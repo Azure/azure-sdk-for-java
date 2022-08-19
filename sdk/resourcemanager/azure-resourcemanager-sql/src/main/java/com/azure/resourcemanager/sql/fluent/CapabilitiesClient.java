@@ -22,7 +22,8 @@ public interface CapabilitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the subscription capabilities available for the specified location.
+     * @return the subscription capabilities available for the specified location along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<LocationCapabilitiesInner>> listByLocationWithResponseAsync(
@@ -36,7 +37,8 @@ public interface CapabilitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the subscription capabilities available for the specified location.
+     * @return the subscription capabilities available for the specified location on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<LocationCapabilitiesInner> listByLocationAsync(String locationName, CapabilityGroup include);
@@ -48,7 +50,8 @@ public interface CapabilitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the subscription capabilities available for the specified location.
+     * @return the subscription capabilities available for the specified location on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<LocationCapabilitiesInner> listByLocationAsync(String locationName);
@@ -74,7 +77,7 @@ public interface CapabilitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the subscription capabilities available for the specified location.
+     * @return the subscription capabilities available for the specified location along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<LocationCapabilitiesInner> listByLocationWithResponse(

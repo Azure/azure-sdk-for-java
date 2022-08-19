@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "HEAD",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg36957?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg44901?api-version=2021-01-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.16.0-beta.1 (17.0.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "614b64ef-1c93-49db-bc9d-da72349f8343",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.17.0-beta.1 (11.0.15.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "bb23a4eb-d693-431f-9214-dca818315892",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -12,20 +12,20 @@
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11801",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11725",
       "StatusCode" : "404",
-      "x-ms-correlation-request-id" : "57787c80-a1c8-4123-9e8f-29218fd6ce2f",
-      "Date" : "Wed, 08 Jun 2022 03:50:10 GMT",
+      "x-ms-correlation-request-id" : "72aefc4e-4ab1-4c88-952e-8bb08144c209",
+      "Date" : "Thu, 14 Jul 2022 02:10:20 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
       "x-ms-failure-cause" : "gateway",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220608T035010Z:57787c80-a1c8-4123-9e8f-29218fd6ce2f",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220714T021020Z:72aefc4e-4ab1-4c88-952e-8bb08144c209",
       "Expires" : "-1",
-      "x-ms-request-id" : "57787c80-a1c8-4123-9e8f-29218fd6ce2f",
+      "x-ms-request-id" : "72aefc4e-4ab1-4c88-952e-8bb08144c209",
       "Body" : "",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "javacsmrg36957", "javacsmrg253164", "nic3840209c005", "vnet8152679e83" ]
+  "variables" : [ "javacsmrg44901", "javacsmrg288996", "nic86289a4ea63", "vnet02334a7b3b" ]
 }

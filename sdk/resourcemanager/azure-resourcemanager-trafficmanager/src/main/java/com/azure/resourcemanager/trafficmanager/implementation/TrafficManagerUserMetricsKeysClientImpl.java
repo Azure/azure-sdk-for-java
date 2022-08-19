@@ -7,6 +7,7 @@ package com.azure.resourcemanager.trafficmanager.implementation;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -60,7 +61,7 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
     @Host("{$host}")
     @ServiceInterface(name = "TrafficManagerManage")
     private interface TrafficManagerUserMetricsKeysService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/trafficManagerUserMetricsKeys/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -68,9 +69,10 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put("/subscriptions/{subscriptionId}/providers/Microsoft.Network/trafficManagerUserMetricsKeys/default")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -78,9 +80,10 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.Network/trafficManagerUserMetricsKeys/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -88,6 +91,7 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -112,6 +116,7 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -120,8 +125,9 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
                             this.client.getEndpoint(),
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -147,9 +153,15 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), context);
+            .get(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                accept,
+                context);
     }
 
     /**
@@ -219,6 +231,7 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -227,8 +240,9 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
                             this.client.getEndpoint(),
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -254,10 +268,15 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
-                this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), context);
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                accept,
+                context);
     }
 
     /**
@@ -327,6 +346,7 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -335,8 +355,9 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
                             this.client.getEndpoint(),
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -362,9 +383,15 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), context);
+            .delete(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                accept,
+                context);
     }
 
     /**

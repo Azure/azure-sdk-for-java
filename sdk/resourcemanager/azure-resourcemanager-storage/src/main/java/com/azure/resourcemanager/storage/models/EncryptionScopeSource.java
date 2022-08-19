@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EncryptionScopeSource. */
+/** The provider for the encryption scope. Possible values (case-insensitive): Microsoft.Storage, Microsoft.KeyVault. */
 public final class EncryptionScopeSource extends ExpandableStringEnum<EncryptionScopeSource> {
     /** Static value Microsoft.Storage for EncryptionScopeSource. */
     public static final EncryptionScopeSource MICROSOFT_STORAGE = fromString("Microsoft.Storage");

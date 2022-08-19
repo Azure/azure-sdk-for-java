@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Vaults PurgeDeleted. */
 public final class VaultsPurgeDeletedSamples {
     /*
-     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2019-09-01/examples/purgeDeletedVault.json
+     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/purgeDeletedVault.json
      */
     /**
      * Sample code: Purge a deleted vault.

@@ -10,14 +10,13 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.automanage.fluent.models.ConfigurationProfileInner;
 import com.azure.resourcemanager.automanage.fluent.models.ConfigurationProfileProperties;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for ConfigurationProfilesVersions CreateOrUpdate. */
 public final class ConfigurationProfilesVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/preview/2021-04-30-preview/examples/createOrUpdateConfigurationProfileVersion.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/createOrUpdateConfigurationProfileVersion.json
      */
     /**
      * Sample code: Create or update configuration profile version.
@@ -43,22 +42,7 @@ public final class ConfigurationProfilesVersionsCreateOrUpdateSamples {
                                     .deserialize(
                                         "{\"Antimalware/Enable\":false,\"AzureSecurityCenter/Enable\":true,\"Backup/Enable\":false,\"BootDiagnostics/Enable\":true,\"ChangeTrackingAndInventory/Enable\":true,\"GuestConfiguration/Enable\":true,\"LogAnalytics/Enable\":true,\"UpdateManagement/Enable\":true,\"VMInsights/Enable\":true}",
                                         Object.class,
-                                        SerializerEncoding.JSON))
-                            .withOverrides(
-                                Arrays
-                                    .asList(
-                                        SerializerFactory
-                                            .createDefaultManagementSerializerAdapter()
-                                            .deserialize(
-                                                "{\"if\":{\"equals\":\"eastus\",\"field\":\"$.location\"},\"priority\":100,\"then\":{\"LogAnalytics/Enable\":true,\"LogAnalytics/Reprovision\":true,\"LogAnalytics/Workspace\":\"/subscriptions/abc/resourceGroups/xyz/providers/Microsoft.La/Workspaces/eastus\"}}",
-                                                Object.class,
-                                                SerializerEncoding.JSON),
-                                        SerializerFactory
-                                            .createDefaultManagementSerializerAdapter()
-                                            .deserialize(
-                                                "{\"if\":{\"equals\":\"centralcanada\",\"field\":\"$.location\"},\"priority\":200,\"then\":{\"LogAnalytics/Enable\":true,\"LogAnalytics/Reprovision\":true,\"LogAnalytics/Workspace\":\"/subscriptions/abc/resourceGroups/xyz/providers/Microsoft.La/Workspaces/centralcanada\"}}",
-                                                Object.class,
-                                                SerializerEncoding.JSON)))),
+                                        SerializerEncoding.JSON))),
                 Context.NONE);
     }
 

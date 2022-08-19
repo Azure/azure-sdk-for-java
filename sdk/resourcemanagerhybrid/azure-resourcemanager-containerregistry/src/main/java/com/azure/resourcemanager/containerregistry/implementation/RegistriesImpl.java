@@ -14,9 +14,11 @@ import com.azure.resourcemanager.containerregistry.fluent.models.RegistryUsageLi
 import com.azure.resourcemanager.containerregistry.models.AccessKeyType;
 import com.azure.resourcemanager.containerregistry.models.CheckNameAvailabilityResult;
 import com.azure.resourcemanager.containerregistry.models.PasswordName;
+import com.azure.resourcemanager.containerregistry.models.RegenerateCredentialParameters;
 import com.azure.resourcemanager.containerregistry.models.Registries;
 import com.azure.resourcemanager.containerregistry.models.Registry;
 import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
+import com.azure.resourcemanager.containerregistry.models.RegistryNameCheckRequest;
 import com.azure.resourcemanager.containerregistry.models.RegistryUsage;
 import com.azure.resourcemanager.containerregistry.models.SourceUploadDefinition;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
@@ -120,7 +122,8 @@ public class RegistriesImpl
             this
                 .inner()
                 .regenerateCredential(
-                    resourceGroupName, registryName, PasswordName.fromString(accessKeyType.toString())));
+                    resourceGroupName, registryName,
+                    new RegenerateCredentialParameters().withName(PasswordName.fromString(accessKeyType.toString()))));
     }
 
     @Override
@@ -129,7 +132,8 @@ public class RegistriesImpl
         return this
             .inner()
             .regenerateCredentialAsync(
-                resourceGroupName, registryName, PasswordName.fromString(accessKeyType.toString()))
+                resourceGroupName, registryName,
+                new RegenerateCredentialParameters().withName(PasswordName.fromString(accessKeyType.toString())))
             .map(RegistryCredentialsImpl::new);
     }
 
@@ -158,14 +162,15 @@ public class RegistriesImpl
 
     @Override
     public CheckNameAvailabilityResult checkNameAvailability(String name) {
-        return new CheckNameAvailabilityResultImpl(this.inner().checkNameAvailability(name));
+        return new CheckNameAvailabilityResultImpl(this.inner()
+            .checkNameAvailability(new RegistryNameCheckRequest().withName(name)));
     }
 
     @Override
     public Mono<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name) {
         return this
             .inner()
-            .checkNameAvailabilityAsync(name)
+            .checkNameAvailabilityAsync(new RegistryNameCheckRequest().withName(name))
             .map(registryNameStatusInner -> new CheckNameAvailabilityResultImpl(registryNameStatusInner));
     }
 

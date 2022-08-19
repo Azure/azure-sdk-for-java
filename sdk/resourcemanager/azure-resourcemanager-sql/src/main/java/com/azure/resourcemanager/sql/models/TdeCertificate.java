@@ -5,29 +5,27 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.sql.fluent.models.TdeCertificateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A TDE certificate that can be uploaded into a server. */
-@JsonFlatten
 @Fluent
-public class TdeCertificate extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TdeCertificate.class);
-
+public final class TdeCertificate extends ProxyResource {
     /*
-     * The base64 encoded certificate private blob.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.privateBlob")
-    private String privateBlob;
+    @JsonProperty(value = "properties")
+    private TdeCertificateProperties innerProperties;
 
-    /*
-     * The certificate password.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.certPassword")
-    private String certPassword;
+    private TdeCertificateProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the privateBlob property: The base64 encoded certificate private blob.
@@ -35,7 +33,7 @@ public class TdeCertificate extends ProxyResource {
      * @return the privateBlob value.
      */
     public String privateBlob() {
-        return this.privateBlob;
+        return this.innerProperties() == null ? null : this.innerProperties().privateBlob();
     }
 
     /**
@@ -45,7 +43,10 @@ public class TdeCertificate extends ProxyResource {
      * @return the TdeCertificate object itself.
      */
     public TdeCertificate withPrivateBlob(String privateBlob) {
-        this.privateBlob = privateBlob;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TdeCertificateProperties();
+        }
+        this.innerProperties().withPrivateBlob(privateBlob);
         return this;
     }
 
@@ -55,7 +56,7 @@ public class TdeCertificate extends ProxyResource {
      * @return the certPassword value.
      */
     public String certPassword() {
-        return this.certPassword;
+        return this.innerProperties() == null ? null : this.innerProperties().certPassword();
     }
 
     /**
@@ -65,7 +66,10 @@ public class TdeCertificate extends ProxyResource {
      * @return the TdeCertificate object itself.
      */
     public TdeCertificate withCertPassword(String certPassword) {
-        this.certPassword = certPassword;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TdeCertificateProperties();
+        }
+        this.innerProperties().withCertPassword(certPassword);
         return this;
     }
 
@@ -75,5 +79,8 @@ public class TdeCertificate extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

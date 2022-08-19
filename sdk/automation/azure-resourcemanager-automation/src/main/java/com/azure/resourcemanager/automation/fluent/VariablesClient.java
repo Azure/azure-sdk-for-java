@@ -45,7 +45,7 @@ public interface VariablesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the variable.
+     * @return definition of the variable along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VariableInner> createOrUpdateWithResponse(
@@ -85,7 +85,7 @@ public interface VariablesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the variable.
+     * @return definition of the variable along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VariableInner> updateWithResponse(
@@ -118,7 +118,7 @@ public interface VariablesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
@@ -148,7 +148,7 @@ public interface VariablesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the variable.
+     * @return definition of the variable along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VariableInner> getWithResponse(
@@ -162,7 +162,7 @@ public interface VariablesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list variables operation.
+     * @return the response model for the list variables operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VariableInner> listByAutomationAccount(String resourceGroupName, String automationAccountName);
@@ -176,7 +176,7 @@ public interface VariablesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list variables operation.
+     * @return the response model for the list variables operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VariableInner> listByAutomationAccount(

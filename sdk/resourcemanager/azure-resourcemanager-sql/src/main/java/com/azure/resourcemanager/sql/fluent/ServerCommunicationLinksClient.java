@@ -30,7 +30,7 @@ public interface ServerCommunicationLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> deleteWithResponseAsync(
@@ -46,7 +46,7 @@ public interface ServerCommunicationLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String serverName, String communicationLinkName);
@@ -76,7 +76,7 @@ public interface ServerCommunicationLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
@@ -92,7 +92,7 @@ public interface ServerCommunicationLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server communication link.
+     * @return server communication link along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ServerCommunicationLinkInner>> getWithResponseAsync(
@@ -108,7 +108,7 @@ public interface ServerCommunicationLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server communication link.
+     * @return server communication link on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ServerCommunicationLinkInner> getAsync(
@@ -140,7 +140,7 @@ public interface ServerCommunicationLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server communication link.
+     * @return server communication link along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ServerCommunicationLinkInner> getWithResponse(
@@ -153,15 +153,18 @@ public interface ServerCommunicationLinksClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param communicationLinkName The name of the server communication link.
-     * @param partnerServer The name of the partner server.
+     * @param parameters The required parameters for creating a server communication link.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server communication link.
+     * @return server communication link along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serverName, String communicationLinkName, String partnerServer);
+        String resourceGroupName,
+        String serverName,
+        String communicationLinkName,
+        ServerCommunicationLinkInner parameters);
 
     /**
      * Creates a server communication link.
@@ -170,15 +173,18 @@ public interface ServerCommunicationLinksClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param communicationLinkName The name of the server communication link.
-     * @param partnerServer The name of the partner server.
+     * @param parameters The required parameters for creating a server communication link.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server communication link.
+     * @return the {@link PollerFlux} for polling of server communication link.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ServerCommunicationLinkInner>, ServerCommunicationLinkInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String serverName, String communicationLinkName, String partnerServer);
+        String resourceGroupName,
+        String serverName,
+        String communicationLinkName,
+        ServerCommunicationLinkInner parameters);
 
     /**
      * Creates a server communication link.
@@ -187,36 +193,39 @@ public interface ServerCommunicationLinksClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param communicationLinkName The name of the server communication link.
-     * @param partnerServer The name of the partner server.
+     * @param parameters The required parameters for creating a server communication link.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server communication link.
+     * @return the {@link SyncPoller} for polling of server communication link.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ServerCommunicationLinkInner>, ServerCommunicationLinkInner> beginCreateOrUpdate(
-        String resourceGroupName, String serverName, String communicationLinkName, String partnerServer);
-
-    /**
-     * Creates a server communication link.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param communicationLinkName The name of the server communication link.
-     * @param partnerServer The name of the partner server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server communication link.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServerCommunicationLinkInner>, ServerCommunicationLinkInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serverName,
         String communicationLinkName,
-        String partnerServer,
+        ServerCommunicationLinkInner parameters);
+
+    /**
+     * Creates a server communication link.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param communicationLinkName The name of the server communication link.
+     * @param parameters The required parameters for creating a server communication link.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of server communication link.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ServerCommunicationLinkInner>, ServerCommunicationLinkInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String serverName,
+        String communicationLinkName,
+        ServerCommunicationLinkInner parameters,
         Context context);
 
     /**
@@ -226,15 +235,18 @@ public interface ServerCommunicationLinksClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param communicationLinkName The name of the server communication link.
-     * @param partnerServer The name of the partner server.
+     * @param parameters The required parameters for creating a server communication link.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server communication link.
+     * @return server communication link on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ServerCommunicationLinkInner> createOrUpdateAsync(
-        String resourceGroupName, String serverName, String communicationLinkName, String partnerServer);
+        String resourceGroupName,
+        String serverName,
+        String communicationLinkName,
+        ServerCommunicationLinkInner parameters);
 
     /**
      * Creates a server communication link.
@@ -243,23 +255,7 @@ public interface ServerCommunicationLinksClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param communicationLinkName The name of the server communication link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server communication link.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ServerCommunicationLinkInner> createOrUpdateAsync(
-        String resourceGroupName, String serverName, String communicationLinkName);
-
-    /**
-     * Creates a server communication link.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param communicationLinkName The name of the server communication link.
-     * @param partnerServer The name of the partner server.
+     * @param parameters The required parameters for creating a server communication link.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -267,7 +263,10 @@ public interface ServerCommunicationLinksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ServerCommunicationLinkInner createOrUpdate(
-        String resourceGroupName, String serverName, String communicationLinkName, String partnerServer);
+        String resourceGroupName,
+        String serverName,
+        String communicationLinkName,
+        ServerCommunicationLinkInner parameters);
 
     /**
      * Creates a server communication link.
@@ -276,7 +275,7 @@ public interface ServerCommunicationLinksClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param communicationLinkName The name of the server communication link.
-     * @param partnerServer The name of the partner server.
+     * @param parameters The required parameters for creating a server communication link.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -288,24 +287,8 @@ public interface ServerCommunicationLinksClient {
         String resourceGroupName,
         String serverName,
         String communicationLinkName,
-        String partnerServer,
+        ServerCommunicationLinkInner parameters,
         Context context);
-
-    /**
-     * Creates a server communication link.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param communicationLinkName The name of the server communication link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server communication link.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ServerCommunicationLinkInner createOrUpdate(
-        String resourceGroupName, String serverName, String communicationLinkName);
 
     /**
      * Gets a list of server communication links.
@@ -316,7 +299,7 @@ public interface ServerCommunicationLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server communication links.
+     * @return a list of server communication links as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ServerCommunicationLinkInner> listByServerAsync(String resourceGroupName, String serverName);
@@ -330,7 +313,7 @@ public interface ServerCommunicationLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server communication links.
+     * @return a list of server communication links as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ServerCommunicationLinkInner> listByServer(String resourceGroupName, String serverName);
@@ -345,7 +328,7 @@ public interface ServerCommunicationLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server communication links.
+     * @return a list of server communication links as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ServerCommunicationLinkInner> listByServer(

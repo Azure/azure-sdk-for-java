@@ -30,6 +30,8 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy;
+import com.azure.security.keyvault.secrets.implementation.KeyVaultErrorCodeStrings;
+import com.azure.security.keyvault.secrets.implementation.SecretClientImpl;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecretIdentifier;
 
 import java.net.MalformedURLException;
@@ -48,56 +50,56 @@ import java.util.Map;
  * <p> The minimal configuration options required by {@link SecretClientBuilder secretClientBuilder} to build
  * {@link SecretAsyncClient} are {@link String vaultUrl} and {@link TokenCredential credential}. </p>
  *
- * <!-- src_embed com.azure.security.keyvault.secrets.async.secretclient.construct -->
+ * <!-- src_embed com.azure.security.keyvault.secrets.SecretAsyncClient.instantiation -->
  * <pre>
  * SecretAsyncClient secretAsyncClient = new SecretClientBuilder&#40;&#41;
  *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
- *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.vault.azure.net&#47;&quot;&#41;
+ *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
  *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.security.keyvault.secrets.async.secretclient.construct -->
+ * <!-- end com.azure.security.keyvault.secrets.SecretAsyncClient.instantiation -->
  *
  * <p><strong>Samples to construct the sync client</strong></p>
- * <!-- src_embed com.azure.security.keyvault.secretclient.sync.construct -->
+ * <!-- src_embed com.azure.security.keyvault.SecretClient.instantiation -->
  * <pre>
  * SecretClient secretClient = new SecretClientBuilder&#40;&#41;
  *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
- *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.vault.azure.net&#47;&quot;&#41;
+ *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
  *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.security.keyvault.secretclient.sync.construct -->
+ * <!-- end com.azure.security.keyvault.SecretClient.instantiation -->
  *
  * <p>The {@link HttpLogDetailLevel log detail level}, multiple custom {@link HttpLoggingPolicy policies} and custom
  * {@link HttpClient http client} can be optionally configured in the {@link SecretClientBuilder}.</p>
  *
- * <!-- src_embed com.azure.security.keyvault.secrets.async.secretclient.withhttpclient.instantiation -->
+ * <!-- src_embed com.azure.security.keyvault.secrets.SecretAsyncClient.instantiation.withHttpClient -->
  * <pre>
  * SecretAsyncClient secretAsyncClient = new SecretClientBuilder&#40;&#41;
  *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
- *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.azure.net&#47;&quot;&#41;
+ *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
  *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *     .httpClient&#40;HttpClient.createDefault&#40;&#41;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.security.keyvault.secrets.async.secretclient.withhttpclient.instantiation -->
+ * <!-- end com.azure.security.keyvault.secrets.SecretAsyncClient.instantiation.withHttpClient -->
  *
  * <p>Alternatively, custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies and
  * {@link String vaultUrl}
  * can be specified. It provides finer control over the construction of {@link SecretAsyncClient client}</p>
  *
- * <!-- src_embed com.azure.security.keyvault.secrets.async.secretclient.pipeline.instantiation -->
+ * <!-- src_embed com.azure.security.keyvault.secrets.SecretAsyncClient.instantiation.withPipeline -->
  * <pre>
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
  *     .policies&#40;new KeyVaultCredentialPolicy&#40;credential&#41;, new RetryPolicy&#40;&#41;&#41;
  *     .build&#40;&#41;;
  * SecretAsyncClient secretAsyncClient = new SecretClientBuilder&#40;&#41;
  *     .pipeline&#40;pipeline&#41;
- *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.azure.net&#47;&quot;&#41;
+ *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.security.keyvault.secrets.async.secretclient.pipeline.instantiation -->
+ * <!-- end com.azure.security.keyvault.secrets.SecretAsyncClient.instantiation.withPipeline -->
  *
  * @see SecretClient
  * @see SecretAsyncClient
@@ -117,7 +119,7 @@ public final class SecretClientBuilder implements
     private final Map<String, String> properties;
     private TokenCredential credential;
     private HttpPipeline pipeline;
-    private URL vaultUrl;
+    private String vaultUrl;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
     private RetryPolicy retryPolicy;
@@ -155,7 +157,7 @@ public final class SecretClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public SecretClient buildClient() {
-        return new SecretClient(buildAsyncClient());
+        return new SecretClient(buildInnerClient());
     }
 
     /**
@@ -177,9 +179,14 @@ public final class SecretClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public SecretAsyncClient buildAsyncClient() {
+        return new SecretAsyncClient(buildInnerClient());
+    }
+
+
+    private SecretClientImpl buildInnerClient() {
         Configuration buildConfiguration =
             (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
-        URL buildEndpoint = getBuildEndpoint(buildConfiguration);
+        String buildEndpoint = getBuildEndpoint(buildConfiguration);
 
         if (buildEndpoint == null) {
             throw logger.logExceptionAsError(
@@ -190,7 +197,7 @@ public final class SecretClientBuilder implements
         SecretServiceVersion serviceVersion = version != null ? version : SecretServiceVersion.getLatest();
 
         if (pipeline != null) {
-            return new SecretAsyncClient(vaultUrl, pipeline, serviceVersion);
+            return new SecretClientImpl(vaultUrl, pipeline, serviceVersion);
         }
 
         if (credential == null) {
@@ -237,7 +244,7 @@ public final class SecretClientBuilder implements
             .httpClient(httpClient)
             .build();
 
-        return new SecretAsyncClient(vaultUrl, pipeline, serviceVersion);
+        return new SecretClientImpl(vaultUrl, pipeline, serviceVersion);
     }
 
     /**
@@ -258,7 +265,8 @@ public final class SecretClientBuilder implements
         }
 
         try {
-            this.vaultUrl = new URL(vaultUrl);
+            URL url = new URL(vaultUrl);
+            this.vaultUrl = url.toString();
         } catch (MalformedURLException e) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "The Azure Key Vault url is malformed.", e));
@@ -480,7 +488,7 @@ public final class SecretClientBuilder implements
         return this;
     }
 
-    private URL getBuildEndpoint(Configuration configuration) {
+    private String getBuildEndpoint(Configuration configuration) {
         if (vaultUrl != null) {
             return vaultUrl;
         }
@@ -491,7 +499,8 @@ public final class SecretClientBuilder implements
         }
 
         try {
-            return new URL(configEndpoint);
+            URL url =  new URL(configEndpoint);
+            return url.toString();
         } catch (MalformedURLException ex) {
             return null;
         }

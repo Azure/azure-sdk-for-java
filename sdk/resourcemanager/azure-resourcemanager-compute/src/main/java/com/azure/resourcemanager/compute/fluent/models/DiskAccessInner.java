@@ -22,8 +22,7 @@ public final class DiskAccessInner extends Resource {
     private DiskAccessProperties innerProperties;
 
     /*
-     * The extended location where the disk access will be created. Extended
-     * location cannot be changed.
+     * The extended location where the disk access will be created. Extended location cannot be changed.
      */
     @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;

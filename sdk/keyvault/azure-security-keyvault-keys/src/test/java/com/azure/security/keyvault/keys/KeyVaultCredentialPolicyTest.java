@@ -12,6 +12,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.test.SyncAsyncExtension;
 import com.azure.core.test.annotation.SyncAsyncTest;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -68,7 +69,8 @@ public class KeyVaultCredentialPolicyTest {
 
         HttpPipelineCallContext bodyContext = mock(HttpPipelineCallContext.class);
         when(bodyContext.getHttpRequest()).thenReturn(request);
-        when(bodyContext.getData("KeyVaultCredentialPolicyStashedBody")).thenReturn(Optional.of(BODY));
+        when(bodyContext.getData("KeyVaultCredentialPolicyStashedBody"))
+            .thenReturn(Optional.of(BinaryData.fromString(BODY)));
         when(bodyContext.getData("KeyVaultCredentialPolicyStashedContentLength")).thenReturn(Optional.of("21"));
 
         HttpPipelineCallContext bodyFluxContext = mock(HttpPipelineCallContext.class);

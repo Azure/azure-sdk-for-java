@@ -53,7 +53,7 @@ public class KubernetesClusterAgentPoolImpl
 
     @Override
     public int count() {
-        return this.innerModel().count();
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().count());
     }
 
     @Override
@@ -63,7 +63,7 @@ public class KubernetesClusterAgentPoolImpl
 
     @Override
     public int osDiskSizeInGB() {
-        return this.innerModel().osDiskSizeGB();
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().osDiskSizeGB());
     }
 
     @Override
@@ -311,6 +311,7 @@ public class KubernetesClusterAgentPoolImpl
         agentPoolInner.withEnableUltraSsd(innerModel().enableUltraSsd());
         agentPoolInner.withEnableFips(innerModel().enableFips());
         agentPoolInner.withGpuInstanceProfile(innerModel().gpuInstanceProfile());
+        agentPoolInner.withHostGroupId(innerModel().hostGroupId());
         return agentPoolInner;
     }
 

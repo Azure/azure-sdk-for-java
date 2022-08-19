@@ -450,7 +450,7 @@ public final class ManagedClustersClientImpl
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -497,7 +497,7 @@ public final class ManagedClustersClientImpl
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -595,7 +595,7 @@ public final class ManagedClustersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -638,7 +638,7 @@ public final class ManagedClustersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -737,7 +737,7 @@ public final class ManagedClustersClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -792,7 +792,7 @@ public final class ManagedClustersClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -909,7 +909,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -960,7 +960,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1024,7 +1024,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * **WARNING**: This API will be deprecated. Instead use
+     * Gets an access profile of a managed cluster.
+     *
+     * <p>**WARNING**: This API will be deprecated. Instead use
      * [ListClusterUserCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusterusercredentials)
      * or
      * [ListClusterAdminCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusteradmincredentials)
@@ -1063,7 +1065,7 @@ public final class ManagedClustersClientImpl
         if (roleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter roleName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1082,7 +1084,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * **WARNING**: This API will be deprecated. Instead use
+     * Gets an access profile of a managed cluster.
+     *
+     * <p>**WARNING**: This API will be deprecated. Instead use
      * [ListClusterUserCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusterusercredentials)
      * or
      * [ListClusterAdminCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusteradmincredentials)
@@ -1122,7 +1126,7 @@ public final class ManagedClustersClientImpl
         if (roleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter roleName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1138,7 +1142,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * **WARNING**: This API will be deprecated. Instead use
+     * Gets an access profile of a managed cluster.
+     *
+     * <p>**WARNING**: This API will be deprecated. Instead use
      * [ListClusterUserCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusterusercredentials)
      * or
      * [ListClusterAdminCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusteradmincredentials)
@@ -1160,7 +1166,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * **WARNING**: This API will be deprecated. Instead use
+     * Gets an access profile of a managed cluster.
+     *
+     * <p>**WARNING**: This API will be deprecated. Instead use
      * [ListClusterUserCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusterusercredentials)
      * or
      * [ListClusterAdminCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusteradmincredentials)
@@ -1181,7 +1189,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * **WARNING**: This API will be deprecated. Instead use
+     * Gets an access profile of a managed cluster.
+     *
+     * <p>**WARNING**: This API will be deprecated. Instead use
      * [ListClusterUserCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusterusercredentials)
      * or
      * [ListClusterAdminCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusteradmincredentials)
@@ -1235,7 +1245,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1287,7 +1297,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1409,7 +1419,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1465,7 +1475,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1592,7 +1602,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1644,7 +1654,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1763,7 +1773,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1813,7 +1823,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1913,7 +1923,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1970,7 +1980,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2182,7 +2192,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2239,7 +2249,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2443,7 +2453,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2493,7 +2503,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2642,7 +2652,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * This action cannot be performed on a cluster that is not using a service principal.
+     * Reset the Service Principal Profile of a managed cluster.
+     *
+     * <p>This action cannot be performed on a cluster that is not using a service principal.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -2679,7 +2691,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2698,7 +2710,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * This action cannot be performed on a cluster that is not using a service principal.
+     * Reset the Service Principal Profile of a managed cluster.
+     *
+     * <p>This action cannot be performed on a cluster that is not using a service principal.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -2739,7 +2753,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2755,7 +2769,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * This action cannot be performed on a cluster that is not using a service principal.
+     * Reset the Service Principal Profile of a managed cluster.
+     *
+     * <p>This action cannot be performed on a cluster that is not using a service principal.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -2777,7 +2793,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * This action cannot be performed on a cluster that is not using a service principal.
+     * Reset the Service Principal Profile of a managed cluster.
+     *
+     * <p>This action cannot be performed on a cluster that is not using a service principal.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -2803,7 +2821,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * This action cannot be performed on a cluster that is not using a service principal.
+     * Reset the Service Principal Profile of a managed cluster.
+     *
+     * <p>This action cannot be performed on a cluster that is not using a service principal.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -2820,7 +2840,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * This action cannot be performed on a cluster that is not using a service principal.
+     * Reset the Service Principal Profile of a managed cluster.
+     *
+     * <p>This action cannot be performed on a cluster that is not using a service principal.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -2842,7 +2864,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * This action cannot be performed on a cluster that is not using a service principal.
+     * Reset the Service Principal Profile of a managed cluster.
+     *
+     * <p>This action cannot be performed on a cluster that is not using a service principal.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -2861,7 +2885,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * This action cannot be performed on a cluster that is not using a service principal.
+     * Reset the Service Principal Profile of a managed cluster.
+     *
+     * <p>This action cannot be performed on a cluster that is not using a service principal.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -2884,7 +2910,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * This action cannot be performed on a cluster that is not using a service principal.
+     * Reset the Service Principal Profile of a managed cluster.
+     *
+     * <p>This action cannot be performed on a cluster that is not using a service principal.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -2900,7 +2928,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * This action cannot be performed on a cluster that is not using a service principal.
+     * Reset the Service Principal Profile of a managed cluster.
+     *
+     * <p>This action cannot be performed on a cluster that is not using a service principal.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -2957,7 +2987,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3014,7 +3044,7 @@ public final class ManagedClustersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3181,7 +3211,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
+     * Rotates the certificates of a managed cluster.
+     *
+     * <p>See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -3213,7 +3245,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3231,7 +3263,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
+     * Rotates the certificates of a managed cluster.
+     *
+     * <p>See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -3264,7 +3298,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3279,7 +3313,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
+     * Rotates the certificates of a managed cluster.
+     *
+     * <p>See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -3301,7 +3337,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
+     * Rotates the certificates of a managed cluster.
+     *
+     * <p>See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -3324,7 +3362,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
+     * Rotates the certificates of a managed cluster.
+     *
+     * <p>See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -3341,7 +3381,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
+     * Rotates the certificates of a managed cluster.
+     *
+     * <p>See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -3359,7 +3401,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
+     * Rotates the certificates of a managed cluster.
+     *
+     * <p>See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -3377,7 +3421,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
+     * Rotates the certificates of a managed cluster.
+     *
+     * <p>See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -3396,7 +3442,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
+     * Rotates the certificates of a managed cluster.
+     *
+     * <p>See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -3411,7 +3459,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
+     * Rotates the certificates of a managed cluster.
+     *
+     * <p>See [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for more details about
      * rotating managed cluster certificates.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -3427,7 +3477,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
+     * Stops a Managed Cluster
+     *
+     * <p>This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
@@ -3460,7 +3512,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3478,7 +3530,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
+     * Stops a Managed Cluster
+     *
+     * <p>This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
@@ -3513,7 +3567,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3528,7 +3582,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
+     * Stops a Managed Cluster
+     *
+     * <p>This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
@@ -3550,7 +3606,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
+     * Stops a Managed Cluster
+     *
+     * <p>This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
@@ -3574,7 +3632,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
+     * Stops a Managed Cluster
+     *
+     * <p>This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
@@ -3592,7 +3652,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
+     * Stops a Managed Cluster
+     *
+     * <p>This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
@@ -3612,7 +3674,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
+     * Stops a Managed Cluster
+     *
+     * <p>This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
@@ -3630,7 +3694,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
+     * Stops a Managed Cluster
+     *
+     * <p>This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
@@ -3651,7 +3717,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
+     * Stops a Managed Cluster
+     *
+     * <p>This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
@@ -3668,7 +3736,9 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
+     * Stops a Managed Cluster
+     *
+     * <p>This can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
      * control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
      * charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster)
      * for more details about stopping a cluster.
@@ -3686,8 +3756,10 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
-     * a cluster.
+     * Starts a previously stopped Managed Cluster
+     *
+     * <p>See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about
+     * starting a cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -3717,7 +3789,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3735,8 +3807,10 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
-     * a cluster.
+     * Starts a previously stopped Managed Cluster
+     *
+     * <p>See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about
+     * starting a cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -3768,7 +3842,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3783,8 +3857,10 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
-     * a cluster.
+     * Starts a previously stopped Managed Cluster
+     *
+     * <p>See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about
+     * starting a cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -3803,8 +3879,10 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
-     * a cluster.
+     * Starts a previously stopped Managed Cluster
+     *
+     * <p>See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about
+     * starting a cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -3825,8 +3903,10 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
-     * a cluster.
+     * Starts a previously stopped Managed Cluster
+     *
+     * <p>See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about
+     * starting a cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -3841,8 +3921,10 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
-     * a cluster.
+     * Starts a previously stopped Managed Cluster
+     *
+     * <p>See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about
+     * starting a cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -3859,8 +3941,10 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
-     * a cluster.
+     * Starts a previously stopped Managed Cluster
+     *
+     * <p>See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about
+     * starting a cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -3875,8 +3959,10 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
-     * a cluster.
+     * Starts a previously stopped Managed Cluster
+     *
+     * <p>See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about
+     * starting a cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -3894,8 +3980,10 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
-     * a cluster.
+     * Starts a previously stopped Managed Cluster
+     *
+     * <p>See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about
+     * starting a cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -3909,8 +3997,10 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about starting
-     * a cluster.
+     * Starts a previously stopped Managed Cluster
+     *
+     * <p>See [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about
+     * starting a cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -3925,8 +4015,10 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
-     * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
+     * Submits a command to run against the Managed Cluster.
+     *
+     * <p>AKS will create a pod to run the command. This is primarily useful for private clusters. For more information
+     * see [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -3963,7 +4055,7 @@ public final class ManagedClustersClientImpl
         } else {
             requestPayload.validate();
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3982,8 +4074,10 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
-     * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
+     * Submits a command to run against the Managed Cluster.
+     *
+     * <p>AKS will create a pod to run the command. This is primarily useful for private clusters. For more information
+     * see [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -4021,7 +4115,7 @@ public final class ManagedClustersClientImpl
         } else {
             requestPayload.validate();
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4037,8 +4131,10 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
-     * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
+     * Submits a command to run against the Managed Cluster.
+     *
+     * <p>AKS will create a pod to run the command. This is primarily useful for private clusters. For more information
+     * see [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -4064,8 +4160,10 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
-     * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
+     * Submits a command to run against the Managed Cluster.
+     *
+     * <p>AKS will create a pod to run the command. This is primarily useful for private clusters. For more information
+     * see [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -4089,8 +4187,10 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
-     * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
+     * Submits a command to run against the Managed Cluster.
+     *
+     * <p>AKS will create a pod to run the command. This is primarily useful for private clusters. For more information
+     * see [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -4107,8 +4207,10 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
-     * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
+     * Submits a command to run against the Managed Cluster.
+     *
+     * <p>AKS will create a pod to run the command. This is primarily useful for private clusters. For more information
+     * see [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -4126,8 +4228,10 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
-     * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
+     * Submits a command to run against the Managed Cluster.
+     *
+     * <p>AKS will create a pod to run the command. This is primarily useful for private clusters. For more information
+     * see [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -4146,8 +4250,10 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
-     * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
+     * Submits a command to run against the Managed Cluster.
+     *
+     * <p>AKS will create a pod to run the command. This is primarily useful for private clusters. For more information
+     * see [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -4167,8 +4273,10 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
-     * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
+     * Submits a command to run against the Managed Cluster.
+     *
+     * <p>AKS will create a pod to run the command. This is primarily useful for private clusters. For more information
+     * see [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -4185,8 +4293,10 @@ public final class ManagedClustersClientImpl
     }
 
     /**
-     * AKS will create a pod to run the command. This is primarily useful for private clusters. For more information see
-     * [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
+     * Submits a command to run against the Managed Cluster.
+     *
+     * <p>AKS will create a pod to run the command. This is primarily useful for private clusters. For more information
+     * see [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -4240,7 +4350,7 @@ public final class ManagedClustersClientImpl
         if (commandId == null) {
             return Mono.error(new IllegalArgumentException("Parameter commandId is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -4296,7 +4406,7 @@ public final class ManagedClustersClientImpl
         if (commandId == null) {
             return Mono.error(new IllegalArgumentException("Parameter commandId is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4366,6 +4476,9 @@ public final class ManagedClustersClientImpl
 
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
+     * cluster.
+     *
+     * <p>Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
      * cluster. The operation returns properties of each egress endpoint.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -4398,7 +4511,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -4426,6 +4539,9 @@ public final class ManagedClustersClientImpl
 
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
+     * cluster.
+     *
+     * <p>Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
      * cluster. The operation returns properties of each egress endpoint.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -4460,7 +4576,7 @@ public final class ManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2022-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4485,6 +4601,9 @@ public final class ManagedClustersClientImpl
 
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
+     * cluster.
+     *
+     * <p>Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
      * cluster. The operation returns properties of each egress endpoint.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -4505,6 +4624,9 @@ public final class ManagedClustersClientImpl
 
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
+     * cluster.
+     *
+     * <p>Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
      * cluster. The operation returns properties of each egress endpoint.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -4526,6 +4648,9 @@ public final class ManagedClustersClientImpl
 
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
+     * cluster.
+     *
+     * <p>Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
      * cluster. The operation returns properties of each egress endpoint.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -4544,6 +4669,9 @@ public final class ManagedClustersClientImpl
 
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
+     * cluster.
+     *
+     * <p>Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
      * cluster. The operation returns properties of each egress endpoint.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.

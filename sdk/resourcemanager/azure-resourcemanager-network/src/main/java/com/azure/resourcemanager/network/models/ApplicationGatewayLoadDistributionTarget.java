@@ -19,8 +19,7 @@ public final class ApplicationGatewayLoadDistributionTarget extends SubResource 
     private ApplicationGatewayLoadDistributionTargetPropertiesFormat innerProperties;
 
     /*
-     * Name of the load distribution policy that is unique within an
-     * Application Gateway.
+     * Name of the load distribution policy that is unique within an Application Gateway.
      */
     @JsonProperty(value = "name")
     private String name;

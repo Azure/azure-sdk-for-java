@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DiskSecurityTypes. */
+/** Specifies the SecurityType of the VM. Applicable for OS disks only. */
 public final class DiskSecurityTypes extends ExpandableStringEnum<DiskSecurityTypes> {
     /** Static value TrustedLaunch for DiskSecurityTypes. */
     public static final DiskSecurityTypes TRUSTED_LAUNCH = fromString("TrustedLaunch");

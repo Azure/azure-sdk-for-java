@@ -10,7 +10,7 @@ import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
 /** Samples for Volumes PoolChange. */
 public final class VolumesPoolChangeSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-01-01/examples/Volumes_PoolChange.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-03-01/examples/Volumes_PoolChange.json
      */
     /**
      * Sample code: Volumes_AuthorizeReplication.

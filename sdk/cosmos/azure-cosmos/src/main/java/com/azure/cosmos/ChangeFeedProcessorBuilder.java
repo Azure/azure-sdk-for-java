@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedProcessorBuilderImpl;
+import com.azure.cosmos.implementation.changefeed.incremental.ChangeFeedProcessorBuilderImpl;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -32,7 +32,7 @@ public class ChangeFeedProcessorBuilder {
     private CosmosAsyncContainer feedContainer;
     private CosmosAsyncContainer leaseContainer;
     private ChangeFeedProcessorOptions changeFeedProcessorOptions;
-    private Consumer<List<JsonNode>> consumer;
+    private Consumer<List<JsonNode>> partitionKeyBasedLeaseConsumer;
 
     /**
      * Instantiates a new Cosmos a new ChangeFeedProcessor builder.
@@ -93,7 +93,7 @@ public class ChangeFeedProcessorBuilder {
      * @return current Builder.
      */
     public ChangeFeedProcessorBuilder handleChanges(Consumer<List<JsonNode>> consumer) {
-        this.consumer = consumer;
+        this.partitionKeyBasedLeaseConsumer = consumer;
 
         return this;
     }
@@ -125,35 +125,42 @@ public class ChangeFeedProcessorBuilder {
      * @return an instance of {@link ChangeFeedProcessor}.
      */
     public ChangeFeedProcessor buildChangeFeedProcessor() {
-        if (hostName == null || hostName.isEmpty()) {
-            throw new IllegalArgumentException("hostName");
-        }
-        if (feedContainer == null) {
-            throw new IllegalArgumentException("feedContainer");
-        }
-        if (leaseContainer == null) {
-            throw new IllegalArgumentException("leaseContainer");
-        }
-        if (consumer == null) {
-            throw new IllegalArgumentException("consumer");
-        }
+        validateChangeFeedProcessorBuilder();
 
         ChangeFeedProcessorBuilderImpl builder = new ChangeFeedProcessorBuilderImpl()
             .hostName(this.hostName)
             .feedContainer(this.feedContainer)
             .leaseContainer(this.leaseContainer)
-            .handleChanges(this.consumer);
+            .handleChanges(this.partitionKeyBasedLeaseConsumer);
 
         if (this.changeFeedProcessorOptions != null) {
-            if (this.changeFeedProcessorOptions.getLeaseRenewInterval().compareTo(this.changeFeedProcessorOptions.getLeaseExpirationInterval()) >= 0) {
-                // Lease renewer task must execute at a faster frequency than expiration setting; otherwise this will
-                //  force a lot of resets and lead to a poor overall performance of ChangeFeedProcessor.
-                throw new IllegalArgumentException("changeFeedProcessorOptions: expecting leaseRenewInterval less than leaseExpirationInterval");
-            }
-
             builder.options(this.changeFeedProcessorOptions);
         }
 
         return builder.build();
+    }
+
+    private void validateChangeFeedProcessorBuilder() {
+        if (hostName == null || hostName.isEmpty()) {
+            throw new IllegalArgumentException("hostName cannot be null or empty");
+        }
+        if (feedContainer == null) {
+            throw new IllegalArgumentException("feedContainer cannot be null");
+        }
+        if (leaseContainer == null) {
+            throw new IllegalArgumentException("leaseContainer cannot be null");
+        }
+        validateChangeFeedProcessorOptions();
+    }
+
+    private void validateChangeFeedProcessorOptions() {
+        if (this.changeFeedProcessorOptions == null) {
+            return;
+        }
+        if (this.changeFeedProcessorOptions.getLeaseRenewInterval().compareTo(this.changeFeedProcessorOptions.getLeaseExpirationInterval()) >= 0) {
+            // Lease renewer task must execute at a faster frequency than expiration setting; otherwise this will
+            //  force a lot of resets and lead to a poor overall performance of ChangeFeedProcessor.
+            throw new IllegalArgumentException("changeFeedProcessorOptions: expecting leaseRenewInterval less than leaseExpirationInterval");
+        }
     }
 }

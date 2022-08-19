@@ -12,6 +12,7 @@ import com.azure.resourcemanager.search.fluent.SearchManagementClient;
 import com.azure.resourcemanager.search.fluent.models.SearchServiceInner;
 import com.azure.resourcemanager.search.models.AdminKeyKind;
 import com.azure.resourcemanager.search.models.AdminKeys;
+import com.azure.resourcemanager.search.models.CheckNameAvailabilityInput;
 import com.azure.resourcemanager.search.models.CheckNameAvailabilityOutput;
 import com.azure.resourcemanager.search.models.QueryKey;
 import com.azure.resourcemanager.search.models.SearchService;
@@ -66,7 +67,7 @@ public class SearchServicesImpl
 
     @Override
     public Mono<CheckNameAvailabilityOutput> checkNameAvailabilityAsync(String name) {
-        return this.inner().getServices().checkNameAvailabilityAsync(name);
+        return this.inner().getServices().checkNameAvailabilityAsync(new CheckNameAvailabilityInput().withName(name));
     }
 
     @Override

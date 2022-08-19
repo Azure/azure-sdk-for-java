@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -28,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.ManagedInstanceKeysClient;
@@ -40,8 +40,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ManagedInstanceKeysClient. */
 public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysClient {
-    private final ClientLogger logger = new ClientLogger(ManagedInstanceKeysClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ManagedInstanceKeysService service;
 
@@ -66,7 +64,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientM")
     private interface ManagedInstanceKeysService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/managedInstances/{managedInstanceName}/keys")
@@ -79,9 +77,10 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
             @QueryParam("$filter") String filter,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/managedInstances/{managedInstanceName}/keys/{keyName}")
@@ -94,9 +93,10 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
             @PathParam("keyName") String keyName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/managedInstances/{managedInstanceName}/keys/{keyName}")
@@ -110,6 +110,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ManagedInstanceKeyInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -127,12 +128,15 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
             @QueryParam("api-version") String apiVersion,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedInstanceKeyListResult>> listByInstanceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -145,7 +149,8 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance keys.
+     * @return a list of managed instance keys along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagedInstanceKeyInner>> listByInstanceSinglePageAsync(
@@ -171,6 +176,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-10-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -182,6 +188,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
                             filter,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<ManagedInstanceKeyInner>>map(
                 res ->
@@ -192,7 +199,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -206,7 +213,8 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance keys.
+     * @return a list of managed instance keys along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagedInstanceKeyInner>> listByInstanceSinglePageAsync(
@@ -232,6 +240,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-10-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByInstance(
@@ -241,6 +250,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
                 filter,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context)
             .map(
                 res ->
@@ -263,7 +273,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance keys.
+     * @return a list of managed instance keys as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedInstanceKeyInner> listByInstanceAsync(
@@ -282,7 +292,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance keys.
+     * @return a list of managed instance keys as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedInstanceKeyInner> listByInstanceAsync(
@@ -304,7 +314,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance keys.
+     * @return a list of managed instance keys as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ManagedInstanceKeyInner> listByInstanceAsync(
@@ -320,17 +330,15 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance keys.
+     * @return a list of managed instance keys as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedInstanceKeyInner> listByInstance(
-        String resourceGroupName, String managedInstanceName, String filter, Context context) {
-        return new PagedIterable<>(listByInstanceAsync(resourceGroupName, managedInstanceName, filter, context));
+    public PagedIterable<ManagedInstanceKeyInner> listByInstance(String resourceGroupName, String managedInstanceName) {
+        final String filter = null;
+        return new PagedIterable<>(listByInstanceAsync(resourceGroupName, managedInstanceName, filter));
     }
 
     /**
@@ -339,15 +347,17 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
+     * @param filter An OData filter expression that filters elements in the collection.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance keys.
+     * @return a list of managed instance keys as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedInstanceKeyInner> listByInstance(String resourceGroupName, String managedInstanceName) {
-        final String filter = null;
-        return new PagedIterable<>(listByInstanceAsync(resourceGroupName, managedInstanceName, filter));
+    public PagedIterable<ManagedInstanceKeyInner> listByInstance(
+        String resourceGroupName, String managedInstanceName, String filter, Context context) {
+        return new PagedIterable<>(listByInstanceAsync(resourceGroupName, managedInstanceName, filter, context));
     }
 
     /**
@@ -360,7 +370,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance key.
+     * @return a managed instance key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedInstanceKeyInner>> getWithResponseAsync(
@@ -389,6 +399,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-10-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -400,8 +411,9 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
                             keyName,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -415,7 +427,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance key.
+     * @return a managed instance key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ManagedInstanceKeyInner>> getWithResponseAsync(
@@ -444,6 +456,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-10-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -453,6 +466,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
                 keyName,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -466,20 +480,13 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance key.
+     * @return a managed instance key on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedInstanceKeyInner> getAsync(
         String resourceGroupName, String managedInstanceName, String keyName) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName, keyName)
-            .flatMap(
-                (Response<ManagedInstanceKeyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -510,7 +517,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance key.
+     * @return a managed instance key along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedInstanceKeyInner> getWithResponse(
@@ -525,11 +532,11 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param keyName The name of the managed instance key to be operated on (updated or created).
-     * @param parameters A managed instance key.
+     * @param parameters The requested managed instance key resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance key.
+     * @return a managed instance key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -563,6 +570,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
             parameters.validate();
         }
         final String apiVersion = "2017-10-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -575,8 +583,9 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
                             this.client.getSubscriptionId(),
                             apiVersion,
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -586,12 +595,12 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param keyName The name of the managed instance key to be operated on (updated or created).
-     * @param parameters A managed instance key.
+     * @param parameters The requested managed instance key resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance key.
+     * @return a managed instance key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -629,6 +638,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
             parameters.validate();
         }
         final String apiVersion = "2017-10-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -639,6 +649,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
                 this.client.getSubscriptionId(),
                 apiVersion,
                 parameters,
+                accept,
                 context);
     }
 
@@ -649,13 +660,13 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param keyName The name of the managed instance key to be operated on (updated or created).
-     * @param parameters A managed instance key.
+     * @param parameters The requested managed instance key resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance key.
+     * @return the {@link PollerFlux} for polling of a managed instance key.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ManagedInstanceKeyInner>, ManagedInstanceKeyInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String managedInstanceName, String keyName, ManagedInstanceKeyInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -677,14 +688,14 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param keyName The name of the managed instance key to be operated on (updated or created).
-     * @param parameters A managed instance key.
+     * @param parameters The requested managed instance key resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance key.
+     * @return the {@link PollerFlux} for polling of a managed instance key.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ManagedInstanceKeyInner>, ManagedInstanceKeyInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String managedInstanceName,
@@ -711,13 +722,13 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param keyName The name of the managed instance key to be operated on (updated or created).
-     * @param parameters A managed instance key.
+     * @param parameters The requested managed instance key resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance key.
+     * @return the {@link SyncPoller} for polling of a managed instance key.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedInstanceKeyInner>, ManagedInstanceKeyInner> beginCreateOrUpdate(
         String resourceGroupName, String managedInstanceName, String keyName, ManagedInstanceKeyInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, keyName, parameters).getSyncPoller();
@@ -730,14 +741,14 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param keyName The name of the managed instance key to be operated on (updated or created).
-     * @param parameters A managed instance key.
+     * @param parameters The requested managed instance key resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance key.
+     * @return the {@link SyncPoller} for polling of a managed instance key.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedInstanceKeyInner>, ManagedInstanceKeyInner> beginCreateOrUpdate(
         String resourceGroupName,
         String managedInstanceName,
@@ -755,11 +766,11 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param keyName The name of the managed instance key to be operated on (updated or created).
-     * @param parameters A managed instance key.
+     * @param parameters The requested managed instance key resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance key.
+     * @return a managed instance key on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedInstanceKeyInner> createOrUpdateAsync(
@@ -776,12 +787,12 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param keyName The name of the managed instance key to be operated on (updated or created).
-     * @param parameters A managed instance key.
+     * @param parameters The requested managed instance key resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance key.
+     * @return a managed instance key on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ManagedInstanceKeyInner> createOrUpdateAsync(
@@ -802,7 +813,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param keyName The name of the managed instance key to be operated on (updated or created).
-     * @param parameters A managed instance key.
+     * @param parameters The requested managed instance key resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -821,7 +832,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param keyName The name of the managed instance key to be operated on (updated or created).
-     * @param parameters A managed instance key.
+     * @param parameters The requested managed instance key resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -848,7 +859,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -889,7 +900,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
                             this.client.getSubscriptionId(),
                             apiVersion,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -903,7 +914,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -954,9 +965,9 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String managedInstanceName, String keyName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -978,9 +989,9 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String managedInstanceName, String keyName, Context context) {
         context = this.client.mergeContext(context);
@@ -1001,9 +1012,9 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String managedInstanceName, String keyName) {
         return beginDeleteAsync(resourceGroupName, managedInstanceName, keyName).getSyncPoller();
@@ -1020,9 +1031,9 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String managedInstanceName, String keyName, Context context) {
         return beginDeleteAsync(resourceGroupName, managedInstanceName, keyName, context).getSyncPoller();
@@ -1038,7 +1049,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String managedInstanceName, String keyName) {
@@ -1058,7 +1069,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1108,15 +1119,23 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance keys.
+     * @return a list of managed instance keys along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagedInstanceKeyInner>> listByInstanceNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByInstanceNext(nextLink, context))
+            .withContext(context -> service.listByInstanceNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<ManagedInstanceKeyInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1126,7 +1145,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1137,7 +1156,8 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance keys.
+     * @return a list of managed instance keys along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagedInstanceKeyInner>> listByInstanceNextSinglePageAsync(
@@ -1145,9 +1165,16 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByInstanceNext(nextLink, context)
+            .listByInstanceNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

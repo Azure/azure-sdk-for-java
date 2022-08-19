@@ -4,55 +4,28 @@
 
 package com.azure.resourcemanager.sql.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.SyncMemberDbType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An Azure SQL Database sync agent linked database. */
-@JsonFlatten
-@Immutable
-public class SyncAgentLinkedDatabaseInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SyncAgentLinkedDatabaseInner.class);
-
+@Fluent
+public final class SyncAgentLinkedDatabaseInner extends ProxyResource {
     /*
-     * Type of the sync agent linked database.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.databaseType", access = JsonProperty.Access.WRITE_ONLY)
-    private SyncMemberDbType databaseType;
+    @JsonProperty(value = "properties")
+    private SyncAgentLinkedDatabaseProperties innerProperties;
 
-    /*
-     * Id of the sync agent linked database.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.databaseId", access = JsonProperty.Access.WRITE_ONLY)
-    private String databaseId;
-
-    /*
-     * Description of the sync agent linked database.
-     */
-    @JsonProperty(value = "properties.description", access = JsonProperty.Access.WRITE_ONLY)
-    private String description;
-
-    /*
-     * Server name of the sync agent linked database.
-     */
-    @JsonProperty(value = "properties.serverName", access = JsonProperty.Access.WRITE_ONLY)
-    private String serverName;
-
-    /*
-     * Database name of the sync agent linked database.
-     */
-    @JsonProperty(value = "properties.databaseName", access = JsonProperty.Access.WRITE_ONLY)
-    private String databaseName;
-
-    /*
-     * User name of the sync agent linked database.
-     */
-    @JsonProperty(value = "properties.userName", access = JsonProperty.Access.WRITE_ONLY)
-    private String username;
+    private SyncAgentLinkedDatabaseProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the databaseType property: Type of the sync agent linked database.
@@ -60,7 +33,7 @@ public class SyncAgentLinkedDatabaseInner extends ProxyResource {
      * @return the databaseType value.
      */
     public SyncMemberDbType databaseType() {
-        return this.databaseType;
+        return this.innerProperties() == null ? null : this.innerProperties().databaseType();
     }
 
     /**
@@ -69,7 +42,7 @@ public class SyncAgentLinkedDatabaseInner extends ProxyResource {
      * @return the databaseId value.
      */
     public String databaseId() {
-        return this.databaseId;
+        return this.innerProperties() == null ? null : this.innerProperties().databaseId();
     }
 
     /**
@@ -78,7 +51,7 @@ public class SyncAgentLinkedDatabaseInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -87,7 +60,7 @@ public class SyncAgentLinkedDatabaseInner extends ProxyResource {
      * @return the serverName value.
      */
     public String serverName() {
-        return this.serverName;
+        return this.innerProperties() == null ? null : this.innerProperties().serverName();
     }
 
     /**
@@ -96,7 +69,7 @@ public class SyncAgentLinkedDatabaseInner extends ProxyResource {
      * @return the databaseName value.
      */
     public String databaseName() {
-        return this.databaseName;
+        return this.innerProperties() == null ? null : this.innerProperties().databaseName();
     }
 
     /**
@@ -105,7 +78,7 @@ public class SyncAgentLinkedDatabaseInner extends ProxyResource {
      * @return the username value.
      */
     public String username() {
-        return this.username;
+        return this.innerProperties() == null ? null : this.innerProperties().username();
     }
 
     /**
@@ -114,5 +87,8 @@ public class SyncAgentLinkedDatabaseInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }
