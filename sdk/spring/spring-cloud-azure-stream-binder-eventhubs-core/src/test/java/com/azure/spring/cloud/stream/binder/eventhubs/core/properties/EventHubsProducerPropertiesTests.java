@@ -46,8 +46,8 @@ class EventHubsProducerPropertiesTests {
     }
 
     @Test
-    void domainNameDefaultsToFalse() {
-        assertEquals("servicebus.windows.net", producerProperties.getDomainName());
+    void domainNameDefaultsToNull() {
+        assertNull(producerProperties.getDomainName());
     }
 
     @Test
@@ -57,19 +57,25 @@ class EventHubsProducerPropertiesTests {
     }
 
     @Test
-    void getFqnWhenNamespaceIsNull() {
+    void getFqdnWhenNamespaceIsNull() {
         producerProperties.setConnectionString(CONNECTION_STRING);
         assertEquals("test.servicebus.windows.net", producerProperties.getFullyQualifiedNamespace());
     }
 
     @Test
-    void getFqnWhenNamespaceIsNotNull() {
+    void getFqdnWhenNamespaceIsNotNull() {
         producerProperties.setNamespace("dev-namespace");
+        producerProperties.setDomainName("servicebus.windows.net");
         assertEquals("dev-namespace.servicebus.windows.net", producerProperties.getFullyQualifiedNamespace());
     }
 
     @Test
-    void getFqnReturnNullWhenNamespaceAndConnectionStringAreNull() {
+    void getFqdnWhenNamespaceAndDomainAreNull() {
+        assertNull(producerProperties.getFullyQualifiedNamespace());
+    }
+
+    @Test
+    void getFqdnReturnNullWhenNamespaceAndConnectionStringAreNull() {
         assertNull(producerProperties.getFullyQualifiedNamespace());
     }
 

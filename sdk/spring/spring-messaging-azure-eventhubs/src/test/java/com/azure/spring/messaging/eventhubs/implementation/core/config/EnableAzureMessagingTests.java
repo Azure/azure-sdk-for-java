@@ -5,7 +5,6 @@ package com.azure.spring.messaging.eventhubs.implementation.core.config;
 
 import com.azure.spring.messaging.eventhubs.implementation.core.annotation.EventHubsListener;
 import com.azure.spring.messaging.eventhubs.implementation.core.annotation.EventHubsListeners;
-import com.azure.spring.messaging.eventhubs.implementation.core.config.MethodEventHubsListenerEndpoint;
 import com.azure.spring.messaging.implementation.annotation.AzureListenerConfigurer;
 import com.azure.spring.messaging.implementation.annotation.EnableAzureMessaging;
 import com.azure.spring.messaging.implementation.config.AbstractAzureMessagingAnnotationDrivenTests;

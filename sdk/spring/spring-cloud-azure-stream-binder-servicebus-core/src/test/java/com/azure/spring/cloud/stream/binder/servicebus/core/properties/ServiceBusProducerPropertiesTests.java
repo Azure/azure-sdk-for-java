@@ -45,8 +45,8 @@ class ServiceBusProducerPropertiesTests {
     }
 
     @Test
-    void domainNameDefaultsToFalse() {
-        assertEquals("servicebus.windows.net", producerProperties.getDomainName());
+    void domainNameDefaultsToNull() {
+        assertNull(producerProperties.getDomainName());
     }
 
     @Test
@@ -62,8 +62,14 @@ class ServiceBusProducerPropertiesTests {
     }
 
     @Test
+    void getFqnWhenNamespaceAndDomainNameAreNull() {
+        assertNull(producerProperties.getDomainName());
+    }
+
+    @Test
     void getFqnWhenNamespaceIsNotNull() {
         producerProperties.setNamespace("dev-namespace");
+        producerProperties.setDomainName("servicebus.windows.net");
         assertEquals("dev-namespace.servicebus.windows.net", producerProperties.getFullyQualifiedNamespace());
     }
 

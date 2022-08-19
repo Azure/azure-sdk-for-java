@@ -49,7 +49,14 @@ public abstract class CommonProperties extends AzureAmqpSdkProperties implements
     // https://docs.microsoft.com/azure/event-hubs/event-hubs-get-connection-string
     @Override
     public String getFullyQualifiedNamespace() {
-        return this.namespace == null ? extractFqdnFromConnectionString() : (this.namespace + "." + domainName);
+        return this.namespace == null ? extractFqdnFromConnectionString() : buildFqdnFromNamespace();
+    }
+
+    private String buildFqdnFromNamespace() {
+        if (namespace == null || domainName == null) {
+            return null;
+        }
+        return this.namespace + "." + domainName;
     }
 
     @Override
