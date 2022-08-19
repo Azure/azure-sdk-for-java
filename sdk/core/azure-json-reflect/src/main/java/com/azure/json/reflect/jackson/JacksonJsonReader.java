@@ -14,6 +14,8 @@ public class JacksonJsonReader extends JsonReader {
 	private static boolean initialized = false;
 	private static MethodHandle createParseMethod;
 	private static MethodHandle jsonFactoryConstructor;
+	private static MethodHandle parserCurrentToken;
+	private static Class<?> jacksonTokenEnum = null;
 	private static final MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
 	private static final Object jsonFactory;
 	
@@ -43,13 +45,16 @@ public class JacksonJsonReader extends JsonReader {
 		jsonFactoryConstructor = publicLookup.findConstructor(jacksonJsonFactory, methodType(void.class));
 		createParseMethod = publicLookup.findVirtual(jacksonJsonFactory, "createParser", methodType(jacksonJsonParser));
 		jsonFactory = jsonFactoryConstructor.invoke();
-				
+		
+		jacksonTokenEnum = Class.forName("com.fasterxml.jackson.core.JsonToken");
+		parserCurrentToken = publicLookup.findVirtual(jacksonJsonParser, "currentToken", methodType(jacksonTokenEnum));
+		
     	initialized = true;
     }
 
     @Override
     public JsonToken currentToken() {
-        return null;
+        return parserCurrentToken.invoke();
     }
 
     @Override
