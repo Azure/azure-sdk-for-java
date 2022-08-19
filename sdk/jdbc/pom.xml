@@ -25,6 +25,7 @@
     <profile>
       <id>dev</id>
       <modules>
+        <module>../../eng/code-quality-reports</module>
         <module>azure-identity-providers-jdbc</module>
         <module>azure-identity-providers-jdbc-mysql</module>
         <module>azure-identity-providers-jdbc-postgresql</module>

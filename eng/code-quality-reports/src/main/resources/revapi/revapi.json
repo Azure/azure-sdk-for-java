@@ -354,14 +354,14 @@
         },
         {
           "regex": true,
-          "code": "java.class.externalClassExposedInAPI",
-          "new": "class com\\.mysql\\.cj\\..*",
+          "code": "java\\.class\\.externalClassExposedInAPI",
+          "new": "(interface|class|enum) com\\.mysql\\.cj\\..*",
           "justification": "Mysql driver classes are allowed to be exposed by dependencies using them."
         },
         {
           "regex": true,
-          "code": "java.class.externalClassExposedInAPI",
-          "new": "class org\\.postgresql\\..*",
+          "code": "java\\.class\\.externalClassExposedInAPI",
+          "new": "(interface|class|enum) org\\.postgresql\\..*",
           "justification": "Postgresql driver classes are allowed to be exposed by dependencies using them."
         },
         {
