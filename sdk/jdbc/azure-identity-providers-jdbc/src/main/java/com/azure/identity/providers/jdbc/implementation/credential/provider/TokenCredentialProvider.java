@@ -1,11 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.identity.providers.jdbc.api.credential.provider;
+package com.azure.identity.providers.jdbc.implementation.credential.provider;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.providers.jdbc.implementation.credential.TokenCredentialProviderOptions;
-import com.azure.identity.providers.jdbc.implementation.credential.provider.TokenCredentialProviders;
 
 import java.util.function.Supplier;
 

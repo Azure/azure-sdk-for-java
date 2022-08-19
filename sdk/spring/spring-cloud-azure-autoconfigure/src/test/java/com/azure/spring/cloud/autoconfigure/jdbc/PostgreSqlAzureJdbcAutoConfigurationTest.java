@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.jdbc;
 
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.providers.jdbc.enums.AuthProperty;
+import com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
 
@@ -19,8 +20,8 @@ class PostgreSqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConf
         = POSTGRESQL_PROPERTY_NAME_SSL_MODE + "=" + POSTGRESQL_PROPERTY_VALUE_SSL_MODE;
     private static final String POSTGRESQL_AUTHENTICATIONPLUGINCLASSNAME_PROPERTY
         = POSTGRESQL_PROPERTY_NAME_AUTHENTICATION_PLUGIN_CLASSNAME + "=" + POSTGRES_AUTH_PLUGIN_CLASS_NAME;
-    private static final String AUTHPROPERTY_MANAGEDIDENTITYENABLED_PROPERTY
-        = AuthProperty.MANAGED_IDENTITY_ENABLED.getPropertyKey() + "=" + "false";
+    private static final String AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY
+        = AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName();
     private static final String AUTHPROPERTY_CACHEENABLED_PROPERTY
         = AuthProperty.CACHE_ENABLED.getPropertyKey() + "=" + "true";
     private static final String AUTHPROPERTY_AUTHORITYHOST_PROPERTY
@@ -57,15 +58,17 @@ class PostgreSqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConf
         String connectionString = "jdbc:postgresql://postgre:5432/test";
         this.contextRunner
             .withPropertyValues("spring.datasource.url = " + connectionString)
+            .withPropertyValues("spring.datasource.azure.credentialFreeEnabled = " + true)
             .run((context) -> {
                 DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
                 String expectedUrl = String.format("%s?%s&%s&%s&%s&%s", connectionString,
                     POSTGRESQL_SSLMODE_PROPERTY,
                     POSTGRESQL_AUTHENTICATIONPLUGINCLASSNAME_PROPERTY,
-                    AUTHPROPERTY_MANAGEDIDENTITYENABLED_PROPERTY,
+                    AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
                     AUTHPROPERTY_CACHEENABLED_PROPERTY,
                     AUTHPROPERTY_AUTHORITYHOST_PROPERTY
                 );
+                System.out.println("dataSourceProperties.getUrl() = " + dataSourceProperties.getUrl());
                 assertEquals(expectedUrl, dataSourceProperties.getUrl());
             });
     }

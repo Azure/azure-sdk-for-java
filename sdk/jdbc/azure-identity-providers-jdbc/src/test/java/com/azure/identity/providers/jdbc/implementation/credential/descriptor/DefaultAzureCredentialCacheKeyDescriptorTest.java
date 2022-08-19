@@ -5,7 +5,6 @@ package com.azure.identity.providers.jdbc.implementation.credential.descriptor;
 
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.identity.providers.jdbc.api.credential.descriptor.CacheKeyDescriptor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

@@ -4,7 +4,6 @@ package com.azure.spring.cloud.autoconfigure.jdbc;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.providers.jdbc.enums.AuthProperty;
-import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.DatabaseType;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionString;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
@@ -16,37 +15,41 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.bind.Binder;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.EnvironmentAware;
+import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.util.StringUtils;
-
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
 
-import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils.copyPropertiesIgnoreNull;
+import static com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider.CREDENTIAL_FREE_TOKEN_BEAN_NAME;
+
 
 /**
  * {@link BeanPostProcessor} to enhance jdbc connection string.
  */
-class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentAware {
+class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentAware, ApplicationContextAware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcPropertiesBeanPostProcessor.class);
     private static final String SPRING_TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME = SpringTokenCredentialProvider.class.getName();
     private static final String SPRING_CLOUD_AZURE_DATASOURCE_PREFIX = "spring.datasource.azure";
 
-    private final AzureGlobalProperties azureGlobalProperties;
-
+    private GenericApplicationContext applicationContext;
     private Environment environment;
-
-    JdbcPropertiesBeanPostProcessor(AzureGlobalProperties azureGlobalProperties) {
-        this.azureGlobalProperties = azureGlobalProperties;
-    }
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         if (bean instanceof DataSourceProperties) {
             DataSourceProperties dataSourceProperties = (DataSourceProperties) bean;
+
+            AzureCredentialFreeProperties properties = Binder.get(environment)
+                .bindOrCreate(SPRING_CLOUD_AZURE_DATASOURCE_PREFIX, AzureCredentialFreeProperties.class);
+            if (!properties.isCredentialFreeEnabled()) {
+                LOGGER.debug("Feature credential free is not enabled, skip enhancing jdbc url.");
+                return bean;
+            }
 
             String url = dataSourceProperties.getUrl();
             if (!StringUtils.hasText(url)) {
@@ -61,14 +64,10 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
             }
 
             boolean isPasswordProvided = StringUtils.hasText(dataSourceProperties.getPassword());
-
             if (isPasswordProvided) {
-                if (isAzureHostedDatabaseService(url)) {
-                    LOGGER.info("Azure managed database services with password detected, it is encouraged to use the"
-                        + "credential-free feature. Please refer to https://aka.ms/spring/credentail-free.");
-                } else {
-                    LOGGER.debug("Value of 'spring.datasource.password' is provided, skip enhancing jdbc url.");
-                }
+                LOGGER.info("Value of 'spring.datasource.password' is detected, if you are using Azure hosted services,"
+                    + "it is encouraged to use the credential-free feature. "
+                    + "Please refer to https://aka.ms/spring/credentail-free.");
                 return bean;
             }
 
@@ -79,9 +78,6 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
             }
 
             try {
-                AzureCredentialFreeProperties properties = Binder.get(environment)
-                    .bindOrCreate(SPRING_CLOUD_AZURE_DATASOURCE_PREFIX, AzureCredentialFreeProperties.class);
-
                 Map<String, String> enhancedProperties = buildEnhancedProperties(databaseType, properties);
                 String enhancedUrl = connectionString.enhanceConnectionString(enhancedProperties);
                 ((DataSourceProperties) bean).setUrl(enhancedUrl);
@@ -94,25 +90,16 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
 
     private Map<String, String> buildEnhancedProperties(DatabaseType databaseType, AzureCredentialFreeProperties properties) {
         Map<String, String> result = new HashMap<>();
-        TokenCredential globalTokenCredential = new AzureTokenCredentialResolver().resolve(azureGlobalProperties);
         TokenCredential credentialFreeTokenCredential = new AzureTokenCredentialResolver().resolve(properties);
 
-        if (globalTokenCredential != null && credentialFreeTokenCredential == null) {
+        if (credentialFreeTokenCredential != null) {
             LOGGER.debug("Add SpringTokenCredentialProvider as the default token credential provider.");
-            AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.setProperty(result, SPRING_TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME);
+            AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.setProperty(result, CREDENTIAL_FREE_TOKEN_BEAN_NAME);
+            applicationContext.registerBean(CREDENTIAL_FREE_TOKEN_BEAN_NAME, TokenCredential.class, () -> credentialFreeTokenCredential);
         }
 
-        copyPropertiesIgnoreNull(azureGlobalProperties.getProfile(), properties.getProfile());
-        copyPropertiesIgnoreNull(azureGlobalProperties.getCredential(), properties.getCredential());
-
         AuthProperty.CACHE_ENABLED.setProperty(result, "true");
-        AuthProperty.CLIENT_ID.setProperty(result, properties.getCredential().getClientId());
-        AuthProperty.CLIENT_SECRET.setProperty(result, properties.getCredential().getClientSecret());
-        AuthProperty.CLIENT_CERTIFICATE_PATH.setProperty(result, properties.getCredential().getClientCertificatePath());
-        AuthProperty.CLIENT_CERTIFICATE_PASSWORD.setProperty(result, properties.getCredential().getClientCertificatePassword());
-        AuthProperty.USERNAME.setProperty(result, properties.getCredential().getUsername());
-        AuthProperty.PASSWORD.setProperty(result, properties.getCredential().getPassword());
-        AuthProperty.MANAGED_IDENTITY_ENABLED.setProperty(result, String.valueOf(properties.getCredential().isManagedIdentityEnabled()));
+        AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.setProperty(result, SPRING_TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME);
         AuthProperty.AUTHORITY_HOST.setProperty(result, properties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
         AuthProperty.TENANT_ID.setProperty(result, properties.getProfile().getTenantId());
 
@@ -126,9 +113,8 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
         this.environment = environment;
     }
 
-    private boolean isAzureHostedDatabaseService(String url) {
-        //Global
-        return Pattern.matches("^jdbc:mysql://.*.mysql.database.azure.com.*", url)
-            || Pattern.matches("^jdbc:postgresql://.*.postgres.database.azure.com.*", url);
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = (GenericApplicationContext) applicationContext;
     }
 }

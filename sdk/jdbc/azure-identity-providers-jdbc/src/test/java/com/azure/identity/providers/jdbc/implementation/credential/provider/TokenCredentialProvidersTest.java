@@ -3,7 +3,6 @@
 
 package com.azure.identity.providers.jdbc.implementation.credential.provider;
 
-import com.azure.identity.providers.jdbc.api.credential.provider.TokenCredentialProvider;
 import com.azure.identity.providers.jdbc.implementation.credential.TokenCredentialProviderOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

@@ -5,7 +5,6 @@ package com.azure.identity.providers.jdbc.implementation.credential.descriptor;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.ClientCertificateCredential;
-import com.azure.identity.providers.jdbc.api.credential.descriptor.CacheKeyDescriptor;
 
 /**
  * Describe the cache key for ClientCertificateCredential.

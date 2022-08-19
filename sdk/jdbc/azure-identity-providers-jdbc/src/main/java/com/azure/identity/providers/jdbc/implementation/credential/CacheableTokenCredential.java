@@ -6,12 +6,11 @@ package com.azure.identity.providers.jdbc.implementation.credential;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.identity.providers.jdbc.api.cache.Cache;
-import com.azure.identity.providers.jdbc.api.credential.descriptor.CacheKeyDescriptor;
+import com.azure.identity.providers.jdbc.implementation.cache.Cache;
+import com.azure.identity.providers.jdbc.implementation.credential.descriptor.CacheKeyDescriptor;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.stream.Collectors;
@@ -55,11 +54,9 @@ public class CacheableTokenCredential implements TokenCredential {
     }
 
     private String getCacheKey(TokenRequestContext request) {
-        List<String> credentialKeyValues = Arrays.stream(getTokenCredentialKeyDescriptors())
-                    .map(descriptor -> descriptor.getGetter().apply(this.options))
-                    .collect(Collectors.toList());
-
-        String tokenCredentialKey = String.join(SUB_KEY_DELIMITER, credentialKeyValues);
+        String tokenCredentialKey = Arrays.stream(getTokenCredentialKeyDescriptors())
+                                          .map(descriptor -> descriptor.getGetter().apply(this.options))
+                                          .collect(Collectors.joining(SUB_KEY_DELIMITER));
         String tokenRequestContextKey = String.join(SUB_KEY_DELIMITER, request.getTenantId(), request.getClaims(),
             request.getScopes().toString());
         return String.join(KEY_DELIMITER, tokenCredentialKey, tokenRequestContextKey);

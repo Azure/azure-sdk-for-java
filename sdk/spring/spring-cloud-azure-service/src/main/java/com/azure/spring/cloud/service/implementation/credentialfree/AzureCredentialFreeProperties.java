@@ -27,6 +27,9 @@ public class AzureCredentialFreeProperties implements AzureProperties {
     // Use proxy options inside credential for azure identity
     private ProxyProperties proxy = new ProxyProperties();
 
+    // Whether to enable supporting azure identity token credentials
+    private boolean credentialFreeEnabled = false;
+
     @Override
     public AzureProfileProperties getProfile() {
         return profile;
@@ -61,5 +64,13 @@ public class AzureCredentialFreeProperties implements AzureProperties {
 
     public void setProxy(ProxyProperties proxy) {
         this.proxy = proxy;
+    }
+
+    public boolean isCredentialFreeEnabled() {
+        return credentialFreeEnabled;
+    }
+
+    public void setCredentialFreeEnabled(boolean credentialFreeEnabled) {
+        this.credentialFreeEnabled = credentialFreeEnabled;
     }
 }

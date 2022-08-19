@@ -5,7 +5,7 @@ package com.azure.identity.providers.jdbc.implementation.credential;
 
 import com.azure.identity.providers.jdbc.enums.AuthProperty;
 import com.azure.identity.AzureAuthorityHosts;
-import com.azure.identity.providers.jdbc.api.credential.provider.TokenCredentialProvider;
+import com.azure.identity.providers.jdbc.implementation.credential.provider.TokenCredentialProvider;
 
 import java.util.Properties;
 

@@ -3,7 +3,6 @@
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
 import com.azure.identity.providers.jdbc.template.AzureAuthenticationTemplate;
-import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.SpringTokenCredentialProviderContextProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -30,9 +29,8 @@ public class AzureJdbcAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    JdbcPropertiesBeanPostProcessor jdbcConfigurationPropertiesBeanPostProcessor(
-        AzureGlobalProperties azureGlobalProperties) {
-        return new JdbcPropertiesBeanPostProcessor(azureGlobalProperties);
+    JdbcPropertiesBeanPostProcessor jdbcConfigurationPropertiesBeanPostProcessor() {
+        return new JdbcPropertiesBeanPostProcessor();
     }
 
     @Bean

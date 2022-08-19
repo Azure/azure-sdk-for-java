@@ -4,8 +4,8 @@
 package com.azure.spring.cloud.service.implementation.identity.credential.provider;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.identity.providers.jdbc.api.credential.provider.TokenCredentialProvider;
 import com.azure.identity.providers.jdbc.implementation.credential.TokenCredentialProviderOptions;
+import com.azure.identity.providers.jdbc.implementation.credential.provider.TokenCredentialProvider;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -18,6 +18,7 @@ import java.util.Objects;
 public class SpringTokenCredentialProvider implements TokenCredentialProvider, ApplicationContextAware {
 
     public static final String DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME = "springCloudAzureDefaultCredential";
+    public static final String CREDENTIAL_FREE_TOKEN_BEAN_NAME = "credentialFreeTokenCredential";
     private static ApplicationContext globalApplicationContext;
     private ApplicationContext applicationContext;
     private String tokenCredentialBeanName = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;

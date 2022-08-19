@@ -40,7 +40,7 @@ abstract class AbstractJdbcPropertiesBeanPostProcessorTest {
     void testProvidePassword() {
         DataSourceProperties dataSourceProperties = new DataSourceProperties();
         dataSourceProperties.setPassword(PASSWORD);
-        JdbcPropertiesBeanPostProcessor postProcessor = new JdbcPropertiesBeanPostProcessor(null);
+        JdbcPropertiesBeanPostProcessor postProcessor = new JdbcPropertiesBeanPostProcessor();
         postProcessor.postProcessBeforeInitialization(dataSourceProperties, "dataSourceProperties");
         assertNull(dataSourceProperties.getUrl());
     }
@@ -48,7 +48,7 @@ abstract class AbstractJdbcPropertiesBeanPostProcessorTest {
     @Test
     void testNoURL() {
         DataSourceProperties dataSourceProperties = new DataSourceProperties();
-        JdbcPropertiesBeanPostProcessor postProcessor = new JdbcPropertiesBeanPostProcessor(null);
+        JdbcPropertiesBeanPostProcessor postProcessor = new JdbcPropertiesBeanPostProcessor();
         postProcessor.postProcessBeforeInitialization(dataSourceProperties, "dataSourceProperties");
         assertNull(dataSourceProperties.getUrl());
     }
@@ -57,7 +57,7 @@ abstract class AbstractJdbcPropertiesBeanPostProcessorTest {
     void mySqlAuthPluginNotOnClassPath() {
         DataSourceProperties dataSourceProperties = new DataSourceProperties();
         dataSourceProperties.setUrl(MYSQL_CONNECTION_STRING);
-        JdbcPropertiesBeanPostProcessor postProcessor = new JdbcPropertiesBeanPostProcessor(null);
+        JdbcPropertiesBeanPostProcessor postProcessor = new JdbcPropertiesBeanPostProcessor();
         postProcessor.postProcessBeforeInitialization(dataSourceProperties, "dataSourceProperties");
         assertEquals(dataSourceProperties.getUrl(), MYSQL_CONNECTION_STRING);
     }

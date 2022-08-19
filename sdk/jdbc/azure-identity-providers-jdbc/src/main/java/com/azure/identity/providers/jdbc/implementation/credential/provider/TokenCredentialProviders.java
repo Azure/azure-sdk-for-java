@@ -4,7 +4,6 @@
 package com.azure.identity.providers.jdbc.implementation.credential.provider;
 
 
-import com.azure.identity.providers.jdbc.api.credential.provider.TokenCredentialProvider;
 import com.azure.identity.providers.jdbc.implementation.credential.TokenCredentialProviderOptions;
 import com.azure.identity.providers.jdbc.utils.ClassUtil;
 
@@ -42,11 +41,11 @@ public final class TokenCredentialProviders {
             clazz = defaultProviderClass;
         }
 
+        TokenCredentialProvider tokenCredentialProvider = instantiateClass(clazz, options);
         if (options.isCachedEnabled()) {
-            return new CacheableTokenCredentialProvider(instantiateClass(clazz, options), options);
-        } else {
-            return instantiateClass(clazz, options);
+            return new CacheableTokenCredentialProvider(tokenCredentialProvider, options);
         }
+        return tokenCredentialProvider;
     }
 
     public static void setDefaultProviderClass(Class<? extends TokenCredentialProvider> clazz) {

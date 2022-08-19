@@ -9,7 +9,6 @@ import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.identity.UsernamePasswordCredentialBuilder;
-import com.azure.identity.providers.jdbc.api.credential.provider.TokenCredentialProvider;
 import com.azure.identity.providers.jdbc.implementation.credential.TokenCredentialProviderOptions;
 import reactor.util.annotation.Nullable;
 

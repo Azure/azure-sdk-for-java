@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.identity.providers.jdbc.api.cache;
+package com.azure.identity.providers.jdbc.implementation.cache;
 
 /**
  * Interface to be implemented by classes that wish to provide cache functionality.

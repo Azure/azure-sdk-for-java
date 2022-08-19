@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.jdbc;
 
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.providers.jdbc.enums.AuthProperty;
+import com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
 
@@ -30,8 +31,8 @@ class MySqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigura
     private static final String MYSQL_USE_SSL_PROPERTY
         = MYSQL_PROPERTY_NAME_USE_SSL + "=" + MYSQL_PROPERTY_VALUE_USE_SSL;
 
-    private static final String AUTHPROPERTY_MANAGEDIDENTITYENABLED_PROPERTY
-        = AuthProperty.MANAGED_IDENTITY_ENABLED.getPropertyKey() + "=" + "false";
+    private static final String AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY
+        = AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName();
 
     private static final String AUTHPROPERTY_CACHEENABLED_PROPERTY
         = AuthProperty.CACHE_ENABLED.getPropertyKey() + "=" + "true";
@@ -70,18 +71,20 @@ class MySqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigura
 
         this.contextRunner
             .withPropertyValues("spring.datasource.url = " + connectionString)
+            .withPropertyValues("spring.datasource.azure.credentialFreeEnabled = " + true)
             .run((context) -> {
                 DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
 
                 String expectedUrl = String.format("%s?%s&%s&%s&%s&%s&%s&%s", connectionString,
-                    AUTHPROPERTY_MANAGEDIDENTITYENABLED_PROPERTY,
                     MYSQL_AUTH_PLUGIN_PROPERTY,
+                    AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
                     MYSQL_DEFAULT_PLUGIN_PROPERTY,
                     AUTHPROPERTY_CACHEENABLED_PROPERTY,
                     AUTHPROPERTY_AUTHORITYHOST_PROPERTY,
                     MYSQL_SSL_MODE_PROPERTY,
                     MYSQL_USE_SSL_PROPERTY
                 );
+                System.out.println("dataSourceProperties.getUrl() = " + dataSourceProperties.getUrl());
                 assertEquals(expectedUrl, dataSourceProperties.getUrl());
             });
     }

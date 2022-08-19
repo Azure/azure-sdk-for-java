@@ -4,7 +4,6 @@
 package com.azure.identity.providers.jdbc.implementation.cache;
 
 import com.azure.core.credential.AccessToken;
-import com.azure.identity.providers.jdbc.api.cache.Cache;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

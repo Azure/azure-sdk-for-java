@@ -4,7 +4,7 @@
 package com.azure.identity.providers.jdbc.utils;
 
 import com.azure.core.exception.AzureException;
-import com.azure.identity.providers.jdbc.api.credential.provider.TokenCredentialProvider;
+import com.azure.identity.providers.jdbc.implementation.credential.provider.TokenCredentialProvider;
 import com.azure.identity.providers.jdbc.implementation.exception.AzureInstantiateException;
 
 import java.lang.reflect.Constructor;

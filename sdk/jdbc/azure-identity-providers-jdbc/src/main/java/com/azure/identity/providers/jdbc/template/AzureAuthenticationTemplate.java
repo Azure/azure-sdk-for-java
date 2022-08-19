@@ -5,7 +5,7 @@ package com.azure.identity.providers.jdbc.template;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.providers.jdbc.api.credential.provider.TokenCredentialProvider;
+import com.azure.identity.providers.jdbc.implementation.credential.provider.TokenCredentialProvider;
 import com.azure.identity.providers.jdbc.implementation.credential.TokenCredentialProviderOptions;
 import com.azure.identity.providers.jdbc.api.token.AccessTokenResolver;
 import com.azure.identity.providers.jdbc.implementation.token.AccessTokenResolverOptions;

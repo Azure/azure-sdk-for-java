@@ -5,7 +5,6 @@ package com.azure.identity.providers.jdbc.implementation.credential.provider;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.providers.jdbc.implementation.cache.StaticAccessTokenCache;
-import com.azure.identity.providers.jdbc.api.credential.provider.TokenCredentialProvider;
 import com.azure.identity.providers.jdbc.implementation.credential.CacheableTokenCredential;
 import com.azure.identity.providers.jdbc.implementation.credential.TokenCredentialProviderOptions;
 
