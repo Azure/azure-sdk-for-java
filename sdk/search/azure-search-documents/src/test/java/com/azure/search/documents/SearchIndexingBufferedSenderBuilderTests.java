@@ -7,7 +7,6 @@ import com.azure.core.util.serializer.TypeReference;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -16,15 +15,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Tests {@link SearchClientBuilder.SearchIndexingBufferedSenderBuilder}.
  */
 public class SearchIndexingBufferedSenderBuilderTests {
-    private static final Map<String, Duration> FOOL_SPOTBUGS = new HashMap<>();
     private static final TypeReference<Map<String, Object>> DOCUMENT_TYPE = new TypeReference<Map<String, Object>>() {
     };
 
     @Test
     public void invalidFlushWindowThrows() {
         SearchClientBuilder.SearchIndexingBufferedSenderBuilder<Map<String, Object>> options = getBaseOptions();
-        Duration interval = FOOL_SPOTBUGS.get("interval");
-        assertThrows(NullPointerException.class, () -> options.autoFlushInterval(interval));
+        assertThrows(NullPointerException.class, () -> options.autoFlushInterval(null));
     }
 
     @Test
@@ -44,8 +41,7 @@ public class SearchIndexingBufferedSenderBuilderTests {
     @Test
     public void invalidRetryDelayThrows() {
         SearchClientBuilder.SearchIndexingBufferedSenderBuilder<Map<String, Object>> options = getBaseOptions();
-        Duration throttlingDelay = FOOL_SPOTBUGS.get("throttlingDelay");
-        assertThrows(NullPointerException.class, () -> options.throttlingDelay(throttlingDelay));
+        assertThrows(NullPointerException.class, () -> options.throttlingDelay(null));
         assertThrows(IllegalArgumentException.class, () -> options.throttlingDelay(Duration.ZERO));
         assertThrows(IllegalArgumentException.class, () -> options.throttlingDelay(Duration.ofMillis(-1)));
     }
@@ -53,8 +49,7 @@ public class SearchIndexingBufferedSenderBuilderTests {
     @Test
     public void invalidMaxRetryDelayThrows() {
         SearchClientBuilder.SearchIndexingBufferedSenderBuilder<Map<String, Object>> options = getBaseOptions();
-        Duration maxThrottlingDelay = FOOL_SPOTBUGS.get("maxThrottlingDelay");
-        assertThrows(NullPointerException.class, () -> options.maxThrottlingDelay(maxThrottlingDelay));
+        assertThrows(NullPointerException.class, () -> options.maxThrottlingDelay(null));
         assertThrows(IllegalArgumentException.class, () -> options.maxThrottlingDelay(Duration.ZERO));
         assertThrows(IllegalArgumentException.class, () -> options.maxThrottlingDelay(Duration.ofMillis(-1)));
     }

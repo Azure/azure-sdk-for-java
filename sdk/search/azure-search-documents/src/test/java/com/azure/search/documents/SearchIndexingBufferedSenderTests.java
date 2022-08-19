@@ -755,7 +755,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
     }
 
-    static Stream<Consumer<SearchIndexingBufferedSender<Map<String, Object>>>> operationsThrowAfterClientIsClosedSupplier() {
+    private static Stream<Consumer<SearchIndexingBufferedSender<Map<String, Object>>>> operationsThrowAfterClientIsClosedSupplier() {
         List<Map<String, Object>> simpleDocuments = Collections.singletonList(Collections.singletonMap("key", "value"));
         List<IndexAction<Map<String, Object>>> actions = simpleDocuments.stream()
             .map(document -> new IndexAction<Map<String, Object>>()
@@ -1025,8 +1025,6 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
      * Helper class to ignore write only properties that need to be spoofed.
      */
     private static class IgnoreJacksonWriteOnlyAccess extends JacksonAnnotationIntrospector {
-        private static final long serialVersionUID = 1L;
-
         @Override
         public JsonProperty.Access findPropertyAccess(Annotated m) {
             JsonProperty.Access access = super.findPropertyAccess(m);

@@ -34,7 +34,6 @@ public final class SearchIndexConverter {
 
         searchIndex.setSuggesters(obj.getSuggesters());
         searchIndex.setCharFilters(obj.getCharFilters());
-        searchIndex.setNormalizers(obj.getNormalizers());
 
         if (obj.getTokenFilters() != null) {
             List<TokenFilter> tokenFilters =
@@ -49,7 +48,6 @@ public final class SearchIndexConverter {
         searchIndex.setCorsOptions(obj.getCorsOptions());
         searchIndex.setETag(obj.getETag());
         searchIndex.setScoringProfiles(obj.getScoringProfiles());
-        searchIndex.setSemanticSettings(obj.getSemanticSettings());
 
         return searchIndex;
     }
@@ -75,7 +73,6 @@ public final class SearchIndexConverter {
 
         searchIndex.setSuggesters(obj.getSuggesters());
         searchIndex.setCharFilters(obj.getCharFilters());
-        searchIndex.setNormalizers(obj.getNormalizers());
 
         if (obj.getTokenFilters() != null) {
             List<com.azure.search.documents.indexes.implementation.models.TokenFilter> tokenFilters =
@@ -90,7 +87,6 @@ public final class SearchIndexConverter {
         searchIndex.setCorsOptions(obj.getCorsOptions());
         searchIndex.setETag(obj.getETag());
         searchIndex.setScoringProfiles(obj.getScoringProfiles());
-        searchIndex.setSemanticSettings(obj.getSemanticSettings());
 
         return searchIndex;
     }
