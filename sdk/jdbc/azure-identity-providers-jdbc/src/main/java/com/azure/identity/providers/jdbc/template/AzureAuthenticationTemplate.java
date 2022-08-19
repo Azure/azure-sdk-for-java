@@ -105,11 +105,11 @@ public class AzureAuthenticationTemplate {
         return tokenCredentialProvider;
     }
 
-    protected Duration getBlockTimeout() {
+    Duration getBlockTimeout() {
         return Duration.ofSeconds(30);
     }
 
-    protected AtomicBoolean getIsInitialized() {
+    AtomicBoolean getIsInitialized() {
         return isInitialized;
     }
 
