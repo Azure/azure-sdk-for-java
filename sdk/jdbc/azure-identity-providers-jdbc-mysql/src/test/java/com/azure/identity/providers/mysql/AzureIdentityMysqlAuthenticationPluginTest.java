@@ -55,8 +55,7 @@ class AzureIdentityMysqlAuthenticationPluginTest {
 
     @Test
     void tokenAudienceShouldConfig() {
-        Properties properties = new Properties();
-        AzureAuthenticationTemplate template = new AzureAuthenticationTemplate(properties);
+        AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
         AzureIdentityMysqlAuthenticationPlugin plugin = new AzureIdentityMysqlAuthenticationPlugin(template);
         plugin.init(protocol);
         assertEquals(OSSRDBMS_SCOPES, properties.getProperty(AuthProperty.SCOPES.getPropertyKey()));
@@ -75,6 +74,7 @@ class AzureIdentityMysqlAuthenticationPluginTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     void testNextAuthenticationStep() throws UnsupportedEncodingException {
         AzureAuthenticationTemplate template = mock(AzureAuthenticationTemplate.class);
         when(template.getTokenAsPassword()).thenReturn("fake-password");
@@ -83,11 +83,11 @@ class AzureIdentityMysqlAuthenticationPluginTest {
         when(protocol.getSocketConnection().isSSLEstablished()).thenReturn(true);
         when(protocol.getServerSession().getCharsetSettings().getPasswordCharacterEncoding()).thenReturn("utf-8");
 
-        AzureIdentityMysqlAuthenticationPlugin plugin = new AzureIdentityMysqlAuthenticationPlugin(template,protocol);
+        AzureIdentityMysqlAuthenticationPlugin plugin = new AzureIdentityMysqlAuthenticationPlugin(template, protocol);
         NativePacketPayload fromServer = new NativePacketPayload(new byte[0]);
         List<NativePacketPayload> toServer = new ArrayList<>();
         plugin.nextAuthenticationStep(fromServer, toServer);
-        assertTrue(new String(toServer.get(0).getByteBuffer(),"utf-8").startsWith("fake-password"));
+        assertTrue(new String(toServer.get(0).getByteBuffer(), "utf-8").startsWith("fake-password"));
     }
 
 }

@@ -28,10 +28,10 @@ public final class StaticAccessTokenCache implements Cache<String, AccessToken> 
     }
 
     public static StaticAccessTokenCache getInstance() {
-        return HolderClass.instance;
+        return HolderClass.INSTANCE;
     }
 
     private static class HolderClass {
-        private static final StaticAccessTokenCache instance = new StaticAccessTokenCache();
+        private static final StaticAccessTokenCache INSTANCE = new StaticAccessTokenCache();
     }
 }

@@ -87,22 +87,49 @@ public enum AuthProperty {
         this.required = required;
     }
 
+    /**
+     * Get propertyValue from properties.
+     * @param properties A set of properties.
+     * @return The propertyValue.
+     */
     public String get(Properties properties) {
         return properties.getProperty(this.propertyKey, defaultValue);
     }
 
+    /**
+     * Get the Boolean value form properties.
+     *
+     * @param properties A set of properties.
+     * @return Boolean type value.
+     */
     public Boolean getBoolean(Properties properties) {
         return Boolean.parseBoolean(get(properties));
     }
 
+    /**
+     * Get the propertyKey.
+     *
+     * @return the propertyKey
+     */
     public String getPropertyKey() {
         return propertyKey;
     }
 
+    /**
+     * Get the Integer value form properties.
+     *
+     * @param properties A set of properties.
+     * @return Integer type value.
+     */
     public Integer getInteger(Properties properties) {
         return Integer.parseInt(get(properties));
     }
 
+    /**
+     * Set properties with given value.
+     * @param properties A set of properties.
+     * @param value A String value represents the property value.
+     */
     public void setProperty(Properties properties, String value) {
         if (value == null) {
             properties.remove(this.propertyKey);
@@ -111,19 +138,16 @@ public enum AuthProperty {
         }
     }
 
+    /**
+     * Set map with given value.
+     * @param map A map contains key values.
+     * @param value A String value represents the property value.
+     */
     public void setProperty(Map<String, String> map, String value) {
         if (value == null) {
             map.remove(this.propertyKey);
         } else {
             map.put(this.propertyKey, value);
-        }
-    }
-
-    public static void main(String[] args) {
-        System.out.println("propertyKey|description|defaultValue|required");
-        System.out.println("--|--|--|--");
-        for (AuthProperty value : AuthProperty.values()) {
-            System.out.println(value.propertyKey+"|"+value.description+"|"+value.defaultValue+"|"+value.required);
         }
     }
 }

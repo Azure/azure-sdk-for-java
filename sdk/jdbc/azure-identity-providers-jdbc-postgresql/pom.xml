@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
-    <artifactId>azure-sdk-all</artifactId>
     <groupId>com.azure</groupId>
-    <version>1.0.0</version>
-    <relativePath>../../../pom.xml</relativePath>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -48,6 +48,13 @@
       <version>5.8.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+      <version>3.0.2</version> <!-- {x-version-update;com.google.code.findbugs:jsr305;external_dependency} -->
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -60,8 +67,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[2.7.2]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
-                <include>org.springframework.experimental:spring-aot:[0.11.4]</include> <!-- {x-include-update;org.springframework.experimental:spring-aot;external_dependency} -->
+                <include>org.postgresql:postgresql:[42.3.6]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

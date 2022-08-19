@@ -3,6 +3,7 @@
 
 package com.azure.identity.providers.mysql;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.providers.jdbc.enums.AuthProperty;
 import com.azure.identity.providers.jdbc.template.AzureAuthenticationTemplate;
 import com.mysql.cj.callback.MysqlCallbackHandler;
@@ -10,8 +11,6 @@ import com.mysql.cj.protocol.AuthenticationPlugin;
 import com.mysql.cj.protocol.Protocol;
 import com.mysql.cj.protocol.a.NativeConstants;
 import com.mysql.cj.protocol.a.NativePacketPayload;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Properties;
@@ -20,17 +19,20 @@ import java.util.Properties;
  * The authentication plugin that enables Azure AD managed identity support.
  */
 public class AzureIdentityMysqlAuthenticationPlugin implements AuthenticationPlugin<NativePacketPayload> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AzureIdentityMysqlAuthenticationPlugin.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AzureIdentityMysqlAuthenticationPlugin.class);
     private static final String OSSRDBMS_SCOPE = "https://ossrdbms-aad.database.windows.net/.default";
     private static final String PLUGIN_NAME = "mysql_clear_password";
 
-    private AzureAuthenticationTemplate azureAuthenticationTemplate;
+    private final AzureAuthenticationTemplate azureAuthenticationTemplate;
 
     /**
      * Stores the protocol.SharedTokenCacheCredential
      */
     private Protocol<NativePacketPayload> protocol;
 
+    /**
+     * Default constructor of AzureIdentityMysqlAuthenticationPlugin.
+     */
     public AzureIdentityMysqlAuthenticationPlugin() {
         this(new AzureAuthenticationTemplate());
     }

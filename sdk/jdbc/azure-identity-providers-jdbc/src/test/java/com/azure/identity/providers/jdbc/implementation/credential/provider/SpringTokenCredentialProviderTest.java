@@ -8,7 +8,7 @@ import com.azure.identity.providers.jdbc.implementation.credential.TokenCredenti
 
 class SpringTokenCredentialProviderTest implements TokenCredentialProvider {
 
-    public SpringTokenCredentialProviderTest(TokenCredentialProviderOptions options) {
+    SpringTokenCredentialProviderTest(TokenCredentialProviderOptions options) {
     }
 
     @Override

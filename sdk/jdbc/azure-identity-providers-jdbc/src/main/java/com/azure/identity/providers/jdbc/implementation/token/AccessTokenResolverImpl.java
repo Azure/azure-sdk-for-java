@@ -6,7 +6,6 @@ package com.azure.identity.providers.jdbc.implementation.token;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.identity.providers.jdbc.api.token.AccessTokenResolver;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;

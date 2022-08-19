@@ -20,7 +20,7 @@ public class AzureIdentityPostgresqlAuthenticationPlugin implements Authenticati
 
     private static final String OSSRDBMS_SCOPE = "https://ossrdbms-aad.database.windows.net/.default";
 
-    private AzureAuthenticationTemplate azureAuthenticationTemplate = new AzureAuthenticationTemplate();
+    private final AzureAuthenticationTemplate azureAuthenticationTemplate;
 
     /**
      * Constructor with properties.
@@ -28,6 +28,7 @@ public class AzureIdentityPostgresqlAuthenticationPlugin implements Authenticati
      * @param properties the properties.
      */
     public AzureIdentityPostgresqlAuthenticationPlugin(Properties properties) {
+        this.azureAuthenticationTemplate = new AzureAuthenticationTemplate();
         AuthProperty.SCOPES.setProperty(properties, OSSRDBMS_SCOPE);
         azureAuthenticationTemplate.init(properties);
     }

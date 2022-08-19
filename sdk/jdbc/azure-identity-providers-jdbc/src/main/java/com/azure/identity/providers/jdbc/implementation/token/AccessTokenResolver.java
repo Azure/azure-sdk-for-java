@@ -1,12 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.identity.providers.jdbc.api.token;
+package com.azure.identity.providers.jdbc.implementation.token;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.identity.providers.jdbc.implementation.token.AccessTokenResolverImpl;
-import com.azure.identity.providers.jdbc.implementation.token.AccessTokenResolverOptions;
 import reactor.core.publisher.Mono;
 
 import java.util.function.Function;

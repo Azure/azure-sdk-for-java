@@ -4,7 +4,6 @@
 package com.azure.identity.providers.jdbc.utils;
 
 import com.azure.core.exception.AzureException;
-import com.azure.identity.providers.jdbc.implementation.credential.provider.TokenCredentialProvider;
 import com.azure.identity.providers.jdbc.implementation.exception.AzureInstantiateException;
 
 import java.lang.reflect.Constructor;
@@ -58,6 +57,15 @@ public final class ClassUtil {
     private ClassUtil() {
     }
 
+    /**
+     * Return an instance with the given class and constructor arguments.
+     *
+     * @param baseClass The Class used to create instances.
+     * @param constructorArguments Parameters to used in the constructor.
+     * @param <R> The return type of instance.
+     * @return An instance with the given class and constructor arguments.
+     *
+     */
     @SuppressWarnings("unchecked")
     public static <R> R instantiateClass(Class<?> baseClass, Object... constructorArguments) {
         Optional<Constructor<?>> constructor = findConstructor(baseClass, constructorArguments);
@@ -69,8 +77,19 @@ public final class ClassUtil {
                     .collect(Collectors.joining(", ")))));
     }
 
+    /**
+     * Get instance with provided className.
+     * @param className The canonical name of the underlying class.
+     * @param assignableClass Used to check whether it's assignable.
+     * @param <T> The return value type.
+     * @param <P> The type of assignableClass.
+     *
+     * @throws AzureException <br/> Will throw AzureException if the provided className is not a assignableClass. <br/>
+     *         Will throw AzureException if the provided className can't be found.
+     * @return An instance of the provided className.
+     */
     @SuppressWarnings("unchecked")
-    public static <T> Class<T> getClass(String className, Class<TokenCredentialProvider> assignableClass) {
+    public static <T, P> Class<T> getClass(String className, Class<P> assignableClass) {
         if (className != null && !className.isEmpty()) {
             try {
                 Class<?> clazz = Class.forName(className);
