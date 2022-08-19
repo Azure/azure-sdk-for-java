@@ -9,9 +9,27 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
 
-  <modules>
-      <module>azure-identity-providers-jdbc</module>
-      <module>azure-identity-providers-jdbc-mysql</module>
-      <module>azure-identity-providers-jdbc-postgresql</module>
-  </modules>
+  <profiles>
+    <profile>
+      <id>default</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>azure-identity-providers-jdbc</module>
+        <module>azure-identity-providers-jdbc-mysql</module>
+        <module>azure-identity-providers-jdbc-postgresql</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>dev</id>
+      <modules>
+        <module>azure-identity-providers-jdbc</module>
+        <module>azure-identity-providers-jdbc-mysql</module>
+        <module>azure-identity-providers-jdbc-postgresql</module>
+      </modules>
+    </profile>
+  </profiles>
+
 </project>
