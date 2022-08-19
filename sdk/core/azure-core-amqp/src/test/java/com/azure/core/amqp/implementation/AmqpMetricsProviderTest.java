@@ -10,6 +10,7 @@ import com.azure.core.test.utils.metrics.TestMeter;
 import com.azure.core.util.Context;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.metrics.MeterProvider;
+import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -47,7 +48,7 @@ public class AmqpMetricsProviderTest {
         assertDoesNotThrow(() -> provider.recordConnectionClosed(null));
         assertDoesNotThrow(() -> provider.recordConnectionInit());
         assertDoesNotThrow(() -> provider.recordSendDelivery(0, DeliveryState.DeliveryStateType.Declared));
-        assertDoesNotThrow(() -> provider.recordReceivedMessage());
+        assertDoesNotThrow(() -> provider.recordReceivedMessage(Proton.message()));
         assertDoesNotThrow(() -> provider.recordLinkError(new ErrorCondition(TIMEOUT_SYMBOL, "")));
         assertDoesNotThrow(() -> provider.recordSessionError(new ErrorCondition(TIMEOUT_SYMBOL, "")));
 
@@ -65,7 +66,7 @@ public class AmqpMetricsProviderTest {
         assertDoesNotThrow(() -> provider.recordConnectionClosed(null));
         assertDoesNotThrow(() -> provider.recordConnectionInit());
         assertDoesNotThrow(() -> provider.recordSendDelivery(0, DeliveryState.DeliveryStateType.Declared));
-        assertDoesNotThrow(() -> provider.recordReceivedMessage());
+        assertDoesNotThrow(() -> provider.recordReceivedMessage(Proton.message()));
         assertDoesNotThrow(() -> provider.recordLinkError(new ErrorCondition(TIMEOUT_SYMBOL, "")));
         assertDoesNotThrow(() -> provider.recordSessionError(new ErrorCondition(TIMEOUT_SYMBOL, "")));
     }
@@ -110,8 +111,8 @@ public class AmqpMetricsProviderTest {
         provider.recordSendDelivery(start, DeliveryState.DeliveryStateType.Accepted);
         provider.recordSendDelivery(start, null);
 
-        assertTrue(meter.getHistograms().containsKey("messaging.az.amqp.producer.send.duration"));
-        TestHistogram histogram = meter.getHistograms().get("messaging.az.amqp.producer.send.duration");
+        assertTrue(meter.getHistograms().containsKey("messaging.az.amqp.client.duration"));
+        TestHistogram histogram = meter.getHistograms().get("messaging.az.amqp.client.duration");
 
         assertEquals(3, histogram.getMeasurements().size());
 
@@ -171,8 +172,8 @@ public class AmqpMetricsProviderTest {
         TestMeter meter = new TestMeter();
         AmqpMetricsProvider provider = new AmqpMetricsProvider(meter, NAMESPACE, ENTITY_PATH);
 
-        provider.recordReceivedMessage();
-        provider.recordReceivedMessage();
+        provider.recordReceivedMessage(Proton.message());
+        provider.recordReceivedMessage(Proton.message());
 
         assertTrue(meter.getCounters().containsKey("messaging.az.amqp.consumer.messages.received"));
         TestCounter counter = meter.getCounters().get("messaging.az.amqp.consumer.messages.received");

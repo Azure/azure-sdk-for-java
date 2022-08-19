@@ -8,17 +8,23 @@ import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.TelemetryAttributes;
 import com.azure.core.util.metrics.DoubleHistogram;
 import com.azure.core.util.metrics.LongCounter;
+import com.azure.core.util.metrics.LongGauge;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.metrics.MeterProvider;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
+import org.apache.qpid.proton.message.Message;
 
 import java.time.Instant;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
+
+import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 
 /**
  * Helper class responsible for efficient reporting metrics in AMQP core. It's efficient and safe to use when there is no
@@ -32,13 +38,16 @@ public class AmqpMetricsProvider {
     private LongCounter sessionErrors = null;
     private LongCounter linkErrors = null;
     private LongCounter receivedMessages = null;
+    private DoubleHistogram receivedLag = null;
+    private LongGauge receivedSequenceNumber = null;
     private LongCounter addCredits = null;
     private AttributeCache sendDeliveryAttributeCache = null;
     private AttributeCache amqpErrorAttributeCache = null;
     private TelemetryAttributes commonAttributes = null;
     private static final Meter DEFAULT_METER = MeterProvider.getDefaultProvider().createMeter("azure-core-amqp", null, new MetricsOptions());
     private static final AmqpMetricsProvider NOOP = new AmqpMetricsProvider();
-
+    private static final AutoCloseable NOOP_CLOSEABLE = () -> {
+    };
     private AmqpMetricsProvider() {
         isEnabled = false;
     }
@@ -74,6 +83,8 @@ public class AmqpMetricsProvider {
             this.linkErrors = meter.createLongCounter("messaging.az.amqp.client.link.errors", "AMQP link errors", "errors");
             this.receivedMessages = meter.createLongCounter("messaging.az.amqp.consumer.messages.received", "Number of received messages", "messages");
             this.addCredits = meter.createLongCounter("messaging.az.amqp.consumer.credits.requested", "Number of requested credits", "credits");
+            this.receivedLag = meter.createDoubleHistogram("messaging.az.amqp.consumer.lag", "Approximate lag between time message was received and time it was enqueued on the broker.", "sec");
+            this.receivedSequenceNumber = meter.createLongGauge("messaging.az.amqp.consumer.sequence_number", "Last received requesnce number.", "sequence number");
         }
     }
 
@@ -125,10 +136,43 @@ public class AmqpMetricsProvider {
     /**
      * Records the message was received.
      */
-    public void recordReceivedMessage() {
-        if (isEnabled && receivedMessages.isEnabled()) {
+    public void recordReceivedMessage(Message message) {
+        if (!isEnabled) {
+            return;
+        }
+
+        if (receivedMessages.isEnabled()) {
             receivedMessages.add(1, commonAttributes, Context.NONE);
         }
+
+        if (message.getMessageAnnotations() == null || message.getMessageAnnotations().getValue() == null) {
+            return;
+        }
+
+        Map<Symbol, Object> properties = message.getMessageAnnotations().getValue();
+        if (receivedLag.isEnabled()) {
+            Object enqueuedTimeDate = properties.get(Symbol.valueOf(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()));
+            if (enqueuedTimeDate instanceof Date) {
+                Instant enqueuedTime = ((Date) enqueuedTimeDate).toInstant();
+                long deltaMs = Instant.now().toEpochMilli() - enqueuedTime.toEpochMilli();
+                if (deltaMs < 0) {
+                    deltaMs = 0;
+                }
+                receivedLag.record(deltaMs / 1000d, commonAttributes, Context.NONE);
+            }
+        }
+    }
+
+
+    /**
+     * Records the message was received.
+     */
+    public AutoCloseable setSequenceNumberCallback(Supplier<Long> supplier) {
+        if (this.isEnabled) {
+            return receivedSequenceNumber.setCallback(supplier, this.commonAttributes);
+        }
+
+        return NOOP_CLOSEABLE;
     }
 
     /**

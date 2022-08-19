@@ -6,6 +6,7 @@ package com.azure.core.util.metrics;
 import com.azure.core.util.TelemetryAttributes;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Meter is generally associated with Azure Service Client instance and allows creating
@@ -139,13 +140,31 @@ public interface Meter extends AutoCloseable {
      * </pre>
      * <!-- end com.azure.core.util.metrics.Meter.upDownCounter -->
      *
-     * @param name short counter  name following https://opentelemetry.io/docs/reference/specification/metrics/api/#instrument-naming-rule
+     * @param name short counter name following https://opentelemetry.io/docs/reference/specification/metrics/api/#instrument-naming-rule
      * @param description free-form text describing the counter
      * @param unit optional unit of measurement.
      * @return new instance of {@link LongCounter}
      * @throws NullPointerException if name or description is null.
      */
     LongCounter createLongUpDownCounter(String name, String description, String unit);
+
+    /**
+     * Creates Gauge instrument that measures current non-additive value, e.g. ServiceBus sequence number.
+     *
+     * See https://opentelemetry.io/docs/reference/specification/metrics/api/#asynchronous-gauge for more details.
+     *
+     * @param name short gauge name following https://opentelemetry.io/docs/reference/specification/metrics/api/#instrument-naming-rule
+     * @param description free-form text describing the counter
+     * @param unit optional unit of measurement.
+     * @return new instance of {@link LongCounter}
+     * @throws NullPointerException if name or description is null.
+     */
+    default LongGauge createLongGauge(String name, String description, String unit) {
+        Objects.requireNonNull(name, "'name' cannot be null.");
+        Objects.requireNonNull(description, "'description' cannot be null.");
+
+        return NoopMeter.NOOP_GAUGE;
+    }
 
     /**
      * Creates and returns attribute collection implementation specific to the meter implementation.

@@ -764,7 +764,7 @@ public class ReactorSenderTest {
             .verify(VERIFY_TIMEOUT);
 
         // Assert
-        TestHistogram sendDuration = meter.getHistograms().get("messaging.az.amqp.producer.send.duration");
+        TestHistogram sendDuration = meter.getHistograms().get("messaging.az.amqp.client.duration");
         List<TestMeasurement<Double>> measurements = sendDuration.getMeasurements();
         assertEquals(1, measurements.size());
         assertEquals(HOSTNAME, measurements.get(0).getAttributes().get(ClientConstants.HOSTNAME_KEY));

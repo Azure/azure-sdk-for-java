@@ -37,6 +37,7 @@ import reactor.core.publisher.SignalType;
 import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Schedulers;
 import reactor.util.context.Context;
+import reactor.util.context.ContextView;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -104,6 +105,7 @@ public class RequestResponseChannel implements AsyncCloseable {
     private final ReactorProvider provider;
 
     private final AmqpMetricsProvider metricsProvider;
+
     /**
      * Creates a new instance of {@link RequestResponseChannel} to send and receive responses from the {@code
      * entityPath} in the message broker.
@@ -170,18 +172,19 @@ public class RequestResponseChannel implements AsyncCloseable {
         BaseHandler.setHandler(receiveLink, receiveLinkHandler);
 
         this.metricsProvider = metricsProvider;
+
         // Subscribe to the events from endpoints (Sender, Receiver & Connection) and track the subscriptions.
         //
         //@formatter:off
         this.subscriptions = Disposables.composite(
             receiveLinkHandler.getDeliveredMessages()
-                .map(this::decodeDelivery)
-                .subscribe(message -> {
+                .subscribe(delivery -> {
+                    Message message = decodeDelivery(delivery);
                     logger.atVerbose()
                         .addKeyValue("messageId", message.getCorrelationId())
                         .log("Settling message.");
 
-                    settleMessage(message);
+                    settleMessage(message, delivery.getLocalState());
                 }),
 
             receiveLinkHandler.getEndpointStates().subscribe(state -> {
@@ -362,22 +365,12 @@ public class RequestResponseChannel implements AsyncCloseable {
             })));
     }
 
+    // TODO (limolkova): tests
     private Mono<Message> trackSendMetric(Mono<Message> publisher) {
         return publisher
-            .doOnEach(signal -> {
-                Object start = signal.getContextView().get("start");
-                if (!(start instanceof Long)) {
-                    return;
-                }
-
-                if (signal.hasError()) {
-                    metricsProvider.recordSendDelivery((Long) start, null);
-                } else {
-                    metricsProvider.recordSendDelivery((Long) start, DeliveryState.DeliveryStateType.Accepted);
-                }
-            })
             .contextWrite(Context.of("start", Instant.now().toEpochMilli()));
     }
+
     /**
      * Gets the error context for the channel.
      *
@@ -403,7 +396,7 @@ public class RequestResponseChannel implements AsyncCloseable {
         return response;
     }
 
-    private void settleMessage(Message message) {
+    private void settleMessage(Message message, DeliveryState deliveryState) {
         final String id = String.valueOf(message.getCorrelationId());
         final UnsignedLong correlationId = UnsignedLong.valueOf(id);
         final MonoSink<Message> sink = unconfirmedSends.remove(correlationId);
@@ -415,7 +408,17 @@ public class RequestResponseChannel implements AsyncCloseable {
             return;
         }
 
+        recordDelivery(sink.contextView(), deliveryState);
         sink.success(message);
+    }
+
+    private void recordDelivery(ContextView context, DeliveryState deliveryState) {
+        Object startTimestamp = context.getOrDefault("start", null);
+        if (startTimestamp instanceof Long && deliveryState != null) {
+            Long startEpoch = (Long) startTimestamp;
+            DeliveryState.DeliveryStateType type = deliveryState.getType();
+            metricsProvider.recordSendDelivery(startEpoch, type);
+        }
     }
 
     private void handleError(Throwable error, String message) {
@@ -496,7 +499,9 @@ public class RequestResponseChannel implements AsyncCloseable {
         int count = 0;
         while ((next = unconfirmedSends.pollFirstEntry()) != null) {
             // pollFirstEntry: atomic retrieve and remove of each entry.
-            next.getValue().error(error);
+            MonoSink<Message> sink = next.getValue();
+            recordDelivery(sink.contextView(), null);
+            sink.error(error);
             count++;
         }
 
