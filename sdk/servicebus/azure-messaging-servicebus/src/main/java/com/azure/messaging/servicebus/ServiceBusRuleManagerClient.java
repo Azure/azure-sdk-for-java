@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * An <b>asynchronous</b> rule manager responsible for managing rules for a specific topic subscription. The rule manager
+ * A <b>synchronous</b> rule manager responsible for managing rules for a specific topic subscription. The rule manager
  * requires only Listen claims, whereas the {@link ServiceBusAdministrationAsyncClient} requires Manage claims.
  *
  * <p><strong>Create a rule to a Service Bus subscription</strong></p>
