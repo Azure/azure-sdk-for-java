@@ -39,6 +39,7 @@
     <module>sdk/communication</module>
     <module>sdk/confidentialledger</module>
     <module>sdk/confluent</module>
+    <module>sdk/connectedvmware</module>
     <module>sdk/consumption</module>
     <module>sdk/containerregistry</module>
     <module>sdk/core</module>
@@ -71,8 +72,8 @@
     <module>sdk/eventgrid</module>
     <module>sdk/eventhubs</module>
     <module>sdk/extendedlocation</module>
-    <module>sdk/formrecognizer</module>
     <module>sdk/fluidrelay</module>
+    <module>sdk/formrecognizer</module>
     <module>sdk/frontdoor</module>
     <module>sdk/hanaonazure</module>
     <module>sdk/hardwaresecuritymodules</module>
