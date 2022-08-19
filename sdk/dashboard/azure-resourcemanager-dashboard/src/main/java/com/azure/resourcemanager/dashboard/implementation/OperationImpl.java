@@ -4,19 +4,18 @@
 
 package com.azure.resourcemanager.dashboard.implementation;
 
-import com.azure.resourcemanager.dashboard.fluent.models.OperationResultInner;
+import com.azure.resourcemanager.dashboard.fluent.models.OperationInner;
 import com.azure.resourcemanager.dashboard.models.ActionType;
+import com.azure.resourcemanager.dashboard.models.Operation;
 import com.azure.resourcemanager.dashboard.models.OperationDisplay;
-import com.azure.resourcemanager.dashboard.models.OperationResult;
 import com.azure.resourcemanager.dashboard.models.Origin;
 
-public final class OperationResultImpl implements OperationResult {
-    private OperationResultInner innerObject;
+public final class OperationImpl implements Operation {
+    private OperationInner innerObject;
 
     private final com.azure.resourcemanager.dashboard.DashboardManager serviceManager;
 
-    OperationResultImpl(
-        OperationResultInner innerObject, com.azure.resourcemanager.dashboard.DashboardManager serviceManager) {
+    OperationImpl(OperationInner innerObject, com.azure.resourcemanager.dashboard.DashboardManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -41,7 +40,7 @@ public final class OperationResultImpl implements OperationResult {
         return this.innerModel().actionType();
     }
 
-    public OperationResultInner innerModel() {
+    public OperationInner innerModel() {
         return this.innerObject;
     }
 
