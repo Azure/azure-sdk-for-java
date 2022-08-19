@@ -129,7 +129,7 @@ org.springframework.boot:spring-boot-autoconfigure-processor;2.7.2
 org.springframework.boot:spring-boot-autoconfigure;2.7.2
 org.springframework.boot:spring-boot-configuration-metadata;2.7.2
 org.springframework.boot:spring-boot-configuration-processor;2.7.2
-org.springframework.boot:spring-boot-maven-plugin;2.7.1
+org.springframework.boot:spring-boot-maven-plugin;2.7.2
 org.springframework.boot:spring-boot-starter-actuator;2.7.2
 org.springframework.boot:spring-boot-starter-aop;2.7.2
 org.springframework.boot:spring-boot-starter-cache;2.7.2
