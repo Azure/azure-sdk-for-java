@@ -5,6 +5,7 @@ package com.azure.spring.cloud.service.implementation.identity.credential.provid
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.providers.jdbc.implementation.credential.TokenCredentialProviderOptions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 
@@ -19,6 +20,10 @@ class SpringTokenCredentialProviderTest {
     public static final String DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME = "springCloudAzureDefaultCredential";
     public static final String CUSTOMIZED_TOKEN_CREDENTIAL_BEAN_NAME = "springCloudAzureCustomizedCredential";
 
+    @BeforeEach
+    void setGlobalApplicationContext() {
+        SpringTokenCredentialProvider.setGlobalApplicationContext(null);
+    }
 
     @Test
     void testDefaultConstructor() {
