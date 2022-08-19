@@ -24,6 +24,13 @@ public abstract class CommonProperties extends AzureAmqpSdkProperties implements
     private String connectionString;
     private String customEndpointAddress;
 
+    /**
+     * The default constructor.
+     *
+     * The object constructed from this constructor will have a null cloud type. Because
+     * object with default value will prevent the object from being correctly merged properties
+     * from another {@link CommonProperties}.
+     */
     public CommonProperties() {
         this.getProfile().setCloudType(null);
     }
