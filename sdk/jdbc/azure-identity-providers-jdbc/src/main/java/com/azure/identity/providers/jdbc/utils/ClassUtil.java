@@ -79,14 +79,14 @@ public final class ClassUtil {
 
     /**
      * Get instance with provided className.
+     *
      * @param className The canonical name of the underlying class.
      * @param assignableClass Used to check whether it's assignable.
      * @param <T> The return value type.
      * @param <P> The type of assignableClass.
-     *
-     * @throws AzureException <br/> Will throw AzureException if the provided className is not a assignableClass. <br/>
-     *         Will throw AzureException if the provided className can't be found.
      * @return An instance of the provided className.
+     * @throws AzureException Will throw AzureException if the provided className is not a assignableClass.<br>
+     *                        Will throw AzureException if the provided className can't be found.
      */
     @SuppressWarnings("unchecked")
     public static <T, P> Class<T> getClass(String className, Class<P> assignableClass) {
