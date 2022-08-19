@@ -71,15 +71,6 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
     }
 
     /**
-     * Get the odataType property: Identifies the concrete type of the analyzer.
-     *
-     * @return the odataType value.
-     */
-    public String getOdataType() {
-        return this.odataType;
-    }
-
-    /**
      * Get the lowerCaseTerms property: A value indicating whether terms should be lower-cased. Default is true.
      *
      * @return the lowerCaseTerms value.

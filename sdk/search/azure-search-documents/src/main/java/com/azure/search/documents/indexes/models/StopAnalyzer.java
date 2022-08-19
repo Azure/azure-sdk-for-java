@@ -51,15 +51,6 @@ public final class StopAnalyzer extends LexicalAnalyzer {
     }
 
     /**
-     * Get the odataType property: Identifies the concrete type of the analyzer.
-     *
-     * @return the odataType value.
-     */
-    public String getOdataType() {
-        return this.odataType;
-    }
-
-    /**
      * Get the stopwords property: A list of stopwords.
      *
      * @return the stopwords value.

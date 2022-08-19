@@ -86,15 +86,6 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Get the odataType property: Identifies the concrete type of the skill.
-     *
-     * @return the odataType value.
-     */
-    public String getOdataType() {
-        return this.odataType;
-    }
-
-    /**
      * Get the defaultLanguageCode property: A value indicating which language code to use. Default is en.
      *
      * @return the defaultLanguageCode value.

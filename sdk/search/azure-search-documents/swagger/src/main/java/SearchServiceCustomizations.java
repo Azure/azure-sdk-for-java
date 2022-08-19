@@ -150,6 +150,7 @@ public class SearchServiceCustomizations extends Customization {
 
     private void customizeCognitiveServicesAccountKey(ClassCustomization classCustomization) {
         changeClassModifier(classCustomization, PUBLIC_FINAL);
+        removeMethod(classCustomization, "getOdataType");
         classCustomization.addMethod(joinWithNewline(
             "/**",
             " * Set the key property: The key used to provision the cognitive service",
@@ -166,6 +167,7 @@ public class SearchServiceCustomizations extends Customization {
 
     private void customizeOcrSkill(ClassCustomization classCustomization) {
         changeClassModifier(classCustomization, PUBLIC_FINAL);
+        removeMethod(classCustomization, "getOdataType");
 
         JavadocCustomization javadocToCopy = classCustomization.getMethod("isShouldDetectOrientation")
             .getJavadoc();
@@ -333,12 +335,14 @@ public class SearchServiceCustomizations extends Customization {
 
     private void customizeImageAnalysisSkill(ClassCustomization classCustomization) {
         changeClassModifier(classCustomization, PUBLIC_FINAL);
+        removeMethod(classCustomization, "getOdataType");
         addVarArgsOverload(classCustomization, "visualFeatures", "VisualFeature");
         addVarArgsOverload(classCustomization, "details", "ImageDetail");
     }
 
     private void customizeCustomEntityLookupSkill(ClassCustomization classCustomization) {
         changeClassModifier(classCustomization, PUBLIC_FINAL);
+        removeMethod(classCustomization, "getOdataType");
         addVarArgsOverload(classCustomization, "inlineEntitiesDefinition", "CustomEntity");
     }
 
@@ -454,12 +458,14 @@ public class SearchServiceCustomizations extends Customization {
 
     private void customizeCustomAnalyzer(ClassCustomization classCustomization) {
         changeClassModifier(classCustomization, PUBLIC_FINAL);
+        removeMethod(classCustomization, "getOdataType");
         addVarArgsOverload(classCustomization, "tokenFilters", "TokenFilterName");
         addVarArgsOverload(classCustomization, "charFilters", "CharFilterName");
     }
 
     private void customizePatternAnalyzer(ClassCustomization classCustomization) {
         changeClassModifier(classCustomization, PUBLIC_FINAL);
+        removeMethod(classCustomization, "getOdataType");
         classCustomization.getMethod("isLowerCaseTerms").rename("areLowerCaseTerms");
         addVarArgsOverload(classCustomization, "stopwords", "String");
 
@@ -495,11 +501,13 @@ public class SearchServiceCustomizations extends Customization {
 
     private void customizeLuceneStandardAnalyzer(ClassCustomization classCustomization) {
         changeClassModifier(classCustomization, PUBLIC_FINAL);
+        removeMethod(classCustomization, "getOdataType");
         addVarArgsOverload(classCustomization, "stopwords", "String");
     }
 
     private void customizeStopAnalyzer(ClassCustomization classCustomization) {
         changeClassModifier(classCustomization, PUBLIC_FINAL);
+        removeMethod(classCustomization, "getOdataType");
         addVarArgsOverload(classCustomization, "stopwords", "String");
     }
 

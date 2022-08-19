@@ -55,15 +55,6 @@ public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
     }
 
     /**
-     * Get the odataType property: Identifies the concrete type of the analyzer.
-     *
-     * @return the odataType value.
-     */
-    public String getOdataType() {
-        return this.odataType;
-    }
-
-    /**
      * Get the maxTokenLength property: The maximum token length. Default is 255. Tokens longer than the maximum length
      * are split. The maximum token length that can be used is 300 characters.
      *

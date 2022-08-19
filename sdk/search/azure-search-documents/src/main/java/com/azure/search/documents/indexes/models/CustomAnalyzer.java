@@ -72,15 +72,6 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
     }
 
     /**
-     * Get the odataType property: Identifies the concrete type of the analyzer.
-     *
-     * @return the odataType value.
-     */
-    public String getOdataType() {
-        return this.odataType;
-    }
-
-    /**
      * Get the tokenizer property: The name of the tokenizer to use to divide continuous text into a sequence of tokens,
      * such as breaking a sentence into words.
      *

@@ -46,16 +46,6 @@ public final class CognitiveServicesAccountKey extends CognitiveServicesAccount 
     }
 
     /**
-     * Get the odataType property: Identifies the concrete type of the cognitive service resource attached to a
-     * skillset.
-     *
-     * @return the odataType value.
-     */
-    public String getOdataType() {
-        return this.odataType;
-    }
-
-    /**
      * Get the key property: The key used to provision the cognitive service resource attached to a skillset.
      *
      * @return the key value.
