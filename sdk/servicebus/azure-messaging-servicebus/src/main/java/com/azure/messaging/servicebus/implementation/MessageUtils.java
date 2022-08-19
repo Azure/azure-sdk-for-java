@@ -494,13 +494,13 @@ public final class MessageUtils {
     @SuppressWarnings("unchecked")
     private static RuleFilter decodeFilter(DescribedType describedFilter) {
         if (describedFilter.getDescriptor().equals(ServiceBusConstants.SQL_FILTER_NAME)) {
-            ArrayList<Object> describedSqlFilter = (ArrayList<Object>) describedFilter.getDescribed();
+            List<Object> describedSqlFilter = (ArrayList<Object>) describedFilter.getDescribed();
             if (describedSqlFilter.size() > 0) {
                 return new SqlRuleFilter((String) describedSqlFilter.get(0));
             }
         } else if (describedFilter.getDescriptor().equals(ServiceBusConstants.CORRELATION_FILTER_NAME)) {
             CorrelationRuleFilter correlationFilter = new CorrelationRuleFilter();
-            ArrayList<Object> describedCorrelationFilter = (ArrayList<Object>) describedFilter.getDescribed();
+            List<Object> describedCorrelationFilter = (ArrayList<Object>) describedFilter.getDescribed();
             int countCorrelationFilter = describedCorrelationFilter.size();
             if (countCorrelationFilter-- > 0) {
                 correlationFilter.setCorrelationId((String) (describedCorrelationFilter.get(0)));

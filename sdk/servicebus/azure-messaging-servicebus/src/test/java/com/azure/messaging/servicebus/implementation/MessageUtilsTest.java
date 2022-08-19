@@ -175,12 +175,12 @@ class MessageUtilsTest {
         Collection<RuleProperties> ruleProperties = new ArrayList<>();
         List<Map<String, DescribedType>> rules = ((Map<String, List<Map<String, DescribedType>>>) body.getValue())
             .get(ManagementConstants.RULES);
+
+        // act & Assert
         for (Map<String, DescribedType> rule : rules) {
             DescribedType ruleDescription = rule.get(ManagementConstants.RULE_DESCRIPTION);
             ruleProperties.add(MessageUtils.decodeRuleDescribedType(ruleDescription));
         }
-
-        // Arrange & Assert
         AtomicInteger ruleCount = new AtomicInteger();
         for (RuleProperties ruleProperty : ruleProperties) {
             String ruleName = ruleProperty.getName();

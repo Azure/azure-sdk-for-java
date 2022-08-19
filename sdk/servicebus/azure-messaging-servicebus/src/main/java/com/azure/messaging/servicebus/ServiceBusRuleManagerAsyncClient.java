@@ -108,6 +108,24 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
     }
 
     /**
+     * Gets the fully qualified namespace.
+     *
+     * @return The fully qualified namespace.
+     */
+    public String getFullyQualifiedNamespace() {
+        return connectionProcessor.getFullyQualifiedNamespace();
+    }
+
+    /**
+     * Gets the name of the Service Bus resource.
+     *
+     * @return The name of the Service Bus resource.
+     */
+    public String getEntityPath() {
+        return entityPath;
+    }
+
+    /**
      * Creates a rule to the current subscription to filter the messages reaching from topic to the subscription.
      *
      * @param ruleName Name of rule.
