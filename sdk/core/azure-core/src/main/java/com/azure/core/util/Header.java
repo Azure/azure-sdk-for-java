@@ -126,6 +126,25 @@ public class Header {
     }
 
     private void checkCachedStringValue() {
-        CACHED_STRING_VALUE_UPDATER.compareAndSet(this, null, String.join(",", values));
+        CACHED_STRING_VALUE_UPDATER.compareAndSet(this, null, getOrConcatenate(values));
+    }
+
+    /*
+     * Optimization over just using String.join.
+     *
+     * In most cases the header will only have a few values which can be combined statically instead of needing have
+     * all the overhead from String.join.
+     *
+     */
+    private static String getOrConcatenate(List<String> values) {
+        int size = values.size();
+        switch (size) {
+            case 0: return "";
+            case 1: return values.get(0);
+            case 2: return values.get(0) + "," + values.get(1);
+            case 3: return values.get(0) + "," + values.get(1) + "," + values.get(2);
+            case 4: return values.get(0) + "," + values.get(1) + "," + values.get(2) + "," + values.get(3);
+            default: return String.join(",", values);
+        }
     }
 }
