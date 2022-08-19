@@ -18,8 +18,7 @@ public final class DiskInstanceView {
     private String name;
 
     /*
-     * Specifies the encryption settings for the OS Disk. <br><br> Minimum
-     * api-version: 2015-06-15
+     * Specifies the encryption settings for the OS Disk. <br><br> Minimum api-version: 2015-06-15
      */
     @JsonProperty(value = "encryptionSettings")
     private List<DiskEncryptionSettings> encryptionSettings;

@@ -22,7 +22,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.fluent.ValidatesClient;
 import com.azure.resourcemanager.cdn.fluent.models.ValidateSecretOutputInner;
 import com.azure.resourcemanager.cdn.models.ValidateSecretInput;
@@ -30,8 +29,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ValidatesClient. */
 public final class ValidatesClientImpl implements ValidatesClient {
-    private final ClientLogger logger = new ClientLogger(ValidatesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ValidatesService service;
 
@@ -167,15 +164,7 @@ public final class ValidatesClientImpl implements ValidatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ValidateSecretOutputInner> secretAsync(ValidateSecretInput validateSecretInput) {
-        return secretWithResponseAsync(validateSecretInput)
-            .flatMap(
-                (Response<ValidateSecretOutputInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return secretWithResponseAsync(validateSecretInput).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

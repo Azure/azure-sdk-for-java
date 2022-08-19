@@ -1,6 +1,12 @@
 # Release History
 
-## 2.17.0-beta.1 (Unreleased)
+## 2.18.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Supported Java SE 17 in `FunctionRuntimeStack` for `FunctionApp`.
+
+## 2.17.0 (2022-07-25)
 
 ### Features Added
 
@@ -14,8 +20,6 @@
   into one class `ResourceNotRenewableReason`.
 - `AppServiceEnvironmentPatchResource` was removed.
 - `ValidateRequest` was removed.
-
-### Bugs Fixed
 
 ### Other Changes
 

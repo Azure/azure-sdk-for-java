@@ -63,7 +63,11 @@ public final class InnerErrorCode extends ExpandableStringEnum<InnerErrorCode> {
         return fromString(name, InnerErrorCode.class);
     }
 
-    /** @return known InnerErrorCode values. */
+    /**
+     * Gets known InnerErrorCode values.
+     *
+     * @return known InnerErrorCode values.
+     */
     public static Collection<InnerErrorCode> values() {
         return values(InnerErrorCode.class);
     }

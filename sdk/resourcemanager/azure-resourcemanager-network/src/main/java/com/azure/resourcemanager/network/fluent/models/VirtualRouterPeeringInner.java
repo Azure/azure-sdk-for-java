@@ -19,8 +19,7 @@ public final class VirtualRouterPeeringInner extends SubResource {
     private VirtualRouterPeeringProperties innerProperties;
 
     /*
-     * Name of the virtual router peering that is unique within a virtual
-     * router.
+     * Name of the virtual router peering that is unique within a virtual router.
      */
     @JsonProperty(value = "name")
     private String name;

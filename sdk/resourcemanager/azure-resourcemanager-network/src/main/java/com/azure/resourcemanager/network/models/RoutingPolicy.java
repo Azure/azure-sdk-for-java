@@ -19,8 +19,7 @@ public final class RoutingPolicy {
     private String name;
 
     /*
-     * List of all destinations which this routing policy is applicable to (for
-     * example: Internet, PrivateTraffic).
+     * List of all destinations which this routing policy is applicable to (for example: Internet, PrivateTraffic).
      */
     @JsonProperty(value = "destinations", required = true)
     private List<String> destinations;

@@ -53,7 +53,7 @@ public class KubernetesClusterAgentPoolImpl
 
     @Override
     public int count() {
-        return this.innerModel().count();
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().count());
     }
 
     @Override
@@ -63,7 +63,7 @@ public class KubernetesClusterAgentPoolImpl
 
     @Override
     public int osDiskSizeInGB() {
-        return this.innerModel().osDiskSizeGB();
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().osDiskSizeGB());
     }
 
     @Override

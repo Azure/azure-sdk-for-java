@@ -32,7 +32,6 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.implementation.TypeUtil;
-import com.azure.core.implementation.UnixTime;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.implementation.serializer.HttpResponseDecodeData;
 import com.azure.core.util.Base64Url;
@@ -41,7 +40,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.UrlBuilder;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
@@ -80,12 +78,11 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     // so these values can be determined once and used for optimizations.
     // For example substitutions should be able to track which location in the raw value they replace without needing
     // to search the raw value on each call.
-    private final SerializerAdapter serializer;
     private final String rawHost;
     private final String fullyQualifiedMethodName;
     private final HttpMethod httpMethod;
     private final String relativePath;
-    private final List<Substitution> hostSubstitutions = new ArrayList<>();
+    final List<Substitution> hostSubstitutions = new ArrayList<>();
     private final List<Substitution> pathSubstitutions = new ArrayList<>();
     private final List<QuerySubstitution> querySubstitutions = new ArrayList<>();
     private final List<Substitution> formSubstitutions = new ArrayList<>();
@@ -104,6 +101,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private final boolean isStreamResponse;
     private final boolean returnTypeDecodeable;
     private final boolean responseEagerlyRead;
+    private final String spanName;
 
     private Map<Integer, UnexpectedExceptionInformation> exceptionMapping;
     private UnexpectedExceptionInformation defaultException;
@@ -112,16 +110,13 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * Create a SwaggerMethodParser object using the provided fully qualified method name.
      *
      * @param swaggerMethod the Swagger method to parse.
-     * @param rawHost the raw host value from the @Host annotation. Before this can be used as the host value in an HTTP
-     * request, it must be processed through the possible host substitutions.
      */
-    public SwaggerMethodParser(Method swaggerMethod, String rawHost) {
-        this(swaggerMethod, rawHost, JacksonAdapter.createDefaultSerializerAdapter());
+    public SwaggerMethodParser(Method swaggerMethod) {
+        this(SwaggerInterfaceParser.getInstance(swaggerMethod.getDeclaringClass()), swaggerMethod);
     }
 
-    public SwaggerMethodParser(Method swaggerMethod, String rawHost, SerializerAdapter serializer) {
-        this.serializer = serializer;
-        this.rawHost = rawHost;
+    SwaggerMethodParser(SwaggerInterfaceParser interfaceParser, Method swaggerMethod) {
+        this.rawHost = interfaceParser.getHost();
 
         final Class<?> swaggerInterface = swaggerMethod.getDeclaringClass();
 
@@ -159,9 +154,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             swaggerMethod.getAnnotation(ReturnValueWireType.class);
         if (returnValueWireTypeAnnotation != null) {
             Class<?> returnValueWireType = returnValueWireTypeAnnotation.value();
-            if (returnValueWireType == Base64Url.class
-                || returnValueWireType == UnixTime.class
-                || returnValueWireType == DateTimeRfc1123.class) {
+            if (returnValueWireType == Base64Url.class || returnValueWireType == DateTimeRfc1123.class) {
                 this.returnValueWireType = returnValueWireType;
             } else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, List.class)) {
                 this.returnValueWireType = returnValueWireType.getGenericInterfaces()[0];
@@ -280,6 +273,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         Type unwrappedReturnType = unwrapReturnType(returnType);
         this.returnTypeDecodeable = isReturnTypeDecodeable(unwrappedReturnType);
         this.responseEagerlyRead = isResponseEagerlyRead(unwrappedReturnType);
+        this.spanName = interfaceParser.getServiceName() + "." + swaggerMethod.getName();
     }
 
     /**
@@ -305,9 +299,16 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      *
      * @param swaggerMethodArguments The arguments to use for scheme and host substitutions.
      * @param urlBuilder The {@link UrlBuilder} that will have its scheme and host set.
+     * @param serializer {@link SerializerAdapter} that is used to encode host substitutions.
      */
-    public void setSchemeAndHost(Object[] swaggerMethodArguments, UrlBuilder urlBuilder) {
-        final String substitutedHost = applySubstitutions(rawHost, hostSubstitutions, swaggerMethodArguments);
+    public void setSchemeAndHost(Object[] swaggerMethodArguments, UrlBuilder urlBuilder, SerializerAdapter serializer) {
+        setSchemeAndHost(rawHost, hostSubstitutions, swaggerMethodArguments, urlBuilder, serializer);
+    }
+
+    static void setSchemeAndHost(String rawHost, List<Substitution> hostSubstitutions, Object[] swaggerMethodArguments,
+        UrlBuilder urlBuilder, SerializerAdapter serializer) {
+        final String substitutedHost = applySubstitutions(rawHost, hostSubstitutions, swaggerMethodArguments,
+            serializer);
         final String[] substitutedHostParts = PATTERN_COLON_SLASH_SLASH.split(substitutedHost);
 
         if (substitutedHostParts.length >= 2) {
@@ -325,10 +326,11 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * Get the path that will be used to complete the Swagger method's request.
      *
      * @param methodArguments the method arguments to use with the path substitutions
+     * @param serializer {@link SerializerAdapter} that is used to encode path substitutions
      * @return the path value with its placeholders replaced by the matching substitutions
      */
-    public String setPath(Object[] methodArguments) {
-        return applySubstitutions(relativePath, pathSubstitutions, methodArguments);
+    public String setPath(Object[] methodArguments, SerializerAdapter serializer) {
+        return applySubstitutions(relativePath, pathSubstitutions, methodArguments, serializer);
     }
 
     /**
@@ -337,9 +339,11 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      *
      * @param swaggerMethodArguments the arguments that will be used to create the query parameters' values
      * @param urlBuilder The {@link UrlBuilder} where the encoded query parameters will be set.
+     * @param serializer {@link SerializerAdapter} that is used to encode the query parameters.
      */
     @SuppressWarnings("unchecked")
-    public void setEncodedQueryParameters(Object[] swaggerMethodArguments, UrlBuilder urlBuilder) {
+    public void setEncodedQueryParameters(Object[] swaggerMethodArguments, UrlBuilder urlBuilder,
+        SerializerAdapter serializer) {
         if (swaggerMethodArguments == null) {
             return;
         }
@@ -369,8 +373,9 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      *
      * @param swaggerMethodArguments The arguments that will be used to create the headers' values.
      * @param httpHeaders The {@link HttpHeaders} where the header values will be set.
+     * @param serializer {@link SerializerAdapter} that is used to serialize the header values.
      */
-    public void setHeaders(Object[] swaggerMethodArguments, HttpHeaders httpHeaders) {
+    public void setHeaders(Object[] swaggerMethodArguments, HttpHeaders httpHeaders, SerializerAdapter serializer) {
         for (HttpHeader header : headers) {
             httpHeaders.set(header.getName(), header.getValuesList());
         }
@@ -470,9 +475,11 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * Get the object to be used as the value of the HTTP request.
      *
      * @param swaggerMethodArguments the method arguments to get the value object from
+     * @param serializer {@link SerializerAdapter} used to encode the request body if it's an
+     * {@code application/x-www-form-urlencoded} request.
      * @return the object that will be used as the body of the HTTP request
      */
-    public Object setBody(Object[] swaggerMethodArguments) {
+    public Object setBody(Object[] swaggerMethodArguments, SerializerAdapter serializer) {
         Object result = null;
 
         if (bodyContentMethodParameterIndex != null
@@ -586,8 +593,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         return shouldEncode ? UrlEscapers.FORM_ESCAPER.escape(serializedValue) : serializedValue;
     }
 
-    private String applySubstitutions(String originalValue, Iterable<Substitution> substitutions,
-                                      Object[] methodArguments) {
+    private static String applySubstitutions(String originalValue, Iterable<Substitution> substitutions,
+                                      Object[] methodArguments, SerializerAdapter serializer) {
         String result = originalValue;
 
         if (methodArguments == null) {
@@ -673,6 +680,15 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     @Override
     public boolean isResponseEagerlyRead() {
         return responseEagerlyRead;
+    }
+
+    /**
+     * Gets the name of the span that will be used when this {@link SwaggerMethodParser} is called.
+     *
+     * @return The span name of this {@link SwaggerMethodParser}.
+     */
+    public String getSpanName() {
+        return spanName;
     }
 
     static boolean isReturnTypeDecodeable(Type unwrappedReturnType) {

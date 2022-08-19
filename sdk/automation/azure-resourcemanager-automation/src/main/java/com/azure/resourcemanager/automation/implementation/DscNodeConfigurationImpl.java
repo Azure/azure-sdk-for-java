@@ -55,6 +55,10 @@ public final class DscNodeConfigurationImpl
         return this.innerModel().incrementNodeConfigurationBuild();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public DscNodeConfigurationInner innerModel() {
         return this.innerObject;
     }

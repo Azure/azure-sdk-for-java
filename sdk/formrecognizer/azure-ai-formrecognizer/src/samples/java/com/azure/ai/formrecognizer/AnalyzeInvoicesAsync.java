@@ -3,13 +3,15 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.implementation.util.Utility;
-import com.azure.ai.formrecognizer.models.AnalyzeResult;
-import com.azure.ai.formrecognizer.models.AnalyzedDocument;
-import com.azure.ai.formrecognizer.models.DocumentField;
-import com.azure.ai.formrecognizer.models.DocumentFieldType;
-import com.azure.ai.formrecognizer.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient;
+import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientBuilder;
+import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentField;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
 
@@ -49,7 +51,7 @@ public class AnalyzeInvoicesAsync {
         PollerFlux<DocumentOperationResult, AnalyzeResult> analyzeInvoicePoller;
         try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
             analyzeInvoicePoller =
-                client.beginAnalyzeDocument("prebuilt-invoice", Utility.toFluxByteBuffer(targetStream),
+                client.beginAnalyzeDocument("prebuilt-invoice", BinaryData.fromStream(targetStream),
                     invoice.length());
         }
 
@@ -73,7 +75,7 @@ public class AnalyzeInvoicesAsync {
                 DocumentField vendorNameField = invoiceFields.get("VendorName");
                 if (vendorNameField != null) {
                     if (DocumentFieldType.STRING == vendorNameField.getType()) {
-                        String merchantName = vendorNameField.getValueString();
+                        String merchantName = vendorNameField.getValueAsString();
                         System.out.printf("Vendor Name: %s, confidence: %.2f%n",
                             merchantName, vendorNameField.getConfidence());
                     }
@@ -82,7 +84,7 @@ public class AnalyzeInvoicesAsync {
                 DocumentField vendorAddressField = invoiceFields.get("VendorAddress");
                 if (vendorAddressField != null) {
                     if (DocumentFieldType.STRING == vendorAddressField.getType()) {
-                        String merchantAddress = vendorAddressField.getValueString();
+                        String merchantAddress = vendorAddressField.getValueAsString();
                         System.out.printf("Vendor address: %s, confidence: %.2f%n",
                             merchantAddress, vendorAddressField.getConfidence());
                     }
@@ -91,7 +93,7 @@ public class AnalyzeInvoicesAsync {
                 DocumentField customerNameField = invoiceFields.get("CustomerName");
                 if (customerNameField != null) {
                     if (DocumentFieldType.STRING == customerNameField.getType()) {
-                        String merchantAddress = customerNameField.getValueString();
+                        String merchantAddress = customerNameField.getValueAsString();
                         System.out.printf("Customer Name: %s, confidence: %.2f%n",
                             merchantAddress, customerNameField.getConfidence());
                     }
@@ -100,7 +102,7 @@ public class AnalyzeInvoicesAsync {
                 DocumentField customerAddressRecipientField = invoiceFields.get("CustomerAddressRecipient");
                 if (customerAddressRecipientField != null) {
                     if (DocumentFieldType.STRING == customerAddressRecipientField.getType()) {
-                        String customerAddr = customerAddressRecipientField.getValueString();
+                        String customerAddr = customerAddressRecipientField.getValueAsString();
                         System.out.printf("Customer Address Recipient: %s, confidence: %.2f%n",
                             customerAddr, customerAddressRecipientField.getConfidence());
                     }
@@ -109,7 +111,7 @@ public class AnalyzeInvoicesAsync {
                 DocumentField invoiceIdField = invoiceFields.get("InvoiceId");
                 if (invoiceIdField != null) {
                     if (DocumentFieldType.STRING == invoiceIdField.getType()) {
-                        String invoiceId = invoiceIdField.getValueString();
+                        String invoiceId = invoiceIdField.getValueAsString();
                         System.out.printf("Invoice ID: %s, confidence: %.2f%n",
                             invoiceId, invoiceIdField.getConfidence());
                     }
@@ -118,7 +120,7 @@ public class AnalyzeInvoicesAsync {
                 DocumentField invoiceDateField = invoiceFields.get("InvoiceDate");
                 if (customerNameField != null) {
                     if (DocumentFieldType.DATE == invoiceDateField.getType()) {
-                        LocalDate invoiceDate = invoiceDateField.getValueDate();
+                        LocalDate invoiceDate = invoiceDateField.getValueAsDate();
                         System.out.printf("Invoice Date: %s, confidence: %.2f%n",
                             invoiceDate, invoiceDateField.getConfidence());
                     }
@@ -127,7 +129,7 @@ public class AnalyzeInvoicesAsync {
                 DocumentField invoiceTotalField = invoiceFields.get("InvoiceTotal");
                 if (customerAddressRecipientField != null) {
                     if (DocumentFieldType.FLOAT == invoiceTotalField.getType()) {
-                        Float invoiceTotal = invoiceTotalField.getValueFloat();
+                        Float invoiceTotal = invoiceTotalField.getValueAsFloat();
                         System.out.printf("Invoice Total: %.2f, confidence: %.2f%n",
                             invoiceTotal, invoiceTotalField.getConfidence());
                     }
@@ -137,37 +139,37 @@ public class AnalyzeInvoicesAsync {
                 if (invoiceItemsField != null) {
                     System.out.printf("Invoice Items: %n");
                     if (DocumentFieldType.LIST == invoiceItemsField.getType()) {
-                        List<DocumentField> invoiceItems = invoiceItemsField.getValueList();
+                        List<DocumentField> invoiceItems = invoiceItemsField.getValueAsList();
                         invoiceItems.stream()
                             .filter(invoiceItem -> DocumentFieldType.MAP == invoiceItem.getType())
-                            .map(formField -> formField.getValueMap())
+                            .map(formField -> formField.getValueAsMap())
                             .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
                                 // See a full list of fields found on an invoice here:
                                 // https://aka.ms/formrecognizer/invoicefields
                                 if ("Description".equals(key)) {
                                     if (DocumentFieldType.STRING == formField.getType()) {
-                                        String name = formField.getValueString();
+                                        String name = formField.getValueAsString();
                                         System.out.printf("Description: %s, confidence: %.2fs%n",
                                             name, formField.getConfidence());
                                     }
                                 }
                                 if ("Quantity".equals(key)) {
                                     if (DocumentFieldType.FLOAT == formField.getType()) {
-                                        Float quantity = formField.getValueFloat();
+                                        Float quantity = formField.getValueAsFloat();
                                         System.out.printf("Quantity: %f, confidence: %.2f%n",
                                             quantity, formField.getConfidence());
                                     }
                                 }
                                 if ("UnitPrice".equals(key)) {
                                     if (DocumentFieldType.FLOAT == formField.getType()) {
-                                        Float unitPrice = formField.getValueFloat();
+                                        Float unitPrice = formField.getValueAsFloat();
                                         System.out.printf("Unit Price: %f, confidence: %.2f%n",
                                             unitPrice, formField.getConfidence());
                                     }
                                 }
                                 if ("ProductCode".equals(key)) {
                                     if (DocumentFieldType.FLOAT == formField.getType()) {
-                                        Float productCode = formField.getValueFloat();
+                                        Float productCode = formField.getValueAsFloat();
                                         System.out.printf("Product Code: %f, confidence: %.2f%n",
                                             productCode, formField.getConfidence());
                                     }

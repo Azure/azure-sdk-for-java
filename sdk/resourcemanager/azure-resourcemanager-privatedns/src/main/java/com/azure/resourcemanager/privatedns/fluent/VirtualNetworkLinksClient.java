@@ -35,7 +35,8 @@ public interface VirtualNetworkLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
+     * @return describes a link to virtual network for a Private DNS zone along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -61,7 +62,7 @@ public interface VirtualNetworkLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
+     * @return the {@link PollerFlux} for polling of describes a link to virtual network for a Private DNS zone.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginCreateOrUpdateAsync(
@@ -87,7 +88,7 @@ public interface VirtualNetworkLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
+     * @return the {@link SyncPoller} for polling of describes a link to virtual network for a Private DNS zone.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginCreateOrUpdate(
@@ -114,7 +115,7 @@ public interface VirtualNetworkLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
+     * @return the {@link SyncPoller} for polling of describes a link to virtual network for a Private DNS zone.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginCreateOrUpdate(
@@ -141,7 +142,7 @@ public interface VirtualNetworkLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
+     * @return describes a link to virtual network for a Private DNS zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<VirtualNetworkLinkInner> createOrUpdateAsync(
@@ -162,7 +163,7 @@ public interface VirtualNetworkLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
+     * @return describes a link to virtual network for a Private DNS zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<VirtualNetworkLinkInner> createOrUpdateAsync(
@@ -257,7 +258,8 @@ public interface VirtualNetworkLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
+     * @return describes a link to virtual network for a Private DNS zone along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -280,7 +282,7 @@ public interface VirtualNetworkLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
+     * @return the {@link PollerFlux} for polling of describes a link to virtual network for a Private DNS zone.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginUpdateAsync(
@@ -303,7 +305,7 @@ public interface VirtualNetworkLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
+     * @return the {@link SyncPoller} for polling of describes a link to virtual network for a Private DNS zone.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginUpdate(
@@ -327,7 +329,7 @@ public interface VirtualNetworkLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
+     * @return the {@link SyncPoller} for polling of describes a link to virtual network for a Private DNS zone.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginUpdate(
@@ -351,7 +353,7 @@ public interface VirtualNetworkLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
+     * @return describes a link to virtual network for a Private DNS zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<VirtualNetworkLinkInner> updateAsync(
@@ -371,7 +373,7 @@ public interface VirtualNetworkLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a link to virtual network for a Private DNS zone.
+     * @return describes a link to virtual network for a Private DNS zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<VirtualNetworkLinkInner> updateAsync(
@@ -460,7 +462,7 @@ public interface VirtualNetworkLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -479,7 +481,7 @@ public interface VirtualNetworkLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -498,7 +500,7 @@ public interface VirtualNetworkLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -518,7 +520,7 @@ public interface VirtualNetworkLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -541,7 +543,7 @@ public interface VirtualNetworkLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(
@@ -558,7 +560,7 @@ public interface VirtualNetworkLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String privateZoneName, String virtualNetworkLinkName);
@@ -627,7 +629,8 @@ public interface VirtualNetworkLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network link to the specified Private DNS zone.
+     * @return a virtual network link to the specified Private DNS zone along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<VirtualNetworkLinkInner>> getWithResponseAsync(
@@ -642,7 +645,7 @@ public interface VirtualNetworkLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network link to the specified Private DNS zone.
+     * @return a virtual network link to the specified Private DNS zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<VirtualNetworkLinkInner> getAsync(
@@ -672,7 +675,7 @@ public interface VirtualNetworkLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network link to the specified Private DNS zone.
+     * @return a virtual network link to the specified Private DNS zone along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VirtualNetworkLinkInner> getWithResponse(
@@ -688,7 +691,8 @@ public interface VirtualNetworkLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list virtual network link to Private DNS zone operation.
+     * @return the response to a list virtual network link to Private DNS zone operation as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<VirtualNetworkLinkInner> listAsync(String resourceGroupName, String privateZoneName, Integer top);
@@ -701,7 +705,8 @@ public interface VirtualNetworkLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list virtual network link to Private DNS zone operation.
+     * @return the response to a list virtual network link to Private DNS zone operation as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<VirtualNetworkLinkInner> listAsync(String resourceGroupName, String privateZoneName);
@@ -714,7 +719,8 @@ public interface VirtualNetworkLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list virtual network link to Private DNS zone operation.
+     * @return the response to a list virtual network link to Private DNS zone operation as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VirtualNetworkLinkInner> list(String resourceGroupName, String privateZoneName);
@@ -730,7 +736,8 @@ public interface VirtualNetworkLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list virtual network link to Private DNS zone operation.
+     * @return the response to a list virtual network link to Private DNS zone operation as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VirtualNetworkLinkInner> list(

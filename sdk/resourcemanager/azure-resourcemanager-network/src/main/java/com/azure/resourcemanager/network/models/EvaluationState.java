@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EvaluationState. */
+/** Connectivity analysis evaluation state. */
 public final class EvaluationState extends ExpandableStringEnum<EvaluationState> {
     /** Static value NotStarted for EvaluationState. */
     public static final EvaluationState NOT_STARTED = fromString("NotStarted");

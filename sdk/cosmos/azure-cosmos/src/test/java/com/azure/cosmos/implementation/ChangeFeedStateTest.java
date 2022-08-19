@@ -3,10 +3,10 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedMode;
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStartFromInternal;
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStateV1;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;

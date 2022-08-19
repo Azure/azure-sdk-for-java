@@ -20,8 +20,8 @@ public final class Sku {
     private String name;
 
     /*
-     * Specifies the tier of virtual machines in a scale set.<br /><br />
-     * Possible Values:<br /><br /> **Standard**<br /><br /> **Basic**
+     * Specifies the tier of virtual machines in a scale set.<br /><br /> Possible Values:<br /><br /> **Standard**<br
+     * /><br /> **Basic**
      */
     @JsonProperty(value = "tier")
     private String tier;

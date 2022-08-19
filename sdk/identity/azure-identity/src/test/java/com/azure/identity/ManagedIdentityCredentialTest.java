@@ -50,7 +50,7 @@ public class ManagedIdentityCredentialTest {
 
             // mock
             try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-                when(identityClient.authenticateToManagedIdentityEndpoint(endpoint, secret, endpoint, secret, request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+                when(identityClient.authenticateWithManagedIdentityConfidentialClient(request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
             })) {
                 // test
                 ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().configuration(configuration).clientId(CLIENT_ID).build();
@@ -78,7 +78,7 @@ public class ManagedIdentityCredentialTest {
 
         // mock
         try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateToIMDSEndpoint(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
+            when(identityClient.authenticateWithManagedIdentityConfidentialClient(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
 
         })) {
             // test

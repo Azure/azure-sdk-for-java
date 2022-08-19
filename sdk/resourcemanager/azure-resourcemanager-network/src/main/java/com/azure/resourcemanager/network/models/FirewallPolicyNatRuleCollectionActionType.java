@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FirewallPolicyNatRuleCollectionActionType. */
+/** The action type of a rule. */
 public final class FirewallPolicyNatRuleCollectionActionType
     extends ExpandableStringEnum<FirewallPolicyNatRuleCollectionActionType> {
     /** Static value DNAT for FirewallPolicyNatRuleCollectionActionType. */

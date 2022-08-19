@@ -18,9 +18,8 @@ public final class CreationData {
     private DiskCreateOption createOption;
 
     /*
-     * Required if createOption is Import. The Azure Resource Manager
-     * identifier of the storage account containing the blob to import as a
-     * disk.
+     * Required if createOption is Import. The Azure Resource Manager identifier of the storage account containing the
+     * blob to import as a disk.
      */
     @JsonProperty(value = "storageAccountId")
     private String storageAccountId;
@@ -32,54 +31,46 @@ public final class CreationData {
     private ImageDiskReference imageReference;
 
     /*
-     * Required if creating from a Gallery Image. The
-     * id/sharedGalleryImageId/communityGalleryImageId of the
-     * ImageDiskReference will be the ARM id of the shared galley image version
-     * from which to create a disk.
+     * Required if creating from a Gallery Image. The id/sharedGalleryImageId/communityGalleryImageId of the
+     * ImageDiskReference will be the ARM id of the shared galley image version from which to create a disk.
      */
     @JsonProperty(value = "galleryImageReference")
     private ImageDiskReference galleryImageReference;
 
     /*
-     * If createOption is Import, this is the URI of a blob to be imported into
-     * a managed disk.
+     * If createOption is Import, this is the URI of a blob to be imported into a managed disk.
      */
     @JsonProperty(value = "sourceUri")
     private String sourceUri;
 
     /*
-     * If createOption is Copy, this is the ARM id of the source snapshot or
-     * disk.
+     * If createOption is Copy, this is the ARM id of the source snapshot or disk.
      */
     @JsonProperty(value = "sourceResourceId")
     private String sourceResourceId;
 
     /*
-     * If this field is set, this is the unique id identifying the source of
-     * this resource.
+     * If this field is set, this is the unique id identifying the source of this resource.
      */
     @JsonProperty(value = "sourceUniqueId", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceUniqueId;
 
     /*
-     * If createOption is Upload, this is the size of the contents of the
-     * upload including the VHD footer. This value should be between 20972032
-     * (20 MiB + 512 bytes for the VHD footer) and 35183298347520 bytes (32 TiB
-     * + 512 bytes for the VHD footer).
+     * If createOption is Upload, this is the size of the contents of the upload including the VHD footer. This value
+     * should be between 20972032 (20 MiB + 512 bytes for the VHD footer) and 35183298347520 bytes (32 TiB + 512 bytes
+     * for the VHD footer).
      */
     @JsonProperty(value = "uploadSizeBytes")
     private Long uploadSizeBytes;
 
     /*
-     * Logical sector size in bytes for Ultra disks. Supported values are 512
-     * ad 4096. 4096 is the default.
+     * Logical sector size in bytes for Ultra disks. Supported values are 512 ad 4096. 4096 is the default.
      */
     @JsonProperty(value = "logicalSectorSize")
     private Integer logicalSectorSize;
 
     /*
-     * If createOption is ImportSecure, this is the URI of a blob to be
-     * imported into VM guest state.
+     * If createOption is ImportSecure, this is the URI of a blob to be imported into VM guest state.
      */
     @JsonProperty(value = "securityDataUri")
     private String securityDataUri;

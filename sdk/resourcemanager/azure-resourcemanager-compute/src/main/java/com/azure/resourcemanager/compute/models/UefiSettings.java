@@ -14,15 +14,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class UefiSettings {
     /*
-     * Specifies whether secure boot should be enabled on the virtual machine.
-     * <br><br>Minimum api-version: 2020-12-01
+     * Specifies whether secure boot should be enabled on the virtual machine. <br><br>Minimum api-version: 2020-12-01
      */
     @JsonProperty(value = "secureBootEnabled")
     private Boolean secureBootEnabled;
 
     /*
-     * Specifies whether vTPM should be enabled on the virtual machine.
-     * <br><br>Minimum api-version: 2020-12-01
+     * Specifies whether vTPM should be enabled on the virtual machine. <br><br>Minimum api-version: 2020-12-01
      */
     @JsonProperty(value = "vTpmEnabled")
     private Boolean vTpmEnabled;
