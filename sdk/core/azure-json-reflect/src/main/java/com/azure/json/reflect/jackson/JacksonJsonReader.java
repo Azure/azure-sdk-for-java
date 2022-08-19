@@ -12,9 +12,10 @@ import java.lang.invoke.MethodType;
 
 public class JacksonJsonReader extends JsonReader {
 	private static boolean initialized = false;
-	private static MethodHandle jacksonFactoryConstructor;
-	private static MethodHandle jacksonJsonParserInstance;
+	private static MethodHandle createParseMethod;
+	private static MethodHandle jsonFactoryConstructor;
 	private static final MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
+	private static final Object jsonFactory;
 	
 	private final Object jacksonParser;
 	
@@ -23,7 +24,7 @@ public class JacksonJsonReader extends JsonReader {
     		initializeMethodHandles();
     	}
     	try {
-    		jacksonParser = jacksonJsonParserInstance.invoke(reader);
+    		jacksonParser = createParseMethod.invoke(jsonFactory, reader);
     	} catch (Throwable e) {
     		if (e instanceof RuntimeException) {
     			throw new RuntimeException(e);
@@ -31,23 +32,18 @@ public class JacksonJsonReader extends JsonReader {
     			throw new IllegalStateException("Incorrect library present.");
     		}
     	}
-    	
     }
     
-    private void initializeMethodHandles() {
-    	try {
-    		// The jacksonJsonParser is made via the JsonFactory
-    		Class<?> jacksonJsonFactory = Class.forName("com.fasterxml.jackson.core.JsonFactory");
-    		// The jacksonJsonParser is the equivalent of the Gson JasonReader
-    		Class<?> jacksonJsonParser = Class.forName("com.fasterxml.jackson.core.JsonParser");
-    		
-    		jacksonFactoryConstructor = publicLookup.findConstructor(jacksonJsonFactory, methodType(void.class));
-    		jacksonJsonParserInstance = publicLookup.findVirtual(jacksonJsonFactory, "JsonParser", jacksonJsonParser);
-    		
-    	} catch (IllegalAccessException | NoSuchMethodException | ClassNotFoundException e) {
-    		throw new IllegalStateException("Incorrect library present.");
-    	}
-    	
+    public static void initializeMethodHandles() throws ReflectiveOperationException{
+		// The jacksonJsonParser is made via the JsonFactory
+		Class<?> jacksonJsonFactory = Class.forName("com.fasterxml.jackson.core.JsonFactory");
+		// The jacksonJsonParser is the equivalent of the Gson JasonReader
+		Class<?> jacksonJsonParser = Class.forName("com.fasterxml.jackson.core.JsonParser");
+		
+		jsonFactoryConstructor = publicLookup.findConstructor(jacksonJsonFactory, methodType(void.class));
+		createParseMethod = publicLookup.findVirtual(jacksonJsonFactory, "createParser", methodType(jacksonJsonParser));
+		jsonFactory = jsonFactoryConstructor.invoke();
+				
     	initialized = true;
     }
 
