@@ -1983,7 +1983,9 @@ public final class ServiceBusClientBuilder implements
          * Creates an <b>asynchronous</b> {@link ServiceBusRuleManagerAsyncClient} for managing rules of the specific subscription.
          *
          * @return A new {@link ServiceBusRuleManagerAsyncClient} that manages rules for specific subscription.
-         * @throws IllegalStateException if {@code topicName} or {@code subscriptionName} is null or empty.
+         * @throws IllegalStateException if {@code topicName} or {@code subscriptionName} is null or empty. It is also
+         * thrown if the Service Bus {@link #connectionString(String) connectionString} contains an {@code EntityPath}
+         * that does not match one set in {@link #topicName(String) topicName}.
          */
         public ServiceBusRuleManagerAsyncClient buildAsyncClient() {
             final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, topicName,
@@ -1994,6 +1996,18 @@ public final class ServiceBusClientBuilder implements
 
             return new ServiceBusRuleManagerAsyncClient(entityPath, entityType, connectionProcessor,
                 ServiceBusClientBuilder.this::onClientClose);
+        }
+
+        /**
+         * Creates a <b>synchronous</b> {@link ServiceBusRuleManagerClient} for managing rules of the specific subscription.
+         *
+         * @return A new {@link ServiceBusRuleManagerClient} that manages rules for specific subscription.
+         * @throws IllegalStateException if {@code topicName} or {@code subscriptionName} is null or empty. It is also
+         * thrown if the Service Bus {@link #connectionString(String) connectionString} contains an {@code EntityPath}
+         * that does not match one set in {@link #topicName(String) topicName}.
+         */
+        public ServiceBusRuleManagerClient buildClient() {
+            return new ServiceBusRuleManagerClient(buildAsyncClient(), MessageUtils.getTotalTimeout(retryOptions));
         }
     }
 

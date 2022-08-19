@@ -91,7 +91,7 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
     private final AtomicBoolean isDisposed = new AtomicBoolean();
 
     /**
-     * Creates a rule manager that manage rules for a Service Bus subscription.
+     * Creates a rule manager that manages rules for a Service Bus subscription.
      *
      * @param entityPath The name of the topic and subscription.
      * @param entityType The type of the Service Bus resource.
