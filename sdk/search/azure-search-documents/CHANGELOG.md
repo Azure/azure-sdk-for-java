@@ -1,5 +1,15 @@
 # Release History
 
+## 11.4.13 (2022-08-19)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.30.0` to version `1.31.0`.
+- Upgraded `azure-core-http-netty` from `1.12.3` to version `1.12.4`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.19` to version `1.2.20`.
+
 ## 11.4.12 (2022-07-01)
 
 ### Other Changes
