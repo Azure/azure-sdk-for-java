@@ -1,4 +1,4 @@
-# Azure Identity JDBC PostgreSQL Plugin Library for Java
+# Azure identity JDBC PostgreSQL plugin library for Java
 
 ## Getting started
 

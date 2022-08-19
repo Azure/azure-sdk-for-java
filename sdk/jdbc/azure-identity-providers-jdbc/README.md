@@ -1,4 +1,4 @@
-# Azure Identity JDBC Plugin Library for Java
+# Azure identity JDBC plugin library for Java
 
 ## Getting started
 

@@ -1,4 +1,4 @@
-# Azure Identity JDBC MySQL Plugin Library for Java
+# Azure identity JDBC MySQL plugin library for Java
 
 ## Getting started
 
