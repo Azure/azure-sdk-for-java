@@ -38,7 +38,6 @@
   </developers>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jacoco.skip>true</jacoco.skip>
   </properties>
   <dependencies>
     <dependency>
