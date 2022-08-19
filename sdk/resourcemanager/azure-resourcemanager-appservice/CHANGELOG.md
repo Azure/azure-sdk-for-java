@@ -4,11 +4,7 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported Java SE 17 in `FunctionRuntimeStack` for `FunctionApp`.
 
 ## 2.17.0 (2022-07-25)
 

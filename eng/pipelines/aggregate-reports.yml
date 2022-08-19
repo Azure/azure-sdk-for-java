@@ -21,7 +21,8 @@ stages:
         timeoutInMinutes: 180
 
         pool:
-          vmImage: 'ubuntu-20.04'
+          name: 'azsdk-pool-mms-ubuntu-2004-general'
+          vmImage: 'MMSUbuntu20.04'
 
         steps:
         - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
@@ -120,7 +121,8 @@ stages:
 
         pool:
           # CredScan build task is Windows only (https://aka.ms/credscan).
-          vmImage: 'windows-2019'
+          name: 'azsdk-pool-mms-win-2019-general'
+          vmImage: 'MMS2019'
         steps:
         - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
           # ComponentGovernance is currently unable to run on pull requests of public projects. Running on non-PR

@@ -1811,7 +1811,7 @@ class ContainerAPITest extends APISpec {
 
         then:
         blobItem.getName() == (delimiter ? "dir1/dir2/file\uFFFE.b" : blobName)
-        blobItem.isPrefix() == (delimiter ? true : null)
+        blobItem.isPrefix() == delimiter
 
         where:
         delimiter | _

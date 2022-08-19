@@ -17,7 +17,6 @@ import com.azure.communication.common.UnknownIdentifier;
 
 import java.util.ArrayList;
 import java.util.Objects;
-
 /**
  * A converter between {@link CommunicationIdentifierModel} and {@link CommunicationIdentifier}.
  */
@@ -128,3 +127,4 @@ public class CommunicationIdentifierConverter {
         }
     }
 }
+
