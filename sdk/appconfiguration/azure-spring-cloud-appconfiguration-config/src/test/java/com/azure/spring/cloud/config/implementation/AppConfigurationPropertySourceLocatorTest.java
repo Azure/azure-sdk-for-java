@@ -175,11 +175,17 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(replicaClientMock.listConfigurationSettings(Mockito.any())).thenReturn(configurationListMock)
             .thenReturn(configurationListMock).thenReturn(configurationListMock);
         when(replicaClientMock.getEndpoint()).thenReturn(TEST_STORE_NAME);
+        
+
+        when(appPropertiesMock.getDefaultMinBackoff()).thenReturn((long) 30);
+        when(appPropertiesMock.getDefaultMaxBackoff()).thenReturn((long) 600);
 
         appProperties = new AppConfigurationProviderProperties();
         appProperties.setVersion("1.0");
         appProperties.setMaxRetries(12);
         appProperties.setMaxRetryTime(0);
+        appProperties.setDefaultMaxBackoff((long) 600);
+        appProperties.setDefaultMinBackoff((long) 30);
 
         AppConfigurationStoreSelects selectedKeys = new AppConfigurationStoreSelects().setKeyFilter(KEY_FILTER);
         List<AppConfigurationStoreSelects> selects = new ArrayList<>();

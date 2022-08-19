@@ -33,6 +33,7 @@ public class StateHolderTest {
         ConfigurationSetting watchKey = new ConfigurationSetting().setKey("sentinal").setValue("0").setETag("current");
 
         watchKeys.add(watchKey);
+        BackoffTimeCalculator.setDefaults((long) 600, (long) 30);
     }
 
     /**
