@@ -37,6 +37,8 @@ module com.azure.core {
     exports com.azure.core.implementation.jackson to com.azure.core.management, com.azure.core.serializer.json.jackson;
 
     // export core utilities to other core packages.
+    exports com.azure.core.implementation to com.azure.core.experimental;
+    exports com.azure.core.implementation.http.rest to com.azure.core.experimental;
     exports com.azure.core.implementation.util to com.azure.http.netty, com.azure.core.http.okhttp,
         com.azure.core.http.jdk.httpclient;
 

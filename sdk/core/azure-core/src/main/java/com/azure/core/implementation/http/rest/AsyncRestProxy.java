@@ -77,10 +77,11 @@ public class AsyncRestProxy extends RestProxyBase {
         final Mono<HttpResponse> asyncResponse = RestProxyUtils.validateLengthAsync(request)
             .flatMap(r -> send(r, finalContext));
 
-        Mono<HttpResponseDecoder.HttpDecodedResponse> asyncDecodedResponse = this.decoder.decode(asyncResponse, methodParser);
+        Mono<HttpResponseDecoder.HttpDecodedResponse> asyncDecodedResponse = this.decoder.decode(asyncResponse,
+            methodParser);
 
-        return handleRestReturnType(asyncDecodedResponse, methodParser,
-            methodParser.getReturnType(), context, options, errorOptions);
+        return handleRestReturnType(asyncDecodedResponse, methodParser, methodParser.getReturnType(), context, options,
+            errorOptions);
     }
 
     /**

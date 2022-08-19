@@ -82,17 +82,6 @@ public abstract class RestProxyBase {
         this.decoder = new HttpResponseDecoder(this.serializer);
     }
 
-    /**
-     * Get the SwaggerMethodParser for the provided method. The Method must exist on the Swagger interface that this
-     * RestProxy was created to "implement".
-     *
-     * @param method the method to get a SwaggerMethodParser for
-     * @return the SwaggerMethodParser for the provided method
-     */
-    public SwaggerMethodParser getMethodParser(Method method) {
-        return interfaceParser.getMethodParser(method);
-    }
-
     public final Object invoke(Object proxy, final Method method, RequestOptions options,
         EnumSet<ErrorOptions> errorOptions, Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser,
         boolean isAsync, Object[] args) {

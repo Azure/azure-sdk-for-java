@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- Added `AsyncRestProxyExperimental` and `SyncRestProxyExperimental` to enable experimental `RestProxy` features using
+  beta features that shouldn't be contained in `azure-core` directly.
+
 ### Breaking Changes
 
 ### Bugs Fixed

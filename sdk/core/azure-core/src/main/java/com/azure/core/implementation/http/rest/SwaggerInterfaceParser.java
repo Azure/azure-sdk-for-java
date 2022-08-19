@@ -15,7 +15,7 @@ import static com.azure.core.implementation.ImplUtils.MAX_CACHE_SIZE;
 /**
  * The type responsible for creating individual Swagger interface method parsers from a Swagger interface.
  */
-public final class SwaggerInterfaceParser {
+public class SwaggerInterfaceParser {
     private static final Map<Class<?>, SwaggerInterfaceParser> INTERFACE_PARSERS = new ConcurrentHashMap<>();
 
     private final String host;
@@ -36,7 +36,7 @@ public final class SwaggerInterfaceParser {
         return INTERFACE_PARSERS.computeIfAbsent(swaggerInterface, SwaggerInterfaceParser::new);
     }
 
-    private SwaggerInterfaceParser(Class<?> swaggerInterface) {
+    protected SwaggerInterfaceParser(Class<?> swaggerInterface) {
         final Host hostAnnotation = swaggerInterface.getAnnotation(Host.class);
         if (hostAnnotation != null && !hostAnnotation.value().isEmpty()) {
             this.host = hostAnnotation.value();

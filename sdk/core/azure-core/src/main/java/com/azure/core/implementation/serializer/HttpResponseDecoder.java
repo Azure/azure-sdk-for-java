@@ -20,7 +20,7 @@ public final class HttpResponseDecoder {
     /**
      * Creates HttpResponseDecoder.
      *
-     * @param serializer the serializer
+     * @param serializer the SerializerAdapter
      */
     public HttpResponseDecoder(SerializerAdapter serializer) {
         this.serializer = serializer;
@@ -50,7 +50,7 @@ public final class HttpResponseDecoder {
 
     /**
      * A decorated HTTP response which has subscribable body and headers that supports lazy decoding.
-     *
+     * <p>
      * Subscribing to body kickoff http content reading, it's decoding then emission of decoded object. Subscribing to
      * header kickoff header decoding and emission of decoded object.
      */
@@ -68,8 +68,7 @@ public final class HttpResponseDecoder {
          * @param serializer the decoder
          * @param decodeData the necessary data required to decode a Http response
          */
-        HttpDecodedResponse(final HttpResponse response, SerializerAdapter serializer,
-            HttpResponseDecodeData decodeData) {
+        HttpDecodedResponse(HttpResponse response, SerializerAdapter serializer, HttpResponseDecodeData decodeData) {
             this.response = response;
             this.serializer = serializer;
             this.decodeData = decodeData;

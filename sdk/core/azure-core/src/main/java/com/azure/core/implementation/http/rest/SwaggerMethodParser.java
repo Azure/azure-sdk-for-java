@@ -115,7 +115,13 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         this(SwaggerInterfaceParser.getInstance(swaggerMethod.getDeclaringClass()), swaggerMethod);
     }
 
-    SwaggerMethodParser(SwaggerInterfaceParser interfaceParser, Method swaggerMethod) {
+    /**
+     * Creates a SwaggerMethodParser object using the provided SwaggerInterfaceParser and Swagger method.
+     *
+     * @param interfaceParser The SwaggerInterfaceParser.
+     * @param swaggerMethod The Swagger method.
+     */
+    protected SwaggerMethodParser(SwaggerInterfaceParser interfaceParser, Method swaggerMethod) {
         this.rawHost = interfaceParser.getHost();
 
         final Class<?> swaggerInterface = swaggerMethod.getDeclaringClass();
@@ -438,7 +444,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
     /**
      * Whether the provided response status code is one of the expected status codes for this Swagger method.
-     *
+     * <p>
      * 1. If the returned int[] is null, then all 2XX status codes are considered as success code. 2. If the returned
      * int[] is not-null, only the codes in the array are considered as success code.
      *
@@ -455,7 +461,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     /**
      * Get the {@link UnexpectedExceptionInformation} that will be used to generate a RestException if the HTTP response
      * status code is not one of the expected status codes.
-     *
+     * <p>
      * If an UnexpectedExceptionInformation is not found for the status code the default UnexpectedExceptionInformation
      * will be returned.
      *

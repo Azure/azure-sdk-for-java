@@ -197,6 +197,17 @@ public class BinaryDataJavaDocCodeSnippet {
     }
 
     /**
+     * Codesnippets for {@link BinaryData#fromByteBuffer(ByteBuffer)}.
+     */
+    public void fromByteBuffer() {
+        // BEGIN: com.azure.core.util.BinaryData.fromByteBuffer#ByteBuffer
+        final ByteBuffer data = ByteBuffer.wrap("Some Data".getBytes(StandardCharsets.UTF_8));
+        BinaryData binaryData = BinaryData.fromByteBuffer(data);
+        System.out.println(new String(binaryData.toBytes(), StandardCharsets.UTF_8));
+        // END: com.azure.core.util.BinaryData.fromByteBuffer#ByteBuffer
+    }
+
+    /**
      * Codesnippets for {@link BinaryData#fromFile(Path)}.
      */
     public void fromFile() {

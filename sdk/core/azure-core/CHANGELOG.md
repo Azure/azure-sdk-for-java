@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- Added support for enabling experimental `RestProxy` using configuration `com.azure.core.http.restproxy.experimental.enable`
+  or `AZURE_HTTP_REST_PROXY_EXPERIMENTAL_ENABLED`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
