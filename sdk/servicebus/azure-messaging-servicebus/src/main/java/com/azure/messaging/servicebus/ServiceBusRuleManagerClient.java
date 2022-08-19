@@ -77,6 +77,7 @@ public class ServiceBusRuleManagerClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code ruleName} is empty string, action of {@code options} is not null and not
      * instanceof {@link SqlRuleAction}, filter of {@code options} is not instanceof {@link SqlRuleFilter} or
      * {@link CorrelationRuleFilter}.
+     * @throws ServiceBusException if filter matches {@code ruleName} is already created in subscription.
      */
     public void createRule(String ruleName, CreateRuleOptions options) {
         asyncClient.createRule(ruleName, options).block(operationTimeout);
@@ -92,6 +93,7 @@ public class ServiceBusRuleManagerClient implements AutoCloseable {
      * @throws IllegalStateException if client is disposed.
      * @throws IllegalArgumentException if ruleName is empty string, {@code filter} is not instanceof {@link SqlRuleFilter} or
      * {@link CorrelationRuleFilter}.
+     * @throws ServiceBusException if filter matches {@code ruleName} is already created in subscription.
      */
     public void createRule(String ruleName, RuleFilter filter) {
         asyncClient.createRule(ruleName, filter).block(operationTimeout);
@@ -116,6 +118,7 @@ public class ServiceBusRuleManagerClient implements AutoCloseable {
      * @throws NullPointerException if {@code ruleName} is null.
      * @throws IllegalStateException if client is disposed.
      * @throws IllegalArgumentException if {@code ruleName} is empty string.
+     * @throws ServiceBusException if cannot find filter matches {@code ruleName} in subscription.
      */
     public void deleteRule(String ruleName) {
         asyncClient.deleteRule(ruleName).block(operationTimeout);
