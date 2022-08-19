@@ -34,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Test cases for {@link LogsIngestionClient}.
  */
-public class LogsCollectionClientTest extends TestBase {
+public class LogsIngestionClientTest extends TestBase {
     private LogsIngestionClientBuilder clientBuilder;
     private String dataCollectionEndpoint;
     private String dataCollectionRuleId;
