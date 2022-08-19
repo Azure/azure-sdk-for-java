@@ -3,6 +3,7 @@
 ## 7.11.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added rule manager client to manage rules for ServiceBus subscription with listen claims.
 
 ### Breaking Changes
 
