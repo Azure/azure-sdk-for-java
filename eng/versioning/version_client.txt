@@ -355,7 +355,7 @@ com.azure.resourcemanager:azure-resourcemanager-hardwaresecuritymodules;1.0.0-be
 com.azure.resourcemanager:azure-resourcemanager-workloads;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-confidentialledger;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-dynatrace;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-deviceupdate;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-deviceupdate;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-machinelearning;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-education;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-orbital;1.0.0-beta.1;1.0.0-beta.2
@@ -363,7 +363,7 @@ com.azure.resourcemanager:azure-resourcemanager-networkfunction;1.0.0-beta.1;1.0
 com.azure.resourcemanager:azure-resourcemanager-resourceconnector;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-fluidrelay;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-devcenter;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-connectedvmware;1.0.0-beta.1;1.0.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-connectedvmware;1.0.0-beta.1;1.0.0-beta.2
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0-beta.1;1.0.0-beta.2
 
