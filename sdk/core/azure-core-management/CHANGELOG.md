@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added new Azure region `Region.QATAR_CENTRAL`.
+
 ### Breaking Changes
 
 ### Bugs Fixed

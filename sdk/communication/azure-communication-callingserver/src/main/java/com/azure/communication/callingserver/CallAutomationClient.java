@@ -16,6 +16,8 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
+import java.net.URI;
+
 /**
  * Synchronous client that supports calling server operations.
  *
@@ -71,7 +73,7 @@ public final class CallAutomationClient {
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnswerCallResult answerCall(String incomingCallContext, String callbackUri) {
+    public AnswerCallResult answerCall(String incomingCallContext, URI callbackUri) {
         return callAutomationAsyncClient.answerCall(incomingCallContext, callbackUri).block();
     }
 
@@ -86,7 +88,7 @@ public final class CallAutomationClient {
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnswerCallResult> answerCallWithResponse(String incomingCallContext, String callbackUri,
+    public Response<AnswerCallResult> answerCallWithResponse(String incomingCallContext, URI callbackUri,
                                                                      Context context) {
         return callAutomationAsyncClient.answerCallWithResponseInternal(incomingCallContext, callbackUri, context).block();
     }
