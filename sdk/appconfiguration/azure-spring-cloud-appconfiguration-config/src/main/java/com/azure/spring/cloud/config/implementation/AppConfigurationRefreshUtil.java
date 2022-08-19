@@ -10,7 +10,6 @@ import java.util.Map.Entry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.config.pipline.policies.BaseAppConfigurationPolicy;
@@ -104,9 +103,7 @@ class AppConfigurationRefreshUtil {
                 }
 
             }
-        } catch (
-
-        Exception e) {
+        } catch (Exception e) {
             // The next refresh will happen sooner if refresh interval is expired.
             StateHolder.getCurrentState().updateNextRefreshTime(refreshInterval, defaultMinBackoff);
             throw e;
@@ -204,7 +201,7 @@ class AppConfigurationRefreshUtil {
         if (date.isAfter(state.getNextRefreshCheck())) {
             SettingSelector selector = new SettingSelector().setKeyFilter(featureStore.getKeyFilter())
                 .setLabelFilter(featureStore.getLabelFilter());
-            PagedIterable<ConfigurationSetting> currentKeys = client.listConfigurationSettings(selector);
+            List<ConfigurationSetting> currentKeys = client.listConfigurationSettings(selector);
 
             int watchedKeySize = 0;
 
@@ -248,7 +245,7 @@ class AppConfigurationRefreshUtil {
         throws AppConfigurationStatusException {
         SettingSelector selector = new SettingSelector().setKeyFilter(featureStore.getKeyFilter())
             .setLabelFilter(featureStore.getLabelFilter());
-        PagedIterable<ConfigurationSetting> currentTriggerConfigurations = client.listConfigurationSettings(selector);
+        List<ConfigurationSetting> currentTriggerConfigurations = client.listConfigurationSettings(selector);
 
         int watchedKeySize = 0;
 

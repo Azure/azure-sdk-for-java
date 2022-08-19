@@ -73,7 +73,7 @@ public class AppConfigurationReplicaClientTest {
 
         when(clientMock.listConfigurationSettings(Mockito.any())).thenReturn(settingsMock);
 
-        assertEquals(settingsMock, client.listConfigurationSettings(new SettingSelector()));
+        assertEquals(0, client.listConfigurationSettings(new SettingSelector()).size());
 
         when(clientMock.listConfigurationSettings(Mockito.any())).thenThrow(exceptionMock);
         when(exceptionMock.getResponse()).thenReturn(responseMock);

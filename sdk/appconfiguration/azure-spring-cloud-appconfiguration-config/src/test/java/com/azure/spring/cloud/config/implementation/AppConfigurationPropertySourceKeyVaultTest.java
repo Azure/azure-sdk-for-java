@@ -34,7 +34,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
@@ -89,7 +88,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
     private SecretAsyncClient clientMock;
 
     @Mock
-    private PagedIterable<ConfigurationSetting> pagedFluxMock;
+    private List<ConfigurationSetting> configurationListMock;
 
     private KeyVaultCredentialProvider tokenCredentialProvider = null;
 
@@ -124,9 +123,9 @@ public class AppConfigurationPropertySourceKeyVaultTest {
     @Test
     public void testKeyVaultTest() throws AppConfigurationStatusException, IOException {
         TEST_ITEMS.add(KEY_VAULT_ITEM);
-        when(pagedFluxMock.iterator()).thenReturn(TEST_ITEMS.iterator())
+        when(configurationListMock.iterator()).thenReturn(TEST_ITEMS.iterator())
             .thenReturn(Collections.emptyIterator());
-        when(replicaClientMock.listConfigurationSettings(Mockito.any())).thenReturn(pagedFluxMock).thenReturn(pagedFluxMock);
+        when(replicaClientMock.listConfigurationSettings(Mockito.any())).thenReturn(configurationListMock).thenReturn(configurationListMock);
 
         Mockito.when(builderMock.buildAsyncClient()).thenReturn(clientMock);
 

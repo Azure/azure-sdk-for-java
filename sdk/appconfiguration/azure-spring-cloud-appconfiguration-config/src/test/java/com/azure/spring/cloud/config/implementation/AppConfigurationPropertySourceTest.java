@@ -46,7 +46,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -161,7 +160,7 @@ public class AppConfigurationPropertySourceTest {
     private KeyVaultCredentialProvider tokenCredentialProvider = null;
 
     @Mock
-    private PagedIterable<ConfigurationSetting> pagedFluxMock;
+    private List<ConfigurationSetting> configurationListMock;
 
     @BeforeAll
     public static void setup() {
@@ -212,9 +211,9 @@ public class AppConfigurationPropertySourceTest {
 
     @Test
     public void testPropCanBeInitAndQueried() throws AppConfigurationStatusException, IOException {
-        when(pagedFluxMock.iterator()).thenReturn(testItems.iterator()).thenReturn(FEATURE_ITEMS.iterator());
-        when(clientMock.listConfigurationSettings(Mockito.any())).thenReturn(pagedFluxMock)
-            .thenReturn(pagedFluxMock);
+        when(configurationListMock.iterator()).thenReturn(testItems.iterator()).thenReturn(FEATURE_ITEMS.iterator());
+        when(clientMock.listConfigurationSettings(Mockito.any())).thenReturn(configurationListMock)
+            .thenReturn(configurationListMock);
 
         FeatureSet featureSet = new FeatureSet();
         propertySource.initProperties(featureSet);
@@ -243,10 +242,10 @@ public class AppConfigurationPropertySourceTest {
             EMPTY_CONTENT_TYPE);
         List<ConfigurationSetting> settings = new ArrayList<>();
         settings.add(slashedProp);
-        when(pagedFluxMock.iterator()).thenReturn(settings.iterator())
+        when(configurationListMock.iterator()).thenReturn(settings.iterator())
             .thenReturn(Collections.<ConfigurationSetting>emptyIterator());
-        when(clientMock.listConfigurationSettings(Mockito.any())).thenReturn(pagedFluxMock)
-            .thenReturn(pagedFluxMock);
+        when(clientMock.listConfigurationSettings(Mockito.any())).thenReturn(configurationListMock)
+            .thenReturn(configurationListMock);
         FeatureSet featureSet = new FeatureSet();
         propertySource.initProperties(featureSet);
 
@@ -261,10 +260,10 @@ public class AppConfigurationPropertySourceTest {
 
     @Test
     public void testFeatureFlagCanBeInitedAndQueried() {
-        when(pagedFluxMock.iterator()).thenReturn(Collections.emptyIterator())
+        when(configurationListMock.iterator()).thenReturn(Collections.emptyIterator())
             .thenReturn(FEATURE_ITEMS.iterator());
         when(clientMock.listConfigurationSettings(Mockito.any()))
-            .thenReturn(pagedFluxMock).thenReturn(pagedFluxMock);
+            .thenReturn(configurationListMock).thenReturn(configurationListMock);
         featureFlagStore.setEnabled(true);
 
         FeatureSet featureSet = new FeatureSet();
@@ -302,10 +301,10 @@ public class AppConfigurationPropertySourceTest {
 
     @Test
     public void testFeatureFlagDisabled() throws AppConfigurationStatusException, IOException {
-        when(pagedFluxMock.iterator()).thenReturn(Collections.emptyIterator())
+        when(configurationListMock.iterator()).thenReturn(Collections.emptyIterator())
             .thenReturn(FEATURE_ITEMS.iterator());
         when(clientMock.listConfigurationSettings(Mockito.any()))
-            .thenReturn(pagedFluxMock).thenReturn(pagedFluxMock);
+            .thenReturn(configurationListMock).thenReturn(configurationListMock);
         featureFlagStore.setEnabled(false);
 
         FeatureSet featureSet = new FeatureSet();
@@ -318,8 +317,8 @@ public class AppConfigurationPropertySourceTest {
     @Test
     public void testFeatureFlagThrowError() {
         FeatureSet featureSet = new FeatureSet();
-        when(pagedFluxMock.iterator()).thenReturn(Collections.emptyIterator());
-        when(clientMock.listConfigurationSettings(Mockito.any())).thenReturn(pagedFluxMock);
+        when(configurationListMock.iterator()).thenReturn(Collections.emptyIterator());
+        when(clientMock.listConfigurationSettings(Mockito.any())).thenReturn(configurationListMock);
         try {
             propertySource.initProperties(featureSet);
         } catch (IOException e) {
@@ -330,9 +329,9 @@ public class AppConfigurationPropertySourceTest {
     @Test
     public void testFeatureFlagBuildError() {
         featureFlagStore.setEnabled(true);
-        when(pagedFluxMock.iterator()).thenReturn(Collections.emptyIterator())
+        when(configurationListMock.iterator()).thenReturn(Collections.emptyIterator())
             .thenReturn(FEATURE_ITEMS.iterator());
-        when(clientMock.listConfigurationSettings(Mockito.any())).thenReturn(pagedFluxMock);
+        when(clientMock.listConfigurationSettings(Mockito.any())).thenReturn(configurationListMock);
 
         FeatureSet featureSet = new FeatureSet();
         try {
@@ -380,9 +379,9 @@ public class AppConfigurationPropertySourceTest {
     public void initNullValidContentTypeTest() throws AppConfigurationStatusException, IOException {
         ArrayList<ConfigurationSetting> items = new ArrayList<>();
         items.add(ITEM_NULL);
-        when(pagedFluxMock.iterator()).thenReturn(items.iterator())
+        when(configurationListMock.iterator()).thenReturn(items.iterator())
             .thenReturn(Collections.emptyIterator());
-        when(clientMock.listConfigurationSettings(Mockito.any())).thenReturn(pagedFluxMock);
+        when(clientMock.listConfigurationSettings(Mockito.any())).thenReturn(configurationListMock);
 
         FeatureSet featureSet = new FeatureSet();
         propertySource.initProperties(featureSet);
@@ -398,10 +397,10 @@ public class AppConfigurationPropertySourceTest {
     public void initNullInvalidContentTypeFeatureFlagTest() throws AppConfigurationStatusException, IOException {
         ArrayList<ConfigurationSetting> items = new ArrayList<>();
         items.add(FEATURE_ITEM_NULL);
-        when(pagedFluxMock.iterator()).thenReturn(Collections.emptyIterator())
+        when(configurationListMock.iterator()).thenReturn(Collections.emptyIterator())
             .thenReturn(items.iterator());
         when(clientMock.listConfigurationSettings(Mockito.any()))
-            .thenReturn(pagedFluxMock).thenReturn(pagedFluxMock);
+            .thenReturn(configurationListMock).thenReturn(configurationListMock);
 
         FeatureSet featureSet = new FeatureSet();
         propertySource.initProperties(featureSet);
@@ -414,10 +413,10 @@ public class AppConfigurationPropertySourceTest {
 
     @Test
     public void testFeatureFlagTargeting() throws AppConfigurationStatusException, IOException {
-        when(pagedFluxMock.iterator()).thenReturn(Collections.emptyIterator())
+        when(configurationListMock.iterator()).thenReturn(Collections.emptyIterator())
             .thenReturn(FEATURE_ITEMS_TARGETING.iterator());
         when(clientMock.listConfigurationSettings(Mockito.any()))
-            .thenReturn(pagedFluxMock).thenReturn(pagedFluxMock);
+            .thenReturn(configurationListMock).thenReturn(configurationListMock);
         featureFlagStore.setEnabled(true);
 
         FeatureSet featureSet = new FeatureSet();

@@ -26,7 +26,6 @@ import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
@@ -165,7 +164,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
     FeatureSet initProperties(FeatureSet featureSet) throws IOException, AppConfigurationStatusException {
         SettingSelector settingSelector = new SettingSelector();
 
-        PagedIterable<ConfigurationSetting> features = null;
+        List<ConfigurationSetting> features = null;
         // Reading In Features
         if (featureStore.getEnabled()) {
             settingSelector.setKeyFilter(featureStore.getKeyFilter()).setLabelFilter(featureStore.getLabelFilter());
@@ -181,8 +180,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
                 .setLabelFilter(label);
 
             // * for wildcard match
-            PagedIterable<ConfigurationSetting> settings = replicaClient.listConfigurationSettings(settingSelector);
-
+            List<ConfigurationSetting> settings = replicaClient.listConfigurationSettings(settingSelector);
             for (ConfigurationSetting setting : settings) {
                 String key = setting.getKey().trim().substring(selectedKeys.getKeyFilter().length()).replace('/', '.');
                 if (setting instanceof SecretReferenceConfigurationSetting) {
@@ -256,7 +254,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
             FEATURE_MAPPER.convertValue(featureSet.getFeatureManagement(), LinkedHashMap.class));
     }
 
-    private FeatureSet addToFeatureSet(FeatureSet featureSet, PagedIterable<ConfigurationSetting> features)
+    private FeatureSet addToFeatureSet(FeatureSet featureSet, List<ConfigurationSetting> features)
         throws IOException {
         if (features == null) {
             return featureSet;
