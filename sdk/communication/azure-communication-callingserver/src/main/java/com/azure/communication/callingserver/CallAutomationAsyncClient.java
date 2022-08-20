@@ -24,6 +24,7 @@ import com.azure.communication.callingserver.implementation.models.CallRejectRea
 import com.azure.communication.callingserver.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.callingserver.models.CreateCallOptions;
 import com.azure.communication.callingserver.models.CreateCallResult;
+import com.azure.communication.callingserver.models.MediaStreamingConfiguration;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -38,7 +39,6 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -107,7 +107,7 @@ public final class CallAutomationAsyncClient {
     }
 
     Mono<Response<CreateCallResult>> createCallWithResponseInternal(CreateCallOptions createCallOptions,
-                                                                            Context context) {
+                                                                    Context context) {
         try {
             context = context == null ? Context.NONE : context;
             List<CommunicationIdentifierModel> targetsModel = createCallOptions.getTargets()
@@ -153,8 +153,8 @@ public final class CallAutomationAsyncClient {
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnswerCallResult> answerCall(String incomingCallContext, URI callbackUri) {
-        return answerCallWithResponse(incomingCallContext, callbackUri).flatMap(FluxUtil::toMono);
+    public Mono<AnswerCallResult> answerCall(String incomingCallContext, String callbackUri) {
+        return answerCallWithResponse(incomingCallContext, callbackUri, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -162,23 +162,31 @@ public final class CallAutomationAsyncClient {
      *
      * @param incomingCallContext The incoming call context.
      * @param callbackUri The call back uri. Optional
+     * @param mediaStreamingConfiguration The MediaStreamingConfiguration. Optional
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnswerCallResult>> answerCallWithResponse(String incomingCallContext, URI callbackUri) {
-        return withContext(context -> answerCallWithResponseInternal(incomingCallContext, callbackUri, context));
+    public Mono<Response<AnswerCallResult>> answerCallWithResponse(String incomingCallContext,
+                                                                   String callbackUri, MediaStreamingConfiguration mediaStreamingConfiguration) {
+        return withContext(context -> answerCallWithResponseInternal(incomingCallContext, callbackUri, mediaStreamingConfiguration, context));
     }
 
-    Mono<Response<AnswerCallResult>> answerCallWithResponseInternal(String incomingCallContext, URI callbackUri,
-                                                                            Context context) {
+    Mono<Response<AnswerCallResult>> answerCallWithResponseInternal(String incomingCallContext, String callbackUri,
+                                                                    MediaStreamingConfiguration mediaStreamingConfiguration,
+                                                                    Context context) {
         try {
             context = context == null ? Context.NONE : context;
 
-            AnswerCallRequestInternal request = new AnswerCallRequestInternal()
-                .setIncomingCallContext(incomingCallContext)
-                .setCallbackUri(callbackUri.toString());
+            AnswerCallRequestInternal request = new AnswerCallRequestInternal();
+
+            if (mediaStreamingConfiguration != null) {
+                request.setIncomingCallContext(incomingCallContext).setCallbackUri(callbackUri).setMediaStreamingConfiguration(mediaStreamingConfiguration);
+            } else {
+                request.setIncomingCallContext(incomingCallContext).setCallbackUri(callbackUri);
+            }
+
 
             return serverCallingInternal.answerCallWithResponseAsync(request, context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)

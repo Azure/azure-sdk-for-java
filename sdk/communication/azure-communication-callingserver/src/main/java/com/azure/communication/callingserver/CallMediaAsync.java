@@ -11,10 +11,12 @@ import com.azure.communication.callingserver.implementation.models.PlayOptionsIn
 import com.azure.communication.callingserver.implementation.models.PlayRequest;
 import com.azure.communication.callingserver.implementation.models.PlaySourceInternal;
 import com.azure.communication.callingserver.implementation.models.PlaySourceTypeInternal;
+import com.azure.communication.callingserver.implementation.models.RecognizeRequest;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.FileSource;
 import com.azure.communication.callingserver.models.PlayOptions;
 import com.azure.communication.callingserver.models.PlaySource;
+import com.azure.communication.callingserver.models.RecognizeOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -101,6 +103,38 @@ public class CallMediaAsync {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> playToAllWithResponse(PlaySource playSource, PlayOptions options) {
         return playWithResponseInternal(playSource, Collections.emptyList(), options, null);
+    }
+
+    /**
+     * Recognize tones.
+     * @param callConnectionId The call connection id.
+     * @param recognizeOptions Different attributes for recognize.
+     * @return Void
+     */
+    public Mono<Void> recognize(String callConnectionId, RecognizeOptions recognizeOptions) {
+        return recognizeWithResponse(callConnectionId, recognizeOptions).then();
+    }
+
+    public Mono<Response<Void>> recognizeWithResponse(String callConnectionId, RecognizeOptions recognizeOptions) {
+        return withContext(context -> recognizeWithResponseInternal(callConnectionId, recognizeOptions, context));
+    }
+
+    public Mono<Response<Void>> recognizeWithResponseInternal(String callConnectionId, RecognizeOptions recognizeOptions, Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+
+            RecognizeRequest recognizeRequest = new RecognizeRequest()
+                .setRecognizeInputType(recognizeOptions.getRecognizeInputType())
+                .setRecognizeConfiguration(recognizeOptions.getRecognizeConfiguration())
+                .setStopCurrentOperations(recognizeOptions.isStopCurrentOperations())
+                .setPlayPrompt(recognizeOptions.getPlayPrompt())
+                .setOperationContext(recognizeOptions.getOperationContext());
+
+            return contentsInternal.recognizeWithResponseAsync(callConnectionId, recognizeRequest, context);
+
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
     }
 
     /**
