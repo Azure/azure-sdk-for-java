@@ -7,12 +7,15 @@ import com.azure.json.JsonReader;
 import com.azure.json.contract.JsonReaderContractTests;
 import com.azure.json.reflect.jackson.JacksonJsonReader;
 
+import java.io.StringReader;
+
 /**
  * Tests {@link JacksonJsonReader} against the contract required by {@link JsonReader}.
  */
-public class JacksonJsonReaderContractTests extends JsonReaderContractTests {
+public class JacksonJsonReaderContractTests extends JsonReaderContractTests {	
 	@Override
 	public JsonReader getJsonReader(String json) {
-		return JacksonJsonReader.fromString(json);
+		StringReader stringReader = new StringReader(json);
+		return new JacksonJsonReader(stringReader);
 	}
 }

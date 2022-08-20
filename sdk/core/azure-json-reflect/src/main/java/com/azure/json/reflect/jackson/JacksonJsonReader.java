@@ -6,9 +6,10 @@ import com.azure.json.JsonToken;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.io.UncheckedIOException;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
+import static java.lang.invoke.MethodType.methodType;
 
 public class JacksonJsonReader extends JsonReader {
 	private static boolean initialized = false;
@@ -18,13 +19,17 @@ public class JacksonJsonReader extends JsonReader {
 	private static MethodHandle parserGetBoolean;
 	private static Class<?> jacksonTokenEnum = null;
 	private static final MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
-	private static final Object jsonFactory;
+	private static Object jsonFactory;
 	
 	private final Object jacksonParser;
 	
     public JacksonJsonReader(Reader reader) {
     	if (!initialized) {
-    		initializeMethodHandles();
+    		try {
+				initializeMethodHandles();
+			} catch (ReflectiveOperationException e) {
+				e.printStackTrace();
+			}
     	}
     	try {
     		jacksonParser = createParseMethod.invoke(jsonFactory, reader);
@@ -45,7 +50,15 @@ public class JacksonJsonReader extends JsonReader {
 		
 		jsonFactoryConstructor = publicLookup.findConstructor(jacksonJsonFactory, methodType(void.class));
 		createParseMethod = publicLookup.findVirtual(jacksonJsonFactory, "createParser", methodType(jacksonJsonParser));
-		jsonFactory = jsonFactoryConstructor.invoke();
+		try {
+			jsonFactory = jsonFactoryConstructor.invoke();
+		} catch (Throwable e) {
+			if (e instanceof IOException) {
+                throw new UncheckedIOException((IOException) e);
+            } else {
+                throw new RuntimeException(e);
+            }
+		}
 		
 		jacksonTokenEnum = Class.forName("com.fasterxml.jackson.core.JsonToken");
 		parserCurrentToken = publicLookup.findVirtual(jacksonJsonParser, "currentToken", methodType(jacksonTokenEnum));
@@ -55,7 +68,15 @@ public class JacksonJsonReader extends JsonReader {
 
     @Override
     public JsonToken currentToken() {
-        return parserCurrentToken.invoke(jacksonParser);
+        try {
+			return (JsonToken) parserCurrentToken.invoke(jacksonParser);
+		} catch (Throwable e) {
+			if (e instanceof IOException) {
+                throw new UncheckedIOException((IOException) e);
+            } else {
+                throw new RuntimeException(e);
+            }
+		}
     }
 
     @Override
@@ -70,7 +91,15 @@ public class JacksonJsonReader extends JsonReader {
 
     @Override
     public boolean getBoolean() {
-        return parserGetBoolean.invoke(jacksonParser);
+        try {
+			return (boolean) parserGetBoolean.invoke(jacksonParser);
+		} catch (Throwable e) {
+			if (e instanceof IOException) {
+                throw new UncheckedIOException((IOException) e);
+            } else {
+                throw new RuntimeException(e);
+            }
+		}
     }
 
     @Override
