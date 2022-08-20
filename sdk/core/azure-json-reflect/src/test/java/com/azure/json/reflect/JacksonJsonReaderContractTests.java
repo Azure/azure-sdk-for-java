@@ -8,7 +8,7 @@ import com.azure.json.contract.JsonReaderContractTests;
 import com.azure.json.reflect.jackson.JacksonJsonReader;
 
 /**
- * Tests {@link GsonJsonReader} against the contract required by {@link JsonReader}.
+ * Tests {@link JacksonJsonReader} against the contract required by {@link JsonReader}.
  */
 public class JacksonJsonReaderContractTests extends JsonReaderContractTests {
 	@Override
