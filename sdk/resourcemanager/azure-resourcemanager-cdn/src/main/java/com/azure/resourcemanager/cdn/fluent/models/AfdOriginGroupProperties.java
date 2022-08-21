@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import com.azure.resourcemanager.cdn.models.EnabledState;
 import com.azure.resourcemanager.cdn.models.HealthProbeParameters;
 import com.azure.resourcemanager.cdn.models.LoadBalancingSettingsParameters;
-import com.azure.resourcemanager.cdn.models.ResponseBasedOriginErrorDetectionParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The JSON object that contains the properties of the origin group. */
 @Fluent
 public final class AfdOriginGroupProperties extends AfdOriginGroupUpdatePropertiesParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AfdOriginGroupProperties.class);
-
     /*
      * Provisioning status
      */
@@ -71,14 +66,6 @@ public final class AfdOriginGroupProperties extends AfdOriginGroupUpdateProperti
         super
             .withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
                 trafficRestorationTimeToHealedOrNewEndpointsInMinutes);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AfdOriginGroupProperties withResponseBasedAfdOriginErrorDetectionSettings(
-        ResponseBasedOriginErrorDetectionParameters responseBasedAfdOriginErrorDetectionSettings) {
-        super.withResponseBasedAfdOriginErrorDetectionSettings(responseBasedAfdOriginErrorDetectionSettings);
         return this;
     }
 

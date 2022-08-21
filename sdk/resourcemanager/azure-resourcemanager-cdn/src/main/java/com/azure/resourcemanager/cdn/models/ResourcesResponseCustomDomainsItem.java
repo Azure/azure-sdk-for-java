@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ResourcesResponseCustomDomainsItem model. */
 @Fluent
 public final class ResourcesResponseCustomDomainsItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourcesResponseCustomDomainsItem.class);
-
     /*
      * The id property.
      */

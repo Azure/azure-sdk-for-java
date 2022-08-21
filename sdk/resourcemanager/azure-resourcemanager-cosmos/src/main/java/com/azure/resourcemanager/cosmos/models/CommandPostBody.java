@@ -33,15 +33,13 @@ public final class CommandPostBody {
     private String host;
 
     /*
-     * If true, stops cassandra before executing the command and then start it
-     * again
+     * If true, stops cassandra before executing the command and then start it again
      */
     @JsonProperty(value = "cassandra-stop-start")
     private Boolean cassandraStopStart;
 
     /*
-     * If true, allows the command to *write* to the cassandra directory,
-     * otherwise read-only.
+     * If true, allows the command to *write* to the cassandra directory, otherwise read-only.
      */
     @JsonProperty(value = "readwrite")
     private Boolean readwrite;

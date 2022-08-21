@@ -7,7 +7,7 @@ package com.azure.resourcemanager.cdn.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ProbeProtocol. */
+/** Protocol to use for health probe. */
 public enum ProbeProtocol {
     /** Enum value NotSet. */
     NOT_SET("NotSet"),
@@ -33,6 +33,9 @@ public enum ProbeProtocol {
      */
     @JsonCreator
     public static ProbeProtocol fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ProbeProtocol[] items = ProbeProtocol.values();
         for (ProbeProtocol item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum ProbeProtocol {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

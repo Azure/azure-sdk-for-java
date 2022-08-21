@@ -20,12 +20,12 @@ public final class SearchAudience extends ExpandableStringEnum<SearchAudience> {
     /**
      * The {@link SearchAudience} for Azure US Government cloud.
      */
-    public static final SearchAudience AZURE_US_GOVERNMENT = fromString("https://search.azure.us");
+    public static final SearchAudience AZURE_GOVERNMENT = fromString("https://search.azure.us");
 
     /**
      * The {@link SearchAudience} for the Azure Public cloud.
      */
-    public static final SearchAudience AZURE_PUBLIC = fromString("https://search.azure.com");
+    public static final SearchAudience AZURE_PUBLIC_CLOUD = fromString("https://search.azure.com");
 
     /**
      * Creates or finds a SearchAudience from its string representation.
