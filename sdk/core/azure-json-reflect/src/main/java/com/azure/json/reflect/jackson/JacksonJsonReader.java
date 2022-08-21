@@ -42,14 +42,14 @@ public class JacksonJsonReader extends JsonReader {
     	}
     }
     
-    public static void initializeMethodHandles() throws ReflectiveOperationException{
+    private static void initializeMethodHandles() throws ReflectiveOperationException{
 		// The jacksonJsonParser is made via the JsonFactory
 		Class<?> jacksonJsonFactory = Class.forName("com.fasterxml.jackson.core.JsonFactory");
-		// The jacksonJsonParser is the equivalent of the Gson JasonReader
+		// The jacksonJsonParser is the equivalent of the Gson JsonReader
 		Class<?> jacksonJsonParser = Class.forName("com.fasterxml.jackson.core.JsonParser");
 		
 		jsonFactoryConstructor = publicLookup.findConstructor(jacksonJsonFactory, methodType(void.class));
-		createParseMethod = publicLookup.findVirtual(jacksonJsonFactory, "createParser", methodType(jacksonJsonParser));
+		createParseMethod = publicLookup.findVirtual(jacksonJsonFactory, "createParser", methodType(jacksonJsonParser, Reader.class));
 		try {
 			jsonFactory = jsonFactoryConstructor.invoke();
 		} catch (Throwable e) {
