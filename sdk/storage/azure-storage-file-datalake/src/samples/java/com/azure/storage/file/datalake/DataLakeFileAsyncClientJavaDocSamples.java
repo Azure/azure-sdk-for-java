@@ -325,6 +325,32 @@ public class DataLakeFileAsyncClientJavaDocSamples {
     }
 
     /**
+     * Code snippets for {@link DataLakeFileAsyncClient#uploadFromFileWithResponse(String, ParallelTransferOptions,
+     * PathHttpHeaders, Map, DataLakeRequestConditions)}
+     */
+    public void uploadFromFileWithResponseCodeSnippet() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadFromFileWithResponse#String-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions
+        PathHttpHeaders headers = new PathHttpHeaders()
+            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+        Long blockSize = 100L * 1024L * 1024L; // 100 MB;
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize);
+
+        client.uploadFromFileWithResponse(filePath, parallelTransferOptions, headers, metadata, requestConditions)
+            .doOnError(throwable ->
+                System.err.printf("Failed to upload from file %s%n", throwable.getMessage()))
+            .subscribe(completion ->
+                System.out.println("Upload from file succeeded at: " + completion.getValue().getLastModified()));
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadFromFileWithResponse#String-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions
+    }
+
+    /**
      * Code snippets for {@link DataLakeFileAsyncClient#append(Flux, long, long)} and
      * {@link DataLakeFileAsyncClient#appendWithResponse(Flux, long, long, byte[], String, Context)}
      */

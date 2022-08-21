@@ -806,6 +806,51 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions requestConditions) {
+        return uploadFromFileWithResponse(filePath, parallelTransferOptions, headers, metadata, requestConditions).then();
+    }
+
+    /**
+     * Creates a new file, with the content of the specified file.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link DataLakeRequestConditions#setIfNoneMatch(String)}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadFromFileWithResponse#String-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions -->
+     * <pre>
+     * PathHttpHeaders headers = new PathHttpHeaders&#40;&#41;
+     *     .setContentMd5&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     *
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     * Long blockSize = 100L * 1024L * 1024L; &#47;&#47; 100 MB;
+     * ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions&#40;&#41;.setBlockSizeLong&#40;blockSize&#41;;
+     *
+     * client.uploadFromFileWithResponse&#40;filePath, parallelTransferOptions, headers, metadata, requestConditions&#41;
+     *     .doOnError&#40;throwable -&gt;
+     *         System.err.printf&#40;&quot;Failed to upload from file %s%n&quot;, throwable.getMessage&#40;&#41;&#41;&#41;
+     *     .subscribe&#40;completion -&gt;
+     *         System.out.println&#40;&quot;Upload from file succeeded at: &quot; + completion.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadFromFileWithResponse#String-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions -->
+     *
+     * @param filePath Path to the upload file
+     * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
+     * transfers parameter is ignored.
+     * @param headers {@link PathHttpHeaders}
+     * @param metadata Metadata to associate with the resource. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
+     * @param requestConditions {@link DataLakeRequestConditions}
+     * @return A reactive response containing the information of the uploaded file.
+     * @throws UncheckedIOException If an I/O error occurs
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PathInfo>> uploadFromFileWithResponse(String filePath, ParallelTransferOptions parallelTransferOptions,
+        PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions requestConditions) {
         Long originalBlockSize = (parallelTransferOptions == null)
             ? null
             : parallelTransferOptions.getBlockSizeLong();
@@ -844,8 +889,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                             return createWithResponse(null, null, headers, metadata, validatedRequestConditions)
                                 .then(uploadWithResponse(FluxUtil.readFile(channel), fileOffset, fileSize, headers,
                                     validatedUploadRequestConditions,
-                                    finalParallelTransferOptions.getProgressListener()))
-                                .then();
+                                    finalParallelTransferOptions.getProgressListener()));
                         }
                     } catch (IOException ex) {
                         return Mono.error(ex);
@@ -857,7 +901,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         }
     }
 
-    private Mono<Void> uploadFileChunks(long fileOffset, long fileSize, ParallelTransferOptions parallelTransferOptions,
+    private Mono<Response<PathInfo>> uploadFileChunks(long fileOffset, long fileSize, ParallelTransferOptions parallelTransferOptions,
         Long originalBlockSize, PathHttpHeaders headers, DataLakeRequestConditions requestConditions,
         AsynchronousFileChannel channel) {
         // parallelTransferOptions are finalized in the calling method.
@@ -877,8 +921,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                 return appendWithResponse(data, fileOffset + chunk.getOffset(), chunk.getCount(), null,
                     requestConditions.getLeaseId(), appendContexts.getContext());
             }, parallelTransferOptions.getMaxConcurrency())
-            .then(Mono.defer(() -> flushWithResponse(fileSize, false, false, headers, requestConditions)))
-            .then();
+            .then(Mono.defer(() -> flushWithResponse(fileSize, false, false, headers, requestConditions)));
     }
 
     private static List<FileRange> sliceFile(long fileSize, Long originalBlockSize, long blockSize) {
