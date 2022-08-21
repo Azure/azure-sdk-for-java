@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -22,10 +23,14 @@ public class AppConfigurationIT {
 
     @Autowired
     private ConfigurationClient client;
+    @Value("${AZURE_APPCONFIGURATION_ENDPOINT}")
+    private String endpoint;
+
 
     @Test
     public void testAppConfigurationOperation() {
         LOGGER.info("AppConfigurationIT begin.");
+        LOGGER.info("The set appconfiguration endpoint is [{}]", endpoint);
         client.addConfigurationSetting(SAMPLE_KEY, SAMPLE_LABEL, SAMPLE_VALUE);
         ConfigurationSetting configurationSetting = client.getConfigurationSetting(SAMPLE_KEY, SAMPLE_LABEL);
         Assertions.assertEquals(SAMPLE_VALUE, configurationSetting.getValue());

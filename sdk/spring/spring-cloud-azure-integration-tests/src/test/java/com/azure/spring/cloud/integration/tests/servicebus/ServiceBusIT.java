@@ -79,7 +79,6 @@ public class ServiceBusIT {
 
     @Test
     public void testServiceBusOperation() throws InterruptedException {
-        System.out.println(azureGlobalProperties.getProfile().getCloudType());
         LOGGER.info("ServiceBusIT begin.");
         senderClient.sendMessage(new ServiceBusMessage(DATA1));
         IterableStream<ServiceBusReceivedMessage> receivedMessages = receiverClient.receiveMessages(1);
@@ -88,9 +87,9 @@ public class ServiceBusIT {
             Assertions.assertEquals(DATA1, message.getBody().toString());
             receiverClient.complete(message);
         }
-        processorClient.start();
         senderClient.sendMessage(new ServiceBusMessage(DATA2));
         senderClient.close();
+        processorClient.start();
         Assertions.assertTrue(processorClient.isRunning());
         LATCH.await(15, TimeUnit.SECONDS);
         Assertions.assertEquals(DATA2, MESSAGE);
