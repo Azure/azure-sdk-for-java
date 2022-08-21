@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.integration.tests.cosmos.springdata;
 
-import com.azure.spring.cloud.integration.tests.ApplicationConfiguration;
 import com.azure.spring.cloud.integration.tests.cosmos.User;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +24,7 @@ public class SpringDataCosmosIT {
     private UserRepository userRepository;
 
     @Test
+    @Disabled
     public void testSpringDataCosmosOperation() {
         LOGGER.info("SpringDataCosmosIT begin.");
         User testUser = new User(USER_ID, "testFirstName", "testLastName", "test address line one");

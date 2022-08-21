@@ -7,8 +7,8 @@ import com.azure.cosmos.CosmosContainer;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.util.CosmosPagedIterable;
-import com.azure.spring.cloud.integration.tests.ApplicationConfiguration;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +27,7 @@ public class CosmosIT {
     private CosmosClient client;
 
     @Test
+    @Disabled
     public void testCosmosOperation() {
         LOGGER.info("CosmosIT begin.");
         User testUser = new User(
