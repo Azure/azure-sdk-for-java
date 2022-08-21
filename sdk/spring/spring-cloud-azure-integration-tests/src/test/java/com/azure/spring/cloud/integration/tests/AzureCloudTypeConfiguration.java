@@ -24,9 +24,6 @@ public class AzureCloudTypeConfiguration {
     static class AzureGlobalPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentAware {
 
         private static final Logger LOGGER = LoggerFactory.getLogger(AzureGlobalPropertiesBeanPostProcessor.class);
-        private static final String ENV_AZURE_CLOUD = "AzureCloud";
-        private static final String ENV_AZURE_US_GOV = "AzureUSGovernment";
-        private static final String ENV_AZURE_CHINA = "AzureChinaCloud";
         private Environment environment;
 
 
@@ -35,16 +32,16 @@ public class AzureCloudTypeConfiguration {
             if (bean instanceof AzureGlobalProperties) {
                 AzureGlobalProperties azureGlobalProperties = (AzureGlobalProperties) bean;
 
-                String springEnvironment = this.environment.getProperty("SPRING_ENVIRONMENT");
+                String authorityHost = this.environment.getProperty("AZURE_AUTHORITY_HOST");
 
-                LOGGER.info("The set SPRING_ENVIRONMENT is [{}]", springEnvironment);
-                if (ENV_AZURE_US_GOV.equals(springEnvironment)) {
+                LOGGER.info("The set AZURE_AUTHORITY_HOST is [{}]", authorityHost);
+                if (authorityHost.startsWith("https://login.microsoftonline.us")) {
                     azureGlobalProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
                     LOGGER.info("US Gov environment set.");
-                } else if (ENV_AZURE_CHINA.equals(springEnvironment)) {
+                } else if (authorityHost.startsWith("https://login.chinacloudapi.cn")) {
                     azureGlobalProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_CHINA);
                     LOGGER.info("China environment set.");
-                } else if (ENV_AZURE_CLOUD.equals(springEnvironment)) {
+                } else if (authorityHost.startsWith("https://login.microsoftonline.com")) {
                     azureGlobalProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE);
                     LOGGER.info("Azure Cloud environment set.");
                 } else {
