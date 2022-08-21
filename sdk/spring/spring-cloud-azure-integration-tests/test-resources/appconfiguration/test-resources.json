@@ -12,12 +12,17 @@
     "baseName": {
       "defaultValue": "[resourceGroup().name]",
       "type": "String"
+    },
+    "azConfigEndpointSuffix": {
+      "defaultValue": ".azconfig.io",
+      "type": "string"
     }
   },
   "variables": {
     "configurationStoresName": "[concat(parameters('baseName'),'-test-appconfiguration')]",
     "azureManagedApplicationContributorRoleRoleId": "/subscriptions/[parameters('subscriptionId')]/providers/Microsoft.Authorization/roleDefinitions/641177b8-a67a-45b9-a033-47bc880bb21e",
-    "location": "[resourceGroup().location]"
+    "location": "[resourceGroup().location]",
+    "endpointValue": "[concat('https://', configurationStoresName, parameters('azConfigEndpointSuffix'))]"
   },
   "resources": [
     {
@@ -47,7 +52,7 @@
   "outputs": {
     "AZURE_APPCONFIGURATION_ENDPOINT": {
       "type": "string",
-      "value": "[reference(variables('configurationStoresName')).endpoint]"
+      "value": "[variables('endpointValue')]"
     }
   }
 }
