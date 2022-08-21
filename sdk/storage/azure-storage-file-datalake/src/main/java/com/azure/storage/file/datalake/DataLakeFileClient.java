@@ -555,7 +555,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileClient.uploadFromFileWithResponse#String-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions-Duration -->
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileClient.uploadFromFileWithResponse#String-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context -->
      * <pre>
      * PathHttpHeaders headers = new PathHttpHeaders&#40;&#41;
      *     .setContentMd5&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;
@@ -571,13 +571,13 @@ public class DataLakeFileClient extends DataLakePathClient {
      *
      * try &#123;
      *     Response&lt;PathInfo&gt; response = client.uploadFromFileWithResponse&#40;filePath, parallelTransferOptions, headers,
-     *         metadata, requestConditions, timeout&#41;;
+     *         metadata, requestConditions, timeout, new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;&#41;;
      *     System.out.printf&#40;&quot;Upload from file succeeded with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
      * &#125; catch &#40;UncheckedIOException ex&#41; &#123;
      *     System.err.printf&#40;&quot;Failed to upload from file %s%n&quot;, ex.getMessage&#40;&#41;&#41;;
      * &#125;
      * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeFileClient.uploadFromFileWithResponse#String-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions-Duration -->
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileClient.uploadFromFileWithResponse#String-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context -->
      *
      * @param filePath Path of the file to upload
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
@@ -586,15 +586,17 @@ public class DataLakeFileClient extends DataLakePathClient {
      * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return Response containing information about the uploaded path.
      * @throws UncheckedIOException If an I/O error occurs
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PathInfo> uploadFromFileWithResponse(String filePath, ParallelTransferOptions parallelTransferOptions,
         PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions requestConditions,
-        Duration timeout) {
+        Duration timeout, Context context) {
         Mono<Response<PathInfo>> upload = this.dataLakeFileAsyncClient.uploadFromFileWithResponse(
-            filePath, parallelTransferOptions, headers, metadata, requestConditions);
+            filePath, parallelTransferOptions, headers, metadata, requestConditions)
+            .contextWrite(FluxUtil.toReactorContext(context));
 
         try {
             return StorageImplUtils.blockWithOptionalTimeout(upload, timeout);

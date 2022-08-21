@@ -3027,7 +3027,7 @@ class FileAPITest extends APISpec {
 
         when:
         def response = fc.uploadFromFileWithResponse(file.toPath().toString(),
-            new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(singleUploadSize), null, null, null, null)
+            new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(singleUploadSize), null, null, null, null, null)
 
         then:
         fc.getProperties().getFileSize() == dataSize
