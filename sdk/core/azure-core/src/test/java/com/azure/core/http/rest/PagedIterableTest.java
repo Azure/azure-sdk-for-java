@@ -78,6 +78,17 @@ public class PagedIterableTest {
 
     @ParameterizedTest
     @ValueSource(ints = {0, 5})
+    public void iterateByPagePagedIterable(int numberOfPages) {
+        PagedIterable<Integer> pagedIterable = getIntegerPagedIterable(numberOfPages);
+        List<PagedResponse<Integer>> pages = new ArrayList<>();
+        pagedIterable.iterableByPage().iterator().forEachRemaining(pages::add);
+
+        assertEquals(numberOfPages, pages.size());
+        assertEquals(pagedResponses, pages);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {0, 5})
     public void streamByT(int numberOfPages) {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(numberOfPages);
         PagedIterable<Integer> pagedIterable = new PagedIterable<>(pagedFlux);
@@ -102,6 +113,17 @@ public class PagedIterableTest {
     public void iterateByT(int numberOfPages) {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(numberOfPages);
         PagedIterable<Integer> pagedIterable = new PagedIterable<>(pagedFlux);
+        List<Integer> values = new ArrayList<>();
+        pagedIterable.iterator().forEachRemaining(values::add);
+
+        assertEquals(numberOfPages * 3, values.size());
+        assertEquals(Stream.iterate(0, i -> i + 1).limit(numberOfPages * 3L).collect(Collectors.toList()), values);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {0, 5})
+    public void iterateByTPagedIterable(int numberOfPages) {
+        PagedIterable<Integer> pagedIterable = getIntegerPagedIterable(numberOfPages);
         List<Integer> values = new ArrayList<>();
         pagedIterable.iterator().forEachRemaining(values::add);
 
@@ -174,6 +196,16 @@ public class PagedIterableTest {
     }
 
     @Test
+    public void streamFirstPagePagedIterable() {
+        TestPagedIterable<Integer> pagedIterable = getTestPagedIterable(5);
+
+        assertEquals(pagedResponses.get(0), pagedIterable.streamByPage().limit(1).collect(Collectors.toList()).get(0));
+
+        // The goal for this test is that 0 next page retrieval calls are made.
+        assertEquals(0, pagedIterable.getNextPageRetrievals());
+    }
+
+    @Test
     public void iterateFirstPage() {
         TestPagedFlux<Integer> pagedFlux = getTestPagedFlux(5);
         PagedIterable<Integer> pagedIterable = new PagedIterable<>(pagedFlux);
@@ -185,9 +217,27 @@ public class PagedIterableTest {
     }
 
     @Test
+    public void iterateFirstPageIterable() {
+        TestPagedIterable<Integer> pagedIterable = getTestPagedIterable(5);
+
+        assertEquals(pagedResponses.get(0), pagedIterable.iterableByPage().iterator().next());
+
+        // The goal for this test is that 0 next page retrieval calls are made.
+        assertEquals(0, pagedIterable.getNextPageRetrievals());
+    }
+
+    @Test
     public void streamFirstValue() {
         TestPagedFlux<Integer> pagedFlux = getTestPagedFlux(5);
         PagedIterable<Integer> pagedIterable = new PagedIterable<>(pagedFlux);
+
+        Integer firstValue = pagedResponses.get(0).getValue().get(0);
+        assertEquals(firstValue, pagedIterable.stream().limit(1).collect(Collectors.toList()).get(0));
+    }
+
+    @Test
+    public void streamFirstValuePagedIterable() {
+        TestPagedIterable<Integer> pagedIterable = getTestPagedIterable(5);
 
         Integer firstValue = pagedResponses.get(0).getValue().get(0);
         assertEquals(firstValue, pagedIterable.stream().limit(1).collect(Collectors.toList()).get(0));
@@ -201,6 +251,15 @@ public class PagedIterableTest {
         Integer firstValue = pagedResponses.get(0).getValue().get(0);
         assertEquals(firstValue, pagedIterable.iterator().next());
         assertEquals(0, pagedFlux.getNextPageRetrievals());
+    }
+
+    @Test
+    public void iterateFirstValuePagedIterable() {
+        TestPagedIterable<Integer> pagedIterable = getTestPagedIterable(5);
+
+        Integer firstValue = pagedResponses.get(0).getValue().get(0);
+        assertEquals(firstValue, pagedIterable.iterator().next());
+        assertEquals(0, pagedIterable.getNextPageRetrievals());
     }
 
     @Test
@@ -246,6 +305,46 @@ public class PagedIterableTest {
         assertEquals(2L, multiPageIterator.streamByPage(expectedPageSize).count());
     }
 
+    @Test
+    public void pageRetrieverPagedIterableWithPageSize() {
+        final int expectedPageSize = 5;
+
+        HttpHeaders headers = new HttpHeaders();
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost");
+        final Function<String, PagedResponse<Integer>> pagedResponseSupplier = continuationToken ->
+            new PagedResponseBase<>(request, 200, headers, Collections.emptyList(), continuationToken, null);
+
+        PagedIterable<Integer> singlePageIterable = new PagedIterable<>(pageSize -> {
+            assertEquals(expectedPageSize, pageSize);
+            return pagedResponseSupplier.apply(null);
+        });
+
+        Iterator<PagedResponse<Integer>> pageIterator = singlePageIterable.iterableByPage(expectedPageSize).iterator();
+        assertTrue(pageIterator.hasNext());
+        pageIterator.next();
+        assertFalse(pageIterator.hasNext());
+
+        assertEquals(1L, singlePageIterable.streamByPage(expectedPageSize).count());
+
+        final String expectedContinuationToken = "0";
+        PagedIterable<Integer> multiPageIterable = new PagedIterable<>(pageSize -> {
+            assertEquals(expectedPageSize, pageSize);
+            return pagedResponseSupplier.apply(expectedContinuationToken);
+        }, (continuationToken, pageSize) -> {
+            assertEquals(expectedPageSize, pageSize);
+            assertEquals(expectedContinuationToken, continuationToken);
+            return pagedResponseSupplier.apply(null);
+        });
+
+        pageIterator = multiPageIterable.iterableByPage(expectedPageSize).iterator();
+        assertTrue(pageIterator.hasNext());
+        pageIterator.next();
+        assertTrue(pageIterator.hasNext());
+        pageIterator.next();
+        assertFalse(pageIterator.hasNext());
+
+        assertEquals(2L, multiPageIterable.streamByPage(expectedPageSize).count());
+    }
     private PagedFlux<Integer> getIntegerPagedFlux(int numberOfPages) {
         createPagedResponse(numberOfPages);
 
@@ -266,6 +365,13 @@ public class PagedIterableTest {
 
         return new TestPagedFlux<>(() -> pagedResponses.isEmpty() ? Mono.empty() : Mono.just(pagedResponses.get(0)),
             continuationToken -> getNextPage(continuationToken, pagedResponses));
+    }
+
+    private TestPagedIterable<Integer> getTestPagedIterable(int numberOfPages) {
+        createPagedResponse(numberOfPages);
+
+        return new TestPagedIterable<>(() -> pagedResponses.isEmpty() ? null : pagedResponses.get(0),
+            continuationToken -> getNextPageSync(continuationToken, pagedResponses));
     }
 
     private void createPagedResponse(int numberOfPages) {
@@ -342,6 +448,31 @@ public class PagedIterableTest {
         public Flux<PagedResponse<T>> byPage(String continuationToken) {
             nextPageRetrievals++;
             return super.byPage(continuationToken);
+        }
+
+        /*
+         * Returns the number of times another page has been retrieved.
+         */
+        int getNextPageRetrievals() {
+            return nextPageRetrievals;
+        }
+    }
+
+    /*
+     * Test class used to verify that paged iterable will lazily request next pages.
+     */
+    private static class TestPagedIterable<T> extends PagedIterable<T> {
+        private int nextPageRetrievals = 0;
+
+        TestPagedIterable(Supplier<PagedResponse<T>> firstPageRetriever,
+                      Function<String, PagedResponse<T>> nextPageRetriever) {
+            super(firstPageRetriever, nextPageRetriever);
+        }
+
+        @Override
+        public Stream<PagedResponse<T>> streamByPage(String continuationToken) {
+            nextPageRetrievals++;
+            return super.streamByPage(continuationToken);
         }
 
         /*
