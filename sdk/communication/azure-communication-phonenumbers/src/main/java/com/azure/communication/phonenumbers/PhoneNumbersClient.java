@@ -365,6 +365,6 @@ public final class PhoneNumbersClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PhoneNumberOffering> listAvailableOfferings(String countryCode, PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType, Context context) {
         context = context == null ? Context.NONE : context;
-        return client.listOfferings(countryCode, phoneNumberType, assignmentType, null, null);
+        return client.listOfferings(countryCode, phoneNumberType, assignmentType, null, null, context);
     }
 }
