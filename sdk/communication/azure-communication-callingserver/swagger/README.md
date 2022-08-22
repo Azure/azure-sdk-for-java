@@ -49,7 +49,7 @@ context-client-method-parameter: true
 title: Azure Communication CallingServer Service 
 directive:
 - rename-model:
-    from: AcsCallParticipantDto
+    from: AcsCallParticipant
     to: AcsCallParticipantInternal    
 - rename-model:
     from: AddParticipantsRequest
@@ -58,16 +58,16 @@ directive:
     from: AddParticipantsResponse
     to: AddParticipantsResponseInternal
 - rename-model:
-    from: CallConnectionPropertiesDto
+    from: CallConnectionProperties
     to: CallConnectionPropertiesInternal     
 - rename-model:
-    from: CallingOperationResultDetailsDto
+    from: CallingOperationResultDetails
     to: CallingOperationResultDetailsInternal
 - rename-model:
-    from: CallingOperationStatusDto
+    from: CallingOperationStatus
     to: CallingOperationStatusInternal
 - rename-model:
-    from: CallSourceDto
+    from: CallSource
     to: CallSourceInternal
 - rename-model:
     from: CommunicationCloudEnvironmentModel
