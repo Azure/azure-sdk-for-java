@@ -11,7 +11,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 - Fix parameter `requested_token_use` missing when using On behalf of process [#30359](https://github.com/Azure/azure-sdk-for-java/issues/30359).
 
 #### Features Added
-- Support auto start-up for the auto-configuration of Service Bus Processor Client by enabling a new property of `spring.cloud.azure.servicebus.processor.auto-startup`. [#29997](https://github.com/Azure/azure-sdk-for-java/issues/29997)
+- Support auto start-up for the auto-configured Service Bus Processor Client by enabling a new property of `spring.cloud.azure.servicebus.processor.auto-startup`. [#29997](https://github.com/Azure/azure-sdk-for-java/issues/29997)
 
 ## 4.3.0 (2022-06-29)
 - This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.9, 2.7.0-2.7.1. (Note: 2.5.x (x>14), 2.6.y (y>9) and 2.7.z (z>1) should be supported, but they aren't tested with this release.)
