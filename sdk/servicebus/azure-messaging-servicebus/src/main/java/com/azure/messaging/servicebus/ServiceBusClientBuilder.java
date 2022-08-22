@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.AmqpClientOptions;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
@@ -59,6 +60,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ServiceLoader;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
@@ -893,6 +895,7 @@ public final class ServiceBusClientBuilder implements
     public final class ServiceBusSenderClientBuilder {
         private String queueName;
         private String topicName;
+        private String identifier;
 
         private ServiceBusSenderClientBuilder() {
         }
@@ -918,6 +921,17 @@ public final class ServiceBusClientBuilder implements
          */
         public ServiceBusSenderClientBuilder topicName(String topicName) {
             this.topicName = topicName;
+            return this;
+        }
+
+        /**
+         * Sets the customized identifier for Service Bus sender client.
+         *
+         * @param identifier The identifier of the client.
+         * @return The modified {@link ServiceBusSenderClientBuilder} object.
+         */
+        public ServiceBusSenderClientBuilder identifier(String identifier) {
+            this.identifier = identifier;
             return this;
         }
 
@@ -953,8 +967,18 @@ public final class ServiceBusClientBuilder implements
                         new IllegalArgumentException("Unknown entity type: " + entityType));
             }
 
+            String clientIdentifier = this.identifier;
+            if (Objects.isNull(clientIdentifier) && clientOptions instanceof AmqpClientOptions) {
+                String clientOptionsIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
+                clientIdentifier = CoreUtils.isNullOrEmpty(clientOptionsIdentifier)
+                    ? UUID.randomUUID().toString() : clientOptionsIdentifier;
+            } else {
+                clientIdentifier = CoreUtils.isNullOrEmpty(clientIdentifier)
+                    ? UUID.randomUUID().toString() : clientIdentifier;
+            }
+
             return new ServiceBusSenderAsyncClient(entityName, entityType, connectionProcessor, retryOptions,
-                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose, null);
+                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose, null, clientIdentifier);
         }
 
         /**
@@ -1213,6 +1237,17 @@ public final class ServiceBusClientBuilder implements
         }
 
         /**
+         * Sets the customized identifier for Service Bus session processor client.
+         *
+         * @param identifier The identifier of the client.
+         * @return The modified {@link ServiceBusSessionProcessorClientBuilder} object.
+         */
+        public ServiceBusSessionProcessorClientBuilder identifier(String identifier) {
+            this.sessionReceiverClientBuilder.identifier(identifier);
+            return this;
+        }
+
+        /**
          * Creates a <b>session-aware</b> Service Bus processor responsible for reading
          * {@link ServiceBusReceivedMessage messages} from a specific queue or subscription.
          *
@@ -1254,6 +1289,7 @@ public final class ServiceBusClientBuilder implements
         private String topicName;
         private Duration maxAutoLockRenewDuration = MAX_LOCK_RENEW_DEFAULT_DURATION;
         private SubQueue subQueue = SubQueue.NONE;
+        private String identifier;
 
         private ServiceBusSessionReceiverClientBuilder() {
         }
@@ -1393,6 +1429,17 @@ public final class ServiceBusClientBuilder implements
         }
 
         /**
+         * Sets the customized identifier for Service Bus session receiver client
+         *
+         * @param identifier The identifier of the client
+         * @return The modified {@link ServiceBusSessionReceiverClientBuilder} object.
+         */
+        public ServiceBusSessionReceiverClientBuilder identifier(String identifier) {
+            this.identifier = identifier;
+            return this;
+        }
+
+        /**
          * Creates an <b>asynchronous</b>, <b>session-aware</b> Service Bus receiver responsible for reading {@link
          * ServiceBusMessage messages} from a specific queue or subscription.
          *
@@ -1425,8 +1472,18 @@ public final class ServiceBusClientBuilder implements
                 maxAutoLockRenewDuration, enableAutoComplete, null,
                 maxConcurrentSessions);
 
+            String clientIdentifier = this.identifier;
+            if (Objects.isNull(clientIdentifier) && clientOptions instanceof AmqpClientOptions) {
+                String clientOptionsIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
+                clientIdentifier = CoreUtils.isNullOrEmpty(clientOptionsIdentifier)
+                    ? UUID.randomUUID().toString() : clientOptionsIdentifier;
+            } else {
+                clientIdentifier = CoreUtils.isNullOrEmpty(clientIdentifier)
+                    ? UUID.randomUUID().toString() : clientIdentifier;
+            }
+
             final ServiceBusSessionManager sessionManager = new ServiceBusSessionManager(entityPath, entityType,
-                connectionProcessor, tracerProvider, messageSerializer, receiverOptions);
+                connectionProcessor, tracerProvider, messageSerializer, receiverOptions, clientIdentifier);
 
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
                 entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
@@ -1494,9 +1551,19 @@ public final class ServiceBusClientBuilder implements
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration, enableAutoComplete, null, maxConcurrentSessions);
 
+            String clientIdentifier = this.identifier;
+            if (Objects.isNull(clientIdentifier) && clientOptions instanceof AmqpClientOptions) {
+                String clientOptionsIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
+                clientIdentifier = CoreUtils.isNullOrEmpty(clientOptionsIdentifier)
+                    ? UUID.randomUUID().toString() : clientOptionsIdentifier;
+            } else {
+                clientIdentifier = CoreUtils.isNullOrEmpty(clientIdentifier)
+                    ? UUID.randomUUID().toString() : clientIdentifier;
+            }
+
             return new ServiceBusSessionReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(),
                 entityPath, entityType, receiverOptions, connectionProcessor, tracerProvider, messageSerializer,
-                ServiceBusClientBuilder.this::onClientClose);
+                ServiceBusClientBuilder.this::onClientClose, clientIdentifier);
         }
     }
 
@@ -1640,6 +1707,17 @@ public final class ServiceBusClientBuilder implements
         }
 
         /**
+         * Sets the customized identifier for Service Bus processor client
+         *
+         * @param identifier The identifier of the client
+         * @return The modified {@link ServiceBusProcessorClientBuilder} object.
+         */
+        public ServiceBusProcessorClientBuilder identifier(String identifier) {
+            serviceBusReceiverClientBuilder.identifier(identifier);
+            return this;
+        }
+
+        /**
          * The message processing callback for the processor which will be executed when a message is received.
          * @param processMessage The message processing consumer that will be executed when a message is received.
          *
@@ -1750,6 +1828,7 @@ public final class ServiceBusClientBuilder implements
         private String subscriptionName;
         private String topicName;
         private Duration maxAutoLockRenewDuration = MAX_LOCK_RENEW_DEFAULT_DURATION;
+        private String identifier;
 
         private ServiceBusReceiverClientBuilder() {
         }
@@ -1869,6 +1948,17 @@ public final class ServiceBusClientBuilder implements
         }
 
         /**
+         * Sets the customized identifier for Service Bus receiver client
+         *
+         * @param identifier The identifier of the client
+         * @return The modified {@link ServiceBusReceiverClientBuilder} object.
+         */
+        public ServiceBusReceiverClientBuilder identifier(String identifier) {
+            this.identifier = identifier;
+            return this;
+        }
+
+        /**
          * Creates an <b>asynchronous</b> Service Bus receiver responsible for reading {@link ServiceBusMessage
          * messages} from a specific queue or subscription.
          *
@@ -1928,9 +2018,19 @@ public final class ServiceBusClientBuilder implements
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration, enableAutoComplete);
 
+            String clientIdentifier = this.identifier;
+            if (Objects.isNull(clientIdentifier) && clientOptions instanceof AmqpClientOptions) {
+                String clientOptionsIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
+                clientIdentifier = CoreUtils.isNullOrEmpty(clientOptionsIdentifier)
+                    ? UUID.randomUUID().toString() : clientOptionsIdentifier;
+            } else {
+                clientIdentifier = CoreUtils.isNullOrEmpty(clientIdentifier)
+                    ? UUID.randomUUID().toString() : clientIdentifier;
+            }
+
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
                 entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
-                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose);
+                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose, clientIdentifier);
         }
     }
 

@@ -302,6 +302,22 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         return this.subscriptionName;
     }
 
+    /**
+     * Gets the identifier of the instance of {@link ServiceBusProcessorClient}.
+     *
+     * @return The identifier that can identify the instance of {@link ServiceBusProcessorClient}.
+     */
+    public synchronized String getIdentifier() {
+        if (asyncClient.get() == null) {
+            ServiceBusReceiverAsyncClient newReceiverClient = this.receiverBuilder == null
+                ? this.sessionReceiverBuilder.buildAsyncClientForProcessor()
+                : this.receiverBuilder.buildAsyncClient();
+            asyncClient.set(newReceiverClient);
+        }
+
+        return asyncClient.get().getIdentifier();
+    }
+
     private synchronized void receiveMessages() {
         if (receiverSubscriptions.size() > 0) {
             // For the case of start -> stop -> start again
