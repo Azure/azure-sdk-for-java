@@ -149,7 +149,7 @@ public final class TableServiceClientBuilder implements
 
         // If 'endpoint' was provided, validate its format to end with the appropriate suffix
         if (endpoint != null) {
-            String trimmedEndpoint = endpoint.endsWith("/") ? endpoint.substring(0,endpoint.length()-1) : endpoint;
+            String trimmedEndpoint = endpoint.endsWith("/") ? endpoint.substring(0, endpoint.length() - 1) : endpoint;
             if (!trimmedEndpoint.endsWith(suffix)) {
                 throw logger.logExceptionAsError(new IllegalArgumentException("The 'endpoint' provided is not valid." +
                     " Please try re-creating the TableServiceClient with just the account Uri."));
