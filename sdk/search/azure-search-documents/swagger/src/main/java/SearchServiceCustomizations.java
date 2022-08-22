@@ -67,7 +67,6 @@ public class SearchServiceCustomizations extends Customization {
         PackageCustomization implCustomization = libraryCustomization.getPackage(IMPLEMENTATION_MODELS);
         PackageCustomization publicCustomization = libraryCustomization.getPackage(MODELS);
 
-        new String()
         // Customize implementation models.
 
         // Customize models.
