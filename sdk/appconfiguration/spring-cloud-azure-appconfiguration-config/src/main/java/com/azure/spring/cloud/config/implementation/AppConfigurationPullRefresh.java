@@ -23,7 +23,6 @@ import com.azure.spring.cloud.config.AppConfigurationRefresh;
 import com.azure.spring.cloud.config.implementation.AppConfigurationRefreshUtil.RefreshEventData;
 import com.azure.spring.cloud.config.implementation.health.AppConfigurationStoreHealth;
 import com.azure.spring.cloud.config.implementation.pipline.policies.BaseAppConfigurationPolicy;
-import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProviderProperties;
 
 /**
  * Enables checking of Configuration updates.
@@ -48,8 +47,9 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
     /**
      * Component used for checking for and triggering configuration refreshes.
      *
-     * @param properties Client properties to check against.
      * @param clientFactory Clients stores used to connect to App Configuration. * @param defaultMinBackoff default
+     * @param refreshInterval time between refresh intervals
+     * @param defaultMinBackoff minimum time between backoff retries
      * minimum backoff time
      */
     public AppConfigurationPullRefresh(AppConfigurationReplicaClientFactory clientFactory, Duration refreshInterval,
@@ -106,7 +106,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
         if (running.compareAndSet(false, true)) {
             BaseAppConfigurationPolicy.setWatchRequests(true);
             try {
-                RefreshEventData eventData = AppConfigurationRefreshUtil.refreshStoresCheck(clientFactory, configStores,
+                RefreshEventData eventData = AppConfigurationRefreshUtil.refreshStoresCheck(clientFactory,
                     refreshInterval, profiles, defaultMinBackoff);
                 if (eventData.getDoRefresh()) {
                     publisher.publishEvent(new RefreshEvent(this, eventData, eventData.getMessage()));

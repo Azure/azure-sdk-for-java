@@ -2,10 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.implementation.config;
 
-import java.util.Optional;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -79,7 +75,7 @@ public class AppConfigurationBootstrapConfiguration {
     @ConditionalOnMissingBean
     AppConfigurationReplicaClientFactory buildClientFactory(AppConfigurationReplicaClientsBuilder clientBuilder,
         AppConfigurationProperties properties) {
-        return new AppConfigurationReplicaClientFactory(clientBuilder, properties);
+        return new AppConfigurationReplicaClientFactory(clientBuilder, properties.getStores());
     }
 
     /**

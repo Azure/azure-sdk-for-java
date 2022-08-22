@@ -14,19 +14,19 @@ final class BackoffTimeCalculator {
     private static final Long SECONDS_TO_NANO_SECONDS = (long) 1000000000;
 
     private static final Random RANDOM = new Random();
-    
+
     private static Long maxBackoff = (long) 600;
 
     private static Long minBackoff = (long) 30;
-    
+
     /**
-     * 
+     *
      * @param maxBackoff maximum amount of time between requests
      * @param minBackoff minimum amount of time between requests
      */
-    static void setDefaults(Long maxBackoffValue, Long minBackoffValue) {
-        maxBackoff = maxBackoffValue;
-        minBackoff = minBackoffValue;
+    static void setDefaults(Long maxBackoff, Long minBackoff) {
+        BackoffTimeCalculator.maxBackoff = maxBackoff;
+        BackoffTimeCalculator.minBackoff = minBackoff;
     }
 
     /**
@@ -34,7 +34,7 @@ final class BackoffTimeCalculator {
      *
      * @param attempts Number of attempts so far
      * @return Nano Seconds to the next request
-     * @throws IllegalArgumentException when backofftime or attempt number is invalid
+     * @throws IllegalArgumentException when back off time or attempt number is invalid
      */
     static Long calculateBackoff(Integer attempts) {
 

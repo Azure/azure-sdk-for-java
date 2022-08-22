@@ -3,6 +3,7 @@
 package com.azure.spring.cloud.config.implementation.properties;
 
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.EMPTY_LABEL;
+import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.FEATURE_STORE_WATCH_KEY;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -29,7 +30,7 @@ public final class FeatureFlagKeyValueSelector {
      */
     public static final String LABEL_SEPARATOR = ",";
 
-    private String keyFilter = "";
+    private String keyFilter = FEATURE_STORE_WATCH_KEY;
 
     private String labelFilter;
 

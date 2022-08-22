@@ -72,7 +72,7 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
      * <p>
      * Gets settings from Azure/Cache to set as configurations. Updates the cache.
      * </p>
-     * @throws JsonProcessingException
+     * @throws JsonProcessingException thrown if fails to parse Json content type
      */
     public void initProperties() throws JsonProcessingException {
         List<String> labels = Arrays.asList(labelFilter);

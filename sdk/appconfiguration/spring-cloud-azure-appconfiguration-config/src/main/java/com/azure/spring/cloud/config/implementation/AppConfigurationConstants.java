@@ -36,11 +36,11 @@ public class AppConfigurationConstants {
      * Key for returning all feature flags
      */
     public static final String FEATURE_STORE_WATCH_KEY = FEATURE_STORE_SUFFIX + "*";
-    
+
     /**
      * Separator for multiple labels.
      */
-    public static final String LABEL_SEPARATOR = ",";
+    public static final String LABEL_SEPARATOR = ","; // TODO (mametcal) This is never used?
 
     /**
      * Constant for tracing if the library is being used with a dev profile.

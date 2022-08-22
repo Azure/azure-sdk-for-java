@@ -58,7 +58,7 @@ public class ConnectionManagerTest {
 
     @Test
     public void getStoreIdentifierTest() {
-        connectionManager = new ConnectionManager(clientBuilderMock, configStore, providerProperties);
+        connectionManager = new ConnectionManager(clientBuilderMock, configStore);
 
         assertEquals(TEST_ENDPOINT, connectionManager.getOriginEndpoint());
 
@@ -71,7 +71,7 @@ public class ConnectionManagerTest {
         configStore.setEndpoints(endpoints);
         configStore.validateAndInit();
 
-        connectionManager = new ConnectionManager(clientBuilderMock, configStore, providerProperties);
+        connectionManager = new ConnectionManager(clientBuilderMock, configStore);
 
         assertEquals("first.endpoint", connectionManager.getOriginEndpoint());
     }
@@ -88,7 +88,7 @@ public class ConnectionManagerTest {
 
         configStore.validateAndInit();
 
-        connectionManager = new ConnectionManager(clientBuilderMock, configStore, providerProperties);
+        connectionManager = new ConnectionManager(clientBuilderMock, configStore);
 
         List<AppConfigurationReplicaClient> clients = new ArrayList<>();
         clients.add(replicaClient1);

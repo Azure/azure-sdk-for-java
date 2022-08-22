@@ -15,7 +15,6 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.config.implementation.pipline.policies.BaseAppConfigurationPolicy;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationStoreMonitoring;
-import com.azure.spring.cloud.config.implementation.properties.ConfigStore;
 import com.azure.spring.cloud.config.implementation.properties.FeatureFlagKeyValueSelector;
 import com.azure.spring.cloud.config.implementation.properties.FeatureFlagStore;
 
@@ -30,8 +29,7 @@ class AppConfigurationRefreshUtil {
      * @return If a refresh event is called.
      */
     static RefreshEventData refreshStoresCheck(AppConfigurationReplicaClientFactory clientFactory,
-        List<ConfigStore> configStores, Duration refreshInterval,
-        List<String> profiles, Long defaultMinBackoff) {
+        Duration refreshInterval, List<String> profiles, Long defaultMinBackoff) {
         RefreshEventData eventData = new RefreshEventData();
         BaseAppConfigurationPolicy.setWatchRequests(true);
 
@@ -68,10 +66,9 @@ class AppConfigurationRefreshUtil {
                             break;
                         } catch (AppConfigurationStatusException e) {
                             LOGGER.warn("Failed attempting to connect to " + client.getEndpoint()
-                                + " durring refresh check.");
+                                + " during refresh check.");
 
                             clientFactory.backoffClientClient(originEndpoint, client.getEndpoint());
-                            continue;
                         }
                     }
                 } else {
@@ -95,10 +92,9 @@ class AppConfigurationRefreshUtil {
                             break;
                         } catch (AppConfigurationStatusException e) {
                             LOGGER.warn("Failed attempting to connect to " + client.getEndpoint()
-                                + " durring refresh check.");
+                                + " during refresh check.");
 
                             clientFactory.backoffClientClient(originEndpoint, client.getEndpoint());
-                            continue;
                         }
                     }
                 } else {
@@ -122,10 +118,9 @@ class AppConfigurationRefreshUtil {
 
     /**
      * This is for a <b>refresh fail only</b>.
-     * @param configStores
-     * @param originEndpoint
+     *
      * @param client Client checking for refresh
-     * @param originEndpoint origin of the client
+     * @param originEndpoint config store origin endpoint
      * @return A refresh should be triggered.
      */
     private static boolean refreshStoreCheck(AppConfigurationReplicaClient client, String originEndpoint) {
@@ -138,12 +133,9 @@ class AppConfigurationRefreshUtil {
 
     /**
      * This is for a <b>refresh fail only</b>.
-     * @param featureStore
-     * @param clientFactory
-     * @param profiles
      * @param featureStore Feature info for the store
-     * @param client Client checking for refresh
      * @param profiles Current configured profiles, can be used as labels.
+     * @param client Client checking for refresh
      * @return true if a refresh should be triggered.
      */
     private static boolean refreshStoreFeatureFlagCheck(FeatureFlagStore featureStore,

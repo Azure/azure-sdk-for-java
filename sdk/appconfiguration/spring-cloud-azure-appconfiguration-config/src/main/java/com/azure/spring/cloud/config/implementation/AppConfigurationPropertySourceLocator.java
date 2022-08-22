@@ -77,13 +77,13 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         this.keyVaultCredentialProvider = keyVaultCredentialProvider;
         this.keyVaultClientProvider = keyVaultClientProvider;
         this.keyVaultSecretProvider = keyVaultSecretProvider;
-        
+
         BackoffTimeCalculator.setDefaults(appProperties.getDefaultMaxBackoff(), appProperties.getDefaultMinBackoff());
     }
 
     @Override
     public PropertySource<?> locate(Environment environment) {
-    	 if (!(environment instanceof ConfigurableEnvironment)) {
+        if (!(environment instanceof ConfigurableEnvironment)) {
             return null;
         }
 
@@ -125,8 +125,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                     sourceList = new ArrayList<>();
 
                     if (!STARTUP.get() && reloadFailed
-                        && !AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(configStore.getFeatureFlags(), client,
-                        configStore.getEndpoint(), profiles)) {
+                        && !AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(client, clientFactory,
+                            configStore.getFeatureFlags(), profiles)) {
                         // This store doesn't have any changes where to refresh store did. Skipping Checking next.
                         continue;
                     }
@@ -142,8 +142,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                         // Setting new ETag values for Watch
                         List<ConfigurationSetting> watchKeysSettings = getWatchKeys(client,
                             configStore.getMonitoring().getTriggers());
-                        List<ConfigurationSetting> watchKeysFeatures = getFeatureFlagWatchKeys(client, configStore,
-                            sources);
+                        List<ConfigurationSetting> watchKeysFeatures = getFeatureFlagWatchKeys(configStore, sources);
 
                         if (watchKeysFeatures.size() > 0) {
                             newState.setStateFeatureFlag(configStore.getEndpoint(), watchKeysFeatures,
@@ -210,8 +209,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         return watchKeysSettings;
     }
 
-    private List<ConfigurationSetting> getFeatureFlagWatchKeys(AppConfigurationReplicaClient client,
-        ConfigStore configStore, List<AppConfigurationPropertySource> sources) {
+    private List<ConfigurationSetting> getFeatureFlagWatchKeys(ConfigStore configStore, List<AppConfigurationPropertySource> sources) {
         List<ConfigurationSetting> watchKeysFeatures = new ArrayList<>();
 
         if (configStore.getFeatureFlags().getEnabled()) {
@@ -236,7 +234,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
             if (properties.getRefreshInterval() != null) {
                 // The next refresh will happen sooner if refresh interval is expired.
-                newState.updateNextRefreshTime(properties.getRefreshInterval(), appProperties);
+                newState.updateNextRefreshTime(properties.getRefreshInterval(), appProperties.getDefaultMinBackoff());
             }
             throw new RuntimeException(message, e);
         } else if (configStore.isFailFast()) {
@@ -269,7 +267,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         for (AppConfigurationKeyValueSelector selectedKeys : selects) {
             AppConfigurationApplicationSettingPropertySource propertySource = new AppConfigurationApplicationSettingPropertySource(
                 store.getEndpoint(), client, selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles),
-                properties, appProperties.getMaxRetryTime(), keyVaultCredentialProvider, keyVaultClientProvider, keyVaultSecretProvider);
+                properties, appProperties.getMaxRetryTime(), keyVaultCredentialProvider, keyVaultClientProvider,
+                keyVaultSecretProvider);
             propertySource.initProperties();
             sourceList.add(propertySource);
         }

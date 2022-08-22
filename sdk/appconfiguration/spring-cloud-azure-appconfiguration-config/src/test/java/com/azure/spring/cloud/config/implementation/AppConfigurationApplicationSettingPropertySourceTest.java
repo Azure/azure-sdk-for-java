@@ -39,7 +39,6 @@ import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.spring.cloud.config.KeyVaultCredentialProvider;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProperties;
-import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProviderProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 
@@ -98,8 +97,6 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
     @Mock
     private PagedResponse<ConfigurationSetting> pagedResponseMock;
 
-    private AppConfigurationProviderProperties appProperties;
-
     private KeyVaultCredentialProvider tokenCredentialProvider = null;
 
     @Mock
@@ -116,7 +113,6 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
 
         MockitoAnnotations.openMocks(this);
         appConfigurationProperties = new AppConfigurationProperties();
-        appProperties = new AppConfigurationProviderProperties();
 
         testItems = new ArrayList<ConfigurationSetting>();
         testItems.add(ITEM_1);
@@ -133,7 +129,7 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
         String[] labelFilter = { "\0" };
 
         propertySource = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, clientMock, KEY_FILTER, labelFilter,
-            appConfigurationProperties, appProperties, tokenCredentialProvider, null, null);
+            appConfigurationProperties, 60, tokenCredentialProvider, null, null);
     }
 
     @AfterEach

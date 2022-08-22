@@ -46,7 +46,6 @@ import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.spring.cloud.config.KeyVaultCredentialProvider;
 import com.azure.spring.cloud.config.KeyVaultSecretProvider;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProperties;
-import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProviderProperties;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -79,8 +78,6 @@ public class AppConfigurationPropertySourceKeyVaultTest {
     private AppConfigurationApplicationSettingPropertySource propertySource;
 
     private AppConfigurationProperties appConfigurationProperties;
-
-    private AppConfigurationProviderProperties appProperties;
 
     @Mock
     private SecretClientBuilder builderMock;
@@ -122,12 +119,10 @@ public class AppConfigurationPropertySourceKeyVaultTest {
 
         MockitoAnnotations.openMocks(this);
         appConfigurationProperties = new AppConfigurationProperties();
-        appProperties = new AppConfigurationProviderProperties();
-        appProperties.setMaxRetryTime(0);
 
         String[] labelFilter = {"\0"};
         propertySource = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, replicaClientMock, KEY_FILTER, labelFilter,
-            appConfigurationProperties, appProperties, tokenCredentialProvider, null,
+            appConfigurationProperties, 60, tokenCredentialProvider, null,
             new TestClient());
 
         TEST_ITEMS.add(ITEM_1);

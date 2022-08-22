@@ -7,8 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProviderProperties;
-
 public class BackoffTimeCalculatorTest {
 
     /**
@@ -18,27 +16,23 @@ public class BackoffTimeCalculatorTest {
     public void testCalculate() {
         int testTime = 10;
 
-        AppConfigurationProviderProperties properties = new AppConfigurationProviderProperties();
-        properties.setDefaultMaxBackoff((long) 600);
-        properties.setDefaultMinBackoff((long) 30);
-
-        Long testDate = BackoffTimeCalculator.calculateBackoff(1, (long) 600, (long) 30);
+        BackoffTimeCalculator.setDefaults((long) 600, (long) 30);
+        Long testDate = BackoffTimeCalculator.calculateBackoff(1);
 
         assertNotNull(testDate);
 
         assertTrue(testDate > 1);
 
-        Long calculatedTime = BackoffTimeCalculator.calculateBackoff(1, (long) 600, (long) 30);
+        Long calculatedTime = BackoffTimeCalculator.calculateBackoff(1);
 
         assertTrue(calculatedTime > testTime);
 
-        calculatedTime = BackoffTimeCalculator.calculateBackoff(2, (long) 600, (long) 30);
+        calculatedTime = BackoffTimeCalculator.calculateBackoff(2);
 
         assertTrue(calculatedTime > testTime);
 
-        calculatedTime = BackoffTimeCalculator.calculateBackoff(3, (long) 600, (long) 30);
+        calculatedTime = BackoffTimeCalculator.calculateBackoff(3);
 
         assertTrue(calculatedTime > testTime);
     }
-
 }
