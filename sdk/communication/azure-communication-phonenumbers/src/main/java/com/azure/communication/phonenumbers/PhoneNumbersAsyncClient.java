@@ -163,9 +163,14 @@ public final class PhoneNumbersAsyncClient {
 
             String areaCode = null;
             Integer quantity = null;
+            String locality = null;
+            String administrativeDivision = null;
+
             if (searchOptions != null) {
                 areaCode = searchOptions.getAreaCode();
                 quantity = searchOptions.getQuantity();
+                locality = searchOptions.getLocality();
+                administrativeDivision = searchOptions.getAdministrativeDivision();
             }
             PhoneNumberSearchRequest searchRequest = new PhoneNumberSearchRequest();
             searchRequest
@@ -173,7 +178,9 @@ public final class PhoneNumbersAsyncClient {
                 .setAssignmentType(assignmentType)
                 .setCapabilities(capabilities)
                 .setAreaCode(areaCode)
-                .setQuantity(quantity);
+                .setQuantity(quantity)
+                .setLocality(locality)
+                .setAdministrativeDivision(administrativeDivision);
 
             return new PollerFlux<>(defaultPollInterval,
                 searchAvailableNumbersInitOperation(countryCode, searchRequest, context),
