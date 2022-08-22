@@ -17,8 +17,6 @@ import java.util.function.Function;
 /**
  *
  * Simple implementation of {@link SyncPoller}.
- * The SimpleSyncPoller is not thread safe but we make every attempt to be safe in cases
- * it is possible to be so, e.g. by using volatile and copying context.
  *
  * @param <T> The type of poll response value
  * @param <U> The type of the final result of the long running operation
@@ -77,7 +75,7 @@ public final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
     }
 
     @Override
-    public PollResponse<T> poll() {
+    public synchronized PollResponse<T> poll() {
         PollResponse<T> response = this.pollOperation
             .apply(this.pollingContext);
         this.pollingContext.setLatestResponse(response);
