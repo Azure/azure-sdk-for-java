@@ -22,7 +22,7 @@
     "configurationStoresName": "[concat(parameters('baseName'),'-test-appconfiguration')]",
     "azureManagedApplicationContributorRoleRoleId": "/subscriptions/[parameters('subscriptionId')]/providers/Microsoft.Authorization/roleDefinitions/641177b8-a67a-45b9-a033-47bc880bb21e",
     "location": "[resourceGroup().location]",
-    "endpointValue": "[concat('https://', configurationStoresName, parameters('azConfigEndpointSuffix'))]"
+    "endpointValue": "[concat('https://', variables('configurationStoresName'), parameters('azConfigEndpointSuffix'))]"
   },
   "resources": [
     {
