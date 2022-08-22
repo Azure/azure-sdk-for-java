@@ -3,10 +3,8 @@
 
 package com.azure.core.util.polling;
 
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Exceptions;
-import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -14,8 +12,8 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
- * AsyncPollResponse represents an event emitted by the {@link PollerFlux} that asynchronously polls
- * a long-running operation (LRO). An AsyncPollResponse event provides information such as the current
+ * SyncPollResponse represents an event emitted by the {@link SimpleSyncPoller} that synchronously polls
+ * a long-running operation (LRO). An SyncPollResponse event provides information such as the current
  * {@link LongRunningOperationStatus status} of the LRO, any {@link #getValue value} returned
  * by the poll, as well as other useful information provided by the service.
  * AsyncPollResponse also exposes {@link #cancelOperation} method to cancel the long-running operation
@@ -25,7 +23,7 @@ import java.util.function.Function;
  * @param <T> The type of poll response value.
  * @param <U> The type of the final result of long-running operation.
  */
-public final class SyncPollResponse<T, U> {
+final class SyncPollResponse<T, U> {
     // AsyncPollResponse is a commonly used class, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(SyncPollResponse.class);
     private final PollingContext<T> pollingContext;
@@ -34,7 +32,7 @@ public final class SyncPollResponse<T, U> {
     private final PollResponse<T> pollResponse;
 
     /**
-     * Creates AsyncPollResponse.
+     * Creates SyncPollResponse.
      *
      * @param pollingContext the polling context
      * @param cancellationOperation the cancellation operation if supported by the service
@@ -72,8 +70,9 @@ public final class SyncPollResponse<T, U> {
     }
 
     /**
-     * @return a Mono, upon subscription it cancels the remote long-running operation if cancellation
-     * is supported by the service.
+     * Cancels the remote long-running operation if cancellation is supported by the service.
+     *
+     * @return T result of cancel operation.
      */
     public T cancelOperation() {
         try {
@@ -85,9 +84,10 @@ public final class SyncPollResponse<T, U> {
     }
 
     /**
-     * @return a Mono, upon subscription it fetches the final result of long-running operation if it
-     * is supported by the service. If the long-running operation is not completed, then an empty
-     * Mono will be returned.
+     * Fetches the final result of long-running operation if it
+     * is supported by the service. If the long-running operation is not completed, null will be returned.
+     *
+     * @return U result of fetch result operation.
      */
     public U getFinalResult() {
         if (!this.pollResponse.getStatus().isComplete()) {
