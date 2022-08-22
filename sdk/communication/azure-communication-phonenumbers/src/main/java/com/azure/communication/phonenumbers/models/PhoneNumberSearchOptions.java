@@ -51,7 +51,7 @@ public final class PhoneNumberSearchOptions {
 
     /**
      * Sets the locality property.  Examples of a locality are city and town. This is applied only on geographic phone number searches.
-     * @param quantity the quantity to set.
+     * @param locality the quantity to set.
      * @return the PhoneNumberSearchOptions object itself.
      */
     public PhoneNumberSearchOptions setLocality(String locality) {
@@ -69,7 +69,7 @@ public final class PhoneNumberSearchOptions {
 
     /**
      * Sets the administrative division property.  Examples of a administrative division are state and province. This is applied only on geographic phone number searches.
-     * @param quantity the quantity to set.
+     * @param admiinstrativeDivision the quantity to set.
      * @return the PhoneNumberSearchOptions object itself.
      */
     public PhoneNumberSearchOptions setAdministrativeDivision(String administrativeDivision) {
