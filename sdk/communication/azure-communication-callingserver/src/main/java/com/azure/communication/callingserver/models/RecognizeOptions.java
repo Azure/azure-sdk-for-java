@@ -43,7 +43,8 @@ public class RecognizeOptions {
 
     /**
      * Initializes a RecognizeOptions object.
-     * @param recognizeInputType
+     * @param recognizeInputType What input the operation should recognize.
+     * @param recognizeConfigurations Configurations for the recognize operations.
      */
     public RecognizeOptions(RecognizeInputType recognizeInputType, RecognizeConfigurations recognizeConfigurations) {
         this.recognizeInputType = recognizeInputType;
