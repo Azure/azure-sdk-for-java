@@ -87,25 +87,23 @@ public class CallMedia {
 
     /**
      * Recognize tones.
-     * @param callConnectionId The call connection id.
      * @param recognizeOptions Optional elements for recognize.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void recognize(String callConnectionId, RecognizeOptions recognizeOptions) {
-        callMediaAsync.recognize(callConnectionId, recognizeOptions).block();
+    public void recognize(RecognizeOptions recognizeOptions) {
+        callMediaAsync.recognize(recognizeOptions).block();
     }
 
     /**
      * Recognize tones.
-     * @param callConnectionId The call connection id.
      * @param recognizeOptions Optional elements for recognize.
      * @param context A {@link Context} representing the request context.
      * @return Response for a successful recognize request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> recognizeWithResponse(String callConnectionId, RecognizeOptions recognizeOptions, Context context) {
+    public Response<Void> recognizeWithResponse(RecognizeOptions recognizeOptions, Context context) {
         return callMediaAsync
-            .recognizeWithResponseInternal(callConnectionId, recognizeOptions, context)
+            .recognizeWithResponseInternal(recognizeOptions, context)
             .block();
     }
 

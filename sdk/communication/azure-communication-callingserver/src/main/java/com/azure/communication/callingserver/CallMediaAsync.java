@@ -107,19 +107,18 @@ public class CallMediaAsync {
 
     /**
      * Recognize tones.
-     * @param callConnectionId The call connection id.
      * @param recognizeOptions Different attributes for recognize.
      * @return Void
      */
-    public Mono<Void> recognize(String callConnectionId, RecognizeOptions recognizeOptions) {
-        return recognizeWithResponse(callConnectionId, recognizeOptions).then();
+    public Mono<Void> recognize(RecognizeOptions recognizeOptions) {
+        return recognizeWithResponse(recognizeOptions).then();
     }
 
-    public Mono<Response<Void>> recognizeWithResponse(String callConnectionId, RecognizeOptions recognizeOptions) {
-        return withContext(context -> recognizeWithResponseInternal(callConnectionId, recognizeOptions, context));
+    public Mono<Response<Void>> recognizeWithResponse(RecognizeOptions recognizeOptions) {
+        return withContext(context -> recognizeWithResponseInternal(recognizeOptions, context));
     }
 
-    public Mono<Response<Void>> recognizeWithResponseInternal(String callConnectionId, RecognizeOptions recognizeOptions, Context context) {
+    public Mono<Response<Void>> recognizeWithResponseInternal(RecognizeOptions recognizeOptions, Context context) {
         try {
             context = context == null ? Context.NONE : context;
 
