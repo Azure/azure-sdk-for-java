@@ -36,8 +36,11 @@ import reactor.core.publisher.MonoSink;
 import reactor.core.publisher.SignalType;
 import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Schedulers;
+import reactor.util.context.Context;
+import reactor.util.context.ContextView;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -47,9 +50,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeAndResult;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
-import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeAndResult;
 import static com.azure.core.util.FluxUtil.monoError;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -101,6 +104,8 @@ public class RequestResponseChannel implements AsyncCloseable {
     // The provider exposes ReactorDispatcher that can schedule such calls on the ReactorThread.
     private final ReactorProvider provider;
 
+    private final AmqpMetricsProvider metricsProvider;
+
     /**
      * Creates a new instance of {@link RequestResponseChannel} to send and receive responses from the {@code
      * entityPath} in the message broker.
@@ -122,7 +127,7 @@ public class RequestResponseChannel implements AsyncCloseable {
         String fullyQualifiedNamespace, String linkName, String entityPath, Session session,
         AmqpRetryOptions retryOptions, ReactorHandlerProvider handlerProvider, ReactorProvider provider,
         MessageSerializer messageSerializer, SenderSettleMode senderSettleMode,
-        ReceiverSettleMode receiverSettleMode) {
+        ReceiverSettleMode receiverSettleMode, AmqpMetricsProvider metricsProvider) {
 
         Map<String, Object> loggingContext = createContextWithConnectionId(connectionId);
         loggingContext.put(LINK_NAME_KEY, linkName);
@@ -166,18 +171,20 @@ public class RequestResponseChannel implements AsyncCloseable {
             linkName, entityPath);
         BaseHandler.setHandler(receiveLink, receiveLinkHandler);
 
+        this.metricsProvider = metricsProvider;
+
         // Subscribe to the events from endpoints (Sender, Receiver & Connection) and track the subscriptions.
         //
         //@formatter:off
         this.subscriptions = Disposables.composite(
             receiveLinkHandler.getDeliveredMessages()
-                .map(this::decodeDelivery)
-                .subscribe(message -> {
+                .subscribe(delivery -> {
+                    Message message = decodeDelivery(delivery);
                     logger.atVerbose()
                         .addKeyValue("messageId", message.getCorrelationId())
                         .log("Settling message.");
 
-                    settleMessage(message);
+                    settleMessage(message, delivery.getLocalState());
                 }),
 
             receiveLinkHandler.getEndpointStates().subscribe(state -> {
@@ -317,7 +324,7 @@ public class RequestResponseChannel implements AsyncCloseable {
             receiveLinkHandler.getEndpointStates().takeUntil(x -> x == EndpointState.ACTIVE));
 
         return RetryUtil.withRetry(onActiveEndpoints, retryOptions, activeEndpointTimeoutMessage)
-            .then(Mono.create(sink -> {
+            .then(trackSendMetric(Mono.create(sink -> {
                 try {
                     logger.atVerbose()
                         .addKeyValue("messageId", message.getCorrelationId())
@@ -355,7 +362,13 @@ public class RequestResponseChannel implements AsyncCloseable {
                 } catch (IOException | RejectedExecutionException e) {
                     sink.error(e);
                 }
-            }));
+            })));
+    }
+
+    // TODO (limolkova): tests
+    private Mono<Message> trackSendMetric(Mono<Message> publisher) {
+        return publisher
+            .contextWrite(Context.of("start", Instant.now().toEpochMilli()));
     }
 
     /**
@@ -383,7 +396,7 @@ public class RequestResponseChannel implements AsyncCloseable {
         return response;
     }
 
-    private void settleMessage(Message message) {
+    private void settleMessage(Message message, DeliveryState deliveryState) {
         final String id = String.valueOf(message.getCorrelationId());
         final UnsignedLong correlationId = UnsignedLong.valueOf(id);
         final MonoSink<Message> sink = unconfirmedSends.remove(correlationId);
@@ -395,7 +408,17 @@ public class RequestResponseChannel implements AsyncCloseable {
             return;
         }
 
+        recordDelivery(sink.contextView(), deliveryState);
         sink.success(message);
+    }
+
+    private void recordDelivery(ContextView context, DeliveryState deliveryState) {
+        Object startTimestamp = context.getOrDefault("start", null);
+        if (startTimestamp instanceof Long && deliveryState != null) {
+            Long startEpoch = (Long) startTimestamp;
+            DeliveryState.DeliveryStateType type = deliveryState.getType();
+            metricsProvider.recordSendDelivery(startEpoch, type);
+        }
     }
 
     private void handleError(Throwable error, String message) {
@@ -476,7 +499,9 @@ public class RequestResponseChannel implements AsyncCloseable {
         int count = 0;
         while ((next = unconfirmedSends.pollFirstEntry()) != null) {
             // pollFirstEntry: atomic retrieve and remove of each entry.
-            next.getValue().error(error);
+            MonoSink<Message> sink = next.getValue();
+            recordDelivery(sink.contextView(), null);
+            sink.error(error);
             count++;
         }
 

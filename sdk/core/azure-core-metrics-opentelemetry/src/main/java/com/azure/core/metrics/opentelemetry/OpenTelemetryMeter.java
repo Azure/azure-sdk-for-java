@@ -9,20 +9,24 @@ import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.TelemetryAttributes;
 import com.azure.core.util.metrics.DoubleHistogram;
 import com.azure.core.util.metrics.LongCounter;
+import com.azure.core.util.metrics.LongGauge;
 import com.azure.core.util.metrics.Meter;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.metrics.DoubleHistogramBuilder;
 import io.opentelemetry.api.metrics.LongCounterBuilder;
+import io.opentelemetry.api.metrics.LongGaugeBuilder;
 import io.opentelemetry.api.metrics.LongUpDownCounterBuilder;
 import io.opentelemetry.api.metrics.MeterProvider;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 /**
  * {@inheritDoc}
  */
 class OpenTelemetryMeter implements Meter {
+    private static final AutoCloseable NOOP_CLOSEABLE = () -> { };
     private final io.opentelemetry.api.metrics.Meter meter;
     private final boolean isEnabled;
 
@@ -107,6 +111,27 @@ class OpenTelemetryMeter implements Meter {
         return new OpenTelemetryLongUpDownCounter(otelMetricBuilder.build());
     }
 
+    @Override
+    public LongGauge createLongGauge(String name, String description, String unit) {
+        Objects.requireNonNull(name, "'name' cannot be null.");
+        Objects.requireNonNull(description, "'description' cannot be null.");
+
+        if (!isEnabled) {
+            // we might have per-instrument control later.
+            return NOOP_GAUGE;
+        }
+
+        LongGaugeBuilder otelMetricBuilder = meter.gaugeBuilder(name)
+            .setDescription(description)
+            .ofLongs();
+
+        if (!CoreUtils.isNullOrEmpty(unit)) {
+            otelMetricBuilder.setUnit(unit);
+        }
+
+        return new OpenTelemetryLongGauge(otelMetricBuilder);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -128,6 +153,18 @@ class OpenTelemetryMeter implements Meter {
     private static final LongCounter NOOP_COUNTER = new LongCounter() {
         @Override
         public void add(long value, TelemetryAttributes attributes, Context context) {
+        }
+
+        @Override
+        public boolean isEnabled() {
+            return false;
+        }
+    };
+
+    private static final LongGauge NOOP_GAUGE = new LongGauge() {
+        @Override
+        public AutoCloseable setCallback(Supplier<Long> measurementSupplier, TelemetryAttributes attributes) {
+            return NOOP_CLOSEABLE;
         }
 
         @Override

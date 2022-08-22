@@ -31,9 +31,11 @@ import java.util.Objects;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
+import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addErrorCondition;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeAndResult;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
@@ -45,6 +47,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * Handles receiving events from Event Hubs service and translating them to proton-j messages.
  */
 public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoCloseable {
+    private static final Message EMPTY_MESSAGE = Proton.message();
     private final String entityPath;
     private final Receiver receiver;
     private final ReceiveLinkHandler handler;
@@ -64,15 +67,28 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
     private final Sinks.Empty<AmqpEndpointState> terminateEndpointStates = Sinks.empty();
 
     private final AtomicReference<Supplier<Integer>> creditSupplier = new AtomicReference<>();
+    private final AmqpMetricsProvider metricsProvider;
+    private final AtomicLong sequenceNumber = new AtomicLong(0);
+    private final AutoCloseable sequenceNumberMetricSubscription;
+
+    @Deprecated
+    protected ReactorReceiver(AmqpConnection amqpConnection, String entityPath, Receiver receiver,
+                              ReceiveLinkHandler handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
+                              AmqpRetryOptions retryOptions) {
+        this(amqpConnection, entityPath, receiver, handler, tokenManager, dispatcher, retryOptions,
+            new AmqpMetricsProvider(amqpConnection.getFullyQualifiedNamespace(), entityPath));
+    }
 
     protected ReactorReceiver(AmqpConnection amqpConnection, String entityPath, Receiver receiver,
-        ReceiveLinkHandler handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
-        AmqpRetryOptions retryOptions) {
+                              ReceiveLinkHandler handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
+                              AmqpRetryOptions retryOptions, AmqpMetricsProvider metricsProvider) {
         this.entityPath = entityPath;
         this.receiver = receiver;
         this.handler = handler;
         this.tokenManager = tokenManager;
         this.dispatcher = dispatcher;
+        this.metricsProvider = metricsProvider;
+        this.sequenceNumberMetricSubscription = this.metricsProvider.setSequenceNumberCallback(() -> sequenceNumber.get());
 
         Map<String, Object> loggingContext = createContextWithConnectionId(handler.getConnectionId());
         loggingContext.put(LINK_NAME_KEY, this.handler.getLinkName());
@@ -95,6 +111,18 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                                 return;
                             }
                             final Message message = decodeDelivery(delivery);
+                            if (message.getBody() != null) {
+                                // ignore servicebus disposition replies
+                                metricsProvider.recordReceivedMessage(message);
+
+                                if (message.getMessageAnnotations() != null && message.getMessageAnnotations().getValue() != null) {
+                                    Object seqNoObj = message.getMessageAnnotations().getValue().get(Symbol.valueOf(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
+                                    if (seqNoObj instanceof Long) {
+                                        sequenceNumber.set(((Long) seqNoObj).longValue());
+                                    }
+                                }
+                            }
+
                             final int creditsLeft = receiver.getRemoteCredit();
 
                             if (creditsLeft > 0) {
@@ -110,6 +138,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                                     .addKeyValue("credits", credits)
                                     .log("Adding credits.");
                                 receiver.flow(credits);
+                                metricsProvider.recordAddCredits(credits);
                             } else {
                                 logger.atVerbose()
                                     .addKeyValue("credits", credits)
@@ -269,11 +298,11 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
         final byte[] buffer = new byte[messageSize];
         final int read = receiver.recv(buffer, 0, messageSize);
         receiver.advance();
-
         final Message message = Proton.message();
         message.decode(buffer, 0, read);
 
         delivery.settle();
+
         return message;
     }
 
@@ -299,6 +328,13 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
      * @param errorCondition Error condition associated with close operation.
      */
     protected Mono<Void> closeAsync(String message, ErrorCondition errorCondition) {
+        if (sequenceNumberMetricSubscription != null) {
+            try {
+                sequenceNumberMetricSubscription.close();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
         if (isDisposed.getAndSet(true)) {
             return getIsClosedMono();
         }

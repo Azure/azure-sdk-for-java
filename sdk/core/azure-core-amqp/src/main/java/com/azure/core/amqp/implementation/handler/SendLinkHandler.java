@@ -3,6 +3,7 @@
 
 package com.azure.core.amqp.implementation.handler;
 
+import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.util.logging.LoggingEventBuilder;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Delivery;
@@ -44,8 +45,8 @@ public class SendLinkHandler extends LinkHandler {
     private final Sinks.Many<Integer> creditProcessor = Sinks.many().unicast().onBackpressureBuffer();
     private final Sinks.Many<Delivery> deliveryProcessor = Sinks.many().multicast().onBackpressureBuffer();
 
-    public SendLinkHandler(String connectionId, String hostname, String linkName, String entityPath) {
-        super(connectionId, hostname, entityPath);
+    public SendLinkHandler(String connectionId, String hostname, String linkName, String entityPath, AmqpMetricsProvider metricsProvider) {
+        super(connectionId, hostname, entityPath, metricsProvider);
         this.linkName = Objects.requireNonNull(linkName, "'linkName' cannot be null.");
         this.entityPath = entityPath;
     }
