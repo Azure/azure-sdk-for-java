@@ -3,7 +3,7 @@
 
 package com.azure.ai.personalizer;
 
-import com.azure.ai.personalizer.models.EvaluationOperationResult;
+import com.azure.ai.personalizer.models.CreateEvaluationOperationResult;
 import com.azure.ai.personalizer.models.PersonalizerEvaluation;
 import com.azure.ai.personalizer.models.PersonalizerEvaluationOptions;
 import com.azure.ai.personalizer.models.PersonalizerLogProperties;
@@ -52,7 +52,7 @@ public final class PersonalizerAdministrationClient {
      * @return a {@link SyncPoller} that will return counterfactual evaluation when polled.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<EvaluationOperationResult, PersonalizerEvaluation> beginCreateEvaluation(PersonalizerEvaluationOptions evaluationOptions) {
+    public SyncPoller<CreateEvaluationOperationResult, PersonalizerEvaluation> beginCreateEvaluation(PersonalizerEvaluationOptions evaluationOptions) {
         return beginCreateEvaluation(evaluationOptions, Context.NONE);
     }
 
@@ -64,7 +64,7 @@ public final class PersonalizerAdministrationClient {
      * @return a {@link SyncPoller} that will return counterfactual evaluation when polled.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<EvaluationOperationResult, PersonalizerEvaluation> beginCreateEvaluation(PersonalizerEvaluationOptions evaluationOptions, Context context) {
+    public SyncPoller<CreateEvaluationOperationResult, PersonalizerEvaluation> beginCreateEvaluation(PersonalizerEvaluationOptions evaluationOptions, Context context) {
         return client
             .beginCreateEvaluation(evaluationOptions, context)
             .getSyncPoller();

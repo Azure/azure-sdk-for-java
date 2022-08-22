@@ -6,7 +6,7 @@ package com.azure.ai.personalizer.models;
 /**
  * The result of the operation to create an evaluation.
  */
-public class EvaluationOperationResult {
+public final class CreateEvaluationOperationResult {
 
     private String evaluationId;
 
@@ -14,9 +14,9 @@ public class EvaluationOperationResult {
      * Set the evaluationId property.
      *
      * @param evaluationId the evaluationId value to set.
-     * @return the EvaluationOperationResult object itself.
+     * @return the CreateEvaluationOperationResult object itself.
      */
-    public EvaluationOperationResult setEvaluationId(String evaluationId) {
+    public CreateEvaluationOperationResult setEvaluationId(String evaluationId) {
         this.evaluationId = evaluationId;
         return this;
     }

@@ -5,16 +5,16 @@ package com.azure.ai.personalizer;
 
 import com.azure.ai.personalizer.implementation.PersonalizerClientV1Preview3Impl;
 import com.azure.ai.personalizer.implementation.models.EvaluationsCreateHeaders;
+import com.azure.ai.personalizer.implementation.models.PersonalizerPolicyReferenceOptions;
 import com.azure.ai.personalizer.implementation.util.Transforms;
 import com.azure.ai.personalizer.implementation.util.Utility;
+import com.azure.ai.personalizer.models.CreateEvaluationOperationResult;
 import com.azure.ai.personalizer.models.EvaluationOperationException;
-import com.azure.ai.personalizer.models.EvaluationOperationResult;
 import com.azure.ai.personalizer.models.PersonalizerEvaluation;
 import com.azure.ai.personalizer.models.PersonalizerEvaluationOptions;
 import com.azure.ai.personalizer.models.PersonalizerLogProperties;
 import com.azure.ai.personalizer.models.PersonalizerModelProperties;
 import com.azure.ai.personalizer.models.PersonalizerPolicy;
-import com.azure.ai.personalizer.implementation.models.PersonalizerPolicyReferenceOptions;
 import com.azure.ai.personalizer.models.PersonalizerServiceProperties;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -39,14 +39,10 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Objects;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import static com.azure.ai.personalizer.models.PersonalizerEvaluationJobStatus.COMPLETED;
-import static com.azure.ai.personalizer.models.PersonalizerEvaluationJobStatus.FAILED;
-import static com.azure.ai.personalizer.models.PersonalizerEvaluationJobStatus.NOT_SUBMITTED;
-import static com.azure.ai.personalizer.models.PersonalizerEvaluationJobStatus.ONLINE_POLICY_RETAINED;
-import static com.azure.ai.personalizer.models.PersonalizerEvaluationJobStatus.OPTIMAL_POLICY_APPLIED;
-import static com.azure.ai.personalizer.models.PersonalizerEvaluationJobStatus.PENDING;
+import static com.azure.ai.personalizer.models.PersonalizerEvaluationJobStatus.*;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
@@ -88,7 +84,7 @@ public final class PersonalizerAdministrationAsyncClient {
      * @throws NullPointerException thrown if evaluationOptions is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<EvaluationOperationResult, PersonalizerEvaluation> beginCreateEvaluation(PersonalizerEvaluationOptions evaluationOptions) {
+    public PollerFlux<CreateEvaluationOperationResult, PersonalizerEvaluation> beginCreateEvaluation(PersonalizerEvaluationOptions evaluationOptions) {
         return beginCreateEvaluation(evaluationOptions, Context.NONE);
     }
 
@@ -563,6 +559,7 @@ public final class PersonalizerAdministrationAsyncClient {
      * Get list of evaluations with paging.
      * @return {@link PagedFlux} of {@link PersonalizerEvaluation}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PersonalizerEvaluation> listEvaluations() {
         return new PagedFlux<>(() -> listEvaluationsSinglePageAsync(Context.NONE), null);
     }
@@ -602,10 +599,10 @@ public final class PersonalizerAdministrationAsyncClient {
             .map(response -> new SimpleResponse<>(response, null));
     }
 
-    Function<PollingContext<EvaluationOperationResult>, Mono<PollResponse<EvaluationOperationResult>>> createEvaluationPollOperation(Context context) {
+    Function<PollingContext<CreateEvaluationOperationResult>, Mono<PollResponse<CreateEvaluationOperationResult>>> createEvaluationPollOperation(Context context) {
         return (pollingContext) -> {
             try {
-                PollResponse<EvaluationOperationResult> operationResultPollResponse =
+                PollResponse<CreateEvaluationOperationResult> operationResultPollResponse =
                     pollingContext.getLatestResponse();
                 String evaluationId = operationResultPollResponse.getValue().getEvaluationId();
                 return service.getEvaluations().getAsync(evaluationId, context)
@@ -618,9 +615,9 @@ public final class PersonalizerAdministrationAsyncClient {
         };
     }
 
-    Mono<PollResponse<EvaluationOperationResult>> processRunEvaluationResponse(
+    Mono<PollResponse<CreateEvaluationOperationResult>> processRunEvaluationResponse(
         PersonalizerEvaluation getOperationResponse,
-        PollResponse<EvaluationOperationResult> evaluationOperationResponse) {
+        PollResponse<CreateEvaluationOperationResult> evaluationOperationResponse) {
         LongRunningOperationStatus status;
         if (PENDING.equals(getOperationResponse.getStatus()) || NOT_SUBMITTED.equals(getOperationResponse.getStatus())) {
             status = LongRunningOperationStatus.IN_PROGRESS;
@@ -637,11 +634,11 @@ public final class PersonalizerAdministrationAsyncClient {
             evaluationOperationResponse.getValue()));
     }
 
-    Function<PollingContext<EvaluationOperationResult>, Mono<EvaluationOperationResult>> createEvaluationInternal(
+    Function<PollingContext<CreateEvaluationOperationResult>, Mono<CreateEvaluationOperationResult>> createEvaluationInternal(
         PersonalizerEvaluationOptions evaluationOptions, Context context) {
         return (pollingContext) -> createEvaluationWithResponse(evaluationOptions, context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
-            .map(response -> new EvaluationOperationResult().setEvaluationId(Utility.parseResultId(response.getDeserializedHeaders().getLocation())));
+            .map(response -> new CreateEvaluationOperationResult().setEvaluationId(Utility.parseResultId(response.getDeserializedHeaders().getLocation())));
     }
 
     Mono<ResponseBase<EvaluationsCreateHeaders, PersonalizerEvaluation>> createEvaluationWithResponse(
@@ -652,18 +649,26 @@ public final class PersonalizerAdministrationAsyncClient {
             .map(response -> response);
     }
 
-    PollerFlux<EvaluationOperationResult, PersonalizerEvaluation> beginCreateEvaluation(
+    PollerFlux<CreateEvaluationOperationResult, PersonalizerEvaluation> beginCreateEvaluation(
         PersonalizerEvaluationOptions evaluationOptions,
         Context context) {
-        return new PollerFlux<EvaluationOperationResult, PersonalizerEvaluation>(
+        return new PollerFlux<CreateEvaluationOperationResult, PersonalizerEvaluation>(
             Duration.ofMinutes(1),
             createEvaluationInternal(evaluationOptions, context),
             createEvaluationPollOperation(context),
-            (activationResponse, pollingContext) -> Mono.error(new RuntimeException("Cancellation is not supported")),
+            cancelEvaluationOperation(context),
             fetchEvaluationResultOperation(context));
     }
 
-    Function<PollingContext<EvaluationOperationResult>, Mono<PersonalizerEvaluation>> fetchEvaluationResultOperation(
+    private BiFunction<PollingContext<CreateEvaluationOperationResult>, PollResponse<CreateEvaluationOperationResult>, Mono<CreateEvaluationOperationResult>> cancelEvaluationOperation(Context context) {
+        return (pollingContext, activationResponse) -> {
+            String evaluationId = activationResponse.getValue().getEvaluationId();
+            return deleteEvaluationWithResponse(evaluationId, context)
+                .thenReturn(new CreateEvaluationOperationResult().setEvaluationId(evaluationId));
+        };
+    }
+
+    Function<PollingContext<CreateEvaluationOperationResult>, Mono<PersonalizerEvaluation>> fetchEvaluationResultOperation(
         Context context) {
         return (pollingContext) -> {
             try {

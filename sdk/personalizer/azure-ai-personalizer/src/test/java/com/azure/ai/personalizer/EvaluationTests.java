@@ -3,7 +3,7 @@
 
 package com.azure.ai.personalizer;
 
-import com.azure.ai.personalizer.models.EvaluationOperationResult;
+import com.azure.ai.personalizer.models.CreateEvaluationOperationResult;
 import com.azure.ai.personalizer.models.PersonalizerEvaluation;
 import com.azure.ai.personalizer.models.PersonalizerEvaluationJobStatus;
 import com.azure.ai.personalizer.models.PersonalizerEvaluationOptions;
@@ -40,7 +40,7 @@ public class EvaluationTests extends PersonalizerTestBase {
             .setEndTime(OffsetDateTime.now().minusDays(1))
             .setPolicies(new ArrayList<PersonalizerPolicy>());
         PersonalizerAdministrationAsyncClient client = getAdministrationAsyncClient(httpClient, serviceVersion, true);
-        SyncPoller<EvaluationOperationResult, PersonalizerEvaluation> syncPoller = client.beginCreateEvaluation(evaluationOptions).getSyncPoller();
+        SyncPoller<CreateEvaluationOperationResult, PersonalizerEvaluation> syncPoller = client.beginCreateEvaluation(evaluationOptions).getSyncPoller();
         syncPoller.waitForCompletion();
 
         PersonalizerEvaluation evaluationResult = syncPoller.getFinalResult();

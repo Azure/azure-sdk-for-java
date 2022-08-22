@@ -44,10 +44,6 @@ public final class PersonalizerClientBuilder implements
     TokenCredentialTrait<PersonalizerClientBuilder> {
     private ClientLogger logger;
 
-    protected void setLogger(ClientLogger logger) {
-        this.logger = logger;
-    }
-
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
 
