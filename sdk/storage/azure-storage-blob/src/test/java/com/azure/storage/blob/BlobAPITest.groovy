@@ -226,6 +226,29 @@ class BlobAPITest extends APISpec {
             .getValue().getETag() != null
     }
 
+    def "Upload InputStream min"() {
+        when:
+        bc.upload(data.defaultInputStream)
+
+        then:
+        notThrown(Exception)
+        bc.downloadContent().toBytes() == data.defaultBytes
+    }
+
+    def "Upload input stream no length overwrite"() {
+        setup:
+        def randomData = getRandomByteArray(Constants.KB)
+        def input = new ByteArrayInputStream(randomData)
+
+        when:
+        bc.upload(input, true)
+
+        then:
+        def stream = new ByteArrayOutputStream()
+        bc.downloadWithResponse(stream, null, null, null, false, null, null)
+        stream.toByteArray() == randomData
+    }
+
     def "Upload InputStream no length"() {
         when:
         bc.uploadWithResponse(new BlobParallelUploadOptions(data.defaultInputStream), null, null)
