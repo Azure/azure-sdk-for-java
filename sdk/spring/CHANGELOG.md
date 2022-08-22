@@ -10,7 +10,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 - Fix bug: Cannot configure "azure" authorization client. [#30354](https://github.com/Azure/azure-sdk-for-java/issues/30354).
 - Fix parameter `requested_token_use` missing when using On behalf of process [#30359](https://github.com/Azure/azure-sdk-for-java/issues/30359).
 
-### Features Added
+#### Features Added
 - Support auto start-up for the auto-configuration of Service Bus Processor Client by enabling a new property of `spring.cloud.azure.servicebus.processor.auto-startup`. [#29997](https://github.com/Azure/azure-sdk-for-java/issues/29997)
 
 ## 4.3.0 (2022-06-29)
