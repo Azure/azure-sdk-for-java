@@ -17,7 +17,12 @@ public class JacksonJsonReader extends JsonReader {
 	private static MethodHandle jsonFactoryConstructor;
 	private static MethodHandle parserCurrentToken;
 	private static MethodHandle parserGetBoolean;
-	private static Class<?> jacksonTokenEnum = null;
+	private static MethodHandle parserGetFloatValue;
+	private static MethodHandle parserGetDoubleValue;
+	private static MethodHandle parserGetIntValue;
+	private static MethodHandle parserGetLongValue;
+	private static MethodHandle parserGetBinaryValue;
+	private static MethodHandle parserNextToken;
 	private static final MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
 	private static Object jsonFactory;
 	
@@ -60,10 +65,16 @@ public class JacksonJsonReader extends JsonReader {
             }
 		}
 		
-		jacksonTokenEnum = Class.forName("com.fasterxml.jackson.core.JsonToken");
+		Class<?> jacksonTokenEnum = Class.forName("com.fasterxml.jackson.core.JsonToken");
 		parserCurrentToken = publicLookup.findVirtual(jacksonJsonParser, "currentToken", methodType(jacksonTokenEnum));
 		parserGetBoolean = publicLookup.findVirtual(jacksonJsonParser, "getBooleanValue", methodType(boolean.class));
-    	initialized = true;
+		parserGetFloatValue = publicLookup.findVirtual(jacksonJsonParser, "getFloatValue", methodType(float.class));
+    	parserGetDoubleValue = publicLookup.findVirtual(jacksonJsonParser, "getDoubleValue", methodType(double.class));
+		parserGetIntValue = publicLookup.findVirtual(jacksonJsonParser, "getIntValue", methodType(int.class));
+    	parserGetLongValue = publicLookup.findVirtual(jacksonJsonParser, "getLongValue", methodType(long.class));
+		parserGetBinaryValue = publicLookup.findVirtual(jacksonJsonParser, "getBinaryValue", methodType(byte[].class));
+    	parserNextToken = publicLookup.findVirtual(jacksonJsonParser, "nextToken", methodType(jacksonTokenEnum));
+		initialized = true;	
     }
 
     @Override
@@ -81,12 +92,29 @@ public class JacksonJsonReader extends JsonReader {
 
     @Override
     public JsonToken nextToken() {
-        return null;
+    	try {
+    		// You cannot cast Jackson.core.JsonToken to Azure.
+			return (JsonToken) parserNextToken.invoke(jacksonParser);
+		} catch (Throwable e) {
+			if (e instanceof IOException) {
+				throw new UncheckedIOException ((IOException) e);
+			} else {
+				throw new RuntimeException(e);
+			}
+		}
     }
 
     @Override
     public byte[] getBinary() {
-        return new byte[0];
+    	try {
+			return (byte[]) parserGetBinaryValue.invoke(jacksonParser);
+		} catch (Throwable e) {
+			if (e instanceof IOException) {
+				throw new UncheckedIOException ((IOException) e);
+			} else {
+				throw new RuntimeException(e);
+			}
+		}
     }
 
     @Override
@@ -104,22 +132,54 @@ public class JacksonJsonReader extends JsonReader {
 
     @Override
     public float getFloat() {
-        return 0;
+        try {
+			return (float) parserGetFloatValue.invoke(jacksonParser);
+		} catch (Throwable e) {
+			if (e instanceof IOException) {
+				throw new UncheckedIOException ((IOException) e);
+			} else {
+				throw new RuntimeException(e);
+			}
+		}
     }
 
     @Override
     public double getDouble() {
-        return 0;
+    	try {
+			return (double) parserGetDoubleValue.invoke(jacksonParser);
+		} catch (Throwable e) {
+			if (e instanceof IOException) {
+				throw new UncheckedIOException ((IOException) e);
+			} else {
+				throw new RuntimeException(e);
+			}
+		}
     }
 
     @Override
     public int getInt() {
-        return 0;
+    	try {
+			return (int) parserGetIntValue.invoke(jacksonParser);
+		} catch (Throwable e) {
+			if (e instanceof IOException) {
+				throw new UncheckedIOException ((IOException) e);
+			} else {
+				throw new RuntimeException(e);
+			}
+		}
     }
 
     @Override
     public long getLong() {
-        return 0;
+    	try {
+			return (long) parserGetLongValue.invoke(jacksonParser);
+		} catch (Throwable e) {
+			if (e instanceof IOException) {
+				throw new UncheckedIOException ((IOException) e);
+			} else {
+				throw new RuntimeException(e);
+			}
+		}
     }
 
     @Override
