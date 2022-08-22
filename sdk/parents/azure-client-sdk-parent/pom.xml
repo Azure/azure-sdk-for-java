@@ -291,7 +291,7 @@
       <plugin>
         <groupId>com.azure.tools</groupId>
         <artifactId>codesnippet-maven-plugin</artifactId>
-        <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+        <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
         <configuration>
           <skip>${codesnippet.skip}</skip>
           <readmeGlob>**/*.md</readmeGlob>
@@ -1547,6 +1547,28 @@
           </plugin>
         </plugins>
       </build>
+    </profile>
+
+    <profile>
+      <id>external-dependency-version-overrides</id>
+      <activation>
+        <property>
+          <name>env.AZURE_VERSION_OVERRIDE_TESTS</name>
+        </property>
+      </activation>
+      <repositories>
+        <repository>
+          <id>repository.spring.milestone</id>
+          <name>Spring Milestone Repository</name>
+          <url>https://repo.spring.io/milestone</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+        </repository>
+      </repositories>
     </profile>
   </profiles>
 </project>

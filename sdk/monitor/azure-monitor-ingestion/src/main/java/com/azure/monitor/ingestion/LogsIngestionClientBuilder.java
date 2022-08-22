@@ -33,6 +33,8 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
     private static final ClientLogger LOGGER = new ClientLogger(LogsIngestionClientBuilder.class);
     private final IngestionUsingDataCollectionRulesClientBuilder innerLogBuilder =
             new IngestionUsingDataCollectionRulesClientBuilder();
+    private String endpoint;
+    private TokenCredential tokenCredential;
 
     /**
      * Sets the log query endpoint.
@@ -44,6 +46,7 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
         try {
             new URL(endpoint);
             innerLogBuilder.endpoint(endpoint);
+            this.endpoint = endpoint;
             return this;
         } catch (MalformedURLException exception) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'endpoint' must be a valid URL.", exception));
@@ -134,6 +137,7 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
     @Override
     public LogsIngestionClientBuilder credential(TokenCredential tokenCredential) {
         innerLogBuilder.credential(tokenCredential);
+        this.tokenCredential = tokenCredential;
         return this;
     }
 
@@ -171,6 +175,12 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
      * @return An asynchronous {@link LogsIngestionAsyncClient}.
      */
     public LogsIngestionAsyncClient buildAsyncClient() {
+        if (endpoint == null) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException("endpoint is required to build the client."));
+        }
+        if (tokenCredential == null) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException("credential is required to build the client."));
+        }
         return new LogsIngestionAsyncClient(innerLogBuilder.buildAsyncClient());
     }
 
