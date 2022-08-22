@@ -6,11 +6,8 @@ package com.azure.core.http.rest;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.ContinuablePagedIterable;
-import com.azure.core.util.paging.PageRetriever;
 import com.azure.core.util.paging.SyncPageRetriever;
-import reactor.core.publisher.Mono;
 
-import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 

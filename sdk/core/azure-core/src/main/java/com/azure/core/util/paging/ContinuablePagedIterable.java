@@ -24,10 +24,10 @@ import java.util.stream.StreamSupport;
  * @see ContinuablePagedFlux
  */
 public class ContinuablePagedIterable<C, T, P extends ContinuablePage<C, T>> extends IterableStream<T> {
+    private static final ClientLogger LOGGER = new ClientLogger(ContinuablePagedIterable.class);
     private final ContinuablePagedFlux<C, T, P> pagedFlux;
     private final int batchSize;
-    private final Supplier<SyncPageRetriever<C, P>> syncPageRetrieverSupplier;
-    private static final ClientLogger LOGGER = new ClientLogger(ContinuablePagedFluxCore.class);
+    private final Supplier<SyncPageRetriever<C, P>> syncPageRetrieverProvider;
     final Integer defaultPageSize;
     private final Predicate<C> continuationPredicate;
 
@@ -37,33 +37,7 @@ public class ContinuablePagedIterable<C, T, P extends ContinuablePage<C, T>> ext
      * @param pagedFlux the paged flux use as iterable
      */
     public ContinuablePagedIterable(ContinuablePagedFlux<C, T, P> pagedFlux) {
-        super(pagedFlux);
-        this.syncPageRetrieverSupplier = null;
-        this.pagedFlux = pagedFlux;
-        this.batchSize = 1;
-        this.defaultPageSize = 1;
-        this.continuationPredicate = null;
-    }
-
-    /**
-     * Creates instance with the given {@link ContinuablePagedFlux}.
-     *
-     * @param syncPageRetrieverSupplier the paged retriever supplier
-     */
-    public ContinuablePagedIterable(Supplier<SyncPageRetriever<C, P>> syncPageRetrieverSupplier, Integer pageSize,
-                                    Predicate<C> continuationPredicate) {
-        super(new ContinuablePagedByItemIterable<>(syncPageRetrieverSupplier.get(), null,
-            continuationPredicate, pageSize));
-        this.continuationPredicate = continuationPredicate;
-        this.batchSize = 1;
-        this.pagedFlux = null;
-        this.syncPageRetrieverSupplier = Objects.requireNonNull(syncPageRetrieverSupplier,
-            "'syncPageRetrieverSupplier' function cannot be null.");
-        if (pageSize != null && pageSize <= 0) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("'pageSize' must be greater than 0 required but provided: " + pageSize));
-        }
-        this.defaultPageSize = pageSize;
+        this(pagedFlux, 1);
     }
 
     /**
@@ -76,9 +50,34 @@ public class ContinuablePagedIterable<C, T, P extends ContinuablePage<C, T>> ext
         super(pagedFlux);
         this.pagedFlux = pagedFlux;
         this.batchSize = batchSize;
-        this.syncPageRetrieverSupplier = null;
         this.defaultPageSize = 1;
         this.continuationPredicate = null;
+        this.syncPageRetrieverProvider = null;
+    }
+
+    /**
+     * Creates instance with the given {@link SyncPageRetriever provider}.
+     *
+     * @param syncPageRetrieverProvider A provider that returns {@link SyncPageRetriever}.
+     * @param pageSize The preferred page size.
+     * @param continuationPredicate A predicate which determines if paging should continue.
+     * @throws NullPointerException If {@code syncPageRetrieverProvider} is null.
+     * @throws IllegalArgumentException If {@code pageSize} is not null and is less than or equal to zero.
+     */
+    public ContinuablePagedIterable(Supplier<SyncPageRetriever<C, P>> syncPageRetrieverProvider, Integer pageSize,
+        Predicate<C> continuationPredicate) {
+        super(new ContinuablePagedByItemIterable<>(syncPageRetrieverProvider.get(), null,
+            continuationPredicate, pageSize));
+        this.syncPageRetrieverProvider = Objects.requireNonNull(syncPageRetrieverProvider,
+            "'syncPageRetrieverProvider' function cannot be null.");
+        if (pageSize != null && pageSize <= 0) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("'pageSize' must be greater than 0 required but provided: " + pageSize));
+        }
+        this.continuationPredicate = continuationPredicate;
+        this.defaultPageSize = pageSize;
+        this.pagedFlux = null;
+        this.batchSize = 1;
     }
 
     @Override
@@ -210,7 +209,7 @@ public class ContinuablePagedIterable<C, T, P extends ContinuablePage<C, T>> ext
     private Iterable<P> iterableByPageInternal(C continuationToken, Integer preferredPageSize,
         Supplier<Iterable<P>> nonPagedFluxCoreIterableSupplier) {
         if (pagedFlux == null) {
-            return new ContinuablePagedByPageIterable<>(syncPageRetrieverSupplier.get(), continuationToken,
+            return new ContinuablePagedByPageIterable<>(syncPageRetrieverProvider.get(), continuationToken,
                 this.continuationPredicate, preferredPageSize);
         }
         if (pagedFlux instanceof ContinuablePagedFluxCore) {
@@ -224,7 +223,7 @@ public class ContinuablePagedIterable<C, T, P extends ContinuablePage<C, T>> ext
 
     private Iterable<T> iterableByItemInternal() {
         if (pagedFlux == null) {
-            return new ContinuablePagedByItemIterable<>(this.syncPageRetrieverSupplier.get(), null,
+            return new ContinuablePagedByItemIterable<>(this.syncPageRetrieverProvider.get(), null,
                 this.continuationPredicate, null);
         }
         if (pagedFlux instanceof ContinuablePagedFluxCore) {

@@ -128,13 +128,16 @@ abstract class ContinuablePagedByIteratorBase<C, T, P extends ContinuablePage<C,
 
         AtomicBoolean receivedPages = new AtomicBoolean(false);
 
-        syncPageRetriever.getIterable(continuationState.getLastContinuationToken(), defaultPageSize).forEach(p -> {
-            receivedPages.set(true);
-            addPage(p);
+        syncPageRetriever
+            .getIterable(continuationState.getLastContinuationToken(), defaultPageSize)
+            .forEach(page -> {
 
-            continuationState.setLastContinuationToken(p.getContinuationToken());
-            this.done = continuationState.isDone();
-        });
+                receivedPages.set(true);
+                addPage(page);
+
+                continuationState.setLastContinuationToken(page.getContinuationToken());
+                this.done = continuationState.isDone();
+            });
 
         /*
          * In the scenario when the subscription completes without emitting an element indicate we are done by checking
