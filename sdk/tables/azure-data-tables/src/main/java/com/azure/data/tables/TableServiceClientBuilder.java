@@ -147,8 +147,8 @@ public final class TableServiceClientBuilder implements
 
         AzureNamedKeyCredential namedKeyCredential = null;
 
-        // If 'endpoint' was provided, validate its format to end with the appropriate suffix
-        if (endpoint != null) {
+        // If 'endpoint' was provided and reflects Storage acct., validate its format to end with the appropriate suffix
+        if (endpoint != null && endpoint.contains(suffix)) {
             String trimmedEndpoint = endpoint.endsWith("/") ? endpoint.substring(0, endpoint.length() - 1) : endpoint;
             if (!trimmedEndpoint.endsWith(suffix)) {
                 throw logger.logExceptionAsError(
