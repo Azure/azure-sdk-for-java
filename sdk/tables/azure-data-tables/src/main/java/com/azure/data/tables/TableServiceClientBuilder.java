@@ -81,6 +81,7 @@ public final class TableServiceClientBuilder implements
     HttpTrait<TableServiceClientBuilder>,
     ConfigurationTrait<TableServiceClientBuilder>,
     EndpointTrait<TableServiceClientBuilder> {
+    static private final String suffix = "core.windows.net";
     private final ClientLogger logger = new ClientLogger(TableServiceClientBuilder.class);
     private final SerializerAdapter serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -145,6 +146,15 @@ public final class TableServiceClientBuilder implements
             logger);
 
         AzureNamedKeyCredential namedKeyCredential = null;
+
+        // If 'endpoint' was provided, validate its format to end with the appropriate suffix
+        if (endpoint != null) {
+            String trimmedEndpoint = endpoint.endsWith("/") ? endpoint.substring(0,endpoint.length()-1) : endpoint;
+            if (!trimmedEndpoint.endsWith(suffix)) {
+                throw logger.logExceptionAsError(new IllegalArgumentException("The 'endpoint' provided is not valid." +
+                    " Please try re-creating the TableServiceClient with just the account Uri."));
+            }
+        }
 
         // If 'connectionString' was provided, extract the endpoint and sasToken.
         if (connectionString != null) {
