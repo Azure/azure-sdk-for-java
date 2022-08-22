@@ -69,7 +69,7 @@ public final class PhoneNumberSearchOptions {
 
     /**
      * Sets the administrative division property.  Examples of a administrative division are state and province. This is applied only on geographic phone number searches.
-     * @param admiinstrativeDivision the quantity to set.
+     * @param adminstrativeDivision the quantity to set.
      * @return the PhoneNumberSearchOptions object itself.
      */
     public PhoneNumberSearchOptions setAdministrativeDivision(String administrativeDivision) {
