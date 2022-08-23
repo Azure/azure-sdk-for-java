@@ -324,6 +324,23 @@ class FileSystemAPITest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
+    def "Exists"() {
+        when:
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+        fsc.create()
+
+        then:
+        fsc.exists()
+    }
+
+    def "Exists not exists"() {
+        when:
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+
+        then:
+        !fsc.exists()
+    }
+
     def "Set metadata"() {
         setup:
         fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExpirationAction. */
+/** The SAS expiration action. Can only be Log. */
 public final class ExpirationAction extends ExpandableStringEnum<ExpirationAction> {
     /** Static value Log for ExpirationAction. */
     public static final ExpirationAction LOG = fromString("Log");

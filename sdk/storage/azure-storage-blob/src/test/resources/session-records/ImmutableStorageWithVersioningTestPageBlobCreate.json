@@ -83,7 +83,7 @@
       "x-ms-version" : "2020-10-02",
       "x-ms-lease-status" : "unlocked",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-immutability-policy-until-date" : "Wed, 11 Aug 2021 17:11:30 GMT",
+      "x-ms-immutability-policy-until-date" : "Fri, 13 Aug 2021 17:11:28 GMT",
       "x-ms-lease-state" : "available",
       "x-ms-blob-sequence-number" : "0",
       "Last-Modified" : "Wed, 11 Aug 2021 17:11:28 GMT",

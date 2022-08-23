@@ -6,11 +6,13 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.WritableByteChannel;
@@ -20,6 +22,8 @@ import java.util.Objects;
  * REST response with a streaming content.
  */
 public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> implements Closeable {
+    private static final ClientLogger LOGGER = new ClientLogger(StreamResponse.class);
+
     private volatile boolean consumed;
     private final HttpResponse response;
 
@@ -82,14 +86,18 @@ public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> imple
     /**
      * Transfers content bytes to the {@link WritableByteChannel}.
      * @param channel The destination {@link WritableByteChannel}.
-     * @throws IOException When I/O operation fails.
+     * @throws UncheckedIOException When I/O operation fails.
      */
-    public void writeValueTo(WritableByteChannel channel) throws IOException {
+    public void writeValueTo(WritableByteChannel channel) {
         Objects.requireNonNull(channel, "'channel' must not be null");
         if (response == null) {
             FluxUtil.writeToWritableByteChannel(getValue(), channel).block();
         } else {
-            response.writeBodyTo(channel);
+            try {
+                response.writeBodyTo(channel);
+            } catch (IOException ex) {
+                throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+            }
         }
     }
 

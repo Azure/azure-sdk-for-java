@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CacheType. */
+/** The level at which the content needs to be cached. */
 public final class CacheType extends ExpandableStringEnum<CacheType> {
     /** Static value All for CacheType. */
     public static final CacheType ALL = fromString("All");
@@ -24,7 +24,11 @@ public final class CacheType extends ExpandableStringEnum<CacheType> {
         return fromString(name, CacheType.class);
     }
 
-    /** @return known CacheType values. */
+    /**
+     * Gets known CacheType values.
+     *
+     * @return known CacheType values.
+     */
     public static Collection<CacheType> values() {
         return values(CacheType.class);
     }

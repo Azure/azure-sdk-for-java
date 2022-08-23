@@ -12,6 +12,10 @@ import com.azure.storage.blob.BlobContainerClient
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.ParallelTransferOptions
+import com.azure.storage.common.sas.AccountSasPermission
+import com.azure.storage.common.sas.AccountSasResourceType
+import com.azure.storage.common.sas.AccountSasService
+import com.azure.storage.common.sas.AccountSasSignatureValues
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.datalake.models.DataLakeAnalyticsLogging
@@ -682,6 +686,50 @@ class ServiceAPITest extends APISpec {
 
         then:
         thrown(DataLakeStorageException.class)
+    }
+
+    def "Set connection string on service client builder"() {
+        setup:
+        def connectionString = environment.primaryAccount.connectionString
+        def serviceClientBuilder = getServiceClientBuilder(environment.dataLakeAccount.credential, primaryDataLakeServiceClient.getAccountUrl())
+
+        serviceClientBuilder.connectionString(connectionString)
+
+        when:
+        serviceClientBuilder.buildClient()
+
+        then:
+        notThrown(IllegalArgumentException)
+    }
+
+    def "Set connection string with sas on service client builder"() {
+        setup:
+        def service = new AccountSasService()
+            .setBlobAccess(true)
+        def resourceType = new AccountSasResourceType()
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
+        def permissions = new AccountSasPermission()
+            .setReadPermission(true)
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+        def sas = primaryDataLakeServiceClient.generateAccountSas(sasValues)
+
+        def connectionString = String.format("BlobEndpoint=%s;SharedAccessSignature=%s;",
+            environment.primaryAccount.blobEndpoint,
+            "?" + sas)
+
+        def serviceClientBuilder = getServiceClientBuilder(environment.dataLakeAccount.credential, primaryDataLakeServiceClient.getAccountUrl())
+
+        serviceClientBuilder.connectionString(connectionString)
+
+        when:
+        serviceClientBuilder.buildClient()
+
+        then:
+        notThrown(IllegalArgumentException)
     }
 
 //    def "Rename file system"() {

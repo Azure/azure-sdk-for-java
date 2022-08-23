@@ -6,14 +6,11 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Input of the custom domain to be validated for DNS mapping. */
 @Fluent
 public final class ValidateCustomDomainInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ValidateCustomDomainInput.class);
-
     /*
      * The host name of the custom domain. Must be a domain name.
      */
@@ -47,10 +44,12 @@ public final class ValidateCustomDomainInput {
      */
     public void validate() {
         if (hostname() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property hostname in model ValidateCustomDomainInput"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ValidateCustomDomainInput.class);
 }

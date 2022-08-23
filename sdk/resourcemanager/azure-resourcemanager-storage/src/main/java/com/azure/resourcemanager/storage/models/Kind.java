@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Kind. */
+/** Indicates the type of storage account. */
 public final class Kind extends ExpandableStringEnum<Kind> {
     /** Static value Storage for Kind. */
     public static final Kind STORAGE = fromString("Storage");

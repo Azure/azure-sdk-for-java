@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SpatialType. */
+/** Indicates the spatial type of index. */
 public final class SpatialType extends ExpandableStringEnum<SpatialType> {
     /** Static value Point for SpatialType. */
     public static final SpatialType POINT = fromString("Point");

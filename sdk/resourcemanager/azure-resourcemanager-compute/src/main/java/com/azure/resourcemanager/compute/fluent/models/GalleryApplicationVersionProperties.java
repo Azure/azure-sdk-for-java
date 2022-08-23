@@ -21,8 +21,9 @@ public final class GalleryApplicationVersionProperties {
     private GalleryApplicationVersionPublishingProfile publishingProfile;
 
     /*
-     * The current state of the gallery or gallery artifact. The provisioning
-     * state, which only appears in the response.
+     * The current state of the gallery or gallery artifact.
+     *
+     * The provisioning state, which only appears in the response.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private GalleryProvisioningState provisioningState;
@@ -55,8 +56,9 @@ public final class GalleryApplicationVersionProperties {
     }
 
     /**
-     * Get the provisioningState property: The current state of the gallery or gallery artifact. The provisioning state,
-     * which only appears in the response.
+     * Get the provisioningState property: The current state of the gallery or gallery artifact.
+     *
+     * <p>The provisioning state, which only appears in the response.
      *
      * @return the provisioningState value.
      */

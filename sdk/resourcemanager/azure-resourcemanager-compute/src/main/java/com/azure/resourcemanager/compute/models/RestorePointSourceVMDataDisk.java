@@ -29,8 +29,7 @@ public final class RestorePointSourceVMDataDisk {
     private CachingTypes caching;
 
     /*
-     * Gets the initial disk size in GB for blank data disks, and the new
-     * desired size for existing OS and Data disks.
+     * Gets the initial disk size in GB for blank data disks, and the new desired size for existing OS and Data disks.
      */
     @JsonProperty(value = "diskSizeGB")
     private Integer diskSizeGB;

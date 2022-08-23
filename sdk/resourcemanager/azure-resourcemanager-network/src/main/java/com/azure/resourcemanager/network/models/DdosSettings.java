@@ -18,8 +18,8 @@ public final class DdosSettings {
     private SubResource ddosCustomPolicy;
 
     /*
-     * The DDoS protection policy customizability of the public IP. Only
-     * standard coverage will have the ability to be customized.
+     * The DDoS protection policy customizability of the public IP. Only standard coverage will have the ability to be
+     * customized.
      */
     @JsonProperty(value = "protectionCoverage")
     private DdosSettingsProtectionCoverage protectionCoverage;

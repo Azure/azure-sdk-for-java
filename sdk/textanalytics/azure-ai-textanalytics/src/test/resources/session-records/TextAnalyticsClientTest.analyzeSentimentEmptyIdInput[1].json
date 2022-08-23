@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-04-01-preview&showStats=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-05-01&showStats=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.3 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "bdd77873-5818-4728-ae4b-0d753d293ed2",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.4 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "11d09145-a96f-4ae7-a8c2-50c43bb1d39b",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -12,11 +12,11 @@
       "x-envoy-upstream-service-time" : "5",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "6f9e47f0-8919-48f0-9045-498042176370",
+      "apim-request-id" : "73765a7c-fff9-4631-8c8b-e47d46da2377",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Invalid Document in request.\",\"innererror\":{\"code\":\"InvalidDocument\",\"message\":\"At least one document is missing an Id attribute.\"}}}",
-      "Date" : "Fri, 06 May 2022 17:45:34 GMT",
+      "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Invalid Document in request.\",\"innererror\":{\"code\":\"InvalidDocument\",\"message\":\"At least one input is missing an Id attribute.\"}}}",
+      "Date" : "Fri, 05 Aug 2022 20:35:16 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

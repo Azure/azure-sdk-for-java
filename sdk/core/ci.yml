@@ -171,6 +171,27 @@ extends:
         releaseInBatch: ${{ parameters.release_azurejsongson }}
     MatrixReplace:
       - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
+    AdditionalStagesAfterBuild:
+      - stage: JacksonUnsupportedVersions
+        displayName: 'Jackson Unsupported Versions'
+        dependsOn: []
+        jobs:
+          - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
+            parameters:
+              JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
+              MatrixConfigs:
+                - Name: jackson_unsupported_version_tests
+                  Path: sdk/core/unsupported-version-matrix.json
+                  Selection: sparse
+                  NonSparseParameters:
+                    - AZURE_CORE_TEST_UNSUPPORTED_JACKSON_VERSION
+                  GenerateVMJobs: true
+              AdditionalParameters:
+                ServiceDirectory: core
+                Artifacts:
+                  - name: azure-core-jackson-tests
+                    groupId: com.azure
+                    safeName: azurecorejacksontests
     LiveTestStages:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
         parameters:
@@ -226,36 +247,11 @@ extends:
               safeName: azurejsongson
           MatrixReplace:
             - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
-      - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
-        parameters:
-          ServiceDirectory: core
-          TestName: 'jackson_supported_versions'
-          MatrixConfigs:
-            - Name: jackson_supported_version_tests
-              Path: sdk/core/supported-version-matrix.json
-              Selection: sparse
-              NonSparseParameters:
-                - AZURE_CORE_TEST_SUPPORTED_JACKSON_VERSION
+          AdditionalMatrixConfigs:
+            - Name: version_overrides_tests
+              Path: sdk/core/version-overrides-matrix.json
+              Selection: all
               GenerateVMJobs: true
-          Artifacts:
-            - name: azure-core-jackson-tests
-              groupId: com.azure
-              safeName: azurecorejacksontests
-      - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
-        parameters:
-          ServiceDirectory: core
-          TestName: 'jackson_unsupported_versions'
-          MatrixConfigs:
-            - Name: jackson_unsupported_version_tests
-              Path: sdk/core/unsupported-version-matrix.json
-              Selection: sparse
-              NonSparseParameters:
-                - AZURE_CORE_TEST_UNSUPPORTED_JACKSON_VERSION
-              GenerateVMJobs: true
-          Artifacts:
-            - name: azure-core-jackson-tests
-              groupId: com.azure
-              safeName: azurecorejacksontests
       - template: /sdk/storage/tests-template.yml
         parameters:
           AdditionalMatrixReplace:

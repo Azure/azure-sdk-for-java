@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Vaults Delete. */
 public final class VaultsDeleteSamples {
     /*
-     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2019-09-01/examples/deleteVault.json
+     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/deleteVault.json
      */
     /**
      * Sample code: Delete a vault.

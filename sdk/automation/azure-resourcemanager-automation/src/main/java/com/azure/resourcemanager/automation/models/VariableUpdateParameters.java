@@ -5,17 +5,12 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.automation.fluent.models.VariableUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters supplied to the update variable operation. */
-@JsonFlatten
 @Fluent
-public class VariableUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VariableUpdateParameters.class);
-
+public final class VariableUpdateParameters {
     /*
      * Gets or sets the name of the variable.
      */
@@ -25,14 +20,8 @@ public class VariableUpdateParameters {
     /*
      * Gets or sets the value of the variable.
      */
-    @JsonProperty(value = "properties.value")
-    private String value;
-
-    /*
-     * Gets or sets the description of the variable.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    @JsonProperty(value = "properties")
+    private VariableUpdateProperties innerProperties;
 
     /**
      * Get the name property: Gets or sets the name of the variable.
@@ -55,12 +44,21 @@ public class VariableUpdateParameters {
     }
 
     /**
+     * Get the innerProperties property: Gets or sets the value of the variable.
+     *
+     * @return the innerProperties value.
+     */
+    private VariableUpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the value property: Gets or sets the value of the variable.
      *
      * @return the value value.
      */
     public String value() {
-        return this.value;
+        return this.innerProperties() == null ? null : this.innerProperties().value();
     }
 
     /**
@@ -70,7 +68,10 @@ public class VariableUpdateParameters {
      * @return the VariableUpdateParameters object itself.
      */
     public VariableUpdateParameters withValue(String value) {
-        this.value = value;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VariableUpdateProperties();
+        }
+        this.innerProperties().withValue(value);
         return this;
     }
 
@@ -80,7 +81,7 @@ public class VariableUpdateParameters {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -90,7 +91,10 @@ public class VariableUpdateParameters {
      * @return the VariableUpdateParameters object itself.
      */
     public VariableUpdateParameters withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VariableUpdateProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -100,5 +104,8 @@ public class VariableUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

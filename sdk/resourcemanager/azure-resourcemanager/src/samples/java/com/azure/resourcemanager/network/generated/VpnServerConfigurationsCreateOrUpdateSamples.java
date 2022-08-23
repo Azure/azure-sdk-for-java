@@ -29,7 +29,7 @@ import java.util.Map;
 /** Samples for VpnServerConfigurations CreateOrUpdate. */
 public final class VpnServerConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VpnServerConfigurationPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-01-01/examples/VpnServerConfigurationPut.json
      */
     /**
      * Sample code: VpnServerConfigurationCreate.

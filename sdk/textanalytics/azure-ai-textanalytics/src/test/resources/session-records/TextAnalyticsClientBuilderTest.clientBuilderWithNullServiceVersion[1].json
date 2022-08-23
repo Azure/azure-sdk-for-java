@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-04-01-preview&showStats=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-05-01&showStats=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.3 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "4ac631da-f104-4428-a7e3-d7a0b4d030e3",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.4 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "079c2cd5-c4e0-4449-a44d-38f8025652d2",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "205",
-      "x-envoy-upstream-service-time" : "7",
+      "x-envoy-upstream-service-time" : "8",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
       "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1,CognitiveServices.TextAnalytics.TextRecords=1",
-      "apim-request-id" : "1e366a6e-8307-46e8-9e11-17c5511117c6",
+      "apim-request-id" : "b2fbe56d-550e-41a3-99b5-cfbecc503d88",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"kind\":\"LanguageDetectionResults\",\"results\":{\"documents\":[{\"id\":\"0\",\"detectedLanguage\":{\"name\":\"English\",\"iso6391Name\":\"en\",\"confidenceScore\":1.0},\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-11-20\"}}",
-      "Date" : "Fri, 06 May 2022 18:00:06 GMT",
+      "Date" : "Fri, 05 Aug 2022 20:49:54 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

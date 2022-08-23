@@ -18,8 +18,7 @@ public final class VirtualMachineExtensionInstanceView {
     private String name;
 
     /*
-     * Specifies the type of the extension; an example is
-     * "CustomScriptExtension".
+     * Specifies the type of the extension; an example is "CustomScriptExtension".
      */
     @JsonProperty(value = "type")
     private String type;

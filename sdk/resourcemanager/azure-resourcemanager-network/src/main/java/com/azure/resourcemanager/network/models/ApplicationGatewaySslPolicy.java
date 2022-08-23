@@ -30,8 +30,7 @@ public final class ApplicationGatewaySslPolicy {
     private ApplicationGatewaySslPolicyName policyName;
 
     /*
-     * Ssl cipher suites to be enabled in the specified order to application
-     * gateway.
+     * Ssl cipher suites to be enabled in the specified order to application gateway.
      */
     @JsonProperty(value = "cipherSuites")
     private List<ApplicationGatewaySslCipherSuite> cipherSuites;
