@@ -66,7 +66,7 @@ public class JacksonJsonReader extends JsonReader {
             }
 		}
 		
-		Class<?> jacksonTokenEnum =  Class.forName("com.fasterxml.jackson.core.JsonToken");
+		jacksonTokenEnum =  Class.forName("com.fasterxml.jackson.core.JsonToken");
 		parserCurrentToken = publicLookup.findVirtual(jacksonJsonParser, "currentToken", methodType(jacksonTokenEnum));
 		parserGetBoolean = publicLookup.findVirtual(jacksonJsonParser, "getBooleanValue", methodType(boolean.class));
 		parserGetFloatValue = publicLookup.findVirtual(jacksonJsonParser, "getFloatValue", methodType(float.class));
