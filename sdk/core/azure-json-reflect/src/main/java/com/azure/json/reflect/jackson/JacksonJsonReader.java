@@ -25,6 +25,7 @@ public class JacksonJsonReader extends JsonReader {
 	private static MethodHandle parserNextToken;
 	private static final MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
 	private static Object jsonFactory;
+	private static Class<?> jacksonTokenEnum = null;
 	
 	private final Object jacksonParser;
 	
@@ -65,7 +66,7 @@ public class JacksonJsonReader extends JsonReader {
             }
 		}
 		
-		Class<?> jacksonTokenEnum = Class.forName("com.fasterxml.jackson.core.JsonToken");
+		Class<?> jacksonTokenEnum =  Class.forName("com.fasterxml.jackson.core.JsonToken");
 		parserCurrentToken = publicLookup.findVirtual(jacksonJsonParser, "currentToken", methodType(jacksonTokenEnum));
 		parserGetBoolean = publicLookup.findVirtual(jacksonJsonParser, "getBooleanValue", methodType(boolean.class));
 		parserGetFloatValue = publicLookup.findVirtual(jacksonJsonParser, "getFloatValue", methodType(float.class));
@@ -80,7 +81,7 @@ public class JacksonJsonReader extends JsonReader {
     @Override
     public JsonToken currentToken() {
         try {
-			return (JsonToken) parserCurrentToken.invoke(jacksonParser);
+			return mapToken((Enum<?>) parserCurrentToken.invoke(jacksonParser));
 		} catch (Throwable e) {
 			if (e instanceof IOException) {
                 throw new UncheckedIOException((IOException) e);
@@ -93,8 +94,7 @@ public class JacksonJsonReader extends JsonReader {
     @Override
     public JsonToken nextToken() {
     	try {
-    		// You cannot cast Jackson.core.JsonToken to Azure.
-			return (JsonToken) parserNextToken.invoke(jacksonParser);
+			return mapToken((Enum<?>) parserNextToken.invoke(jacksonParser));
 		} catch (Throwable e) {
 			if (e instanceof IOException) {
 				throw new UncheckedIOException ((IOException) e);
@@ -215,5 +215,35 @@ public class JacksonJsonReader extends JsonReader {
     @Override
     public void close() throws IOException {
 
+    }
+    
+    /*
+     * Maps the Jackson JsonToken to Azure JsonToken
+     * You cannot explicitly cast them
+     */
+    private JsonToken mapToken(Enum<?> token) {
+    	if (token == null) {
+    		return null;
+    	}
+    	
+    	if (token.getClass() != jacksonTokenEnum) {
+    		throw new IllegalStateException("Unsupported enum, pass a Jackson JsonToken");
+    	}
+    	
+    	return switch(token.name()) {
+    		case "END_ARRAY" -> JsonToken.END_ARRAY;
+    		case "END_OBJECT" -> JsonToken.END_OBJECT;
+    		case "FIELD_NAME" -> JsonToken.FIELD_NAME;
+    		case "NOT_AVAILABLE" -> JsonToken.NULL;
+    		case "START_ARRAY" -> JsonToken.START_ARRAY;
+    		case "START_OBJECT" -> JsonToken.START_OBJECT;
+    		case "VALUE_FALSE" -> JsonToken.BOOLEAN;
+    		case "VALUE_NULL" -> JsonToken.NULL;
+    		case "VALUE_NUMBER_FLOAT" -> JsonToken.NUMBER;
+    		case "VALUE_NUMBER_INT" -> JsonToken.NUMBER;
+    		case "VALUE_STRING" -> JsonToken.STRING;
+    		case "VALUE_TRUE" -> JsonToken.BOOLEAN;
+    		default -> throw new IllegalStateException("Unsupported token type: '" + token + "'.");
+    	};
     }
 }
