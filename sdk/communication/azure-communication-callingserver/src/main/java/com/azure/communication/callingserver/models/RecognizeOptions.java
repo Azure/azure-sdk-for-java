@@ -5,6 +5,7 @@ package com.azure.communication.callingserver.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/** Options to configure the Recognize operation **/
 public class RecognizeOptions {
     /*
      * Determines the type of the recognition.

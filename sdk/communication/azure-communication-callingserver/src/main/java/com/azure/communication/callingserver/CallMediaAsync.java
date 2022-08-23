@@ -112,19 +112,24 @@ public class CallMediaAsync {
     }
 
     /**
-     * Recognize tones.
+     * Recognize operation.
      * @param recognizeOptions Different attributes for recognize.
-     * @return Void
+     * @return Response for successful recognize request.
      */
     public Mono<Void> recognize(RecognizeOptions recognizeOptions) {
         return recognizeWithResponse(recognizeOptions).then();
     }
 
+    /**
+     * Recognize operation
+     * @param recognizeOptions Different attributes for recognize.
+     * @return Response for successful recognize request.
+     */
     public Mono<Response<Void>> recognizeWithResponse(RecognizeOptions recognizeOptions) {
         return withContext(context -> recognizeWithResponseInternal(recognizeOptions, context));
     }
 
-    public Mono<Response<Void>> recognizeWithResponseInternal(RecognizeOptions recognizeOptions, Context context) {
+    Mono<Response<Void>> recognizeWithResponseInternal(RecognizeOptions recognizeOptions, Context context) {
         try {
             context = context == null ? Context.NONE : context;
 
@@ -136,7 +141,7 @@ public class CallMediaAsync {
                     .setMaxTonesToCollect(dtmfConfigurations.getMaxTonesToCollect());
 
                 if (dtmfConfigurations.getInterToneTimeoutInSeconds() != null) {
-                    dtmfConfigurationsInternal.setInterToneTimeoutInSeconds((int)dtmfConfigurations.getInterToneTimeoutInSeconds().getSeconds());
+                    dtmfConfigurationsInternal.setInterToneTimeoutInSeconds((int) dtmfConfigurations.getInterToneTimeoutInSeconds().getSeconds());
                 }
                 if (dtmfConfigurations.getStopTones() != null) {
                     dtmfConfigurationsInternal
@@ -151,7 +156,7 @@ public class CallMediaAsync {
                 .setInterruptPromptAndStartRecognition(recognizeConfigurations.isInterruptPromptAndStartRecognition())
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(recognizeConfigurations.getTargetParticipant()));
             if (recognizeConfigurations.getInitialSilenceTimeoutInSeconds() != null) {
-                recognizeConfigurationsInternal.setInitialSilenceTimeoutInSeconds((int)recognizeConfigurations.getInitialSilenceTimeoutInSeconds().getSeconds());
+                recognizeConfigurationsInternal.setInitialSilenceTimeoutInSeconds((int) recognizeConfigurations.getInitialSilenceTimeoutInSeconds().getSeconds());
             }
 
             PlaySourceInternal playSourceInternal = null;
