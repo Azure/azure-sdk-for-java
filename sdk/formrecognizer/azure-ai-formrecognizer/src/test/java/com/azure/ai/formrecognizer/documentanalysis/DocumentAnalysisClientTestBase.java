@@ -354,8 +354,8 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         assertNotNull(analyzeResult.getDocuments());
         assertEquals(1, analyzeResult.getDocuments().size());
         Map<String, DocumentField> invoicePage1Fields = analyzeResult.getDocuments().get(0).getFields();
-        assertEquals("1020 Enterprise Way\n" +
-            "Sunnayvale, CA 87659", invoicePage1Fields.get("CustomerAddress")
+        assertEquals("1020 Enterprise Way\n"
+            + "Sunnayvale, CA 87659", invoicePage1Fields.get("CustomerAddress")
             .getValueAsAddress().getStreetAddress());
         assertNotNull(invoicePage1Fields.get("CustomerAddress").getConfidence());
         assertEquals("Microsoft", invoicePage1Fields.get("CustomerAddressRecipient")

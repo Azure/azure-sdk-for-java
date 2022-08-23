@@ -603,21 +603,20 @@ public class Transforms {
                 DocumentModelOperationDetailsHelper.setResult(documentModelOperationDetails,
                     composeOperationDetails == null ? null : toDocumentModelDetails(composeOperationDetails));
             }
+            DocumentModelOperationDetailsHelper.setOperationId(documentModelOperationDetails, operationDetails.getOperationId());
+            DocumentModelOperationDetailsHelper.setCreatedOn(documentModelOperationDetails, operationDetails.getCreatedDateTime());
+            // operationDetails does not return kind?
+            // DocumentModelOperationDetailsHelper.setKind(documentModelOperationDetails,
+            //     ModelOperationKind.fromString(operationDetails.getKind().toString()));
+            DocumentModelOperationDetailsHelper.setLastUpdatedOn(documentModelOperationDetails, operationDetails.getLastUpdatedDateTime());
+            DocumentModelOperationDetailsHelper.setPercentCompleted(documentModelOperationDetails,
+                operationDetails.getPercentCompleted() == null ? Integer.valueOf(0)
+                    : operationDetails.getPercentCompleted());
+            DocumentModelOperationDetailsHelper.setStatus(documentModelOperationDetails,
+                ModelOperationStatus.fromString(operationDetails.getStatus().toString()));
+            DocumentModelOperationDetailsHelper.setResourceLocation(documentModelOperationDetails, operationDetails.getResourceLocation());
+            DocumentModelOperationDetailsHelper.setError(documentModelOperationDetails, toResponseError(operationDetails.getError()));
         }
-        DocumentModelOperationDetailsHelper.setOperationId(documentModelOperationDetails, operationDetails.getOperationId());
-        DocumentModelOperationDetailsHelper.setCreatedOn(documentModelOperationDetails, operationDetails.getCreatedDateTime());
-        // operationDetails does not return kind?
-        // DocumentModelOperationDetailsHelper.setKind(documentModelOperationDetails,
-        //     ModelOperationKind.fromString(operationDetails.getKind().toString()));
-        DocumentModelOperationDetailsHelper.setLastUpdatedOn(documentModelOperationDetails, operationDetails.getLastUpdatedDateTime());
-        DocumentModelOperationDetailsHelper.setPercentCompleted(documentModelOperationDetails,
-            operationDetails.getPercentCompleted() == null ? Integer.valueOf(0)
-                : operationDetails.getPercentCompleted());
-        DocumentModelOperationDetailsHelper.setStatus(documentModelOperationDetails,
-            ModelOperationStatus.fromString(operationDetails.getStatus().toString()));
-        DocumentModelOperationDetailsHelper.setResourceLocation(documentModelOperationDetails, operationDetails.getResourceLocation());
-        DocumentModelOperationDetailsHelper.setError(documentModelOperationDetails, toResponseError(operationDetails.getError()));
-
         return documentModelOperationDetails;
     }
 
@@ -634,8 +633,8 @@ public class Transforms {
                 DocumentModelOperationSummaryHelper.setPercentCompleted(documentModelOperationSummary,
                     operationSummaryItem.getPercentCompleted() == null ? Integer.valueOf(0)
                         : operationSummaryItem.getPercentCompleted());
-                DocumentModelOperationSummaryHelper.setStatus(documentModelOperationSummary, operationSummaryItem.getStatus() == null ?
-                    null : ModelOperationStatus.fromString(operationSummaryItem.getStatus().toString()));
+                DocumentModelOperationSummaryHelper.setStatus(documentModelOperationSummary, operationSummaryItem.getStatus() == null
+                    ? null : ModelOperationStatus.fromString(operationSummaryItem.getStatus().toString()));
                 DocumentModelOperationSummaryHelper.setResourceLocation(documentModelOperationSummary, operationSummaryItem.getResourceLocation());
                 DocumentModelOperationSummaryHelper.setTags(documentModelOperationSummary, operationSummaryItem.getTags());
                 return documentModelOperationSummary;
