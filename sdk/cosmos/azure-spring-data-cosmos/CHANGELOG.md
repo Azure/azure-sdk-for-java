@@ -1,5 +1,15 @@
 ## Release History
 
+### 3.27.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
 ### 3.26.0 (2022-08-19)
 #### Features Added
 * Added support for NOT CONTAINS. - See [PR 30379](https://github.com/Azure/azure-sdk-for-java/pull/30379)
