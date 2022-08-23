@@ -3,8 +3,8 @@
 
 package com.azure.identity.providers.mysql;
 
-import com.azure.identity.providers.jdbc.enums.AuthProperty;
-import com.azure.identity.providers.jdbc.template.AzureAuthenticationTemplate;
+import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
+import com.azure.identity.providers.jdbc.implementation.template.AzureAuthenticationTemplate;
 import com.mysql.cj.conf.PropertySet;
 import com.mysql.cj.protocol.Protocol;
 import com.mysql.cj.protocol.a.NativePacketPayload;
@@ -40,9 +40,8 @@ class AzureIdentityMysqlAuthenticationPluginTest {
     }
 
     @Test
-    void testThrowIllegalStateException() {
+    void testTokenAsPasswordAsyncWithoutInit() {
         AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
-        new AzureIdentityMysqlAuthenticationPlugin(template);
         assertThrows(IllegalStateException.class, () -> template.getTokenAsPasswordAsync());
     }
 

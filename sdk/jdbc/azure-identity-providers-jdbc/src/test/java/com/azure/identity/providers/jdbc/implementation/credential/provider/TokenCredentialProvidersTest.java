@@ -12,7 +12,7 @@ class TokenCredentialProvidersTest {
     private static final String SPRING_TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME = SpringTokenCredentialProviderTest.class.getName();
 
     @Test
-    void shouldCreateDefaultTokenCredentialProvider() {
+    void testOptionsIsNull() {
         TokenCredentialProvider credentialProvider = TokenCredentialProviders.createInstance(null);
         Assertions.assertTrue(credentialProvider instanceof DefaultTokenCredentialProvider);
     }
@@ -24,7 +24,7 @@ class TokenCredentialProvidersTest {
     }
 
     @Test
-    void shouldCreateSpringTokenCredentialProvider() {
+    void testCreateSpringTokenCredentialProvider() {
         TokenCredentialProviderOptions option = new TokenCredentialProviderOptions();
         option.setTokenCredentialProviderClassName(SPRING_TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME);
         TokenCredentialProvider credentialProvider = TokenCredentialProviders.createInstance(option);

@@ -3,8 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
-import com.azure.identity.AzureAuthorityHosts;
-import com.azure.identity.providers.jdbc.enums.AuthProperty;
+import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
 import com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
@@ -37,9 +36,8 @@ class MySqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigura
     private static final String AUTHPROPERTY_CACHEENABLED_PROPERTY
         = AuthProperty.CACHE_ENABLED.getPropertyKey() + "=" + "true";
 
-    private static final String AUTHPROPERTY_AUTHORITYHOST_PROPERTY
-        = AuthProperty.AUTHORITY_HOST.getPropertyKey() + "=" + AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
-
+    private static final String AUTHPROPERTY_CREDENTIAL_BEAN_NAME
+        = AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.getPropertyKey() + "=" + "credentialFreeTokenCredential";
 
     @Override
     void pluginNotOnClassPath() {
@@ -66,7 +64,7 @@ class MySqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigura
     }
 
     @Override
-    void enhanceUrl() {
+    void enhanceUrlWithDefaultCredential() {
         String connectionString = "jdbc:mysql://mysql:1234/test";
 
         this.contextRunner
@@ -75,16 +73,40 @@ class MySqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigura
             .run((context) -> {
                 DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
 
-                String expectedUrl = String.format("%s?%s&%s&%s&%s&%s&%s&%s", connectionString,
+                String expectedUrl = String.format("%s?%s&%s&%s&%s&%s&%s", connectionString,
                     MYSQL_AUTH_PLUGIN_PROPERTY,
                     AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
                     MYSQL_DEFAULT_PLUGIN_PROPERTY,
                     AUTHPROPERTY_CACHEENABLED_PROPERTY,
-                    AUTHPROPERTY_AUTHORITYHOST_PROPERTY,
                     MYSQL_SSL_MODE_PROPERTY,
                     MYSQL_USE_SSL_PROPERTY
                 );
-                System.out.println("dataSourceProperties.getUrl() = " + dataSourceProperties.getUrl());
+                assertEquals(expectedUrl, dataSourceProperties.getUrl());
+            });
+    }
+
+    @Override
+    void enhanceUrlWithCustomCredential() {
+        String connectionString = "jdbc:mysql://mysql:1234/test";
+
+        this.contextRunner
+            .withPropertyValues("spring.datasource.url = " + connectionString)
+            .withPropertyValues("spring.datasource.azure.credentialFreeEnabled = " + true)
+            .withPropertyValues("spring.datasource.azure.profile.tenantId = " + "fake-tenantId")
+            .withPropertyValues("spring.datasource.azure.credential.clientSecret = " + "fake-clientSecret")
+            .withPropertyValues("spring.datasource.azure.credential.clientId = " + "fake-clientId")
+            .run((context) -> {
+                DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
+
+                String expectedUrl = String.format("%s?%s&%s&%s&%s&%s&%s&%s", connectionString,
+                    AUTHPROPERTY_CREDENTIAL_BEAN_NAME,
+                    MYSQL_AUTH_PLUGIN_PROPERTY,
+                    AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
+                    MYSQL_DEFAULT_PLUGIN_PROPERTY,
+                    AUTHPROPERTY_CACHEENABLED_PROPERTY,
+                    MYSQL_SSL_MODE_PROPERTY,
+                    MYSQL_USE_SSL_PROPERTY
+                );
                 assertEquals(expectedUrl, dataSourceProperties.getUrl());
             });
     }

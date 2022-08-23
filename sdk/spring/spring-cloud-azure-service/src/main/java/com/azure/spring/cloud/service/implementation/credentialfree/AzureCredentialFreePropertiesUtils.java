@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.service.implementation.credentialfree;
 
-import com.azure.identity.providers.jdbc.enums.AuthProperty;
+import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
 import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 
@@ -55,7 +55,7 @@ public final class AzureCredentialFreePropertiesUtils {
 
         managedIdentityEnabled(AuthProperty.MANAGED_IDENTITY_ENABLED,
             p -> String.valueOf(p.getCredential().isManagedIdentityEnabled()),
-            (p, s) -> p.getCredential().setManagedIdentityEnabled(Boolean.valueOf(s))),
+            (p, s) -> p.getCredential().setManagedIdentityEnabled(Boolean.parseBoolean(s))),
 
         password(AuthProperty.PASSWORD,
             p -> p.getCredential().getPassword(),
@@ -73,9 +73,9 @@ public final class AzureCredentialFreePropertiesUtils {
             p -> p.getProfile().getTenantId(),
             (p, s) -> p.getProfile().setTenantId(s));
 
-        private AuthProperty authProperty;
-        private Function<AzureProperties, String> getter;
-        private BiConsumer<AzureCredentialFreeProperties, String> setter;
+        private final AuthProperty authProperty;
+        private final Function<AzureProperties, String> getter;
+        private final BiConsumer<AzureCredentialFreeProperties, String> setter;
 
         Mapping(AuthProperty authProperty, Function<AzureProperties, String> getter, BiConsumer<AzureCredentialFreeProperties,
             String> setter) {

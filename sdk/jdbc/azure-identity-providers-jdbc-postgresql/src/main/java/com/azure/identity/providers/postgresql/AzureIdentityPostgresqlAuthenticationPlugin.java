@@ -3,8 +3,8 @@
 
 package com.azure.identity.providers.postgresql;
 
-import com.azure.identity.providers.jdbc.enums.AuthProperty;
-import com.azure.identity.providers.jdbc.template.AzureAuthenticationTemplate;
+import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
+import com.azure.identity.providers.jdbc.implementation.template.AzureAuthenticationTemplate;
 import org.postgresql.plugin.AuthenticationPlugin;
 import org.postgresql.plugin.AuthenticationRequestType;
 import org.postgresql.util.PSQLException;
@@ -14,7 +14,7 @@ import java.util.Properties;
 import static org.postgresql.util.PSQLState.INVALID_PASSWORD;
 
 /**
- * The authentication plugin that enables Azure AD managed identity support.
+ * The authentication plugin that enables authentication with Azure AD.
  */
 public class AzureIdentityPostgresqlAuthenticationPlugin implements AuthenticationPlugin {
 

@@ -3,7 +3,7 @@
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.identity.providers.jdbc.enums.AuthProperty;
+import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.DatabaseType;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionString;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
@@ -65,7 +65,8 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
 
             boolean isPasswordProvided = StringUtils.hasText(dataSourceProperties.getPassword());
             if (isPasswordProvided) {
-                LOGGER.info("Value of 'spring.datasource.password' is detected, if you are using Azure hosted services,"
+                LOGGER.debug(
+                    "If you are using Azure hosted services,"
                     + "it is encouraged to use the credential-free feature. "
                     + "Please refer to https://aka.ms/credentail-free.");
                 return bean;
@@ -90,18 +91,17 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
 
     private Map<String, String> buildEnhancedProperties(DatabaseType databaseType, AzureCredentialFreeProperties properties) {
         Map<String, String> result = new HashMap<>();
-        TokenCredential credentialFreeTokenCredential = new AzureTokenCredentialResolver().resolve(properties);
+        AzureTokenCredentialResolver resolver = applicationContext.getBean(AzureTokenCredentialResolver.class);
+        TokenCredential tokenCredential = resolver.resolve(properties);
 
-        if (credentialFreeTokenCredential != null) {
+        if (tokenCredential != null) {
             LOGGER.debug("Add SpringTokenCredentialProvider as the default token credential provider.");
             AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.setProperty(result, CREDENTIAL_FREE_TOKEN_BEAN_NAME);
-            applicationContext.registerBean(CREDENTIAL_FREE_TOKEN_BEAN_NAME, TokenCredential.class, () -> credentialFreeTokenCredential);
+            applicationContext.registerBean(CREDENTIAL_FREE_TOKEN_BEAN_NAME, TokenCredential.class, () -> tokenCredential);
         }
 
         AuthProperty.CACHE_ENABLED.setProperty(result, "true");
         AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.setProperty(result, SPRING_TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME);
-        AuthProperty.AUTHORITY_HOST.setProperty(result, properties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
-        AuthProperty.TENANT_ID.setProperty(result, properties.getProfile().getTenantId());
 
         databaseType.setDefaultEnhancedProperties(result);
 

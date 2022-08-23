@@ -1,19 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.identity.providers.jdbc.enums;
+package com.azure.identity.providers.jdbc.implementation.enums;
 
-
+import com.azure.core.util.Configuration;
 import com.azure.identity.AzureAuthorityHosts;
-
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+
+import static com.azure.identity.providers.jdbc.implementation.enums.AuthProperty.AuthPropertyConfigurationProperty.getConfigurationPropertyValue;
 
 /**
  * Contains authentication property used to resolve token credential.
  */
 public enum AuthProperty {
-
     /**
      * Client ID to use when performing service principal authentication with Azure.
      */
@@ -135,7 +136,7 @@ public enum AuthProperty {
      * @return The propertyValue.
      */
     public String get(Properties properties) {
-        return properties.getProperty(this.propertyKey, defaultValue);
+        return properties.getProperty(this.propertyKey, getConfigurationPropertyValue(this));
     }
 
     /**
@@ -190,6 +191,30 @@ public enum AuthProperty {
             map.remove(this.propertyKey);
         } else {
             map.put(this.propertyKey, value);
+        }
+    }
+
+    static class AuthPropertyConfigurationProperty {
+        private static Configuration configuration = Configuration.getGlobalConfiguration();
+        static Map<AuthProperty, String> authPropertyKeyAndConfigurationPropertyKey = new HashMap<AuthProperty, String>() {
+            {
+                put(AuthProperty.CLIENT_ID, Configuration.PROPERTY_AZURE_CLIENT_ID);
+                put(AuthProperty.CLIENT_SECRET, Configuration.PROPERTY_AZURE_CLIENT_SECRET);
+                put(AuthProperty.CLIENT_CERTIFICATE_PATH, Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH);
+                put(AuthProperty.USERNAME, Configuration.PROPERTY_AZURE_USERNAME);
+                put(AuthProperty.PASSWORD, Configuration.PROPERTY_AZURE_PASSWORD);
+                put(AuthProperty.AUTHORITY_HOST, Configuration.PROPERTY_AZURE_AUTHORITY_HOST);
+                put(AuthProperty.TENANT_ID, Configuration.PROPERTY_AZURE_TENANT_ID);
+            }
+        };
+
+        static String getConfigurationPropertyValue(AuthProperty authProperty) {
+            String key = authPropertyKeyAndConfigurationPropertyKey.get(authProperty);
+            if (key == null) {
+                return authProperty.defaultValue;
+            }
+            String value = configuration.get(key);
+            return value == null ? authProperty.defaultValue : value;
         }
     }
 }

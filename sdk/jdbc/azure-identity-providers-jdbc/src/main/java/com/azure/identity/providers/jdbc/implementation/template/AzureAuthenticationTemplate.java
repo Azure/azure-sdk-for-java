@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.identity.providers.jdbc.template;
+package com.azure.identity.providers.jdbc.implementation.template;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.util.logging.ClientLogger;
@@ -75,7 +75,7 @@ public class AzureAuthenticationTemplate {
 
     /**
      * @return a Publisher emitting a String password response
-     * @throws IllegalStateException {@link com.azure.identity.providers.jdbc.template.AzureAuthenticationTemplate#init(java.util.Properties)}
+     * @throws IllegalStateException {@link AzureAuthenticationTemplate#init(java.util.Properties)}
      *                               must be called before calling getTokenAsPasswordAsync().
      */
     public Mono<String> getTokenAsPasswordAsync() {

@@ -3,7 +3,8 @@
 
 package com.azure.identity.providers.jdbc.implementation.token;
 
-import com.azure.identity.providers.jdbc.enums.AuthProperty;
+
+import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
 
 import java.util.Properties;
 

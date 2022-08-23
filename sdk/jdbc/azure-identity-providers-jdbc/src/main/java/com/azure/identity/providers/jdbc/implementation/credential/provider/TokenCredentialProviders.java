@@ -5,9 +5,9 @@ package com.azure.identity.providers.jdbc.implementation.credential.provider;
 
 
 import com.azure.identity.providers.jdbc.implementation.credential.TokenCredentialProviderOptions;
-import com.azure.identity.providers.jdbc.utils.ClassUtil;
+import com.azure.identity.providers.jdbc.implementation.utils.ClassUtil;
 
-import static com.azure.identity.providers.jdbc.utils.ClassUtil.instantiateClass;
+import static com.azure.identity.providers.jdbc.implementation.utils.ClassUtil.instantiateClass;
 
 /**
  * Util class to provide TokenCredentialProvider.

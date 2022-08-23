@@ -4,8 +4,8 @@
 package com.azure.identity.providers.mysql;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.providers.jdbc.enums.AuthProperty;
-import com.azure.identity.providers.jdbc.template.AzureAuthenticationTemplate;
+import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
+import com.azure.identity.providers.jdbc.implementation.template.AzureAuthenticationTemplate;
 import com.mysql.cj.callback.MysqlCallbackHandler;
 import com.mysql.cj.protocol.AuthenticationPlugin;
 import com.mysql.cj.protocol.Protocol;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * The authentication plugin that enables Azure AD managed identity support.
+ * The authentication plugin that enables authentication with Azure AD.
  */
 public class AzureIdentityMysqlAuthenticationPlugin implements AuthenticationPlugin<NativePacketPayload> {
     private static final ClientLogger LOGGER = new ClientLogger(AzureIdentityMysqlAuthenticationPlugin.class);

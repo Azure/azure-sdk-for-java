@@ -4,4 +4,4 @@
 /**
  * AuthenticationPlugin for Mysql.
  */
-package com.azure.identity.providers.jdbc.template;
+package com.azure.identity.providers.jdbc.implementation.template;

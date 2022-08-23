@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class DefaultTokenCredentialProviderTest {
 
     @Test
-    void testNullOptions() {
+    void testOptionsIsNull() {
         DefaultTokenCredentialProvider provider = new DefaultTokenCredentialProvider(null);
         TokenCredential tokenCredential = provider.get();
         assertTrue(tokenCredential instanceof DefaultAzureCredential);

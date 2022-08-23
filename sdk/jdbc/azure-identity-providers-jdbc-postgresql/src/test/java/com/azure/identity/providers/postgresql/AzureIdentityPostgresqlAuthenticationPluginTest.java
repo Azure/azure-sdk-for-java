@@ -3,8 +3,8 @@
 
 package com.azure.identity.providers.postgresql;
 
-import com.azure.identity.providers.jdbc.enums.AuthProperty;
-import com.azure.identity.providers.jdbc.template.AzureAuthenticationTemplate;
+import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
+import com.azure.identity.providers.jdbc.implementation.template.AzureAuthenticationTemplate;
 import org.junit.jupiter.api.Test;
 import org.postgresql.plugin.AuthenticationRequestType;
 import org.postgresql.util.PSQLException;

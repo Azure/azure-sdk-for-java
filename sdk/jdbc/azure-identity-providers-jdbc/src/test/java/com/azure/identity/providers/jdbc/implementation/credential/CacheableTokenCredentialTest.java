@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 class CacheableTokenCredentialTest {
 
     @Test
-    void testGetToken() {
+    void testGetTokenFromCache() {
         TokenCredential tokenCredential = mock(TokenCredential.class);
         when(tokenCredential.getToken(any()))
             .thenReturn(Mono.just(new AccessToken("fake-access-token-1", OffsetDateTime.now().plusHours(2))))

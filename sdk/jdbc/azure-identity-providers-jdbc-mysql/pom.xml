@@ -33,6 +33,7 @@
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
       <version>8.0.29</version> <!-- {x-version-update;mysql:mysql-connector-java;external_dependency} -->
+      <scope>provided</scope>
     </dependency>
 
     <!-- test   -->

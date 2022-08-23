@@ -4,4 +4,4 @@
 /**
  * AuthenticationPlugin for Mysql.
  */
-package com.azure.identity.providers.jdbc.utils;
+package com.azure.identity.providers.jdbc.implementation.enums;

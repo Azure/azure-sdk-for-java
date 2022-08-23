@@ -1,13 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.identity.providers.jdbc.template;
+package com.azure.identity.providers.jdbc.implementation.template;
 
 import com.azure.core.credential.AccessToken;
+import com.azure.core.util.Configuration;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.providers.jdbc.implementation.credential.provider.TokenCredentialProvider;
 import com.azure.identity.providers.jdbc.implementation.token.AccessTokenResolver;
-import com.azure.identity.providers.jdbc.enums.AuthProperty;
+import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
 import com.azure.identity.providers.jdbc.implementation.credential.TokenCredentialProviderOptions;
 import com.azure.identity.providers.jdbc.implementation.credential.provider.CacheableTokenCredentialProvider;
 import com.azure.identity.providers.jdbc.implementation.token.AccessTokenResolverOptions;
@@ -32,17 +33,19 @@ class AzureAuthenticationTemplateTest {
     private static final String OSSRDBMS_SCOPE = "https://ossrdbms-aad.database.windows.net/.default";
 
     @Test
-    void initCalledOnlyOnce() {
+    void testInitShouldCalledOnlyOnce() {
         AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
         assertFalse(template.getIsInitialized().get());
         Properties properties = new Properties();
+        Configuration configuration = new Configuration();
+        configuration.put("a", "configurations");
         template.init(properties);
         assertTrue(template.getIsInitialized().get());
         assertFalse(template.getIsInitialized().compareAndSet(false, true));
     }
 
     @Test
-    void shouldCallInitFirst() {
+    void testShouldCallInitFirst() {
         AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
         assertThrows(IllegalStateException.class, template::getTokenAsPasswordAsync);
     }
@@ -58,7 +61,7 @@ class AzureAuthenticationTemplateTest {
     }
 
     @Test
-    void testCachedToken() {
+    void testTokenAsPasswordWithCache() {
 
         TokenCredentialProvider tokenCredentialProvider = getCachedTokenCredentialProvider();
         AccessTokenResolver accessTokenResolver = getAccessTokenResolver();
@@ -76,7 +79,7 @@ class AzureAuthenticationTemplateTest {
     }
 
     @Test
-    void testNotCachedToken() {
+    void testTokenAsPasswordWithoutCache() {
 
         AccessTokenResolver accessTokenResolver = getAccessTokenResolver();
         TokenCredentialProvider tokenCredentialProvider = getTokenCredentialProvider();

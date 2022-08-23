@@ -3,8 +3,9 @@
 
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
-import com.azure.identity.providers.jdbc.template.AzureAuthenticationTemplate;
+import com.azure.identity.providers.jdbc.implementation.template.AzureAuthenticationTemplate;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.SpringTokenCredentialProviderContextProvider;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -20,16 +21,23 @@ abstract class AbstractAzureJdbcAutoConfigurationTest {
 
     abstract void pluginNotOnClassPath();
     abstract void wrongJdbcUrl();
-    abstract void enhanceUrl();
+    abstract void enhanceUrlWithDefaultCredential();
+    abstract void enhanceUrlWithCustomCredential();
 
     protected final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureJdbcAutoConfiguration.class,
+            AzureTokenCredentialAutoConfiguration.class,
             DataSourceAutoConfiguration.class,
             AzureGlobalProperties.class));
 
     @Test
-    void testEnhancedUrl() {
-        enhanceUrl();
+    void testEnhanceUrlDefaultCredential() {
+        enhanceUrlWithDefaultCredential();
+    }
+
+    @Test
+    void testEnhanceUrlWithCustomCredential() {
+        enhanceUrlWithCustomCredential();
     }
 
     @Test
