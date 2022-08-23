@@ -14,7 +14,7 @@ public final class RecognizeRequest {
      * Determines the type of the recognition.
      */
     @JsonProperty(value = "recognizeInputType", required = true)
-    private RecognizeInputType recognizeInputType;
+    private RecognizeInputTypeInternal recognizeInputType;
 
     /*
      * The source of the audio to be played for recognition.
@@ -33,7 +33,7 @@ public final class RecognizeRequest {
      * Defines options for recognition.
      */
     @JsonProperty(value = "recognizeConfiguration", required = true)
-    private RecognizeConfigurations recognizeConfiguration;
+    private RecognizeConfigurationsInternal recognizeConfiguration;
 
     /*
      * The value to identify context of the operation.
@@ -46,7 +46,7 @@ public final class RecognizeRequest {
      *
      * @return the recognizeInputType value.
      */
-    public RecognizeInputType getRecognizeInputType() {
+    public RecognizeInputTypeInternal getRecognizeInputType() {
         return this.recognizeInputType;
     }
 
@@ -56,7 +56,7 @@ public final class RecognizeRequest {
      * @param recognizeInputType the recognizeInputType value to set.
      * @return the RecognizeRequest object itself.
      */
-    public RecognizeRequest setRecognizeInputType(RecognizeInputType recognizeInputType) {
+    public RecognizeRequest setRecognizeInputType(RecognizeInputTypeInternal recognizeInputType) {
         this.recognizeInputType = recognizeInputType;
         return this;
     }
@@ -108,7 +108,7 @@ public final class RecognizeRequest {
      *
      * @return the recognizeConfiguration value.
      */
-    public RecognizeConfigurations getRecognizeConfiguration() {
+    public RecognizeConfigurationsInternal getRecognizeConfiguration() {
         return this.recognizeConfiguration;
     }
 
@@ -118,7 +118,7 @@ public final class RecognizeRequest {
      * @param recognizeConfiguration the recognizeConfiguration value to set.
      * @return the RecognizeRequest object itself.
      */
-    public RecognizeRequest setRecognizeConfiguration(RecognizeConfigurations recognizeConfiguration) {
+    public RecognizeRequest setRecognizeConfiguration(RecognizeConfigurationsInternal recognizeConfiguration) {
         this.recognizeConfiguration = recognizeConfiguration;
         return this;
     }

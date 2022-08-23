@@ -3,10 +3,6 @@
 
 package com.azure.communication.callingserver.models;
 
-import com.azure.communication.callingserver.implementation.models.PlaySourceInternal;
-import com.azure.communication.callingserver.implementation.models.RecognizeConfigurations;
-import com.azure.communication.callingserver.implementation.models.RecognizeInputType;
-import com.azure.communication.callingserver.implementation.models.RecognizeRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class RecognizeOptions {
@@ -20,7 +16,7 @@ public class RecognizeOptions {
      * The source of the audio to be played for recognition.
      */
     @JsonProperty(value = "playPrompt")
-    private PlaySourceInternal playPrompt;
+    private PlaySource playPrompt;
 
     /*
      * If set recognize can barge into other existing
@@ -76,7 +72,7 @@ public class RecognizeOptions {
      *
      * @return the playPrompt value.
      */
-    public PlaySourceInternal getPlayPrompt() {
+    public PlaySource getPlayPrompt() {
         return this.playPrompt;
     }
 
@@ -86,7 +82,7 @@ public class RecognizeOptions {
      * @param playPrompt the playPrompt value to set.
      * @return the RecognizeRequest object itself.
      */
-    public RecognizeOptions setPlayPrompt(PlaySourceInternal playPrompt) {
+    public RecognizeOptions setPlayPrompt(PlaySource playPrompt) {
         this.playPrompt = playPrompt;
         return this;
     }
