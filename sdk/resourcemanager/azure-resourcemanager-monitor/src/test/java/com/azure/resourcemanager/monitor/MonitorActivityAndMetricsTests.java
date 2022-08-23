@@ -3,8 +3,11 @@
 
 package com.azure.resourcemanager.monitor;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.monitor.models.EventData;
 import com.azure.resourcemanager.monitor.models.EventDataPropertyName;
@@ -18,9 +21,28 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class MonitorActivityAndMetricsTests extends MonitorManagementTest {
+    private String rgName = "";
+    @Override
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
+        rgName = generateRandomResourceName("jMonitor_", 18);
+
+        super.initializeClients(httpPipeline, profile);
+    }
+
+    @Override
+    protected void cleanUpResources() {
+        resourceManager.resourceGroups().beginDeleteByName(rgName);
+    }
+
     @Test
     public void canListEventsAndMetrics() throws Exception {
         // make sure there exists a VM
+        Region region = Region.US_WEST;
+        String vmName = generateRandomResourceName("jMonitorVm_", 18);
+        VirtualMachine vm = ensureVM(region,
+            resourceManager.resourceGroups().define(rgName).withRegion(region).create(),
+            vmName,
+            "10.0.0.0/28");
 
         OffsetDateTime now = OffsetDateTime.parse("2020-12-28T21:44:57.424+08:00");
         if (!this.isPlaybackMode()) {
@@ -29,7 +51,6 @@ public class MonitorActivityAndMetricsTests extends MonitorManagementTest {
         }
 
         OffsetDateTime recordDateTime = now.minusDays(40);
-        VirtualMachine vm = computeManager.virtualMachines().list().iterator().next();
 
         // Metric Definition
         PagedIterable<MetricDefinition> mt = monitorManager.metricDefinitions().listByResource(vm.id());
