@@ -59,6 +59,19 @@ public final class ChangeFeedProcessorItem {
         return changeFeedMetaData;
     }
 
+    /**
+     * Helper API to convert this changeFeedProcessorItem instance to raw JsonNode format.
+     *
+     * @return jsonNode format of this changeFeedProcessorItem instance.
+     *
+     * @throws IllegalArgumentException If conversion fails due to incompatible type;
+     * if so, root cause will contain underlying checked exception data binding functionality threw
+     */
+    @Beta(value = Beta.SinceVersion.V4_35_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public JsonNode toJsonNode() {
+        return Utils.getSimpleObjectMapper().convertValue(this, JsonNode.class);
+    }
+
     @Override
     public String toString() {
         try {

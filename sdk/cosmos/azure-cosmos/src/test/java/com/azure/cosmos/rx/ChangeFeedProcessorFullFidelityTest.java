@@ -216,7 +216,8 @@ public class ChangeFeedProcessorFullFidelityTest {
             .handleAllChanges(changeFeedProcessorItems -> {
                 for (ChangeFeedProcessorItem item : changeFeedProcessorItems) {
                     try {
-//                        logger.info("Item is : {}", item.toString());
+                        logger.info("Item is : {}", item.toString());
+                        logger.info("JsonNode version is : {}", item.toJsonNode().toPrettyString());
                         ChangeFeedOperationType operationType = item.getChangeFeedMetaData().getOperationType();
                         changeFeedMap.computeIfAbsent(operationType, changeFeedOperationType -> new AtomicInteger(0));
                         changeFeedMap.get(operationType).incrementAndGet();
