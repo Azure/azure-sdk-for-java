@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DomainsProvisioningState. */
+/** Provisioning state of the resource. */
 public final class DomainsProvisioningState extends ExpandableStringEnum<DomainsProvisioningState> {
     /** Static value Unknown for DomainsProvisioningState. */
     public static final DomainsProvisioningState UNKNOWN = fromString("Unknown");
