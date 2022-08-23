@@ -36,6 +36,7 @@ import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.TransformUtils;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
+import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -87,6 +88,7 @@ public class DataLakeServiceClientBuilder implements
     private ClientOptions clientOptions = new ClientOptions();
     private Configuration configuration;
     private DataLakeServiceVersion version;
+    private FileSystemEncryptionScopeOptions fileSystemEncryptionScopeOptions;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link DataLakeServiceClient
@@ -487,6 +489,31 @@ public class DataLakeServiceClientBuilder implements
             blobServiceClientBuilder.customerProvidedKey(Transforms.toBlobCustomerProvidedKey(customerProvidedKey));
         }
 
+        return this;
+    }
+
+    /**
+     * Sets the {@link FileSystemEncryptionScopeOptions encryption scope} that is used to determine how path contents are
+     * encrypted on the server.
+     *
+     * @param fileSystemEncryptionScopeOptions Encryption scope containing the encryption key information.
+     * @return the updated DataLakeServiceClientBuilder object
+     */
+    public DataLakeServiceClientBuilder fileSystemEncryptionScopeOptions(FileSystemEncryptionScopeOptions fileSystemEncryptionScopeOptions) {
+        this.fileSystemEncryptionScopeOptions = fileSystemEncryptionScopeOptions;
+        blobServiceClientBuilder
+            .blobContainerEncryptionScope(Transforms.toBlobContainerEncryptionScope(fileSystemEncryptionScopeOptions));
+        return this;
+    }
+
+    /**
+     * Sets the encryption scope that is used to encrypt path contents on the server.
+     *
+     * @param encryptionScope Encryption scope containing the encryption key information.
+     * @return the updated DataLakeServiceClientBuilder object
+     */
+    public DataLakeServiceClientBuilder encryptionScope(String encryptionScope) {
+        blobServiceClientBuilder.encryptionScope(encryptionScope);
         return this;
     }
 }
