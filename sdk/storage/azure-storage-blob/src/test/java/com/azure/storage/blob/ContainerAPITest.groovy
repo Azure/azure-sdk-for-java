@@ -1811,7 +1811,7 @@ class ContainerAPITest extends APISpec {
 
         then:
         blobItem.getName() == (delimiter ? "dir1/dir2/file\uFFFE.b" : blobName)
-        blobItem.isPrefix() == (delimiter ? true : null)
+        blobItem.isPrefix() == delimiter
 
         where:
         delimiter | _
@@ -1840,6 +1840,7 @@ class ContainerAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
+    @PlaybackOnly(expiryTime = "2022-08-28")
     def "Find blobs query"() {
         setup:
         def blobClient = cc.getBlobClient(generateBlobName())
@@ -1865,6 +1866,7 @@ class ContainerAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
+    @PlaybackOnly(expiryTime = "2022-08-28")
     def "Find blobs marker"() {
         setup:
         def tags = Collections.singletonMap(tagKey, tagValue)
@@ -1903,10 +1905,7 @@ class ContainerAPITest extends APISpec {
         }
 
         expect:
-        for (ContinuablePage page :
-            cc.findBlobsByTags(
-                new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(PAGE_RESULTS), null, Context.NONE)
-                .iterableByPage()) {
+        for (ContinuablePage page : cc.findBlobsByTags(new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(PAGE_RESULTS), null, Context.NONE).iterableByPage()) {
             assert page.iterator().size() <= PAGE_RESULTS
         }
     }
@@ -1924,10 +1923,7 @@ class ContainerAPITest extends APISpec {
         }
 
         expect:
-        for (ContinuablePage page :
-            cc.findBlobsByTags(
-                new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)), null, Context.NONE)
-                .iterableByPage(PAGE_RESULTS)) {
+        for (ContinuablePage page : cc.findBlobsByTags(new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)), null, Context.NONE).iterableByPage(PAGE_RESULTS)) {
             assert page.iterator().size() <= PAGE_RESULTS
         }
     }

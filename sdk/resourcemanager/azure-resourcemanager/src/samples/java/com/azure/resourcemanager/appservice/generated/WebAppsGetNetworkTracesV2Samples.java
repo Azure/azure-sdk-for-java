@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for WebApps GetNetworkTracesV2. */
 public final class WebAppsGetNetworkTracesV2Samples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetWebSiteNetworkTraces.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetWebSiteNetworkTraces.json
      */
     /**
      * Sample code: Get NetworkTraces for a site.

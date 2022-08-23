@@ -4,11 +4,21 @@
 
 ### Features Added
 
+- Added new Azure region `Region.QATAR_CENTRAL`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.7.1 (2022-08-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.30.0` to `1.31.0`.
 
 ## 1.7.0 (2022-06-30)
 

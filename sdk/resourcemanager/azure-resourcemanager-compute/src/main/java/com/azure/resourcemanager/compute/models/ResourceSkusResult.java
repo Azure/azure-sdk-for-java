@@ -20,8 +20,8 @@ public final class ResourceSkusResult {
     private List<ResourceSkuInner> value;
 
     /*
-     * The URI to fetch the next page of Resource Skus. Call ListNext() with
-     * this URI to fetch the next page of Resource Skus
+     * The URI to fetch the next page of Resource Skus. Call ListNext() with this URI to fetch the next page of
+     * Resource Skus
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;

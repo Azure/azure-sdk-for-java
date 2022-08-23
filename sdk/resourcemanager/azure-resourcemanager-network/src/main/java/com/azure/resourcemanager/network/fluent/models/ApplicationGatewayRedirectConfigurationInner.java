@@ -20,8 +20,7 @@ public final class ApplicationGatewayRedirectConfigurationInner extends SubResou
     private ApplicationGatewayRedirectConfigurationPropertiesFormat innerProperties;
 
     /*
-     * Name of the redirect configuration that is unique within an Application
-     * Gateway.
+     * Name of the redirect configuration that is unique within an Application Gateway.
      */
     @JsonProperty(value = "name")
     private String name;

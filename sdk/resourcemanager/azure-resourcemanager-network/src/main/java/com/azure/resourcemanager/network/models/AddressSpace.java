@@ -12,8 +12,7 @@ import java.util.List;
 @Fluent
 public final class AddressSpace {
     /*
-     * A list of address blocks reserved for this virtual network in CIDR
-     * notation.
+     * A list of address blocks reserved for this virtual network in CIDR notation.
      */
     @JsonProperty(value = "addressPrefixes")
     private List<String> addressPrefixes;

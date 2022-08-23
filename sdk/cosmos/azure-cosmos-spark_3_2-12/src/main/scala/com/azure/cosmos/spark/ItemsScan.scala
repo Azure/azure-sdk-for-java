@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal}
 import com.azure.cosmos.models.{CosmosParameterizedQuery, SqlParameter, SqlQuerySpec}
 import com.azure.cosmos.spark.CosmosPredicates.requireNotNull
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, LoggerHelper}
@@ -19,7 +18,7 @@ private case class ItemsScan(session: SparkSession,
                              config: Map[String, String],
                              readConfig: CosmosReadConfig,
                              cosmosQuery: CosmosParameterizedQuery,
-                             cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
+                             cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
                              diagnosticsConfig: DiagnosticsConfig)
   extends Scan
     with Batch {
@@ -67,20 +66,30 @@ private case class ItemsScan(session: SparkSession,
     val partitionMetadata = CosmosPartitionPlanner.getFilteredPartitionMetadata(
       config,
       clientConfiguration,
-      Some(cosmosClientStateHandle),
+      Some(cosmosClientStateHandles),
       containerConfig,
       partitioningConfig,
       false
     )
 
-    Loan(CosmosClientCache.apply(
-      clientConfiguration,
-      Some(cosmosClientStateHandle),
-      s"ItemsScan($description()).planInputPartitions"
-    ))
-      .to(clientCacheItem => {
-        val container = ThroughputControlHelper
-          .getContainer(config, containerConfig, clientCacheItem.client)
+    val calledFrom = s"ItemsScan($description()).planInputPartitions"
+    Loan(
+      List[Option[CosmosClientCacheItem]](
+        Some(CosmosClientCache.apply(
+          clientConfiguration,
+          Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
+          calledFrom
+        )),
+        ThroughputControlHelper.getThroughputControlClientCacheItem(
+          config, calledFrom, Some(cosmosClientStateHandles))
+      ))
+      .to(clientCacheItems => {
+        val container =
+          ThroughputControlHelper.getContainer(
+            config,
+            containerConfig,
+            clientCacheItems(0).get,
+            clientCacheItems(1))
         SparkUtils.safeOpenConnectionInitCaches(container, log)
 
         CosmosPartitionPlanner
@@ -104,7 +113,7 @@ private case class ItemsScan(session: SparkSession,
       schema,
       cosmosQuery,
       DiagnosticsContext(correlationActivityId, cosmosQuery.queryText),
-      cosmosClientStateHandle,
+      cosmosClientStateHandles,
       DiagnosticsConfig.parseDiagnosticsConfig(config))
   }
 

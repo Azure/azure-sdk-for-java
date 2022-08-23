@@ -17,8 +17,7 @@ public class SharedGalleryDiskImage {
     private Integer diskSizeGB;
 
     /*
-     * The host caching of the disk. Valid values are 'None', 'ReadOnly', and
-     * 'ReadWrite'
+     * The host caching of the disk. Valid values are 'None', 'ReadOnly', and 'ReadWrite'
      */
     @JsonProperty(value = "hostCaching")
     private SharedGalleryHostCaching hostCaching;

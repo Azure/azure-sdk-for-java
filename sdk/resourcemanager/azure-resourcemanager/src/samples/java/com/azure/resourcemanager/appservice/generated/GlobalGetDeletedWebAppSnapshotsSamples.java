@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Global GetDeletedWebAppSnapshots. */
 public final class GlobalGetDeletedWebAppSnapshotsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetDeletedWebAppSnapshots.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetDeletedWebAppSnapshots.json
      */
     /**
      * Sample code: Get Deleted Web App Snapshots.

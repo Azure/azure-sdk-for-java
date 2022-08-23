@@ -26,7 +26,7 @@ public class KeyVaultBackupClientJavaDocCodeSnippets {
     public KeyVaultBackupClient createClient() {
         // BEGIN: com.azure.security.keyvault.administration.keyVaultBackupClient.instantiation
         KeyVaultBackupClient keyVaultBackupClient = new KeyVaultBackupClientBuilder()
-            .vaultUrl("https://myaccount.managedhsm.azure.net/")
+            .vaultUrl("<your-managed-hsm-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
         // END: com.azure.security.keyvault.administration.keyVaultBackupClient.instantiation

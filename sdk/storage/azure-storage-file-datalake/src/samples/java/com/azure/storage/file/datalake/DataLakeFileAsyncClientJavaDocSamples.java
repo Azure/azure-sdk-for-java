@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.datalake;
 
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
@@ -252,6 +253,40 @@ public class DataLakeFileAsyncClientJavaDocSamples {
     }
 
     /**
+     * Code snippets for {@link DataLakeFileAsyncClient#upload(BinaryData, ParallelTransferOptions)}
+     */
+    public void uploadBinaryDataCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.upload#BinaryData-ParallelTransferOptions
+        Long blockSize = 100L * 1024L * 1024L; // 100 MB;
+        ParallelTransferOptions pto = new ParallelTransferOptions()
+            .setBlockSizeLong(blockSize)
+            .setProgressListener(bytesTransferred -> System.out.printf("Upload progress: %s bytes sent", bytesTransferred));
+
+        BinaryData.fromFlux(data, length, false)
+            .flatMap(binaryData -> client.upload(binaryData, pto))
+            .doOnError(throwable -> System.err.printf("Failed to upload %s%n", throwable.getMessage()))
+            .subscribe(completion -> System.out.println("Upload succeeded"));
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.upload#BinaryData-ParallelTransferOptions
+    }
+
+    /**
+     * Code snippets for {@link DataLakeFileAsyncClient#upload(BinaryData, ParallelTransferOptions, boolean)}
+     */
+    public void uploadBinaryDataCodeSnippets2() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.upload#BinaryData-ParallelTransferOptions-boolean
+        Long blockSize = 100L * 1024L * 1024L; // 100 MB;
+        ParallelTransferOptions pto = new ParallelTransferOptions()
+            .setBlockSizeLong(blockSize)
+            .setProgressListener(bytesTransferred -> System.out.printf("Upload progress: %s bytes sent", bytesTransferred));
+
+        BinaryData.fromFlux(data, length, false)
+            .flatMap(binaryData -> client.upload(binaryData, pto, true))
+            .doOnError(throwable -> System.err.printf("Failed to upload %s%n", throwable.getMessage()))
+            .subscribe(completion -> System.out.println("Upload succeeded"));
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.upload#BinaryData-ParallelTransferOptions-boolean
+    }
+
+    /**
      * Code snippets for {@link DataLakeFileAsyncClient#uploadFromFile(String)},
      * {@link DataLakeFileAsyncClient#uploadFromFile(String, boolean)} and
      * {@link DataLakeFileAsyncClient#uploadFromFile(String, ParallelTransferOptions, PathHttpHeaders, Map, DataLakeRequestConditions)}
@@ -287,6 +322,32 @@ public class DataLakeFileAsyncClientJavaDocSamples {
             .doOnError(throwable -> System.err.printf("Failed to upload from file %s%n", throwable.getMessage()))
             .subscribe(completion -> System.out.println("Upload from file succeeded"));
         // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadFromFile#String-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions
+    }
+
+    /**
+     * Code snippets for {@link DataLakeFileAsyncClient#uploadFromFileWithResponse(String, ParallelTransferOptions,
+     * PathHttpHeaders, Map, DataLakeRequestConditions)}
+     */
+    public void uploadFromFileWithResponseCodeSnippet() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadFromFileWithResponse#String-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions
+        PathHttpHeaders headers = new PathHttpHeaders()
+            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+        Long blockSize = 100L * 1024L * 1024L; // 100 MB;
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize);
+
+        client.uploadFromFileWithResponse(filePath, parallelTransferOptions, headers, metadata, requestConditions)
+            .doOnError(throwable ->
+                System.err.printf("Failed to upload from file %s%n", throwable.getMessage()))
+            .subscribe(completion ->
+                System.out.println("Upload from file succeeded at: " + completion.getValue().getLastModified()));
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadFromFileWithResponse#String-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions
     }
 
     /**

@@ -17,8 +17,7 @@ public final class MatchedRule {
     private String ruleName;
 
     /*
-     * The network traffic is allowed or denied. Possible values are 'Allow'
-     * and 'Deny'.
+     * The network traffic is allowed or denied. Possible values are 'Allow' and 'Deny'.
      */
     @JsonProperty(value = "action")
     private String action;

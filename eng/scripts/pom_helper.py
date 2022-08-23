@@ -40,6 +40,21 @@ dependency_template = '''
         </dependency>
 '''
 
+distribution_management = '''
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <name>Sonatype Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <uniqueVersion>true</uniqueVersion>
+            <layout>default</layout>
+        </snapshotRepository>
+        <site>
+            <id>azure-java-build-docs</id>
+            <url>$\{site.url\}/site/</url>
+        </site>
+    </distributionManagement>
+'''
 
 # Creates an artifacts identifier.
 def create_artifact_identifier(element: ET.Element):

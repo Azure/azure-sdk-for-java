@@ -8,23 +8,23 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Public Land Mobile Network (PLMN) ID. */
+/** Public land mobile network (PLMN) ID. */
 @Fluent
 public final class PlmnId {
     /*
-     * Mobile Country Code (MCC).
+     * Mobile country code (MCC).
      */
     @JsonProperty(value = "mcc", required = true)
     private String mcc;
 
     /*
-     * Mobile Network Code (MNC).
+     * Mobile network code (MNC).
      */
     @JsonProperty(value = "mnc", required = true)
     private String mnc;
 
     /**
-     * Get the mcc property: Mobile Country Code (MCC).
+     * Get the mcc property: Mobile country code (MCC).
      *
      * @return the mcc value.
      */
@@ -33,7 +33,7 @@ public final class PlmnId {
     }
 
     /**
-     * Set the mcc property: Mobile Country Code (MCC).
+     * Set the mcc property: Mobile country code (MCC).
      *
      * @param mcc the mcc value to set.
      * @return the PlmnId object itself.
@@ -44,7 +44,7 @@ public final class PlmnId {
     }
 
     /**
-     * Get the mnc property: Mobile Network Code (MNC).
+     * Get the mnc property: Mobile network code (MNC).
      *
      * @return the mnc value.
      */
@@ -53,7 +53,7 @@ public final class PlmnId {
     }
 
     /**
-     * Set the mnc property: Mobile Network Code (MNC).
+     * Set the mnc property: Mobile network code (MNC).
      *
      * @param mnc the mnc value to set.
      * @return the PlmnId object itself.

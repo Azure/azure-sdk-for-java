@@ -14,8 +14,7 @@ import java.util.List;
 @Fluent
 public final class UniqueKey {
     /*
-     * List of paths must be unique for each document in the Azure Cosmos DB
-     * service
+     * List of paths must be unique for each document in the Azure Cosmos DB service
      */
     @JsonProperty(value = "paths")
     private List<String> paths;

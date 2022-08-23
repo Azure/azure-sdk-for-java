@@ -30,6 +30,9 @@ public enum CmkIdentityType {
      */
     @JsonCreator
     public static CmkIdentityType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         CmkIdentityType[] items = CmkIdentityType.values();
         for (CmkIdentityType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {

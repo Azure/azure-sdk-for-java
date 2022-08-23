@@ -11,15 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class GalleryArtifactVersionSource {
     /*
-     * The id of the gallery artifact version source. Can specify a disk uri,
-     * snapshot uri, user image or storage account resource.
+     * The id of the gallery artifact version source. Can specify a disk uri, snapshot uri, user image or storage
+     * account resource.
      */
     @JsonProperty(value = "id")
     private String id;
 
     /*
-     * The uri of the gallery artifact version source. Currently used to
-     * specify vhd/blob source.
+     * The uri of the gallery artifact version source. Currently used to specify vhd/blob source.
      */
     @JsonProperty(value = "uri")
     private String uri;
