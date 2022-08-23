@@ -70,6 +70,7 @@ public class ServiceBusIT {
         LOGGER.info("ServiceBusIT begin.");
         senderClient.sendMessage(new ServiceBusMessage(DATA1));
         IterableStream<ServiceBusReceivedMessage> receivedMessages = receiverClient.receiveMessages(1);
+        Assertions.assertEquals(1, receivedMessages.stream().count());
         if (receivedMessages.stream().iterator().hasNext()) {
             ServiceBusReceivedMessage message = receivedMessages.stream().iterator().next();
             Assertions.assertEquals(DATA1, message.getBody().toString());
