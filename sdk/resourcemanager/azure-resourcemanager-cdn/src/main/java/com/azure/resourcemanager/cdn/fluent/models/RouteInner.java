@@ -7,7 +7,6 @@ package com.azure.resourcemanager.cdn.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.ActivatedResourceReference;
 import com.azure.resourcemanager.cdn.models.AfdEndpointProtocols;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
@@ -18,15 +17,12 @@ import com.azure.resourcemanager.cdn.models.ForwardingProtocol;
 import com.azure.resourcemanager.cdn.models.HttpsRedirect;
 import com.azure.resourcemanager.cdn.models.LinkToDefaultDomain;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Friendly Routes name mapping to the any Routes or secret related information. */
 @Fluent
 public final class RouteInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RouteInner.class);
-
     /*
      * The JSON object that contains the properties of the Routes to create.
      */

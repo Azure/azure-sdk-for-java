@@ -356,7 +356,7 @@ public final class RntbdResponse implements ReferenceCounted {
         if (length == 0) {
             content = null;
         } else {
-            //  TODO (kuthapar): Add a byte array pool instead of creating a new array every time.
+            //  TODO:(kuthapar) Add a byte array pool instead of creating a new array every time.
             content = new byte[length];
             this.content.getBytes(0, content);
         }

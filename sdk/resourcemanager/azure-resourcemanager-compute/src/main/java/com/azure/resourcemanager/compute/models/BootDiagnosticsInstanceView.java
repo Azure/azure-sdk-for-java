@@ -11,23 +11,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class BootDiagnosticsInstanceView {
     /*
-     * The console screenshot blob URI. <br><br>NOTE: This will **not** be set
-     * if boot diagnostics is currently enabled with managed storage.
+     * The console screenshot blob URI. <br><br>NOTE: This will **not** be set if boot diagnostics is currently enabled
+     * with managed storage.
      */
     @JsonProperty(value = "consoleScreenshotBlobUri", access = JsonProperty.Access.WRITE_ONLY)
     private String consoleScreenshotBlobUri;
 
     /*
-     * The serial console log blob Uri. <br><br>NOTE: This will **not** be set
-     * if boot diagnostics is currently enabled with managed storage.
+     * The serial console log blob Uri. <br><br>NOTE: This will **not** be set if boot diagnostics is currently enabled
+     * with managed storage.
      */
     @JsonProperty(value = "serialConsoleLogBlobUri", access = JsonProperty.Access.WRITE_ONLY)
     private String serialConsoleLogBlobUri;
 
     /*
-     * The boot diagnostics status information for the VM. <br><br> NOTE: It
-     * will be set only if there are errors encountered in enabling boot
-     * diagnostics.
+     * The boot diagnostics status information for the VM. <br><br> NOTE: It will be set only if there are errors
+     * encountered in enabling boot diagnostics.
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private InstanceViewStatus status;

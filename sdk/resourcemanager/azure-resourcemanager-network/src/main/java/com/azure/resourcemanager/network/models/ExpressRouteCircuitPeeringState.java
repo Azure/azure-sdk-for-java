@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExpressRouteCircuitPeeringState. */
+/** The state of peering. */
 public final class ExpressRouteCircuitPeeringState extends ExpandableStringEnum<ExpressRouteCircuitPeeringState> {
     /** Static value Disabled for ExpressRouteCircuitPeeringState. */
     public static final ExpressRouteCircuitPeeringState DISABLED = fromString("Disabled");

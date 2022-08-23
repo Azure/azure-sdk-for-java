@@ -7,18 +7,18 @@ package com.azure.resourcemanager.cdn.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.cdn.models.DeepCreatedCustomDomain;
 import com.azure.resourcemanager.cdn.models.DeepCreatedOrigin;
 import com.azure.resourcemanager.cdn.models.DeepCreatedOriginGroup;
 import com.azure.resourcemanager.cdn.models.EndpointPropertiesUpdateParametersDeliveryPolicy;
 import com.azure.resourcemanager.cdn.models.EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink;
+import com.azure.resourcemanager.cdn.models.EndpointProvisioningState;
 import com.azure.resourcemanager.cdn.models.EndpointResourceState;
 import com.azure.resourcemanager.cdn.models.GeoFilter;
 import com.azure.resourcemanager.cdn.models.OptimizationType;
 import com.azure.resourcemanager.cdn.models.QueryStringCachingBehavior;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
 import com.azure.resourcemanager.cdn.models.UrlSigningKey;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -29,11 +29,8 @@ import java.util.Map;
  */
 @Fluent
 public final class EndpointInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EndpointInner.class);
-
     /*
-     * The JSON object that contains the properties required to create an
-     * endpoint.
+     * The JSON object that contains the properties required to create an endpoint.
      */
     @JsonProperty(value = "properties")
     private EndpointProperties innerProperties;
@@ -139,7 +136,7 @@ public final class EndpointInner extends Resource {
      *
      * @return the customDomains value.
      */
-    public List<CustomDomainInner> customDomains() {
+    public List<DeepCreatedCustomDomain> customDomains() {
         return this.innerProperties() == null ? null : this.innerProperties().customDomains();
     }
 
@@ -157,7 +154,7 @@ public final class EndpointInner extends Resource {
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public EndpointProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

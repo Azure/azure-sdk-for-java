@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.incremental;
 
-import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverFactory;
 import com.azure.cosmos.implementation.changefeed.Lease;
@@ -12,23 +11,25 @@ import com.azure.cosmos.implementation.changefeed.PartitionProcessor;
 import com.azure.cosmos.implementation.changefeed.PartitionProcessorFactory;
 import com.azure.cosmos.implementation.changefeed.PartitionSupervisor;
 import com.azure.cosmos.implementation.changefeed.PartitionSupervisorFactory;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
+import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.scheduler.Scheduler;
 
 /**
  * Implementation for the partition supervisor factory.
  */
 class PartitionSupervisorFactoryImpl  implements PartitionSupervisorFactory {
-    private final ChangeFeedObserverFactory observerFactory;
+    private final ChangeFeedObserverFactory<JsonNode> observerFactory;
     private final LeaseManager leaseManager;
     private final ChangeFeedProcessorOptions changeFeedProcessorOptions;
-    private final PartitionProcessorFactory partitionProcessorFactory;
+    private final PartitionProcessorFactory<JsonNode> partitionProcessorFactory;
     private final Scheduler scheduler;
 
 
     public PartitionSupervisorFactoryImpl(
-            ChangeFeedObserverFactory observerFactory,
+            ChangeFeedObserverFactory<JsonNode> observerFactory,
             LeaseManager leaseManager,
-            PartitionProcessorFactory partitionProcessorFactory,
+            PartitionProcessorFactory<JsonNode> partitionProcessorFactory,
             ChangeFeedProcessorOptions options,
             Scheduler scheduler) {
 
@@ -61,7 +62,7 @@ class PartitionSupervisorFactoryImpl  implements PartitionSupervisorFactory {
             throw new IllegalArgumentException("lease");
         }
 
-        ChangeFeedObserver changeFeedObserver = this.observerFactory.createObserver();
+        ChangeFeedObserver<JsonNode> changeFeedObserver = this.observerFactory.createObserver();
         PartitionProcessor processor = this.partitionProcessorFactory.create(lease, changeFeedObserver);
         LeaseRenewer renewer = new LeaseRenewerImpl(lease, this.leaseManager, this.changeFeedProcessorOptions.getLeaseRenewInterval());
 

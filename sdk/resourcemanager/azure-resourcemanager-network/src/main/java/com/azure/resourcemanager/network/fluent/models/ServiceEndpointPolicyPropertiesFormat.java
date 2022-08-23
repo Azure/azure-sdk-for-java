@@ -13,8 +13,7 @@ import java.util.List;
 @Fluent
 public final class ServiceEndpointPolicyPropertiesFormat {
     /*
-     * A collection of service endpoint policy definitions of the service
-     * endpoint policy.
+     * A collection of service endpoint policy definitions of the service endpoint policy.
      */
     @JsonProperty(value = "serviceEndpointPolicyDefinitions")
     private List<ServiceEndpointPolicyDefinitionInner> serviceEndpointPolicyDefinitions;

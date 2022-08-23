@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IssueType. */
+/** The type of issue. */
 public final class IssueType extends ExpandableStringEnum<IssueType> {
     /** Static value Unknown for IssueType. */
     public static final IssueType UNKNOWN = fromString("Unknown");

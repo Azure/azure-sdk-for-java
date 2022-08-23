@@ -11,9 +11,8 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointSta
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Locale;
 import java.util.Map;
-import com.azure.cosmos.implementation.Utils;
-import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
  * Used internally to represents a response from the store.
@@ -21,7 +20,8 @@ import java.util.concurrent.ConcurrentSkipListMap;
 public class StoreResponse {
     final static Logger LOGGER = LoggerFactory.getLogger(StoreResponse.class);
     final private int status;
-    final private Map<String, String> responseHeaders;
+    final private String[] responseHeaderNames;
+    final private String[] responseHeaderValues;
     final private byte[] content;
 
     private int pendingRequestQueueSize;
@@ -40,8 +40,15 @@ public class StoreResponse {
             byte[] content) {
 
         requestTimeline = RequestTimeline.empty();
-        responseHeaders = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
-        responseHeaders.putAll(headerMap);
+        responseHeaderNames = new String[headerMap.size()];
+        responseHeaderValues = new String[headerMap.size()];
+
+        int i = 0;
+        for (Map.Entry<String, String> headerEntry : headerMap.entrySet()) {
+            responseHeaderNames[i] = headerEntry.getKey();
+            responseHeaderValues[i] = headerEntry.getValue();
+            i++;
+        }
 
         this.status = status;
         this.content = content;
@@ -54,8 +61,12 @@ public class StoreResponse {
         return status;
     }
 
-    public Map<String, String> getResponseHeaders() {
-        return responseHeaders;
+    public String[] getResponseHeaderNames() {
+        return responseHeaderNames;
+    }
+
+    public String[] getResponseHeaderValues() {
+        return responseHeaderValues;
     }
 
     public int getRntbdChannelTaskQueueSize() {
@@ -128,7 +139,17 @@ public class StoreResponse {
     }
 
     public String getHeaderValue(String attribute) {
-        return responseHeaders.get(attribute);
+        if (this.responseHeaderValues == null || this.responseHeaderNames.length != this.responseHeaderValues.length) {
+            return null;
+        }
+
+        for (int i = 0; i < responseHeaderNames.length; i++) {
+            if (responseHeaderNames[i].equalsIgnoreCase(attribute)) {
+                return responseHeaderValues[i];
+            }
+        }
+
+        return null;
     }
 
     public double getRequestCharge() {

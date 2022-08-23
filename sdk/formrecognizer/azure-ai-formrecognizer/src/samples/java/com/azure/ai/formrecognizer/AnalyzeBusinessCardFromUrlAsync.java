@@ -3,12 +3,14 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.AnalyzeDocumentOptions;
-import com.azure.ai.formrecognizer.models.AnalyzeResult;
-import com.azure.ai.formrecognizer.models.AnalyzedDocument;
-import com.azure.ai.formrecognizer.models.DocumentField;
-import com.azure.ai.formrecognizer.models.DocumentFieldType;
-import com.azure.ai.formrecognizer.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient;
+import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientBuilder;
+import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeDocumentOptions;
+import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentField;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The connection type property associated with the entity. */
 @Fluent
 public final class ConnectionTypeAssociationProperty {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionTypeAssociationProperty.class);
-
     /*
      * Gets or sets the name of the connection type.
      */
