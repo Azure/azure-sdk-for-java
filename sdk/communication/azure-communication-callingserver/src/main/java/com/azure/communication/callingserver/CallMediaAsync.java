@@ -137,7 +137,7 @@ public class CallMediaAsync {
                     .setMaxTonesToCollect(dtmfConfigurations.getMaxTonesToCollect());
 
                 if (dtmfConfigurations.getInterToneTimeoutInSeconds() != null) {
-                    dtmfConfigurationsInternal.setInterToneTimeoutInSeconds((int)dtmfConfigurations.getInterToneTimeoutInSeconds().toSeconds());
+                    dtmfConfigurationsInternal.setInterToneTimeoutInSeconds((int)dtmfConfigurations.getInterToneTimeoutInSeconds().getSeconds());
                 }
                 if (dtmfConfigurations.getStopTones() != null) {
                     dtmfConfigurationsInternal
@@ -152,7 +152,7 @@ public class CallMediaAsync {
                 .setInterruptPromptAndStartRecognition(recognizeConfigurations.isInterruptPromptAndStartRecognition())
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(recognizeConfigurations.getTargetParticipant()));
             if (recognizeConfigurations.getInitialSilenceTimeoutInSeconds() != null) {
-                recognizeConfigurationsInternal.setInitialSilenceTimeoutInSeconds((int)recognizeConfigurations.getInitialSilenceTimeoutInSeconds().toSeconds());
+                recognizeConfigurationsInternal.setInitialSilenceTimeoutInSeconds((int)recognizeConfigurations.getInitialSilenceTimeoutInSeconds().getSeconds());
             }
 
             PlaySourceInternal playSourceInternal = null;
