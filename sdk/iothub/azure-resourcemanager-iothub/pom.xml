@@ -13,7 +13,7 @@
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for IotHub Management</name>
-  <description>This package contains Microsoft Azure SDK for IotHub Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Use this API to manage the IoT hubs in your Azure subscription. Package tag package-2021-07-02.</description>
+  <description>This package contains Microsoft Azure SDK for IotHub Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Use this API to manage the IoT hubs in your Azure subscription. Package tag package-preview-2022-04-30.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
