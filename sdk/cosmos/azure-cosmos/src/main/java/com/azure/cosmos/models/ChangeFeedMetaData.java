@@ -10,7 +10,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 /**
  * Change Feed response meta data
  */
-@Beta(value = Beta.SinceVersion.V4_35_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+@Beta(value = Beta.SinceVersion.V4_36_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class ChangeFeedMetaData {
     @JsonProperty("crts")
     private long conflictResolutionTimestamp;
@@ -28,7 +28,7 @@ public final class ChangeFeedMetaData {
      *
      * @return conflict resolution timestamp
      */
-    @Beta(value = Beta.SinceVersion.V4_35_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_36_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public long getConflictResolutionTimestamp() {
         return conflictResolutionTimestamp;
     }
@@ -38,7 +38,7 @@ public final class ChangeFeedMetaData {
      *
      * @return current logical sequence number
      */
-    @Beta(value = Beta.SinceVersion.V4_35_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_36_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public long getLogSequenceNumber() {
         return logSequenceNumber;
     }
@@ -48,7 +48,7 @@ public final class ChangeFeedMetaData {
      *
      * @return change Feed operation type
      */
-    @Beta(value = Beta.SinceVersion.V4_35_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_36_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ChangeFeedOperationType getOperationType() {
         return operationType;
     }
@@ -58,7 +58,7 @@ public final class ChangeFeedMetaData {
      *
      * @return previous logical sequence number
      */
-    @Beta(value = Beta.SinceVersion.V4_35_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_36_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public long getPreviousLogSequenceNumber() {
         return previousLogSequenceNumber;
     }
@@ -69,7 +69,7 @@ public final class ChangeFeedMetaData {
      *
      * @return true if ttlExpiration caused the delete.
      */
-    @Beta(value = Beta.SinceVersion.V4_35_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_36_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public boolean isTimeToLiveExpired() {
         return timeToLiveExpired;
     }

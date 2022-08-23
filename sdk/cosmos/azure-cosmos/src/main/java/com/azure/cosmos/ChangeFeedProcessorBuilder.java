@@ -135,7 +135,7 @@ public class ChangeFeedProcessorBuilder {
     //  Future options -> handleChangesWithMergeSupport() ?
     //  Future options -> handleChangesWithLogicalPartition() ?
     //  Or keep it generic and open for future -> handleChangesV1() ?
-    @Beta(value = Beta.SinceVersion.V4_35_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_36_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ChangeFeedProcessorBuilder handleAllChanges(Consumer<List<ChangeFeedProcessorItem>> consumer) {
         this.epkRangeBasedLeaseConsumer = consumer;
 
@@ -170,7 +170,7 @@ public class ChangeFeedProcessorBuilder {
      * @param changeFeedMode changeFeedMode to be used for this {@link ChangeFeedProcessor}
      * @return current Builder
      */
-    @Beta(value = Beta.SinceVersion.V4_35_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_36_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ChangeFeedProcessorBuilder changeFeedMode(ChangeFeedMode changeFeedMode) {
         this.changeFeedMode = changeFeedMode;
         return this;

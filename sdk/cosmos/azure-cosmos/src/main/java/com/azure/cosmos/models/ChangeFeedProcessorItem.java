@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.JsonNode;
  *
  * Caller is recommended to type cast {@link JsonNode} to cosmos item structure.
  */
-@Beta(value = Beta.SinceVersion.V4_35_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+@Beta(value = Beta.SinceVersion.V4_36_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class ChangeFeedProcessorItem {
     @JsonProperty("current")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -32,7 +32,7 @@ public final class ChangeFeedProcessorItem {
      *
      * @return change feed current item.
      */
-    @Beta(value = Beta.SinceVersion.V4_35_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_36_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public JsonNode getCurrent() {
         return current;
     }
@@ -44,7 +44,7 @@ public final class ChangeFeedProcessorItem {
      *
      * @return change feed previous item.
      */
-    @Beta(value = Beta.SinceVersion.V4_35_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_36_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public JsonNode getPrevious() {
         return previous;
     }
@@ -54,7 +54,7 @@ public final class ChangeFeedProcessorItem {
      *
      * @return change feed metadata.
      */
-    @Beta(value = Beta.SinceVersion.V4_35_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_36_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ChangeFeedMetaData getChangeFeedMetaData() {
         return changeFeedMetaData;
     }
@@ -67,7 +67,7 @@ public final class ChangeFeedProcessorItem {
      * @throws IllegalArgumentException If conversion fails due to incompatible type;
      * if so, root cause will contain underlying checked exception data binding functionality threw
      */
-    @Beta(value = Beta.SinceVersion.V4_35_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_36_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public JsonNode toJsonNode() {
         return Utils.getSimpleObjectMapper().convertValue(this, JsonNode.class);
     }
