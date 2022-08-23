@@ -11,31 +11,31 @@ import java.util.Collection;
 /** Defines values for VehicleLoadType. */
 public final class VehicleLoadType extends ExpandableStringEnum<VehicleLoadType> {
     /** Static value USHazmatClass1 for VehicleLoadType. */
-    public static final VehicleLoadType USHAZMAT_CLASS1 = fromString("USHazmatClass1");
+    public static final VehicleLoadType US_HAZMAT_CLASS1 = fromString("USHazmatClass1");
 
     /** Static value USHazmatClass2 for VehicleLoadType. */
-    public static final VehicleLoadType USHAZMAT_CLASS2 = fromString("USHazmatClass2");
+    public static final VehicleLoadType US_HAZMAT_CLASS2 = fromString("USHazmatClass2");
 
     /** Static value USHazmatClass3 for VehicleLoadType. */
-    public static final VehicleLoadType USHAZMAT_CLASS3 = fromString("USHazmatClass3");
+    public static final VehicleLoadType US_HAZMAT_CLASS3 = fromString("USHazmatClass3");
 
     /** Static value USHazmatClass4 for VehicleLoadType. */
-    public static final VehicleLoadType USHAZMAT_CLASS4 = fromString("USHazmatClass4");
+    public static final VehicleLoadType US_HAZMAT_CLASS4 = fromString("USHazmatClass4");
 
     /** Static value USHazmatClass5 for VehicleLoadType. */
-    public static final VehicleLoadType USHAZMAT_CLASS5 = fromString("USHazmatClass5");
+    public static final VehicleLoadType US_HAZMAT_CLASS5 = fromString("USHazmatClass5");
 
     /** Static value USHazmatClass6 for VehicleLoadType. */
-    public static final VehicleLoadType USHAZMAT_CLASS6 = fromString("USHazmatClass6");
+    public static final VehicleLoadType US_HAZMAT_CLASS6 = fromString("USHazmatClass6");
 
     /** Static value USHazmatClass7 for VehicleLoadType. */
-    public static final VehicleLoadType USHAZMAT_CLASS7 = fromString("USHazmatClass7");
+    public static final VehicleLoadType US_HAZMAT_CLASS7 = fromString("USHazmatClass7");
 
     /** Static value USHazmatClass8 for VehicleLoadType. */
-    public static final VehicleLoadType USHAZMAT_CLASS8 = fromString("USHazmatClass8");
+    public static final VehicleLoadType US_HAZMAT_CLASS8 = fromString("USHazmatClass8");
 
     /** Static value USHazmatClass9 for VehicleLoadType. */
-    public static final VehicleLoadType USHAZMAT_CLASS9 = fromString("USHazmatClass9");
+    public static final VehicleLoadType US_HAZMAT_CLASS9 = fromString("USHazmatClass9");
 
     /** Static value otherHazmatExplosive for VehicleLoadType. */
     public static final VehicleLoadType OTHER_HAZMAT_EXPLOSIVE = fromString("otherHazmatExplosive");

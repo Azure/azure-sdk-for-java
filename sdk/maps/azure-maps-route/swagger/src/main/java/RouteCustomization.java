@@ -58,6 +58,9 @@ public class RouteCustomization extends Customization {
 
         // customize route summary
         customizeRouteSummary(models);
+
+        // customize vehicle load type
+        customizeVehicleLoadType(models);
     }
 
     // Customizes the RouteMatrix class by flattening the Response property.
@@ -339,5 +342,19 @@ public class RouteCustomization extends Customization {
         JavadocCustomization getTrafficDelayInSecondsMethodJavadoc = classCustomization.getMethod("getTrafficDelayInSeconds").getJavadoc();
         getTrafficDelayInSecondsMethodJavadoc.setDescription(getTrafficDelayInSecondsMethodJavadocDescription);
         getTrafficDelayInSecondsMethodJavadoc.setReturn("the trafficDelayInSeconds value.");
+    }
+
+    // Customizes the VehicleLoadType class
+    private void customizeVehicleLoadType(PackageCustomization models) {
+        ClassCustomization classCustomization = models.getClass("VehicleLoadType");
+        classCustomization.getConstant("USHAZMAT_CLASS1").rename("US_HAZMAT_CLASS1");
+        classCustomization.getConstant("USHAZMAT_CLASS2").rename("US_HAZMAT_CLASS2");
+        classCustomization.getConstant("USHAZMAT_CLASS3").rename("US_HAZMAT_CLASS3");
+        classCustomization.getConstant("USHAZMAT_CLASS4").rename("US_HAZMAT_CLASS4");
+        classCustomization.getConstant("USHAZMAT_CLASS5").rename("US_HAZMAT_CLASS5");
+        classCustomization.getConstant("USHAZMAT_CLASS6").rename("US_HAZMAT_CLASS6");
+        classCustomization.getConstant("USHAZMAT_CLASS7").rename("US_HAZMAT_CLASS7");
+        classCustomization.getConstant("USHAZMAT_CLASS8").rename("US_HAZMAT_CLASS8");
+        classCustomization.getConstant("USHAZMAT_CLASS9").rename("US_HAZMAT_CLASS9");
     }
 }

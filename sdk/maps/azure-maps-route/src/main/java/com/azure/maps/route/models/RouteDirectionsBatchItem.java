@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An item returned from Route Directions Batch service call. */
 @Immutable
-public final class RouteDirectionsBatchItem {
+public final class RouteDirectionsBatchItem extends BatchResultItem {
     /*
      * The result of the query. RouteDirections if the query completed
      * successfully, ErrorResponse otherwise.
