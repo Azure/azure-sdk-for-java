@@ -6,11 +6,13 @@ package com.azure.maps.search.models;
 import java.util.List;
 import java.util.Optional;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.models.GeoPosition;
 
 /**
  * Class holding optional parameters for POI Search.
  */
+@Fluent
 public abstract class BaseSearchPointOfInterestOptions<T extends BaseSearchPointOfInterestOptions<T>> extends BaseSearchOptions<T> {
     private List<Integer> categoryFilter;
     private List<String> brandFilter;

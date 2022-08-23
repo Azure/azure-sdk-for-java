@@ -14,7 +14,7 @@
   <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-maps-route;current} -->
   <packaging>jar</packaging>
 
-  <name>Microsoft Azure client library for azure-maps-route service</name>
+  <name>Microsoft Azure client library for Azure Maps Route service</name>
   <description>This package contains Microsoft Azure SDK for Route Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Azure Maps Route REST APIs. Package tag 1.0-preview.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
@@ -63,6 +63,11 @@
     <!-- END: com.azure.maps.route.dependency -->
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.12.4</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
       <version>1.11.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
@@ -72,11 +77,6 @@
       <artifactId>azure-identity</artifactId>
       <version>1.5.4</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-netty</artifactId>
-      <version>1.12.4</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

@@ -125,26 +125,6 @@ public final class MapTileset {
     private List<Float> center;
 
     /**
-     * Get the tilejson property: Describes the version of the TileJSON spec that is implemented by this JSON object.
-     *
-     * @return the tilejson value.
-     */
-    public String getTilejson() {
-        return this.tilejson;
-    }
-
-    /**
-     * Set the tilejson property: Describes the version of the TileJSON spec that is implemented by this JSON object.
-     *
-     * @param tilejson the tilejson value to set.
-     * @return the MapTileset object itself.
-     */
-    public MapTileset setTilejson(String tilejson) {
-        this.tilejson = tilejson;
-        return this;
-    }
-
-    /**
      * Get the name property: A name describing the tileset. The name can contain any legal character. Implementations
      * SHOULD NOT interpret the name as HTML.
      *
@@ -423,5 +403,25 @@ public final class MapTileset {
     public GeoPosition getCenter() {
         return new GeoPosition(
                 this.center.get(0).doubleValue(), this.center.get(1).doubleValue(), this.center.get(2).doubleValue());
+    }
+
+    /**
+     * Get the tilejson property: Describes the version of the TileJSON spec that is implemented by this JSON object.
+     *
+     * @return the tilejson value.
+     */
+    public String getTileJson() {
+        return this.tilejson;
+    }
+
+    /**
+     * Set the tilejson property: Describes the version of the TileJSON spec that is implemented by this JSON object.
+     *
+     * @param tilejson TileJson version
+     * @return the MapTileset object itself.
+     */
+    public MapTileset setTileJson(String tilejson) {
+        this.tilejson = tilejson;
+        return this;
     }
 }

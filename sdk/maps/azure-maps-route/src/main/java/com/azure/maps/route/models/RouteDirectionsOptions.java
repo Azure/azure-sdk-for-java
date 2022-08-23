@@ -5,13 +5,14 @@ package com.azure.maps.route.models;
 
 import java.time.OffsetDateTime;
 import java.util.List;
-
+import com.azure.core.annotation.Fluent;
 import com.azure.core.models.GeoPosition;
 
 /**
  * Route Directions Options
  *
  */
+@Fluent
 public class RouteDirectionsOptions extends BaseRouteOptions<RouteDirectionsOptions> {
     private List<GeoPosition> routePoints;
     private Integer maxAlternatives;

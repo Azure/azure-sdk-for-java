@@ -18,6 +18,9 @@ public class RenderCustomization extends Customization {
 
         // customize tilesetid
         customizeTilesetId(models);
+
+        // customize region copyrights country
+        customizeRegionCopyrightsCountry(models);
     }
 
     // Customizes the MapTileset class
@@ -30,13 +33,26 @@ public class RenderCustomization extends Customization {
             "public GeoPosition getCenter() {" +
             "    return new GeoPosition(this.center.get(0).doubleValue(), this.center.get(1).doubleValue(), this.center.get(2).doubleValue());" +
             "}";
+        final String getTileJsonMethod =
+            "public String getTileJson() {" +
+            "    return this.tilejson;" +
+            "}";
+        final String setTileJsonMethod =
+            "public MapTileset setTileJson(String tilejson) {" +
+            "    this.tilejson = tilejson;" +
+            "    return this;" +
+            "}";
         ClassCustomization classCustomization = models.getClass("MapTileset");
         classCustomization.removeMethod("getBounds");
         classCustomization.removeMethod("setBounds");
         classCustomization.removeMethod("getCenter");
         classCustomization.removeMethod("setCenter");
+        classCustomization.removeMethod("getTilejson");
+        classCustomization.removeMethod("setTilejson");
         classCustomization.addMethod(getBoundsMethod, Arrays.asList("com.azure.core.models.GeoBoundingBox"));
         classCustomization.addMethod(getCenterMethod, Arrays.asList("com.azure.core.models.GeoPosition"));
+        classCustomization.addMethod(getTileJsonMethod);
+        classCustomization.addMethod(setTileJsonMethod);
 
         // javadoc customization to pass Checkstyle
         final String getCenterJavadocDescription = "Get the center property: The default location of the " +
@@ -52,11 +68,39 @@ public class RenderCustomization extends Customization {
         JavadocCustomization boundsDoc = classCustomization.getMethod("getBounds").getJavadoc();
         boundsDoc.setDescription(getBoundsJavadocDescription);
         boundsDoc.setReturn("a {@code GeoBoundingBox} representing the bounding box.");
+
+        final String getTileJsonMethodDescription = "Get the tilejson property: Describes the version of the TileJSON spec that is implemented by this JSON object.";
+        JavadocCustomization getTileJsonJavadoc = classCustomization.getMethod("getTileJson").getJavadoc();
+        getTileJsonJavadoc.setDescription(getTileJsonMethodDescription);
+        getTileJsonJavadoc.setReturn("the tilejson value.");
+
+        final String setTileJsonMethodDescription = "Set the tilejson property: Describes the version of the TileJSON spec that is implemented by this JSON object.";
+        JavadocCustomization setTileJsonJavadoc = classCustomization.getMethod("setTileJson").getJavadoc();
+        setTileJsonJavadoc.setDescription(setTileJsonMethodDescription);
+        setTileJsonJavadoc.setParam("tilejson", "TileJson version");
+        setTileJsonJavadoc.setReturn("the MapTileset object itself.");
     }
 
      // Customizes the TilesetId class
      private void customizeTilesetId(PackageCustomization models) {
         ClassCustomization classCustomization = models.getClass("TilesetID");
         classCustomization.rename("TilesetId");
+     }
+
+     // Customizes the RegionCopyrightsCountry class
+     private void customizeRegionCopyrightsCountry(PackageCustomization models) {
+        ClassCustomization classCustomization = models.getClass("RegionCopyrightsCountry");
+        final String getIso3Method =
+            "public String getIso3() {" +
+            "    return this.iSO3;" +
+            "}";
+        classCustomization.removeMethod("getISO3");
+        classCustomization.addMethod(getIso3Method);
+
+        // javadoc customization to pass Checkstyle
+        final String getIso3JavadocDescription = "Get the iSO3 property: ISO3 property.";
+        JavadocCustomization getIso3Javadoc = classCustomization.getMethod("getIso3").getJavadoc();
+        getIso3Javadoc.setDescription(getIso3JavadocDescription);
+        getIso3Javadoc.setReturn("the iSO3 value.");
      }
 }

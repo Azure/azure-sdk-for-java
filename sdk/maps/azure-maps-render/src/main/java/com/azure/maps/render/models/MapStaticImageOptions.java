@@ -5,12 +5,14 @@ package com.azure.maps.render.models;
 
 import java.util.List;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.models.GeoBoundingBox;
 import com.azure.core.models.GeoPosition;
 
 /**
  * Organize inputs for get map static image
  */
+@Fluent
 public final class MapStaticImageOptions {
     private RasterTileFormat format;
     private StaticMapLayer layer;

@@ -5,11 +5,13 @@ package com.azure.maps.search.models;
 
 import java.util.List;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.models.GeoPosition;
 
 /**
  * Class holding parameters for a fuzzy search.
  */
+@Fluent
 public final class FuzzySearchOptions extends BaseSearchPointOfInterestOptions<FuzzySearchOptions> {
     private Boolean isTypeAhead;
     private List<SearchIndexes> extendedPostalCodesFor;

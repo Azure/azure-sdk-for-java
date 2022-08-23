@@ -4,10 +4,12 @@
 package com.azure.maps.search.models;
 
 import java.util.List;
+import com.azure.core.annotation.Fluent;
 
 /**
  * Options for searching with a StructureAddress.
  */
+@Fluent
 public final class SearchStructuredAddressOptions extends BaseSearchOptions<SearchStructuredAddressOptions> {
     private GeographicEntityType entityType;
     private List<SearchIndexes> extendedPostalCodesFor;

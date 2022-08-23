@@ -5,11 +5,13 @@ package com.azure.maps.search.models;
 
 import java.util.List;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.models.GeoPosition;
 
 /**
  * Class holding optional parameters for Reverse Search.
  */
+@Fluent
 public final class ReverseSearchAddressOptions extends BaseReverseSearchOptions<ReverseSearchAddressOptions> {
     private Boolean includeSpeedLimit;
     private String number;

@@ -5,9 +5,12 @@ package com.azure.maps.search.models;
 
 import java.util.List;
 
+import com.azure.core.annotation.Fluent;
+
 /**
  * Class holding optional parameters for Geometry Search.
  */
+@Fluent
 public abstract class BaseSearchGeometryOptions<T extends BaseSearchGeometryOptions<T>> {
     private String query;
     private Integer top;

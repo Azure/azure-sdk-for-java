@@ -3,11 +3,13 @@
 
 package com.azure.maps.search.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.models.GeoPosition;
 
 /**
  * Class holding optional parameters for Search.
  */
+@Fluent
 public final class ReverseSearchCrossStreetAddressOptions extends BaseReverseSearchOptions<ReverseSearchCrossStreetAddressOptions> {
     private Integer top;
 

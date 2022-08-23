@@ -4,12 +4,13 @@
 package com.azure.maps.search.models;
 
 import java.util.List;
-
+import com.azure.core.annotation.Fluent;
 import com.azure.core.models.GeoPosition;
 
 /**
  * Options for searching nearby points of interest.
  */
+@Fluent
 public final class SearchNearbyPointsOfInterestOptions extends BaseSearchPointOfInterestOptions<SearchNearbyPointsOfInterestOptions> {
     private List<SearchIndexes> extendedPostalCodesFor;
 

@@ -5,9 +5,12 @@ package com.azure.maps.render.models;
 
 import java.time.OffsetDateTime;
 
+import com.azure.core.annotation.Fluent;
+
 /**
  * Map tile options class to organize inputs for get map tile
  */
+@Fluent
 public final class MapTileOptions {
     private TilesetId tilesetId;
     private TileIndex tileIndex;

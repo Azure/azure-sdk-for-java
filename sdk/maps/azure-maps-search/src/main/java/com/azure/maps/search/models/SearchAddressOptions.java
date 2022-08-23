@@ -6,11 +6,13 @@ package com.azure.maps.search.models;
 import java.util.List;
 import java.util.Optional;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.models.GeoPosition;
 
 /**
  * Class holding optional parameters for Search.
  */
+@Fluent
 public final class SearchAddressOptions extends BaseSearchOptions<SearchAddressOptions> {
     private GeoPosition coordinates;
     private Boolean isTypeAhead;

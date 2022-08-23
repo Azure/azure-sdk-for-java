@@ -4,13 +4,14 @@
 package com.azure.maps.route.models;
 
 import java.time.Duration;
-
+import com.azure.core.annotation.Fluent;
 import com.azure.core.models.GeoPosition;
 
 /**
  * Options class for a get route range call.
  *
  */
+@Fluent
 public class RouteRangeOptions extends BaseRouteOptions<RouteRangeOptions> {
     private GeoPosition startingPoint;
     private Double fuelBudgetInLiters;

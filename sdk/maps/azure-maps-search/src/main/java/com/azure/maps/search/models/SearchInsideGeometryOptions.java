@@ -4,12 +4,13 @@
 package com.azure.maps.search.models;
 
 import java.util.List;
-
+import com.azure.core.annotation.Fluent;
 import com.azure.core.models.GeoObject;
 
 /**
  * Class holding optional parameters for Geometry Search.
  */
+@Fluent
 public final class SearchInsideGeometryOptions extends BaseSearchGeometryOptions<SearchInsideGeometryOptions> {
     private String language;
     private GeoObject geometry;

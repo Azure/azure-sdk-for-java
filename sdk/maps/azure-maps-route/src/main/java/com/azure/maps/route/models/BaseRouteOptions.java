@@ -6,7 +6,10 @@ package com.azure.maps.route.models;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+import com.azure.core.annotation.Fluent;
+
 /** Base Route Options */
+@Fluent
 public abstract class BaseRouteOptions<T extends BaseRouteOptions<T>>  {
     private OffsetDateTime departAt;
     private Integer vehicleAxleWeight;

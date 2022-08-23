@@ -23,20 +23,20 @@ public final class RegionCopyrightsCountry {
     private String label;
 
     /**
-     * Get the iSO3 property: ISO3 property.
-     *
-     * @return the iSO3 value.
-     */
-    public String getISO3() {
-        return this.iSO3;
-    }
-
-    /**
      * Get the label property: Label property.
      *
      * @return the label value.
      */
     public String getLabel() {
         return this.label;
+    }
+
+    /**
+     * Get the iSO3 property: ISO3 property.
+     *
+     * @return the iSO3 value.
+     */
+    public String getIso3() {
+        return this.iSO3;
     }
 }

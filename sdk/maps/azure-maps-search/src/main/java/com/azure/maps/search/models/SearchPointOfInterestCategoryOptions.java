@@ -4,12 +4,13 @@
 package com.azure.maps.search.models;
 
 import java.util.List;
-
+import com.azure.core.annotation.Fluent;
 import com.azure.core.models.GeoPosition;
 
 /**
  * Options for searching point of interest category.
  */
+@Fluent
 public final class SearchPointOfInterestCategoryOptions extends BaseSearchPointOfInterestOptions<SearchPointOfInterestCategoryOptions> {
     private Boolean isTypeAhead;
     private List<SearchIndexes> extendedPostalCodesFor;

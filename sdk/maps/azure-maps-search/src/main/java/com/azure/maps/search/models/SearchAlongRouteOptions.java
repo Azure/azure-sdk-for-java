@@ -4,12 +4,14 @@
 package com.azure.maps.search.models;
 
 import java.util.List;
+import com.azure.core.annotation.Fluent;
 
 import com.azure.core.models.GeoLineString;
 
 /**
  * Class holding optional parameters for Search along a route.
  */
+@Fluent
 public final class SearchAlongRouteOptions extends BaseSearchGeometryOptions<SearchAlongRouteOptions> {
     private List<String> brandFilter;
     private List<ElectricVehicleConnector> electricVehicleConnectorFilter;

@@ -22,12 +22,10 @@ For details on contributing to this repository, see the [contributing guide](htt
 For examples of each module please see:
 - [Azure Maps Search Samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/maps/azure-maps-search/src/samples) 
 - [Azure Maps Route Samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/maps/azure-maps-route/src/samples)
-) 
 - [Azure Maps Render Samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/maps/azure-maps-render/src/samples)
-) 
 
 ## Troubleshooting
-When you interact with the Azure Maps Services, errors returned by the Language service correspond to the same HTTP status codes returned for REST API requests.
+When you interact with the Azure Maps Services, errors returned by the Maps service correspond to the same HTTP status codes returned for REST API requests.
 
 For example, if you search with an invalid coordinate, a error is returned, indicating "Bad Request".400
 

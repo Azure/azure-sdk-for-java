@@ -5,10 +5,12 @@ package com.azure.maps.route.models;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import com.azure.core.annotation.Fluent;
 
 /**
  * Represents the options for requesting a route matrix.
  */
+@Fluent
 public class RouteMatrixOptions {
     private RouteMatrixQuery routeMatrixQuery;
     private Boolean waitForResults;
