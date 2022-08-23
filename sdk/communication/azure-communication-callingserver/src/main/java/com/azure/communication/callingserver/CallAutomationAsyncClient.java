@@ -12,6 +12,10 @@ import com.azure.communication.callingserver.implementation.accesshelpers.CallCo
 import com.azure.communication.callingserver.implementation.accesshelpers.ErrorConstructorProxy;
 import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callingserver.implementation.models.CallSourceInternal;
+import com.azure.communication.callingserver.implementation.models.MediaStreamingAudioChannelTypeInternal;
+import com.azure.communication.callingserver.implementation.models.MediaStreamingConfigurationInternal;
+import com.azure.communication.callingserver.implementation.models.MediaStreamingContentTypeInternal;
+import com.azure.communication.callingserver.implementation.models.MediaStreamingTransportTypeInternal;
 import com.azure.communication.callingserver.models.AnswerCallResult;
 import com.azure.communication.callingserver.models.CallRejectReason;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
@@ -182,7 +186,14 @@ public final class CallAutomationAsyncClient {
             AnswerCallRequestInternal request = new AnswerCallRequestInternal();
 
             if (mediaStreamingConfiguration != null) {
-                request.setIncomingCallContext(incomingCallContext).setCallbackUri(callbackUri).setMediaStreamingConfiguration(mediaStreamingConfiguration);
+                MediaStreamingConfigurationInternal mediaStreamingConfigurationInternal =
+                    new MediaStreamingConfigurationInternal()
+                        .setAudioChannelType(MediaStreamingAudioChannelTypeInternal.fromString(mediaStreamingConfiguration.getAudioChannelType().toString()))
+                        .setContentType(MediaStreamingContentTypeInternal.fromString(mediaStreamingConfiguration.getContentType().toString()))
+                        .setTransportType(MediaStreamingTransportTypeInternal.fromString(mediaStreamingConfiguration.getTransportType().toString()))
+                        .setTransportUrl(mediaStreamingConfiguration.getTransportUrl());
+
+                request.setIncomingCallContext(incomingCallContext).setCallbackUri(callbackUri).setMediaStreamingConfiguration(mediaStreamingConfigurationInternal);
             } else {
                 request.setIncomingCallContext(incomingCallContext).setCallbackUri(callbackUri);
             }

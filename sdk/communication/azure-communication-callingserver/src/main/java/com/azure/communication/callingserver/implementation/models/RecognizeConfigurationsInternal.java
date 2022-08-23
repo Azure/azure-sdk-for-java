@@ -7,9 +7,9 @@ package com.azure.communication.callingserver.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RecognizeConfigurations model. */
+/** The RecognizeConfigurationsInternal model. */
 @Fluent
-public final class RecognizeConfigurations {
+public final class RecognizeConfigurationsInternal {
     /*
      * Determines if we interrupt the prompt and start recognizing.
      */
@@ -47,9 +47,10 @@ public final class RecognizeConfigurations {
      * Set the interruptPromptAndStartRecognition property: Determines if we interrupt the prompt and start recognizing.
      *
      * @param interruptPromptAndStartRecognition the interruptPromptAndStartRecognition value to set.
-     * @return the RecognizeConfigurations object itself.
+     * @return the RecognizeConfigurationsInternal object itself.
      */
-    public RecognizeConfigurations setInterruptPromptAndStartRecognition(Boolean interruptPromptAndStartRecognition) {
+    public RecognizeConfigurationsInternal setInterruptPromptAndStartRecognition(
+            Boolean interruptPromptAndStartRecognition) {
         this.interruptPromptAndStartRecognition = interruptPromptAndStartRecognition;
         return this;
     }
@@ -67,9 +68,9 @@ public final class RecognizeConfigurations {
      * Set the initialSilenceTimeoutInSeconds property: Time to wait for first input after prompt (if any).
      *
      * @param initialSilenceTimeoutInSeconds the initialSilenceTimeoutInSeconds value to set.
-     * @return the RecognizeConfigurations object itself.
+     * @return the RecognizeConfigurationsInternal object itself.
      */
-    public RecognizeConfigurations setInitialSilenceTimeoutInSeconds(Integer initialSilenceTimeoutInSeconds) {
+    public RecognizeConfigurationsInternal setInitialSilenceTimeoutInSeconds(Integer initialSilenceTimeoutInSeconds) {
         this.initialSilenceTimeoutInSeconds = initialSilenceTimeoutInSeconds;
         return this;
     }
@@ -87,9 +88,9 @@ public final class RecognizeConfigurations {
      * Set the targetParticipant property: Target participant of DTFM tone recognition.
      *
      * @param targetParticipant the targetParticipant value to set.
-     * @return the RecognizeConfigurations object itself.
+     * @return the RecognizeConfigurationsInternal object itself.
      */
-    public RecognizeConfigurations setTargetParticipant(CommunicationIdentifierModel targetParticipant) {
+    public RecognizeConfigurationsInternal setTargetParticipant(CommunicationIdentifierModel targetParticipant) {
         this.targetParticipant = targetParticipant;
         return this;
     }
@@ -107,9 +108,9 @@ public final class RecognizeConfigurations {
      * Set the dtmfConfigurations property: Defines configurations for DTMF.
      *
      * @param dtmfConfigurations the dtmfConfigurations value to set.
-     * @return the RecognizeConfigurations object itself.
+     * @return the RecognizeConfigurationsInternal object itself.
      */
-    public RecognizeConfigurations setDtmfConfigurations(DtmfConfigurationsInternal dtmfConfigurations) {
+    public RecognizeConfigurationsInternal setDtmfConfigurations(DtmfConfigurationsInternal dtmfConfigurations) {
         this.dtmfConfigurations = dtmfConfigurations;
         return this;
     }
