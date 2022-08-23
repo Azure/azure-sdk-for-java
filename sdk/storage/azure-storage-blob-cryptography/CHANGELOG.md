@@ -2,6 +2,9 @@
 
 ## 12.19.0-beta.1 (2022-09-06)
 
+### Features Added
+- Added support for 2021-10-04 service version.
+
 ## 12.18.0 (2022-08-12)
 
 ### Other Changes

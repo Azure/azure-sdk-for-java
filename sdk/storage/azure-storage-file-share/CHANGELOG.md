@@ -2,6 +2,9 @@
 
 ## 12.16.0-beta.1 (2022-09-06)
 
+### Features Added
+- Added support for 2021-10-04 service version.
+
 ### Bugs Fixed
 - Fixed a bug that would cause auth failures when trying to rename a file share/directory share while authenticating with a sas.
 
