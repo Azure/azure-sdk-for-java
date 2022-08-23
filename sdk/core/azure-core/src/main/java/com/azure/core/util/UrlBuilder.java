@@ -8,6 +8,7 @@ import com.azure.core.implementation.ImplUtils;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -198,7 +199,7 @@ public final class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder clearQuery() {
-        if (query == null || query.isEmpty()) {
+        if (CoreUtils.isNullOrEmpty(query)) {
             return this;
         }
 
@@ -229,9 +230,7 @@ public final class UrlBuilder {
      * @return A String containing the currently configured query string.
      */
     public String getQueryString() {
-        initializeQuery();
-
-        if (query.isEmpty()) {
+        if (CoreUtils.isNullOrEmpty(queryToCopy) && CoreUtils.isNullOrEmpty(query)) {
             return "";
         }
 
@@ -242,26 +241,43 @@ public final class UrlBuilder {
     }
 
     private void appendQueryString(StringBuilder stringBuilder) {
-        initializeQuery();
-
-        if (query.isEmpty()) {
+        if (CoreUtils.isNullOrEmpty(queryToCopy) && CoreUtils.isNullOrEmpty(query)) {
             return;
         }
 
         stringBuilder.append("?");
 
         boolean first = true;
-        for (Map.Entry<String, QueryParameter> entry : query.entrySet()) {
-            for (String queryValue : entry.getValue().getValuesList()) {
-                if (!first) {
-                    stringBuilder.append("&");
-                }
-                stringBuilder.append(entry.getKey());
-                stringBuilder.append("=");
-                stringBuilder.append(queryValue);
-                first = false;
+
+        // queryToCopy hasn't been copied yet as no operations on query parameters have been applied since creating
+        // this UrlBuilder. Use queryToCopy to create the query string and while doing so copy it into query.
+        if (query == null) {
+            query = new LinkedHashMap<>();
+
+            for (Map.Entry<String, QueryParameter> entry : queryToCopy.entrySet()) {
+                first = writeQueryValues(stringBuilder, entry.getKey(), entry.getValue().getValuesList(), first);
+
+                query.put(entry.getKey(), entry.getValue());
+            }
+        } else {
+            // queryToCopy has been copied, use query to build the query string.
+            for (Map.Entry<String, QueryParameter> entry : query.entrySet()) {
+                first = writeQueryValues(stringBuilder, entry.getKey(), entry.getValue().getValuesList(), first);
             }
         }
+    }
+
+    private static boolean writeQueryValues(StringBuilder builder, String key, List<String> values, boolean first) {
+        for (String value : values) {
+            if (!first) {
+                builder.append("&");
+            }
+
+            builder.append(key).append("=").append(value);
+            first = false;
+        }
+
+        return first;
     }
 
     private UrlBuilder with(String text, UrlTokenizerState startState) {
