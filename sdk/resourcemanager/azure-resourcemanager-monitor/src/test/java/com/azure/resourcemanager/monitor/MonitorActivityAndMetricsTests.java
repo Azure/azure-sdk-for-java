@@ -8,6 +8,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.monitor.models.EventData;
 import com.azure.resourcemanager.monitor.models.EventDataPropertyName;
@@ -35,7 +36,8 @@ public class MonitorActivityAndMetricsTests extends MonitorManagementTest {
     }
 
     @Test
-    public void canListEventsAndMetrics() throws Exception {
+    @DoNotRecord(skipInPlayback = true)
+    public void canListEventsAndMetrics() {
         // make sure there exists a VM
         Region region = Region.US_WEST;
         String vmName = generateRandomResourceName("jMonitorVm_", 18);
@@ -44,11 +46,8 @@ public class MonitorActivityAndMetricsTests extends MonitorManagementTest {
             vmName,
             "10.0.0.0/28");
 
-        OffsetDateTime now = OffsetDateTime.parse("2020-12-28T21:44:57.424+08:00");
-        if (!this.isPlaybackMode()) {
-            now = OffsetDateTime.now();
-            System.out.println("record timestamp: " + now);
-        }
+        OffsetDateTime now = OffsetDateTime.now();
+        System.out.println("record timestamp: " + now);
 
         OffsetDateTime recordDateTime = now.minusDays(40);
 
