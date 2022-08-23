@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.iothub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iothub.models.TestResultStatus;
 import com.azure.resourcemanager.iothub.models.TestRouteResultDetails;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Result of testing one route. */
 @Fluent
 public final class TestRouteResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TestRouteResultInner.class);
-
     /*
      * Result of testing route
      */
