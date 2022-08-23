@@ -41,6 +41,13 @@ class AzureEventHubsKafkaBinderOAuth2AutoConfigurationTest {
     }
 
     @Test
+    void shouldConfigureWhenKafkaDisabled() {
+        this.contextRunner
+                .withPropertyValues("spring.cloud.azure.eventhubs.kafka.enabled=false")
+                .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsKafkaBinderOAuth2AutoConfiguration.class));
+    }
+
+    @Test
     void shouldConfigureWithKafkaBinderConfigurationClass() {
         this.contextRunner
                 .run(context -> {
