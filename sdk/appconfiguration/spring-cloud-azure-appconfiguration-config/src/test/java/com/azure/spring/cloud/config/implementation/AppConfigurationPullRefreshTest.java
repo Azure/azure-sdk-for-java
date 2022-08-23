@@ -27,7 +27,7 @@ public class AppConfigurationPullRefreshTest {
     @Mock
     private ApplicationEventPublisher publisher;
 
-    private Duration refreshInterval = Duration.ofMinutes(10);
+    private final Duration refreshInterval = Duration.ofMinutes(10);
 
     private RefreshEventData eventData;
 

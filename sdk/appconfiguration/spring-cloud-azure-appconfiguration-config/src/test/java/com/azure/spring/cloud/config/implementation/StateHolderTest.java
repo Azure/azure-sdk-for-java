@@ -24,7 +24,7 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 
 public class StateHolderTest {
 
-    private List<ConfigurationSetting> watchKeys = new ArrayList<>();
+    private final List<ConfigurationSetting> watchKeys = new ArrayList<>();
 
     @BeforeEach
     public void setup() {

@@ -14,20 +14,15 @@ import static com.azure.spring.cloud.config.implementation.TestConstants.TEST_CO
 import static com.azure.spring.cloud.config.implementation.TestUtils.propPair;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.InputStream;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
-import org.springframework.context.ApplicationContext;
 
 import com.azure.spring.cloud.config.implementation.config.AppConfigurationBootstrapConfiguration;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class AppConfigurationPropertiesTest {
 
@@ -44,15 +39,6 @@ public class AppConfigurationPropertiesTest {
     @InjectMocks
     private ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AppConfigurationBootstrapConfiguration.class));
-
-    @Mock
-    private ApplicationContext context;
-
-    @Mock
-    private InputStream mockInputStream;
-
-    @Mock
-    private ObjectMapper mockObjectMapper;
 
     @BeforeEach
     public void setup() {

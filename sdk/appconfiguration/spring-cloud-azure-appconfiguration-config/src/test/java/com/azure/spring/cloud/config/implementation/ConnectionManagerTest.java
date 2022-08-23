@@ -20,7 +20,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import com.azure.spring.cloud.config.implementation.health.AppConfigurationStoreHealth;
-import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.implementation.properties.ConfigStore;
 
 public class ConnectionManagerTest {
@@ -38,8 +37,6 @@ public class ConnectionManagerTest {
 
     private ConfigStore configStore;
 
-    private AppConfigurationProviderProperties providerProperties;
-
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
@@ -48,10 +45,6 @@ public class ConnectionManagerTest {
         configStore.setEndpoint(TEST_ENDPOINT);
 
         configStore.validateAndInit();
-
-        providerProperties = new AppConfigurationProviderProperties();
-        providerProperties.setDefaultMaxBackoff((long) 1000);
-        providerProperties.setDefaultMinBackoff((long) 1000);
 
         connectionManager = null;
     }

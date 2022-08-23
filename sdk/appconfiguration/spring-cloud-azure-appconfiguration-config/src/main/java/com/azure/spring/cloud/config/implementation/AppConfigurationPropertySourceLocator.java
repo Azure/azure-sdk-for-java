@@ -20,9 +20,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.spring.cloud.config.KeyVaultCredentialProvider;
-import com.azure.spring.cloud.config.KeyVaultSecretProvider;
-import com.azure.spring.cloud.config.SecretClientBuilderSetup;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationKeyValueSelector;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProviderProperties;
@@ -49,11 +46,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
     private final AppConfigurationReplicaClientFactory clientFactory;
 
-    private final KeyVaultCredentialProvider keyVaultCredentialProvider;
-
-    private final SecretClientBuilderSetup keyVaultClientProvider;
-
-    private final KeyVaultSecretProvider keyVaultSecretProvider;
+    private final AppConfigurationKeyVaultClientFactory keyVaultClientFactory;
 
     static final AtomicBoolean STARTUP = new AtomicBoolean(true);
 
@@ -62,21 +55,16 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
      * @param properties Configurations for stores to be loaded.
      * @param appProperties Configurations for the library.
      * @param clientFactory factory for creating clients for connecting to Azure App Configuration.
-     * @param keyVaultCredentialProvider optional provider for Key Vault Credentials
-     * @param keyVaultClientProvider optional provider for modifying the Key Vault Client
-     * @param keyVaultSecretProvider optional provider for loading secrets instead of connecting to Key Vault
+     * @param keyVaultClientFactory factory for creating clients for connecting to Azure Key Vault
      */
     public AppConfigurationPropertySourceLocator(AppConfigurationProperties properties,
         AppConfigurationProviderProperties appProperties, AppConfigurationReplicaClientFactory clientFactory,
-        KeyVaultCredentialProvider keyVaultCredentialProvider, SecretClientBuilderSetup keyVaultClientProvider,
-        KeyVaultSecretProvider keyVaultSecretProvider) {
+        AppConfigurationKeyVaultClientFactory keyVaultClientFactory) {
         this.properties = properties;
         this.appProperties = appProperties;
         this.configStores = properties.getStores();
         this.clientFactory = clientFactory;
-        this.keyVaultCredentialProvider = keyVaultCredentialProvider;
-        this.keyVaultClientProvider = keyVaultClientProvider;
-        this.keyVaultSecretProvider = keyVaultSecretProvider;
+        this.keyVaultClientFactory = keyVaultClientFactory;
 
         BackoffTimeCalculator.setDefaults(appProperties.getDefaultMaxBackoff(), appProperties.getDefaultMinBackoff());
     }
@@ -209,7 +197,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         return watchKeysSettings;
     }
 
-    private List<ConfigurationSetting> getFeatureFlagWatchKeys(ConfigStore configStore, List<AppConfigurationPropertySource> sources) {
+    private List<ConfigurationSetting> getFeatureFlagWatchKeys(ConfigStore configStore,
+        List<AppConfigurationPropertySource> sources) {
         List<ConfigurationSetting> watchKeysFeatures = new ArrayList<>();
 
         if (configStore.getFeatureFlags().getEnabled()) {
@@ -266,9 +255,9 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
         for (AppConfigurationKeyValueSelector selectedKeys : selects) {
             AppConfigurationApplicationSettingPropertySource propertySource = new AppConfigurationApplicationSettingPropertySource(
-                store.getEndpoint(), client, selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles),
-                properties, appProperties.getMaxRetryTime(), keyVaultCredentialProvider, keyVaultClientProvider,
-                keyVaultSecretProvider);
+                store.getEndpoint(), client, keyVaultClientFactory, selectedKeys.getKeyFilter(),
+                selectedKeys.getLabelFilter(profiles),
+                properties, appProperties.getMaxRetryTime());
             propertySource.initProperties();
             sourceList.add(propertySource);
         }

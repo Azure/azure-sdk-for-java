@@ -112,7 +112,7 @@ public class AppConfigurationStoreSelectsTest {
         String[] results = selects.getLabelFilter(new ArrayList<>());
         assertEquals(1, results.length);
         assertEquals("v1*", results[0]);
-        assertThrows(IllegalArgumentException.class, () -> selects.validateAndInit());
+        assertThrows(IllegalArgumentException.class, selects::validateAndInit);
 
         AppConfigurationKeyValueSelector selects2 = new AppConfigurationKeyValueSelector().setLabelFilter("v1")
             .setKeyFilter("/application/*");
@@ -120,7 +120,7 @@ public class AppConfigurationStoreSelectsTest {
         results = selects2.getLabelFilter(new ArrayList<>());
         assertEquals(1, results.length);
         assertEquals("v1", results[0]);
-        assertThrows(IllegalArgumentException.class, () -> selects2.validateAndInit());
+        assertThrows(IllegalArgumentException.class, selects2::validateAndInit);
     }
 
 }

@@ -24,8 +24,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
@@ -35,26 +36,18 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
-import com.azure.spring.cloud.config.KeyVaultCredentialProvider;
-import com.azure.spring.cloud.config.KeyVaultSecretProvider;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProperties;
+import com.azure.spring.cloud.config.implementation.stores.AppConfigurationSecretClientManager;
 
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 public class AppConfigurationPropertySourceKeyVaultTest {
 
     public static final List<ConfigurationSetting> TEST_ITEMS = new ArrayList<>();
-
-    public static final List<ConfigurationSetting> FEATURE_ITEMS = new ArrayList<>();
 
     private static final String EMPTY_CONTENT_TYPE = "";
 
@@ -77,10 +70,14 @@ public class AppConfigurationPropertySourceKeyVaultTest {
 
     private AppConfigurationApplicationSettingPropertySource propertySource;
 
-    private AppConfigurationProperties appConfigurationProperties;
-
     @Mock
     private SecretClientBuilder builderMock;
+
+    @Mock
+    private AppConfigurationKeyVaultClientFactory keyVaultClientFactory;
+
+    @Mock
+    private AppConfigurationSecretClientManager clientManagerMock;
 
     @Mock
     private AppConfigurationReplicaClient replicaClientMock;
@@ -89,27 +86,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
     private SecretAsyncClient clientMock;
 
     @Mock
-    private PagedFlux<ConfigurationSetting> settingsMock;
-
-    @Mock
-    private Flux<PagedResponse<ConfigurationSetting>> pageMock;
-
-    @Mock
-    private Mono<List<PagedResponse<ConfigurationSetting>>> collectionMock;
-
-    @Mock
-    private List<PagedResponse<ConfigurationSetting>> itemsMock;
-
-    @Mock
-    private Iterator<PagedResponse<ConfigurationSetting>> itemsIteratorMock;
-
-    @Mock
-    private PagedResponse<ConfigurationSetting> pagedResponseMock;
-
-    @Mock
-    private PagedIterable<ConfigurationSetting> pagedFluxMock;
-
-    private KeyVaultCredentialProvider tokenCredentialProvider = null;
+    private List<ConfigurationSetting> keyVaultSecretListMock;
 
     @BeforeEach
     public void init() {
@@ -118,12 +95,10 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         KEY_VAULT_ITEM.setContentType(KEY_VAULT_CONTENT_TYPE);
 
         MockitoAnnotations.openMocks(this);
-        appConfigurationProperties = new AppConfigurationProperties();
 
-        String[] labelFilter = {"\0"};
-        propertySource = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, replicaClientMock, KEY_FILTER, labelFilter,
-            appConfigurationProperties, 60, tokenCredentialProvider, null,
-            new TestClient());
+        String[] labelFilter = { "\0" };
+        propertySource = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, replicaClientMock,
+            keyVaultClientFactory, KEY_FILTER, labelFilter, new AppConfigurationProperties(), 60);
 
         TEST_ITEMS.add(ITEM_1);
         TEST_ITEMS.add(ITEM_2);
@@ -136,16 +111,18 @@ public class AppConfigurationPropertySourceKeyVaultTest {
     }
 
     @Test
-    public void testKeyVaultTest() throws Exception {
+    public void testKeyVaultTest() {
         TEST_ITEMS.add(KEY_VAULT_ITEM);
-        when(pagedFluxMock.iterator()).thenReturn(TEST_ITEMS.iterator())
-            .thenReturn(new ArrayList<ConfigurationSetting>().iterator());
-        when(replicaClientMock.listSettings(Mockito.any())).thenReturn(pagedFluxMock).thenReturn(pagedFluxMock);
+        when(keyVaultSecretListMock.iterator()).thenReturn(TEST_ITEMS.iterator())
+            .thenReturn(Collections.emptyIterator());
+        when(replicaClientMock.listSettings(Mockito.any())).thenReturn(keyVaultSecretListMock)
+            .thenReturn(keyVaultSecretListMock);
 
         Mockito.when(builderMock.buildAsyncClient()).thenReturn(clientMock);
 
         KeyVaultSecret secret = new KeyVaultSecret("mySecret", "mySecretValue");
-        when(clientMock.getSecret(Mockito.anyString(), Mockito.anyString())).thenReturn(Mono.just(secret));
+        when(keyVaultClientFactory.getClient(Mockito.any(URI.class), Mockito.any())).thenReturn(clientManagerMock);
+        when(clientManagerMock.getSecret(Mockito.any(URI.class), Mockito.anyInt())).thenReturn(secret);
 
         try {
             propertySource.initProperties();
@@ -163,14 +140,5 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         assertThat(propertySource.getProperty(TEST_KEY_2)).isEqualTo(TEST_VALUE_2);
         assertThat(propertySource.getProperty(TEST_KEY_3)).isEqualTo(TEST_VALUE_3);
         assertThat(propertySource.getProperty(TEST_KEY_VAULT_1)).isEqualTo("mySecretValue");
-    }
-
-    class TestClient implements KeyVaultSecretProvider {
-
-        @Override
-        public String getSecret(String uri) {
-            return "mySecretValue";
-        }
-
     }
 }

@@ -47,8 +47,6 @@ public class AppConfigurationBootstrapConfigurationTest {
     @Test
     public void clientsBeanCreated() {
         CONTEXT_RUNNER
-            .withPropertyValues(propPair(CONN_STRING_PROP, TEST_CONN_STRING)).run(context -> {
-                assertThat(context).hasSingleBean(AppConfigurationReplicaClientFactory.class);
-            });
+            .withPropertyValues(propPair(CONN_STRING_PROP, TEST_CONN_STRING)).run(context -> assertThat(context).hasSingleBean(AppConfigurationReplicaClientFactory.class));
     }
 }

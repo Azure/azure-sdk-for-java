@@ -25,7 +25,6 @@ import java.util.stream.IntStream;
 
 import org.springframework.util.StringUtils;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
@@ -99,7 +98,7 @@ final class AppConfigurationFeatureManagementPropertySource extends AppConfigura
         for (String label : labels) {
             settingSelector.setLabelFilter(label);
 
-            PagedIterable<ConfigurationSetting> features = replicaClient.listSettings(settingSelector);
+            List<ConfigurationSetting> features = replicaClient.listSettings(settingSelector);
 
             // Reading In Features
             for (ConfigurationSetting setting : features) {

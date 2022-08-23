@@ -16,10 +16,13 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,15 +39,13 @@ import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySource;
 
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.spring.cloud.config.KeyVaultCredentialProvider;
+import com.azure.spring.cloud.config.implementation.properties.AppConfigurationKeyValueSelector;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationStoreMonitoring;
-import com.azure.spring.cloud.config.implementation.properties.AppConfigurationKeyValueSelector;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationStoreTrigger;
 import com.azure.spring.cloud.config.implementation.properties.ConfigStore;
 import com.azure.spring.cloud.config.implementation.properties.FeatureFlagStore;
@@ -71,6 +72,9 @@ public class AppConfigurationPropertySourceLocatorTest {
 
     @Mock
     private AppConfigurationReplicaClientFactory clientFactoryMock;
+
+    @Mock
+    private AppConfigurationKeyVaultClientFactory keyVaultClientFactory;
 
     @Mock
     private AppConfigurationReplicaClient replicaClientMock;
@@ -108,13 +112,11 @@ public class AppConfigurationPropertySourceLocatorTest {
     private AppConfigurationProperties properties;
 
     @Mock
-    private PagedIterable<ConfigurationSetting> pagedFluxMock;
+    private List<ConfigurationSetting> watchKeyListMock;
 
     private AppConfigurationPropertySourceLocator locator;
 
     private AppConfigurationProviderProperties appProperties;
-
-    private KeyVaultCredentialProvider tokenCredentialProvider = null;
 
     @BeforeEach
     public void setup() {
@@ -152,9 +154,9 @@ public class AppConfigurationPropertySourceLocatorTest {
         AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
         monitoring.setEnabled(false);
         AppConfigurationStoreTrigger trigger = new AppConfigurationStoreTrigger();
-        trigger.setKey("sentinal");
+        trigger.setKey("sentinel");
         trigger.setKey("test");
-        ArrayList<AppConfigurationStoreTrigger> triggers = new ArrayList<AppConfigurationStoreTrigger>();
+        ArrayList<AppConfigurationStoreTrigger> triggers = new ArrayList<>();
         triggers.add(trigger);
         monitoring.setTriggers(triggers);
         when(configStoreMock.getMonitoring()).thenReturn(monitoring);
@@ -166,12 +168,12 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(iteratorMock.next()).thenReturn(pagedMock);
         when(pagedMock.getItems()).thenReturn(new ArrayList<>());
 
-        when(pagedFluxMock.iterator()).thenReturn(Collections.emptyIterator());
+        when(watchKeyListMock.iterator()).thenReturn(Collections.emptyIterator());
 
         when(clientFactoryMock.getAvailableClients(Mockito.anyString(), Mockito.eq(true)))
             .thenReturn(Arrays.asList(replicaClientMock));
-        when(replicaClientMock.listSettings(Mockito.any())).thenReturn(pagedFluxMock)
-            .thenReturn(pagedFluxMock).thenReturn(pagedFluxMock);
+        when(replicaClientMock.listSettings(Mockito.any())).thenReturn(watchKeyListMock)
+            .thenReturn(watchKeyListMock).thenReturn(watchKeyListMock);
         when(replicaClientMock.getEndpoint()).thenReturn(TEST_STORE_NAME);
 
         appProperties = new AppConfigurationProviderProperties();
@@ -196,7 +198,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStoreMock);
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientFactoryMock,
-            tokenCredentialProvider, null, null);
+            keyVaultClientFactory);
 
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
             stateHolderMock.when(() -> StateHolder.updateState(Mockito.any())).thenReturn(null);
@@ -210,7 +212,7 @@ public class AppConfigurationPropertySourceLocatorTest {
                 KEY_FILTER + "store1/\0"
             };
             assertEquals(expectedSourceNames.length, sources.size());
-            assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
+            assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(PropertySource::getName).toArray());
         }
     }
 
@@ -219,7 +221,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStoreMock);
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientFactoryMock,
-            tokenCredentialProvider, null, null);
+            keyVaultClientFactory);
 
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
             stateHolderMock.when(() -> StateHolder.updateState(Mockito.any())).thenReturn(null);
@@ -232,7 +234,7 @@ public class AppConfigurationPropertySourceLocatorTest {
                 KEY_FILTER + "store1/dev"
             };
             assertEquals(expectedSourceNames.length, sources.size());
-            assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
+            assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(PropertySource::getName).toArray());
         }
     }
 
@@ -241,7 +243,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStoreMock);
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientFactoryMock,
-            tokenCredentialProvider, null, null);
+            keyVaultClientFactory);
 
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
             stateHolderMock.when(() -> StateHolder.updateState(Mockito.any())).thenReturn(null);
@@ -254,19 +256,19 @@ public class AppConfigurationPropertySourceLocatorTest {
                 KEY_FILTER + "store1/prod,dev"
             };
             assertEquals(expectedSourceNames.length, sources.size());
-            assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
+            assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(PropertySource::getName).toArray());
         }
     }
 
     @Test
-    public void storeCreatedWithFeatureFlags() throws MalformedURLException {
+    public void storeCreatedWithFeatureFlags() {
         FeatureFlagStore featureFlagStore = new FeatureFlagStore();
         featureFlagStore.setEnabled(true);
 
         when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStore);
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientFactoryMock,
-            tokenCredentialProvider, null, null);
+            keyVaultClientFactory);
 
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
             stateHolderMock.when(() -> StateHolder.updateState(Mockito.any())).thenReturn(null);
@@ -282,7 +284,7 @@ public class AppConfigurationPropertySourceLocatorTest {
                 KEY_FILTER + "store1/\0"
             };
             assertEquals(expectedSourceNames.length, sources.size());
-            assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
+            assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(PropertySource::getName).toArray());
         }
     }
 
@@ -291,7 +293,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStoreMock);
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientFactoryMock,
-            tokenCredentialProvider, null, null);
+            keyVaultClientFactory);
 
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
             stateHolderMock.when(() -> StateHolder.updateState(Mockito.any())).thenReturn(null);
@@ -307,17 +309,17 @@ public class AppConfigurationPropertySourceLocatorTest {
                 KEY_FILTER + "store1/\0"
             };
             assertEquals(expectedSourceNames.length, sources.size());
-            assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
+            assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(PropertySource::getName).toArray());
         }
     }
 
     @Test
-    public void defaultFailFastThrowException() throws IOException {
+    public void defaultFailFastThrowException() {
         when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStoreMock);
         when(configStoreMock.isFailFast()).thenReturn(true);
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties,
-            clientFactoryMock, tokenCredentialProvider, null, null);
+            clientFactoryMock, keyVaultClientFactory);
 
         when(clientFactoryMock.getAvailableClients(Mockito.anyString())).thenReturn(Arrays.asList(replicaClientMock));
         when(replicaClientMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenThrow(new RuntimeException());
@@ -327,12 +329,12 @@ public class AppConfigurationPropertySourceLocatorTest {
     }
 
     @Test
-    public void refreshThrowException() throws IOException, IllegalArgumentException {
+    public void refreshThrowException() throws IllegalArgumentException {
         when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStoreMock);
         AppConfigurationPropertySourceLocator.STARTUP.set(false);
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties,
-            clientFactoryMock, tokenCredentialProvider, null, null);
+            clientFactoryMock, keyVaultClientFactory);
 
         when(clientFactoryMock.getAvailableClients(Mockito.anyString())).thenReturn(Arrays.asList(replicaClientMock));
         when(replicaClientMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenThrow(new RuntimeException());
@@ -346,10 +348,10 @@ public class AppConfigurationPropertySourceLocatorTest {
     }
 
     @Test
-    public void notFailFastShouldPass() throws IOException {
+    public void notFailFastShouldPass() {
         when(configStoreMock.isFailFast()).thenReturn(false);
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties,
-            clientFactoryMock, tokenCredentialProvider, null, null);
+            clientFactoryMock, keyVaultClientFactory);
 
         when(configStoreMock.isFailFast()).thenReturn(false);
         when(configStoreMock.getEndpoint()).thenReturn(TEST_STORE_NAME);
@@ -373,7 +375,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         TestUtils.addStore(properties, TEST_STORE_NAME_2, TEST_CONN_STRING_2, KEY_FILTER);
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties,
-            clientFactoryMock, tokenCredentialProvider, null, null);
+            clientFactoryMock, keyVaultClientFactory);
 
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
             stateHolderMock.when(() -> StateHolder.updateState(Mockito.any())).thenReturn(null);
@@ -384,12 +386,12 @@ public class AppConfigurationPropertySourceLocatorTest {
             String[] expectedSourceNames = new String[] { KEY_FILTER + TEST_STORE_NAME_2 + "/\0",
                 KEY_FILTER + TEST_STORE_NAME_1 + "/\0" };
             assertEquals(2, sources.size());
-            assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
+            assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(PropertySource::getName).toArray());
         }
     }
 
     @Test
-    public void awaitOnError()  {
+    public void awaitOnError() {
         List<ConfigStore> configStores = new ArrayList<>();
         configStores.add(configStoreMockError);
         AppConfigurationProperties properties = new AppConfigurationProperties();
@@ -412,7 +414,8 @@ public class AppConfigurationPropertySourceLocatorTest {
 
         String[] array = {};
         when(env.getActiveProfiles()).thenReturn(array);
-        AppConfigurationKeyValueSelector selectedKeys = new AppConfigurationKeyValueSelector().setKeyFilter("/application/");
+        AppConfigurationKeyValueSelector selectedKeys = new AppConfigurationKeyValueSelector()
+            .setKeyFilter("/application/");
         List<AppConfigurationKeyValueSelector> selects = new ArrayList<>();
         selects.add(selectedKeys);
         when(configStoreMockError.getSelects()).thenReturn(selects);
@@ -428,7 +431,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(appPropertiesMock.getStartDate()).thenReturn(Instant.now());
 
         locator = new AppConfigurationPropertySourceLocator(properties, appPropertiesMock, clientFactoryMock,
-            tokenCredentialProvider, null, null);
+            keyVaultClientFactory);
 
         assertThrows(RuntimeException.class, () -> locator.locate(env));
         verify(appPropertiesMock, times(1)).getPrekillTime();
@@ -439,7 +442,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(configStoreMock.isEnabled()).thenReturn(false);
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientFactoryMock,
-            tokenCredentialProvider, null, null);
+            keyVaultClientFactory);
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
             stateHolderMock.when(() -> StateHolder.updateState(Mockito.any())).thenReturn(null);
             PropertySource<?> source = locator.locate(emptyEnvironment);
