@@ -26,7 +26,7 @@ import java.util.List;
  * slot as well as multi-slot scenarios.
  *
  * <p><strong>Instantiating a synchronous Personalizer Client</strong></p>
- *
+ * <p>
  * <!-- src_embed com.azure.ai.personalizer.PersonalizerClient.instantiation -->
  * <pre>
  * PersonalizerClient personalizerClient = new PersonalizerClientBuilder&#40;&#41;
@@ -54,7 +54,7 @@ public final class PersonalizerClient {
      *
      * @param rankOptions A Personalizer Rank request.
      * @return returns which action to use as rewardActionId, and additional information about each action as a result
-     *     of a Rank request.
+     * of a Rank request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PersonalizerRankResult rank(PersonalizerRankOptions rankOptions) {
@@ -70,7 +70,7 @@ public final class PersonalizerClient {
      * @param rankOptions A Personalizer Rank request.
      * @param context The context to associate with this operation.
      * @return returns which action to use as rewardActionId, and additional information about each action as a result
-     *     of a Rank request along with {@link Response}.
+     * of a Rank request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PersonalizerRankResult> rankWithResponse(PersonalizerRankOptions rankOptions, Context context) {
@@ -189,7 +189,7 @@ public final class PersonalizerClient {
      * @param eventId The event id this reward applies to.
      * @param slotId The slot id of the slot.
      * @param reward The associated reward for the given slot. The reward should be a floating point number, typically
-     *               between 0 and 1.
+     *                between 0 and 1.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void rewardMultiSlot(String eventId, String slotId, float reward) {
@@ -208,7 +208,7 @@ public final class PersonalizerClient {
      *
      * @param eventId The event id this reward applies to.
      * @param rewardMultiSlotOptions List of slot id and reward values. The reward should be a floating point number, typically
-     *                      between 0 and 1.
+     *                               between 0 and 1.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void rewardMultiSlot(String eventId, PersonalizerRewardMultiSlotOptions rewardMultiSlotOptions) {
@@ -222,7 +222,7 @@ public final class PersonalizerClient {
      *
      * @param eventId The event id this reward applies to.
      * @param rewardMultiSlotOptions List of slot id and reward values. The reward should be a floating point number, typically
-     *                      between 0 and 1.
+     *                               between 0 and 1.
      * @param context The context to associate with this operation.
      * @return the {@link Response}.
      */

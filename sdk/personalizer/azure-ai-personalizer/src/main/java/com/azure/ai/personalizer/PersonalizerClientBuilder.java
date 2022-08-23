@@ -42,11 +42,9 @@ public final class PersonalizerClientBuilder implements
     EndpointTrait<PersonalizerClientBuilder>,
     HttpTrait<PersonalizerClientBuilder>,
     TokenCredentialTrait<PersonalizerClientBuilder> {
-    private ClientLogger logger;
-
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
-
+    private ClientLogger logger;
     private ClientOptions clientOptions;
     private String endpoint;
     private AzureKeyCredential azureKeyCredential;
@@ -180,6 +178,7 @@ public final class PersonalizerClientBuilder implements
 
     /**
      * Set the retry policy to be used by the clients that are returned by this builder.
+     *
      * @param retryPolicy The retry policy to be used when making network calls.
      * @return the PersonalizerClientBuilder object itself.
      */
@@ -196,6 +195,7 @@ public final class PersonalizerClientBuilder implements
 
     /**
      * Set the service version to be used by the clients that are returned by this builder.
+     *
      * @param version The service version to be used when calling Personalizer service.
      * @return the PersonalizerClientBuilder object itself.
      */
@@ -206,6 +206,7 @@ public final class PersonalizerClientBuilder implements
 
     /**
      * Set the azure cloud to be used by the clients that are returned by this builder.
+     *
      * @param audience The azure cloud that the Personalizer instance belongs to.
      * @return the PersonalizerClientBuilder object itself.
      */
@@ -217,6 +218,7 @@ public final class PersonalizerClientBuilder implements
 
     /**
      * Create a {@link PersonalizerClient} object to invoke the Personalizer service.
+     *
      * @return the PersonalizerClient object.
      */
     public PersonalizerClient buildClient() {
@@ -225,6 +227,7 @@ public final class PersonalizerClientBuilder implements
 
     /**
      * Create a {@link PersonalizerAsyncClient} object to invoke the Personalizer service in an asynchronous manner.
+     *
      * @return the created object.
      */
     public PersonalizerAsyncClient buildAsyncClient() {

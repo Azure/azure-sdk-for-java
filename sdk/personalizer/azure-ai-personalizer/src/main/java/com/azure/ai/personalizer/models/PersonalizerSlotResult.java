@@ -37,7 +37,7 @@ public final class PersonalizerSlotResult {
      * @param id the id value to set.
      * @return the PersonalizerSlotResult object itself.
      */
-    public PersonalizerSlotResult setId(String id) {
+    PersonalizerSlotResult setId(String id) {
         this.id = id;
         return this;
     }

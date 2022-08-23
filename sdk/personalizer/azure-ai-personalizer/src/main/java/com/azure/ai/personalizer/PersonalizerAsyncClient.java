@@ -4,7 +4,6 @@
 package com.azure.ai.personalizer;
 
 import com.azure.ai.personalizer.implementation.PersonalizerClientV1Preview3Impl;
-import com.azure.ai.personalizer.implementation.util.Transforms;
 import com.azure.ai.personalizer.models.PersonalizerRankMultiSlotOptions;
 import com.azure.ai.personalizer.models.PersonalizerRankMultiSlotResult;
 import com.azure.ai.personalizer.models.PersonalizerRankOptions;
@@ -31,7 +30,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * slot as well as multi-slot scenarios.
  *
  * <p><strong>Instantiating an asynchronous Personalizer Client</strong></p>
- *
+ * <p>
  * <!-- src_embed com.azure.ai.personalizer.PersonalizerAsyncClient.instantiation -->
  * <pre>
  * PersonalizerAsyncClient personalizerClient = new PersonalizerClientBuilder&#40;&#41;
@@ -61,7 +60,7 @@ public final class PersonalizerAsyncClient {
      *
      * @param rankRequest A Personalizer Rank request.
      * @return returns which action to use as rewardActionId, and additional information about each action as a result
-     *     of a Rank request.
+     * of a Rank request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PersonalizerRankResult> rank(PersonalizerRankOptions rankRequest) {
@@ -76,7 +75,7 @@ public final class PersonalizerAsyncClient {
      *
      * @param rankRequest A Personalizer Rank request.
      * @return returns which action to use as rewardActionId, and additional information about each action as a result
-     *     of a Rank request along with {@link Response} on successful completion of {@link Mono}.
+     * of a Rank request along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PersonalizerRankResult>> rankWithResponse(PersonalizerRankOptions rankRequest) {
@@ -228,7 +227,7 @@ public final class PersonalizerAsyncClient {
      *
      * @param eventId The event id this reward applies to.
      * @param rewardRequest List of slot id and reward values. The reward should be a floating point number, typically between 0
-     *     and 1.
+     *                      and 1.
      * @return the completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -243,7 +242,7 @@ public final class PersonalizerAsyncClient {
      *
      * @param eventId The event id this reward applies to.
      * @param rewardRequest List of slot id and reward values. The reward should be a floating point number, typically between 0
-     *     and 1.
+     *                      and 1.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

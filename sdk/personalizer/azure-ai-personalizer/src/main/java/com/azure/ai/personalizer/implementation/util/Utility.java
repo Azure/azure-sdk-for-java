@@ -42,15 +42,16 @@ import java.util.Objects;
  * Utility method class.
  */
 public final class Utility {
+    static final String DEFAULT_SCOPE = "/.default";
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
+
     static {
         Map<String, String> properties = CoreUtils.getProperties(Constants.PERSONALIZER_PROPERTIES);
         CLIENT_NAME = properties.getOrDefault(Constants.NAME, "UnknownName");
         CLIENT_VERSION = properties.getOrDefault(Constants.VERSION, "UnknownVersion");
     }
-    static final String DEFAULT_SCOPE = "/.default";
 
     private Utility() {
     }

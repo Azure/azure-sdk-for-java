@@ -3,12 +3,9 @@
 
 package com.azure.ai.personalizer;
 
-import com.azure.ai.personalizer.models.CreateEvaluationOperationResult;
-import com.azure.ai.personalizer.models.PersonalizerEvaluation;
-import com.azure.ai.personalizer.models.PersonalizerEvaluationJobStatus;
-import com.azure.ai.personalizer.models.PersonalizerEvaluationOptions;
-import com.azure.ai.personalizer.models.PersonalizerPolicy;
-import com.azure.ai.personalizer.models.PersonalizerPolicySource;
+import com.azure.ai.personalizer.administration.*;
+import com.azure.ai.personalizer.administration.models.*;
+import com.azure.ai.personalizer.models.*;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.SyncPoller;
@@ -35,7 +32,7 @@ public class EvaluationTests extends PersonalizerTestBase {
     public final void runEvaluationLifecycleTest(HttpClient httpClient, PersonalizerServiceVersion serviceVersion) {
         PersonalizerEvaluationOptions evaluationOptions = new PersonalizerEvaluationOptions()
             .setName("JavaSDKTestEvaluation")
-            .setEnableOfflineExperimentation(true)
+            .setOfflineExperimentationEnabled(true)
             .setStartTime(OffsetDateTime.now())
             .setEndTime(OffsetDateTime.now().minusDays(1))
             .setPolicies(new ArrayList<PersonalizerPolicy>());
@@ -45,8 +42,8 @@ public class EvaluationTests extends PersonalizerTestBase {
 
         PersonalizerEvaluation evaluationResult = syncPoller.getFinalResult();
         assertNotNull(evaluationResult);
-        assertEquals(PersonalizerEvaluationJobStatus.COMPLETED, evaluationResult.getStatus());
-        assertTrue(evaluationResult.getPolicyResults().stream().anyMatch(p -> p.getPolicySource().equals(PersonalizerPolicySource.ONLINE)));
+        assertEquals(EvaluationJobStatus.COMPLETED, evaluationResult.getStatus());
+        assertTrue(evaluationResult.getPolicyResults().stream().anyMatch(p -> p.getPolicySource().equals(PolicySource.ONLINE)));
         assertFalse(CoreUtils.isNullOrEmpty(evaluationResult.getOptimalPolicy()));
 
         client.deleteEvaluation(evaluationResult.getId());

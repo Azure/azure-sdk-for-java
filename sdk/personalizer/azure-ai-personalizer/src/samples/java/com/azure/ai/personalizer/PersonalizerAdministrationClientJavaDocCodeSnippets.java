@@ -3,6 +3,7 @@
 
 package com.azure.ai.personalizer;
 
+import com.azure.ai.personalizer.administration.*;
 import com.azure.core.credential.AzureKeyCredential;
 
 /**

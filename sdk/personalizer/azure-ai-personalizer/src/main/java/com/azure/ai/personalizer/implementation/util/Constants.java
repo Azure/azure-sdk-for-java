@@ -11,6 +11,7 @@ import java.time.Duration;
 
 public class Constants {
 
+    public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
     static final String PERSONALIZER_PROPERTIES = "azure-ai-personalizer.properties";
     static final String NAME = "name";
     static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
@@ -18,6 +19,4 @@ public class Constants {
     static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
     static final HttpHeaders DEFAULT_HTTP_HEADERS = new HttpHeaders();
     static final HttpLogOptions DEFAULT_LOG_OPTIONS = new HttpLogOptions();
-
-    public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
 }

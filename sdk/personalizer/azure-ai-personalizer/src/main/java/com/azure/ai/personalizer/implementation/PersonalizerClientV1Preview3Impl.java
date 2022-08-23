@@ -4,7 +4,7 @@
 
 package com.azure.ai.personalizer.implementation;
 
-import com.azure.ai.personalizer.implementation.models.ErrorResponseException;
+import com.azure.ai.personalizer.models.ErrorResponseException;
 import com.azure.ai.personalizer.models.PersonalizerRankOptions;
 import com.azure.ai.personalizer.models.PersonalizerRankResult;
 import com.azure.core.annotation.BodyParam;

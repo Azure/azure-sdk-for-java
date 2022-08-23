@@ -3,7 +3,8 @@
 
 package com.azure.ai.personalizer;
 
-import com.azure.ai.personalizer.models.PersonalizerModelProperties;
+import com.azure.ai.personalizer.administration.PersonalizerAdministrationClient;
+import com.azure.ai.personalizer.administration.models.PersonalizerModelProperties;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.params.ParameterizedTest;

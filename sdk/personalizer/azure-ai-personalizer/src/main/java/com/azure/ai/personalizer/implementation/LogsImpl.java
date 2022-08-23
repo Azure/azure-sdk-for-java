@@ -4,8 +4,8 @@
 
 package com.azure.ai.personalizer.implementation;
 
-import com.azure.ai.personalizer.implementation.models.ErrorResponseException;
-import com.azure.ai.personalizer.models.PersonalizerLogProperties;
+import com.azure.ai.personalizer.administration.models.PersonalizerLogProperties;
+import com.azure.ai.personalizer.models.ErrorResponseException;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;

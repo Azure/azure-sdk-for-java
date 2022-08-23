@@ -20,12 +20,6 @@ public enum PersonalizerServiceVersion implements ServiceVersion {
         this.version = version;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public String getVersion() {
-        return this.version;
-    }
-
     /**
      * Gets the latest service version supported by this client library
      *
@@ -33,5 +27,13 @@ public enum PersonalizerServiceVersion implements ServiceVersion {
      */
     public static PersonalizerServiceVersion getLatest() {
         return V1_1_PREVIEW_3;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getVersion() {
+        return this.version;
     }
 }

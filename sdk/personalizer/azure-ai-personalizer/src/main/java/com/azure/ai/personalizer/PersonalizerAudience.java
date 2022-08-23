@@ -7,12 +7,18 @@ import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Collection;
 
-/** Defines values for PersonalizerAudience. */
+/**
+ * Defines values for PersonalizerAudience.
+ */
 public class PersonalizerAudience extends ExpandableStringEnum<PersonalizerAudience> {
-    /** Static value AZURE_RESOURCE_MANAGER_GOVERNMENT for PersonalizerAudience. */
+    /**
+     * Static value AZURE_RESOURCE_MANAGER_GOVERNMENT for PersonalizerAudience.
+     */
     public static final PersonalizerAudience AZURE_RESOURCE_MANAGER_US_GOVERNMENT = fromString("https://cognitiveservices.azure.us");
 
-    /** Static value AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD for PersonalizerAudience. */
+    /**
+     * Static value AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD for PersonalizerAudience.
+     */
     public static final PersonalizerAudience AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD = fromString("https://cognitiveservices.azure.com");
 
     /**
@@ -25,7 +31,9 @@ public class PersonalizerAudience extends ExpandableStringEnum<PersonalizerAudie
         return fromString(name, PersonalizerAudience.class);
     }
 
-    /** @return known FormRecognizerAudience values. */
+    /**
+     * @return known FormRecognizerAudience values.
+     */
     public static Collection<PersonalizerAudience> values() {
         return values(PersonalizerAudience.class);
     }

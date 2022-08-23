@@ -3,14 +3,12 @@
 
 package com.azure.ai.personalizer;
 
-import com.azure.ai.personalizer.models.PersonalizerPolicy;
-import com.azure.ai.personalizer.models.PersonalizerServiceProperties;
+import com.azure.ai.personalizer.administration.*;
+import com.azure.ai.personalizer.administration.models.*;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.TestBase;
-import com.azure.core.test.TestMode;
+import com.azure.core.http.policy.*;
+import com.azure.core.test.*;
 
 import java.time.Duration;
 

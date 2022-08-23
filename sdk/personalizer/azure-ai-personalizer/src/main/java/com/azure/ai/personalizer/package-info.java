@@ -3,7 +3,6 @@
 
 /**
  * Package containing classes for creating a
- * {@link com.azure.ai.personalizer.PersonalizerAdministrationClient} and
  * {@link com.azure.ai.personalizer.PersonalizerClient} to perform operations on
  * Azure Personalizer.
  */
