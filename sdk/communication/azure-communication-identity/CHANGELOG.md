@@ -6,15 +6,15 @@
 - Added support to customize the Communication Identity access token’s validity period:
   - Added methods that provide the ability to create a Communication Identity access token with custom expiration:
       - CommunicationIdentityClient:
-        - `createUserAndToken(Iterable<CommunicationTokenScope> scopes, Duration expiresAfter)`
-        - `createUserAndTokenWithResponse(Iterable<CommunicationTokenScope> scopes, Duration expiresAfter, Context context)`
-        - `getToken(CommunicationUserIdentifier communicationUser, Iterable<CommunicationTokenScope> scopes, Duration expiresAfter)`
-        - `getTokenWithResponse(CommunicationUserIdentifier communicationUser, Iterable<CommunicationTokenScope> scopes, Duration expiresAfter, Context context)`
+        - `createUserAndToken(Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresAfter)`
+        - `createUserAndTokenWithResponse(Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresAfter, Context context)`
+        - `getToken(CommunicationUserIdentifier communicationUser, Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresAfter)`
+        - `getTokenWithResponse(CommunicationUserIdentifier communicationUser, Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresAfter, Context context)`
       - CommunicationIdentityAsyncClient:
-        - `createUserAndToken(Iterable<CommunicationTokenScope> scopes, Duration expiresAfter)`
-        - `createUserAndTokenWithResponse(Iterable<CommunicationTokenScope> scopes, Duration expiresAfter)`
-        - `getToken(CommunicationUserIdentifier communicationUser, Iterable<CommunicationTokenScope> scopes, Duration expiresAfter)`
-        - `getTokenWithResponse(CommunicationUserIdentifier communicationUser, Iterable<CommunicationTokenScope> scopes, Duration expiresAfter)`
+        - `createUserAndToken(Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresAfter)`
+        - `createUserAndTokenWithResponse(Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresAfter)`
+        - `getToken(CommunicationUserIdentifier communicationUser, Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresAfter)`
+        - `getTokenWithResponse(CommunicationUserIdentifier communicationUser, Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresAfter)`
 - Added a new API version `CommunicationIdentityServiceVersion.V2022_10_01` that is now the default API version.
 
 ### Breaking Changes
