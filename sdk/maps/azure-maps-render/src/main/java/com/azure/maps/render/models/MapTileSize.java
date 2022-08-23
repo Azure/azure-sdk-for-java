@@ -14,7 +14,7 @@ public final class MapTileSize extends ExpandableStringEnum<MapTileSize> {
     public static final MapTileSize SIZE_256 = fromString("256");
 
     /** Static value 512 for MapTileSize. */
-    public static final MapTileSize SIZE512 = fromString("512");
+    public static final MapTileSize SIZE_512 = fromString("512");
 
     /**
      * Creates or finds a MapTileSize from its string representation.
