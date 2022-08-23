@@ -30,10 +30,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.PollerFlux;
-import com.azure.core.util.polling.PollingContext;
+import com.azure.core.util.polling.*;
 import com.azure.security.keyvault.secrets.SecretServiceVersion;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
@@ -580,21 +577,33 @@ public class SecretClientImpl {
 
     public PollerFlux<DeletedSecret, Void> beginDeleteSecretAsync(String name) {
         return new PollerFlux<>(getDefaultPollingInterval(),
-            activationOperation(name),
-            createPollOperation(name),
+            activationOperationAsync(name),
+            createPollOperationAsync(name),
             (pollingContext, firstResponse) -> Mono.empty(),
             (pollingContext) -> Mono.empty());
     }
 
-    private Function<PollingContext<DeletedSecret>, Mono<DeletedSecret>> activationOperation(String name) {
+    public SyncPoller<DeletedSecret, Void> beginDeleteSecret(String name, Context context) {
+        return new SimpleSyncPoller<>(getDefaultPollingInterval(),
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation(name, context).apply(cxt)),
+            createPollOperation(name, context),
+            (pollingContext, firstResponse) -> null,
+            (pollingContext) -> null);
+    }
+
+    private Function<PollingContext<DeletedSecret>, Mono<DeletedSecret>> activationOperationAsync(String name) {
         return (pollingContext) -> withContext(context -> deleteSecretWithResponseAsync(name, context)).
             flatMap(deletedSecretResponse -> Mono.just(deletedSecretResponse.getValue()));
+    }
+
+    private Function<PollingContext<DeletedSecret>, DeletedSecret> activationOperation(String name, Context context) {
+        return (pollingContext) -> deleteSecretWithResponse(name, context).getValue();
     }
 
     /**
      * Polling operation to poll on the delete secret operation status.
      */
-    private Function<PollingContext<DeletedSecret>, Mono<PollResponse<DeletedSecret>>> createPollOperation(String keyName) {
+    private Function<PollingContext<DeletedSecret>, Mono<PollResponse<DeletedSecret>>> createPollOperationAsync(String keyName) {
         return pollingContext ->
             withContext(context -> service.getDeletedSecretPollerAsync(vaultUrl, keyName,
                 secretServiceVersion.getVersion(), ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
@@ -617,12 +626,44 @@ public class SecretClientImpl {
                     pollingContext.getLatestResponse().getValue()));
     }
 
+    /**
+     * Polling operation to poll on the delete secret operation status.
+     */
+    private Function<PollingContext<DeletedSecret>, PollResponse<DeletedSecret>> createPollOperation(String keyName,
+                                                                                                     Context context) {
+        return pollingContext -> {
+            try {
+                Response<DeletedSecret> deletedSecretResponse = service.getDeletedSecretPoller(vaultUrl, keyName,
+                    secretServiceVersion.getVersion(), ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
+                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
+                if (deletedSecretResponse.getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+                    return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+                        pollingContext.getLatestResponse().getValue());
+                }
+
+                return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                    deletedSecretResponse.getValue());
+            } catch (Exception e) {
+                // This means either vault has soft-delete disabled or permission is not granted for the get deleted key
+                // operation. In both cases deletion operation was successful when activation operation succeeded before
+                // reaching here.
+                return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                    pollingContext.getLatestResponse().getValue());
+            }
+        };
+    }
+
     private Mono<Response<DeletedSecret>> deleteSecretWithResponseAsync(String name, Context context) {
         return service.deleteSecretAsync(vaultUrl, name, secretServiceVersion.getVersion(), ACCEPT_LANGUAGE,
                 CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.verbose("Deleting secret - {}", name))
             .doOnSuccess(response -> logger.verbose("Deleted secret - {}", response.getValue().getName()))
             .doOnError(error -> logger.warning("Failed to delete secret - {}", name, error));
+    }
+
+    private Response<DeletedSecret> deleteSecretWithResponse(String name, Context context) {
+        return service.deleteSecret(vaultUrl, name, secretServiceVersion.getVersion(), ACCEPT_LANGUAGE,
+                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
     }
 
     public Mono<Response<DeletedSecret>> getDeletedSecretWithResponseAsync(String name, Context context) {
