@@ -3,11 +3,9 @@
 
 package com.azure.core.implementation.http.rest;
 
-import com.azure.core.util.CoreUtils;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.regex.Pattern;
 
 /**
@@ -20,9 +18,7 @@ import java.util.regex.Pattern;
  * generate a {@link Pattern} to perform replacing.
  */
 public class RangeReplaceSubstitution extends Substitution {
-    private final String substitutionBase;
-    private final String placeholder;
-    private final Set<Range> ranges;
+    private final List<Range> ranges;
 
     /**
      * Create a new Substitution.
@@ -37,10 +33,9 @@ public class RangeReplaceSubstitution extends Substitution {
     public RangeReplaceSubstitution(String urlParameterName, int methodParameterIndex, boolean shouldEncode,
         String substitutionBase) {
         super(urlParameterName, methodParameterIndex, shouldEncode);
-        this.substitutionBase = substitutionBase;
-        this.placeholder = "{" + urlParameterName + "}";
-        this.ranges = new TreeSet<>();
+        this.ranges = new ArrayList<>();
 
+        String placeholder = "{" + urlParameterName + "}";
         int indexOf = 0;
         while (true) {
             indexOf = substitutionBase.indexOf(placeholder, indexOf);
@@ -54,57 +49,29 @@ public class RangeReplaceSubstitution extends Substitution {
         }
     }
 
-    /**
-     * Replaces all ranges with the specified {@code replaceValue}.
-     *
-     * @param replaceValue The value to replace ranges with.
-     * @return The resulting string with ranges replaced with the specified value.
-     * @throws NullPointerException If {@code replaceValue} is null.
-     */
-    public String replace(String replaceValue) {
-        if (CoreUtils.isNullOrEmpty(ranges)) {
-            return substitutionBase;
-        }
-
-        int initialLength = substitutionBase.length();
-
-        // Replacement placeholder is the parameter name wrapped with '{' '}', '{<parameter name>}'
-        int placeholderLength = placeholder.length();
-
-        // Replaced string size should be the String size plus (replaced - placeholder) * replace_count.
-        // For example if the replacement is 'hello' and the placeholder is '{message}' the resulting replaced
-        // string will be smaller than the initial size.
-        StringBuilder replaced = new StringBuilder(Math.max(0, initialLength
-            - ((placeholderLength - replaceValue.length()) * ranges.size())));
-
-        int last = 0;
-        for (Range range : ranges) {
-            if (range.end > initialLength) {
-                continue;
-            }
-
-            if (last < range.start) {
-                replaced.append(substitutionBase, last, range.start);
-            }
-
-            replaced.append(replaceValue);
-            last = range.end;
-        }
-
-        if (last < initialLength) {
-            replaced.append(substitutionBase, last, initialLength);
-        }
-
-        return replaced.toString();
+    public List<Range> getRanges() {
+        return ranges;
     }
 
-    private static final class Range implements Comparable<Range> {
-        final int start;
-        final int end;
+    static final class Range implements Comparable<Range> {
+        private final int start;
+        private final int end;
 
         Range(int start, int end) {
             this.start = start;
             this.end = end;
+        }
+
+        public int getStart() {
+            return start;
+        }
+
+        public int getEnd() {
+            return end;
+        }
+
+        public int getSize() {
+            return end - start;
         }
 
         @Override

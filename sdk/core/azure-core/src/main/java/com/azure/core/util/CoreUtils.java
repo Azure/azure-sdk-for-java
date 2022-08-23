@@ -391,7 +391,7 @@ public final class CoreUtils {
      * @return The {@code values} joined delimited by the {@code delimiter}.
      * @throws NullPointerException If {@code delimiter} or {@code values} is null.
      */
-    public static String optimizedStringJoin(String delimiter, String... values) {
+    public static String stringJoin(String delimiter, String... values) {
         Objects.requireNonNull(delimiter, "'delimiter' cannot be null.");
         Objects.requireNonNull(values, "'values' cannot be null.");
 
@@ -419,7 +419,7 @@ public final class CoreUtils {
      * @return The {@code values} joined delimited by the {@code delimiter}.
      * @throws NullPointerException If {@code delimiter} or {@code values} is null.
      */
-    public static String optimizedStringJoin(String delimiter, List<String> values) {
+    public static String stringJoin(String delimiter, List<String> values) {
         Objects.requireNonNull(delimiter, "'delimiter' cannot be null.");
         Objects.requireNonNull(values, "'values' cannot be null.");
 

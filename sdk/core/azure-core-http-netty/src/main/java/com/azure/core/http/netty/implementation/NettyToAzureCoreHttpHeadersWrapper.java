@@ -126,7 +126,7 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     public Map<String, String> toMap() {
         if (abstractMap == null) {
             abstractMap = new DeferredCacheImmutableMap<>(LOGGER, new HashMap<>(), nettyHeaders,
-                getAll -> CoreUtils.optimizedStringJoin(",", getAll));
+                getAll -> CoreUtils.stringJoin(",", getAll));
         }
         return abstractMap;
     }

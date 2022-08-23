@@ -139,6 +139,6 @@ class QueryParameter {
 
     private void checkCachedStringValue() {
         CACHED_STRING_VALUE_UPDATER.compareAndSet(this, null,
-            (values == null) ? value : CoreUtils.optimizedStringJoin(",", values));
+            (values == null) ? value : CoreUtils.stringJoin(",", values));
     }
 }

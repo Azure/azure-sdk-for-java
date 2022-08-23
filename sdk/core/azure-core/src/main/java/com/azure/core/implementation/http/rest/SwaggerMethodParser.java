@@ -57,8 +57,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.function.Predicate;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.azure.core.implementation.TypeUtil.getRawClass;
@@ -69,7 +70,6 @@ import static com.azure.core.implementation.TypeUtil.typeImplementsInterface;
  * {@link RestProxy}.
  */
 public class SwaggerMethodParser implements HttpResponseDecodeData {
-    private static final Pattern PATTERN_COLON_SLASH_SLASH = Pattern.compile("://");
     private static final List<Class<? extends Annotation>> REQUIRED_HTTP_METHODS =
         Arrays.asList(Delete.class, Get.class, Head.class, Options.class, Patch.class, Post.class, Put.class);
 
@@ -309,16 +309,17 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         Object[] swaggerMethodArguments, UrlBuilder urlBuilder, SerializerAdapter serializer) {
         final String substitutedHost = applySubstitutions(rawHost, hostSubstitutions, swaggerMethodArguments,
             serializer);
-        final String[] substitutedHostParts = PATTERN_COLON_SLASH_SLASH.split(substitutedHost);
-
-        if (substitutedHostParts.length >= 2) {
-            urlBuilder.setScheme(substitutedHostParts[0]);
-            urlBuilder.setHost(substitutedHostParts[1]);
-        } else if (substitutedHostParts.length == 1) {
-            urlBuilder.setScheme(substitutedHostParts[0]);
+        int index = substitutedHost.indexOf("://");
+        if (index == -1) {
             urlBuilder.setHost(substitutedHost);
         } else {
-            urlBuilder.setHost(substitutedHost);
+            urlBuilder.setScheme(substitutedHost.substring(0, index));
+            String host = substitutedHost.substring(index + 3);
+            if (!CoreUtils.isNullOrEmpty(host)) {
+                urlBuilder.setHost(host);
+            } else {
+                urlBuilder.setHost(substitutedHost);
+            }
         }
     }
 
@@ -593,14 +594,15 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         return shouldEncode ? UrlEscapers.FORM_ESCAPER.escape(serializedValue) : serializedValue;
     }
 
-    private static String applySubstitutions(String originalValue, Iterable<RangeReplaceSubstitution> substitutions,
+    private static String applySubstitutions(String originalValue, List<RangeReplaceSubstitution> substitutions,
         Object[] methodArguments, SerializerAdapter serializer) {
-        String result = originalValue;
-
-        if (methodArguments == null) {
-            return result;
+        if (methodArguments == null || CoreUtils.isNullOrEmpty(substitutions)) {
+            return originalValue;
         }
 
+        int originalSize = originalValue.length();
+        int substitutionSize = originalSize;
+        SortedMap<RangeReplaceSubstitution.Range, String> replacements = new TreeMap<>();
         for (RangeReplaceSubstitution substitution : substitutions) {
             final int substitutionParameterIndex = substitution.getMethodParameterIndex();
             if (substitutionParameterIndex >= 0 && substitutionParameterIndex < methodArguments.length) {
@@ -616,11 +618,29 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                     substitutionValue = "";
                 }
 
-                result = substitution.replace(substitutionValue);
+                for (RangeReplaceSubstitution.Range range : substitution.getRanges()) {
+                    substitutionSize += substitutionValue.length() - range.getSize();
+                    replacements.put(range, substitutionValue);
+                }
             }
         }
 
-        return result;
+        int last = 0;
+        StringBuilder builder = new StringBuilder(substitutionSize);
+        for (Map.Entry<RangeReplaceSubstitution.Range, String> replacement : replacements.entrySet()) {
+            if (last < replacement.getKey().getStart()) {
+                builder.append(originalValue, last, replacement.getKey().getStart());
+            }
+
+            builder.append(replacement.getValue());
+            last = replacement.getKey().getEnd();
+        }
+
+        if (last < originalSize) {
+            builder.append(originalValue, last, originalSize);
+        }
+
+        return builder.toString();
     }
 
     private Map<Integer, UnexpectedExceptionInformation> processUnexpectedResponseExceptionTypes() {

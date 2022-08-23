@@ -137,7 +137,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
         String[] hostParts = urlBuilder.getHost().split("\\.");
         hostParts[0] = "REDACTED";
 
-        urlBuilder.setHost(CoreUtils.optimizedStringJoin(".", hostParts));
+        urlBuilder.setHost(CoreUtils.stringJoin(".", hostParts));
     }
 
     private static void captureRequestHeaders(HttpHeaders requestHeaders, Map<String, String> captureHeaders,
