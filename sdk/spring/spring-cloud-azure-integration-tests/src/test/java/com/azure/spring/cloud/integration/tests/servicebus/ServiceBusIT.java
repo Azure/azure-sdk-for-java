@@ -68,21 +68,21 @@ public class ServiceBusIT {
     @Test
     public void testServiceBusOperation() throws InterruptedException {
         LOGGER.info("ServiceBusIT begin.");
+        Assertions.assertTrue(processorClient.isRunning());
         senderClient.sendMessage(new ServiceBusMessage(DATA1));
+        LATCH.await(15, TimeUnit.SECONDS);
+        Assertions.assertEquals(DATA1, MESSAGE);
+        processorClient.close();
+        Assertions.assertFalse(processorClient.isRunning());
+
+        senderClient.sendMessage(new ServiceBusMessage(DATA2));
+        senderClient.close();
         IterableStream<ServiceBusReceivedMessage> receivedMessages = receiverClient.receiveMessages(1);
         if (receivedMessages.stream().iterator().hasNext()) {
             ServiceBusReceivedMessage message = receivedMessages.stream().iterator().next();
-            Assertions.assertEquals(DATA1, message.getBody().toString());
+            Assertions.assertEquals(DATA2, message.getBody().toString());
             receiverClient.complete(message);
         }
-        processorClient.start();
-        senderClient.sendMessage(new ServiceBusMessage(DATA2));
-        senderClient.close();
-        Assertions.assertTrue(processorClient.isRunning());
-        LATCH.await(15, TimeUnit.SECONDS);
-        Assertions.assertEquals(DATA2, MESSAGE);
-        processorClient.close();
-        Assertions.assertFalse(processorClient.isRunning());
         LOGGER.info("ServiceBusIT end.");
     }
 }
