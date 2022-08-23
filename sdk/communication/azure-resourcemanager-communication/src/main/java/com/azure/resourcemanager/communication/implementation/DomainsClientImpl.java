@@ -194,7 +194,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Get the Domains resource and its properties.
+     * Get
+     *
+     * <p>Get the Domains resource and its properties.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -249,7 +251,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Get the Domains resource and its properties.
+     * Get
+     *
+     * <p>Get the Domains resource and its properties.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -302,7 +306,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Get the Domains resource and its properties.
+     * Get
+     *
+     * <p>Get the Domains resource and its properties.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -319,7 +325,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Get the Domains resource and its properties.
+     * Get
+     *
+     * <p>Get the Domains resource and its properties.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -335,7 +343,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Get the Domains resource and its properties.
+     * Get
+     *
+     * <p>Get the Domains resource and its properties.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -353,7 +363,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
+     * Create Or Update
+     *
+     * <p>Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -415,7 +427,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
+     * Create Or Update
+     *
+     * <p>Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -479,7 +493,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
+     * Create Or Update
+     *
+     * <p>Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -506,7 +522,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
+     * Create Or Update
+     *
+     * <p>Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -535,7 +553,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
+     * Create Or Update
+     *
+     * <p>Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -553,7 +573,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
+     * Create Or Update
+     *
+     * <p>Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -577,7 +599,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
+     * Create Or Update
+     *
+     * <p>Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -597,7 +621,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
+     * Create Or Update
+     *
+     * <p>Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -622,7 +648,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
+     * Create Or Update
+     *
+     * <p>Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -640,7 +668,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
+     * Create Or Update
+     *
+     * <p>Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -663,7 +693,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Operation to delete a Domains resource.
+     * Delete
+     *
+     * <p>Operation to delete a Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -717,7 +749,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Operation to delete a Domains resource.
+     * Delete
+     *
+     * <p>Operation to delete a Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -769,7 +803,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Operation to delete a Domains resource.
+     * Delete
+     *
+     * <p>Operation to delete a Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -791,7 +827,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Operation to delete a Domains resource.
+     * Delete
+     *
+     * <p>Operation to delete a Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -814,7 +852,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Operation to delete a Domains resource.
+     * Delete
+     *
+     * <p>Operation to delete a Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -831,7 +871,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Operation to delete a Domains resource.
+     * Delete
+     *
+     * <p>Operation to delete a Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -849,7 +891,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Operation to delete a Domains resource.
+     * Delete
+     *
+     * <p>Operation to delete a Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -867,7 +911,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Operation to delete a Domains resource.
+     * Delete
+     *
+     * <p>Operation to delete a Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -887,7 +933,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Operation to delete a Domains resource.
+     * Delete
+     *
+     * <p>Operation to delete a Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -902,7 +950,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Operation to delete a Domains resource.
+     * Delete
+     *
+     * <p>Operation to delete a Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -918,7 +968,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Operation to update an existing Domains resource.
+     * Update
+     *
+     * <p>Operation to update an existing Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -983,7 +1035,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Operation to update an existing Domains resource.
+     * Update
+     *
+     * <p>Operation to update an existing Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1047,7 +1101,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Operation to update an existing Domains resource.
+     * Update
+     *
+     * <p>Operation to update an existing Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1077,7 +1133,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Operation to update an existing Domains resource.
+     * Update
+     *
+     * <p>Operation to update an existing Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1106,7 +1164,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Operation to update an existing Domains resource.
+     * Update
+     *
+     * <p>Operation to update an existing Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1127,7 +1187,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Operation to update an existing Domains resource.
+     * Update
+     *
+     * <p>Operation to update an existing Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1150,7 +1212,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Operation to update an existing Domains resource.
+     * Update
+     *
+     * <p>Operation to update an existing Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1173,7 +1237,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Operation to update an existing Domains resource.
+     * Update
+     *
+     * <p>Operation to update an existing Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1198,7 +1264,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Operation to update an existing Domains resource.
+     * Update
+     *
+     * <p>Operation to update an existing Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1219,7 +1287,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Operation to update an existing Domains resource.
+     * Update
+     *
+     * <p>Operation to update an existing Domains resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1242,7 +1312,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Handles requests to list all Domains resources under the parent EmailServices resource.
+     * List by EmailService
+     *
+     * <p>Handles requests to list all Domains resources under the parent EmailServices resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1301,7 +1373,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Handles requests to list all Domains resources under the parent EmailServices resource.
+     * List by EmailService
+     *
+     * <p>Handles requests to list all Domains resources under the parent EmailServices resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1358,7 +1432,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Handles requests to list all Domains resources under the parent EmailServices resource.
+     * List by EmailService
+     *
+     * <p>Handles requests to list all Domains resources under the parent EmailServices resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1377,7 +1453,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Handles requests to list all Domains resources under the parent EmailServices resource.
+     * List by EmailService
+     *
+     * <p>Handles requests to list all Domains resources under the parent EmailServices resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1397,7 +1475,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Handles requests to list all Domains resources under the parent EmailServices resource.
+     * List by EmailService
+     *
+     * <p>Handles requests to list all Domains resources under the parent EmailServices resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1414,7 +1494,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Handles requests to list all Domains resources under the parent EmailServices resource.
+     * List by EmailService
+     *
+     * <p>Handles requests to list all Domains resources under the parent EmailServices resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1432,7 +1514,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Initiate verification of DNS record.
+     * Initiate Verification
+     *
+     * <p>Initiate verification of DNS record.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1493,7 +1577,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Initiate verification of DNS record.
+     * Initiate Verification
+     *
+     * <p>Initiate verification of DNS record.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1556,7 +1642,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Initiate verification of DNS record.
+     * Initiate Verification
+     *
+     * <p>Initiate verification of DNS record.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1579,7 +1667,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Initiate verification of DNS record.
+     * Initiate Verification
+     *
+     * <p>Initiate verification of DNS record.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1607,7 +1697,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Initiate verification of DNS record.
+     * Initiate Verification
+     *
+     * <p>Initiate verification of DNS record.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1626,7 +1718,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Initiate verification of DNS record.
+     * Initiate Verification
+     *
+     * <p>Initiate verification of DNS record.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1650,7 +1744,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Initiate verification of DNS record.
+     * Initiate Verification
+     *
+     * <p>Initiate verification of DNS record.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1670,7 +1766,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Initiate verification of DNS record.
+     * Initiate Verification
+     *
+     * <p>Initiate verification of DNS record.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1695,7 +1793,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Initiate verification of DNS record.
+     * Initiate Verification
+     *
+     * <p>Initiate verification of DNS record.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1712,7 +1812,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Initiate verification of DNS record.
+     * Initiate Verification
+     *
+     * <p>Initiate verification of DNS record.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1734,7 +1836,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Cancel verification of DNS record.
+     * Cancel Verification
+     *
+     * <p>Cancel verification of DNS record.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1795,7 +1899,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Cancel verification of DNS record.
+     * Cancel Verification
+     *
+     * <p>Cancel verification of DNS record.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1858,7 +1964,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Cancel verification of DNS record.
+     * Cancel Verification
+     *
+     * <p>Cancel verification of DNS record.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1881,7 +1989,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Cancel verification of DNS record.
+     * Cancel Verification
+     *
+     * <p>Cancel verification of DNS record.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1909,7 +2019,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Cancel verification of DNS record.
+     * Cancel Verification
+     *
+     * <p>Cancel verification of DNS record.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1928,7 +2040,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Cancel verification of DNS record.
+     * Cancel Verification
+     *
+     * <p>Cancel verification of DNS record.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1952,7 +2066,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Cancel verification of DNS record.
+     * Cancel Verification
+     *
+     * <p>Cancel verification of DNS record.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1972,7 +2088,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Cancel verification of DNS record.
+     * Cancel Verification
+     *
+     * <p>Cancel verification of DNS record.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -1997,7 +2115,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Cancel verification of DNS record.
+     * Cancel Verification
+     *
+     * <p>Cancel verification of DNS record.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -2014,7 +2134,9 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * Cancel verification of DNS record.
+     * Cancel Verification
+     *
+     * <p>Cancel verification of DNS record.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -2038,7 +2160,8 @@ public final class DomainsClientImpl implements DomainsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2075,7 +2198,8 @@ public final class DomainsClientImpl implements DomainsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

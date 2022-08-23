@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iothub.fluent.models.IotHubQuotaMetricInfoInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The JSON-serialized array of IotHubQuotaMetricInfo objects with a next link. */
 @Fluent
 public final class IotHubQuotaMetricInfoListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IotHubQuotaMetricInfoListResult.class);
-
     /*
      * The array of quota metrics objects.
      */

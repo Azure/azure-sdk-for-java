@@ -3020,6 +3020,31 @@ class FileAPITest extends APISpec {
         100      | 50               | 20        || 5 // Test that blockSize is respected
     }
 
+    @Unroll
+    def "Upload from file with response"() {
+        setup:
+        def file = getRandomFile((int) dataSize)
+
+        when:
+        def response = fc.uploadFromFileWithResponse(file.toPath().toString(),
+            new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(singleUploadSize), null, null, null, null, null)
+
+        then:
+        fc.getProperties().getFileSize() == dataSize
+        response.getStatusCode() == 200
+        response.getValue().getETag() != null
+        response.getValue().getLastModified() != null
+
+
+        cleanup:
+        file.delete()
+
+        where:
+        dataSize | singleUploadSize | blockSize || expectedBlockCount
+        100      | 50               | null      || 1 // Test that singleUploadSize is respected
+        100      | 50               | 20        || 5 // Test that blockSize is respected
+    }
+
     @LiveOnly
     def "Async buffered upload empty"() {
         setup:
