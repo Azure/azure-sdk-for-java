@@ -26,7 +26,7 @@ public final class AnswerCallRequestInternal {
      * Media Streaming Configuration.
      */
     @JsonProperty(value = "mediaStreamingConfiguration")
-    private MediaStreamingConfigurationDto mediaStreamingConfiguration;
+    private MediaStreamingConfiguration mediaStreamingConfiguration;
 
     /**
      * Get the incomingCallContext property: The context associated with the call.
@@ -73,7 +73,7 @@ public final class AnswerCallRequestInternal {
      *
      * @return the mediaStreamingConfiguration value.
      */
-    public MediaStreamingConfigurationDto getMediaStreamingConfiguration() {
+    public MediaStreamingConfiguration getMediaStreamingConfiguration() {
         return this.mediaStreamingConfiguration;
     }
 
@@ -84,7 +84,7 @@ public final class AnswerCallRequestInternal {
      * @return the AnswerCallRequestInternal object itself.
      */
     public AnswerCallRequestInternal setMediaStreamingConfiguration(
-            MediaStreamingConfigurationDto mediaStreamingConfiguration) {
+            MediaStreamingConfiguration mediaStreamingConfiguration) {
         this.mediaStreamingConfiguration = mediaStreamingConfiguration;
         return this;
     }
