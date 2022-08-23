@@ -3,25 +3,38 @@
 
 package com.azure.security.keyvault.secrets;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationBuilder;
+import com.azure.core.util.ConfigurationSource;
 import com.azure.core.util.Header;
+import com.azure.security.keyvault.secrets.implementation.SecretClientImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedConstruction;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.*;
 
 public class SecretClientBuilderTest {
     private String vaultUrl;
@@ -181,5 +194,75 @@ public class SecretClientBuilderTest {
         assertTrue(perCallPolicyPosition != -1);
         assertTrue(perCallPolicyPosition < retryPolicyPosition);
         assertTrue(retryPolicyPosition < perRetryPolicyPosition);
+    }
+
+    @Test
+    public void setPipeline() {
+        List<Object> constructorArguments = new ArrayList<>();
+        try (MockedConstruction<SecretClientImpl> mocked = mockConstruction(SecretClientImpl.class, (mock, context) -> constructorArguments.addAll(context.arguments()))) {
+            HttpPipeline pipeline = new HttpPipelineBuilder().build();
+            new SecretClientBuilder()
+                .vaultUrl(vaultUrl)
+                .pipeline(pipeline)
+                .buildClient();
+            assertEquals(1, mocked.constructed().size());
+            assertSame(pipeline, constructorArguments.get(1));
+        }
+    }
+
+    @Test
+    public void getKeyVaultEndpointFromConfiguration() {
+        Map<String, String> configurationMap = new HashMap<>();
+        configurationMap.put("AZURE_KEYVAULT_ENDPOINT", vaultUrl);
+        ConfigurationSource source = source1 -> configurationMap;
+
+        TokenCredential credential = new TestUtils.TestCredential();
+        Configuration configurationBadUrl = new ConfigurationBuilder(source, source, source).build();
+        assertThrows(NullPointerException.class, () -> new SecretClientBuilder().configuration(configurationBadUrl)
+            .credential(credential)
+            .buildClient());
+    }
+
+    @Test
+    public void misconfiguredKeyVaultEndpointThrowsIllegalStateException() {
+        Configuration configurationMissingEndpoint = new ConfigurationBuilder().build();
+        assertThrows(IllegalStateException.class, () ->
+            new SecretClientBuilder().configuration(configurationMissingEndpoint).buildClient());
+
+        Map<String, String> configurationMap = new HashMap<>();
+        configurationMap.put("AZURE_KEYVAULT_ENDPOINT", "bad_url");
+        ConfigurationSource source = source1 -> configurationMap;
+
+        Configuration configurationBadUrl = new ConfigurationBuilder(source, source, source).build();
+        assertThrows(IllegalStateException.class, () ->
+            new SecretClientBuilder().configuration(configurationBadUrl).buildClient());
+
+    }
+
+    @Test
+    public void getVaultUrl() {
+        SecretClient secretClient = new SecretClientBuilder()
+            .vaultUrl(vaultUrl)
+            .credential(new TestUtils.TestCredential())
+            .buildClient();
+        assertEquals(vaultUrl, secretClient.getVaultUrl());
+    }
+
+    @Test
+    public void vaultUrlCannotBeSetToNull() {
+        assertThrows(NullPointerException.class, () ->
+            new SecretClientBuilder().vaultUrl(null));
+    }
+
+    @Test
+    public void policyCannotBeSetToNull() {
+        assertThrows(NullPointerException.class, () ->
+            new SecretClientBuilder().addPolicy(null));
+    }
+
+    @Test
+    public void credentialCannotBeSetToNull() {
+        assertThrows(IllegalStateException.class, () ->
+            new SecretClientBuilder().vaultUrl(vaultUrl).buildClient());
     }
 }

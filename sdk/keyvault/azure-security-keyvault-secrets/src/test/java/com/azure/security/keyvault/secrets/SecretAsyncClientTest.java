@@ -387,6 +387,39 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
     }
 
     /**
+     * Tests that a deleted secret can be purged.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void purgeSecret(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+        createSecretAsyncClient(httpClient, serviceVersion);
+
+        deleteSecretRunner((secretToDelete) -> {
+            StepVerifier.create(secretAsyncClient.setSecret(secretToDelete))
+                .assertNext(response -> assertSecretEquals(secretToDelete, response))
+                .verifyComplete();
+
+            secretAsyncClient.beginDeleteSecret(secretToDelete.getName());
+            StepVerifier.create(secretAsyncClient.purgeDeletedSecret(secretToDelete.getName()))
+                        .verifyComplete();
+
+        });
+    }
+
+    /**
+     * Tests that an attempt to retrieve a non existing deleted secret throws an error on a soft-delete enabled vault.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void purgeSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+        createSecretAsyncClient(httpClient, serviceVersion);
+
+        StepVerifier.create(secretAsyncClient.purgeDeletedSecret("non-existing"))
+            .verifyErrorSatisfies(e ->
+                assertRestException(e, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
+    }
+
+    /**
      * Tests that a secret can be backed up in the key vault.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -586,6 +619,16 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
 
             assertEquals(0, secretsToSetAndList.size());
         });
+    }
+
+    /**
+     * Tests that the vault URL can be returned to the client.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getVaultUrl(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+        createSecretAsyncClient(httpClient, serviceVersion);
+        assertEquals(getEndpoint(), secretAsyncClient.getVaultUrl());
     }
 
     private void pollOnSecretPurge(String secretName) {
