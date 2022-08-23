@@ -11,7 +11,7 @@ import java.util.Collection;
 /** Defines values for MapTileSize. */
 public final class MapTileSize extends ExpandableStringEnum<MapTileSize> {
     /** Static value 256 for MapTileSize. */
-    public static final MapTileSize SIZE256 = fromString("256");
+    public static final MapTileSize SIZE_256 = fromString("256");
 
     /** Static value 512 for MapTileSize. */
     public static final MapTileSize SIZE512 = fromString("512");

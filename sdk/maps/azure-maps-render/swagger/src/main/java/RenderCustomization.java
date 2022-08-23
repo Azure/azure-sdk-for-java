@@ -21,6 +21,9 @@ public class RenderCustomization extends Customization {
 
         // customize region copyrights country
         customizeRegionCopyrightsCountry(models);
+
+        // customize map tile size
+        customizeMapTileSize(models);
     }
 
     // Customizes the MapTileset class
@@ -102,5 +105,12 @@ public class RenderCustomization extends Customization {
         JavadocCustomization getIso3Javadoc = classCustomization.getMethod("getIso3").getJavadoc();
         getIso3Javadoc.setDescription(getIso3JavadocDescription);
         getIso3Javadoc.setReturn("the iSO3 value.");
+     }
+
+     // Customizes the MapTileSize class
+     private void customizeMapTileSize(PackageCustomization models) {
+        ClassCustomization classCustomization = models.getClass("MapTileSize");
+        classCustomization.getConstant("SIZE256").rename("SIZE_256");
+        classCustomization.getConstant("SIZE512").rename("SIZE_512");
      }
 }
