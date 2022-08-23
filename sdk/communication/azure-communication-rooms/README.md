@@ -25,9 +25,10 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-rooms</artifactId>
-  <version>1.0.0-beta.1</version>
+  <version>1.0.0-beta.2</version>
 </dependency>
 ```
+[//]: # ({x-version-update-end})
 
 ## Authenticate the client
 
@@ -57,7 +58,7 @@ There are four operations to interact with the Azure Communication Rooms Service
 ## Examples
 
 ### Create a new room
-Use the `createRoom`  function to create a new Room on Azure Communciation Service.
+Use the `createRoom`  function to create a new Room on Azure Communication Service.
 
 ```java readme-sample-createRoomWithValidInput
 public void createRoomWithValidInput() {
@@ -75,7 +76,7 @@ public void createRoomWithValidInput() {
 ```
 
 ### Create a new open room
-Use the `createRoom`  function to create a new Open Room on Azure Communciation Service.
+Use the `createRoom`  function to create a new Open Room on Azure Communication Service.
 
 ```java readme-sample-createOpenRoomWithValidInput
 public void createOpenRoomWithValidInput() {
@@ -89,7 +90,7 @@ public void createOpenRoomWithValidInput() {
 ```
 
 ### Update an existing room
-Use the `updateRoom`  function to create a new Room on Azure Communciation Service.
+Use the `updateRoom`  function to create a new Room on Azure Communication Service.
 
 ```java readme-sample-updateRoomWithRoomId
 public void updateRoomWithRoomId() {
@@ -112,7 +113,7 @@ public void updateRoomWithRoomId() {
 ```
 
 ### Get an existing room
-Use the `getRoom`  function to get an existing Room on Azure Communciation Service.
+Use the `getRoom`  function to get an existing Room on Azure Communication Service.
 
 ```java readme-sample-getRoomWithRoomId
 public void getRoomWithRoomId() {
@@ -127,7 +128,7 @@ public void getRoomWithRoomId() {
 ```
 
 ### Delete an existing room
-Use the `deleteRoomWithResponse`  function to delete an existing Room on Azure Communciation Service.
+Use the `deleteRoomWithResponse`  function to delete an existing Room on Azure Communication Service.
 
 ```java readme-sample-deleteRoomWithRoomId
 public void deleteRoomWithRoomId() {
@@ -141,7 +142,7 @@ public void deleteRoomWithRoomId() {
 ```
 
 ### Add participants an existing room
-Use the `addParticipants`  function to add participants to an existing Room on Azure Communciation Service.
+Use the `addParticipants`  function to add participants to an existing Room on Azure Communication Service.
 
 ```java readme-sample-addRoomParticipantsWithRoomId
 public void addRoomParticipantsWithRoomId() {
@@ -163,7 +164,7 @@ public void addRoomParticipantsWithRoomId() {
 ```
 
 ### Remove participants an existing room
-Use the `removeParticipants`  function to remove participants from an existing Room on Azure Communciation Service.
+Use the `removeParticipants`  function to remove participants from an existing Room on Azure Communication Service.
 
 ```java readme-sample-removeRoomParticipantsWithRoomId
 public void removeRoomParticipantsWithRoomId() {

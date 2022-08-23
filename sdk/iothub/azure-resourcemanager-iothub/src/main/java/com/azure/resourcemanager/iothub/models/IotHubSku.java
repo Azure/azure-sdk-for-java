@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IotHubSku. */
+/** The name of the SKU. */
 public final class IotHubSku extends ExpandableStringEnum<IotHubSku> {
     /** Static value F1 for IotHubSku. */
     public static final IotHubSku F1 = fromString("F1");
@@ -42,7 +42,11 @@ public final class IotHubSku extends ExpandableStringEnum<IotHubSku> {
         return fromString(name, IotHubSku.class);
     }
 
-    /** @return known IotHubSku values. */
+    /**
+     * Gets known IotHubSku values.
+     *
+     * @return known IotHubSku values.
+     */
     public static Collection<IotHubSku> values() {
         return values(IotHubSku.class);
     }

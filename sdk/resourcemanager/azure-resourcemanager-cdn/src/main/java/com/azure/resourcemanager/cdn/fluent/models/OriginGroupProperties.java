@@ -5,20 +5,17 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.HealthProbeParameters;
+import com.azure.resourcemanager.cdn.models.OriginGroupProvisioningState;
 import com.azure.resourcemanager.cdn.models.OriginGroupResourceState;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
 import com.azure.resourcemanager.cdn.models.ResponseBasedOriginErrorDetectionParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The JSON object that contains the properties of the origin group. */
 @Fluent
 public final class OriginGroupProperties extends OriginGroupUpdatePropertiesParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OriginGroupProperties.class);
-
     /*
      * Resource status of the origin group.
      */
@@ -29,7 +26,7 @@ public final class OriginGroupProperties extends OriginGroupUpdatePropertiesPara
      * Provisioning status of the origin group.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private OriginGroupProvisioningState provisioningState;
 
     /**
      * Get the resourceState property: Resource status of the origin group.
@@ -45,7 +42,7 @@ public final class OriginGroupProperties extends OriginGroupUpdatePropertiesPara
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public OriginGroupProvisioningState provisioningState() {
         return this.provisioningState;
     }
 

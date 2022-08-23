@@ -24,7 +24,11 @@ public final class WafMetric extends ExpandableStringEnum<WafMetric> {
         return fromString(name, WafMetric.class);
     }
 
-    /** @return known WafMetric values. */
+    /**
+     * Gets known WafMetric values.
+     *
+     * @return known WafMetric values.
+     */
     public static Collection<WafMetric> values() {
         return values(WafMetric.class);
     }

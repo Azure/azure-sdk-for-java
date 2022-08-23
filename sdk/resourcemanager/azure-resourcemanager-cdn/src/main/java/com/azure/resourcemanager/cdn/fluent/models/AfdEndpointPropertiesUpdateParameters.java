@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.EnabledState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The JSON object containing endpoint update parameters. */
 @Fluent
 public class AfdEndpointPropertiesUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AfdEndpointPropertiesUpdateParameters.class);
-
     /*
      * The name of the profile which holds the endpoint.
      */
@@ -22,8 +18,7 @@ public class AfdEndpointPropertiesUpdateParameters {
     private String profileName;
 
     /*
-     * Whether to enable use of this rule. Permitted values are 'Enabled' or
-     * 'Disabled'
+     * Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'
      */
     @JsonProperty(value = "enabledState")
     private EnabledState enabledState;

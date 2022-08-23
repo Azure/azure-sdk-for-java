@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** IoT Hub capacity information. */
 @Immutable
 public final class IotHubCapacity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IotHubCapacity.class);
-
     /*
      * The minimum number of units.
      */

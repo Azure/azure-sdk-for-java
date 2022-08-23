@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ScheduleDay. */
+/** Day of the occurrence. Must be one of monday, tuesday, wednesday, thursday, friday, saturday, sunday. */
 public final class ScheduleDay extends ExpandableStringEnum<ScheduleDay> {
     /** Static value Monday for ScheduleDay. */
     public static final ScheduleDay MONDAY = fromString("Monday");
@@ -42,7 +42,11 @@ public final class ScheduleDay extends ExpandableStringEnum<ScheduleDay> {
         return fromString(name, ScheduleDay.class);
     }
 
-    /** @return known ScheduleDay values. */
+    /**
+     * Gets known ScheduleDay values.
+     *
+     * @return known ScheduleDay values.
+     */
     public static Collection<ScheduleDay> values() {
         return values(ScheduleDay.class);
     }

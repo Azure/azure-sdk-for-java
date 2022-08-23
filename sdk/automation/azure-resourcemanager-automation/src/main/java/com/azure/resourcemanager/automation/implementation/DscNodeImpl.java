@@ -74,8 +74,8 @@ public final class DscNodeImpl implements DscNode {
         }
     }
 
-    public String namePropertiesNodeConfigurationName() {
-        return this.innerModel().namePropertiesNodeConfigurationName();
+    public String namePropertiesName() {
+        return this.innerModel().namePropertiesName();
     }
 
     public DscNodeInner innerModel() {

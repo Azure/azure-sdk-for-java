@@ -10,7 +10,7 @@ import com.azure.resourcemanager.deviceupdate.models.PrivateEndpointUpdate;
 /** Samples for PrivateEndpointConnectionProxies UpdatePrivateEndpointProperties. */
 public final class PrivateEndpointConnectionProxiesUpdatePrivateEndpointPropertiesSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_PrivateEndpointUpdate.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/PrivateEndpointConnectionProxies/PrivateEndpointConnectionProxy_PrivateEndpointUpdate.json
      */
     /**
      * Sample code: PrivateEndpointConnectionProxyPrivateEndpointUpdate.
