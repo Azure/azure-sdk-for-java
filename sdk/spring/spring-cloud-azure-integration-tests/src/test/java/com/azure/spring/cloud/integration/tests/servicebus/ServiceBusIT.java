@@ -70,7 +70,7 @@ public class ServiceBusIT {
         LOGGER.info("ServiceBusIT begin.");
         Assertions.assertTrue(processorClient.isRunning());
         senderClient.sendMessage(new ServiceBusMessage(DATA1));
-        LATCH.await(15, TimeUnit.SECONDS);
+        LATCH.await(30, TimeUnit.SECONDS);
         Assertions.assertEquals(DATA1, MESSAGE);
         processorClient.close();
         Assertions.assertFalse(processorClient.isRunning());
