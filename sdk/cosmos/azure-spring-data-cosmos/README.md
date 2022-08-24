@@ -383,8 +383,8 @@ public interface AnnotatedQueriesUserReactiveRepositoryCodeSnippet extends React
 
 The queries that are specified in the annotation are same as the cosmos queries.
 Please refer to the following articles for more information on sql queries in cosmos
- - [sql-query-getting-started] [sql_queries_getting_started]
- - [tutorial-query-sql-api] [sql_queries_in_cosmos] 
+ - [Sql API Query Getting Started] [sql_queries_getting_started]
+ - [Sql API Query Tutorial] [sql_queries_in_cosmos] 
 
 ### Create an Application class
 Here create an application class with all the components
@@ -917,7 +917,7 @@ public class MultiDatabaseApplication implements CommandLineRunner {
 
 ## Beta version package
 
-Beta version built from `master` branch are available, you can refer to the [instruction](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md#nightly-package-builds) to use beta version packages.
+Beta version built from `main` branch are available, you can refer to the [instruction](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md#nightly-package-builds) to use beta version packages.
 
 ## Troubleshooting
 
@@ -994,7 +994,7 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [sql_api_query]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sql-query
 [local_emulator]: https://docs.microsoft.com/azure/cosmos-db/local-emulator
 [local_emulator_export_ssl_certificates]: https://docs.microsoft.com/azure/cosmos-db/local-emulator-export-ssl-certificates
-[spring_data_commons_id_annotation]: https://github.com/spring-projects/spring-data-commons/blob/master/src/main/java/org/springframework/data/annotation/Id.java
+[spring_data_commons_id_annotation]: https://github.com/spring-projects/spring-data-commons/blob/main/src/main/java/org/springframework/data/annotation/Id.java
 [azure_cosmos_db_partition]: https://docs.microsoft.com/azure/cosmos-db/partition-data
 [address_repository_it_test]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-spring-data-cosmos-test/src/test/java/com/azure/spring/data/cosmos/repository/integration/AddressRepositoryIT.java
 [azure_spring_data_cosmos_docs]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sdk-java-spring-v3
