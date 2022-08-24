@@ -5,9 +5,13 @@
 ### Breaking Changes
 
 - Removed unused classes.
-- Removed `JsonFlatten` annotation from model classes.
-- Added `final` modifier to model classes previously annotated with `JsonFlatten`.
 - Changed type of `CategoryType` from enum to class.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `composite-v1`.
 
 ## 2.17.0 (2022-07-25)
 
