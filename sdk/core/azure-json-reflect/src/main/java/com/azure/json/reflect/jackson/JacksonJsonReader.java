@@ -116,6 +116,10 @@ public class JacksonJsonReader extends JsonReader {
     @Override
     public byte[] getBinary() {
     	try {
+    		// GetBinaryValue cannot handle a Null token
+    		if (currentToken() == JsonToken.NULL) {
+    			return null;
+    		}
 			return (byte[]) parserGetBinaryValue.invoke(jacksonParser);
 		} catch (Throwable e) {
 			if (e instanceof IOException) {
