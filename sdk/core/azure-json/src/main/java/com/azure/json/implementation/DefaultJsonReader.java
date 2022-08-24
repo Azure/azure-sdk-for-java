@@ -1,25 +1,33 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.json;
+package com.azure.json.implementation;
 
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.azure.json.implementation.jackson.core.JsonFactory;
 import com.azure.json.implementation.jackson.core.JsonParser;
+import com.azure.json.implementation.jackson.core.json.JsonReadFeature;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
 import java.io.UncheckedIOException;
 
 /**
  * Default {@link JsonReader} implementation.
  */
 public final class DefaultJsonReader extends JsonReader {
-    private static final JsonFactory FACTORY = JsonFactory.builder().build();
+    private static final JsonFactory FACTORY = JsonFactory.builder()
+        .enable(JsonReadFeature.ALLOW_NON_NUMERIC_NUMBERS)
+        .build();
 
     private final JsonParser parser;
     private final byte[] jsonBytes;
     private final String jsonString;
     private final boolean resetSupported;
+
+    private JsonToken currentToken;
 
     /**
      * Constructs an instance of {@link DefaultJsonReader} from a {@code byte[]}.
@@ -62,7 +70,23 @@ public final class DefaultJsonReader extends JsonReader {
      */
     public static JsonReader fromStream(InputStream json) {
         try {
-            return new DefaultJsonReader(FACTORY.createParser(json), true, null, null);
+            return new DefaultJsonReader(FACTORY.createParser(json), json.markSupported(), null, null);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    /**
+     * Constructs an instance of {@link DefaultJsonReader} from a {@link Reader}.
+     *
+     * @param reader JSON {@link Reader}.
+     * @return An instance of {@link DefaultJsonReader}.
+     * @throws UncheckedIOException If a {@link DefaultJsonReader} wasn't able to be constructed from the JSON
+     * {@link Reader}.
+     */
+    public static JsonReader fromReader(Reader reader) {
+        try {
+            return new DefaultJsonReader(FACTORY.createParser(reader), reader.markSupported(), null, null);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -77,13 +101,14 @@ public final class DefaultJsonReader extends JsonReader {
 
     @Override
     public JsonToken currentToken() {
-        return mapToken(parser.currentToken());
+        return currentToken;
     }
 
     @Override
     public JsonToken nextToken() {
         try {
-            return mapToken(parser.nextToken());
+            currentToken = mapToken(parser.nextToken(), currentToken);
+            return currentToken;
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -258,30 +283,24 @@ public final class DefaultJsonReader extends JsonReader {
      * azure-json doesn't support the EMBEDDED_OBJECT or NOT_AVAILABLE Jackson Core JsonTokens, but those should only
      * be returned by specialty implementations that aren't used.
      */
-    private static JsonToken mapToken(com.azure.json.implementation.jackson.core.JsonToken token) {
+    private static JsonToken mapToken(com.azure.json.implementation.jackson.core.JsonToken nextToken,
+        JsonToken currentToken) {
         // Special case for when currentToken is called after instantiating the JsonReader.
-        if (token == null) {
+        if (nextToken == null && currentToken == null) {
             return null;
+        } else if (nextToken == null) {
+            return JsonToken.END_DOCUMENT;
         }
 
-        switch (token) {
-            case START_OBJECT:
-                return JsonToken.START_OBJECT;
+        switch (nextToken) {
+            case START_OBJECT: return JsonToken.START_OBJECT;
+            case END_OBJECT: return JsonToken.END_OBJECT;
 
-            case END_OBJECT:
-                return JsonToken.END_OBJECT;
+            case START_ARRAY: return JsonToken.START_ARRAY;
+            case END_ARRAY: return JsonToken.END_ARRAY;
 
-            case START_ARRAY:
-                return JsonToken.START_ARRAY;
-
-            case END_ARRAY:
-                return JsonToken.END_ARRAY;
-
-            case FIELD_NAME:
-                return JsonToken.FIELD_NAME;
-
-            case VALUE_STRING:
-                return JsonToken.STRING;
+            case FIELD_NAME: return JsonToken.FIELD_NAME;
+            case VALUE_STRING: return JsonToken.STRING;
 
             case VALUE_NUMBER_INT:
             case VALUE_NUMBER_FLOAT:
@@ -291,11 +310,10 @@ public final class DefaultJsonReader extends JsonReader {
             case VALUE_FALSE:
                 return JsonToken.BOOLEAN;
 
-            case VALUE_NULL:
-                return JsonToken.NULL;
+            case VALUE_NULL: return JsonToken.NULL;
 
             default:
-                throw new IllegalStateException("Unsupported token type: '" + token + "'.");
+                throw new IllegalStateException("Unsupported token type: '" + nextToken + "'.");
         }
     }
 }

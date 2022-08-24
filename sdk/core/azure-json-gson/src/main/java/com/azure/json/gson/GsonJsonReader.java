@@ -3,7 +3,7 @@
 
 package com.azure.json.gson;
 
-import com.azure.json.DefaultJsonReader;
+import com.azure.json.implementation.DefaultJsonReader;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 
@@ -29,6 +29,7 @@ public final class GsonJsonReader extends JsonReader {
 
     private com.google.gson.stream.JsonToken gsonCurrentToken;
     private JsonToken currentToken;
+    private boolean complete = false;
 
     /**
      * Constructs an instance of {@link GsonJsonReader} from a {@code byte[]}.
@@ -58,11 +59,22 @@ public final class GsonJsonReader extends JsonReader {
      * @return An instance of {@link GsonJsonReader}.
      */
     public static JsonReader fromStream(InputStream json) {
-        return new GsonJsonReader(new InputStreamReader(json, StandardCharsets.UTF_8), false, null, null);
+        return new GsonJsonReader(new InputStreamReader(json, StandardCharsets.UTF_8), json.markSupported(), null, null);
+    }
+
+    /**
+     * Constructs an instance of {@link GsonJsonReader} from a {@link Reader}.
+     *
+     * @param json JSON {@link Reader}.
+     * @return An instance of {@link GsonJsonReader}.
+     */
+    public static JsonReader fromReader(Reader json) {
+        return new GsonJsonReader(json, json.markSupported(), null, null);
     }
 
     private GsonJsonReader(Reader reader, boolean resetSupported, byte[] jsonBytes, String jsonString) {
         this.reader = new com.google.gson.stream.JsonReader(reader);
+        this.reader.setLenient(true);
         this.resetSupported = resetSupported;
         this.jsonBytes = jsonBytes;
         this.jsonString = jsonString;
@@ -75,6 +87,10 @@ public final class GsonJsonReader extends JsonReader {
 
     @Override
     public JsonToken nextToken() {
+        if (complete) {
+            return currentToken;
+        }
+
         // GSON requires explicitly beginning and ending arrays and objects and consuming null values.
         // The contract of JsonReader implicitly overlooks these properties.
         try {
@@ -91,6 +107,9 @@ public final class GsonJsonReader extends JsonReader {
             }
 
             gsonCurrentToken = reader.peek();
+            if (gsonCurrentToken == com.google.gson.stream.JsonToken.END_DOCUMENT) {
+                complete = true;
+            }
             currentToken = mapToken(gsonCurrentToken);
             return currentToken;
         } catch (IOException e) {
@@ -276,33 +295,19 @@ public final class GsonJsonReader extends JsonReader {
         }
 
         switch (token) {
-            case BEGIN_OBJECT:
-                return JsonToken.START_OBJECT;
+            case BEGIN_OBJECT: return JsonToken.START_OBJECT;
+            case END_OBJECT: return JsonToken.END_OBJECT;
 
-            case END_OBJECT:
-            case END_DOCUMENT:
-                return JsonToken.END_OBJECT;
+            case BEGIN_ARRAY: return JsonToken.START_ARRAY;
+            case END_ARRAY: return JsonToken.END_ARRAY;
 
-            case BEGIN_ARRAY:
-                return JsonToken.START_ARRAY;
+            case NAME: return JsonToken.FIELD_NAME;
+            case STRING: return JsonToken.STRING;
+            case NUMBER: return JsonToken.NUMBER;
+            case BOOLEAN: return JsonToken.BOOLEAN;
+            case NULL: return JsonToken.NULL;
 
-            case END_ARRAY:
-                return JsonToken.END_ARRAY;
-
-            case NAME:
-                return JsonToken.FIELD_NAME;
-
-            case STRING:
-                return JsonToken.STRING;
-
-            case NUMBER:
-                return JsonToken.NUMBER;
-
-            case BOOLEAN:
-                return JsonToken.BOOLEAN;
-
-            case NULL:
-                return JsonToken.NULL;
+            case END_DOCUMENT: return JsonToken.END_DOCUMENT;
 
             default:
                 throw new IllegalStateException("Unsupported token type: '" + token + "'.");
