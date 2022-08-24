@@ -67,7 +67,7 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
                     CALL_CALLER_ID, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URI), 200)
             )));
 
-        AnswerCallResult answerCallResult = callAutomationAsyncClient.answerCall(CALL_INCOMING_CALL_CONTEXT, new URI(CALL_CALLBACK_URI)).block();
+        AnswerCallResult answerCallResult = callAutomationAsyncClient.answerCall(CALL_INCOMING_CALL_CONTEXT, CALL_CALLBACK_URI).block();
 
         assertNotNull(answerCallResult);
     }
@@ -81,7 +81,7 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
             )));
 
         Response<AnswerCallResult> answerCallResult = callAutomationAsyncClient.answerCallWithResponse(
-            CALL_INCOMING_CALL_CONTEXT, new URI(CALL_CALLBACK_URI)).block();
+            CALL_INCOMING_CALL_CONTEXT, CALL_CALLBACK_URI, null).block();
 
         assertNotNull(answerCallResult);
         assertEquals(200, answerCallResult.getStatusCode());
