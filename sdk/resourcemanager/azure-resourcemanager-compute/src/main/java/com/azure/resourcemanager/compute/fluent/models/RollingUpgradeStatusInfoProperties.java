@@ -27,8 +27,7 @@ public final class RollingUpgradeStatusInfoProperties {
     private RollingUpgradeRunningStatus runningStatus;
 
     /*
-     * Information about the number of virtual machine instances in each
-     * upgrade state.
+     * Information about the number of virtual machine instances in each upgrade state.
      */
     @JsonProperty(value = "progress", access = JsonProperty.Access.WRITE_ONLY)
     private RollingUpgradeProgressInfo progress;

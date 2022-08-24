@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.automation.fluent.models.DscCompilationJobCreateProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The parameters supplied to the create compilation job operation. */
-@JsonFlatten
 @Fluent
-public class DscCompilationJobCreateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DscCompilationJobCreateParameters.class);
+public final class DscCompilationJobCreateParameters {
+    /*
+     * Gets or sets the list of compilation job properties.
+     */
+    @JsonProperty(value = "properties", required = true)
+    private DscCompilationJobCreateProperties innerProperties = new DscCompilationJobCreateProperties();
 
     /*
      * Gets or sets name of the resource.
@@ -33,25 +36,17 @@ public class DscCompilationJobCreateParameters {
      * Gets or sets the tags attached to the resource.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /*
-     * Gets or sets the configuration.
+    /**
+     * Get the innerProperties property: Gets or sets the list of compilation job properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.configuration", required = true)
-    private DscConfigurationAssociationProperty configuration;
-
-    /*
-     * Gets or sets the parameters of the job.
-     */
-    @JsonProperty(value = "properties.parameters")
-    private Map<String, String> parameters;
-
-    /*
-     * If a new build version of NodeConfiguration is required.
-     */
-    @JsonProperty(value = "properties.incrementNodeConfigurationBuild")
-    private Boolean incrementNodeConfigurationBuild;
+    private DscCompilationJobCreateProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Gets or sets name of the resource.
@@ -119,7 +114,7 @@ public class DscCompilationJobCreateParameters {
      * @return the configuration value.
      */
     public DscConfigurationAssociationProperty configuration() {
-        return this.configuration;
+        return this.innerProperties() == null ? null : this.innerProperties().configuration();
     }
 
     /**
@@ -129,7 +124,10 @@ public class DscCompilationJobCreateParameters {
      * @return the DscCompilationJobCreateParameters object itself.
      */
     public DscCompilationJobCreateParameters withConfiguration(DscConfigurationAssociationProperty configuration) {
-        this.configuration = configuration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscCompilationJobCreateProperties();
+        }
+        this.innerProperties().withConfiguration(configuration);
         return this;
     }
 
@@ -139,7 +137,7 @@ public class DscCompilationJobCreateParameters {
      * @return the parameters value.
      */
     public Map<String, String> parameters() {
-        return this.parameters;
+        return this.innerProperties() == null ? null : this.innerProperties().parameters();
     }
 
     /**
@@ -149,7 +147,10 @@ public class DscCompilationJobCreateParameters {
      * @return the DscCompilationJobCreateParameters object itself.
      */
     public DscCompilationJobCreateParameters withParameters(Map<String, String> parameters) {
-        this.parameters = parameters;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscCompilationJobCreateProperties();
+        }
+        this.innerProperties().withParameters(parameters);
         return this;
     }
 
@@ -159,7 +160,7 @@ public class DscCompilationJobCreateParameters {
      * @return the incrementNodeConfigurationBuild value.
      */
     public Boolean incrementNodeConfigurationBuild() {
-        return this.incrementNodeConfigurationBuild;
+        return this.innerProperties() == null ? null : this.innerProperties().incrementNodeConfigurationBuild();
     }
 
     /**
@@ -170,7 +171,10 @@ public class DscCompilationJobCreateParameters {
      */
     public DscCompilationJobCreateParameters withIncrementNodeConfigurationBuild(
         Boolean incrementNodeConfigurationBuild) {
-        this.incrementNodeConfigurationBuild = incrementNodeConfigurationBuild;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscCompilationJobCreateProperties();
+        }
+        this.innerProperties().withIncrementNodeConfigurationBuild(incrementNodeConfigurationBuild);
         return this;
     }
 
@@ -180,13 +184,15 @@ public class DscCompilationJobCreateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (configuration() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property configuration in model DscCompilationJobCreateParameters"));
+                        "Missing required property innerProperties in model DscCompilationJobCreateParameters"));
         } else {
-            configuration().validate();
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DscCompilationJobCreateParameters.class);
 }

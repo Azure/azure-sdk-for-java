@@ -32,7 +32,7 @@ public interface SourceControls {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String sourceControlName, Context context);
@@ -60,7 +60,7 @@ public interface SourceControls {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the source control.
+     * @return definition of the source control along with {@link Response}.
      */
     Response<SourceControl> getWithResponse(
         String resourceGroupName, String automationAccountName, String sourceControlName, Context context);
@@ -73,7 +73,8 @@ public interface SourceControls {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list source controls operation.
+     * @return the response model for the list source controls operation as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<SourceControl> listByAutomationAccount(String resourceGroupName, String automationAccountName);
 
@@ -87,7 +88,8 @@ public interface SourceControls {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list source controls operation.
+     * @return the response model for the list source controls operation as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<SourceControl> listByAutomationAccount(
         String resourceGroupName, String automationAccountName, String filter, Context context);
@@ -99,7 +101,7 @@ public interface SourceControls {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the source control.
+     * @return definition of the source control along with {@link Response}.
      */
     SourceControl getById(String id);
 
@@ -111,7 +113,7 @@ public interface SourceControls {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the source control.
+     * @return definition of the source control along with {@link Response}.
      */
     Response<SourceControl> getByIdWithResponse(String id, Context context);
 
@@ -133,7 +135,7 @@ public interface SourceControls {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

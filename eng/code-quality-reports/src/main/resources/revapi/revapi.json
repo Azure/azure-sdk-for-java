@@ -105,7 +105,11 @@
           {
             "matcher": "java-package",
             "match": "/com\\.google\\.gson(\\..*)?/"
-          }
+          },
+          "class com\\.azure\\.cosmos\\.BridgeInternal",
+          "class com\\.azure\\.cosmos\\.CosmosBridgeInternal",
+          "class com\\.azure\\.cosmos\\.models\\.ModelBridgeInternal",
+          "class com\\.azure\\.cosmos\\.util\\.UtilBridgeInternal"
         ]
       }
     }
@@ -218,6 +222,12 @@
           "code": "java\\.annotation\\.added",
           "new": "(class|interface|method|parameter) com\\.azure\\.spring\\.data\\.cosmos\\.repository\\.query\\..*",
           "justification": "Spring Data Commons framework 2.6.1 added Nullable annotations to its interfaces which are implemented by Cosmos Spring Data SDK for internal usage."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "new": "(class|interface|method|parameter) com\\.azure\\.cosmos\\..*",
+          "justification": "Cosmos SDK removes Beta annotation to GA its APIs and classes."
         },
         {
           "code": "java.method.added",
@@ -355,6 +365,24 @@
           "new": "parameter <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate::insert(java.lang.String, ===T===, com.azure.cosmos.models.PartitionKey)",
           "parameterIndex": "1",
           "justification": "To support mono method chaining, without explicit typcast for upper bounded generics"
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "(interface|class|enum) redis\\.clients\\.jedis\\..*",
+          "justification": "To support the EventHubs JedisRedisCheckpointStore constructor"
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class org\\.json\\.JSON(Array|Exception|Object|Pointer|PointerException|Tokener)",
+          "justification": "To support the EventHubs JedisRedisCheckpointStore constructor"
+        },
+        {
+          "regex": true,
+          "code": "java.method.returnTypeChangedCovariantly",
+          "new": "method com.azure.search.documents.indexes.models.(CognitiveServicesAccountKey|ConditionalSkill|CustomEntityLookupSkill|DefaultCognitiveServicesAccount|DistanceScoringFunction|DocumentExtractionSkill|EntityRecognitionSkill|FreshnessScoringFunction|ImageAnalysisSkill|KeyPhraseExtractionSkill|LanguageDetectionSkill|MagnitudeScoringFunction|MergeSkill|OcrSkill|SentimentSkill|ShaperSkill|SplitSkill|TagScoringFunction|TextTranslationSkill|WebApiSkill) .*",
+          "justification": "Proper support for fluent setters in subtypes."
         }
       ]
     }

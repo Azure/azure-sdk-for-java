@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PfsGroup. */
+/** The Pfs Groups used in IKE Phase 2 for new child SA. */
 public final class PfsGroup extends ExpandableStringEnum<PfsGroup> {
     /** Static value None for PfsGroup. */
     public static final PfsGroup NONE = fromString("None");

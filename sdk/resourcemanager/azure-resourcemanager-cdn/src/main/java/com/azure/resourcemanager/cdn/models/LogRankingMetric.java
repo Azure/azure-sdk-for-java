@@ -39,7 +39,11 @@ public final class LogRankingMetric extends ExpandableStringEnum<LogRankingMetri
         return fromString(name, LogRankingMetric.class);
     }
 
-    /** @return known LogRankingMetric values. */
+    /**
+     * Gets known LogRankingMetric values.
+     *
+     * @return known LogRankingMetric values.
+     */
     public static Collection<LogRankingMetric> values() {
         return values(LogRankingMetric.class);
     }

@@ -37,16 +37,15 @@ public final class DiskInner extends Resource {
     private String managedBy;
 
     /*
-     * List of relative URIs containing the IDs of the VMs that have the disk
-     * attached. maxShares should be set to a value greater than one for disks
-     * to allow attaching them to multiple VMs.
+     * List of relative URIs containing the IDs of the VMs that have the disk attached. maxShares should be set to a
+     * value greater than one for disks to allow attaching them to multiple VMs.
      */
     @JsonProperty(value = "managedByExtended", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> managedByExtended;
 
     /*
-     * The disks sku name. Can be Standard_LRS, Premium_LRS, StandardSSD_LRS,
-     * UltraSSD_LRS, Premium_ZRS, StandardSSD_ZRS, or PremiumV2_LRS.
+     * The disks sku name. Can be Standard_LRS, Premium_LRS, StandardSSD_LRS, UltraSSD_LRS, Premium_ZRS,
+     * StandardSSD_ZRS, or PremiumV2_LRS.
      */
     @JsonProperty(value = "sku")
     private DiskSku sku;
@@ -58,8 +57,7 @@ public final class DiskInner extends Resource {
     private List<String> zones;
 
     /*
-     * The extended location where the disk will be created. Extended location
-     * cannot be changed.
+     * The extended location where the disk will be created. Extended location cannot be changed.
      */
     @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;

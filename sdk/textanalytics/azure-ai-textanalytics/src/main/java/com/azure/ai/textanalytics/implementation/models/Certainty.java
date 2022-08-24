@@ -39,6 +39,9 @@ public enum Certainty {
      */
     @JsonCreator
     public static Certainty fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         Certainty[] items = Certainty.values();
         for (Certainty item : items) {
             if (item.toString().equalsIgnoreCase(value)) {

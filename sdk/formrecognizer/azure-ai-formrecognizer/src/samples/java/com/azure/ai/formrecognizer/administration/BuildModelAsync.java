@@ -3,10 +3,12 @@
 
 package com.azure.ai.formrecognizer.administration;
 
-import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
-import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
-import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
-import com.azure.ai.formrecognizer.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient;
+import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildModelOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
@@ -40,16 +42,17 @@ public class BuildModelAsync {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
+        String blobContainerUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
-        PollerFlux<DocumentOperationResult, DocumentModelInfo> buildModelPoller =
-            client.beginBuildModel(trainingFilesUrl,
-                DocumentBuildMode.TEMPLATE,
+        String prefix = "{blob_name_prefix}";
+        PollerFlux<DocumentOperationResult, DocumentModelDetails> buildModelPoller =
+            client.beginBuildModel(blobContainerUrl,
+                DocumentModelBuildMode.TEMPLATE, prefix,
                 new BuildModelOptions()
                     .setModelId("custom-model-id")
                     .setDescription("my custom model desc"));
 
-        Mono<DocumentModelInfo> customFormModelResult = buildModelPoller
+        Mono<DocumentModelDetails> customFormModelResult = buildModelPoller
             .last()
             .flatMap(pollResponse -> {
                 if (pollResponse.getStatus().isComplete()) {
@@ -66,11 +69,11 @@ public class BuildModelAsync {
             System.out.printf("Model created on: %s%n%n", documentModel.getCreatedOn());
 
             System.out.println("Document Fields:");
-            documentModel.getDocTypes().forEach((key, docTypeInfo) -> {
-                docTypeInfo.getFieldSchema().forEach((field, documentFieldSchema) -> {
+            documentModel.getDocumentTypes().forEach((key, documentTypeDetails) -> {
+                documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
                     System.out.printf("Field: %s", field);
                     System.out.printf("Field type: %s", documentFieldSchema.getType());
-                    System.out.printf("Field confidence: %.2f", docTypeInfo.getFieldConfidence().get(field));
+                    System.out.printf("Field confidence: %.2f", documentTypeDetails.getFieldConfidence().get(field));
                 });
             });
         });

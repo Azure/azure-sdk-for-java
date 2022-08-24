@@ -177,7 +177,7 @@ public interface KubernetesCluster
         interface WithVersion {
             /**
              * Specifies the version for the Kubernetes cluster.
-             * Could retrieve from {@link KubernetesClusters#listKubernetesVersions(Region)}
+             * Could retrieve from {@link KubernetesClusters#listOrchestrators(Region, ContainerServiceResourceTypes)}
              *
              * @param kubernetesVersion the kubernetes version
              * @return the next stage of the definition

@@ -11,6 +11,7 @@ import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Head;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
+import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Options;
 import com.azure.core.annotation.Patch;
@@ -19,6 +20,7 @@ import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnValueWireType;
+import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
@@ -34,13 +36,14 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.TypeUtil;
-import com.azure.core.implementation.UnixTime;
 import com.azure.core.models.JsonPatchDocument;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.UrlBuilder;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -70,6 +73,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SwaggerMethodParserTests {
+    private static final SerializerAdapter DEFAULT_SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
+
+    @Host("https://raw.host.com")
+    @ServiceInterface(name = "OperationMethods")
     interface OperationMethods {
         void noMethod();
 
@@ -104,17 +111,16 @@ public class SwaggerMethodParserTests {
     @Test
     public void noHttpMethodAnnotation() throws NoSuchMethodException {
         Method noHttpMethodAnnotation = OperationMethods.class.getDeclaredMethod("noMethod");
-        assertThrows(MissingRequiredAnnotationException.class, () ->
-            new SwaggerMethodParser(noHttpMethodAnnotation, "s://raw.host.com"));
+        assertThrows(MissingRequiredAnnotationException.class, () -> new SwaggerMethodParser(noHttpMethodAnnotation));
     }
 
     @ParameterizedTest
     @MethodSource("httpMethodSupplier")
     public void httpMethod(Method method, HttpMethod expectedMethod, String expectedRelativePath,
         String expectedFullyQualifiedName) {
-        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
         assertEquals(expectedMethod, swaggerMethodParser.getHttpMethod());
-        assertEquals(expectedRelativePath, swaggerMethodParser.setPath(null));
+        assertEquals(expectedRelativePath, swaggerMethodParser.setPath(null, DEFAULT_SERIALIZER));
         assertEquals(expectedFullyQualifiedName, swaggerMethodParser.getFullyQualifiedMethodName());
     }
 
@@ -140,6 +146,8 @@ public class SwaggerMethodParserTests {
         );
     }
 
+    @Host("https://raw.host.com")
+    @ServiceInterface(name = "WireTypesMethods")
     interface WireTypesMethods {
         @Get("test")
         void noWireType();
@@ -147,10 +155,6 @@ public class SwaggerMethodParserTests {
         @Get("test")
         @ReturnValueWireType(Base64Url.class)
         void base64Url();
-
-        @Get("test")
-        @ReturnValueWireType(UnixTime.class)
-        void unixTime();
 
         @Get("test")
         @ReturnValueWireType(DateTimeRfc1123.class)
@@ -168,7 +172,7 @@ public class SwaggerMethodParserTests {
     @ParameterizedTest
     @MethodSource("wireTypesSupplier")
     public void wireTypes(Method method, Class<?> expectedWireType) {
-        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
         assertEquals(expectedWireType, swaggerMethodParser.getReturnValueWireType());
     }
 
@@ -178,13 +182,14 @@ public class SwaggerMethodParserTests {
         return Stream.of(
             Arguments.of(clazz.getDeclaredMethod("noWireType"), null),
             Arguments.of(clazz.getDeclaredMethod("base64Url"), Base64Url.class),
-            Arguments.of(clazz.getDeclaredMethod("unixTime"), UnixTime.class),
             Arguments.of(clazz.getDeclaredMethod("dateTimeRfc1123"), DateTimeRfc1123.class),
             Arguments.of(clazz.getDeclaredMethod("page"), Page.class),
             Arguments.of(clazz.getDeclaredMethod("unknownType"), null)
         );
     }
 
+    @Host("https://raw.host.com")
+    @ServiceInterface(name = "HeaderMethods")
     interface HeaderMethods {
         @Get("test")
         void noHeaders();
@@ -205,10 +210,10 @@ public class SwaggerMethodParserTests {
     @ParameterizedTest
     @MethodSource("headersSupplier")
     public void headers(Method method, HttpHeaders expectedHeaders) {
-        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
         HttpHeaders actual = new HttpHeaders();
-        swaggerMethodParser.setHeaders(null, actual);
+        swaggerMethodParser.setHeaders(null, actual, DEFAULT_SERIALIZER);
 
         for (HttpHeader header : actual) {
             assertEquals(expectedHeaders.getValue(header.getName()), header.getValue());
@@ -226,6 +231,8 @@ public class SwaggerMethodParserTests {
         );
     }
 
+    @Host("https://{sub1}.host.com")
+    @ServiceInterface(name = "HostSubstitutionMethods")
     interface HostSubstitutionMethods {
         @Get("test")
         void noSubstitutions(String sub1);
@@ -235,78 +242,103 @@ public class SwaggerMethodParserTests {
 
         @Get("test")
         void encodingSubstitution(@HostParam(value = "sub1", encoded = false) String sub1);
+
+        @Get("test")
+        void substitutionWrongParam(@HostParam("sub2") String sub2);
+
+        @Get("test")
+        void encodingSubstitutionWrongParam(@HostParam(value = "sub2", encoded = false) String sub2);
     }
 
     @ParameterizedTest
     @MethodSource("hostSubstitutionSupplier")
-    public void hostSubstitution(Method method, String rawHost, Object[] arguments, String expectedUrl) {
-        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, rawHost);
+    public void hostSubstitution(Method method, Object[] arguments, String expectedUrl) {
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
         UrlBuilder urlBuilder = new UrlBuilder();
-        swaggerMethodParser.setSchemeAndHost(arguments, urlBuilder);
+        SwaggerMethodParser.setSchemeAndHost("https://{sub1}.host.com", swaggerMethodParser.hostSubstitutions,
+            arguments, urlBuilder, DEFAULT_SERIALIZER);
 
         assertEquals(expectedUrl, urlBuilder.toString());
     }
 
     private static Stream<Arguments> hostSubstitutionSupplier() throws NoSuchMethodException {
-        String sub1RawHost = "https://{sub1}.host.com";
-        String sub2RawHost = "https://{sub2}.host.com";
-
         Class<HostSubstitutionMethods> clazz = HostSubstitutionMethods.class;
         Method noSubstitutions = clazz.getDeclaredMethod("noSubstitutions", String.class);
         Method substitution = clazz.getDeclaredMethod("substitution", String.class);
         Method encodingSubstitution = clazz.getDeclaredMethod("encodingSubstitution", String.class);
+        Method substitutionWrongParam = clazz.getDeclaredMethod("substitutionWrongParam", String.class);
+        Method encodingSubstitutionWrongParam = clazz.getDeclaredMethod("encodingSubstitutionWrongParam", String.class);
 
         return Stream.of(
-            Arguments.of(noSubstitutions, sub1RawHost, toObjectArray("raw"), "https://{sub1}.host.com"),
-            Arguments.of(noSubstitutions, sub2RawHost, toObjectArray("raw"), "https://{sub2}.host.com"),
-            Arguments.of(substitution, sub1RawHost, toObjectArray("raw"), "https://raw.host.com"),
-            Arguments.of(substitution, sub1RawHost, toObjectArray("{sub1}"), "https://{sub1}.host.com"),
-            Arguments.of(substitution, sub1RawHost, toObjectArray((String) null), "https://.host.com"),
-            Arguments.of(substitution, sub1RawHost, null, "https://{sub1}.host.com"),
-            Arguments.of(substitution, sub2RawHost, toObjectArray("raw"), "https://{sub2}.host.com"),
-            Arguments.of(encodingSubstitution, sub1RawHost, toObjectArray("raw"), "https://raw.host.com"),
-            Arguments.of(encodingSubstitution, sub1RawHost, toObjectArray("{sub1}"), "https://%7Bsub1%7D.host.com"),
-            Arguments.of(encodingSubstitution, sub1RawHost, toObjectArray((String) null), "https://.host.com"),
-            Arguments.of(substitution, sub1RawHost, null, "https://{sub1}.host.com"),
-            Arguments.of(encodingSubstitution, sub2RawHost, toObjectArray("raw"), "https://{sub2}.host.com")
+            Arguments.of(noSubstitutions, toObjectArray("raw"), "https://{sub1}.host.com"),
+            Arguments.of(substitution, toObjectArray("raw"), "https://raw.host.com"),
+            Arguments.of(substitution, toObjectArray("{sub1}"), "https://{sub1}.host.com"),
+            Arguments.of(substitution, toObjectArray((String) null), "https://.host.com"),
+            Arguments.of(substitution, null, "https://{sub1}.host.com"),
+            Arguments.of(substitutionWrongParam, toObjectArray("raw"), "https://{sub1}.host.com"),
+            Arguments.of(encodingSubstitution, toObjectArray("raw"), "https://raw.host.com"),
+            Arguments.of(encodingSubstitution, toObjectArray("{sub1}"), "https://%7Bsub1%7D.host.com"),
+            Arguments.of(encodingSubstitution, toObjectArray((String) null), "https://.host.com"),
+            Arguments.of(substitution, null, "https://{sub1}.host.com"),
+            Arguments.of(encodingSubstitutionWrongParam, toObjectArray("raw"), "https://{sub1}.host.com")
         );
+    }
+
+    @Host("{sub1}://raw.host.com")
+    @ServiceInterface(name = "SchemeSubstitutionMethods")
+    interface SchemeSubstitutionMethods {
+        @Get("test")
+        void noSubstitutions(String sub1);
+
+        @Get("test")
+        void substitution(@HostParam("sub1") String sub1);
+
+        @Get("test")
+        void encodingSubstitution(@HostParam(value = "sub1", encoded = false) String sub1);
+
+        @Get("test")
+        void substitutionWrongParam(@HostParam("sub2") String sub2);
+
+        @Get("test")
+        void encodingSubstitutionWrongParam(@HostParam(value = "sub2", encoded = false) String sub2);
     }
 
     @ParameterizedTest
     @MethodSource("schemeSubstitutionSupplier")
-    public void schemeSubstitution(Method method, String rawHost, Object[] arguments, String expectedUrl) {
-        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, rawHost);
+    public void schemeSubstitution(Method method, Object[] arguments, String expectedUrl) {
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
         UrlBuilder urlBuilder = new UrlBuilder();
-        swaggerMethodParser.setSchemeAndHost(arguments, urlBuilder);
+        SwaggerMethodParser.setSchemeAndHost("{sub1}://raw.host.com", swaggerMethodParser.hostSubstitutions, arguments,
+            urlBuilder, DEFAULT_SERIALIZER);
 
         assertEquals(expectedUrl, urlBuilder.toString());
     }
 
     private static Stream<Arguments> schemeSubstitutionSupplier() throws NoSuchMethodException {
-        String sub1RawHost = "{sub1}://raw.host.com";
-        String sub2RawHost = "{sub2}://raw.host.com";
-
-        Class<HostSubstitutionMethods> clazz = HostSubstitutionMethods.class;
+        Class<SchemeSubstitutionMethods> clazz = SchemeSubstitutionMethods.class;
         Method noSubstitutions = clazz.getDeclaredMethod("noSubstitutions", String.class);
         Method substitution = clazz.getDeclaredMethod("substitution", String.class);
         Method encodingSubstitution = clazz.getDeclaredMethod("encodingSubstitution", String.class);
+        Method substitutionWrongParam = clazz.getDeclaredMethod("substitutionWrongParam", String.class);
+        Method encodingSubstitutionWrongParam = clazz.getDeclaredMethod("encodingSubstitutionWrongParam", String.class);
 
         return Stream.of(
-            Arguments.of(noSubstitutions, sub1RawHost, toObjectArray("raw"), "raw.host.com"),
-            Arguments.of(noSubstitutions, sub2RawHost, toObjectArray("raw"), "raw.host.com"),
-            Arguments.of(substitution, sub1RawHost, toObjectArray("http"), "http://raw.host.com"),
-            Arguments.of(substitution, sub1RawHost, toObjectArray("ĥttps"), "ĥttps://raw.host.com"),
-            Arguments.of(substitution, sub1RawHost, toObjectArray((String) null), "raw.host.com"),
-            Arguments.of(substitution, sub1RawHost, null, "raw.host.com"),
-            Arguments.of(substitution, sub2RawHost, toObjectArray("raw"), "raw.host.com"),
-            Arguments.of(encodingSubstitution, sub1RawHost, toObjectArray("http"), "http://raw.host.com"),
-            Arguments.of(encodingSubstitution, sub1RawHost, toObjectArray("ĥttps"), "raw.host.com"),
-            Arguments.of(encodingSubstitution, sub1RawHost, toObjectArray((String) null), "raw.host.com"),
-            Arguments.of(substitution, sub1RawHost, null, "raw.host.com"),
-            Arguments.of(encodingSubstitution, sub2RawHost, toObjectArray("raw"), "raw.host.com")
+            Arguments.of(noSubstitutions, toObjectArray("raw"), "raw.host.com"),
+            Arguments.of(substitution, toObjectArray("http"), "http://raw.host.com"),
+            Arguments.of(substitution, toObjectArray("ĥttps"), "ĥttps://raw.host.com"),
+            Arguments.of(substitution, toObjectArray((String) null), "raw.host.com"),
+            Arguments.of(substitution, null, "raw.host.com"),
+            Arguments.of(substitutionWrongParam, toObjectArray("raw"), "raw.host.com"),
+            Arguments.of(encodingSubstitution, toObjectArray("http"), "http://raw.host.com"),
+            Arguments.of(encodingSubstitution, toObjectArray("ĥttps"), "raw.host.com"),
+            Arguments.of(encodingSubstitution, toObjectArray((String) null), "raw.host.com"),
+            Arguments.of(substitution, null, "raw.host.com"),
+            Arguments.of(encodingSubstitutionWrongParam, toObjectArray("raw"), "raw.host.com")
         );
     }
 
+    @Host("https://raw.host.com")
+    @ServiceInterface(name = "PathSubstitutionMethods")
     interface PathSubstitutionMethods {
         @Get("{sub1}")
         void noSubstitutions(String sub1);
@@ -321,8 +353,8 @@ public class SwaggerMethodParserTests {
     @ParameterizedTest
     @MethodSource("pathSubstitutionSupplier")
     public void pathSubstitution(Method method, Object[] arguments, String expectedPath) {
-        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
-        assertEquals(expectedPath, swaggerMethodParser.setPath(arguments));
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
+        assertEquals(expectedPath, swaggerMethodParser.setPath(arguments, DEFAULT_SERIALIZER));
     }
 
     private static Stream<Arguments> pathSubstitutionSupplier() throws NoSuchMethodException {
@@ -342,6 +374,8 @@ public class SwaggerMethodParserTests {
         );
     }
 
+    @Host("https://raw.host.com")
+    @ServiceInterface(name = "QuerySubstitutionMethods")
     interface QuerySubstitutionMethods {
         @Get("test")
         void substitutions(@QueryParam("sub1") String sub1, @QueryParam("sub2") boolean sub2);
@@ -355,10 +389,10 @@ public class SwaggerMethodParserTests {
     @ParameterizedTest
     @MethodSource("querySubstitutionSupplier")
     public void querySubstitution(Method method, Object[] arguments, String expectedUrl) {
-        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
         UrlBuilder urlBuilder = UrlBuilder.parse("https://raw.host.com");
-        swaggerMethodParser.setEncodedQueryParameters(arguments, urlBuilder);
+        swaggerMethodParser.setEncodedQueryParameters(arguments, urlBuilder, DEFAULT_SERIALIZER);
 
         assertEquals(expectedUrl, urlBuilder.toString());
     }
@@ -382,6 +416,8 @@ public class SwaggerMethodParserTests {
         );
     }
 
+    @Host("https://raw.host.com")
+    @ServiceInterface(name = "HeaderSubstitutionMethods")
     interface HeaderSubstitutionMethods {
         @Get("test")
         void addHeaders(@HeaderParam("sub1") String sub1, @HeaderParam("sub2") boolean sub2);
@@ -397,10 +433,10 @@ public class SwaggerMethodParserTests {
     @ParameterizedTest
     @MethodSource("headerSubstitutionSupplier")
     public void headerSubstitution(Method method, Object[] arguments, Map<String, String> expectedHeaders) {
-        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
         HttpHeaders actual = new HttpHeaders();
-        swaggerMethodParser.setHeaders(arguments, actual);
+        swaggerMethodParser.setHeaders(arguments, actual, DEFAULT_SERIALIZER);
 
         for (HttpHeader header : actual) {
             assertEquals(expectedHeaders.get(header.getName()), header.getValue());
@@ -434,6 +470,8 @@ public class SwaggerMethodParserTests {
         );
     }
 
+    @Host("https://raw.host.com")
+    @ServiceInterface(name = "BodySubstitutionMethods")
     interface BodySubstitutionMethods {
         @Get("test")
         void applicationJsonBody(@BodyParam(ContentType.APPLICATION_JSON) String jsonBody);
@@ -457,12 +495,12 @@ public class SwaggerMethodParserTests {
     @MethodSource("bodySubstitutionSupplier")
     public void bodySubstitution(Method method, Object[] arguments, String expectedBodyContentType,
         Object expectedBody) {
-        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
         assertEquals(void.class, swaggerMethodParser.getReturnType());
         assertEquals(String.class, swaggerMethodParser.getBodyJavaType());
         assertEquals(expectedBodyContentType, swaggerMethodParser.getBodyContentType());
-        assertEquals(expectedBody, swaggerMethodParser.setBody(arguments));
+        assertEquals(expectedBody, swaggerMethodParser.setBody(arguments, DEFAULT_SERIALIZER));
     }
 
     private static Stream<Arguments> bodySubstitutionSupplier() throws NoSuchMethodException {
@@ -512,7 +550,7 @@ public class SwaggerMethodParserTests {
 
     private static Stream<Arguments> setContextSupplier() throws NoSuchMethodException {
         Method method = OperationMethods.class.getDeclaredMethod("getMethodWithContext", Context.class);
-        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
         Context context = new Context("key", "value");
 
@@ -532,7 +570,7 @@ public class SwaggerMethodParserTests {
 
     private static Stream<Arguments> setRequestOptionsSupplier() throws NoSuchMethodException {
         Method method = OperationMethods.class.getDeclaredMethod("getMethodWithRequestOptions", RequestOptions.class);
-        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
         RequestOptions bodyOptions = new RequestOptions()
             .setBody(BinaryData.fromString("{\"id\":\"123\"}"));
@@ -556,6 +594,8 @@ public class SwaggerMethodParserTests {
         );
     }
 
+    @Host("https://raw.host.com")
+    @ServiceInterface(name = "ExpectedStatusCodeMethods")
     interface ExpectedStatusCodeMethods {
         @Get("test")
         void noExpectedStatusCodes();
@@ -573,7 +613,7 @@ public class SwaggerMethodParserTests {
     @MethodSource("expectedStatusCodeSupplier")
     public void expectedStatusCodeSupplier(Method method, int statusCode, int[] expectedStatusCodes,
         boolean matchesExpected) {
-        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
         if (expectedStatusCodes != null) {
             for (int expectedCode : expectedStatusCodes) {
@@ -601,6 +641,8 @@ public class SwaggerMethodParserTests {
         );
     }
 
+    @Host("https://raw.host.com")
+    @ServiceInterface(name = "UnexpectedStatusCodeMethods")
     interface UnexpectedStatusCodeMethods {
         @Get("test")
         void noUnexpectedStatusCodes();
@@ -618,7 +660,7 @@ public class SwaggerMethodParserTests {
     @ParameterizedTest
     @MethodSource("unexpectedStatusCodeSupplier")
     public void unexpectedStatusCode(Method method, int statusCode, Class<?> expectedExceptionType) {
-        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
         assertEquals(expectedExceptionType, swaggerMethodParser.getUnexpectedException(statusCode).getExceptionType());
     }

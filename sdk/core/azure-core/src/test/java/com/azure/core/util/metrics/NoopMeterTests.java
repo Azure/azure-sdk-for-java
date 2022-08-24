@@ -18,6 +18,7 @@ public class NoopMeterTests {
     public void noopMeter() {
         Meter noopMeter = MeterProvider.getDefaultProvider().createMeter("foo", null, null);
         assertNotNull(noopMeter);
+        assertFalse(noopMeter.isEnabled());
     }
 
     @Test
@@ -53,6 +54,7 @@ public class NoopMeterTests {
     public void noopCounterMeasurement() {
         Meter noopMeter = MeterProvider.getDefaultProvider().createMeter("foo", null, null);
         LongCounter counter = noopMeter.createLongCounter("name", "description", null);
+        assertFalse(counter.isEnabled());
         TelemetryAttributes attributes = noopMeter.createAttributes(Collections.singletonMap("foo", 0.42d));
         counter.add(42L, attributes, Context.NONE);
     }
@@ -61,6 +63,7 @@ public class NoopMeterTests {
     public void noopUpDownCounterMeasurement() {
         Meter noopMeter = MeterProvider.getDefaultProvider().createMeter("foo", null, null);
         LongCounter counter = noopMeter.createLongUpDownCounter("name", "description", null);
+        assertFalse(counter.isEnabled());
         TelemetryAttributes attributes = noopMeter.createAttributes(Collections.emptyMap());
         counter.add(42L, attributes, Context.NONE);
     }

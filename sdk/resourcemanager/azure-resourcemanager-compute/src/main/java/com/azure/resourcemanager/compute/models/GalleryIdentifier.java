@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class GalleryIdentifier {
     /*
-     * The unique name of the Shared Image Gallery. This name is generated
-     * automatically by Azure.
+     * The unique name of the Shared Image Gallery. This name is generated automatically by Azure.
      */
     @JsonProperty(value = "uniqueName", access = JsonProperty.Access.WRITE_ONLY)
     private String uniqueName;

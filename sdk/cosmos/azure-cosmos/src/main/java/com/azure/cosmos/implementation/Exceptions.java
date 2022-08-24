@@ -22,6 +22,10 @@ public class Exceptions {
         return isStatusCode(e, HttpConstants.StatusCodes.GONE);
     }
 
+    public static boolean isConflict(CosmosException e) {
+        return isStatusCode(e, HttpConstants.StatusCodes.CONFLICT);
+    }
+
     public static boolean isNotFound(CosmosException e) {
         return isStatusCode(e, HttpConstants.StatusCodes.NOTFOUND);
     }

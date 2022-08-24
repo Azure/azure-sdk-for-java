@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines the parameters for the origin group override configuration. */
 @Fluent
 public final class OriginGroupOverride {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OriginGroupOverride.class);
-
     /*
-     * defines the OriginGroup that would override the DefaultOriginGroup on
-     * route.
+     * defines the OriginGroup that would override the DefaultOriginGroup on route.
      */
     @JsonProperty(value = "originGroup")
     private ResourceReference originGroup;

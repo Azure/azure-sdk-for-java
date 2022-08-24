@@ -28,6 +28,9 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.routing.LocationCache;
+import com.azure.cosmos.models.CosmosBatch;
+import com.azure.cosmos.models.CosmosBatchRequestOptions;
+import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -39,6 +42,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedFlux;
+import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -327,6 +331,54 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         } finally {
             if (testDirectClient != null) {
                 testDirectClient.close();
+            }
+        }
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void requestSessionTokenDiagnostics() {
+        CosmosClient testSessionTokenClient = null;
+        try {
+            testSessionTokenClient = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .consistencyLevel(ConsistencyLevel.SESSION)
+                .contentResponseOnWriteEnabled(true)
+                .directMode()
+                .buildClient();
+            CosmosContainer cosmosContainer =
+                testSessionTokenClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
+            InternalObjectNode internalObjectNode = getInternalObjectNode();
+            CosmosItemResponse<InternalObjectNode> createResponse = cosmosContainer.createItem(internalObjectNode);
+            String diagnostics = createResponse.getDiagnostics().toString();
+
+            // assert that request session token was not sent to backend (null)
+            assertThat(diagnostics).contains("\"requestSessionToken\":null");
+
+            // read item to validate response and request session tokens are equal
+            String sessionToken = createResponse.getSessionToken();
+            CosmosItemResponse<InternalObjectNode> readResponse =
+                cosmosContainer.readItem(BridgeInternal.getProperties(createResponse).getId(),
+                    new PartitionKey(BridgeInternal.getProperties(createResponse).getId()),
+                    InternalObjectNode.class);
+            diagnostics = readResponse.getDiagnostics().toString();
+            assertThat(diagnostics).contains(String.format("\"requestSessionToken\":\"%s\"", sessionToken));
+
+            // use batch operation to check that user-set session token is being passed in
+            // need to use batch since we only pass session token on multiple region write or batch operation
+            CosmosBatch batch = CosmosBatch.createCosmosBatch(new PartitionKey(
+                BridgeInternal.getProperties(createResponse).getId()));
+            internalObjectNode = getInternalObjectNode();
+            batch.createItemOperation(internalObjectNode);
+            CosmosBatchResponse batchResponse = cosmosContainer.executeCosmosBatch(batch,
+                new CosmosBatchRequestOptions().setSessionToken(readResponse.getSessionToken()));
+            diagnostics = batchResponse.getDiagnostics().toString();
+            assertThat(diagnostics).contains(String.format("\"requestSessionToken\":\"%s\"",
+                readResponse.getSessionToken()));
+
+        } finally {
+            if (testSessionTokenClient != null) {
+                testSessionTokenClient.close();
             }
         }
     }
@@ -766,7 +818,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(Instant.now().toEpochMilli() - instant.toEpochMilli()).isLessThan(5000);
             assertThat(node.get("requestResponseTimeUTC")).isNotNull();
             assertThat(node.get("requestOperationType")).isNotNull();
-            assertThat(node.get("requestOperationType")).isNotNull();
+            assertThat(node.get("requestSessionToken")).isNotNull();
         }
     }
 
@@ -1129,7 +1181,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
     public void isValidJSON(final String json) {
         try {
-            final JsonParser parser = new ObjectMapper().createParser(json);
+            final JsonParser parser = new JsonFactory().createParser(json);
             while (parser.nextToken() != null) {
             }
         } catch (IOException ex) {

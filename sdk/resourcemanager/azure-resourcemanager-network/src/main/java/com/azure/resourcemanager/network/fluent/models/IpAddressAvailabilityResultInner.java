@@ -18,8 +18,7 @@ public final class IpAddressAvailabilityResultInner {
     private Boolean available;
 
     /*
-     * Contains other available private IP addresses if the asked for address
-     * is taken.
+     * Contains other available private IP addresses if the asked for address is taken.
      */
     @JsonProperty(value = "availableIPAddresses")
     private List<String> availableIpAddresses;

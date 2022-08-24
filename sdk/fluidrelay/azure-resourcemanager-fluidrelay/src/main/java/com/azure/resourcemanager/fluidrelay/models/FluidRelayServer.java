@@ -92,7 +92,9 @@ public interface FluidRelayServer {
     EncryptionProperties encryption();
 
     /**
-     * Gets the storagesku property: StorageSKU Sku of the storage associated with the resource.
+     * Gets the storagesku property: StorageSKU
+     *
+     * <p>Sku of the storage associated with the resource.
      *
      * @return the storagesku value.
      */
@@ -234,9 +236,12 @@ public interface FluidRelayServer {
         /** The stage of the FluidRelayServer definition allowing to specify storagesku. */
         interface WithStoragesku {
             /**
-             * Specifies the storagesku property: StorageSKU Sku of the storage associated with the resource.
+             * Specifies the storagesku property: StorageSKU
              *
-             * @param storagesku StorageSKU Sku of the storage associated with the resource.
+             * <p>Sku of the storage associated with the resource.
+             *
+             * @param storagesku StorageSKU
+             *     <p>Sku of the storage associated with the resource.
              * @return the next definition stage.
              */
             WithCreate withStoragesku(StorageSku storagesku);

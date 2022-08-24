@@ -1,21 +1,54 @@
 # Release History
 
-## 4.0.0-beta.6 (Unreleased)
+## 4.0.0-beta.7 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
-- Added BinaryData support to synchronous document analysis client using `beginAnalyzeDocument(String modelId, BinaryData document, long length)`
-- Renamed `beginCreateComposedModel` method to `beginComposeModel` on DocumentModelAdministrationClient and DocumentModelAdministrationAsyncClient.
-- Renamed `CreateComposedModelOptions` model to `ComposeModelOptions`
-- Renamed `DocumentModelInfo` model to `DocumentModelSummary`
-- Renamed `DocumentModel` model to `DocumentModelInfo`
-- Renamed `getAccountProperties` method to `getResourceInfo`
-- Renamed `AccountProperties` model to `ResourceInfo`
+- Removed property `kind` from model `DocumentPage`
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 3.1.14 (2022-08-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.31.0`.
+- Upgraded `azure-core-http-netty` to `1.12.4`.
+
+## 4.0.0-beta.6 (2022-08-10)
+
+### Features Added
+- Add a constructor to create an instance of `CopyAuthorization` model.
+- Added BinaryData support to document analysis client using `beginAnalyzeDocument(String modelId, BinaryData document, long length)`
+- Added support for V2.1 & V2.0 APIs by adding FormRecognizerClient and FormTrainingClient.
+
+### Breaking Changes
+- Renamed `beginCreateComposedModel` method to `beginComposeModel` on DocumentModelAdministrationClient and DocumentModelAdministrationAsyncClient.
+- Renamed `CreateComposedModelOptions` model to `ComposeModelOptions`
+- Renamed `DocumentModelInfo` model to `DocumentModelDetails`
+- Renamed `ModelOperation` model to `ModelOperationDetails`
+- Renamed `ModelOperationInfo` model to `ModelOperationSummary`
+- Renamed `getAccountProperties` method to `getResourceDetails`
+- Renamed `AccountProperties` model to `ResourceDetails`
+- Renamed `state` property on model `DocumentSelectionMark` to `selectionMarkState`
+- Renamed `getValue*` accessor methods on `DocumentField` to `getValueAs*`
+- Renamed `DocTypeInfo` model to `DocumentTypeDetails`
+- Renamed `docTypes` property on `DocumentModelDetails` model to `documentTypes`
+- Removed models `DocumentModelOperationException`, `DocumentModelOperationError` and `DocumentModelOperationInnerError`.
+- Renamed `trainingFilesUrl` to `blobContainerUrl` in `beginBuildModel` method
+- Changed method `beginBuildModel(String, DocumentModelBuildMode, BuildModelOptions)` to `beginBuildModel(String, DocumentModelBuildMode, String, BuildModelOptions)`
+- Removed `prefix` property on model `BuildModelOptions`
+
+### Other Changes
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.31.0`.
+- Upgraded `azure-core-http-netty` to `1.12.4`.
 
 ## 3.1.13 (2022-07-05)
 

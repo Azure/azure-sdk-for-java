@@ -27,7 +27,11 @@ public final class PiiDomain extends ExpandableStringEnum<PiiDomain> {
         return fromString(name, PiiDomain.class);
     }
 
-    /** @return known PiiDomain values. */
+    /**
+     * Gets known PiiDomain values.
+     *
+     * @return known PiiDomain values.
+     */
     public static Collection<PiiDomain> values() {
         return values(PiiDomain.class);
     }
