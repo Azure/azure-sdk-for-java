@@ -25,8 +25,9 @@ public class JacksonJsonReader extends JsonReader {
 	private static MethodHandle parserGetBinaryValue;
 	private static MethodHandle parserNextToken;
 	private static MethodHandle parserGetValueAsString;
-	private static MethodHandle parserNextFieldName;
+	private static MethodHandle parserGetCurrentName;
 	private static MethodHandle parserSkipChildren;
+	private static MethodHandle parserClose;
 	private static final MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
 	private static Object jsonFactory;
 	private static Class<?> jacksonTokenEnum = null;
@@ -80,9 +81,10 @@ public class JacksonJsonReader extends JsonReader {
 		parserGetBinaryValue = publicLookup.findVirtual(jacksonJsonParser, "getBinaryValue", methodType(byte[].class));
     	parserNextToken = publicLookup.findVirtual(jacksonJsonParser, "nextToken", methodType(jacksonTokenEnum));
 		parserGetValueAsString = publicLookup.findVirtual(jacksonJsonParser, "getValueAsString", methodType(String.class));
-    	parserNextFieldName = publicLookup.findVirtual(jacksonJsonParser, "nextFieldName", methodType(String.class));
+    	parserGetCurrentName = publicLookup.findVirtual(jacksonJsonParser, "getCurrentName", methodType(String.class));
 		parserSkipChildren = publicLookup.findVirtual(jacksonJsonParser, "skipChildren", methodType(jacksonJsonParser));
-    	initialized = true;	
+    	parserClose = publicLookup.findVirtual(jacksonJsonParser, "close", methodType(void.class));
+		initialized = true;	
     }
 
     @Override
@@ -205,7 +207,7 @@ public class JacksonJsonReader extends JsonReader {
     @Override
     public String getFieldName() {
     	try {
-        	return (String) parserNextFieldName.invoke(jacksonParser);
+        	return (String) parserGetCurrentName.invoke(jacksonParser);
         } catch (Throwable e) {
         	if (e instanceof IOException) {
         		throw new UncheckedIOException ((IOException) e);
@@ -293,7 +295,15 @@ public class JacksonJsonReader extends JsonReader {
 
     @Override
     public void close() throws IOException {
-
+    	try {
+    		parserClose.invoke(jacksonParser);
+        } catch (Throwable e) {
+        	if (e instanceof IOException) {
+        		throw new UncheckedIOException ((IOException) e);
+        	} else {
+        		throw new RuntimeException(e);
+        	}
+        }
     }
     
     /*
