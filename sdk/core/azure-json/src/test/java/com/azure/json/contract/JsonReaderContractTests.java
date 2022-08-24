@@ -4,7 +4,9 @@
 package com.azure.json.contract;
 
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -20,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -420,6 +423,55 @@ public abstract class JsonReaderContractTests {
         );
     }
 
+    @ParameterizedTest
+    @MethodSource("bufferObjectSupplier")
+    public void bufferObject(String json, int nextCount) {
+        JsonReader reader = getJsonReader(json);
+
+        for (int i = 0; i < nextCount; i++) {
+            reader.nextToken();
+        }
+
+        JsonReader buffer = reader.bufferObject();
+        TestData testData = TestData.fromJson(buffer);
+
+        assertEquals("test", testData.getTest());
+    }
+
+    private static Stream<Arguments> bufferObjectSupplier() {
+        return Stream.of(
+            // Arguments.of("{\"test\":\"test\"}", 1),
+            Arguments.of("{\"outerfield\":{\"test\":\"test\"}}", 2)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("bufferObjectIllegalStateSupplier")
+    public void bufferObjectIllegalState(String json, int nextCount) {
+        JsonReader reader = getJsonReader(json);
+
+        for (int i = 0; i < nextCount; i++) {
+            reader.nextToken();
+        }
+
+        assertThrows(IllegalStateException.class, reader::bufferObject);
+    }
+
+    private static Stream<Arguments> bufferObjectIllegalStateSupplier() {
+        return Stream.of(
+            Arguments.of("[]", 1),
+            Arguments.of("12", 1),
+            Arguments.of("null", 1),
+            Arguments.of("true", 1),
+            Arguments.of("\"hello\"", 1),
+            Arguments.of("{\"outerfield\": []}", 2),
+            Arguments.of("{\"outerfield\": 12}", 2),
+            Arguments.of("{\"outerfield\": null}", 2),
+            Arguments.of("{\"outerfield\": true}", 2),
+            Arguments.of("{\"outerfield\": \"hello\"}", 2)
+        );
+    }
+
     private static void assertJsonReaderStructInitialization(JsonReader reader, JsonToken expectedInitialToken) {
         assertNull(reader.currentToken());
         reader.nextToken();
@@ -429,5 +481,44 @@ public abstract class JsonReaderContractTests {
 
     private static <T> Function<JsonReader, T> createJsonConsumer(Function<JsonReader, T> func) {
         return func;
+    }
+
+    private static final class TestData implements JsonSerializable<TestData> {
+        private String test;
+
+        public String getTest() {
+            return test;
+        }
+
+        public TestData setTest(String test) {
+            this.test = test;
+            return this;
+        }
+
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) {
+            return jsonWriter.writeStartObject()
+                .writeStringField("test", test)
+                .writeEndObject();
+        }
+
+        public static TestData fromJson(JsonReader jsonReader) {
+            return jsonReader.readObject(reader -> {
+                TestData result = new TestData();
+
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+
+                    if ("test".equals(fieldName)) {
+                        result.setTest(reader.getString());
+                    } else {
+                        reader.skipChildren();
+                    }
+                }
+
+                return result;
+            });
+        }
     }
 }
