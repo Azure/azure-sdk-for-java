@@ -7,7 +7,7 @@ package com.azure.resourcemanager.monitor.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.models.ActionList;
-import com.azure.resourcemanager.monitor.models.AlertRuleAllOfCondition;
+import com.azure.resourcemanager.monitor.models.ActivityLogAlertAllOfCondition;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -25,7 +25,7 @@ public final class AlertRuleProperties {
      * The condition that will cause this alert to activate.
      */
     @JsonProperty(value = "condition", required = true)
-    private AlertRuleAllOfCondition condition;
+    private ActivityLogAlertAllOfCondition condition;
 
     /*
      * The actions that will activate when the condition is met.
@@ -75,7 +75,7 @@ public final class AlertRuleProperties {
      *
      * @return the condition value.
      */
-    public AlertRuleAllOfCondition condition() {
+    public ActivityLogAlertAllOfCondition condition() {
         return this.condition;
     }
 
@@ -85,7 +85,7 @@ public final class AlertRuleProperties {
      * @param condition the condition value to set.
      * @return the AlertRuleProperties object itself.
      */
-    public AlertRuleProperties withCondition(AlertRuleAllOfCondition condition) {
+    public AlertRuleProperties withCondition(ActivityLogAlertAllOfCondition condition) {
         this.condition = condition;
         return this;
     }

@@ -17,7 +17,7 @@ import java.util.List;
  * set in an AnyOf Condition._.
  */
 @Fluent
-public final class AlertRuleAnyOfOrLeafCondition extends AlertRuleLeafCondition {
+public final class ActivityLogAlertLeafCondition extends AlertRuleLeafCondition {
     /*
      * An Activity Log Alert rule 'anyOf' condition.
      *
@@ -43,30 +43,30 @@ public final class AlertRuleAnyOfOrLeafCondition extends AlertRuleLeafCondition 
      * <p>An Activity Log Alert rule condition that is met when at least one of its member leaf conditions are met.
      *
      * @param anyOf the anyOf value to set.
-     * @return the AlertRuleAnyOfOrLeafCondition object itself.
+     * @return the ActivityLogAlertLeafCondition object itself.
      */
-    public AlertRuleAnyOfOrLeafCondition withAnyOf(List<AlertRuleLeafCondition> anyOf) {
+    public ActivityLogAlertLeafCondition withAnyOf(List<AlertRuleLeafCondition> anyOf) {
         this.anyOf = anyOf;
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public AlertRuleAnyOfOrLeafCondition withField(String field) {
+    public ActivityLogAlertLeafCondition withField(String field) {
         super.withField(field);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public AlertRuleAnyOfOrLeafCondition withEquals(String equals) {
+    public ActivityLogAlertLeafCondition withEquals(String equals) {
         super.withEquals(equals);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public AlertRuleAnyOfOrLeafCondition withContainsAny(List<String> containsAny) {
+    public ActivityLogAlertLeafCondition withContainsAny(List<String> containsAny) {
         super.withContainsAny(containsAny);
         return this;
     }

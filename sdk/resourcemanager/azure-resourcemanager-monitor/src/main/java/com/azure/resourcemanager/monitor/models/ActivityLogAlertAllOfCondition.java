@@ -11,19 +11,19 @@ import java.util.List;
 
 /** An Activity Log Alert rule condition that is met when all its member conditions are met. */
 @Fluent
-public final class AlertRuleAllOfCondition {
+public final class ActivityLogAlertAllOfCondition {
     /*
      * The list of Activity Log Alert rule conditions.
      */
     @JsonProperty(value = "allOf", required = true)
-    private List<AlertRuleAnyOfOrLeafCondition> allOf;
+    private List<ActivityLogAlertLeafCondition> allOf;
 
     /**
      * Get the allOf property: The list of Activity Log Alert rule conditions.
      *
      * @return the allOf value.
      */
-    public List<AlertRuleAnyOfOrLeafCondition> allOf() {
+    public List<ActivityLogAlertLeafCondition> allOf() {
         return this.allOf;
     }
 
@@ -31,9 +31,9 @@ public final class AlertRuleAllOfCondition {
      * Set the allOf property: The list of Activity Log Alert rule conditions.
      *
      * @param allOf the allOf value to set.
-     * @return the AlertRuleAllOfCondition object itself.
+     * @return the ActivityLogAlertAllOfCondition object itself.
      */
-    public AlertRuleAllOfCondition withAllOf(List<AlertRuleAnyOfOrLeafCondition> allOf) {
+    public ActivityLogAlertAllOfCondition withAllOf(List<ActivityLogAlertLeafCondition> allOf) {
         this.allOf = allOf;
         return this;
     }
@@ -47,11 +47,12 @@ public final class AlertRuleAllOfCondition {
         if (allOf() == null) {
             throw LOGGER
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property allOf in model AlertRuleAllOfCondition"));
+                    new IllegalArgumentException(
+                        "Missing required property allOf in model ActivityLogAlertAllOfCondition"));
         } else {
             allOf().forEach(e -> e.validate());
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(AlertRuleAllOfCondition.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ActivityLogAlertAllOfCondition.class);
 }
