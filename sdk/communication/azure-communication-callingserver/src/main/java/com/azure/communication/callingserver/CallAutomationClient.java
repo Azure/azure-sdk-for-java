@@ -66,7 +66,7 @@ public final class CallAutomationClient {
      * Answer an incoming call
      *
      * @param incomingCallContext The incoming call context.
-     * @param callbackUrl The call back uri. Optional
+     * @param callbackUrl The call back uri.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
@@ -80,7 +80,7 @@ public final class CallAutomationClient {
      * Create a call connection request from a source identity to a target identity.
      *
      * @param incomingCallContext The incoming call context.
-     * @param callbackUrl The call back uri. Optional
+     * @param callbackUrl The call back uri.
      * @param mediaStreamingConfiguration The MediaStreamingConfiguration. Optional
      * @param context The context to associate with this operation.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
