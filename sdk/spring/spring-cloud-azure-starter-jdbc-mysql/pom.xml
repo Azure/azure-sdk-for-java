@@ -99,6 +99,13 @@
       <artifactId>azure-identity-providers-jdbc-mysql</artifactId>
       <version>1.0.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-identity-providers-jdbc-mysql;dependency} -->
     </dependency>
+
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.29</version> <!-- {x-version-update;mysql:mysql-connector-java;external_dependency} -->
+    </dependency>
+
   </dependencies>
 
   <build>
