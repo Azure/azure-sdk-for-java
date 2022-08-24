@@ -3,12 +3,14 @@
 package com.azure.spring.cloud.autoconfigure.aadb2c.properties;
 
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cConfigurationException;
+import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.net.MalformedURLException;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,6 +57,21 @@ public class AadB2cProperties implements InitializingBean {
      * App ID URI which might be used in the "aud" claim of a token.
      */
     private String appIdUri;
+
+    /**
+     * Connection Timeout for the JWKSet Remote URL call.
+     */
+    private Duration jwtConnectTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT);
+
+    /**
+     * Read Timeout for the JWKSet Remote URL call.
+     */
+    private Duration jwtReadTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT);
+
+    /**
+     * Size limit in Bytes of the JWKSet Remote URL call.
+     */
+    private int jwtSizeLimit = RemoteJWKSet.DEFAULT_HTTP_SIZE_LIMIT; /* bytes */
 
     /**
      * Redirect url after logout.
@@ -317,6 +334,60 @@ public class AadB2cProperties implements InitializingBean {
      */
     public void setAppIdUri(String appIdUri) {
         this.appIdUri = appIdUri;
+    }
+
+    /**
+     * Gets the JWT connect timeout.
+     *
+     * @return the JWT connect timeout
+     */
+    public Duration getJwtConnectTimeout() {
+        return jwtConnectTimeout;
+    }
+
+    /**
+     * Sets the JWT connect timeout.
+     *
+     * @param jwtConnectTimeout the JWT connect timeout
+     */
+    public void setJwtConnectTimeout(Duration jwtConnectTimeout) {
+        this.jwtConnectTimeout = jwtConnectTimeout;
+    }
+
+    /**
+     * Get the JWT read timeout.
+     *
+     * @return the JWT read timeout
+     */
+    public Duration getJwtReadTimeout() {
+        return jwtReadTimeout;
+    }
+
+    /**
+     * Sets the JWT read timeout.
+     *
+     * @param jwtReadTimeout the JWT read timeout
+     */
+    public void setJwtReadTimeout(Duration jwtReadTimeout) {
+        this.jwtReadTimeout = jwtReadTimeout;
+    }
+
+    /**
+     * Gets the JWT size limit.
+     *
+     * @return the JWT size limit
+     */
+    public int getJwtSizeLimit() {
+        return jwtSizeLimit;
+    }
+
+    /**
+     * Sets the JWT size limit.
+     *
+     * @param jwtSizeLimit the JWT size limit
+     */
+    public void setJwtSizeLimit(int jwtSizeLimit) {
+        this.jwtSizeLimit = jwtSizeLimit;
     }
 
     /**
