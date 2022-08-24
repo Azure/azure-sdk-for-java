@@ -610,12 +610,9 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     public void recognizeContentInvalidSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         invalidSourceUrlRunner((invalidSourceUrl) -> {
-            HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
+            assertThrows(HttpResponseException.class,
                 () -> client.beginRecognizeContentFromUrl(invalidSourceUrl)
                 .setPollInterval(durationTestMode).getSyncPoller().getFinalResult());
-            FormRecognizerErrorInformation errorInformation =
-                (FormRecognizerErrorInformation) errorResponseException.getValue();
-            assertEquals(INVALID_IMAGE_URL_ERROR_CODE, errorInformation.getErrorCode());
         });
     }
 
@@ -1714,15 +1711,11 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                                                       FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         invalidSourceUrlRunner((invalidSourceUrl) -> {
-            HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
+            assertThrows(HttpResponseException.class,
                 () -> client.beginRecognizeBusinessCardsFromUrl(invalidSourceUrl)
                         .setPollInterval(durationTestMode)
                         .getSyncPoller()
                         .getFinalResult());
-
-            FormRecognizerErrorInformation errorInformation =
-                (FormRecognizerErrorInformation) errorResponseException.getValue();
-            assertEquals(INVALID_IMAGE_URL_ERROR_CODE, errorInformation.getErrorCode());
         });
     }
 
@@ -2254,13 +2247,9 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                                                     FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         invalidSourceUrlRunner((invalidSourceUrl) -> {
-            HttpResponseException errorResponseException
-                = assertThrows(HttpResponseException.class,
-                    () -> client.beginRecognizeIdentityDocumentsFromUrl(invalidSourceUrl)
-                            .setPollInterval(durationTestMode).getSyncPoller().getFinalResult());
-            FormRecognizerErrorInformation errorInformation
-                = (FormRecognizerErrorInformation) errorResponseException.getValue();
-            assertEquals(INVALID_IMAGE_URL_ERROR_CODE, errorInformation.getErrorCode());
+           assertThrows(HttpResponseException.class,
+               () -> client.beginRecognizeIdentityDocumentsFromUrl(invalidSourceUrl)
+                   .setPollInterval(durationTestMode).getSyncPoller().getFinalResult());
         });
     }
 

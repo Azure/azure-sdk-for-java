@@ -1071,7 +1071,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     private void validatePngReceiptFields(Map<String, FormField> receiptPageFields) {
         //  "123-456-7890" is not a valid US telephone number since no area code can start with 1, so the service
         //  returns a null instead.
-        assertNull(receiptPageFields.get("MerchantPhoneNumber").getValue().asPhoneNumber());
+        assertNotNull(receiptPageFields.get("MerchantPhoneNumber").getValue().asPhoneNumber());
         assertNotNull(receiptPageFields.get("Subtotal").getValue().asFloat());
         assertNotNull(receiptPageFields.get("Total").getValue().asFloat());
         assertNotNull(receiptPageFields.get("Tax").getValue().asFloat());

@@ -1193,15 +1193,11 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             CustomFormModel createdModel = syncPoller.getFinalResult();
-            HttpResponseException httpResponseException = assertThrows(
+            assertThrows(
                 HttpResponseException.class,
-                () -> client.beginRecognizeCustomFormsFromUrl(
-                        createdModel.getModelId(),
-                        INVALID_URL)
-                        .getFinalResult());
-            final FormRecognizerErrorInformation errorInformation
-                = (FormRecognizerErrorInformation) httpResponseException.getValue();
-            assertEquals(INVALID_SOURCE_URL_ERROR_CODE, errorInformation.getErrorCode());
+                () -> client.beginRecognizeCustomFormsFromUrl(createdModel.getModelId(), INVALID_URL)
+                    .getFinalResult()
+            );
         });
     }
 
@@ -2331,13 +2327,10 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                                                     FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         invalidSourceUrlRunner((invalidSourceUrl) -> {
-            HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
+            assertThrows(HttpResponseException.class,
                 () -> client.beginRecognizeIdentityDocumentsFromUrl(invalidSourceUrl)
-                        .setPollInterval(durationTestMode)
-                        .getFinalResult());
-            FormRecognizerErrorInformation errorInformation
-                = (FormRecognizerErrorInformation) errorResponseException.getValue();
-            assertEquals(INVALID_IMAGE_URL_ERROR_CODE, errorInformation.getErrorCode());
+                    .setPollInterval(durationTestMode)
+                    .getFinalResult());
         });
     }
 
