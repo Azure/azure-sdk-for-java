@@ -45,8 +45,25 @@ If you don’t want to use the `spring-boot-starter-parent`, you can still keep 
 </dependencyManagement>
 ```
 
+## Which Version of Spring Data Cosmos Should I Use
+
+Mapping from **Spring Boot** / **Spring Cloud** version to **Spring Data Cosmos SDK** versions
+
+| Spring Boot version   | Spring Cloud version   | Spring Data Cosmos SDK versions |
+|-----------------------|------------------------|---------------------------------|
+| 2.7.x                 | 2021.0.x               |  3.23.0 and above |
+| 2.6.x                 | 2021.0.x               |  3.15.0 - 3.22.0 |
+| 2.5.x                 | 2020.0.x               |  3.8.0 - 3.14.0 |
+| 2.4.x                 | 2020.0.x               |  3.5.0 - 3.7.0 |
+
+### I'm Using Spring Boot Version X
+If you are using **Spring Boot** in your project, you can find related **Spring Data Cosmos DB SDK** versions from above table. For example: if you are using **Spring Boot** 2.7.x, you should use **Spring Data Cosmos DB SDK** versions 3.23.0 and above.
+
+### I'm Using Spring Cloud Version Y
+If you are using **Spring Cloud** in your project, you can also find related **Spring Data Cosmos DB SDK** versions from above table. For example, if you are using **Spring Cloud** 2021.0.x, you should use **Spring Data Cosmos DB SDK** versions 3.23.0 and above.
+
 ## Spring Data Version Support
-This project supports `spring-data-commons 2.6.x` versions.
+This project supports `spring-data-commons 2.7.x` versions.
 
 The above setup does not allow you to override individual dependencies using a property as explained above. To achieve the same result, you’d need to add an entry in the dependencyManagement of your project before the `spring-boot-dependencies` entry. For instance, to upgrade to another Spring Data release train you’d add the following to your pom.xml.
 ```xml
