@@ -84,6 +84,7 @@ public class AadB2cResourceServerAutoConfiguration {
         RestTemplateBuilder builder = builderObjectProvider.getIfAvailable(RestTemplateBuilder::new);
         return builder.build();
     }
+
     /**
      * Declare JWT ResourceRetriever bean.
      *
@@ -95,6 +96,7 @@ public class AadB2cResourceServerAutoConfiguration {
     public ResourceRetriever jwtResourceRetriever(RestOperations restOperations) {
         return new RestOperationsResourceRetriever(restOperations);
     }
+
     /**
      * Declare JWTClaimsSetAwareJWSKeySelector bean.
      *
