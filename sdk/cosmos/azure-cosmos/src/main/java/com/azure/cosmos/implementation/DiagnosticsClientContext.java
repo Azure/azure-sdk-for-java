@@ -63,6 +63,7 @@ public interface DiagnosticsClientContext {
                         logger.debug("unexpected failure", e);
                     }
                 }
+                generator.writeEndObject();
                 generator.writeObjectFieldStart("connCfg");
                 try {
                     generator.writeStringField("rntbd", clientConfig.rntbdConfig());
