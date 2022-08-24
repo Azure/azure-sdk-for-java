@@ -17,8 +17,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 
-//copied from org.springframework.security.oauth2.jwt.NimbusJwtDecoder.JwkSetUriJwtDecoderBuilder
-// .RestOperationsResourceRetriever
+/**
+ * A ResourceRetriever that accepts an RestOperations as a constructor parameter.
+ * Copied from org.springframework.security.oauth2.jwt.NimbusJwtDecoder.JwkSetUriJwtDecoderBuilder.RestOperationsResourceRetriever
+ */
 public class RestOperationsResourceRetriever implements ResourceRetriever {
 
     private static final MediaType APPLICATION_JWK_SET_JSON = new MediaType("application", "jwk-set+json");
