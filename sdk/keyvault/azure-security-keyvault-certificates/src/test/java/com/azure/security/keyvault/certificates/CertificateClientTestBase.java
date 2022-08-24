@@ -657,6 +657,11 @@ public abstract class CertificateClientTestBase extends TestBase {
         assertRestException(exception, HttpResponseException.class, expectedStatusCode);
     }
 
+    static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
+        assertEquals(expectedExceptionType, exception.getClass());
+        assertEquals(expectedStatusCode, ((HttpResponseException) exception).getResponse().getStatusCode());
+    }
+
     static void assertRestException(HttpResponseException exception,
                                     Class<? extends HttpResponseException> expectedExceptionType,
                                     int expectedStatusCode) {
