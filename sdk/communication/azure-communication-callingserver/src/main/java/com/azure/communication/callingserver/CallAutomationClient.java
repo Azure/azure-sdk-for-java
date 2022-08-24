@@ -66,21 +66,21 @@ public final class CallAutomationClient {
      * Answer an incoming call
      *
      * @param incomingCallContext The incoming call context.
-     * @param callbackUri The call back uri. Optional
+     * @param callbackUrl The call back uri. Optional
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnswerCallResult answerCall(String incomingCallContext, String callbackUri) {
-        return callAutomationAsyncClient.answerCall(incomingCallContext, callbackUri).block();
+    public AnswerCallResult answerCall(String incomingCallContext, String callbackUrl) {
+        return callAutomationAsyncClient.answerCall(incomingCallContext, callbackUrl).block();
     }
 
     /**
      * Create a call connection request from a source identity to a target identity.
      *
      * @param incomingCallContext The incoming call context.
-     * @param callbackUri The call back uri. Optional
+     * @param callbackUrl The call back uri. Optional
      * @param mediaStreamingConfiguration The MediaStreamingConfiguration. Optional
      * @param context The context to associate with this operation.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -88,10 +88,10 @@ public final class CallAutomationClient {
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnswerCallResult> answerCallWithResponse(String incomingCallContext, String callbackUri,
+    public Response<AnswerCallResult> answerCallWithResponse(String incomingCallContext, String callbackUrl,
                                                              MediaStreamingConfiguration mediaStreamingConfiguration,
                                                              Context context) {
-        return callAutomationAsyncClient.answerCallWithResponseInternal(incomingCallContext, callbackUri, mediaStreamingConfiguration, context).block();
+        return callAutomationAsyncClient.answerCallWithResponseInternal(incomingCallContext, callbackUrl, mediaStreamingConfiguration, context).block();
     }
 
     /**
