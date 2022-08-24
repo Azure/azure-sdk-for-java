@@ -45,11 +45,11 @@ If you don’t want to use the `spring-boot-starter-parent`, you can still keep 
 </dependencyManagement>
 ```
 
-## Which Version of Spring Data Cosmos Should I Use
+## Which Version of Azure Spring Data Cosmos Should I Use
 
-Mapping from **Spring Boot** / **Spring Cloud** version to **Spring Data Cosmos SDK** versions
+Mapping from **Spring Boot** / **Spring Cloud** version to **Azure Spring Data Cosmos** versions
 
-| Spring Boot version   | Spring Cloud version   | Spring Data Cosmos SDK versions |
+| Spring Boot version   | Spring Cloud version   | Azure Spring Data Cosmos versions |
 |-----------------------|------------------------|---------------------------------|
 | 2.7.x                 | 2021.0.x               |  3.23.0 and above |
 | 2.6.x                 | 2021.0.x               |  3.15.0 - 3.22.0 |
@@ -57,10 +57,10 @@ Mapping from **Spring Boot** / **Spring Cloud** version to **Spring Data Cosmos 
 | 2.4.x                 | 2020.0.x               |  3.5.0 - 3.7.0 |
 
 ### I'm Using Spring Boot Version X
-If you are using **Spring Boot** in your project, you can find related **Spring Data Cosmos DB SDK** versions from above table. For example: if you are using **Spring Boot** 2.7.x, you should use **Spring Data Cosmos DB SDK** versions 3.23.0 and above.
+If you are using **Spring Boot** in your project, you can find related **Azure Spring Data Cosmos** versions from above table. For example: if you are using **Spring Boot** 2.7.x, you should use **Azure Spring Data Cosmos** versions 3.23.0 and above.
 
 ### I'm Using Spring Cloud Version Y
-If you are using **Spring Cloud** in your project, you can also find related **Spring Data Cosmos DB SDK** versions from above table. For example, if you are using **Spring Cloud** 2021.0.x, you should use **Spring Data Cosmos DB SDK** versions 3.23.0 and above.
+If you are using **Spring Cloud** in your project, you can also find related **Azure Spring Data Cosmos** versions from above table. For example, if you are using **Spring Cloud** 2021.0.x, you should use **Azure Spring Data Cosmos** versions 3.23.0 and above.
 
 ## Spring Data Version Support
 This project supports `spring-data-commons 2.7.x` versions.
@@ -310,7 +310,7 @@ public class UserSample {
 ```
 #### Nested Partition Key support
 
-- Spring Data Cosmos SDK supports nested partition key. To add nested partition key, use `partitionKeyPath` field in `@Container` annotation.
+- Azure Spring Data Cosmos supports nested partition key. To add nested partition key, use `partitionKeyPath` field in `@Container` annotation.
 - `partitionKeyPath` should only be used to support nested partition key path. For general partition key support, use the `@PartitionKey` annotation.
 - By default `@PartitionKey` annotation will take precedence, unless not specified.
 - Below example shows how to properly use Nested Partition key feature.
@@ -482,7 +482,7 @@ String[] includePaths() default {};
 String[] excludePaths() default {};
 ```
 #### Unique Key Policy
- - Spring Data Cosmos SDK supports setting `UniqueKeyPolicy` on container by adding the annotation `@CosmosUniqueKeyPolicy` to domain class. This annotation has the following attributes:
+ - Azure Spring Data Cosmos supports setting `UniqueKeyPolicy` on container by adding the annotation `@CosmosUniqueKeyPolicy` to domain class. This annotation has the following attributes:
 ```java readme-sample-CosmosUniqueKeyPolicyCodeSnippet
 @Container
 @CosmosUniqueKeyPolicy(uniqueKeys = {
