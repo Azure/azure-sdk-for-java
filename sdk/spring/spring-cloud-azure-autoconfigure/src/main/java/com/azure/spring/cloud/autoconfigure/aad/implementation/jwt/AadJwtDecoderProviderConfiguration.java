@@ -62,7 +62,6 @@ final class AadJwtDecoderProviderConfiguration {
                 && ((HttpClientErrorException) e).getStatusCode().is4xxClientError())) {
                 throw new IllegalArgumentException(errorMessage, e);
             }
-            // else try another endpoint
         }
         throw new IllegalArgumentException(errorMessage);
     }
