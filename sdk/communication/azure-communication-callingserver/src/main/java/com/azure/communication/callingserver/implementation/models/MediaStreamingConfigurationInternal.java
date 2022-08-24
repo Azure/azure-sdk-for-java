@@ -7,9 +7,9 @@ package com.azure.communication.callingserver.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The MediaStreamingConfigurationDto model. */
+/** The MediaStreamingConfigurationInternal model. */
 @Fluent
-public final class MediaStreamingConfigurationDto {
+public final class MediaStreamingConfigurationInternal {
     /*
      * Transport URL for media streaming
      */
@@ -20,19 +20,19 @@ public final class MediaStreamingConfigurationDto {
      * The type of tranport to be used for media streaming, eg. Websocket
      */
     @JsonProperty(value = "transportType")
-    private MediaStreamingTransportTypeDto transportType;
+    private MediaStreamingTransportTypeInternal transportType;
 
     /*
      * Content type to stream, eg. audio, audio/video
      */
     @JsonProperty(value = "contentType")
-    private MediaStreamingContentTypeDto contentType;
+    private MediaStreamingContentTypeInternal contentType;
 
     /*
      * Audio channel type to stream, eg. unmixed audio, mixed audio
      */
     @JsonProperty(value = "audioChannelType")
-    private MediaStreamingAudioChannelTypeDto audioChannelType;
+    private MediaStreamingAudioChannelTypeInternal audioChannelType;
 
     /**
      * Get the transportUrl property: Transport URL for media streaming.
@@ -47,9 +47,9 @@ public final class MediaStreamingConfigurationDto {
      * Set the transportUrl property: Transport URL for media streaming.
      *
      * @param transportUrl the transportUrl value to set.
-     * @return the MediaStreamingConfigurationDto object itself.
+     * @return the MediaStreamingConfigurationInternal object itself.
      */
-    public MediaStreamingConfigurationDto setTransportUrl(String transportUrl) {
+    public MediaStreamingConfigurationInternal setTransportUrl(String transportUrl) {
         this.transportUrl = transportUrl;
         return this;
     }
@@ -59,7 +59,7 @@ public final class MediaStreamingConfigurationDto {
      *
      * @return the transportType value.
      */
-    public MediaStreamingTransportTypeDto getTransportType() {
+    public MediaStreamingTransportTypeInternal getTransportType() {
         return this.transportType;
     }
 
@@ -67,9 +67,9 @@ public final class MediaStreamingConfigurationDto {
      * Set the transportType property: The type of tranport to be used for media streaming, eg. Websocket.
      *
      * @param transportType the transportType value to set.
-     * @return the MediaStreamingConfigurationDto object itself.
+     * @return the MediaStreamingConfigurationInternal object itself.
      */
-    public MediaStreamingConfigurationDto setTransportType(MediaStreamingTransportTypeDto transportType) {
+    public MediaStreamingConfigurationInternal setTransportType(MediaStreamingTransportTypeInternal transportType) {
         this.transportType = transportType;
         return this;
     }
@@ -79,7 +79,7 @@ public final class MediaStreamingConfigurationDto {
      *
      * @return the contentType value.
      */
-    public MediaStreamingContentTypeDto getContentType() {
+    public MediaStreamingContentTypeInternal getContentType() {
         return this.contentType;
     }
 
@@ -87,9 +87,9 @@ public final class MediaStreamingConfigurationDto {
      * Set the contentType property: Content type to stream, eg. audio, audio/video.
      *
      * @param contentType the contentType value to set.
-     * @return the MediaStreamingConfigurationDto object itself.
+     * @return the MediaStreamingConfigurationInternal object itself.
      */
-    public MediaStreamingConfigurationDto setContentType(MediaStreamingContentTypeDto contentType) {
+    public MediaStreamingConfigurationInternal setContentType(MediaStreamingContentTypeInternal contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -99,7 +99,7 @@ public final class MediaStreamingConfigurationDto {
      *
      * @return the audioChannelType value.
      */
-    public MediaStreamingAudioChannelTypeDto getAudioChannelType() {
+    public MediaStreamingAudioChannelTypeInternal getAudioChannelType() {
         return this.audioChannelType;
     }
 
@@ -107,9 +107,10 @@ public final class MediaStreamingConfigurationDto {
      * Set the audioChannelType property: Audio channel type to stream, eg. unmixed audio, mixed audio.
      *
      * @param audioChannelType the audioChannelType value to set.
-     * @return the MediaStreamingConfigurationDto object itself.
+     * @return the MediaStreamingConfigurationInternal object itself.
      */
-    public MediaStreamingConfigurationDto setAudioChannelType(MediaStreamingAudioChannelTypeDto audioChannelType) {
+    public MediaStreamingConfigurationInternal setAudioChannelType(
+            MediaStreamingAudioChannelTypeInternal audioChannelType) {
         this.audioChannelType = audioChannelType;
         return this;
     }
