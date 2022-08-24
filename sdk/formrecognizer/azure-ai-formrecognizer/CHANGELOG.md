@@ -5,6 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
+- Removed property `kind` from model `DocumentPage`
 
 ### Bugs Fixed
 

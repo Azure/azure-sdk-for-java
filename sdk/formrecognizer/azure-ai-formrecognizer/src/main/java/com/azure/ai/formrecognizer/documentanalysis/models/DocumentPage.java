@@ -59,11 +59,6 @@ public final class DocumentPage {
      */
     private List<DocumentLine> lines;
 
-    /*
-     * Kind of document page.
-     */
-    private DocumentPageKind kind;
-
     /**
      * Get the pageNumber property: 1-based page number in the input document.
      *
@@ -238,25 +233,7 @@ public final class DocumentPage {
     void setLines(List<DocumentLine> lines) {
         this.lines = lines;
     }
-
-    /**
-     * Get the kind property: Kind of document page.
-     *
-     * @return the kind value.
-     */
-    public DocumentPageKind getKind() {
-        return this.kind;
-    }
-
-    /**
-     * Set the kind property: Kind of document page.
-     *
-     * @param kind the kind value to set.
-     */
-    void setKind(DocumentPageKind kind) {
-        this.kind = kind;
-    }
-
+    
     static {
         DocumentPageHelper.setAccessor(new DocumentPageHelper.DocumentPageAccessor() {
             @Override
@@ -302,12 +279,6 @@ public final class DocumentPage {
             @Override
             public void setLines(DocumentPage documentPage, List<DocumentLine> lines) {
                 documentPage.setLines(lines);
-            }
-
-            @Override
-            public void setKind(DocumentPage documentPage, DocumentPageKind kind) {
-                documentPage.setKind(kind);
-
             }
         });
     }
