@@ -4,11 +4,13 @@
 package com.azure.ai.formrecognizer.documentanalysis.administration.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentModelOperationSummaryHelper;
+import com.azure.core.annotation.Immutable;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** DocumentModelOperationSummary. */
+@Immutable
 public class DocumentModelOperationSummary {
     /*
      * Operation ID
@@ -18,7 +20,7 @@ public class DocumentModelOperationSummary {
     /*
      * Operation status.
      */
-    private ModelOperationStatus status;
+    private DocumentOperationStatus status;
 
     /*
      * Operation progress (0-100).
@@ -38,7 +40,7 @@ public class DocumentModelOperationSummary {
     /*
      * Type of operation.
      */
-    private ModelOperationKind kind;
+    private DocumentOperationKind kind;
 
     /*
      * URL of the resource targeted by this operation.
@@ -60,7 +62,7 @@ public class DocumentModelOperationSummary {
      *
      * @param operationId the operationId value to set.
      */
-    void setOperationId(String operationId) {
+    private void setOperationId(String operationId) {
         this.operationId = operationId;
     }
 
@@ -69,7 +71,7 @@ public class DocumentModelOperationSummary {
      *
      * @return the status value.
      */
-    public ModelOperationStatus getStatus() {
+    public DocumentOperationStatus getStatus() {
         return this.status;
     }
 
@@ -78,7 +80,7 @@ public class DocumentModelOperationSummary {
      *
      * @param status the status value to set.
      */
-    void setStatus(ModelOperationStatus status) {
+    private void setStatus(DocumentOperationStatus status) {
         this.status = status;
     }
 
@@ -96,7 +98,7 @@ public class DocumentModelOperationSummary {
      *
      * @param percentCompleted the percentCompleted value to set.
      */
-    void setPercentCompleted(Integer percentCompleted) {
+    private void setPercentCompleted(Integer percentCompleted) {
         this.percentCompleted = percentCompleted;
     }
 
@@ -114,7 +116,7 @@ public class DocumentModelOperationSummary {
      *
      * @param createdOn the createdDateTime value to set.
      */
-    void setCreatedOn(OffsetDateTime createdOn) {
+    private void setCreatedOn(OffsetDateTime createdOn) {
         this.createdOn = createdOn;
     }
 
@@ -132,7 +134,7 @@ public class DocumentModelOperationSummary {
      *
      * @param lastUpdatedOn the lastUpdatedDateTime value to set.
      */
-    void setLastUpdatedOn(OffsetDateTime lastUpdatedOn) {
+    private void setLastUpdatedOn(OffsetDateTime lastUpdatedOn) {
         this.lastUpdatedOn = lastUpdatedOn;
     }
 
@@ -141,7 +143,7 @@ public class DocumentModelOperationSummary {
      *
      * @return the kind value.
      */
-    public ModelOperationKind getKind() {
+    public DocumentOperationKind getKind() {
         return this.kind;
     }
 
@@ -150,7 +152,7 @@ public class DocumentModelOperationSummary {
      *
      * @param kind the kind value to set.
      */
-    void setKind(ModelOperationKind kind) {
+    private void setKind(DocumentOperationKind kind) {
         this.kind = kind;
     }
 
@@ -168,7 +170,7 @@ public class DocumentModelOperationSummary {
      *
      * @param resourceLocation the resourceLocation value to set.
      */
-    void setResourceLocation(String resourceLocation) {
+    private void setResourceLocation(String resourceLocation) {
         this.resourceLocation = resourceLocation;
     }
 
@@ -186,7 +188,7 @@ public class DocumentModelOperationSummary {
      *
      * @param tags the tags value to set.
      */
-    void setTags(Map<String, String> tags) {
+    private void setTags(Map<String, String> tags) {
         this.tags = tags;
     }
 
@@ -198,7 +200,7 @@ public class DocumentModelOperationSummary {
             }
 
             @Override
-            public void setStatus(DocumentModelOperationSummary documentModelOperationSummary, ModelOperationStatus status) {
+            public void setStatus(DocumentModelOperationSummary documentModelOperationSummary, DocumentOperationStatus status) {
                 documentModelOperationSummary.setStatus(status);
             }
 
@@ -218,7 +220,7 @@ public class DocumentModelOperationSummary {
             }
 
             @Override
-            public void setKind(DocumentModelOperationSummary documentModelOperationSummary, ModelOperationKind kind) {
+            public void setKind(DocumentModelOperationSummary documentModelOperationSummary, DocumentOperationKind kind) {
                 documentModelOperationSummary.setKind(kind);
             }
 

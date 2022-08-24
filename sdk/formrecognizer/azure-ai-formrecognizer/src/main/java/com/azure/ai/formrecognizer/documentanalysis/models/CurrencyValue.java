@@ -4,10 +4,12 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.CurrencyValueHelper;
+import com.azure.core.annotation.Immutable;
 
 /**
  * Currency field value.
  */
+@Immutable
 public final class CurrencyValue {
     /*
      * Currency amount.

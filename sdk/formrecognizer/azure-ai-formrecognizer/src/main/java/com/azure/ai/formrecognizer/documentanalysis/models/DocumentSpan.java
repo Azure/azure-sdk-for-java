@@ -4,10 +4,12 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentSpanHelper;
+import com.azure.core.annotation.Immutable;
 
 /**
  * Contiguous region of the concatenated content property, specified as an offset and length.
  */
+@Immutable
 public final class DocumentSpan {
     /*
      * Zero-based index of the content represented by the span.

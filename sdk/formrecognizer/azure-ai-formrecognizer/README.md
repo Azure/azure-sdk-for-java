@@ -61,7 +61,7 @@ add the direct dependency to your project as follows.
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-> Note: This version of the client library defaults to the `"2022-01-30-preview"` version of the service.
+> Note: This version of the client library defaults to the `"2022-08-31"` version of the service.
 
 This table shows the relationship between SDK versions and supported API versions of the service:
 
@@ -69,9 +69,9 @@ This table shows the relationship between SDK versions and supported API version
 |-|-
 |3.0.x | 2.0
 |3.1.X - 3.1.12| 2.0, 2.1 (default)
-|4.0.0-beta.1 - Latest beta release| 2022-01-30-preview (default)
+|4.0.0-beta.1 - Latest beta release| 2022-08-31 (default)
 
-> Note: Starting with version 2022-01-30-preview, a new set of clients were introduced to leverage the newest features
+> Note: Starting with version 2022-08-31, a new set of clients were introduced to leverage the newest features
 > of the Form Recognizer service. Please see the [Migration Guide][migration_guide] for detailed instructions on how to update application
 > code from client library version 3.1.X or lower to the latest version. For more information, see [Changelog][changelog].
 > The below table describes the relationship of each client and its supported API version(s):

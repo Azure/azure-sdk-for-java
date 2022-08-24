@@ -4,8 +4,8 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.util;
 
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelOperationSummary;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.ModelOperationKind;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.ModelOperationStatus;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentOperationKind;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentOperationStatus;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -26,7 +26,7 @@ public final class DocumentModelOperationSummaryHelper {
 
         void setOperationId(DocumentModelOperationSummary documentModelOperationSummary, String operationId);
 
-        void setStatus(DocumentModelOperationSummary documentModelOperationSummary, ModelOperationStatus status);
+        void setStatus(DocumentModelOperationSummary documentModelOperationSummary, DocumentOperationStatus status);
 
         void setPercentCompleted(DocumentModelOperationSummary documentModelOperationSummary, Integer percentCompleted);
 
@@ -34,7 +34,7 @@ public final class DocumentModelOperationSummaryHelper {
 
         void setLastUpdatedOn(DocumentModelOperationSummary documentModelOperationSummary, OffsetDateTime lastUpdatedOn);
 
-        void setKind(DocumentModelOperationSummary documentModelOperationSummary, ModelOperationKind kind);
+        void setKind(DocumentModelOperationSummary documentModelOperationSummary, DocumentOperationKind kind);
 
         void setResourceLocation(DocumentModelOperationSummary documentModelOperationSummary, String resourceLocation);
         void setTags(DocumentModelOperationSummary documentModelOperationSummary, Map<String, String> tags);
@@ -54,7 +54,7 @@ public final class DocumentModelOperationSummaryHelper {
         accessor.setOperationId(documentModelOperationSummary, operationId);
     }
 
-    static void setStatus(DocumentModelOperationSummary documentModelOperationSummary, ModelOperationStatus status) {
+    static void setStatus(DocumentModelOperationSummary documentModelOperationSummary, DocumentOperationStatus status) {
         accessor.setStatus(documentModelOperationSummary, status);
     }
 
@@ -70,7 +70,7 @@ public final class DocumentModelOperationSummaryHelper {
         accessor.setLastUpdatedOn(documentModelOperationSummary, lastUpdatedOn);
     }
 
-    static void setKind(DocumentModelOperationSummary documentModelOperationSummary, ModelOperationKind kind) {
+    static void setKind(DocumentModelOperationSummary documentModelOperationSummary, DocumentOperationKind kind) {
         accessor.setKind(documentModelOperationSummary, kind);
     }
 
