@@ -4,16 +4,16 @@
     "Uri" : "https://REDACTED.api.adu.microsoft.com/deviceUpdate/sdkinstance/management/devices?api-version=2022-07-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-iot-deviceupdate/1.0.0-beta.4 (1.8.0_342; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "3c7b352b-9680-4411-9b9e-f155a4db31a7"
+      "x-ms-client-request-id" : "81d1ad1f-8c46-4458-ba27-884730919266"
     },
     "Response" : {
       "content-length" : "1163",
-      "traceparent" : "00-8cbbfc7e5f6d1a49876477b9aaefec76-fb5d0338460e6745-00",
-      "mise-correlation-id" : "36119057-abe7-43f8-bb72-d017048b07e1",
+      "traceparent" : "00-8ab8fecba048e94a8e2d76b353bf681b-8645646ce02abb4b-00",
+      "mise-correlation-id" : "8d854aeb-8467-44f5-9bba-3bee7bb53912",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"value\":[{\"deviceId\":\"adu-sdk-test-device-1\",\"deviceClassId\":\"0919e3ae422a2bfa8c84ff905813e60351e456d1\",\"groupId\":\"testgroup\",\"onLatestUpdate\":false,\"deploymentStatus\":\"Succeeded\",\"lastInstallResult\":{\"resultCode\":700,\"extendedResultCode\":0,\"resultDetails\":\"\"}},{\"deviceId\":\"joseph-edgevm2\",\"deviceClassId\":\"0919e3ae422a2bfa8c84ff905813e60351e456d1\",\"groupId\":\"joegroup\",\"installedUpdate\":{\"updateId\":{\"provider\":\"fabrikam\",\"name\":\"vacuum\",\"version\":\"2022.128.1751.30\"}},\"onLatestUpdate\":false,\"lastAttemptedUpdate\":{\"updateId\":{\"provider\":\"fabrikam\",\"name\":\"vacuum\",\"version\":\"2022.128.1751.30\"}},\"deploymentStatus\":\"Succeeded\",\"lastDeploymentId\":\"joegroup-2022-128-1751-30-0129015341\",\"lastInstallResult\":{\"resultCode\":700,\"extendedResultCode\":0,\"resultDetails\":\"\"}},{\"deviceId\":\"dpokluda-test\",\"deviceClassId\":\"0919e3ae422a2bfa8c84ff905813e60351e456d1\",\"groupId\":\"dpokluda-test\",\"onLatestUpdate\":false,\"lastAttemptedUpdate\":{\"updateId\":{\"provider\":\"fabrikam\",\"name\":\"vacuum\",\"version\":\"2022.809.1238.32\"}},\"deploymentStatus\":\"Failed\",\"lastDeploymentId\":\"test0809074302\",\"lastInstallResult\":{\"resultCode\":0,\"extendedResultCode\":805306472,\"resultDetails\":\"\"}}]}",
-      "Date" : "Mon, 15 Aug 2022 21:03:07 GMT",
+      "Date" : "Wed, 24 Aug 2022 18:05:55 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

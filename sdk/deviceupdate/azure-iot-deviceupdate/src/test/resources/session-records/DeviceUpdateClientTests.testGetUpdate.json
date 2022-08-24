@@ -4,18 +4,18 @@
     "Uri" : "https://REDACTED.api.adu.microsoft.com/deviceUpdate/sdkinstance/updates/providers/fabrikam/names/vacuum/versions/2022.401.504.6?api-version=2022-07-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-iot-deviceupdate/1.0.0-beta.4 (1.8.0_342; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "a21839d8-bc67-49b0-bd57-a6565ff940a2"
+      "x-ms-client-request-id" : "63b846a9-c4ed-4a25-952c-03ef289d3874"
     },
     "Response" : {
       "content-length" : "453",
       "Cache-Control" : "max-age=60, private",
       "ETag" : "\"46deecbf-a19e-41c8-939b-1a8a9ee6fcac\"",
-      "traceparent" : "00-0c133863e94eed4195620855b5927a8b-70f31db4d28ece41-00",
-      "mise-correlation-id" : "9b4df9a3-3b82-4381-97fa-284275459fc4",
+      "traceparent" : "00-a0646f59aa2ca243b73aa373d2144393-11e9078e1cb6f643-00",
+      "mise-correlation-id" : "738738d9-9b3d-4f90-a855-9990c9451cbf",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"updateId\":{\"provider\":\"fabrikam\",\"name\":\"vacuum\",\"version\":\"2022.401.504.6\"},\"isDeployable\":true,\"updateType\":\"microsoft/apt:1\",\"installedCriteria\":\"apt-update-test-2022.401.504.6\",\"compatibility\":[{\"DeviceManufacturer\":\"fabrikam\",\"DeviceModel\":\"vacuum\"}],\"scanResult\":\"Success\",\"manifestVersion\":\"3.0\",\"importedDateTime\":\"2022-04-02T00:06:08.5994525Z\",\"createdDateTime\":\"2022-04-02T00:04:07.002276Z\",\"etag\":\"\\\"46deecbf-a19e-41c8-939b-1a8a9ee6fcac\\\"\"}",
-      "Date" : "Mon, 15 Aug 2022 21:03:06 GMT",
+      "Date" : "Wed, 24 Aug 2022 18:06:16 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

@@ -4,16 +4,16 @@
     "Uri" : "https://REDACTED.api.adu.microsoft.com/deviceUpdate/sdkinstance/updates/providers/foo/names/bar/versions/1.2/files?api-version=2022-07-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-iot-deviceupdate/1.0.0-beta.4 (1.8.0_342; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "3090bb8b-8229-4be3-befb-be7724f5aab2"
+      "x-ms-client-request-id" : "0ae3b9a3-b3bc-4c30-a45f-c25ca877050d"
     },
     "Response" : {
       "content-length" : "161",
-      "traceparent" : "00-b7a39d0c7e8bc24285e0319ac697d9f5-312f77cf41d0c547-00",
-      "mise-correlation-id" : "13278c13-5c7c-4f8d-b129-485a4a6349d7",
+      "traceparent" : "00-3f6ff58b53fae94ca3cd0f07bef46393-0d8a8e6d4e8e5746-00",
+      "mise-correlation-id" : "d90d7498-b934-4c8f-8b44-83cdfb24d8a3",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Body" : "{\"type\":\"https://tools.ietf.org/html/rfc7231#section-6.5.4\",\"title\":\"Not Found\",\"status\":404,\"traceId\":\"00-b7a39d0c7e8bc24285e0319ac697d9f5-bcfa9438fb776145-00\"}",
-      "Date" : "Mon, 15 Aug 2022 21:03:07 GMT",
+      "Body" : "{\"type\":\"https://tools.ietf.org/html/rfc7231#section-6.5.4\",\"title\":\"Not Found\",\"status\":404,\"traceId\":\"00-3f6ff58b53fae94ca3cd0f07bef46393-73f3f0dd47fafa49-00\"}",
+      "Date" : "Wed, 24 Aug 2022 18:05:55 GMT",
       "Content-Type" : "application/problem+json; charset=utf-8"
     },
     "Exception" : null
