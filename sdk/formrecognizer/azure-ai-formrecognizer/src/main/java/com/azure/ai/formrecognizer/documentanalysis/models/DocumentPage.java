@@ -4,12 +4,14 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentPageHelper;
+import com.azure.core.annotation.Immutable;
 
 import java.util.List;
 
 /**
  * Content and layout elements extracted from a page from the input.
  */
+@Immutable
 public final class DocumentPage {
     /*
      * 1-based page number in the input document.
@@ -233,7 +235,7 @@ public final class DocumentPage {
     void setLines(List<DocumentLine> lines) {
         this.lines = lines;
     }
-    
+
     static {
         DocumentPageHelper.setAccessor(new DocumentPageHelper.DocumentPageAccessor() {
             @Override

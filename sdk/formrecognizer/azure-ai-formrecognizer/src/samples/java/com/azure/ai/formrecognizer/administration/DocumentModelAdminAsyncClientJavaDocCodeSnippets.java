@@ -12,7 +12,7 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAu
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelOperationDetails;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.ModelOperationStatus;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentOperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipeline;
@@ -200,9 +200,9 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
         documentModelAdministrationAsyncClient.getResourceDetails()
             .subscribe(resourceInfo -> {
                 System.out.printf("Max number of models that can be build for this account: %d%n",
-                    resourceInfo.getDocumentModelLimit());
+                    resourceInfo.getCustomDocumentModelLimit());
                 System.out.printf("Current count of built document analysis models: %d%n",
-                    resourceInfo.getDocumentModelCount());
+                    resourceInfo.getCustomDocumentModelCount());
             });
         // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.getResourceDetails
     }
@@ -217,9 +217,9 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Response Status Code: %d.", response.getStatusCode());
                 ResourceDetails resourceDetails = response.getValue();
                 System.out.printf("Max number of models that can be build for this account: %d%n",
-                    resourceDetails.getDocumentModelLimit());
+                    resourceDetails.getCustomDocumentModelLimit());
                 System.out.printf("Current count of built document analysis models: %d%n",
-                    resourceDetails.getDocumentModelCount());
+                    resourceDetails.getCustomDocumentModelCount());
             });
         // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.getResourceDetailsWithResponse
     }
@@ -376,7 +376,7 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
             System.out.printf("Operation Status: %s%n", modelOperationDetails.getStatus());
             System.out.printf("Model ID created with this operation: %s%n",
                 modelOperationDetails.getResult().getModelId());
-            if (ModelOperationStatus.FAILED.equals(modelOperationDetails.getStatus())) {
+            if (DocumentOperationStatus.FAILED.equals(modelOperationDetails.getStatus())) {
                 System.out.printf("Operation fail error: %s%n", modelOperationDetails.getError().getMessage());
             }
         });
@@ -397,7 +397,7 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
             System.out.printf("Operation Status: %s%n", documentModelOperationDetails.getStatus());
             System.out.printf("Model ID created with this operation: %s%n",
                 documentModelOperationDetails.getResult().getModelId());
-            if (ModelOperationStatus.FAILED.equals(documentModelOperationDetails.getStatus())) {
+            if (DocumentOperationStatus.FAILED.equals(documentModelOperationDetails.getStatus())) {
                 System.out.printf("Operation fail error: %s%n", documentModelOperationDetails.getError().getMessage());
             }
         });

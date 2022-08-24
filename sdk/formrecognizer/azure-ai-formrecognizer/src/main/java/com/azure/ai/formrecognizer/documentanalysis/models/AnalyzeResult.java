@@ -4,12 +4,14 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.AnalyzeResultHelper;
+import com.azure.core.annotation.Immutable;
 
 import java.util.List;
 
 /**
  * Document analysis result.
  */
+@Immutable
 public final class AnalyzeResult {
 
     /*
@@ -69,7 +71,7 @@ public final class AnalyzeResult {
      *
      * @param paragraphs the paragraphs value to set.
      */
-    void setParagraphs(List<DocumentParagraph> paragraphs) {
+    private void setParagraphs(List<DocumentParagraph> paragraphs) {
         this.paragraphs = paragraphs;
     }
 
@@ -88,7 +90,7 @@ public final class AnalyzeResult {
      * @param modelId the modelId value to set.
      * @return the AnalyzeResult object itself.
      */
-    void setModelId(String modelId) {
+    private void setModelId(String modelId) {
         this.modelId = modelId;
     }
 
@@ -107,7 +109,7 @@ public final class AnalyzeResult {
      * @param content the content value to set.
      * @return the AnalyzeResult object itself.
      */
-    void setContent(String content) {
+    private void setContent(String content) {
         this.content = content;
     }
 
@@ -126,7 +128,7 @@ public final class AnalyzeResult {
      * @param pages the pages value to set.
      * @return the AnalyzeResult object itself.
      */
-    void setPages(List<DocumentPage> pages) {
+    private void setPages(List<DocumentPage> pages) {
         this.pages = pages;
     }
 
@@ -145,7 +147,7 @@ public final class AnalyzeResult {
      * @param tables the tables value to set.
      * @return the AnalyzeResult object itself.
      */
-    void setTables(List<DocumentTable> tables) {
+    private void setTables(List<DocumentTable> tables) {
         this.tables = tables;
     }
 
@@ -164,7 +166,7 @@ public final class AnalyzeResult {
      * @param keyValuePairs the keyValuePairs value to set.
      * @return the AnalyzeResult object itself.
      */
-    void setKeyValuePairs(List<DocumentKeyValuePair> keyValuePairs) {
+    private void setKeyValuePairs(List<DocumentKeyValuePair> keyValuePairs) {
         this.keyValuePairs = keyValuePairs;
     }
         /**
@@ -182,7 +184,7 @@ public final class AnalyzeResult {
      * @param styles the styles value to set.
      * @return the AnalyzeResult object itself.
      */
-    void setStyles(List<DocumentStyle> styles) {
+    private void setStyles(List<DocumentStyle> styles) {
         this.styles = styles;
     }
 
@@ -201,7 +203,7 @@ public final class AnalyzeResult {
      * @param documents the documents value to set.
      * @return the AnalyzeResult object itself.
      */
-    void setDocuments(List<AnalyzedDocument> documents) {
+    private void setDocuments(List<AnalyzedDocument> documents) {
         this.documents = documents;
     }
 
@@ -219,7 +221,7 @@ public final class AnalyzeResult {
      *
      * @param languages the languages value to set.
      */
-    void setLanguages(List<DocumentLanguage> languages) {
+    private void setLanguages(List<DocumentLanguage> languages) {
         this.languages = languages;
     }
 

@@ -4,10 +4,12 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentFootnoteHelper;
+import com.azure.core.annotation.Immutable;
 
 import java.util.List;
 
 /** An object representing the location and content of a table footnote. */
+@Immutable
 public final class DocumentFootnote {
     /*
      * Table footnote content.

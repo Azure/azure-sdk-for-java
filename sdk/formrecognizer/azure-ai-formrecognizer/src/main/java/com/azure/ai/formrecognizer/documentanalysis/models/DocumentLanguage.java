@@ -4,10 +4,12 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentLanguageHelper;
+import com.azure.core.annotation.Immutable;
 
 import java.util.List;
 
 /** An object representing the detected language for a given text span. */
+@Immutable
 public final class DocumentLanguage {
     /*
      * Detected language.  Value may an ISO 639-1 language code (ex. "en",
