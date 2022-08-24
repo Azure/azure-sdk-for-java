@@ -4,10 +4,12 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.AddressValueHelper;
+import com.azure.core.annotation.Immutable;
 
 /**
  * Address field value.
  */
+@Immutable
 public final class AddressValue {
 
     /*
@@ -65,7 +67,7 @@ public final class AddressValue {
      *
      * @param houseNumber the houseNumber value to set.
      */
-    void setHouseNumber(String houseNumber) {
+    private void setHouseNumber(String houseNumber) {
         this.houseNumber = houseNumber;
     }
 
@@ -83,7 +85,7 @@ public final class AddressValue {
      *
      * @param poBox the poBox value to set.
      */
-    void setPoBox(String poBox) {
+    private void setPoBox(String poBox) {
         this.poBox = poBox;
     }
 
@@ -101,7 +103,7 @@ public final class AddressValue {
      *
      * @param road the road value to set.
      */
-    void setRoad(String road) {
+    private void setRoad(String road) {
         this.road = road;
     }
 
@@ -119,7 +121,7 @@ public final class AddressValue {
      *
      * @param city the city value to set.
      */
-    void setCity(String city) {
+    private void setCity(String city) {
         this.city = city;
     }
 
@@ -137,7 +139,7 @@ public final class AddressValue {
      *
      * @param state the state value to set.
      */
-    void setState(String state) {
+    private void setState(String state) {
         this.state = state;
     }
 
@@ -155,7 +157,7 @@ public final class AddressValue {
      *
      * @param postalCode the postalCode value to set.
      */
-    void setPostalCode(String postalCode) {
+    private void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
 
@@ -173,7 +175,7 @@ public final class AddressValue {
      *
      * @param countryRegion the countryRegion value to set.
      */
-    void setCountryRegion(String countryRegion) {
+    private void setCountryRegion(String countryRegion) {
         this.countryRegion = countryRegion;
     }
 
@@ -191,7 +193,7 @@ public final class AddressValue {
      *
      * @param streetAddress the streetAddress value to set.
      */
-    void setStreetAddress(String streetAddress) {
+    private void setStreetAddress(String streetAddress) {
         this.streetAddress = streetAddress;
     }
 

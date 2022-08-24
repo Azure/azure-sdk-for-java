@@ -4,29 +4,31 @@
 package com.azure.ai.formrecognizer.documentanalysis.administration.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.ResourceDetailsHelper;
+import com.azure.core.annotation.Immutable;
 
 /**
  * The ResourceDetails model.
  */
+@Immutable
 public final class ResourceDetails {
 
     /*
      * The current count of built document analysis models.
      */
-    private int documentModelCount;
+    private int customDocumentModelCount;
 
     /*
      * Max number of models that can be built for this account.
      */
-    private int documentModelLimit;
+    private int customDocumentModelLimit;
 
     /**
      * Get the current count of built document analysis models
      *
      * @return the count value.
      */
-    public int getDocumentModelCount() {
-        return this.documentModelCount;
+    public int getCustomDocumentModelCount() {
+        return this.customDocumentModelCount;
     }
 
     /**
@@ -34,16 +36,16 @@ public final class ResourceDetails {
      *
      * @return the limit value.
      */
-    public int getDocumentModelLimit() {
-        return this.documentModelLimit;
+    public int getCustomDocumentModelLimit() {
+        return this.customDocumentModelLimit;
     }
 
-    void setDocumentModelCount(int documentModelCount) {
-        this.documentModelCount = documentModelCount;
+    void setCustomDocumentModelCount(int customDocumentModelCount) {
+        this.customDocumentModelCount = customDocumentModelCount;
     }
 
-    void setDocumentModelLimit(int documentModelLimit) {
-        this.documentModelLimit = documentModelLimit;
+    void setCustomDocumentModelLimit(int customDocumentModelLimit) {
+        this.customDocumentModelLimit = customDocumentModelLimit;
     }
 
     static {
@@ -51,13 +53,13 @@ public final class ResourceDetails {
             @Override
             public void setDocumentModelCount(
                 ResourceDetails resourceDetails, int documentModelCount) {
-                resourceDetails.setDocumentModelCount(documentModelCount);
+                resourceDetails.setCustomDocumentModelCount(documentModelCount);
             }
 
             @Override
             public void setDocumentModelLimit(
                 ResourceDetails resourceDetails, int documentModelLimit) {
-                resourceDetails.setDocumentModelLimit(documentModelLimit);
+                resourceDetails.setCustomDocumentModelLimit(documentModelLimit);
             }
         });
     }

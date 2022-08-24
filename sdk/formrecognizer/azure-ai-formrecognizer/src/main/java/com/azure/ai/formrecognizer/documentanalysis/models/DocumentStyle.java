@@ -4,12 +4,14 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentStyleHelper;
+import com.azure.core.annotation.Immutable;
 
 import java.util.List;
 
 /**
  * An object representing observed text styles.
  */
+@Immutable
 public final class DocumentStyle {
     /*
      * Is content handwritten?

@@ -100,8 +100,8 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestBase
     }
 
     static void validateResourceInfo(ResourceDetails actualResourceDetails) {
-        assertNotNull(actualResourceDetails.getDocumentModelLimit());
-        assertNotNull(actualResourceDetails.getDocumentModelCount());
+        assertNotNull(actualResourceDetails.getCustomDocumentModelLimit());
+        assertNotNull(actualResourceDetails.getCustomDocumentModelCount());
     }
 
     void validateDocumentModelData(DocumentModelDetails actualCustomModel) {

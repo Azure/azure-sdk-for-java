@@ -4,10 +4,12 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentParagraphHelper;
+import com.azure.core.annotation.Immutable;
 
 import java.util.List;
 
 /** A paragraph object consisting with contiguous lines generally with common alignment and spacing. */
+@Immutable
 public final class DocumentParagraph {
     /*
      * Semantic role of the paragraph.
