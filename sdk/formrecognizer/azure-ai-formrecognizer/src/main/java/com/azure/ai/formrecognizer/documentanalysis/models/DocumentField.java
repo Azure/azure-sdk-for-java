@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentFieldHelper;
+import com.azure.core.annotation.Immutable;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -13,6 +14,7 @@ import java.util.Map;
 /**
  * An object representing the content and location of a field value.
  */
+@Immutable
 public final class DocumentField {
     /*
      * Data type of the field value.

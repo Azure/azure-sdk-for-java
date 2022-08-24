@@ -32,7 +32,7 @@ public final class RecognizeConfigurations {
      * Defines configurations for DTMF.
      */
     @JsonProperty(value = "dtmfConfigurations")
-    private DtmfConfigurations dtmfConfigurations;
+    private DtmfConfigurationsInternal dtmfConfigurations;
 
     /**
      * Get the interruptPromptAndStartRecognition property: Determines if we interrupt the prompt and start recognizing.
@@ -99,7 +99,7 @@ public final class RecognizeConfigurations {
      *
      * @return the dtmfConfigurations value.
      */
-    public DtmfConfigurations getDtmfConfigurations() {
+    public DtmfConfigurationsInternal getDtmfConfigurations() {
         return this.dtmfConfigurations;
     }
 
@@ -109,7 +109,7 @@ public final class RecognizeConfigurations {
      * @param dtmfConfigurations the dtmfConfigurations value to set.
      * @return the RecognizeConfigurations object itself.
      */
-    public RecognizeConfigurations setDtmfConfigurations(DtmfConfigurations dtmfConfigurations) {
+    public RecognizeConfigurations setDtmfConfigurations(DtmfConfigurationsInternal dtmfConfigurations) {
         this.dtmfConfigurations = dtmfConfigurations;
         return this;
     }

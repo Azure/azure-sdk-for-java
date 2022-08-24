@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.formrecognizer.documentanalysis.administration;
+package com.azure.ai.formrecognizer.administration;
 
+import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient;
+import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelSummary;
@@ -35,7 +37,7 @@ public class ManageCustomModels {
         // First, we see how many models we have, and what our limit is
         ResourceDetails resourceDetails = client.getResourceDetails();
         System.out.printf("The resource has %s models, and we can have at most %s models",
-            resourceDetails.getDocumentModelCount(), resourceDetails.getDocumentModelLimit());
+            resourceDetails.getCustomDocumentModelCount(), resourceDetails.getCustomDocumentModelLimit());
 
         // Next, we get a paged list of all of our models
         PagedIterable<DocumentModelSummary> customDocumentModels = client.listModels();

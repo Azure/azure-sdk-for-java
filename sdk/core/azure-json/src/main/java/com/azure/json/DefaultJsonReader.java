@@ -176,57 +176,16 @@ public final class DefaultJsonReader extends JsonReader {
 
     @Override
     public JsonReader bufferObject() {
-        StringBuilder bufferedObject = new StringBuilder();
-        if (isStartArrayOrObject()) {
-            // If the current token is the beginning of an array or object use JsonReader's readChildren method.
+        JsonToken currentToken = currentToken();
+        if (currentToken == JsonToken.START_OBJECT
+            || (currentToken == JsonToken.FIELD_NAME && nextToken() == JsonToken.START_OBJECT)) {
+            StringBuilder bufferedObject = new StringBuilder();
             readChildren(bufferedObject);
-        } else if (currentToken() == JsonToken.FIELD_NAME) {
-            // Otherwise, we're in a complex case where the reading needs to be handled.
-
-            // Add a starting object token.
-            bufferedObject.append("{");
-
-            JsonToken token = currentToken();
-            boolean needsComa = false;
-            while (token != JsonToken.END_OBJECT) {
-                // Appending comas happens in the subsequent loop run to prevent the case of appending comas before
-                // the end of the object, ex {"fieldName":true,}
-                if (needsComa) {
-                    bufferedObject.append(",");
-                }
-
-                if (token == JsonToken.FIELD_NAME) {
-                    // Field names need to have quotes added and a trailing colon.
-                    bufferedObject.append("\"").append(getFieldName()).append("\":");
-
-                    // Comas shouldn't happen after a field name.
-                    needsComa = false;
-                } else {
-                    if (token == JsonToken.STRING) {
-                        // String fields need to have quotes added.
-                        bufferedObject.append("\"").append(getString()).append("\"");
-                    } else if (isStartArrayOrObject()) {
-                        // Structures use readChildren.
-                        readChildren(bufferedObject);
-                    } else {
-                        // All other value types use text value.
-                        bufferedObject.append(getText());
-                    }
-
-                    // Comas should happen after a field value.
-                    needsComa = true;
-                }
-
-                token = nextToken();
-            }
-
-            bufferedObject.append("}");
+            return DefaultJsonReader.fromString(bufferedObject.toString());
         } else {
             throw new IllegalStateException("Cannot buffer a JSON object from a non-object, non-field name "
                 + "starting location. Starting location: " + currentToken());
         }
-
-        return DefaultJsonReader.fromString(bufferedObject.toString());
     }
 
     @Override

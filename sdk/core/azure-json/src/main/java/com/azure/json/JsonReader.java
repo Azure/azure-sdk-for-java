@@ -210,17 +210,17 @@ public abstract class JsonReader implements Closeable {
     public abstract void skipChildren();
 
     /**
-     * Reads and returns the current JSON structure the {@link JsonReader} is pointing to. This will mutate the current
+     * Reads and returns the current JSON object the {@link JsonReader} is pointing to. This will mutate the current
      * location of this {@link JsonReader}.
      * <p>
-     * If the {@link #currentToken()} isn't {@link JsonToken#START_OBJECT} or {@link JsonToken#FIELD_NAME} an
-     * {@link IllegalStateException} will be thrown.
+     * If the {@link #currentToken()} isn't {@link JsonToken#START_OBJECT} or {@link JsonToken#FIELD_NAME} followed by
+     * {@link JsonToken#START_OBJECT} an {@link IllegalStateException} will be thrown.
      * <p>
      * The returned {@link JsonReader} is able to be {@link #reset()} to replay the underlying JSON stream.
      *
      * @return The buffered JSON object the {@link JsonReader} was pointing to.
      * @throws IllegalStateException If the {@link #currentToken()} isn't {@link JsonToken#START_OBJECT} or
-     * {@link JsonToken#FIELD_NAME}.
+     * {@link JsonToken#FIELD_NAME} followed by {@link JsonToken#START_OBJECT}
      */
     public abstract JsonReader bufferObject();
 

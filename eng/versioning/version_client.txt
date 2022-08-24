@@ -142,20 +142,21 @@ com.azure:azure-sdk-template-two;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-sdk-template-three;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-spring-data-cosmos;3.26.0;3.27.0-beta.1
 com.azure:azure-spring-data-cosmos-test;3.0.0-beta.1;3.0.0-beta.1
-com.azure:azure-storage-blob;12.19.0;12.20.0-beta.1
-com.azure:azure-storage-blob-batch;12.15.0;12.16.0-beta.1
+com.azure:azure-storage-blob;12.19.0;12.20.0-beta.2
+com.azure:azure-storage-blob-batch;12.15.0;12.16.0-beta.2
 com.azure:azure-storage-blob-changefeed;12.0.0-beta.18;12.0.0-beta.19
-com.azure:azure-storage-blob-cryptography;12.18.0;12.19.0-beta.1
+com.azure:azure-storage-blob-cryptography;12.18.0;12.19.0-beta.2
 com.azure:azure-storage-blob-nio;12.0.0-beta.19;12.0.0-beta.20
-com.azure:azure-storage-common;12.18.0;12.19.0-beta.1
-com.azure:azure-storage-file-share;12.15.0;12.16.0-beta.1
-com.azure:azure-storage-file-datalake;12.12.0;12.13.0-beta.1
-com.azure:azure-storage-internal-avro;12.4.1;12.5.0-beta.1
+com.azure:azure-storage-common;12.18.0;12.19.0-beta.2
+com.azure:azure-storage-file-share;12.15.0;12.16.0-beta.2
+com.azure:azure-storage-file-datalake;12.12.0;12.13.0-beta.2
+com.azure:azure-storage-internal-avro;12.4.1;12.5.0-beta.2
 com.azure:azure-storage-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-storage-queue;12.14.1;12.15.0-beta.1
+com.azure:azure-storage-queue;12.14.1;12.15.0-beta.2
 com.azure:azure-template-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-media-videoanalyzer-edge;1.0.0-beta.6;1.0.0-beta.7
 com.azure:azure-verticals-agrifood-farming;1.0.0-beta.2;1.0.0-beta.3
+com.azure:azure-xml;1.0.0-beta.1;1.0.0-beta.1
 com.azure:perf-test-core;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-communication-email;1.0.0-beta.1;1.0.0-beta.2
 com.microsoft.azure:spring-cloud-azure-appconfiguration-config-web;1.3.0;1.4.0-beta.1
@@ -364,6 +365,7 @@ com.azure.resourcemanager:azure-resourcemanager-resourceconnector;1.0.0-beta.1;1
 com.azure.resourcemanager:azure-resourcemanager-fluidrelay;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-devcenter;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-connectedvmware;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-alertsmanagement;1.0.0-beta.1;1.0.0-beta.2
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0-beta.1;1.0.0-beta.2
 
