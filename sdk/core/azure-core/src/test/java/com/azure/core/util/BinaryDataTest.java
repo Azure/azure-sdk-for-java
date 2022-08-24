@@ -7,8 +7,10 @@ import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.implementation.util.IterableOfByteBuffersInputStream;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
@@ -23,6 +25,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SynchronousSink;
 import reactor.test.StepVerifier;
+import wiremock.com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -1046,6 +1049,58 @@ public class BinaryDataTest {
                 }
             });
         };
+    }
+
+    @Test
+    public void binaryDataAsPropertySerialization() throws IOException {
+        BinaryDataAsProperty binaryDataAsProperty = new BinaryDataAsProperty()
+            .setProperty(BinaryData.fromObject(new BinaryDataPropertyClass().setTest("test")));
+        String expectedJson = "{\"property\":{\"test\":\"test\"}}";
+
+        String actualJson = JacksonAdapter.createDefaultSerializerAdapter().serialize(binaryDataAsProperty,
+            SerializerEncoding.JSON);
+
+        assertEquals(expectedJson, actualJson);
+    }
+
+    @Test
+    public void binaryDataAsPropertyDeserialization() throws IOException {
+        BinaryDataAsProperty expected = new BinaryDataAsProperty()
+            .setProperty(BinaryData.fromObject(new BinaryDataPropertyClass().setTest("test")));
+        String json = "{\"property\":{\"test\":\"test\"}}";
+
+        BinaryDataAsProperty actual = JacksonAdapter.createDefaultSerializerAdapter().deserialize(json,
+            BinaryDataAsProperty.class, SerializerEncoding.JSON);
+
+        assertEquals(expected.getProperty().toString(), actual.getProperty().toString());
+    }
+
+    public static final class BinaryDataAsProperty {
+        @JsonProperty("property")
+        private BinaryData property;
+
+        public BinaryData getProperty() {
+            return property;
+        }
+
+        public BinaryDataAsProperty setProperty(BinaryData property) {
+            this.property = property;
+            return this;
+        }
+    }
+
+    public static final class BinaryDataPropertyClass {
+        @JsonProperty("test")
+        private String test;
+
+        public String getTest() {
+            return test;
+        }
+
+        public BinaryDataPropertyClass setTest(String test) {
+            this.test = test;
+            return this;
+        }
     }
 
     private static byte[] readInputStream(InputStream inputStream) throws IOException {
