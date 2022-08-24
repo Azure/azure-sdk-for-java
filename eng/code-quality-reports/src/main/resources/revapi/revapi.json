@@ -121,6 +121,18 @@
       "differences": [
         {
           "regex": true,
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method com.nimbusds.jose.util.ResourceRetriever com.azure.spring.cloud.autoconfigure.aad.AadAuthenticationFilterAutoConfiguration::jwtResourceRetriever(org.springframework.web.client.RestOperations)",
+          "justification": "The change is expected, and this is bean definition method, will not be used by customer."
+        },
+        {
+          "regex": true,
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector<com.nimbusds.jose.proc.SecurityContext> com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfiguration::aadIssuerJwsKeySelector(org.springframework.web.client.RestOperations, com.azure.spring.cloud.autoconfigure.aad.AadTrustedIssuerRepository, com.nimbusds.jose.util.ResourceRetriever)",
+          "justification": "The change is expected, and this is bean definition method, will not be used by customer."
+        },
+        {
+          "regex": true,
           "code": "java.class.nonPublicPartOfAPI",
           "new": "class com.azure.spring.messaging.container.DefaultMessageListenerContainer",
           "justification": "We allow this in azure.spring.messaging."
