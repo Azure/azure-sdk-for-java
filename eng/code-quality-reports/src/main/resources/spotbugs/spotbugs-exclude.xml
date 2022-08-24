@@ -2724,6 +2724,11 @@
     <Package name="~com\.azure\.json\.implementation\.jackson\.core.*"/>
   </Match>
 
+  <Match>
+    <Class name="com.azure.xml.DefaultXmlReader"/>
+    <Bug pattern="XXE_XMLSTREAMREADER"/>
+  </Match>
+
   <!-- Non Shipped code -->
   <Match>
     <Or>

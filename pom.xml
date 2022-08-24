@@ -7,6 +7,7 @@
   <artifactId>azure-sdk-all</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
+
   <modules>
     <module>common/perf-test-core</module>
     <module>eng/code-quality-reports</module>
