@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.properties;
 
+import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -89,6 +90,21 @@ public class AadAuthenticationProperties implements InitializingBean {
      * Add additional parameters to the Authorization URL.
      */
     private final Map<String, Object> authenticateAdditionalParameters = new HashMap<>();
+
+    /**
+     * Connection Timeout for the JWKSet Remote URL call.
+     */
+    private Duration jwtConnectTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT);
+
+    /**
+     * Read Timeout for the JWKSet Remote URL call.
+     */
+    private Duration jwtReadTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT);
+
+    /**
+     * Size limit in Bytes of the JWKSet Remote URL call.
+     */
+    private int jwtSizeLimit = RemoteJWKSet.DEFAULT_HTTP_SIZE_LIMIT; /* bytes */
 
     /**
      * The lifespan of the cached JWK set before it expires, default is 5 minutes.
@@ -339,6 +355,60 @@ public class AadAuthenticationProperties implements InitializingBean {
      */
     public Map<String, Object> getAuthenticateAdditionalParameters() {
         return authenticateAdditionalParameters;
+    }
+
+    /**
+     * Gets the JWT connect timeout.
+     *
+     * @return the JWT connect timeout
+     */
+    public Duration getJwtConnectTimeout() {
+        return jwtConnectTimeout;
+    }
+
+    /**
+     * Sets the JWT connect timeout.
+     *
+     * @param jwtConnectTimeout the JWT connect timeout
+     */
+    public void setJwtConnectTimeout(Duration jwtConnectTimeout) {
+        this.jwtConnectTimeout = jwtConnectTimeout;
+    }
+
+    /**
+     * Gets the JWT read timeout.
+     *
+     * @return the JWT read timeout
+     */
+    public Duration getJwtReadTimeout() {
+        return jwtReadTimeout;
+    }
+
+    /**
+     * Sets the JWT read timeout.
+     *
+     * @param jwtReadTimeout the JWT read timeout
+     */
+    public void setJwtReadTimeout(Duration jwtReadTimeout) {
+        this.jwtReadTimeout = jwtReadTimeout;
+    }
+
+    /**
+     * Gets the JWT size limit.
+     *
+     * @return the JWT size limit
+     */
+    public int getJwtSizeLimit() {
+        return jwtSizeLimit;
+    }
+
+    /**
+     * Sets the JWT size limit.
+     *
+     * @param jwtSizeLimit the JWT size limit
+     */
+    public void setJwtSizeLimit(int jwtSizeLimit) {
+        this.jwtSizeLimit = jwtSizeLimit;
     }
 
     /**
