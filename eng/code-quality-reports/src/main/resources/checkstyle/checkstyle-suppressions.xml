@@ -53,7 +53,7 @@
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.ai.formrecognizer.models.FieldValue"/>
   <!-- Suppress the v3 package name in Form Recognizer samples for V2 endpoints -->
   <suppress checks="PackageName" files="com.azure.ai.formrecognizer.v3" />
-  <!-- Suppress for the OnlyFinalFieldsForImmutableClass on Text Analytics -->
+  <!-- Suppress for the OnlyFinalFieldsForImmutableClass on Form Recognizer -->
   <suppress checks="com.azure.tools.checkstyle.checks.OnlyFinalFieldsForImmutableClass"
             files="com.azure.ai.formrecognizer.documentanalysis.(models|administration).*\.java"/>
 
