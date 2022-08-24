@@ -312,7 +312,7 @@ public class CallConnectionAsync {
             }
 
             return callConnectionInternal.addParticipantWithResponseAsync(callConnectionId, request, context)
-                //.onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
+                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> new SimpleResponse<>(response, AddParticipantsResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
