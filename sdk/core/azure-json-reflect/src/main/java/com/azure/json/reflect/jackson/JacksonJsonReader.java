@@ -6,6 +6,7 @@ import com.azure.json.JsonToken;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
 import java.io.UncheckedIOException;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -23,6 +24,9 @@ public class JacksonJsonReader extends JsonReader {
 	private static MethodHandle parserGetLongValue;
 	private static MethodHandle parserGetBinaryValue;
 	private static MethodHandle parserNextToken;
+	private static MethodHandle parserGetValueAsString;
+	private static MethodHandle parserNextFieldName;
+	private static MethodHandle parserSkipChildren;
 	private static final MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
 	private static Object jsonFactory;
 	private static Class<?> jacksonTokenEnum = null;
@@ -75,7 +79,10 @@ public class JacksonJsonReader extends JsonReader {
     	parserGetLongValue = publicLookup.findVirtual(jacksonJsonParser, "getLongValue", methodType(long.class));
 		parserGetBinaryValue = publicLookup.findVirtual(jacksonJsonParser, "getBinaryValue", methodType(byte[].class));
     	parserNextToken = publicLookup.findVirtual(jacksonJsonParser, "nextToken", methodType(jacksonTokenEnum));
-		initialized = true;	
+		parserGetValueAsString = publicLookup.findVirtual(jacksonJsonParser, "getValueAsString", methodType(String.class));
+    	parserNextFieldName = publicLookup.findVirtual(jacksonJsonParser, "nextFieldName", methodType(String.class));
+		parserSkipChildren = publicLookup.findVirtual(jacksonJsonParser, "skipChildren", methodType(jacksonJsonParser));
+    	initialized = true;	
     }
 
     @Override
@@ -184,22 +191,94 @@ public class JacksonJsonReader extends JsonReader {
 
     @Override
     public String getString() {
-        return null;
+        try {
+        	return (String) parserGetValueAsString.invoke(jacksonParser);
+        } catch (Throwable e) {
+        	if (e instanceof IOException) {
+        		throw new UncheckedIOException ((IOException) e);
+        	} else {
+        		throw new RuntimeException(e);
+        	}
+        }
     }
 
     @Override
     public String getFieldName() {
-        return null;
+    	try {
+        	return (String) parserNextFieldName.invoke(jacksonParser);
+        } catch (Throwable e) {
+        	if (e instanceof IOException) {
+        		throw new UncheckedIOException ((IOException) e);
+        	} else {
+        		throw new RuntimeException(e);
+        	}
+        }
     }
 
     @Override
     public void skipChildren() {
-
+    	try {
+        	parserSkipChildren.invoke(jacksonParser);
+        } catch (Throwable e) {
+        	if (e instanceof IOException) {
+        		throw new UncheckedIOException ((IOException) e);
+        	} else {
+        		throw new RuntimeException(e);
+        	}
+        }
     }
 
     @Override
     public JsonReader bufferObject() {
-        return null;
+    	StringBuilder bufferedObject = new StringBuilder();
+    	if (isStartArrayOrObject()) {
+    		// If the current token is the beginning of an array or object, 
+    		// use JsonReader's readChildren method.
+    		readChildren(bufferedObject);
+    	} else if (currentToken() == JsonToken.FIELD_NAME) {
+    		// Otherwise, we're in a complex case where the reading needs to be handled.
+    		
+    		// Add a starting object token.
+    		bufferedObject.append("{");
+    		
+    		JsonToken token = currentToken();
+    		boolean needsComa = false;
+    		while (token != JsonToken.END_OBJECT) {
+    			// Appending commas happens in the subsequent loop run to prevent the case 
+    			// of appending commas before the end of the object, e.g. {"fieldName":true,}
+    			if (needsComa) {
+    				bufferedObject.append(",");
+    			}
+    			
+    			if (token == JsonToken.FIELD_NAME) {
+    				// Field names need to have quotes added and a trailing colon
+    				bufferedObject.append("\"").append(getFieldName()).append("\":");
+    				
+    				// Commas shouldn't happen after a field name.
+    				needsComa = false;
+    			} else {
+    				if (token == JsonToken.STRING) {
+    					// String fields need to have quotes added.
+    					bufferedObject.append("\"").append(getString()).append("\"");
+    				} else if (isStartArrayOrObject()) {
+    					// Structures and readChildren.
+    					readChildren(bufferedObject);
+    				} else {
+    					// All other value types use text value.
+    					bufferedObject.append(getText());
+    				}
+    				// commas should happen after a field value.
+    				needsComa = true;
+    			}
+    			token = nextToken();
+    		}
+    		bufferedObject.append("}");
+    	} else {
+    		throw new IllegalStateException("Cannot buffer a JSON object from a non-object, non-field name "
+                    + "starting location. Starting location: " + currentToken());
+    	}
+    	StringReader stringReader = new StringReader(bufferedObject.toString());
+        return new JacksonJsonReader(stringReader);
     }
 
     @Override
