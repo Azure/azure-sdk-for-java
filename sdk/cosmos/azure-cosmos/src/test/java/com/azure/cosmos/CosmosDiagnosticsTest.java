@@ -382,6 +382,51 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
     }
 
+    @Test(groups = {"simple"})
+    public void databaseAccountToClients() {
+        CosmosClient testClient = null;
+        try {
+            testClient = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .directMode()
+                .buildClient();
+            CosmosContainer cosmosContainer =
+                testClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
+            InternalObjectNode internalObjectNode = getInternalObjectNode();
+            CosmosItemResponse<InternalObjectNode> createResponse = cosmosContainer.createItem(internalObjectNode);
+            String diagnostics = createResponse.getDiagnostics().toString();
+
+            // assert diagnostics shows the correct format and number of clients
+            // BeforeTest creates one client, BeforeClass creates 2, so the testClient above should be the 4th client
+            assertThat(diagnostics).contains(String.format("\"clientEndpoints\"" +
+                    ":{\"databaseAccount\":\"%s\",\"clientsForAccount\":4,", TestConfigurations.HOST));
+
+            CosmosClient testClient2 = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .directMode()
+                .buildClient();
+
+            internalObjectNode = getInternalObjectNode();
+            createResponse = cosmosContainer.createItem(internalObjectNode);
+            diagnostics = createResponse.getDiagnostics().toString();
+            // assert one additional client (5 total) is mapped to the same endpoint used for the other ones
+            assertThat(diagnostics).contains(String.format("\"clientEndpoints\"" +
+                    ":{\"databaseAccount\":\"%s\",\"clientsForAccount\":5,", TestConfigurations.HOST));
+
+            //close second client
+            testClient2.close();
+
+        } finally {
+            if (testClient != null) {
+                testClient.close();
+            }
+        }
+    }
+
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void queryPlanDiagnostics() throws JsonProcessingException {
         CosmosContainer cosmosContainer = directClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());

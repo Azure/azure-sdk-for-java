@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -53,6 +54,15 @@ public interface DiagnosticsClientContext {
                 generator.writeStringField("machineId", ClientTelemetry.getMachineId(clientConfig));
                 generator.writeStringField("connectionMode", clientConfig.getConnectionMode().toString());
                 generator.writeNumberField("numberOfClients", clientConfig.getActiveClientsCount());
+                generator.writeObjectFieldStart("clientEndpoints");
+                for (String key: clientConfig.clientMap.keySet()) {
+                    try {
+                        generator.writeStringField("databaseAccount", key);
+                        generator.writeNumberField("clientsForAccount", clientConfig.clientMap.get(key));
+                    } catch (Exception e) {
+                        logger.debug("unexpected failure", e);
+                    }
+                }
                 generator.writeObjectFieldStart("connCfg");
                 try {
                     generator.writeStringField("rntbd", clientConfig.rntbdConfig());
@@ -75,6 +85,7 @@ public interface DiagnosticsClientContext {
 
         private AtomicInteger activeClientsCnt;
         private int clientId;
+        private Map<String, Integer> clientMap;
 
         private ConsistencyLevel consistencyLevel;
         private boolean connectionSharingAcrossClientsEnabled;
@@ -99,6 +110,10 @@ public interface DiagnosticsClientContext {
 
         public void withClientId(int clientId) {
             this.clientId = clientId;
+        }
+
+        public void withClientMap(Map<String, Integer> clientMap) {
+            this.clientMap = clientMap;
         }
 
         public DiagnosticsClientConfig withEndpointDiscoveryEnabled(boolean endpointDiscoveryEnabled) {
