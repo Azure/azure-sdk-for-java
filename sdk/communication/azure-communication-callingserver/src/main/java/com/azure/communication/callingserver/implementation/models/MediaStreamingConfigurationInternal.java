@@ -7,50 +7,32 @@ package com.azure.communication.callingserver.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-<<<<<<<< HEAD:sdk/communication/azure-communication-callingserver/src/main/java/com/azure/communication/callingserver/implementation/models/MediaStreamingConfiguration.java
-/** The MediaStreamingConfiguration model. */
-@Fluent
-public final class MediaStreamingConfiguration {
-========
 /** The MediaStreamingConfigurationInternal model. */
 @Fluent
 public final class MediaStreamingConfigurationInternal {
->>>>>>>> main:sdk/communication/azure-communication-callingserver/src/main/java/com/azure/communication/callingserver/implementation/models/MediaStreamingConfigurationInternal.java
     /*
      * Transport URL for media streaming
      */
-    @JsonProperty(value = "transportUrl")
+    @JsonProperty(value = "transportUrl", required = true)
     private String transportUrl;
 
     /*
      * The type of tranport to be used for media streaming, eg. Websocket
      */
-    @JsonProperty(value = "transportType")
-<<<<<<<< HEAD:sdk/communication/azure-communication-callingserver/src/main/java/com/azure/communication/callingserver/implementation/models/MediaStreamingConfiguration.java
-    private MediaStreamingTransportType transportType;
-========
+    @JsonProperty(value = "transportType", required = true)
     private MediaStreamingTransportTypeInternal transportType;
->>>>>>>> main:sdk/communication/azure-communication-callingserver/src/main/java/com/azure/communication/callingserver/implementation/models/MediaStreamingConfigurationInternal.java
 
     /*
      * Content type to stream, eg. audio, audio/video
      */
-    @JsonProperty(value = "contentType")
-<<<<<<<< HEAD:sdk/communication/azure-communication-callingserver/src/main/java/com/azure/communication/callingserver/implementation/models/MediaStreamingConfiguration.java
-    private MediaStreamingContentType contentType;
-========
+    @JsonProperty(value = "contentType", required = true)
     private MediaStreamingContentTypeInternal contentType;
->>>>>>>> main:sdk/communication/azure-communication-callingserver/src/main/java/com/azure/communication/callingserver/implementation/models/MediaStreamingConfigurationInternal.java
 
     /*
      * Audio channel type to stream, eg. unmixed audio, mixed audio
      */
-    @JsonProperty(value = "audioChannelType")
-<<<<<<<< HEAD:sdk/communication/azure-communication-callingserver/src/main/java/com/azure/communication/callingserver/implementation/models/MediaStreamingConfiguration.java
-    private MediaStreamingAudioChannelType audioChannelType;
-========
+    @JsonProperty(value = "audioChannelType", required = true)
     private MediaStreamingAudioChannelTypeInternal audioChannelType;
->>>>>>>> main:sdk/communication/azure-communication-callingserver/src/main/java/com/azure/communication/callingserver/implementation/models/MediaStreamingConfigurationInternal.java
 
     /**
      * Get the transportUrl property: Transport URL for media streaming.
@@ -65,15 +47,9 @@ public final class MediaStreamingConfigurationInternal {
      * Set the transportUrl property: Transport URL for media streaming.
      *
      * @param transportUrl the transportUrl value to set.
-<<<<<<<< HEAD:sdk/communication/azure-communication-callingserver/src/main/java/com/azure/communication/callingserver/implementation/models/MediaStreamingConfiguration.java
-     * @return the MediaStreamingConfiguration object itself.
-     */
-    public MediaStreamingConfiguration setTransportUrl(String transportUrl) {
-========
      * @return the MediaStreamingConfigurationInternal object itself.
      */
     public MediaStreamingConfigurationInternal setTransportUrl(String transportUrl) {
->>>>>>>> main:sdk/communication/azure-communication-callingserver/src/main/java/com/azure/communication/callingserver/implementation/models/MediaStreamingConfigurationInternal.java
         this.transportUrl = transportUrl;
         return this;
     }
@@ -83,11 +59,7 @@ public final class MediaStreamingConfigurationInternal {
      *
      * @return the transportType value.
      */
-<<<<<<<< HEAD:sdk/communication/azure-communication-callingserver/src/main/java/com/azure/communication/callingserver/implementation/models/MediaStreamingConfiguration.java
-    public MediaStreamingTransportType getTransportType() {
-========
     public MediaStreamingTransportTypeInternal getTransportType() {
->>>>>>>> main:sdk/communication/azure-communication-callingserver/src/main/java/com/azure/communication/callingserver/implementation/models/MediaStreamingConfigurationInternal.java
         return this.transportType;
     }
 
@@ -95,15 +67,9 @@ public final class MediaStreamingConfigurationInternal {
      * Set the transportType property: The type of tranport to be used for media streaming, eg. Websocket.
      *
      * @param transportType the transportType value to set.
-<<<<<<<< HEAD:sdk/communication/azure-communication-callingserver/src/main/java/com/azure/communication/callingserver/implementation/models/MediaStreamingConfiguration.java
-     * @return the MediaStreamingConfiguration object itself.
-     */
-    public MediaStreamingConfiguration setTransportType(MediaStreamingTransportType transportType) {
-========
      * @return the MediaStreamingConfigurationInternal object itself.
      */
     public MediaStreamingConfigurationInternal setTransportType(MediaStreamingTransportTypeInternal transportType) {
->>>>>>>> main:sdk/communication/azure-communication-callingserver/src/main/java/com/azure/communication/callingserver/implementation/models/MediaStreamingConfigurationInternal.java
         this.transportType = transportType;
         return this;
     }
@@ -113,11 +79,7 @@ public final class MediaStreamingConfigurationInternal {
      *
      * @return the contentType value.
      */
-<<<<<<<< HEAD:sdk/communication/azure-communication-callingserver/src/main/java/com/azure/communication/callingserver/implementation/models/MediaStreamingConfiguration.java
-    public MediaStreamingContentType getContentType() {
-========
     public MediaStreamingContentTypeInternal getContentType() {
->>>>>>>> main:sdk/communication/azure-communication-callingserver/src/main/java/com/azure/communication/callingserver/implementation/models/MediaStreamingConfigurationInternal.java
         return this.contentType;
     }
 
@@ -125,15 +87,9 @@ public final class MediaStreamingConfigurationInternal {
      * Set the contentType property: Content type to stream, eg. audio, audio/video.
      *
      * @param contentType the contentType value to set.
-<<<<<<<< HEAD:sdk/communication/azure-communication-callingserver/src/main/java/com/azure/communication/callingserver/implementation/models/MediaStreamingConfiguration.java
-     * @return the MediaStreamingConfiguration object itself.
-     */
-    public MediaStreamingConfiguration setContentType(MediaStreamingContentType contentType) {
-========
      * @return the MediaStreamingConfigurationInternal object itself.
      */
     public MediaStreamingConfigurationInternal setContentType(MediaStreamingContentTypeInternal contentType) {
->>>>>>>> main:sdk/communication/azure-communication-callingserver/src/main/java/com/azure/communication/callingserver/implementation/models/MediaStreamingConfigurationInternal.java
         this.contentType = contentType;
         return this;
     }
@@ -143,11 +99,7 @@ public final class MediaStreamingConfigurationInternal {
      *
      * @return the audioChannelType value.
      */
-<<<<<<<< HEAD:sdk/communication/azure-communication-callingserver/src/main/java/com/azure/communication/callingserver/implementation/models/MediaStreamingConfiguration.java
-    public MediaStreamingAudioChannelType getAudioChannelType() {
-========
     public MediaStreamingAudioChannelTypeInternal getAudioChannelType() {
->>>>>>>> main:sdk/communication/azure-communication-callingserver/src/main/java/com/azure/communication/callingserver/implementation/models/MediaStreamingConfigurationInternal.java
         return this.audioChannelType;
     }
 
@@ -155,16 +107,10 @@ public final class MediaStreamingConfigurationInternal {
      * Set the audioChannelType property: Audio channel type to stream, eg. unmixed audio, mixed audio.
      *
      * @param audioChannelType the audioChannelType value to set.
-<<<<<<<< HEAD:sdk/communication/azure-communication-callingserver/src/main/java/com/azure/communication/callingserver/implementation/models/MediaStreamingConfiguration.java
-     * @return the MediaStreamingConfiguration object itself.
-     */
-    public MediaStreamingConfiguration setAudioChannelType(MediaStreamingAudioChannelType audioChannelType) {
-========
      * @return the MediaStreamingConfigurationInternal object itself.
      */
     public MediaStreamingConfigurationInternal setAudioChannelType(
             MediaStreamingAudioChannelTypeInternal audioChannelType) {
->>>>>>>> main:sdk/communication/azure-communication-callingserver/src/main/java/com/azure/communication/callingserver/implementation/models/MediaStreamingConfigurationInternal.java
         this.audioChannelType = audioChannelType;
         return this;
     }
