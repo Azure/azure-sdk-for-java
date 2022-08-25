@@ -136,22 +136,11 @@ public class Transforms {
                                 toPolygonPoints(innerDocumentLine.getPolygon()));
                             DocumentLineHelper.setContent(documentLine, innerDocumentLine.getContent());
                             DocumentLineHelper.setSpans(documentLine, toDocumentSpans(innerDocumentLine.getSpans()));
+                            DocumentLineHelper.setPageWords(documentLine, toDocumentWords(innerDocumentPage));
                             return documentLine;
                         })
                         .collect(Collectors.toList()));
-                DocumentPageHelper.setWords(documentPage,
-                    innerDocumentPage.getWords() == null ? null : innerDocumentPage.getWords()
-                        .stream()
-                        .map(innerDocumentWord -> {
-                            DocumentWord documentWord = new DocumentWord();
-                            DocumentWordHelper.setBoundingPolygon(documentWord,
-                                toPolygonPoints(innerDocumentWord.getPolygon()));
-                            DocumentWordHelper.setConfidence(documentWord, innerDocumentWord.getConfidence());
-                            DocumentWordHelper.setSpan(documentWord, getDocumentSpan(innerDocumentWord.getSpan()));
-                            DocumentWordHelper.setContent(documentWord, innerDocumentWord.getContent());
-                            return documentWord;
-                        })
-                        .collect(Collectors.toList()));
+                DocumentPageHelper.setWords(documentPage, toDocumentWords(innerDocumentPage));
                 return documentPage;
             })
             .collect(Collectors.toList()));
@@ -665,5 +654,21 @@ public class Transforms {
                 .append(": ").append(innerError.getMessage());
         }
         return new ResponseError(error.getCode(), errorInformationStringBuilder.toString());
+    }
+
+    private static List<DocumentWord> toDocumentWords(
+        com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentPage innerDocumentPage) {
+        return innerDocumentPage.getWords() == null ? null : innerDocumentPage.getWords()
+            .stream()
+            .map(innerDocumentWord -> {
+                DocumentWord documentWord = new DocumentWord();
+                DocumentWordHelper.setBoundingPolygon(documentWord,
+                    toPolygonPoints(innerDocumentWord.getPolygon()));
+                DocumentWordHelper.setConfidence(documentWord, innerDocumentWord.getConfidence());
+                DocumentWordHelper.setSpan(documentWord, getDocumentSpan(innerDocumentWord.getSpan()));
+                DocumentWordHelper.setContent(documentWord, innerDocumentWord.getContent());
+                return documentWord;
+            })
+            .collect(Collectors.toList());
     }
 }

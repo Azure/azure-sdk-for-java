@@ -58,7 +58,7 @@ public final class DocumentEntity {
      * @param category the category value to set.
      * @return the DocumentEntity object itself.
      */
-    void setCategory(String category) {
+    private void setCategory(String category) {
         this.category = category;
     }
 
@@ -77,7 +77,7 @@ public final class DocumentEntity {
      * @param subCategory the subCategory value to set.
      * @return the DocumentEntity object itself.
      */
-    void setSubCategory(String subCategory) {
+    private void setSubCategory(String subCategory) {
         this.subCategory = subCategory;
     }
 
@@ -96,7 +96,7 @@ public final class DocumentEntity {
      * @param content the content value to set.
      * @return the DocumentEntity object itself.
      */
-    void setContent(String content) {
+    private void setContent(String content) {
         this.content = content;
     }
 
@@ -115,7 +115,7 @@ public final class DocumentEntity {
      * @param boundingRegions the boundingRegions value to set.
      * @return the DocumentEntity object itself.
      */
-    void setBoundingRegions(List<BoundingRegion> boundingRegions) {
+    private void setBoundingRegions(List<BoundingRegion> boundingRegions) {
         this.boundingRegions = boundingRegions;
     }
 
@@ -134,7 +134,7 @@ public final class DocumentEntity {
      * @param spans the spans value to set.
      * @return the DocumentEntity object itself.
      */
-    void setSpans(List<DocumentSpan> spans) {
+    private void setSpans(List<DocumentSpan> spans) {
         this.spans = spans;
     }
 
@@ -153,7 +153,7 @@ public final class DocumentEntity {
      * @param confidence the confidence value to set.
      * @return the DocumentEntity object itself.
      */
-    void setConfidence(float confidence) {
+    private void setConfidence(float confidence) {
         this.confidence = confidence;
     }
 
@@ -167,7 +167,7 @@ public final class DocumentEntity {
 
             @Override
             public void setSubCategory(DocumentEntity documentEntity, String subCategory) {
-                documentEntity.setCategory(subCategory);
+                documentEntity.setSubCategory(subCategory);
             }
 
             @Override

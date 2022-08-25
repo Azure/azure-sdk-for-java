@@ -11,6 +11,7 @@ import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentField;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentWord;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.models.ResponseError;
@@ -28,7 +29,10 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.BLANK_PDF;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.BUSINESS_CARD_JPG;
@@ -1438,5 +1442,26 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             ResponseError responseError = (ResponseError) errorResponseException.getValue();
             Assertions.assertEquals("InvalidRequest", responseError.getCode());
         });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    public void testGetWordsInALine(HttpClient httpClient,
+                                    DocumentAnalysisServiceVersion serviceVersion) {
+        client = getDocumentAnalysisClient(httpClient, serviceVersion);
+        dataRunner((data, dataLength) -> {
+            SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
+                = client.beginAnalyzeDocument("prebuilt-document", BinaryData.fromStream(data),
+                    dataLength)
+                .setPollInterval(durationTestMode);
+            AnalyzeResult analyzeResult = syncPoller.getFinalResult();
+            List<DocumentWord> actualWords =
+                analyzeResult.getPages().get(0).getLines().get(2).getWords();
+            List<String> expectedWords = Arrays.stream("1 Redmond way Suite".split(" ")).collect(Collectors.toList());
+            int expectedWordCount = 4;
+            assertEquals(expectedWordCount, actualWords.size());
+            AtomicInteger i = new AtomicInteger(0);
+            actualWords.forEach(documentWord -> assertEquals(expectedWords.get(i.getAndIncrement()), documentWord.getContent()));
+        }, INVOICE_PDF);
     }
 }
