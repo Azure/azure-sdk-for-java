@@ -27,7 +27,7 @@ public class RankTests extends PersonalizerTestBase {
     private void singleSlotRankTests(PersonalizerClient client) {
         rankNullParameters(client);
         rankServerFeatures(client);
-        rankWithNoOptions(client);
+        rankWithNoExcludedFeatures(client);
     }
 
     private void rankNullParameters(PersonalizerClient client) {
@@ -102,7 +102,7 @@ public class RankTests extends PersonalizerTestBase {
         }
     }
 
-    private void rankWithNoOptions(PersonalizerClient client) {
+    private void rankWithNoExcludedFeatures(PersonalizerClient client) {
         List<Object> contextFeatures = new ArrayList<Object>() {
             {
                 add(new Object() { Object features = new Object() { String day = "tuesday"; boolean payingUser = true; String favoriteGenre = "documentary"; double hoursOnSite = 0.12; String lastWatchedType = "movie"; }; });

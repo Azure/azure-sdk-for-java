@@ -1,41 +1,19 @@
 {
   "networkCallRecords" : [ {
-    "Method" : "DELETE",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/personalizer/v1.1-preview.3/logs",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (18.0.1.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "0f6022e4-82da-4ff5-9854-e836747fd9c7"
-    },
-    "Response" : {
-      "content-length" : "0",
-      "x-envoy-upstream-service-time" : "7",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "Cache-Control" : "no-cache, no-store, must-revalidate",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "f3625c18-2e25-42db-b9e8-4cb74505f9aa",
-      "Expires" : "0",
-      "timing-allow-origin" : "*",
-      "retry-after" : "0",
-      "StatusCode" : "204",
-      "pragma" : "no-cache",
-      "Date" : "Wed, 10 Aug 2022 19:54:25 GMT"
-    },
-    "Exception" : null
-  }, {
     "Method" : "GET",
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/personalizer/v1.1-preview.3/logs/properties",
     "Headers" : {
-      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (18.0.1.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "2fe2253b-919d-4f76-bc9a-6fc264c906bb"
+      "User-Agent" : "azsdk-java-azure-ai-personalizer/1.0.0-beta.1 (18.0.1.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "76046cf7-08a4-4b14-85b3-58d657b7678c"
     },
     "Response" : {
       "content-length" : "2",
-      "x-envoy-upstream-service-time" : "104",
-      "apim-request-id" : "088d04e9-2c54-4896-8c80-9d998617d653",
+      "x-envoy-upstream-service-time" : "18",
+      "apim-request-id" : "baf85ec7-91b8-4301-9981-6a8d27b548b2",
       "retry-after" : "0",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "Date" : "Wed, 10 Aug 2022 19:54:25 GMT",
+      "Date" : "Thu, 25 Aug 2022 23:32:36 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "Cache-Control" : "no-cache, no-store, must-revalidate",
       "x-content-type-options" : "nosniff",

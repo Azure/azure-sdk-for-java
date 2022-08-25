@@ -80,6 +80,8 @@ public final class Utility {
             if (firstIndex != -1 && lastIndex != -1) {
                 return operationLocation.substring(operationLocation.lastIndexOf('/') + 1,
                     operationLocation.indexOf('?'));
+            } else if (firstIndex == -1) {
+                return operationLocation.substring(operationLocation.lastIndexOf('/') + 1);
             }
         }
         throw LOGGER.logExceptionAsError(
