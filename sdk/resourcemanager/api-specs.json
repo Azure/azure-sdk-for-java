@@ -164,7 +164,6 @@
     "source": "specification/monitor/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.monitor",
     "args": "--tag=package-composite-v1 --add-inner=AutoscaleProfile,ScaleRule,LocalizableString,DiagnosticSettingsCategoryResourceCollection --rename-model=MetricUnit:Unit",
-    "note": "Add status code '409' to 'enableReceiver' in 'ActionGroupsClientImpl'"
   },
   "monitor-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-monitor",
