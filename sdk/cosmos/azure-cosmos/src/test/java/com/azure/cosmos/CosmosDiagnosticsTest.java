@@ -398,10 +398,16 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             CosmosItemResponse<InternalObjectNode> createResponse = cosmosContainer.createItem(internalObjectNode);
             String diagnostics = createResponse.getDiagnostics().toString();
 
-            // assert diagnostics shows the correct format and number of clients
-            // BeforeTest creates one client, BeforeClass creates 2, so the testClient above should be the 4th client
+            // assert diagnostics shows the correct format for tracking client instances
             assertThat(diagnostics).contains(String.format("\"clientEndpoints\"" +
-                    ":{\"databaseAccount\":\"%s\",\"clientsForAccount\":4,", TestConfigurations.HOST));
+                    ":{\"databaseAccount\":\"%s\",\"clientsForAccount\":", TestConfigurations.HOST));
+            // track number of clients currently mapped to account
+            int clientsIndex = diagnostics.indexOf("\"clientsForAccount\":");
+            // we do start at +20 to reach the start of the int, and end at +27 to ensure we grab the bracket even if
+            // we have hundreds of clients (triple digit ints) running at once in the pipelines
+            String intString = diagnostics.substring(clientsIndex+20, clientsIndex+27).split("}")[0];
+            int intValue = Integer.parseInt(intString);
+
 
             CosmosClient testClient2 = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -413,9 +419,13 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             internalObjectNode = getInternalObjectNode();
             createResponse = cosmosContainer.createItem(internalObjectNode);
             diagnostics = createResponse.getDiagnostics().toString();
-            // assert one additional client (5 total) is mapped to the same endpoint used for the other ones
+            // assert diagnostics shows the correct format for tracking client instances
             assertThat(diagnostics).contains(String.format("\"clientEndpoints\"" +
-                    ":{\"databaseAccount\":\"%s\",\"clientsForAccount\":5,", TestConfigurations.HOST));
+                ":{\"databaseAccount\":\"%s\",\"clientsForAccount\":", TestConfigurations.HOST));
+            // grab new value and assert one additional client is mapped to the same account used previously
+            clientsIndex = diagnostics.indexOf("\"clientsForAccount\":");
+            intString = diagnostics.substring(clientsIndex+20, clientsIndex+27).split("}")[0];
+            assertThat(Integer.parseInt(intString)).isEqualTo(intValue+1);
 
             //close second client
             testClient2.close();
