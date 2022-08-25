@@ -1065,7 +1065,7 @@ public final class BlobContainerClient {
      * @return A {@link BlobContainerClient} used to interact with the renamed container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BlobContainerClient rename(String destinationContainerName) {
+    public BlobContainerClient rename(String destinationContainerName) {
         return renameWithResponse(new BlobContainerRenameOptions(destinationContainerName
         ), null, Context.NONE).getValue();
     }
@@ -1085,7 +1085,7 @@ public final class BlobContainerClient {
      * {@link BlobContainerClient} used to interact with the renamed container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BlobContainerClient> renameWithResponse(BlobContainerRenameOptions options, Duration timeout,
+    public Response<BlobContainerClient> renameWithResponse(BlobContainerRenameOptions options, Duration timeout,
         Context context) {
         Mono<Response<BlobContainerClient>> response = this.client.renameWithResponse(options, context)
                 .map(r -> new SimpleResponse<>(r, new BlobContainerClient(r.getValue())));

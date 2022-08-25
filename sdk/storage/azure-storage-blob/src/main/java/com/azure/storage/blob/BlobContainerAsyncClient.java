@@ -1550,7 +1550,7 @@ public final class BlobContainerAsyncClient {
      * @return A {@link Mono} containing a {@link BlobContainerAsyncClient} used to interact with the renamed container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<BlobContainerAsyncClient> rename(String destinationContainerName) {
+    public Mono<BlobContainerAsyncClient> rename(String destinationContainerName) {
         return renameWithResponse(new BlobContainerRenameOptions(destinationContainerName)).flatMap(FluxUtil::toMono);
     }
 
@@ -1567,7 +1567,7 @@ public final class BlobContainerAsyncClient {
      * {@link BlobContainerAsyncClient} used to interact with the renamed container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BlobContainerAsyncClient>> renameWithResponse(BlobContainerRenameOptions options) {
+    public Mono<Response<BlobContainerAsyncClient>> renameWithResponse(BlobContainerRenameOptions options) {
         try {
             return withContext(context -> this.renameWithResponse(options, context));
         } catch (RuntimeException ex) {
