@@ -11,15 +11,9 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointSta
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentSkipListMap;
-=======
-import java.util.Locale;
-import java.util.Map;
->>>>>>> main
 
 /**
  * Used internally to represents a response from the store.

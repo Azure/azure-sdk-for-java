@@ -9,7 +9,6 @@ import org.testng.annotations.Test;
 
 public class DocumentServiceRequestContextTests {
 
-
     @DataProvider(name = "exceptionArgProvider")
     private Object[][] exceptionArgProvider() {
         return new Object[][]{
