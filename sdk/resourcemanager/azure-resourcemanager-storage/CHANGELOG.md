@@ -2,11 +2,6 @@
 
 ## 2.18.0-beta.1 (Unreleased)
 
-### Breaking Changes
-
-- Renamed class `CorsRuleAllowedMethodsItem` to `AllowedMethods`.
-- Renamed class `ActiveDirectoryPropertiesAccountType` to `AccountType`.
-
 ### Other Changes
 
 #### Dependency Updates
