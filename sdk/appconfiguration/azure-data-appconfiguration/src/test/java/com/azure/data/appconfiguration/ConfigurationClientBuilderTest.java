@@ -3,8 +3,10 @@
 
 package com.azure.data.appconfiguration;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
@@ -21,7 +23,10 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Header;
 import com.azure.data.appconfiguration.implementation.ClientConstants;
+import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -29,6 +34,9 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.UnknownHostException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Locale;
@@ -229,6 +237,36 @@ public class ConfigurationClientBuilderTest extends TestBase {
                 })
                 .buildClient();
         assertThrows(HttpResponseException.class, () -> configurationClient.setConfigurationSetting(key, null, value));
+    }
+
+    @Test
+    public void notShareDefaultHttpPipeline() throws NoSuchAlgorithmException, InvalidKeyException {
+        final String key = "key1";
+        final String label = "label1";
+        final String value = "value1";
+
+        ConfigurationClientBuilder builder = new ConfigurationClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build());
+
+        // Build a new instance without custom pipeline should create a new pipeline each time.
+        // Endpoint: Does Not Exist
+        builder.endpoint("https://aaa.azconfig.io");
+        ConfigurationClient clientNotExist = builder.buildClient();
+
+        // Endpoint: Exists
+        builder.endpoint(new ConfigurationClientCredentials(
+            Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING))
+            .getBaseUri());
+        ConfigurationClient client = builder.buildClient();
+
+        // TODO: after Netty supports SyncStack, we should assert UnknownHostException type
+        try {
+            clientNotExist.setConfigurationSetting(key, label, value);
+        } catch (Exception e) {
+            assertTrue(e.getMessage().startsWith("java.net.UnknownHostException:"));
+        }
+        ConfigurationSetting configurationSetting = client.setConfigurationSetting(key, label, value);
+        Assertions.assertEquals(configurationSetting.getKey(), key);
     }
 
     private static URI getURI(String endpointFormat, String namespace, String domainName) {
