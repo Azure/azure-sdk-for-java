@@ -393,6 +393,7 @@ public class ReflectionUtils {
         set(clientTelemetry, HttpClient, "metadataHttpClient");
     }
 
+    @SuppressWarnings("unchecked")
     public static AtomicReference<Uri.HealthStatus> getHealthStatus(Uri uri) {
         return get(AtomicReference.class, uri, "healthStatus");
     }
