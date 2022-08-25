@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CreationData {
     /*
-     * This is the ARM ID of the source object to be used to create the target
-     * object.
+     * This is the ARM ID of the source object to be used to create the target object.
      */
     @JsonProperty(value = "sourceResourceId")
     private String sourceResourceId;

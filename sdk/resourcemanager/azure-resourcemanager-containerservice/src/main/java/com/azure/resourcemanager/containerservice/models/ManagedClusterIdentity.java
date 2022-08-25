@@ -13,15 +13,13 @@ import java.util.Map;
 @Fluent
 public class ManagedClusterIdentity {
     /*
-     * The principal id of the system assigned identity which is used by master
-     * components.
+     * The principal id of the system assigned identity which is used by master components.
      */
     @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
-     * The tenant id of the system assigned identity which is used by master
-     * components.
+     * The tenant id of the system assigned identity which is used by master components.
      */
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
