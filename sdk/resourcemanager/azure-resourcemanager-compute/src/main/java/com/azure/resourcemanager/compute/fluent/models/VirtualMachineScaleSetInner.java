@@ -33,13 +33,10 @@ public final class VirtualMachineScaleSetInner extends Resource {
     private Sku sku;
 
     /*
-     * Specifies information about the marketplace image used to create the
-     * virtual machine. This element is only used for marketplace images.
-     * Before you can use a marketplace image from an API, you must enable the
-     * image for programmatic use.  In the Azure portal, find the marketplace
-     * image that you want to use and then click **Want to deploy
-     * programmatically, Get Started ->**. Enter any required information and
-     * then click **Save**.
+     * Specifies information about the marketplace image used to create the virtual machine. This element is only used
+     * for marketplace images. Before you can use a marketplace image from an API, you must enable the image for
+     * programmatic use.  In the Azure portal, find the marketplace image that you want to use and then click **Want to
+     * deploy programmatically, Get Started ->**. Enter any required information and then click **Save**.
      */
     @JsonProperty(value = "plan")
     private Plan plan;
@@ -57,8 +54,7 @@ public final class VirtualMachineScaleSetInner extends Resource {
     private VirtualMachineScaleSetIdentity identity;
 
     /*
-     * The virtual machine scale set zones. NOTE: Availability zones can only
-     * be set when you create the scale set
+     * The virtual machine scale set zones. NOTE: Availability zones can only be set when you create the scale set
      */
     @JsonProperty(value = "zones")
     private List<String> zones;

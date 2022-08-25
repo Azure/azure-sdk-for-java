@@ -959,14 +959,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GalleryImageInner> getAsync(String resourceGroupName, String galleryName, String galleryImageName) {
         return getWithResponseAsync(resourceGroupName, galleryName, galleryImageName)
-            .flatMap(
-                (Response<GalleryImageInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1448,7 +1441,8 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1484,7 +1478,8 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.

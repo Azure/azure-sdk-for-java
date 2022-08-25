@@ -28,7 +28,6 @@ Install-ModuleIfNotInstalled "powershell-yaml" "0.4.1" | Import-Module
 
 $artifactsDict = [ordered]@{}
 $addModulesDict  = [ordered]@{}
-$addBuildOptions = @{}
 $ymlFiles = Get-ChildItem -Path $SourcesDirectory -Recurse -Depth 3 -File -Filter "ci.yml"
 foreach ($ymlFile in $ymlFiles) {
     if ($ymlFile.FullName.Split([IO.Path]::DirectorySeparatorChar) -contains "resourcemanagerhybrid" -or
@@ -46,10 +45,6 @@ foreach ($ymlFile in $ymlFiles) {
     $ymlObject = ConvertFrom-Yaml $ymlContent -Ordered
     $serviceDir = $ymlObject["extends"]["parameters"]["ServiceDirectory"]
 
-    # Collect the AdditionalBuildOptions, which are per ServiceDirectory
-    if ($ymlObject["extends"]["parameters"]["AdditionalBuildOptions"]) {
-        $addBuildOptions.Add($serviceDir, $ymlObject["extends"]["parameters"]["AdditionalBuildOptions"])
-    }
     foreach ($artifact in $ymlObject["extends"]["parameters"]["artifacts"]) {
         # The artifact type from the yml object is [System.Collections.Specialized.OrderedDictionary]
         # This needs to be an ordered list, the ordering needs to be preserved so that name is first.
@@ -99,24 +94,8 @@ foreach ($project in $ProjectList) {
     }
 }
 
-# AdditionalBuildOptions are done on a ServiceDirectory basis and only need to be added once
-$additionalBuildOptions = ""
-foreach ($dir in $serviceDirsForProjectList) {
-    if ($addBuildOptions.Contains($dir)) {
-        $additionalBuildOptions += "$($addBuildOptions[$dir]) "
-    }
-}
 $ymlContent = Get-Content $YmlToUpdate -Raw
 $ymlObject = ConvertFrom-Yaml $ymlContent -Ordered
-if ([string]::IsNullOrEmpty($additionalBuildOptions)) {
-    Write-Host "is null or empty"
-    if ($ymlObject["extends"]["parameters"]["AdditionalBuildOptions"]) {
-        Write-Host "removing AdditionalBuildOptions"
-        $ymlObject["extends"]["parameters"].Remove("AdditionalBuildOptions")
-    }
-} else {
-    $ymlObject["extends"]["parameters"]["AdditionalBuildOptions"] = $additionalBuildOptions
-}
 $ymlObject["extends"]["parameters"]["artifacts"] = $newArtifacts
 if ($newAdditionalMods.Count -gt 0) {
     if ($ymlObject["extends"]["parameters"]["AdditionalModules"]) {

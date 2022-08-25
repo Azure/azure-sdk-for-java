@@ -9,7 +9,11 @@ import com.azure.resourcemanager.network.fluent.models.ExpressRoutePortsLocation
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** ExpressRoutePorts Location List Result Response for ListExpressRoutePortsLocations API service call. */
+/**
+ * ExpressRoutePorts Location List Result
+ *
+ * <p>Response for ListExpressRoutePortsLocations API service call.
+ */
 @Fluent
 public final class ExpressRoutePortsLocationListResult {
     /*

@@ -100,7 +100,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-identity</artifactId>
-  <version>1.5.3</version>
+  <version>1.5.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

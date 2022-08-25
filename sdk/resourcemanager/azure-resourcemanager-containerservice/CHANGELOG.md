@@ -2,13 +2,9 @@
 
 ## 2.18.0-beta.1 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+- Deprecated method `KubernetesClusters.listKubernetesVersions`. Use `KubernetesClusters.listOrchestrators`.
 
 ## 2.17.0 (2022-07-25)
 

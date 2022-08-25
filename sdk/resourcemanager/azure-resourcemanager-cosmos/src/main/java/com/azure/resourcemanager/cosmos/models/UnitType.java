@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for UnitType. */
+/** The unit of the metric. */
 public final class UnitType extends ExpandableStringEnum<UnitType> {
     /** Static value Count for UnitType. */
     public static final UnitType COUNT = fromString("Count");

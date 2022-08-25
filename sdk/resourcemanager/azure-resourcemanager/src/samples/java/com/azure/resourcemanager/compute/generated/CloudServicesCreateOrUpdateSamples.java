@@ -28,7 +28,7 @@ import java.util.Arrays;
 /** Samples for CloudServices CreateOrUpdate. */
 public final class CloudServicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudService_Create_WithSingleRole.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-04-04/examples/CloudService_Create_WithSingleRole.json
      */
     /**
      * Sample code: Create New Cloud Service with Single Role.
@@ -87,7 +87,7 @@ public final class CloudServicesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudService_Create_WithSingleRoleAndCertificate.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-04-04/examples/CloudService_Create_WithSingleRoleAndCertificate.json
      */
     /**
      * Sample code: Create New Cloud Service with Single Role and Certificate from Key Vault.
@@ -163,7 +163,7 @@ public final class CloudServicesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudService_Create_WithSingleRoleAndRDP.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-04-04/examples/CloudService_Create_WithSingleRoleAndRDP.json
      */
     /**
      * Sample code: Create New Cloud Service with Single Role and RDP Extension.
@@ -241,7 +241,7 @@ public final class CloudServicesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudService_Create_WithMultiRole.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-04-04/examples/CloudService_Create_WithMultiRole.json
      */
     /**
      * Sample code: Create New Cloud Service with Multiple Roles.

@@ -4,7 +4,9 @@
 package com.azure.json.contract;
 
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -20,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -57,38 +60,38 @@ public abstract class JsonReaderContractTests {
             // Value handling.
 
             // Boolean
-            Arguments.of("false", false, createJsonConsumer(JsonReader::getBooleanValue)),
-            Arguments.of("true", true, createJsonConsumer(JsonReader::getBooleanValue)),
-            Arguments.of("null", null, createJsonConsumer(JsonReader::getBooleanNullableValue)),
+            Arguments.of("false", false, createJsonConsumer(JsonReader::getBoolean)),
+            Arguments.of("true", true, createJsonConsumer(JsonReader::getBoolean)),
+            Arguments.of("null", null, createJsonConsumer(reader -> reader.getNullable(JsonReader::getBoolean))),
 
             // Double
-            Arguments.of("-42.0", -42D, createJsonConsumer(JsonReader::getDoubleValue)),
-            Arguments.of("-42", -42D, createJsonConsumer(JsonReader::getDoubleValue)),
-            Arguments.of("42.0", 42D, createJsonConsumer(JsonReader::getDoubleValue)),
-            Arguments.of("42", 42D, createJsonConsumer(JsonReader::getDoubleValue)),
-            Arguments.of("null", null, createJsonConsumer(JsonReader::getDoubleNullableValue)),
+            Arguments.of("-42.0", -42D, createJsonConsumer(JsonReader::getDouble)),
+            Arguments.of("-42", -42D, createJsonConsumer(JsonReader::getDouble)),
+            Arguments.of("42.0", 42D, createJsonConsumer(JsonReader::getDouble)),
+            Arguments.of("42", 42D, createJsonConsumer(JsonReader::getDouble)),
+            Arguments.of("null", null, createJsonConsumer(reader -> reader.getNullable(JsonReader::getDouble))),
 
             // Float
-            Arguments.of("-42.0", -42F, createJsonConsumer(JsonReader::getFloatValue)),
-            Arguments.of("-42", -42F, createJsonConsumer(JsonReader::getFloatValue)),
-            Arguments.of("42.0", 42F, createJsonConsumer(JsonReader::getFloatValue)),
-            Arguments.of("42", 42F, createJsonConsumer(JsonReader::getFloatValue)),
-            Arguments.of("null", null, createJsonConsumer(JsonReader::getFloatNullableValue)),
+            Arguments.of("-42.0", -42F, createJsonConsumer(JsonReader::getFloat)),
+            Arguments.of("-42", -42F, createJsonConsumer(JsonReader::getFloat)),
+            Arguments.of("42.0", 42F, createJsonConsumer(JsonReader::getFloat)),
+            Arguments.of("42", 42F, createJsonConsumer(JsonReader::getFloat)),
+            Arguments.of("null", null, createJsonConsumer(reader -> reader.getNullable(JsonReader::getFloat))),
 
             // Integer
-            Arguments.of("-42", -42, createJsonConsumer(JsonReader::getIntValue)),
-            Arguments.of("42", 42, createJsonConsumer(JsonReader::getIntValue)),
-            Arguments.of("null", null, createJsonConsumer(JsonReader::getIntegerNullableValue)),
+            Arguments.of("-42", -42, createJsonConsumer(JsonReader::getInt)),
+            Arguments.of("42", 42, createJsonConsumer(JsonReader::getInt)),
+            Arguments.of("null", null, createJsonConsumer(reader -> reader.getNullable(JsonReader::getInt))),
 
             // Long
-            Arguments.of("-42", -42L, createJsonConsumer(JsonReader::getLongValue)),
-            Arguments.of("42", 42L, createJsonConsumer(JsonReader::getLongValue)),
-            Arguments.of("null", null, createJsonConsumer(JsonReader::getLongNullableValue)),
+            Arguments.of("-42", -42L, createJsonConsumer(JsonReader::getLong)),
+            Arguments.of("42", 42L, createJsonConsumer(JsonReader::getLong)),
+            Arguments.of("null", null, createJsonConsumer(reader -> reader.getNullable(JsonReader::getLong))),
 
             // String
-            Arguments.of("null", null, createJsonConsumer(JsonReader::getStringValue)),
-            Arguments.of("\"\"", "", createJsonConsumer(JsonReader::getStringValue)),
-            Arguments.of("\"hello\"", "hello", createJsonConsumer(JsonReader::getStringValue))
+            Arguments.of("null", null, createJsonConsumer(JsonReader::getString)),
+            Arguments.of("\"\"", "", createJsonConsumer(JsonReader::getString)),
+            Arguments.of("\"hello\"", "hello", createJsonConsumer(JsonReader::getString))
         );
     }
 
@@ -107,10 +110,10 @@ public abstract class JsonReaderContractTests {
     private static Stream<Arguments> binaryOperationsSupplier() {
         return Stream.of(
             // Binary
-            Arguments.of("null", null, createJsonConsumer(JsonReader::getBinaryValue)),
-            Arguments.of("\"\"", new byte[0], createJsonConsumer(JsonReader::getBinaryValue)),
+            Arguments.of("null", null, createJsonConsumer(JsonReader::getBinary)),
+            Arguments.of("\"\"", new byte[0], createJsonConsumer(JsonReader::getBinary)),
             Arguments.of("\"" + Base64.getEncoder().encodeToString("Hello".getBytes(StandardCharsets.UTF_8)) + "\"",
-                "Hello".getBytes(StandardCharsets.UTF_8), createJsonConsumer(JsonReader::getBinaryValue))
+                "Hello".getBytes(StandardCharsets.UTF_8), createJsonConsumer(JsonReader::getBinary))
         );
     }
 
@@ -155,15 +158,15 @@ public abstract class JsonReaderContractTests {
             reader.nextToken();
 
             if ("stringProperty".equals(fieldName)) {
-                stringProperty = reader.getStringValue();
+                stringProperty = reader.getString();
             } else if ("nullProperty".equals(fieldName)) {
                 hasNullProperty = true;
             } else if ("integerProperty".equals(fieldName)) {
-                integerProperty = reader.getIntValue();
+                integerProperty = reader.getInt();
             } else if ("floatProperty".equals(fieldName)) {
-                floatProperty = reader.getFloatValue();
+                floatProperty = reader.getFloat();
             } else if ("booleanProperty".equals(fieldName)) {
-                booleanProperty = reader.getBooleanValue();
+                booleanProperty = reader.getBoolean();
             } else {
                 fail("Unknown property name: '" + fieldName + "'");
             }
@@ -214,15 +217,15 @@ public abstract class JsonReaderContractTests {
             reader.nextToken();
 
             if ("stringProperty".equals(fieldName)) {
-                stringProperty = reader.getStringValue();
+                stringProperty = reader.getString();
             } else if ("nullProperty".equals(fieldName)) {
                 hasNullProperty = true;
             } else if ("integerProperty".equals(fieldName)) {
-                integerProperty = reader.getIntValue();
+                integerProperty = reader.getInt();
             } else if ("floatProperty".equals(fieldName)) {
-                floatProperty = reader.getFloatValue();
+                floatProperty = reader.getFloat();
             } else if ("booleanProperty".equals(fieldName)) {
-                booleanProperty = reader.getBooleanValue();
+                booleanProperty = reader.getBoolean();
             } else if ("innerObject".equals(fieldName)) {
                 assertEquals(JsonToken.START_OBJECT, reader.currentToken());
                 while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -230,7 +233,7 @@ public abstract class JsonReaderContractTests {
                     reader.nextToken();
 
                     if ("innerStringProperty".equals(fieldName)) {
-                        innerStringProperty = reader.getStringValue();
+                        innerStringProperty = reader.getString();
                     } else {
                         fail("Unknown property name: '" + fieldName + "'");
                     }
@@ -283,22 +286,22 @@ public abstract class JsonReaderContractTests {
             reader.nextToken();
 
             if ("stringProperty".equals(fieldName)) {
-                stringProperty = reader.getStringValue();
+                stringProperty = reader.getString();
             } else if ("nullProperty".equals(fieldName)) {
                 hasNullProperty = true;
             } else if ("integerProperty".equals(fieldName)) {
-                integerProperty = reader.getIntValue();
+                integerProperty = reader.getInt();
             } else if ("floatProperty".equals(fieldName)) {
-                floatProperty = reader.getFloatValue();
+                floatProperty = reader.getFloat();
             } else if ("booleanProperty".equals(fieldName)) {
-                booleanProperty = reader.getBooleanValue();
+                booleanProperty = reader.getBoolean();
             } else if ("innerArray".equals(fieldName)) {
                 assertEquals(JsonToken.START_ARRAY, reader.currentToken());
                 while (reader.nextToken() != JsonToken.END_ARRAY) {
                     if (innerStringProperty != null) {
                         fail("Only expected one value in the inner array but found more.");
                     }
-                    innerStringProperty = reader.getStringValue();
+                    innerStringProperty = reader.getString();
                 }
             } else {
                 fail("Unknown property name: '" + fieldName + "'");
@@ -345,7 +348,7 @@ public abstract class JsonReaderContractTests {
                         fail("Only expected one value in the inner array but found more.");
                     }
 
-                    jsonArray[5] = reader.getStringValue();
+                    jsonArray[5] = reader.getString();
                 }
             } else {
                 jsonArray[jsonArrayIndex++] = ContractUtils.readUntypedField(reader);
@@ -389,7 +392,7 @@ public abstract class JsonReaderContractTests {
                     reader.nextToken();
 
                     if ("innerStringProperty".equals(fieldName)) {
-                        jsonArray[5] = reader.getStringValue();
+                        jsonArray[5] = reader.getString();
                     } else {
                         fail("Unknown property name: '" + fieldName + "'");
                     }
@@ -420,6 +423,55 @@ public abstract class JsonReaderContractTests {
         );
     }
 
+    @ParameterizedTest
+    @MethodSource("bufferObjectSupplier")
+    public void bufferObject(String json, int nextCount) {
+        JsonReader reader = getJsonReader(json);
+
+        for (int i = 0; i < nextCount; i++) {
+            reader.nextToken();
+        }
+
+        JsonReader buffer = reader.bufferObject();
+        TestData testData = TestData.fromJson(buffer);
+
+        assertEquals("test", testData.getTest());
+    }
+
+    private static Stream<Arguments> bufferObjectSupplier() {
+        return Stream.of(
+            // Arguments.of("{\"test\":\"test\"}", 1),
+            Arguments.of("{\"outerfield\":{\"test\":\"test\"}}", 2)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("bufferObjectIllegalStateSupplier")
+    public void bufferObjectIllegalState(String json, int nextCount) {
+        JsonReader reader = getJsonReader(json);
+
+        for (int i = 0; i < nextCount; i++) {
+            reader.nextToken();
+        }
+
+        assertThrows(IllegalStateException.class, reader::bufferObject);
+    }
+
+    private static Stream<Arguments> bufferObjectIllegalStateSupplier() {
+        return Stream.of(
+            Arguments.of("[]", 1),
+            Arguments.of("12", 1),
+            Arguments.of("null", 1),
+            Arguments.of("true", 1),
+            Arguments.of("\"hello\"", 1),
+            Arguments.of("{\"outerfield\": []}", 2),
+            Arguments.of("{\"outerfield\": 12}", 2),
+            Arguments.of("{\"outerfield\": null}", 2),
+            Arguments.of("{\"outerfield\": true}", 2),
+            Arguments.of("{\"outerfield\": \"hello\"}", 2)
+        );
+    }
+
     private static void assertJsonReaderStructInitialization(JsonReader reader, JsonToken expectedInitialToken) {
         assertNull(reader.currentToken());
         reader.nextToken();
@@ -429,5 +481,44 @@ public abstract class JsonReaderContractTests {
 
     private static <T> Function<JsonReader, T> createJsonConsumer(Function<JsonReader, T> func) {
         return func;
+    }
+
+    private static final class TestData implements JsonSerializable<TestData> {
+        private String test;
+
+        public String getTest() {
+            return test;
+        }
+
+        public TestData setTest(String test) {
+            this.test = test;
+            return this;
+        }
+
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) {
+            return jsonWriter.writeStartObject()
+                .writeStringField("test", test)
+                .writeEndObject();
+        }
+
+        public static TestData fromJson(JsonReader jsonReader) {
+            return jsonReader.readObject(reader -> {
+                TestData result = new TestData();
+
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+
+                    if ("test".equals(fieldName)) {
+                        result.setTest(reader.getString());
+                    } else {
+                        reader.skipChildren();
+                    }
+                }
+
+                return result;
+            });
+        }
     }
 }

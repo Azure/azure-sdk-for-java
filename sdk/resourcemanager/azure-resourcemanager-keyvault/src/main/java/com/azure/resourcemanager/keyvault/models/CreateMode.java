@@ -7,7 +7,7 @@ package com.azure.resourcemanager.keyvault.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for CreateMode. */
+/** The vault's create mode to indicate whether the vault need to be recovered or not. */
 public enum CreateMode {
     /** Enum value recover. */
     RECOVER("recover"),
@@ -30,6 +30,9 @@ public enum CreateMode {
      */
     @JsonCreator
     public static CreateMode fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         CreateMode[] items = CreateMode.values();
         for (CreateMode item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum CreateMode {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

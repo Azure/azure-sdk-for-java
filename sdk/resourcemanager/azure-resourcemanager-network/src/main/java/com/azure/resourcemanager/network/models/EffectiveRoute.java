@@ -18,8 +18,7 @@ public final class EffectiveRoute {
     private String name;
 
     /*
-     * If true, on-premises routes are not propagated to the network interfaces
-     * in the subnet.
+     * If true, on-premises routes are not propagated to the network interfaces in the subnet.
      */
     @JsonProperty(value = "disableBgpRoutePropagation")
     private Boolean disableBgpRoutePropagation;

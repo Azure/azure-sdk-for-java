@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class Encryption {
     /*
-     * ResourceId of the disk encryption set to use for enabling encryption at
-     * rest.
+     * ResourceId of the disk encryption set to use for enabling encryption at rest.
      */
     @JsonProperty(value = "diskEncryptionSetId")
     private String diskEncryptionSetId;
