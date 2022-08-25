@@ -156,7 +156,7 @@ public final class ConfigurationClientBuilder implements
     private String endpoint;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
-    private HttpPipeline pipeline;
+    private HttpPipeline httpPipeline;
     private HttpPipelinePolicy retryPolicy;
     private RetryOptions retryOptions;
     private Configuration configuration;
@@ -220,8 +220,9 @@ public final class ConfigurationClientBuilder implements
             ? version
             : ConfigurationServiceVersion.getLatest();
 
+        HttpPipeline pipeline = httpPipeline;
         if (pipeline == null) {
-            this.pipeline = createHttpPipeline();
+            pipeline = createHttpPipeline();
         }
 
         ConfigurationClientImpl client =
@@ -472,11 +473,11 @@ public final class ConfigurationClientBuilder implements
      */
     @Override
     public ConfigurationClientBuilder pipeline(HttpPipeline pipeline) {
-        if (this.pipeline != null && pipeline == null) {
+        if (this.httpPipeline != null && pipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
 
-        this.pipeline = pipeline;
+        this.httpPipeline = pipeline;
         return this;
     }
 
