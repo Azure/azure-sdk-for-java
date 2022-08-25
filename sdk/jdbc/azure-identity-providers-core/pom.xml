@@ -10,11 +10,11 @@
   </parent>
 
   <groupId>com.azure</groupId>
-  <artifactId>azure-identity-providers-jdbc</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity-providers-jdbc;current} -->
+  <artifactId>azure-identity-providers-core</artifactId>
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity-providers-core;current} -->
   <packaging>jar</packaging>
 
-  <name>azure-identity-providers-jdbc</name>
+  <name>azure-identity-providers-core</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
