@@ -47,7 +47,7 @@ final class BinaryDataDeserializer extends JsonDeserializer<BinaryData> {
         Writer bufferWriter = new StringBuilderWriter(buffer);
 
         // If this state is reached it is known that the current JsonToken is either '{' or '['
-        buffer.append(parser.getText());
+        buffer.append(parser.currentToken() == JsonToken.START_OBJECT ? '{' : '[');
 
         int depth = 1;
         while (depth > 0) {
