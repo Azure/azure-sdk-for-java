@@ -286,6 +286,9 @@ public class GatewayAddressCache implements IAddressCache {
                             forceRefreshPartitionAddressesModified,
                             cachedAddresses),
                         cachedAddresses -> {
+                            for (Uri failedEndpoints : request.requestContext.getFailedEndpoints()) {
+                                failedEndpoints.setUnhealthy();
+                            }
                             return forceRefreshPartitionAddressesModified
                                     || Arrays.stream(cachedAddresses).anyMatch(addressInformation -> addressInformation.getPhysicalUri().shouldRefreshHealthStatus());
                         })
