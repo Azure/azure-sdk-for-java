@@ -497,5 +497,4 @@ the main ServiceBusClientBuilder. -->
 
   <!-- Star import is ok in impl class - it makes it easier to import all parent APIs, etc -->
   <suppress checks="AvoidStarImport" files="com.azure.jedis.AzureJedisClient.java"/>
-  
 </suppressions>
