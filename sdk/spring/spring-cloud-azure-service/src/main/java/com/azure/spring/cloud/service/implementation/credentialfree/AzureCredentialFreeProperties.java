@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.service.implementation.kafka;
+package com.azure.spring.cloud.service.implementation.credentialfree;
 
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.core.properties.authentication.TokenCredentialProperties;
@@ -15,7 +15,7 @@ import com.azure.spring.cloud.core.provider.authentication.TokenCredentialOption
  * Implement {@link TokenCredentialOptionsProvider} and {@link AzureProfileOptionsProvider} for Spring Cloud Azure
  * support for other third party services.
  */
-public class AzureKafkaProperties implements AzureProperties {
+public class AzureCredentialFreeProperties implements AzureProperties {
 
     private AzureProfileProperties profile = new AzureProfileProperties();
 
@@ -26,6 +26,9 @@ public class AzureKafkaProperties implements AzureProperties {
 
     // Use proxy options inside credential for azure identity
     private ProxyProperties proxy = new ProxyProperties();
+
+    // Whether to enable supporting azure identity token credentials
+    private boolean credentialFreeEnabled = false;
 
     @Override
     public AzureProfileProperties getProfile() {
@@ -61,5 +64,13 @@ public class AzureKafkaProperties implements AzureProperties {
 
     public void setProxy(ProxyProperties proxy) {
         this.proxy = proxy;
+    }
+
+    public boolean isCredentialFreeEnabled() {
+        return credentialFreeEnabled;
+    }
+
+    public void setCredentialFreeEnabled(boolean credentialFreeEnabled) {
+        this.credentialFreeEnabled = credentialFreeEnabled;
     }
 }

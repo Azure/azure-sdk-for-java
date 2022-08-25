@@ -16,11 +16,12 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.cloud.core.implementation.factory.credential.DefaultAzureCredentialBuilderFactory;
+import com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreeProperties;
+import com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreePropertiesUtils;
 import org.apache.kafka.common.security.auth.AuthenticateCallbackHandler;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerToken;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerTokenCallback;
 
-import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.AZURE_TOKEN_CREDENTIAL;
 import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG;
 
 /**
@@ -30,8 +31,9 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
 
     private static final Duration ACCESS_TOKEN_REQUEST_BLOCK_TIME = Duration.ofSeconds(30);
     private static final String TOKEN_AUDIENCE_FORMAT = "%s://%s/.default";
+    public static final String AZURE_TOKEN_CREDENTIAL = "azure.token.credential";
 
-    private final AzureKafkaProperties properties;
+    private final AzureCredentialFreeProperties properties;
     private final AzureTokenCredentialResolver tokenCredentialResolver;
 
     private TokenCredential credential;
@@ -39,10 +41,10 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
     private String tokenAudience;
 
     public KafkaOAuth2AuthenticateCallbackHandler() {
-        this(new AzureKafkaProperties(), new AzureTokenCredentialResolver());
+        this(new AzureCredentialFreeProperties(), new AzureTokenCredentialResolver());
     }
 
-    public KafkaOAuth2AuthenticateCallbackHandler(AzureKafkaProperties properties, AzureTokenCredentialResolver tokenCredentialResolver) {
+    public KafkaOAuth2AuthenticateCallbackHandler(AzureCredentialFreeProperties properties, AzureTokenCredentialResolver tokenCredentialResolver) {
         this.properties = properties;
         this.tokenCredentialResolver = tokenCredentialResolver;
     }
@@ -62,7 +64,7 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
         URI uri = URI.create("https://" + bootstrapServer);
         this.tokenAudience = String.format(TOKEN_AUDIENCE_FORMAT, uri.getScheme(), uri.getHost());
         credential = (TokenCredential) configs.get(AZURE_TOKEN_CREDENTIAL);
-        AzureKafkaPropertiesUtils.convertConfigMapToAzureProperties(configs, properties);
+        AzureCredentialFreePropertiesUtils.convertConfigMapToAzureProperties(configs, properties);
     }
 
     @Override
