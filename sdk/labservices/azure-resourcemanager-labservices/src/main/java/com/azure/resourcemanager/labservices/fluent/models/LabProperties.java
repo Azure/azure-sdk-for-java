@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.labservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.labservices.models.AutoShutdownProfile;
 import com.azure.resourcemanager.labservices.models.ConnectionProfile;
 import com.azure.resourcemanager.labservices.models.LabNetworkProfile;
@@ -14,14 +13,11 @@ import com.azure.resourcemanager.labservices.models.ProvisioningState;
 import com.azure.resourcemanager.labservices.models.RosterProfile;
 import com.azure.resourcemanager.labservices.models.SecurityProfile;
 import com.azure.resourcemanager.labservices.models.VirtualMachineProfile;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of a lab resource. */
 @Fluent
 public final class LabProperties extends LabUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LabProperties.class);
-
     /*
      * Current provisioning state of the lab.
      */
@@ -29,8 +25,8 @@ public final class LabProperties extends LabUpdateProperties {
     private ProvisioningState provisioningState;
 
     /*
-     * The network profile for the lab, typically applied via a lab plan. This
-     * profile cannot be modified once a lab has been created.
+     * The network profile for the lab, typically applied via a lab plan. This profile cannot be modified once a lab
+     * has been created.
      */
     @JsonProperty(value = "networkProfile")
     private LabNetworkProfile networkProfile;

@@ -164,7 +164,7 @@ public class Authentication {
     private static void getResourceInfo(DocumentModelAdministrationClient documentModelAdminClient) {
         ResourceDetails resourceDetails = documentModelAdminClient.getResourceDetails();
         System.out.printf("Max number of models that can be trained for this account: %s%n",
-            resourceDetails.getDocumentModelLimit());
-        System.out.printf("Current count of built custom models: %d%n", resourceDetails.getDocumentModelCount());
+            resourceDetails.getCustomDocumentModelLimit());
+        System.out.printf("Current count of built custom models: %d%n", resourceDetails.getCustomDocumentModelCount());
     }
 }

@@ -4,12 +4,14 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentEntityHelper;
+import com.azure.core.annotation.Immutable;
 
 import java.util.List;
 
 /**
  * An object representing various categories of entities.
  */
+@Immutable
 public final class DocumentEntity {
     /*
      * Entity type.
