@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.personalizer.administration;
+package com.azure.ai.personalizer.implementation.util;
 
 import com.azure.ai.personalizer.models.ErrorResponseException;
 import com.azure.ai.personalizer.models.InternalError;
@@ -9,7 +9,7 @@ import com.azure.ai.personalizer.models.PersonalizerError;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.models.ResponseError;
 
-class Transforms {
+public class Transforms {
     public static Throwable mapToHttpResponseExceptionIfExists(Throwable throwable) {
         if (throwable instanceof ErrorResponseException) {
             ErrorResponseException errorResponseException = (ErrorResponseException) throwable;

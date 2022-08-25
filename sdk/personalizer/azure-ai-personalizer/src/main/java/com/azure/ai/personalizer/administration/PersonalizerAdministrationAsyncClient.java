@@ -15,6 +15,7 @@ import com.azure.ai.personalizer.administration.models.PersonalizerPolicyReferen
 import com.azure.ai.personalizer.administration.models.PersonalizerServiceProperties;
 import com.azure.ai.personalizer.implementation.PersonalizerClientV1Preview3Impl;
 import com.azure.ai.personalizer.implementation.util.ModelTransforms;
+import com.azure.ai.personalizer.implementation.util.Transforms;
 import com.azure.ai.personalizer.implementation.util.Utility;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;

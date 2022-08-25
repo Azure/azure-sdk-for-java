@@ -4,6 +4,7 @@
 package com.azure.ai.personalizer;
 
 import com.azure.ai.personalizer.implementation.PersonalizerClientV1Preview3Impl;
+import com.azure.ai.personalizer.implementation.util.Transforms;
 import com.azure.ai.personalizer.models.PersonalizerRankMultiSlotOptions;
 import com.azure.ai.personalizer.models.PersonalizerRankMultiSlotResult;
 import com.azure.ai.personalizer.models.PersonalizerRankOptions;
