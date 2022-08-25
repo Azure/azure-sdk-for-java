@@ -395,5 +395,5 @@ resourcemanager_com.jcraft:jsch;0.1.55
 # sdk\storage\azure-storage-blob-cryptography\pom.xml
 storage_com.microsoft.azure:azure-storage;8.4.0
 
-# sdk\spring\azure-spring-boot\pom.xml
+# sdk\appconfiguration\azure-spring-cloud-test-appconfiguration-config\pom.xml
 spring_com.microsoft.azure:azure;1.34.0
