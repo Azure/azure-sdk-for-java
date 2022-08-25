@@ -10,22 +10,28 @@ import com.azure.core.util.Context;
 /** Resource collection API of Operations. */
 public interface Operations {
     /**
-     * Returns a list of all operations.
+     * Get all operations
+     *
+     * <p>Returns a list of all operations.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider.
+     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<Operation> list();
 
     /**
-     * Returns a list of all operations.
+     * Get all operations
+     *
+     * <p>Returns a list of all operations.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider.
+     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<Operation> list(Context context);
 }
