@@ -49,9 +49,16 @@ final class BinaryDataDeserializer extends JsonDeserializer<BinaryData> {
         // If this state is reached it is known that the current JsonToken is either '{' or '['
         buffer.append(parser.currentToken() == JsonToken.START_OBJECT ? '{' : '[');
 
+        JsonToken previous = parser.currentToken();
         int depth = 1;
         while (depth > 0) {
             JsonToken next = parser.nextToken();
+
+            if (!(previous.isStructStart() || next.isStructEnd() || previous == JsonToken.FIELD_NAME)) {
+                buffer.append(',');
+            }
+
+            previous = next;
             switch (next) {
                 case START_ARRAY:
                 case START_OBJECT:

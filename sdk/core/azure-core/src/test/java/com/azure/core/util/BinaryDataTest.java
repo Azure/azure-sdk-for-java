@@ -12,6 +12,7 @@ import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import org.junit.jupiter.api.Assertions;
@@ -25,7 +26,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SynchronousSink;
 import reactor.test.StepVerifier;
-import wiremock.com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
