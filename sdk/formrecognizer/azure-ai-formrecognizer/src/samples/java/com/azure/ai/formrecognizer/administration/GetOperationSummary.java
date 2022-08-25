@@ -3,8 +3,10 @@
 
 package com.azure.ai.formrecognizer.administration;
 
-import com.azure.ai.formrecognizer.administration.models.ModelOperationDetails;
-import com.azure.ai.formrecognizer.administration.models.ModelOperationStatus;
+import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient;
+import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelOperationDetails;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentOperationStatus;
 import com.azure.core.credential.AzureKeyCredential;
 
 /**
@@ -27,19 +29,20 @@ public class GetOperationSummary {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
-        client.listOperations().forEach(modelOperationInfo -> {
-            System.out.printf("Operation ID: %s%n", modelOperationInfo.getOperationId());
-            System.out.printf("Operation Kind: %s%n", modelOperationInfo.getKind());
-            System.out.printf("Operation Status: %s%n", modelOperationInfo.getStatus());
-            System.out.printf("Operation resource location %s%n", modelOperationInfo.getResourceLocation());
-            System.out.printf("Operation percent completion status: %d%n", modelOperationInfo.getPercentCompleted());
+        client.listOperations().forEach(modelOperationSummary -> {
+            System.out.printf("Operation ID: %s%n", modelOperationSummary.getOperationId());
+            System.out.printf("Operation Kind: %s%n", modelOperationSummary.getKind());
+            System.out.printf("Operation Status: %s%n", modelOperationSummary.getStatus());
+            System.out.printf("Operation resource location %s%n", modelOperationSummary.getResourceLocation());
+            System.out.printf("Operation percent completion status: %d%n", modelOperationSummary.getPercentCompleted());
 
             // get the specific operation info
-            ModelOperationDetails modelOperationDetails =
-                client.getOperation(modelOperationInfo.getOperationId());
-            System.out.printf("Model ID created with this operation: %s%n", modelOperationDetails.getModelId());
-            if (ModelOperationStatus.FAILED.equals(modelOperationInfo.getStatus())) {
+            DocumentModelOperationDetails modelOperationDetails =
+                client.getOperation(modelOperationSummary.getOperationId());
+            if (DocumentOperationStatus.FAILED.equals(modelOperationSummary.getStatus())) {
                 System.out.printf("Operation fail error: %s%n", modelOperationDetails.getError().getMessage());
+            } else {
+                System.out.printf("Model ID created with this operation: %s%n", modelOperationDetails.getResult().getModelId());
             }
         });
 

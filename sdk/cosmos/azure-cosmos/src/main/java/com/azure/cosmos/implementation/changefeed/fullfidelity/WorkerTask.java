@@ -15,10 +15,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 class WorkerTask extends Thread {
     private final Logger logger = LoggerFactory.getLogger(WorkerTask.class);
-    private AtomicBoolean done;
+    private final AtomicBoolean done;
     private Mono<Void> job;
-    private Lease lease;
-    private PartitionSupervisor partitionSupervisor;
+    private final Lease lease;
+    private final PartitionSupervisor partitionSupervisor;
 
     WorkerTask(Lease lease, PartitionSupervisor partitionSupervisor, Mono<Void> job) {
         this.lease = lease;

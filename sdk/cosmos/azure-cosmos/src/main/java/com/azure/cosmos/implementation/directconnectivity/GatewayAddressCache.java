@@ -39,7 +39,7 @@ import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
-import com.azure.cosmos.implementation.caches.AsyncCache;
+import com.azure.cosmos.implementation.caches.AsyncCacheNonBlocking;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
@@ -50,7 +50,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -85,7 +84,7 @@ public class GatewayAddressCache implements IAddressCache {
     private final String databaseFeedEntryUrl = PathsHelper.generatePath(ResourceType.Database, "", true);
     private final URI addressEndpoint;
 
-    private final AsyncCache<PartitionKeyRangeIdentity, AddressInformation[]> serverPartitionAddressCache;
+    private final AsyncCacheNonBlocking<PartitionKeyRangeIdentity, AddressInformation[]> serverPartitionAddressCache;
     private final ConcurrentHashMap<PartitionKeyRangeIdentity, Instant> suboptimalServerPartitionTimestamps;
     private final long suboptimalPartitionForceRefreshIntervalInSeconds;
 
@@ -130,7 +129,7 @@ public class GatewayAddressCache implements IAddressCache {
             throw new IllegalStateException(e);
         }
         this.tokenProvider = tokenProvider;
-        this.serverPartitionAddressCache = new AsyncCache<>();
+        this.serverPartitionAddressCache = new AsyncCacheNonBlocking<>();
         this.suboptimalServerPartitionTimestamps = new ConcurrentHashMap<>();
         this.suboptimalMasterPartitionTimestamp = Instant.MAX;
 
@@ -274,68 +273,35 @@ public class GatewayAddressCache implements IAddressCache {
         final boolean forceRefreshPartitionAddressesModified = forceRefreshPartitionAddresses;
 
         if (forceRefreshPartitionAddressesModified) {
-            logger.debug("refresh serverPartitionAddressCache for {}", partitionKeyRangeIdentity);
-
-            // Mark the addresses as unhealthy
-            for (Uri uri : request.requestContext.getFailedEndpoints()) {
-                uri.setUnhealthy();
-            }
-
-            this.serverPartitionAddressCache.refreshWithInitFunction(
-                partitionKeyRangeIdentity,
-                cachedAddresses -> this.getAddressesForRangeId(
-                    request,
-                    partitionKeyRangeIdentity,
-                    true,
-                    cachedAddresses)); // TODO: change to use unblocking cache
-
             this.suboptimalServerPartitionTimestamps.remove(partitionKeyRangeIdentity);
         }
 
         Mono<Utils.ValueHolder<AddressInformation[]>> addressesObs =
                 this.serverPartitionAddressCache
-                    .getAsyncWithInitFunction(
+                    .getAsync(
                         partitionKeyRangeIdentity,
-                        null,
                         cachedAddresses -> this.getAddressesForRangeId(
                             request,
                             partitionKeyRangeIdentity,
-                            false,
-                            cachedAddresses)) // TODO: change to use unblocking cache
+                            forceRefreshPartitionAddressesModified,
+                            cachedAddresses),
+                        cachedAddresses -> {
+                            return forceRefreshPartitionAddressesModified
+                                    || Arrays.stream(cachedAddresses).anyMatch(addressInformation -> addressInformation.getPhysicalUri().shouldRefreshHealthStatus());
+                        })
                     .map(Utils.ValueHolder::new);
 
         return addressesObs
-                .map(
-                    addressesValueHolder -> {
-                        if (notAllReplicasAvailable(addressesValueHolder.v)) {
-                            if (logger.isDebugEnabled()) {
-                                logger.debug("not all replicas available {}", JavaStreamUtils.info(addressesValueHolder.v));
-                            }
-                            this.suboptimalServerPartitionTimestamps.putIfAbsent(partitionKeyRangeIdentity, Instant.now());
+                .map(addressesValueHolder -> {
+                    if (notAllReplicasAvailable(addressesValueHolder.v)) {
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("not all replicas available {}", JavaStreamUtils.info(addressesValueHolder.v));
                         }
+                        this.suboptimalServerPartitionTimestamps.putIfAbsent(partitionKeyRangeIdentity, Instant.now());
+                    }
 
-                        // Refresh the cache if there was an address has been marked as unhealthy long enough and need to revalidate its status
-                        // If you are curious about why we do not depend on 410 to force refresh the addresses, the reason being:
-                        // When an address is marked as unhealthy, then the address enumerator will move it to the end of the list
-                        // So it could happen that no request will use the unhealthy address for an extended period of time
-                        // So the 410 -> forceRefresh workflow may not happen
-                        // TODO: moving this part logic into forceRefresh decision making in unblocking cache
-                        if (Arrays
-                                .stream(addressesValueHolder.v)
-                                .anyMatch(addressInformation -> addressInformation.getPhysicalUri().shouldRefreshHealthStatus())) {
-
-                            logger.info("refresh cache due to address uri in unhealthy status");
-                            this.serverPartitionAddressCache.refreshWithInitFunction(
-                                    partitionKeyRangeIdentity,
-                                    cachedAddresses -> this.getAddressesForRangeId(
-                                            request,
-                                            partitionKeyRangeIdentity,
-                                            true,
-                                            cachedAddresses));
-                        }
-
-                        return addressesValueHolder;
-                    })
+                    return addressesValueHolder;
+                })
                 .onErrorResume(ex -> {
                     Throwable unwrappedException = reactor.core.Exceptions.unwrap(ex);
                     CosmosException dce = Utils.as(unwrappedException, CosmosException.class);

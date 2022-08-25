@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for Instances Update. */
 public final class InstancesUpdateSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/Instances/Instances_Update.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/Instances/Instances_Update.json
      */
     /**
      * Sample code: Updates Instance.

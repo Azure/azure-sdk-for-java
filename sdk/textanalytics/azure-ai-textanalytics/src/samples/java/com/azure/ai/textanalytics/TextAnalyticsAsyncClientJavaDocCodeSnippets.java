@@ -8,6 +8,10 @@ import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetai
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AssessmentSentiment;
+import com.azure.ai.textanalytics.models.CategorizedEntity;
+import com.azure.ai.textanalytics.models.ClassificationCategory;
+import com.azure.ai.textanalytics.models.ClassifyDocumentOperationDetail;
+import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
@@ -16,19 +20,26 @@ import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
+import com.azure.ai.textanalytics.models.MultiLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomain;
+import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesOperationDetail;
+import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesAction;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
+import com.azure.ai.textanalytics.models.SingleLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
+import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
+import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
@@ -861,6 +872,277 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                         });
                     }));
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeHealthcareEntities#Iterable-AnalyzeHealthcareEntitiesOptions
+    }
+
+    // Custom Entities Recognition
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#beginRecognizeCustomEntities(Iterable, String, String, String, RecognizeCustomEntitiesOptions)}
+     */
+    public void recognizeCustomEntitiesStringInput() {
+        // BEGIN: AsyncClient.beginRecognizeCustomEntities#Iterable-String-String-String-RecognizeCustomEntitiesOptions
+        List<String> documents = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            documents.add(
+                "A recent report by the Government Accountability Office (GAO) found that the dramatic increase "
+                    + "in oil and natural gas development on federal lands over the past six years has stretched the"
+                    + " staff of the BLM to a point that it has been unable to meet its environmental protection "
+                    + "responsibilities."
+            );
+        }
+        RecognizeCustomEntitiesOptions options = new RecognizeCustomEntitiesOptions().setIncludeStatistics(true);
+        textAnalyticsAsyncClient.beginRecognizeCustomEntities(documents, "{project_name}",
+            "{deployment_name}", "en", options)
+            .flatMap(pollResult -> {
+                RecognizeCustomEntitiesOperationDetail operationResult = pollResult.getValue();
+                System.out.printf("Operation created time: %s, expiration time: %s.%n",
+                    operationResult.getCreatedAt(), operationResult.getExpiresAt());
+                return pollResult.getFinalResult();
+            })
+            .flatMap(pagedFlux -> pagedFlux.byPage())
+            .subscribe(
+                perPage -> {
+                    System.out.printf("Response code: %d, Continuation Token: %s.%n",
+                        perPage.getStatusCode(), perPage.getContinuationToken());
+                    for (RecognizeCustomEntitiesResultCollection documentsResults : perPage.getElements()) {
+                        System.out.printf("Project name: %s, deployment name: %s.%n",
+                            documentsResults.getProjectName(), documentsResults.getDeploymentName());
+                        for (RecognizeEntitiesResult documentResult : documentsResults) {
+                            System.out.println("Document ID: " + documentResult.getId());
+                            for (CategorizedEntity entity : documentResult.getEntities()) {
+                                System.out.printf(
+                                    "\tText: %s, category: %s, confidence score: %f.%n",
+                                    entity.getText(), entity.getCategory(), entity.getConfidenceScore());
+                            }
+                        }
+                    }
+                },
+                ex -> System.out.println("Error listing pages: " + ex.getMessage()),
+                () -> System.out.println("Successfully listed all pages"));
+        // END: AsyncClient.beginRecognizeCustomEntities#Iterable-String-String-String-RecognizeCustomEntitiesOptions
+    }
+
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#beginRecognizeCustomEntities(Iterable, String, String, RecognizeCustomEntitiesOptions)}
+     */
+    public void recognizeCustomEntitiesMaxOverload() {
+        // BEGIN: AsyncClient.beginRecognizeCustomEntities#Iterable-String-String-RecognizeCustomEntitiesOptions
+        List<TextDocumentInput> documents = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            documents.add(new TextDocumentInput(Integer.toString(i),
+                "A recent report by the Government Accountability Office (GAO) found that the dramatic increase "
+                    + "in oil and natural gas development on federal lands over the past six years has stretched the"
+                    + " staff of the BLM to a point that it has been unable to meet its environmental protection "
+                    + "responsibilities."));
+        }
+        RecognizeCustomEntitiesOptions options = new RecognizeCustomEntitiesOptions().setIncludeStatistics(true);
+        textAnalyticsAsyncClient.beginRecognizeCustomEntities(documents, "{project_name}",
+            "{deployment_name}", options)
+            .flatMap(pollResult -> {
+                RecognizeCustomEntitiesOperationDetail operationResult = pollResult.getValue();
+                System.out.printf("Operation created time: %s, expiration time: %s.%n",
+                    operationResult.getCreatedAt(), operationResult.getExpiresAt());
+                return pollResult.getFinalResult();
+            })
+            .flatMap(pagedFlux -> pagedFlux.byPage())
+            .subscribe(
+                perPage -> {
+                    System.out.printf("Response code: %d, Continuation Token: %s.%n",
+                        perPage.getStatusCode(), perPage.getContinuationToken());
+                    for (RecognizeCustomEntitiesResultCollection documentsResults : perPage.getElements()) {
+                        System.out.printf("Project name: %s, deployment name: %s.%n",
+                            documentsResults.getProjectName(), documentsResults.getDeploymentName());
+                        for (RecognizeEntitiesResult documentResult : documentsResults) {
+                            System.out.println("Document ID: " + documentResult.getId());
+                            for (CategorizedEntity entity : documentResult.getEntities()) {
+                                System.out.printf(
+                                    "\tText: %s, category: %s, confidence score: %f.%n",
+                                    entity.getText(), entity.getCategory(), entity.getConfidenceScore());
+                            }
+                        }
+                    }
+                },
+                ex -> System.out.println("Error listing pages: " + ex.getMessage()),
+                () -> System.out.println("Successfully listed all pages"));
+        // END: AsyncClient.beginRecognizeCustomEntities#Iterable-String-String-RecognizeCustomEntitiesOptions
+    }
+
+    // Single-Label Classification
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#beginSingleLabelClassify(Iterable, String, String, String, SingleLabelClassifyOptions)}
+     */
+    public void singleLabelClassificationStringInput() {
+        // BEGIN: AsyncClient.beginSingleLabelClassify#Iterable-String-String-String-SingleLabelClassifyOptions
+        List<String> documents = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            documents.add(
+                "A recent report by the Government Accountability Office (GAO) found that the dramatic increase "
+                    + "in oil and natural gas development on federal lands over the past six years has stretched the"
+                    + " staff of the BLM to a point that it has been unable to meet its environmental protection "
+                    + "responsibilities."
+            );
+        }
+        SingleLabelClassifyOptions options = new SingleLabelClassifyOptions().setIncludeStatistics(true);
+        // See the service documentation for regional support and how to train a model to classify your documents,
+        // see https://aka.ms/azsdk/textanalytics/customfunctionalities
+        textAnalyticsAsyncClient.beginSingleLabelClassify(documents,
+            "{project_name}", "{deployment_name}", "en", options)
+            .flatMap(pollResult -> {
+                ClassifyDocumentOperationDetail operationResult = pollResult.getValue();
+                System.out.printf("Operation created time: %s, expiration time: %s.%n",
+                    operationResult.getCreatedAt(), operationResult.getExpiresAt());
+                return pollResult.getFinalResult();
+            })
+            .flatMap(pagedFluxAsyncPollResponse -> pagedFluxAsyncPollResponse.byPage())
+            .subscribe(
+                perPage -> {
+                    System.out.printf("Response code: %d, Continuation Token: %s.%n",
+                        perPage.getStatusCode(), perPage.getContinuationToken());
+                    for (ClassifyDocumentResultCollection documentsResults : perPage.getElements()) {
+                        System.out.printf("Project name: %s, deployment name: %s.%n",
+                            documentsResults.getProjectName(), documentsResults.getDeploymentName());
+                        for (ClassifyDocumentResult documentResult : documentsResults) {
+                            System.out.println("Document ID: " + documentResult.getId());
+                            for (ClassificationCategory classification : documentResult.getClassifications()) {
+                                System.out.printf("\tCategory: %s, confidence score: %f.%n",
+                                    classification.getCategory(), classification.getConfidenceScore());
+                            }
+                        }
+                    }
+                },
+                ex -> System.out.println("Error listing pages: " + ex.getMessage()),
+                () -> System.out.println("Successfully listed all pages"));
+        // END: AsyncClient.beginSingleLabelClassify#Iterable-String-String-String-SingleLabelClassifyOptions
+    }
+
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#beginSingleLabelClassify(Iterable, String, String, SingleLabelClassifyOptions)}
+     */
+    public void singleLabelClassificationMaxOverload() {
+        // BEGIN: AsyncClient.beginSingleLabelClassify#Iterable-String-String-SingleLabelClassifyOptions
+        List<TextDocumentInput> documents = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            documents.add(new TextDocumentInput(Integer.toString(i),
+                "A recent report by the Government Accountability Office (GAO) found that the dramatic increase "
+                + "in oil and natural gas development on federal lands over the past six years has stretched the"
+                + " staff of the BLM to a point that it has been unable to meet its environmental protection "
+                + "responsibilities."));
+        }
+        SingleLabelClassifyOptions options = new SingleLabelClassifyOptions().setIncludeStatistics(true);
+        // See the service documentation for regional support and how to train a model to classify your documents,
+        // see https://aka.ms/azsdk/textanalytics/customfunctionalities
+        textAnalyticsAsyncClient.beginSingleLabelClassify(documents,
+            "{project_name}", "{deployment_name}", options)
+            .flatMap(pollResult -> {
+                ClassifyDocumentOperationDetail operationResult = pollResult.getValue();
+                System.out.printf("Operation created time: %s, expiration time: %s.%n",
+                    operationResult.getCreatedAt(), operationResult.getExpiresAt());
+                return pollResult.getFinalResult();
+            })
+            .flatMap(pagedFluxAsyncPollResponse -> pagedFluxAsyncPollResponse.byPage())
+            .subscribe(
+                perPage -> {
+                    System.out.printf("Response code: %d, Continuation Token: %s.%n",
+                        perPage.getStatusCode(), perPage.getContinuationToken());
+                    for (ClassifyDocumentResultCollection documentsResults : perPage.getElements()) {
+                        System.out.printf("Project name: %s, deployment name: %s.%n",
+                            documentsResults.getProjectName(), documentsResults.getDeploymentName());
+                        for (ClassifyDocumentResult documentResult : documentsResults) {
+                            System.out.println("Document ID: " + documentResult.getId());
+                            for (ClassificationCategory classification : documentResult.getClassifications()) {
+                                System.out.printf("\tCategory: %s, confidence score: %f.%n",
+                                    classification.getCategory(), classification.getConfidenceScore());
+                            }
+                        }
+                    }
+                },
+                ex -> System.out.println("Error listing pages: " + ex.getMessage()),
+                () -> System.out.println("Successfully listed all pages"));
+        // END: AsyncClient.beginSingleLabelClassify#Iterable-String-String-SingleLabelClassifyOptions
+    }
+
+    // Multi-Label classification
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#beginMultiLabelClassify(Iterable, String, String, String, MultiLabelClassifyOptions)}
+     */
+    public void multiLabelClassificationStringInput() {
+        // BEGIN: AsyncClient.beginMultiLabelClassify#Iterable-String-String-String-MultiLabelClassifyOptions
+        List<String> documents = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            documents.add(
+                "I need a reservation for an indoor restaurant in China. Please don't stop the music."
+                    + " Play music and add it to my playlist");
+        }
+        MultiLabelClassifyOptions options = new MultiLabelClassifyOptions().setIncludeStatistics(true);
+        textAnalyticsAsyncClient.beginMultiLabelClassify(documents, "{project_name}",
+            "{deployment_name}", "en", options)
+            .flatMap(pollResult -> {
+                ClassifyDocumentOperationDetail operationResult = pollResult.getValue();
+                System.out.printf("Operation created time: %s, expiration time: %s.%n",
+                    operationResult.getCreatedAt(), operationResult.getExpiresAt());
+                return pollResult.getFinalResult();
+            })
+            .flatMap(pagedFluxAsyncPollResponse -> pagedFluxAsyncPollResponse.byPage())
+            .subscribe(
+                perPage -> {
+                    System.out.printf("Response code: %d, Continuation Token: %s.%n",
+                        perPage.getStatusCode(), perPage.getContinuationToken());
+                    for (ClassifyDocumentResultCollection documentsResults : perPage.getElements()) {
+                        System.out.printf("Project name: %s, deployment name: %s.%n",
+                            documentsResults.getProjectName(), documentsResults.getDeploymentName());
+                        for (ClassifyDocumentResult documentResult : documentsResults) {
+                            System.out.println("Document ID: " + documentResult.getId());
+                            for (ClassificationCategory classification : documentResult.getClassifications()) {
+                                System.out.printf("\tCategory: %s, confidence score: %f.%n",
+                                    classification.getCategory(), classification.getConfidenceScore());
+                            }
+                        }
+                    }
+                },
+                ex -> System.out.println("Error listing pages: " + ex.getMessage()),
+                () -> System.out.println("Successfully listed all pages"));
+        // END: AsyncClient.beginMultiLabelClassify#Iterable-String-String-String-MultiLabelClassifyOptions
+    }
+
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#beginMultiLabelClassify(Iterable, String, String, MultiLabelClassifyOptions)}
+     */
+    public void multiLabelClassificationMaxOverload() {
+        // BEGIN: AsyncClient.beginMultiLabelClassify#Iterable-String-String-MultiLabelClassifyOptions
+        List<TextDocumentInput> documents = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            documents.add(new TextDocumentInput(Integer.toString(i),
+                "I need a reservation for an indoor restaurant in China. Please don't stop the music."
+                    + " Play music and add it to my playlist"));
+        }
+        MultiLabelClassifyOptions options = new MultiLabelClassifyOptions().setIncludeStatistics(true);
+        textAnalyticsAsyncClient.beginMultiLabelClassify(documents, "{project_name}",
+            "{deployment_name}", options)
+            .flatMap(pollResult -> {
+                ClassifyDocumentOperationDetail operationResult = pollResult.getValue();
+                System.out.printf("Operation created time: %s, expiration time: %s.%n",
+                    operationResult.getCreatedAt(), operationResult.getExpiresAt());
+                return pollResult.getFinalResult();
+            })
+            .flatMap(pagedFluxAsyncPollResponse -> pagedFluxAsyncPollResponse.byPage())
+            .subscribe(
+                perPage -> {
+                    System.out.printf("Response code: %d, Continuation Token: %s.%n",
+                        perPage.getStatusCode(), perPage.getContinuationToken());
+                    for (ClassifyDocumentResultCollection documentsResults : perPage.getElements()) {
+                        System.out.printf("Project name: %s, deployment name: %s.%n",
+                            documentsResults.getProjectName(), documentsResults.getDeploymentName());
+                        for (ClassifyDocumentResult documentResult : documentsResults) {
+                            System.out.println("Document ID: " + documentResult.getId());
+                            for (ClassificationCategory classification : documentResult.getClassifications()) {
+                                System.out.printf("\tCategory: %s, confidence score: %f.%n",
+                                    classification.getCategory(), classification.getConfidenceScore());
+                            }
+                        }
+                    }
+                },
+                ex -> System.out.println("Error listing pages: " + ex.getMessage()),
+                () -> System.out.println("Successfully listed all pages"));
+        // END: AsyncClient.beginMultiLabelClassify#Iterable-String-String-MultiLabelClassifyOptions
     }
 
     // Analyze actions

@@ -9,7 +9,11 @@ import com.azure.resourcemanager.network.fluent.models.ExpressRoutePortAuthoriza
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** ExpressRoute Port Authorization List Result Response for ListExpressRoutePortAuthorizations API service call. */
+/**
+ * ExpressRoute Port Authorization List Result
+ *
+ * <p>Response for ListExpressRoutePortAuthorizations API service call.
+ */
 @Fluent
 public final class ExpressRoutePortAuthorizationListResult {
     /*

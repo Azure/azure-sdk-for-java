@@ -6,15 +6,12 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Defines the parameters for RemoteAddress match conditions. */
 @Fluent
 public final class RemoteAddressMatchConditionParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RemoteAddressMatchConditionParameters.class);
-
     /*
      * The typeName property.
      */
@@ -34,9 +31,8 @@ public final class RemoteAddressMatchConditionParameters {
     private Boolean negateCondition;
 
     /*
-     * Match values to match against. The operator will apply to each value in
-     * here with OR semantics. If any of them match the variable with the given
-     * operator this match condition is considered a match.
+     * Match values to match against. The operator will apply to each value in here with OR semantics. If any of them
+     * match the variable with the given operator this match condition is considered a match.
      */
     @JsonProperty(value = "matchValues")
     private List<String> matchValues;
@@ -163,10 +159,12 @@ public final class RemoteAddressMatchConditionParameters {
      */
     public void validate() {
         if (operator() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property operator in model RemoteAddressMatchConditionParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RemoteAddressMatchConditionParameters.class);
 }

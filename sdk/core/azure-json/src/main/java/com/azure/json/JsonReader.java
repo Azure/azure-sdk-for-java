@@ -74,35 +74,19 @@ public abstract class JsonReader implements Closeable {
      * @throws IllegalStateException If the reader isn't pointing to either {@link JsonToken#STRING} or
      * {@link JsonToken#NULL}.
      */
-    public abstract byte[] getBinaryValue();
+    public abstract byte[] getBinary();
 
     /**
      * Gets the boolean value if the reader is currently pointing to a {@link JsonToken#BOOLEAN} token.
      * <p>
      * If the reader is pointing to any other token type an {@link IllegalStateException} will be thrown.
      * <p>
-     * If {@link Boolean} should be read use {@link #getBooleanNullableValue()}.
+     * If {@link Boolean} should be read use {@link #getNullable(Function)}.
      *
      * @return The boolean value based on the {@link JsonToken#BOOLEAN}.
      * @throws IllegalStateException If the reader isn't pointing to {@link JsonToken#BOOLEAN}.
      */
-    public abstract boolean getBooleanValue();
-
-    /**
-     * Gets the {@link Boolean} value if the reader is currently pointing to a {@link JsonToken#BOOLEAN} token or null
-     * if the reader is currently pointing to a {@link JsonToken#NULL}.
-     * <p>
-     * If the reader is pointing to any other token type an {@link IllegalStateException} will be thrown.
-     * <p>
-     * If boolean should be read use {@link #getBooleanValue()}.
-     *
-     * @return The {@link Boolean} value based on the current token.
-     * @throws IllegalStateException If the reader isn't pointing to {@link JsonToken#BOOLEAN} or
-     * {@link JsonToken#NULL}.
-     */
-    public final Boolean getBooleanNullableValue() {
-        return currentToken() == JsonToken.NULL ? null : getBooleanValue();
-    }
+    public abstract boolean getBoolean();
 
     /**
      * Gets the float value if the reader is currently pointing to a {@link JsonToken#NUMBER} or
@@ -113,35 +97,14 @@ public abstract class JsonReader implements Closeable {
      * <p>
      * All other {@link JsonToken} types will throw an {@link IllegalStateException}.
      * <p>
-     * If {@link Float} should be read use {@link #getFloatNullableValue()}.
+     * If {@link Float} should be read use {@link #getNullable(Function)}.
      *
      * @return The float value based on the current token.
      * @throws NumberFormatException If the current token is a {@link JsonToken#STRING} and cannot be converted to a
      * float.
      * @throws IllegalStateException If the current token isn't a {@link JsonToken#NUMBER} or {@link JsonToken#STRING}.
      */
-    public abstract float getFloatValue();
-
-    /**
-     * Gets the {@link Float} value if the reader is currently pointing to a {@link JsonToken#NUMBER},
-     * {@link JsonToken#STRING}, or {@link JsonToken#NULL}.
-     * <p>
-     * {@link JsonToken#STRING} will throw a {@link NumberFormatException} if the underlying string value cannot be
-     * converted to a float.
-     * <p>
-     * All other {@link JsonToken} types will throw an {@link IllegalStateException}.
-     * <p>
-     * If float should be read use {@link #getFloatValue()}.
-     *
-     * @return The {@link Float} value based on the current token.
-     * @throws NumberFormatException If the current token is a {@link JsonToken#STRING} and cannot be converted to a
-     * float.
-     * @throws IllegalStateException If the current token isn't a {@link JsonToken#NUMBER}, {@link JsonToken#STRING}, or
-     * {@link JsonToken#NULL}.
-     */
-    public final Float getFloatNullableValue() {
-        return currentToken() == JsonToken.NULL ? null : getFloatValue();
-    }
+    public abstract float getFloat();
 
     /**
      * Gets the double value if the reader is currently pointing to a {@link JsonToken#NUMBER} or
@@ -152,35 +115,14 @@ public abstract class JsonReader implements Closeable {
      * <p>
      * All other {@link JsonToken} types will throw an {@link IllegalStateException}.
      * <p>
-     * If {@link Double} should be read use {@link #getDoubleNullableValue()}.
+     * If {@link Double} should be read use {@link #getNullable(Function)}.
      *
      * @return The double value based on the current token.
      * @throws NumberFormatException If the current token is a {@link JsonToken#STRING} and cannot be converted to a
      * double.
      * @throws IllegalStateException If the current token isn't a {@link JsonToken#NUMBER} or {@link JsonToken#STRING}.
      */
-    public abstract double getDoubleValue();
-
-    /**
-     * Gets the {@link Double} value if the reader is currently pointing to a {@link JsonToken#NUMBER},
-     * {@link JsonToken#STRING}, or {@link JsonToken#NULL}.
-     * <p>
-     * {@link JsonToken#STRING} will throw a {@link NumberFormatException} if the underlying string value cannot be
-     * converted to a double.
-     * <p>
-     * All other {@link JsonToken} types will throw an {@link IllegalStateException}.
-     * <p>
-     * If double should be read use {@link #getDoubleValue()}.
-     *
-     * @return The {@link Double} value based on the current token.
-     * @throws NumberFormatException If the current token is a {@link JsonToken#STRING} and cannot be converted to a
-     * double.
-     * @throws IllegalStateException If the current token isn't a {@link JsonToken#NUMBER}, {@link JsonToken#STRING}, or
-     * {@link JsonToken#NULL}.
-     */
-    public final Double getDoubleNullableValue() {
-        return currentToken() == JsonToken.NULL ? null : getDoubleValue();
-    }
+    public abstract double getDouble();
 
     /**
      * Gets the int value if the reader is currently pointing to a {@link JsonToken#NUMBER} or
@@ -191,35 +133,14 @@ public abstract class JsonReader implements Closeable {
      * <p>
      * All other {@link JsonToken} types will throw an {@link IllegalStateException}.
      * <p>
-     * If {@link Integer} should be read use {@link #getIntegerNullableValue()}
+     * If {@link Integer} should be read use {@link #getNullable(Function)}.
      *
      * @return The int value based on the current token.
      * @throws NumberFormatException If the current token is a {@link JsonToken#STRING} and cannot be converted to an
      * int.
      * @throws IllegalStateException If the current token isn't a {@link JsonToken#NUMBER} or {@link JsonToken#STRING}.
      */
-    public abstract int getIntValue();
-
-    /**
-     * Gets the {@link Integer} value if the reader is currently pointing to a {@link JsonToken#NUMBER},
-     * {@link JsonToken#STRING}, or {@link JsonToken#NULL}.
-     * <p>
-     * {@link JsonToken#STRING} will throw a {@link NumberFormatException} if the underlying string value cannot be
-     * converted to an int.
-     * <p>
-     * All other {@link JsonToken} types will throw an {@link IllegalStateException}.
-     * <p>
-     * If int should be read use {@link #getIntValue()}
-     *
-     * @return The {@link Integer} value based on the current token.
-     * @throws NumberFormatException If the current token is a {@link JsonToken#STRING} and cannot be converted to an
-     * int.
-     * @throws IllegalStateException If the current token isn't a {@link JsonToken#NUMBER}, {@link JsonToken#STRING}, or
-     * {@link JsonToken#NULL}.
-     */
-    public final Integer getIntegerNullableValue() {
-        return currentToken() == JsonToken.NULL ? null : getIntValue();
-    }
+    public abstract int getInt();
 
     /**
      * Gets the long value if the reader is currently pointing to a {@link JsonToken#NUMBER} or
@@ -230,35 +151,14 @@ public abstract class JsonReader implements Closeable {
      * <p>
      * All other {@link JsonToken} types will throw an {@link IllegalStateException}.
      * <p>
-     * If {@link Long} should be read use {@link #getLongNullableValue()}.
+     * If {@link Long} should be read use {@link #getNullable(Function)}.
      *
      * @return The long value based on the current token.
      * @throws NumberFormatException If the current token is a {@link JsonToken#STRING} and cannot be converted to a
      * long.
      * @throws IllegalStateException If the current token isn't a {@link JsonToken#NUMBER} or {@link JsonToken#STRING}.
      */
-    public abstract long getLongValue();
-
-    /**
-     * Gets the {@link Long} value if the reader is currently pointing to a {@link JsonToken#NUMBER},
-     * {@link JsonToken#STRING}, or {@link JsonToken#NULL}.
-     * <p>
-     * {@link JsonToken#STRING} will throw a {@link NumberFormatException} if the underlying string value cannot be
-     * converted to a long.
-     * <p>
-     * All other {@link JsonToken} types will throw an {@link IllegalStateException}.
-     * <p>
-     * If long should be read use {@link #getLongValue()}.
-     *
-     * @return The {@link Long} value based on the current token.
-     * @throws NumberFormatException If the current token is a {@link JsonToken#STRING} and cannot be converted to a
-     * long.
-     * @throws IllegalStateException If the current token isn't a {@link JsonToken#NUMBER}, {@link JsonToken#STRING}, or
-     * {@link JsonToken#NULL}.
-     */
-    public final Long getLongNullableValue() {
-        return currentToken() == JsonToken.NULL ? null : getLongValue();
-    }
+    public abstract long getLong();
 
     /**
      * Gets the String value if the reader is currently pointing to a {@link JsonToken#BOOLEAN}, {@link JsonToken#NULL},
@@ -273,7 +173,7 @@ public abstract class JsonReader implements Closeable {
      * @throws IllegalStateException If the current token isn't a {@link JsonToken#BOOLEAN}, {@link JsonToken#NULL},
      * {@link JsonToken#NUMBER}, or {@link JsonToken#STRING}.
      */
-    public abstract String getStringValue();
+    public abstract String getString();
 
     /**
      * Gets the field name if the reader is currently pointing to a {@link JsonToken#FIELD_NAME}.
@@ -297,7 +197,7 @@ public abstract class JsonReader implements Closeable {
      * @return null if the {@link #currentToken()} is {@link JsonToken#NULL} or the value returned by
      * {@code nonNullGetter}.
      */
-    public final <T> T getNullableValue(Function<JsonReader, T> nonNullGetter) {
+    public final <T> T getNullable(Function<JsonReader, T> nonNullGetter) {
         return currentToken() == JsonToken.NULL ? null : nonNullGetter.apply(this);
     }
 
@@ -310,17 +210,17 @@ public abstract class JsonReader implements Closeable {
     public abstract void skipChildren();
 
     /**
-     * Reads and returns the current JSON structure the {@link JsonReader} is pointing to. This will mutate the current
+     * Reads and returns the current JSON object the {@link JsonReader} is pointing to. This will mutate the current
      * location of this {@link JsonReader}.
      * <p>
-     * If the {@link #currentToken()} isn't {@link JsonToken#START_OBJECT} or {@link JsonToken#FIELD_NAME} an
-     * {@link IllegalStateException} will be thrown.
+     * If the {@link #currentToken()} isn't {@link JsonToken#START_OBJECT} or {@link JsonToken#FIELD_NAME} followed by
+     * {@link JsonToken#START_OBJECT} an {@link IllegalStateException} will be thrown.
      * <p>
      * The returned {@link JsonReader} is able to be {@link #reset()} to replay the underlying JSON stream.
      *
      * @return The buffered JSON object the {@link JsonReader} was pointing to.
      * @throws IllegalStateException If the {@link #currentToken()} isn't {@link JsonToken#START_OBJECT} or
-     * {@link JsonToken#FIELD_NAME}.
+     * {@link JsonToken#FIELD_NAME} followed by {@link JsonToken#START_OBJECT}
      */
     public abstract JsonReader bufferObject();
 
@@ -374,7 +274,7 @@ public abstract class JsonReader implements Closeable {
             return buffer;
         }
 
-        buffer.append(getTextValue());
+        buffer.append(getText());
 
         // Initial array or object depth is 1.
         int depth = 1;
@@ -407,9 +307,9 @@ public abstract class JsonReader implements Closeable {
             if (token == JsonToken.FIELD_NAME) {
                 buffer.append("\"").append(getFieldName()).append("\":");
             } else if (token == JsonToken.STRING) {
-                buffer.append("\"").append(getStringValue()).append("\"");
+                buffer.append("\"").append(getString()).append("\"");
             } else {
-                buffer.append(getTextValue());
+                buffer.append(getText());
             }
         }
 
@@ -588,9 +488,9 @@ public abstract class JsonReader implements Closeable {
         if (token == JsonToken.NULL || token == null) {
             return null;
         } else if (token == JsonToken.BOOLEAN) {
-            return getBooleanValue();
+            return getBoolean();
         } else if (token == JsonToken.NUMBER) {
-            String numberText = getTextValue();
+            String numberText = getText();
             if (numberText.contains(".")) {
                 // Unlike integers always use Double to prevent floating point rounding issues.
                 return Double.parseDouble(numberText);
@@ -602,7 +502,7 @@ public abstract class JsonReader implements Closeable {
                 }
             }
         } else if (token == JsonToken.STRING) {
-            return getStringValue();
+            return getString();
         } else if (token == JsonToken.START_ARRAY) {
             List<Object> array = new ArrayList<>();
 
@@ -640,10 +540,10 @@ public abstract class JsonReader implements Closeable {
      *     <li>{@link JsonToken#START_ARRAY} -&gt; [</li>
      *     <li>{@link JsonToken#END_ARRAY} -&gt; ]</li>
      *     <li>{@link JsonToken#FIELD_NAME} -&gt; {@link #getFieldName()}</li>
-     *     <li>{@link JsonToken#BOOLEAN} -&gt; String.valueOf {@link #getBooleanValue()}</li>
+     *     <li>{@link JsonToken#BOOLEAN} -&gt; String.valueOf {@link #getBoolean()}</li>
      *     <li>{@link JsonToken#NULL} -&gt; "null"</li>
-     *     <li>{@link JsonToken#STRING} -&gt; {@link #getStringValue()}</li>
-     *     <li>{@link JsonToken#NUMBER} -&gt; String.valueOf {@link #getStringValue()}</li>
+     *     <li>{@link JsonToken#STRING} -&gt; {@link #getString()}</li>
+     *     <li>{@link JsonToken#NUMBER} -&gt; String.valueOf {@link #getString()}</li>
      * </ul>
      *
      * If the current token is null an {@link IllegalStateException} will be thrown.
@@ -651,7 +551,7 @@ public abstract class JsonReader implements Closeable {
      * @return The text value for the {@link #currentToken()}.
      * @throws IllegalStateException If the current token is null.
      */
-    public final String getTextValue() {
+    public final String getText() {
         JsonToken token = currentToken();
 
         if (token == null) {
@@ -677,7 +577,7 @@ public abstract class JsonReader implements Closeable {
             case BOOLEAN:
             case NUMBER:
             case STRING:
-                return getStringValue();
+                return getString();
 
             case NULL:
                 return "null";

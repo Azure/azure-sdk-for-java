@@ -13,6 +13,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /** The TopicDescription model. */
@@ -94,6 +95,11 @@ public final class TopicDescription {
     private static final class AuthorizationRulesWrapper {
         @JacksonXmlProperty(localName = "AuthorizationRule")
         private final List<AuthorizationRuleImpl> items;
+
+        @JsonCreator
+        private AuthorizationRulesWrapper() {
+            this.items = Collections.emptyList();
+        }
 
         @JsonCreator
         private AuthorizationRulesWrapper(

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ParamIndicator. */
+/** Indicates the purpose of the parameter. */
 public final class ParamIndicator extends ExpandableStringEnum<ParamIndicator> {
     /** Static value Expires for ParamIndicator. */
     public static final ParamIndicator EXPIRES = fromString("Expires");
@@ -30,7 +30,11 @@ public final class ParamIndicator extends ExpandableStringEnum<ParamIndicator> {
         return fromString(name, ParamIndicator.class);
     }
 
-    /** @return known ParamIndicator values. */
+    /**
+     * Gets known ParamIndicator values.
+     *
+     * @return known ParamIndicator values.
+     */
     public static Collection<ParamIndicator> values() {
         return values(ParamIndicator.class);
     }

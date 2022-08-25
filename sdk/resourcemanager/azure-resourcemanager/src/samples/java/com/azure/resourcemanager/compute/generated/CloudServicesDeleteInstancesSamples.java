@@ -11,7 +11,7 @@ import java.util.Arrays;
 /** Samples for CloudServices DeleteInstances. */
 public final class CloudServicesDeleteInstancesSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudServiceRoleInstance_Delete_ByCloudService.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-04-04/examples/CloudServiceRoleInstance_Delete_ByCloudService.json
      */
     /**
      * Sample code: Delete Cloud Service Role Instances in a Cloud Service.

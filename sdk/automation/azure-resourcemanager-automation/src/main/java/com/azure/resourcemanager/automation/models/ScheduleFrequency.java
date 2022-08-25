@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ScheduleFrequency. */
+/** Gets or sets the frequency of the schedule. */
 public final class ScheduleFrequency extends ExpandableStringEnum<ScheduleFrequency> {
     /** Static value OneTime for ScheduleFrequency. */
     public static final ScheduleFrequency ONE_TIME = fromString("OneTime");
@@ -39,7 +39,11 @@ public final class ScheduleFrequency extends ExpandableStringEnum<ScheduleFreque
         return fromString(name, ScheduleFrequency.class);
     }
 
-    /** @return known ScheduleFrequency values. */
+    /**
+     * Gets known ScheduleFrequency values.
+     *
+     * @return known ScheduleFrequency values.
+     */
     public static Collection<ScheduleFrequency> values() {
         return values(ScheduleFrequency.class);
     }

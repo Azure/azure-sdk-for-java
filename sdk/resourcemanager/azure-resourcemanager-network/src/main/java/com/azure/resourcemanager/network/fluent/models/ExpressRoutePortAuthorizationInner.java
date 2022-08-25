@@ -10,18 +10,23 @@ import com.azure.resourcemanager.network.models.ExpressRoutePortAuthorizationUse
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ExpressRoute Port Authorization ExpressRoutePort Authorization resource definition. */
+/**
+ * ExpressRoute Port Authorization
+ *
+ * <p>ExpressRoutePort Authorization resource definition.
+ */
 @Fluent
 public final class ExpressRoutePortAuthorizationInner extends SubResource {
     /*
-     * ExpressRoute Port Authorization Properties ExpressRoutePort properties.
+     * ExpressRoute Port Authorization Properties
+     *
+     * ExpressRoutePort properties.
      */
     @JsonProperty(value = "properties")
     private ExpressRoutePortAuthorizationPropertiesFormat innerProperties;
 
     /*
-     * The name of the resource that is unique within a resource group. This
-     * name can be used to access the resource.
+     * The name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -39,7 +44,9 @@ public final class ExpressRoutePortAuthorizationInner extends SubResource {
     private String type;
 
     /**
-     * Get the innerProperties property: ExpressRoute Port Authorization Properties ExpressRoutePort properties.
+     * Get the innerProperties property: ExpressRoute Port Authorization Properties
+     *
+     * <p>ExpressRoutePort properties.
      *
      * @return the innerProperties value.
      */

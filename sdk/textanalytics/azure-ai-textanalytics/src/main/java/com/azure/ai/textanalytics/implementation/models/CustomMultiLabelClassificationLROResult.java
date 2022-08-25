@@ -19,14 +19,14 @@ public final class CustomMultiLabelClassificationLROResult extends AnalyzeTextLR
      * The results property.
      */
     @JsonProperty(value = "results", required = true)
-    private CustomMultiLabelClassificationResult results;
+    private CustomLabelClassificationResult results;
 
     /**
      * Get the results property: The results property.
      *
      * @return the results value.
      */
-    public CustomMultiLabelClassificationResult getResults() {
+    public CustomLabelClassificationResult getResults() {
         return this.results;
     }
 
@@ -36,7 +36,7 @@ public final class CustomMultiLabelClassificationLROResult extends AnalyzeTextLR
      * @param results the results value to set.
      * @return the CustomMultiLabelClassificationLROResult object itself.
      */
-    public CustomMultiLabelClassificationLROResult setResults(CustomMultiLabelClassificationResult results) {
+    public CustomMultiLabelClassificationLROResult setResults(CustomLabelClassificationResult results) {
         this.results = results;
         return this;
     }
