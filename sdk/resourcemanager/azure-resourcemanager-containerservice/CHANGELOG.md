@@ -6,6 +6,10 @@
 
 - Deprecated method `KubernetesClusters.listKubernetesVersions`. Use `KubernetesClusters.listOrchestrators`.
 
+#### Dependency Updates
+
+- Updated `api-version` to `2022-07-01`.
+
 ## 2.17.0 (2022-07-25)
 
 ### Breaking Changes
