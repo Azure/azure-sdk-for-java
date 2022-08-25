@@ -7,6 +7,7 @@ import com.nimbusds.jose.util.Resource;
 import com.nimbusds.jose.util.ResourceRetriever;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +38,7 @@ public class RestOperationsResourceRetriever implements ResourceRetriever {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON, APPLICATION_JWK_SET_JSON));
         ResponseEntity<String> response = getResponse(url, headers);
-        if (response.getStatusCodeValue() != 200) {
+        if (response.getStatusCodeValue() != HttpStatus.OK.value()) {
             throw new IOException(response.toString());
         }
         return new Resource(response.getBody(), "UTF-8");
