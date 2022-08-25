@@ -18,7 +18,9 @@ import java.util.List;
 /** An instance of this class provides access to all the operations defined in EmailServicesClient. */
 public interface EmailServicesClient {
     /**
-     * Get the EmailService and its properties.
+     * Get
+     *
+     * <p>Get the EmailService and its properties.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -31,7 +33,9 @@ public interface EmailServicesClient {
     EmailServiceResourceInner getByResourceGroup(String resourceGroupName, String emailServiceName);
 
     /**
-     * Get the EmailService and its properties.
+     * Get
+     *
+     * <p>Get the EmailService and its properties.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -46,7 +50,9 @@ public interface EmailServicesClient {
         String resourceGroupName, String emailServiceName, Context context);
 
     /**
-     * Create a new EmailService or update an existing EmailService.
+     * Create Or Update
+     *
+     * <p>Create a new EmailService or update an existing EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -61,7 +67,9 @@ public interface EmailServicesClient {
         String resourceGroupName, String emailServiceName, EmailServiceResourceInner parameters);
 
     /**
-     * Create a new EmailService or update an existing EmailService.
+     * Create Or Update
+     *
+     * <p>Create a new EmailService or update an existing EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -77,7 +85,9 @@ public interface EmailServicesClient {
         String resourceGroupName, String emailServiceName, EmailServiceResourceInner parameters, Context context);
 
     /**
-     * Create a new EmailService or update an existing EmailService.
+     * Create Or Update
+     *
+     * <p>Create a new EmailService or update an existing EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -92,7 +102,9 @@ public interface EmailServicesClient {
         String resourceGroupName, String emailServiceName, EmailServiceResourceInner parameters);
 
     /**
-     * Create a new EmailService or update an existing EmailService.
+     * Create Or Update
+     *
+     * <p>Create a new EmailService or update an existing EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -108,7 +120,9 @@ public interface EmailServicesClient {
         String resourceGroupName, String emailServiceName, EmailServiceResourceInner parameters, Context context);
 
     /**
-     * Operation to delete a EmailService.
+     * Delete
+     *
+     * <p>Operation to delete a EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -121,7 +135,9 @@ public interface EmailServicesClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String emailServiceName);
 
     /**
-     * Operation to delete a EmailService.
+     * Delete
+     *
+     * <p>Operation to delete a EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -135,7 +151,9 @@ public interface EmailServicesClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String emailServiceName, Context context);
 
     /**
-     * Operation to delete a EmailService.
+     * Delete
+     *
+     * <p>Operation to delete a EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -147,7 +165,9 @@ public interface EmailServicesClient {
     void delete(String resourceGroupName, String emailServiceName);
 
     /**
-     * Operation to delete a EmailService.
+     * Delete
+     *
+     * <p>Operation to delete a EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -160,7 +180,9 @@ public interface EmailServicesClient {
     void delete(String resourceGroupName, String emailServiceName, Context context);
 
     /**
-     * Operation to update an existing EmailService.
+     * Update
+     *
+     * <p>Operation to update an existing EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -175,7 +197,9 @@ public interface EmailServicesClient {
         String resourceGroupName, String emailServiceName, EmailServiceResourceUpdate parameters);
 
     /**
-     * Operation to update an existing EmailService.
+     * Update
+     *
+     * <p>Operation to update an existing EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -191,7 +215,9 @@ public interface EmailServicesClient {
         String resourceGroupName, String emailServiceName, EmailServiceResourceUpdate parameters, Context context);
 
     /**
-     * Operation to update an existing EmailService.
+     * Update
+     *
+     * <p>Operation to update an existing EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -206,7 +232,9 @@ public interface EmailServicesClient {
         String resourceGroupName, String emailServiceName, EmailServiceResourceUpdate parameters);
 
     /**
-     * Operation to update an existing EmailService.
+     * Update
+     *
+     * <p>Operation to update an existing EmailService.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
@@ -222,7 +250,9 @@ public interface EmailServicesClient {
         String resourceGroupName, String emailServiceName, EmailServiceResourceUpdate parameters, Context context);
 
     /**
-     * Handles requests to list all resources in a subscription.
+     * List By Subscription
+     *
+     * <p>Handles requests to list all resources in a subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -233,7 +263,9 @@ public interface EmailServicesClient {
     PagedIterable<EmailServiceResourceInner> list();
 
     /**
-     * Handles requests to list all resources in a subscription.
+     * List By Subscription
+     *
+     * <p>Handles requests to list all resources in a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -246,7 +278,9 @@ public interface EmailServicesClient {
     PagedIterable<EmailServiceResourceInner> list(Context context);
 
     /**
-     * Handles requests to list all resources in a resource group.
+     * List By Resource Group
+     *
+     * <p>Handles requests to list all resources in a resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -259,7 +293,9 @@ public interface EmailServicesClient {
     PagedIterable<EmailServiceResourceInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Handles requests to list all resources in a resource group.
+     * List By Resource Group
+     *
+     * <p>Handles requests to list all resources in a resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -273,7 +309,9 @@ public interface EmailServicesClient {
     PagedIterable<EmailServiceResourceInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Get a list of domains that are fully verified in Exchange Online.
+     * List Verified Domains From Exchange Online
+     *
+     * <p>Get a list of domains that are fully verified in Exchange Online.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -283,7 +321,9 @@ public interface EmailServicesClient {
     List<String> listVerifiedExchangeOnlineDomains();
 
     /**
-     * Get a list of domains that are fully verified in Exchange Online.
+     * List Verified Domains From Exchange Online
+     *
+     * <p>Get a list of domains that are fully verified in Exchange Online.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

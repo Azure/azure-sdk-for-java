@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AzureFirewallRCActionType. */
+/** The action type of a rule collection. */
 public final class AzureFirewallRCActionType extends ExpandableStringEnum<AzureFirewallRCActionType> {
     /** Static value Allow for AzureFirewallRCActionType. */
     public static final AzureFirewallRCActionType ALLOW = fromString("Allow");

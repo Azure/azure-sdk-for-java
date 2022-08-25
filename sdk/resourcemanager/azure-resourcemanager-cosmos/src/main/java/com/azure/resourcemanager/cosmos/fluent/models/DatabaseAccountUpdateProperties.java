@@ -31,8 +31,7 @@ public final class DatabaseAccountUpdateProperties {
     private ConsistencyPolicy consistencyPolicy;
 
     /*
-     * An array that contains the georeplication locations enabled for the
-     * Cosmos DB account.
+     * An array that contains the georeplication locations enabled for the Cosmos DB account.
      */
     @JsonProperty(value = "locations")
     private List<Location> locations;
@@ -50,10 +49,9 @@ public final class DatabaseAccountUpdateProperties {
     private Boolean isVirtualNetworkFilterEnabled;
 
     /*
-     * Enables automatic failover of the write region in the rare event that
-     * the region is unavailable due to an outage. Automatic failover will
-     * result in a new write region for the account and is chosen based on the
-     * failover priorities configured for the account.
+     * Enables automatic failover of the write region in the rare event that the region is unavailable due to an
+     * outage. Automatic failover will result in a new write region for the account and is chosen based on the failover
+     * priorities configured for the account.
      */
     @JsonProperty(value = "enableAutomaticFailover")
     private Boolean enableAutomaticFailover;
@@ -83,15 +81,13 @@ public final class DatabaseAccountUpdateProperties {
     private Boolean enableCassandraConnector;
 
     /*
-     * The cassandra connector offer type for the Cosmos DB database C*
-     * account.
+     * The cassandra connector offer type for the Cosmos DB database C* account.
      */
     @JsonProperty(value = "connectorOffer")
     private ConnectorOffer connectorOffer;
 
     /*
-     * Disable write operations on metadata resources (databases, containers,
-     * throughput) via account keys
+     * Disable write operations on metadata resources (databases, containers, throughput) via account keys
      */
     @JsonProperty(value = "disableKeyBasedMetadataWriteAccess")
     private Boolean disableKeyBasedMetadataWriteAccess;
@@ -103,10 +99,8 @@ public final class DatabaseAccountUpdateProperties {
     private String keyVaultKeyUri;
 
     /*
-     * The default identity for accessing key vault used in features like
-     * customer managed keys. The default identity needs to be explicitly set
-     * by the users. It can be "FirstPartyIdentity", "SystemAssignedIdentity"
-     * and more.
+     * The default identity for accessing key vault used in features like customer managed keys. The default identity
+     * needs to be explicitly set by the users. It can be "FirstPartyIdentity", "SystemAssignedIdentity" and more.
      */
     @JsonProperty(value = "defaultIdentity")
     private String defaultIdentity;
@@ -160,22 +154,19 @@ public final class DatabaseAccountUpdateProperties {
     private NetworkAclBypass networkAclBypass;
 
     /*
-     * An array that contains the Resource Ids for Network Acl Bypass for the
-     * Cosmos DB account.
+     * An array that contains the Resource Ids for Network Acl Bypass for the Cosmos DB account.
      */
     @JsonProperty(value = "networkAclBypassResourceIds")
     private List<String> networkAclBypassResourceIds;
 
     /*
-     * Opt-out of local authentication and ensure only MSI and AAD can be used
-     * exclusively for authentication.
+     * Opt-out of local authentication and ensure only MSI and AAD can be used exclusively for authentication.
      */
     @JsonProperty(value = "disableLocalAuth")
     private Boolean disableLocalAuth;
 
     /*
-     * The object that represents all properties related to capacity
-     * enforcement on an account.
+     * The object that represents all properties related to capacity enforcement on an account.
      */
     @JsonProperty(value = "capacity")
     private Capacity capacity;

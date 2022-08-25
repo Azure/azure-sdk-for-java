@@ -30,7 +30,11 @@ public final class WafRuleType extends ExpandableStringEnum<WafRuleType> {
         return fromString(name, WafRuleType.class);
     }
 
-    /** @return known WafRuleType values. */
+    /**
+     * Gets known WafRuleType values.
+     *
+     * @return known WafRuleType values.
+     */
     public static Collection<WafRuleType> values() {
         return values(WafRuleType.class);
     }

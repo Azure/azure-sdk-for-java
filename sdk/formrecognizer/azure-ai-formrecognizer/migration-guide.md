@@ -23,16 +23,16 @@ we have been focused on learning the patterns and practices to best support deve
 customers.
 
 To improve the development experience and address the consistent feedback across the Form Recognizer SDK, this new 
-version of the library replaces the previously existing clients `FormRecognizerClient` and `FormTrainingClient` with
+version of the library introduces two new clients
 `DocumentAnalysisClient` and the `DocumentModelAdministrationClient` that provide unified methods for 
 analyzing documents and provide support for the new features added by the service in 
-API version `2022-01-30-preview` and later.
+API version `2022-08-31` and later.
 
 The below table describes the relationship of each client and its supported API version(s):
 
 |API version|Supported clients
 |-|-
-|2022-01-30-preview | DocumentAnalysisClient and DocumentModelAdministrationClient
+|2022-08-31 | DocumentAnalysisClient and DocumentModelAdministrationClient
 |2.1 | FormRecognizerClient and FormTrainingClient
 |2.0 | FormRecognizerClient and FormTrainingClient
 
@@ -49,6 +49,7 @@ The service has further matured to define cross-page elements by using the `Boun
 - List Models operation now returns a paged list of prebuilt in addition to custom models that are built successfully. 
 Also, when using the `getModel()` model, users can get the field schema (field names and types that the model can extract) for the model they specified, including for prebuilt models.
 - Added methods for getting/listing operations of the past 24 hours, useful to track the status of model creation/copying operations and any resulting errors.
+- `FormRecognizerClient` and `FormTrainingClient` will continue to work targeting API version 2.1 and 2.0.
 
 Please refer to the [README][README] for more information on these new clients.
 
@@ -58,7 +59,7 @@ Please refer to the [README][README] for more information on these new clients.
 
 In 3.x.x, the `FormRecognizerClient` and the `FormRecognizerAsyncClient` is instantiated via the `FormRecognizerClientBuilder`.
 
-In 4.x.x, the `FormRecognizerClient` and the `FormRecognizerAsyncClient`, has been replaced by the `DocumentAnalysisClient` and the `DocumentAnalysisAsyncClient` respectively and is instantiated via the [DocumentAnalysisClientBuilder][DocumentAnalysisClientBuilder].
+In 4.x.x, we have added the `DocumentAnalysisClient` and the `DocumentAnalysisAsyncClient`, instantiated via the [DocumentAnalysisClientBuilder][DocumentAnalysisClientBuilder].
 The sync and async operations are separated to [DocumentAnalysisClient][DocumentAnalysisClient] and [DocumentAnalysisAsyncClient][DocumentAnalysisAsyncClient].
 
 Instantiating FormRecognizerClient client with 3.x.x:
@@ -76,7 +77,7 @@ DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilde
     .endpoint("{endpoint}")
     .buildClient();
 ```
-Similarly, with 4.x.x, the `FormTrainingClient` and `FormTrainingAsyncClient` has been replaced by the `DocumentModelAdministrationClient` 
+Similarly, with 4.x.x, we have added the `DocumentModelAdministrationClient` 
 and `DocumentModelAdministrationAsyncClient`, instantiated via the [DocumentModelAdministrationClientBuilder][DocumentModelAdministrationClientBuilder].
 The sync and async operations are separated to [DocumentModelAdministrationClient][DocumentModelAdministrationClient] and [DocumentModelAdministrationAsyncClient][DocumentModelAdministrationAsyncClient].
 
@@ -107,7 +108,7 @@ With 4.x.x, the unified method, `beginAnalyzeDocument` and `beginAnalyzeDocument
 - provides the functionality of `beginRecognizeCustomForms`, `beginRecognizeContent`, `beginRecognizeReceipt`,
   `beginRecognizeReceipts`, `beginRecognizeInvoices` `beginRecognizeIdentityDocuments` and `beginRecognizeBusinessCards` from the previous (azure-ai-formrecognizer 3.1.X - below) package versions.
 - accepts unified `AnalyzeDocumentOptions` to specify pages and locale information for the outgoing request
-- the `includeFieldElements` parameter is not supported with the `DocumentAnalysisClient`, text details are automatically included with API version `2022-01-30-preview` and later.
+- the `includeFieldElements` parameter is not supported with the `DocumentAnalysisClient`, text details are automatically included with API version `2022-08-31` and later.
 - the `readingOrder` parameter does not exist as the service uses `natural` reading order for the returned data.
 
 #### Using a prebuilt model
@@ -522,10 +523,13 @@ Build a custom document model using 4.x.x `beginBuildModel`:
 // Build custom document analysis model
 String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
 // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
+String prefix = "{blob_name_prefix}}";
 SyncPoller<DocumentOperationResult, DocumentModelDetails> buildOperationPoller =
     documentModelAdminClient.beginBuildModel(trainingFilesUrl,
         DocumentModelBuildMode.TEMPLATE,
-        new BuildModelOptions().setModelId("my-build-model").setDescription("model desc"), Context.NONE);
+        prefix,
+        new BuildModelOptions().setModelId("my-build-model").setDescription("model desc"),
+        Context.NONE);
 
 DocumentModelDetails documentModelDetails = buildOperationPoller.getFinalResult();
 
@@ -559,17 +563,17 @@ and were returned in the list models response.
 For additional samples please take a look at the [Form Recognizer samples][README-Samples]
 
 <!-- Links -->
-[DocumentAnalysisClientBuilder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/DocumentAnalysisClientBuilder.java
-[DocumentAnalysisClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/DocumentAnalysisClient.java
-[DocumentAnalysisAsyncClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/DocumentAnalysisAsyncClient.java
-[DocumentModelAdministrationClientBuilder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/administration/DocumentModelAdministrationClientBuilder.java
-[DocumentModelAdministrationClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/administration/DocumentModelAdministrationClient.java
-[DocumentModelAdministrationAsyncClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/administration/DocumentModelAdministrationAsyncClient.java
+[DocumentAnalysisClientBuilder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/documentanalysis/DocumentAnalysisClientBuilder.java
+[DocumentAnalysisClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/documentanalysis/DocumentAnalysisClient.java
+[DocumentAnalysisAsyncClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/documentanalysis/DocumentAnalysisAsyncClient.java
+[DocumentModelAdministrationClientBuilder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/documentanalysis/administration/DocumentModelAdministrationClientBuilder.java
+[DocumentModelAdministrationClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/documentanalysis/administration/DocumentModelAdministrationClient.java
+[DocumentModelAdministrationAsyncClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/documentanalysis/administration/DocumentModelAdministrationAsyncClient.java
 [Guidelines]: https://azure.github.io/azure-sdk/general_introduction.html
 [GuidelinesJava]: https://azure.github.io/azure-sdk/java_introduction.html
 [GuidelinesJavaDesign]: https://azure.github.io/azure-sdk/java_introduction.html#namespaces
 [README-Samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/README.md
 [README]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/README.md
-<!-- [service_supported_models]: TODO -->
+[service_supported_models]: https://aka.ms/azsdk/formrecognizer/models
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fformrecognizer%2Fazure-ai-formrecognizer%2Fmigration-guide.png)

@@ -314,14 +314,7 @@ public final class ProximityPlacementGroupsClientImpl
     public Mono<ProximityPlacementGroupInner> createOrUpdateAsync(
         String resourceGroupName, String proximityPlacementGroupName, ProximityPlacementGroupInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, proximityPlacementGroupName, parameters)
-            .flatMap(
-                (Response<ProximityPlacementGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -499,14 +492,7 @@ public final class ProximityPlacementGroupsClientImpl
     public Mono<ProximityPlacementGroupInner> updateAsync(
         String resourceGroupName, String proximityPlacementGroupName, ProximityPlacementGroupUpdate parameters) {
         return updateWithResponseAsync(resourceGroupName, proximityPlacementGroupName, parameters)
-            .flatMap(
-                (Response<ProximityPlacementGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -660,8 +646,7 @@ public final class ProximityPlacementGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String proximityPlacementGroupName) {
-        return deleteWithResponseAsync(resourceGroupName, proximityPlacementGroupName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, proximityPlacementGroupName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -822,14 +807,7 @@ public final class ProximityPlacementGroupsClientImpl
         String resourceGroupName, String proximityPlacementGroupName, String includeColocationStatus) {
         return getByResourceGroupWithResponseAsync(
                 resourceGroupName, proximityPlacementGroupName, includeColocationStatus)
-            .flatMap(
-                (Response<ProximityPlacementGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -848,14 +826,7 @@ public final class ProximityPlacementGroupsClientImpl
         final String includeColocationStatus = null;
         return getByResourceGroupWithResponseAsync(
                 resourceGroupName, proximityPlacementGroupName, includeColocationStatus)
-            .flatMap(
-                (Response<ProximityPlacementGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1203,7 +1174,8 @@ public final class ProximityPlacementGroupsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1240,7 +1212,8 @@ public final class ProximityPlacementGroupsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1278,7 +1251,8 @@ public final class ProximityPlacementGroupsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1315,7 +1289,8 @@ public final class ProximityPlacementGroupsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.

@@ -12,10 +12,12 @@ import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseRenewer;
 import com.azure.cosmos.implementation.changefeed.PartitionProcessor;
 import com.azure.cosmos.implementation.changefeed.PartitionSupervisor;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedObserverContextImpl;
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
 import com.azure.cosmos.implementation.changefeed.exceptions.ObserverException;
 import com.azure.cosmos.implementation.changefeed.exceptions.PartitionSplitException;
 import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledException;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedProcessorItem;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
@@ -26,16 +28,16 @@ import java.time.Duration;
  */
 class PartitionSupervisorImpl implements PartitionSupervisor {
     private final Lease lease;
-    private final ChangeFeedObserver observer;
+    private final ChangeFeedObserver<ChangeFeedProcessorItem> observer;
     private final PartitionProcessor processor;
     private final LeaseRenewer renewer;
-    private CancellationTokenSource childShutdownCts;
+    private final CancellationTokenSource childShutdownCts;
 
     private volatile RuntimeException resultException;
 
-    private Scheduler scheduler;
+    private final Scheduler scheduler;
 
-    public PartitionSupervisorImpl(Lease lease, ChangeFeedObserver observer, PartitionProcessor processor, LeaseRenewer renewer, Scheduler scheduler) {
+    public PartitionSupervisorImpl(Lease lease, ChangeFeedObserver<ChangeFeedProcessorItem> observer, PartitionProcessor processor, LeaseRenewer renewer, Scheduler scheduler) {
         this.lease = lease;
         this.observer = observer;
         this.processor = processor;
@@ -48,7 +50,7 @@ class PartitionSupervisorImpl implements PartitionSupervisor {
     public Mono<Void> run(CancellationToken shutdownToken) {
         this.resultException = null;
 
-        ChangeFeedObserverContext context = new ChangeFeedObserverContextImpl(this.lease.getLeaseToken());
+        ChangeFeedObserverContext<ChangeFeedProcessorItem> context = new ChangeFeedObserverContextImpl<>(this.lease.getLeaseToken());
 
         this.observer.open(context);
 
@@ -65,7 +67,7 @@ class PartitionSupervisorImpl implements PartitionSupervisor {
             .flatMap( value -> this.afterRun(context, shutdownToken));
     }
 
-    private Mono<Void> afterRun(ChangeFeedObserverContext context, CancellationToken shutdownToken) {
+    private Mono<Void> afterRun(ChangeFeedObserverContext<ChangeFeedProcessorItem> context, CancellationToken shutdownToken) {
         ChangeFeedObserverCloseReason closeReason = ChangeFeedObserverCloseReason.UNKNOWN;
 
         try {
@@ -120,8 +122,6 @@ class PartitionSupervisorImpl implements PartitionSupervisor {
 
     @Override
     public void shutdown() {
-        if (this.childShutdownCts != null) {
-            this.childShutdownCts.cancel();
-        }
+        this.childShutdownCts.cancel();
     }
 }

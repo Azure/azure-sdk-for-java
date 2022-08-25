@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The WafRankingsResponseDataItem model. */
 @Fluent
 public final class WafRankingsResponseDataItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WafRankingsResponseDataItem.class);
-
     /*
      * The groupValues property.
      */
@@ -25,7 +21,7 @@ public final class WafRankingsResponseDataItem {
      * The metrics property.
      */
     @JsonProperty(value = "metrics")
-    private List<ComponentsKpo1PjSchemasWafrankingsresponsePropertiesDataItemsPropertiesMetricsItems> metrics;
+    private List<WafRankingsResponseDataItemMetric> metrics;
 
     /**
      * Get the groupValues property: The groupValues property.
@@ -52,7 +48,7 @@ public final class WafRankingsResponseDataItem {
      *
      * @return the metrics value.
      */
-    public List<ComponentsKpo1PjSchemasWafrankingsresponsePropertiesDataItemsPropertiesMetricsItems> metrics() {
+    public List<WafRankingsResponseDataItemMetric> metrics() {
         return this.metrics;
     }
 
@@ -62,8 +58,7 @@ public final class WafRankingsResponseDataItem {
      * @param metrics the metrics value to set.
      * @return the WafRankingsResponseDataItem object itself.
      */
-    public WafRankingsResponseDataItem withMetrics(
-        List<ComponentsKpo1PjSchemasWafrankingsresponsePropertiesDataItemsPropertiesMetricsItems> metrics) {
+    public WafRankingsResponseDataItem withMetrics(List<WafRankingsResponseDataItemMetric> metrics) {
         this.metrics = metrics;
         return this;
     }

@@ -36,8 +36,7 @@ public final class AgentPoolInner extends SubResource {
     private ManagedClusterAgentPoolProfileProperties innerProperties;
 
     /*
-     * The name of the resource that is unique within a resource group. This
-     * name can be used to access the resource.
+     * The name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
@@ -356,7 +355,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the osSku property: Specifies an OS SKU. This value must not be specified if OSType is Windows.
+     * Get the osSku property: Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux.
+     * The default is Windows2019 when Kubernetes &lt;= 1.24 or Windows2022 when Kubernetes &gt;= 1.25 if OSType is
+     * Windows.
      *
      * @return the osSku value.
      */
@@ -365,7 +366,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the osSku property: Specifies an OS SKU. This value must not be specified if OSType is Windows.
+     * Set the osSku property: Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux.
+     * The default is Windows2019 when Kubernetes &lt;= 1.24 or Windows2022 when Kubernetes &gt;= 1.25 if OSType is
+     * Windows.
      *
      * @param osSku the osSku value to set.
      * @return the AgentPoolInner object itself.

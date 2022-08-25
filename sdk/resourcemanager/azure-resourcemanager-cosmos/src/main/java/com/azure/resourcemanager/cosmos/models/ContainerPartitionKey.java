@@ -18,9 +18,8 @@ public final class ContainerPartitionKey {
     private List<String> paths;
 
     /*
-     * Indicates the kind of algorithm used for partitioning. For MultiHash,
-     * multiple partition keys (upto three maximum) are supported for container
-     * create
+     * Indicates the kind of algorithm used for partitioning. For MultiHash, multiple partition keys (upto three
+     * maximum) are supported for container create
      */
     @JsonProperty(value = "kind")
     private PartitionKind kind;

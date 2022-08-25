@@ -151,11 +151,11 @@
       </And>
       <And>
         <Class name="com.azure.json.DefaultJsonReader"/>
-        <Method name="getBinaryValue"/>
+        <Method name="getBinary"/>
       </And>
       <And>
         <Class name="com.azure.json.gson.GsonJsonReader"/>
-        <Method name="getBinaryValue"/>
+        <Method name="getBinary"/>
       </And>
     </Or>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
@@ -1252,13 +1252,7 @@
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9087 -->
   <Match>
-    <Class name="com.azure.cosmos.implementation.changefeed.incremental.AutoCheckpointer"/>
-    <Field name="processedDocCount"/>
-    <Bug pattern="VO_VOLATILE_INCREMENT"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.cosmos.implementation.changefeed.fullfidelity.AutoCheckpointer"/>
+    <Class name="com.azure.cosmos.implementation.changefeed.common.AutoCheckpointer"/>
     <Field name="processedDocCount"/>
     <Bug pattern="VO_VOLATILE_INCREMENT"/>
   </Match>
@@ -1325,10 +1319,10 @@
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
-  <!-- DocumentModelOperationException fields re serializable -->
+  <!-- FormRecognizerException fields re serializable -->
   <Match>
-    <Class name="com.azure.ai.formrecognizer.models.DocumentModelOperationException"/>
-    <Field name="documentModelOperationError"/>
+    <Class name="com.azure.ai.formrecognizer.models.FormRecognizerException"/>
+    <Field name="errorInformationList"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
@@ -2719,68 +2713,6 @@
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
 
-  <!-- Exclude BC_UNCONFIRMED_CAST_OF_RETURN_VALUE as false positive -->
-  <Match>
-    <Class name="com.azure.ai.textanalytics.AnalyzeActionsAsyncClient"/>
-    <Or>
-      <Method name="getCustomEntitiesTaskParameters"/>
-      <Method name="getCustomMultiLabelClassificationTaskParameters"/>
-      <Method name="getCustomSingleClassificationTaskParameters"/>
-      <Method name="getEntitiesTaskParameters"/>
-      <Method name="getEntityLinkingTaskParameters"/>
-      <Method name="getExtractiveSummarizationTaskParameters"/>
-      <Method name="getHealthcareTaskParameters"/>
-      <Method name="getKeyPhraseTaskParameters"/>
-      <Method name="getPiiTaskParameters"/>
-      <Method name="getSentimentAnalysisTaskParameters"/>
-    </Or>
-  </Match>
-  <Match>
-    <Class name="com.azure.ai.textanalytics.AnalyzeHealthcareEntityAsyncClient"/>
-    <Or>
-      <Method name="beginAnalyzeHealthcareEntities"/>
-      <Method name="beginAnalyzeHealthcarePagedIterable"/>
-    </Or>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-  <Match>
-    <Class name="com.azure.ai.textanalytics.AnalyzeHealthcareEntityAsyncClient"/>
-    <Or>
-      <Method name="beginAnalyzeHealthcareEntities"/>
-      <Method name="beginAnalyzeHealthcarePagedIterable"/>
-    </Or>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-  <Match>
-    <Class name="com.azure.ai.textanalytics.AnalyzeSentimentAsyncClient"/>
-    <Method name="getAnalyzedSentimentResponse"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-  <Match>
-    <Class name="com.azure.ai.textanalytics.DetectLanguageAsyncClient"/>
-    <Method name="getDetectedLanguageResponse"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-  <Match>
-    <Class name="com.azure.ai.textanalytics.ExtractKeyPhraseAsyncClient"/>
-    <Method name="getExtractedKeyPhrasesResponse"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-  <Match>
-    <Class name="com.azure.ai.textanalytics.RecognizeEntityAsyncClient"/>
-    <Method name="getRecognizedEntitiesResponse"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-  <Match>
-    <Class name="com.azure.ai.textanalytics.RecognizeLinkedEntityAsyncClient"/>
-    <Method name="getRecognizedLinkedEntitiesResponse"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-  <Match>
-    <Class name="com.azure.ai.textanalytics.RecognizePiiEntityAsyncClient"/>
-    <Method name="getRecognizePiiEntitiesResponse"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
   <Match>
     <Class name="com.azure.core.implementation.http.rest.ResponseExceptionConstructorCache"/>
     <Method name="locateExceptionConstructor"/>
@@ -2790,6 +2722,11 @@
   <!-- Shaded code shouldn't run Spotbugs -->
   <Match>
     <Package name="~com\.azure\.json\.implementation\.jackson\.core.*"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.xml.DefaultXmlReader"/>
+    <Bug pattern="XXE_XMLSTREAMREADER"/>
   </Match>
 
   <!-- Non Shipped code -->

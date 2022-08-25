@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AzureFirewallSkuTier. */
+/** Tier of an Azure Firewall. */
 public final class AzureFirewallSkuTier extends ExpandableStringEnum<AzureFirewallSkuTier> {
     /** Static value Standard for AzureFirewallSkuTier. */
     public static final AzureFirewallSkuTier STANDARD = fromString("Standard");

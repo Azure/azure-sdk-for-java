@@ -30,8 +30,7 @@ public final class BgpSettings {
     private Integer peerWeight;
 
     /*
-     * BGP peering address with IP configuration ID for virtual network
-     * gateway.
+     * BGP peering address with IP configuration ID for virtual network gateway.
      */
     @JsonProperty(value = "bgpPeeringAddresses")
     private List<IpConfigurationBgpPeeringAddress> bgpPeeringAddresses;

@@ -38,8 +38,7 @@ public final class ApplicationGatewayPrivateLinkIpConfigurationProperties {
     private Boolean primary;
 
     /*
-     * The provisioning state of the application gateway private link IP
-     * configuration.
+     * The provisioning state of the application gateway private link IP configuration.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
