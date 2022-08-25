@@ -7,34 +7,31 @@ package com.azure.resourcemanager.labservices.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** The user lab registration state. */
-public enum RegistrationState {
-    /** Enum value Registered. */
-    REGISTERED("Registered"),
+/** The identity type. */
+public enum ResourceIdentityType {
+    /** Enum value SystemAssigned. */
+    SYSTEM_ASSIGNED("SystemAssigned");
 
-    /** Enum value NotRegistered. */
-    NOT_REGISTERED("NotRegistered");
-
-    /** The actual serialized value for a RegistrationState instance. */
+    /** The actual serialized value for a ResourceIdentityType instance. */
     private final String value;
 
-    RegistrationState(String value) {
+    ResourceIdentityType(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a RegistrationState instance.
+     * Parses a serialized value to a ResourceIdentityType instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed RegistrationState object, or null if unable to parse.
+     * @return the parsed ResourceIdentityType object, or null if unable to parse.
      */
     @JsonCreator
-    public static RegistrationState fromString(String value) {
+    public static ResourceIdentityType fromString(String value) {
         if (value == null) {
             return null;
         }
-        RegistrationState[] items = RegistrationState.values();
-        for (RegistrationState item : items) {
+        ResourceIdentityType[] items = ResourceIdentityType.values();
+        for (ResourceIdentityType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
