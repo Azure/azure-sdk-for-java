@@ -8,7 +8,12 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OutboundType. */
+/**
+ * The outbound (egress) routing method.
+ *
+ * <p>This can only be set at cluster creation time and cannot be changed later. For more information see [egress
+ * outbound type](https://docs.microsoft.com/azure/aks/egress-outboundtype).
+ */
 public final class OutboundType extends ExpandableStringEnum<OutboundType> {
     /** Static value loadBalancer for OutboundType. */
     public static final OutboundType LOAD_BALANCER = fromString("loadBalancer");
