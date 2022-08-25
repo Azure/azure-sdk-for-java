@@ -57,8 +57,7 @@ public interface DiagnosticsClientContext {
                 generator.writeObjectFieldStart("clientEndpoints");
                 for (String key: clientConfig.clientMap.keySet()) {
                     try {
-                        generator.writeStringField("databaseAccount", key);
-                        generator.writeNumberField("clientsForAccount", clientConfig.clientMap.get(key));
+                        generator.writeNumberField(key, clientConfig.clientMap.get(key));
                     } catch (Exception e) {
                         logger.debug("unexpected failure", e);
                     }

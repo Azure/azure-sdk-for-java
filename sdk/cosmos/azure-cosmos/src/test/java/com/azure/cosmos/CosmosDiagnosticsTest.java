@@ -400,12 +400,14 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
             // assert diagnostics shows the correct format for tracking client instances
             assertThat(diagnostics).contains(String.format("\"clientEndpoints\"" +
-                    ":{\"databaseAccount\":\"%s\",\"clientsForAccount\":", TestConfigurations.HOST));
+                    ":{\"%s\"", TestConfigurations.HOST));
             // track number of clients currently mapped to account
-            int clientsIndex = diagnostics.indexOf("\"clientsForAccount\":");
-            // we do start at +20 to reach the start of the int, and end at +27 to ensure we grab the bracket even if
+            int clientsIndex = diagnostics.indexOf("\"clientEndpoints\":");
+            // we do end at +120 to ensure we grab the bracket even if the account is very long or if
             // we have hundreds of clients (triple digit ints) running at once in the pipelines
-            String intString = diagnostics.substring(clientsIndex+20, clientsIndex+27).split("}")[0];
+            String[] substrings = diagnostics.substring(clientsIndex, clientsIndex + 120)
+                .split("}")[0].split(":");
+            String intString = substrings[substrings.length-1];
             int intValue = Integer.parseInt(intString);
 
 
@@ -421,10 +423,12 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             diagnostics = createResponse.getDiagnostics().toString();
             // assert diagnostics shows the correct format for tracking client instances
             assertThat(diagnostics).contains(String.format("\"clientEndpoints\"" +
-                ":{\"databaseAccount\":\"%s\",\"clientsForAccount\":", TestConfigurations.HOST));
+                ":{\"%s\"", TestConfigurations.HOST));
             // grab new value and assert one additional client is mapped to the same account used previously
-            clientsIndex = diagnostics.indexOf("\"clientsForAccount\":");
-            intString = diagnostics.substring(clientsIndex+20, clientsIndex+27).split("}")[0];
+            clientsIndex = diagnostics.indexOf("\"clientEndpoints\":");
+            substrings = diagnostics.substring(clientsIndex, clientsIndex + 120)
+                .split("}")[0].split(":");
+            intString = substrings[substrings.length-1];
             assertThat(Integer.parseInt(intString)).isEqualTo(intValue+1);
 
             //close second client
