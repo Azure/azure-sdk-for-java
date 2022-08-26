@@ -9,4 +9,4 @@ module com.azure.data.appconfiguration {
 
     exports com.azure.data.appconfiguration;
     exports com.azure.data.appconfiguration.models;
-git
+}

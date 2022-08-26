@@ -8,6 +8,7 @@ open module com.azure.data.appconfiguration {
     requires transitive com.azure.core;
     requires transitive com.azure.core.test;
     requires transitive com.azure.identity;
+    requires transitive com.azure.http.netty;
     requires java.sql;
     requires transitive org.junit.jupiter.engine;
     requires transitive org.junit.jupiter.api;
