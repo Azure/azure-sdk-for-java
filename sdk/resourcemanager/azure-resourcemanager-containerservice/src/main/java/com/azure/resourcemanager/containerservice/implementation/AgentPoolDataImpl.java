@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.resourcemanager.containerservice.implementation;
 
 import com.azure.resourcemanager.containerservice.fluent.models.AgentPoolInner;
@@ -6,7 +9,7 @@ import com.azure.resourcemanager.containerservice.models.AgentPoolData;
 /**
  * AgentPool implementation that exposes AgentPoolInner as constructor arguments.
  */
-public class AgentPoolDataImpl extends AgentPoolData {
+class AgentPoolDataImpl extends AgentPoolData {
     /**
      * Creates an instance of agent pool data.
      *
