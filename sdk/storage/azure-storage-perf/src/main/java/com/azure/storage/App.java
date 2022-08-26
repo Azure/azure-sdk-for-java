@@ -44,6 +44,8 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Collection;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
@@ -63,14 +65,18 @@ public class App {
         SdkMeterProvider meterProvider = SdkMeterProvider.builder().registerMetricReader(metricReader)
             .build();
         OpenTelemetry otel = OpenTelemetrySdk.builder().setMeterProvider(meterProvider).buildAndRegisterGlobal();
-        Cpu.registerObservers(otel);
-        GarbageCollector.registerObservers(otel);
-        Threads.registerObservers(otel);
+        //Cpu.registerObservers(otel);
+        //GarbageCollector.registerObservers(otel);
+        //Threads.registerObservers(otel);
         MemoryPools.registerObservers(otel);
 
-        Mono.delay(Duration.ofSeconds(5))
-            .repeat()
-            .subscribe(p -> metricReader.collectAndPrint(), e -> System.out.println(e));
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                metricReader.collectAndPrint();
+            }
+        }, 1000, 1000);
 
         PerfStressProgram.run(new Class<?>[]{
             DownloadBlobTest.class,
@@ -93,6 +99,7 @@ public class App {
         }, args);
 
         metricReader.forceFlush();
+        timer.cancel();
     }
 
     static class InMemoryMetricReader implements MetricReader {
