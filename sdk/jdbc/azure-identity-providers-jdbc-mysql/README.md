@@ -14,12 +14,12 @@ This package contains the authentication plugin to authenticate with Azure AD fo
 
 ### Adding the package to your product
 
-[//]: # ({x-version-update-start;com.azure:azure-identity-providers-jdbc-postgresql;current})
+[//]: # ({x-version-update-start;com.azure:azure-identity-providers-jdbc-mysql;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-identity-providers-jdbc-postgresql</artifactId>
-    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity-providers-jdbc-postgresql;current} -->
+    <artifactId>azure-identity-providers-jdbc-mysql</artifactId>
+    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity-providers-jdbc-mysql;current} -->
 </dependency>
 ```
 [//]: # ({x-version-update-end})
