@@ -11,8 +11,6 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.ParallelTransferOptions;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -186,6 +184,15 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
     private final ConcurrentMap<String, FileSystem> openFileSystems;
 
+    static final Map<String, ?> defaultConfigurations = readEnvironmentConfiguration();
+    static final String defaultEndpoint = readEnvironmentEndpoint();
+
+    /**
+     * NIO contractually expects the caller to explicitly create file systems as needed, instead of automatically
+     * creating them based on URI. This disagrees with how several workflows actually use NIO. This flag allows developers
+     * to opt-in to this non-contractual behavior.
+     */
+    static final boolean autoCreateFileSystems = readEnvironmentAutoCreateFileSystems();
 
     // Specs require a public zero argument constructor.
     /**
@@ -223,7 +230,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      */
     @Override
     public FileSystem newFileSystem(URI uri, Map<String, ?> config) throws IOException {
-        String endpoint = extractAccountEndpoint(uri);
+        String endpoint = extractAccountEndpointOrGetDefault(uri);
+        config = config != null ? config : defaultConfigurations;
 
         if (this.openFileSystems.containsKey(endpoint)) {
             throw LoggingUtility.logError(ClientLoggerHolder.LOGGER,
@@ -247,17 +255,34 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * @param uri URI reference
      * @return the file system
      * @throws IllegalArgumentException If the pre-conditions for the uri parameter aren't met
-     * @throws FileSystemNotFoundException If the file system already exists
+     * @throws FileSystemNotFoundException If the file system does not already exist and this provider is not configured
+     * to create new filesystems on get.
      * @throws SecurityException never
+     * @throws UncheckedIOException If this provider is configured to create filesystems when not found, and filesystem
+     * creation throw an IOException
      */
     @Override
     public FileSystem getFileSystem(URI uri) {
-        String endpoint = extractAccountEndpoint(uri);
-        if (!this.openFileSystems.containsKey(endpoint)) {
+        String endpoint = extractAccountEndpointOrGetDefault(uri);
+        if (this.openFileSystems.containsKey(endpoint)) {
+            return this.openFileSystems.get(endpoint);
+        } else if (autoCreateFileSystems && defaultConfigurations != null) {
+            synchronized (this.openFileSystems) {
+                if (!this.openFileSystems.containsKey(endpoint)) {
+                    FileSystem newSystem = null;
+                    try {
+                        newSystem = new AzureFileSystem(this, endpoint, defaultConfigurations);
+                    } catch (IOException e) {
+                        throw new UncheckedIOException("Failed to open new FileSystem", e);
+                    }
+                    this.openFileSystems.put(endpoint, newSystem);
+                }
+            }
+            return this.openFileSystems.get(endpoint);
+        } else {
             throw LoggingUtility.logError(ClientLoggerHolder.LOGGER,
                 new FileSystemNotFoundException("Name: " + endpoint));
         }
-        return this.openFileSystems.get(endpoint);
     }
 
     /**
@@ -1152,30 +1177,39 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         this.openFileSystems.remove(fileSystemName);
     }
 
-    private String extractAccountEndpoint(URI uri) {
+    private String extractAccountEndpointOrGetDefault(URI uri) {
         if (!uri.getScheme().equals(this.getScheme())) {
             throw LoggingUtility.logError(ClientLoggerHolder.LOGGER, new IllegalArgumentException(
                 "URI scheme does not match this provider"));
         }
-        if (CoreUtils.isNullOrEmpty(uri.getQuery())) {
+        if (CoreUtils.isNullOrEmpty(uri.getQuery()) && CoreUtils.isNullOrEmpty(defaultEndpoint)) {
             throw LoggingUtility.logError(ClientLoggerHolder.LOGGER,
                 new IllegalArgumentException("URI does not contain a query component. FileSystems require a URI of "
                     + "the format \"azb://?endpoint=<account_endpoint>\"."));
         }
 
-        String endpoint = Flux.fromArray(uri.getQuery().split("&"))
-                .filter(s -> s.startsWith(ENDPOINT_QUERY_KEY + "="))
-                .switchIfEmpty(Mono.defer(() -> Mono.error(LoggingUtility.logError(ClientLoggerHolder.LOGGER,
-                    new IllegalArgumentException("URI does not contain an \"" + ENDPOINT_QUERY_KEY + "=\" parameter. "
-                        + "FileSystems require a URI of the format \"azb://?endpoint=<endpoint>\"")))))
-                .map(s -> s.substring(ENDPOINT_QUERY_KEY.length() + 1)) // Trim the query key and =
-                .blockLast();
+        String endpoint = Arrays.stream((uri.getQuery() != null ? uri.getQuery() : "").split("&"))
+            .filter(s -> s.startsWith(ENDPOINT_QUERY_KEY + "="))
+            .map(s -> s.substring(ENDPOINT_QUERY_KEY.length() + 1)) // Trim the query key and =
+            .findFirst().orElse(defaultEndpoint);
 
         if (CoreUtils.isNullOrEmpty(endpoint)) {
             throw LoggingUtility.logError(ClientLoggerHolder.LOGGER,
-                new IllegalArgumentException("No account endpoint provided in URI query."));
+                new IllegalArgumentException("No account endpoint provided in URI query and no default configured."));
         }
 
         return endpoint;
+    }
+
+    static Map<String, ?> readEnvironmentConfiguration() {
+        return null; // not implemented
+    }
+
+    static String readEnvironmentEndpoint() {
+        return null; // not implemented
+    }
+
+    static boolean readEnvironmentAutoCreateFileSystems() {
+        return false; // not implemented
     }
 }
