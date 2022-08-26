@@ -8,7 +8,7 @@ This version of the SDK defaults to the latest supported API version, which curr
 
 ### Breaking Changes
 - Removed property `kind` from model `DocumentPage`
-- Removed model `DocumentPageKind`
+- Removed model `DocumentPageKind`, `DocumentEntity`, `DocumentFootnote`, and `DocumentCaption`.
 - Renamed models `ModelOperationDetails`, `ModelOperationSummary`, `ModelOperationKind` and `ModelOperationStatus`
 to `DocumentModelOperationDetails`, `DocumentModelOperationSummary`, `DocumentOperationKind` and `DocumentModelOperationStatus` 
 respectively.

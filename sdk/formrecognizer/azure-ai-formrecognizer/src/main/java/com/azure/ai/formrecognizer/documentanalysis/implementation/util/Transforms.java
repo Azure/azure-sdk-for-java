@@ -17,7 +17,6 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.Resour
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelBuildOperationDetails;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelComposeOperationDetails;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelCopyToOperationDetails;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.models.Error;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationDetails;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationSummary;
@@ -254,7 +253,7 @@ public class Transforms {
         return throwable;
     }
 
-    public static HttpResponseException mapResponseErrorToHttpResponseException(Error error) {
+    public static HttpResponseException mapResponseErrorToHttpResponseException(com.azure.ai.formrecognizer.documentanalysis.implementation.models.Error error) {
         return new HttpResponseException(
             error.getMessage(),
             null,
