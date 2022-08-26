@@ -4,12 +4,14 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentSelectionMarkHelper;
+import com.azure.core.annotation.Immutable;
 
 import java.util.List;
 
 /**
  * A selection mark object representing check boxes, radio buttons, and other elements indicating a selection.
  */
+@Immutable
 public final class DocumentSelectionMark {
     /*
      * State of the selection mark.

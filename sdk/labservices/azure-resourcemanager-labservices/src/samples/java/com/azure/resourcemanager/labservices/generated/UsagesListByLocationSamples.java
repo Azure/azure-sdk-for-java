@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Usages ListByLocation. */
 public final class UsagesListByLocationSamples {
     /*
-     * x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Usages/getUsages.json
+     * x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/Usages/getUsages.json
      */
     /**
      * Sample code: listUsages.
@@ -17,6 +17,6 @@ public final class UsagesListByLocationSamples {
      * @param manager Entry point to LabServicesManager.
      */
     public static void listUsages(com.azure.resourcemanager.labservices.LabServicesManager manager) {
-        manager.usages().listByLocation("westus2", null, Context.NONE);
+        manager.usages().listByLocation("eastus2", null, Context.NONE);
     }
 }

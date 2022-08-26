@@ -3,11 +3,14 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.administration.models;
 
+import com.azure.core.annotation.Immutable;
+
 import java.time.OffsetDateTime;
 
 /**
  * Authorization to copy a model to the specified target resource and modelId.
  */
+@Immutable
 public final class CopyAuthorization {
     /*
      * ID of the target Azure resource where the document model should be copied to.

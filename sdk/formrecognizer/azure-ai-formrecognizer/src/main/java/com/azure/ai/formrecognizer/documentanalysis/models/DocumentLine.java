@@ -4,12 +4,14 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentLineHelper;
+import com.azure.core.annotation.Immutable;
 
 import java.util.List;
 
 /**
  * A content line object consisting of an adjacent sequence of content elements, such as words and selection marks.
  */
+@Immutable
 public final class DocumentLine {
     /*
      * Concatenated content of the contained elements in reading order.

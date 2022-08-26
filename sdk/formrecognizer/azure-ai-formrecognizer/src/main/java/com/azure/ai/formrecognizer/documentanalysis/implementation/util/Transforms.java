@@ -10,9 +10,9 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.Docume
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelOperationDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelOperationSummary;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelSummary;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentOperationKind;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentOperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentTypeDetails;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.ModelOperationKind;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.ModelOperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelBuildOperationDetails;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelComposeOperationDetails;
@@ -607,13 +607,13 @@ public class Transforms {
             DocumentModelOperationDetailsHelper.setCreatedOn(documentModelOperationDetails, operationDetails.getCreatedDateTime());
             // operationDetails does not return kind?
             // DocumentModelOperationDetailsHelper.setKind(documentModelOperationDetails,
-            //     ModelOperationKind.fromString(operationDetails.getKind().toString()));
+            //     DocumentOperationKind.fromString(operationDetails.getKind().toString()));
             DocumentModelOperationDetailsHelper.setLastUpdatedOn(documentModelOperationDetails, operationDetails.getLastUpdatedDateTime());
             DocumentModelOperationDetailsHelper.setPercentCompleted(documentModelOperationDetails,
                 operationDetails.getPercentCompleted() == null ? Integer.valueOf(0)
                     : operationDetails.getPercentCompleted());
             DocumentModelOperationDetailsHelper.setStatus(documentModelOperationDetails,
-                ModelOperationStatus.fromString(operationDetails.getStatus().toString()));
+                DocumentOperationStatus.fromString(operationDetails.getStatus().toString()));
             DocumentModelOperationDetailsHelper.setResourceLocation(documentModelOperationDetails, operationDetails.getResourceLocation());
             DocumentModelOperationDetailsHelper.setError(documentModelOperationDetails, toResponseError(operationDetails.getError()));
         }
@@ -628,13 +628,13 @@ public class Transforms {
                 DocumentModelOperationSummaryHelper.setOperationId(documentModelOperationSummary, operationSummaryItem.getOperationId());
                 DocumentModelOperationSummaryHelper.setCreatedOn(documentModelOperationSummary, operationSummaryItem.getCreatedDateTime());
                 DocumentModelOperationSummaryHelper.setKind(documentModelOperationSummary, operationSummaryItem.getKind() == null
-                    ? null : ModelOperationKind.fromString(operationSummaryItem.getKind().toString()));
+                    ? null : DocumentOperationKind.fromString(operationSummaryItem.getKind().toString()));
                 DocumentModelOperationSummaryHelper.setLastUpdatedOn(documentModelOperationSummary, operationSummaryItem.getLastUpdatedDateTime());
                 DocumentModelOperationSummaryHelper.setPercentCompleted(documentModelOperationSummary,
                     operationSummaryItem.getPercentCompleted() == null ? Integer.valueOf(0)
                         : operationSummaryItem.getPercentCompleted());
                 DocumentModelOperationSummaryHelper.setStatus(documentModelOperationSummary, operationSummaryItem.getStatus() == null
-                    ? null : ModelOperationStatus.fromString(operationSummaryItem.getStatus().toString()));
+                    ? null : DocumentOperationStatus.fromString(operationSummaryItem.getStatus().toString()));
                 DocumentModelOperationSummaryHelper.setResourceLocation(documentModelOperationSummary, operationSummaryItem.getResourceLocation());
                 DocumentModelOperationSummaryHelper.setTags(documentModelOperationSummary, operationSummaryItem.getTags());
                 return documentModelOperationSummary;

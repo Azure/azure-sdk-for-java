@@ -4,10 +4,12 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentCaptionHelper;
+import com.azure.core.annotation.Immutable;
 
 import java.util.List;
 
 /** An object representing the location and content of a table caption. */
+@Immutable
 public final class DocumentCaption {
     /*
      * Table caption content.

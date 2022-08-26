@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentWordHelper;
+import com.azure.core.annotation.Immutable;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
  * A word object consisting of a contiguous sequence of characters. For non-space delimited languages, such as Chinese,
  * Japanese, and Korean, each character is represented as its own word.
  */
+@Immutable
 public final class DocumentWord {
     /*
      * Text content of the word.

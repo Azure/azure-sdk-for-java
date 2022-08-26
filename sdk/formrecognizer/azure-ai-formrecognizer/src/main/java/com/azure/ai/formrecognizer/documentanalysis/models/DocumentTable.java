@@ -4,12 +4,14 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentTableHelper;
+import com.azure.core.annotation.Immutable;
 
 import java.util.List;
 
 /**
  * A table object consisting table cells arranged in a rectangular layout.
  */
+@Immutable
 public final class DocumentTable {
     /*
      * Number of rows in the table.
