@@ -104,8 +104,8 @@ public class App {
         private static final double MB = 1024 * 1024d;
         public InMemoryMetricReader() {
             this.aggregationTemporality = AggregationTemporality.CUMULATIVE;
-            System.out.println("| JVM memory usage: G1 Eden Space | JVM memory usage: G1 Survivor Space | JVM memory usage: G1 Old Gen |");
-            System.out.println("|---------------------------------|-------------------------------------|------------------------------|");
+            System.out.println("| JVM memory usage: Eden Space | JVM memory usage: Survivor Space | JVM memory usage: Old Gen |");
+            System.out.println("|------------------------------|----------------------------------|---------------------------|");
         }
 
         /** Returns all metrics accumulated since the last call. */
@@ -114,12 +114,13 @@ public class App {
                 return;
             }
             Collection<MetricData> metrics =  metricProducer.collectAllMetrics();
-            metrics.stream().forEach(d -> {
-                System.out.println("metric " + d.getName());
-                for (PointData p : d.getData().getPoints()) {
-                    printDataPoint(p);
-                }
-            });
+            metrics.stream()
+                .filter(d -> d.getName().equals("process.runtime.jvm.memory.usage"))
+                .forEach(InMemoryMetricReader::printJvmMemUsage);
+            /*System.out.println("metric " + d.getName());
+            for (PointData p : d.getData().getPoints()) {
+                printDataPoint(p);
+            }*/
         }
 
         private static void printDataPoint(PointData p) {
@@ -135,28 +136,28 @@ public class App {
         }
 
         private static void printJvmMemUsage(MetricData data) {
-            double maxG1Eden = 0;
-            double maxG1Surv = 0;
-            double maxG1Old = 0;
+            double maxEden = 0;
+            double maxSurv = 0;
+            double maxOld = 0;
             for (LongPointData p : data.getLongSumData().getPoints()) {
                 String pool = p.getAttributes().get(POOL_NAME);
 
-                if (pool.equals("G1 Eden Space")) {
-                    if (p.getValue() > maxG1Eden) {
-                        maxG1Eden = p.getValue();
+                if (pool.equals("PS Eden Space")) {
+                    if (p.getValue() > maxEden) {
+                        maxEden = p.getValue();
                     }
-                } else if (pool.equals("G1 Survivor Space")) {
-                    if (p.getValue() > maxG1Surv) {
-                        maxG1Surv = p.getValue();
+                } else if (pool.equals("PS Survivor Space")) {
+                    if (p.getValue() > maxSurv) {
+                        maxSurv = p.getValue();
                     }
-                } else if (pool.equals("G1 Old Gen")) {
-                    if (p.getValue() > maxG1Old) {
-                        maxG1Old = p.getValue();
+                } else if (pool.equals("PS Old Gen")) {
+                    if (p.getValue() > maxOld) {
+                        maxOld = p.getValue();
                     }
                 }
             }
 
-            System.out.printf("|     %28f|     %32f|     %25f|\n", maxG1Eden/MB, maxG1Surv/MB, maxG1Old/MB);
+            System.out.printf("|     %25f|     %28f|     %22f|\n", maxEden/MB, maxSurv/MB, maxOld/MB);
         }
 
 
