@@ -58,6 +58,16 @@
       <version>4.4.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
     </dependency>
 
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-sdk</artifactId>
+      <version>1.16.0</version>
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry.instrumentation</groupId>
+      <artifactId>opentelemetry-runtime-metrics</artifactId>
+      <version>1.16.0-alpha</version>
+    </dependency>
   </dependencies>
 
   <profiles>
@@ -125,4 +135,23 @@
       </dependencies>
     </profile>
   </profiles>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>io.opentelemetry:opentelemetry-sdk:[1.16.0]</include>
+                <include>io.opentelemetry.instrumentation:opentelemetry-runtime-metrics:[1.16.0-alpha]</include>
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

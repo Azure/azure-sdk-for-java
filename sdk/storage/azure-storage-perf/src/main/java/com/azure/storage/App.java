@@ -21,6 +21,27 @@ import com.azure.storage.file.share.perf.DownloadFileShareTest;
 import com.azure.storage.file.share.perf.DownloadToFileShareTest;
 import com.azure.storage.file.share.perf.UploadFileShareTest;
 import com.azure.storage.file.share.perf.UploadFromFileShareTest;
+import io.opentelemetry.api.OpenTelemetry;
+import io.opentelemetry.api.common.AttributeKey;
+import io.opentelemetry.instrumentation.runtimemetrics.Cpu;
+import io.opentelemetry.instrumentation.runtimemetrics.GarbageCollector;
+import io.opentelemetry.instrumentation.runtimemetrics.MemoryPools;
+import io.opentelemetry.instrumentation.runtimemetrics.Threads;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.common.CompletableResultCode;
+import io.opentelemetry.sdk.metrics.InstrumentType;
+import io.opentelemetry.sdk.metrics.SdkMeterProvider;
+import io.opentelemetry.sdk.metrics.data.AggregationTemporality;
+import io.opentelemetry.sdk.metrics.data.LongPointData;
+import io.opentelemetry.sdk.metrics.data.MetricData;
+import io.opentelemetry.sdk.metrics.export.CollectionRegistration;
+import io.opentelemetry.sdk.metrics.export.MetricReader;
+import io.opentelemetry.sdk.metrics.internal.export.MetricProducer;
+import reactor.core.publisher.Mono;
+
+import java.time.Duration;
+import java.util.Collection;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Runs the Storage performance test.
@@ -34,6 +55,19 @@ import com.azure.storage.file.share.perf.UploadFromFileShareTest;
  */
 public class App {
     public static void main(String[] args) {
+        InMemoryMetricReader metricReader = new InMemoryMetricReader();
+        SdkMeterProvider meterProvider = SdkMeterProvider.builder().registerMetricReader(metricReader)
+            .build();
+        OpenTelemetry otel = OpenTelemetrySdk.builder().setMeterProvider(meterProvider).buildAndRegisterGlobal();
+        Cpu.registerObservers(otel);
+        GarbageCollector.registerObservers(otel);
+        Threads.registerObservers(otel);
+        MemoryPools.registerObservers(otel);
+
+        Mono.delay(Duration.ofSeconds(5))
+            .repeat()
+            .subscribe(p -> metricReader.collectAndPrint(), e -> System.out.println(e));
+
         PerfStressProgram.run(new Class<?>[]{
             DownloadBlobTest.class,
             DownloadBlobToFileTest.class,
@@ -53,5 +87,88 @@ public class App {
             UploadFromFileDatalakeTest.class,
             DownloadBlobNonSharedClientTest.class
         }, args);
+
+        metricReader.forceFlush();
     }
+
+    static class InMemoryMetricReader implements MetricReader {
+        private final AggregationTemporality aggregationTemporality;
+        private final AtomicBoolean isShutdown = new AtomicBoolean(false);
+        private volatile MetricProducer metricProducer = MetricProducer.noop();
+
+        private static final AttributeKey<String> POOL_NAME = AttributeKey.stringKey("pool");
+        private static final double MB = 1024 * 1024d;
+        public InMemoryMetricReader() {
+            this.aggregationTemporality = AggregationTemporality.CUMULATIVE;
+            System.out.println("| JVM memory usage: G1 Eden Space | JVM memory usage: G1 Survivor Space | JVM memory usage: G1 Old Gen |");
+            System.out.println("|---------------------------------|-------------------------------------|------------------------------|");
+        }
+
+        /** Returns all metrics accumulated since the last call. */
+        public void collectAndPrint() {
+            if (isShutdown.get()) {
+                return;
+            }
+            Collection<MetricData> metrics =  metricProducer.collectAllMetrics();
+            metrics.stream().forEach(d -> {
+                if (d.getName().equals("process.runtime.jvm.memory.usage")) {
+                    printJvmMemUsage(d);
+                }
+            });
+        }
+
+        private static void printJvmMemUsage(MetricData data) {
+            double maxG1Eden = 0;
+            double maxG1Surv = 0;
+            double maxG1Old = 0;
+            for (LongPointData p : data.getLongSumData().getPoints()) {
+                String pool = p.getAttributes().get(POOL_NAME);
+
+                if (pool.equals("G1 Eden Space")) {
+                    if (p.getValue() > maxG1Eden) {
+                        maxG1Eden = p.getValue();
+                    }
+                } else if (pool.equals("G1 Survivor Space")) {
+                    if (p.getValue() > maxG1Surv) {
+                        maxG1Surv = p.getValue();
+                    }
+                } else if (pool.equals("G1 Old Gen")) {
+                    if (p.getValue() > maxG1Old) {
+                        maxG1Old = p.getValue();
+                    }
+                }
+            }
+
+            System.out.printf("|     %28f|     %32f|     %25f|\n", maxG1Eden/MB, maxG1Surv/MB, maxG1Old/MB);
+        }
+
+
+        @Override
+        public void register(CollectionRegistration registration) {
+            this.metricProducer = MetricProducer.asMetricProducer(registration);
+        }
+
+        @Override
+        public AggregationTemporality getAggregationTemporality(InstrumentType instrumentType) {
+            return aggregationTemporality;
+        }
+
+        @Override
+        public CompletableResultCode forceFlush() {
+            collectAndPrint();
+            return CompletableResultCode.ofSuccess();
+        }
+
+        @Override
+        public CompletableResultCode shutdown() {
+            isShutdown.set(true);
+            return CompletableResultCode.ofSuccess();
+        }
+
+        @Override
+        public String toString() {
+            return "InMemoryMetricReader{aggregationTemporality=" + aggregationTemporality + "}";
+        }
+    }
+
 }
