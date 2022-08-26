@@ -5,7 +5,6 @@ package com.azure.communication.callingserver.models;
 
 import com.azure.core.annotation.Fluent;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Objects;
 
