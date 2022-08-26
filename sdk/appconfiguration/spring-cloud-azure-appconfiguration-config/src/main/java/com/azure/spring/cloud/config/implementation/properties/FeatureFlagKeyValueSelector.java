@@ -3,7 +3,6 @@
 package com.azure.spring.cloud.config.implementation.properties;
 
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.EMPTY_LABEL;
-import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.FEATURE_STORE_WATCH_KEY;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -30,7 +29,7 @@ public final class FeatureFlagKeyValueSelector {
      */
     public static final String LABEL_SEPARATOR = ",";
 
-    private String keyFilter = FEATURE_STORE_WATCH_KEY;
+    private String keyFilter = "";
 
     private String labelFilter;
 
@@ -87,15 +86,6 @@ public final class FeatureFlagKeyValueSelector {
     }
 
     /**
-     * Used for Generating Property Source name only.
-     * 
-     * @return String all labels combined.
-     */
-    public String getLabel() {
-        return labelFilter;
-    }
-
-    /**
      * @param labelFilter the labelFilter to set
      * @return AppConfigurationStoreSelects
      */
@@ -109,7 +99,6 @@ public final class FeatureFlagKeyValueSelector {
      */
     @PostConstruct
     public void validateAndInit() {
-        Assert.isTrue(!keyFilter.contains("*"), "KeyFilter must not contain asterisk(*)");
         if (labelFilter != null) {
             Assert.isTrue(!labelFilter.contains("*"), "LabelFilter must not contain asterisk(*)");
         }

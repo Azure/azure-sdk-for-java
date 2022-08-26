@@ -81,24 +81,6 @@ public final class AppConfigurationKeyValueSelector {
     }
 
     /**
-     * Get all labels as a single String
-     * @param profiles current user profiles
-     * @return comma separated list of labels
-     */
-    public String getLabelFilterText(List<String> profiles) {
-        return String.join(",", getLabelFilter(profiles));
-    }
-
-    /**
-     * Used for Generating Property Source name only.
-     * 
-     * @return String all labels combined.
-     */
-    public String getLabel() {
-        return labelFilter;
-    }
-
-    /**
      * @param labelFilter the labelFilter to set
      * @return AppConfigurationStoreSelects
      */

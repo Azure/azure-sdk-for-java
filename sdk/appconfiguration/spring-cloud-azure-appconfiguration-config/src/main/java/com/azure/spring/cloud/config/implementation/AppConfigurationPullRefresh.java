@@ -49,8 +49,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
      *
      * @param clientFactory Clients stores used to connect to App Configuration. * @param defaultMinBackoff default
      * @param refreshInterval time between refresh intervals
-     * @param defaultMinBackoff minimum time between backoff retries
-     * minimum backoff time
+     * @param defaultMinBackoff minimum time between backoff retries minimum backoff time
      */
     public AppConfigurationPullRefresh(AppConfigurationReplicaClientFactory clientFactory, Duration refreshInterval,
         Long defaultMinBackoff) {
@@ -88,10 +87,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
 
         String originEndpoint = clientFactory.findOriginForEndpoint(endpoint);
 
-        // Sync token can only be used if no replicas are being used.
-        if (clientFactory.hasReplicas(endpoint)) {
-            clientFactory.updateSyncToken(originEndpoint, syncToken);
-        }
+        clientFactory.updateSyncToken(originEndpoint, endpoint, syncToken);
 
         StateHolder.getCurrentState().expireState(originEndpoint);
     }

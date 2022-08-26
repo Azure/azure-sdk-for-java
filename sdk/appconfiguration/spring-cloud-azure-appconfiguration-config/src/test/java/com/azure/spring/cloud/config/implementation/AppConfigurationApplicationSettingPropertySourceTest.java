@@ -22,7 +22,6 @@ import static org.mockito.Mockito.when;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
@@ -33,16 +32,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 public class AppConfigurationApplicationSettingPropertySourceTest {
 
@@ -77,27 +70,6 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
     private AppConfigurationKeyVaultClientFactory keyVaultClientFactoryMock;
 
     @Mock
-    private ConfigurationAsyncClient configClientMock;
-
-    @Mock
-    private PagedFlux<ConfigurationSetting> settingsMock;
-
-    @Mock
-    private Flux<PagedResponse<ConfigurationSetting>> pageMock;
-
-    @Mock
-    private Mono<List<PagedResponse<ConfigurationSetting>>> collectionMock;
-
-    @Mock
-    private List<PagedResponse<ConfigurationSetting>> itemsMock;
-
-    @Mock
-    private Iterator<PagedResponse<ConfigurationSetting>> itemsIteratorMock;
-
-    @Mock
-    private PagedResponse<ConfigurationSetting> pagedResponseMock;
-
-    @Mock
     private List<ConfigurationSetting> configurationListMock;
 
     @BeforeAll
@@ -115,13 +87,6 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
         testItems.add(ITEM_1);
         testItems.add(ITEM_2);
         testItems.add(ITEM_3);
-
-        when(configClientMock.listConfigurationSettings(Mockito.any())).thenReturn(settingsMock);
-        when(settingsMock.byPage()).thenReturn(pageMock);
-        when(pageMock.collectList()).thenReturn(collectionMock);
-        when(collectionMock.block()).thenReturn(itemsMock);
-        when(itemsMock.iterator()).thenReturn(itemsIteratorMock);
-        when(itemsIteratorMock.next()).thenReturn(pagedResponseMock);
 
         String[] labelFilter = { "\0" };
 

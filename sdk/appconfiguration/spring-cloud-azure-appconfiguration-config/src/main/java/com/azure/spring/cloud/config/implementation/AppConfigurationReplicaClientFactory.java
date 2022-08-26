@@ -131,13 +131,8 @@ public class AppConfigurationReplicaClientFactory {
         CONNECTIONS.get(originEndpoint).setCurrentClient(replicaEndpoint);
     }
 
-    void updateSyncToken(String originEndpoint, String syncToken) {
-        ConnectionManager manager = CONNECTIONS.get(originEndpoint);
-        if (manager.getAllEndpoints().size() > 1) {
-            // Sync Token is only used for stores without replicas
-            return;
-        }
-        manager.updateSyncToken(syncToken);
+    void updateSyncToken(String originEndpoint, String endpoint, String syncToken) {
+        CONNECTIONS.get(originEndpoint).updateSyncToken(endpoint, syncToken);
     }
 
 }

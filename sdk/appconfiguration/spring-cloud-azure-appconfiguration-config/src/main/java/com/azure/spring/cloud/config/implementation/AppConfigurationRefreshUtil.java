@@ -39,7 +39,8 @@ class AppConfigurationRefreshUtil {
 
                 LOGGER.info(eventDataInfo);
 
-                eventData.setMessage(eventDataInfo);
+                eventData.setFullMessage(eventDataInfo);
+                return eventData;
             }
 
             for (Entry<String, ConnectionManager> entry : clientFactory.getConnections().entrySet()) {
@@ -324,7 +325,12 @@ class AppConfigurationRefreshUtil {
         }
 
         RefreshEventData setMessage(String prefix) {
-            this.message = String.format(MSG_TEMPLATE, prefix);
+            setFullMessage(String.format(MSG_TEMPLATE, prefix));
+            return this;
+        }
+        
+        RefreshEventData setFullMessage(String message) {
+            this.message = message;
             this.doRefresh = true;
             return this;
         }

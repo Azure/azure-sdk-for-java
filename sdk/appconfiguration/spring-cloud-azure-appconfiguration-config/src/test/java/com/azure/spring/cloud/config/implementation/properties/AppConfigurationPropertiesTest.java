@@ -11,8 +11,15 @@ import static com.azure.spring.cloud.config.implementation.TestConstants.LABEL_P
 import static com.azure.spring.cloud.config.implementation.TestConstants.REFRESH_INTERVAL_PROP;
 import static com.azure.spring.cloud.config.implementation.TestConstants.STORE_ENDPOINT_PROP;
 import static com.azure.spring.cloud.config.implementation.TestConstants.TEST_CONN_STRING;
+import static com.azure.spring.cloud.config.implementation.TestConstants.TEST_ENDPOINT;
+import static com.azure.spring.cloud.config.implementation.TestConstants.TEST_ENDPOINT_GEO;
 import static com.azure.spring.cloud.config.implementation.TestUtils.propPair;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -123,5 +130,28 @@ public class AppConfigurationPropertiesTest {
             .withPropertyValues(propPair(CONN_STRING_PROP, TEST_CONN_STRING))
             .withPropertyValues(propPair(REFRESH_INTERVAL_PROP, "1s"))
             .run(context -> assertThat(context).hasSingleBean(AppConfigurationProperties.class));
+    }
+
+    @Test
+    public void multipleEndpointsTest() {
+        AppConfigurationProperties properties = new AppConfigurationProperties();
+        ConfigStore store = new ConfigStore();
+        List<String> endpoints = new ArrayList<>();
+        endpoints.add(TEST_ENDPOINT);
+        endpoints.add(TEST_ENDPOINT_GEO);
+        
+        store.setEndpoints(endpoints);
+        List<ConfigStore> stores = new ArrayList<>();
+        stores.add(store);
+        
+        properties.setStores(stores);
+        properties.validateAndInit();
+        
+        endpoints.clear();
+        endpoints.add(TEST_ENDPOINT);
+        endpoints.add(TEST_ENDPOINT);
+        
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> properties.validateAndInit());
+        assertEquals("Duplicate store name exists.", e.getMessage());
     }
 }

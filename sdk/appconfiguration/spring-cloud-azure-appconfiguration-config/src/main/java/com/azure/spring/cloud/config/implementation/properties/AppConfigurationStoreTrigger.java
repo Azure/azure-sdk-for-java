@@ -55,14 +55,6 @@ public final class AppConfigurationStoreTrigger {
         Assert.notNull(key, "All Triggers need a key value set.");
     }
 
-    @Override
-    public String toString() {
-        if (label == null) {
-            return key + "/";
-        }
-        return key + "/" + label;
-    }
-
     private String mapLabel(String label) {
         if (label == null || "".equals(label)) {
             return EMPTY_LABEL;

@@ -49,9 +49,10 @@ public final class FeatureFlagStore {
     
     @PostConstruct
     public void validateAndInit() {
-        if (selects.size() == 0) {
+        if (enabled && selects.size() == 0) {
             selects.add(new FeatureFlagKeyValueSelector());
         }
+        selects.forEach(FeatureFlagKeyValueSelector::validateAndInit);
     }
 
 }

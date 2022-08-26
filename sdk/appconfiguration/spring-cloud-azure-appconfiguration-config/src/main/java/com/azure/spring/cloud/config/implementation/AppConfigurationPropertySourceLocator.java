@@ -23,6 +23,7 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationKeyValueSelector;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProviderProperties;
+import com.azure.spring.cloud.config.implementation.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationStoreTrigger;
 import com.azure.spring.cloud.config.implementation.properties.ConfigStore;
 import com.azure.spring.cloud.config.implementation.properties.FeatureFlagKeyValueSelector;
@@ -126,23 +127,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                         sourceList.addAll(sources);
 
                         LOGGER.debug("PropertySource context.");
+                        setupMonitoring(configStore, client, sources, newState);
 
-                        // Setting new ETag values for Watch
-                        List<ConfigurationSetting> watchKeysSettings = getWatchKeys(client,
-                            configStore.getMonitoring().getTriggers());
-                        List<ConfigurationSetting> watchKeysFeatures = getFeatureFlagWatchKeys(configStore, sources);
-
-                        if (watchKeysFeatures.size() > 0) {
-                            newState.setStateFeatureFlag(configStore.getEndpoint(), watchKeysFeatures,
-                                configStore.getMonitoring().getFeatureFlagRefreshInterval());
-                            newState.setLoadStateFeatureFlag(configStore.getEndpoint(), true);
-                        } else {
-                            newState.setLoadStateFeatureFlag(configStore.getEndpoint(), false);
-                        }
-
-                        newState.setState(configStore.getEndpoint(), watchKeysSettings,
-                            configStore.getMonitoring().getRefreshInterval());
-                        newState.setLoadState(configStore.getEndpoint(), true);
                         generatedPropertySources = true;
                     } catch (AppConfigurationStatusException e) {
                         reloadFailed = true;
@@ -179,6 +165,34 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         STARTUP.set(false);
 
         return composite;
+    }
+
+    private void setupMonitoring(ConfigStore configStore, AppConfigurationReplicaClient client,
+        List<AppConfigurationPropertySource> sources, StateHolder newState) {
+        AppConfigurationStoreMonitoring monitoring = configStore.getMonitoring();
+        if (monitoring.isEnabled()) {
+
+            // Setting new ETag values for Watch
+            List<ConfigurationSetting> watchKeysSettings = getWatchKeys(client,
+                monitoring.getTriggers());
+            List<ConfigurationSetting> watchKeysFeatures = getFeatureFlagWatchKeys(configStore,
+                sources);
+
+            if (watchKeysFeatures.size() > 0) {
+                newState.setStateFeatureFlag(configStore.getEndpoint(), watchKeysFeatures,
+                    monitoring.getFeatureFlagRefreshInterval());
+                newState.setLoadStateFeatureFlag(configStore.getEndpoint(), true);
+            } else {
+                newState.setLoadStateFeatureFlag(configStore.getEndpoint(), false);
+            }
+
+            newState.setState(configStore.getEndpoint(), watchKeysSettings,
+                monitoring.getRefreshInterval());
+            newState.setLoadState(configStore.getEndpoint(), true);
+        } else {
+            newState.setLoadState(configStore.getEndpoint(), false);
+            newState.setLoadStateFeatureFlag(configStore.getEndpoint(), false);
+        }
     }
 
     private List<ConfigurationSetting> getWatchKeys(AppConfigurationReplicaClient client,

@@ -7,6 +7,8 @@ import static com.azure.spring.cloud.config.implementation.TestConstants.TEST_CO
 import static com.azure.spring.cloud.config.implementation.TestConstants.TEST_ENDPOINT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.Instant;
@@ -134,5 +136,24 @@ public class ConnectionManagerTest {
         assertEquals(2, connectionManager.getAllEndpoints().size());
         assertTrue(connectionManager.getAllEndpoints().containsAll(expectedEndpoints));
         assertEquals(AppConfigurationStoreHealth.DOWN, connectionManager.getHealth());
+    }
+    
+    @Test
+    public void updateSyncTokenTest() {
+        String fakeToken = "fakeToken";
+        ConnectionManager manager = new ConnectionManager(clientBuilderMock, configStore);
+        
+        List<AppConfigurationReplicaClient> clients = new ArrayList<>();
+        clients.add(replicaClient1);
+
+        when(clientBuilderMock.buildClients(Mockito.eq(configStore))).thenReturn(clients);
+        when(replicaClient1.getEndpoint()).thenReturn(TEST_ENDPOINT);
+        
+        List<AppConfigurationReplicaClient> availableClients = manager.getAvailableClients();
+        assertEquals(1, availableClients.size());
+        
+        manager.updateSyncToken(TEST_ENDPOINT, fakeToken);
+        
+        verify(replicaClient1, times(1)).updateSyncToken(Mockito.eq(fakeToken));
     }
 }

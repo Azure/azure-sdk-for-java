@@ -6,6 +6,8 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.util.StringUtils;
+
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.ConfigurationClient;
@@ -141,7 +143,7 @@ class AppConfigurationReplicaClient {
      * @param syncToken the sync token.
      */
     void updateSyncToken(String syncToken) {
-        if (syncToken != null) {
+        if (StringUtils.hasText(syncToken)) {
             client.updateSyncToken(syncToken);
         }
     }
