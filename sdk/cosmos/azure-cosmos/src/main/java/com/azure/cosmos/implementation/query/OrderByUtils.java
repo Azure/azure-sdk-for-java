@@ -90,7 +90,7 @@ class OrderByUtils {
                                       .keySet()) {
                     if (queryMetricsMap.containsKey(key)) {
                         QueryMetrics qm = BridgeInternal.queryMetricsFromFeedResponse(documentProducerFeedResponse.pageResult).get(key);
-                        queryMetricsMap.get(key).add(qm);
+                        queryMetricsMap.put(key, QueryMetrics.addQueryMetrics(queryMetricsMap.get(key), qm));
                     } else {
                         queryMetricsMap.put(key, BridgeInternal.queryMetricsFromFeedResponse(documentProducerFeedResponse.pageResult).get(key));
                     }

@@ -84,7 +84,7 @@ public class AggregateDocumentQueryExecutionContext
                         for(String key : BridgeInternal.queryMetricsFromFeedResponse(page).keySet()) {
                             if (queryMetricsMap.containsKey(key)) {
                                 QueryMetrics qm = BridgeInternal.queryMetricsFromFeedResponse(page).get(key);
-                                queryMetricsMap.get(key).add(qm);
+                                queryMetricsMap.put(key, QueryMetrics.addQueryMetrics(queryMetricsMap.get(key), qm));
                             } else {
                                 queryMetricsMap.put(key, BridgeInternal.queryMetricsFromFeedResponse(page).get(key));
                             }

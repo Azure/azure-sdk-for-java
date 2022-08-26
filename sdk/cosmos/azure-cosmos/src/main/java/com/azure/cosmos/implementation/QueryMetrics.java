@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -172,13 +173,8 @@ public final class QueryMetrics {
         return this.clientSideMetrics.getRetries();
     }
 
-    public QueryMetrics add(QueryMetrics... queryMetricsArgs) {
-        ArrayList<QueryMetrics> queryMetricsList = new ArrayList<QueryMetrics>();
-        for (QueryMetrics queryMetrics : queryMetricsArgs) {
-            queryMetricsList.add(queryMetrics);
-        }
-
-        queryMetricsList.add(this);
+    public static QueryMetrics addQueryMetrics(QueryMetrics... additionalQueryMetrics) {
+        ArrayList<QueryMetrics> queryMetricsList = new ArrayList<>(Arrays.asList(additionalQueryMetrics));
 
         return QueryMetrics.createFromCollection(queryMetricsList);
     }
@@ -191,7 +187,7 @@ public final class QueryMetrics {
     public static void mergeQueryMetricsMap(ConcurrentMap<String, QueryMetrics> base, ConcurrentMap<String, QueryMetrics> addOn) {
         for (ConcurrentMap.Entry<String, QueryMetrics> entry : addOn.entrySet()) {
             if (base.containsKey(entry.getKey())) {
-                base.get(entry.getKey()).add(entry.getValue());
+                base.put(entry.getKey(), addQueryMetrics(base.get(entry.getKey()), entry.getValue()));
             } else {
                 base.put(entry.getKey(), entry.getValue());
             }

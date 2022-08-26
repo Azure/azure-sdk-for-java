@@ -310,9 +310,8 @@ public final class SessionContainer implements ISessionContainer {
         if (!Strings.isNullOrEmpty(resourceIdString)) {
             resourceId.v = ResourceId.parse(resourceIdString);
 
-            if (resourceId.v.getDocumentCollection() != 0 &&
-                    collectionName != null &&
-                    !ReplicatedResourceClientUtils.isReadingFromMaster(request.getResourceType(), request.getOperationType())) {
+            if (resourceId.v.getDocumentCollection() != 0
+                && !ReplicatedResourceClientUtils.isReadingFromMaster(request.getResourceType(), request.getOperationType())) {
                 return true;
             }
         }
