@@ -42,6 +42,7 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
@@ -112,7 +113,8 @@ public class CallRecordingAsync {
 
     Mono<Response<RecordingStateResult>> startRecordingWithResponseInternal(StartRecordingOptions options, Context context) {
         try {
-            if (!Boolean.TRUE.equals(options.getRecordingStateCallbackUri().isAbsolute())) {
+            URI callbackUri = options.getRecordingStateCallbackUri();
+            if (callbackUri != null && !callbackUri.toString().isEmpty() && !Boolean.TRUE.equals(callbackUri.isAbsolute())) {
                 throw logger.logExceptionAsError(new InvalidParameterException("'recordingStateCallbackUri' has to be an absolute Uri"));
             }
             StartCallRecordingRequestInternal request = getStartCallRecordingRequest(options);
