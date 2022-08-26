@@ -100,20 +100,24 @@ public interface DiagnosticsClientContext {
         private ConnectionMode connectionMode;
         private String machineId;
 
-        public void withMachineId(String machineId) {
+        public DiagnosticsClientConfig withMachineId(String machineId) {
             this.machineId = machineId;
+            return this;
         }
 
-        public void withActiveClientCounter(AtomicInteger activeClientsCnt) {
+        public DiagnosticsClientConfig withActiveClientCounter(AtomicInteger activeClientsCnt) {
             this.activeClientsCnt = activeClientsCnt;
+            return this;
         }
 
-        public void withClientId(int clientId) {
+        public DiagnosticsClientConfig withClientId(int clientId) {
             this.clientId = clientId;
+            return this;
         }
 
-        public void withClientMap(Map<String, Integer> clientMap) {
+        public DiagnosticsClientConfig withClientMap(Map<String, Integer> clientMap) {
             this.clientMap = clientMap;
+            return this;
         }
 
         public DiagnosticsClientConfig withEndpointDiscoveryEnabled(boolean endpointDiscoveryEnabled) {
