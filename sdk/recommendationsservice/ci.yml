@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/recommendationsservice/ci.yml
+      - sdk/recommendationsservice/azure-resourcemanager-recommendationsservice/
+    exclude:
+      - sdk/recommendationsservice/pom.xml
+      - sdk/recommendationsservice/azure-resourcemanager-recommendationsservice/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/recommendationsservice/ci.yml
+      - sdk/recommendationsservice/azure-resourcemanager-recommendationsservice/
+    exclude:
+      - sdk/recommendationsservice/pom.xml
+      - sdk/recommendationsservice/azure-resourcemanager-recommendationsservice/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerrecommendationsservice
+    displayName: azure-resourcemanager-recommendationsservice
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: recommendationsservice
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-recommendationsservice
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerrecommendationsservice
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerrecommendationsservice }}
