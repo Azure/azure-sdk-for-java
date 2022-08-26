@@ -4,10 +4,12 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.PointHelper;
+import com.azure.core.annotation.Immutable;
 
 /**
  * Represents the x and y coordinates of a vertex.
  */
+@Immutable
 public final class Point {
 
     /*

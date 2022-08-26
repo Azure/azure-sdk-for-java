@@ -3,11 +3,13 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.administration.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Collection;
 
 /** Defines values for DocumentModelBuildMode. */
+@Immutable
 public final class DocumentModelBuildMode extends ExpandableStringEnum<DocumentModelBuildMode> {
 
     /** Static value template for DocumentModelBuildMode.

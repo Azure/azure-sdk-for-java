@@ -4,12 +4,14 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentKeyValueElementHelper;
+import com.azure.core.annotation.Immutable;
 
 import java.util.List;
 
 /**
  * An object representing the field key or value in a key-value pair.
  */
+@Immutable
 public final class DocumentKeyValueElement {
     /*
      * Concatenated content of the key-value element in reading order.

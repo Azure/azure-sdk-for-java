@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.administration.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentModelDetailsHelper;
+import com.azure.core.annotation.Immutable;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -11,6 +12,7 @@ import java.util.Map;
 /**
  * Information about the document model.
  */
+@Immutable
 public final class DocumentModelDetails {
 
     /*
@@ -44,7 +46,7 @@ public final class DocumentModelDetails {
         return modelId;
     }
 
-    void setModelId(String modelId) {
+    private void setModelId(String modelId) {
         this.modelId = modelId;
     }
 
@@ -57,7 +59,7 @@ public final class DocumentModelDetails {
         return description;
     }
 
-    void setDescription(String description) {
+    private void setDescription(String description) {
         this.description = description;
     }
 
@@ -70,7 +72,7 @@ public final class DocumentModelDetails {
         return createdOn;
     }
 
-    void setCreatedOn(OffsetDateTime createdOn) {
+    private void setCreatedOn(OffsetDateTime createdOn) {
         this.createdOn = createdOn;
     }
 
@@ -83,7 +85,7 @@ public final class DocumentModelDetails {
         return documentTypes;
     }
 
-    void setDocumentTypes(
+    private void setDocumentTypes(
         Map<String, DocumentTypeDetails> documentTypes) {
         this.documentTypes = documentTypes;
     }
@@ -97,7 +99,7 @@ public final class DocumentModelDetails {
         return this.tags;
     }
 
-    void setTags(Map<String, String> tags) {
+    private void setTags(Map<String, String> tags) {
         this.tags = tags;
     }
 

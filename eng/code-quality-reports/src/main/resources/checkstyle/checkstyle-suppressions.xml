@@ -53,6 +53,9 @@
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.ai.formrecognizer.models.FieldValue"/>
   <!-- Suppress the v3 package name in Form Recognizer samples for V2 endpoints -->
   <suppress checks="PackageName" files="com.azure.ai.formrecognizer.v3" />
+  <!-- Suppress for the OnlyFinalFieldsForImmutableClass on Form Recognizer -->
+  <suppress checks="com.azure.tools.checkstyle.checks.OnlyFinalFieldsForImmutableClass"
+            files="com.azure.ai.formrecognizer.documentanalysis.(models|administration).*\.java"/>
 
   <!-- Don't apply custom Checkstyle rules to files under checkstyle package. -->
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\..+" files=".*[/\\]tools[/\\]checkstyle[/\\].*"/>
@@ -495,7 +498,10 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.json..*"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.json..*"/>
 
+  <!-- azure-xml doesn't have a dependency on azure-core -->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.xml..*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.xml..*"/>
+
   <!-- Star import is ok in impl class - it makes it easier to import all parent APIs, etc -->
   <suppress checks="AvoidStarImport" files="com.azure.jedis.AzureJedisClient.java"/>
-
 </suppressions>

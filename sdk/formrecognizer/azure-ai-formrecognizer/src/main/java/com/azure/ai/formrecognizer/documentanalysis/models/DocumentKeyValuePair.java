@@ -4,10 +4,12 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentKeyValuePairHelper;
+import com.azure.core.annotation.Immutable;
 
 /**
  * An object representing a form field with distinct field label (key) and field value (may be empty).
  */
+@Immutable
 public final class DocumentKeyValuePair {
     /*
      * Field label of the key-value pair.

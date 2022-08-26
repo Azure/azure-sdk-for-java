@@ -27,8 +27,7 @@ public final class KubeletConfig {
     private String cpuManagerPolicy;
 
     /*
-     * If CPU CFS quota enforcement is enabled for containers that specify CPU
-     * limits.
+     * If CPU CFS quota enforcement is enabled for containers that specify CPU limits.
      *
      * The default is true.
      */
@@ -38,16 +37,14 @@ public final class KubeletConfig {
     /*
      * The CPU CFS quota period value.
      *
-     * The default is '100ms.' Valid values are a sequence of decimal numbers
-     * with an optional fraction and a unit suffix. For example: '300ms',
-     * '2h45m'. Supported units are 'ns', 'us', 'ms', 's', 'm', and 'h'.
+     * The default is '100ms.' Valid values are a sequence of decimal numbers with an optional fraction and a unit
+     * suffix. For example: '300ms', '2h45m'. Supported units are 'ns', 'us', 'ms', 's', 'm', and 'h'.
      */
     @JsonProperty(value = "cpuCfsQuotaPeriod")
     private String cpuCfsQuotaPeriod;
 
     /*
-     * The percent of disk usage after which image garbage collection is always
-     * run.
+     * The percent of disk usage after which image garbage collection is always run.
      *
      * To disable image garbage collection, set to 100. The default is 85%
      */
@@ -55,8 +52,7 @@ public final class KubeletConfig {
     private Integer imageGcHighThreshold;
 
     /*
-     * The percent of disk usage before which image garbage collection is never
-     * run.
+     * The percent of disk usage before which image garbage collection is never run.
      *
      * This cannot be set higher than imageGcHighThreshold. The default is 80%
      */
@@ -67,23 +63,20 @@ public final class KubeletConfig {
      * The Topology Manager policy to use.
      *
      * For more information see [Kubernetes Topology
-     * Manager](https://kubernetes.io/docs/tasks/administer-cluster/topology-manager).
-     * The default is 'none'. Allowed values are 'none', 'best-effort',
-     * 'restricted', and 'single-numa-node'.
+     * Manager](https://kubernetes.io/docs/tasks/administer-cluster/topology-manager). The default is 'none'. Allowed
+     * values are 'none', 'best-effort', 'restricted', and 'single-numa-node'.
      */
     @JsonProperty(value = "topologyManagerPolicy")
     private String topologyManagerPolicy;
 
     /*
-     * Allowed list of unsafe sysctls or unsafe sysctl patterns (ending in
-     * `*`).
+     * Allowed list of unsafe sysctls or unsafe sysctl patterns (ending in `*`).
      */
     @JsonProperty(value = "allowedUnsafeSysctls")
     private List<String> allowedUnsafeSysctls;
 
     /*
-     * If set to true it will make the Kubelet fail to start if swap is enabled
-     * on the node.
+     * If set to true it will make the Kubelet fail to start if swap is enabled on the node.
      */
     @JsonProperty(value = "failSwapOn")
     private Boolean failSwapOn;
@@ -95,8 +88,7 @@ public final class KubeletConfig {
     private Integer containerLogMaxSizeMB;
 
     /*
-     * The maximum number of container log files that can be present for a
-     * container. The number must be ≥ 2.
+     * The maximum number of container log files that can be present for a container. The number must be ≥ 2.
      */
     @JsonProperty(value = "containerLogMaxFiles")
     private Integer containerLogMaxFiles;

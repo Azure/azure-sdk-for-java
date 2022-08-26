@@ -12,12 +12,6 @@ import java.util.List;
 @Fluent
 public final class DocumentPage {
     /*
-     * Kind of document page.
-     */
-    @JsonProperty(value = "kind", required = true)
-    private DocumentPageKind kind;
-
-    /*
      * 1-based page number in the input document.
      */
     @JsonProperty(value = "pageNumber", required = true)
@@ -68,37 +62,11 @@ public final class DocumentPage {
     private List<DocumentSelectionMark> selectionMarks;
 
     /*
-     * Extracted images from the page.
-     */
-    @JsonProperty(value = "images")
-    private List<DocumentImage> images;
-
-    /*
      * Extracted lines from the page, potentially containing both textual and
      * visual elements.
      */
     @JsonProperty(value = "lines")
     private List<DocumentLine> lines;
-
-    /**
-     * Get the kind property: Kind of document page.
-     *
-     * @return the kind value.
-     */
-    public DocumentPageKind getKind() {
-        return this.kind;
-    }
-
-    /**
-     * Set the kind property: Kind of document page.
-     *
-     * @param kind the kind value to set.
-     * @return the DocumentPage object itself.
-     */
-    public DocumentPage setKind(DocumentPageKind kind) {
-        this.kind = kind;
-        return this;
-    }
 
     /**
      * Get the pageNumber property: 1-based page number in the input document.
@@ -261,26 +229,6 @@ public final class DocumentPage {
      */
     public DocumentPage setSelectionMarks(List<DocumentSelectionMark> selectionMarks) {
         this.selectionMarks = selectionMarks;
-        return this;
-    }
-
-    /**
-     * Get the images property: Extracted images from the page.
-     *
-     * @return the images value.
-     */
-    public List<DocumentImage> getImages() {
-        return this.images;
-    }
-
-    /**
-     * Set the images property: Extracted images from the page.
-     *
-     * @param images the images value to set.
-     * @return the DocumentPage object itself.
-     */
-    public DocumentPage setImages(List<DocumentImage> images) {
-        this.images = images;
         return this;
     }
 

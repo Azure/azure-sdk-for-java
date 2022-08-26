@@ -6,9 +6,9 @@ package com.azure.resourcemanager.storage.generated;
 
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.fluent.models.BlobServicePropertiesInner;
-import com.azure.resourcemanager.storage.models.AllowedMethods;
 import com.azure.resourcemanager.storage.models.ChangeFeed;
 import com.azure.resourcemanager.storage.models.CorsRule;
+import com.azure.resourcemanager.storage.models.CorsRuleAllowedMethodsItem;
 import com.azure.resourcemanager.storage.models.CorsRules;
 import com.azure.resourcemanager.storage.models.DeleteRetentionPolicy;
 import com.azure.resourcemanager.storage.models.LastAccessTimeTrackingPolicy;
@@ -46,26 +46,29 @@ public final class BlobServicesSetServicePropertiesSamples {
                                             .withAllowedMethods(
                                                 Arrays
                                                     .asList(
-                                                        AllowedMethods.GET,
-                                                        AllowedMethods.HEAD,
-                                                        AllowedMethods.POST,
-                                                        AllowedMethods.OPTIONS,
-                                                        AllowedMethods.MERGE,
-                                                        AllowedMethods.PUT))
+                                                        CorsRuleAllowedMethodsItem.GET,
+                                                        CorsRuleAllowedMethodsItem.HEAD,
+                                                        CorsRuleAllowedMethodsItem.POST,
+                                                        CorsRuleAllowedMethodsItem.OPTIONS,
+                                                        CorsRuleAllowedMethodsItem.MERGE,
+                                                        CorsRuleAllowedMethodsItem.PUT))
                                             .withMaxAgeInSeconds(100)
                                             .withExposedHeaders(Arrays.asList("x-ms-meta-*"))
                                             .withAllowedHeaders(
                                                 Arrays.asList("x-ms-meta-abc", "x-ms-meta-data*", "x-ms-meta-target*")),
                                         new CorsRule()
                                             .withAllowedOrigins(Arrays.asList("*"))
-                                            .withAllowedMethods(Arrays.asList(AllowedMethods.GET))
+                                            .withAllowedMethods(Arrays.asList(CorsRuleAllowedMethodsItem.GET))
                                             .withMaxAgeInSeconds(2)
                                             .withExposedHeaders(Arrays.asList("*"))
                                             .withAllowedHeaders(Arrays.asList("*")),
                                         new CorsRule()
                                             .withAllowedOrigins(
                                                 Arrays.asList("http://www.abc23.com", "https://www.fabrikam.com/*"))
-                                            .withAllowedMethods(Arrays.asList(AllowedMethods.GET, AllowedMethods.PUT))
+                                            .withAllowedMethods(
+                                                Arrays
+                                                    .asList(
+                                                        CorsRuleAllowedMethodsItem.GET, CorsRuleAllowedMethodsItem.PUT))
                                             .withMaxAgeInSeconds(2000)
                                             .withExposedHeaders(
                                                 Arrays.asList("x-ms-meta-abc", "x-ms-meta-data*", "x -ms-meta-target*"))

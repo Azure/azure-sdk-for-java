@@ -2664,6 +2664,13 @@
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
 
+  <!-- This is inside Azure Maps Implementation package (codegen), and cannot be modified via a customization. -->
+  <Match>
+    <Class name="com.azure.maps.render.implementation.RenderV2sImpl"/>
+    <Method name="~getMap.*+"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
   <Match>
     <Class name="~com\.azure\.search.*"/>
     <Or>
@@ -2722,6 +2729,11 @@
   <!-- Shaded code shouldn't run Spotbugs -->
   <Match>
     <Package name="~com\.azure\.json\.implementation\.jackson\.core.*"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.xml.DefaultXmlReader"/>
+    <Bug pattern="XXE_XMLSTREAMREADER"/>
   </Match>
 
   <!-- Non Shipped code -->
