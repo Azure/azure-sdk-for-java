@@ -34,7 +34,7 @@ public class AgentPoolData implements AgentPool, HasInnerModel<AgentPoolInner> {
      *
      * @param innerModel the inner model of agent pool.
      */
-    public AgentPoolData(AgentPoolInner innerModel) {
+    protected AgentPoolData(AgentPoolInner innerModel) {
         this.innerModel = innerModel;
     }
 

@@ -305,14 +305,14 @@ public class KubernetesClusterImpl
 
     @Override
     public Accepted<AgentPool> beginCreateAgentPool(String agentPoolName, AgentPoolData agentPool) {
-        return AcceptedImpl.<AgentPool, AgentPoolInner>newAccepted(
+        return AcceptedImpl.newAccepted(
             logger,
             this.manager().serviceClient().getHttpPipeline(),
             this.manager().serviceClient().getDefaultPollInterval(),
             () -> this.manager().serviceClient().getAgentPools()
                 .createOrUpdateWithResponseAsync(resourceGroupName(), name(), agentPoolName, agentPool.innerModel())
                 .block(),
-            AgentPoolData::new,
+            AgentPoolDataImpl::new,
             AgentPoolInner.class,
             null,
             Context.NONE);
