@@ -39,42 +39,50 @@ public class UploadUtils {
      * @return A reactive response containing the information of the uploaded data.
      */
     public static <T> Mono<Response<T>> uploadFullOrChunked(final Flux<ByteBuffer> data,
-        ParallelTransferOptions parallelTransferOptions,
+        ParallelTransferOptions parallelTransferOptions, Long length,
         final Function<Flux<ByteBuffer>, Mono<Response<T>>> uploadInChunks,
         final BiFunction<Flux<ByteBuffer>, Long, Mono<Response<T>>> uploadFull) {
 
         PayloadSizeGate gate = new PayloadSizeGate(parallelTransferOptions.getMaxSingleUploadSizeLong());
 
-        return data
-            .filter(ByteBuffer::hasRemaining)
-            // The gate buffers data until threshold is breached.
-            .concatMap(gate::write, 0)
-            // First buffer is emitted after threshold is breached or there's no more data.
-            // Therefore we can make a decision how to upload data on first element.
-            .switchOnFirst((signal, flux) -> {
-                // If there is an error before the threshold is reached, propagate the error
-                if (signal.isOnError()) {
-                    Throwable t = signal.getThrowable();
-                    if (t != null) {
-                        return Flux.error(t);
-                    } else {
-                        return Flux.error(new IllegalStateException("Source flux failed but cause is unretrievable"));
+        if (length == null) {
+            return data
+                .filter(ByteBuffer::hasRemaining)
+                // The gate buffers data until threshold is breached.
+                .concatMap(gate::write, 0)
+                // First buffer is emitted after threshold is breached or there's no more data.
+                // Therefore we can make a decision how to upload data on first element.
+                .switchOnFirst((signal, flux) -> {
+                    // If there is an error before the threshold is reached, propagate the error
+                    if (signal.isOnError()) {
+                        Throwable t = signal.getThrowable();
+                        if (t != null) {
+                            return Flux.error(t);
+                        } else {
+                            return Flux.error(new IllegalStateException("Source flux failed but cause is unretrievable"));
+                        }
                     }
-                }
-                if (gate.isThresholdBreached()) {
-                    // In this case we can pass a flux that can have just one subscriber because
-                    // the chunked upload is going to cache the data downstream before sending chunks over the wire.
-                    return uploadInChunks.apply(flux.concatWith(Flux.defer(gate::flush)));
-                } else {
-                    // In this case gate contains all the data cached.
-                    // The flux passed to this lambda allows only one subscriber. Therefore we substitute it
-                    // with flux coming from gate which is based of iterable and can be subscribed again.
-                    return uploadFull.apply(gate.flush(), gate.size());
-                }
-            })
-            .next()
-            // If nothing was emitted from the stream upload an empty blob.
-            .switchIfEmpty(Mono.defer(() -> uploadFull.apply(Flux.empty(), 0L)));
+                    if (gate.isThresholdBreached()) {
+                        // In this case we can pass a flux that can have just one subscriber because
+                        // the chunked upload is going to cache the data downstream before sending chunks over the wire.
+                        return uploadInChunks.apply(flux.concatWith(Flux.defer(gate::flush)));
+                    } else {
+                        // In this case gate contains all the data cached.
+                        // The flux passed to this lambda allows only one subscriber. Therefore we substitute it
+                        // with flux coming from gate which is based of iterable and can be subscribed again.
+                        return uploadFull.apply(gate.flush(), gate.size());
+                    }
+                })
+                .next()
+                // If nothing was emitted from the stream upload an empty blob.
+                .switchIfEmpty(Mono.defer(() -> uploadFull.apply(Flux.empty(), 0L)));
+        } else {
+            if (length <= parallelTransferOptions.getMaxSingleUploadSizeLong()) {
+                return uploadFull.apply(data, length);
+            } else {
+                return uploadInChunks.apply(data);
+            }
+        }
     }
 
     /**

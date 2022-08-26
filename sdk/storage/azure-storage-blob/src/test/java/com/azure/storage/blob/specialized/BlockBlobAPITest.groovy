@@ -2042,6 +2042,27 @@ class BlockBlobAPITest extends APISpec {
         100                                            | 50               | 20        || 5 // Test that blockSize is respected
     }
 
+    @Unroll
+    @LiveOnly
+    def "Buffered upload with length"() {
+        setup:
+        def data = getRandomData(dataSize)
+
+        when:
+        blobAsyncClient.uploadWithResponse(Flux.just(data),
+            new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(singleUploadSize),
+            dataSize, null, null, null, null).block()
+
+        then:
+        blobAsyncClient.getBlockBlobAsyncClient()
+            .listBlocks(BlockListType.COMMITTED).block().getCommittedBlocks().size() == expectedBlockCount
+
+        where:
+        dataSize                                       | singleUploadSize | blockSize || expectedBlockCount
+        100                                            | 100              | null      || 0 // Test that singleUploadSize is respected
+        100                                            | 50               | 20        || 5 // Test that blockSize is respected
+    }
+
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
     @LiveOnly
@@ -2248,6 +2269,13 @@ class BlockBlobAPITest extends APISpec {
             })
         cleanup:
         smallFile.delete()
+    }
+
+    @LiveOnly
+    def "Buffered upload with specified length"() {
+        expect:
+        StepVerifier.create(blobAsyncClient.upload(data.defaultFlux, null, data.getDefaultDataSizeLong(), true))
+            .assertNext({ assert it.getETag() != null }).verifyComplete()
     }
 
     @LiveOnly

@@ -628,7 +628,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
             return createWithResponse(options.getPermissions(), options.getUmask(), options.getHeaders(),
                 options.getMetadata(), validatedRequestConditions)
-                .then(UploadUtils.uploadFullOrChunked(data, validatedParallelTransferOptions,
+                .then(UploadUtils.uploadFullOrChunked(data, validatedParallelTransferOptions, null,
                     uploadInChunksFunction, uploadFullMethod));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);

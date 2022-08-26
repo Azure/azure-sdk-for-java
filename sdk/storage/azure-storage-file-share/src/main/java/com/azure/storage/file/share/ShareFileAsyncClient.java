@@ -2081,7 +2081,7 @@ public class ShareFileAsyncClient {
                     options.getDataStream(), options.getLength(), chunkSize, false);
             }
 
-            return UploadUtils.uploadFullOrChunked(data, validatedParallelTransferOptions, uploadInChunks, uploadFull);
+            return UploadUtils.uploadFullOrChunked(data, validatedParallelTransferOptions, null, uploadInChunks, uploadFull);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

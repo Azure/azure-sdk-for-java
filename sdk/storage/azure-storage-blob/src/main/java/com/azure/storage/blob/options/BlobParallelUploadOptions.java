@@ -56,6 +56,21 @@ public class BlobParallelUploadOptions {
     /**
      * Constructs a new {@link BlobParallelUploadOptions}.
      *
+     * @param dataFlux The data to write to the blob. Unlike other upload methods, this method does not require that
+     * the {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not
+     * expected to produce the same values across subscriptions.
+     * @param length Optional known length of the data.
+     */
+    public BlobParallelUploadOptions(Flux<ByteBuffer> dataFlux, long length) {
+        StorageImplUtils.assertNotNull("dataFlux", dataFlux);
+        this.dataFlux = dataFlux;
+        this.dataStream = null;
+        this.length = length;
+    }
+
+    /**
+     * Constructs a new {@link BlobParallelUploadOptions}.
+     *
      * Use {@link #BlobParallelUploadOptions(InputStream)} instead to supply an InputStream without knowing the exact
      * length beforehand.
      *
@@ -105,7 +120,7 @@ public class BlobParallelUploadOptions {
         StorageImplUtils.assertNotNull("data", data);
         this.dataFlux = Flux.just(data.toByteBuffer());
         this.dataStream = null;
-        this.length = null;
+        this.length = data.getLength();
     }
 
     /**
