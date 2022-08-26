@@ -1544,6 +1544,11 @@ public final class BlobContainerAsyncClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.blob.BlobContainerAsyncClient.rename#String -->
+     * <pre>
+     * BlobContainerAsyncClient blobContainerAsyncClient =
+     *     client.rename&#40;&quot;newContainerName&quot;&#41;
+     *         .block&#40;&#41;;
+     * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.rename#String -->
      *
      * @param destinationContainerName The new name of the container.
@@ -1560,6 +1565,12 @@ public final class BlobContainerAsyncClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.blob.BlobContainerAsyncClient.renameWithResponse#BlobContainerRenameOptions -->
+     * <pre>
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;.setLeaseId&#40;&quot;lease-id&quot;&#41;;
+     * BlobContainerAsyncClient containerClient = client
+     *     .renameWithResponse&#40;new BlobContainerRenameOptions&#40; &quot;newContainerName&quot;&#41;
+     *             .setRequestConditions&#40;requestConditions&#41;&#41;.block&#40;&#41;.getValue&#40;&#41;;
+     * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.renameWithResponse#BlobContainerRenameOptions -->
      *
      * @param options {@link BlobContainerRenameOptions}
