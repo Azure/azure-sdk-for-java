@@ -19,7 +19,7 @@ public class StartRecordingOptions {
      */
     private final CallLocator callLocator;
 
-    private URI recordingStateCallbackUri;
+    private String recordingStateCallbackUrl;
 
     private RecordingChannel recordingChannel;
 
@@ -52,20 +52,20 @@ public class StartRecordingOptions {
     /**
      * Uri to send state change callbacks.
      *
-     * @return {@link URI} to send state change callbacks.
+     * @return url to send state change callbacks.
      */
-    public URI getRecordingStateCallbackUri() {
-        return recordingStateCallbackUri;
+    public String getRecordingStateCallbackUrl() {
+        return recordingStateCallbackUrl;
     }
 
     /**
-     * Set the recordingStateCallbackUri
+     * Set the recordingStateCallbackUrl
      *
-     * @param recordingStateCallbackUri a {@link URI} to send state change callbacks.
+     * @param recordingStateCallbackUrl to send state change callbacks.
      * @return the {@link StartRecordingOptions}
      */
-    public StartRecordingOptions setRecordingStateCallbackUri(URI recordingStateCallbackUri) {
-        this.recordingStateCallbackUri = recordingStateCallbackUri;
+    public StartRecordingOptions setRecordingStateCallbackUrl(String recordingStateCallbackUrl) {
+        this.recordingStateCallbackUrl = recordingStateCallbackUrl;
         return this;
     }
 

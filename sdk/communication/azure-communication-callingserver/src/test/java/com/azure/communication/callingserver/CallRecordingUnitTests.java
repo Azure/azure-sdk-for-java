@@ -38,7 +38,7 @@ public class CallRecordingUnitTests extends CallRecordingUnitTestBase {
         assertThrows(
             InvalidParameterException.class,
             () -> callRecording.startRecording(new StartRecordingOptions(new ServerCallLocator(SERVER_CALL_ID))
-                    .setRecordingStateCallbackUri(URI.create("/not/absolute/uri"))
+                    .setRecordingStateCallbackUrl("/not/absolute/uri")
             ));
     }
 
@@ -48,7 +48,7 @@ public class CallRecordingUnitTests extends CallRecordingUnitTestBase {
             .setRecordingContent(RecordingContent.AUDIO_VIDEO)
             .setRecordingChannel(RecordingChannel.MIXED)
             .setRecordingFormat(RecordingFormat.MP4)
-            .setRecordingStateCallbackUri(URI.create("/not/absolute/uri"))
+            .setRecordingStateCallbackUrl("/not/absolute/uri")
             .setChannelAffinity(new ArrayList<ChannelAffinity>(Arrays.asList(
                 new ChannelAffinity(0, new CommunicationUserIdentifier("rawId1")),
                 new ChannelAffinity(1, new CommunicationUserIdentifier("rawId2")))));
@@ -69,7 +69,7 @@ public class CallRecordingUnitTests extends CallRecordingUnitTestBase {
 
         validateRecording(
             callRecording.startRecording(new StartRecordingOptions(new ServerCallLocator(SERVER_CALL_ID))
-                .setRecordingStateCallbackUri(URI.create("https://localhost/"))),
+                .setRecordingStateCallbackUrl("https://localhost/")),
             RecordingState.ACTIVE
         );
 

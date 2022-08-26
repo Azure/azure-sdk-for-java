@@ -39,7 +39,7 @@ public class CallRecordingLiveTests extends CallAutomationLiveTestBase {
             CallRecording callRecording = client.getCallRecording();
             RecordingStateResult recordingResponse = callRecording.startRecording(
                 new StartRecordingOptions(new ServerCallLocator(serverCallId))
-                    .setRecordingStateCallbackUri(new URI(ngrok)));
+                    .setRecordingStateCallbackUrl(ngrok));
             assertNotNull(recordingResponse);
             String recordingId = recordingResponse.getRecordingId();
             assertNotNull(recordingId);
