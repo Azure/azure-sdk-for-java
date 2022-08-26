@@ -43,7 +43,9 @@ import io.opentelemetry.sdk.metrics.internal.export.MetricProducer;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -74,7 +76,7 @@ public class App {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                metricReader.collectAndPrint();
+                metricReader.collect();
             }
         }, 1000, 1000);
 
@@ -99,6 +101,7 @@ public class App {
         }, args);
 
         metricReader.forceFlush();
+        metricReader.printMetrics();
         timer.cancel();
     }
 
@@ -106,40 +109,30 @@ public class App {
         private final AggregationTemporality aggregationTemporality;
         private final AtomicBoolean isShutdown = new AtomicBoolean(false);
         private volatile MetricProducer metricProducer = MetricProducer.noop();
+        private final List<MetricData> metrics = new ArrayList<>();
 
         private static final AttributeKey<String> POOL_NAME = AttributeKey.stringKey("pool");
         private static final double MB = 1024 * 1024d;
         public InMemoryMetricReader() {
             this.aggregationTemporality = AggregationTemporality.CUMULATIVE;
-            System.out.println("| JVM memory usage: Eden Space | JVM memory usage: Survivor Space | JVM memory usage: Old Gen |");
-            System.out.println("|------------------------------|----------------------------------|---------------------------|");
         }
 
         /** Returns all metrics accumulated since the last call. */
-        public void collectAndPrint() {
+        public void collect() {
             if (isShutdown.get()) {
                 return;
             }
             Collection<MetricData> metrics =  metricProducer.collectAllMetrics();
-            metrics.stream()
-                .filter(d -> d.getName().equals("process.runtime.jvm.memory.usage"))
-                .forEach(InMemoryMetricReader::printJvmMemUsage);
-            /*System.out.println("metric " + d.getName());
-            for (PointData p : d.getData().getPoints()) {
-                printDataPoint(p);
-            }*/
-        }
-
-        private static void printDataPoint(PointData p) {
-            Attributes a = p.getAttributes();
-            double value = -1;
-            if (p instanceof LongPointData) {
-                value = ((LongPointData)p).getValue();
-            } else if (p instanceof DoublePointData) {
-                value = ((DoublePointData)p).getValue();
+            for (MetricData metric : metrics) {
+                if (metric.getName().equals("process.runtime.jvm.memory.usage")) {
+                    this.metrics.add(metric);
+                }
             }
-
-            System.out.printf("\tval='%f', attributes=%s\n", value, a.asMap().keySet().stream().map(k -> k.getKey() + "=" + a.asMap().get(k)).collect(Collectors.joining(", ")));
+        }
+        public void printMetrics() {
+            System.out.println("| JVM memory usage: Eden Space | JVM memory usage: Survivor Space | JVM memory usage: Old Gen |");
+            System.out.println("|------------------------------|----------------------------------|---------------------------|");
+            metrics.forEach(m -> printJvmMemUsage(m));
         }
 
         private static void printJvmMemUsage(MetricData data) {
@@ -180,7 +173,7 @@ public class App {
 
         @Override
         public CompletableResultCode forceFlush() {
-            collectAndPrint();
+            collect();
             return CompletableResultCode.ofSuccess();
         }
 
