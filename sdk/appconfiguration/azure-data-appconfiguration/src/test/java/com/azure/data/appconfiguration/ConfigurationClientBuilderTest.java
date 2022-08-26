@@ -3,10 +3,8 @@
 
 package com.azure.data.appconfiguration;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
@@ -34,7 +32,6 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.UnknownHostException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
@@ -239,14 +236,20 @@ public class ConfigurationClientBuilderTest extends TestBase {
         assertThrows(HttpResponseException.class, () -> configurationClient.setConfigurationSetting(key, null, value));
     }
 
-    @Test
-    public void notShareDefaultHttpPipeline() throws NoSuchAlgorithmException, InvalidKeyException {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void notShareDefaultHttpPipeline(HttpClient httpClient) {
         final String key = "key1";
         final String label = "label1";
         final String value = "value1";
 
         ConfigurationClientBuilder builder = new ConfigurationClientBuilder()
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .credential(new DefaultAzureCredentialBuilder().build());
+
+        if (!interceptorManager.isPlaybackMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
 
         // Build a new instance without custom pipeline should create a new pipeline each time.
         // Endpoint: Does Not Exist
@@ -254,9 +257,16 @@ public class ConfigurationClientBuilderTest extends TestBase {
         ConfigurationClient clientNotExist = builder.buildClient();
 
         // Endpoint: Exists
-        builder.endpoint(new ConfigurationClientCredentials(
-            Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING))
-            .getBaseUri());
+        String endpoint = null;
+        try {
+            endpoint = new ConfigurationClientCredentials(
+                Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING))
+                .getBaseUri();
+        } catch (NoSuchAlgorithmException | InvalidKeyException exception) {
+            assertTrue(false);
+        }
+
+        builder.endpoint(endpoint);
         ConfigurationClient client = builder.buildClient();
 
         // TODO: after Netty supports SyncStack, we should assert UnknownHostException type

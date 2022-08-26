@@ -1,0 +1,85 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.azconfig.io/kv/key1?label=label1&api-version=1.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-data-appconfiguration/1.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4e656cf2-8996-422d-b3f6-f7ec33601d04",
+      "Content-Type" : "application/json"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "java.net.UnknownHostException",
+      "ErrorMessage" : "No such host is known (aaa.azconfig.io)"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.azconfig.io/kv/key1?label=label1&api-version=1.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-data-appconfiguration/1.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4e656cf2-8996-422d-b3f6-f7ec33601d04",
+      "Content-Type" : "application/json"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "java.net.UnknownHostException",
+      "ErrorMessage" : "aaa.azconfig.io"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.azconfig.io/kv/key1?label=label1&api-version=1.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-data-appconfiguration/1.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4e656cf2-8996-422d-b3f6-f7ec33601d04",
+      "Content-Type" : "application/json"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "java.net.UnknownHostException",
+      "ErrorMessage" : "aaa.azconfig.io"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.azconfig.io/kv/key1?label=label1&api-version=1.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-data-appconfiguration/1.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4e656cf2-8996-422d-b3f6-f7ec33601d04",
+      "Content-Type" : "application/json"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "java.net.UnknownHostException",
+      "ErrorMessage" : "aaa.azconfig.io"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.azconfig.io/kv/key1?label=label1&api-version=1.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-data-appconfiguration/1.4.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0836700b-feec-4567-b056-9bfaed913a4d",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Server" : "openresty/1.17.8.2",
+      "Access-Control-Allow-Origin" : "*",
+      "Connection" : "keep-alive",
+      "Last-Modified" : "Thu, 25 Aug 2022 22:23:11 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 25 Aug 2022 22:23:11 GMT",
+      "x-ms-correlation-request-id" : "55cadef2-e7fb-4199-bb91-f416121c7e37",
+      "Access-Control-Expose-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-useragent, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, retry-after-ms, x-ms-request-id, x-ms-client-session-id, x-ms-effective-locale, WWW-Authenticate, traceparent, tracestate",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "ETag" : "\"2EVbOttxzf48CoUqSXx7HUo4XlsEJLpF-gwa-Yvv6sY\"",
+      "Access-Control-Allow-Credentials" : "true",
+      "Sync-Token" : "zAJw6V16=MjoyMCMzNzI0MTMy;sn=3724132",
+      "x-ms-request-id" : "55cadef2-e7fb-4199-bb91-f416121c7e37",
+      "Body" : "{\"etag\":\"2EVbOttxzf48CoUqSXx7HUo4XlsEJLpF-gwa-Yvv6sY\",\"key\":\"key1\",\"label\":\"label1\",\"content_type\":null,\"value\":\"value1\",\"tags\":{},\"locked\":false,\"last_modified\":\"2022-08-25T22:23:11+00:00\"}",
+      "x-ms-client-request-id" : "0836700b-feec-4567-b056-9bfaed913a4d",
+      "Content-Type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
