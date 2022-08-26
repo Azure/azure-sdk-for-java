@@ -6,16 +6,22 @@ package com.azure.resourcemanager.automation.implementation;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.http.rest.StreamResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.fluent.RunbookDraftsClient;
 import com.azure.resourcemanager.automation.fluent.models.RunbookDraftInner;
+import com.azure.resourcemanager.automation.fluent.models.RunbookDraftUndoEditResultInner;
 import com.azure.resourcemanager.automation.models.RunbookDraft;
+import com.azure.resourcemanager.automation.models.RunbookDraftUndoEditResult;
 import com.azure.resourcemanager.automation.models.RunbookDrafts;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 
 public final class RunbookDraftsImpl implements RunbookDrafts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RunbookDraftsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RunbookDraftsImpl.class);
 
     private final RunbookDraftsClient innerClient;
 
@@ -27,31 +33,63 @@ public final class RunbookDraftsImpl implements RunbookDrafts {
         this.serviceManager = serviceManager;
     }
 
-    public String getContent(String resourceGroupName, String automationAccountName, String runbookName) {
+    public Flux<ByteBuffer> getContent(String resourceGroupName, String automationAccountName, String runbookName) {
         return this.serviceClient().getContent(resourceGroupName, automationAccountName, runbookName);
     }
 
-    public Response<String> getContentWithResponse(
+    public Response<Flux<ByteBuffer>> getContentWithResponse(
         String resourceGroupName, String automationAccountName, String runbookName, Context context) {
         return this
             .serviceClient()
             .getContentWithResponse(resourceGroupName, automationAccountName, runbookName, context);
     }
 
-    public void replaceContent(
-        String resourceGroupName, String automationAccountName, String runbookName, String runbookContent) {
-        this.serviceClient().replaceContent(resourceGroupName, automationAccountName, runbookName, runbookContent);
-    }
-
-    public void replaceContent(
+    public InputStream replaceContent(
         String resourceGroupName,
         String automationAccountName,
         String runbookName,
-        String runbookContent,
-        Context context) {
-        this
+        Flux<ByteBuffer> runbookContent,
+        long contentLength) {
+        return this
             .serviceClient()
-            .replaceContent(resourceGroupName, automationAccountName, runbookName, runbookContent, context);
+            .replaceContent(resourceGroupName, automationAccountName, runbookName, runbookContent, contentLength);
+    }
+
+    public StreamResponse replaceContentWithResponse(
+        String resourceGroupName,
+        String automationAccountName,
+        String runbookName,
+        Flux<ByteBuffer> runbookContent,
+        long contentLength,
+        Context context) {
+        return this
+            .serviceClient()
+            .replaceContentWithResponse(
+                resourceGroupName, automationAccountName, runbookName, runbookContent, contentLength, context);
+    }
+
+    public InputStream replaceContent(
+        String resourceGroupName,
+        String automationAccountName,
+        String runbookName,
+        BinaryData runbookContent,
+        long contentLength) {
+        return this
+            .serviceClient()
+            .replaceContent(resourceGroupName, automationAccountName, runbookName, runbookContent, contentLength);
+    }
+
+    public StreamResponse replaceContentWithResponse(
+        String resourceGroupName,
+        String automationAccountName,
+        String runbookName,
+        BinaryData runbookContent,
+        long contentLength,
+        Context context) {
+        return this
+            .serviceClient()
+            .replaceContentWithResponse(
+                resourceGroupName, automationAccountName, runbookName, runbookContent, contentLength, context);
     }
 
     public RunbookDraft get(String resourceGroupName, String automationAccountName, String runbookName) {
@@ -78,15 +116,30 @@ public final class RunbookDraftsImpl implements RunbookDrafts {
         }
     }
 
-    public void undoEdit(String resourceGroupName, String automationAccountName, String runbookName) {
-        this.serviceClient().undoEdit(resourceGroupName, automationAccountName, runbookName);
+    public RunbookDraftUndoEditResult undoEdit(
+        String resourceGroupName, String automationAccountName, String runbookName) {
+        RunbookDraftUndoEditResultInner inner =
+            this.serviceClient().undoEdit(resourceGroupName, automationAccountName, runbookName);
+        if (inner != null) {
+            return new RunbookDraftUndoEditResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public Response<Void> undoEditWithResponse(
+    public Response<RunbookDraftUndoEditResult> undoEditWithResponse(
         String resourceGroupName, String automationAccountName, String runbookName, Context context) {
-        return this
-            .serviceClient()
-            .undoEditWithResponse(resourceGroupName, automationAccountName, runbookName, context);
+        Response<RunbookDraftUndoEditResultInner> inner =
+            this.serviceClient().undoEditWithResponse(resourceGroupName, automationAccountName, runbookName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new RunbookDraftUndoEditResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     private RunbookDraftsClient serviceClient() {

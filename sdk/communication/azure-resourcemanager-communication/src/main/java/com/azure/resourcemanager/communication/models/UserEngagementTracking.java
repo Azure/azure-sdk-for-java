@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for UserEngagementTracking. */
+/** Describes whether user engagement tracking is enabled or disabled. */
 public final class UserEngagementTracking extends ExpandableStringEnum<UserEngagementTracking> {
     /** Static value Disabled for UserEngagementTracking. */
     public static final UserEngagementTracking DISABLED = fromString("Disabled");

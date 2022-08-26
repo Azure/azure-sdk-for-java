@@ -111,8 +111,7 @@ public final class PublicIpAddressPropertiesFormatInner {
     private PublicIpAddressInner linkedPublicIpAddress;
 
     /*
-     * Specify what happens to the public IP address when the VM using it is
-     * deleted
+     * Specify what happens to the public IP address when the VM using it is deleted
      */
     @JsonProperty(value = "deleteOption")
     private DeleteOptions deleteOption;

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The BlobContainersExtendImmutabilityPolicyHeaders model. */
@@ -15,6 +16,16 @@ public final class BlobContainersExtendImmutabilityPolicyHeaders {
      */
     @JsonProperty(value = "Etag")
     private String etag;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of BlobContainersExtendImmutabilityPolicyHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public BlobContainersExtendImmutabilityPolicyHeaders(HttpHeaders rawHeaders) {
+        this.etag = rawHeaders.getValue("Etag");
+    }
 
     /**
      * Get the etag property: The Etag property.

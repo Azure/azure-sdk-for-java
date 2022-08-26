@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DnsEndpointType. */
+/**
+ * Allows you to specify the type of endpoint. Set this to AzureDNSZone to create a large number of accounts in a single
+ * subscription, which creates accounts in an Azure DNS Zone and the endpoint URL will have an alphanumeric DNS Zone
+ * identifier.
+ */
 public final class DnsEndpointType extends ExpandableStringEnum<DnsEndpointType> {
     /** Static value Standard for DnsEndpointType. */
     public static final DnsEndpointType STANDARD = fromString("Standard");

@@ -164,15 +164,11 @@ public class StreamResponseTest {
     }
 
     @Test
-    public void transferToWriteableChannel() throws IOException {
+    public void transferToWriteableChannel() {
         createStreamResponses().forEach(streamResponse -> {
 
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            try {
-                streamResponse.writeValueTo(Channels.newChannel(bos));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            streamResponse.writeValueTo(Channels.newChannel(bos));
 
             assertArrayEquals(responseValue, bos.toByteArray());
         });

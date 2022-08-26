@@ -15,8 +15,7 @@ import java.util.Map;
 @Fluent
 public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoolProfileProperties {
     /*
-     * Unique name of the agent pool profile in the context of the subscription
-     * and resource group.
+     * Unique name of the agent pool profile in the context of the subscription and resource group.
      *
      * Windows agent pool names must be 6 characters or less.
      */

@@ -756,14 +756,16 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
          * so we do not need to apply the offset as the continuation token handles the pages.
          */
         int feedResponseContentSize = pageable.getPageSize();
-        if (!pageable.hasPrevious()) {
-            feedResponseContentSize = (int) (feedResponseContentSize + pageable.getOffset());
-        }
         if (pageable instanceof CosmosPageRequest) {
+            if (((CosmosPageRequest) pageable).getRequestContinuation() == null) {
+                feedResponseContentSize = (int) (feedResponseContentSize
+                    + (feedResponseContentSize * pageable.getPageNumber()) + pageable.getOffset());
+            }
             feedResponseFlux = container
                 .queryItems(querySpec, cosmosQueryRequestOptions, JsonNode.class)
                 .byPage(((CosmosPageRequest) pageable).getRequestContinuation(), feedResponseContentSize);
         } else {
+            feedResponseContentSize = feedResponseContentSize + (feedResponseContentSize * pageable.getPageNumber());
             feedResponseFlux = container
                 .queryItems(querySpec, cosmosQueryRequestOptions, JsonNode.class)
                 .byPage(feedResponseContentSize);
@@ -788,21 +790,26 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
          * After we apply the offset to the first page, the continuation token will pick
          * up the second and future pages at the correct index.
          */
-        int offsetForFirstPageResults = 0;
-        if (!pageable.hasPrevious()) {
-            offsetForFirstPageResults = (int) pageable.getOffset();
+        int offsetForPageWithoutContToken = 0;
+        if (pageable instanceof CosmosPageRequest) {
+            if (((CosmosPageRequest) pageable).getRequestContinuation() == null) {
+                offsetForPageWithoutContToken = (pageable.getPageNumber() * pageable.getPageSize())
+                    + (int) pageable.getOffset();
+            }
+        } else {
+            offsetForPageWithoutContToken = (pageable.getPageNumber() * pageable.getPageSize());
         }
 
         final List<T> result = new ArrayList<>();
         for (int index = 0; it.hasNext()
-            && index < pageable.getPageSize() + offsetForFirstPageResults; index++) {
+            && index < pageable.getPageSize() + offsetForPageWithoutContToken; index++) {
 
             final JsonNode jsonNode = it.next();
             if (jsonNode == null) {
                 continue;
             }
 
-            if (index >= offsetForFirstPageResults) {
+            if (index >= offsetForPageWithoutContToken) {
                 maybeEmitEvent(new AfterLoadEvent<>(jsonNode, returnType, containerName));
                 final T entity = mappingCosmosConverter.read(returnType, jsonNode);
                 result.add(entity);

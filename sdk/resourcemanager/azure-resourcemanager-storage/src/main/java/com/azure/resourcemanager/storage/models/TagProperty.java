@@ -30,8 +30,7 @@ public final class TagProperty {
     private String objectIdentifier;
 
     /*
-     * Returns the Tenant ID that issued the token for the user who added the
-     * tag.
+     * Returns the Tenant ID that issued the token for the user who added the tag.
      */
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;

@@ -1,14 +1,10 @@
 # Release History
 
-## 2.18.0-beta.1 (Unreleased)
+## 2.18.0 (2022-08-26)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported Java SE 17 in `FunctionRuntimeStack` for `FunctionApp`.
 
 ## 2.17.0 (2022-07-25)
 

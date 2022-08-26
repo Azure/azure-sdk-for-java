@@ -5,8 +5,7 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -14,8 +13,6 @@ import java.util.Map;
 /** Definition of the test job. */
 @Fluent
 public final class TestJobInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TestJobInner.class);
-
     /*
      * Gets or sets the creation time of the test job.
      */
@@ -35,8 +32,7 @@ public final class TestJobInner {
     private String statusDetails;
 
     /*
-     * Gets or sets the runOn which specifies the group name where the job is
-     * to be executed.
+     * Gets or sets the runOn which specifies the group name where the job is to be executed.
      */
     @JsonProperty(value = "runOn")
     private String runOn;
@@ -75,6 +71,7 @@ public final class TestJobInner {
      * Gets or sets the parameters of the test job.
      */
     @JsonProperty(value = "parameters")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> parameters;
 
     /*

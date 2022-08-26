@@ -42,8 +42,8 @@ public final class KeyVaultProperties {
     private OffsetDateTime lastKeyRotationTimestamp;
 
     /*
-     * This is a read only property that represents the expiration time of the
-     * current version of the customer managed key used for encryption.
+     * This is a read only property that represents the expiration time of the current version of the customer managed
+     * key used for encryption.
      */
     @JsonProperty(value = "currentVersionedKeyExpirationTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime currentVersionedKeyExpirationTimestamp;

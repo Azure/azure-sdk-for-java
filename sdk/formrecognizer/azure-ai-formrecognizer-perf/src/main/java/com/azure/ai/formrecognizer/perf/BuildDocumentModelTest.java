@@ -3,10 +3,10 @@
 
 package com.azure.ai.formrecognizer.perf;
 
-import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
-import com.azure.ai.formrecognizer.administration.models.DocumentModelBuildMode;
-import com.azure.ai.formrecognizer.administration.models.DocumentModelDetails;
-import com.azure.ai.formrecognizer.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildModelOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
 import com.azure.ai.formrecognizer.perf.core.ServiceTest;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.perf.test.core.PerfStressOptions;
@@ -34,7 +34,7 @@ public class BuildDocumentModelTest extends ServiceTest<PerfStressOptions> {
         SyncPoller<DocumentOperationResult, DocumentModelDetails>
             syncPoller = documentModelAdministrationAsyncClient
             .beginBuildModel(FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL,
-                DocumentModelBuildMode.TEMPLATE,
+                DocumentModelBuildMode.TEMPLATE, null,
                 new BuildModelOptions().setDescription("perf-training-model"))
             .getSyncPoller();
         modelId = syncPoller.getFinalResult().getModelId();
@@ -45,7 +45,7 @@ public class BuildDocumentModelTest extends ServiceTest<PerfStressOptions> {
     public Mono<Void> runAsync() {
         return documentModelAdministrationAsyncClient
             .beginBuildModel(FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL,
-                DocumentModelBuildMode.TEMPLATE,
+                DocumentModelBuildMode.TEMPLATE, null,
                 new BuildModelOptions().setDescription("perf-training-model"))
             .last()
             .flatMap(pollResponse -> {

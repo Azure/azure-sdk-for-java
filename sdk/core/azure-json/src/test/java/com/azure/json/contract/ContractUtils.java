@@ -39,9 +39,9 @@ final class ContractUtils {
         if (token == JsonToken.NULL || token == null) {
             return null;
         } else if (token == JsonToken.BOOLEAN) {
-            return jsonReader.getBooleanValue();
+            return jsonReader.getBoolean();
         } else if (token == JsonToken.NUMBER) {
-            String numberText = jsonReader.getTextValue();
+            String numberText = jsonReader.getText();
             if (numberText.contains(".")) {
                 try {
                     return Float.parseFloat(numberText);
@@ -56,7 +56,7 @@ final class ContractUtils {
                 }
             }
         } else if (token == JsonToken.STRING) {
-            return jsonReader.getStringValue();
+            return jsonReader.getString();
         } else if (token == JsonToken.START_ARRAY) {
             List<Object> array = new ArrayList<>();
 

@@ -24,6 +24,7 @@ import com.azure.storage.file.datalake.options.DataLakePathCreateOptions
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions
 import com.azure.storage.file.datalake.options.DataLakePathScheduleDeletionOptions
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions
+import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -112,6 +113,65 @@ class FileSystemAPITest extends APISpec {
         e.getServiceMessage().contains("The specified container already exists.")
     }
 
+    def "Create encryption scope"() {
+        setup:
+        def encryptionScope = new FileSystemEncryptionScopeOptions()
+            .setDefaultEncryptionScope(encryptionScopeString)
+            .setEncryptionScopeOverridePrevented(true)
+
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+
+        def client = getFileSystemClientBuilder(fsc.getFileSystemUrl())
+            .credential(environment.dataLakeAccount.credential)
+            .fileSystemEncryptionScopeOptions(encryptionScope)
+            .buildClient()
+
+        when:
+        client.create()
+        def properties = client.getProperties()
+
+        then:
+        properties.getEncryptionScope() == encryptionScopeString
+        properties.isEncryptionScopeOverridePrevented()
+    }
+
+    def "Create metadata encryption scope"() {
+        setup:
+        def encryptionScope = new FileSystemEncryptionScopeOptions()
+            .setDefaultEncryptionScope(encryptionScopeString)
+            .setEncryptionScopeOverridePrevented(true)
+
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+
+        def client = getFileSystemClientBuilder(fsc.getFileSystemUrl())
+            .credential(environment.dataLakeAccount.credential)
+            .fileSystemEncryptionScopeOptions(encryptionScope)
+            .buildClient()
+
+        def metadata = new HashMap<String, String>()
+        if (key1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null) {
+            metadata.put(key2, value2)
+        }
+
+        when:
+        client.createWithResponse(metadata, null, null, null)
+        def properties = client.getProperties()
+
+        then:
+        properties.getEncryptionScope() == encryptionScopeString
+        properties.isEncryptionScopeOverridePrevented()
+        properties.getMetadata() == metadata
+
+        where:
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
+        "testFoo" | "testBar" | "testFizz" | "testBuzz"
+    }
+
     def "Create if not exists all null"() {
         setup:
         // Overwrite the existing fsc, which has already been created
@@ -195,6 +255,28 @@ class FileSystemAPITest extends APISpec {
         secondResponse.getStatusCode() == 409
     }
 
+    def "Create if not exists encryption scope"() {
+        setup:
+        def encryptionScope = new FileSystemEncryptionScopeOptions()
+            .setDefaultEncryptionScope(encryptionScopeString)
+            .setEncryptionScopeOverridePrevented(true)
+
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+
+        def client = getFileSystemClientBuilder(fsc.getFileSystemUrl())
+            .credential(environment.dataLakeAccount.credential)
+            .fileSystemEncryptionScopeOptions(encryptionScope)
+            .buildClient()
+
+        when:
+        client.createIfNotExists()
+        def properties = client.getProperties()
+
+        then:
+        properties.getEncryptionScope() == encryptionScopeString
+        properties.isEncryptionScopeOverridePrevented()
+    }
+
     def "Get properties null"() {
         when:
         def response = fsc.getPropertiesWithResponse(null, null, null)
@@ -240,6 +322,23 @@ class FileSystemAPITest extends APISpec {
 
         then:
         thrown(DataLakeStorageException)
+    }
+
+    def "Exists"() {
+        when:
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+        fsc.create()
+
+        then:
+        fsc.exists()
+    }
+
+    def "Exists not exists"() {
+        when:
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+
+        then:
+        !fsc.exists()
     }
 
     def "Set metadata"() {
@@ -2298,6 +2397,56 @@ class FileSystemAPITest extends APISpec {
         for (def page : fsc.listPaths(new ListPathsOptions(), null).iterableByPage(1)) {
             assert page.value.size() == 1
         }
+    }
+
+    def "List paths encryption scope"() {
+        setup:
+        def encryptionScope = new FileSystemEncryptionScopeOptions()
+            .setDefaultEncryptionScope(encryptionScopeString)
+            .setEncryptionScopeOverridePrevented(true)
+
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+
+        def client = getFileSystemClientBuilder(fsc.getFileSystemUrl())
+            .credential(environment.dataLakeAccount.credential)
+            .fileSystemEncryptionScopeOptions(encryptionScope)
+            .buildClient()
+
+        client.create()
+
+        def dirName = generatePathName()
+        client.getDirectoryClient(dirName).create()
+
+        def fileName = generatePathName()
+        def fileClient = fsc.getFileClient(fileName)
+        fileClient.create()
+
+        when:
+        def response = fsc.listPaths().iterator()
+
+        then:
+        def dirPath = response.next()
+        dirPath.getName() == dirName
+        dirPath.getETag()
+        dirPath.getGroup()
+        dirPath.getLastModified()
+        dirPath.getOwner()
+        dirPath.getPermissions()
+        dirPath.isDirectory()
+        dirPath.getEncryptionScope() == encryptionScopeString
+
+        response.hasNext()
+        def filePath = response.next()
+        filePath.getName() == fileName
+        filePath.getETag()
+        filePath.getGroup()
+        filePath.getLastModified()
+        filePath.getOwner()
+        filePath.getPermissions()
+        filePath.getEncryptionScope() == encryptionScopeString
+        !filePath.isDirectory()
+
+        !response.hasNext()
     }
 
     def "Async list paths max results by page"() {

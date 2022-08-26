@@ -220,7 +220,7 @@ public final class DeviceUpdateImpl implements DeviceUpdate {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-04-01-preview";
+        this.apiVersion = "2022-10-01";
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.accounts = new AccountsClientImpl(this);
         this.instances = new InstancesClientImpl(this);

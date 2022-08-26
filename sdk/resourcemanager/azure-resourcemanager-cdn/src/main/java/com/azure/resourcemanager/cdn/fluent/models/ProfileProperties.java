@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.cdn.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.cdn.models.ProfileProvisioningState;
 import com.azure.resourcemanager.cdn.models.ProfileResourceState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The JSON object that contains the properties required to create a profile. */
 @Fluent
 public final class ProfileProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProfileProperties.class);
-
     /*
      * Resource status of the profile.
      */
@@ -23,16 +19,10 @@ public final class ProfileProperties {
     private ProfileResourceState resourceState;
 
     /*
-     * Managed service identity.
-     */
-    @JsonProperty(value = "identity")
-    private ManagedServiceIdentity identity;
-
-    /*
      * Provisioning status of the profile.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private ProfileProvisioningState provisioningState;
 
     /*
      * The Id of the frontdoor.
@@ -41,8 +31,8 @@ public final class ProfileProperties {
     private String frontDoorId;
 
     /*
-     * Send and receive timeout on forwarding request to the origin. When
-     * timeout is reached, the request fails and returns.
+     * Send and receive timeout on forwarding request to the origin. When timeout is reached, the request fails and
+     * returns.
      */
     @JsonProperty(value = "originResponseTimeoutSeconds")
     private Integer originResponseTimeoutSeconds;
@@ -57,31 +47,11 @@ public final class ProfileProperties {
     }
 
     /**
-     * Get the identity property: Managed service identity.
-     *
-     * @return the identity value.
-     */
-    public ManagedServiceIdentity identity() {
-        return this.identity;
-    }
-
-    /**
-     * Set the identity property: Managed service identity.
-     *
-     * @param identity the identity value to set.
-     * @return the ProfileProperties object itself.
-     */
-    public ProfileProperties withIdentity(ManagedServiceIdentity identity) {
-        this.identity = identity;
-        return this;
-    }
-
-    /**
      * Get the provisioningState property: Provisioning status of the profile.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProfileProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -122,8 +92,5 @@ public final class ProfileProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (identity() != null) {
-            identity().validate();
-        }
     }
 }

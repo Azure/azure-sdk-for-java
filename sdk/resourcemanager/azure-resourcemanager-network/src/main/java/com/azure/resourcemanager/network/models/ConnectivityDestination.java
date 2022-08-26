@@ -17,8 +17,7 @@ public final class ConnectivityDestination {
     private String resourceId;
 
     /*
-     * The IP address or URI the resource to which a connection attempt will be
-     * made.
+     * The IP address or URI the resource to which a connection attempt will be made.
      */
     @JsonProperty(value = "address")
     private String address;

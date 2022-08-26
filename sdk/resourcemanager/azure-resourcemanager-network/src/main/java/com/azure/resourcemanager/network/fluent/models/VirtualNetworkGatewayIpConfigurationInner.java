@@ -20,8 +20,7 @@ public final class VirtualNetworkGatewayIpConfigurationInner extends SubResource
     private VirtualNetworkGatewayIpConfigurationPropertiesFormat innerProperties;
 
     /*
-     * The name of the resource that is unique within a resource group. This
-     * name can be used to access the resource.
+     * The name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;

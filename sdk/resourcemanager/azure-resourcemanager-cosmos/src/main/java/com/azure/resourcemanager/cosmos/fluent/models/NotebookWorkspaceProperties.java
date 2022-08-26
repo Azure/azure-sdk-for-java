@@ -17,8 +17,7 @@ public final class NotebookWorkspaceProperties {
     private String notebookServerEndpoint;
 
     /*
-     * Status of the notebook workspace. Possible values are: Creating, Online,
-     * Deleting, Failed, Updating.
+     * Status of the notebook workspace. Possible values are: Creating, Online, Deleting, Failed, Updating.
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
