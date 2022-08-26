@@ -653,7 +653,7 @@ public final class DocumentModelAdministrationClient {
      * System.out.printf&#40;&quot;Operation Status: %s%n&quot;, documentModelOperationDetails.getStatus&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Model ID created with this operation: %s%n&quot;,
      *     documentModelOperationDetails.getResult&#40;&#41;.getModelId&#40;&#41;&#41;;
-     * if &#40;ModelOperationStatus.FAILED.equals&#40;documentModelOperationDetails.getStatus&#40;&#41;&#41;&#41; &#123;
+     * if &#40;DocumentOperationStatus.FAILED.equals&#40;documentModelOperationDetails.getStatus&#40;&#41;&#41;&#41; &#123;
      *     System.out.printf&#40;&quot;Operation fail error: %s%n&quot;, documentModelOperationDetails.getError&#40;&#41;.getMessage&#40;&#41;&#41;;
      * &#125;
      * </pre>
@@ -686,7 +686,7 @@ public final class DocumentModelAdministrationClient {
      * System.out.printf&#40;&quot;Operation Status: %s%n&quot;, documentModelOperationDetails.getStatus&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Model ID created with this operation: %s%n&quot;,
      *     documentModelOperationDetails.getResult&#40;&#41;.getModelId&#40;&#41;&#41;;
-     * if &#40;ModelOperationStatus.FAILED.equals&#40;documentModelOperationDetails.getStatus&#40;&#41;&#41;&#41; &#123;
+     * if &#40;DocumentOperationStatus.FAILED.equals&#40;documentModelOperationDetails.getStatus&#40;&#41;&#41;&#41; &#123;
      *     System.out.printf&#40;&quot;Operation fail error: %s%n&quot;, documentModelOperationDetails.getError&#40;&#41;.getMessage&#40;&#41;&#41;;
      * &#125;
      * </pre>

@@ -13,25 +13,25 @@ public final class MediaStreamingConfigurationInternal {
     /*
      * Transport URL for media streaming
      */
-    @JsonProperty(value = "transportUrl")
+    @JsonProperty(value = "transportUrl", required = true)
     private String transportUrl;
 
     /*
      * The type of tranport to be used for media streaming, eg. Websocket
      */
-    @JsonProperty(value = "transportType")
+    @JsonProperty(value = "transportType", required = true)
     private MediaStreamingTransportTypeInternal transportType;
 
     /*
      * Content type to stream, eg. audio, audio/video
      */
-    @JsonProperty(value = "contentType")
+    @JsonProperty(value = "contentType", required = true)
     private MediaStreamingContentTypeInternal contentType;
 
     /*
      * Audio channel type to stream, eg. unmixed audio, mixed audio
      */
-    @JsonProperty(value = "audioChannelType")
+    @JsonProperty(value = "audioChannelType", required = true)
     private MediaStreamingAudioChannelTypeInternal audioChannelType;
 
     /**

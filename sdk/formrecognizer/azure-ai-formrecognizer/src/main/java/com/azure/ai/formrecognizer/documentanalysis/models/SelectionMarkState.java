@@ -3,11 +3,13 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Collection;
 
 /** Defines values for SelectionMarkState. */
+@Immutable
 public final class SelectionMarkState extends ExpandableStringEnum<SelectionMarkState> {
     /** Static value selected for SelectionMarkState. */
     public static final SelectionMarkState SELECTED = fromString("selected");

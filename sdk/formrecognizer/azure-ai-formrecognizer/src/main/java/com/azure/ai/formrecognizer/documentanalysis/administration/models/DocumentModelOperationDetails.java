@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer.documentanalysis.administration.models;
 
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentModelOperationDetailsHelper;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.models.ResponseError;
 
 import java.time.OffsetDateTime;
@@ -13,15 +14,16 @@ import java.util.Map;
 /**
  * The DocumentModelOperationDetails model.
  */
+@Immutable
 public final class DocumentModelOperationDetails {
     private String operationId;
-    private ModelOperationStatus status;
+    private DocumentOperationStatus status;
     private Integer percentCompleted;
     private OffsetDateTime createdOn;
     private ResponseError error;
     private String resourceLocation;
     private OffsetDateTime lastUpdatedOn;
-    private ModelOperationKind kind;
+    private DocumentOperationKind kind;
     private Map<String, String> tags;
     private DocumentModelDetails result;
 
@@ -34,10 +36,10 @@ public final class DocumentModelOperationDetails {
         return createdOn;
     }
 
-    void setCreatedOn(OffsetDateTime createdOn) {
+    private void setCreatedOn(OffsetDateTime createdOn) {
         this.createdOn = createdOn;
     }
-    void setError(ResponseError error) {
+    private void setError(ResponseError error) {
         this.error = error;
     }
 
@@ -59,7 +61,7 @@ public final class DocumentModelOperationDetails {
         return operationId;
     }
 
-    void setOperationId(String operationId) {
+    private void setOperationId(String operationId) {
         this.operationId = operationId;
     }
 
@@ -68,11 +70,11 @@ public final class DocumentModelOperationDetails {
      *
      * @return the status value.
      */
-    public ModelOperationStatus getStatus() {
+    public DocumentOperationStatus getStatus() {
         return status;
     }
 
-    void setStatus(ModelOperationStatus status) {
+    private void setStatus(DocumentOperationStatus status) {
         this.status = status;
     }
 
@@ -85,7 +87,7 @@ public final class DocumentModelOperationDetails {
         return percentCompleted;
     }
 
-    void setPercentCompleted(Integer percentCompleted) {
+    private void setPercentCompleted(Integer percentCompleted) {
         this.percentCompleted = percentCompleted;
     }
 
@@ -98,7 +100,7 @@ public final class DocumentModelOperationDetails {
         return lastUpdatedOn;
     }
 
-    void setLastUpdatedOn(OffsetDateTime lastUpdatedOn) {
+    private void setLastUpdatedOn(OffsetDateTime lastUpdatedOn) {
         this.lastUpdatedOn = lastUpdatedOn;
     }
 
@@ -107,11 +109,11 @@ public final class DocumentModelOperationDetails {
      *
      * @return the kind value.
      */
-    public ModelOperationKind getKind() {
+    public DocumentOperationKind getKind() {
         return kind;
     }
 
-    void setKind(ModelOperationKind kind) {
+    private void setKind(DocumentOperationKind kind) {
         this.kind = kind;
     }
 
@@ -124,7 +126,7 @@ public final class DocumentModelOperationDetails {
         return resourceLocation;
     }
 
-    void setResourceLocation(String resourceLocation) {
+    private void setResourceLocation(String resourceLocation) {
         this.resourceLocation = resourceLocation;
     }
 
@@ -142,7 +144,7 @@ public final class DocumentModelOperationDetails {
      *
      * @param tags the tags value to set.
      */
-    void setTags(Map<String, String> tags) {
+    private void setTags(Map<String, String> tags) {
         this.tags = tags;
     }
 
@@ -160,7 +162,7 @@ public final class DocumentModelOperationDetails {
      *
      * @param documentModelDetails the result value to set.
      */
-    void setResult(DocumentModelDetails documentModelDetails) {
+    private void setResult(DocumentModelDetails documentModelDetails) {
         this.result = documentModelDetails;
     }
 
@@ -178,7 +180,7 @@ public final class DocumentModelOperationDetails {
                 documentModelOperationDetails.setOperationId(operationId);
             }
 
-            public void setStatus(DocumentModelOperationDetails documentModelOperationDetails, ModelOperationStatus status) {
+            public void setStatus(DocumentModelOperationDetails documentModelOperationDetails, DocumentOperationStatus status) {
                 documentModelOperationDetails.setStatus(status);
             }
 
@@ -190,7 +192,7 @@ public final class DocumentModelOperationDetails {
                 documentModelOperationDetails.setLastUpdatedOn(lastUpdatedOn);
             }
 
-            public void setKind(DocumentModelOperationDetails documentModelOperationDetails, ModelOperationKind kind) {
+            public void setKind(DocumentModelOperationDetails documentModelOperationDetails, DocumentOperationKind kind) {
                 documentModelOperationDetails.setKind(kind);
             }
 

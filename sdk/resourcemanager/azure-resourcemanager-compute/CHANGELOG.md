@@ -1,6 +1,6 @@
 # Release History
 
-## 2.18.0-beta.1 (Unreleased)
+## 2.18.0 (2022-08-26)
 
 ### Bugs Fixed
 

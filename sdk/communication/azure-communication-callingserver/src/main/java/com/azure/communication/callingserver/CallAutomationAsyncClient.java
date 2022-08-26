@@ -114,20 +114,7 @@ public final class CallAutomationAsyncClient {
                                                                     Context context) {
         try {
             context = context == null ? Context.NONE : context;
-            List<CommunicationIdentifierModel> targetsModel = createCallOptions.getTargets()
-                .stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
-
-            CallSourceInternal callSourceDto = new CallSourceInternal().setIdentifier(
-                CommunicationIdentifierConverter.convert(createCallOptions.getSource()));
-            if (createCallOptions.getSourceCallerId() != null) {
-                callSourceDto.setCallerId(new PhoneNumberIdentifierModel().setValue(createCallOptions.getSourceCallerId()));
-            }
-
-            CreateCallRequestInternal request = new CreateCallRequestInternal()
-                .setSource(callSourceDto)
-                .setTargets(targetsModel)
-                .setCallbackUri(createCallOptions.getCallbackUri().toString())
-                .setSubject(createCallOptions.getSubject());
+            CreateCallRequestInternal request = getCreateCallRequestInternal(createCallOptions);
 
             return serverCallingInternal.createCallWithResponseAsync(request, context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
@@ -147,25 +134,65 @@ public final class CallAutomationAsyncClient {
         }
     }
 
+    private CreateCallRequestInternal getCreateCallRequestInternal(CreateCallOptions createCallOptions) {
+        List<CommunicationIdentifierModel> targetsModel = createCallOptions.getTargets()
+            .stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
+
+        CallSourceInternal callSourceDto = new CallSourceInternal().setIdentifier(
+            CommunicationIdentifierConverter.convert(createCallOptions.getSource()));
+        if (createCallOptions.getSourceCallerId() != null) {
+            callSourceDto.setCallerId(new PhoneNumberIdentifierModel().setValue(createCallOptions.getSourceCallerId()));
+        }
+
+        CreateCallRequestInternal request = new CreateCallRequestInternal()
+            .setSource(callSourceDto)
+            .setTargets(targetsModel)
+            .setCallbackUri(createCallOptions.getCallbackUrl())
+            .setSubject(createCallOptions.getSubject());
+
+        if (createCallOptions.getMediaStreamingConfiguration() != null) {
+            MediaStreamingConfigurationInternal streamingConfigurationInternal =
+                getMediaStreamingConfigurationInternal(createCallOptions.getMediaStreamingConfiguration());
+            request.setMediaStreamingConfiguration(streamingConfigurationInternal);
+        }
+        return request;
+    }
+
+    private MediaStreamingConfigurationInternal getMediaStreamingConfigurationInternal(
+        MediaStreamingConfiguration mediaStreamingConfiguration
+    ) {
+        return new MediaStreamingConfigurationInternal()
+            .setTransportUrl(mediaStreamingConfiguration.getTransportUrl())
+            .setAudioChannelType(
+                MediaStreamingAudioChannelTypeInternal.fromString(
+                    mediaStreamingConfiguration.getAudioChannelType().toString()))
+            .setContentType(
+                MediaStreamingContentTypeInternal.fromString(
+                    mediaStreamingConfiguration.getContentType().toString()))
+            .setTransportType(
+                MediaStreamingTransportTypeInternal.fromString(
+                    mediaStreamingConfiguration.getTransportType().toString()));
+    }
+
     /**
      * Answer an incoming call
      *
      * @param incomingCallContext The incoming call context.
-     * @param callbackUri The call back uri. Optional
+     * @param callbackUrl The call back url.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnswerCallResult> answerCall(String incomingCallContext, String callbackUri) {
-        return answerCallWithResponse(incomingCallContext, callbackUri, null).flatMap(FluxUtil::toMono);
+    public Mono<AnswerCallResult> answerCall(String incomingCallContext, String callbackUrl) {
+        return answerCallWithResponse(incomingCallContext, callbackUrl, null).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Create a call connection request from a source identity to a target identity.
      *
      * @param incomingCallContext The incoming call context.
-     * @param callbackUri The call back uri. Optional
+     * @param callbackUrl The call back url.
      * @param mediaStreamingConfiguration The MediaStreamingConfiguration. Optional
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -173,29 +200,25 @@ public final class CallAutomationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnswerCallResult>> answerCallWithResponse(String incomingCallContext,
-                                                                   String callbackUri, MediaStreamingConfiguration mediaStreamingConfiguration) {
-        return withContext(context -> answerCallWithResponseInternal(incomingCallContext, callbackUri, mediaStreamingConfiguration, context));
+                                                                   String callbackUrl, MediaStreamingConfiguration mediaStreamingConfiguration) {
+        return withContext(context -> answerCallWithResponseInternal(incomingCallContext, callbackUrl, mediaStreamingConfiguration, context));
     }
 
-    Mono<Response<AnswerCallResult>> answerCallWithResponseInternal(String incomingCallContext, String callbackUri,
+    Mono<Response<AnswerCallResult>> answerCallWithResponseInternal(String incomingCallContext, String callbackUrl,
                                                                     MediaStreamingConfiguration mediaStreamingConfiguration,
                                                                     Context context) {
         try {
             context = context == null ? Context.NONE : context;
 
-            AnswerCallRequestInternal request = new AnswerCallRequestInternal();
+            AnswerCallRequestInternal request = new AnswerCallRequestInternal()
+                .setIncomingCallContext(incomingCallContext)
+                .setCallbackUri(callbackUrl);
 
             if (mediaStreamingConfiguration != null) {
                 MediaStreamingConfigurationInternal mediaStreamingConfigurationInternal =
-                    new MediaStreamingConfigurationInternal()
-                        .setAudioChannelType(MediaStreamingAudioChannelTypeInternal.fromString(mediaStreamingConfiguration.getAudioChannelType().toString()))
-                        .setContentType(MediaStreamingContentTypeInternal.fromString(mediaStreamingConfiguration.getContentType().toString()))
-                        .setTransportType(MediaStreamingTransportTypeInternal.fromString(mediaStreamingConfiguration.getTransportType().toString()))
-                        .setTransportUrl(mediaStreamingConfiguration.getTransportUrl());
+                    getMediaStreamingConfigurationInternal(mediaStreamingConfiguration);
 
-                request.setIncomingCallContext(incomingCallContext).setCallbackUri(callbackUri).setMediaStreamingConfiguration(mediaStreamingConfigurationInternal);
-            } else {
-                request.setIncomingCallContext(incomingCallContext).setCallbackUri(callbackUri);
+                request.setMediaStreamingConfiguration(mediaStreamingConfigurationInternal);
             }
 
 

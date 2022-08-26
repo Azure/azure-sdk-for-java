@@ -19,17 +19,15 @@ public final class WindowsGmsaProfile {
     private Boolean enabled;
 
     /*
-     * Specifies the DNS server for Windows gMSA. <br><br> Set it to empty if
-     * you have configured the DNS server in the vnet which is used to create
-     * the managed cluster.
+     * Specifies the DNS server for Windows gMSA. <br><br> Set it to empty if you have configured the DNS server in the
+     * vnet which is used to create the managed cluster.
      */
     @JsonProperty(value = "dnsServer")
     private String dnsServer;
 
     /*
-     * Specifies the root domain name for Windows gMSA. <br><br> Set it to
-     * empty if you have configured the DNS server in the vnet which is used to
-     * create the managed cluster.
+     * Specifies the root domain name for Windows gMSA. <br><br> Set it to empty if you have configured the DNS server
+     * in the vnet which is used to create the managed cluster.
      */
     @JsonProperty(value = "rootDomainName")
     private String rootDomainName;
