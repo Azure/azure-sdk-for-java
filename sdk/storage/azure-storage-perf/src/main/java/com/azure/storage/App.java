@@ -23,6 +23,7 @@ import com.azure.storage.file.share.perf.UploadFileShareTest;
 import com.azure.storage.file.share.perf.UploadFromFileShareTest;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
+import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.instrumentation.runtimemetrics.Cpu;
 import io.opentelemetry.instrumentation.runtimemetrics.GarbageCollector;
 import io.opentelemetry.instrumentation.runtimemetrics.MemoryPools;
@@ -32,8 +33,10 @@ import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.metrics.InstrumentType;
 import io.opentelemetry.sdk.metrics.SdkMeterProvider;
 import io.opentelemetry.sdk.metrics.data.AggregationTemporality;
+import io.opentelemetry.sdk.metrics.data.DoublePointData;
 import io.opentelemetry.sdk.metrics.data.LongPointData;
 import io.opentelemetry.sdk.metrics.data.MetricData;
+import io.opentelemetry.sdk.metrics.data.PointData;
 import io.opentelemetry.sdk.metrics.export.CollectionRegistration;
 import io.opentelemetry.sdk.metrics.export.MetricReader;
 import io.opentelemetry.sdk.metrics.internal.export.MetricProducer;
@@ -42,6 +45,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 /**
  * Runs the Storage performance test.
@@ -111,10 +115,23 @@ public class App {
             }
             Collection<MetricData> metrics =  metricProducer.collectAllMetrics();
             metrics.stream().forEach(d -> {
-                if (d.getName().equals("process.runtime.jvm.memory.usage")) {
-                    printJvmMemUsage(d);
+                System.out.println("metric " + d.getName());
+                for (PointData p : d.getData().getPoints()) {
+                    printDataPoint(p);
                 }
             });
+        }
+
+        private static void printDataPoint(PointData p) {
+            Attributes a = p.getAttributes();
+            double value = -1;
+            if (p instanceof LongPointData) {
+                value = ((LongPointData)p).getValue();
+            } else if (p instanceof DoublePointData) {
+                value = ((DoublePointData)p).getValue();
+            }
+
+            System.out.printf("\tval='%f', attributes=%s\n", value, a.asMap().keySet().stream().map(k -> k.getKey() + "=" + a.asMap().get(k)).collect(Collectors.joining(", ")));
         }
 
         private static void printJvmMemUsage(MetricData data) {
