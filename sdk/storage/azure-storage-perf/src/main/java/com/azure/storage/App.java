@@ -48,6 +48,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
@@ -109,7 +110,7 @@ public class App {
         private final AggregationTemporality aggregationTemporality;
         private final AtomicBoolean isShutdown = new AtomicBoolean(false);
         private volatile MetricProducer metricProducer = MetricProducer.noop();
-        private final List<MetricData> metrics = new ArrayList<>();
+        private final ConcurrentLinkedDeque<MetricData> metrics = new ConcurrentLinkedDeque<>();
 
         private static final AttributeKey<String> POOL_NAME = AttributeKey.stringKey("pool");
         private static final double MB = 1024 * 1024d;
@@ -133,6 +134,7 @@ public class App {
             System.out.println("| JVM memory usage: Eden Space | JVM memory usage: Survivor Space | JVM memory usage: Old Gen |");
             System.out.println("|------------------------------|----------------------------------|---------------------------|");
             metrics.forEach(m -> printJvmMemUsage(m));
+            metrics.clear();
         }
 
         private static void printJvmMemUsage(MetricData data) {
