@@ -40,8 +40,9 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
 
     @Override
     public Flux<ByteBuffer> getBody() {
-        return bodyIntern().doFinally(ignored -> close())
-            .map(byteBuf -> this.disableBufferCopy ? byteBuf.nioBuffer() : deepCopyBuffer(byteBuf));
+        return bodyIntern()
+            .map(byteBuf -> this.disableBufferCopy ? byteBuf.nioBuffer() : deepCopyBuffer(byteBuf))
+            .doFinally(ignored -> close());
     }
 
     @Override
@@ -70,12 +71,17 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
             .flatMapSequential(nettyBuffer ->
                 FluxUtil.writeToAsynchronousByteChannel(Flux.just(nettyBuffer.nioBuffer()), channel)
                     .doFinally(ignored -> nettyBuffer.release()), 1, 1)
+            .doFinally(ignored -> close())
             .then();
     }
 
     @Override
     public void writeBodyTo(WritableByteChannel channel) {
-        bodyIntern().retain()
+        // Since this uses a synchronous write this doesn't need to retain the ByteBuf as the async version does.
+        // In fact, if retain is used here and there is a cancellation or exception during writing this will likely
+        // leak ByteBufs as it doesn't have the asynchronous stream handling to properly close them when errors happen
+        // during writing.
+        bodyIntern()
             .publishOn(Schedulers.boundedElastic())
             .map(nettyBuffer -> {
                 try {
@@ -89,7 +95,9 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
                 } finally {
                     nettyBuffer.release();
                 }
-            }).then().block();
+            })
+            .doFinally(ignored -> close())
+            .then().block();
     }
 
     @Override
