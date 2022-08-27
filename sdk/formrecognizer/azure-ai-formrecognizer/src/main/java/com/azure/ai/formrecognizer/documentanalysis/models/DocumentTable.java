@@ -53,7 +53,7 @@ public final class DocumentTable {
      * @param rowCount the rowCount value to set.
      * @return the DocumentTable object itself.
      */
-    void setRowCount(int rowCount) {
+    private void setRowCount(int rowCount) {
         this.rowCount = rowCount;
     }
 
@@ -72,7 +72,7 @@ public final class DocumentTable {
      * @param columnCount the columnCount value to set.
      * @return the DocumentTable object itself.
      */
-    void setColumnCount(int columnCount) {
+    private void setColumnCount(int columnCount) {
         this.columnCount = columnCount;
     }
 
@@ -91,7 +91,7 @@ public final class DocumentTable {
      * @param cells the cells value to set.
      * @return the DocumentTable object itself.
      */
-    void setCells(List<DocumentTableCell> cells) {
+    private void setCells(List<DocumentTableCell> cells) {
         this.cells = cells;
     }
 
@@ -110,7 +110,7 @@ public final class DocumentTable {
      * @param boundingRegions the boundingRegions value to set.
      * @return the DocumentTable object itself.
      */
-    void setBoundingRegions(List<BoundingRegion> boundingRegions) {
+    private void setBoundingRegions(List<BoundingRegion> boundingRegions) {
         this.boundingRegions = boundingRegions;
     }
 
@@ -129,7 +129,7 @@ public final class DocumentTable {
      * @param spans the spans value to set.
      * @return the DocumentTable object itself.
      */
-    void setSpans(List<DocumentSpan> spans) {
+    private void setSpans(List<DocumentSpan> spans) {
         this.spans = spans;
     }
 
