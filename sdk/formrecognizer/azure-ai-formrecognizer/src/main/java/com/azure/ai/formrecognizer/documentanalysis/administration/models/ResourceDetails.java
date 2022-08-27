@@ -40,11 +40,11 @@ public final class ResourceDetails {
         return this.customDocumentModelLimit;
     }
 
-    void setCustomDocumentModelCount(int customDocumentModelCount) {
+    private void setCustomDocumentModelCount(int customDocumentModelCount) {
         this.customDocumentModelCount = customDocumentModelCount;
     }
 
-    void setCustomDocumentModelLimit(int customDocumentModelLimit) {
+    private void setCustomDocumentModelLimit(int customDocumentModelLimit) {
         this.customDocumentModelLimit = customDocumentModelLimit;
     }
 
