@@ -243,9 +243,9 @@ public class CosmosContainerTest extends TestSuiteBase {
         try {
             ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(paths);
             fail("clientEncryptionPolicy should fail as id which is part of the partition key cannot be encrypted with " +
-                "PolicyFormatVersion 0.");
+                "PolicyFormatVersion 1.");
         } catch (IllegalArgumentException ex) {
-            assertThat(ex.getMessage()).isEqualTo("Path /id cannot be encrypted with policyFormatVersion 0.");
+            assertThat(ex.getMessage()).isEqualTo("Path /id cannot be encrypted with policyFormatVersion 1.");
         }
     }
 

@@ -40,9 +40,9 @@ public final class ClientEncryptionPolicy {
      */
     @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ClientEncryptionPolicy(List<ClientEncryptionIncludedPath> paths) {
+        this.policyFormatVersion = 1;
         this.validateIncludedPaths(paths, policyFormatVersion);
         this.includedPaths = paths;
-        this.policyFormatVersion = 1;
     }
 
     /**
@@ -129,7 +129,7 @@ public final class ClientEncryptionPolicy {
                     }
 
                     // for the ClientEncryptionIncludedPath found check the encryption type.
-                    if (encrypterPartitionKeyPath.stream().map(encrypter -> encrypter.getEncryptionType()).findFirst().orElse(null) != "Deterministic")
+                    if (!encrypterPartitionKeyPath.stream().map(encrypter -> encrypter.getEncryptionType()).findFirst().orElse(null).equals("Deterministic"))
                     throw new IllegalArgumentException(String.format("Path %s which is part of the partition key " +
                         "has to be encrypted" +
                         " with Deterministic type Encryption.", topLevelToken));
@@ -169,7 +169,7 @@ public final class ClientEncryptionPolicy {
                 throw new IllegalArgumentException(String.format("Path %s cannot be encrypted with policyFormatVersion %s.", clientEncryptionIncludedPath.getPath(), policyFormatVersion));
             }
 
-            if (clientEncryptionIncludedPath.getEncryptionType() != "Deterministic") {
+            if (!clientEncryptionIncludedPath.getEncryptionType().equals("Deterministic")) {
                 throw new IllegalArgumentException(String.format("Only deterministic encryption type is supported for path %s.", clientEncryptionIncludedPath.getPath()));
             }
         }
