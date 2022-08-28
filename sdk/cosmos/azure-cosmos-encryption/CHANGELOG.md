@@ -3,6 +3,8 @@
 ### 1.6.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added support for allowing parition key path and id to be part of client encryption policy - See [PR 30678](https://github.com/Azure/azure-sdk-for-java/pull/30678)
+
 
 #### Breaking Changes
 
