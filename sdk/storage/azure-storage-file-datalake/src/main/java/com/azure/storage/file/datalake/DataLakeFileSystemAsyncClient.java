@@ -1831,6 +1831,11 @@ public class DataLakeFileSystemAsyncClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.rename#String -->
+     * <pre>
+     * DataLakeFileSystemAsyncClient fileSystemAsyncClient =
+     *     client.rename&#40;&quot;newFileSystemName&quot;&#41;
+     *         .block&#40;&#41;;
+     * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.rename#String -->
      *
      * @param destinationContainerName The new name of the file system.
@@ -1847,6 +1852,12 @@ public class DataLakeFileSystemAsyncClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.renameWithResponse#FileSystemRenameOptions -->
+     * <pre>
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;.setLeaseId&#40;&quot;lease-id&quot;&#41;;
+     * DataLakeFileSystemAsyncClient fileSystemAsyncClient = client
+     *     .renameWithResponse&#40;new FileSystemRenameOptions&#40; &quot;newFileSystemName&quot;&#41;
+     *         .setRequestConditions&#40;requestConditions&#41;&#41;.block&#40;&#41;.getValue&#40;&#41;;
+     * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.renameWithResponse#FileSystemRenameOptions -->
      *
      * @param options {@link FileSystemRenameOptions}

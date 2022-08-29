@@ -1623,6 +1623,9 @@ public class DataLakeFileSystemClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.rename#String -->
+     * <pre>
+     * DataLakeFileSystemClient fileSystemClient = client.rename&#40;&quot;newFileSystemName&quot;&#41;;
+     * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.rename#String -->
      *
      * @param destinationFileSystemName The new name of the file system.
@@ -1639,6 +1642,16 @@ public class DataLakeFileSystemClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.renameWithResponse#FileSystemRenameOptions-Duration-Context -->
+     * <pre>
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;.setLeaseId&#40;&quot;lease-id&quot;&#41;;
+     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
+     *
+     * DataLakeFileSystemClient fileSystemClient = client.renameWithResponse&#40;
+     *     new FileSystemRenameOptions&#40;&quot;newFileSystemName&quot;&#41;
+     *         .setRequestConditions&#40;requestConditions&#41;,
+     *     Duration.ofSeconds&#40;1&#41;,
+     *     context&#41;.getValue&#40;&#41;;
+     * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.renameWithResponse#FileSystemRenameOptions-Duration-Context -->
      *
      * @param options {@link FileSystemRenameOptions}
