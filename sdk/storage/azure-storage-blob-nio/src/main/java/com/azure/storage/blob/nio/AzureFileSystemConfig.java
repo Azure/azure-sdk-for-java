@@ -61,7 +61,9 @@ class AzureFileSystemConfig {
         putBlobThreshold = (Long) config.get(AzureFileSystem.AZURE_STORAGE_PUT_BLOB_THRESHOLD);
         maxConcurrencyPerRequest = (Integer) config.get(AzureFileSystem.AZURE_STORAGE_MAX_CONCURRENCY_PER_REQUEST);
         downloadResumeRetries = (Integer) config.get(AzureFileSystem.AZURE_STORAGE_DOWNLOAD_RESUME_RETRIES);
-        Collections.addAll(fileStoreNames, ((String) config.get(AzureFileSystem.AZURE_STORAGE_FILE_STORES)).split(","));
+
+        String fileStores = (String) config.get(AzureFileSystem.AZURE_STORAGE_FILE_STORES);
+        Collections.addAll(fileStoreNames, (fileStores != null ? fileStores : "").split(","));
 
         skipInitialContainerCheck = (Boolean) config.get(AzureFileSystem.AZURE_STORAGE_SKIP_INITIAL_CONTAINER_CHECK);
     }

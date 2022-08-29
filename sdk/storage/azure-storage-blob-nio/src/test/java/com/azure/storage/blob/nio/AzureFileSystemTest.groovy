@@ -69,7 +69,7 @@ class AzureFileSystemTest extends APISpec {
             config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
         }
         if (credential) {
-            config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = environment.primaryAccount.key
+            config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = environment.primaryAccount.getCredential()
         }
 
         when:
