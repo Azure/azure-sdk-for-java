@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aadb2c.configuration;
 
+import com.azure.spring.cloud.autoconfigure.aad.configuration.CommonConfiguration;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cClientRegistrationRepository;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cConditions;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cUrl;
@@ -45,7 +46,7 @@ import java.util.stream.Stream;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(value = "spring.cloud.azure.active-directory.b2c.enabled", havingValue = "true")
 @Conditional(AadB2cConditions.ClientRegistrationCondition.class)
-@Import(AadB2cPropertiesConfiguration.class)
+@Import({AadB2cPropertiesConfiguration.class, CommonConfiguration.class})
 @ConditionalOnClass({ OAuth2LoginAuthenticationFilter.class })
 public class AadB2cOAuth2ClientConfiguration {
 
