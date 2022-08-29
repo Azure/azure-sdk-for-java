@@ -64,10 +64,10 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [azure_subscription]: https://azure.microsoft.com/free
 [personalizer_account]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
-[personalizer_admin_sync_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/personalizer/azure-ai-personalizer/src/main/java/com/azure/ai/personalizer/PersonalizerAdministrationClient.java
-[personalizer_admin_async_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/personalizer/azure-ai-personalizer/src/main/java/com/azure/ai/personalizer/PersonalizerAdministrationAsyncClient.java
+[personalizer_admin_sync_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/personalizer/azure-ai-personalizer/src/main/java/com/azure/ai/personalizer/administration/PersonalizerAdministrationClient.java
+[personalizer_admin_async_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/personalizer/azure-ai-personalizer/src/main/java/com/azure/ai/personalizer/administration/PersonalizerAdministrationAsyncClient.java
 [personalizer_sync_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/personalizer/azure-ai-personalizer/src/main/java/com/azure/ai/personalizer/PersonalizerClient.java
 [personalizer_async_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/personalizer/azure-ai-personalizer/src/main/java/com/azure/ai/personalizer/PersonalizerAsyncClient.java
-[learning_mode]: https://docs.microsoft.com/en-us/azure/cognitive-services/personalizer/what-is-personalizer#learning-modes
-[exploration]: https://docs.microsoft.com/en-us/azure/cognitive-services/personalizer/concepts-exploration
-[multi_slot]: https://docs.microsoft.com/en-us/azure/cognitive-services/personalizer/concept-multi-slot-personalization
+[learning_mode]: https://docs.microsoft.com/azure/cognitive-services/personalizer/what-is-personalizer#learning-modes
+[exploration]: https://docs.microsoft.com/azure/cognitive-services/personalizer/concepts-exploration
+[multi_slot]: https://docs.microsoft.com/azure/cognitive-services/personalizer/concept-multi-slot-personalization
