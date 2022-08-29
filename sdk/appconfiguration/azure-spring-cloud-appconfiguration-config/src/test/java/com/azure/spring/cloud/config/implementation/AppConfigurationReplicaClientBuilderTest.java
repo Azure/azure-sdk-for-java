@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -209,6 +210,7 @@ public class AppConfigurationReplicaClientBuilderTest {
     }
 
     @Test
+    @Disabled("Disabled until connection string support is added.")
     public void buildClientsFromMultipleConnectionStringsTest() {
         configStore = new ConfigStore();
         List<String> connectionStrings = new ArrayList<>();
@@ -216,7 +218,7 @@ public class AppConfigurationReplicaClientBuilderTest {
         connectionStrings.add(TEST_CONN_STRING);
         connectionStrings.add(TEST_CONN_STRING_GEO);
 
-        configStore.setConnectionStrings(connectionStrings);
+        // configStore.setConnectionStrings(connectionStrings);
 
         configStore.validateAndInit();
 

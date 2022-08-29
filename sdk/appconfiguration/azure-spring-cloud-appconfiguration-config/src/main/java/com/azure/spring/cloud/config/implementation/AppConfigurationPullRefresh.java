@@ -81,10 +81,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
 
         String originEndpoint = clientFactory.findOriginForEndpoint(endpoint);
 
-        // Sync token can only be used if no replicas are being used.
-        if (clientFactory.hasReplicas(endpoint)) {
-            clientFactory.updateSyncToken(originEndpoint, syncToken);
-        }
+        clientFactory.updateSyncToken(originEndpoint, endpoint, syncToken);
 
         StateHolder.getCurrentState().expireState(originEndpoint);
     }

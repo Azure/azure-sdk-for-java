@@ -89,13 +89,6 @@ public final class ConfigStore {
     }
 
     /**
-     * @param connectionStrings list of connection strings to connect to geo-replicated config store instances.
-     */
-    public void setConnectionStrings(List<String> connectionStrings) {
-        this.connectionStrings = connectionStrings;
-    }
-
-    /**
      * @return the failFast
      */
     public boolean isFailFast() {

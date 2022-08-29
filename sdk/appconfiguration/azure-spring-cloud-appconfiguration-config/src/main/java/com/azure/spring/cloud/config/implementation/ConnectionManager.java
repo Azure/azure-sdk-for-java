@@ -133,15 +133,13 @@ public class ConnectionManager {
     }
 
     /**
-     * Updates the sync token of the client. Only works if no replicas are being used.
+     * Updates the sync token of the client.
      *
      * @param syncToken App Configuration sync token
      */
-    void updateSyncToken(String syncToken) {
-        // Currently sync tokens aren't supported in geo-replication
-        if (clients.size() == 1) {
-            clients.get(0).updateSyncToken(syncToken);
-        }
+    void updateSyncToken(String endpoint, String syncToken) {
+        clients.stream().filter(client -> client.getEndpoint().equals(endpoint)).findFirst()
+            .ifPresent(client -> client.updateSyncToken(syncToken));
     }
     
     AppConfigurationStoreMonitoring getMonitoring() {
