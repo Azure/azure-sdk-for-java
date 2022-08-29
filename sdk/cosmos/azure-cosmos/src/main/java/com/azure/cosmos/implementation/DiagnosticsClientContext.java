@@ -55,9 +55,9 @@ public interface DiagnosticsClientContext {
                 generator.writeStringField("connectionMode", clientConfig.getConnectionMode().toString());
                 generator.writeNumberField("numberOfClients", clientConfig.getActiveClientsCount());
                 generator.writeObjectFieldStart("clientEndpoints");
-                for (String key: clientConfig.clientMap.keySet()) {
+                for (Map.Entry<String, Integer> entry: clientConfig.clientMap.entrySet()) {
                     try {
-                        generator.writeNumberField(key, clientConfig.clientMap.get(key));
+                        generator.writeNumberField(entry.getKey(), entry.getValue());
                     } catch (Exception e) {
                         logger.debug("unexpected failure", e);
                     }
