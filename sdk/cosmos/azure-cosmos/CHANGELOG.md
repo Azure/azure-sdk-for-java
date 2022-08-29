@@ -9,8 +9,6 @@
 #### Bugs Fixed
 
 #### Other Changes
-* Remove requires io.netty.transport.epoll from module-info.
-* Converted from `durationInMicroSec` to `durationInMilliSecs` in `CosmosDiagnostics` - See [PR 29643](https://github.com/Azure/azure-sdk-for-java/pull/29643)
 * Update isReadRequestsFallbackEnabled() to have a default value - See [PR 30693](https://github.com/Azure/azure-sdk-for-java/pull/30693)
 
 ### 4.35.0 (2022-08-19)
