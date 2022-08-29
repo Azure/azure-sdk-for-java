@@ -379,7 +379,7 @@ public class MetricsTests {
 
         AtomicLong value = new AtomicLong();
 
-        AutoCloseable subscription = gauge.registerCallback(value::get,METRIC_ATTRIBUTES);
+        AutoCloseable subscription = gauge.registerCallback(value::get, METRIC_ATTRIBUTES);
         value.set(42);
         testClock.advance(Duration.ofNanos(SECOND_NANOS));
         assertThat(sdkMeterReader.collectAllMetrics())

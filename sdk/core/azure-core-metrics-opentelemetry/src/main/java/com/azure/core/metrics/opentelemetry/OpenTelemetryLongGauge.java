@@ -13,11 +13,10 @@ import java.util.function.Supplier;
  * {@inheritDoc}
  */
 class OpenTelemetryLongGauge implements LongGauge {
-    static final LongGauge NOOP  = new LongGauge() {
-        private static final AutoCloseable NOOP_CLOSEABLE = () -> {
+    private static final AutoCloseable NOOP_CLOSEABLE = () -> {
+    };
 
-        };
-
+    static final LongGauge NOOP = new LongGauge() {
         @Override
         public AutoCloseable registerCallback(Supplier<Long> valueSupplier, TelemetryAttributes attributes) {
             return NOOP_CLOSEABLE;
