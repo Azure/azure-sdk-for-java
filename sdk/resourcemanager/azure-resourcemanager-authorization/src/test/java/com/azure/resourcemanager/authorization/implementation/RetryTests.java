@@ -28,7 +28,7 @@ public class RetryTests {
         HttpResponse mockedResponse404 = Mockito.mock(HttpResponse.class);
         Mockito.when(mockedResponse404.getStatusCode()).thenReturn(404);
 
-        RetryBackoffSpec retry = ActiveDirectoryApplicationImpl.backoffRetryFor404();
+        RetryBackoffSpec retry = RetryUtils.backoffRetryFor404();
         AtomicInteger retryCount = new AtomicInteger(0);
         retry = retry.doAfterRetry(ignored -> {
             System.out.println("retry " + retryCount.incrementAndGet() + ", at " + OffsetDateTime.now());

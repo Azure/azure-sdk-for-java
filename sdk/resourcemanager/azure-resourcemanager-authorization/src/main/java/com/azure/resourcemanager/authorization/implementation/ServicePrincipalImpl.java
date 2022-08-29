@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.resourcemanager.authorization.AuthorizationManager;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphPasswordCredentialInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphServicePrincipalInner;
 import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalsAddPasswordRequestBodyInner;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplication;
@@ -17,6 +18,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.implementation.Creat
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -93,6 +95,8 @@ class ServicePrincipalImpl
 
     @Override
     public Mono<ServicePrincipal> createResourceAsync() {
+        Retry retry = isInCreateMode() ? RetryUtils.backoffRetryFor404() : null;
+
         Mono<ServicePrincipal> sp;
         if (isInCreateMode()) {
             innerModel().withAccountEnabled(true);
@@ -112,7 +116,9 @@ class ServicePrincipalImpl
         return sp
             .flatMap(
                 servicePrincipal ->
-                    submitCredentialsAsync(servicePrincipal).mergeWith(submitRolesAsync(servicePrincipal)).last())
+                    submitCredentialsAsync(servicePrincipal, retry)
+                        .mergeWith(submitRolesAsync(servicePrincipal, retry))
+                        .last())
             .map(
                 servicePrincipal -> {
                     for (PasswordCredentialImpl<?> passwordCredential : passwordCredentialsToCreate) {
@@ -128,7 +134,7 @@ class ServicePrincipalImpl
                 });
     }
 
-    private Mono<ServicePrincipal> submitCredentialsAsync(final ServicePrincipal sp) {
+    private Mono<ServicePrincipal> submitCredentialsAsync(final ServicePrincipal servicePrincipal, Retry retry) {
         return Flux.defer(() ->
 //                    Flux.fromIterable(certificateCredentialsToCreate)
 //                        .flatMap(certificateCredential ->
@@ -142,13 +148,18 @@ class ServicePrincipalImpl
 //                                new ServicePrincipalsRemoveKeyRequestBody()
 //                                    .withKeyId(UUID.fromString(id)))),
                     Flux.fromIterable(passwordCredentialsToCreate)
-                        .flatMap(passwordCredential ->
-                            manager().serviceClient().getServicePrincipals()
-                                .addPasswordAsync(id(),
-                                    new ServicePrincipalsAddPasswordRequestBodyInner()
-                                        .withPasswordCredential(passwordCredential.innerModel()))
-                                .doOnNext(passwordCredential::setInner)
-                        )
+                        .flatMap(passwordCredential -> {
+                            Mono<MicrosoftGraphPasswordCredentialInner> monoAddPassword =
+                                manager().serviceClient().getServicePrincipals()
+                                    .addPasswordAsync(id(),
+                                        new ServicePrincipalsAddPasswordRequestBodyInner()
+                                            .withPasswordCredential(passwordCredential.innerModel()));
+                            if (retry != null) {
+                                monoAddPassword = monoAddPassword.retryWhen(retry);
+                            }
+                            monoAddPassword = monoAddPassword.doOnNext(passwordCredential::setInner);
+                            return monoAddPassword;
+                        })
 //                    Flux.fromIterable(passwordCredentialsToDelete)
 //                        .flatMap(id -> manager().serviceClient().getServicePrincipals()
 //                            .removePasswordAsync(id(),
@@ -158,7 +169,7 @@ class ServicePrincipalImpl
             .then(refreshAsync());
     }
 
-    private Mono<ServicePrincipal> submitRolesAsync(final ServicePrincipal servicePrincipal) {
+    private Mono<ServicePrincipal> submitRolesAsync(final ServicePrincipal servicePrincipal, Retry retry) {
         Mono<ServicePrincipal> create;
         if (rolesToCreate.isEmpty()) {
             create = Mono.just(servicePrincipal);
@@ -167,14 +178,19 @@ class ServicePrincipalImpl
                 Flux
                     .fromIterable(rolesToCreate.entrySet())
                     .flatMap(
-                        roleEntry ->
-                            manager()
+                        roleEntry -> {
+                            Mono<RoleAssignment> monoRoleAssignment = manager()
                                 .roleAssignments()
                                 .define(this.manager().internalContext().randomUuid())
                                 .forServicePrincipal(servicePrincipal)
                                 .withBuiltInRole(roleEntry.getValue())
                                 .withScope(roleEntry.getKey())
-                                .createAsync())
+                                .createAsync();
+                            if (retry != null) {
+                                monoRoleAssignment = monoRoleAssignment.retryWhen(retry);
+                            }
+                            return monoRoleAssignment;
+                        })
                     .doOnNext(
                         indexable ->
                             cachedRoleAssignments.put(indexable.id(), indexable))

@@ -65,7 +65,7 @@ class ActiveDirectoryApplicationImpl
 
     @Override
     public Mono<ActiveDirectoryApplication> createResourceAsync() {
-        Retry retry = backoffRetryFor404();
+        Retry retry = RetryUtils.backoffRetryFor404();
 
         return manager
             .serviceClient()
@@ -82,15 +82,6 @@ class ActiveDirectoryApplicationImpl
             .then(submitCredentialAsync(null).doOnComplete(this::postRequest).then(refreshAsync()));
     }
 
-    static RetryBackoffSpec backoffRetryFor404() {
-        return Retry
-            // 10 + 20 + 40 = 70 seconds
-            .backoff(3, ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(Duration.ofSeconds(10)))
-            .filter(e -> (e instanceof HttpResponseException)
-                && (((HttpResponseException) e).getResponse().getStatusCode() == 404))
-            // do not convert to RetryExhaustedException
-            .onRetryExhaustedThrow((spec, signal) -> signal.failure());
-    }
 
     private void refreshCredentials(MicrosoftGraphApplicationInner inner) {
         cachedCertificateCredentials.clear();
@@ -118,7 +109,6 @@ class ActiveDirectoryApplicationImpl
                     manager().serviceClient().getApplications()
                         .addPasswordAsync(id(), new ApplicationsAddPasswordRequestBodyInner()
                             .withPasswordCredential(passwordCredential.innerModel()));
-
                 if (retry != null) {
                     monoAddPassword = monoAddPassword.retryWhen(retry);
                 }
