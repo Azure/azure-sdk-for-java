@@ -1,5 +1,18 @@
 # Release History
 
+## 2.19.0-beta.1 (Unreleased)
+
+### Breaking Changes
+
+- Removed unused classes.
+- `enableReceiver` in `ActionGroups` will throw an exception if the receiver is already enabled.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `composite-v1`.
+
 ## 2.18.0 (2022-08-26)
 
 ### Other Changes
