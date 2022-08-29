@@ -23,6 +23,24 @@
 
   <dependencies>
     <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-sdk</artifactId>
+      <version>1.16.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-metrics-opentelemetry</artifactId>
+      <version>1.0.0-beta.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.opentelemetry.instrumentation</groupId>
+      <artifactId>opentelemetry-runtime-metrics</artifactId>
+      <version>1.16.0-alpha</version>
+    </dependency>
+
+    <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
       <version>12.19.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
@@ -58,16 +76,6 @@
       <version>4.4.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
     </dependency>
 
-    <dependency>
-      <groupId>io.opentelemetry</groupId>
-      <artifactId>opentelemetry-sdk</artifactId>
-      <version>1.16.0</version>
-    </dependency>
-    <dependency>
-      <groupId>io.opentelemetry.instrumentation</groupId>
-      <artifactId>opentelemetry-runtime-metrics</artifactId>
-      <version>1.16.0-alpha</version>
-    </dependency>
   </dependencies>
 
   <profiles>

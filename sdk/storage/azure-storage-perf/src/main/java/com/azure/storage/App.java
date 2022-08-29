@@ -40,6 +40,7 @@ import io.opentelemetry.sdk.metrics.data.PointData;
 import io.opentelemetry.sdk.metrics.export.CollectionRegistration;
 import io.opentelemetry.sdk.metrics.export.MetricReader;
 import io.opentelemetry.sdk.metrics.internal.export.MetricProducer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -68,10 +69,8 @@ public class App {
         SdkMeterProvider meterProvider = SdkMeterProvider.builder().registerMetricReader(metricReader)
             .build();
         OpenTelemetry otel = OpenTelemetrySdk.builder().setMeterProvider(meterProvider).buildAndRegisterGlobal();
-        //Cpu.registerObservers(otel);
-        //GarbageCollector.registerObservers(otel);
-        //Threads.registerObservers(otel);
         MemoryPools.registerObservers(otel);
+        Cpu.registerObservers(otel);
 
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
@@ -102,16 +101,15 @@ public class App {
         }, args);
 
         metricReader.forceFlush();
-        metricReader.printMetrics();
         timer.cancel();
+        metricReader.printMetrics();
     }
 
     static class InMemoryMetricReader implements MetricReader {
         private final AggregationTemporality aggregationTemporality;
-        private final AtomicBoolean isShutdown = new AtomicBoolean(false);
         private volatile MetricProducer metricProducer = MetricProducer.noop();
-        private final ConcurrentLinkedDeque<MetricData> metrics = new ConcurrentLinkedDeque<>();
-
+        private final ConcurrentLinkedDeque<MetricData> jvmMem = new ConcurrentLinkedDeque<>();
+        private final ConcurrentLinkedDeque<MetricData> cpuUtilization = new ConcurrentLinkedDeque<>();
         private static final AttributeKey<String> POOL_NAME = AttributeKey.stringKey("pool");
         private static final double MB = 1024 * 1024d;
         public InMemoryMetricReader() {
@@ -120,48 +118,56 @@ public class App {
 
         /** Returns all metrics accumulated since the last call. */
         public void collect() {
-            if (isShutdown.get()) {
-                return;
-            }
             Collection<MetricData> metrics =  metricProducer.collectAllMetrics();
             for (MetricData metric : metrics) {
                 if (metric.getName().equals("process.runtime.jvm.memory.usage")) {
-                    this.metrics.add(metric);
+                    this.jvmMem.add(metric);
+                } else if (metric.getName().equals("process.runtime.jvm.cpu.utilization")) {
+                    cpuUtilization.add(metric);
                 }
             }
         }
         public void printMetrics() {
-            System.out.println("| JVM memory usage: Eden Space | JVM memory usage: Survivor Space | JVM memory usage: Old Gen |");
-            System.out.println("|------------------------------|----------------------------------|---------------------------|");
-            metrics.forEach(m -> printJvmMemUsage(m));
-            metrics.clear();
-        }
+            System.out.println("| JVM memory usage: Eden Space | JVM memory usage: Survivor Space | JVM memory usage: Old Gen |   CPU    |");
+            System.out.println("|------------------------------|----------------------------------|---------------------------|----------|");
+            MetricData mem = jvmMem.poll(), cpu = cpuUtilization.poll();
+            while (mem!= null && cpu != null) {
+                double maxEden = 0;
+                double maxSurv = 0;
+                double maxOld = 0;
+                double cpuUt = 0;
+                for (LongPointData p : mem.getLongSumData().getPoints()) {
+                    String pool = p.getAttributes().get(POOL_NAME);
 
-        private static void printJvmMemUsage(MetricData data) {
-            double maxEden = 0;
-            double maxSurv = 0;
-            double maxOld = 0;
-            for (LongPointData p : data.getLongSumData().getPoints()) {
-                String pool = p.getAttributes().get(POOL_NAME);
+                    if (pool.equals("PS Eden Space") || pool.equals("G1 Eden Space")) {
+                        if (p.getValue() > maxEden) {
+                            maxEden = p.getValue();
+                        }
+                    } else if (pool.equals("PS Survivor Space") || pool.equals("G1 Survivor Space")) {
+                        if (p.getValue() > maxSurv) {
+                            maxSurv = p.getValue();
+                        }
+                    } else if (pool.equals("PS Old Gen") || pool.equals("G1 Old Gen")) {
+                        if (p.getValue() > maxOld) {
+                            maxOld = p.getValue();
+                        }
+                    }
 
-                if (pool.equals("PS Eden Space")) {
-                    if (p.getValue() > maxEden) {
-                        maxEden = p.getValue();
+                    if (cpu != null) {
+                        DoublePointData ut = cpu.getDoubleGaugeData().getPoints().stream().findFirst().orElse(null);
+                        if (ut != null) {
+                            cpuUt = ut.getValue();
+                        }
                     }
-                } else if (pool.equals("PS Survivor Space")) {
-                    if (p.getValue() > maxSurv) {
-                        maxSurv = p.getValue();
-                    }
-                } else if (pool.equals("PS Old Gen")) {
-                    if (p.getValue() > maxOld) {
-                        maxOld = p.getValue();
-                    }
+                    mem = jvmMem.poll();
+                    cpu = cpuUtilization.poll();
+                    System.out.printf("|     %27d |     %31d |     %24d | %8d |\n", (long)(maxEden / MB), (long)(maxSurv / MB), (long)(maxOld / MB), (int)(cpuUt * 100));
                 }
+
             }
-
-            System.out.printf("|     %25f|     %28f|     %22f|\n", maxEden/MB, maxSurv/MB, maxOld/MB);
+            jvmMem.clear();
+            cpuUtilization.clear();
         }
-
 
         @Override
         public void register(CollectionRegistration registration) {
@@ -181,7 +187,6 @@ public class App {
 
         @Override
         public CompletableResultCode shutdown() {
-            isShutdown.set(true);
             return CompletableResultCode.ofSuccess();
         }
 
