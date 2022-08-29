@@ -35,11 +35,29 @@ public class PersonalizerCustomization extends Customization {
 //                    .setModifier(0); // 0 -> package-private
 //            });
 
+        useBinaryDataForRankApis(libraryCustomization, logger);
         renameLogMirrorSasUriProperty(libraryCustomization, logger);
         hideMethods(libraryCustomization, logger);
         renameOfflineExperimentationProperties(libraryCustomization, logger);
         returnBaseClassTypesForMethodReturnValues(libraryCustomization, logger);
         hideClasses(libraryCustomization, logger);
+    }
+
+    private void useBinaryDataForRankApis(LibraryCustomization libraryCustomization, Logger logger) {
+        Arrays.asList("PersonalizerRankableAction", "PersonalizerRankMultiSlotOptions", "PersonalizerRankOptions", "PersonalizerSlotOptions")
+            .forEach(className -> {
+                String fileName = "src/main/java/com/azure/ai/personalizer/models/" + className + ".java";
+                libraryCustomization
+                    .getClass("com.azure.ai.personalizer.models", className)
+                    .addImports("com.azure.core.util.BinaryData");
+                libraryCustomization.getRawEditor()
+                    .searchText(fileName, "List<Object>")
+                    .forEach(range -> {
+                        libraryCustomization
+                            .getRawEditor()
+                            .replace(fileName, range.getStart(), range.getEnd(), "List<BinaryData>");
+                    });
+            });
     }
 
     private void renameLogMirrorSasUriProperty(LibraryCustomization libraryCustomization, Logger logger) {

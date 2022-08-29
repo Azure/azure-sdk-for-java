@@ -3,8 +3,17 @@
 
 package com.azure.ai.personalizer;
 
-import com.azure.ai.personalizer.models.*;
+import com.azure.ai.personalizer.models.PersonalizerRankMultiSlotOptions;
+import com.azure.ai.personalizer.models.PersonalizerRankMultiSlotResult;
+import com.azure.ai.personalizer.models.PersonalizerRankableAction;
+import com.azure.ai.personalizer.models.PersonalizerSlotOptions;
+import com.azure.ai.personalizer.models.PersonalizerSlotResult;
+import com.azure.ai.personalizer.models.PersonalizerSlotReward;
 import com.azure.core.http.HttpClient;
+import com.azure.core.util.BinaryData;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -101,18 +110,22 @@ public class MultiSlotTests extends PersonalizerTestBase {
 
     private static List<PersonalizerRankableAction> getActions() {
         ArrayList<PersonalizerRankableAction> actions = new ArrayList<>();
-        ArrayList<Object> newsFeatures = new ArrayList<Object>();
-        newsFeatures.add(new Object() {
-            Object type = "News";
-        });
-        ArrayList<Object> sportsFeatures = new ArrayList<Object>();
-        sportsFeatures.add(new Object() {
-            final Object type = "News";
-        });
-        ArrayList<Object> entertainmentFeatures = new ArrayList<Object>();
-        entertainmentFeatures.add(new Object() {
-            Object type = "News";
-        });
+        List<BinaryData> newsFeatures = new ArrayList<BinaryData>() {
+            {
+                add(BinaryData.fromObject(new TestFeatureMetadata().setFeatureType("News")));
+            }
+        };
+        List<BinaryData> sportsFeatures = new ArrayList<BinaryData>() {
+            {
+                add(BinaryData.fromObject(new TestFeatureMetadata().setFeatureType("Sports")));
+            }
+        };
+        List<BinaryData> entertainmentFeatures = new ArrayList<BinaryData>() {
+            {
+                add(BinaryData.fromObject(new TestFeatureMetadata().setFeatureType("Entertainment")));
+            }
+        };
+
         actions.add(new PersonalizerRankableAction().setId("NewsArticle").setFeatures(newsFeatures));
         actions.add(new PersonalizerRankableAction().setId("SportsArticle").setFeatures(sportsFeatures));
         actions.add(new PersonalizerRankableAction().setId("EntertainmentArticle").setFeatures(entertainmentFeatures));
@@ -120,11 +133,12 @@ public class MultiSlotTests extends PersonalizerTestBase {
     }
 
     private static PersonalizerSlotOptions getSlot1() {
-        ArrayList<Object> positionFeatures = new ArrayList<Object>();
-        positionFeatures.add(new Object() {
-            Object size = "Large";
-            Object position = "Top Middle";
-        });
+        ArrayList<BinaryData> positionFeatures = new ArrayList<BinaryData>() {
+            {
+                add(BinaryData.fromObject(new TestSlotPositionFeatures().setSize("Large").setPosition("Top Middle")));
+            }
+        };
+
         ArrayList<String> excludedActions = new ArrayList<String>() {
             {
                 add("SportsArticle");
@@ -135,11 +149,12 @@ public class MultiSlotTests extends PersonalizerTestBase {
     }
 
     private static PersonalizerSlotOptions getSlot2() {
-        ArrayList<Object> positionFeatures = new ArrayList<Object>();
-        positionFeatures.add(new Object() {
-            Object size = "Small";
-            Object position = "Bottom Right";
-        });
+        ArrayList<BinaryData> positionFeatures = new ArrayList<BinaryData>() {
+            {
+                add(BinaryData.fromObject(new TestSlotPositionFeatures().setSize("Small").setPosition("Bottom Right")));
+            }
+        };
+
         ArrayList<String> excludedActions = new ArrayList<String>() {
             {
                 add("EntertainmentArticle");
@@ -157,14 +172,176 @@ public class MultiSlotTests extends PersonalizerTestBase {
         };
     }
 
-    private static List<Object> getContextFeatures() {
-        return new ArrayList<Object>() {
+    private static List<BinaryData> getContextFeatures() {
+        return new ArrayList<BinaryData>() {
             {
-                add(new Object() { Object user = new Object() { String profileType = "AnonymousUser"; String latLong = "47.6,-122.1"; }; });
-                add(new Object() { Object environment = new Object() { String dayOfMonth = "28"; String monthOfYear = "8"; String weather = "Sunny"; }; });
-                add(new Object() { Object device = new Object() { boolean mobile = true; boolean windows = true; }; });
-                add(new Object() { Object recentActivity = new Object() { Integer itemsInCart = 3; }; });
+                add(BinaryData.fromObject(new TestUserProfile().setProfileType("AnonymousUser").setLatLong("47.6,-122.1")));
+                add(BinaryData.fromObject(new TestEnvironment().setDayOfMonth("28").setMonthOfYear("8").setWeather("Sunny")));
+                add(BinaryData.fromObject(new TestDevice().setMobile(true).setWindows(true)));
+                add(BinaryData.fromObject(new TestRecentActivity().setItemsInCart(3)));
             }
         };
     }
+}
+
+class TestFeatureMetadata {
+    @JsonGetter
+    public String getFeatureType() {
+        return featureType;
+    }
+
+    @JsonSetter
+    public TestFeatureMetadata setFeatureType(String featureType) {
+        this.featureType = featureType;
+        return this;
+    }
+
+    @JsonProperty
+    String featureType;
+
+}
+
+class TestSlotPositionFeatures {
+    @JsonGetter
+    public String getSize() {
+        return size;
+    }
+
+    @JsonSetter
+    public TestSlotPositionFeatures setSize(String size) {
+        this.size = size;
+        return this;
+    }
+
+    @JsonGetter
+    public String getPosition() {
+        return position;
+    }
+
+    @JsonSetter
+    public TestSlotPositionFeatures setPosition(String position) {
+        this.position = position;
+        return this;
+    }
+
+    @JsonProperty
+    String size;
+    @JsonProperty
+    String position;
+}
+
+class TestUserProfile {
+    @JsonGetter
+    public String getProfileType() {
+        return profileType;
+    }
+
+    @JsonSetter
+    public TestUserProfile setProfileType(String profileType) {
+        this.profileType = profileType;
+        return this;
+    }
+
+    @JsonGetter
+    public String getLatLong() {
+        return latLong;
+    }
+
+    @JsonSetter
+    public TestUserProfile setLatLong(String latLong) {
+        this.latLong = latLong;
+        return this;
+    }
+
+    @JsonProperty
+    String profileType;
+    @JsonProperty
+    String latLong;
+}
+
+class TestEnvironment {
+    @JsonGetter
+    public String getDayOfMonth() {
+        return dayOfMonth;
+    }
+
+    @JsonSetter
+    public TestEnvironment setDayOfMonth(String dayOfMonth) {
+        this.dayOfMonth = dayOfMonth;
+        return this;
+    }
+
+    @JsonGetter
+    public String getMonthOfYear() {
+        return monthOfYear;
+    }
+
+    @JsonSetter
+    public TestEnvironment setMonthOfYear(String monthOfYear) {
+        this.monthOfYear = monthOfYear;
+        return this;
+    }
+
+    @JsonGetter
+    public String getWeather() {
+        return weather;
+    }
+
+    @JsonSetter
+    public TestEnvironment setWeather(String weather) {
+        this.weather = weather;
+        return this;
+    }
+
+    @JsonProperty
+    String dayOfMonth;
+    @JsonProperty
+    String monthOfYear;
+    @JsonProperty
+    String weather;
+}
+
+class TestDevice {
+    @JsonGetter
+    public boolean isMobile() {
+        return isMobile;
+    }
+
+    @JsonSetter
+    public TestDevice setMobile(boolean mobile) {
+        isMobile = mobile;
+        return this;
+    }
+
+    @JsonGetter
+    public boolean isWindows() {
+        return isWindows;
+    }
+
+    @JsonSetter
+    public TestDevice setWindows(boolean windows) {
+        isWindows = windows;
+        return this;
+    }
+
+    @JsonProperty
+    boolean isMobile;
+    @JsonProperty
+    boolean isWindows;
+}
+
+class TestRecentActivity {
+    @JsonGetter
+    public Integer getItemsInCart() {
+        return itemsInCart;
+    }
+
+    @JsonSetter
+    public TestRecentActivity setItemsInCart(Integer itemsInCart) {
+        this.itemsInCart = itemsInCart;
+        return this;
+    }
+
+    @JsonProperty
+    Integer itemsInCart;
 }

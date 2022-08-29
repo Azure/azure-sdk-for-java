@@ -7,6 +7,7 @@ import com.azure.ai.personalizer.models.PersonalizerRankOptions;
 import com.azure.ai.personalizer.models.PersonalizerRankResult;
 import com.azure.ai.personalizer.models.PersonalizerRankableAction;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.BinaryData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,15 +44,15 @@ public class RankActionsAndRewardEvents {
         System.out.println("Completed sending reward for event");
     }
 
-
     /**
      * Get the rich features associated with the current context.
      * @return the current context.
      */
-    private static List<Object> getContextFeatures() {
-        return new ArrayList<Object>() {
+    private static List<BinaryData> getContextFeatures() {
+        return new ArrayList<BinaryData>() {
             {
-                add(new Object() { Object features = new Object() { String dayOfWeek = "tuesday"; boolean payingUser = true; String favoriteGenre = "documentary"; double hoursOnSite = 0.12; String lastWatchedType = "movie"; }; });
+                add(BinaryData.fromObject(new Context().setCurrentFeatures(new CurrentFeatures().setDay("Tuesday").setWeather("rainy"))));
+                add(BinaryData.fromObject(new UserFeatures().setPayingUser(true).setFavoriteGenre("rainy").setHoursOnSite(0.12).setLastWatchedType("movie")));
             }
         };
     }
@@ -62,32 +63,22 @@ public class RankActionsAndRewardEvents {
      */
     private static List<PersonalizerRankableAction> getActions() {
         List<PersonalizerRankableAction> actions = new ArrayList<>();
-        List<Object> features1 = new ArrayList<Object>() {
+        List<BinaryData> features1 =  new ArrayList<BinaryData>() {
             {
-                add(new Object() {
-                    String videoType = "documentary";
-                    Integer videoLength = 35;
-                    String director = "CarlSagan";
-                });
-                add(new Object() {
-                    String mostWatchedByAge = "30-35";
-                });
+                add(BinaryData.fromObject(new ActionFeatures().setVideoType("documentary").setVideoLength(35).setDirector("CarlSagan")));
+                add(BinaryData.fromObject(new ActionCategory().setMostWatchedByAge("30-35")));
             }
         };
+
         actions.add(new PersonalizerRankableAction().setId("Video1").setFeatures(features1));
 
-        List<Object> features2 = new ArrayList<Object>() {
+        List<BinaryData> features2 = new ArrayList<BinaryData>() {
             {
-                add(new Object() {
-                    String videoType = "documentary";
-                    Integer videoLength = 35;
-                    String director = "CarlSagan";
-                });
-                add(new Object() {
-                    String mostWatchedByAge = "40-45";
-                });
+                add(BinaryData.fromObject(new ActionFeatures().setVideoType("documentary").setVideoLength(35).setDirector("CarlSagan")));
+                add(BinaryData.fromObject(new ActionCategory().setMostWatchedByAge("40-45")));
             }
         };
+
         actions.add(new PersonalizerRankableAction().setId("Video2").setFeatures(features2));
         return actions;
     }

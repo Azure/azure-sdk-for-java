@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public final class PersonalizerRankableAction {
      * List of dictionaries containing features.
      */
     @JsonProperty(value = "features", required = true)
-    private List<Object> features;
+    private List<BinaryData> features;
 
     /**
      * Get the id property: Id of the action.
@@ -48,7 +49,7 @@ public final class PersonalizerRankableAction {
      *
      * @return the features value.
      */
-    public List<Object> getFeatures() {
+    public List<BinaryData> getFeatures() {
         return this.features;
     }
 
@@ -58,7 +59,7 @@ public final class PersonalizerRankableAction {
      * @param features the features value to set.
      * @return the PersonalizerRankableAction object itself.
      */
-    public PersonalizerRankableAction setFeatures(List<Object> features) {
+    public PersonalizerRankableAction setFeatures(List<BinaryData> features) {
         this.features = features;
         return this;
     }

@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public final class PersonalizerRankMultiSlotOptions {
      * unique UserIDs, or precise timestamps.
      */
     @JsonProperty(value = "contextFeatures")
-    private List<Object> contextFeatures;
+    private List<BinaryData> contextFeatures;
 
     /*
      * The set of actions the Personalizer service can pick from.
@@ -75,7 +76,7 @@ public final class PersonalizerRankMultiSlotOptions {
      *
      * @return the contextFeatures value.
      */
-    public List<Object> getContextFeatures() {
+    public List<BinaryData> getContextFeatures() {
         return this.contextFeatures;
     }
 
@@ -88,7 +89,7 @@ public final class PersonalizerRankMultiSlotOptions {
      * @param contextFeatures the contextFeatures value to set.
      * @return the PersonalizerRankMultiSlotOptions object itself.
      */
-    public PersonalizerRankMultiSlotOptions setContextFeatures(List<Object> contextFeatures) {
+    public PersonalizerRankMultiSlotOptions setContextFeatures(List<BinaryData> contextFeatures) {
         this.contextFeatures = contextFeatures;
         return this;
     }

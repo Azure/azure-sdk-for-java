@@ -15,6 +15,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 
 import java.util.ArrayList;
@@ -147,7 +148,7 @@ public final class PersonalizerClient {
      * @return List of slot responses for each slot along with eventId.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PersonalizerRankMultiSlotResult rankMultiSlot(List<PersonalizerRankableAction> actions, List<PersonalizerSlotOptions> slots, List<Object> contextFeatures) {
+    public PersonalizerRankMultiSlotResult rankMultiSlot(List<PersonalizerRankableAction> actions, List<PersonalizerSlotOptions> slots, List<BinaryData> contextFeatures) {
         PersonalizerRankMultiSlotOptions request = new PersonalizerRankMultiSlotOptions().setActions(actions).setSlots(slots).setContextFeatures(contextFeatures);
         return rankMultiSlot(request);
     }

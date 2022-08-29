@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public final class PersonalizerSlotOptions {
      * List of dictionaries containing slot features.
      */
     @JsonProperty(value = "features")
-    private List<Object> features;
+    private List<BinaryData> features;
 
     /*
      * List of excluded action Ids.
@@ -66,7 +67,7 @@ public final class PersonalizerSlotOptions {
      *
      * @return the features value.
      */
-    public List<Object> getFeatures() {
+    public List<BinaryData> getFeatures() {
         return this.features;
     }
 
@@ -76,7 +77,7 @@ public final class PersonalizerSlotOptions {
      * @param features the features value to set.
      * @return the PersonalizerSlotOptions object itself.
      */
-    public PersonalizerSlotOptions setFeatures(List<Object> features) {
+    public PersonalizerSlotOptions setFeatures(List<BinaryData> features) {
         this.features = features;
         return this;
     }
