@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.aad;
 
 import com.azure.spring.cloud.autoconfigure.aad.configuration.AadPropertiesConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.configuration.CommonConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.filter.AadAppRoleStatelessAuthenticationFilter;
 import com.azure.spring.cloud.autoconfigure.aad.filter.AadAuthenticationFilter;
 import com.azure.spring.cloud.autoconfigure.aad.filter.UserPrincipalManager;
@@ -15,13 +16,11 @@ import com.nimbusds.jose.jwk.source.JWKSetCache;
 import com.nimbusds.jose.util.ResourceRetriever;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -41,7 +40,7 @@ import java.util.concurrent.TimeUnit;
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnExpression("${spring.cloud.azure.active-directory.enabled:false}")
 @ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken" })
-@Import(AadPropertiesConfiguration.class)
+@Import({AadPropertiesConfiguration.class, CommonConfiguration.class})
 public class AadAuthenticationFilterAutoConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AadAuthenticationProperties.class);
@@ -99,19 +98,6 @@ public class AadAuthenticationFilterAutoConfiguration {
                 true
             )
         );
-    }
-
-    /**
-     * Declare RestOperations bean used by various Nimbus JWT components.
-     *
-     * @param builderObjectProvider the optional rest template builder bean.
-     * @return RestOperations bean
-     */
-    @Bean
-    @ConditionalOnMissingBean(RestOperations.class)
-    public RestOperations aadAuthRestOperations(ObjectProvider<RestTemplateBuilder> builderObjectProvider) {
-        RestTemplateBuilder builder = builderObjectProvider.getIfAvailable(RestTemplateBuilder::new);
-        return builder.build();
     }
 
     /**

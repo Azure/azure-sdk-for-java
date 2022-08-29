@@ -3,6 +3,7 @@
 package com.azure.spring.cloud.autoconfigure.aadb2c;
 
 import com.azure.spring.cloud.autoconfigure.aad.AadTrustedIssuerRepository;
+import com.azure.spring.cloud.autoconfigure.aad.configuration.CommonConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadJwtClaimNames;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.AadIssuerJwsKeySelector;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.RestOperationsResourceRetriever;
@@ -16,12 +17,10 @@ import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
 import com.nimbusds.jwt.proc.JWTProcessor;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -47,7 +46,7 @@ import java.util.List;
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnProperty(value = "spring.cloud.azure.active-directory.b2c.enabled", havingValue = "true")
 @ConditionalOnClass(BearerTokenAuthenticationToken.class)
-@Import({ AadB2cPropertiesConfiguration.class, AadB2cOAuth2ClientConfiguration.class})
+@Import({ AadB2cPropertiesConfiguration.class, AadB2cOAuth2ClientConfiguration.class, CommonConfiguration.class})
 public class AadB2cResourceServerAutoConfiguration {
 
     private final AadB2cProperties properties;
@@ -70,19 +69,6 @@ public class AadB2cResourceServerAutoConfiguration {
     @ConditionalOnMissingBean
     public AadTrustedIssuerRepository trustedIssuerRepository() {
         return new AadB2cTrustedIssuerRepository(properties);
-    }
-
-    /**
-     * Declare RestOperations bean used by various Nimbus JWT components.
-     *
-     * @param builderObjectProvider the optional rest template builder bean.
-     * @return JWT ResourceRetriever bean
-     */
-    @Bean
-    @ConditionalOnMissingBean(RestOperations.class)
-    public RestOperations aadAuthRestOperations(ObjectProvider<RestTemplateBuilder> builderObjectProvider) {
-        RestTemplateBuilder builder = builderObjectProvider.getIfAvailable(RestTemplateBuilder::new);
-        return builder.build();
     }
 
     /**
