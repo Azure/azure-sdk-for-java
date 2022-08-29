@@ -3,7 +3,9 @@
 
 package com.azure.ai.personalizer;
 
-import com.azure.ai.personalizer.administration.*;
+import com.azure.ai.personalizer.administration.PersonalizerAdministrationAsyncClient;
+import com.azure.ai.personalizer.administration.PersonalizerAdministrationClient;
+import com.azure.ai.personalizer.administration.PersonalizerAdministrationClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 
 /**
