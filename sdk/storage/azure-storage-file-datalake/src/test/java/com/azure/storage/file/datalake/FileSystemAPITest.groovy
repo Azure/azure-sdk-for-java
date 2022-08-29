@@ -4,6 +4,7 @@ import com.azure.core.util.Context
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
+import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.Utility
 import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
@@ -2785,6 +2786,7 @@ class FileSystemAPITest extends APISpec {
             .setReadPermission(true)
             .setCreatePermission(true)
             .setWritePermission(true)
+            .setDeletePermission(true)
         def expiryTime = namer.getUtcNow().plusDays(1)
 
         def newName = generateFileSystemName()
@@ -2855,7 +2857,6 @@ class FileSystemAPITest extends APISpec {
         null     | newDate    | null         | null
         null     | null       | receivedEtag | null
         null     | null       | null         | garbageEtag
-        null     | null       | null         | null
     }
 
     def "Rename error"() {
@@ -2867,7 +2868,7 @@ class FileSystemAPITest extends APISpec {
         fsc.rename(newName)
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
     }
 
 }

@@ -509,9 +509,9 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
     public void renameContainerWithResponse() {
         // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.renameWithResponse#BlobContainerRenameOptions
         BlobRequestConditions requestConditions = new BlobRequestConditions().setLeaseId("lease-id");
-        BlobContainerAsyncClient containerClient = client
-            .renameWithResponse(new BlobContainerRenameOptions( "newContainerName")
-                    .setRequestConditions(requestConditions)).block().getValue();
+        BlobContainerAsyncClient containerClient =
+            client.renameWithResponse(new BlobContainerRenameOptions( "newContainerName")
+                .setRequestConditions(requestConditions)).block().getValue();
         // END: com.azure.storage.blob.BlobContainerAsyncClient.renameWithResponse#BlobContainerRenameOptions
     }
 }
