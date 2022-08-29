@@ -36,7 +36,7 @@ public final class DocumentSpan {
      * @param offset the offset value to set.
      * @return the DocumentSpan object itself.
      */
-    void setOffset(int offset) {
+    private void setOffset(int offset) {
         this.offset = offset;
     }
 
@@ -55,7 +55,7 @@ public final class DocumentSpan {
      * @param length the length value to set.
      * @return the DocumentSpan object itself.
      */
-    void setLength(int length) {
+    private void setLength(int length) {
         this.length = length;
     }
 
