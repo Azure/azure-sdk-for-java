@@ -18,7 +18,7 @@ public final class TestUtils {
     private TestUtils() {
     }
 
-    static String propPair(String propName, String propValue) {
+    public static String propPair(String propName, String propValue) {
         return String.format("%s=%s", propName, propValue);
     }
 
