@@ -23,6 +23,11 @@ public class CosmosPageRequest extends PageRequest {
      */
     private long offset;
 
+    /**
+     * Additional Pages to be added to the total page count.
+     */
+    private int additionalPages;
+
     // Request continuation token used to resume query
     /**
      * Request continuation token
@@ -67,6 +72,14 @@ public class CosmosPageRequest extends PageRequest {
         this.requestContinuation = requestContinuation;
     }
 
+    private CosmosPageRequest(long offset, int page, int size, String requestContinuation,
+                              Sort sort, int additionalPages) {
+        super(page, size, sort);
+        this.offset = offset;
+        this.additionalPages = additionalPages;
+        this.requestContinuation = requestContinuation;
+    }
+
     /**
      * Creates a new {@link CosmosPageRequest}
      *
@@ -94,6 +107,22 @@ public class CosmosPageRequest extends PageRequest {
         return new CosmosPageRequest(offset, page, size, requestContinuation, sort);
     }
 
+    /**
+     * Creates a new {@link CosmosPageRequest}
+     *
+     * @param offset cannot be null
+     * @param page zero-based page index, must not be negative.
+     * @param size the size of the page to be returned, must be greater than 0.
+     * @param requestContinuation cannot be null
+     * @param sort cannot be null
+     * @param additionalPages Additional Pages to be added to the total page count
+     * @return CosmosPageRequest
+     */
+    public static CosmosPageRequest of(long offset, int page, int size, String requestContinuation,
+                                       Sort sort, int additionalPages) {
+        return new CosmosPageRequest(offset, page, size, requestContinuation, sort, additionalPages);
+    }
+
     @Override
     public PageRequest next() {
         return new CosmosPageRequest(this.offset + (long) this.getPageSize(),
@@ -103,6 +132,10 @@ public class CosmosPageRequest extends PageRequest {
     @Override
     public long getOffset() {
         return offset;
+    }
+
+    public int getAdditionalPages() {
+        return additionalPages;
     }
 
     /**

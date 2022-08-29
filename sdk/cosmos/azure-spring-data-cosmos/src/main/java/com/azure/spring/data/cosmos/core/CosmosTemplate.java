@@ -818,25 +818,21 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
         final int contentSize = result.size();
 
-        int pageSize;
-
+        int additionalPages = 0;
+        if (pageable instanceof CosmosPageRequest) {
+            additionalPages = ((CosmosPageRequest) pageable).getAdditionalPages();
+        }
         if (contentSize < pageable.getPageSize()
             && contentSize > 0) {
-            //  If the content size is less than page size,
-            //  this means, cosmosDB is returning less items than page size,
-            //  because of either RU limit, or payload limit
-
-            //  Set the page size to content size.
-            pageSize = contentSize;
-        } else {
-            pageSize = pageable.getPageSize();
+            additionalPages++;
         }
 
         final CosmosPageRequest pageRequest = CosmosPageRequest.of(pageable.getOffset(),
             pageable.getPageNumber(),
-            pageSize,
+            pageable.getPageSize(),
             feedResponse.getContinuationToken(),
-            sort);
+            sort,
+            additionalPages);
 
         return new CosmosSliceImpl<>(result, pageRequest, feedResponse.getContinuationToken() != null);
     }

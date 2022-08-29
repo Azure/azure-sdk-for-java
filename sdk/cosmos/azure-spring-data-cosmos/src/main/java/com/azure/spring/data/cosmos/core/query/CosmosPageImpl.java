@@ -26,6 +26,11 @@ public class CosmosPageImpl<T> extends PageImpl<T> {
     private final long offset;
 
     /**
+     * Additional Pages to be added to the total page count.
+     */
+    private int additionalPages;
+
+    /**
      * Constructor of {@code CosmosPageImpl}.
      *
      * @param content the content of this page, must not be {@literal null}.
@@ -36,11 +41,16 @@ public class CosmosPageImpl<T> extends PageImpl<T> {
     public CosmosPageImpl(List<T> content, Pageable pageable, long total) {
         super(content, pageable, total);
         this.offset = pageable.getOffset();
+        this.additionalPages = 0;
+        if (pageable instanceof CosmosPageRequest) {
+            this.additionalPages = ((CosmosPageRequest) pageable).getAdditionalPages();
+        }
     }
 
     @Override
     public int getTotalPages() {
-        return super.getTotalPages();
+        return getSize() == 0 ? 1 : (int) Math.ceil(((double) super.getTotalElements() / (double) getSize())
+            + (double) this.additionalPages);
     }
 
     @Override
