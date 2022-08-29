@@ -1,14 +1,9 @@
 ## Release History
 
-### 4.36.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
-
+### 4.35.1 (2022-08-29)
 #### Other Changes
+* Improved availability during intermittent connection issues by using asynchronous non-blocking cache - See [PR 29322](https://github.com/Azure/azure-sdk-for-java/pull/29322)
+* Improved performance of `StoreResponse` using array headers - See [PR 30596](https://github.com/Azure/azure-sdk-for-java/pull/30596)
 
 ### 4.35.0 (2022-08-19)
 #### Other Changes
