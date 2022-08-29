@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PostArgsOperator. */
+/** Describes operator to be matched. */
 public final class PostArgsOperator extends ExpandableStringEnum<PostArgsOperator> {
     /** Static value Any for PostArgsOperator. */
     public static final PostArgsOperator ANY = fromString("Any");
@@ -51,7 +51,11 @@ public final class PostArgsOperator extends ExpandableStringEnum<PostArgsOperato
         return fromString(name, PostArgsOperator.class);
     }
 
-    /** @return known PostArgsOperator values. */
+    /**
+     * Gets known PostArgsOperator values.
+     *
+     * @return known PostArgsOperator values.
+     */
     public static Collection<PostArgsOperator> values() {
         return values(PostArgsOperator.class);
     }

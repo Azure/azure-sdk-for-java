@@ -3,22 +3,34 @@
 
 package com.azure.ai.formrecognizer.models;
 
-import com.azure.ai.formrecognizer.implementation.util.PointHelper;
+import com.azure.core.annotation.Immutable;
 
 /**
- * Represents the x and y coordinates of a vertex.
+ * Represents the x and y coordinates of a point.
  */
+@Immutable
 public final class Point {
 
     /*
      * The x-axis point coordinate.
      */
-    private float xCoordinate;
+    private final float xCoordinate;
 
     /*
      * The y-axis point coordinate.
      */
-    private float yCoordinate;
+    private final float yCoordinate;
+
+    /**
+     * Creates a Point object.
+     *
+     * @param xCoordinate The x-axis point coordinate.
+     * @param yCoordinate The y-axis point coordinate.
+     */
+    public Point(final float xCoordinate, final float yCoordinate) {
+        this.xCoordinate = xCoordinate;
+        this.yCoordinate = yCoordinate;
+    }
 
     /**
      * Gets the x-coordinate value.
@@ -36,27 +48,5 @@ public final class Point {
      */
     public float getY() {
         return this.yCoordinate;
-    }
-
-    void setX(float xCoordinate) {
-        this.xCoordinate = xCoordinate;
-    }
-
-    void setY(float yCoordinate) {
-        this.yCoordinate = yCoordinate;
-    }
-
-    static {
-        PointHelper.setAccessor(new PointHelper.PointAccessor() {
-            @Override
-            public void setX(Point point, float xCoordinate) {
-                point.setX(xCoordinate);
-            }
-
-            @Override
-            public void setY(Point point, float yCoordinate) {
-                point.setY(yCoordinate);
-            }
-        });
     }
 }

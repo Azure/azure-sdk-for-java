@@ -8,6 +8,7 @@ import com.azure.core.implementation.ImplUtils;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -25,8 +26,19 @@ public final class UrlBuilder {
     private Integer port;
     private String path;
 
-    // LinkedHashMap preserves insertion order
-    private final Map<String, QueryParameter> query = new LinkedHashMap<>();
+    private Map<String, QueryParameter> queryToCopy;
+    private Map<String, QueryParameter> query;
+
+    /**
+     * Creates a new instance of {@link UrlBuilder}.
+     */
+    public UrlBuilder() {
+        this(null);
+    }
+
+    private UrlBuilder(Map<String, QueryParameter> queryToCopy) {
+        this.queryToCopy = queryToCopy;
+    }
 
     /**
      * Set the scheme/protocol that will be used to build the final URL.
@@ -144,6 +156,8 @@ public final class UrlBuilder {
      * @throws NullPointerException if {@code queryParameterName} or {@code queryParameterEncodedValue} are null.
      */
     public UrlBuilder setQueryParameter(String queryParameterName, String queryParameterEncodedValue) {
+        initializeQuery();
+
         query.put(queryParameterName, new QueryParameter(queryParameterName, queryParameterEncodedValue));
         return this;
     }
@@ -157,6 +171,8 @@ public final class UrlBuilder {
      * @throws NullPointerException if {@code queryParameterName} or {@code queryParameterEncodedValue} are null.
      */
     public UrlBuilder addQueryParameter(String queryParameterName, String queryParameterEncodedValue) {
+        initializeQuery();
+
         query.compute(queryParameterName, (key, value) -> {
             if (value == null) {
                 return new QueryParameter(queryParameterName, queryParameterEncodedValue);
@@ -174,12 +190,7 @@ public final class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder setQuery(String query) {
-        if (query == null || query.isEmpty()) {
-            this.query.clear();
-        } else {
-            with(query, UrlTokenizerState.QUERY);
-        }
-        return this;
+        return (query == null || query.isEmpty()) ? clearQuery() : with(query, UrlTokenizerState.QUERY);
     }
 
     /**
@@ -188,7 +199,7 @@ public final class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder clearQuery() {
-        if (query.isEmpty()) {
+        if (CoreUtils.isNullOrEmpty(query)) {
             return this;
         }
 
@@ -202,6 +213,8 @@ public final class UrlBuilder {
      * @return the query that has been assigned to this UrlBuilder.
      */
     public Map<String, String> getQuery() {
+        initializeQuery();
+
         // This contains a map of key=value query parameters, replacing
         // multiple values for a single key with a list of values under the same name,
         // joined together with a comma. As discussed in https://github.com/Azure/azure-sdk-for-java/pull/21203.
@@ -217,7 +230,7 @@ public final class UrlBuilder {
      * @return A String containing the currently configured query string.
      */
     public String getQueryString() {
-        if (query.isEmpty()) {
+        if (CoreUtils.isNullOrEmpty(queryToCopy) && CoreUtils.isNullOrEmpty(query)) {
             return "";
         }
 
@@ -228,24 +241,43 @@ public final class UrlBuilder {
     }
 
     private void appendQueryString(StringBuilder stringBuilder) {
-        if (query.isEmpty()) {
+        if (CoreUtils.isNullOrEmpty(queryToCopy) && CoreUtils.isNullOrEmpty(query)) {
             return;
         }
 
         stringBuilder.append("?");
 
         boolean first = true;
-        for (Map.Entry<String, QueryParameter> entry : query.entrySet()) {
-            for (String queryValue : entry.getValue().getValuesList()) {
-                if (!first) {
-                    stringBuilder.append("&");
-                }
-                stringBuilder.append(entry.getKey());
-                stringBuilder.append("=");
-                stringBuilder.append(queryValue);
-                first = false;
+
+        // queryToCopy hasn't been copied yet as no operations on query parameters have been applied since creating
+        // this UrlBuilder. Use queryToCopy to create the query string and while doing so copy it into query.
+        if (query == null) {
+            query = new LinkedHashMap<>();
+
+            for (Map.Entry<String, QueryParameter> entry : queryToCopy.entrySet()) {
+                first = writeQueryValues(stringBuilder, entry.getKey(), entry.getValue().getValuesList(), first);
+
+                query.put(entry.getKey(), entry.getValue());
+            }
+        } else {
+            // queryToCopy has been copied, use query to build the query string.
+            for (Map.Entry<String, QueryParameter> entry : query.entrySet()) {
+                first = writeQueryValues(stringBuilder, entry.getKey(), entry.getValue().getValuesList(), first);
             }
         }
+    }
+
+    private static boolean writeQueryValues(StringBuilder builder, String key, List<String> values, boolean first) {
+        for (String value : values) {
+            if (!first) {
+                builder.append("&");
+            }
+
+            builder.append(key).append("=").append(value);
+            first = false;
+        }
+
+        return first;
     }
 
     private UrlBuilder with(String text, UrlTokenizerState startState) {
@@ -386,14 +418,24 @@ public final class UrlBuilder {
     }
 
     private UrlBuilder copy() {
-        UrlBuilder copy = new UrlBuilder();
+        UrlBuilder copy = new UrlBuilder(query);
 
         copy.scheme = this.scheme;
         copy.host = this.host;
         copy.path = this.path;
         copy.port = this.port;
-        copy.query.putAll(this.query);
 
         return copy;
+    }
+
+    private void initializeQuery() {
+        if (query == null) {
+            query = new LinkedHashMap<>();
+        }
+
+        if (queryToCopy != null) {
+            query.putAll(queryToCopy);
+            queryToCopy = null;
+        }
     }
 }

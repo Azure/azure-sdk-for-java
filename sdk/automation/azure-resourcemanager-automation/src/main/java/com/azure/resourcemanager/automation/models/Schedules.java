@@ -33,7 +33,7 @@ public interface Schedules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the schedule.
+     * @return definition of the schedule along with {@link Response}.
      */
     Response<Schedule> getWithResponse(
         String resourceGroupName, String automationAccountName, String scheduleName, Context context);
@@ -60,7 +60,7 @@ public interface Schedules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String scheduleName, Context context);
@@ -73,7 +73,7 @@ public interface Schedules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list schedule operation.
+     * @return the response model for the list schedule operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Schedule> listByAutomationAccount(String resourceGroupName, String automationAccountName);
 
@@ -86,7 +86,7 @@ public interface Schedules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list schedule operation.
+     * @return the response model for the list schedule operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Schedule> listByAutomationAccount(
         String resourceGroupName, String automationAccountName, Context context);
@@ -98,7 +98,7 @@ public interface Schedules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the schedule.
+     * @return definition of the schedule along with {@link Response}.
      */
     Schedule getById(String id);
 
@@ -110,7 +110,7 @@ public interface Schedules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the schedule.
+     * @return definition of the schedule along with {@link Response}.
      */
     Response<Schedule> getByIdWithResponse(String id, Context context);
 
@@ -132,7 +132,7 @@ public interface Schedules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

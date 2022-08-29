@@ -7,7 +7,7 @@ package com.azure.resourcemanager.labservices.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for LabState. */
+/** The state of a virtual machine. */
 public enum LabState {
     /** Enum value Draft. */
     DRAFT("Draft"),
@@ -39,6 +39,9 @@ public enum LabState {
      */
     @JsonCreator
     public static LabState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         LabState[] items = LabState.values();
         for (LabState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -48,6 +51,7 @@ public enum LabState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

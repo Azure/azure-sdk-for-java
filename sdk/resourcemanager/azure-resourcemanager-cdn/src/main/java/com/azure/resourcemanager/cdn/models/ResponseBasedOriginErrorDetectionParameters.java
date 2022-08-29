@@ -5,33 +5,27 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The JSON object that contains the properties to determine origin health using real requests/responses. */
 @Fluent
 public final class ResponseBasedOriginErrorDetectionParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResponseBasedOriginErrorDetectionParameters.class);
-
     /*
-     * Type of response errors for real user requests for which origin will be
-     * deemed unhealthy
+     * Type of response errors for real user requests for which origin will be deemed unhealthy
      */
     @JsonProperty(value = "responseBasedDetectedErrorTypes")
     private ResponseBasedDetectedErrorTypes responseBasedDetectedErrorTypes;
 
     /*
-     * The percentage of failed requests in the sample where failover should
-     * trigger.
+     * The percentage of failed requests in the sample where failover should trigger.
      */
     @JsonProperty(value = "responseBasedFailoverThresholdPercentage")
     private Integer responseBasedFailoverThresholdPercentage;
 
     /*
-     * The list of Http status code ranges that are considered as server errors
-     * for origin and it is marked as unhealthy.
+     * The list of Http status code ranges that are considered as server errors for origin and it is marked as
+     * unhealthy.
      */
     @JsonProperty(value = "httpErrorRanges")
     private List<HttpErrorRangeParameters> httpErrorRanges;

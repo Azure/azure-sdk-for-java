@@ -6,7 +6,6 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("UrlRewrite")
 @Fluent
 public final class UrlRewriteAction extends DeliveryRuleAction {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UrlRewriteAction.class);
-
     /*
      * Defines the parameters for the action.
      */
@@ -53,11 +50,13 @@ public final class UrlRewriteAction extends DeliveryRuleAction {
     public void validate() {
         super.validate();
         if (parameters() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property parameters in model UrlRewriteAction"));
         } else {
             parameters().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UrlRewriteAction.class);
 }

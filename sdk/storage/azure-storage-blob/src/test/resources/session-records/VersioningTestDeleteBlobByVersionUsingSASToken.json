@@ -95,7 +95,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.blob.core.windows.net/77c7fff5277c7fff55d85918139f7c9ba3b384d81902/77c7fff5177c7fff55d875058edacb17f68d94f438c0?versionid=2021-05-14T20%3A33%3A02.7498548Z&sv=2021-08-06&se=2021-05-15T20%3A33%3A02Z&sr=bv&sp=x&sig=REDACTED",
+    "Uri" : "https://REDACTED.blob.core.windows.net/77c7fff5277c7fff55d85918139f7c9ba3b384d81902/77c7fff5177c7fff55d875058edacb17f68d94f438c0?versionid=2021-05-14T20%3A33%3A02.7498548Z&sv=2021-10-04&se=2021-05-15T20%3A33%3A02Z&sr=bv&sp=x&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-10-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.2 (11.0.7; Windows 10; 10.0)",

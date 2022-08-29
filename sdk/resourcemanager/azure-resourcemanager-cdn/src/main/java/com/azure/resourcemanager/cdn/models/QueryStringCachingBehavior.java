@@ -7,7 +7,10 @@ package com.azure.resourcemanager.cdn.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for QueryStringCachingBehavior. */
+/**
+ * Defines how CDN caches requests that include query strings. You can ignore any query strings when caching, bypass
+ * caching to prevent requests that contain query strings from being cached, or cache every request with a unique URL.
+ */
 public enum QueryStringCachingBehavior {
     /** Enum value IgnoreQueryString. */
     IGNORE_QUERY_STRING("IgnoreQueryString"),
@@ -36,6 +39,9 @@ public enum QueryStringCachingBehavior {
      */
     @JsonCreator
     public static QueryStringCachingBehavior fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         QueryStringCachingBehavior[] items = QueryStringCachingBehavior.values();
         for (QueryStringCachingBehavior item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,6 +51,7 @@ public enum QueryStringCachingBehavior {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

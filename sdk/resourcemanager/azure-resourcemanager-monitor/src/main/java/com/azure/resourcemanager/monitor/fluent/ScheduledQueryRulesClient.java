@@ -25,13 +25,13 @@ public interface ScheduledQueryRulesClient
     /**
      * Creates or updates an log search rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
      * @param parameters The parameters of the rule to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Log Search Rule resource.
+     * @return the Log Search Rule resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<LogSearchRuleResourceInner>> createOrUpdateWithResponseAsync(
@@ -40,13 +40,13 @@ public interface ScheduledQueryRulesClient
     /**
      * Creates or updates an log search rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
      * @param parameters The parameters of the rule to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Log Search Rule resource.
+     * @return the Log Search Rule resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<LogSearchRuleResourceInner> createOrUpdateAsync(
@@ -55,7 +55,7 @@ public interface ScheduledQueryRulesClient
     /**
      * Creates or updates an log search rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
      * @param parameters The parameters of the rule to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -70,14 +70,14 @@ public interface ScheduledQueryRulesClient
     /**
      * Creates or updates an log search rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
      * @param parameters The parameters of the rule to create or update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Log Search Rule resource.
+     * @return the Log Search Rule resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<LogSearchRuleResourceInner> createOrUpdateWithResponse(
@@ -86,12 +86,12 @@ public interface ScheduledQueryRulesClient
     /**
      * Gets an Log Search rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Log Search rule.
+     * @return an Log Search rule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<LogSearchRuleResourceInner>> getByResourceGroupWithResponseAsync(
@@ -100,12 +100,12 @@ public interface ScheduledQueryRulesClient
     /**
      * Gets an Log Search rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Log Search rule.
+     * @return an Log Search rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<LogSearchRuleResourceInner> getByResourceGroupAsync(String resourceGroupName, String ruleName);
@@ -113,7 +113,7 @@ public interface ScheduledQueryRulesClient
     /**
      * Gets an Log Search rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -126,13 +126,13 @@ public interface ScheduledQueryRulesClient
     /**
      * Gets an Log Search rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Log Search rule.
+     * @return an Log Search rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<LogSearchRuleResourceInner> getByResourceGroupWithResponse(
@@ -141,13 +141,13 @@ public interface ScheduledQueryRulesClient
     /**
      * Update log search Rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
      * @param parameters The parameters of the rule to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Log Search Rule resource.
+     * @return the Log Search Rule resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<LogSearchRuleResourceInner>> updateWithResponseAsync(
@@ -156,13 +156,13 @@ public interface ScheduledQueryRulesClient
     /**
      * Update log search Rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
      * @param parameters The parameters of the rule to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Log Search Rule resource.
+     * @return the Log Search Rule resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<LogSearchRuleResourceInner> updateAsync(
@@ -171,7 +171,7 @@ public interface ScheduledQueryRulesClient
     /**
      * Update log search Rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
      * @param parameters The parameters of the rule to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -185,14 +185,14 @@ public interface ScheduledQueryRulesClient
     /**
      * Update log search Rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
      * @param parameters The parameters of the rule to update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Log Search Rule resource.
+     * @return the Log Search Rule resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<LogSearchRuleResourceInner> updateWithResponse(
@@ -201,12 +201,12 @@ public interface ScheduledQueryRulesClient
     /**
      * Deletes a Log Search rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String ruleName);
@@ -214,12 +214,12 @@ public interface ScheduledQueryRulesClient
     /**
      * Deletes a Log Search rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String ruleName);
@@ -227,7 +227,7 @@ public interface ScheduledQueryRulesClient
     /**
      * Deletes a Log Search rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -239,13 +239,13 @@ public interface ScheduledQueryRulesClient
     /**
      * Deletes a Log Search rule.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ruleName The name of the rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(String resourceGroupName, String ruleName, Context context);
@@ -258,7 +258,7 @@ public interface ScheduledQueryRulesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of Log Search rule resources.
+     * @return represents a collection of Log Search rule resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<LogSearchRuleResourceInner> listAsync(String filter);
@@ -268,7 +268,7 @@ public interface ScheduledQueryRulesClient
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of Log Search rule resources.
+     * @return represents a collection of Log Search rule resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<LogSearchRuleResourceInner> listAsync();
@@ -278,7 +278,7 @@ public interface ScheduledQueryRulesClient
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of Log Search rule resources.
+     * @return represents a collection of Log Search rule resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LogSearchRuleResourceInner> list();
@@ -292,7 +292,7 @@ public interface ScheduledQueryRulesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of Log Search rule resources.
+     * @return represents a collection of Log Search rule resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LogSearchRuleResourceInner> list(String filter, Context context);
@@ -300,13 +300,13 @@ public interface ScheduledQueryRulesClient
     /**
      * List the Log Search rules within a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter The filter to apply on the operation. For more information please see
      *     https://msdn.microsoft.com/en-us/library/azure/dn931934.aspx.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of Log Search rule resources.
+     * @return represents a collection of Log Search rule resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<LogSearchRuleResourceInner> listByResourceGroupAsync(String resourceGroupName, String filter);
@@ -314,11 +314,11 @@ public interface ScheduledQueryRulesClient
     /**
      * List the Log Search rules within a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of Log Search rule resources.
+     * @return represents a collection of Log Search rule resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<LogSearchRuleResourceInner> listByResourceGroupAsync(String resourceGroupName);
@@ -326,11 +326,11 @@ public interface ScheduledQueryRulesClient
     /**
      * List the Log Search rules within a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of Log Search rule resources.
+     * @return represents a collection of Log Search rule resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LogSearchRuleResourceInner> listByResourceGroup(String resourceGroupName);
@@ -338,14 +338,14 @@ public interface ScheduledQueryRulesClient
     /**
      * List the Log Search rules within a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter The filter to apply on the operation. For more information please see
      *     https://msdn.microsoft.com/en-us/library/azure/dn931934.aspx.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of Log Search rule resources.
+     * @return represents a collection of Log Search rule resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LogSearchRuleResourceInner> listByResourceGroup(

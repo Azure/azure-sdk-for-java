@@ -29,6 +29,9 @@ parameters:
   - name: TestEnvVars
     type: object
     default: {}
+  - name: TestVersionSupport
+    type: string
+    default: 'false'
   - name: IsLiveTest
     type: boolean
     default: false
@@ -48,6 +51,8 @@ steps:
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
       goals: 'install'
+    env:
+      AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
     condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
 
   - task: Maven@3

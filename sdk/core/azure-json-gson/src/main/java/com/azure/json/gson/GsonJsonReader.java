@@ -3,7 +3,6 @@
 
 package com.azure.json.gson;
 
-import com.azure.json.DefaultJsonReader;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 
@@ -27,8 +26,8 @@ public final class GsonJsonReader extends JsonReader {
     private final String jsonString;
     private final boolean resetSupported;
 
-    private com.google.gson.stream.JsonToken gsonCurrentToken;
     private JsonToken currentToken;
+    private boolean consumed = false;
 
     /**
      * Constructs an instance of {@link GsonJsonReader} from a {@code byte[]}.
@@ -78,20 +77,43 @@ public final class GsonJsonReader extends JsonReader {
         // GSON requires explicitly beginning and ending arrays and objects and consuming null values.
         // The contract of JsonReader implicitly overlooks these properties.
         try {
-            if (gsonCurrentToken == com.google.gson.stream.JsonToken.BEGIN_OBJECT) {
+            if (currentToken == JsonToken.START_OBJECT) {
                 reader.beginObject();
-            } else if (gsonCurrentToken == com.google.gson.stream.JsonToken.END_OBJECT) {
+            } else if (currentToken == JsonToken.END_OBJECT) {
                 reader.endObject();
-            } else if (gsonCurrentToken == com.google.gson.stream.JsonToken.BEGIN_ARRAY) {
+            } else if (currentToken == JsonToken.START_ARRAY) {
                 reader.beginArray();
-            } else if (gsonCurrentToken == com.google.gson.stream.JsonToken.END_ARRAY) {
+            } else if (currentToken == JsonToken.END_ARRAY) {
                 reader.endArray();
             } else if (currentToken == JsonToken.NULL) {
                 reader.nextNull();
             }
 
-            gsonCurrentToken = reader.peek();
-            currentToken = mapToken(gsonCurrentToken);
+            if (!consumed && currentToken != null) {
+                switch (currentToken) {
+                    case FIELD_NAME:
+                        reader.nextName();
+                        break;
+
+                    case BOOLEAN:
+                        reader.nextBoolean();
+                        break;
+
+                    case NUMBER:
+                        reader.nextDouble();
+                        break;
+
+                    case STRING:
+                        reader.nextString();
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            currentToken = mapToken(reader.peek());
+            consumed = false;
             return currentToken;
         } catch (IOException e) {
             throw new UncheckedIOException(e);
@@ -100,6 +122,8 @@ public final class GsonJsonReader extends JsonReader {
 
     @Override
     public byte[] getBinary() {
+        consumed = true;
+
         try {
             if (currentToken == JsonToken.NULL) {
                 reader.nextNull();
@@ -114,6 +138,8 @@ public final class GsonJsonReader extends JsonReader {
 
     @Override
     public boolean getBoolean() {
+        consumed = true;
+
         try {
             return reader.nextBoolean();
         } catch (IOException e) {
@@ -123,6 +149,8 @@ public final class GsonJsonReader extends JsonReader {
 
     @Override
     public double getDouble() {
+        consumed = true;
+
         try {
             return reader.nextDouble();
         } catch (IOException e) {
@@ -132,6 +160,8 @@ public final class GsonJsonReader extends JsonReader {
 
     @Override
     public float getFloat() {
+        consumed = true;
+
         try {
             return (float) reader.nextDouble();
         } catch (IOException e) {
@@ -141,6 +171,8 @@ public final class GsonJsonReader extends JsonReader {
 
     @Override
     public int getInt() {
+        consumed = true;
+
         try {
             return reader.nextInt();
         } catch (IOException e) {
@@ -150,6 +182,8 @@ public final class GsonJsonReader extends JsonReader {
 
     @Override
     public long getLong() {
+        consumed = true;
+
         try {
             return reader.nextLong();
         } catch (IOException e) {
@@ -159,6 +193,8 @@ public final class GsonJsonReader extends JsonReader {
 
     @Override
     public String getString() {
+        consumed = true;
+
         try {
             if (currentToken == JsonToken.NULL) {
                 return null;
@@ -172,6 +208,8 @@ public final class GsonJsonReader extends JsonReader {
 
     @Override
     public String getFieldName() {
+        consumed = true;
+
         try {
             return reader.nextName();
         } catch (IOException e) {
@@ -181,6 +219,8 @@ public final class GsonJsonReader extends JsonReader {
 
     @Override
     public void skipChildren() {
+        consumed = true;
+
         try {
             reader.skipValue();
         } catch (IOException e) {
@@ -190,57 +230,16 @@ public final class GsonJsonReader extends JsonReader {
 
     @Override
     public JsonReader bufferObject() {
-        StringBuilder bufferedObject = new StringBuilder();
-        if (isStartArrayOrObject()) {
-            // If the current token is the beginning of an array or object use JsonReader's readChildren method.
+        if (currentToken == JsonToken.START_OBJECT
+            || (currentToken == JsonToken.FIELD_NAME && nextToken() == JsonToken.START_OBJECT)) {
+            consumed = true;
+            StringBuilder bufferedObject = new StringBuilder();
             readChildren(bufferedObject);
-        } else if (currentToken() == JsonToken.FIELD_NAME) {
-            // Otherwise, we're in a complex case where the reading needs to be handled.
-
-            // Add a starting object token.
-            bufferedObject.append("{");
-
-            JsonToken token = currentToken();
-            boolean needsComa = false;
-            while (token != JsonToken.END_OBJECT) {
-                // Appending comas happens in the subsequent loop run to prevent the case of appending comas before
-                // the end of the object, ex {"fieldName":true,}
-                if (needsComa) {
-                    bufferedObject.append(",");
-                }
-
-                if (token == JsonToken.FIELD_NAME) {
-                    // Field names need to have quotes added and a trailing colon.
-                    bufferedObject.append("\"").append(getFieldName()).append("\":");
-
-                    // Comas shouldn't happen after a field name.
-                    needsComa = false;
-                } else {
-                    if (token == JsonToken.STRING) {
-                        // String fields need to have quotes added.
-                        bufferedObject.append("\"").append(getString()).append("\"");
-                    } else if (isStartArrayOrObject()) {
-                        // Structures use readChildren.
-                        readChildren(bufferedObject);
-                    } else {
-                        // All other value types use text value.
-                        bufferedObject.append(getText());
-                    }
-
-                    // Comas should happen after a field value.
-                    needsComa = true;
-                }
-
-                token = nextToken();
-            }
-
-            bufferedObject.append("}");
+            return GsonJsonReader.fromString(bufferedObject.toString());
         } else {
             throw new IllegalStateException("Cannot buffer a JSON object from a non-object, non-field name "
                 + "starting location. Starting location: " + currentToken());
         }
-
-        return DefaultJsonReader.fromString(bufferedObject.toString());
     }
 
     @Override
@@ -255,9 +254,9 @@ public final class GsonJsonReader extends JsonReader {
         }
 
         if (jsonBytes != null) {
-            return DefaultJsonReader.fromBytes(jsonBytes);
+            return GsonJsonReader.fromBytes(jsonBytes);
         } else {
-            return DefaultJsonReader.fromString(jsonString);
+            return GsonJsonReader.fromString(jsonString);
         }
     }
 

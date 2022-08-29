@@ -67,7 +67,7 @@ public class AzureApplicationCredentialTest {
 
         // mock
         try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateToIMDSEndpoint(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+            when(identityClient.authenticateWithManagedIdentityConfidentialClient(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
 
         }); MockedConstruction<IntelliJCredential> intelliCredentialMock = mockConstruction(IntelliJCredential.class, (intelliJCredential, context) -> {
             when(intelliJCredential.getToken(request)).thenReturn(Mono.empty());
@@ -91,7 +91,7 @@ public class AzureApplicationCredentialTest {
         Configuration configuration = new ConfigurationBuilder(source, source, source).build();
         // mock
         try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateToIMDSEndpoint(request))
+            when(identityClient.authenticateWithManagedIdentityConfidentialClient(request))
                 .thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from managed identity")));
         })) {
             // test

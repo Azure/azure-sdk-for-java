@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-04-01-preview&showStats=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-05-01&showStats=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.3 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "97d3b579-4519-42d4-b05c-29d78cb4a309",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.4 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "de4f3c57-40b5-4f73-9779-57a45982530d",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "753",
-      "x-envoy-upstream-service-time" : "19",
+      "x-envoy-upstream-service-time" : "17",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
       "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1,CognitiveServices.TextAnalytics.TextRecords=1",
-      "apim-request-id" : "02f401b0-89c5-427e-b3df-033844df33cd",
+      "apim-request-id" : "7e9c16ef-1d67-4394-8189-8764e9e338f5",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"kind\":\"SentimentAnalysisResults\",\"results\":{\"documents\":[{\"id\":\"0\",\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.01,\"neutral\":0.0,\"negative\":0.99},\"sentences\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.01,\"neutral\":0.0,\"negative\":0.99},\"offset\":0,\"length\":26,\"text\":\"año The hotel was unclean.\",\"targets\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.07,\"negative\":0.93},\"offset\":8,\"length\":5,\"text\":\"hotel\",\"relations\":[{\"relationType\":\"assessment\",\"ref\":\"#/documents/0/sentences/0/assessments/0\"}]}],\"assessments\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.07,\"negative\":0.93},\"offset\":18,\"length\":7,\"text\":\"unclean\",\"isNegated\":false}]}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-10-01\"}}",
-      "Date" : "Fri, 06 May 2022 17:49:45 GMT",
+      "Body" : "{\"kind\":\"SentimentAnalysisResults\",\"results\":{\"documents\":[{\"id\":\"0\",\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.01,\"neutral\":0.0,\"negative\":0.99},\"sentences\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.01,\"neutral\":0.0,\"negative\":0.99},\"offset\":0,\"length\":26,\"text\":\"año The hotel was unclean.\",\"targets\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.07,\"negative\":0.93},\"offset\":8,\"length\":5,\"text\":\"hotel\",\"relations\":[{\"relationType\":\"assessment\",\"ref\":\"#/documents/0/sentences/0/assessments/0\"}]}],\"assessments\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.07,\"negative\":0.93},\"offset\":18,\"length\":7,\"text\":\"unclean\",\"isNegated\":false}]}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-06-01\"}}",
+      "Date" : "Fri, 05 Aug 2022 20:39:30 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
