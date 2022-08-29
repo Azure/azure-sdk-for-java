@@ -297,46 +297,35 @@ public class AmqpMetricsProvider {
             case PAYMENT_REQUIRED:
                 return "payment_required";
             case METHOD_NOT_ALLOWED:
-                return "";
-
+                return "method_no_allowed";
             case NOT_ACCEPTABLE:
-                return "";
-
+                return "not_acceptable";
             case PROXY_AUTHENTICATION_REQUIRED:
-                return "";
-
+                return "proxy_authentication_required";
             case REQUEST_TIMEOUT:
-                return "";
-
+                return "request_timeout";
             case CONFLICT:
-                return "";
-
+                return "conflict";
             case GONE:
-                return "";
-
+                return "gone";
             case LENGTH_REQUIRED:
-                return "";
-
+                return "length_required";
             case PRECONDITION_FAILED:
-                return "";
-
+                return "precondition_failed";
             case REQUEST_ENTITY_TOO_LARGE:
-                return "";
-
+                return "request_entity_is_too_large";
             case REQUEST_URI_TOO_LONG:
-                return "";
-
+                return "request_uri_too_long";
             case UNSUPPORTED_MEDIA_TYPE:
-                return "";
-
+                return "unsupported_media_type";
             case REQUESTED_RANGE_NOT_SATISFIABLE:
-                return "";
+                return "requested_range_not_satisfiable";
             case EXPECTATION_FAILED:
                 return "expectation_failed";
             case UPGRADE_REQUIRED:
                 return "upgrade_required";
             case NOT_IMPLEMENTED:
-                return "";
+                return "no_implemented";
             case BAD_GATEWAY:
                 return "bad_gateway";
             case SERVICE_UNAVAILABLE:

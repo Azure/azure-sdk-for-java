@@ -51,6 +51,7 @@ public class ReactorHandlerProvider {
      * generated handlers.
      *
      * @param provider The provider that creates and manages {@link Reactor} instances.
+     * @param meter Instance of {@link Meter} to report metrics to.
      *
      * @throws NullPointerException If {@code provider} is {@code null}.
      */
