@@ -4,12 +4,14 @@
 package com.azure.resourcemanager.monitor;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorizationRule;
 import com.azure.resourcemanager.monitor.models.DiagnosticSetting;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.monitor.models.DiagnosticSettingsCategory;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -40,11 +42,13 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
     }
 
     @Test
-    public void canCRUDDiagnosticSettings() throws Exception {
+    public void canCRUDDiagnosticSettings() {
 
         // make sure there exists a VM
-
-        VirtualMachine vm = computeManager.virtualMachines().list().iterator().next();
+        Region region = Region.US_WEST;
+        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName).withRegion(region).create();
+        String vmName = generateRandomResourceName("jMonitorVm_", 18);
+        VirtualMachine vm = ensureVM(region, resourceGroup, vmName, "10.0.0.0/28");
 
         // clean all diagnostic settings.
         List<DiagnosticSetting> dsList = monitorManager.diagnosticSettings().listByResource(vm.id()).stream().collect(Collectors.toList());
