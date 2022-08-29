@@ -48,6 +48,7 @@ public class AadResourceServerConfiguration {
      * Use JwkKeySetUri to create JwtDecoder
      *
      * @param aadAuthenticationProperties the AAD properties
+     * @param aadAuthRestOperations the RestOperation used to connect Azure AD
      * @return Get the jwtDecoder instance.
      */
     @Bean

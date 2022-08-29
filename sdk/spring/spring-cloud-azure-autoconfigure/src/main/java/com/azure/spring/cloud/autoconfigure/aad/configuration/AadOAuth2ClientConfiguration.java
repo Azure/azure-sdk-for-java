@@ -89,6 +89,7 @@ public class AadOAuth2ClientConfiguration {
     /**
      * Declare OAuth2AuthorizedClientManager bean.
      *
+     * @param aadAuthRestOperations the RestOperation used to connect Azure AD
      * @param clientRegistrations the client registration repository
      * @param authorizedClients the OAuth2 authorized client repository
      * @param refreshTokenProvider the refresh token grant type provider
