@@ -92,7 +92,7 @@ public final class ConnectionPolicy {
         //  Default values
         this.endpointDiscoveryEnabled = true;
         this.multipleWriteRegionsEnabled = true;
-        this.readRequestsFallbackEnabled = ReadRequestsFallbackEnabled.True;
+        this.readRequestsFallbackEnabled = ReadRequestsFallbackEnabled.Default;
         this.actualConsistencyLevel = ConsistencyLevel.EVENTUAL;    // it would be better to have an undefined value here, but this is only used to determine if isReadRequestsFallbackEnabled()
         this.throttlingRetryOptions = new ThrottlingRetryOptions();
         this.userAgentSuffix = "";
