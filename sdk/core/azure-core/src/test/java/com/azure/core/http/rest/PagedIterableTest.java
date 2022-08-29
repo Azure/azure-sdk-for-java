@@ -575,7 +575,8 @@ public class PagedIterableTest {
         OnlyOnePagedIterable pagedIterable = new OnlyOnePagedIterable(() -> pageRetriever, null, null);
 
         // Validation that there is more than one paged in the full return.
-        pagedIterable.iterator().forEachRemaining(ignored -> {});
+        pagedIterable.iterator().forEachRemaining(ignored -> {
+        });
         assertEquals(DEFAULT_PAGE_COUNT, pageRetriever.getGetCount());
 
         Integer next = pagedIterable.iterator().next();
