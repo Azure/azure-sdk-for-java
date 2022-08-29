@@ -895,7 +895,6 @@ public final class ServiceBusClientBuilder implements
     public final class ServiceBusSenderClientBuilder {
         private String queueName;
         private String topicName;
-        private String identifier;
 
         private ServiceBusSenderClientBuilder() {
         }
@@ -921,17 +920,6 @@ public final class ServiceBusClientBuilder implements
          */
         public ServiceBusSenderClientBuilder topicName(String topicName) {
             this.topicName = topicName;
-            return this;
-        }
-
-        /**
-         * Sets the customized identifier for Service Bus sender client.
-         *
-         * @param identifier The identifier of the client.
-         * @return The modified {@link ServiceBusSenderClientBuilder} object.
-         */
-        public ServiceBusSenderClientBuilder identifier(String identifier) {
-            this.identifier = identifier;
             return this;
         }
 
@@ -967,14 +955,12 @@ public final class ServiceBusClientBuilder implements
                         new IllegalArgumentException("Unknown entity type: " + entityType));
             }
 
-            String clientIdentifier = this.identifier;
-            if (Objects.isNull(clientIdentifier) && clientOptions instanceof AmqpClientOptions) {
-                String clientOptionsIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
-                clientIdentifier = CoreUtils.isNullOrEmpty(clientOptionsIdentifier)
-                    ? UUID.randomUUID().toString() : clientOptionsIdentifier;
+            String clientIdentifier;
+            if (clientOptions instanceof AmqpClientOptions) {
+                String clientOptionIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
+                clientIdentifier = CoreUtils.isNullOrEmpty(clientOptionIdentifier) ? UUID.randomUUID().toString() : clientOptionIdentifier;
             } else {
-                clientIdentifier = CoreUtils.isNullOrEmpty(clientIdentifier)
-                    ? UUID.randomUUID().toString() : clientIdentifier;
+                clientIdentifier = UUID.randomUUID().toString();
             }
 
             return new ServiceBusSenderAsyncClient(entityName, entityType, connectionProcessor, retryOptions,
@@ -1237,17 +1223,6 @@ public final class ServiceBusClientBuilder implements
         }
 
         /**
-         * Sets the customized identifier for Service Bus session processor client.
-         *
-         * @param identifier The identifier of the client.
-         * @return The modified {@link ServiceBusSessionProcessorClientBuilder} object.
-         */
-        public ServiceBusSessionProcessorClientBuilder identifier(String identifier) {
-            this.sessionReceiverClientBuilder.identifier(identifier);
-            return this;
-        }
-
-        /**
          * Creates a <b>session-aware</b> Service Bus processor responsible for reading
          * {@link ServiceBusReceivedMessage messages} from a specific queue or subscription.
          *
@@ -1289,7 +1264,6 @@ public final class ServiceBusClientBuilder implements
         private String topicName;
         private Duration maxAutoLockRenewDuration = MAX_LOCK_RENEW_DEFAULT_DURATION;
         private SubQueue subQueue = SubQueue.NONE;
-        private String identifier;
 
         private ServiceBusSessionReceiverClientBuilder() {
         }
@@ -1429,17 +1403,6 @@ public final class ServiceBusClientBuilder implements
         }
 
         /**
-         * Sets the customized identifier for Service Bus session receiver client
-         *
-         * @param identifier The identifier of the client
-         * @return The modified {@link ServiceBusSessionReceiverClientBuilder} object.
-         */
-        public ServiceBusSessionReceiverClientBuilder identifier(String identifier) {
-            this.identifier = identifier;
-            return this;
-        }
-
-        /**
          * Creates an <b>asynchronous</b>, <b>session-aware</b> Service Bus receiver responsible for reading {@link
          * ServiceBusMessage messages} from a specific queue or subscription.
          *
@@ -1472,14 +1435,12 @@ public final class ServiceBusClientBuilder implements
                 maxAutoLockRenewDuration, enableAutoComplete, null,
                 maxConcurrentSessions);
 
-            String clientIdentifier = this.identifier;
-            if (Objects.isNull(clientIdentifier) && clientOptions instanceof AmqpClientOptions) {
-                String clientOptionsIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
-                clientIdentifier = CoreUtils.isNullOrEmpty(clientOptionsIdentifier)
-                    ? UUID.randomUUID().toString() : clientOptionsIdentifier;
+            String clientIdentifier;
+            if (clientOptions instanceof AmqpClientOptions) {
+                String clientOptionIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
+                clientIdentifier = CoreUtils.isNullOrEmpty(clientOptionIdentifier) ? UUID.randomUUID().toString() : clientOptionIdentifier;
             } else {
-                clientIdentifier = CoreUtils.isNullOrEmpty(clientIdentifier)
-                    ? UUID.randomUUID().toString() : clientIdentifier;
+                clientIdentifier = UUID.randomUUID().toString();
             }
 
             final ServiceBusSessionManager sessionManager = new ServiceBusSessionManager(entityPath, entityType,
@@ -1551,14 +1512,12 @@ public final class ServiceBusClientBuilder implements
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration, enableAutoComplete, null, maxConcurrentSessions);
 
-            String clientIdentifier = this.identifier;
-            if (Objects.isNull(clientIdentifier) && clientOptions instanceof AmqpClientOptions) {
-                String clientOptionsIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
-                clientIdentifier = CoreUtils.isNullOrEmpty(clientOptionsIdentifier)
-                    ? UUID.randomUUID().toString() : clientOptionsIdentifier;
+            String clientIdentifier;
+            if (clientOptions instanceof AmqpClientOptions) {
+                String clientOptionIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
+                clientIdentifier = CoreUtils.isNullOrEmpty(clientOptionIdentifier) ? UUID.randomUUID().toString() : clientOptionIdentifier;
             } else {
-                clientIdentifier = CoreUtils.isNullOrEmpty(clientIdentifier)
-                    ? UUID.randomUUID().toString() : clientIdentifier;
+                clientIdentifier = UUID.randomUUID().toString();
             }
 
             return new ServiceBusSessionReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(),
@@ -1707,17 +1666,6 @@ public final class ServiceBusClientBuilder implements
         }
 
         /**
-         * Sets the customized identifier for Service Bus processor client
-         *
-         * @param identifier The identifier of the client
-         * @return The modified {@link ServiceBusProcessorClientBuilder} object.
-         */
-        public ServiceBusProcessorClientBuilder identifier(String identifier) {
-            serviceBusReceiverClientBuilder.identifier(identifier);
-            return this;
-        }
-
-        /**
          * The message processing callback for the processor which will be executed when a message is received.
          * @param processMessage The message processing consumer that will be executed when a message is received.
          *
@@ -1828,7 +1776,6 @@ public final class ServiceBusClientBuilder implements
         private String subscriptionName;
         private String topicName;
         private Duration maxAutoLockRenewDuration = MAX_LOCK_RENEW_DEFAULT_DURATION;
-        private String identifier;
 
         private ServiceBusReceiverClientBuilder() {
         }
@@ -1948,17 +1895,6 @@ public final class ServiceBusClientBuilder implements
         }
 
         /**
-         * Sets the customized identifier for Service Bus receiver client
-         *
-         * @param identifier The identifier of the client
-         * @return The modified {@link ServiceBusReceiverClientBuilder} object.
-         */
-        public ServiceBusReceiverClientBuilder identifier(String identifier) {
-            this.identifier = identifier;
-            return this;
-        }
-
-        /**
          * Creates an <b>asynchronous</b> Service Bus receiver responsible for reading {@link ServiceBusMessage
          * messages} from a specific queue or subscription.
          *
@@ -2018,14 +1954,12 @@ public final class ServiceBusClientBuilder implements
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration, enableAutoComplete);
 
-            String clientIdentifier = this.identifier;
-            if (Objects.isNull(clientIdentifier) && clientOptions instanceof AmqpClientOptions) {
-                String clientOptionsIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
-                clientIdentifier = CoreUtils.isNullOrEmpty(clientOptionsIdentifier)
-                    ? UUID.randomUUID().toString() : clientOptionsIdentifier;
+            String clientIdentifier;
+            if (clientOptions instanceof AmqpClientOptions) {
+                String clientOptionIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
+                clientIdentifier = CoreUtils.isNullOrEmpty(clientOptionIdentifier) ? UUID.randomUUID().toString() : clientOptionIdentifier;
             } else {
-                clientIdentifier = CoreUtils.isNullOrEmpty(clientIdentifier)
-                    ? UUID.randomUUID().toString() : clientIdentifier;
+                clientIdentifier = UUID.randomUUID().toString();
             }
 
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
