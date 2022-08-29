@@ -3,11 +3,18 @@
 ## 1.0.0-beta.4 (Unreleased)
 
 ### Features Added
-- Added filter to DeviceManagementOperations.listDeviceClasses method
+- Added filter to listDeviceClasses device management method
 - Updated description for some methods to be more descriptive and less ambiguous
 
+### Breaking Changes
+- Removed filter from listBestUpdatesForGroup device management method
+
 ### Other Changes
-- Removed filter from DeviceManagementOperations.listBestUpdatesForGroup method
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.30.0` to version `1.31.0`.
+- Upgraded `azure-core-http-netty` from `1.12.3` to version `1.12.4`.
 
 ## 1.0.0-beta.3 (2022-07-12)
 
