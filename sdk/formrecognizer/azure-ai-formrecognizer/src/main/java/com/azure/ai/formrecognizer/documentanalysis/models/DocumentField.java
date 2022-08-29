@@ -120,7 +120,7 @@ public final class DocumentField {
      *
      * @param type the type value to set.
      */
-    void setType(DocumentFieldType type) {
+    private void setType(DocumentFieldType type) {
         this.type = type;
     }
 
@@ -138,7 +138,7 @@ public final class DocumentField {
      *
      * @param valueString the valueString value to set.
      */
-    void setValueString(String valueString) {
+    private void setValueString(String valueString) {
         this.valueString = valueString;
     }
 
@@ -156,7 +156,7 @@ public final class DocumentField {
      *
      * @param valueDate the valueDate value to set.
      */
-    void setValueDate(LocalDate valueDate) {
+    private void setValueDate(LocalDate valueDate) {
         this.valueDate = valueDate;
     }
 
@@ -174,7 +174,7 @@ public final class DocumentField {
      *
      * @param valueTime the valueTime value to set.
      */
-    void setValueTime(LocalTime valueTime) {
+    private void setValueTime(LocalTime valueTime) {
         this.valueTime = valueTime;
     }
 
@@ -192,7 +192,7 @@ public final class DocumentField {
      *
      * @param valuePhoneNumber the valuePhoneNumber value to set.
      */
-    void setValuePhoneNumber(String valuePhoneNumber) {
+    private void setValuePhoneNumber(String valuePhoneNumber) {
         this.valuePhoneNumber = valuePhoneNumber;
     }
 
@@ -210,7 +210,7 @@ public final class DocumentField {
      *
      * @param valueFloat the valueFloat value to set.
      */
-    void setValueFloat(Float valueFloat) {
+    private void setValueFloat(Float valueFloat) {
         this.valueFloat = valueFloat;
     }
 
@@ -228,7 +228,7 @@ public final class DocumentField {
      *
      * @param valueInteger the valueInteger value to set.
      */
-    void setValueInteger(Long valueInteger) {
+    private void setValueInteger(Long valueInteger) {
         this.valueInteger = valueInteger;
     }
 
@@ -246,7 +246,7 @@ public final class DocumentField {
      *
      * @param valueSelectionMark the valueSelectionMark value to set.
      */
-    void setValueSelectionMark(SelectionMarkState valueSelectionMark) {
+    private void setValueSelectionMark(SelectionMarkState valueSelectionMark) {
         this.valueSelectionMark = valueSelectionMark;
     }
 
@@ -264,7 +264,7 @@ public final class DocumentField {
      *
      * @param valueSignature the valueSignature value to set.
      */
-    void setValueSignature(DocumentSignatureType valueSignature) {
+    private void setValueSignature(DocumentSignatureType valueSignature) {
         this.valueSignature = valueSignature;
     }
 
@@ -282,7 +282,7 @@ public final class DocumentField {
      *
      * @param valueCountry the valueCountryRegion value to set.
      */
-    void setValueCountry(String valueCountry) {
+    private void setValueCountry(String valueCountry) {
         this.valueCountry = valueCountry;
     }
 
@@ -307,7 +307,7 @@ public final class DocumentField {
      * @param valueList the valueList value to set.
      * @return the DocumentField object itself.
      */
-    void setValueList(List<DocumentField> valueList) {
+    private void setValueList(List<DocumentField> valueList) {
         this.valueList = valueList;
     }
 
@@ -326,7 +326,7 @@ public final class DocumentField {
      * @param valueMap the valueMap value to set.
      * @return the DocumentField object itself.
      */
-    void setValueMap(Map<String, DocumentField> valueMap) {
+    private void setValueMap(Map<String, DocumentField> valueMap) {
         this.valueMap = valueMap;
     }
 
@@ -344,7 +344,7 @@ public final class DocumentField {
      *
      * @param valueCurrency the valueCurrency value to set.
      */
-    void setValueCurrency(CurrencyValue valueCurrency) {
+    private void setValueCurrency(CurrencyValue valueCurrency) {
         this.valueCurrency = valueCurrency;
     }
 
@@ -362,7 +362,7 @@ public final class DocumentField {
      *
      * @param valueAddress the valueAddress value to set.
      */
-    void setValueAddress(AddressValue valueAddress) {
+    private void setValueAddress(AddressValue valueAddress) {
         this.valueAddress = valueAddress;
     }
 
@@ -380,7 +380,7 @@ public final class DocumentField {
      *
      * @param content the content value to set.
      */
-    void setContent(String content) {
+    private void setContent(String content) {
         this.content = content;
     }
 
@@ -398,7 +398,7 @@ public final class DocumentField {
      *
      * @param boundingRegions the boundingRegions value to set.
      */
-    void setBoundingRegions(List<BoundingRegion> boundingRegions) {
+    private void setBoundingRegions(List<BoundingRegion> boundingRegions) {
         this.boundingRegions = boundingRegions;
     }
 
@@ -416,7 +416,7 @@ public final class DocumentField {
      *
      * @param spans the spans value to set.
      */
-    void setSpans(List<DocumentSpan> spans) {
+    private void setSpans(List<DocumentSpan> spans) {
         this.spans = spans;
     }
 
@@ -434,7 +434,7 @@ public final class DocumentField {
      *
      * @param confidence the confidence value to set.
      */
-    void setConfidence(Float confidence) {
+    private void setConfidence(Float confidence) {
         this.confidence = confidence;
     }
 

@@ -17,7 +17,6 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.Resour
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelBuildOperationDetails;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelComposeOperationDetails;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelCopyToOperationDetails;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.models.Error;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationDetails;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationSummary;
@@ -136,22 +135,11 @@ public class Transforms {
                                 toPolygonPoints(innerDocumentLine.getPolygon()));
                             DocumentLineHelper.setContent(documentLine, innerDocumentLine.getContent());
                             DocumentLineHelper.setSpans(documentLine, toDocumentSpans(innerDocumentLine.getSpans()));
+                            DocumentLineHelper.setPageWords(documentLine, toDocumentWords(innerDocumentPage));
                             return documentLine;
                         })
                         .collect(Collectors.toList()));
-                DocumentPageHelper.setWords(documentPage,
-                    innerDocumentPage.getWords() == null ? null : innerDocumentPage.getWords()
-                        .stream()
-                        .map(innerDocumentWord -> {
-                            DocumentWord documentWord = new DocumentWord();
-                            DocumentWordHelper.setBoundingPolygon(documentWord,
-                                toPolygonPoints(innerDocumentWord.getPolygon()));
-                            DocumentWordHelper.setConfidence(documentWord, innerDocumentWord.getConfidence());
-                            DocumentWordHelper.setSpan(documentWord, getDocumentSpan(innerDocumentWord.getSpan()));
-                            DocumentWordHelper.setContent(documentWord, innerDocumentWord.getContent());
-                            return documentWord;
-                        })
-                        .collect(Collectors.toList()));
+                DocumentPageHelper.setWords(documentPage, toDocumentWords(innerDocumentPage));
                 return documentPage;
             })
             .collect(Collectors.toList()));
@@ -265,7 +253,7 @@ public class Transforms {
         return throwable;
     }
 
-    public static HttpResponseException mapResponseErrorToHttpResponseException(Error error) {
+    public static HttpResponseException mapResponseErrorToHttpResponseException(com.azure.ai.formrecognizer.documentanalysis.implementation.models.Error error) {
         return new HttpResponseException(
             error.getMessage(),
             null,
@@ -665,5 +653,21 @@ public class Transforms {
                 .append(": ").append(innerError.getMessage());
         }
         return new ResponseError(error.getCode(), errorInformationStringBuilder.toString());
+    }
+
+    private static List<DocumentWord> toDocumentWords(
+        com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentPage innerDocumentPage) {
+        return innerDocumentPage.getWords() == null ? null : innerDocumentPage.getWords()
+            .stream()
+            .map(innerDocumentWord -> {
+                DocumentWord documentWord = new DocumentWord();
+                DocumentWordHelper.setBoundingPolygon(documentWord,
+                    toPolygonPoints(innerDocumentWord.getPolygon()));
+                DocumentWordHelper.setConfidence(documentWord, innerDocumentWord.getConfidence());
+                DocumentWordHelper.setSpan(documentWord, getDocumentSpan(innerDocumentWord.getSpan()));
+                DocumentWordHelper.setContent(documentWord, innerDocumentWord.getContent());
+                return documentWord;
+            })
+            .collect(Collectors.toList());
     }
 }

@@ -3,8 +3,8 @@
 
 package com.azure.ai.formrecognizer.documentanalysis;
 
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentOperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AnalyzeResultOperation;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeDocumentOptions;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
@@ -80,7 +80,7 @@ public final class DocumentAnalysisClient {
      * @return A {@link SyncPoller} to poll the progress of the analyze document operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
      * @throws HttpResponseException If analyze operation fails and the {@link AnalyzeResultOperation} returns
-     * with an {@link OperationStatus#FAILED}..
+     * with an {@link DocumentOperationStatus#FAILED}..
      * @throws IllegalArgumentException If {@code documentUrl} or {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -124,7 +124,7 @@ public final class DocumentAnalysisClient {
      * @return A {@link SyncPoller} to poll the progress of the analyze document operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
      * @throws HttpResponseException If analyze operation fails and the {@link AnalyzeResultOperation} returns
-     * with an {@link OperationStatus#FAILED}.
+     * with an {@link DocumentOperationStatus#FAILED}.
      * @throws IllegalArgumentException If {@code documentUrl} or {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -169,7 +169,7 @@ public final class DocumentAnalysisClient {
      * @return A {@link SyncPoller} that polls the of progress of analyze document operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
      * @throws HttpResponseException If analyze operation fails and the {@link AnalyzeResultOperation}returns
-     * with an {@link OperationStatus#FAILED}.
+     * with an {@link DocumentOperationStatus#FAILED}.
      * @throws IllegalArgumentException If {@code document} or {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -216,7 +216,7 @@ public final class DocumentAnalysisClient {
      * @return A {@link SyncPoller} that polls the of progress of analyze document operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
      * @throws HttpResponseException If analyze operation fails and the {@link AnalyzeResultOperation} returns
-     * with an {@link OperationStatus#FAILED}.
+     * with an {@link DocumentOperationStatus#FAILED}.
      * @throws IllegalArgumentException If {@code document} or {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)

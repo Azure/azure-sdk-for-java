@@ -84,7 +84,11 @@ public final class KnownSyslogDataSourceFacilityNames extends ExpandableStringEn
         return fromString(name, KnownSyslogDataSourceFacilityNames.class);
     }
 
-    /** @return known KnownSyslogDataSourceFacilityNames values. */
+    /**
+     * Gets known KnownSyslogDataSourceFacilityNames values.
+     *
+     * @return known KnownSyslogDataSourceFacilityNames values.
+     */
     public static Collection<KnownSyslogDataSourceFacilityNames> values() {
         return values(KnownSyslogDataSourceFacilityNames.class);
     }
