@@ -165,6 +165,11 @@ public final class AzureFileSystem extends FileSystem {
 
     AzureFileSystem(AzureFileSystemProvider parentFileSystemProvider, String endpoint, Map<String, ?> config)
             throws IOException {
+        this(parentFileSystemProvider, endpoint, new AzureFileSystemConfig(config));
+    }
+
+    AzureFileSystem(AzureFileSystemProvider parentFileSystemProvider, String endpoint, AzureFileSystemConfig config)
+            throws IOException {
         // A FileSystem should only ever be instantiated by a provider.
         if (Objects.isNull(parentFileSystemProvider)) {
             throw LoggingUtility.logError(LOGGER, new IllegalArgumentException("AzureFileSystem cannot be instantiated"
@@ -175,10 +180,10 @@ public final class AzureFileSystem extends FileSystem {
         // Read configurations and build client.
         try {
             this.blobServiceClient = this.buildBlobServiceClient(endpoint, config);
-            this.blockSize = (Long) config.get(AZURE_STORAGE_UPLOAD_BLOCK_SIZE);
-            this.putBlobThreshold = (Long) config.get(AZURE_STORAGE_PUT_BLOB_THRESHOLD);
-            this.maxConcurrencyPerRequest = (Integer) config.get(AZURE_STORAGE_MAX_CONCURRENCY_PER_REQUEST);
-            this.downloadResumeRetries = (Integer) config.get(AZURE_STORAGE_DOWNLOAD_RESUME_RETRIES);
+            this.blockSize = config.blockSize;
+            this.putBlobThreshold = config.putBlobThreshold;
+            this.maxConcurrencyPerRequest = config.maxConcurrencyPerRequest;
+            this.downloadResumeRetries = config.downloadResumeRetries;
 
             // Initialize and ensure access to FileStores.
             this.fileStores = this.initializeFileStores(config);
@@ -388,15 +393,15 @@ public final class AzureFileSystem extends FileSystem {
         return this.blobServiceClient;
     }
 
-    private BlobServiceClient buildBlobServiceClient(String endpoint, Map<String, ?> config) {
+    private BlobServiceClient buildBlobServiceClient(String endpoint, AzureFileSystemConfig config) {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
                 .endpoint(endpoint);
 
         // Set the credentials.
-        if (config.containsKey(AZURE_STORAGE_SHARED_KEY_CREDENTIAL)) {
-            builder.credential((StorageSharedKeyCredential) config.get(AZURE_STORAGE_SHARED_KEY_CREDENTIAL));
-        } else if (config.containsKey(AZURE_STORAGE_SAS_TOKEN_CREDENTIAL)) {
-            builder.credential((AzureSasCredential) config.get(AZURE_STORAGE_SAS_TOKEN_CREDENTIAL));
+        if (config.sharedKeyCredential != null) {
+            builder.credential(config.sharedKeyCredential);
+        } else if (config.sasCredential != null) {
+            builder.credential(config.sasCredential);
         } else {
             throw LoggingUtility.logError(LOGGER, new IllegalArgumentException(String.format("No credentials were "
                     + "provided. Please specify one of the following when constructing an AzureFileSystem: %s, %s.",
@@ -404,43 +409,29 @@ public final class AzureFileSystem extends FileSystem {
         }
 
         // Configure options and client.
-        builder.httpLogOptions(BlobServiceClientBuilder.getDefaultHttpLogOptions()
-            .setLogLevel((HttpLogDetailLevel) config.get(AZURE_STORAGE_HTTP_LOG_DETAIL_LEVEL)));
-
-        RequestRetryOptions retryOptions = new RequestRetryOptions(
-            (RetryPolicyType) config.get(AZURE_STORAGE_RETRY_POLICY_TYPE),
-            (Integer) config.get(AZURE_STORAGE_MAX_TRIES),
-            (Integer) config.get(AZURE_STORAGE_TRY_TIMEOUT),
-            (Long) config.get(AZURE_STORAGE_RETRY_DELAY_IN_MS),
-            (Long) config.get(AZURE_STORAGE_MAX_RETRY_DELAY_IN_MS),
-            (String) config.get(AZURE_STORAGE_SECONDARY_HOST));
-        builder.retryOptions(retryOptions);
-
-        builder.httpClient((HttpClient) config.get(AZURE_STORAGE_HTTP_CLIENT));
+        builder.httpLogOptions(config.getLogOptions());
+        builder.retryOptions(config.getRetryOptions());
+        builder.httpClient(config.httpClient);
 
         // Add BlobUserAgentModificationPolicy
         builder.addPolicy(new BlobUserAgentModificationPolicy(CLIENT_NAME, CLIENT_VERSION));
 
-        if (config.containsKey(AZURE_STORAGE_HTTP_POLICIES)) {
-            for (HttpPipelinePolicy policy : (HttpPipelinePolicy[]) config.get(AZURE_STORAGE_HTTP_POLICIES)) {
-                builder.addPolicy(policy);
-            }
+        for (HttpPipelinePolicy policy : config.policyList) {
+            builder.addPolicy(policy);
         }
 
         return builder.buildClient();
     }
 
-    private Map<String, FileStore> initializeFileStores(Map<String, ?> config) throws IOException {
-        String fileStoreNames = (String) config.get(AZURE_STORAGE_FILE_STORES);
-        if (CoreUtils.isNullOrEmpty(fileStoreNames)) {
+    private Map<String, FileStore> initializeFileStores(AzureFileSystemConfig config) throws IOException {
+        if (config.fileStoreNames.isEmpty()) {
             throw LoggingUtility.logError(LOGGER, new IllegalArgumentException("The list of FileStores cannot be "
                 + "null."));
         }
 
-        Boolean skipConnectionCheck = (Boolean) config.get(AZURE_STORAGE_SKIP_INITIAL_CONTAINER_CHECK);
         Map<String, FileStore> fileStores = new HashMap<>();
-        for (String fileStoreName : fileStoreNames.split(",")) {
-            FileStore fs = new AzureFileStore(this, fileStoreName, skipConnectionCheck);
+        for (String fileStoreName : config.fileStoreNames) {
+            FileStore fs = new AzureFileStore(this, fileStoreName, config.skipInitialContainerCheck);
             if (this.defaultFileStore == null) {
                 this.defaultFileStore = fs;
             }

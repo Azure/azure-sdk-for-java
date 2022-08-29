@@ -11,6 +11,7 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.common.implementation.Constants;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -184,7 +185,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
     private final ConcurrentMap<String, FileSystem> openFileSystems;
 
-    static final Map<String, ?> defaultConfigurations = readEnvironmentConfiguration();
+    static final AzureFileSystemConfig defaultConfigurations = readEnvironmentConfiguration();
     static final String defaultEndpoint = readEnvironmentEndpoint();
 
     /**
@@ -231,14 +232,14 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     @Override
     public FileSystem newFileSystem(URI uri, Map<String, ?> config) throws IOException {
         String endpoint = extractAccountEndpointOrGetDefault(uri);
-        config = config != null ? config : defaultConfigurations;
+        AzureFileSystemConfig azureConfig = config != null ? new AzureFileSystemConfig(config) : defaultConfigurations;
 
         if (this.openFileSystems.containsKey(endpoint)) {
             throw LoggingUtility.logError(ClientLoggerHolder.LOGGER,
                 new FileSystemAlreadyExistsException("Name: " + endpoint));
         }
 
-        AzureFileSystem afs = new AzureFileSystem(this, endpoint, config);
+        AzureFileSystem afs = new AzureFileSystem(this, endpoint, azureConfig);
         this.openFileSystems.put(endpoint, afs);
 
         return afs;
@@ -1201,15 +1202,21 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         return endpoint;
     }
 
-    static Map<String, ?> readEnvironmentConfiguration() {
-        return null; // not implemented
+    static AzureFileSystemConfig readEnvironmentConfiguration() {
+        return null;
+//        com.azure.core.util.Configuration config = com.azure.core.util.Configuration.getGlobalConfiguration();
+//        return new AzureFileSystemConfig(config);
     }
 
     static String readEnvironmentEndpoint() {
-        return null; // not implemented
+        return null;
+//        return com.azure.core.util.Configuration.getGlobalConfiguration().get(
+//            Constants.NioConstants.ENVIRONMENT_DEFAULT_BLOB_ENDPOINT);
     }
 
     static boolean readEnvironmentAutoCreateFileSystems() {
-        return false; // not implemented
+        return false;
+//        return Boolean.parseBoolean(com.azure.core.util.Configuration.getGlobalConfiguration().get(
+//            Constants.NioConstants.ENVIRONMENT_AUTO_CREATE_FILESYSTEM));
     }
 }

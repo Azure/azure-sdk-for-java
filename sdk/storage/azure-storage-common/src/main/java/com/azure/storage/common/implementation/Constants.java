@@ -421,4 +421,15 @@ public final class Constants {
             // Private to prevent construction.
         }
     }
+
+    /**
+     * Defines constants for use with NIO plugin.
+     *
+     * RESERVED FOR INTERNAL USE.
+     */
+    public static final class NioConstants {
+        public static final String ENVIRONMENT_DEFAULT_BLOB_ENDPOINT = "AZURE_STORAGE_NIO_DEFAULT_BLOB_ENDPOINT";
+
+        public static final String ENVIRONMENT_AUTO_CREATE_FILESYSTEM = "AZURE_STORAGE_NIO_AUTO_CREATE_FILESYSTEMS";
+    }
 }
