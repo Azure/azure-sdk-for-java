@@ -4,9 +4,8 @@
 package com.azure.core.http.rest;
 
 import com.azure.core.util.IterableStream;
-import com.azure.core.util.paging.SyncPageRetriever;
+import com.azure.core.util.paging.PageRetrieverSync;
 
-import java.util.Collections;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -150,8 +149,8 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
         Function<String, PagedResponse<T>> nextPageRetriever) {
         this(() -> (continuationToken, pageSize) ->
             continuationToken == null
-                 ? toIterable(firstPageRetriever.get())
-                 : toIterable(nextPageRetriever.apply(continuationToken)), true);
+                 ? firstPageRetriever.get()
+                 : nextPageRetriever.apply(continuationToken), true);
     }
 
     /**
@@ -175,8 +174,8 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
     public PagedIterable(Function<Integer, PagedResponse<T>> firstPageRetriever,
         BiFunction<String, Integer, PagedResponse<T>> nextPageRetriever) {
         this(() -> (continuationToken, pageSize) -> continuationToken == null
-             ? toIterable(firstPageRetriever.apply(pageSize))
-             : toIterable(nextPageRetriever.apply(continuationToken, pageSize)), true);
+             ? firstPageRetriever.apply(pageSize)
+             : nextPageRetriever.apply(continuationToken, pageSize), true);
     }
 
     /**
@@ -197,15 +196,8 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
      * @param provider the Page Retrieval Provider
      * @param ignored param is ignored, exists in signature only to avoid conflict with first ctr
      */
-    private PagedIterable(Supplier<SyncPageRetriever<String, PagedResponse<T>>> provider, boolean ignored) {
+    private PagedIterable(Supplier<PageRetrieverSync<String, PagedResponse<T>>> provider, boolean ignored) {
         super(provider);
         this.pagedFlux = null;
-    }
-
-    private static <T> IterableStream<PagedResponse<T>> toIterable(PagedResponse<T> pagedResponse) {
-        if (pagedResponse == null) {
-            return IterableStream.of(null);
-        }
-        return IterableStream.of(Collections.singletonList(pagedResponse));
     }
 }

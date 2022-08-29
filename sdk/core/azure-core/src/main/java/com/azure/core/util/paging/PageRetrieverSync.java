@@ -3,25 +3,23 @@
 
 package com.azure.core.util.paging;
 
-import com.azure.core.util.IterableStream;
-
 /**
- * This class handles retrieving pages.
+ * This class handles retrieving page synchronously.
  *
  * @param <C> Type of the continuation token.
  * @param <P> the page elements type
  */
 @FunctionalInterface
-public interface SyncPageRetriever<C, P> {
+public interface PageRetrieverSync<C, P> {
 
     /**
-     * Retrieves one or more pages starting from the page identified by the given continuation token.
+     * Retrieves one starting from the page identified by the given continuation token.
      *
      * @param continuationToken Token identifying which page to retrieve, passing {@code null} indicates to retrieve
      * the first page.
      * @param pageSize The number of items to retrieve per page, passing {@code null} will use the source's default
      * page size.
-     * @return A {@link IterableStream} that emits one or more pages.
+     * @return A page of elements type <P>.
      */
-    IterableStream<P> getIterable(C continuationToken, Integer pageSize);
+    P getPage(C continuationToken, Integer pageSize);
 }
