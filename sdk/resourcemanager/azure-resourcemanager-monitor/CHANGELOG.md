@@ -5,7 +5,6 @@
 ### Breaking Changes
 
 - Removed unused classes.
-- Changed type of `CategoryType` from enum to class.
 - `enableReceiver` in `ActionGroups` will throw an exception if the receiver is already enabled.
 
 ### Other Changes

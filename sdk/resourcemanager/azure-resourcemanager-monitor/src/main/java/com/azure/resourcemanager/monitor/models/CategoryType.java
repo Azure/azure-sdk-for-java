@@ -4,35 +4,48 @@
 
 package com.azure.resourcemanager.monitor.models;
 
-import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import java.util.Collection;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 /** The type of the diagnostic settings category. */
-public final class CategoryType extends ExpandableStringEnum<CategoryType> {
-    /** Static value Metrics for CategoryType. */
-    public static final CategoryType METRICS = fromString("Metrics");
+public enum CategoryType {
+    /** Enum value Metrics. */
+    METRICS("Metrics"),
 
-    /** Static value Logs for CategoryType. */
-    public static final CategoryType LOGS = fromString("Logs");
+    /** Enum value Logs. */
+    LOGS("Logs");
 
-    /**
-     * Creates or finds a CategoryType from its string representation.
-     *
-     * @param name a name to look for.
-     * @return the corresponding CategoryType.
-     */
-    @JsonCreator
-    public static CategoryType fromString(String name) {
-        return fromString(name, CategoryType.class);
+    /** The actual serialized value for a CategoryType instance. */
+    private final String value;
+
+    CategoryType(String value) {
+        this.value = value;
     }
 
     /**
-     * Gets known CategoryType values.
+     * Parses a serialized value to a CategoryType instance.
      *
-     * @return known CategoryType values.
+     * @param value the serialized value to parse.
+     * @return the parsed CategoryType object, or null if unable to parse.
      */
-    public static Collection<CategoryType> values() {
-        return values(CategoryType.class);
+    @JsonCreator
+    public static CategoryType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
+        CategoryType[] items = CategoryType.values();
+        for (CategoryType item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    /** {@inheritDoc} */
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.value;
     }
 }
