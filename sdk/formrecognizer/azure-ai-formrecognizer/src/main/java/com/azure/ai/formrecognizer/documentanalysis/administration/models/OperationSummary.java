@@ -3,15 +3,15 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.administration.models;
 
-import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentModelOperationSummaryHelper;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.util.OperationSummaryHelper;
 import com.azure.core.annotation.Immutable;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** DocumentModelOperationSummary. */
+/** OperationSummary. */
 @Immutable
-public class DocumentModelOperationSummary {
+public class OperationSummary {
     /*
      * Operation ID
      */
@@ -20,7 +20,7 @@ public class DocumentModelOperationSummary {
     /*
      * Operation status.
      */
-    private DocumentOperationStatus status;
+    private OperationStatus status;
 
     /*
      * Operation progress (0-100).
@@ -40,7 +40,7 @@ public class DocumentModelOperationSummary {
     /*
      * Type of operation.
      */
-    private DocumentOperationKind kind;
+    private OperationKind kind;
 
     /*
      * URL of the resource targeted by this operation.
@@ -71,7 +71,7 @@ public class DocumentModelOperationSummary {
      *
      * @return the status value.
      */
-    public DocumentOperationStatus getStatus() {
+    public OperationStatus getStatus() {
         return this.status;
     }
 
@@ -80,7 +80,7 @@ public class DocumentModelOperationSummary {
      *
      * @param status the status value to set.
      */
-    private void setStatus(DocumentOperationStatus status) {
+    private void setStatus(OperationStatus status) {
         this.status = status;
     }
 
@@ -143,7 +143,7 @@ public class DocumentModelOperationSummary {
      *
      * @return the kind value.
      */
-    public DocumentOperationKind getKind() {
+    public OperationKind getKind() {
         return this.kind;
     }
 
@@ -152,7 +152,7 @@ public class DocumentModelOperationSummary {
      *
      * @param kind the kind value to set.
      */
-    private void setKind(DocumentOperationKind kind) {
+    private void setKind(OperationKind kind) {
         this.kind = kind;
     }
 
@@ -193,45 +193,45 @@ public class DocumentModelOperationSummary {
     }
 
     static {
-        DocumentModelOperationSummaryHelper.setAccessor(new DocumentModelOperationSummaryHelper.DocumentModelOperationSummaryAccessor() {
+        OperationSummaryHelper.setAccessor(new OperationSummaryHelper.OperationSummaryAccessor() {
             @Override
-            public void setOperationId(DocumentModelOperationSummary documentModelOperationSummary, String operationId) {
-                documentModelOperationSummary.setOperationId(operationId);
+            public void setOperationId(OperationSummary operationSummary, String operationId) {
+                operationSummary.setOperationId(operationId);
             }
 
             @Override
-            public void setStatus(DocumentModelOperationSummary documentModelOperationSummary, DocumentOperationStatus status) {
-                documentModelOperationSummary.setStatus(status);
+            public void setStatus(OperationSummary operationSummary, OperationStatus status) {
+                operationSummary.setStatus(status);
             }
 
             @Override
-            public void setPercentCompleted(DocumentModelOperationSummary documentModelOperationSummary, Integer percentCompleted) {
-                documentModelOperationSummary.setPercentCompleted(percentCompleted);
+            public void setPercentCompleted(OperationSummary operationSummary, Integer percentCompleted) {
+                operationSummary.setPercentCompleted(percentCompleted);
             }
 
             @Override
-            public void setCreatedOn(DocumentModelOperationSummary documentModelOperationSummary, OffsetDateTime createdOn) {
-                documentModelOperationSummary.setCreatedOn(createdOn);
+            public void setCreatedOn(OperationSummary operationSummary, OffsetDateTime createdOn) {
+                operationSummary.setCreatedOn(createdOn);
             }
 
             @Override
-            public void setLastUpdatedOn(DocumentModelOperationSummary documentModelOperationSummary, OffsetDateTime lastUpdatedOn) {
-                documentModelOperationSummary.setLastUpdatedOn(lastUpdatedOn);
+            public void setLastUpdatedOn(OperationSummary operationSummary, OffsetDateTime lastUpdatedOn) {
+                operationSummary.setLastUpdatedOn(lastUpdatedOn);
             }
 
             @Override
-            public void setKind(DocumentModelOperationSummary documentModelOperationSummary, DocumentOperationKind kind) {
-                documentModelOperationSummary.setKind(kind);
+            public void setKind(OperationSummary operationSummary, OperationKind kind) {
+                operationSummary.setKind(kind);
             }
 
             @Override
-            public void setResourceLocation(DocumentModelOperationSummary documentModelOperationSummary, String resourceLocation) {
-                documentModelOperationSummary.setResourceLocation(resourceLocation);
+            public void setResourceLocation(OperationSummary operationSummary, String resourceLocation) {
+                operationSummary.setResourceLocation(resourceLocation);
             }
 
             @Override
-            public void setTags(DocumentModelOperationSummary documentModelOperationSummary, Map<String, String> tags) {
-                documentModelOperationSummary.setTags(tags);
+            public void setTags(OperationSummary operationSummary, Map<String, String> tags) {
+                operationSummary.setTags(tags);
             }
         });
     }
