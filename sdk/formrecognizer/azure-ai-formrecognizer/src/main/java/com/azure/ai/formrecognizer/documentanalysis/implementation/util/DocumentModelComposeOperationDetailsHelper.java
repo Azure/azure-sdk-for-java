@@ -5,7 +5,6 @@ package com.azure.ai.formrecognizer.documentanalysis.implementation.util;
 
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelComposeOperationDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
-import com.azure.ai.formrecognizer.documentanalysis.models.AddressValue;
 
 /**
  * The helper class to set the non-public properties of an {@link DocumentModelComposeOperationDetails} instance.
