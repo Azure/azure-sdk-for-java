@@ -8,6 +8,7 @@ import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsPro
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
+import jakarta.jms.ConnectionFactory;
 import org.apache.qpid.jms.JmsConnectionExtensions;
 import org.apache.qpid.jms.JmsConnectionFactory;
 import org.springframework.beans.factory.ObjectProvider;
@@ -27,7 +28,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.jms.core.JmsTemplate;
 
-import javax.jms.ConnectionFactory;
 import java.util.HashMap;
 import java.util.Map;
 

@@ -7,12 +7,12 @@ import com.azure.spring.cloud.autoconfigure.aad.implementation.TestJwks;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.KeyType;
 import com.nimbusds.jose.jwk.RSAKey;
+import jakarta.xml.bind.DatatypeConverter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 
-import javax.xml.bind.DatatypeConverter;
 import java.util.function.Function;
 
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.TestClientRegistrations.clientRegistration;

@@ -52,6 +52,18 @@ client_from_source_pom_path = os.path.join(root_path, 'ClientFromSourcePom.xml')
 
 sdk_string = "/sdk/"
 
+# Exclude artifacts list when build from source.These artifacts may be not compatible with current dependencies.
+exclude_artifacts_list = [
+    'azure-spring-cloud-appconfiguration-config',
+    'azure-spring-cloud-appconfiguration-config-web',
+    'azure-spring-cloud-feature-management-web',
+    'azure-spring-cloud-starter-appconfiguration-config',
+    'azure-spring-cloud-test-appconfiguration-config',
+    'azure-spring-data-cosmos',
+    'azure-spring-data-cosmos-test',
+    'spring-cloud-azure-starter-data-cosmos'
+]
+
 # Function that creates the aggregate POM.
 def create_from_source_pom(project_list: str, set_skip_linting_projects: str, match_any_version: bool):
     project_list_identifiers = project_list.split(',')
@@ -195,9 +207,14 @@ def create_projects(project_list_identifiers: list, artifact_identifier_to_versi
 
         for file_name in files:
             file_path = root + os.sep + file_name
-
             # Only parse files that are pom.xml files.
             if (file_name.startswith('pom') and file_name.endswith('.xml')):
+                pom_file_path_list = file_path.split(os.sep)
+                if 'sdk' in pom_file_path_list and len(pom_file_path_list[pom_file_path_list.index('sdk'):]) == 4:
+                    artifact_id = pom_file_path_list[pom_file_path_list.index('sdk') + 2]
+                    if artifact_id in exclude_artifacts_list:
+                        print('Exclude artifact:', artifact_id)
+                        continue
                 project = create_project_for_pom(file_path, project_list_identifiers, artifact_identifier_to_version, match_any_version)
                 if project is not None:
                     projects[project.identifier] = project

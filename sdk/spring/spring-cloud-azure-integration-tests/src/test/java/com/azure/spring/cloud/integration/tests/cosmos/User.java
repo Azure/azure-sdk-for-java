@@ -2,11 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.integration.tests.cosmos;
 
-import com.azure.spring.data.cosmos.core.mapping.Container;
 
 import java.util.Objects;
 
-@Container(containerName = "Users")
 public class User {
     private String id;
     private String firstName;

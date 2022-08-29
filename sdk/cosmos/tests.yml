@@ -37,28 +37,28 @@ stages:
       TestOptions: '$(ProfileFlag) $(AdditionalArgs)'
       TestResultsFiles: '**/junitreports/TEST-*.xml'
 
-  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
-    parameters:
-      TestName: 'Integration'
-      CloudConfig:
-        Public:
-          SubscriptionConfigurations:
-            - $(sub-config-azure-cloud-test-resources)
-            - $(sub-config-cosmos-azure-cloud-test-resources)
-      MatrixConfigs:
-        - Name: Cosmos_live_test_integration
-          Path: sdk/cosmos/integration-matrix.json
-          Selection: all
-          GenerateVMJobs: true
-      MatrixReplace:
-        - JavaTestVersion=(.*1)\.17(.*)/$1.11$2
-      ServiceDirectory: cosmos
-      Artifacts:
-        - name: azure-spring-data-cosmos-test
-          groupId: com.azure
-          safeName: azurespringdatacosmostest
-      TimeoutInMinutes: 90
-      PreSteps:
-        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-      TestGoals: 'clean verify'
-      TestOptions: '$(ProfileFlag)'
+#  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+#    parameters:
+#      TestName: 'Integration'
+#      CloudConfig:
+#        Public:
+#          SubscriptionConfigurations:
+#            - $(sub-config-azure-cloud-test-resources)
+#            - $(sub-config-cosmos-azure-cloud-test-resources)
+#      MatrixConfigs:
+#        - Name: Cosmos_live_test_integration
+#          Path: sdk/cosmos/integration-matrix.json
+#          Selection: all
+#          GenerateVMJobs: true
+#      MatrixReplace:
+#        - JavaTestVersion=(.*1)\.17(.*)/$1.11$2
+#      ServiceDirectory: cosmos
+#      Artifacts:
+#        - name: azure-spring-data-cosmos-test
+#          groupId: com.azure
+#          safeName: azurespringdatacosmostest
+#      TimeoutInMinutes: 90
+#      PreSteps:
+#        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
+#      TestGoals: 'clean verify'
+#      TestOptions: '$(ProfileFlag)'

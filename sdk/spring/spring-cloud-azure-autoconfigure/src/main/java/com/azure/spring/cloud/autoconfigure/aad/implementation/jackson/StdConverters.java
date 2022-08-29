@@ -22,12 +22,10 @@ final class StdConverters {
         @Override
         public ClientAuthenticationMethod convert(JsonNode jsonNode) {
             String value = JsonNodeUtils.findStringValue(jsonNode, FIELD_NAME_OF_VALUE);
-            if (ClientAuthenticationMethod.CLIENT_SECRET_BASIC.getValue().equalsIgnoreCase(value)
-                || ClientAuthenticationMethod.BASIC.getValue().equalsIgnoreCase(value)) {
+            if (ClientAuthenticationMethod.CLIENT_SECRET_BASIC.getValue().equalsIgnoreCase(value)) {
                 return ClientAuthenticationMethod.CLIENT_SECRET_BASIC;
             }
-            if (ClientAuthenticationMethod.CLIENT_SECRET_POST.getValue().equalsIgnoreCase(value)
-                || ClientAuthenticationMethod.POST.getValue().equalsIgnoreCase(value)) {
+            if (ClientAuthenticationMethod.CLIENT_SECRET_POST.getValue().equalsIgnoreCase(value)) {
                 return ClientAuthenticationMethod.CLIENT_SECRET_POST;
             }
             if (ClientAuthenticationMethod.PRIVATE_KEY_JWT.getValue().equalsIgnoreCase(value)) {
@@ -48,9 +46,6 @@ final class StdConverters {
             String value = JsonNodeUtils.findStringValue(jsonNode, FIELD_NAME_OF_VALUE);
             if (AuthorizationGrantType.AUTHORIZATION_CODE.getValue().equalsIgnoreCase(value)) {
                 return AuthorizationGrantType.AUTHORIZATION_CODE;
-            }
-            if (AuthorizationGrantType.IMPLICIT.getValue().equalsIgnoreCase(value)) {
-                return AuthorizationGrantType.IMPLICIT;
             }
             if (AuthorizationGrantType.CLIENT_CREDENTIALS.getValue().equalsIgnoreCase(value)) {
                 return AuthorizationGrantType.CLIENT_CREDENTIALS;

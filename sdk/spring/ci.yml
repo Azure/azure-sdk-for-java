@@ -111,10 +111,10 @@ parameters:
   displayName: 'spring-cloud-azure-starter-cosmos'
   type: boolean
   default: true
-- name: release_springcloudazurestarterdatacosmos
-  displayName: 'spring-cloud-azure-starter-data-cosmos'
-  type: boolean
-  default: true
+#- name: release_springcloudazurestarterdatacosmos
+#  displayName: 'spring-cloud-azure-starter-data-cosmos'
+#  type: boolean
+#  default: true
 - name: release_springcloudazurestartereventhubs
   displayName: 'spring-cloud-azure-starter-eventhubs'
   type: boolean
@@ -337,14 +337,14 @@ extends:
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazurestartercosmos }}
-      - name: spring-cloud-azure-starter-data-cosmos
-        groupId: com.azure.spring
-        safeName: springcloudazurestarterdatacosmos
-        skipPublishDocGithubIo: true
-        skipPublishDocMs: true
-        skipUpdatePackageJson: true
-        skipVerifyChangelog: true
-        releaseInBatch: ${{ parameters.release_springcloudazurestarterdatacosmos }}
+#      - name: spring-cloud-azure-starter-data-cosmos
+#        groupId: com.azure.spring
+#        safeName: springcloudazurestarterdatacosmos
+#        skipPublishDocGithubIo: true
+#        skipPublishDocMs: true
+#        skipUpdatePackageJson: true
+#        skipVerifyChangelog: true
+#        releaseInBatch: ${{ parameters.release_springcloudazurestarterdatacosmos }}
       - name: spring-cloud-azure-starter-eventhubs
         groupId: com.azure.spring
         safeName: springcloudazurestartereventhubs
@@ -489,3 +489,5 @@ extends:
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazurestarterstreamservicebus }}
+    MatrixFilters:
+        - JavaTestVersion=^(?!1.8|1.11).*

@@ -6,6 +6,8 @@ package com.azure.spring.cloud.autoconfigure.jms;
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
+import jakarta.jms.ConnectionFactory;
+import jakarta.jms.Session;
 import org.apache.qpid.jms.JmsConnectionFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -26,8 +28,6 @@ import org.springframework.jms.connection.CachingConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
 
-import javax.jms.ConnectionFactory;
-import javax.jms.Session;
 import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
