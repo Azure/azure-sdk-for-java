@@ -14,6 +14,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -27,6 +28,7 @@ import org.springframework.security.oauth2.jwt.JwtTimestampValidator;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestOperations;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,7 @@ import java.util.List;
  */
 @Configuration(proxyBeanMethods = false)
 @Conditional(ResourceServerCondition.class)
+@Import(CommonConfiguration.class)
 public class AadResourceServerConfiguration {
 
     /**
@@ -49,11 +52,14 @@ public class AadResourceServerConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean(JwtDecoder.class)
-    public JwtDecoder jwtDecoder(AadAuthenticationProperties aadAuthenticationProperties) {
+    public JwtDecoder jwtDecoder(AadAuthenticationProperties aadAuthenticationProperties,
+                                 RestOperations aadAuthRestOperations) {
         AadAuthorizationServerEndpoints identityEndpoints = new AadAuthorizationServerEndpoints(
             aadAuthenticationProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint(), aadAuthenticationProperties.getProfile().getTenantId());
         NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder
-            .withJwkSetUri(identityEndpoints.getJwkSetEndpoint()).build();
+            .withJwkSetUri(identityEndpoints.getJwkSetEndpoint())
+                .restOperations(aadAuthRestOperations)
+                .build();
         List<OAuth2TokenValidator<Jwt>> validators = createDefaultValidator(aadAuthenticationProperties);
         nimbusJwtDecoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(validators));
         return nimbusJwtDecoder;
