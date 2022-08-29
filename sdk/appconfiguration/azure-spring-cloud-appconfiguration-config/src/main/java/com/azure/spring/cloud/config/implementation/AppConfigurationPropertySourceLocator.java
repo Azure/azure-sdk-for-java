@@ -166,7 +166,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                         generatedPropertySources = true;
                     } catch (AppConfigurationStatusException e) {
                         reloadFailed = true;
-                        clientFactory.backoffClientClient(configStore.getEndpoint(), client.getEndpoint());
+                        clientFactory.backoffClient(configStore.getEndpoint(), client.getEndpoint());
                     } catch (Exception e) {
                         newState = failedToGeneratePropertySource(configStore, newState, e);
 

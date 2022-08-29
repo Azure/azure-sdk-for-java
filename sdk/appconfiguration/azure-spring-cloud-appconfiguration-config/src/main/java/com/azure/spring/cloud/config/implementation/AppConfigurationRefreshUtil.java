@@ -65,7 +65,7 @@ class AppConfigurationRefreshUtil {
                             LOGGER.warn("Failed attempting to connect to " + client.getEndpoint()
                                 + " during refresh check.");
 
-                            clientFactory.backoffClientClient(originEndpoint, client.getEndpoint());
+                            clientFactory.backoffClient(originEndpoint, client.getEndpoint());
                             continue;
                         }
 
@@ -94,7 +94,7 @@ class AppConfigurationRefreshUtil {
                             LOGGER.warn("Failed attempting to connect to " + client.getEndpoint()
                                 + " durring refresh check.");
 
-                            clientFactory.backoffClientClient(originEndpoint, client.getEndpoint());
+                            clientFactory.backoffClient(originEndpoint, client.getEndpoint());
                             continue;
                         }
                     }

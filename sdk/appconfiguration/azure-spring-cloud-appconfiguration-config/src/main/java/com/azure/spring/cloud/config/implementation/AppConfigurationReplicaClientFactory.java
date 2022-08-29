@@ -72,7 +72,7 @@ public class AppConfigurationReplicaClientFactory {
      * @param originEndpoint identifier of the store. The identifier is the primary endpoint of the store.
      * @param endpoint replica endpoint
      */
-    void backoffClientClient(String originEndpoint, String endpoint) {
+    void backoffClient(String originEndpoint, String endpoint) {
         CONNECTIONS.get(originEndpoint).backoffClient(endpoint);
     }
 
