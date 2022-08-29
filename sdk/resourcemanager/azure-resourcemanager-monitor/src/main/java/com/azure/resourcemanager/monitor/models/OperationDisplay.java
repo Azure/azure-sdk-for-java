@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Display metadata associated with the operation. */
 @Fluent
 public final class OperationDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
-
     /*
      * Service provider: Microsoft.Insights
      */
@@ -21,8 +17,7 @@ public final class OperationDisplay {
     private String provider;
 
     /*
-     * Resource on which the operation is performed: AlertRules, Autoscale,
-     * etc.
+     * Resource on which the operation is performed: AlertRules, Autoscale, etc.
      */
     @JsonProperty(value = "resource")
     private String resource;
