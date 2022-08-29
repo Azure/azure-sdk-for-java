@@ -4,12 +4,14 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.BoundingRegionHelper;
+import com.azure.core.annotation.Immutable;
 
 import java.util.List;
 
 /**
  * Bounding polygon on a specific page of the input.
  */
+@Immutable
 public final class BoundingRegion {
     /*
      * 1-based page number of page containing the bounding region.
@@ -36,7 +38,7 @@ public final class BoundingRegion {
      * @param pageNumber the pageNumber value to set.
      * @return the BoundingRegion object itself.
      */
-    void setPageNumber(int pageNumber) {
+    private void setPageNumber(int pageNumber) {
         this.pageNumber = pageNumber;
     }
 
@@ -59,7 +61,7 @@ public final class BoundingRegion {
      * @param boundingPolygon the boundingPolygon value to set.
      * @return the BoundingRegion object itself.
      */
-    void setBoundingPolygon(List<Point> boundingPolygon) {
+    private void setBoundingPolygon(List<Point> boundingPolygon) {
         this.boundingPolygon = boundingPolygon;
     }
 

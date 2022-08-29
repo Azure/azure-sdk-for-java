@@ -3,11 +3,13 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Collection;
 
 /** Defines values for DocumentFieldType. */
+@Immutable
 public final class DocumentFieldType extends ExpandableStringEnum<DocumentFieldType> {
     /** Static value string for DocumentFieldType. */
     public static final DocumentFieldType STRING = fromString("string");

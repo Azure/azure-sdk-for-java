@@ -74,7 +74,7 @@
 /sdk/containerregistry/                             @lmolkova @alzimmermsft
 
 # PRLabel: %Azure.Core
-/sdk/core/                                          @alzimmermsft @srnagar @anuchandy @lmolkova @vcolin7 @mssfang @jonathangiles @billwert @kasobol-msft
+/sdk/core/                                          @alzimmermsft @srnagar @anuchandy @lmolkova @vcolin7 @mssfang @jonathangiles @billwert
 
 # PRLabel: %Azure.Core.AMQP
 /sdk/core/azure-core-amqp/                          @conniey @anuchandy @ki1729 @srnagar @jonathangiles @haolingdong-msft @liukun-msft @weidongxu-microsoft @ZejiaJiang
@@ -83,11 +83,11 @@
 /sdk/core/azure-core-tracing-opentelemetry/         @samvaity @alzimmermsft @trask @lmolkova
 
 # PRLabel: %Cosmos
-/sdk/cosmos/                                        @kushagraThapar @FabianMeiswinkel @kirankumarkolli @mbhaskar @simplynaveen20 @xinlian12 @milismsft @aayush3011
+/sdk/cosmos/                                        @kushagraThapar @FabianMeiswinkel @kirankumarkolli @xinlian12 @milismsft @aayush3011
 # PRLabel: %azure-spring
-/sdk/cosmos/azure-spring-data-cosmos/               @kushagraThapar @mbhaskar @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @xinlian12 @moarychan
+/sdk/cosmos/azure-spring-data-cosmos/               @kushagraThapar @FabianMeiswinkel @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @xinlian12 @moarychan @aayush3011
 # PRLabel: %azure-spring
-/sdk/cosmos/azure-spring-data-cosmos-test/          @kushagraThapar @mbhaskar @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @xinlian12 @moarychan
+/sdk/cosmos/azure-spring-data-cosmos-test/          @kushagraThapar @FabianMeiswinkel @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @xinlian12 @moarychan @aayush3011
 
 # ServiceLabel: %Device Update for IoT Hub %Service Attention
 /sdk/deviceupdate/                                  @dpokluda
@@ -157,10 +157,10 @@
 /sdk/servicebus/microsoft-azure-servicebus/         @shankarsama @yvgopal
 
 # PRLabel: %Storage
-/sdk/storage/                                       @rickle-msft @jaschrep-msft @alzimmermsft @kasobol-msft @ibrahimrabab
+/sdk/storage/                                       @rickle-msft @jaschrep-msft @alzimmermsft @ibrahimrabab
 
 # PRLabel: %Tables
-/sdk/tables/                                        @vcolin7 @conniey @kasobol-msft @jairmyree
+/sdk/tables/                                        @vcolin7 @conniey @jairmyree
 
 # PRLabel: %EngSys
 /sdk/template/                                      @hallipr @weshaggard @JimSuplizio
@@ -249,7 +249,7 @@
 #/<NotInRepo>/          @darshanhs90 @AshishGargMicrosoft
 
 # ServiceLabel: %Automation %Service Attention
-#/<NotInRepo>/          @zjalexander
+#/<NotInRepo>/          @jaspkaur28
 
 # ServiceLabel: %AVS %Service Attention
 #/<NotInRepo>/          @divka78 @amitchat @aishu

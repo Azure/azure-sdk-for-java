@@ -14,8 +14,8 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.Docume
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelSummary;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelOperationDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelOperationSummary;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentOperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -111,7 +111,7 @@ public final class DocumentModelAdministrationClient {
      * for more information on building mode for custom documents.
      * @return A {@link SyncPoller} that polls the building model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns the trained {@link DocumentModelDetails custom document analysis model}.
-     * @throws HttpResponseException If building model fails with {@link OperationStatus#FAILED} is created.
+     * @throws HttpResponseException If building model fails with {@link DocumentOperationStatus#FAILED} is created.
      * @throws NullPointerException If {@code blobContainerUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -175,7 +175,7 @@ public final class DocumentModelAdministrationClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link SyncPoller} that polls the building model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns the built {@link DocumentModelDetails custom document analysis model}.
-     * @throws HttpResponseException If building the model fails with {@link OperationStatus#FAILED} is created.
+     * @throws HttpResponseException If building the model fails with {@link DocumentOperationStatus#FAILED} is created.
      * @throws NullPointerException If {@code blobContainerUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -195,9 +195,9 @@ public final class DocumentModelAdministrationClient {
      * <pre>
      * ResourceDetails resourceDetails = documentModelAdministrationClient.getResourceDetails&#40;&#41;;
      * System.out.printf&#40;&quot;Max number of models that can be build for this account: %d%n&quot;,
-     *     resourceDetails.getDocumentModelLimit&#40;&#41;&#41;;
+     *     resourceDetails.getCustomDocumentModelLimit&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Current count of built document analysis models: %d%n&quot;,
-     *     resourceDetails.getDocumentModelCount&#40;&#41;&#41;;
+     *     resourceDetails.getCustomDocumentModelCount&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getResourceDetails -->
      *
@@ -220,9 +220,9 @@ public final class DocumentModelAdministrationClient {
      * System.out.printf&#40;&quot;Response Status Code: %d.&quot;, response.getStatusCode&#40;&#41;&#41;;
      * ResourceDetails resourceDetails = response.getValue&#40;&#41;;
      * System.out.printf&#40;&quot;Max number of models that can be build for this account: %d%n&quot;,
-     *     resourceDetails.getDocumentModelLimit&#40;&#41;&#41;;
+     *     resourceDetails.getCustomDocumentModelLimit&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Current count of built document analysis models: %d%n&quot;,
-     *     resourceDetails.getDocumentModelCount&#40;&#41;&#41;;
+     *     resourceDetails.getCustomDocumentModelCount&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getResourceDetailsWithResponse#Context -->
      *
@@ -375,7 +375,7 @@ public final class DocumentModelAdministrationClient {
      * @return A {@link SyncPoller} that polls the create composed model operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns the {@link DocumentModelDetails composed model}.
      * @throws HttpResponseException If create composed model operation fails and model with
-     * {@link OperationStatus#FAILED} is created.
+     * {@link DocumentOperationStatus#FAILED} is created.
      * @throws NullPointerException If the list of {@code componentModelIds} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -434,7 +434,7 @@ public final class DocumentModelAdministrationClient {
      * @return A {@link SyncPoller} that polls the create composed model operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns the {@link DocumentModelDetails composed model}.
      * @throws HttpResponseException If create composed model operation fails and model with
-     * {@link OperationStatus#FAILED} is created.
+     * {@link DocumentOperationStatus#FAILED} is created.
      * @throws NullPointerException If the list of {@code componentModelIds} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -653,7 +653,7 @@ public final class DocumentModelAdministrationClient {
      * System.out.printf&#40;&quot;Operation Status: %s%n&quot;, documentModelOperationDetails.getStatus&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Model ID created with this operation: %s%n&quot;,
      *     documentModelOperationDetails.getResult&#40;&#41;.getModelId&#40;&#41;&#41;;
-     * if &#40;ModelOperationStatus.FAILED.equals&#40;documentModelOperationDetails.getStatus&#40;&#41;&#41;&#41; &#123;
+     * if &#40;DocumentOperationStatus.FAILED.equals&#40;documentModelOperationDetails.getStatus&#40;&#41;&#41;&#41; &#123;
      *     System.out.printf&#40;&quot;Operation fail error: %s%n&quot;, documentModelOperationDetails.getError&#40;&#41;.getMessage&#40;&#41;&#41;;
      * &#125;
      * </pre>
@@ -686,7 +686,7 @@ public final class DocumentModelAdministrationClient {
      * System.out.printf&#40;&quot;Operation Status: %s%n&quot;, documentModelOperationDetails.getStatus&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Model ID created with this operation: %s%n&quot;,
      *     documentModelOperationDetails.getResult&#40;&#41;.getModelId&#40;&#41;&#41;;
-     * if &#40;ModelOperationStatus.FAILED.equals&#40;documentModelOperationDetails.getStatus&#40;&#41;&#41;&#41; &#123;
+     * if &#40;DocumentOperationStatus.FAILED.equals&#40;documentModelOperationDetails.getStatus&#40;&#41;&#41;&#41; &#123;
      *     System.out.printf&#40;&quot;Operation fail error: %s%n&quot;, documentModelOperationDetails.getError&#40;&#41;.getMessage&#40;&#41;&#41;;
      * &#125;
      * </pre>

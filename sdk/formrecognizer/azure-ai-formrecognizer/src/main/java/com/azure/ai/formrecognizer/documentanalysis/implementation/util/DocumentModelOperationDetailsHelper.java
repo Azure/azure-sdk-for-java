@@ -5,8 +5,8 @@ package com.azure.ai.formrecognizer.documentanalysis.implementation.util;
 
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelOperationDetails;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.ModelOperationKind;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.ModelOperationStatus;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentOperationKind;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentOperationStatus;
 import com.azure.core.models.ResponseError;
 
 import java.time.OffsetDateTime;
@@ -32,13 +32,13 @@ public final class DocumentModelOperationDetailsHelper {
 
         void setOperationId(DocumentModelOperationDetails documentModelOperationDetails, String operationId);
 
-        void setStatus(DocumentModelOperationDetails documentModelOperationDetails, ModelOperationStatus status);
+        void setStatus(DocumentModelOperationDetails documentModelOperationDetails, DocumentOperationStatus status);
 
         void setPercentCompleted(DocumentModelOperationDetails documentModelOperationDetails, Integer percentCompleted);
 
         void setLastUpdatedOn(DocumentModelOperationDetails documentModelOperationDetails, OffsetDateTime lastUpdatedOn);
 
-        void setKind(DocumentModelOperationDetails documentModelOperationDetails, ModelOperationKind kind);
+        void setKind(DocumentModelOperationDetails documentModelOperationDetails, DocumentOperationKind kind);
 
         void setResourceLocation(DocumentModelOperationDetails documentModelOperationDetails, String resourceLocation);
         void setTags(DocumentModelOperationDetails documentModelOperationDetails, Map<String, String> tags);
@@ -66,7 +66,7 @@ public final class DocumentModelOperationDetailsHelper {
         accessor.setOperationId(documentModelOperationDetails, operationId);
     }
 
-    static void setStatus(DocumentModelOperationDetails documentModelOperationDetails, ModelOperationStatus status) {
+    static void setStatus(DocumentModelOperationDetails documentModelOperationDetails, DocumentOperationStatus status) {
         accessor.setStatus(documentModelOperationDetails, status);
     }
 
@@ -78,7 +78,7 @@ public final class DocumentModelOperationDetailsHelper {
         accessor.setLastUpdatedOn(documentModelOperationDetails, lastUpdatedOn);
     }
 
-    static void setKind(DocumentModelOperationDetails documentModelOperationDetails, ModelOperationKind kind) {
+    static void setKind(DocumentModelOperationDetails documentModelOperationDetails, DocumentOperationKind kind) {
         accessor.setKind(documentModelOperationDetails, kind);
     }
 

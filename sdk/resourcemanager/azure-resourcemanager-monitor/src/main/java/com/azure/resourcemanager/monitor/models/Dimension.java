@@ -6,15 +6,12 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Specifies the criteria for converting log to metric. */
 @Fluent
 public final class Dimension {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Dimension.class);
-
     /*
      * Name of the dimension
      */
@@ -100,18 +97,20 @@ public final class Dimension {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Dimension"));
         }
         if (operator() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property operator in model Dimension"));
         }
         if (values() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property values in model Dimension"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Dimension.class);
 }

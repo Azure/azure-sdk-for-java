@@ -4,12 +4,14 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentPageHelper;
+import com.azure.core.annotation.Immutable;
 
 import java.util.List;
 
 /**
  * Content and layout elements extracted from a page from the input.
  */
+@Immutable
 public final class DocumentPage {
     /*
      * 1-based page number in the input document.
@@ -74,7 +76,7 @@ public final class DocumentPage {
      * @param pageNumber the pageNumber value to set.
      * @return the DocumentPage object itself.
      */
-    void setPageNumber(int pageNumber) {
+    private void setPageNumber(int pageNumber) {
         this.pageNumber = pageNumber;
     }
 
@@ -95,7 +97,7 @@ public final class DocumentPage {
      * @param angle the angle value to set.
      * @return the DocumentPage object itself.
      */
-    void setAngle(Float angle) {
+    private void setAngle(Float angle) {
         this.angle = angle;
     }
 
@@ -114,7 +116,7 @@ public final class DocumentPage {
      * @param width the width value to set.
      * @return the DocumentPage object itself.
      */
-    void setWidth(Float width) {
+    private void setWidth(Float width) {
         this.width = width;
     }
 
@@ -133,7 +135,7 @@ public final class DocumentPage {
      * @param height the height value to set.
      * @return the DocumentPage object itself.
      */
-    void setHeight(Float height) {
+    private void setHeight(Float height) {
         this.height = height;
     }
 
@@ -154,7 +156,7 @@ public final class DocumentPage {
      * @param unit the unit value to set.
      * @return the DocumentPage object itself.
      */
-    void setUnit(LengthUnit unit) {
+    private void setUnit(LengthUnit unit) {
         this.unit = unit;
     }
 
@@ -173,7 +175,7 @@ public final class DocumentPage {
      * @param spans the spans value to set.
      * @return the DocumentPage object itself.
      */
-    void setSpans(List<DocumentSpan> spans) {
+    private void setSpans(List<DocumentSpan> spans) {
         this.spans = spans;
     }
 
@@ -192,7 +194,7 @@ public final class DocumentPage {
      * @param words the words value to set.
      * @return the DocumentPage object itself.
      */
-    void setWords(List<DocumentWord> words) {
+    private void setWords(List<DocumentWord> words) {
         this.words = words;
     }
 
@@ -211,7 +213,7 @@ public final class DocumentPage {
      * @param selectionMarks the selectionMarks value to set.
      * @return the DocumentPage object itself.
      */
-    void setSelectionMarks(List<DocumentSelectionMark> selectionMarks) {
+    private void setSelectionMarks(List<DocumentSelectionMark> selectionMarks) {
         this.selectionMarks = selectionMarks;
     }
 
@@ -230,10 +232,10 @@ public final class DocumentPage {
      * @param lines the lines value to set.
      * @return the DocumentPage object itself.
      */
-    void setLines(List<DocumentLine> lines) {
+    private void setLines(List<DocumentLine> lines) {
         this.lines = lines;
     }
-    
+
     static {
         DocumentPageHelper.setAccessor(new DocumentPageHelper.DocumentPageAccessor() {
             @Override
