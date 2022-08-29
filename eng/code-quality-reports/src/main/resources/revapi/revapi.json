@@ -120,6 +120,36 @@
       "ignore": true,
       "differences": [
         {
+          "code": "java.annotation.attributeValueChanged",
+          "new": "class com.azure.spring.cloud.autoconfigure.aad.AadAuthenticationFilterAutoConfiguration",
+          "justification": "The change is expected. This is bean definition class, will not be used by customer's java code directly."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method org.springframework.security.oauth2.jwt.JwtDecoder com.azure.spring.cloud.autoconfigure.aad.configuration.AadResourceServerConfiguration::jwtDecoder(com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties, org.springframework.web.client.RestOperations)",
+          "justification": "The change is expected. This is bean definition method, will not be used by customer's java code directly."
+        },
+        {
+          "code": "java.annotation.added",
+          "new": "class com.azure.spring.cloud.autoconfigure.aad.configuration.AadResourceServerConfiguration",
+          "justification": "The change is expected. This is bean definition class, will not be used by customer's java code directly."
+        },
+        {
+          "code": "java.annotation.attributeValueChanged",
+          "new": "class com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfiguration",
+          "justification": "The change is expected. This is bean definition class, will not be used by customer's java code directly."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cOAuth2ClientConfiguration::authorizedClientManager(org.springframework.web.client.RestOperations, org.springframework.security.oauth2.client.registration.ClientRegistrationRepository, org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository)",
+          "justification": "The change is expected. This is bean definition method, will not be used by customer's java code directly."
+        },
+        {
+          "code": "java.annotation.attributeValueChanged",
+          "new": "class com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cOAuth2ClientConfiguration",
+          "justification": "The change is expected. This is bean definition class, will not be used by customer's java code directly."
+        },
+        {
           "code": "java.method.numberOfParametersChanged",
           "new": "method com.nimbusds.jose.util.ResourceRetriever com.azure.spring.cloud.autoconfigure.aad.AadAuthenticationFilterAutoConfiguration::jwtResourceRetriever(org.springframework.web.client.RestOperations)",
           "justification": "The change is expected, and this is bean definition method, will not be used by customer."
