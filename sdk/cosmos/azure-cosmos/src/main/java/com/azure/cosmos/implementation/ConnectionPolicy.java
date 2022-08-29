@@ -4,7 +4,12 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.core.http.ProxyOptions;
-import com.azure.cosmos.*;
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.GatewayConnectionConfig;
+import com.azure.cosmos.ThrottlingRetryOptions;
+import com.azure.cosmos.ConsistencyLevel;
 
 import java.time.Duration;
 import java.util.Collections;
