@@ -121,16 +121,16 @@ public final class TextAnalyticsAsyncClient {
         this.serviceVersion = serviceVersion;
         this.defaultCountryHint = defaultCountryHint;
         this.defaultLanguage = defaultLanguage;
-        this.detectLanguageAsyncClient = new DetectLanguageAsyncClient(legacyService);
-        this.analyzeSentimentAsyncClient = new AnalyzeSentimentAsyncClient(legacyService);
-        this.extractKeyPhraseAsyncClient = new ExtractKeyPhraseAsyncClient(legacyService);
-        this.recognizeEntityAsyncClient = new RecognizeEntityAsyncClient(legacyService);
-        this.recognizePiiEntityAsyncClient = new RecognizePiiEntityAsyncClient(legacyService);
-        this.recognizeLinkedEntityAsyncClient = new RecognizeLinkedEntityAsyncClient(legacyService);
-        this.recognizeCustomEntitiesAsyncClient = new RecognizeCustomEntitiesAsyncClient(null);
-        this.analyzeHealthcareEntityAsyncClient = new AnalyzeHealthcareEntityAsyncClient(legacyService);
-        this.analyzeActionsAsyncClient = new AnalyzeActionsAsyncClient(legacyService);
-        this.labelClassifyAsyncClient = new LabelClassifyAsyncClient(null);
+        this.detectLanguageAsyncClient = new DetectLanguageAsyncClient(legacyService, serviceVersion);
+        this.analyzeSentimentAsyncClient = new AnalyzeSentimentAsyncClient(legacyService, serviceVersion);
+        this.extractKeyPhraseAsyncClient = new ExtractKeyPhraseAsyncClient(legacyService, serviceVersion);
+        this.recognizeEntityAsyncClient = new RecognizeEntityAsyncClient(legacyService, serviceVersion);
+        this.recognizePiiEntityAsyncClient = new RecognizePiiEntityAsyncClient(legacyService, serviceVersion);
+        this.recognizeLinkedEntityAsyncClient = new RecognizeLinkedEntityAsyncClient(legacyService, serviceVersion);
+        this.recognizeCustomEntitiesAsyncClient = new RecognizeCustomEntitiesAsyncClient(null, serviceVersion);
+        this.analyzeHealthcareEntityAsyncClient = new AnalyzeHealthcareEntityAsyncClient(legacyService, serviceVersion);
+        this.analyzeActionsAsyncClient = new AnalyzeActionsAsyncClient(legacyService, serviceVersion);
+        this.labelClassifyAsyncClient = new LabelClassifyAsyncClient(null, serviceVersion);
     }
 
     TextAnalyticsAsyncClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
@@ -140,16 +140,18 @@ public final class TextAnalyticsAsyncClient {
         this.serviceVersion = serviceVersion;
         this.defaultCountryHint = defaultCountryHint;
         this.defaultLanguage = defaultLanguage;
-        this.detectLanguageAsyncClient = new DetectLanguageAsyncClient(service);
-        this.analyzeSentimentAsyncClient = new AnalyzeSentimentAsyncClient(service);
-        this.extractKeyPhraseAsyncClient = new ExtractKeyPhraseAsyncClient(service);
-        this.recognizeEntityAsyncClient = new RecognizeEntityAsyncClient(service);
-        this.recognizePiiEntityAsyncClient = new RecognizePiiEntityAsyncClient(service);
-        this.recognizeLinkedEntityAsyncClient = new RecognizeLinkedEntityAsyncClient(service);
-        this.recognizeCustomEntitiesAsyncClient = new RecognizeCustomEntitiesAsyncClient(new AnalyzeTextsImpl(service));
-        this.analyzeHealthcareEntityAsyncClient = new AnalyzeHealthcareEntityAsyncClient(new AnalyzeTextsImpl(service));
-        this.analyzeActionsAsyncClient = new AnalyzeActionsAsyncClient(new AnalyzeTextsImpl(service));
-        this.labelClassifyAsyncClient = new LabelClassifyAsyncClient(new AnalyzeTextsImpl(service));
+        this.detectLanguageAsyncClient = new DetectLanguageAsyncClient(service, serviceVersion);
+        this.analyzeSentimentAsyncClient = new AnalyzeSentimentAsyncClient(service, serviceVersion);
+        this.extractKeyPhraseAsyncClient = new ExtractKeyPhraseAsyncClient(service, serviceVersion);
+        this.recognizeEntityAsyncClient = new RecognizeEntityAsyncClient(service, serviceVersion);
+        this.recognizePiiEntityAsyncClient = new RecognizePiiEntityAsyncClient(service, serviceVersion);
+        this.recognizeLinkedEntityAsyncClient = new RecognizeLinkedEntityAsyncClient(service, serviceVersion);
+        this.recognizeCustomEntitiesAsyncClient = new RecognizeCustomEntitiesAsyncClient(
+            new AnalyzeTextsImpl(service), serviceVersion);
+        this.analyzeHealthcareEntityAsyncClient = new AnalyzeHealthcareEntityAsyncClient(new AnalyzeTextsImpl(service),
+            serviceVersion);
+        this.analyzeActionsAsyncClient = new AnalyzeActionsAsyncClient(new AnalyzeTextsImpl(service), serviceVersion);
+        this.labelClassifyAsyncClient = new LabelClassifyAsyncClient(new AnalyzeTextsImpl(service), serviceVersion);
     }
 
     /**

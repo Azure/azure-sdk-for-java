@@ -61,6 +61,7 @@ import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContex
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
 import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
+import static com.azure.ai.textanalytics.implementation.Utility.throwIfLegacyApiVersion;
 import static com.azure.ai.textanalytics.implementation.Utility.toAnalyzeHealthcareEntitiesResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.models.State.CANCELLED;
@@ -75,20 +76,28 @@ class AnalyzeHealthcareEntityAsyncClient {
     private final TextAnalyticsClientImpl legacyService;
     private final AnalyzeTextsImpl service;
 
-    AnalyzeHealthcareEntityAsyncClient(TextAnalyticsClientImpl legacyService) {
+    private final TextAnalyticsServiceVersion serviceVersion;
+
+    AnalyzeHealthcareEntityAsyncClient(TextAnalyticsClientImpl legacyService,
+                                       TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = legacyService;
         this.service = null;
+        this.serviceVersion = serviceVersion;
     }
 
-    AnalyzeHealthcareEntityAsyncClient(AnalyzeTextsImpl service) {
+    AnalyzeHealthcareEntityAsyncClient(AnalyzeTextsImpl service, TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = null;
         this.service = service;
+        this.serviceVersion = serviceVersion;
     }
 
     PollerFlux<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
         beginAnalyzeHealthcareEntities(Iterable<TextDocumentInput> documents, AnalyzeHealthcareEntitiesOptions options,
             Context context) {
         try {
+            throwIfLegacyApiVersion(this.serviceVersion,
+                Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+                "'beginAnalyzeHealthcareEntities' is only available for API version v3.1 and up.");
             inputDocumentsValidation(documents);
             options = getNotNullAnalyzeHealthcareEntitiesOptions(options);
             final Context finalContext = getNotNullContext(context)
@@ -162,6 +171,9 @@ class AnalyzeHealthcareEntityAsyncClient {
         beginAnalyzeHealthcarePagedIterable(Iterable<TextDocumentInput> documents,
             AnalyzeHealthcareEntitiesOptions options, Context context) {
         try {
+            throwIfLegacyApiVersion(this.serviceVersion,
+                Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+                "'beginAnalyzeHealthcareEntities' is only available for API version v3.1 and up.");
             inputDocumentsValidation(documents);
             options = getNotNullAnalyzeHealthcareEntitiesOptions(options);
             final Context finalContext = getNotNullContext(context)

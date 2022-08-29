@@ -2510,4 +2510,19 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 resultCollection.forEach(documentResult -> validateLabelClassificationResult(documentResult)));
         });
     }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void clientSideValidation(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, TextAnalyticsServiceVersion.V3_1);
+        classifyCustomMultiLabelRunner((documents, parameters) -> {
+            SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable> syncPoller =
+                client.beginMultiLabelClassify(documents, parameters.get(0), parameters.get(1), "en", null);
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            ClassifyDocumentPagedIterable pagedIterable = syncPoller.getFinalResult();
+            pagedIterable.forEach(resultCollection ->
+                resultCollection.forEach(documentResult -> validateLabelClassificationResult(documentResult)));
+        });
+    }
 }

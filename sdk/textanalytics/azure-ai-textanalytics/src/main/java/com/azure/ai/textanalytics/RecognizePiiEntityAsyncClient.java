@@ -24,12 +24,14 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
+import static com.azure.ai.textanalytics.implementation.Utility.throwIfLegacyApiVersion;
 import static com.azure.ai.textanalytics.implementation.Utility.toCategoriesFilter;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsException;
@@ -45,14 +47,19 @@ class RecognizePiiEntityAsyncClient {
     private final TextAnalyticsClientImpl legacyService;
     private final MicrosoftCognitiveLanguageServiceTextAnalysisImpl service;
 
-    RecognizePiiEntityAsyncClient(TextAnalyticsClientImpl legacyService) {
+    private final TextAnalyticsServiceVersion serviceVersion;
+
+    RecognizePiiEntityAsyncClient(TextAnalyticsClientImpl legacyService, TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = legacyService;
         this.service = null;
+        this.serviceVersion = serviceVersion;
     }
 
-    RecognizePiiEntityAsyncClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service) {
+    RecognizePiiEntityAsyncClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
+        TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = null;
         this.service = service;
+        this.serviceVersion = serviceVersion;
     }
 
     /**
@@ -69,6 +76,9 @@ class RecognizePiiEntityAsyncClient {
     Mono<PiiEntityCollection> recognizePiiEntities(String document, String language,
         RecognizePiiEntitiesOptions options) {
         try {
+            throwIfLegacyApiVersion(this.serviceVersion,
+                Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+                "'recognizePiiEntities' is only available for API version v3.1 and up.");
             Objects.requireNonNull(document, "'document' cannot be null.");
             return recognizePiiEntitiesBatch(
                 Collections.singletonList(new TextDocumentInput("0", document).setLanguage(language)), options)
@@ -102,6 +112,9 @@ class RecognizePiiEntityAsyncClient {
     Mono<Response<RecognizePiiEntitiesResultCollection>> recognizePiiEntitiesBatch(
         Iterable<TextDocumentInput> documents, RecognizePiiEntitiesOptions options) {
         try {
+            throwIfLegacyApiVersion(this.serviceVersion,
+                Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+                "'recognizePiiEntitiesBatch' is only available for API version v3.1 and up.");
             inputDocumentsValidation(documents);
             return withContext(context -> getRecognizePiiEntitiesResponse(documents, options, context));
         } catch (RuntimeException ex) {
@@ -122,6 +135,9 @@ class RecognizePiiEntityAsyncClient {
     Mono<Response<RecognizePiiEntitiesResultCollection>> recognizePiiEntitiesBatchWithContext(
         Iterable<TextDocumentInput> documents, RecognizePiiEntitiesOptions options, Context context) {
         try {
+            throwIfLegacyApiVersion(this.serviceVersion,
+                Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+                "'recognizePiiEntitiesBatch' is only available for API version v3.1 and up.");
             inputDocumentsValidation(documents);
             return getRecognizePiiEntitiesResponse(documents, options, context);
         } catch (RuntimeException ex) {

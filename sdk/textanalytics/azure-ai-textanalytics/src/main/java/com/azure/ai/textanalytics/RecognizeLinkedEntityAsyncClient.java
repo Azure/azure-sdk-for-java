@@ -23,6 +23,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
 
@@ -30,6 +31,7 @@ import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRAC
 import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
+import static com.azure.ai.textanalytics.implementation.Utility.throwIfLegacyApiVersion;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsException;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -44,14 +46,20 @@ class RecognizeLinkedEntityAsyncClient {
     private final TextAnalyticsClientImpl legacyService;
     private final MicrosoftCognitiveLanguageServiceTextAnalysisImpl service;
 
-    RecognizeLinkedEntityAsyncClient(TextAnalyticsClientImpl legacyService) {
+    private final TextAnalyticsServiceVersion serviceVersion;
+
+    RecognizeLinkedEntityAsyncClient(TextAnalyticsClientImpl legacyService,
+        TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = legacyService;
         this.service = null;
+        this.serviceVersion = serviceVersion;
     }
 
-    RecognizeLinkedEntityAsyncClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service) {
+    RecognizeLinkedEntityAsyncClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
+        TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = null;
         this.service = service;
+        this.serviceVersion = serviceVersion;
     }
 
     /**
@@ -97,7 +105,6 @@ class RecognizeLinkedEntityAsyncClient {
     Mono<Response<RecognizeLinkedEntitiesResultCollection>> recognizeLinkedEntitiesBatch(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
         try {
-            inputDocumentsValidation(documents);
             return withContext(context -> getRecognizedLinkedEntitiesResponse(documents, options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -118,7 +125,6 @@ class RecognizeLinkedEntityAsyncClient {
         recognizeLinkedEntitiesBatchWithContext(Iterable<TextDocumentInput> documents,
             TextAnalyticsRequestOptions options, Context context) {
         try {
-            inputDocumentsValidation(documents);
             return getRecognizedLinkedEntitiesResponse(documents, options, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -136,6 +142,8 @@ class RecognizeLinkedEntityAsyncClient {
      */
     private Mono<Response<RecognizeLinkedEntitiesResultCollection>> getRecognizedLinkedEntitiesResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        throwIfCallingNotAvailableFeatureInOptions(options);
+        inputDocumentsValidation(documents);
         options = options == null ? new TextAnalyticsRequestOptions() : options;
         final Context finalContext = getNotNullContext(context)
                                          .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
@@ -179,5 +187,12 @@ class RecognizeLinkedEntityAsyncClient {
                    .doOnError(error -> logger.warning("Failed to recognize linked entities - {}", error))
                    .map(Utility::toRecognizeLinkedEntitiesResultCollectionResponse)
                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+    }
+
+    private void throwIfCallingNotAvailableFeatureInOptions(TextAnalyticsRequestOptions options) {
+        if (options != null && options.isServiceLogsDisabled()) {
+            throwIfLegacyApiVersion(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+                "'disableServiceLogs' is only available for API version v3.1 and up.");
+        }
     }
 }

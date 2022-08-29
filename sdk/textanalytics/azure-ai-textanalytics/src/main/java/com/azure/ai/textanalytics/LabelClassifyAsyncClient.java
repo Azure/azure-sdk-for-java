@@ -61,6 +61,7 @@ import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContex
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
 import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
+import static com.azure.ai.textanalytics.implementation.Utility.throwIfLegacyApiVersion;
 import static com.azure.ai.textanalytics.implementation.Utility.toLabelClassificationResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.models.State.CANCELLED;
@@ -74,14 +75,20 @@ class LabelClassifyAsyncClient {
     private static final ClientLogger LOGGER = new ClientLogger(LabelClassifyAsyncClient.class);
     private final AnalyzeTextsImpl service;
 
-    LabelClassifyAsyncClient(AnalyzeTextsImpl service) {
+    private final TextAnalyticsServiceVersion serviceVersion;
+
+    LabelClassifyAsyncClient(AnalyzeTextsImpl service, TextAnalyticsServiceVersion serviceVersion) {
         this.service = service;
+        this.serviceVersion = serviceVersion;
     }
 
     PollerFlux<ClassifyDocumentOperationDetail, ClassifyDocumentPagedFlux> singleLabelClassify(
         Iterable<TextDocumentInput> documents, String projectName, String deploymentName,
         SingleLabelClassifyOptions options, Context context) {
         try {
+            throwIfLegacyApiVersion(this.serviceVersion,
+                Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1),
+                "'beginSingleLabelClassify' is only available for API version 2022-05-01 and up.");
             inputDocumentsValidation(documents);
             options = getNotNullSingleLabelClassifyOptions(options);
             final Context finalContext = getNotNullContext(context)
@@ -129,6 +136,9 @@ class LabelClassifyAsyncClient {
         Iterable<TextDocumentInput> documents, String projectName, String deploymentName,
         SingleLabelClassifyOptions options, Context context) {
         try {
+            throwIfLegacyApiVersion(this.serviceVersion,
+                Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1),
+                "'beginSingleLabelClassify' is only available for API version 2022-05-01 and up.");
             inputDocumentsValidation(documents);
             options = getNotNullSingleLabelClassifyOptions(options);
             final Context finalContext = getNotNullContext(context)
@@ -176,6 +186,9 @@ class LabelClassifyAsyncClient {
         Iterable<TextDocumentInput> documents, String projectName, String deploymentName,
         MultiLabelClassifyOptions options, Context context) {
         try {
+            throwIfLegacyApiVersion(this.serviceVersion,
+                Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1),
+                "'beginMultiLabelClassify' is only available for API version 2022-05-01 and up.");
             inputDocumentsValidation(documents);
             options = getNotNullMultiLabelClassifyOptions(options);
             final Context finalContext = getNotNullContext(context)
@@ -223,6 +236,9 @@ class LabelClassifyAsyncClient {
         Iterable<TextDocumentInput> documents, String projectName, String deploymentName,
         MultiLabelClassifyOptions options, Context context) {
         try {
+            throwIfLegacyApiVersion(this.serviceVersion,
+                Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1),
+                "'beginMultiLabelClassify' is only available for API version 2022-05-01 and up.");
             inputDocumentsValidation(documents);
             options = getNotNullMultiLabelClassifyOptions(options);
             final Context finalContext = getNotNullContext(context)

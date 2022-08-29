@@ -21,10 +21,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
+
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
+import static com.azure.ai.textanalytics.implementation.Utility.throwIfLegacyApiVersion;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -38,14 +41,19 @@ class AnalyzeSentimentAsyncClient {
     private final TextAnalyticsClientImpl legacyService;
     private final MicrosoftCognitiveLanguageServiceTextAnalysisImpl service;
 
-    AnalyzeSentimentAsyncClient(TextAnalyticsClientImpl legacyService) {
+    private final TextAnalyticsServiceVersion serviceVersion;
+
+    AnalyzeSentimentAsyncClient(TextAnalyticsClientImpl legacyService, TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = legacyService;
         this.service = null;
+        this.serviceVersion = serviceVersion;
     }
 
-    AnalyzeSentimentAsyncClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service) {
+    AnalyzeSentimentAsyncClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
+                                TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = null;
         this.service = service;
+        this.serviceVersion = serviceVersion;
     }
 
     /**
@@ -64,6 +72,7 @@ class AnalyzeSentimentAsyncClient {
     public Mono<Response<AnalyzeSentimentResultCollection>> analyzeSentimentBatch(
         Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options) {
         try {
+            throwIfCallingNotAvailableFeatureInAnalyzeSentimentOptions(options);
             inputDocumentsValidation(documents);
             return withContext(context -> getAnalyzedSentimentResponse(documents, options, context));
         } catch (RuntimeException ex) {
@@ -85,6 +94,7 @@ class AnalyzeSentimentAsyncClient {
     Mono<Response<AnalyzeSentimentResultCollection>> analyzeSentimentBatchWithContext(
         Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options, Context context) {
         try {
+            throwIfCallingNotAvailableFeatureInAnalyzeSentimentOptions(options);
             inputDocumentsValidation(documents);
             return getAnalyzedSentimentResponse(documents, options, context);
         } catch (RuntimeException ex) {
@@ -145,5 +155,16 @@ class AnalyzeSentimentAsyncClient {
             .doOnError(error -> logger.warning("Failed to analyze sentiment - {}", error))
             .map(Utility::toAnalyzeSentimentResultCollectionResponse)
             .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+    }
+
+    private void throwIfCallingNotAvailableFeatureInAnalyzeSentimentOptions(AnalyzeSentimentOptions options) {
+        if (options.isIncludeOpinionMining()) {
+            throwIfLegacyApiVersion(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+                "'includeOpinionMining' is only available for API version v3.1 and up.");
+        }
+        if (options.isServiceLogsDisabled()) {
+            throwIfLegacyApiVersion(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+                "'disableServiceLogs' is only available for API version v3.1 and up.");
+        }
     }
 }

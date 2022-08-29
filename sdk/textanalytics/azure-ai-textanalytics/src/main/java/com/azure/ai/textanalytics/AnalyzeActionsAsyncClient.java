@@ -137,6 +137,7 @@ import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INT
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
 import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
+import static com.azure.ai.textanalytics.implementation.Utility.throwIfLegacyApiVersion;
 import static com.azure.ai.textanalytics.implementation.Utility.toAnalyzeHealthcareEntitiesResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toAnalyzeSentimentResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toCategoriesFilter;
@@ -174,19 +175,24 @@ class AnalyzeActionsAsyncClient {
     private final ClientLogger logger = new ClientLogger(AnalyzeActionsAsyncClient.class);
     private final TextAnalyticsClientImpl legacyService;
     private final AnalyzeTextsImpl service;
+
+    private final TextAnalyticsServiceVersion serviceVersion;
+
     private static final Pattern PATTERN;
     static {
         PATTERN = Pattern.compile(REGEX_ACTION_ERROR_TARGET, Pattern.MULTILINE);
     }
 
-    AnalyzeActionsAsyncClient(TextAnalyticsClientImpl legacyService) {
+    AnalyzeActionsAsyncClient(TextAnalyticsClientImpl legacyService, TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = legacyService;
         this.service = null;
+        this.serviceVersion = serviceVersion;
     }
 
-    AnalyzeActionsAsyncClient(AnalyzeTextsImpl service) {
+    AnalyzeActionsAsyncClient(AnalyzeTextsImpl service, TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = null;
         this.service = service;
+        this.serviceVersion = serviceVersion;
     }
 
     PollerFlux<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> beginAnalyzeActions(
@@ -194,6 +200,8 @@ class AnalyzeActionsAsyncClient {
         Context context) {
         try {
             Objects.requireNonNull(actions, "'actions' cannot be null.");
+            throwIfLegacyApiVersion(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+                "'beginAnalyzeActions' is only available for API version v3.1 and up.");
             inputDocumentsValidation(documents);
             options = getNotNullAnalyzeActionsOptions(options);
             final Context finalContext = getNotNullContext(context)
@@ -201,6 +209,9 @@ class AnalyzeActionsAsyncClient {
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
 
             if (service != null) {
+                throwIfLegacyApiVersionForActions(actions,
+                    Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1),
+                    this.serviceVersion);
                 final AnalyzeTextJobsInput analyzeTextJobsInput =
                     new AnalyzeTextJobsInput()
                         .setDisplayName(actions.getDisplayName())
@@ -229,6 +240,8 @@ class AnalyzeActionsAsyncClient {
                 );
             }
 
+            throwIfLegacyApiVersionForActions(actions, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+                this.serviceVersion);
             final AnalyzeBatchInput analyzeBatchInput =
                 new AnalyzeBatchInput()
                     .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)))
@@ -263,6 +276,8 @@ class AnalyzeActionsAsyncClient {
         Context context) {
         try {
             Objects.requireNonNull(actions, "'actions' cannot be null.");
+            throwIfLegacyApiVersion(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+                "'beginAnalyzeActions' is only available for API version v3.1 and up.");
             inputDocumentsValidation(documents);
             options = getNotNullAnalyzeActionsOptions(options);
             final Context finalContext = getNotNullContext(context)
@@ -275,6 +290,9 @@ class AnalyzeActionsAsyncClient {
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
 
             if (service != null) {
+                throwIfLegacyApiVersionForActions(actions,
+                    Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1),
+                    this.serviceVersion);
                 return new PollerFlux<>(
                     DEFAULT_POLL_INTERVAL,
                     activationOperation(
@@ -301,6 +319,8 @@ class AnalyzeActionsAsyncClient {
                 );
             }
 
+            throwIfLegacyApiVersionForActions(actions, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+                this.serviceVersion);
             return new PollerFlux<>(
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(
@@ -1283,5 +1303,28 @@ class AnalyzeActionsAsyncClient {
             taskNameIdPair[1] = matcher.group(2);
         }
         return taskNameIdPair;
+    }
+
+    private void throwIfLegacyApiVersionForActions(TextAnalyticsActions actions,
+        List<TextAnalyticsServiceVersion> targetVersions, TextAnalyticsServiceVersion version) {
+        if (actions.getMultiLabelClassifyActions() != null) {
+            throwIfLegacyApiVersion(version, targetVersions,
+                "'MultiLabelClassifyAction' is only available for API version 2022-05-01 and up.");
+        }
+
+        if (actions.getSingleLabelClassifyActions() != null) {
+            throwIfLegacyApiVersion(version, targetVersions,
+                "'SingleLabelClassifyAction' is only available for API version 2022-05-01 and up.");
+        }
+
+        if (actions.getRecognizeCustomEntitiesActions() != null) {
+            throwIfLegacyApiVersion(version, targetVersions,
+                "'RecognizeCustomEntitiesAction' is only available for API version 2022-05-01 and up.");
+        }
+
+        if (actions.getAnalyzeHealthcareEntitiesActions() != null) {
+            throwIfLegacyApiVersion(version, targetVersions,
+                "'AnalyzeHealthcareEntitiesAction' is only available for API version 2022-05-01 and up.");
+        }
     }
 }
