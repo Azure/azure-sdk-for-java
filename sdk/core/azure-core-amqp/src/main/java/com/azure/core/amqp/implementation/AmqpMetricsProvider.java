@@ -43,6 +43,8 @@ public class AmqpMetricsProvider {
         .getProperties(AZURE_CORE_AMQP_PROPERTIES_NAME)
         .getOrDefault(AZURE_CORE_AMQP_PROPERTIES_VERSION_KEY, null);
 
+    private static final int DELIVERY_STATES_COUNT = DeliveryState.DeliveryStateType.values().length + 1;
+    private static final int RESPONSE_CODES_COUNT = AmqpResponseCode.values().length + 1;
     private static final Meter DEFAULT_METER = MeterProvider.getDefaultProvider().createMeter("azure-core-amqp", AZURE_CORE_VERSION, new MetricsOptions());
     private static final AmqpMetricsProvider NOOP = new AmqpMetricsProvider();
     private final boolean isEnabled;
@@ -56,8 +58,8 @@ public class AmqpMetricsProvider {
     private LongCounter transportErrors = null;
     private DoubleHistogram receivedLag = null;
     private LongCounter addCredits = null;
-    private AttributeCache sendAttributeCache = null;
-    private AttributeCacheTwoDimensional requestResponseAttributeCache = null;
+    private TelemetryAttributes[] sendAttributeCache = null;
+    private AttributeCache[] requestResponseAttributeCache = null;
     private AttributeCache amqpErrorAttributeCache = null;
     private TelemetryAttributes commonAttributes = null;
 
@@ -91,9 +93,9 @@ public class AmqpMetricsProvider {
             }
 
             this.commonAttributes = this.meter.createAttributes(commonAttributesMap);
-            this.requestResponseAttributeCache = new AttributeCacheTwoDimensional(STATUS_CODE_KEY, MANAGEMENT_OPERATION_KEY);
-            this.sendAttributeCache = new AttributeCache(ClientConstants.DELIVERY_STATE_KEY);
-            this.amqpErrorAttributeCache = new AttributeCache(ClientConstants.ERROR_CONDITION_KEY);
+            this.requestResponseAttributeCache = new AttributeCache[RESPONSE_CODES_COUNT];
+            this.sendAttributeCache = new TelemetryAttributes[DELIVERY_STATES_COUNT];
+            this.amqpErrorAttributeCache = new AttributeCache(ClientConstants.ERROR_CONDITION_KEY, commonAttributesMap);
             this.sendDuration = this.meter.createDoubleHistogram("messaging.az.amqp.producer.send.duration", "Duration of AMQP-level send call.", "ms");
             this.requestResponseDuration = this.meter.createDoubleHistogram("messaging.az.amqp.management.request.duration", "Duration of AMQP request-response operation.", "ms");
             this.closedConnections = this.meter.createLongCounter("messaging.az.amqp.client.connections.closed", "Closed connections", "connections");
@@ -121,8 +123,7 @@ public class AmqpMetricsProvider {
      */
     public void recordSend(long start, DeliveryState.DeliveryStateType deliveryState) {
         if (isEnabled && sendDuration.isEnabled()) {
-            TelemetryAttributes attributes = sendAttributeCache.getOrCreate(deliveryStateToLowerCaseString(deliveryState));
-            sendDuration.record(Instant.now().toEpochMilli() - start, attributes, Context.NONE);
+            sendDuration.record(Instant.now().toEpochMilli() - start, getDeliveryStateAttribute(deliveryState), Context.NONE);
         }
     }
 
@@ -131,8 +132,9 @@ public class AmqpMetricsProvider {
      */
     public void recordRequestResponseDuration(long start, String operationName, AmqpResponseCode responseCode) {
         if (isEnabled && requestResponseDuration.isEnabled()) {
-            TelemetryAttributes attributes = requestResponseAttributeCache.getOrCreate(deliveryStateToLowerCaseString(responseCode), operationName);
-            requestResponseDuration.record(Instant.now().toEpochMilli() - start, attributes, Context.NONE);
+            requestResponseDuration.record(Instant.now().toEpochMilli() - start,
+                getResponseCodeAttributes(responseCode, operationName),
+                Context.NONE);
         }
     }
 
@@ -209,6 +211,40 @@ public class AmqpMetricsProvider {
         }
     }
 
+    private TelemetryAttributes getDeliveryStateAttribute(DeliveryState.DeliveryStateType state) {
+        int ind = state == null ? DELIVERY_STATES_COUNT - 1 : state.ordinal();
+        TelemetryAttributes attrs = sendAttributeCache[ind];
+        if (attrs != null) {
+            return attrs;
+        }
+
+        return createDeliveryStateAttribute(state, ind);
+    }
+
+    private TelemetryAttributes getResponseCodeAttributes(AmqpResponseCode code, String operation) {
+        int ind = code == null ? RESPONSE_CODES_COUNT - 1 : code.ordinal();
+        AttributeCache codeAttributes = requestResponseAttributeCache[ind];
+        if (codeAttributes == null) {
+            codeAttributes = createResponseCodeAttribute(code, ind);
+        }
+
+        return codeAttributes.getOrCreate(operation);
+    }
+
+    private synchronized AttributeCache createResponseCodeAttribute(AmqpResponseCode code, int ind) {
+        Map<String, Object> attrs = new HashMap<>(commonAttributesMap);
+        attrs.put(STATUS_CODE_KEY, responseCodeToLowerCaseString(code));
+        requestResponseAttributeCache[ind] = new AttributeCache(MANAGEMENT_OPERATION_KEY, attrs);
+        return requestResponseAttributeCache[ind];
+    }
+
+    private synchronized TelemetryAttributes createDeliveryStateAttribute(DeliveryState.DeliveryStateType state, int ind) {
+        Map<String, Object> attrs = new HashMap<>(commonAttributesMap);
+        attrs.put(ClientConstants.DELIVERY_STATE_KEY, deliveryStateToLowerCaseString(state));
+        sendAttributeCache[ind] = this.meter.createAttributes(attrs);
+        return sendAttributeCache[ind];
+    }
+
     private static String deliveryStateToLowerCaseString(DeliveryState.DeliveryStateType state) {
         if (state == null) {
             return "error";
@@ -234,7 +270,7 @@ public class AmqpMetricsProvider {
         }
     }
 
-    private static String deliveryStateToLowerCaseString(AmqpResponseCode response) {
+    private static String responseCodeToLowerCaseString(AmqpResponseCode response) {
         if (response == null) {
             return "error";
         }
@@ -341,9 +377,11 @@ public class AmqpMetricsProvider {
 
     private class AttributeCache {
         private final Map<String, TelemetryAttributes> attr = new ConcurrentHashMap<>();
+        private final Map<String, Object> common;
         private final String dimensionName;
-        AttributeCache(String dimensionName) {
+        AttributeCache(String dimensionName, Map<String, Object> common) {
             this.dimensionName = dimensionName;
+            this.common = common;
         }
 
         public TelemetryAttributes getOrCreate(String value) {
@@ -351,29 +389,8 @@ public class AmqpMetricsProvider {
         }
 
         private TelemetryAttributes create(String value) {
-            Map<String, Object> attributes = new HashMap<>(commonAttributesMap);
+            Map<String, Object> attributes = new HashMap<>(common);
             attributes.put(dimensionName, value);
-            return meter.createAttributes(attributes);
-        }
-    }
-
-    private class AttributeCacheTwoDimensional {
-        private final Map<String, TelemetryAttributes> attr = new ConcurrentHashMap<>();
-        private final String dimensionName1;
-        private final String dimensionName2;
-        AttributeCacheTwoDimensional(String dimension1, String dimension2) {
-            this.dimensionName1 = dimension1;
-            this.dimensionName2 = dimension2;
-        }
-
-        public TelemetryAttributes getOrCreate(String value1, String value2) {
-            return attr.computeIfAbsent(value1 + ":" + value2, Ignored -> create(value1, value2));
-        }
-
-        private TelemetryAttributes create(String value1, String value2) {
-            Map<String, Object> attributes = new HashMap<>(commonAttributesMap);
-            attributes.put(dimensionName1, value1);
-            attributes.put(dimensionName2, value2);
             return meter.createAttributes(attributes);
         }
     }
