@@ -4,11 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.core.http.ProxyOptions;
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.DirectConnectionConfig;
-import com.azure.cosmos.GatewayConnectionConfig;
-import com.azure.cosmos.ThrottlingRetryOptions;
+import com.azure.cosmos.*;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -26,7 +22,13 @@ public final class ConnectionPolicy {
     private boolean endpointDiscoveryEnabled;
     private boolean multipleWriteRegionsEnabled;
     private List<String> preferredRegions;
-    private boolean readRequestsFallbackEnabled;
+    private enum ReadRequestsFallbackEnabled {
+        Default,
+        False,
+        True
+    };
+    private ReadRequestsFallbackEnabled readRequestsFallbackEnabled;
+    private ConsistencyLevel actualConsistencyLevel;
     private ThrottlingRetryOptions throttlingRetryOptions;
     private String userAgentSuffix;
 
@@ -90,7 +92,8 @@ public final class ConnectionPolicy {
         //  Default values
         this.endpointDiscoveryEnabled = true;
         this.multipleWriteRegionsEnabled = true;
-        this.readRequestsFallbackEnabled = true;
+        this.readRequestsFallbackEnabled = ReadRequestsFallbackEnabled.True;
+        this.actualConsistencyLevel = ConsistencyLevel.EVENTUAL;    // it would be better to have an undefined value here, but this is only used to determine if isReadRequestsFallbackEnabled()
         this.throttlingRetryOptions = new ThrottlingRetryOptions();
         this.userAgentSuffix = "";
         this.ioThreadPriority = Thread.NORM_PRIORITY;
@@ -368,6 +371,20 @@ public final class ConnectionPolicy {
     }
 
     /**
+     * Sets the actual consistency level reported on the database connection after the connection has been made.
+     * <p>
+     * Initialized value can be anything other than Bounded Staleness as that has specific meaning for isReadRequestsFallbackEnabled().
+     * <p>
+     * Until this property is not set, it defaults to eventual consistency
+     *
+     * @param consistencyLevel should only be set AFTER actual consistency level is known (after connection to database).
+     * @return the actual ConsistencyLevel for the database connection.
+     */
+    public void setActualConsistencyLevel(ConsistencyLevel consistencyLevel) {
+        this.actualConsistencyLevel = consistencyLevel;
+    }
+
+    /**
      * Gets whether to allow for reads to go to multiple regions configured on an account of Azure Cosmos DB service.
      * <p>
      * DEFAULT value is true.
@@ -380,7 +397,11 @@ public final class ConnectionPolicy {
      * @return flag to allow for reads to go to multiple regions configured on an account of Azure Cosmos DB service.
      */
     public boolean isReadRequestsFallbackEnabled() {
-        return this.readRequestsFallbackEnabled;
+        switch (this.readRequestsFallbackEnabled) {
+            case True:  return true;
+            case False: return false;
+        }
+        return (this.actualConsistencyLevel == null) || (this.actualConsistencyLevel != ConsistencyLevel.BOUNDED_STALENESS);
     }
 
     /**
@@ -420,7 +441,9 @@ public final class ConnectionPolicy {
      * @return the ConnectionPolicy.
      */
     public ConnectionPolicy setReadRequestsFallbackEnabled(boolean readRequestsFallbackEnabled) {
-        this.readRequestsFallbackEnabled = readRequestsFallbackEnabled;
+        this.readRequestsFallbackEnabled = readRequestsFallbackEnabled
+            ? ReadRequestsFallbackEnabled.True
+            : ReadRequestsFallbackEnabled.False;
         return this;
     }
 
@@ -576,7 +599,7 @@ public final class ConnectionPolicy {
             ", multipleWriteRegionsEnabled=" + multipleWriteRegionsEnabled +
             ", proxyType=" + (proxy != null ? proxy.getType() : null) +
             ", inetSocketProxyAddress=" + (proxy != null ? proxy.getAddress() : null) +
-            ", readRequestsFallbackEnabled=" + readRequestsFallbackEnabled +
+            ", readRequestsFallbackEnabled=" + isReadRequestsFallbackEnabled() +
             ", connectTimeout=" + connectTimeout +
             ", idleTcpEndpointTimeout=" + idleTcpEndpointTimeout +
             ", maxConnectionsPerEndpoint=" + maxConnectionsPerEndpoint +

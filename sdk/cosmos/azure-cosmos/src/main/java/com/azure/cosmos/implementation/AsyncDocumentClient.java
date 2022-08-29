@@ -256,6 +256,8 @@ public interface AsyncDocumentClient {
                 apiType,
                 clientTelemetryConfig);
 
+            connectionPolicy.setActualConsistencyLevel(client.getConsistencyLevel());
+
             client.init(state, null);
             return client;
         }
