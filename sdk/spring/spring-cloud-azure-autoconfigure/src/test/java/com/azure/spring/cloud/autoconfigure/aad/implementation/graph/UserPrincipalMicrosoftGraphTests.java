@@ -45,7 +45,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-@Disabled("No available jakarta version for 'com.github.tomakehurst:wiremock-jre8'")
+@Disabled("No available jakarta version for 'com.github.tomakehurst:wiremock-jre8', https://github.com/wiremock/wiremock/issues/1760")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 //@WireMockTest(httpPort = 8080)
 class UserPrincipalMicrosoftGraphTests {
