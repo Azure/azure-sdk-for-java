@@ -3,12 +3,14 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
 /** Defines values for ParagraphRole. */
+@Immutable
 public final class ParagraphRole extends ExpandableStringEnum<ParagraphRole> {
     /** Static value pageHeader for ParagraphRole. */
     public static final ParagraphRole PAGE_HEADER = fromString("pageHeader");

@@ -45,8 +45,25 @@ If you don’t want to use the `spring-boot-starter-parent`, you can still keep 
 </dependencyManagement>
 ```
 
+## Which Version of Azure Spring Data Cosmos Should I Use
+
+Mapping from **Spring Boot** / **Spring Cloud** version to **Azure Spring Data Cosmos** versions
+
+| Spring Boot version   | Spring Cloud version   | Azure Spring Data Cosmos versions |
+|-----------------------|------------------------|---------------------------------|
+| 2.7.x                 | 2021.0.x               |  3.23.0 and above |
+| 2.6.x                 | 2021.0.x               |  3.15.0 - 3.22.0 |
+| 2.5.x                 | 2020.0.x               |  3.8.0 - 3.14.0 |
+| 2.4.x                 | 2020.0.x               |  3.5.0 - 3.7.0 |
+
+### I'm Using Spring Boot Version X
+If you are using **Spring Boot** in your project, you can find related **Azure Spring Data Cosmos** versions from above table. For example: if you are using **Spring Boot** 2.7.x, you should use **Azure Spring Data Cosmos** versions 3.23.0 and above.
+
+### I'm Using Spring Cloud Version Y
+If you are using **Spring Cloud** in your project, you can also find related **Azure Spring Data Cosmos** versions from above table. For example, if you are using **Spring Cloud** 2021.0.x, you should use **Azure Spring Data Cosmos** versions 3.23.0 and above.
+
 ## Spring Data Version Support
-This project supports `spring-data-commons 2.6.x` versions.
+This project supports `spring-data-commons 2.7.x` versions.
 
 The above setup does not allow you to override individual dependencies using a property as explained above. To achieve the same result, you’d need to add an entry in the dependencyManagement of your project before the `spring-boot-dependencies` entry. For instance, to upgrade to another Spring Data release train you’d add the following to your pom.xml.
 ```xml
@@ -293,7 +310,7 @@ public class UserSample {
 ```
 #### Nested Partition Key support
 
-- Spring Data Cosmos SDK supports nested partition key. To add nested partition key, use `partitionKeyPath` field in `@Container` annotation.
+- Azure Spring Data Cosmos supports nested partition key. To add nested partition key, use `partitionKeyPath` field in `@Container` annotation.
 - `partitionKeyPath` should only be used to support nested partition key path. For general partition key support, use the `@PartitionKey` annotation.
 - By default `@PartitionKey` annotation will take precedence, unless not specified.
 - Below example shows how to properly use Nested Partition key feature.
@@ -366,8 +383,8 @@ public interface AnnotatedQueriesUserReactiveRepositoryCodeSnippet extends React
 
 The queries that are specified in the annotation are same as the cosmos queries.
 Please refer to the following articles for more information on sql queries in cosmos
- - [sql-query-getting-started] [sql_queries_getting_started]
- - [tutorial-query-sql-api] [sql_queries_in_cosmos] 
+ - [Sql API Query Getting Started] [sql_queries_getting_started]
+ - [Sql API Query Tutorial] [sql_queries_in_cosmos] 
 
 ### Create an Application class
 Here create an application class with all the components
@@ -465,7 +482,7 @@ String[] includePaths() default {};
 String[] excludePaths() default {};
 ```
 #### Unique Key Policy
- - Spring Data Cosmos SDK supports setting `UniqueKeyPolicy` on container by adding the annotation `@CosmosUniqueKeyPolicy` to domain class. This annotation has the following attributes:
+ - Azure Spring Data Cosmos supports setting `UniqueKeyPolicy` on container by adding the annotation `@CosmosUniqueKeyPolicy` to domain class. This annotation has the following attributes:
 ```java readme-sample-CosmosUniqueKeyPolicyCodeSnippet
 @Container
 @CosmosUniqueKeyPolicy(uniqueKeys = {
@@ -900,7 +917,7 @@ public class MultiDatabaseApplication implements CommandLineRunner {
 
 ## Beta version package
 
-Beta version built from `master` branch are available, you can refer to the [instruction](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md#nightly-package-builds) to use beta version packages.
+Beta version built from `main` branch are available, you can refer to the [instruction](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md#nightly-package-builds) to use beta version packages.
 
 ## Troubleshooting
 
@@ -972,12 +989,12 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [coc_contact]: mailto:opencode@microsoft.com
 [azure_subscription]: https://azure.microsoft.com/free/
 [samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-spring-data-cosmos/src/samples/java/com/azure/spring/data/cosmos
-[sample-for-multi-database]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/cosmos/azure-spring-boot-sample-cosmos-multi-database-multi-account
-[sample-for-multi-database-single-account]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/cosmos/azure-spring-boot-sample-cosmos-multi-database-single-account
+[sample-for-multi-database]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_v4.3.0/cosmos/azure-spring-data-cosmos/cosmos-multi-database-multi-account
+[sample-for-multi-database-single-account]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_v4.3.0/cosmos/azure-spring-data-cosmos/cosmos-multi-database-single-account
 [sql_api_query]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sql-query
 [local_emulator]: https://docs.microsoft.com/azure/cosmos-db/local-emulator
 [local_emulator_export_ssl_certificates]: https://docs.microsoft.com/azure/cosmos-db/local-emulator-export-ssl-certificates
-[spring_data_commons_id_annotation]: https://github.com/spring-projects/spring-data-commons/blob/master/src/main/java/org/springframework/data/annotation/Id.java
+[spring_data_commons_id_annotation]: https://github.com/spring-projects/spring-data-commons/blob/main/src/main/java/org/springframework/data/annotation/Id.java
 [azure_cosmos_db_partition]: https://docs.microsoft.com/azure/cosmos-db/partition-data
 [address_repository_it_test]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-spring-data-cosmos-test/src/test/java/com/azure/spring/data/cosmos/repository/integration/AddressRepositoryIT.java
 [azure_spring_data_cosmos_docs]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sdk-java-spring-v3

@@ -12,10 +12,10 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAu
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelSummary;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.ModelOperationDetails;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.ModelOperationSummary;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelOperationDetails;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelOperationSummary;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentOperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -111,7 +111,7 @@ public final class DocumentModelAdministrationClient {
      * for more information on building mode for custom documents.
      * @return A {@link SyncPoller} that polls the building model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns the trained {@link DocumentModelDetails custom document analysis model}.
-     * @throws HttpResponseException If building model fails with {@link OperationStatus#FAILED} is created.
+     * @throws HttpResponseException If building model fails with {@link DocumentOperationStatus#FAILED} is created.
      * @throws NullPointerException If {@code blobContainerUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -175,7 +175,7 @@ public final class DocumentModelAdministrationClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link SyncPoller} that polls the building model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns the built {@link DocumentModelDetails custom document analysis model}.
-     * @throws HttpResponseException If building the model fails with {@link OperationStatus#FAILED} is created.
+     * @throws HttpResponseException If building the model fails with {@link DocumentOperationStatus#FAILED} is created.
      * @throws NullPointerException If {@code blobContainerUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -195,9 +195,9 @@ public final class DocumentModelAdministrationClient {
      * <pre>
      * ResourceDetails resourceDetails = documentModelAdministrationClient.getResourceDetails&#40;&#41;;
      * System.out.printf&#40;&quot;Max number of models that can be build for this account: %d%n&quot;,
-     *     resourceDetails.getDocumentModelLimit&#40;&#41;&#41;;
+     *     resourceDetails.getCustomDocumentModelLimit&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Current count of built document analysis models: %d%n&quot;,
-     *     resourceDetails.getDocumentModelCount&#40;&#41;&#41;;
+     *     resourceDetails.getCustomDocumentModelCount&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getResourceDetails -->
      *
@@ -220,9 +220,9 @@ public final class DocumentModelAdministrationClient {
      * System.out.printf&#40;&quot;Response Status Code: %d.&quot;, response.getStatusCode&#40;&#41;&#41;;
      * ResourceDetails resourceDetails = response.getValue&#40;&#41;;
      * System.out.printf&#40;&quot;Max number of models that can be build for this account: %d%n&quot;,
-     *     resourceDetails.getDocumentModelLimit&#40;&#41;&#41;;
+     *     resourceDetails.getCustomDocumentModelLimit&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Current count of built document analysis models: %d%n&quot;,
-     *     resourceDetails.getDocumentModelCount&#40;&#41;&#41;;
+     *     resourceDetails.getCustomDocumentModelCount&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getResourceDetailsWithResponse#Context -->
      *
@@ -375,7 +375,7 @@ public final class DocumentModelAdministrationClient {
      * @return A {@link SyncPoller} that polls the create composed model operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns the {@link DocumentModelDetails composed model}.
      * @throws HttpResponseException If create composed model operation fails and model with
-     * {@link OperationStatus#FAILED} is created.
+     * {@link DocumentOperationStatus#FAILED} is created.
      * @throws NullPointerException If the list of {@code componentModelIds} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -434,7 +434,7 @@ public final class DocumentModelAdministrationClient {
      * @return A {@link SyncPoller} that polls the create composed model operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns the {@link DocumentModelDetails composed model}.
      * @throws HttpResponseException If create composed model operation fails and model with
-     * {@link OperationStatus#FAILED} is created.
+     * {@link DocumentOperationStatus#FAILED} is created.
      * @throws NullPointerException If the list of {@code componentModelIds} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -502,7 +502,8 @@ public final class DocumentModelAdministrationClient {
      * CopyAuthorization copyAuthorization = documentModelAdministrationClient.getCopyAuthorization&#40;&#41;;
      * &#47;&#47; Start copy operation from the source client
      * DocumentModelDetails documentModelDetails =
-     *     documentModelAdministrationClient.beginCopyModelTo&#40;copyModelId, copyAuthorization, Context.NONE&#41;.getFinalResult&#40;&#41;;
+     *     documentModelAdministrationClient.beginCopyModelTo&#40;copyModelId, copyAuthorization, Context.NONE&#41;
+     *         .getFinalResult&#40;&#41;;
      * System.out.printf&#40;&quot;Copied model has model ID: %s, was created on: %s.%n,&quot;,
      *     documentModelDetails.getModelId&#40;&#41;,
      *     documentModelDetails.getCreatedOn&#40;&#41;&#41;;
@@ -610,7 +611,8 @@ public final class DocumentModelAdministrationClient {
      * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getModelWithResponse#string-Context -->
      * <pre>
      * String modelId = &quot;&#123;custom-model-id&#125;&quot;;
-     * Response&lt;DocumentModelDetails&gt; response = documentModelAdministrationClient.getModelWithResponse&#40;modelId, Context.NONE&#41;;
+     * Response&lt;DocumentModelDetails&gt; response
+     *     = documentModelAdministrationClient.getModelWithResponse&#40;modelId, Context.NONE&#41;;
      * System.out.printf&#40;&quot;Response Status Code: %d.&quot;, response.getStatusCode&#40;&#41;&#41;;
      * DocumentModelDetails documentModelDetails = response.getValue&#40;&#41;;
      * System.out.printf&#40;&quot;Model ID: %s%n&quot;, documentModelDetails.getModelId&#40;&#41;&#41;;
@@ -644,13 +646,15 @@ public final class DocumentModelAdministrationClient {
      * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getOperation#string -->
      * <pre>
      * String operationId = &quot;&#123;operation-id&#125;&quot;;
-     * ModelOperationDetails modelOperationDetails = documentModelAdministrationClient.getOperation&#40;operationId&#41;;
-     * System.out.printf&#40;&quot;Operation ID: %s%n&quot;, modelOperationDetails.getOperationId&#40;&#41;&#41;;
-     * System.out.printf&#40;&quot;Operation Kind: %s%n&quot;, modelOperationDetails.getKind&#40;&#41;&#41;;
-     * System.out.printf&#40;&quot;Operation Status: %s%n&quot;, modelOperationDetails.getStatus&#40;&#41;&#41;;
-     * System.out.printf&#40;&quot;Model ID created with this operation: %s%n&quot;, modelOperationDetails.getModelId&#40;&#41;&#41;;
-     * if &#40;ModelOperationStatus.FAILED.equals&#40;modelOperationDetails.getStatus&#40;&#41;&#41;&#41; &#123;
-     *     System.out.printf&#40;&quot;Operation fail error: %s%n&quot;, modelOperationDetails.getError&#40;&#41;.getMessage&#40;&#41;&#41;;
+     * DocumentModelOperationDetails documentModelOperationDetails
+     *     = documentModelAdministrationClient.getOperation&#40;operationId&#41;;
+     * System.out.printf&#40;&quot;Operation ID: %s%n&quot;, documentModelOperationDetails.getOperationId&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Operation Kind: %s%n&quot;, documentModelOperationDetails.getKind&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Operation Status: %s%n&quot;, documentModelOperationDetails.getStatus&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Model ID created with this operation: %s%n&quot;,
+     *     documentModelOperationDetails.getResult&#40;&#41;.getModelId&#40;&#41;&#41;;
+     * if &#40;DocumentOperationStatus.FAILED.equals&#40;documentModelOperationDetails.getStatus&#40;&#41;&#41;&#41; &#123;
+     *     System.out.printf&#40;&quot;Operation fail error: %s%n&quot;, documentModelOperationDetails.getError&#40;&#41;.getMessage&#40;&#41;&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getOperation#string -->
@@ -661,7 +665,7 @@ public final class DocumentModelAdministrationClient {
      * @throws IllegalArgumentException If {@code operationId} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ModelOperationDetails getOperation(String operationId) {
+    public DocumentModelOperationDetails getOperation(String operationId) {
         return getOperationWithResponse(operationId, Context.NONE).getValue();
     }
 
@@ -673,16 +677,17 @@ public final class DocumentModelAdministrationClient {
      * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getOperationWithResponse#string-Context -->
      * <pre>
      * String operationId = &quot;&#123;operation-id&#125;&quot;;
-     * Response&lt;ModelOperationDetails&gt; response =
+     * Response&lt;DocumentModelOperationDetails&gt; response =
      *     documentModelAdministrationClient.getOperationWithResponse&#40;operationId, Context.NONE&#41;;
      * System.out.printf&#40;&quot;Response Status Code: %d.&quot;, response.getStatusCode&#40;&#41;&#41;;
-     * ModelOperationDetails modelOperationDetails = response.getValue&#40;&#41;;
-     * System.out.printf&#40;&quot;Operation ID: %s%n&quot;, modelOperationDetails.getOperationId&#40;&#41;&#41;;
-     * System.out.printf&#40;&quot;Operation Kind: %s%n&quot;, modelOperationDetails.getKind&#40;&#41;&#41;;
-     * System.out.printf&#40;&quot;Operation Status: %s%n&quot;, modelOperationDetails.getStatus&#40;&#41;&#41;;
-     * System.out.printf&#40;&quot;Model ID created with this operation: %s%n&quot;, modelOperationDetails.getModelId&#40;&#41;&#41;;
-     * if &#40;ModelOperationStatus.FAILED.equals&#40;modelOperationDetails.getStatus&#40;&#41;&#41;&#41; &#123;
-     *     System.out.printf&#40;&quot;Operation fail error: %s%n&quot;, modelOperationDetails.getError&#40;&#41;.getMessage&#40;&#41;&#41;;
+     * DocumentModelOperationDetails documentModelOperationDetails = response.getValue&#40;&#41;;
+     * System.out.printf&#40;&quot;Operation ID: %s%n&quot;, documentModelOperationDetails.getOperationId&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Operation Kind: %s%n&quot;, documentModelOperationDetails.getKind&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Operation Status: %s%n&quot;, documentModelOperationDetails.getStatus&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Model ID created with this operation: %s%n&quot;,
+     *     documentModelOperationDetails.getResult&#40;&#41;.getModelId&#40;&#41;&#41;;
+     * if &#40;DocumentOperationStatus.FAILED.equals&#40;documentModelOperationDetails.getStatus&#40;&#41;&#41;&#41; &#123;
+     *     System.out.printf&#40;&quot;Operation fail error: %s%n&quot;, documentModelOperationDetails.getError&#40;&#41;.getMessage&#40;&#41;&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getOperationWithResponse#string-Context -->
@@ -694,7 +699,7 @@ public final class DocumentModelAdministrationClient {
      * @throws IllegalArgumentException If {@code operationId} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ModelOperationDetails> getOperationWithResponse(String operationId, Context context) {
+    public Response<DocumentModelOperationDetails> getOperationWithResponse(String operationId, Context context) {
         return client.getOperationWithResponse(operationId, context).block();
     }
 
@@ -704,7 +709,7 @@ public final class DocumentModelAdministrationClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.listOperations -->
      * <pre>
-     * PagedIterable&lt;ModelOperationSummary&gt;
+     * PagedIterable&lt;DocumentModelOperationSummary&gt;
      *     modelOperationInfo = documentModelAdministrationClient.listOperations&#40;&#41;;
      * modelOperationInfo.forEach&#40;modelOperationSummary -&gt; &#123;
      *     System.out.printf&#40;&quot;Operation ID: %s%n&quot;, modelOperationSummary.getOperationId&#40;&#41;&#41;;
@@ -718,10 +723,10 @@ public final class DocumentModelAdministrationClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.listOperations -->
      *
-     * @return {@link PagedIterable} of {@link ModelOperationSummary} custom form model information.
+     * @return {@link PagedIterable} of {@link DocumentModelOperationSummary} custom form model information.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ModelOperationSummary> listOperations() {
+    public PagedIterable<DocumentModelOperationSummary> listOperations() {
         return new PagedIterable<>(client.listOperations(Context.NONE));
     }
 
@@ -732,7 +737,7 @@ public final class DocumentModelAdministrationClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.listOperations#Context -->
      * <pre>
-     * PagedIterable&lt;ModelOperationSummary&gt;
+     * PagedIterable&lt;DocumentModelOperationSummary&gt;
      *     modelOperationInfo = documentModelAdministrationClient.listOperations&#40;Context.NONE&#41;;
      * modelOperationInfo.forEach&#40;modelOperationSummary -&gt; &#123;
      *     System.out.printf&#40;&quot;Operation ID: %s%n&quot;, modelOperationSummary.getOperationId&#40;&#41;&#41;;
@@ -748,10 +753,10 @@ public final class DocumentModelAdministrationClient {
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return {@link PagedIterable} of {@link ModelOperationSummary} custom form model information.
+     * @return {@link PagedIterable} of {@link DocumentModelOperationSummary} custom form model information.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ModelOperationSummary> listOperations(Context context) {
+    public PagedIterable<DocumentModelOperationSummary> listOperations(Context context) {
         return new PagedIterable<>(client.listOperations(context));
     }
 }

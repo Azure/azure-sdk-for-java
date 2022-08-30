@@ -13,6 +13,7 @@ import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileQueryDelimitedSerialization;
 import com.azure.storage.file.datalake.models.FileQueryError;
 import com.azure.storage.file.datalake.models.FileQueryJsonSerialization;
+import com.azure.storage.file.datalake.options.DataLakeFileAppendOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
@@ -324,6 +325,23 @@ public class DataLakeFileClientJavaDocSamples {
     }
 
     /**
+     * Code snippet for {@link DataLakeFileClient#appendWithResponse(InputStream, long, long, DataLakeFileAppendOptions, Duration, Context)}
+     */
+    public void appendWithOptionsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.appendWithResponse#InputStream-long-long-DataLakeFileAppendOptions-Duration-Context
+        FileRange range = new FileRange(1024, 2048L);
+        byte[] contentMd5 = new byte[0]; // Replace with valid md5
+        DataLakeFileAppendOptions appendOptions = new DataLakeFileAppendOptions()
+            .setLeaseId(leaseId)
+            .setContentHash(contentMd5)
+            .setFlush(true);
+        Response<Void> response = client.appendWithResponse(data, offset, length, appendOptions, timeout,
+            new Context(key1, value1));
+        System.out.printf("Append data completed with status %d%n", response.getStatusCode());
+        // END: com.azure.storage.file.datalake.DataLakeFileClient.appendWithResponse#InputStream-long-long-DataLakeFileAppendOptions-Duration-Context
+    }
+
+    /**
      * Code snippets for {@link DataLakeFileClient#append(BinaryData, long)} and
      * {@link DataLakeFileClient#appendWithResponse(BinaryData, long, byte[], String, Duration, Context)}
      */
@@ -343,6 +361,24 @@ public class DataLakeFileClientJavaDocSamples {
             new Context(key1, value1));
         System.out.printf("Append data completed with status %d%n", response.getStatusCode());
         // END: com.azure.storage.file.datalake.DataLakeFileClient.appendWithResponse#BinaryData-long-byte-String-Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link DataLakeFileClient#appendWithResponse(BinaryData, long, DataLakeFileAppendOptions, Duration, Context)}
+     */
+    public void appendBinaryDataWithOptionsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.appendWithResponse#BinaryData-long-DataLakeFileAppendOptions-Duration-Context
+        BinaryData binaryData = BinaryData.fromStream(data, length);
+        FileRange range = new FileRange(1024, 2048L);
+        byte[] contentMd5 = new byte[0]; // Replace with valid md5
+        DataLakeFileAppendOptions appendOptions = new DataLakeFileAppendOptions()
+            .setLeaseId(leaseId)
+            .setContentHash(contentMd5)
+            .setFlush(true);
+        Response<Void> response = client.appendWithResponse(binaryData, offset, appendOptions, timeout,
+            new Context(key1, value1));
+        System.out.printf("Append data completed with status %d%n", response.getStatusCode());
+        // END: com.azure.storage.file.datalake.DataLakeFileClient.appendWithResponse#BinaryData-long-DataLakeFileAppendOptions-Duration-Context
     }
 
     /**

@@ -3,13 +3,13 @@
     "Method" : "PUT",
     "Uri" : "https://REDACTED.blob.preprod.core.windows.net/6f06d35d06f06d35dee1759289936bb1b73eb4858941?restype=container",
     "Headers" : {
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.17.0-beta.2 azsdk-java-azure-storage-file-datalake/12.10.0-beta.2 (11.0.14; Windows 10; 10.0)",
       "x-ms-client-request-id" : "90df5ba6-42c7-43a8-bb7e-a35cc43a2c55"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "eTag" : "0x8DA38363D6D2E0A",
       "Last-Modified" : "Tue, 17 May 2022 18:51:23 GMT",
       "retry-after" : "0",
@@ -23,13 +23,13 @@
     "Method" : "PUT",
     "Uri" : "https://REDACTED.dfs.preprod.core.windows.net/6f06d35d06f06d35dee1759289936bb1b73eb4858941/6f06d35d16f06d35dee133211c7c2f4222f1642f1afd?resource=directory",
     "Headers" : {
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.10.0-beta.2 (11.0.14; Windows 10; 10.0)",
       "x-ms-client-request-id" : "f811e715-695b-42a0-b241-13ae88d5904e"
     },
     "Response" : {
       "content-length" : "0",
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "eTag" : "0x8DA38363DF634E7",
       "Last-Modified" : "Tue, 17 May 2022 18:51:24 GMT",
       "retry-after" : "0",
@@ -44,7 +44,7 @@
     "Method" : "HEAD",
     "Uri" : "https://REDACTED.blob.preprod.core.windows.net/6f06d35d06f06d35dee1759289936bb1b73eb4858941/6f06d35d16f06d35dee133211c7c2f4222f1642f1afd",
     "Headers" : {
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.17.0-beta.2 azsdk-java-azure-storage-file-datalake/12.10.0-beta.2 (11.0.14; Windows 10; 10.0)",
       "x-ms-client-request-id" : "3596580f-c142-42a7-8d7d-d7051f97e017"
     },
@@ -66,7 +66,7 @@
       "x-ms-owner" : "$superuser",
       "Content-Type" : "type",
       "x-ms-group" : "$superuser",
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "x-ms-resource-type" : "directory",
       "Date" : "Tue, 17 May 2022 18:51:23 GMT",
       "Accept-Ranges" : "bytes",

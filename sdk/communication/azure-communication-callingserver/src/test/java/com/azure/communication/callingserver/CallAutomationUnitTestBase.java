@@ -8,14 +8,18 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
+import java.util.Collections;
 
 import com.azure.communication.callingserver.implementation.models.AcsCallParticipantInternal;
 import com.azure.communication.callingserver.implementation.models.AddParticipantsResponseInternal;
 import com.azure.communication.callingserver.implementation.models.CallConnectionPropertiesInternal;
 import com.azure.communication.callingserver.implementation.models.CallConnectionStateModelInternal;
 import com.azure.communication.callingserver.implementation.models.CallSourceInternal;
-import com.azure.communication.callingserver.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callingserver.implementation.models.GetParticipantsResponseInternal;
+import com.azure.communication.callingserver.models.MediaStreamingAudioChannelType;
+import com.azure.communication.callingserver.models.MediaStreamingConfiguration;
+import com.azure.communication.callingserver.models.MediaStreamingContentType;
+import com.azure.communication.callingserver.models.MediaStreamingTransportType;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
@@ -35,9 +39,16 @@ public class CallAutomationUnitTestBase {
     static final String CALL_TARGET_ID = "targetId";
     static final String CALL_CONNECTION_STATE = "connected";
     static final String CALL_SUBJECT = "subject";
-    static final String CALL_CALLBACK_URI = "https://REDACTED.com/events";
+    static final String CALL_CALLBACK_URL = "https://REDACTED.com/events";
     static final String CALL_INCOMING_CALL_CONTEXT = "eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.REDACTED";
     static final String CALL_OPERATION_CONTEXT = "operationContext";
+
+    static final MediaStreamingConfiguration MEDIA_STREAMING_CONFIGURATION = new MediaStreamingConfiguration(
+        "https://websocket.url.com",
+        MediaStreamingTransportType.WEBSOCKET,
+        MediaStreamingContentType.AUDIO,
+        MediaStreamingAudioChannelType.MIXED
+    );
 
     public static String generateDownloadResult(String content) {
         return content;
@@ -53,7 +64,7 @@ public class CallAutomationUnitTestBase {
             .setCallConnectionState(CallConnectionStateModelInternal.fromString(connectionState))
             .setSource(new CallSourceInternal()
                 .setIdentifier(ModelGenerator.generateUserIdentifierModel(callerId)))
-            .setTargets(new ArrayList<CommunicationIdentifierModel>(Arrays.asList(ModelGenerator.generateUserIdentifierModel(targetId)))
+            .setTargets(new ArrayList<>(Collections.singletonList(ModelGenerator.generateUserIdentifierModel(targetId)))
             );
 
         return serializeObject(result);
@@ -77,7 +88,7 @@ public class CallAutomationUnitTestBase {
     public static String generateAddParticipantsResponse() {
         AddParticipantsResponseInternal addParticipantsResponseInternal = new AddParticipantsResponseInternal()
             .setOperationContext(CALL_OPERATION_CONTEXT)
-            .setParticipants(new ArrayList<>(Arrays.asList(
+            .setParticipants(new ArrayList<>(Collections.singletonList(
                 ModelGenerator.generateAcsCallParticipantInternal(CALL_TARGET_ID, false))));
 
         return serializeObject(addParticipantsResponseInternal);

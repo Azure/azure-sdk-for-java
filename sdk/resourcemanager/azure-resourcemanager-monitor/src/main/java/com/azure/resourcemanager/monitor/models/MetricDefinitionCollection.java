@@ -7,15 +7,12 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.models.MetricDefinitionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Represents collection of metric definitions. */
 @Fluent
 public final class MetricDefinitionCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricDefinitionCollection.class);
-
     /*
      * the values for the metric definitions.
      */
@@ -49,7 +46,7 @@ public final class MetricDefinitionCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model MetricDefinitionCollection"));
@@ -57,4 +54,6 @@ public final class MetricDefinitionCollection {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MetricDefinitionCollection.class);
 }
