@@ -19,7 +19,7 @@ variables:
   - template: /eng/pipelines/templates/variables/globals.yml
 jobs:
 - ${{ each artifact in parameters.PackageIds }}:
-  - job: RetryOnGithubIo
+  - job: RetryOnGithubIo_{{artifact}}
     pool:
       name: azsdk-pool-mms-ubuntu-2004-general
       vmImage: MMSUbuntu20.04
@@ -42,7 +42,7 @@ jobs:
           # we override the regular script path because we have cloned the build tools repo as a separate artifact.
           ScriptPath: 'eng/common/scripts/copy-docs-to-blobstorage.ps1'
 
-  - job: RetryOnDocsMs
+  - job: RetryOnDocsMs_{{artifact}}
     pool:
       name: azsdk-pool-mms-ubuntu-2004-general
       vmImage: MMSUbuntu20.04
