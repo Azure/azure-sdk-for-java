@@ -1,4 +1,7 @@
 parameters:
+- name: ToolsRepoCommitish
+  type: string
+  default: 'main'
 - name: PackageVersions
   displayName: PackageVersions (regex of package versions to run)
   type: string
@@ -10,7 +13,7 @@ parameters:
 - name: Arguments
   displayName: Arguments (regex of arguments to run)
   type: string
-  default: '(10240)|(10485760)|(1073741824)' 
+  default: '(10240)|(10485760)|(1073741824)'
 - name: Iterations
   displayName: Iterations (times to run each test)
   type: number
@@ -30,3 +33,4 @@ extends:
     Arguments: ${{ parameters.Arguments }}
     Iterations: ${{ parameters.Iterations }}
     AdditionalArguments: ${{ parameters.AdditionalArguments }}
+    ToolsRepoCommitish: ${{ parameters.ToolsRepoCommitish }}
