@@ -33,7 +33,7 @@ jobs:
           path: '$(Build.SourcesDirectory)/packages' 
           pipeline: ${{ parameters.PipelineId }}
           runId: ${{ parameters.BuildId }}
-          project: 'java - resourcemanager'
+          project: 'Azure/azure-sdk-for-java'
       - template: /eng/common/pipelines/templates/steps/publish-blobs.yml
         parameters:
           FolderForUpload: '$(Pipeline.Workspace)/packages/${{parameters.GroupId}}/${{artifact.name}}'
@@ -58,7 +58,7 @@ jobs:
           path: '$(Pipeline.Workspace)/packages' 
           pipeline: ${{ parameters.PipelineId }}
           runId: ${{ parameters.BuildId }}
-          project: 'java - resourcemanager'
+          project: 'Azure/azure-sdk-for-java'
       # Pull and build the docker image.
       - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
         parameters:
