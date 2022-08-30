@@ -25,6 +25,7 @@ jobs:
       vmImage: MMSUbuntu20.04
     steps:
       # Sync docs repo onboarding files/folders
+      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
       - task: DownloadPipelineArtifact@2
         inputs:
           source: 'specific'
@@ -32,6 +33,7 @@ jobs:
           path: '$(Build.SourcesDirectory)/packages' 
           pipeline: ${{ parameters.PipelineId }}
           runId: ${{ parameters.BuildId }}
+          project: 'java - resourcemanager'
       - template: /eng/common/pipelines/templates/steps/publish-blobs.yml
         parameters:
           FolderForUpload: '$(Pipeline.Workspace)/packages/${{parameters.GroupId}}/${{artifact.name}}'
@@ -48,6 +50,7 @@ jobs:
       vmImage: MMSUbuntu20.04
     steps:
       # Sync docs repo onboarding files/folders
+      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
       - task: DownloadPipelineArtifact@2
         inputs:
           source: 'specific'
@@ -55,6 +58,7 @@ jobs:
           path: '$(Pipeline.Workspace)/packages' 
           pipeline: ${{ parameters.PipelineId }}
           runId: ${{ parameters.BuildId }}
+          project: 'java - resourcemanager'
       # Pull and build the docker image.
       - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
         parameters:
