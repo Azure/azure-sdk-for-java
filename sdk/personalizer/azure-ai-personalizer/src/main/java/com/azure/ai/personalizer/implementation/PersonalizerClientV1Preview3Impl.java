@@ -47,6 +47,18 @@ public final class PersonalizerClientV1Preview3Impl {
         return this.endpoint;
     }
 
+    /** Personalizer API version (for example, v1.0). */
+    private final String apiVersion;
+
+    /**
+     * Gets Personalizer API version (for example, v1.0).
+     *
+     * @return the apiVersion value.
+     */
+    public String getApiVersion() {
+        return this.apiVersion;
+    }
+
     /** The HTTP pipeline to send requests through. */
     private final HttpPipeline httpPipeline;
 
@@ -171,14 +183,16 @@ public final class PersonalizerClientV1Preview3Impl {
      * Initializes an instance of PersonalizerClientV1Preview3 client.
      *
      * @param endpoint Supported Cognitive Services endpoint.
+     * @param apiVersion Personalizer API version (for example, v1.0).
      */
-    PersonalizerClientV1Preview3Impl(String endpoint) {
+    PersonalizerClientV1Preview3Impl(String endpoint, String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint);
+                endpoint,
+                apiVersion);
     }
 
     /**
@@ -186,9 +200,10 @@ public final class PersonalizerClientV1Preview3Impl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint Supported Cognitive Services endpoint.
+     * @param apiVersion Personalizer API version (for example, v1.0).
      */
-    PersonalizerClientV1Preview3Impl(HttpPipeline httpPipeline, String endpoint) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
+    PersonalizerClientV1Preview3Impl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
     }
 
     /**
@@ -197,11 +212,14 @@ public final class PersonalizerClientV1Preview3Impl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint Supported Cognitive Services endpoint.
+     * @param apiVersion Personalizer API version (for example, v1.0).
      */
-    PersonalizerClientV1Preview3Impl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
+    PersonalizerClientV1Preview3Impl(
+            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
+        this.apiVersion = apiVersion;
         this.serviceConfigurations = new ServiceConfigurationsImpl(this);
         this.policies = new PoliciesImpl(this);
         this.evaluations = new EvaluationsImpl(this);
@@ -219,7 +237,7 @@ public final class PersonalizerClientV1Preview3Impl {
      * The interface defining all the services for PersonalizerClientV1Preview3 to be used by the proxy service to
      * perform REST calls.
      */
-    @Host("{Endpoint}/personalizer/v1.1-preview.3")
+    @Host("{Endpoint}/personalizer/{ApiVersion}")
     @ServiceInterface(name = "PersonalizerClientV1")
     public interface PersonalizerClientV1Preview3Service {
         @Post("/rank")
@@ -227,6 +245,7 @@ public final class PersonalizerClientV1Preview3Impl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<PersonalizerRankResult>> rank(
                 @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @BodyParam("application/json") PersonalizerRankOptions rankRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -248,7 +267,8 @@ public final class PersonalizerClientV1Preview3Impl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PersonalizerRankResult>> rankWithResponseAsync(PersonalizerRankOptions rankRequest) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.rank(this.getEndpoint(), rankRequest, accept, context));
+        return FluxUtil.withContext(
+                context -> service.rank(this.getEndpoint(), this.getApiVersion(), rankRequest, accept, context));
     }
 
     /**
@@ -269,7 +289,7 @@ public final class PersonalizerClientV1Preview3Impl {
     public Mono<Response<PersonalizerRankResult>> rankWithResponseAsync(
             PersonalizerRankOptions rankRequest, Context context) {
         final String accept = "application/json";
-        return service.rank(this.getEndpoint(), rankRequest, accept, context);
+        return service.rank(this.getEndpoint(), this.getApiVersion(), rankRequest, accept, context);
     }
 
     /**

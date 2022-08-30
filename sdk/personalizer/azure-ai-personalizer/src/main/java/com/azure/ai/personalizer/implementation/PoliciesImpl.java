@@ -47,20 +47,24 @@ public final class PoliciesImpl {
      * The interface defining all the services for PersonalizerClientV1Preview3Policies to be used by the proxy service
      * to perform REST calls.
      */
-    @Host("{Endpoint}/personalizer/v1.1-preview.3")
+    @Host("{Endpoint}/personalizer/{ApiVersion}")
     @ServiceInterface(name = "PersonalizerClientV1")
     public interface PoliciesService {
         @Get("/configurations/policy")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<PersonalizerPolicy>> get(
-                @HostParam("Endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
+                @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Put("/configurations/policy")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<PersonalizerPolicy>> update(
                 @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @BodyParam("application/json") PersonalizerPolicy policy,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -69,7 +73,10 @@ public final class PoliciesImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<PersonalizerPolicy>> reset(
-                @HostParam("Endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
+                @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
     }
 
     /**
@@ -85,7 +92,8 @@ public final class PoliciesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PersonalizerPolicy>> getWithResponseAsync() {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), accept, context));
+        return FluxUtil.withContext(
+                context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -103,7 +111,7 @@ public final class PoliciesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PersonalizerPolicy>> getWithResponseAsync(Context context) {
         final String accept = "application/json";
-        return service.get(this.client.getEndpoint(), accept, context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -183,7 +191,10 @@ public final class PoliciesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PersonalizerPolicy>> updateWithResponseAsync(PersonalizerPolicy policy) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(), policy, accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.update(
+                                this.client.getEndpoint(), this.client.getApiVersion(), policy, accept, context));
     }
 
     /**
@@ -202,7 +213,7 @@ public final class PoliciesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PersonalizerPolicy>> updateWithResponseAsync(PersonalizerPolicy policy, Context context) {
         final String accept = "application/json";
-        return service.update(this.client.getEndpoint(), policy, accept, context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), policy, accept, context);
     }
 
     /**
@@ -284,7 +295,8 @@ public final class PoliciesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PersonalizerPolicy>> resetWithResponseAsync() {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.reset(this.client.getEndpoint(), accept, context));
+        return FluxUtil.withContext(
+                context -> service.reset(this.client.getEndpoint(), this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -302,7 +314,7 @@ public final class PoliciesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PersonalizerPolicy>> resetWithResponseAsync(Context context) {
         final String accept = "application/json";
-        return service.reset(this.client.getEndpoint(), accept, context);
+        return service.reset(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
     }
 
     /**

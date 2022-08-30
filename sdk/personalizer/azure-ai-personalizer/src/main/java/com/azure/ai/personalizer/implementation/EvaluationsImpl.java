@@ -53,7 +53,7 @@ public final class EvaluationsImpl {
      * The interface defining all the services for PersonalizerClientV1Preview3Evaluations to be used by the proxy
      * service to perform REST calls.
      */
-    @Host("{Endpoint}/personalizer/v1.1-preview.3")
+    @Host("{Endpoint}/personalizer/{ApiVersion}")
     @ServiceInterface(name = "PersonalizerClientV1")
     public interface EvaluationsService {
         @Get("/evaluations/{evaluationId}")
@@ -61,6 +61,7 @@ public final class EvaluationsImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<PersonalizerEvaluation>> get(
                 @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @PathParam("evaluationId") String evaluationId,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -70,6 +71,7 @@ public final class EvaluationsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> delete(
                 @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @PathParam("evaluationId") String evaluationId,
                 Context context);
 
@@ -77,13 +79,17 @@ public final class EvaluationsImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<List<PersonalizerEvaluation>>> list(
-                @HostParam("Endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
+                @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/evaluations")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<ResponseBase<EvaluationsCreateHeaders, PersonalizerEvaluation>> create(
                 @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @BodyParam("application/json") PersonalizerEvaluationOptions evaluation,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -104,7 +110,10 @@ public final class EvaluationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PersonalizerEvaluation>> getWithResponseAsync(String evaluationId) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), evaluationId, accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.get(
+                                this.client.getEndpoint(), this.client.getApiVersion(), evaluationId, accept, context));
     }
 
     /**
@@ -123,7 +132,7 @@ public final class EvaluationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PersonalizerEvaluation>> getWithResponseAsync(String evaluationId, Context context) {
         final String accept = "application/json";
-        return service.get(this.client.getEndpoint(), evaluationId, accept, context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), evaluationId, accept, context);
     }
 
     /**
@@ -205,7 +214,9 @@ public final class EvaluationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String evaluationId) {
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), evaluationId, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.delete(this.client.getEndpoint(), this.client.getApiVersion(), evaluationId, context));
     }
 
     /**
@@ -222,7 +233,7 @@ public final class EvaluationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String evaluationId, Context context) {
-        return service.delete(this.client.getEndpoint(), evaluationId, context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), evaluationId, context);
     }
 
     /**
@@ -302,7 +313,8 @@ public final class EvaluationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<PersonalizerEvaluation>>> listWithResponseAsync() {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), accept, context));
+        return FluxUtil.withContext(
+                context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -319,7 +331,7 @@ public final class EvaluationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<PersonalizerEvaluation>>> listWithResponseAsync(Context context) {
         final String accept = "application/json";
-        return service.list(this.client.getEndpoint(), accept, context);
+        return service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -397,7 +409,10 @@ public final class EvaluationsImpl {
     public Mono<ResponseBase<EvaluationsCreateHeaders, PersonalizerEvaluation>> createWithResponseAsync(
             PersonalizerEvaluationOptions evaluation) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.create(this.client.getEndpoint(), evaluation, accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.create(
+                                this.client.getEndpoint(), this.client.getApiVersion(), evaluation, accept, context));
     }
 
     /**
@@ -416,7 +431,7 @@ public final class EvaluationsImpl {
     public Mono<ResponseBase<EvaluationsCreateHeaders, PersonalizerEvaluation>> createWithResponseAsync(
             PersonalizerEvaluationOptions evaluation, Context context) {
         final String accept = "application/json";
-        return service.create(this.client.getEndpoint(), evaluation, accept, context);
+        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), evaluation, accept, context);
     }
 
     /**

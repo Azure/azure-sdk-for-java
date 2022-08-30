@@ -177,6 +177,23 @@ public final class PersonalizerClientV1Preview3ImplBuilder
     }
 
     /*
+     * Personalizer API version (for example, v1.0).
+     */
+    @Generated private String apiVersion;
+
+    /**
+     * Sets Personalizer API version (for example, v1.0).
+     *
+     * @param apiVersion the apiVersion value.
+     * @return the PersonalizerClientV1Preview3ImplBuilder.
+     */
+    @Generated
+    public PersonalizerClientV1Preview3ImplBuilder apiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
+        return this;
+    }
+
+    /*
      * The serializer to serialize an object into a string
      */
     @Generated private SerializerAdapter serializerAdapter;
@@ -221,11 +238,14 @@ public final class PersonalizerClientV1Preview3ImplBuilder
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
+        if (apiVersion == null) {
+            this.apiVersion = "v1.1-preview.3";
+        }
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
         PersonalizerClientV1Preview3Impl client =
-                new PersonalizerClientV1Preview3Impl(pipeline, serializerAdapter, endpoint);
+                new PersonalizerClientV1Preview3Impl(pipeline, serializerAdapter, endpoint, apiVersion);
         return client;
     }
 

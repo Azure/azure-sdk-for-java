@@ -57,7 +57,7 @@ public final class ModelsImpl {
      * The interface defining all the services for PersonalizerClientV1Preview3Models to be used by the proxy service to
      * perform REST calls.
      */
-    @Host("{Endpoint}/personalizer/v1.1-preview.3")
+    @Host("{Endpoint}/personalizer/{ApiVersion}")
     @ServiceInterface(name = "PersonalizerClientV1")
     public interface ModelsService {
         @Get("/model")
@@ -65,6 +65,7 @@ public final class ModelsImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<StreamResponse> get(
                 @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @QueryParam("signed") Boolean signed,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -74,6 +75,7 @@ public final class ModelsImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> importMethod(
                 @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @BodyParam("application/octet-stream") Flux<ByteBuffer> body,
                 @HeaderParam("Content-Length") long contentLength,
                 @HeaderParam("Accept") String accept,
@@ -84,6 +86,7 @@ public final class ModelsImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> importMethod(
                 @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @BodyParam("application/octet-stream") BinaryData body,
                 @HeaderParam("Content-Length") long contentLength,
                 @HeaderParam("Accept") String accept,
@@ -93,13 +96,19 @@ public final class ModelsImpl {
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> reset(
-                @HostParam("Endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
+                @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/model/properties")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<PersonalizerModelProperties>> getProperties(
-                @HostParam("Endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
+                @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
     }
 
     /**
@@ -116,7 +125,9 @@ public final class ModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StreamResponse> getWithResponseAsync(Boolean signed) {
         final String accept = "application/octet-stream, application/json";
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), signed, accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.get(this.client.getEndpoint(), this.client.getApiVersion(), signed, accept, context));
     }
 
     /**
@@ -134,7 +145,7 @@ public final class ModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StreamResponse> getWithResponseAsync(Boolean signed, Context context) {
         final String accept = "application/octet-stream, application/json";
-        return service.get(this.client.getEndpoint(), signed, accept, context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), signed, accept, context);
     }
 
     /**
@@ -233,7 +244,14 @@ public final class ModelsImpl {
     public Mono<Response<Void>> importMethodWithResponseAsync(Flux<ByteBuffer> body, long contentLength) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.importMethod(this.client.getEndpoint(), body, contentLength, accept, context));
+                context ->
+                        service.importMethod(
+                                this.client.getEndpoint(),
+                                this.client.getApiVersion(),
+                                body,
+                                contentLength,
+                                accept,
+                                context));
     }
 
     /**
@@ -253,7 +271,8 @@ public final class ModelsImpl {
     public Mono<Response<Void>> importMethodWithResponseAsync(
             Flux<ByteBuffer> body, long contentLength, Context context) {
         final String accept = "application/json";
-        return service.importMethod(this.client.getEndpoint(), body, contentLength, accept, context);
+        return service.importMethod(
+                this.client.getEndpoint(), this.client.getApiVersion(), body, contentLength, accept, context);
     }
 
     /**
@@ -341,7 +360,14 @@ public final class ModelsImpl {
     public Mono<Response<Void>> importMethodWithResponseAsync(BinaryData body, long contentLength) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.importMethod(this.client.getEndpoint(), body, contentLength, accept, context));
+                context ->
+                        service.importMethod(
+                                this.client.getEndpoint(),
+                                this.client.getApiVersion(),
+                                body,
+                                contentLength,
+                                accept,
+                                context));
     }
 
     /**
@@ -360,7 +386,8 @@ public final class ModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> importMethodWithResponseAsync(BinaryData body, long contentLength, Context context) {
         final String accept = "application/json";
-        return service.importMethod(this.client.getEndpoint(), body, contentLength, accept, context);
+        return service.importMethod(
+                this.client.getEndpoint(), this.client.getApiVersion(), body, contentLength, accept, context);
     }
 
     /**
@@ -444,7 +471,8 @@ public final class ModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resetWithResponseAsync() {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.reset(this.client.getEndpoint(), accept, context));
+        return FluxUtil.withContext(
+                context -> service.reset(this.client.getEndpoint(), this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -461,7 +489,7 @@ public final class ModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resetWithResponseAsync(Context context) {
         final String accept = "application/json";
-        return service.reset(this.client.getEndpoint(), accept, context);
+        return service.reset(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -536,7 +564,9 @@ public final class ModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PersonalizerModelProperties>> getPropertiesWithResponseAsync() {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getProperties(this.client.getEndpoint(), accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.getProperties(this.client.getEndpoint(), this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -554,7 +584,7 @@ public final class ModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PersonalizerModelProperties>> getPropertiesWithResponseAsync(Context context) {
         final String accept = "application/json";
-        return service.getProperties(this.client.getEndpoint(), accept, context);
+        return service.getProperties(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
     }
 
     /**

@@ -50,7 +50,7 @@ public final class LogsImpl {
      * The interface defining all the services for PersonalizerClientV1Preview3Logs to be used by the proxy service to
      * perform REST calls.
      */
-    @Host("{Endpoint}/personalizer/v1.1-preview.3")
+    @Host("{Endpoint}/personalizer/{ApiVersion}")
     @ServiceInterface(name = "PersonalizerClientV1")
     public interface LogsService {
         @Post("/logs/interactions")
@@ -58,6 +58,7 @@ public final class LogsImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> interactions(
                 @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @BodyParam("application/octet-stream") Flux<ByteBuffer> body,
                 @HeaderParam("Content-Length") long contentLength,
                 @HeaderParam("Accept") String accept,
@@ -68,6 +69,7 @@ public final class LogsImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> interactions(
                 @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @BodyParam("application/octet-stream") BinaryData body,
                 @HeaderParam("Content-Length") long contentLength,
                 @HeaderParam("Accept") String accept,
@@ -78,6 +80,7 @@ public final class LogsImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> observations(
                 @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @BodyParam("application/octet-stream") Flux<ByteBuffer> body,
                 @HeaderParam("Content-Length") long contentLength,
                 @HeaderParam("Accept") String accept,
@@ -88,6 +91,7 @@ public final class LogsImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> observations(
                 @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @BodyParam("application/octet-stream") BinaryData body,
                 @HeaderParam("Content-Length") long contentLength,
                 @HeaderParam("Accept") String accept,
@@ -96,13 +100,17 @@ public final class LogsImpl {
         @Delete("/logs")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> delete(@HostParam("Endpoint") String endpoint, Context context);
+        Mono<Response<Void>> delete(
+                @HostParam("Endpoint") String endpoint, @HostParam("ApiVersion") String apiVersion, Context context);
 
         @Get("/logs/properties")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<PersonalizerLogProperties>> getProperties(
-                @HostParam("Endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
+                @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
     }
 
     /**
@@ -123,7 +131,14 @@ public final class LogsImpl {
     public Mono<Response<Void>> interactionsWithResponseAsync(Flux<ByteBuffer> body, long contentLength) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.interactions(this.client.getEndpoint(), body, contentLength, accept, context));
+                context ->
+                        service.interactions(
+                                this.client.getEndpoint(),
+                                this.client.getApiVersion(),
+                                body,
+                                contentLength,
+                                accept,
+                                context));
     }
 
     /**
@@ -145,7 +160,8 @@ public final class LogsImpl {
     public Mono<Response<Void>> interactionsWithResponseAsync(
             Flux<ByteBuffer> body, long contentLength, Context context) {
         final String accept = "application/json";
-        return service.interactions(this.client.getEndpoint(), body, contentLength, accept, context);
+        return service.interactions(
+                this.client.getEndpoint(), this.client.getApiVersion(), body, contentLength, accept, context);
     }
 
     /**
@@ -243,7 +259,14 @@ public final class LogsImpl {
     public Mono<Response<Void>> interactionsWithResponseAsync(BinaryData body, long contentLength) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.interactions(this.client.getEndpoint(), body, contentLength, accept, context));
+                context ->
+                        service.interactions(
+                                this.client.getEndpoint(),
+                                this.client.getApiVersion(),
+                                body,
+                                contentLength,
+                                accept,
+                                context));
     }
 
     /**
@@ -264,7 +287,8 @@ public final class LogsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> interactionsWithResponseAsync(BinaryData body, long contentLength, Context context) {
         final String accept = "application/json";
-        return service.interactions(this.client.getEndpoint(), body, contentLength, accept, context);
+        return service.interactions(
+                this.client.getEndpoint(), this.client.getApiVersion(), body, contentLength, accept, context);
     }
 
     /**
@@ -362,7 +386,14 @@ public final class LogsImpl {
     public Mono<Response<Void>> observationsWithResponseAsync(Flux<ByteBuffer> body, long contentLength) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.observations(this.client.getEndpoint(), body, contentLength, accept, context));
+                context ->
+                        service.observations(
+                                this.client.getEndpoint(),
+                                this.client.getApiVersion(),
+                                body,
+                                contentLength,
+                                accept,
+                                context));
     }
 
     /**
@@ -384,7 +415,8 @@ public final class LogsImpl {
     public Mono<Response<Void>> observationsWithResponseAsync(
             Flux<ByteBuffer> body, long contentLength, Context context) {
         final String accept = "application/json";
-        return service.observations(this.client.getEndpoint(), body, contentLength, accept, context);
+        return service.observations(
+                this.client.getEndpoint(), this.client.getApiVersion(), body, contentLength, accept, context);
     }
 
     /**
@@ -482,7 +514,14 @@ public final class LogsImpl {
     public Mono<Response<Void>> observationsWithResponseAsync(BinaryData body, long contentLength) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.observations(this.client.getEndpoint(), body, contentLength, accept, context));
+                context ->
+                        service.observations(
+                                this.client.getEndpoint(),
+                                this.client.getApiVersion(),
+                                body,
+                                contentLength,
+                                accept,
+                                context));
     }
 
     /**
@@ -503,7 +542,8 @@ public final class LogsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> observationsWithResponseAsync(BinaryData body, long contentLength, Context context) {
         final String accept = "application/json";
-        return service.observations(this.client.getEndpoint(), body, contentLength, accept, context);
+        return service.observations(
+                this.client.getEndpoint(), this.client.getApiVersion(), body, contentLength, accept, context);
     }
 
     /**
@@ -594,7 +634,8 @@ public final class LogsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync() {
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), context));
+        return FluxUtil.withContext(
+                context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), context));
     }
 
     /**
@@ -610,7 +651,7 @@ public final class LogsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(Context context) {
-        return service.delete(this.client.getEndpoint(), context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), context);
     }
 
     /**
@@ -684,7 +725,9 @@ public final class LogsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PersonalizerLogProperties>> getPropertiesWithResponseAsync() {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getProperties(this.client.getEndpoint(), accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.getProperties(this.client.getEndpoint(), this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -701,7 +744,7 @@ public final class LogsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PersonalizerLogProperties>> getPropertiesWithResponseAsync(Context context) {
         final String accept = "application/json";
-        return service.getProperties(this.client.getEndpoint(), accept, context);
+        return service.getProperties(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
     }
 
     /**

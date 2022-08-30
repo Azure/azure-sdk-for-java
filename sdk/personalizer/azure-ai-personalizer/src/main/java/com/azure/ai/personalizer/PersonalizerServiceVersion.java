@@ -10,9 +10,9 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum PersonalizerServiceVersion implements ServiceVersion {
     /**
-     * Service version {@code v1-1.preview.3}.
+     * Service version {@code v1.1-preview.3}.
      */
-    V1_1_PREVIEW_3("v1-1.preview.3");
+    V1_1_PREVIEW_3("v1.1-preview.3");
 
     private final String version;
 

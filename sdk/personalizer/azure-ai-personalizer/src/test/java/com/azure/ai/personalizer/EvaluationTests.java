@@ -48,7 +48,10 @@ public class EvaluationTests extends PersonalizerTestBase {
             .setEndTime(OffsetDateTime.parse("2022-08-25T20:00:00+00:00"))
             .setPolicies(new ArrayList<>());
         PersonalizerAdministrationAsyncClient client = getAdministrationAsyncClient(httpClient, serviceVersion, true);
-        SyncPoller<CreateEvaluationOperationResult, PersonalizerEvaluation> syncPoller = client.beginCreateEvaluation(evaluationOptions).getSyncPoller();
+        SyncPoller<CreateEvaluationOperationResult, PersonalizerEvaluation> syncPoller = client
+            .beginCreateEvaluation(evaluationOptions)
+            .setPollInterval(durationTestMode)
+            .getSyncPoller();
         System.out.println("Created evaluation with Id: " + syncPoller.getFinalResult().getId());
         syncPoller.waitForCompletion();
 

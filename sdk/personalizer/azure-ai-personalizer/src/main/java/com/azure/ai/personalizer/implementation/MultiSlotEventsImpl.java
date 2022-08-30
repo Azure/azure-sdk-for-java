@@ -46,7 +46,7 @@ public final class MultiSlotEventsImpl {
      * The interface defining all the services for PersonalizerClientV1Preview3MultiSlotEvents to be used by the proxy
      * service to perform REST calls.
      */
-    @Host("{Endpoint}/personalizer/v1.1-preview.3")
+    @Host("{Endpoint}/personalizer/{ApiVersion}")
     @ServiceInterface(name = "PersonalizerClientV1")
     public interface MultiSlotEventsService {
         @Post("/multislot/events/{eventId}/reward")
@@ -54,6 +54,7 @@ public final class MultiSlotEventsImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> reward(
                 @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @PathParam("eventId") String eventId,
                 @BodyParam("application/json") PersonalizerRewardMultiSlotOptions body,
                 @HeaderParam("Accept") String accept,
@@ -64,6 +65,7 @@ public final class MultiSlotEventsImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> activate(
                 @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @PathParam("eventId") String eventId,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -86,7 +88,14 @@ public final class MultiSlotEventsImpl {
     public Mono<Response<Void>> rewardWithResponseAsync(String eventId, PersonalizerRewardMultiSlotOptions body) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.reward(this.client.getEndpoint(), eventId, body, accept, context));
+                context ->
+                        service.reward(
+                                this.client.getEndpoint(),
+                                this.client.getApiVersion(),
+                                eventId,
+                                body,
+                                accept,
+                                context));
     }
 
     /**
@@ -107,7 +116,7 @@ public final class MultiSlotEventsImpl {
     public Mono<Response<Void>> rewardWithResponseAsync(
             String eventId, PersonalizerRewardMultiSlotOptions body, Context context) {
         final String accept = "application/json";
-        return service.reward(this.client.getEndpoint(), eventId, body, accept, context);
+        return service.reward(this.client.getEndpoint(), this.client.getApiVersion(), eventId, body, accept, context);
     }
 
     /**
@@ -198,7 +207,10 @@ public final class MultiSlotEventsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> activateWithResponseAsync(String eventId) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.activate(this.client.getEndpoint(), eventId, accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.activate(
+                                this.client.getEndpoint(), this.client.getApiVersion(), eventId, accept, context));
     }
 
     /**
@@ -217,7 +229,7 @@ public final class MultiSlotEventsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> activateWithResponseAsync(String eventId, Context context) {
         final String accept = "application/json";
-        return service.activate(this.client.getEndpoint(), eventId, accept, context);
+        return service.activate(this.client.getEndpoint(), this.client.getApiVersion(), eventId, accept, context);
     }
 
     /**

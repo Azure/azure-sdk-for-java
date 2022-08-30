@@ -46,7 +46,7 @@ public final class MultiSlotsImpl {
      * The interface defining all the services for PersonalizerClientV1Preview3MultiSlots to be used by the proxy
      * service to perform REST calls.
      */
-    @Host("{Endpoint}/personalizer/v1.1-preview.3")
+    @Host("{Endpoint}/personalizer/{ApiVersion}")
     @ServiceInterface(name = "PersonalizerClientV1")
     public interface MultiSlotsService {
         @Post("/multislot/rank")
@@ -54,6 +54,7 @@ public final class MultiSlotsImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<PersonalizerRankMultiSlotResult>> rank(
                 @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @BodyParam("application/json") PersonalizerRankMultiSlotOptions body,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -75,7 +76,8 @@ public final class MultiSlotsImpl {
     public Mono<Response<PersonalizerRankMultiSlotResult>> rankWithResponseAsync(
             PersonalizerRankMultiSlotOptions body) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.rank(this.client.getEndpoint(), body, accept, context));
+        return FluxUtil.withContext(
+                context -> service.rank(this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context));
     }
 
     /**
@@ -95,7 +97,7 @@ public final class MultiSlotsImpl {
     public Mono<Response<PersonalizerRankMultiSlotResult>> rankWithResponseAsync(
             PersonalizerRankMultiSlotOptions body, Context context) {
         final String accept = "application/json";
-        return service.rank(this.client.getEndpoint(), body, accept, context);
+        return service.rank(this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context);
     }
 
     /**

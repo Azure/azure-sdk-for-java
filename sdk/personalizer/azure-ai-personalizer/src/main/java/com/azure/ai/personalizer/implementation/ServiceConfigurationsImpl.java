@@ -50,20 +50,24 @@ public final class ServiceConfigurationsImpl {
      * The interface defining all the services for PersonalizerClientV1Preview3ServiceConfigurations to be used by the
      * proxy service to perform REST calls.
      */
-    @Host("{Endpoint}/personalizer/v1.1-preview.3")
+    @Host("{Endpoint}/personalizer/{ApiVersion}")
     @ServiceInterface(name = "PersonalizerClientV1")
     public interface ServiceConfigurationsService {
         @Get("/configurations/service")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<PersonalizerServiceProperties>> get(
-                @HostParam("Endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
+                @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Put("/configurations/service")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<PersonalizerServiceProperties>> update(
                 @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @BodyParam("application/json") PersonalizerServiceProperties config,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -73,6 +77,7 @@ public final class ServiceConfigurationsImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> applyFromEvaluation(
                 @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @BodyParam("application/json") PersonalizerPolicyReferenceOptions body,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -91,7 +96,8 @@ public final class ServiceConfigurationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PersonalizerServiceProperties>> getWithResponseAsync() {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), accept, context));
+        return FluxUtil.withContext(
+                context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -109,7 +115,7 @@ public final class ServiceConfigurationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PersonalizerServiceProperties>> getWithResponseAsync(Context context) {
         final String accept = "application/json";
-        return service.get(this.client.getEndpoint(), accept, context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -186,7 +192,10 @@ public final class ServiceConfigurationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PersonalizerServiceProperties>> updateWithResponseAsync(PersonalizerServiceProperties config) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(), config, accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.update(
+                                this.client.getEndpoint(), this.client.getApiVersion(), config, accept, context));
     }
 
     /**
@@ -205,7 +214,7 @@ public final class ServiceConfigurationsImpl {
     public Mono<Response<PersonalizerServiceProperties>> updateWithResponseAsync(
             PersonalizerServiceProperties config, Context context) {
         final String accept = "application/json";
-        return service.update(this.client.getEndpoint(), config, accept, context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), config, accept, context);
     }
 
     /**
@@ -289,7 +298,9 @@ public final class ServiceConfigurationsImpl {
     public Mono<Response<Void>> applyFromEvaluationWithResponseAsync(PersonalizerPolicyReferenceOptions body) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.applyFromEvaluation(this.client.getEndpoint(), body, accept, context));
+                context ->
+                        service.applyFromEvaluation(
+                                this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context));
     }
 
     /**
@@ -307,7 +318,8 @@ public final class ServiceConfigurationsImpl {
     public Mono<Response<Void>> applyFromEvaluationWithResponseAsync(
             PersonalizerPolicyReferenceOptions body, Context context) {
         final String accept = "application/json";
-        return service.applyFromEvaluation(this.client.getEndpoint(), body, accept, context);
+        return service.applyFromEvaluation(
+                this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context);
     }
 
     /**
