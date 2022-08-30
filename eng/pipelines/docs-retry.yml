@@ -10,10 +10,10 @@ parameters:
   default: 'not-specified'
 - name: BuildId
   type: number
-  default: 'not-specified'
+  default: 0
 - name: PipelineId
   type: number
-  default: 'not-specified'
+  default: 0
 
 variables:
   - template: /eng/pipelines/templates/variables/globals.yml
@@ -75,4 +75,4 @@ jobs:
           TargetBranch: $(TargetBranchName)
           DocRepoLocation: $(Pipeline.Workspace)/docs
           TargetDocRepoName: 'azure-docs-sdk-java'
-          TargetDocRepoOwner: "Azure"
+          TargetDocRepoOwner: 'Azure'
