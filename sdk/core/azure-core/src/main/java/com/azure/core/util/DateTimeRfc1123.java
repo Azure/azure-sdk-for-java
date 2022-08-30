@@ -6,6 +6,7 @@ package com.azure.core.util;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+import java.nio.charset.StandardCharsets;
 import java.time.DateTimeException;
 import java.time.DayOfWeek;
 import java.time.Month;
@@ -177,57 +178,183 @@ public final class DateTimeRfc1123 {
         // ensure datetime is UTC offset.
         dateTime = dateTime.withOffsetSameInstant(ZoneOffset.UTC);
 
-        StringBuilder sb = new StringBuilder(32);
-
+        int index = 0;
+        byte[] bytes = new byte[29];
         final DayOfWeek dayOfWeek = dateTime.getDayOfWeek();
         switch (dayOfWeek) {
-            case MONDAY: sb.append("Mon, "); break;
-            case TUESDAY: sb.append("Tue, "); break;
-            case WEDNESDAY: sb.append("Wed, "); break;
-            case THURSDAY: sb.append("Thu, "); break;
-            case FRIDAY: sb.append("Fri, "); break;
-            case SATURDAY: sb.append("Sat, "); break;
-            case SUNDAY: sb.append("Sun, "); break;
-            default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown day of week " + dayOfWeek));
+            case MONDAY:
+                bytes[index++] = 'M';
+                bytes[index++] = 'o';
+                bytes[index++] = 'n';
+                break;
+
+            case TUESDAY:
+                bytes[index++] = 'T';
+                bytes[index++] = 'u';
+                bytes[index++] = 'e';
+                break;
+
+            case WEDNESDAY:
+                bytes[index++] = 'W';
+                bytes[index++] = 'e';
+                bytes[index++] = 'd';
+                break;
+
+            case THURSDAY:
+                bytes[index++] = 'T';
+                bytes[index++] = 'h';
+                bytes[index++] = 'u';
+                break;
+
+            case FRIDAY:
+                bytes[index++] = 'F';
+                bytes[index++] = 'r';
+                bytes[index++] = 'i';
+                break;
+
+            case SATURDAY:
+                bytes[index++] = 'S';
+                bytes[index++] = 'a';
+                bytes[index++] = 't';
+                break;
+
+            case SUNDAY:
+                bytes[index++] = 'S';
+                bytes[index++] = 'u';
+                bytes[index++] = 'n';
+                break;
+
+            default: throw new IllegalArgumentException("Unknown day of week " + dayOfWeek);
         }
 
-        zeroPad(dateTime.getDayOfMonth(), sb);
+        bytes[index++] = ',';
+        bytes[index++] = ' ';
 
+        zeroPad(dateTime.getDayOfMonth(), bytes, index);
+        index += 2;
+
+        bytes[index++] = ' ';
         final Month month = dateTime.getMonth();
         switch (month) {
-            case JANUARY: sb.append(" Jan "); break;
-            case FEBRUARY: sb.append(" Feb "); break;
-            case MARCH: sb.append(" Mar "); break;
-            case APRIL: sb.append(" Apr "); break;
-            case MAY: sb.append(" May "); break;
-            case JUNE: sb.append(" Jun "); break;
-            case JULY: sb.append(" Jul "); break;
-            case AUGUST: sb.append(" Aug "); break;
-            case SEPTEMBER: sb.append(" Sep "); break;
-            case OCTOBER: sb.append(" Oct "); break;
-            case NOVEMBER: sb.append(" Nov "); break;
-            case DECEMBER: sb.append(" Dec "); break;
-            default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + month));
+            case JANUARY:
+                bytes[index++] = 'J';
+                bytes[index++] = 'a';
+                bytes[index++] = 'n';
+                break;
+
+            case FEBRUARY:
+                bytes[index++] = 'F';
+                bytes[index++] = 'e';
+                bytes[index++] = 'b';
+                break;
+
+            case MARCH:
+                bytes[index++] = 'M';
+                bytes[index++] = 'a';
+                bytes[index++] = 'r';
+                break;
+
+            case APRIL:
+                bytes[index++] = 'A';
+                bytes[index++] = 'p';
+                bytes[index++] = 'r';
+                break;
+
+            case MAY:
+                bytes[index++] = 'M';
+                bytes[index++] = 'a';
+                bytes[index++] = 'y';
+                break;
+
+            case JUNE:
+                bytes[index++] = 'J';
+                bytes[index++] = 'u';
+                bytes[index++] = 'n';
+                break;
+
+            case JULY:
+                bytes[index++] = 'J';
+                bytes[index++] = 'u';
+                bytes[index++] = 'l';
+                break;
+
+            case AUGUST:
+                bytes[index++] = 'A';
+                bytes[index++] = 'u';
+                bytes[index++] = 'g';
+                break;
+
+            case SEPTEMBER:
+                bytes[index++] = 'S';
+                bytes[index++] = 'e';
+                bytes[index++] = 'p';
+                break;
+
+            case OCTOBER:
+                bytes[index++] = 'O';
+                bytes[index++] = 'c';
+                bytes[index++] = 't';
+                break;
+
+            case NOVEMBER:
+                bytes[index++] = 'N';
+                bytes[index++] = 'o';
+                bytes[index++] = 'v';
+                break;
+
+            case DECEMBER:
+                bytes[index++] = 'D';
+                bytes[index++] = 'e';
+                bytes[index++] = 'c';
+                break;
+
+            default: throw new IllegalArgumentException("Unknown month " + month);
         }
+        bytes[index++] = ' ';
 
-        sb.append(dateTime.getYear());
-        sb.append(" ");
+        int year = dateTime.getYear();
+        bytes[index++] = (byte) ('0' + (year / 1000));
+        year = moduloLessDecimalStepDown(year, 1000);
+        bytes[index++] = (byte) ('0' + (year / 100));
+        year = moduloLessDecimalStepDown(year, 100);
+        bytes[index++] = (byte) ('0' + (year / 10));
+        year = moduloLessDecimalStepDown(year, 10);
+        bytes[index++] = (byte) ('0' + year);
 
-        zeroPad(dateTime.getHour(), sb);
-        sb.append(":");
-        zeroPad(dateTime.getMinute(), sb);
-        sb.append(":");
-        zeroPad(dateTime.getSecond(), sb);
-        sb.append(" GMT");
+        bytes[index++] = ' ';
 
-        return sb.toString();
+        zeroPad(dateTime.getHour(), bytes, index);
+        index += 2;
+        bytes[index++] = ':';
+        zeroPad(dateTime.getMinute(), bytes, index);
+        index += 2;
+        bytes[index++] = ':';
+        zeroPad(dateTime.getSecond(), bytes, index);
+        index += 2;
+        bytes[index++] = ' ';
+        bytes[index++] = 'G';
+        bytes[index++] = 'M';
+        bytes[index] = 'T';
+
+        return new String(bytes, StandardCharsets.US_ASCII);
     }
 
-    private static void zeroPad(int value, StringBuilder sb) {
+    private static void zeroPad(int value, byte[] bytes, int index) {
         if (value < 10) {
-            sb.append("0");
+            bytes[index] = '0';
+            bytes[index + 1] = (byte) ('0' + value);
+        } else {
+            bytes[index] = (byte) ('0' + (value / 10));
+            bytes[index + 1] = (byte) ('0' + (moduloLessDecimalStepDown(value, 10)));
         }
-        sb.append(value);
+    }
+
+    private static int moduloLessDecimalStepDown(int value, int mod) {
+        while (value > mod) {
+            value -= mod;
+        }
+
+        return value;
     }
 
     @Override
