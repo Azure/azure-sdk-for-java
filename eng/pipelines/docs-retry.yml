@@ -1,0 +1,78 @@
+parameters:
+- name: GroupId
+  type: string
+  default: com.azure
+- name: PackageIds
+  type: object
+  default: []
+- name: Version
+  type: string
+  default: 'not-specified'
+- name: BuildId
+  type: number
+  default: 'not-specified'
+- name: PipelineId
+  type: number
+  default: 'not-specified'
+
+variables:
+  - template: /eng/pipelines/templates/variables/globals.yml
+jobs:
+- ${{ each artifact in parameters.PackageIds }}:
+  - job: RetryOnGithubIo
+    pool:
+      name: azsdk-pool-mms-ubuntu-2004-general
+      vmImage: MMSUbuntu20.04
+    steps:
+      # Sync docs repo onboarding files/folders
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          source: 'specific'
+          artifact: 'packages'
+          path: '$(Build.SourcesDirectory)/packages' 
+          pipeline: ${{ parameters.PipelineId }}
+          runId: ${{ parameters.BuildId }}
+      - template: /eng/common/pipelines/templates/steps/publish-blobs.yml
+        parameters:
+          FolderForUpload: '$(Pipeline.Workspace)/packages/${{parameters.GroupId}}/${{artifact}}'
+          BlobSASKey: '$(azure-sdk-docs-prod-sas)'
+          BlobName: '$(azure-sdk-docs-prod-blob-name)'
+          TargetLanguage: 'java'
+          ArtifactLocation: $(Pipeline.Workspace)/packages/${{parameters.GroupId}}/${{artifact}}
+          # we override the regular script path because we have cloned the build tools repo as a separate artifact.
+          ScriptPath: 'eng/common/scripts/copy-docs-to-blobstorage.ps1'
+
+  - job: RetryOnDocsMs
+    pool:
+      name: azsdk-pool-mms-ubuntu-2004-general
+      vmImage: MMSUbuntu20.04
+    steps:
+      # Sync docs repo onboarding files/folders
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          source: 'specific'
+          artifact: 'packages'
+          path: '$(Pipeline.Workspace)/packages' 
+          pipeline: ${{ parameters.PipelineId }}
+          runId: ${{ parameters.BuildId }}
+      # Pull and build the docker image.
+      - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
+        parameters:
+          PackageInfoLocations:
+            - $(Pipeline.Workspace)/packages/PackageInfo/${{artifact}}.json
+          WorkingDirectory: $(System.DefaultWorkingDirectory)
+          TargetDocRepoOwner: 'Azure'
+          TargetDocRepoName: 'azure-docs-sdk-java'
+          Language: 'java'
+          SparseCheckoutPaths:
+            - docs-ref-services/
+            - metadata/
+          DocValidationImageId: azuresdkimages.azurecr.io/javarefautocr:latest
+      - template: /eng/pipelines/templates/steps/fetch-package-list.yml
+        parameters:
+          JavaDocJarLocation: "$(Pipeline.Workspace)/packages/${{parameters.GroupId}}/${{artifact}}"
+          ArtifactName: ${{artifact}}
+          TargetBranch: $(TargetBranchName)
+          DocRepoLocation: $(Pipeline.Workspace)/docs
+          TargetDocRepoName: 'azure-docs-sdk-java'
+          TargetDocRepoOwner: "Azure"
