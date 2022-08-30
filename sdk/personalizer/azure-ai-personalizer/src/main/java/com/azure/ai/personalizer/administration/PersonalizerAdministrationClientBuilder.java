@@ -46,7 +46,7 @@ public final class PersonalizerAdministrationClientBuilder implements
     TokenCredentialTrait<PersonalizerAdministrationClientBuilder> {
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
-    private ClientLogger logger;
+    private final ClientLogger logger = new ClientLogger(PersonalizerAdministrationClientBuilder.class);
     private ClientOptions clientOptions;
     private String endpoint;
     private AzureKeyCredential azureKeyCredential;

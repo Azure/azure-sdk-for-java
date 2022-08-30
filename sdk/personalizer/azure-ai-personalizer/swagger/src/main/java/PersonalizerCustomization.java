@@ -18,6 +18,11 @@ public class PersonalizerCustomization extends Customization {
 
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
+        // Following classes are not intended for consumption by external callers. But we cannot do that since the
+        // current autorest configuration only allows for two packages (and not three). Since these are with the
+        // models package but still need to be accessible from the administration.models package, we have to make them
+        // public. Once issue https://github.com/Azure/autorest.java/issues/1647 is fixed, we can have these in the
+        // implementation package and hidden from the customer.
 //        Arrays.asList("ErrorResponse", "ErrorResponseException",
 //                "InternalError", "PersonalizerError", "PersonalizerErrorCode",
 //                "ServiceStatus")
@@ -28,6 +33,8 @@ public class PersonalizerCustomization extends Customization {
                     .setModifier(0); // 0 -> package-private
             });
 
+
+        // Same comment as line 21 above applies here as well.
 //        Arrays.asList("EvaluationsCreateHeaders", "PersonalizerPolicyReferenceOptions")
 //            .forEach(className -> {
 //                libraryCustomization

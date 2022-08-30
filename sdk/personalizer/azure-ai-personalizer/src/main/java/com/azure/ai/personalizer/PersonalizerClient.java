@@ -194,11 +194,9 @@ public final class PersonalizerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void rewardMultiSlot(String eventId, String slotId, float reward) {
-        PersonalizerRewardMultiSlotOptions rewardRequest = new PersonalizerRewardMultiSlotOptions().setReward(new ArrayList<PersonalizerSlotReward>() {
-            {
-                add(new PersonalizerSlotReward().setSlotId(slotId).setValue(reward));
-            }
-        });
+        ArrayList<PersonalizerSlotReward> slotRewards = new ArrayList<PersonalizerSlotReward>();
+        slotRewards.add(new PersonalizerSlotReward().setSlotId(slotId).setValue(reward));
+        PersonalizerRewardMultiSlotOptions rewardRequest = new PersonalizerRewardMultiSlotOptions().setReward(slotRewards);
         rewardMultiSlot(eventId, rewardRequest);
     }
 
