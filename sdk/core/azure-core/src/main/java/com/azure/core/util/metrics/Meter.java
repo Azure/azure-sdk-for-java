@@ -139,7 +139,7 @@ public interface Meter extends AutoCloseable {
      * </pre>
      * <!-- end com.azure.core.util.metrics.Meter.upDownCounter -->
      *
-     * @param name short counter  name following https://opentelemetry.io/docs/reference/specification/metrics/api/#instrument-naming-rule
+     * @param name short counter name following https://opentelemetry.io/docs/reference/specification/metrics/api/#instrument-naming-rule
      * @param description free-form text describing the counter
      * @param unit optional unit of measurement.
      * @return new instance of {@link LongCounter}
