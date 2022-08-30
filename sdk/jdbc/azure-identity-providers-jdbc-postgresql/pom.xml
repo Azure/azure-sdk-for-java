@@ -15,7 +15,7 @@
   <packaging>jar</packaging>
 
   <name>Azure Identity Providers JDBC PostgreSQL</name>
-  <description>Azure Identity Providers JDBC PostgreSQL</description>
+  <description>Implementation of PostgreSQL authenticationPlugin that enables authentication using Azure AD.</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
