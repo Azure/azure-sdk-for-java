@@ -24,7 +24,7 @@ jobs:
     steps:
       # Sync docs repo onboarding files/folders
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-      - task: DownloadPipelineArtifact@0
+      - task: DownloadPipelineArtifact@2
         inputs:
           source: 'specific'
           artifact: 'packages'
@@ -32,6 +32,7 @@ jobs:
           pipeline: ${{ parameters.PipelineId }}
           buildId: ${{ parameters.BuildId }}
           project: 'internal'
+          RunVersion : 'specific'
       - template: /eng/common/pipelines/templates/steps/publish-blobs.yml
         parameters:
           FolderForUpload: '$(Build.SourcesDirectory)/packages/${{parameters.GroupId}}/${{artifact.name}}'
@@ -49,7 +50,7 @@ jobs:
     steps:
       # Sync docs repo onboarding files/folders
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-      - task: DownloadPipelineArtifact@0
+      - task: DownloadPipelineArtifact@2
         inputs:
           source: 'specific'
           artifact: 'packages'
@@ -57,6 +58,7 @@ jobs:
           pipeline: ${{ parameters.PipelineId }}
           buildId: ${{ parameters.BuildId }}
           project: 'internal'
+          RunVersion : 'specific'
       # Pull and build the docker image.
       - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
         parameters:
