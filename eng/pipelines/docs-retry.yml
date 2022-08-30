@@ -10,10 +10,8 @@ parameters:
   default: 'not-specified'
 - name: BuildId
   type: number
-  default: 0
 - name: PipelineId
   type: number
-  default: 0
 
 variables:
   - template: /eng/pipelines/templates/variables/globals.yml
@@ -26,7 +24,7 @@ jobs:
     steps:
       # Sync docs repo onboarding files/folders
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-      - task: DownloadPipelineArtifact@2
+      - task: DownloadPipelineArtifact@0
         inputs:
           source: 'specific'
           artifact: 'packages'
@@ -51,7 +49,7 @@ jobs:
     steps:
       # Sync docs repo onboarding files/folders
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-      - task: DownloadPipelineArtifact@2
+      - task: DownloadPipelineArtifact@0
         inputs:
           source: 'specific'
           artifact: 'packages'
