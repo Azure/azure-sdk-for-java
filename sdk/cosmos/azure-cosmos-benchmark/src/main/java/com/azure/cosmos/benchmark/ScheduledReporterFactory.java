@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.benchmark;
 
+import com.azure.cosmos.benchmark.reporter.BenchmarkCsvReporter;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.CsvReporter;
 import com.codahale.metrics.MetricFilter;
@@ -50,7 +51,7 @@ public class ScheduledReporterFactory {
                 .filter(MetricFilter.ALL)
                 .build(graphite);
         } else if (configuration.getReportingDirectory() != null) {
-            return CsvReporter.forRegistry(metricsRegistry)
+            return BenchmarkCsvReporter.forRegistry(metricsRegistry)
                 .convertDurationsTo(TimeUnit.MILLISECONDS)
                 .convertRatesTo(TimeUnit.SECONDS)
                 .build(configuration.getReportingDirectory());
