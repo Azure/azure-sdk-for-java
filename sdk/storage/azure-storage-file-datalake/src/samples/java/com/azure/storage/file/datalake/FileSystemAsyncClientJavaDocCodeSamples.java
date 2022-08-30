@@ -742,7 +742,7 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.renameWithResponse#FileSystemRenameOptions
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setLeaseId("lease-id");
         DataLakeFileSystemAsyncClient fileSystemAsyncClient = client
-            .renameWithResponse(new FileSystemRenameOptions( "newFileSystemName")
+            .renameWithResponse(new FileSystemRenameOptions("newFileSystemName")
                 .setRequestConditions(requestConditions)).block().getValue();
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.renameWithResponse#FileSystemRenameOptions
     }
