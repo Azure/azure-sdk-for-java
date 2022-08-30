@@ -7,12 +7,15 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.RetryOptions;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.time.Duration;
 import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * Configuration options for {@link RequestRetryPolicy}.
@@ -278,5 +281,32 @@ public final class RequestRetryOptions {
         }
 
         return new RequestRetryOptions(policyType, maxTries, tryTimeout, retryDelay, maxRetryDelay, secondaryHost);
+    }
+
+    /**
+     * Creates new {@link RequestRetryOptions} from {@link Configuration}.
+     *
+     * @param configuration Configuration to read from. Will not read a secondary endpoint.
+     * @param secondaryEndpoint Optional secondary endpoint to configure with the environmental options.
+     * @return The {@link RequestRetryOptions}
+     */
+    public static RequestRetryOptions fromConfiguration(Configuration configuration, String secondaryEndpoint) {
+        return new RequestRetryOptions(
+            RetryPolicyType.fromConfiguration(configuration),
+            getValueFromConfiguration(configuration, "AZURE_STORAGE_MAX_RETRIES", Integer::valueOf),
+            getValueFromConfiguration(configuration, "AZURE_STORAGE_REQUEST_TIMEOUT_SECONDS", Integer::valueOf),
+            getValueFromConfiguration(configuration, "AZURE_STORAGE_RETRY_DELAY_MS", Long::valueOf),
+            // compiler confused without final cast
+            (Long) getValueFromConfiguration(configuration, "AZURE_STORAGE_MAX_RETRY_DELAY_MS", Long::valueOf),
+            secondaryEndpoint
+        );
+    }
+
+    private static <T> T getValueFromConfiguration(Configuration config, String key, Function<String, T> parseValue) {
+        String rawValue = config.get(key);
+        if (!CoreUtils.isNullOrEmpty(rawValue)) {
+            return parseValue.apply(rawValue);
+        }
+        return null;
     }
 }

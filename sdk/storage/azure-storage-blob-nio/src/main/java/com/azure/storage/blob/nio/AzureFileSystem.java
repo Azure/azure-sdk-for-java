@@ -409,8 +409,8 @@ public final class AzureFileSystem extends FileSystem {
         }
 
         // Configure options and client.
-        builder.httpLogOptions(config.getLogOptions());
-        builder.retryOptions(config.getRetryOptions());
+        builder.httpLogOptions(config.logOptions);
+        builder.retryOptions(config.retryOptions);
         builder.httpClient(config.httpClient);
 
         // Add BlobUserAgentModificationPolicy
