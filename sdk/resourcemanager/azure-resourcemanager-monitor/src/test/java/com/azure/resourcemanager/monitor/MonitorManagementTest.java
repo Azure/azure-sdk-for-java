@@ -9,13 +9,17 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.compute.ComputeManager;
-import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
+import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
@@ -67,5 +71,18 @@ public class MonitorManagementTest extends ResourceManagerTestBase {
 
     @Override
     protected void cleanUpResources() {
+    }
+
+    protected VirtualMachine ensureVM(Region region, ResourceGroup resourceGroup, String vmName, String addressSpace) {
+        return computeManager.virtualMachines().define(vmName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withNewPrimaryNetwork(addressSpace)
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("Foo12")
+            .withSsh(sshPublicKey())
+            .create();
     }
 }

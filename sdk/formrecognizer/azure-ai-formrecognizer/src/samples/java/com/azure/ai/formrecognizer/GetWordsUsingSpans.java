@@ -6,9 +6,9 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient;
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientBuilder;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentLine;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentWord;
+import com.azure.ai.formrecognizer.documentanalysis.models.Point;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
@@ -16,7 +16,6 @@ import com.azure.core.util.polling.SyncPoller;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,11 +57,11 @@ public class GetWordsUsingSpans {
 
             // lines
             documentPage.getLines().forEach(documentLine -> {
-                System.out.printf("Line '%s' is within a bounding box %s.%n",
+                System.out.printf("Line '%s' is within a bounding polygon %s.%n",
                     documentLine.getContent(),
-                    documentLine.getBoundingPolygon().toString());
+                    getBoundingCoordinates(documentLine.getBoundingPolygon()));
 
-                List<DocumentWord> containedWords = getWordsInALine(documentLine, documentPage.getWords());
+                List<DocumentWord> containedWords = documentLine.getWords();
 
                 System.out.printf("Total number of words in the line: %d.%n", containedWords.size());
                 System.out.printf("Words contained in the line are: %s.%n",
@@ -72,20 +71,10 @@ public class GetWordsUsingSpans {
     }
 
     /**
-     * Utility function to get all the words contained in a line.
+     * Utility function to get the bounding polygon coordinates.
      */
-    private static List<DocumentWord> getWordsInALine(DocumentLine documentLine, List<DocumentWord> pageWords) {
-        List<DocumentWord> containedWords = new ArrayList<>();
-        pageWords.forEach(documentWord -> {
-            documentLine.getSpans().forEach(documentSpan -> {
-                if ((documentWord.getSpan().getOffset() >= documentSpan.getOffset())
-                    && ((documentWord.getSpan().getOffset()
-                         + documentWord.getSpan().getLength()) <= (documentSpan.getOffset() + documentSpan.getLength()))) {
-                    containedWords.add(documentWord);
-                }
-            });
-        });
-
-        return containedWords;
+    private static String getBoundingCoordinates(List<Point> boundingPolygon) {
+        return boundingPolygon.stream().map(point -> String.format("[%.2f, %.2f]", point.getX(),
+            point.getY())).collect(Collectors.joining(", "));
     }
 }

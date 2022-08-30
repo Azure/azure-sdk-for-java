@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for QueryType. */
+/** Set value to 'ResultAccount'. */
 public final class QueryType extends ExpandableStringEnum<QueryType> {
     /** Static value ResultCount for QueryType. */
     public static final QueryType RESULT_COUNT = fromString("ResultCount");
@@ -24,7 +24,11 @@ public final class QueryType extends ExpandableStringEnum<QueryType> {
         return fromString(name, QueryType.class);
     }
 
-    /** @return known QueryType values. */
+    /**
+     * Gets known QueryType values.
+     *
+     * @return known QueryType values.
+     */
     public static Collection<QueryType> values() {
         return values(QueryType.class);
     }
