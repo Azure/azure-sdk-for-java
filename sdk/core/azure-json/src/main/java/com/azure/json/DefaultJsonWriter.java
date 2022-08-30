@@ -8,7 +8,6 @@ import com.azure.json.implementation.jackson.core.JsonGenerator;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UncheckedIOException;
 import java.util.Objects;
 
 /**
@@ -30,10 +29,8 @@ public final class DefaultJsonWriter extends JsonWriter {
      *
      * @param stream The {@link OutputStream} that will be written.
      * @return An instance of {@link DefaultJsonWriter}.
-     * @throws UncheckedIOException If a {@link DefaultJsonWriter} wasn't able to be constructed from the
+     * @throws IOException If a {@link DefaultJsonWriter} wasn't able to be constructed from the
      * {@link OutputStream}.
-     * @throws IOException If a {@link JsonWriter} fails to be created targeting the {@code stream} as the content
-     * container.
      */
     public static JsonWriter toStream(OutputStream stream) throws IOException {
         return new DefaultJsonWriter(FACTORY.createGenerator(stream));

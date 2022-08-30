@@ -8,7 +8,6 @@ import com.azure.json.implementation.jackson.core.JsonParser;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UncheckedIOException;
 
 /**
  * Default {@link JsonReader} implementation.
@@ -21,51 +20,39 @@ public final class DefaultJsonReader extends JsonReader {
     private final String jsonString;
     private final boolean resetSupported;
 
+    private JsonToken currentToken;
+
     /**
-     * Constructs an instance of {@link DefaultJsonReader} from a {@code byte[]}.
+     * Constructs an instance of {@link JsonReader} from a {@code byte[]}.
      *
      * @param json JSON {@code byte[]}.
-     * @return An instance of {@link DefaultJsonReader}.
-     * @throws UncheckedIOException If a {@link DefaultJsonReader} wasn't able to be constructed from the JSON
-     * {@code byte[]}.
+     * @return An instance of {@link JsonReader}.
+     * @throws IOException If a {@link JsonReader} wasn't able to be constructed from the JSON {@code byte[]}.
      */
-    public static JsonReader fromBytes(byte[] json) {
-        try {
-            return new DefaultJsonReader(FACTORY.createParser(json), true, json, null);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    public static JsonReader fromBytes(byte[] json) throws IOException {
+        return new DefaultJsonReader(FACTORY.createParser(json), true, json, null);
     }
 
     /**
-     * Constructs an instance of {@link DefaultJsonReader} from a String.
+     * Constructs an instance of {@link JsonReader} from a String.
      *
      * @param json JSON String.
-     * @return An instance of {@link DefaultJsonReader}.
-     * @throws UncheckedIOException If a {@link DefaultJsonReader} wasn't able to be constructed from the JSON String.
+     * @return An instance of {@link JsonReader}.
+     * @throws IOException If a {@link JsonReader} wasn't able to be constructed from the JSON String.
      */
-    public static JsonReader fromString(String json) {
-        try {
-            return new DefaultJsonReader(FACTORY.createParser(json), true, null, json);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    public static JsonReader fromString(String json) throws IOException {
+        return new DefaultJsonReader(FACTORY.createParser(json), true, null, json);
     }
 
     /**
-     * Constructs an instance of {@link DefaultJsonReader} from an {@link InputStream}.
+     * Constructs an instance of {@link JsonReader} from an {@link InputStream}.
      *
      * @param json JSON {@link InputStream}.
-     * @return An instance of {@link DefaultJsonReader}.
-     * @throws UncheckedIOException If a {@link DefaultJsonReader} wasn't able to be constructed from the JSON
-     * {@link InputStream}.
+     * @return An instance of {@link JsonReader}.
+     * @throws IOException If a {@link JsonReader} wasn't able to be constructed from the JSON {@link InputStream}.
      */
-    public static JsonReader fromStream(InputStream json) {
-        try {
-            return new DefaultJsonReader(FACTORY.createParser(json), true, null, null);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    public static JsonReader fromStream(InputStream json) throws IOException {
+        return new DefaultJsonReader(FACTORY.createParser(json), true, null, null);
     }
 
     private DefaultJsonReader(JsonParser parser, boolean resetSupported, byte[] jsonBytes, String jsonString) {
@@ -77,105 +64,66 @@ public final class DefaultJsonReader extends JsonReader {
 
     @Override
     public JsonToken currentToken() {
-        return mapToken(parser.currentToken());
+        return currentToken;
     }
 
     @Override
-    public JsonToken nextToken() {
-        try {
-            return mapToken(parser.nextToken());
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    public JsonToken nextToken() throws IOException {
+        currentToken = mapToken(parser.nextToken());
+        return currentToken;
     }
 
     @Override
-    public byte[] getBinary() {
+    public byte[] getBinary() throws IOException {
         if (currentToken() == JsonToken.NULL) {
             return null;
         } else {
-            try {
-                return parser.getBinaryValue();
-            } catch (IOException e) {
-                throw new UncheckedIOException(e);
-            }
+            return parser.getBinaryValue();
         }
     }
 
     @Override
-    public boolean getBoolean() {
-        try {
-            return parser.getBooleanValue();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    public boolean getBoolean() throws IOException {
+        return parser.getBooleanValue();
     }
 
     @Override
-    public double getDouble() {
-        try {
-            return parser.getDoubleValue();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    public double getDouble() throws IOException {
+        return parser.getDoubleValue();
     }
 
     @Override
-    public float getFloat() {
-        try {
-            return parser.getFloatValue();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    public float getFloat() throws IOException {
+        return parser.getFloatValue();
     }
 
     @Override
-    public int getInt() {
-        try {
-            return parser.getIntValue();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    public int getInt() throws IOException {
+        return parser.getIntValue();
     }
 
     @Override
-    public long getLong() {
-        try {
-            return parser.getLongValue();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    public long getLong() throws IOException {
+        return parser.getLongValue();
     }
 
     @Override
-    public String getString() {
-        try {
-            return parser.getValueAsString();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    public String getString() throws IOException {
+        return parser.getValueAsString();
     }
 
     @Override
-    public String getFieldName() {
-        try {
-            return parser.currentName();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    public String getFieldName() throws IOException {
+        return parser.currentName();
     }
 
     @Override
-    public void skipChildren() {
-        try {
-            parser.skipChildren();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    public void skipChildren() throws IOException {
+        parser.skipChildren();
     }
 
     @Override
-    public JsonReader bufferObject() {
+    public JsonReader bufferObject() throws IOException {
         JsonToken currentToken = currentToken();
         if (currentToken == JsonToken.START_OBJECT
             || (currentToken == JsonToken.FIELD_NAME && nextToken() == JsonToken.START_OBJECT)) {
@@ -194,7 +142,7 @@ public final class DefaultJsonReader extends JsonReader {
     }
 
     @Override
-    public JsonReader reset() {
+    public JsonReader reset() throws IOException {
         if (!resetSupported) {
             throw new IllegalStateException("'reset' isn't supported by this JsonReader.");
         }

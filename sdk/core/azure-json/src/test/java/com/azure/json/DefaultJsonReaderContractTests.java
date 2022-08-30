@@ -5,12 +5,14 @@ package com.azure.json;
 
 import com.azure.json.contract.JsonReaderContractTests;
 
+import java.io.IOException;
+
 /**
  * Tests {@link DefaultJsonReader} against the contract required by {@link JsonReader}.
  */
 public class DefaultJsonReaderContractTests extends JsonReaderContractTests {
     @Override
-    public JsonReader getJsonReader(String json) {
+    public JsonReader getJsonReader(String json) throws IOException {
         return DefaultJsonReader.fromString(json);
     }
 }
