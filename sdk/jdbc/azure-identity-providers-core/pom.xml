@@ -15,7 +15,7 @@
   <packaging>jar</packaging>
 
   <name>Azure Identity Providers Core</name>
-  <description>Azure Identity Providers Core</description>
+  <description>This package contains the business logic of authenticating with Azure AD and returning a token as a password.</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
