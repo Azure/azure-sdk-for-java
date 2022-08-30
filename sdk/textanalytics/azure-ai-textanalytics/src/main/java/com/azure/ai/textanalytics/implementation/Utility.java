@@ -120,7 +120,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.security.InvalidParameterException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -1355,9 +1354,9 @@ public final class Utility {
                                                List<TextAnalyticsServiceVersion> targetVersions,
                                                String errorMessage) {
         for (TextAnalyticsServiceVersion targetVersion : targetVersions) {
-            String targetVersionString = targetVersion.getVersion();
-            if (targetVersionString.equals(version)) {
-                throw LOGGER.logExceptionAsError(new InvalidParameterException(errorMessage));
+            if (targetVersion != null && version != null
+                && targetVersion.getVersion().equals(version.getVersion())) {
+                throw LOGGER.logExceptionAsError(new IllegalStateException(errorMessage));
             }
         }
     }

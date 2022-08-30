@@ -240,7 +240,8 @@ class AnalyzeActionsAsyncClient {
                 );
             }
 
-            throwIfLegacyApiVersionForActions(actions, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+            throwIfLegacyApiVersionForActions(actions,
+                Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1),
                 this.serviceVersion);
             final AnalyzeBatchInput analyzeBatchInput =
                 new AnalyzeBatchInput()
@@ -319,7 +320,8 @@ class AnalyzeActionsAsyncClient {
                 );
             }
 
-            throwIfLegacyApiVersionForActions(actions, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+            throwIfLegacyApiVersionForActions(actions,
+                Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1),
                 this.serviceVersion);
             return new PollerFlux<>(
                 DEFAULT_POLL_INTERVAL,

@@ -112,10 +112,6 @@ class RecognizePiiEntityAsyncClient {
     Mono<Response<RecognizePiiEntitiesResultCollection>> recognizePiiEntitiesBatch(
         Iterable<TextDocumentInput> documents, RecognizePiiEntitiesOptions options) {
         try {
-            throwIfLegacyApiVersion(this.serviceVersion,
-                Arrays.asList(TextAnalyticsServiceVersion.V3_0),
-                "'recognizePiiEntitiesBatch' is only available for API version v3.1 and up.");
-            inputDocumentsValidation(documents);
             return withContext(context -> getRecognizePiiEntitiesResponse(documents, options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -135,10 +131,6 @@ class RecognizePiiEntityAsyncClient {
     Mono<Response<RecognizePiiEntitiesResultCollection>> recognizePiiEntitiesBatchWithContext(
         Iterable<TextDocumentInput> documents, RecognizePiiEntitiesOptions options, Context context) {
         try {
-            throwIfLegacyApiVersion(this.serviceVersion,
-                Arrays.asList(TextAnalyticsServiceVersion.V3_0),
-                "'recognizePiiEntitiesBatch' is only available for API version v3.1 and up.");
-            inputDocumentsValidation(documents);
             return getRecognizePiiEntitiesResponse(documents, options, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -158,6 +150,10 @@ class RecognizePiiEntityAsyncClient {
      */
     private Mono<Response<RecognizePiiEntitiesResultCollection>> getRecognizePiiEntitiesResponse(
         Iterable<TextDocumentInput> documents, RecognizePiiEntitiesOptions options, Context context) {
+        throwIfLegacyApiVersion(this.serviceVersion,
+            Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+            "'recognizePiiEntitiesBatch' is only available for API version v3.1 and up.");
+        inputDocumentsValidation(documents);
         options = options == null ? new RecognizePiiEntitiesOptions() : options;
         final Context finalContext = getNotNullContext(context)
             .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);

@@ -103,8 +103,6 @@ class ExtractKeyPhraseAsyncClient {
     Mono<Response<ExtractKeyPhrasesResultCollection>> extractKeyPhrasesWithResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
         try {
-            throwIfCallingNotAvailableFeatureInOptions(options);
-            inputDocumentsValidation(documents);
             return withContext(context -> getExtractedKeyPhrasesResponse(documents, options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -124,8 +122,6 @@ class ExtractKeyPhraseAsyncClient {
     Mono<Response<ExtractKeyPhrasesResultCollection>> extractKeyPhrasesBatchWithContext(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         try {
-            throwIfCallingNotAvailableFeatureInOptions(options);
-            inputDocumentsValidation(documents);
             return getExtractedKeyPhrasesResponse(documents, options, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -144,6 +140,8 @@ class ExtractKeyPhraseAsyncClient {
      */
     private Mono<Response<ExtractKeyPhrasesResultCollection>> getExtractedKeyPhrasesResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        throwIfCallingNotAvailableFeatureInOptions(options);
+        inputDocumentsValidation(documents);
         options = options == null ? new TextAnalyticsRequestOptions() : options;
 
         if (service != null) {

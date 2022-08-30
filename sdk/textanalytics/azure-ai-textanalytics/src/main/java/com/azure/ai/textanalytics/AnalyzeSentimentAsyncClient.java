@@ -72,8 +72,6 @@ class AnalyzeSentimentAsyncClient {
     public Mono<Response<AnalyzeSentimentResultCollection>> analyzeSentimentBatch(
         Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options) {
         try {
-            throwIfCallingNotAvailableFeatureInAnalyzeSentimentOptions(options);
-            inputDocumentsValidation(documents);
             return withContext(context -> getAnalyzedSentimentResponse(documents, options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -94,8 +92,6 @@ class AnalyzeSentimentAsyncClient {
     Mono<Response<AnalyzeSentimentResultCollection>> analyzeSentimentBatchWithContext(
         Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options, Context context) {
         try {
-            throwIfCallingNotAvailableFeatureInAnalyzeSentimentOptions(options);
-            inputDocumentsValidation(documents);
             return getAnalyzedSentimentResponse(documents, options, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -115,6 +111,8 @@ class AnalyzeSentimentAsyncClient {
      */
     private Mono<Response<AnalyzeSentimentResultCollection>> getAnalyzedSentimentResponse(
         Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options, Context context) {
+        throwIfCallingNotAvailableFeatureInAnalyzeSentimentOptions(options);
+        inputDocumentsValidation(documents);
         options = options == null ? new AnalyzeSentimentOptions() : options;
 
         if (service != null) {
@@ -158,6 +156,9 @@ class AnalyzeSentimentAsyncClient {
     }
 
     private void throwIfCallingNotAvailableFeatureInAnalyzeSentimentOptions(AnalyzeSentimentOptions options) {
+        if (options == null) {
+            return;
+        }
         if (options.isIncludeOpinionMining()) {
             throwIfLegacyApiVersion(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
                 "'includeOpinionMining' is only available for API version v3.1 and up.");
