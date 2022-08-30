@@ -15,71 +15,11 @@ import java.util.Map;
  * An object representing the content and location of a field value.
  */
 @Immutable
-public final class DocumentField {
+public final class DocumentField extends TypedDocumentField<Object> {
     /*
      * Data type of the field value.
      */
     private DocumentFieldType type;
-
-    /*
-     * String value.
-     */
-    private String valueString;
-
-    /*
-     * Date value in YYYY-MM-DD format (ISO 8601).
-     */
-    private LocalDate valueDate;
-
-    /*
-     * Time value in hh:mm:ss format (ISO 8601).
-     */
-    private LocalTime valueTime;
-
-    /*
-     * Phone number value in E.164 format (ex. +19876543210).
-     */
-    private String valuePhoneNumber;
-
-    /*
-     * Floating point value.
-     */
-    private Float valueFloat;
-
-    /*
-     * Integer value.
-     */
-    private Long valueInteger;
-
-    /*
-     * Selection mark value.
-     */
-    private SelectionMarkState valueSelectionMark;
-
-    /*
-     * Presence of signature.
-     */
-    private DocumentSignatureType valueSignature;
-
-    /*
-     * 3-letter country code value (ISO 3166-1 alpha-3).
-     */
-    private String valueCountry;
-
-    /*
-     * Array of field values.
-     */
-    private List<DocumentField> valueList;
-
-    /*
-     * Dictionary of named field values.
-     */
-    private Map<String, DocumentField> valueMap;
-
-    /*
-     * Currency value.
-     */
-    private CurrencyValue valueCurrency;
 
     /*
      * Field content.
@@ -101,10 +41,7 @@ public final class DocumentField {
      */
     private Float confidence;
 
-    /*
-     * Currency value.
-     */
-    private AddressValue valueAddress;
+    private Object value;
 
     /**
      * Get the type property: Data type of the field value.
@@ -125,249 +62,126 @@ public final class DocumentField {
     }
 
     /**
-     * Get the valueString property: String value.
+     * Get the string value of the field.
      *
-     * @return the valueString value.
+     * @return the value.
      */
     public String getValueAsString() {
-        return this.valueString;
+        return (String) this.value;
     }
 
     /**
-     * Set the valueString property: String value.
+     * Get the date value in YYYY-MM-DD format (ISO 8601).
      *
-     * @param valueString the valueString value to set.
-     */
-    private void setValueString(String valueString) {
-        this.valueString = valueString;
-    }
-
-    /**
-     * Get the valueDate property: Date value in YYYY-MM-DD format (ISO 8601).
-     *
-     * @return the valueDate value.
+     * @return the value.
      */
     public LocalDate getValueAsDate() {
-        return this.valueDate;
+        return (LocalDate) this.value;
     }
 
     /**
-     * Set the valueDate property: Date value in YYYY-MM-DD format (ISO 8601).
+     * Get the time value in hh:mm:ss format (ISO 8601).
      *
-     * @param valueDate the valueDate value to set.
-     */
-    private void setValueDate(LocalDate valueDate) {
-        this.valueDate = valueDate;
-    }
-
-    /**
-     * Get the valueTime property: Time value in hh:mm:ss format (ISO 8601).
-     *
-     * @return the valueTime value.
+     * @return the value.
      */
     public LocalTime getValueAsTime() {
-        return this.valueTime;
+        return (LocalTime) this.value;
     }
 
     /**
-     * Set the valueTime property: Time value in hh:mm:ss format (ISO 8601).
+     * Get the phone number value in E.164 format (ex. +19876543210).
      *
-     * @param valueTime the valueTime value to set.
-     */
-    private void setValueTime(LocalTime valueTime) {
-        this.valueTime = valueTime;
-    }
-
-    /**
-     * Get the valuePhoneNumber property: Phone number value in E.164 format (ex. +19876543210).
-     *
-     * @return the valuePhoneNumber value.
+     * @return the value.
      */
     public String getValueAsPhoneNumber() {
-        return this.valuePhoneNumber;
+        return (String) this.value;
     }
 
     /**
-     * Set the valuePhoneNumber property: Phone number value in E.164 format (ex. +19876543210).
+     * Get the floating point value of the field.
      *
-     * @param valuePhoneNumber the valuePhoneNumber value to set.
-     */
-    private void setValuePhoneNumber(String valuePhoneNumber) {
-        this.valuePhoneNumber = valuePhoneNumber;
-    }
-
-    /**
-     * Get the valueFloat property: Floating point value.
-     *
-     * @return the valueFloat value.
+     * @return the value.
      */
     public Float getValueAsFloat() {
-        return this.valueFloat;
+        return (Float) this.value;
     }
 
     /**
-     * Set the valueFloat property: Floating point value.
+     * Get the integer value of the field.
      *
-     * @param valueFloat the valueFloat value to set.
-     */
-    private void setValueFloat(Float valueFloat) {
-        this.valueFloat = valueFloat;
-    }
-
-    /**
-     * Get the valueInteger property: Integer value.
-     *
-     * @return the valueInteger value.
+     * @return the value.
      */
     public Long getValueAsInteger() {
-        return this.valueInteger;
+        return (Long) this.value;
     }
 
     /**
-     * Set the valueInteger property: Integer value.
+     * Get the selection mark value.
      *
-     * @param valueInteger the valueInteger value to set.
-     */
-    private void setValueInteger(Long valueInteger) {
-        this.valueInteger = valueInteger;
-    }
-
-    /**
-     * Get the valueSelectionMark property: Selection mark value.
-     *
-     * @return the valueSelectionMark value.
+     * @return the value.
      */
     public SelectionMarkState getValueAsSelectionMark() {
-        return this.valueSelectionMark;
+        return (SelectionMarkState) this.value;
     }
 
     /**
-     * Set the valueSelectionMark property: Selection mark value.
+     * Get the presence of signature type.
      *
-     * @param valueSelectionMark the valueSelectionMark value to set.
-     */
-    private void setValueSelectionMark(SelectionMarkState valueSelectionMark) {
-        this.valueSelectionMark = valueSelectionMark;
-    }
-
-    /**
-     * Get the valueSignature property: Presence of signature.
-     *
-     * @return the valueSignature value.
+     * @return the value.
      */
     public DocumentSignatureType getValueAsSignature() {
-        return this.valueSignature;
+        return (DocumentSignatureType) this.value;
     }
 
     /**
-     * Set the valueSignature property: Presence of signature.
+     * Get the 3-letter country code value (ISO 3166-1 alpha-3).
      *
-     * @param valueSignature the valueSignature value to set.
-     */
-    private void setValueSignature(DocumentSignatureType valueSignature) {
-        this.valueSignature = valueSignature;
-    }
-
-    /**
-     * Get the valueCountryRegion property: 3-letter country code value (ISO 3166-1 alpha-3).
-     *
-     * @return the valueCountryRegion value.
+     * @return the value.
      */
     public String getValueAsCountry() {
-        return this.valueCountry;
+        return (String) this.value;
     }
 
     /**
-     * Set the valueCountryRegion property: 3-letter country code value (ISO 3166-1 alpha-3).
+     * Get the array of field values.
      *
-     * @param valueCountry the valueCountryRegion value to set.
+     * @return the value.
      */
-    private void setValueCountry(String valueCountry) {
-        this.valueCountry = valueCountry;
-    }
-
-    /**
-     * Set the valueCurrency property: 3-letter currency code value (ISO 4217).
-     *
-     * @param valueCurrency the valueCurrency value to set.
-     * @return the DocumentField object itself.
-     */
-    /**
-     * Get the valueList property: Array of field values.
-     *
-     * @return the valueList value.
-     */
+    @SuppressWarnings("unchecked")
     public List<DocumentField> getValueAsList() {
-        return this.valueList;
+        return (List<DocumentField>) this.value;
     }
 
     /**
-     * Set the valueList property: Array of field values.
+     * Get the map of named field values.
      *
-     * @param valueList the valueList value to set.
-     * @return the DocumentField object itself.
+     * @return the value.
      */
-    private void setValueList(List<DocumentField> valueList) {
-        this.valueList = valueList;
-    }
-
-    /**
-     * Get the valueMap property: Dictionary of named field values.
-     *
-     * @return the valueMap value.
-     */
+    @SuppressWarnings("unchecked")
     public Map<String, DocumentField> getValueAsMap() {
-        return this.valueMap;
-    }
-
-    /**
-     * Set the valueMap property: Dictionary of named field values.
-     *
-     * @param valueMap the valueMap value to set.
-     * @return the DocumentField object itself.
-     */
-    private void setValueMap(Map<String, DocumentField> valueMap) {
-        this.valueMap = valueMap;
+        return (Map<String, DocumentField>) this.value;
     }
 
     /**
      * Get the Currency value.
      *
-     * @return the valueCurrency value.
+     * @return the value.
      */
     public CurrencyValue getValueAsCurrency() {
-        return valueCurrency;
+        return (CurrencyValue) this.value;
     }
 
     /**
-     * Set the valueCurrency property: Currency value.
+     * Get address value of the field.
      *
-     * @param valueCurrency the valueCurrency value to set.
-     */
-    private void setValueCurrency(CurrencyValue valueCurrency) {
-        this.valueCurrency = valueCurrency;
-    }
-
-    /**
-     * Get the valueAddress property: Address value.
-     *
-     * @return the valueAddress value.
+     * @return the value.
      */
     public AddressValue getValueAsAddress() {
-        return this.valueAddress;
+        return (AddressValue) this.value;
     }
 
     /**
-     * Set the valueAddress property: Address value.
-     *
-     * @param valueAddress the valueAddress value to set.
-     */
-    private void setValueAddress(AddressValue valueAddress) {
-        this.valueAddress = valueAddress;
-    }
-
-    /**
-     * Get the content property: Field content.
+     * Get the field content.
      *
      * @return the content value.
      */
@@ -385,7 +199,7 @@ public final class DocumentField {
     }
 
     /**
-     * Get the boundingRegions property: Bounding regions covering the field.
+     * Get the bounding regions covering the field.
      *
      * @return the boundingRegions value.
      */
@@ -421,7 +235,7 @@ public final class DocumentField {
     }
 
     /**
-     * Get the confidence property: Confidence of correctly extracting the field.
+     * Get the confidence of correctly extracting the field.
      *
      * @return the confidence value.
      */
@@ -438,82 +252,20 @@ public final class DocumentField {
         this.confidence = confidence;
     }
 
+    /**
+     * Set the field value.
+     *
+     * @param value the value to set.
+     */
+    private void setValue(Object value) {
+        this.value = value;
+    }
+
     static {
         DocumentFieldHelper.setAccessor(new DocumentFieldHelper.DocumentFieldAccessor() {
             @Override
             public void setType(DocumentField documentField, DocumentFieldType type) {
                 documentField.setType(type);
-            }
-
-            @Override
-            public void setValueString(DocumentField documentField, String valueString) {
-                documentField.setValueString(valueString);
-            }
-
-            @Override
-            public void setValueDate(DocumentField documentField, LocalDate valueDate) {
-                documentField.setValueDate(valueDate);
-            }
-
-            @Override
-            public void setValueTime(DocumentField documentField, LocalTime valueTime) {
-                documentField.setValueTime(valueTime);
-            }
-
-            @Override
-            public void setValuePhoneNumber(DocumentField documentField, String valuePhoneNumber) {
-                documentField.setValuePhoneNumber(valuePhoneNumber);
-            }
-
-            @Override
-            public void setValueNumber(DocumentField documentField, Float valueFloat) {
-                documentField.setValueFloat(valueFloat);
-            }
-
-            @Override
-            public void setValueInteger(DocumentField documentField, Long valueInteger) {
-                documentField.setValueInteger(valueInteger);
-            }
-
-            @Override
-            public void setValueSelectionMark(DocumentField documentField,
-                                              SelectionMarkState valueSelectionMark) {
-                documentField.setValueSelectionMark(valueSelectionMark);
-            }
-
-            @Override
-            public void setValueSignature(DocumentField documentField,
-                                          DocumentSignatureType valueSignature) {
-                documentField.setValueSignature(valueSignature);
-            }
-
-            @Override
-            public void setValueCountryRegion(DocumentField documentField, String valueCountryRegion) {
-                documentField.setValueCountry(valueCountryRegion);
-            }
-
-            @Override
-            public void setValueArray(DocumentField documentField,
-                                      List<DocumentField> valueList) {
-                documentField.setValueList(valueList);
-            }
-
-            @Override
-            public void setValueObject(DocumentField documentField,
-                                       Map<String, DocumentField> valueMap) {
-                documentField.setValueMap(valueMap);
-            }
-
-            @Override
-            public void setValueCurrency(DocumentField documentField,
-                                        CurrencyValue valueCurrency) {
-                documentField.setValueCurrency(valueCurrency);
-            }
-
-            @Override
-            public void setValueAddress(DocumentField documentField,
-                                         AddressValue valueAddress) {
-                documentField.setValueAddress(valueAddress);
             }
 
             @Override
@@ -534,6 +286,11 @@ public final class DocumentField {
             @Override
             public void setConfidence(DocumentField documentField, Float confidence) {
                 documentField.setConfidence(confidence);
+            }
+
+            @Override
+            public void setValue(DocumentField documentField, Object value) {
+                documentField.setValue(value);
             }
         });
     }
