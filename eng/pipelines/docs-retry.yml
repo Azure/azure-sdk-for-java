@@ -36,11 +36,11 @@ jobs:
           project: 'internal'
       - template: /eng/common/pipelines/templates/steps/publish-blobs.yml
         parameters:
-          FolderForUpload: '$(Pipeline.Workspace)/packages/${{parameters.GroupId}}/${{artifact.name}}'
+          FolderForUpload: '$(Build.SourcesDirectory)/packages/${{parameters.GroupId}}/${{artifact.name}}'
           BlobSASKey: '$(azure-sdk-docs-prod-sas)'
           BlobName: '$(azure-sdk-docs-prod-blob-name)'
           TargetLanguage: 'java'
-          ArtifactLocation: $(Pipeline.Workspace)/packages/${{parameters.GroupId}}/${{artifact.name}}
+          ArtifactLocation: $(Build.SourcesDirectory)/packages/${{parameters.GroupId}}/${{artifact.name}}
           # we override the regular script path because we have cloned the build tools repo as a separate artifact.
           ScriptPath: 'eng/common/scripts/copy-docs-to-blobstorage.ps1'
 
@@ -55,7 +55,7 @@ jobs:
         inputs:
           source: 'specific'
           artifact: 'packages'
-          path: '$(Pipeline.Workspace)/packages' 
+          path: '$(Build.SourcesDirectory)/packages' 
           pipeline: ${{ parameters.PipelineId }}
           runId: ${{ parameters.BuildId }}
           project: 'internal'
@@ -63,7 +63,7 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
         parameters:
           PackageInfoLocations:
-            - $(Pipeline.Workspace)/packages/PackageInfo/${{artifact.name}}.json
+            - $(Build.SourcesDirectory)/packages/PackageInfo/${{artifact.name}}.json
           WorkingDirectory: $(System.DefaultWorkingDirectory)
           TargetDocRepoOwner: 'Azure'
           TargetDocRepoName: 'azure-docs-sdk-java'
