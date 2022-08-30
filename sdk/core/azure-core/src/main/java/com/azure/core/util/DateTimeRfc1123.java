@@ -350,7 +350,7 @@ public final class DateTimeRfc1123 {
     }
 
     private static int moduloLessDecimalStepDown(int value, int mod) {
-        while (value > mod) {
+        while (value >= mod) {
             value -= mod;
         }
 
