@@ -83,6 +83,7 @@
     <module>sdk/hdinsight</module>
     <module>sdk/healthbot</module>
     <module>sdk/healthcareapis</module>
+    <module>sdk/hybridaks</module>
     <module>sdk/hybridcompute</module>
     <module>sdk/hybridkubernetes</module>
     <module>sdk/hybridnetwork</module>

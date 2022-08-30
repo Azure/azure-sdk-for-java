@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/hybridaks/ci.yml
+      - sdk/hybridaks/azure-resourcemanager-hybridaks/
+    exclude:
+      - sdk/hybridaks/pom.xml
+      - sdk/hybridaks/azure-resourcemanager-hybridaks/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/hybridaks/ci.yml
+      - sdk/hybridaks/azure-resourcemanager-hybridaks/
+    exclude:
+      - sdk/hybridaks/pom.xml
+      - sdk/hybridaks/azure-resourcemanager-hybridaks/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerhybridaks
+    displayName: azure-resourcemanager-hybridaks
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: hybridaks
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-hybridaks
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerhybridaks
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerhybridaks }}
