@@ -123,12 +123,6 @@ public class SearchServiceCustomizations extends Customization {
         customizeSearchIndexerSkill(publicCustomization.getClass("SearchIndexerSkill"));
         customizeSentimentSkill(publicCustomization.getClass("SentimentSkill"),
             implCustomization.getClass("SentimentSkillV3"));
-
-        addKnowledgeStoreProjectionFluentSetterOverrides(
-            publicCustomization.getClass("SearchIndexerKnowledgeStoreBlobProjectionSelector"),
-            publicCustomization.getClass("SearchIndexerKnowledgeStoreFileProjectionSelector"),
-            publicCustomization.getClass("SearchIndexerKnowledgeStoreObjectProjectionSelector"),
-            publicCustomization.getClass("SearchIndexerKnowledgeStoreTableProjectionSelector"));
     }
 
     private void customizeSearchFieldDataType(ClassCustomization classCustomization) {
@@ -401,43 +395,6 @@ public class SearchServiceCustomizations extends Customization {
             "}"
         ));
         addVarArgsOverload(classCustomization, "skills", "SearchIndexerSkill");
-    }
-
-    private void addKnowledgeStoreProjectionFluentSetterOverrides(ClassCustomization... classCustomizations) {
-        for (ClassCustomization classCustomization : classCustomizations) {
-            String className = classCustomization.getClassName();
-
-            classCustomization.addMethod(joinWithNewline(
-                String.format("public %s setReferenceKeyName(String referenceKeyName) {", className),
-                "    super.setReferenceKeyName(referenceKeyName);",
-                "    return this;",
-                "}")).addAnnotation("@Override");
-
-            classCustomization.addMethod(joinWithNewline(
-                String.format("public %s setGeneratedKeyName(String generatedKeyName) {", className),
-                "    super.setGeneratedKeyName(generatedKeyName);",
-                "    return this;",
-                "}")).addAnnotation("@Override");
-
-            classCustomization.addMethod(joinWithNewline(
-                String.format("public %s setSource(String source) {", className),
-                "    super.setSource(source);\n",
-                "    return this;\n",
-                "}")).addAnnotation("@Override");
-
-            classCustomization.addMethod(joinWithNewline(
-                String.format("public %s setSourceContext(String sourceContext) {", className),
-                "    super.setSourceContext(sourceContext);",
-                "    return this;",
-                "}")).addAnnotation("@Override");
-
-            classCustomization.addMethod(joinWithNewline(
-                    String.format("public %s setInputs(List<InputFieldMappingEntry> inputs) {", className),
-                    "    super.setInputs(inputs);",
-                    "    return this;",
-                    "}"), Collections.singletonList("java.util.List"))
-                .addAnnotation("@Override");
-        }
     }
 
     private void customizeSearchIndexerSkill(ClassCustomization classCustomization) {

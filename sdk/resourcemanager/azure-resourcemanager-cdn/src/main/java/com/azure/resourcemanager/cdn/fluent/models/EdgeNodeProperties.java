@@ -7,15 +7,12 @@ package com.azure.resourcemanager.cdn.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.IpAddressGroup;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The JSON object that contains the properties required to create an edgenode. */
 @Fluent
 public final class EdgeNodeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EdgeNodeProperties.class);
-
     /*
      * List of ip address groups.
      */
@@ -49,7 +46,7 @@ public final class EdgeNodeProperties {
      */
     public void validate() {
         if (ipAddressGroups() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property ipAddressGroups in model EdgeNodeProperties"));
@@ -57,4 +54,6 @@ public final class EdgeNodeProperties {
             ipAddressGroups().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EdgeNodeProperties.class);
 }

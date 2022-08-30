@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.microsoft.com/route/directions/json?api-version=1.0&query=13.42936%2C52.50931%3A13.43872%2C52.50274",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaSearchSDK/1.0 (14.0.2; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "content-length" : "102",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-azuremaps-region" : "West US 2",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "X-MSEdge-Ref" : "Ref A: 3A4EB0B96CC5477181E225B75D67A91D Ref B: PAOEDGE0508 Ref C: 2022-08-18T20:22:19Z",
+      "Body" : "{\"error\":{\"code\":\"400 BadRequest\",\"message\":\"avoidAreas parameter only supports rectangle polygons.\"}}",
+      "Date" : "Thu, 18 Aug 2022 20:22:19 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

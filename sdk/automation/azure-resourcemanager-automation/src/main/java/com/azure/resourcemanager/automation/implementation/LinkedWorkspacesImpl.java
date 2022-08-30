@@ -12,10 +12,9 @@ import com.azure.resourcemanager.automation.fluent.LinkedWorkspacesClient;
 import com.azure.resourcemanager.automation.fluent.models.LinkedWorkspaceInner;
 import com.azure.resourcemanager.automation.models.LinkedWorkspace;
 import com.azure.resourcemanager.automation.models.LinkedWorkspaces;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LinkedWorkspacesImpl implements LinkedWorkspaces {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LinkedWorkspacesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LinkedWorkspacesImpl.class);
 
     private final LinkedWorkspacesClient innerClient;
 

@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.UUID;
 
 /** The AnalyzeTextJobState model. */
 @Fluent
@@ -90,15 +89,15 @@ public final class AnalyzeTextJobState extends JobState {
 
     /** {@inheritDoc} */
     @Override
-    public AnalyzeTextJobState setJobId(UUID jobId) {
+    public AnalyzeTextJobState setJobId(String jobId) {
         super.setJobId(jobId);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public AnalyzeTextJobState setLastUpdateDateTime(OffsetDateTime lastUpdateDateTime) {
-        super.setLastUpdateDateTime(lastUpdateDateTime);
+    public AnalyzeTextJobState setLastUpdatedDateTime(OffsetDateTime lastUpdatedDateTime) {
+        super.setLastUpdatedDateTime(lastUpdatedDateTime);
         return this;
     }
 

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.4 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,78 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.3 (2022-08-25)
+
+- Azure Resource Manager LabServices client library for Java. This package contains Microsoft Azure SDK for LabServices Management SDK. REST API for managing Azure Lab Services images. Package tag package-2022-08. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.RecurrencePattern` was modified
+
+* `java.time.LocalDate expirationDate()` -> `java.time.OffsetDateTime expirationDate()`
+* `withExpirationDate(java.time.LocalDate)` was removed
+
+### Features Added
+
+* `models.ResourceIdentityType` was added
+
+* `models.Identity` was added
+
+#### `models.Lab` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.UsageName` was modified
+
+* `skuInstances()` was added
+* `withSkuInstances(java.util.List)` was added
+
+#### `LabServicesManager` was modified
+
+* `authenticate(com.azure.core.http.HttpPipeline,com.azure.core.management.profile.AzureProfile)` was added
+
+#### `models.ListUsagesResult` was modified
+
+* `withValue(java.util.List)` was added
+
+#### `models.LabPlan$Update` was modified
+
+* `withIdentity(models.Identity)` was added
+
+#### `models.RecurrencePattern` was modified
+
+* `withExpirationDate(java.time.OffsetDateTime)` was added
+
+#### `LabServicesManager$Configurable` was modified
+
+* `withRetryOptions(com.azure.core.http.policy.RetryOptions)` was added
+
+#### `models.LabPlanUpdate` was modified
+
+* `identity()` was added
+* `withIdentity(models.Identity)` was added
+
+#### `models.Image` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.LabPlan` was modified
+
+* `resourceGroupName()` was added
+* `identity()` was added
+
+#### `models.User` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.LabPlan$Definition` was modified
+
+* `withIdentity(models.Identity)` was added
+
+#### `models.Schedule` was modified
+
+* `resourceGroupName()` was added
 
 ## 1.0.0-beta.2 (2022-01-17)
 

@@ -16,15 +16,13 @@ import java.util.List;
 @Fluent
 public final class ContainerNetworkInterfacePropertiesFormat {
     /*
-     * Container network interface configuration from which this container
-     * network interface is created.
+     * Container network interface configuration from which this container network interface is created.
      */
     @JsonProperty(value = "containerNetworkInterfaceConfiguration", access = JsonProperty.Access.WRITE_ONLY)
     private ContainerNetworkInterfaceConfiguration containerNetworkInterfaceConfiguration;
 
     /*
-     * Reference to the container to which this container network interface is
-     * attached.
+     * Reference to the container to which this container network interface is attached.
      */
     @JsonProperty(value = "container")
     private Container container;

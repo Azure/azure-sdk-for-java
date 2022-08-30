@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Azure query for the update configuration. */
 @Fluent
 public final class AzureQueryProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureQueryProperties.class);
-
     /*
      * List of Subscription or Resource Group ARM Ids.
      */

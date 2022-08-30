@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VerificationStatus. */
+/** Status of the verification operation. */
 public final class VerificationStatus extends ExpandableStringEnum<VerificationStatus> {
     /** Static value NotStarted for VerificationStatus. */
     public static final VerificationStatus NOT_STARTED = fromString("NotStarted");

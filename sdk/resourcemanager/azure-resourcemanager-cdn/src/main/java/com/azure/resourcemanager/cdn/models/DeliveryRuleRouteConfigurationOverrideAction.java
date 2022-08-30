@@ -6,7 +6,6 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,9 +18,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("RouteConfigurationOverride")
 @Fluent
 public final class DeliveryRuleRouteConfigurationOverrideAction extends DeliveryRuleAction {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(DeliveryRuleRouteConfigurationOverrideAction.class);
-
     /*
      * Defines the parameters for the action.
      */
@@ -58,7 +54,7 @@ public final class DeliveryRuleRouteConfigurationOverrideAction extends Delivery
     public void validate() {
         super.validate();
         if (parameters() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property parameters in model DeliveryRuleRouteConfigurationOverrideAction"));
@@ -66,4 +62,6 @@ public final class DeliveryRuleRouteConfigurationOverrideAction extends Delivery
             parameters().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DeliveryRuleRouteConfigurationOverrideAction.class);
 }

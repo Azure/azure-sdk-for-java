@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.fluent.models.EdgeNodeInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,8 +15,6 @@ import java.util.List;
  */
 @Fluent
 public final class EdgenodeResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EdgenodeResult.class);
-
     /*
      * Edge node of CDN service.
      */
