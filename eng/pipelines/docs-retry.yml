@@ -74,7 +74,7 @@ jobs:
           DocValidationImageId: azuresdkimages.azurecr.io/javarefautocr:latest
       - template: /eng/pipelines/templates/steps/fetch-package-list.yml
         parameters:
-          JavaDocJarLocation: "$(Pipeline.Workspace)/packages/${{parameters.GroupId}}/${{artifact.name}}"
+          JavaDocJarLocation: "$(Build.SourcesDirectory)/packages/${{parameters.GroupId}}/${{artifact.name}}"
           ArtifactName: ${{artifact.name}}
           TargetBranch: 'main'
           DocRepoLocation: '$(DocRepoLocation)'
