@@ -19,7 +19,7 @@ variables:
   - template: /eng/pipelines/templates/variables/globals.yml
 jobs:
 - ${{ each artifact in parameters.PackageIds }}:
-  - job: RetryOnGithubIo_{{artifact}}
+  - job: RetryOnGithubIo_${{artifact}}
     pool:
       name: azsdk-pool-mms-ubuntu-2004-general
       vmImage: MMSUbuntu20.04
