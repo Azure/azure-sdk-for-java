@@ -32,7 +32,7 @@ jobs:
           artifact: 'packages'
           path: '$(Build.SourcesDirectory)/packages' 
           pipeline: ${{ parameters.PipelineId }}
-          runId: ${{ parameters.BuildId }}
+          buildId: ${{ parameters.BuildId }}
           project: 'internal'
       - template: /eng/common/pipelines/templates/steps/publish-blobs.yml
         parameters:
@@ -57,7 +57,7 @@ jobs:
           artifact: 'packages'
           path: '$(Build.SourcesDirectory)/packages' 
           pipeline: ${{ parameters.PipelineId }}
-          runId: ${{ parameters.BuildId }}
+          buildId: ${{ parameters.BuildId }}
           project: 'internal'
       # Pull and build the docker image.
       - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
