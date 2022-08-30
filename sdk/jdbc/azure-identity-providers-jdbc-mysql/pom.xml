@@ -16,6 +16,29 @@
 
   <name>Azure Identity Providers JDBC MySQL</name>
   <description>Provide implementation of MySQL authenticationPlugin that enables authentication using Azure AD.</description>
+  <url>https://github.com/azure/azure-sdk-for-java</url>
+  <licenses>
+    <license>
+      <name>The MIT License (MIT)</name>
+      <url>http://opensource.org/licenses/MIT</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>microsoft</id>
+      <name>Microsoft Corporation</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:git://github.com/azure/azure-sdk-for-java</connection>
+    <developerConnection>scm:git:git://github.com/azure/azure-sdk-for-java</developerConnection>
+    <url>https://github.com/azure/azure-sdk-for-java</url>
+  </scm>
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/azure/azure-sdk-for-java/issues</url>
+  </issueManagement>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -33,7 +56,7 @@
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
-      <version>8.0.29</version> <!-- {x-version-update;mysql:mysql-connector-java;external_dependency} -->
+      <version>8.0.30</version> <!-- {x-version-update;mysql:mysql-connector-java;external_dependency} -->
       <scope>provided</scope>
     </dependency>
 
@@ -70,7 +93,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>mysql:mysql-connector-java:[8.0.29]</include> <!-- {x-include-update;mysql:mysql-connector-java;external_dependency} -->
+                <include>mysql:mysql-connector-java:[8.0.30]</include> <!-- {x-include-update;mysql:mysql-connector-java;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
