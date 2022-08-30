@@ -10,12 +10,16 @@ import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentField;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.TypedDocumentField;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import java.time.LocalDate;
-import java.util.List;
+import java.text.SimpleDateFormat;
 import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * Sample for analyzing commonly found receipt fields from a file source URL.
@@ -47,84 +51,45 @@ public class AnalyzeReceiptsFromUrl {
 
         for (int i = 0; i < receiptResults.getDocuments().size(); i++) {
             AnalyzedDocument analyzedReceipt = receiptResults.getDocuments().get(i);
+            // Current
             Map<String, DocumentField> receiptFields = analyzedReceipt.getFields();
             System.out.printf("----------- Analyzing receipt info %d -----------%n", i);
             DocumentField merchantNameField = receiptFields.get("MerchantName");
             if (merchantNameField != null) {
                 if (DocumentFieldType.STRING == merchantNameField.getType()) {
                     String merchantName = merchantNameField.getValueAsString();
+                    // Users can also access `getValue` with a cast:
+                    // String merchantName = (String) merchantNameField.getValue();
+
                     System.out.printf("Merchant Name: %s, confidence: %.2f%n",
                         merchantName, merchantNameField.getConfidence());
                 }
             }
 
-            DocumentField merchantPhoneNumberField = receiptFields.get("MerchantPhoneNumber");
-            if (merchantPhoneNumberField != null) {
-                if (DocumentFieldType.PHONE_NUMBER == merchantPhoneNumberField.getType()) {
-                    String merchantAddress = merchantPhoneNumberField.getValueAsPhoneNumber();
-                    System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
-                        merchantAddress, merchantPhoneNumberField.getConfidence());
-                }
-            }
+            // Future feature to support strongly typed data example code
+            ReceiptDocument receiptDocument = getFullyTyped(analyzedReceipt);
+            TypedDocumentField<String> typedMerchantNameField = receiptDocument.getMerchantName();
+            // Here users can still have access to non-typed/raw fields by:
+            // Map<String, DocumentField> receiptFields = receiptDocument.getFields() // invokes AnalyzedDocument.getFields()
+            if (typedMerchantNameField != null) {
+                String valueMerchantName = typedMerchantNameField.getValue();
 
-            DocumentField merchantAddressField = receiptFields.get("MerchantAddress");
-            if (merchantAddressField != null) {
-                if (DocumentFieldType.STRING == merchantAddressField.getType()) {
-                    String merchantAddress = merchantAddressField.getValueAsString();
-                    System.out.printf("Merchant Address: %s, confidence: %.2f%n",
-                        merchantAddress, merchantAddressField.getConfidence());
-                }
-            }
-
-            DocumentField transactionDateField = receiptFields.get("TransactionDate");
-            if (transactionDateField != null) {
-                if (DocumentFieldType.DATE == transactionDateField.getType()) {
-                    LocalDate transactionDate = transactionDateField.getValueAsDate();
-                    System.out.printf("Transaction Date: %s, confidence: %.2f%n",
-                        transactionDate, transactionDateField.getConfidence());
-                }
-            }
-
-            DocumentField receiptItemsField = receiptFields.get("Items");
-            if (receiptItemsField != null) {
-                System.out.printf("Receipt Items: %n");
-                if (DocumentFieldType.LIST == receiptItemsField.getType()) {
-                    List<DocumentField> receiptItems = receiptItemsField.getValueAsList();
-                    receiptItems.stream()
-                        .filter(receiptItem -> DocumentFieldType.MAP == receiptItem.getType())
-                        .map(formField -> formField.getValueAsMap())
-                        .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
-                            if ("Name".equals(key)) {
-                                if (DocumentFieldType.STRING == formField.getType()) {
-                                    String name = formField.getValueAsString();
-                                    System.out.printf("Name: %s, confidence: %.2fs%n",
-                                        name, formField.getConfidence());
-                                }
-                            }
-                            if ("Quantity".equals(key)) {
-                                if (DocumentFieldType.FLOAT == formField.getType()) {
-                                    Float quantity = formField.getValueAsFloat();
-                                    System.out.printf("Quantity: %f, confidence: %.2f%n",
-                                        quantity, formField.getConfidence());
-                                }
-                            }
-                            if ("Price".equals(key)) {
-                                if (DocumentFieldType.FLOAT == formField.getType()) {
-                                    Float price = formField.getValueAsFloat();
-                                    System.out.printf("Price: %f, confidence: %.2f%n",
-                                        price, formField.getConfidence());
-                                }
-                            }
-                            if ("TotalPrice".equals(key)) {
-                                if (DocumentFieldType.FLOAT == formField.getType()) {
-                                    Float totalPrice = formField.getValueAsFloat();
-                                    System.out.printf("Total Price: %f, confidence: %.2f%n",
-                                        totalPrice, formField.getConfidence());
-                                }
-                            }
-                        }));
-                }
+                System.out.printf("Merchant Name: %s, confidence: %.2f%n",
+                    valueMerchantName, typedMerchantNameField.getConfidence());
             }
         }
     }
+
+
+    static ReceiptDocument getFullyTyped(AnalyzedDocument analyzedDocument) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        df.setTimeZone(TimeZone.getDefault());
+        objectMapper.setDateFormat(df);
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        return objectMapper.convertValue(analyzedDocument, ReceiptDocument.class);
+    }
 }
+

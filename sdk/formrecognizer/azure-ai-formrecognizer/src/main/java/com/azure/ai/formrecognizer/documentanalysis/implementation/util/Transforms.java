@@ -419,47 +419,47 @@ public class Transforms {
 
         if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.STRING.equals(
             innerDocumentField.getType())) {
-            DocumentFieldHelper.setValueString(documentField, innerDocumentField.getValueString());
+            DocumentFieldHelper.setValue(documentField, innerDocumentField.getValueString());
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.DATE.equals(
             innerDocumentField.getType())) {
-            DocumentFieldHelper.setValueDate(documentField, innerDocumentField.getValueDate());
+            DocumentFieldHelper.setValue(documentField, innerDocumentField.getValueDate());
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.TIME.equals(
             innerDocumentField.getType())) {
-            DocumentFieldHelper.setValueTime(documentField, innerDocumentField.getValueTime() == null
+            DocumentFieldHelper.setValue(documentField, innerDocumentField.getValueTime() == null
                 ? null : LocalTime.parse(innerDocumentField.getValueTime(),
                 DateTimeFormatter.ofPattern("HH:mm:ss")));
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.PHONE_NUMBER.equals(
             innerDocumentField.getType())) {
-            DocumentFieldHelper.setValuePhoneNumber(documentField, innerDocumentField.getValuePhoneNumber());
+            DocumentFieldHelper.setValue(documentField, innerDocumentField.getValuePhoneNumber());
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.NUMBER.equals(
             innerDocumentField.getType())) {
-            DocumentFieldHelper.setValueNumber(documentField, innerDocumentField.getValueNumber());
+            DocumentFieldHelper.setValue(documentField, innerDocumentField.getValueNumber());
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.INTEGER.equals(
             innerDocumentField.getType())) {
-            DocumentFieldHelper.setValueInteger(documentField, innerDocumentField.getValueInteger());
+            DocumentFieldHelper.setValue(documentField, innerDocumentField.getValueInteger());
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.SELECTION_MARK.equals(
             innerDocumentField.getType())) {
             if (innerDocumentField.getValueSelectionMark() == null) {
-                DocumentFieldHelper.setValueSelectionMark(documentField, null);
+                DocumentFieldHelper.setValue(documentField, null);
             } else {
-                DocumentFieldHelper.setValueSelectionMark(documentField,
+                DocumentFieldHelper.setValue(documentField,
                     SelectionMarkState.fromString(innerDocumentField.getValueSelectionMark().toString()));
             }
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.COUNTRY_REGION.equals(
             innerDocumentField.getType())) {
-            DocumentFieldHelper.setValueCountryRegion(documentField, innerDocumentField.getValueCountryRegion());
+            DocumentFieldHelper.setValue(documentField, innerDocumentField.getValueCountryRegion());
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.SIGNATURE.equals(
             innerDocumentField.getType())) {
             if (innerDocumentField.getValueSignature() != null) {
-                DocumentFieldHelper.setValueSignature(documentField,
+                DocumentFieldHelper.setValue(documentField,
                     DocumentSignatureType.fromString(innerDocumentField.getValueSignature().toString()));
             }
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.ARRAY.equals(
             innerDocumentField.getType())) {
             if (CoreUtils.isNullOrEmpty(innerDocumentField.getValueArray())) {
-                DocumentFieldHelper.setValueArray(documentField, null);
+                DocumentFieldHelper.setValue(documentField, null);
             } else {
-                DocumentFieldHelper.setValueArray(documentField, innerDocumentField.getValueArray()
+                DocumentFieldHelper.setValue(documentField, innerDocumentField.getValueArray()
                     .stream()
                     .map(innerArrayDocumentField -> toDocumentField(innerArrayDocumentField))
                     .collect(Collectors.toList()));
@@ -467,29 +467,29 @@ public class Transforms {
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.OBJECT.equals(
             innerDocumentField.getType())) {
             if (CoreUtils.isNullOrEmpty(innerDocumentField.getValueObject())) {
-                DocumentFieldHelper.setValueObject(documentField, null);
+                DocumentFieldHelper.setValue(documentField, null);
             } else {
                 HashMap<String, DocumentField> documentFieldMap = new HashMap<>();
                 innerDocumentField.getValueObject()
                     .forEach((key, innerMapDocumentField)
                         -> documentFieldMap.put(key, toDocumentField(innerMapDocumentField)));
-                DocumentFieldHelper.setValueObject(documentField, documentFieldMap);
+                DocumentFieldHelper.setValue(documentField, documentFieldMap);
             }
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.CURRENCY.equals(
             innerDocumentField.getType())) {
             if (innerDocumentField.getValueCurrency() == null) {
-                DocumentFieldHelper.setValueCurrency(documentField, null);
+                DocumentFieldHelper.setValue(documentField, null);
             } else {
                 CurrencyValue currencyValue = new CurrencyValue();
                 CurrencyValueHelper.setAmount(currencyValue, innerDocumentField.getValueCurrency().getAmount());
                 CurrencyValueHelper.setCurrencySymbol(currencyValue,
                     innerDocumentField.getValueCurrency().getCurrencySymbol());
-                DocumentFieldHelper.setValueCurrency(documentField, currencyValue);
+                DocumentFieldHelper.setValue(documentField, currencyValue);
             }
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.ADDRESS.equals(
             innerDocumentField.getType())) {
             if (innerDocumentField.getValueAddress() == null) {
-                DocumentFieldHelper.setValueAddress(documentField, null);
+                DocumentFieldHelper.setValue(documentField, null);
             } else {
                 AddressValue addressValue = new AddressValue();
                 AddressValueHelper.setCity(addressValue, innerDocumentField.getValueAddress().getCity());
@@ -502,7 +502,7 @@ public class Transforms {
                 AddressValueHelper.setPoBox(addressValue, innerDocumentField.getValueAddress().getPoBox());
                 AddressValueHelper.setPostalCode(addressValue, innerDocumentField.getValueAddress().getPostalCode());
                 AddressValueHelper.setState(addressValue, innerDocumentField.getValueAddress().getState());
-                DocumentFieldHelper.setValueAddress(documentField, addressValue);
+                DocumentFieldHelper.setValue(documentField, addressValue);
             }
         }
     }
