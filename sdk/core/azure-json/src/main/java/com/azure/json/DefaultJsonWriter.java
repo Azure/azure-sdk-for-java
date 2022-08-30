@@ -32,13 +32,11 @@ public final class DefaultJsonWriter extends JsonWriter {
      * @return An instance of {@link DefaultJsonWriter}.
      * @throws UncheckedIOException If a {@link DefaultJsonWriter} wasn't able to be constructed from the
      * {@link OutputStream}.
+     * @throws IOException If a {@link JsonWriter} fails to be created targeting the {@code stream} as the content
+     * container.
      */
-    public static JsonWriter toStream(OutputStream stream) {
-        try {
-            return new DefaultJsonWriter(FACTORY.createGenerator(stream));
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    public static JsonWriter toStream(OutputStream stream) throws IOException {
+        return new DefaultJsonWriter(FACTORY.createGenerator(stream));
     }
 
     private DefaultJsonWriter(JsonGenerator generator) {
@@ -46,99 +44,65 @@ public final class DefaultJsonWriter extends JsonWriter {
     }
 
     @Override
-    public JsonWriter flush() {
-        try {
-            generator.flush();
-            return this;
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    public JsonWriter flush() throws IOException {
+        generator.flush();
+        return this;
     }
 
     @Override
-    public JsonWriter writeStartObject() {
+    public JsonWriter writeStartObject() throws IOException {
         context.validateToken(JsonToken.START_OBJECT);
-
-        try {
-            generator.writeStartObject();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        generator.writeStartObject();
 
         context = context.updateContext(JsonToken.START_OBJECT);
         return this;
     }
 
     @Override
-    public JsonWriter writeEndObject() {
+    public JsonWriter writeEndObject() throws IOException {
         context.validateToken(JsonToken.END_OBJECT);
-
-        try {
-            generator.writeEndObject();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        generator.writeEndObject();
 
         context = context.updateContext(JsonToken.END_OBJECT);
         return this;
     }
 
     @Override
-    public JsonWriter writeStartArray() {
+    public JsonWriter writeStartArray() throws IOException {
         context.validateToken(JsonToken.START_ARRAY);
-
-        try {
-            generator.writeStartArray();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        generator.writeStartArray();
 
         context = context.updateContext(JsonToken.START_ARRAY);
         return this;
     }
 
     @Override
-    public JsonWriter writeEndArray() {
+    public JsonWriter writeEndArray() throws IOException {
         context.validateToken(JsonToken.END_ARRAY);
-
-        try {
-            generator.writeEndArray();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        generator.writeEndArray();
 
         context = context.updateContext(JsonToken.END_ARRAY);
         return this;
     }
 
     @Override
-    public JsonWriter writeFieldName(String fieldName) {
+    public JsonWriter writeFieldName(String fieldName) throws IOException {
         Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
 
         context.validateToken(JsonToken.FIELD_NAME);
-
-        try {
-            generator.writeFieldName(fieldName);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        generator.writeFieldName(fieldName);
 
         context = context.updateContext(JsonToken.FIELD_NAME);
         return this;
     }
 
     @Override
-    public JsonWriter writeBinary(byte[] value) {
+    public JsonWriter writeBinary(byte[] value) throws IOException {
         context.validateToken(JsonToken.STRING);
-
-        try {
-            if (value == null) {
-                generator.writeNull();
-            } else {
-                generator.writeBinary(value);
-            }
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
+        if (value == null) {
+            generator.writeNull();
+        } else {
+            generator.writeBinary(value);
         }
 
         context = context.updateContext(JsonToken.STRING);
@@ -146,114 +110,74 @@ public final class DefaultJsonWriter extends JsonWriter {
     }
 
     @Override
-    public JsonWriter writeBoolean(boolean value) {
+    public JsonWriter writeBoolean(boolean value) throws IOException {
         context.validateToken(JsonToken.BOOLEAN);
-
-        try {
-            generator.writeBoolean(value);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        generator.writeBoolean(value);
 
         context = context.updateContext(JsonToken.BOOLEAN);
         return this;
     }
 
     @Override
-    public JsonWriter writeDouble(double value) {
+    public JsonWriter writeDouble(double value) throws IOException {
         context.validateToken(JsonToken.NUMBER);
-
-        try {
-            generator.writeNumber(value);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        generator.writeNumber(value);
 
         context = context.updateContext(JsonToken.NUMBER);
         return this;
     }
 
     @Override
-    public JsonWriter writeFloat(float value) {
+    public JsonWriter writeFloat(float value) throws IOException {
         context.validateToken(JsonToken.NUMBER);
-
-        try {
-            generator.writeNumber(value);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        generator.writeNumber(value);
 
         context = context.updateContext(JsonToken.NUMBER);
         return this;
     }
 
     @Override
-    public JsonWriter writeInt(int value) {
+    public JsonWriter writeInt(int value) throws IOException {
         context.validateToken(JsonToken.NUMBER);
-
-        try {
-            generator.writeNumber(value);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        generator.writeNumber(value);
 
         context = context.updateContext(JsonToken.NUMBER);
         return this;
     }
 
     @Override
-    public JsonWriter writeLong(long value) {
+    public JsonWriter writeLong(long value) throws IOException {
         context.validateToken(JsonToken.NUMBER);
-
-        try {
-            generator.writeNumber(value);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        generator.writeNumber(value);
 
         context = context.updateContext(JsonToken.NUMBER);
         return this;
     }
 
     @Override
-    public JsonWriter writeNull() {
+    public JsonWriter writeNull() throws IOException {
         context.validateToken(JsonToken.NULL);
-
-        try {
-            generator.writeNull();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        generator.writeNull();
 
         context = context.updateContext(JsonToken.NULL);
         return this;
     }
 
     @Override
-    public JsonWriter writeString(String value) {
+    public JsonWriter writeString(String value) throws IOException {
         context.validateToken(JsonToken.STRING);
-
-        try {
-            generator.writeString(value);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        generator.writeString(value);
 
         context = context.updateContext(JsonToken.STRING);
         return this;
     }
 
     @Override
-    public JsonWriter writeRawValue(String value) {
+    public JsonWriter writeRawValue(String value) throws IOException {
         Objects.requireNonNull(value, "'value' cannot be null.");
 
         context.validateToken(JsonToken.STRING);
-
-        try {
-            generator.writeRawValue(value);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        generator.writeRawValue(value);
 
         context = context.updateContext(JsonToken.STRING);
         return this;

@@ -8,6 +8,7 @@ import com.azure.json.contract.JsonWriterContractTests;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
@@ -19,7 +20,7 @@ public class GsonJsonWriterContractTests extends JsonWriterContractTests {
     private JsonWriter writer;
 
     @BeforeEach
-    public void beforeEach() {
+    public void beforeEach() throws IOException {
         this.outputStream = new ByteArrayOutputStream();
         this.writer = GsonJsonWriter.toStream(outputStream);
     }

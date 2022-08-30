@@ -13,6 +13,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.function.Function;
@@ -425,7 +426,7 @@ public abstract class JsonReaderContractTests {
 
     @ParameterizedTest
     @MethodSource("bufferObjectSupplier")
-    public void bufferObject(String json, int nextCount) {
+    public void bufferObject(String json, int nextCount) throws IOException {
         JsonReader reader = getJsonReader(json);
 
         for (int i = 0; i < nextCount; i++) {
@@ -496,13 +497,13 @@ public abstract class JsonReaderContractTests {
         }
 
         @Override
-        public JsonWriter toJson(JsonWriter jsonWriter) {
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
             return jsonWriter.writeStartObject()
                 .writeStringField("test", test)
                 .writeEndObject();
         }
 
-        public static TestData fromJson(JsonReader jsonReader) {
+        public static TestData fromJson(JsonReader jsonReader) throws IOException {
             return jsonReader.readObject(reader -> {
                 TestData result = new TestData();
 
