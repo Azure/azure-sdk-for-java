@@ -43,7 +43,10 @@ public class AmqpMetricsProvider {
         .getProperties(AZURE_CORE_AMQP_PROPERTIES_NAME)
         .getOrDefault(AZURE_CORE_AMQP_PROPERTIES_VERSION_KEY, null);
 
+    // all delivery state + 1 for `null` - we'll treat it as an error - no delivery was received
     private static final int DELIVERY_STATES_COUNT = DeliveryState.DeliveryStateType.values().length + 1;
+
+    // all error codes + 1 for `null` - error, no response was received
     private static final int RESPONSE_CODES_COUNT = AmqpResponseCode.values().length + 1;
     private static final Meter DEFAULT_METER = MeterProvider.getDefaultProvider().createMeter("azure-core-amqp", AZURE_CORE_VERSION, new MetricsOptions());
     private static final AmqpMetricsProvider NOOP = new AmqpMetricsProvider();
@@ -58,8 +61,33 @@ public class AmqpMetricsProvider {
     private LongCounter transportErrors = null;
     private DoubleHistogram receivedLag = null;
     private LongCounter addCredits = null;
+
+    /**
+     * Cache of sendDuration attributes. Each element has
+     * namespace, entity name and path, and also a delivery state.
+     * Element index is ordinal number of state in the enum definition.
+     *
+     * The last element in the array represents no delivery (e.g. timeout or network issues)
+     * case and w ill be stored as last element in the array.
+      */
     private TelemetryAttributes[] sendAttributeCache = null;
+
+    /**
+     * Stores attribute caches with Management operation and response code.
+     * AmqpResponseCode ordinal number serves as index in this array,
+     * (the last element represents no response).
+     *
+     * Each element is a cache on its own that holds attribute sets for
+     * namespace, entity name and path, and management operation.
+     */
     private AttributeCache[] requestResponseAttributeCache = null;
+
+    /**
+     * There is no enum for AMQP condition, so we just use a cache
+     * that holds attribute sets representing namespace, entity name and path,
+     * and error condition.
+     * Error condition serves as a key, and other attributes are shared across all attribute sets.
+     */
     private AttributeCache amqpErrorAttributeCache = null;
     private TelemetryAttributes commonAttributes = null;
 
@@ -169,7 +197,7 @@ public class AmqpMetricsProvider {
                 deltaMs = 0;
             }
             receivedLag.record(deltaMs / 1000d, commonAttributes, Context.NONE);
-        } else {
+        } else if (enqueuedTimeDate != null) {
             LOGGER.verbose("Received message has unexpected `x-opt-enqueued-time` annotation value - `{}`. Ignoring it.", enqueuedTimeDate);
         }
     }
@@ -210,8 +238,10 @@ public class AmqpMetricsProvider {
             }
         }
     }
-
     private TelemetryAttributes getDeliveryStateAttribute(DeliveryState.DeliveryStateType state) {
+        // if there was no response, state is null and indicates a network (probably) error.
+        // we don't have an enum for network issues and metric attributes cannot have arbitrary
+        // high-cardinality data, so we'll just use vague "error" for it.
         int ind = state == null ? DELIVERY_STATES_COUNT - 1 : state.ordinal();
         TelemetryAttributes attrs = sendAttributeCache[ind];
         if (attrs != null) {
@@ -222,6 +252,9 @@ public class AmqpMetricsProvider {
     }
 
     private TelemetryAttributes getResponseCodeAttributes(AmqpResponseCode code, String operation) {
+        // if there was no response, code is null and indicates a network (probably) error.
+        // we don't have an enum for network issues and metric attributes cannot have arbitrary
+        // high-cardinality data, so we'll just use vague "error" for it
         int ind = code == null ? RESPONSE_CODES_COUNT - 1 : code.ordinal();
         AttributeCache codeAttributes = requestResponseAttributeCache[ind];
         if (codeAttributes == null) {
