@@ -77,6 +77,5 @@ jobs:
           JavaDocJarLocation: "$(Pipeline.Workspace)/packages/${{parameters.GroupId}}/${{artifact.name}}"
           ArtifactName: ${{artifact.name}}
           TargetBranch: 'main'
-          DocRepoLocation: '$(Pipeline.Workspace)/docs'
           TargetDocRepoName: 'azure-docs-sdk-java'
           TargetDocRepoOwner: 'Azure'
