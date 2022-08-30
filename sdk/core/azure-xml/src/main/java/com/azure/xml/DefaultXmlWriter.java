@@ -27,15 +27,11 @@ public final class DefaultXmlWriter extends XmlWriter {
      *
      * @param outputStream The {@link OutputStream} where content will be written.
      * @return A new instance of {@link XmlWriter}.
-     * @throws RuntimeException If an {@link XmlWriter} cannot be instantiated.
+     * @throws XMLStreamException If an {@link XmlWriter} cannot be instantiated.
      */
-    public static XmlWriter toOutputStream(OutputStream outputStream) {
-        try {
-            return new DefaultXmlWriter(XML_OUTPUT_FACTORY.createXMLStreamWriter(
-                new OutputStreamWriter(outputStream, StandardCharsets.UTF_8)));
-        } catch (XMLStreamException ex) {
-            throw new RuntimeException(ex);
-        }
+    public static XmlWriter toOutputStream(OutputStream outputStream) throws XMLStreamException {
+        return new DefaultXmlWriter(XML_OUTPUT_FACTORY.createXMLStreamWriter(
+            new OutputStreamWriter(outputStream, StandardCharsets.UTF_8)));
     }
 
     private DefaultXmlWriter(XMLStreamWriter writer) {
@@ -43,122 +39,87 @@ public final class DefaultXmlWriter extends XmlWriter {
     }
 
     @Override
-    public XmlWriter writeStartDocument(String version, String encoding) {
-        try {
-            writer.writeStartDocument(encoding, version);
-            return this;
-        } catch (XMLStreamException e) {
-            throw new RuntimeException(e);
-        }
+    public XmlWriter writeStartDocument(String version, String encoding) throws XMLStreamException {
+        writer.writeStartDocument(encoding, version);
+        return this;
     }
 
     @Override
-    public XmlWriter writeStartElement(String namespaceUri, String localName) {
-        try {
-            if (namespaceUri == null) {
-                writer.writeStartElement(localName);
-            } else {
-                writer.writeStartElement(namespaceUri, localName);
-            }
-            return this;
-        } catch (XMLStreamException e) {
-            throw new RuntimeException(e);
+    public XmlWriter writeStartElement(String namespaceUri, String localName) throws XMLStreamException {
+        if (namespaceUri == null) {
+            writer.writeStartElement(localName);
+        } else {
+            writer.writeStartElement(namespaceUri, localName);
         }
+        return this;
     }
 
     @Override
-    public XmlWriter writeStartSelfClosingElement(String namespaceUri, String localName) {
-        try {
-            if (namespaceUri == null) {
-                writer.writeEmptyElement(localName);
-            } else {
-                writer.writeEmptyElement(namespaceUri, localName);
-            }
-            return this;
-        } catch (XMLStreamException e) {
-            throw new RuntimeException(e);
+    public XmlWriter writeStartSelfClosingElement(String namespaceUri, String localName) throws XMLStreamException {
+        if (namespaceUri == null) {
+            writer.writeEmptyElement(localName);
+        } else {
+            writer.writeEmptyElement(namespaceUri, localName);
         }
+        return this;
     }
 
     @Override
-    public XmlWriter writeNamespace(String namespaceUri) {
+    public XmlWriter writeNamespace(String namespaceUri) throws XMLStreamException {
         if (Objects.equals(writer.getNamespaceContext().getNamespaceURI(DEFAULT_NS_PREFIX), namespaceUri)) {
             return this;
         }
 
-        try {
-            writer.setDefaultNamespace(namespaceUri);
-            writer.writeDefaultNamespace(namespaceUri);
-            return this;
-        } catch (XMLStreamException e) {
-            throw new RuntimeException(e);
-        }
+        writer.setDefaultNamespace(namespaceUri);
+        writer.writeDefaultNamespace(namespaceUri);
+        return this;
     }
 
     @Override
-    public XmlWriter writeEndElement() {
-        try {
-            writer.writeEndElement();
-            return this;
-        } catch (XMLStreamException e) {
-            throw new RuntimeException(e);
-        }
+    public XmlWriter writeEndElement() throws XMLStreamException {
+        writer.writeEndElement();
+        return this;
     }
 
     @Override
-    public XmlWriter writeStringAttribute(String namespaceUri, String localName, String value) {
+    public XmlWriter writeStringAttribute(String namespaceUri, String localName,
+        String value) throws XMLStreamException {
         if (value == null) {
             return this;
         }
 
-        try {
-            if (namespaceUri == null) {
-                writer.writeAttribute(localName, value);
-            } else {
-                writer.writeAttribute(namespaceUri, localName, value);
-            }
-            return this;
-        } catch (XMLStreamException e) {
-            throw new RuntimeException(e);
+        if (namespaceUri == null) {
+            writer.writeAttribute(localName, value);
+        } else {
+            writer.writeAttribute(namespaceUri, localName, value);
         }
+        return this;
     }
 
     @Override
-    public XmlWriter writeString(String value) {
+    public XmlWriter writeString(String value) throws XMLStreamException {
         if (value == null) {
             return this;
         }
 
-        try {
-            writer.writeCharacters(value);
-            return this;
-        } catch (XMLStreamException e) {
-            throw new RuntimeException(e);
-        }
+        writer.writeCharacters(value);
+        return this;
     }
 
     @Override
-    public XmlWriter writeCDataString(String value) {
+    public XmlWriter writeCDataString(String value) throws XMLStreamException {
         if (value == null) {
             return this;
         }
 
-        try {
-            writer.writeCData(value);
-            return this;
-        } catch (XMLStreamException e) {
-            throw new RuntimeException(e);
-        }
+        writer.writeCData(value);
+        return this;
     }
 
     @Override
-    public XmlWriter flush() {
-        try {
-            writer.flush();
-            return this;
-        } catch (XMLStreamException e) {
-            throw new RuntimeException(e);
-        }
+    public XmlWriter flush() throws XMLStreamException {
+        writer.flush();
+        return this;
     }
 
     @Override

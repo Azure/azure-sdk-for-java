@@ -6,6 +6,7 @@ package com.azure.xml.storage;
 import com.azure.xml.DefaultXmlReader;
 import org.junit.jupiter.api.Test;
 
+import javax.xml.stream.XMLStreamException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
@@ -17,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class DeserializeListBlobsTests {
     @Test
-    public void minimumListing() {
+    public void minimumListing() throws XMLStreamException {
         String xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
             + "<EnumerationResults ServiceEndpoint=\"https://kasobolcanadacentral.blob.core.windows.net/\" ContainerName=\"b9a86bdc0b9a86bdca9a521096fb76e1772d14cbaabf\">"
             + "<Blobs />"
@@ -35,7 +36,7 @@ public class DeserializeListBlobsTests {
     }
 
     @Test
-    public void pagedListing() {
+    public void pagedListing() throws XMLStreamException {
         String xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
             + "<EnumerationResults ServiceEndpoint=\"https://kasobolcanadacentral.blob.core.windows.net/\" ContainerName=\"34fbcbbc034fbcbbc26a33948aa1becb5a91f4ae995b\">"
             + "<Marker>2!120!MDAwMDQ1IWMzNGZiY2JiYzIzNGZiY2JiYzI2YTgzMDgzZWVhMDI2YjYxNWNhNGJlOGI0NSEwMDAwMjghOTk5OS0xMi0zMVQyMzo1OTo1OS45OTk5OTk5WiE-</Marker>"
@@ -96,7 +97,7 @@ public class DeserializeListBlobsTests {
     }
 
     @Test
-    public void metadataListing() {
+    public void metadataListing() throws XMLStreamException {
         String xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
             + "<EnumerationResults ServiceEndpoint=\"https://kasobolcanadacentral.blob.core.windows.net/\" ContainerName=\"42735743042735743c8d29610ac1e2478dbcc4df1a99\">"
             + "<Blobs>"
@@ -179,7 +180,7 @@ public class DeserializeListBlobsTests {
     }
 
     @Test
-    public void tagsListing() {
+    public void tagsListing() throws XMLStreamException {
         String xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
             + "<EnumerationResults ServiceEndpoint=\"https://kasobolcanadacentral.blob.core.windows.net/\" ContainerName=\"3f9c116203f9c11629bd22488e44f35974dcc48c2aa0\">"
             + "<Blobs>"
@@ -262,7 +263,7 @@ public class DeserializeListBlobsTests {
     }
 
     @Test
-    public void restApiExample() {
+    public void restApiExample() throws XMLStreamException {
         String xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
             + "<EnumerationResults ServiceEndpoint=\"http://myaccount.blob.core.windows.net/\"  ContainerName=\"mycontainer\">"
             + "<Prefix>string-value</Prefix>"
