@@ -41,6 +41,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -90,6 +91,7 @@ public class AsyncCtlWorkload {
     private int readManyPct;
 
     public AsyncCtlWorkload(Configuration cfg) {
+
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(cfg.getServiceEndpoint())
             .key(cfg.getMasterKey())
@@ -99,7 +101,10 @@ public class AsyncCtlWorkload {
             .clientTelemetryEnabled(cfg.isClientTelemetryEnabled());
 
         if (cfg.getConnectionMode().equals(ConnectionMode.DIRECT)) {
-            cosmosClientBuilder = cosmosClientBuilder.directMode(DirectConnectionConfig.getDefaultConfig());
+            DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
+            directConnectionConfig.setConnectTimeout(Duration.ofMillis(600));
+
+            cosmosClientBuilder = cosmosClientBuilder.directMode(directConnectionConfig);
         } else {
             GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
             gatewayConnectionConfig.setMaxConnectionPoolSize(cfg.getMaxConnectionPoolSize());
