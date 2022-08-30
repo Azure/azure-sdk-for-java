@@ -129,5 +129,3 @@ extends:
 #      - name: azure-spring-cloud-test-appconfiguration-config
 #        groupId: com.azure.spring
 #        safeName: azurespringcloudtestappconfigurationconfig
-    MatrixFilters:
-      - JavaTestVersion=^(?!1.8|1.11).*

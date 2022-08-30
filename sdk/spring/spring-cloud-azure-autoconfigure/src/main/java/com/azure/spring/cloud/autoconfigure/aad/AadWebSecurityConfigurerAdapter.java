@@ -84,7 +84,7 @@ public abstract class AadWebSecurityConfigurerAdapter extends WebSecurityConfigu
 
         Filter conditionalAccessFilter = conditionalAccessFilter();
         if (conditionalAccessFilter != null) {
-            http.addFilterAfter(conditionalAccessFilter, (Class<? extends Filter>) OAuth2AuthorizationRequestRedirectFilter.class);
+            http.addFilterAfter(conditionalAccessFilter, OAuth2AuthorizationRequestRedirectFilter.class);
         }
     }
 
