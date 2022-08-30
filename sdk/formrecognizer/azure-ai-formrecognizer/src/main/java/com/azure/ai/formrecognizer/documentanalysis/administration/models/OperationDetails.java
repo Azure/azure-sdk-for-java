@@ -4,28 +4,25 @@
 package com.azure.ai.formrecognizer.documentanalysis.administration.models;
 
 
-import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentModelOperationDetailsHelper;
-import com.azure.core.annotation.Immutable;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.util.OperationDetailsHelper;
 import com.azure.core.models.ResponseError;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
- * The DocumentModelOperationDetails model.
+ * The OperationDetails model.
  */
-@Immutable
-public final class DocumentModelOperationDetails {
+public class OperationDetails {
     private String operationId;
-    private DocumentOperationStatus status;
+    private OperationStatus status;
     private Integer percentCompleted;
     private OffsetDateTime createdOn;
     private ResponseError error;
     private String resourceLocation;
     private OffsetDateTime lastUpdatedOn;
-    private DocumentOperationKind kind;
+    private OperationKind kind;
     private Map<String, String> tags;
-    private DocumentModelDetails result;
 
    /**
      * Get the Date and time (UTC) when the analyze operation was submitted.
@@ -70,11 +67,11 @@ public final class DocumentModelOperationDetails {
      *
      * @return the status value.
      */
-    public DocumentOperationStatus getStatus() {
+    public OperationStatus getStatus() {
         return status;
     }
 
-    private void setStatus(DocumentOperationStatus status) {
+    private void setStatus(OperationStatus status) {
         this.status = status;
     }
 
@@ -109,11 +106,11 @@ public final class DocumentModelOperationDetails {
      *
      * @return the kind value.
      */
-    public DocumentOperationKind getKind() {
+    public OperationKind getKind() {
         return kind;
     }
 
-    private void setKind(DocumentOperationKind kind) {
+    private void setKind(OperationKind kind) {
         this.kind = kind;
     }
 
@@ -148,64 +145,42 @@ public final class DocumentModelOperationDetails {
         this.tags = tags;
     }
 
-    /**
-     * Get the operation result upon success.
-     *
-     * @return the result value.
-     */
-    public DocumentModelDetails getResult() {
-        return this.result;
-    }
-
-    /**
-     * Set the operation result upon success.
-     *
-     * @param documentModelDetails the result value to set.
-     */
-    private void setResult(DocumentModelDetails documentModelDetails) {
-        this.result = documentModelDetails;
-    }
-
     static {
-        DocumentModelOperationDetailsHelper.setAccessor(new DocumentModelOperationDetailsHelper.DocumentModelOperationDetailsAccessor() {
-            public void setCreatedOn(DocumentModelOperationDetails documentModelOperationDetails, OffsetDateTime createdOn) {
-                documentModelOperationDetails.setCreatedOn(createdOn);
+        OperationDetailsHelper.setAccessor(new OperationDetailsHelper.OperationDetailsAccessor() {
+            public void setCreatedOn(OperationDetails operationDetails, OffsetDateTime createdOn) {
+                operationDetails.setCreatedOn(createdOn);
             }
 
-            public void setError(DocumentModelOperationDetails documentModelOperationDetails, ResponseError error) {
-                documentModelOperationDetails.setError(error);
+            public void setError(OperationDetails operationDetails, ResponseError error) {
+                operationDetails.setError(error);
             }
 
-            public void setOperationId(DocumentModelOperationDetails documentModelOperationDetails, String operationId) {
-                documentModelOperationDetails.setOperationId(operationId);
+            public void setOperationId(OperationDetails operationDetails, String operationId) {
+                operationDetails.setOperationId(operationId);
             }
 
-            public void setStatus(DocumentModelOperationDetails documentModelOperationDetails, DocumentOperationStatus status) {
-                documentModelOperationDetails.setStatus(status);
+            public void setStatus(OperationDetails operationDetails, OperationStatus status) {
+                operationDetails.setStatus(status);
             }
 
-            public void setPercentCompleted(DocumentModelOperationDetails documentModelOperationDetails, Integer percentCompleted) {
-                documentModelOperationDetails.setPercentCompleted(percentCompleted);
+            public void setPercentCompleted(OperationDetails operationDetails, Integer percentCompleted) {
+                operationDetails.setPercentCompleted(percentCompleted);
             }
 
-            public void setLastUpdatedOn(DocumentModelOperationDetails documentModelOperationDetails, OffsetDateTime lastUpdatedOn) {
-                documentModelOperationDetails.setLastUpdatedOn(lastUpdatedOn);
+            public void setLastUpdatedOn(OperationDetails operationDetails, OffsetDateTime lastUpdatedOn) {
+                operationDetails.setLastUpdatedOn(lastUpdatedOn);
             }
 
-            public void setKind(DocumentModelOperationDetails documentModelOperationDetails, DocumentOperationKind kind) {
-                documentModelOperationDetails.setKind(kind);
+            public void setKind(OperationDetails operationDetails, OperationKind kind) {
+                operationDetails.setKind(kind);
             }
 
-            public void setResourceLocation(DocumentModelOperationDetails documentModelOperationDetails, String resourceLocation) {
-                documentModelOperationDetails.setResourceLocation(resourceLocation);
+            public void setResourceLocation(OperationDetails operationDetails, String resourceLocation) {
+                operationDetails.setResourceLocation(resourceLocation);
             }
 
-            public void setTags(DocumentModelOperationDetails documentModelOperationDetails, Map<String, String> tags) {
-                documentModelOperationDetails.setTags(tags);
-            }
-
-            public void setResult(DocumentModelOperationDetails documentModelOperationDetails, DocumentModelDetails documentModelDetails) {
-                documentModelOperationDetails.setResult(documentModelDetails);
+            public void setTags(OperationDetails operationDetails, Map<String, String> tags) {
+                operationDetails.setTags(tags);
             }
         });
     }
