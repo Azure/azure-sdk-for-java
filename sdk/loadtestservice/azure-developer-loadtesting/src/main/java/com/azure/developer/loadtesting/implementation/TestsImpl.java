@@ -23,8 +23,6 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpMethod;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
@@ -971,9 +969,7 @@ public final class TestsImpl {
     public Mono<Response<BinaryData>> uploadTestFileWithResponseAsync(
             String testId, String fileId, BinaryData file, RequestOptions requestOptions) {
         final String accept = "application/json";
-
-        HttpRequest request = new HttpRequest(HttpMethod.PUT, this.client.getEndpoint())
-            .setBody(file);
+        // need modify file to include MIME boundary at start and end
         return FluxUtil.withContext(
                 context ->
                         service.uploadTestFile(
