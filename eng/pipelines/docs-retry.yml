@@ -19,7 +19,7 @@ variables:
   - template: /eng/pipelines/templates/variables/globals.yml
 jobs:
 - ${{ each artifact in parameters.PackageIds }}:
-  - job: RetryOnGithubIo${{artifact}}
+  - job: RetryOnGithubIo${{artifact.safename}}
     pool:
       name: azsdk-pool-mms-ubuntu-2004-general
       vmImage: MMSUbuntu20.04
@@ -34,15 +34,15 @@ jobs:
           runId: ${{ parameters.BuildId }}
       - template: /eng/common/pipelines/templates/steps/publish-blobs.yml
         parameters:
-          FolderForUpload: '$(Pipeline.Workspace)/packages/${{parameters.GroupId}}/${{artifact}}'
+          FolderForUpload: '$(Pipeline.Workspace)/packages/${{parameters.GroupId}}/${{artifact.name}}'
           BlobSASKey: '$(azure-sdk-docs-prod-sas)'
           BlobName: '$(azure-sdk-docs-prod-blob-name)'
           TargetLanguage: 'java'
-          ArtifactLocation: $(Pipeline.Workspace)/packages/${{parameters.GroupId}}/${{artifact}}
+          ArtifactLocation: $(Pipeline.Workspace)/packages/${{parameters.GroupId}}/${{artifact.name}}
           # we override the regular script path because we have cloned the build tools repo as a separate artifact.
           ScriptPath: 'eng/common/scripts/copy-docs-to-blobstorage.ps1'
 
-  - job: RetryOnDocsMs${{artifact}}
+  - job: RetryOnDocsMs${{artifact.safename}}
     pool:
       name: azsdk-pool-mms-ubuntu-2004-general
       vmImage: MMSUbuntu20.04
@@ -59,7 +59,7 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
         parameters:
           PackageInfoLocations:
-            - $(Pipeline.Workspace)/packages/PackageInfo/${{artifact}}.json
+            - $(Pipeline.Workspace)/packages/PackageInfo/${{artifact.name}}.json
           WorkingDirectory: $(System.DefaultWorkingDirectory)
           TargetDocRepoOwner: 'Azure'
           TargetDocRepoName: 'azure-docs-sdk-java'
@@ -70,9 +70,9 @@ jobs:
           DocValidationImageId: azuresdkimages.azurecr.io/javarefautocr:latest
       - template: /eng/pipelines/templates/steps/fetch-package-list.yml
         parameters:
-          JavaDocJarLocation: "$(Pipeline.Workspace)/packages/${{parameters.GroupId}}/${{artifact}}"
-          ArtifactName: ${{artifact}}
-          TargetBranch: $(TargetBranchName)
-          DocRepoLocation: $(Pipeline.Workspace)/docs
+          JavaDocJarLocation: "$(Pipeline.Workspace)/packages/${{parameters.GroupId}}/${{artifact.name}}"
+          ArtifactName: ${{artifact.name}}
+          TargetBranch: 'main'
+          DocRepoLocation: '$(Pipeline.Workspace)/docs'
           TargetDocRepoName: 'azure-docs-sdk-java'
           TargetDocRepoOwner: 'Azure'
