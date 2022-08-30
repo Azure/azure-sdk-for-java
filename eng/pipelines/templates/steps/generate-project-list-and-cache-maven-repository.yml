@@ -20,6 +20,10 @@ parameters:
     default: test
 
 steps:
+  # Create the ProjectList and ProjectListSha256 variables.
+  # The ProjectList is used by subsequent steps and tasks to run CI.
+  # The ProjectListSha256 is used by the cache key, previously the cache key was using ProjectList but it was found
+  # that long cache keys cause caching to fail.
 - pwsh: |
     $artifacts = '${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json
     $additionalModules = '${{ convertToJson(parameters.AdditionalModules) }}' | ConvertFrom-Json
@@ -35,11 +39,11 @@ steps:
 
     Write-Host "ProjectList = $projects"
     Write-Host "##vso[task.setvariable variable=ProjectList;]$projects"
-    
+
     $sha256 = new-object -TypeName System.Security.Cryptography.SHA256Managed
     $utf8 = new-object -TypeName System.Text.UTF8Encoding
 
-    $projectListSha256 = [System.BitConverter]::ToString($sha256.ComputeHash($utf8.GetBytes($projects)))
+    $projectListSha256 = [Convert]::ToBase64String($sha256.ComputeHash($utf8.GetBytes($projects)))
     Write-Host "##vso[task.setvariable variable=ProjectListSha256;]$projectListSha256"
   displayName: Initialize project list variable
 
