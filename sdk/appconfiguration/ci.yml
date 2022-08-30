@@ -109,10 +109,10 @@ extends:
 #        groupId: com.azure.spring
 #        safeName: azurespringcloudappconfigurationconfigweb
 #        releaseInBatch: ${{ parameters.release_azurespringcloudappconfigurationconfigweb }}
-      - name: azure-spring-cloud-feature-management
-        groupId: com.azure.spring
-        safeName: azurespringcloudfeaturemanagement
-        releaseInBatch: ${{ parameters.release_azurespringcloudfeaturemanagement }}
+#      - name: azure-spring-cloud-feature-management
+#        groupId: com.azure.spring
+#        safeName: azurespringcloudfeaturemanagement
+#        releaseInBatch: ${{ parameters.release_azurespringcloudfeaturemanagement }}
 #      - name: azure-spring-cloud-feature-management-web
 #        groupId: com.azure.spring
 #        safeName: azurespringcloudfeaturemanagementweb
