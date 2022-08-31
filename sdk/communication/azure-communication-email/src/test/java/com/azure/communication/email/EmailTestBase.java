@@ -83,7 +83,7 @@ public class EmailTestBase extends TestBase {
         List<Arguments> argumentsList = new ArrayList<>();
 
         getHttpClients()
-            .forEach(httpClient -> Arguments.of(httpClient));
+            .forEach(httpClient -> argumentsList.add(Arguments.of(httpClient)));
 
         return argumentsList.stream();
     }
