@@ -28,10 +28,10 @@ public enum AuthProperty {
         "Client secret to use when performing service principal authentication with Azure.",
         false),
     /**
-     * Path of a PEM certificate file to use when performing service principal authentication with Azure.
+     * Path of a PEM/PFX certificate file to use when performing service principal authentication with Azure.
      */
     CLIENT_CERTIFICATE_PATH("azure.clientCertificatePath",
-        "Path of a PEM certificate file to use when performing service principal authentication with Azure.",
+        "Path of a PEM/PFX certificate file to use when performing service principal authentication with Azure.",
         false),
     /**
      * Password of the certificate file.
