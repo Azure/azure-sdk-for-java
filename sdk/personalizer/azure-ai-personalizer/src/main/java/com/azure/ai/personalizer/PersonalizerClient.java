@@ -145,7 +145,7 @@ public final class PersonalizerClient {
      * @param actions List of actions.
      * @param slots List of slots.
      * @param contextFeatures List of context features.
-     * @return List of slot responses for each slot along with eventId.
+     * @return the response body.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PersonalizerRankMultiSlotResult rankMultiSlot(List<PersonalizerRankableAction> actions, List<PersonalizerSlotOptions> slots, List<BinaryData> contextFeatures) {

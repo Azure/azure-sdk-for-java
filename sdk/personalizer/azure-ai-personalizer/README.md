@@ -44,7 +44,7 @@ The [PersonalizerClient][personalizer_sync_client] and
 - Run counterfactual evaluations on prior historical event data.
 
 ## Examples
-TBD
+Please refer the sample scenarios outlined in the [examples][examples].
 
 ## Troubleshooting
 TBD
@@ -71,3 +71,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [learning_mode]: https://docs.microsoft.com/azure/cognitive-services/personalizer/what-is-personalizer#learning-modes
 [exploration]: https://docs.microsoft.com/azure/cognitive-services/personalizer/concepts-exploration
 [multi_slot]: https://docs.microsoft.com/azure/cognitive-services/personalizer/concept-multi-slot-personalization
+[examples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/personalizer/azure-ai-personalizer/src/samples#examples

@@ -104,7 +104,7 @@ public final class PersonalizerAsyncClient {
      *
      * @param eventId The event id this reward applies to.
      * @param rewardValue The reward should be a floating point number, typically between 0 and 1.
-     * @return the {@link Response}.
+     * @return the completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> reward(String eventId, float rewardValue) {

@@ -3,16 +3,26 @@
 
 package com.azure.ai.personalizer;
 
-import com.azure.ai.personalizer.administration.*;
-import com.azure.ai.personalizer.administration.models.*;
+import com.azure.ai.personalizer.administration.PersonalizerAdministrationAsyncClient;
+import com.azure.ai.personalizer.administration.PersonalizerAdministrationClient;
+import com.azure.ai.personalizer.administration.PersonalizerAdministrationClientBuilder;
+import com.azure.ai.personalizer.administration.models.PersonalizerPolicy;
+import com.azure.ai.personalizer.administration.models.PersonalizerServiceProperties;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.*;
-import com.azure.core.test.*;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.test.TestBase;
+import com.azure.core.test.TestMode;
 
 import java.time.Duration;
 
-import static com.azure.ai.personalizer.TestUtils.*;
+import static com.azure.ai.personalizer.TestUtils.INVALID_KEY;
+import static com.azure.ai.personalizer.TestUtils.ONE_NANO_DURATION;
+import static com.azure.ai.personalizer.TestUtils.PERSONALIZER_API_KEY_MULTI_SLOT;
+import static com.azure.ai.personalizer.TestUtils.PERSONALIZER_API_KEY_SINGLE_SLOT;
+import static com.azure.ai.personalizer.TestUtils.PERSONALIZER_ENDPOINT_MULTI_SLOT;
+import static com.azure.ai.personalizer.TestUtils.PERSONALIZER_ENDPOINT_SINGLE_SLOT;
 import static com.azure.ai.personalizer.implementation.util.Constants.DEFAULT_POLL_INTERVAL;
 
 
@@ -57,9 +67,9 @@ public abstract class PersonalizerTestBase extends TestBase {
     }
 
     public PersonalizerClientBuilder setBuilderProperties(PersonalizerClientBuilder builder,
-                                                        HttpClient httpClient,
-                                                        PersonalizerServiceVersion serviceVersion,
-                                                        boolean isSingleSlot) {
+                                                          HttpClient httpClient,
+                                                          PersonalizerServiceVersion serviceVersion,
+                                                          boolean isSingleSlot) {
         String endpoint = getEndpoint(isSingleSlot);
         PersonalizerAudience audience = TestUtils.getAudience(endpoint);
 

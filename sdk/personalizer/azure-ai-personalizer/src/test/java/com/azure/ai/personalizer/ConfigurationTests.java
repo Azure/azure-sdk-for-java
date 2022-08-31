@@ -4,7 +4,8 @@
 package com.azure.ai.personalizer;
 
 import com.azure.ai.personalizer.administration.PersonalizerAdministrationClient;
-import com.azure.ai.personalizer.administration.models.*;
+import com.azure.ai.personalizer.administration.models.PersonalizerPolicy;
+import com.azure.ai.personalizer.administration.models.PersonalizerServiceProperties;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -12,7 +13,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.time.Duration;
 
 import static com.azure.ai.personalizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ConfigurationTests extends PersonalizerTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
