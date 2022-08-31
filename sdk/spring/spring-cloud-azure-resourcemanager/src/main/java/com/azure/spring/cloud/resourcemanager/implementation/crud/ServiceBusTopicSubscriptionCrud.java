@@ -6,6 +6,7 @@ package com.azure.spring.cloud.resourcemanager.implementation.crud;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.servicebus.models.ServiceBusSubscription;
+import com.azure.resourcemanager.servicebus.models.Topic;
 import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
 import reactor.util.function.Tuple3;
 import reactor.util.function.Tuples;
@@ -34,8 +35,9 @@ public class ServiceBusTopicSubscriptionCrud extends AbstractResourceCrud<Servic
     @Override
     public ServiceBusSubscription internalGet(Tuple3<String, String, String> subscriptionCoordinate) {
         try {
-            return new ServiceBusTopicCrud(this.resourceManager, this.resourceMetadata)
-                .get(Tuples.of(subscriptionCoordinate.getT1(), subscriptionCoordinate.getT2()))
+            Topic topic = new ServiceBusTopicCrud(this.resourceManager, this.resourceMetadata)
+                .get(Tuples.of(subscriptionCoordinate.getT1(), subscriptionCoordinate.getT2()));
+            return topic == null ? null :topic
                 .subscriptions()
                 .getByName(subscriptionCoordinate.getT2());
         } catch (ManagementException e) {
