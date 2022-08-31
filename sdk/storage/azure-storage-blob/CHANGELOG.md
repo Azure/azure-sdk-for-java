@@ -3,6 +3,7 @@
 ## 12.20.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added ability to rename existing containers with `BlobContainerClient.rename()`.
 
 ### Breaking Changes
 
