@@ -59,6 +59,12 @@ parameters:
 - name: EnvVars
   type: object
   default: {}
+- name: PreRunSteps
+  type: stepList
+  default: []
+- name: PostRunSteps
+  type: stepList
+  default: []
 
 jobs:
 - job: ${{ parameters.JobName }}
@@ -103,6 +109,8 @@ jobs:
       AgentImage: $(OSVmImage)
 
   - ${{ parameters.InstallLanguageSteps }}
+
+  - ${{ parameters.PreRunSteps }}
 
   - template: /eng/common/TestResources/deploy-test-resources.yml
     parameters:
@@ -166,3 +174,5 @@ jobs:
     parameters:
       ServiceDirectory: ${{ parameters.ServiceDirectory }}
       ResourceType: perf
+
+  - ${{ parameters.PostRunSteps }}
