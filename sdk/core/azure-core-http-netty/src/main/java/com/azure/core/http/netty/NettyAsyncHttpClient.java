@@ -49,6 +49,7 @@ import reactor.util.retry.Retry;
 import javax.net.ssl.SSLException;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.net.URI;
 import java.nio.channels.FileChannel;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
@@ -116,12 +117,14 @@ class NettyAsyncHttpClient implements HttpClient {
             .map(timeoutDuration -> ((Duration) timeoutDuration).toMillis())
             .orElse(this.responseTimeout);
 
+        new URI()
         return nettyClient
             .doOnRequest((r, connection) -> addRequestHandlers(connection, context))
             .doAfterRequest((r, connection) -> doAfterRequest(connection, effectiveResponseTimeout))
             .doOnResponse((response, connection) -> addReadTimeoutHandler(connection, readTimeout))
             .doAfterResponseSuccess((response, connection) -> removeReadTimeoutHandler(connection))
             .request(HttpMethod.valueOf(request.getHttpMethod().toString()))
+            .uri(request.getUrl().toURI())
             .uri(request.getUrl().toString())
             .send(bodySendDelegate(request))
             .responseConnection(responseDelegate(request, disableBufferCopy, effectiveEagerlyReadResponse))

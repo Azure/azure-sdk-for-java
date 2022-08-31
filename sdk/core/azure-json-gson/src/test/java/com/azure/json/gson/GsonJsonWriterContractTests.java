@@ -9,7 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -33,8 +32,9 @@ public class GsonJsonWriterContractTests extends JsonWriterContractTests {
     @Override
     public String getJsonWriterContents() {
         try {
+            writer.flush();
             return outputStream.toString(StandardCharsets.UTF_8.name());
-        } catch (UnsupportedEncodingException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
