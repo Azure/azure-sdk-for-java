@@ -45,7 +45,7 @@ extends:
         java -version
         mvn --version
       displayName: Print Java Versions
-    - ${{ if contains(parameters.AdditionalArguments, '--profiling') }}:
+    ${{ if contains(parameters.AdditionalArguments, '--profiling') }}:
       PreRunSteps:
         - pwsh: |
             New-Item -Path . -Name "java-profiling" -ItemType "directory"
