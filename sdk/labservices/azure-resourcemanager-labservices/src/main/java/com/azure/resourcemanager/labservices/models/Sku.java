@@ -6,14 +6,11 @@ package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The resource model definition representing SKU. */
 @Fluent
 public final class Sku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Sku.class);
-
     /*
      * The name of the SKU. Ex - P3. It is typically a letter+number code
      */
@@ -21,30 +18,28 @@ public final class Sku {
     private String name;
 
     /*
-     * This field is required to be implemented by the Resource Provider if the
-     * service has more than one tier, but is not required on a PUT.
+     * This field is required to be implemented by the Resource Provider if the service has more than one tier, but is
+     * not required on a PUT.
      */
     @JsonProperty(value = "tier")
     private SkuTier tier;
 
     /*
-     * The SKU size. When the name field is the combination of tier and some
-     * other value, this would be the standalone code.
+     * The SKU size. When the name field is the combination of tier and some other value, this would be the standalone
+     * code.
      */
     @JsonProperty(value = "size")
     private String size;
 
     /*
-     * If the service has different generations of hardware, for the same SKU,
-     * then that can be captured here.
+     * If the service has different generations of hardware, for the same SKU, then that can be captured here.
      */
     @JsonProperty(value = "family")
     private String family;
 
     /*
-     * If the SKU supports scale out/in then the capacity integer should be
-     * included. If scale out/in is not possible for the resource this may be
-     * omitted.
+     * If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible
+     * for the resource this may be omitted.
      */
     @JsonProperty(value = "capacity")
     private Integer capacity;
@@ -164,8 +159,10 @@ public final class Sku {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Sku"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Sku.class);
 }

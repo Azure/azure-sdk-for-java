@@ -78,6 +78,7 @@ package-lock.json
 .vscode/
 .factorypath
 jacoco.exec
+.vs/
 
 # Generated client pom file
 ClientAggregatePom.xml
@@ -104,3 +105,4 @@ scalastyle-output.xml
 # Flatten-pom
 .flattened-pom.xml
 flatter.pom
+/.vs/

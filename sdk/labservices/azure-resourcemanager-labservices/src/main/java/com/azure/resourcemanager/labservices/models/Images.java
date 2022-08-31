@@ -11,7 +11,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of Images. */
 public interface Images {
     /**
-     * Gets all images from galleries attached to a lab plan.
+     * Gets all images.
+     *
+     * <p>Gets all images from galleries attached to a lab plan.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
@@ -19,12 +21,14 @@ public interface Images {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all images from galleries attached to a lab plan.
+     * @return all images from galleries attached to a lab plan as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Image> listByLabPlan(String resourceGroupName, String labPlanName);
 
     /**
-     * Gets all images from galleries attached to a lab plan.
+     * Gets all images.
+     *
+     * <p>Gets all images from galleries attached to a lab plan.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
@@ -34,12 +38,14 @@ public interface Images {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all images from galleries attached to a lab plan.
+     * @return all images from galleries attached to a lab plan as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Image> listByLabPlan(String resourceGroupName, String labPlanName, String filter, Context context);
 
     /**
-     * Gets an image resource.
+     * Gets an image.
+     *
+     * <p>Gets an image resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
@@ -53,7 +59,9 @@ public interface Images {
     Image get(String resourceGroupName, String labPlanName, String imageName);
 
     /**
-     * Gets an image resource.
+     * Gets an image.
+     *
+     * <p>Gets an image resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
@@ -68,7 +76,9 @@ public interface Images {
     Response<Image> getWithResponse(String resourceGroupName, String labPlanName, String imageName, Context context);
 
     /**
-     * Gets an image resource.
+     * Gets an image.
+     *
+     * <p>Gets an image resource.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -79,7 +89,9 @@ public interface Images {
     Image getById(String id);
 
     /**
-     * Gets an image resource.
+     * Gets an image.
+     *
+     * <p>Gets an image resource.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

@@ -44,7 +44,7 @@ public final class DocumentStyle {
      * @param isHandwritten the isHandwritten value to set.
      * @return the DocumentStyle object itself.
      */
-    void setIsHandwritten(Boolean isHandwritten) {
+    private void setIsHandwritten(Boolean isHandwritten) {
         this.isHandwritten = isHandwritten;
     }
 
@@ -63,7 +63,7 @@ public final class DocumentStyle {
      * @param spans the spans value to set.
      * @return the DocumentStyle object itself.
      */
-    void setSpans(List<DocumentSpan> spans) {
+    private void setSpans(List<DocumentSpan> spans) {
         this.spans = spans;
     }
 
@@ -82,7 +82,7 @@ public final class DocumentStyle {
      * @param confidence the confidence value to set.
      * @return the DocumentStyle object itself.
      */
-    void setConfidence(float confidence) {
+    private void setConfidence(float confidence) {
         this.confidence = confidence;
     }
 

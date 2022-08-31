@@ -11,17 +11,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ManagedClusterSecurityProfileDefender {
     /*
-     * Resource ID of the Log Analytics workspace to be associated with
-     * Microsoft Defender. When Microsoft Defender is enabled, this field is
-     * required and must be a valid workspace resource ID. When Microsoft
-     * Defender is disabled, leave the field empty.
+     * Resource ID of the Log Analytics workspace to be associated with Microsoft Defender. When Microsoft Defender is
+     * enabled, this field is required and must be a valid workspace resource ID. When Microsoft Defender is disabled,
+     * leave the field empty.
      */
     @JsonProperty(value = "logAnalyticsWorkspaceResourceId")
     private String logAnalyticsWorkspaceResourceId;
 
     /*
-     * Microsoft Defender threat detection for Cloud settings for the security
-     * profile.
+     * Microsoft Defender threat detection for Cloud settings for the security profile.
      */
     @JsonProperty(value = "securityMonitoring")
     private ManagedClusterSecurityProfileDefenderSecurityMonitoring securityMonitoring;
