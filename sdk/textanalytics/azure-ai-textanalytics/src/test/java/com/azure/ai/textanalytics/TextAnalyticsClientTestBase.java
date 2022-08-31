@@ -168,7 +168,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      */
     @Override
     protected void beforeTest() {
-        if (interceptorManager.isPlaybackMode()) {
+            if (interceptorManager.isPlaybackMode()) {
             durationTestMode = Duration.ofMillis(1);
         } else {
             durationTestMode = DEFAULT_POLL_INTERVAL;

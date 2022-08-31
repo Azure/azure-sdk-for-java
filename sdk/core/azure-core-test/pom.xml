@@ -88,6 +88,12 @@
     </dependency>
 
     <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>testcontainers</artifactId>
+      <version>1.17.2</version> <!-- {x-version-update;org.testcontainers:testcontainers;external_dependency} -->
+    </dependency>
+
+    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
       <version>5.9.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
