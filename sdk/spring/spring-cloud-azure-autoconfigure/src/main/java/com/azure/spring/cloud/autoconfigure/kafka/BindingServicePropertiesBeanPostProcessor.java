@@ -16,7 +16,7 @@ import java.util.Map;
  *
  * @since 4.4.0
  */
-class BindingServicePropertiesBeanPostProcessor implements BeanPostProcessor {
+public class BindingServicePropertiesBeanPostProcessor implements BeanPostProcessor {
 
     static final String SPRING_MAIN_SOURCES_PROPERTY = "spring.main.sources";
     private static final String KAKFA_BINDER_DEFAULT_NAME = "kafka";

@@ -34,7 +34,7 @@ import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentif
 import static com.azure.spring.cloud.service.implementation.kafka.KafkaOAuth2AuthenticateCallbackHandler.AZURE_TOKEN_CREDENTIAL;
 
 /**
- * {@link EnableAutoConfiguration Auto-configuration} for Azure Event Hubs Kafka support. Provide Azure Identity-based
+ * {@link EnableAutoConfiguration Auto-configuration} for Azure Event Hubs Kafka support. Provide Managed Identity-based
  * OAuth2 authentication for Event Hubs for Kafka on the basis of Spring Boot Autoconfiguration.
  *
  * @since 4.3.0
