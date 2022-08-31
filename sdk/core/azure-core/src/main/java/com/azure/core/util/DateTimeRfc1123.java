@@ -333,7 +333,8 @@ public final class DateTimeRfc1123 {
         bytes[27] = 'M';
         bytes[28] = 'T';
 
-        return new String(bytes, StandardCharsets.US_ASCII);
+        // Use UTF-8 as it's more performant than ASCII in Java 8
+        return new String(bytes, StandardCharsets.UTF_8);
     }
 
     private static void zeroPad(int value, byte[] bytes, int index) {
