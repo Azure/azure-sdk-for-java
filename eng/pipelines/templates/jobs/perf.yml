@@ -54,9 +54,8 @@ extends:
         - pwsh: |
             [System.IO.Compression.ZipFile]::CreateFromDirectory("java-profiling","java-profiling.zip")
           workingDirectory: azure-sdk-tools/tools/perf-automation/Azure.Sdk.Tools.PerfAutomation
-        - publish: java-profiling.zip
+        - publish: azure-sdk-tools/tools/perf-automation/Azure.Sdk.Tools.PerfAutomation/java-profiling.zip
           artifact: $(System.JobName)-$(System.JobAttempt)-java-profiling.zip
-          workingDirectory: azure-sdk-tools/tools/perf-automation/Azure.Sdk.Tools.PerfAutomation
     ServiceDirectory: ${{ parameters.ServiceDirectory }}
     Services: ${{ parameters.Services }}
     PackageVersions: ${{ parameters.PackageVersions }}
