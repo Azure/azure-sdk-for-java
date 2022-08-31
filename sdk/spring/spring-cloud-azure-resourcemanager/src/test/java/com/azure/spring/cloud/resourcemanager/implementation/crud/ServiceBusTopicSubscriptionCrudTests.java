@@ -44,10 +44,8 @@ public class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTe
         when(namespace.topics()).thenReturn(topics);
         when(topics.getByName(getKey().getT2())).thenReturn(topic);
         when(topic.subscriptions()).thenReturn(serviceBusSubscriptions);
-        when(serviceBusSubscriptions.getByName(getKey().getT3())).thenThrow(exception);
-
+        when(serviceBusSubscriptions.getByName(getKey().getT2())).thenThrow(exception);
     }
-
 
     @Override
     void createStubManagementException() {
@@ -67,14 +65,14 @@ public class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTe
         when(serviceBusSubscriptions.getByName(getKey().getT3())).thenThrow(exception);
 
         ServiceBusTopicCrud serviceBusTopicCrud = mock(ServiceBusTopicCrud.class);
-        when(serviceBusTopicCrud.get(Tuples.of(NAMESPACE, TOPIC_NAME))).thenThrow(exception);
+        when(serviceBusTopicCrud.get(Tuples.of(NAMESPACE, TOPIC_NAME))).thenReturn(null);
 
-//        ServiceBusSubscription.DefinitionStages.Blank define = mock(ServiceBusSubscription.DefinitionStages.Blank.class);
-//        when(serviceBusSubscriptions.define(SUBSCRIPTION_NAME)).thenReturn(define);
-//        when(define.create()).thenThrow(exception);
-//
-//        ServiceBusSubscription.DefinitionStages.WithCreate create = mock(ServiceBusSubscription.DefinitionStages.WithCreate.class);
-//        when(create.create()).thenThrow(exception);
+        ServiceBusSubscription.DefinitionStages.Blank define = mock(ServiceBusSubscription.DefinitionStages.Blank.class);
+        when(serviceBusSubscriptions.define(SUBSCRIPTION_NAME)).thenReturn(define);
+        when(define.create()).thenThrow(exception);
+
+        ServiceBusSubscription.DefinitionStages.WithCreate create = mock(ServiceBusSubscription.DefinitionStages.WithCreate.class);
+        when(create.create()).thenThrow(exception);
     }
 
     @Override
