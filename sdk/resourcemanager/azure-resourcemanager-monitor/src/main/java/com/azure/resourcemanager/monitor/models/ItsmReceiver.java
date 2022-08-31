@@ -6,13 +6,17 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An Itsm receiver. */
 @Fluent
 public final class ItsmReceiver {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ItsmReceiver.class);
+
     /*
-     * The name of the Itsm receiver. Names must be unique across all receivers within an action group.
+     * The name of the Itsm receiver. Names must be unique across all receivers
+     * within an action group.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -24,14 +28,15 @@ public final class ItsmReceiver {
     private String workspaceId;
 
     /*
-     * Unique identification of ITSM connection among multiple defined in above workspace.
+     * Unique identification of ITSM connection among multiple defined in above
+     * workspace.
      */
     @JsonProperty(value = "connectionId", required = true)
     private String connectionId;
 
     /*
-     * JSON blob for the configurations of the ITSM action. CreateMultipleWorkItems option will be part of this blob as
-     * well.
+     * JSON blob for the configurations of the ITSM action.
+     * CreateMultipleWorkItems option will be part of this blob as well.
      */
     @JsonProperty(value = "ticketConfiguration", required = true)
     private String ticketConfiguration;
@@ -158,32 +163,30 @@ public final class ItsmReceiver {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model ItsmReceiver"));
         }
         if (workspaceId() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property workspaceId in model ItsmReceiver"));
         }
         if (connectionId() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property connectionId in model ItsmReceiver"));
         }
         if (ticketConfiguration() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property ticketConfiguration in model ItsmReceiver"));
         }
         if (region() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property region in model ItsmReceiver"));
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ItsmReceiver.class);
 }

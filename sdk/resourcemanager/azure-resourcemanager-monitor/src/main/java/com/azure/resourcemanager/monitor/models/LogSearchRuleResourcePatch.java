@@ -5,26 +5,30 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.monitor.fluent.models.LogSearchRulePatch;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The log search rule resource for patch operations. */
+@JsonFlatten
 @Fluent
-public final class LogSearchRuleResourcePatch {
+public class LogSearchRuleResourcePatch {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogSearchRuleResourcePatch.class);
+
     /*
      * Resource tags
      */
     @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
-     * The log search rule properties of the resource.
+     * The flag which indicates whether the Log Search rule is enabled. Value
+     * should be true or false
      */
-    @JsonProperty(value = "properties")
-    private LogSearchRulePatch innerProperties;
+    @JsonProperty(value = "properties.enabled")
+    private Enabled enabled;
 
     /**
      * Get the tags property: Resource tags.
@@ -47,22 +51,13 @@ public final class LogSearchRuleResourcePatch {
     }
 
     /**
-     * Get the innerProperties property: The log search rule properties of the resource.
-     *
-     * @return the innerProperties value.
-     */
-    private LogSearchRulePatch innerProperties() {
-        return this.innerProperties;
-    }
-
-    /**
      * Get the enabled property: The flag which indicates whether the Log Search rule is enabled. Value should be true
      * or false.
      *
      * @return the enabled value.
      */
     public Enabled enabled() {
-        return this.innerProperties() == null ? null : this.innerProperties().enabled();
+        return this.enabled;
     }
 
     /**
@@ -73,10 +68,7 @@ public final class LogSearchRuleResourcePatch {
      * @return the LogSearchRuleResourcePatch object itself.
      */
     public LogSearchRuleResourcePatch withEnabled(Enabled enabled) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new LogSearchRulePatch();
-        }
-        this.innerProperties().withEnabled(enabled);
+        this.enabled = enabled;
         return this;
     }
 
@@ -86,8 +78,5 @@ public final class LogSearchRuleResourcePatch {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
-        }
     }
 }

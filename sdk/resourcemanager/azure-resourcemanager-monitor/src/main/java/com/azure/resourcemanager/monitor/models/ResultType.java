@@ -30,9 +30,6 @@ public enum ResultType {
      */
     @JsonCreator
     public static ResultType fromString(String value) {
-        if (value == null) {
-            return null;
-        }
         ResultType[] items = ResultType.values();
         for (ResultType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,7 +39,6 @@ public enum ResultType {
         return null;
     }
 
-    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

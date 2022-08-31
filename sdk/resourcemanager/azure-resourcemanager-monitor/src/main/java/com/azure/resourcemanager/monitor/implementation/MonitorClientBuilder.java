@@ -7,6 +7,7 @@ package com.azure.resourcemanager.monitor.implementation;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
@@ -66,22 +67,6 @@ public final class MonitorClientBuilder {
     }
 
     /*
-     * The HTTP pipeline to send requests through
-     */
-    private HttpPipeline pipeline;
-
-    /**
-     * Sets The HTTP pipeline to send requests through.
-     *
-     * @param pipeline the pipeline value.
-     * @return the MonitorClientBuilder.
-     */
-    public MonitorClientBuilder pipeline(HttpPipeline pipeline) {
-        this.pipeline = pipeline;
-        return this;
-    }
-
-    /*
      * The default poll interval for long-running operation
      */
     private Duration defaultPollInterval;
@@ -94,6 +79,22 @@ public final class MonitorClientBuilder {
      */
     public MonitorClientBuilder defaultPollInterval(Duration defaultPollInterval) {
         this.defaultPollInterval = defaultPollInterval;
+        return this;
+    }
+
+    /*
+     * The HTTP pipeline to send requests through
+     */
+    private HttpPipeline pipeline;
+
+    /**
+     * Sets The HTTP pipeline to send requests through.
+     *
+     * @param pipeline the pipeline value.
+     * @return the MonitorClientBuilder.
+     */
+    public MonitorClientBuilder pipeline(HttpPipeline pipeline) {
+        this.pipeline = pipeline;
         return this;
     }
 
@@ -119,26 +120,27 @@ public final class MonitorClientBuilder {
      * @return an instance of MonitorClientImpl.
      */
     public MonitorClientImpl buildClient() {
-        String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
-        AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline =
-            (pipeline != null)
-                ? pipeline
-                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        Duration localDefaultPollInterval =
-            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter =
-            (serializerAdapter != null)
-                ? serializerAdapter
-                : SerializerFactory.createDefaultManagementSerializerAdapter();
+        if (endpoint == null) {
+            this.endpoint = "https://management.azure.com";
+        }
+        if (environment == null) {
+            this.environment = AzureEnvironment.AZURE;
+        }
+        if (defaultPollInterval == null) {
+            this.defaultPollInterval = Duration.ofSeconds(30);
+        }
+        if (pipeline == null) {
+            this.pipeline =
+                new HttpPipelineBuilder()
+                    .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                    .build();
+        }
+        if (serializerAdapter == null) {
+            this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
+        }
         MonitorClientImpl client =
             new MonitorClientImpl(
-                localPipeline,
-                localSerializerAdapter,
-                localDefaultPollInterval,
-                localEnvironment,
-                subscriptionId,
-                localEndpoint);
+                pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
         return client;
     }
 }

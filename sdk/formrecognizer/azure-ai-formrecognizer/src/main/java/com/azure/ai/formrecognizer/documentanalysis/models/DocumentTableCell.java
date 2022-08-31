@@ -68,7 +68,7 @@ public final class DocumentTableCell {
      * @param kind the kind value to set.
      * @return the DocumentTableCell object itself.
      */
-    private void setKind(DocumentTableCellKind kind) {
+    void setKind(DocumentTableCellKind kind) {
         this.kind = kind;
     }
 
@@ -87,7 +87,7 @@ public final class DocumentTableCell {
      * @param rowIndex the rowIndex value to set.
      * @return the DocumentTableCell object itself.
      */
-    private void setRowIndex(int rowIndex) {
+    void setRowIndex(int rowIndex) {
         this.rowIndex = rowIndex;
     }
 
@@ -106,7 +106,7 @@ public final class DocumentTableCell {
      * @param columnIndex the columnIndex value to set.
      * @return the DocumentTableCell object itself.
      */
-    private void setColumnIndex(int columnIndex) {
+    void setColumnIndex(int columnIndex) {
         this.columnIndex = columnIndex;
     }
 
@@ -125,7 +125,7 @@ public final class DocumentTableCell {
      * @param rowSpan the rowSpan value to set.
      * @return the DocumentTableCell object itself.
      */
-    private void setRowSpan(Integer rowSpan) {
+    void setRowSpan(Integer rowSpan) {
         this.rowSpan = rowSpan;
     }
 
@@ -144,7 +144,7 @@ public final class DocumentTableCell {
      * @param columnSpan the columnSpan value to set.
      * @return the DocumentTableCell object itself.
      */
-    private void setColumnSpan(Integer columnSpan) {
+    void setColumnSpan(Integer columnSpan) {
         this.columnSpan = columnSpan;
     }
 
@@ -163,7 +163,7 @@ public final class DocumentTableCell {
      * @param content the content value to set.
      * @return the DocumentTableCell object itself.
      */
-    private void setContent(String content) {
+    void setContent(String content) {
         this.content = content;
     }
 
@@ -182,7 +182,7 @@ public final class DocumentTableCell {
      * @param boundingRegions the boundingRegions value to set.
      * @return the DocumentTableCell object itself.
      */
-    private void setBoundingRegions(List<BoundingRegion> boundingRegions) {
+    void setBoundingRegions(List<BoundingRegion> boundingRegions) {
         this.boundingRegions = boundingRegions;
     }
 
@@ -201,7 +201,7 @@ public final class DocumentTableCell {
      * @param spans the spans value to set.
      * @return the DocumentTableCell object itself.
      */
-    private void setSpans(List<DocumentSpan> spans) {
+    void setSpans(List<DocumentSpan> spans) {
         this.spans = spans;
     }
 

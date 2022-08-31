@@ -41,7 +41,7 @@ public final class DocumentKeyValuePair {
      * @param key the key value to set.
      * @return the DocumentKeyValuePair object itself.
      */
-    private void setKey(DocumentKeyValueElement key) {
+    void setKey(DocumentKeyValueElement key) {
         this.key = key;
     }
 
@@ -60,7 +60,7 @@ public final class DocumentKeyValuePair {
      * @param value the value value to set.
      * @return the DocumentKeyValuePair object itself.
      */
-    private void setValue(DocumentKeyValueElement value) {
+    void setValue(DocumentKeyValueElement value) {
         this.value = value;
     }
 
@@ -79,7 +79,7 @@ public final class DocumentKeyValuePair {
      * @param confidence the confidence value to set.
      * @return the DocumentKeyValuePair object itself.
      */
-    private void setConfidence(float confidence) {
+    void setConfidence(float confidence) {
         this.confidence = confidence;
     }
 

@@ -5,7 +5,8 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -15,11 +16,12 @@ import java.util.Map;
  */
 @Fluent
 public final class TagsResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TagsResource.class);
+
     /*
      * Resource tags
      */
     @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /**

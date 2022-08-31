@@ -5,30 +5,51 @@
 package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.models.DataContainer;
 import com.azure.resourcemanager.monitor.models.DataStatus;
 import com.azure.resourcemanager.monitor.models.OnboardingStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** VM Insights onboarding status for a resource. */
+@JsonFlatten
 @Fluent
-public final class VMInsightsOnboardingStatusInner extends ProxyResource {
-    /*
-     * Resource properties.
-     */
-    @JsonProperty(value = "properties")
-    private VMInsightsOnboardingStatusProperties innerProperties;
+public class VMInsightsOnboardingStatusInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VMInsightsOnboardingStatusInner.class);
 
-    /**
-     * Get the innerProperties property: Resource properties.
-     *
-     * @return the innerProperties value.
+    /*
+     * Azure Resource Manager identifier of the resource whose onboarding
+     * status is being represented.
      */
-    private VMInsightsOnboardingStatusProperties innerProperties() {
-        return this.innerProperties;
-    }
+    @JsonProperty(value = "properties.resourceId")
+    private String resourceId;
+
+    /*
+     * The onboarding status for the resource. Note that, a higher level scope,
+     * e.g., resource group or subscription, is considered onboarded if at
+     * least one resource under it is onboarded.
+     */
+    @JsonProperty(value = "properties.onboardingStatus")
+    private OnboardingStatus onboardingStatus;
+
+    /*
+     * The status of VM Insights data from the resource. When reported as
+     * `present` the data array will contain information about the data
+     * containers to which data for the specified resource is being routed.
+     */
+    @JsonProperty(value = "properties.dataStatus")
+    private DataStatus dataStatus;
+
+    /*
+     * Containers that currently store VM Insights data for the specified
+     * resource.
+     */
+    @JsonProperty(value = "properties.data")
+    private List<DataContainer> data;
 
     /**
      * Get the resourceId property: Azure Resource Manager identifier of the resource whose onboarding status is being
@@ -37,7 +58,7 @@ public final class VMInsightsOnboardingStatusInner extends ProxyResource {
      * @return the resourceId value.
      */
     public String resourceId() {
-        return this.innerProperties() == null ? null : this.innerProperties().resourceId();
+        return this.resourceId;
     }
 
     /**
@@ -48,10 +69,7 @@ public final class VMInsightsOnboardingStatusInner extends ProxyResource {
      * @return the VMInsightsOnboardingStatusInner object itself.
      */
     public VMInsightsOnboardingStatusInner withResourceId(String resourceId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VMInsightsOnboardingStatusProperties();
-        }
-        this.innerProperties().withResourceId(resourceId);
+        this.resourceId = resourceId;
         return this;
     }
 
@@ -62,7 +80,7 @@ public final class VMInsightsOnboardingStatusInner extends ProxyResource {
      * @return the onboardingStatus value.
      */
     public OnboardingStatus onboardingStatus() {
-        return this.innerProperties() == null ? null : this.innerProperties().onboardingStatus();
+        return this.onboardingStatus;
     }
 
     /**
@@ -73,10 +91,7 @@ public final class VMInsightsOnboardingStatusInner extends ProxyResource {
      * @return the VMInsightsOnboardingStatusInner object itself.
      */
     public VMInsightsOnboardingStatusInner withOnboardingStatus(OnboardingStatus onboardingStatus) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VMInsightsOnboardingStatusProperties();
-        }
-        this.innerProperties().withOnboardingStatus(onboardingStatus);
+        this.onboardingStatus = onboardingStatus;
         return this;
     }
 
@@ -88,7 +103,7 @@ public final class VMInsightsOnboardingStatusInner extends ProxyResource {
      * @return the dataStatus value.
      */
     public DataStatus dataStatus() {
-        return this.innerProperties() == null ? null : this.innerProperties().dataStatus();
+        return this.dataStatus;
     }
 
     /**
@@ -100,10 +115,7 @@ public final class VMInsightsOnboardingStatusInner extends ProxyResource {
      * @return the VMInsightsOnboardingStatusInner object itself.
      */
     public VMInsightsOnboardingStatusInner withDataStatus(DataStatus dataStatus) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VMInsightsOnboardingStatusProperties();
-        }
-        this.innerProperties().withDataStatus(dataStatus);
+        this.dataStatus = dataStatus;
         return this;
     }
 
@@ -113,7 +125,7 @@ public final class VMInsightsOnboardingStatusInner extends ProxyResource {
      * @return the data value.
      */
     public List<DataContainer> data() {
-        return this.innerProperties() == null ? null : this.innerProperties().data();
+        return this.data;
     }
 
     /**
@@ -123,10 +135,7 @@ public final class VMInsightsOnboardingStatusInner extends ProxyResource {
      * @return the VMInsightsOnboardingStatusInner object itself.
      */
     public VMInsightsOnboardingStatusInner withData(List<DataContainer> data) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VMInsightsOnboardingStatusProperties();
-        }
-        this.innerProperties().withData(data);
+        this.data = data;
         return this;
     }
 
@@ -136,8 +145,8 @@ public final class VMInsightsOnboardingStatusInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (data() != null) {
+            data().forEach(e -> e.validate());
         }
     }
 }

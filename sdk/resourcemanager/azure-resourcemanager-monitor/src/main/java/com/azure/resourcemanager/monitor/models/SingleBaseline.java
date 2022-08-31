@@ -6,12 +6,15 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The baseline values for a single sensitivity value. */
 @Fluent
 public final class SingleBaseline {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SingleBaseline.class);
+
     /*
      * the sensitivity of the baseline.
      */
@@ -97,21 +100,19 @@ public final class SingleBaseline {
      */
     public void validate() {
         if (sensitivity() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property sensitivity in model SingleBaseline"));
         }
         if (lowThresholds() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property lowThresholds in model SingleBaseline"));
         }
         if (highThresholds() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property highThresholds in model SingleBaseline"));
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(SingleBaseline.class);
 }

@@ -10,7 +10,6 @@ import com.azure.core.util.TelemetryAttributes;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Contains code snippets for {@link Meter} showing how to use it in Azure client libraries.
@@ -68,35 +67,6 @@ public class MetricsJavaDocCodeSnippets {
         activeHttpConnections.add(-1, attributes, currentContext);
         // END: com.azure.core.util.metrics.Meter.upDownCounter
     }
-
-    /**
-     * Code snippet for {@link Meter#createLongGauge(String, String, String)}
-     */
-    public void createLongGauge() {
-        AtomicLong sequenceNumber = new AtomicLong();
-
-        // BEGIN: com.azure.core.util.metrics.Meter.longGauge
-        TelemetryAttributes attributes = defaultMeter.createAttributes(new HashMap<String, Object>() {{
-                put("endpoint", "http://service-endpoint.azure.com");
-                put("container", "my-container");
-            }});
-
-        LongGauge latestSequenceNumber = defaultMeter.createLongGauge("az.eventhubs.consumer.sequence_number",
-            "Sequence number of the latest event received from the broker.", null);
-
-        AutoCloseable subscription = latestSequenceNumber.registerCallback(sequenceNumber::get, attributes);
-
-        // update value when event is received
-        sequenceNumber.set(getSequenceNumber());
-
-        try {
-            subscription.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        // END: com.azure.core.util.metrics.Meter.longGauge
-    }
-
 
     /**
      * Code snippet for {@link Meter#createDoubleHistogram(String, String, String)}}
@@ -162,8 +132,5 @@ public class MetricsJavaDocCodeSnippets {
 
     private boolean doThings() {
         return true;
-    }
-    private long getSequenceNumber() {
-        return 1;
     }
 }

@@ -5,10 +5,14 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** Network access control rules for the endpoints. */
 @Fluent
 public final class DataCollectionEndpointNetworkAcls extends NetworkRuleSet {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataCollectionEndpointNetworkAcls.class);
+
     /** {@inheritDoc} */
     @Override
     public DataCollectionEndpointNetworkAcls withPublicNetworkAccess(

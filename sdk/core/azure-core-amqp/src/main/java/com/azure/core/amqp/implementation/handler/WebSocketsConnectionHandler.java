@@ -3,7 +3,6 @@
 
 package com.azure.core.amqp.implementation.handler;
 
-import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.microsoft.azure.proton.transport.ws.impl.WebSocketImpl;
 import org.apache.qpid.proton.engine.Event;
@@ -32,8 +31,8 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
      * @param connectionOptions Options used when creating the connection.
      */
     public WebSocketsConnectionHandler(String connectionId, ConnectionOptions connectionOptions,
-        SslPeerDetails peerDetails, AmqpMetricsProvider metricsProvider) {
-        super(connectionId, connectionOptions, peerDetails, metricsProvider);
+        SslPeerDetails peerDetails) {
+        super(connectionId, connectionOptions, peerDetails);
     }
 
     /**

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Kind of namespace. */
+/** Defines values for NamespaceClassification. */
 public final class NamespaceClassification extends ExpandableStringEnum<NamespaceClassification> {
     /** Static value Platform for NamespaceClassification. */
     public static final NamespaceClassification PLATFORM = fromString("Platform");
@@ -30,11 +30,7 @@ public final class NamespaceClassification extends ExpandableStringEnum<Namespac
         return fromString(name, NamespaceClassification.class);
     }
 
-    /**
-     * Gets known NamespaceClassification values.
-     *
-     * @return known NamespaceClassification values.
-     */
+    /** @return known NamespaceClassification values. */
     public static Collection<NamespaceClassification> values() {
         return values(NamespaceClassification.class);
     }

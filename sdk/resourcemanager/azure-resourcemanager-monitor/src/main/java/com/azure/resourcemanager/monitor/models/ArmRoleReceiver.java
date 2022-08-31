@@ -6,13 +6,17 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An arm role receiver. */
 @Fluent
 public final class ArmRoleReceiver {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ArmRoleReceiver.class);
+
     /*
-     * The name of the arm role receiver. Names must be unique across all receivers within an action group.
+     * The name of the arm role receiver. Names must be unique across all
+     * receivers within an action group.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -98,16 +102,14 @@ public final class ArmRoleReceiver {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model ArmRoleReceiver"));
         }
         if (roleId() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property roleId in model ArmRoleReceiver"));
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ArmRoleReceiver.class);
 }

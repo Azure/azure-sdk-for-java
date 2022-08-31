@@ -6,20 +6,23 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An Activity Log Alert rule condition that is met when all its member conditions are met. */
+/** An Activity Log alert condition that is met when all its member conditions are met. */
 @Fluent
 public final class ActivityLogAlertAllOfCondition {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ActivityLogAlertAllOfCondition.class);
+
     /*
-     * The list of Activity Log Alert rule conditions.
+     * The list of activity log alert conditions.
      */
     @JsonProperty(value = "allOf", required = true)
     private List<ActivityLogAlertLeafCondition> allOf;
 
     /**
-     * Get the allOf property: The list of Activity Log Alert rule conditions.
+     * Get the allOf property: The list of activity log alert conditions.
      *
      * @return the allOf value.
      */
@@ -28,7 +31,7 @@ public final class ActivityLogAlertAllOfCondition {
     }
 
     /**
-     * Set the allOf property: The list of Activity Log Alert rule conditions.
+     * Set the allOf property: The list of activity log alert conditions.
      *
      * @param allOf the allOf value to set.
      * @return the ActivityLogAlertAllOfCondition object itself.
@@ -45,7 +48,7 @@ public final class ActivityLogAlertAllOfCondition {
      */
     public void validate() {
         if (allOf() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property allOf in model ActivityLogAlertAllOfCondition"));
@@ -53,6 +56,4 @@ public final class ActivityLogAlertAllOfCondition {
             allOf().forEach(e -> e.validate());
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ActivityLogAlertAllOfCondition.class);
 }

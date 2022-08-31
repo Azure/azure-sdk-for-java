@@ -42,8 +42,6 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
@@ -114,8 +112,7 @@ public class CallRecordingAsync {
 
     Mono<Response<RecordingStateResult>> startRecordingWithResponseInternal(StartRecordingOptions options, Context context) {
         try {
-            String callbackUrl = options.getRecordingStateCallbackUrl();
-            if (callbackUrl != null && !callbackUrl.isEmpty() && !Boolean.TRUE.equals(new URI(callbackUrl).isAbsolute())) {
+            if (!Boolean.TRUE.equals(options.getRecordingStateCallbackUri().isAbsolute())) {
                 throw logger.logExceptionAsError(new InvalidParameterException("'recordingStateCallbackUri' has to be an absolute Uri"));
             }
             StartCallRecordingRequestInternal request = getStartCallRecordingRequest(options);
@@ -131,8 +128,6 @@ public class CallRecordingAsync {
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
-        } catch (URISyntaxException ex) {
-            return monoError(logger, new RuntimeException(ex));
         }
     }
 
@@ -161,8 +156,8 @@ public class CallRecordingAsync {
         if (options.getRecordingChannel() != null) {
             request.setRecordingChannelType(RecordingChannelInternal.fromString(options.getRecordingChannel().toString()));
         }
-        if (options.getRecordingStateCallbackUrl() != null) {
-            request.setRecordingStateCallbackUri(options.getRecordingStateCallbackUrl());
+        if (options.getRecordingStateCallbackUri() != null) {
+            request.setRecordingStateCallbackUri(options.getRecordingStateCallbackUri().toString());
         }
         if (options.getChannelAffinity() != null) {
             List<ChannelAffinityInternal> channelAffinityInternal = options.getChannelAffinity()

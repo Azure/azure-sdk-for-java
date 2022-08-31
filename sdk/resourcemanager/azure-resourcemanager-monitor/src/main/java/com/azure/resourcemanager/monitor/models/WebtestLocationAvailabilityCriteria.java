@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Specifies the metric alert rule criteria for a web test resource. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata\\.type")
 @JsonTypeName("Microsoft.Azure.Monitor.WebtestLocationAvailabilityCriteria")
+@JsonFlatten
 @Fluent
-public final class WebtestLocationAvailabilityCriteria extends MetricAlertCriteria {
+public class WebtestLocationAvailabilityCriteria extends MetricAlertCriteria {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebtestLocationAvailabilityCriteria.class);
+
     /*
      * The Application Insights web test Id.
      */
@@ -102,18 +107,16 @@ public final class WebtestLocationAvailabilityCriteria extends MetricAlertCriter
     public void validate() {
         super.validate();
         if (webTestId() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property webTestId in model WebtestLocationAvailabilityCriteria"));
         }
         if (componentId() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property componentId in model WebtestLocationAvailabilityCriteria"));
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(WebtestLocationAvailabilityCriteria.class);
 }

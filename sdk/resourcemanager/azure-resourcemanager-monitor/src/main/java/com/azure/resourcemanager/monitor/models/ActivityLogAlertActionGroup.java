@@ -6,29 +6,30 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** A pointer to an Azure Action Group. */
 @Fluent
 public final class ActivityLogAlertActionGroup {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ActivityLogAlertActionGroup.class);
+
     /*
-     * The resource ID of the Action Group. This cannot be null or empty.
+     * The resourceId of the action group. This cannot be null or empty.
      */
     @JsonProperty(value = "actionGroupId", required = true)
     private String actionGroupId;
 
     /*
-     * the dictionary of custom properties to include with the post operation. These data are appended to the webhook
-     * payload.
+     * the dictionary of custom properties to include with the post operation.
+     * These data are appended to the webhook payload.
      */
     @JsonProperty(value = "webhookProperties")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> webhookProperties;
 
     /**
-     * Get the actionGroupId property: The resource ID of the Action Group. This cannot be null or empty.
+     * Get the actionGroupId property: The resourceId of the action group. This cannot be null or empty.
      *
      * @return the actionGroupId value.
      */
@@ -37,7 +38,7 @@ public final class ActivityLogAlertActionGroup {
     }
 
     /**
-     * Set the actionGroupId property: The resource ID of the Action Group. This cannot be null or empty.
+     * Set the actionGroupId property: The resourceId of the action group. This cannot be null or empty.
      *
      * @param actionGroupId the actionGroupId value to set.
      * @return the ActivityLogAlertActionGroup object itself.
@@ -76,12 +77,10 @@ public final class ActivityLogAlertActionGroup {
      */
     public void validate() {
         if (actionGroupId() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property actionGroupId in model ActivityLogAlertActionGroup"));
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ActivityLogAlertActionGroup.class);
 }

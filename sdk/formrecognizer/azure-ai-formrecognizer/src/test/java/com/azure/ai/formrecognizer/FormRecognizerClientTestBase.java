@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.regex.Pattern;
 
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_ENDPOINT;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL;
@@ -60,6 +61,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class FormRecognizerClientTestBase extends TestBase {
+
+    private static final Pattern NON_DIGIT_PATTERN = Pattern.compile("[^0-9]+");
     private static final String EXPECTED_RECEIPT_ADDRESS_VALUE = "123 Main Street Redmond, WA 98052";
     private static final String EXPECTED_JPEG_RECEIPT_PHONE_NUMBER_VALUE = "+19876543210";
     private static final String ITEMIZED_RECEIPT_VALUE = "Itemized";
@@ -1066,7 +1069,9 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     }
 
     private void validatePngReceiptFields(Map<String, FormField> receiptPageFields) {
-
+        //  "123-456-7890" is not a valid US telephone number since no area code can start with 1, so the service
+        //  returns a null instead.
+        assertNull(receiptPageFields.get("MerchantPhoneNumber").getValue().asPhoneNumber());
         assertNotNull(receiptPageFields.get("Subtotal").getValue().asFloat());
         assertNotNull(receiptPageFields.get("Total").getValue().asFloat());
         assertNotNull(receiptPageFields.get("Tax").getValue().asFloat());
@@ -1075,8 +1080,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
         for (int i = 0; i < itemizedItems.size(); i++) {
             if (itemizedItems.get(i).getValue() != null) {
-                String[] itemizedNames = new String[] {"Surface Pro 6", "Surface Pen"};
-                Float[] itemizedTotalPrices = new Float[] {1998f, 299.97f};
+                String[] itemizedNames = new String[] {"Surface Pro 6", "SurfacePen"};
+                Float[] itemizedTotalPrices = new Float[] {999f, 99.99f};
 
                 Map<String, FormField> actualReceiptItems = itemizedItems.get(i).getValue().asMap();
                 int finalI = i;
@@ -1093,7 +1098,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                         assertNotNull(formField.getValue());
                         if (FieldValueType.FLOAT == formField.getValue().getValueType()) {
                             Float quantity = formField.getValue().asFloat();
-                            assertNotNull(quantity);
+                            assertEquals(1.f, quantity);
                         }
                     }
                     if ("Price".equals(key)) {

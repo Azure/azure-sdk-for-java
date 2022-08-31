@@ -5,10 +5,14 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-/** The endpoint used by clients to access their configuration. */
+/** The endpoint used by agents to access their configuration. */
 @Immutable
 public final class DataCollectionEndpointConfigurationAccess extends ConfigurationAccessEndpointSpec {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataCollectionEndpointConfigurationAccess.class);
+
     /**
      * Validates the instance.
      *

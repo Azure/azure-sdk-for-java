@@ -2,8 +2,6 @@
 
 ## 1.32.0-beta.1 (Unreleased)
 
-- Added `com.azure.core.util.metrics.LongGauge` instrument support to metrics.
-
 ### Features Added
 
 ### Breaking Changes

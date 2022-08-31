@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The configuration to set whether network access from public internet to the endpoints are allowed. */
+/** Defines values for KnownPublicNetworkAccessOptions. */
 public final class KnownPublicNetworkAccessOptions extends ExpandableStringEnum<KnownPublicNetworkAccessOptions> {
     /** Static value Enabled for KnownPublicNetworkAccessOptions. */
     public static final KnownPublicNetworkAccessOptions ENABLED = fromString("Enabled");
@@ -27,11 +27,7 @@ public final class KnownPublicNetworkAccessOptions extends ExpandableStringEnum<
         return fromString(name, KnownPublicNetworkAccessOptions.class);
     }
 
-    /**
-     * Gets known KnownPublicNetworkAccessOptions values.
-     *
-     * @return known KnownPublicNetworkAccessOptions values.
-     */
+    /** @return known KnownPublicNetworkAccessOptions values. */
     public static Collection<KnownPublicNetworkAccessOptions> values() {
         return values(KnownPublicNetworkAccessOptions.class);
     }

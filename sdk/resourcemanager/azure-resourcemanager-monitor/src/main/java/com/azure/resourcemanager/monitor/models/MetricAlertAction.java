@@ -5,13 +5,16 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** An alert action. */
 @Fluent
 public final class MetricAlertAction {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricAlertAction.class);
+
     /*
      * the id of the action group to use.
      */
@@ -19,11 +22,10 @@ public final class MetricAlertAction {
     private String actionGroupId;
 
     /*
-     * This field allows specifying custom properties, which would be appended to the alert payload sent as input to
-     * the webhook.
+     * This field allows specifying custom properties, which would be appended
+     * to the alert payload sent as input to the webhook.
      */
     @JsonProperty(value = "webHookProperties")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> webhookProperties;
 
     /**

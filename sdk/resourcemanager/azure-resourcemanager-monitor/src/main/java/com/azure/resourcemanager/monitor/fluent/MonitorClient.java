@@ -45,13 +45,6 @@ public interface MonitorClient {
     AutoscaleSettingsClient getAutoscaleSettings();
 
     /**
-     * Gets the PredictiveMetricsClient object to access its operations.
-     *
-     * @return the PredictiveMetricsClient object.
-     */
-    PredictiveMetricsClient getPredictiveMetrics();
-
-    /**
      * Gets the OperationsClient object to access its operations.
      *
      * @return the OperationsClient object.
@@ -80,11 +73,11 @@ public interface MonitorClient {
     LogProfilesClient getLogProfiles();
 
     /**
-     * Gets the DiagnosticSettingsOperationsClient object to access its operations.
+     * Gets the DiagnosticSettingsClient object to access its operations.
      *
-     * @return the DiagnosticSettingsOperationsClient object.
+     * @return the DiagnosticSettingsClient object.
      */
-    DiagnosticSettingsOperationsClient getDiagnosticSettingsOperations();
+    DiagnosticSettingsClient getDiagnosticSettings();
 
     /**
      * Gets the DiagnosticSettingsCategoriesClient object to access its operations.

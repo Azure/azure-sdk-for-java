@@ -223,14 +223,14 @@ class DiagnosticSettingImpl
         return this
             .manager()
             .serviceClient()
-            .getDiagnosticSettingsOperations()
+            .getDiagnosticSettings()
             .createOrUpdateAsync(this.resourceId, this.name(), this.innerModel())
             .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<DiagnosticSettingsResourceInner> getInnerAsync() {
-        return this.manager().serviceClient().getDiagnosticSettingsOperations().getAsync(this.resourceId, this.name());
+        return this.manager().serviceClient().getDiagnosticSettings().getAsync(this.resourceId, this.name());
     }
 
     @Override

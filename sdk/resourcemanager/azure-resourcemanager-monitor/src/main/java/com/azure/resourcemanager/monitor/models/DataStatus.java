@@ -8,10 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * The status of VM Insights data from the resource. When reported as `present` the data array will contain information
- * about the data containers to which data for the specified resource is being routed.
- */
+/** Defines values for DataStatus. */
 public final class DataStatus extends ExpandableStringEnum<DataStatus> {
     /** Static value present for DataStatus. */
     public static final DataStatus PRESENT = fromString("present");
@@ -30,11 +27,7 @@ public final class DataStatus extends ExpandableStringEnum<DataStatus> {
         return fromString(name, DataStatus.class);
     }
 
-    /**
-     * Gets known DataStatus values.
-     *
-     * @return known DataStatus values.
-     */
+    /** @return known DataStatus values. */
     public static Collection<DataStatus> values() {
         return values(DataStatus.class);
     }

@@ -17,13 +17,12 @@ public interface PrivateLinkScopeOperationStatusClient extends InnerSupportsGet<
     /**
      * Get the status of an azure asynchronous operation associated with a private link scope operation.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param asyncOperationId The operation Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of an azure asynchronous operation associated with a private link scope operation along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * @return the status of an azure asynchronous operation associated with a private link scope operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<OperationStatusInner>> getByResourceGroupWithResponseAsync(
@@ -32,13 +31,12 @@ public interface PrivateLinkScopeOperationStatusClient extends InnerSupportsGet<
     /**
      * Get the status of an azure asynchronous operation associated with a private link scope operation.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param asyncOperationId The operation Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of an azure asynchronous operation associated with a private link scope operation on
-     *     successful completion of {@link Mono}.
+     * @return the status of an azure asynchronous operation associated with a private link scope operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<OperationStatusInner> getByResourceGroupAsync(String resourceGroupName, String asyncOperationId);
@@ -46,7 +44,7 @@ public interface PrivateLinkScopeOperationStatusClient extends InnerSupportsGet<
     /**
      * Get the status of an azure asynchronous operation associated with a private link scope operation.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param asyncOperationId The operation Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -59,14 +57,13 @@ public interface PrivateLinkScopeOperationStatusClient extends InnerSupportsGet<
     /**
      * Get the status of an azure asynchronous operation associated with a private link scope operation.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param asyncOperationId The operation Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of an azure asynchronous operation associated with a private link scope operation along with
-     *     {@link Response}.
+     * @return the status of an azure asynchronous operation associated with a private link scope operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<OperationStatusInner> getByResourceGroupWithResponse(

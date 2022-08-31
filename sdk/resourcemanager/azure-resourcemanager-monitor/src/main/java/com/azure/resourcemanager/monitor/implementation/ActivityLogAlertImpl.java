@@ -4,22 +4,21 @@
 package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.resourcemanager.monitor.MonitorManager;
-import com.azure.resourcemanager.monitor.fluent.models.ActivityLogAlertResourceInner;
-import com.azure.resourcemanager.monitor.models.ActionList;
 import com.azure.resourcemanager.monitor.models.ActivityLogAlert;
 import com.azure.resourcemanager.monitor.models.ActivityLogAlertActionGroup;
+import com.azure.resourcemanager.monitor.models.ActivityLogAlertActionList;
 import com.azure.resourcemanager.monitor.models.ActivityLogAlertAllOfCondition;
 import com.azure.resourcemanager.monitor.models.ActivityLogAlertLeafCondition;
+import com.azure.resourcemanager.monitor.fluent.models.ActivityLogAlertResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import reactor.core.publisher.Mono;
 
 /** Implementation for ActivityLogAlert. */
 class ActivityLogAlertImpl
@@ -141,7 +140,7 @@ class ActivityLogAlertImpl
     @Override
     public ActivityLogAlertImpl withActionGroups(String... actionGroupId) {
         if (this.innerModel().actions() == null) {
-            this.innerModel().withActions(new ActionList());
+            this.innerModel().withActions(new ActivityLogAlertActionList());
             this.innerModel().actions().withActionGroups(new ArrayList<ActivityLogAlertActionGroup>());
         }
         this.innerModel().actions().actionGroups().clear();

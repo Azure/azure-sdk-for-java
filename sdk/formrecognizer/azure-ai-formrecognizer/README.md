@@ -468,7 +468,7 @@ AtomicReference<String> modelId = new AtomicReference<>();
 // First, we see how many models we have, and what our limit is
 ResourceDetails resourceDetails = documentModelAdminClient.getResourceDetails();
 System.out.printf("The resource has %s models, and we can have at most %s models",
-    resourceDetails.getCustomDocumentModelCount(), resourceDetails.getCustomDocumentModelLimit());
+    resourceDetails.getDocumentModelCount(), resourceDetails.getDocumentModelLimit());
 
 // Next, we get a paged list of all of our models
 PagedIterable<DocumentModelSummary> customDocumentModels = documentModelAdminClient.listModels();

@@ -5,8 +5,9 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.monitor.fluent.models.MetricAlertPropertiesPatch;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -14,20 +15,101 @@ import java.util.List;
 import java.util.Map;
 
 /** The metric alert resource for patch operations. */
+@JsonFlatten
 @Fluent
-public final class MetricAlertResourcePatch {
+public class MetricAlertResourcePatch {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricAlertResourcePatch.class);
+
     /*
      * Resource tags
      */
     @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
-     * The alert rule properties of the resource.
+     * the description of the metric alert that will be included in the alert
+     * email.
      */
-    @JsonProperty(value = "properties")
-    private MetricAlertPropertiesPatch innerProperties;
+    @JsonProperty(value = "properties.description")
+    private String description;
+
+    /*
+     * Alert severity {0, 1, 2, 3, 4}
+     */
+    @JsonProperty(value = "properties.severity")
+    private Integer severity;
+
+    /*
+     * the flag that indicates whether the metric alert is enabled.
+     */
+    @JsonProperty(value = "properties.enabled")
+    private Boolean enabled;
+
+    /*
+     * the list of resource id's that this metric alert is scoped to.
+     */
+    @JsonProperty(value = "properties.scopes")
+    private List<String> scopes;
+
+    /*
+     * how often the metric alert is evaluated represented in ISO 8601 duration
+     * format.
+     */
+    @JsonProperty(value = "properties.evaluationFrequency")
+    private Duration evaluationFrequency;
+
+    /*
+     * the period of time (in ISO 8601 duration format) that is used to monitor
+     * alert activity based on the threshold.
+     */
+    @JsonProperty(value = "properties.windowSize")
+    private Duration windowSize;
+
+    /*
+     * the resource type of the target resource(s) on which the alert is
+     * created/updated. Mandatory for MultipleResourceMultipleMetricCriteria.
+     */
+    @JsonProperty(value = "properties.targetResourceType")
+    private String targetResourceType;
+
+    /*
+     * the region of the target resource(s) on which the alert is
+     * created/updated. Mandatory for MultipleResourceMultipleMetricCriteria.
+     */
+    @JsonProperty(value = "properties.targetResourceRegion")
+    private String targetResourceRegion;
+
+    /*
+     * defines the specific alert criteria information.
+     */
+    @JsonProperty(value = "properties.criteria")
+    private MetricAlertCriteria criteria;
+
+    /*
+     * the flag that indicates whether the alert should be auto resolved or
+     * not. The default is true.
+     */
+    @JsonProperty(value = "properties.autoMitigate")
+    private Boolean autoMitigate;
+
+    /*
+     * the array of actions that are performed when the alert rule becomes
+     * active, and when an alert condition is resolved.
+     */
+    @JsonProperty(value = "properties.actions")
+    private List<MetricAlertAction> actions;
+
+    /*
+     * Last time the rule was updated in ISO8601 format.
+     */
+    @JsonProperty(value = "properties.lastUpdatedTime", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime lastUpdatedTime;
+
+    /*
+     * the value indicating whether this alert rule is migrated.
+     */
+    @JsonProperty(value = "properties.isMigrated", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean isMigrated;
 
     /**
      * Get the tags property: Resource tags.
@@ -50,21 +132,12 @@ public final class MetricAlertResourcePatch {
     }
 
     /**
-     * Get the innerProperties property: The alert rule properties of the resource.
-     *
-     * @return the innerProperties value.
-     */
-    private MetricAlertPropertiesPatch innerProperties() {
-        return this.innerProperties;
-    }
-
-    /**
      * Get the description property: the description of the metric alert that will be included in the alert email.
      *
      * @return the description value.
      */
     public String description() {
-        return this.innerProperties() == null ? null : this.innerProperties().description();
+        return this.description;
     }
 
     /**
@@ -74,10 +147,7 @@ public final class MetricAlertResourcePatch {
      * @return the MetricAlertResourcePatch object itself.
      */
     public MetricAlertResourcePatch withDescription(String description) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new MetricAlertPropertiesPatch();
-        }
-        this.innerProperties().withDescription(description);
+        this.description = description;
         return this;
     }
 
@@ -87,7 +157,7 @@ public final class MetricAlertResourcePatch {
      * @return the severity value.
      */
     public Integer severity() {
-        return this.innerProperties() == null ? null : this.innerProperties().severity();
+        return this.severity;
     }
 
     /**
@@ -97,10 +167,7 @@ public final class MetricAlertResourcePatch {
      * @return the MetricAlertResourcePatch object itself.
      */
     public MetricAlertResourcePatch withSeverity(Integer severity) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new MetricAlertPropertiesPatch();
-        }
-        this.innerProperties().withSeverity(severity);
+        this.severity = severity;
         return this;
     }
 
@@ -110,7 +177,7 @@ public final class MetricAlertResourcePatch {
      * @return the enabled value.
      */
     public Boolean enabled() {
-        return this.innerProperties() == null ? null : this.innerProperties().enabled();
+        return this.enabled;
     }
 
     /**
@@ -120,10 +187,7 @@ public final class MetricAlertResourcePatch {
      * @return the MetricAlertResourcePatch object itself.
      */
     public MetricAlertResourcePatch withEnabled(Boolean enabled) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new MetricAlertPropertiesPatch();
-        }
-        this.innerProperties().withEnabled(enabled);
+        this.enabled = enabled;
         return this;
     }
 
@@ -133,7 +197,7 @@ public final class MetricAlertResourcePatch {
      * @return the scopes value.
      */
     public List<String> scopes() {
-        return this.innerProperties() == null ? null : this.innerProperties().scopes();
+        return this.scopes;
     }
 
     /**
@@ -143,10 +207,7 @@ public final class MetricAlertResourcePatch {
      * @return the MetricAlertResourcePatch object itself.
      */
     public MetricAlertResourcePatch withScopes(List<String> scopes) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new MetricAlertPropertiesPatch();
-        }
-        this.innerProperties().withScopes(scopes);
+        this.scopes = scopes;
         return this;
     }
 
@@ -157,7 +218,7 @@ public final class MetricAlertResourcePatch {
      * @return the evaluationFrequency value.
      */
     public Duration evaluationFrequency() {
-        return this.innerProperties() == null ? null : this.innerProperties().evaluationFrequency();
+        return this.evaluationFrequency;
     }
 
     /**
@@ -168,10 +229,7 @@ public final class MetricAlertResourcePatch {
      * @return the MetricAlertResourcePatch object itself.
      */
     public MetricAlertResourcePatch withEvaluationFrequency(Duration evaluationFrequency) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new MetricAlertPropertiesPatch();
-        }
-        this.innerProperties().withEvaluationFrequency(evaluationFrequency);
+        this.evaluationFrequency = evaluationFrequency;
         return this;
     }
 
@@ -182,7 +240,7 @@ public final class MetricAlertResourcePatch {
      * @return the windowSize value.
      */
     public Duration windowSize() {
-        return this.innerProperties() == null ? null : this.innerProperties().windowSize();
+        return this.windowSize;
     }
 
     /**
@@ -193,10 +251,7 @@ public final class MetricAlertResourcePatch {
      * @return the MetricAlertResourcePatch object itself.
      */
     public MetricAlertResourcePatch withWindowSize(Duration windowSize) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new MetricAlertPropertiesPatch();
-        }
-        this.innerProperties().withWindowSize(windowSize);
+        this.windowSize = windowSize;
         return this;
     }
 
@@ -207,7 +262,7 @@ public final class MetricAlertResourcePatch {
      * @return the targetResourceType value.
      */
     public String targetResourceType() {
-        return this.innerProperties() == null ? null : this.innerProperties().targetResourceType();
+        return this.targetResourceType;
     }
 
     /**
@@ -218,10 +273,7 @@ public final class MetricAlertResourcePatch {
      * @return the MetricAlertResourcePatch object itself.
      */
     public MetricAlertResourcePatch withTargetResourceType(String targetResourceType) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new MetricAlertPropertiesPatch();
-        }
-        this.innerProperties().withTargetResourceType(targetResourceType);
+        this.targetResourceType = targetResourceType;
         return this;
     }
 
@@ -232,7 +284,7 @@ public final class MetricAlertResourcePatch {
      * @return the targetResourceRegion value.
      */
     public String targetResourceRegion() {
-        return this.innerProperties() == null ? null : this.innerProperties().targetResourceRegion();
+        return this.targetResourceRegion;
     }
 
     /**
@@ -243,10 +295,7 @@ public final class MetricAlertResourcePatch {
      * @return the MetricAlertResourcePatch object itself.
      */
     public MetricAlertResourcePatch withTargetResourceRegion(String targetResourceRegion) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new MetricAlertPropertiesPatch();
-        }
-        this.innerProperties().withTargetResourceRegion(targetResourceRegion);
+        this.targetResourceRegion = targetResourceRegion;
         return this;
     }
 
@@ -256,7 +305,7 @@ public final class MetricAlertResourcePatch {
      * @return the criteria value.
      */
     public MetricAlertCriteria criteria() {
-        return this.innerProperties() == null ? null : this.innerProperties().criteria();
+        return this.criteria;
     }
 
     /**
@@ -266,10 +315,7 @@ public final class MetricAlertResourcePatch {
      * @return the MetricAlertResourcePatch object itself.
      */
     public MetricAlertResourcePatch withCriteria(MetricAlertCriteria criteria) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new MetricAlertPropertiesPatch();
-        }
-        this.innerProperties().withCriteria(criteria);
+        this.criteria = criteria;
         return this;
     }
 
@@ -280,7 +326,7 @@ public final class MetricAlertResourcePatch {
      * @return the autoMitigate value.
      */
     public Boolean autoMitigate() {
-        return this.innerProperties() == null ? null : this.innerProperties().autoMitigate();
+        return this.autoMitigate;
     }
 
     /**
@@ -291,10 +337,7 @@ public final class MetricAlertResourcePatch {
      * @return the MetricAlertResourcePatch object itself.
      */
     public MetricAlertResourcePatch withAutoMitigate(Boolean autoMitigate) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new MetricAlertPropertiesPatch();
-        }
-        this.innerProperties().withAutoMitigate(autoMitigate);
+        this.autoMitigate = autoMitigate;
         return this;
     }
 
@@ -305,7 +348,7 @@ public final class MetricAlertResourcePatch {
      * @return the actions value.
      */
     public List<MetricAlertAction> actions() {
-        return this.innerProperties() == null ? null : this.innerProperties().actions();
+        return this.actions;
     }
 
     /**
@@ -316,10 +359,7 @@ public final class MetricAlertResourcePatch {
      * @return the MetricAlertResourcePatch object itself.
      */
     public MetricAlertResourcePatch withActions(List<MetricAlertAction> actions) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new MetricAlertPropertiesPatch();
-        }
-        this.innerProperties().withActions(actions);
+        this.actions = actions;
         return this;
     }
 
@@ -329,7 +369,7 @@ public final class MetricAlertResourcePatch {
      * @return the lastUpdatedTime value.
      */
     public OffsetDateTime lastUpdatedTime() {
-        return this.innerProperties() == null ? null : this.innerProperties().lastUpdatedTime();
+        return this.lastUpdatedTime;
     }
 
     /**
@@ -338,7 +378,7 @@ public final class MetricAlertResourcePatch {
      * @return the isMigrated value.
      */
     public Boolean isMigrated() {
-        return this.innerProperties() == null ? null : this.innerProperties().isMigrated();
+        return this.isMigrated;
     }
 
     /**
@@ -347,8 +387,11 @@ public final class MetricAlertResourcePatch {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (criteria() != null) {
+            criteria().validate();
+        }
+        if (actions() != null) {
+            actions().forEach(e -> e.validate());
         }
     }
 }

@@ -1,15 +1,5 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 1.0.0-beta.3 (2022-08-25)
 
 - Azure Resource Manager LabServices client library for Java. This package contains Microsoft Azure SDK for LabServices Management SDK. REST API for managing Azure Lab Services images. Package tag package-2022-08. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).

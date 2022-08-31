@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The resource provisioning state. This property is READ-ONLY. */
+/** Defines values for KnownDataCollectionEndpointProvisioningState. */
 public final class KnownDataCollectionEndpointProvisioningState
     extends ExpandableStringEnum<KnownDataCollectionEndpointProvisioningState> {
     /** Static value Creating for KnownDataCollectionEndpointProvisioningState. */
@@ -37,11 +37,7 @@ public final class KnownDataCollectionEndpointProvisioningState
         return fromString(name, KnownDataCollectionEndpointProvisioningState.class);
     }
 
-    /**
-     * Gets known KnownDataCollectionEndpointProvisioningState values.
-     *
-     * @return known KnownDataCollectionEndpointProvisioningState values.
-     */
+    /** @return known KnownDataCollectionEndpointProvisioningState values. */
     public static Collection<KnownDataCollectionEndpointProvisioningState> values() {
         return values(KnownDataCollectionEndpointProvisioningState.class);
     }

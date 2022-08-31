@@ -5,6 +5,9 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -12,10 +15,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * A rule management event data source. The discriminator fields is always RuleManagementEventDataSource in this case.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata\\.type")
 @JsonTypeName("Microsoft.Azure.Management.Insights.Models.RuleManagementEventDataSource")
+@JsonFlatten
 @Fluent
-public final class RuleManagementEventDataSource extends RuleDataSource {
+public class RuleManagementEventDataSource extends RuleDataSource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RuleManagementEventDataSource.class);
+
     /*
      * the event name.
      */
@@ -35,7 +41,8 @@ public final class RuleManagementEventDataSource extends RuleDataSource {
     private String level;
 
     /*
-     * The name of the operation that should be checked for. If no name is provided, any operation will match.
+     * The name of the operation that should be checked for. If no name is
+     * provided, any operation will match.
      */
     @JsonProperty(value = "operationName")
     private String operationName;
@@ -53,7 +60,8 @@ public final class RuleManagementEventDataSource extends RuleDataSource {
     private String resourceProviderName;
 
     /*
-     * The status of the operation that should be checked for. If no status is provided, any status will match.
+     * The status of the operation that should be checked for. If no status is
+     * provided, any status will match.
      */
     @JsonProperty(value = "status")
     private String status;

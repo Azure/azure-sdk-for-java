@@ -13,6 +13,8 @@ import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.net.URI;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -37,7 +39,7 @@ public class CallRecordingAsyncLiveTests extends CallAutomationLiveTestBase {
             CallRecordingAsync callRecording = client.getCallRecordingAsync();
             RecordingStateResult recordingResponse = callRecording.startRecording(
                 new StartRecordingOptions(new ServerCallLocator(serverCallId))
-                    .setRecordingStateCallbackUrl(ngrok))
+                    .setRecordingStateCallbackUri(new URI(ngrok)))
                 .block();
             assertNotNull(recordingResponse);
             String recordingId = recordingResponse.getRecordingId();

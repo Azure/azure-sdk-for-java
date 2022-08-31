@@ -26,7 +26,7 @@ public final class DocumentOperationResult {
         return this.resultId;
     }
 
-    private void setResultId(String resultId) {
+    void setResultId(String resultId) {
         this.resultId = resultId;
     }
 

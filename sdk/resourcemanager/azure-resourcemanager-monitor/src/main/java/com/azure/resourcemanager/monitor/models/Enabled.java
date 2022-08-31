@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The flag which indicates whether the Log Search rule is enabled. Value should be true or false. */
+/** Defines values for Enabled. */
 public final class Enabled extends ExpandableStringEnum<Enabled> {
     /** Static value true for Enabled. */
     public static final Enabled TRUE = fromString("true");
@@ -27,11 +27,7 @@ public final class Enabled extends ExpandableStringEnum<Enabled> {
         return fromString(name, Enabled.class);
     }
 
-    /**
-     * Gets known Enabled values.
-     *
-     * @return known Enabled values.
-     */
+    /** @return known Enabled values. */
     public static Collection<Enabled> values() {
         return values(Enabled.class);
     }

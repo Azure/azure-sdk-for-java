@@ -29,6 +29,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.monitor.fluent.PrivateLinkScopedResourcesClient;
@@ -40,6 +41,8 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PrivateLinkScopedResourcesClient. */
 public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkScopedResourcesClient {
+    private final ClientLogger logger = new ClientLogger(PrivateLinkScopedResourcesClientImpl.class);
+
     /** The proxy service used to perform REST calls. */
     private final PrivateLinkScopedResourcesService service;
 
@@ -99,7 +102,7 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
             @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
                 + "/privateLinkScopes/{scopeName}/scopedResources/{name}")
@@ -112,7 +115,6 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
             @QueryParam("api-version") String apiVersion,
             @PathParam("scopeName") String scopeName,
             @PathParam("name") String name,
-            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -144,14 +146,13 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
     /**
      * Gets a scoped resource in a private link scope.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param name The name of the scoped resource object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a scoped resource in a private link scope along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a scoped resource in a private link scope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ScopedResourceInner>> getWithResponseAsync(
@@ -178,7 +179,7 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01-preview";
+        final String apiVersion = "2019-10-17-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -199,15 +200,14 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
     /**
      * Gets a scoped resource in a private link scope.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param name The name of the scoped resource object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a scoped resource in a private link scope along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a scoped resource in a private link scope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ScopedResourceInner>> getWithResponseAsync(
@@ -234,7 +234,7 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01-preview";
+        final String apiVersion = "2019-10-17-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -252,24 +252,31 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
     /**
      * Gets a scoped resource in a private link scope.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param name The name of the scoped resource object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a scoped resource in a private link scope on successful completion of {@link Mono}.
+     * @return a scoped resource in a private link scope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ScopedResourceInner> getAsync(String resourceGroupName, String scopeName, String name) {
         return getWithResponseAsync(resourceGroupName, scopeName, name)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<ScopedResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets a scoped resource in a private link scope.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param name The name of the scoped resource object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -285,14 +292,14 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
     /**
      * Gets a scoped resource in a private link scope.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param name The name of the scoped resource object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a scoped resource in a private link scope along with {@link Response}.
+     * @return a scoped resource in a private link scope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScopedResourceInner> getWithResponse(
@@ -303,18 +310,18 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
     /**
      * Approve or reject a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param name The name of the scoped resource object.
-     * @param parameters A private link scoped resource.
+     * @param linkedResourceId The resource id of the scoped Azure monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private link scoped resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return a private link scoped resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters) {
+        String resourceGroupName, String scopeName, String name, String linkedResourceId) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -337,13 +344,10 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2021-07-01-preview";
+        final String apiVersion = "2019-10-17-preview";
         final String accept = "application/json";
+        ScopedResourceInner parameters = new ScopedResourceInner();
+        parameters.withLinkedResourceId(linkedResourceId);
         return FluxUtil
             .withContext(
                 context ->
@@ -364,19 +368,19 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
     /**
      * Approve or reject a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param name The name of the scoped resource object.
-     * @param parameters A private link scoped resource.
+     * @param linkedResourceId The resource id of the scoped Azure monitor resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private link scoped resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return a private link scoped resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters, Context context) {
+        String resourceGroupName, String scopeName, String name, String linkedResourceId, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -399,13 +403,10 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2021-07-01-preview";
+        final String apiVersion = "2019-10-17-preview";
         final String accept = "application/json";
+        ScopedResourceInner parameters = new ScopedResourceInner();
+        parameters.withLinkedResourceId(linkedResourceId);
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -423,20 +424,20 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
     /**
      * Approve or reject a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param name The name of the scoped resource object.
-     * @param parameters A private link scoped resource.
+     * @param linkedResourceId The resource id of the scoped Azure monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a private link scoped resource.
+     * @return a private link scoped resource.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<ScopedResourceInner>, ScopedResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters) {
+        String resourceGroupName, String scopeName, String name, String linkedResourceId) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, scopeName, name, parameters);
+            createOrUpdateWithResponseAsync(resourceGroupName, scopeName, name, linkedResourceId);
         return this
             .client
             .<ScopedResourceInner, ScopedResourceInner>getLroResult(
@@ -450,22 +451,22 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
     /**
      * Approve or reject a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param name The name of the scoped resource object.
-     * @param parameters A private link scoped resource.
+     * @param linkedResourceId The resource id of the scoped Azure monitor resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a private link scoped resource.
+     * @return a private link scoped resource.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<ScopedResourceInner>, ScopedResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters, Context context) {
+        String resourceGroupName, String scopeName, String name, String linkedResourceId, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, scopeName, name, parameters, context);
+            createOrUpdateWithResponseAsync(resourceGroupName, scopeName, name, linkedResourceId, context);
         return this
             .client
             .<ScopedResourceInner, ScopedResourceInner>getLroResult(
@@ -475,56 +476,56 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
     /**
      * Approve or reject a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param name The name of the scoped resource object.
-     * @param parameters A private link scoped resource.
+     * @param linkedResourceId The resource id of the scoped Azure monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a private link scoped resource.
+     * @return a private link scoped resource.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<ScopedResourceInner>, ScopedResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, scopeName, name, parameters).getSyncPoller();
+        String resourceGroupName, String scopeName, String name, String linkedResourceId) {
+        return beginCreateOrUpdateAsync(resourceGroupName, scopeName, name, linkedResourceId).getSyncPoller();
     }
 
     /**
      * Approve or reject a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param name The name of the scoped resource object.
-     * @param parameters A private link scoped resource.
+     * @param linkedResourceId The resource id of the scoped Azure monitor resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a private link scoped resource.
+     * @return a private link scoped resource.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<ScopedResourceInner>, ScopedResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, scopeName, name, parameters, context).getSyncPoller();
+        String resourceGroupName, String scopeName, String name, String linkedResourceId, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, scopeName, name, linkedResourceId, context).getSyncPoller();
     }
 
     /**
      * Approve or reject a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param name The name of the scoped resource object.
-     * @param parameters A private link scoped resource.
+     * @param linkedResourceId The resource id of the scoped Azure monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private link scoped resource on successful completion of {@link Mono}.
+     * @return a private link scoped resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ScopedResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, scopeName, name, parameters)
+        String resourceGroupName, String scopeName, String name, String linkedResourceId) {
+        return beginCreateOrUpdateAsync(resourceGroupName, scopeName, name, linkedResourceId)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -532,20 +533,39 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
     /**
      * Approve or reject a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param name The name of the scoped resource object.
-     * @param parameters A private link scoped resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private link scoped resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ScopedResourceInner> createOrUpdateAsync(String resourceGroupName, String scopeName, String name) {
+        final String linkedResourceId = null;
+        return beginCreateOrUpdateAsync(resourceGroupName, scopeName, name, linkedResourceId)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Approve or reject a private endpoint connection with a given name.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
+     * @param name The name of the scoped resource object.
+     * @param linkedResourceId The resource id of the scoped Azure monitor resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private link scoped resource on successful completion of {@link Mono}.
+     * @return a private link scoped resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ScopedResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, scopeName, name, parameters, context)
+        String resourceGroupName, String scopeName, String name, String linkedResourceId, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, scopeName, name, linkedResourceId, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -553,10 +573,10 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
     /**
      * Approve or reject a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param name The name of the scoped resource object.
-     * @param parameters A private link scoped resource.
+     * @param linkedResourceId The resource id of the scoped Azure monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -564,17 +584,34 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScopedResourceInner createOrUpdate(
-        String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, scopeName, name, parameters).block();
+        String resourceGroupName, String scopeName, String name, String linkedResourceId) {
+        return createOrUpdateAsync(resourceGroupName, scopeName, name, linkedResourceId).block();
     }
 
     /**
      * Approve or reject a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param name The name of the scoped resource object.
-     * @param parameters A private link scoped resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private link scoped resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ScopedResourceInner createOrUpdate(String resourceGroupName, String scopeName, String name) {
+        final String linkedResourceId = null;
+        return createOrUpdateAsync(resourceGroupName, scopeName, name, linkedResourceId).block();
+    }
+
+    /**
+     * Approve or reject a private endpoint connection with a given name.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
+     * @param name The name of the scoped resource object.
+     * @param linkedResourceId The resource id of the scoped Azure monitor resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -583,20 +620,20 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScopedResourceInner createOrUpdate(
-        String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters, Context context) {
-        return createOrUpdateAsync(resourceGroupName, scopeName, name, parameters, context).block();
+        String resourceGroupName, String scopeName, String name, String linkedResourceId, Context context) {
+        return createOrUpdateAsync(resourceGroupName, scopeName, name, linkedResourceId, context).block();
     }
 
     /**
      * Deletes a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param name The name of the scoped resource object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -623,8 +660,7 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01-preview";
-        final String accept = "application/json";
+        final String apiVersion = "2019-10-17-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -636,7 +672,6 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
                             apiVersion,
                             scopeName,
                             name,
-                            accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -644,14 +679,14 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
     /**
      * Deletes a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param name The name of the scoped resource object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -678,8 +713,7 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01-preview";
-        final String accept = "application/json";
+        final String apiVersion = "2019-10-17-preview";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -689,22 +723,21 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
                 apiVersion,
                 scopeName,
                 name,
-                accept,
                 context);
     }
 
     /**
      * Deletes a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param name The name of the scoped resource object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String scopeName, String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, scopeName, name);
@@ -717,16 +750,16 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
     /**
      * Deletes a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param name The name of the scoped resource object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String scopeName, String name, Context context) {
         context = this.client.mergeContext(context);
@@ -739,15 +772,15 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
     /**
      * Deletes a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param name The name of the scoped resource object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String scopeName, String name) {
         return beginDeleteAsync(resourceGroupName, scopeName, name).getSyncPoller();
     }
@@ -755,16 +788,16 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
     /**
      * Deletes a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param name The name of the scoped resource object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String scopeName, String name, Context context) {
         return beginDeleteAsync(resourceGroupName, scopeName, name, context).getSyncPoller();
@@ -773,13 +806,13 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
     /**
      * Deletes a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param name The name of the scoped resource object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String scopeName, String name) {
@@ -791,14 +824,14 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
     /**
      * Deletes a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param name The name of the scoped resource object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String scopeName, String name, Context context) {
@@ -810,7 +843,7 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
     /**
      * Deletes a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param name The name of the scoped resource object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -825,7 +858,7 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
     /**
      * Deletes a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param name The name of the scoped resource object.
      * @param context The context to associate with this operation.
@@ -841,13 +874,12 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
     /**
      * Gets all private endpoint connections on a private link scope.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections on a private link scope along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * @return all private endpoint connections on a private link scope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScopedResourceInner>> listByPrivateLinkScopeSinglePageAsync(
@@ -871,7 +903,7 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
         if (scopeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter scopeName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01-preview";
+        final String apiVersion = "2019-10-17-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -900,14 +932,13 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
     /**
      * Gets all private endpoint connections on a private link scope.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections on a private link scope along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * @return all private endpoint connections on a private link scope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScopedResourceInner>> listByPrivateLinkScopeSinglePageAsync(
@@ -931,7 +962,7 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
         if (scopeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter scopeName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01-preview";
+        final String apiVersion = "2019-10-17-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -957,12 +988,12 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
     /**
      * Gets all private endpoint connections on a private link scope.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections on a private link scope as paginated response with {@link PagedFlux}.
+     * @return all private endpoint connections on a private link scope.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ScopedResourceInner> listByPrivateLinkScopeAsync(String resourceGroupName, String scopeName) {
@@ -974,13 +1005,13 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
     /**
      * Gets all private endpoint connections on a private link scope.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections on a private link scope as paginated response with {@link PagedFlux}.
+     * @return all private endpoint connections on a private link scope.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ScopedResourceInner> listByPrivateLinkScopeAsync(
@@ -993,13 +1024,12 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
     /**
      * Gets all private endpoint connections on a private link scope.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections on a private link scope as paginated response with {@link
-     *     PagedIterable}.
+     * @return all private endpoint connections on a private link scope.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScopedResourceInner> listByPrivateLinkScope(String resourceGroupName, String scopeName) {
@@ -1009,14 +1039,13 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
     /**
      * Gets all private endpoint connections on a private link scope.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections on a private link scope as paginated response with {@link
-     *     PagedIterable}.
+     * @return all private endpoint connections on a private link scope.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScopedResourceInner> listByPrivateLinkScope(
@@ -1027,13 +1056,11 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of scoped resources in a private link scope along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * @return a list of scoped resources in a private link scope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScopedResourceInner>> listByPrivateLinkScopeNextSinglePageAsync(String nextLink) {
@@ -1065,14 +1092,12 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of scoped resources in a private link scope along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * @return a list of scoped resources in a private link scope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScopedResourceInner>> listByPrivateLinkScopeNextSinglePageAsync(

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.util.List;
@@ -13,6 +14,8 @@ import java.util.List;
 /** The trigger that results in a scaling action. */
 @Fluent
 public final class MetricTrigger {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricTrigger.class);
+
     /*
      * the name of the metric that defines what the rule monitors.
      */
@@ -38,28 +41,31 @@ public final class MetricTrigger {
     private String metricResourceLocation;
 
     /*
-     * the granularity of metrics the rule monitors. Must be one of the predefined values returned from metric
-     * definitions for the metric. Must be between 12 hours and 1 minute.
+     * the granularity of metrics the rule monitors. Must be one of the
+     * predefined values returned from metric definitions for the metric. Must
+     * be between 12 hours and 1 minute.
      */
     @JsonProperty(value = "timeGrain", required = true)
     private Duration timeGrain;
 
     /*
-     * the metric statistic type. How the metrics from multiple instances are combined.
+     * the metric statistic type. How the metrics from multiple instances are
+     * combined.
      */
     @JsonProperty(value = "statistic", required = true)
     private MetricStatisticType statistic;
 
     /*
-     * the range of time in which instance data is collected. This value must be greater than the delay in metric
-     * collection, which can vary from resource-to-resource. Must be between 12 hours and 5 minutes.
+     * the range of time in which instance data is collected. This value must
+     * be greater than the delay in metric collection, which can vary from
+     * resource-to-resource. Must be between 12 hours and 5 minutes.
      */
     @JsonProperty(value = "timeWindow", required = true)
     private Duration timeWindow;
 
     /*
-     * time aggregation type. How the data that is collected should be combined over time. The default value is
-     * Average.
+     * time aggregation type. How the data that is collected should be combined
+     * over time. The default value is Average.
      */
     @JsonProperty(value = "timeAggregation", required = true)
     private TimeAggregationType timeAggregation;
@@ -349,37 +355,37 @@ public final class MetricTrigger {
      */
     public void validate() {
         if (metricName() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property metricName in model MetricTrigger"));
         }
         if (metricResourceUri() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property metricResourceUri in model MetricTrigger"));
         }
         if (timeGrain() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property timeGrain in model MetricTrigger"));
         }
         if (statistic() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property statistic in model MetricTrigger"));
         }
         if (timeWindow() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property timeWindow in model MetricTrigger"));
         }
         if (timeAggregation() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property timeAggregation in model MetricTrigger"));
         }
         if (operator() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property operator in model MetricTrigger"));
         }
@@ -387,6 +393,4 @@ public final class MetricTrigger {
             dimensions().forEach(e -> e.validate());
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(MetricTrigger.class);
 }

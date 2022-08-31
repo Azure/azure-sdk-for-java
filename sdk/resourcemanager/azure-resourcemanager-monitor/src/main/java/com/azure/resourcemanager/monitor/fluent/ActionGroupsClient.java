@@ -9,20 +9,12 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
-import com.azure.core.util.polling.PollerFlux;
-import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.monitor.fluent.models.ActionGroupResourceInner;
-import com.azure.resourcemanager.monitor.fluent.models.TestNotificationDetailsResponseInner;
 import com.azure.resourcemanager.monitor.models.ActionGroupPatchBody;
-import com.azure.resourcemanager.monitor.models.EnableRequest;
-import com.azure.resourcemanager.monitor.models.NotificationRequestBody;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import java.nio.ByteBuffer;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ActionGroupsClient. */
@@ -33,13 +25,13 @@ public interface ActionGroupsClient
     /**
      * Create a new action group or update an existing one.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param actionGroupName The name of the action group.
      * @param actionGroup The action group to create or use for the update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an action group resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return an action group resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ActionGroupResourceInner>> createOrUpdateWithResponseAsync(
@@ -48,13 +40,13 @@ public interface ActionGroupsClient
     /**
      * Create a new action group or update an existing one.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param actionGroupName The name of the action group.
      * @param actionGroup The action group to create or use for the update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an action group resource on successful completion of {@link Mono}.
+     * @return an action group resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ActionGroupResourceInner> createOrUpdateAsync(
@@ -63,7 +55,7 @@ public interface ActionGroupsClient
     /**
      * Create a new action group or update an existing one.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param actionGroupName The name of the action group.
      * @param actionGroup The action group to create or use for the update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -78,14 +70,14 @@ public interface ActionGroupsClient
     /**
      * Create a new action group or update an existing one.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param actionGroupName The name of the action group.
      * @param actionGroup The action group to create or use for the update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an action group resource along with {@link Response}.
+     * @return an action group resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ActionGroupResourceInner> createOrUpdateWithResponse(
@@ -94,12 +86,12 @@ public interface ActionGroupsClient
     /**
      * Get an action group.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param actionGroupName The name of the action group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an action group along with {@link Response} on successful completion of {@link Mono}.
+     * @return an action group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ActionGroupResourceInner>> getByResourceGroupWithResponseAsync(
@@ -108,12 +100,12 @@ public interface ActionGroupsClient
     /**
      * Get an action group.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param actionGroupName The name of the action group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an action group on successful completion of {@link Mono}.
+     * @return an action group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ActionGroupResourceInner> getByResourceGroupAsync(String resourceGroupName, String actionGroupName);
@@ -121,7 +113,7 @@ public interface ActionGroupsClient
     /**
      * Get an action group.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param actionGroupName The name of the action group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -134,13 +126,13 @@ public interface ActionGroupsClient
     /**
      * Get an action group.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param actionGroupName The name of the action group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an action group along with {@link Response}.
+     * @return an action group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ActionGroupResourceInner> getByResourceGroupWithResponse(
@@ -149,12 +141,12 @@ public interface ActionGroupsClient
     /**
      * Delete an action group.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param actionGroupName The name of the action group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String actionGroupName);
@@ -162,12 +154,12 @@ public interface ActionGroupsClient
     /**
      * Delete an action group.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param actionGroupName The name of the action group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String actionGroupName);
@@ -175,7 +167,7 @@ public interface ActionGroupsClient
     /**
      * Delete an action group.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param actionGroupName The name of the action group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -187,13 +179,13 @@ public interface ActionGroupsClient
     /**
      * Delete an action group.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param actionGroupName The name of the action group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(String resourceGroupName, String actionGroupName, Context context);
@@ -201,13 +193,13 @@ public interface ActionGroupsClient
     /**
      * Updates an existing action group's tags. To update other fields use the CreateOrUpdate method.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param actionGroupName The name of the action group.
      * @param actionGroupPatch Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an action group resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return an action group resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ActionGroupResourceInner>> updateWithResponseAsync(
@@ -216,13 +208,13 @@ public interface ActionGroupsClient
     /**
      * Updates an existing action group's tags. To update other fields use the CreateOrUpdate method.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param actionGroupName The name of the action group.
      * @param actionGroupPatch Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an action group resource on successful completion of {@link Mono}.
+     * @return an action group resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ActionGroupResourceInner> updateAsync(
@@ -231,7 +223,7 @@ public interface ActionGroupsClient
     /**
      * Updates an existing action group's tags. To update other fields use the CreateOrUpdate method.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param actionGroupName The name of the action group.
      * @param actionGroupPatch Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -246,507 +238,25 @@ public interface ActionGroupsClient
     /**
      * Updates an existing action group's tags. To update other fields use the CreateOrUpdate method.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param actionGroupName The name of the action group.
      * @param actionGroupPatch Parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an action group resource along with {@link Response}.
+     * @return an action group resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ActionGroupResourceInner> updateWithResponse(
         String resourceGroupName, String actionGroupName, ActionGroupPatchBody actionGroupPatch, Context context);
 
     /**
-     * Send test notifications to a set of provided receivers.
-     *
-     * @param notificationRequest The notification request body which includes the contact details.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the test notification results along with {@link Response} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> postTestNotificationsWithResponseAsync(
-        NotificationRequestBody notificationRequest);
-
-    /**
-     * Send test notifications to a set of provided receivers.
-     *
-     * @param notificationRequest The notification request body which includes the contact details.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the details of the test notification results.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<TestNotificationDetailsResponseInner>, TestNotificationDetailsResponseInner>
-        beginPostTestNotificationsAsync(NotificationRequestBody notificationRequest);
-
-    /**
-     * Send test notifications to a set of provided receivers.
-     *
-     * @param notificationRequest The notification request body which includes the contact details.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the details of the test notification results.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TestNotificationDetailsResponseInner>, TestNotificationDetailsResponseInner>
-        beginPostTestNotifications(NotificationRequestBody notificationRequest);
-
-    /**
-     * Send test notifications to a set of provided receivers.
-     *
-     * @param notificationRequest The notification request body which includes the contact details.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the details of the test notification results.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TestNotificationDetailsResponseInner>, TestNotificationDetailsResponseInner>
-        beginPostTestNotifications(NotificationRequestBody notificationRequest, Context context);
-
-    /**
-     * Send test notifications to a set of provided receivers.
-     *
-     * @param notificationRequest The notification request body which includes the contact details.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the test notification results on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<TestNotificationDetailsResponseInner> postTestNotificationsAsync(NotificationRequestBody notificationRequest);
-
-    /**
-     * Send test notifications to a set of provided receivers.
-     *
-     * @param notificationRequest The notification request body which includes the contact details.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the test notification results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    TestNotificationDetailsResponseInner postTestNotifications(NotificationRequestBody notificationRequest);
-
-    /**
-     * Send test notifications to a set of provided receivers.
-     *
-     * @param notificationRequest The notification request body which includes the contact details.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the test notification results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    TestNotificationDetailsResponseInner postTestNotifications(
-        NotificationRequestBody notificationRequest, Context context);
-
-    /**
-     * Send test notifications to a set of provided receivers.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param notificationRequest The notification request body which includes the contact details.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the test notification results along with {@link Response} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createNotificationsAtResourceGroupLevelWithResponseAsync(
-        String resourceGroupName, NotificationRequestBody notificationRequest);
-
-    /**
-     * Send test notifications to a set of provided receivers.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param notificationRequest The notification request body which includes the contact details.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the details of the test notification results.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<TestNotificationDetailsResponseInner>, TestNotificationDetailsResponseInner>
-        beginCreateNotificationsAtResourceGroupLevelAsync(
-            String resourceGroupName, NotificationRequestBody notificationRequest);
-
-    /**
-     * Send test notifications to a set of provided receivers.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param notificationRequest The notification request body which includes the contact details.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the details of the test notification results.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TestNotificationDetailsResponseInner>, TestNotificationDetailsResponseInner>
-        beginCreateNotificationsAtResourceGroupLevel(
-            String resourceGroupName, NotificationRequestBody notificationRequest);
-
-    /**
-     * Send test notifications to a set of provided receivers.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param notificationRequest The notification request body which includes the contact details.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the details of the test notification results.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TestNotificationDetailsResponseInner>, TestNotificationDetailsResponseInner>
-        beginCreateNotificationsAtResourceGroupLevel(
-            String resourceGroupName, NotificationRequestBody notificationRequest, Context context);
-
-    /**
-     * Send test notifications to a set of provided receivers.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param notificationRequest The notification request body which includes the contact details.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the test notification results on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<TestNotificationDetailsResponseInner> createNotificationsAtResourceGroupLevelAsync(
-        String resourceGroupName, NotificationRequestBody notificationRequest);
-
-    /**
-     * Send test notifications to a set of provided receivers.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param notificationRequest The notification request body which includes the contact details.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the test notification results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    TestNotificationDetailsResponseInner createNotificationsAtResourceGroupLevel(
-        String resourceGroupName, NotificationRequestBody notificationRequest);
-
-    /**
-     * Send test notifications to a set of provided receivers.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param notificationRequest The notification request body which includes the contact details.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the test notification results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    TestNotificationDetailsResponseInner createNotificationsAtResourceGroupLevel(
-        String resourceGroupName, NotificationRequestBody notificationRequest, Context context);
-
-    /**
-     * Send test notifications to a set of provided receivers.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param actionGroupName The name of the action group.
-     * @param notificationRequest The notification request body which includes the contact details.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the test notification results along with {@link Response} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createNotificationsAtActionGroupResourceLevelWithResponseAsync(
-        String resourceGroupName, String actionGroupName, NotificationRequestBody notificationRequest);
-
-    /**
-     * Send test notifications to a set of provided receivers.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param actionGroupName The name of the action group.
-     * @param notificationRequest The notification request body which includes the contact details.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the details of the test notification results.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<TestNotificationDetailsResponseInner>, TestNotificationDetailsResponseInner>
-        beginCreateNotificationsAtActionGroupResourceLevelAsync(
-            String resourceGroupName, String actionGroupName, NotificationRequestBody notificationRequest);
-
-    /**
-     * Send test notifications to a set of provided receivers.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param actionGroupName The name of the action group.
-     * @param notificationRequest The notification request body which includes the contact details.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the details of the test notification results.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TestNotificationDetailsResponseInner>, TestNotificationDetailsResponseInner>
-        beginCreateNotificationsAtActionGroupResourceLevel(
-            String resourceGroupName, String actionGroupName, NotificationRequestBody notificationRequest);
-
-    /**
-     * Send test notifications to a set of provided receivers.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param actionGroupName The name of the action group.
-     * @param notificationRequest The notification request body which includes the contact details.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the details of the test notification results.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TestNotificationDetailsResponseInner>, TestNotificationDetailsResponseInner>
-        beginCreateNotificationsAtActionGroupResourceLevel(
-            String resourceGroupName,
-            String actionGroupName,
-            NotificationRequestBody notificationRequest,
-            Context context);
-
-    /**
-     * Send test notifications to a set of provided receivers.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param actionGroupName The name of the action group.
-     * @param notificationRequest The notification request body which includes the contact details.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the test notification results on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<TestNotificationDetailsResponseInner> createNotificationsAtActionGroupResourceLevelAsync(
-        String resourceGroupName, String actionGroupName, NotificationRequestBody notificationRequest);
-
-    /**
-     * Send test notifications to a set of provided receivers.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param actionGroupName The name of the action group.
-     * @param notificationRequest The notification request body which includes the contact details.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the test notification results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    TestNotificationDetailsResponseInner createNotificationsAtActionGroupResourceLevel(
-        String resourceGroupName, String actionGroupName, NotificationRequestBody notificationRequest);
-
-    /**
-     * Send test notifications to a set of provided receivers.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param actionGroupName The name of the action group.
-     * @param notificationRequest The notification request body which includes the contact details.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the test notification results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    TestNotificationDetailsResponseInner createNotificationsAtActionGroupResourceLevel(
-        String resourceGroupName, String actionGroupName, NotificationRequestBody notificationRequest, Context context);
-
-    /**
-     * Get the test notifications by the notification id.
-     *
-     * @param notificationId The notification id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the test notifications by the notification id along with {@link Response} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<TestNotificationDetailsResponseInner>> getTestNotificationsWithResponseAsync(String notificationId);
-
-    /**
-     * Get the test notifications by the notification id.
-     *
-     * @param notificationId The notification id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the test notifications by the notification id on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<TestNotificationDetailsResponseInner> getTestNotificationsAsync(String notificationId);
-
-    /**
-     * Get the test notifications by the notification id.
-     *
-     * @param notificationId The notification id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the test notifications by the notification id.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    TestNotificationDetailsResponseInner getTestNotifications(String notificationId);
-
-    /**
-     * Get the test notifications by the notification id.
-     *
-     * @param notificationId The notification id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the test notifications by the notification id along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TestNotificationDetailsResponseInner> getTestNotificationsWithResponse(
-        String notificationId, Context context);
-
-    /**
-     * Get the test notifications by the notification id.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param notificationId The notification id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the test notifications by the notification id along with {@link Response} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<TestNotificationDetailsResponseInner>> getTestNotificationsAtResourceGroupLevelWithResponseAsync(
-        String resourceGroupName, String notificationId);
-
-    /**
-     * Get the test notifications by the notification id.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param notificationId The notification id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the test notifications by the notification id on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<TestNotificationDetailsResponseInner> getTestNotificationsAtResourceGroupLevelAsync(
-        String resourceGroupName, String notificationId);
-
-    /**
-     * Get the test notifications by the notification id.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param notificationId The notification id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the test notifications by the notification id.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    TestNotificationDetailsResponseInner getTestNotificationsAtResourceGroupLevel(
-        String resourceGroupName, String notificationId);
-
-    /**
-     * Get the test notifications by the notification id.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param notificationId The notification id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the test notifications by the notification id along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TestNotificationDetailsResponseInner> getTestNotificationsAtResourceGroupLevelWithResponse(
-        String resourceGroupName, String notificationId, Context context);
-
-    /**
-     * Get the test notifications by the notification id.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param actionGroupName The name of the action group.
-     * @param notificationId The notification id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the test notifications by the notification id along with {@link Response} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<TestNotificationDetailsResponseInner>>
-        getTestNotificationsAtActionGroupResourceLevelWithResponseAsync(
-            String resourceGroupName, String actionGroupName, String notificationId);
-
-    /**
-     * Get the test notifications by the notification id.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param actionGroupName The name of the action group.
-     * @param notificationId The notification id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the test notifications by the notification id on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<TestNotificationDetailsResponseInner> getTestNotificationsAtActionGroupResourceLevelAsync(
-        String resourceGroupName, String actionGroupName, String notificationId);
-
-    /**
-     * Get the test notifications by the notification id.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param actionGroupName The name of the action group.
-     * @param notificationId The notification id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the test notifications by the notification id.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    TestNotificationDetailsResponseInner getTestNotificationsAtActionGroupResourceLevel(
-        String resourceGroupName, String actionGroupName, String notificationId);
-
-    /**
-     * Get the test notifications by the notification id.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param actionGroupName The name of the action group.
-     * @param notificationId The notification id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the test notifications by the notification id along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TestNotificationDetailsResponseInner> getTestNotificationsAtActionGroupResourceLevelWithResponse(
-        String resourceGroupName, String actionGroupName, String notificationId, Context context);
-
-    /**
      * Get a list of all action groups in a subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all action groups in a subscription as paginated response with {@link PagedFlux}.
+     * @return a list of all action groups in a subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ActionGroupResourceInner> listAsync();
@@ -756,7 +266,7 @@ public interface ActionGroupsClient
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all action groups in a subscription as paginated response with {@link PagedIterable}.
+     * @return a list of all action groups in a subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ActionGroupResourceInner> list();
@@ -768,7 +278,7 @@ public interface ActionGroupsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all action groups in a subscription as paginated response with {@link PagedIterable}.
+     * @return a list of all action groups in a subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ActionGroupResourceInner> list(Context context);
@@ -776,11 +286,11 @@ public interface ActionGroupsClient
     /**
      * Get a list of all action groups in a resource group.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all action groups in a resource group as paginated response with {@link PagedFlux}.
+     * @return a list of all action groups in a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ActionGroupResourceInner> listByResourceGroupAsync(String resourceGroupName);
@@ -788,11 +298,11 @@ public interface ActionGroupsClient
     /**
      * Get a list of all action groups in a resource group.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all action groups in a resource group as paginated response with {@link PagedIterable}.
+     * @return a list of all action groups in a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ActionGroupResourceInner> listByResourceGroup(String resourceGroupName);
@@ -800,12 +310,12 @@ public interface ActionGroupsClient
     /**
      * Get a list of all action groups in a resource group.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all action groups in a resource group as paginated response with {@link PagedIterable}.
+     * @return a list of all action groups in a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ActionGroupResourceInner> listByResourceGroup(String resourceGroupName, Context context);
@@ -814,61 +324,61 @@ public interface ActionGroupsClient
      * Enable a receiver in an action group. This changes the receiver's status from Disabled to Enabled. This operation
      * is only supported for Email or SMS receivers.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param actionGroupName The name of the action group.
-     * @param enableRequest The receiver to re-enable.
+     * @param receiverName The name of the receiver to resubscribe.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> enableReceiverWithResponseAsync(
-        String resourceGroupName, String actionGroupName, EnableRequest enableRequest);
+        String resourceGroupName, String actionGroupName, String receiverName);
 
     /**
      * Enable a receiver in an action group. This changes the receiver's status from Disabled to Enabled. This operation
      * is only supported for Email or SMS receivers.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param actionGroupName The name of the action group.
-     * @param enableRequest The receiver to re-enable.
+     * @param receiverName The name of the receiver to resubscribe.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> enableReceiverAsync(String resourceGroupName, String actionGroupName, EnableRequest enableRequest);
+    Mono<Void> enableReceiverAsync(String resourceGroupName, String actionGroupName, String receiverName);
 
     /**
      * Enable a receiver in an action group. This changes the receiver's status from Disabled to Enabled. This operation
      * is only supported for Email or SMS receivers.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param actionGroupName The name of the action group.
-     * @param enableRequest The receiver to re-enable.
+     * @param receiverName The name of the receiver to resubscribe.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void enableReceiver(String resourceGroupName, String actionGroupName, EnableRequest enableRequest);
+    void enableReceiver(String resourceGroupName, String actionGroupName, String receiverName);
 
     /**
      * Enable a receiver in an action group. This changes the receiver's status from Disabled to Enabled. This operation
      * is only supported for Email or SMS receivers.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param actionGroupName The name of the action group.
-     * @param enableRequest The receiver to re-enable.
+     * @param receiverName The name of the receiver to resubscribe.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> enableReceiverWithResponse(
-        String resourceGroupName, String actionGroupName, EnableRequest enableRequest, Context context);
+        String resourceGroupName, String actionGroupName, String receiverName, Context context);
 }

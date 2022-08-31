@@ -64,25 +64,15 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
     private final Sinks.Empty<AmqpEndpointState> terminateEndpointStates = Sinks.empty();
 
     private final AtomicReference<Supplier<Integer>> creditSupplier = new AtomicReference<>();
-    private final AmqpMetricsProvider metricsProvider;
-
-    @Deprecated
-    protected ReactorReceiver(AmqpConnection amqpConnection, String entityPath, Receiver receiver,
-                              ReceiveLinkHandler handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
-                              AmqpRetryOptions retryOptions) {
-        this(amqpConnection, entityPath, receiver, handler, tokenManager, dispatcher, retryOptions,
-            new AmqpMetricsProvider(null, amqpConnection.getFullyQualifiedNamespace(), entityPath));
-    }
 
     protected ReactorReceiver(AmqpConnection amqpConnection, String entityPath, Receiver receiver,
-                              ReceiveLinkHandler handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
-                              AmqpRetryOptions retryOptions, AmqpMetricsProvider metricsProvider) {
+        ReceiveLinkHandler handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
+        AmqpRetryOptions retryOptions) {
         this.entityPath = entityPath;
         this.receiver = receiver;
         this.handler = handler;
         this.tokenManager = tokenManager;
         this.dispatcher = dispatcher;
-        this.metricsProvider = metricsProvider;
 
         Map<String, Object> loggingContext = createContextWithConnectionId(handler.getConnectionId());
         loggingContext.put(LINK_NAME_KEY, this.handler.getLinkName());
@@ -105,8 +95,6 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                                 return;
                             }
                             final Message message = decodeDelivery(delivery);
-                            metricsProvider.recordReceivedMessage(message);
-
                             final int creditsLeft = receiver.getRemoteCredit();
 
                             if (creditsLeft > 0) {
@@ -122,7 +110,6 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                                     .addKeyValue("credits", credits)
                                     .log("Adding credits.");
                                 receiver.flow(credits);
-                                metricsProvider.recordAddCredits(credits);
                             } else {
                                 logger.atVerbose()
                                     .addKeyValue("credits", credits)
@@ -219,7 +206,6 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
             try {
                 dispatcher.invoke(() -> {
                     receiver.flow(credits);
-                    metricsProvider.recordAddCredits(credits);
                     sink.success();
                 });
             } catch (IOException e) {

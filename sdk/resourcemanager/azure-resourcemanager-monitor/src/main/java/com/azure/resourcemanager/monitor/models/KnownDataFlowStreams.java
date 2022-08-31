@@ -36,11 +36,7 @@ public final class KnownDataFlowStreams extends ExpandableStringEnum<KnownDataFl
         return fromString(name, KnownDataFlowStreams.class);
     }
 
-    /**
-     * Gets known KnownDataFlowStreams values.
-     *
-     * @return known KnownDataFlowStreams values.
-     */
+    /** @return known KnownDataFlowStreams values. */
     public static Collection<KnownDataFlowStreams> values() {
         return values(KnownDataFlowStreams.class);
     }

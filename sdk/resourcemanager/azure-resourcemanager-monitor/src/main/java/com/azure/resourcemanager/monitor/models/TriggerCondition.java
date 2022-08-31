@@ -6,11 +6,14 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The condition that results in the Log Search rule. */
 @Fluent
 public final class TriggerCondition {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggerCondition.class);
+
     /*
      * Evaluation operation for rule - 'GreaterThan' or 'LessThan.
      */
@@ -96,7 +99,7 @@ public final class TriggerCondition {
      */
     public void validate() {
         if (thresholdOperator() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property thresholdOperator in model TriggerCondition"));
@@ -105,6 +108,4 @@ public final class TriggerCondition {
             metricTrigger().validate();
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(TriggerCondition.class);
 }

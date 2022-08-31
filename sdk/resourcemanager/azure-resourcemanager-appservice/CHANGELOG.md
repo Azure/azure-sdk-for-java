@@ -1,16 +1,6 @@
 # Release History
 
-## 2.19.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-## 2.18.0 (2022-08-26)
+## 2.18.0-beta.1 (Unreleased)
 
 ### Features Added
 

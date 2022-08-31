@@ -19,23 +19,30 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.monitor.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.monitor.fluent.models.PrivateEndpointConnectionInner;
-import com.azure.resourcemanager.monitor.fluent.models.PrivateEndpointConnectionListResultInner;
+import com.azure.resourcemanager.monitor.models.PrivateEndpointConnectionListResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient. */
 public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpointConnectionsClient {
+    private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionsClientImpl.class);
+
     /** The proxy service used to perform REST calls. */
     private final PrivateEndpointConnectionsService service;
 
@@ -95,7 +102,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
                 + "/privateLinkScopes/{scopeName}/privateEndpointConnections/{privateEndpointConnectionName}")
@@ -108,7 +115,6 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             @QueryParam("api-version") String apiVersion,
             @PathParam("scopeName") String scopeName,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
-            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -117,7 +123,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 + "/privateLinkScopes/{scopeName}/privateEndpointConnections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateEndpointConnectionListResultInner>> listByPrivateLinkScope(
+        Mono<Response<PrivateEndpointConnectionListResult>> listByPrivateLinkScope(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -125,18 +131,28 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             @PathParam("scopeName") String scopeName,
             @HeaderParam("Accept") String accept,
             Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<PrivateEndpointConnectionListResult>> listByPrivateLinkScopeNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
      * Gets a private endpoint connection.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection along with {@link Response} on successful completion of {@link Mono}.
+     * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
@@ -166,7 +182,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01-preview";
+        final String apiVersion = "2019-10-17-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -187,14 +203,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Gets a private endpoint connection.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection along with {@link Response} on successful completion of {@link Mono}.
+     * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
@@ -224,7 +240,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01-preview";
+        final String apiVersion = "2019-10-17-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -242,25 +258,32 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Gets a private endpoint connection.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection on successful completion of {@link Mono}.
+     * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateEndpointConnectionInner> getAsync(
         String resourceGroupName, String scopeName, String privateEndpointConnectionName) {
         return getWithResponseAsync(resourceGroupName, scopeName, privateEndpointConnectionName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<PrivateEndpointConnectionInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets a private endpoint connection.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -277,14 +300,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Gets a private endpoint connection.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection along with {@link Response}.
+     * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionInner> getWithResponse(
@@ -295,15 +318,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Approve or reject a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters The Private Endpoint Connection resource.
+     * @param parameters A private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -341,7 +363,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-07-01-preview";
+        final String apiVersion = "2019-10-17-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -363,16 +385,15 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Approve or reject a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters The Private Endpoint Connection resource.
+     * @param parameters A private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -411,7 +432,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-07-01-preview";
+        final String apiVersion = "2019-10-17-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -430,16 +451,16 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Approve or reject a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters The Private Endpoint Connection resource.
+     * @param parameters A private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the Private Endpoint Connection resource.
+     * @return a private endpoint connection.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -461,17 +482,17 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Approve or reject a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters The Private Endpoint Connection resource.
+     * @param parameters A private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the Private Endpoint Connection resource.
+     * @return a private endpoint connection.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -496,16 +517,16 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Approve or reject a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters The Private Endpoint Connection resource.
+     * @param parameters A private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Private Endpoint Connection resource.
+     * @return a private endpoint connection.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String scopeName,
@@ -518,17 +539,17 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Approve or reject a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters The Private Endpoint Connection resource.
+     * @param parameters A private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Private Endpoint Connection resource.
+     * @return a private endpoint connection.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String scopeName,
@@ -543,14 +564,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Approve or reject a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters The Private Endpoint Connection resource.
+     * @param parameters A private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource on successful completion of {@link Mono}.
+     * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateEndpointConnectionInner> createOrUpdateAsync(
@@ -566,15 +587,15 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Approve or reject a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters The Private Endpoint Connection resource.
+     * @param parameters A private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource on successful completion of {@link Mono}.
+     * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PrivateEndpointConnectionInner> createOrUpdateAsync(
@@ -592,14 +613,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Approve or reject a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters The Private Endpoint Connection resource.
+     * @param parameters A private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
+     * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner createOrUpdate(
@@ -613,15 +634,15 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Approve or reject a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters The Private Endpoint Connection resource.
+     * @param parameters A private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
+     * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner createOrUpdate(
@@ -637,13 +658,13 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Deletes a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -673,8 +694,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01-preview";
-        final String accept = "application/json";
+        final String apiVersion = "2019-10-17-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -686,7 +706,6 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                             apiVersion,
                             scopeName,
                             privateEndpointConnectionName,
-                            accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -694,14 +713,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Deletes a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -731,8 +750,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01-preview";
-        final String accept = "application/json";
+        final String apiVersion = "2019-10-17-preview";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -742,22 +760,21 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 apiVersion,
                 scopeName,
                 privateEndpointConnectionName,
-                accept,
                 context);
     }
 
     /**
      * Deletes a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String scopeName, String privateEndpointConnectionName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -771,16 +788,16 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Deletes a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String scopeName, String privateEndpointConnectionName, Context context) {
         context = this.client.mergeContext(context);
@@ -794,15 +811,15 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Deletes a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String scopeName, String privateEndpointConnectionName) {
         return beginDeleteAsync(resourceGroupName, scopeName, privateEndpointConnectionName).getSyncPoller();
@@ -811,16 +828,16 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Deletes a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String scopeName, String privateEndpointConnectionName, Context context) {
         return beginDeleteAsync(resourceGroupName, scopeName, privateEndpointConnectionName, context).getSyncPoller();
@@ -829,13 +846,13 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Deletes a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String scopeName, String privateEndpointConnectionName) {
@@ -847,14 +864,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Deletes a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -867,7 +884,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Deletes a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -882,7 +899,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Deletes a private endpoint connection with a given name.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param context The context to associate with this operation.
@@ -899,16 +916,15 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Gets all private endpoint connections on a private link scope.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections on a private link scope along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return all private endpoint connections on a private link scope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PrivateEndpointConnectionListResultInner>> listByPrivateLinkScopeWithResponseAsync(
+    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listByPrivateLinkScopeSinglePageAsync(
         String resourceGroupName, String scopeName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -929,7 +945,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         if (scopeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter scopeName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01-preview";
+        final String apiVersion = "2019-10-17-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -943,23 +959,31 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                             scopeName,
                             accept,
                             context))
+            .<PagedResponse<PrivateEndpointConnectionInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all private endpoint connections on a private link scope.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections on a private link scope along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return all private endpoint connections on a private link scope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateEndpointConnectionListResultInner>> listByPrivateLinkScopeWithResponseAsync(
+    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listByPrivateLinkScopeSinglePageAsync(
         String resourceGroupName, String scopeName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -980,7 +1004,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         if (scopeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter scopeName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01-preview";
+        final String apiVersion = "2019-10-17-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -991,55 +1015,159 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 apiVersion,
                 scopeName,
                 accept,
-                context);
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
      * Gets all private endpoint connections on a private link scope.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections on a private link scope on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrivateEndpointConnectionListResultInner> listByPrivateLinkScopeAsync(
-        String resourceGroupName, String scopeName) {
-        return listByPrivateLinkScopeWithResponseAsync(resourceGroupName, scopeName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets all private endpoint connections on a private link scope.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private endpoint connections on a private link scope.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionListResultInner listByPrivateLinkScope(String resourceGroupName, String scopeName) {
-        return listByPrivateLinkScopeAsync(resourceGroupName, scopeName).block();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PrivateEndpointConnectionInner> listByPrivateLinkScopeAsync(
+        String resourceGroupName, String scopeName) {
+        return new PagedFlux<>(
+            () -> listByPrivateLinkScopeSinglePageAsync(resourceGroupName, scopeName),
+            nextLink -> listByPrivateLinkScopeNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all private endpoint connections on a private link scope.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections on a private link scope along with {@link Response}.
+     * @return all private endpoint connections on a private link scope.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<PrivateEndpointConnectionInner> listByPrivateLinkScopeAsync(
+        String resourceGroupName, String scopeName, Context context) {
+        return new PagedFlux<>(
+            () -> listByPrivateLinkScopeSinglePageAsync(resourceGroupName, scopeName, context),
+            nextLink -> listByPrivateLinkScopeNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Gets all private endpoint connections on a private link scope.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all private endpoint connections on a private link scope.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PrivateEndpointConnectionInner> listByPrivateLinkScope(
+        String resourceGroupName, String scopeName) {
+        return new PagedIterable<>(listByPrivateLinkScopeAsync(resourceGroupName, scopeName));
+    }
+
+    /**
+     * Gets all private endpoint connections on a private link scope.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all private endpoint connections on a private link scope.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PrivateEndpointConnectionInner> listByPrivateLinkScope(
+        String resourceGroupName, String scopeName, Context context) {
+        return new PagedIterable<>(listByPrivateLinkScopeAsync(resourceGroupName, scopeName, context));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of private endpoint connections.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrivateEndpointConnectionListResultInner> listByPrivateLinkScopeWithResponse(
-        String resourceGroupName, String scopeName, Context context) {
-        return listByPrivateLinkScopeWithResponseAsync(resourceGroupName, scopeName, context).block();
+    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listByPrivateLinkScopeNextSinglePageAsync(
+        String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.listByPrivateLinkScopeNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<PrivateEndpointConnectionInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of private endpoint connections.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listByPrivateLinkScopeNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listByPrivateLinkScopeNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

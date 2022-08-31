@@ -4,10 +4,6 @@
 
 ### Features Added
 
-- Added AMQP-level metrics to reporting number of sent batches, duration of network call, number of received message and consumer lag as well as 
-  error counters. Metrics are off by default and can be enabled with [azure-core-metrics-opentelemetry](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-metrics-opentelemetry/README.md)
-  plugin. ([#30583](https://github.com/Azure/azure-sdk-for-java/pull/30583))
-
 ### Breaking Changes
 
 ### Bugs Fixed

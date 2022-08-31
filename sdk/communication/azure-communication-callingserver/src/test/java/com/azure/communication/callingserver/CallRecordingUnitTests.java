@@ -17,6 +17,7 @@ import com.azure.core.util.Context;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.net.URI;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,7 +38,7 @@ public class CallRecordingUnitTests extends CallRecordingUnitTestBase {
         assertThrows(
             InvalidParameterException.class,
             () -> callRecording.startRecording(new StartRecordingOptions(new ServerCallLocator(SERVER_CALL_ID))
-                    .setRecordingStateCallbackUrl("/not/absolute/uri")
+                    .setRecordingStateCallbackUri(URI.create("/not/absolute/uri"))
             ));
     }
 
@@ -47,7 +48,7 @@ public class CallRecordingUnitTests extends CallRecordingUnitTestBase {
             .setRecordingContent(RecordingContent.AUDIO_VIDEO)
             .setRecordingChannel(RecordingChannel.MIXED)
             .setRecordingFormat(RecordingFormat.MP4)
-            .setRecordingStateCallbackUrl("/not/absolute/uri")
+            .setRecordingStateCallbackUri(URI.create("/not/absolute/uri"))
             .setChannelAffinity(new ArrayList<ChannelAffinity>(Arrays.asList(
                 new ChannelAffinity(0, new CommunicationUserIdentifier("rawId1")),
                 new ChannelAffinity(1, new CommunicationUserIdentifier("rawId2")))));
@@ -68,7 +69,7 @@ public class CallRecordingUnitTests extends CallRecordingUnitTestBase {
 
         validateRecording(
             callRecording.startRecording(new StartRecordingOptions(new ServerCallLocator(SERVER_CALL_ID))
-                .setRecordingStateCallbackUrl("https://localhost/")),
+                .setRecordingStateCallbackUri(URI.create("https://localhost/"))),
             RecordingState.ACTIVE
         );
 

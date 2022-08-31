@@ -28,11 +28,7 @@ public final class KnownPerfCounterDataSourceStreams extends ExpandableStringEnu
         return fromString(name, KnownPerfCounterDataSourceStreams.class);
     }
 
-    /**
-     * Gets known KnownPerfCounterDataSourceStreams values.
-     *
-     * @return known KnownPerfCounterDataSourceStreams values.
-     */
+    /** @return known KnownPerfCounterDataSourceStreams values. */
     public static Collection<KnownPerfCounterDataSourceStreams> values() {
         return values(KnownPerfCounterDataSourceStreams.class);
     }

@@ -6,12 +6,15 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Specifies the criteria for converting log to metric. */
 @Fluent
 public final class Criteria {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Criteria.class);
+
     /*
      * Name of the metric
      */
@@ -71,7 +74,7 @@ public final class Criteria {
      */
     public void validate() {
         if (metricName() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property metricName in model Criteria"));
         }
@@ -79,6 +82,4 @@ public final class Criteria {
             dimensions().forEach(e -> e.validate());
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(Criteria.class);
 }

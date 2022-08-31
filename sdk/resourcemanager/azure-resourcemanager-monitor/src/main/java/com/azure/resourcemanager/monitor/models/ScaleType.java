@@ -7,7 +7,7 @@ package com.azure.resourcemanager.monitor.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** the type of action that should occur when the scale rule fires. */
+/** Defines values for ScaleType. */
 public enum ScaleType {
     /** Enum value ChangeCount. */
     CHANGE_COUNT("ChangeCount"),
@@ -36,9 +36,6 @@ public enum ScaleType {
      */
     @JsonCreator
     public static ScaleType fromString(String value) {
-        if (value == null) {
-            return null;
-        }
         ScaleType[] items = ScaleType.values();
         for (ScaleType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -48,7 +45,6 @@ public enum ScaleType {
         return null;
     }
 
-    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

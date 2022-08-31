@@ -7,7 +7,7 @@ package com.azure.resourcemanager.monitor.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** the scale direction. Whether the scaling action increases or decreases the number of instances. */
+/** Defines values for ScaleDirection. */
 public enum ScaleDirection {
     /** Enum value None. */
     NONE("None"),
@@ -33,9 +33,6 @@ public enum ScaleDirection {
      */
     @JsonCreator
     public static ScaleDirection fromString(String value) {
-        if (value == null) {
-            return null;
-        }
         ScaleDirection[] items = ScaleDirection.values();
         for (ScaleDirection item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,7 +42,6 @@ public enum ScaleDirection {
         return null;
     }
 
-    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

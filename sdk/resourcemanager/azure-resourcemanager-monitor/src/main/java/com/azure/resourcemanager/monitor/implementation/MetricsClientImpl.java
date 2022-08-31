@@ -21,6 +21,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.MetricsClient;
 import com.azure.resourcemanager.monitor.fluent.models.ResponseInner;
 import com.azure.resourcemanager.monitor.models.ResultType;
@@ -29,6 +30,8 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in MetricsClient. */
 public final class MetricsClientImpl implements MetricsClient {
+    private final ClientLogger logger = new ClientLogger(MetricsClientImpl.class);
+
     /** The proxy service used to perform REST calls. */
     private final MetricsService service;
 
@@ -64,7 +67,7 @@ public final class MetricsClientImpl implements MetricsClient {
             @QueryParam("metricnames") String metricnames,
             @QueryParam("aggregation") String aggregation,
             @QueryParam("top") Integer top,
-            @QueryParam("orderby") String orderBy,
+            @QueryParam("orderby") String orderby,
             @QueryParam("$filter") String filter,
             @QueryParam("resultType") ResultType resultType,
             @QueryParam("api-version") String apiVersion,
@@ -84,7 +87,7 @@ public final class MetricsClientImpl implements MetricsClient {
      *     has a comma in it then use %2 to indicate it. Eg: 'Metric,Name1' should be **'Metric%2Name1'**.
      * @param aggregation The list of aggregation types (comma separated) to retrieve.
      * @param top The maximum number of records to retrieve. Valid only if $filter is specified. Defaults to 10.
-     * @param orderBy The aggregation to use for sorting results and the direction of the sort. Only one order can be
+     * @param orderby The aggregation to use for sorting results and the direction of the sort. Only one order can be
      *     specified. Examples: sum asc.
      * @param filter The **$filter** is used to reduce the set of metric data returned. Example: Metric contains
      *     metadata A, B and C. - Return all time series of C where A = a1 and B = b1 or b2 **$filter=A eq 'a1' and B eq
@@ -102,7 +105,7 @@ public final class MetricsClientImpl implements MetricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a metrics query along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response to a metrics query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ResponseInner>> listWithResponseAsync(
@@ -112,7 +115,7 @@ public final class MetricsClientImpl implements MetricsClient {
         String metricnames,
         String aggregation,
         Integer top,
-        String orderBy,
+        String orderby,
         String filter,
         ResultType resultType,
         String metricnamespace) {
@@ -139,7 +142,7 @@ public final class MetricsClientImpl implements MetricsClient {
                             metricnames,
                             aggregation,
                             top,
-                            orderBy,
+                            orderby,
                             filter,
                             resultType,
                             apiVersion,
@@ -160,7 +163,7 @@ public final class MetricsClientImpl implements MetricsClient {
      *     has a comma in it then use %2 to indicate it. Eg: 'Metric,Name1' should be **'Metric%2Name1'**.
      * @param aggregation The list of aggregation types (comma separated) to retrieve.
      * @param top The maximum number of records to retrieve. Valid only if $filter is specified. Defaults to 10.
-     * @param orderBy The aggregation to use for sorting results and the direction of the sort. Only one order can be
+     * @param orderby The aggregation to use for sorting results and the direction of the sort. Only one order can be
      *     specified. Examples: sum asc.
      * @param filter The **$filter** is used to reduce the set of metric data returned. Example: Metric contains
      *     metadata A, B and C. - Return all time series of C where A = a1 and B = b1 or b2 **$filter=A eq 'a1' and B eq
@@ -179,7 +182,7 @@ public final class MetricsClientImpl implements MetricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a metrics query along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response to a metrics query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ResponseInner>> listWithResponseAsync(
@@ -189,7 +192,7 @@ public final class MetricsClientImpl implements MetricsClient {
         String metricnames,
         String aggregation,
         Integer top,
-        String orderBy,
+        String orderby,
         String filter,
         ResultType resultType,
         String metricnamespace,
@@ -215,7 +218,7 @@ public final class MetricsClientImpl implements MetricsClient {
                 metricnames,
                 aggregation,
                 top,
-                orderBy,
+                orderby,
                 filter,
                 resultType,
                 apiVersion,
@@ -235,7 +238,7 @@ public final class MetricsClientImpl implements MetricsClient {
      *     has a comma in it then use %2 to indicate it. Eg: 'Metric,Name1' should be **'Metric%2Name1'**.
      * @param aggregation The list of aggregation types (comma separated) to retrieve.
      * @param top The maximum number of records to retrieve. Valid only if $filter is specified. Defaults to 10.
-     * @param orderBy The aggregation to use for sorting results and the direction of the sort. Only one order can be
+     * @param orderby The aggregation to use for sorting results and the direction of the sort. Only one order can be
      *     specified. Examples: sum asc.
      * @param filter The **$filter** is used to reduce the set of metric data returned. Example: Metric contains
      *     metadata A, B and C. - Return all time series of C where A = a1 and B = b1 or b2 **$filter=A eq 'a1' and B eq
@@ -253,7 +256,7 @@ public final class MetricsClientImpl implements MetricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a metrics query on successful completion of {@link Mono}.
+     * @return the response to a metrics query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseInner> listAsync(
@@ -263,7 +266,7 @@ public final class MetricsClientImpl implements MetricsClient {
         String metricnames,
         String aggregation,
         Integer top,
-        String orderBy,
+        String orderby,
         String filter,
         ResultType resultType,
         String metricnamespace) {
@@ -274,11 +277,18 @@ public final class MetricsClientImpl implements MetricsClient {
                 metricnames,
                 aggregation,
                 top,
-                orderBy,
+                orderby,
                 filter,
                 resultType,
                 metricnamespace)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<ResponseInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -288,7 +298,7 @@ public final class MetricsClientImpl implements MetricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a metrics query on successful completion of {@link Mono}.
+     * @return the response to a metrics query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseInner> listAsync(String resourceUri) {
@@ -297,7 +307,7 @@ public final class MetricsClientImpl implements MetricsClient {
         final String metricnames = null;
         final String aggregation = null;
         final Integer top = null;
-        final String orderBy = null;
+        final String orderby = null;
         final String filter = null;
         final ResultType resultType = null;
         final String metricnamespace = null;
@@ -308,11 +318,18 @@ public final class MetricsClientImpl implements MetricsClient {
                 metricnames,
                 aggregation,
                 top,
-                orderBy,
+                orderby,
                 filter,
                 resultType,
                 metricnamespace)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<ResponseInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -331,7 +348,7 @@ public final class MetricsClientImpl implements MetricsClient {
         final String metricnames = null;
         final String aggregation = null;
         final Integer top = null;
-        final String orderBy = null;
+        final String orderby = null;
         final String filter = null;
         final ResultType resultType = null;
         final String metricnamespace = null;
@@ -342,7 +359,7 @@ public final class MetricsClientImpl implements MetricsClient {
                 metricnames,
                 aggregation,
                 top,
-                orderBy,
+                orderby,
                 filter,
                 resultType,
                 metricnamespace)
@@ -360,7 +377,7 @@ public final class MetricsClientImpl implements MetricsClient {
      *     has a comma in it then use %2 to indicate it. Eg: 'Metric,Name1' should be **'Metric%2Name1'**.
      * @param aggregation The list of aggregation types (comma separated) to retrieve.
      * @param top The maximum number of records to retrieve. Valid only if $filter is specified. Defaults to 10.
-     * @param orderBy The aggregation to use for sorting results and the direction of the sort. Only one order can be
+     * @param orderby The aggregation to use for sorting results and the direction of the sort. Only one order can be
      *     specified. Examples: sum asc.
      * @param filter The **$filter** is used to reduce the set of metric data returned. Example: Metric contains
      *     metadata A, B and C. - Return all time series of C where A = a1 and B = b1 or b2 **$filter=A eq 'a1' and B eq
@@ -379,7 +396,7 @@ public final class MetricsClientImpl implements MetricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a metrics query along with {@link Response}.
+     * @return the response to a metrics query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResponseInner> listWithResponse(
@@ -389,7 +406,7 @@ public final class MetricsClientImpl implements MetricsClient {
         String metricnames,
         String aggregation,
         Integer top,
-        String orderBy,
+        String orderby,
         String filter,
         ResultType resultType,
         String metricnamespace,
@@ -401,7 +418,7 @@ public final class MetricsClientImpl implements MetricsClient {
                 metricnames,
                 aggregation,
                 top,
-                orderBy,
+                orderby,
                 filter,
                 resultType,
                 metricnamespace,

@@ -44,7 +44,7 @@ public final class DocumentLanguage {
      *
      * @param locale the code value to set.
      */
-    private void setLocale(String locale) {
+    void setLocale(String locale) {
         this.locale = locale;
     }
 
@@ -62,7 +62,7 @@ public final class DocumentLanguage {
      *
      * @param spans the spans value to set.
      */
-    private void setSpans(List<DocumentSpan> spans) {
+    void setSpans(List<DocumentSpan> spans) {
         this.spans = spans;
     }
 
@@ -80,7 +80,7 @@ public final class DocumentLanguage {
      *
      * @param confidence the confidence value to set.
      */
-    private void setConfidence(float confidence) {
+    void setConfidence(float confidence) {
         this.confidence = confidence;
     }
 

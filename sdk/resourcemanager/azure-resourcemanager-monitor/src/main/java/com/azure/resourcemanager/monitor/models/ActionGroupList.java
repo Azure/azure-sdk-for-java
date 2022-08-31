@@ -5,13 +5,17 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.models.ActionGroupResourceInner;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of action groups. */
 @Fluent
 public final class ActionGroupList {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ActionGroupList.class);
+
     /*
      * The list of action groups.
      */

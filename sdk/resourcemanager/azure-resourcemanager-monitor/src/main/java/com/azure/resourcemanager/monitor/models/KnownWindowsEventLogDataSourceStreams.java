@@ -29,11 +29,7 @@ public final class KnownWindowsEventLogDataSourceStreams
         return fromString(name, KnownWindowsEventLogDataSourceStreams.class);
     }
 
-    /**
-     * Gets known KnownWindowsEventLogDataSourceStreams values.
-     *
-     * @return known KnownWindowsEventLogDataSourceStreams values.
-     */
+    /** @return known KnownWindowsEventLogDataSourceStreams values. */
     public static Collection<KnownWindowsEventLogDataSourceStreams> values() {
         return values(KnownWindowsEventLogDataSourceStreams.class);
     }

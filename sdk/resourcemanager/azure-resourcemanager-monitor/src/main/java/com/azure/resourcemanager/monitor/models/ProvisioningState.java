@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Provisioning state of the scheduled query rule. */
+/** Defines values for ProvisioningState. */
 public final class ProvisioningState extends ExpandableStringEnum<ProvisioningState> {
     /** Static value Succeeded for ProvisioningState. */
     public static final ProvisioningState SUCCEEDED = fromString("Succeeded");
@@ -33,11 +33,7 @@ public final class ProvisioningState extends ExpandableStringEnum<ProvisioningSt
         return fromString(name, ProvisioningState.class);
     }
 
-    /**
-     * Gets known ProvisioningState values.
-     *
-     * @return known ProvisioningState values.
-     */
+    /** @return known ProvisioningState values. */
     public static Collection<ProvisioningState> values() {
         return values(ProvisioningState.class);
     }

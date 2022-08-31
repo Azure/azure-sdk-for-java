@@ -21,12 +21,15 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.VMInsightsClient;
 import com.azure.resourcemanager.monitor.fluent.models.VMInsightsOnboardingStatusInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VMInsightsClient. */
 public final class VMInsightsClientImpl implements VMInsightsClient {
+    private final ClientLogger logger = new ClientLogger(VMInsightsClientImpl.class);
+
     /** The proxy service used to perform REST calls. */
     private final VMInsightsService service;
 
@@ -71,8 +74,7 @@ public final class VMInsightsClientImpl implements VMInsightsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vM Insights onboarding status for a resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return vM Insights onboarding status for a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VMInsightsOnboardingStatusInner>> getOnboardingStatusWithResponseAsync(String resourceUri) {
@@ -103,8 +105,7 @@ public final class VMInsightsClientImpl implements VMInsightsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vM Insights onboarding status for a resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return vM Insights onboarding status for a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VMInsightsOnboardingStatusInner>> getOnboardingStatusWithResponseAsync(
@@ -132,11 +133,19 @@ public final class VMInsightsClientImpl implements VMInsightsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vM Insights onboarding status for a resource on successful completion of {@link Mono}.
+     * @return vM Insights onboarding status for a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VMInsightsOnboardingStatusInner> getOnboardingStatusAsync(String resourceUri) {
-        return getOnboardingStatusWithResponseAsync(resourceUri).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return getOnboardingStatusWithResponseAsync(resourceUri)
+            .flatMap(
+                (Response<VMInsightsOnboardingStatusInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -163,7 +172,7 @@ public final class VMInsightsClientImpl implements VMInsightsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vM Insights onboarding status for a resource along with {@link Response}.
+     * @return vM Insights onboarding status for a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VMInsightsOnboardingStatusInner> getOnboardingStatusWithResponse(

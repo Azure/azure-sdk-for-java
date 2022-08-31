@@ -5,13 +5,17 @@
 package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.exception.ManagementError;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.monitor.models.ErrorResponseCommon;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The status of operation. */
 @Fluent
 public final class OperationStatusInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationStatusInner.class);
+
     /*
      * The operation Id.
      */
@@ -46,7 +50,7 @@ public final class OperationStatusInner {
      * The error detail of the operation if any.
      */
     @JsonProperty(value = "error")
-    private ManagementError error;
+    private ErrorResponseCommon error;
 
     /**
      * Get the id property: The operation Id.
@@ -153,7 +157,7 @@ public final class OperationStatusInner {
      *
      * @return the error value.
      */
-    public ManagementError error() {
+    public ErrorResponseCommon error() {
         return this.error;
     }
 
@@ -163,7 +167,7 @@ public final class OperationStatusInner {
      * @param error the error value to set.
      * @return the OperationStatusInner object itself.
      */
-    public OperationStatusInner withError(ManagementError error) {
+    public OperationStatusInner withError(ErrorResponseCommon error) {
         this.error = error;
         return this;
     }
@@ -174,5 +178,8 @@ public final class OperationStatusInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (error() != null) {
+            error().validate();
+        }
     }
 }

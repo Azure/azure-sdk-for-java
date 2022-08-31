@@ -5,11 +5,15 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Definition of data collection endpoint. */
 @Fluent
 public class DataCollectionEndpoint {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataCollectionEndpoint.class);
+
     /*
      * Description of the data collection endpoint.
      */
@@ -17,13 +21,14 @@ public class DataCollectionEndpoint {
     private String description;
 
     /*
-     * The immutable ID of this data collection endpoint resource. This property is READ-ONLY.
+     * The immutable ID of this data collection endpoint resource. This
+     * property is READ-ONLY.
      */
     @JsonProperty(value = "immutableId")
     private String immutableId;
 
     /*
-     * The endpoint used by clients to access their configuration.
+     * The endpoint used by agents to access their configuration.
      */
     @JsonProperty(value = "configurationAccess")
     private DataCollectionEndpointConfigurationAccess configurationAccess;
@@ -89,7 +94,7 @@ public class DataCollectionEndpoint {
     }
 
     /**
-     * Get the configurationAccess property: The endpoint used by clients to access their configuration.
+     * Get the configurationAccess property: The endpoint used by agents to access their configuration.
      *
      * @return the configurationAccess value.
      */
@@ -98,7 +103,7 @@ public class DataCollectionEndpoint {
     }
 
     /**
-     * Set the configurationAccess property: The endpoint used by clients to access their configuration.
+     * Set the configurationAccess property: The endpoint used by agents to access their configuration.
      *
      * @param configurationAccess the configurationAccess value to set.
      * @return the DataCollectionEndpoint object itself.

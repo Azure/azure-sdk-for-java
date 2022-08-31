@@ -3,20 +3,20 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/prebuilt/idDocument/analyze?includeTextDetails=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a794397f-d5dd-46ca-a306-ddff8469bdab",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "08861505-b324-491d-964f-c43d8ce94856",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "161",
-      "x-envoy-upstream-service-time" : "3098",
+      "content-length" : "144",
+      "x-envoy-upstream-service-time" : "198",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "f68993a3-4353-40a0-89a5-78ba39fd2772",
+      "apim-request-id" : "2ce18f5d-8bf5-4f58-ab06-616b4b1800b8",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "Body" : "{\"error\":{\"code\":\"FailedToDownloadImage\",\"innerError\":{\"requestId\":\"f68993a3-4353-40a0-89a5-78ba39fd2772\"},\"message\":\"Failed to download image from input URL.\"}}",
-      "Date" : "Thu, 25 Aug 2022 18:17:32 GMT",
+      "Body" : "{\"error\":{\"code\":\"InvalidImageURL\",\"innerError\":{\"requestId\":\"2ce18f5d-8bf5-4f58-ab06-616b4b1800b8\"},\"message\":\"Image URL is badly formatted.\"}}",
+      "Date" : "Wed, 07 Jul 2021 06:31:36 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

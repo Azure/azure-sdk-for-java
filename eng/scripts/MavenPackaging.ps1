@@ -172,7 +172,8 @@ function Test-ReleasedPackage([string]$RepositoryUrl, [MavenPackageDetail]$Packa
     if (!$BearerToken) {
       throw "BearerToken required for Azure DevOps package feeds"
     }
-    $baseUrl = $RepositoryUrl
+    
+    $baseUrl = "https://pkgs.dev.azure.com/azure-sdk/internal/_packaging/azure-sdk-for-java-pr/maven/v1"
     $algorithm = "sha256"
     $headers = @{ Authorization="BEARER $BearerToken" }
   }
@@ -186,7 +187,7 @@ function Test-ReleasedPackage([string]$RepositoryUrl, [MavenPackageDetail]$Packa
   }
 
   $packageUrl = "$baseUrl/$($PackageDetail.GroupId.Replace('.', '/'))/$($PackageDetail.ArtifactID)/$($PackageDetail.Version)"
-
+  
   # Count the number of remote hashes found
   $remoteCount = 0
 
@@ -215,7 +216,7 @@ function Test-ReleasedPackage([string]$RepositoryUrl, [MavenPackageDetail]$Packa
         Write-Information "  Getting local hash"
         $localPath = $artifact.File.FullName
         $localHash = Get-FileHash -Path $localPath -Algorithm $algorithm | Select-Object -ExpandProperty 'Hash'
-
+        
         if ($remoteHash -eq $localHash) {
           $matchCount++
           Write-Information "  Remote $remoteHash == Local $localHash"

@@ -6,13 +6,17 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An azure function receiver. */
 @Fluent
 public final class AzureFunctionReceiver {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFunctionReceiver.class);
+
     /*
-     * The name of the azure function receiver. Names must be unique across all receivers within an action group.
+     * The name of the azure function receiver. Names must be unique across all
+     * receivers within an action group.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -150,29 +154,27 @@ public final class AzureFunctionReceiver {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model AzureFunctionReceiver"));
         }
         if (functionAppResourceId() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property functionAppResourceId in model AzureFunctionReceiver"));
         }
         if (functionName() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property functionName in model AzureFunctionReceiver"));
         }
         if (httpTriggerUrl() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property httpTriggerUrl in model AzureFunctionReceiver"));
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AzureFunctionReceiver.class);
 }

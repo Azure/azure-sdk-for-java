@@ -36,64 +36,16 @@ public class OpenTelemetryAttributesTests {
                 put("long", 42L);
                 put("boolean", true);
                 put("double", 0.42d);
-                put("float", 4.2f);
-                put("short", (short) 1);
-                put("byte", (byte) 2);
-                put("int", 3);
-                put("unknown", this); // will be ignored
             }});
 
         assertEquals(OpenTelemetryAttributes.class, attributeCollection.getClass());
         Attributes attributes = ((OpenTelemetryAttributes) attributeCollection).get();
 
-        assertEquals(8, attributes.size());
+        assertEquals(4, attributes.size());
         assertEquals("string-value", attributes.get(AttributeKey.stringKey("string")));
         assertEquals(42L, attributes.get(AttributeKey.longKey("long")));
         assertTrue(attributes.get(AttributeKey.booleanKey("boolean")));
         assertEquals(0.42d, attributes.get(AttributeKey.doubleKey("double")));
-        assertEquals(4.2d, attributes.get(AttributeKey.doubleKey("float")), 0.00001);
-        assertEquals(1, attributes.get(AttributeKey.longKey("short")));
-        assertEquals(2, attributes.get(AttributeKey.longKey("byte")));
-        assertEquals(3, attributes.get(AttributeKey.longKey("int")));
-
-    }
-
-    @Test
-    public void attributeMappings() {
-        TelemetryAttributes attributeCollection = METER.createAttributes(new HashMap<String, Object>() {{
-                put("foobar", "value");
-                put("hostName", "host");
-                put("entityName", "entity");
-                put("entityPath", "path");
-                put("errorCondition", "amqp::error::code");
-                put("deliveryState", "rejected");
-                put("amqpStatusCode", "no_content");
-                put("amqpOperation", "peek");
-            }});
-
-        assertEquals(OpenTelemetryAttributes.class, attributeCollection.getClass());
-        Attributes attributes = ((OpenTelemetryAttributes) attributeCollection).get();
-
-        assertEquals(8, attributes.size());
-        assertEquals("value", attributes.get(AttributeKey.stringKey("foobar")));
-        assertEquals("host", attributes.get(AttributeKey.stringKey("net.peer.name")));
-        assertEquals("entity", attributes.get(AttributeKey.stringKey("messaging.destination")));
-        assertEquals("path", attributes.get(AttributeKey.stringKey("messaging.az.entity_path")));
-        assertEquals("amqp::error::code", attributes.get(AttributeKey.stringKey("amqp.error_condition")));
-        assertEquals("rejected", attributes.get(AttributeKey.stringKey("amqp.delivery_state")));
-        assertEquals("peek", attributes.get(AttributeKey.stringKey("amqp.operation")));
-        assertEquals("no_content", attributes.get(AttributeKey.stringKey("amqp.status_code")));
-    }
-
-    @Test
-    public void attributeLongMappings() {
-        TelemetryAttributes attributeCollection = METER.createAttributes(Collections.singletonMap("errorCondition", 42));
-
-        assertEquals(OpenTelemetryAttributes.class, attributeCollection.getClass());
-        Attributes attributes = ((OpenTelemetryAttributes) attributeCollection).get();
-
-        assertEquals(1, attributes.size());
-        assertEquals(42, attributes.get(AttributeKey.longKey("amqp.error_condition")));
     }
 
     @Test

@@ -40,11 +40,11 @@ public final class Point {
         return this.yCoordinate;
     }
 
-    private void setX(float xCoordinate) {
+    void setX(float xCoordinate) {
         this.xCoordinate = xCoordinate;
     }
 
-    private void setY(float yCoordinate) {
+    void setY(float yCoordinate) {
         this.yCoordinate = yCoordinate;
     }
 

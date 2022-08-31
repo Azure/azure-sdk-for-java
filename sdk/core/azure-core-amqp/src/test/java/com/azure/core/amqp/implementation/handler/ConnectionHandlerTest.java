@@ -6,20 +6,15 @@ package com.azure.core.amqp.implementation.handler;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.implementation.AmqpErrorCode;
-import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ClientConstants;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.test.utils.metrics.TestMeasurement;
-import com.azure.core.test.utils.metrics.TestMeter;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Header;
 import com.azure.core.util.UserAgentUtil;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
-import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
@@ -93,7 +88,7 @@ public class ConnectionHandlerTest {
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "authorization-scope",
             AmqpTransportType.AMQP, new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS,
             VERIFY_MODE, CLIENT_PRODUCT, CLIENT_VERSION);
-        this.handler = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails, AmqpMetricsProvider.noop());
+        this.handler = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails);
     }
 
     @AfterEach
@@ -111,10 +106,9 @@ public class ConnectionHandlerTest {
 
     @Test
     void constructorNull() {
-        assertThrows(NullPointerException.class, () -> new ConnectionHandler(null, connectionOptions, peerDetails, AmqpMetricsProvider.noop()));
-        assertThrows(NullPointerException.class, () -> new ConnectionHandler(CONNECTION_ID, null, peerDetails, AmqpMetricsProvider.noop()));
-        assertThrows(NullPointerException.class, () -> new ConnectionHandler(CONNECTION_ID, connectionOptions, null, AmqpMetricsProvider.noop()));
-        assertThrows(NullPointerException.class, () -> new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails, null));
+        assertThrows(NullPointerException.class, () -> new ConnectionHandler(null, connectionOptions, peerDetails));
+        assertThrows(NullPointerException.class, () -> new ConnectionHandler(CONNECTION_ID, null, peerDetails));
+        assertThrows(NullPointerException.class, () -> new ConnectionHandler(CONNECTION_ID, connectionOptions, null));
     }
 
     @Test
@@ -129,7 +123,7 @@ public class ConnectionHandlerTest {
             CLIENT_VERSION);
 
         // Act
-        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, options, peerDetails, AmqpMetricsProvider.noop());
+        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, options, peerDetails);
 
         // Assert
         final String userAgent = (String) handler.getConnectionProperties().get(USER_AGENT.toString());
@@ -143,7 +137,7 @@ public class ConnectionHandlerTest {
             CLIENT_VERSION, null);
 
         // Act
-        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails, AmqpMetricsProvider.noop());
+        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails);
 
         // Assert
         final String userAgent = (String) handler.getConnectionProperties().get(USER_AGENT.toString());
@@ -236,48 +230,5 @@ public class ConnectionHandlerTest {
             assertEquals(expected, actual);
         });
         assertTrue(actualProperties.isEmpty());
-    }
-
-    @Test
-    void onConnectionCloseMetrics() {
-        // Arrange
-        final ErrorCondition errorCondition = new ErrorCondition(Symbol.valueOf(AmqpErrorCode.SERVER_BUSY_ERROR.toString()), "");
-        Event openEvent = mock(Event.class);
-        Event closeEventWithError = mock(Event.class);
-        Event closeEventNoError = mock(Event.class);
-
-        Connection connectionWithError = mock(Connection.class);
-        when(openEvent.getConnection()).thenReturn(connectionWithError);
-        when(closeEventWithError.getConnection()).thenReturn(connectionWithError);
-
-        Connection connectionNoError = mock(Connection.class);
-        when(openEvent.getConnection()).thenReturn(connectionNoError);
-        when(closeEventNoError.getConnection()).thenReturn(connectionNoError);
-
-        when(connectionWithError.getCondition()).thenReturn(errorCondition);
-        when(connectionWithError.getRemoteState()).thenReturn(EndpointState.ACTIVE);
-
-        when(connectionNoError.getCondition()).thenReturn(new ErrorCondition(null, ""));
-        when(connectionNoError.getRemoteState()).thenReturn(EndpointState.ACTIVE);
-
-        TestMeter meter = new TestMeter();
-        ConnectionHandler handlerWithMetrics = new ConnectionHandler(CONNECTION_ID, connectionOptions,
-            peerDetails, new AmqpMetricsProvider(meter, HOSTNAME, null));
-
-        handlerWithMetrics.onConnectionInit(openEvent);
-        handlerWithMetrics.onConnectionInit(openEvent);
-        handlerWithMetrics.onConnectionFinal(closeEventWithError);
-        handlerWithMetrics.onConnectionFinal(closeEventNoError);
-
-        // Assert
-        List<TestMeasurement<Long>> closedConnections = meter.getCounters().get("messaging.az.amqp.client.connections.closed").getMeasurements();
-        assertEquals(2, closedConnections.size());
-
-        assertEquals(1, closedConnections.get(0).getValue());
-        assertEquals(1, closedConnections.get(1).getValue());
-
-        assertEquals(HOSTNAME, closedConnections.get(0).getAttributes().get(ClientConstants.HOSTNAME_KEY));
-        assertEquals("com.microsoft:server-busy", closedConnections.get(0).getAttributes().get(ClientConstants.ERROR_CONDITION_KEY));
-        assertEquals("ok", closedConnections.get(1).getAttributes().get(ClientConstants.ERROR_CONDITION_KEY));
     }
 }

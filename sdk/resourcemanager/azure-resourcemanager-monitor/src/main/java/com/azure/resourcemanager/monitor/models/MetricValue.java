@@ -6,12 +6,15 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Represents a metric value. */
 @Fluent
 public final class MetricValue {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricValue.class);
+
     /*
      * the timestamp for the metric value in ISO 8601 format.
      */
@@ -43,8 +46,8 @@ public final class MetricValue {
     private Double total;
 
     /*
-     * the number of samples in the time range. Can be used to determine the number of values that contributed to the
-     * average value.
+     * the number of samples in the time range. Can be used to determine the
+     * number of values that contributed to the average value.
      */
     @JsonProperty(value = "count")
     private Double count;
@@ -178,11 +181,9 @@ public final class MetricValue {
      */
     public void validate() {
         if (timestamp() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property timestamp in model MetricValue"));
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(MetricValue.class);
 }

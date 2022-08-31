@@ -7,7 +7,7 @@ package com.azure.resourcemanager.monitor.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** the aggregation type of the metric. */
+/** Defines values for AggregationType. */
 public enum AggregationType {
     /** Enum value None. */
     NONE("None"),
@@ -42,9 +42,6 @@ public enum AggregationType {
      */
     @JsonCreator
     public static AggregationType fromString(String value) {
-        if (value == null) {
-            return null;
-        }
         AggregationType[] items = AggregationType.values();
         for (AggregationType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -54,7 +51,6 @@ public enum AggregationType {
         return null;
     }
 
-    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

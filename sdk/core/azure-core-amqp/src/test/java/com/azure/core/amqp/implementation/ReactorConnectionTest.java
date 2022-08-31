@@ -94,6 +94,7 @@ class ReactorConnectionTest {
 
     private static final ClientOptions CLIENT_OPTIONS = new ClientOptions().setHeaders(
         Arrays.asList(new Header("name", PRODUCT), new Header("version", CLIENT_VERSION)));
+
     private final SslPeerDetails peerDetails = Proton.sslPeerDetails(FULLY_QUALIFIED_NAMESPACE, 3128);
 
     private ReactorConnection connection;
@@ -137,7 +138,7 @@ class ReactorConnectionTest {
             AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, SCHEDULER, CLIENT_OPTIONS, VERIFY_MODE,
             PRODUCT, CLIENT_VERSION);
 
-        connectionHandler = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails, AmqpMetricsProvider.noop());
+        connectionHandler = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails);
 
         when(reactor.selectable()).thenReturn(selectable);
         when(reactor.connectionToHost(FULLY_QUALIFIED_NAMESPACE, connectionHandler.getProtocolPort(),
@@ -154,7 +155,7 @@ class ReactorConnectionTest {
         when(reactorHandlerProvider.createConnectionHandler(CONNECTION_ID, connectionOptions))
             .thenReturn(connectionHandler);
         sessionHandler = new SessionHandler(CONNECTION_ID, FULLY_QUALIFIED_NAMESPACE, SESSION_NAME, reactorDispatcher,
-            TEST_DURATION, AmqpMetricsProvider.noop());
+            TEST_DURATION);
         when(reactorHandlerProvider.createSessionHandler(anyString(), anyString(), anyString(), any(Duration.class)))
             .thenReturn(sessionHandler);
 
@@ -404,7 +405,7 @@ class ReactorConnectionTest {
             AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(),
             CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION);
 
-        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails, AmqpMetricsProvider.noop());
+        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails);
         final ReactorHandlerProvider handlerProvider = mock(ReactorHandlerProvider.class);
         final ReactorProvider reactorProvider = mock(ReactorProvider.class);
         final ReactorDispatcher dispatcher = mock(ReactorDispatcher.class);
@@ -646,7 +647,7 @@ class ReactorConnectionTest {
             CLIENT_VERSION, hostname, port);
 
         final ConnectionHandler connectionHandler = new ConnectionHandler(connectionId, connectionOptions,
-            peerDetails, AmqpMetricsProvider.noop());
+            peerDetails);
 
         when(reactor.connectionToHost(hostname, port, connectionHandler)).thenReturn(connectionProtonJ);
 
@@ -660,7 +661,7 @@ class ReactorConnectionTest {
             .thenReturn(connectionHandler);
 
         final SessionHandler sessionHandler = new SessionHandler(connectionId, FULLY_QUALIFIED_NAMESPACE, SESSION_NAME,
-            reactorDispatcher, TEST_DURATION, AmqpMetricsProvider.noop());
+            reactorDispatcher, TEST_DURATION);
         when(reactorHandlerProvider.createSessionHandler(anyString(), anyString(), anyString(), any(Duration.class)))
             .thenReturn(sessionHandler);
 
@@ -775,7 +776,7 @@ class ReactorConnectionTest {
             .thenReturn(sessionHandler);
 
         final SendLinkHandler linkHandler = new SendLinkHandler(CONNECTION_ID, FULLY_QUALIFIED_NAMESPACE, linkName,
-            entityPath, AmqpMetricsProvider.noop());
+            entityPath);
         when(reactorHandlerProvider.createSendLinkHandler(eq(CONNECTION_ID), eq(FULLY_QUALIFIED_NAMESPACE),
             argThat(path -> path.contains("mgmt") && path.contains(entityPath)), argThat(path -> path.contains("management"))))
             .thenReturn(linkHandler);
@@ -784,7 +785,7 @@ class ReactorConnectionTest {
             .thenReturn(linkHandler);
 
         final ReceiveLinkHandler receiveLinkHandler = new ReceiveLinkHandler(CONNECTION_ID, FULLY_QUALIFIED_NAMESPACE,
-            linkName, entityPath, AmqpMetricsProvider.noop());
+            linkName, entityPath);
         when(reactorHandlerProvider.createReceiveLinkHandler(eq(CONNECTION_ID), eq(FULLY_QUALIFIED_NAMESPACE),
             argThat(path -> path.contains("mgmt") && path.contains(entityPath)), argThat(path -> path.contains("management"))))
             .thenReturn(receiveLinkHandler);

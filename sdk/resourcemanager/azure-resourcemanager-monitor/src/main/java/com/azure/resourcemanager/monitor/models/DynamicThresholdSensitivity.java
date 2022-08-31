@@ -8,10 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * The extent of deviation required to trigger an alert. This will affect how tight the threshold is to the metric
- * series pattern.
- */
+/** Defines values for DynamicThresholdSensitivity. */
 public final class DynamicThresholdSensitivity extends ExpandableStringEnum<DynamicThresholdSensitivity> {
     /** Static value Low for DynamicThresholdSensitivity. */
     public static final DynamicThresholdSensitivity LOW = fromString("Low");
@@ -33,11 +30,7 @@ public final class DynamicThresholdSensitivity extends ExpandableStringEnum<Dyna
         return fromString(name, DynamicThresholdSensitivity.class);
     }
 
-    /**
-     * Gets known DynamicThresholdSensitivity values.
-     *
-     * @return known DynamicThresholdSensitivity values.
-     */
+    /** @return known DynamicThresholdSensitivity values. */
     public static Collection<DynamicThresholdSensitivity> values() {
         return values(DynamicThresholdSensitivity.class);
     }

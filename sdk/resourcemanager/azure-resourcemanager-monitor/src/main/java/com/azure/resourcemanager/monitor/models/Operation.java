@@ -5,11 +5,15 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Microsoft Insights API operation definition. */
 @Fluent
 public final class Operation {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Operation.class);
+
     /*
      * Operation name: {provider}/{resource}/{operation}
      */

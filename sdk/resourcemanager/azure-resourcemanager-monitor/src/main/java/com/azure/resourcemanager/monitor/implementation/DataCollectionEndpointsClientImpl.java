@@ -29,6 +29,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.DataCollectionEndpointsClient;
 import com.azure.resourcemanager.monitor.fluent.models.DataCollectionEndpointResourceInner;
 import com.azure.resourcemanager.monitor.models.DataCollectionEndpointResourceListResult;
@@ -36,6 +37,7 @@ import com.azure.resourcemanager.monitor.models.ResourceForUpdate;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
+import java.util.Map;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DataCollectionEndpointsClient. */
@@ -44,6 +46,8 @@ public final class DataCollectionEndpointsClientImpl
         InnerSupportsListing<DataCollectionEndpointResourceInner>,
         InnerSupportsDelete<Void>,
         DataCollectionEndpointsClient {
+    private final ClientLogger logger = new ClientLogger(DataCollectionEndpointsClientImpl.class);
+
     /** The proxy service used to perform REST calls. */
     private final DataCollectionEndpointsService service;
 
@@ -184,7 +188,7 @@ public final class DataCollectionEndpointsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pageable list of resources along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a pageable list of resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataCollectionEndpointResourceInner>> listByResourceGroupSinglePageAsync(
@@ -205,7 +209,7 @@ public final class DataCollectionEndpointsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -238,7 +242,7 @@ public final class DataCollectionEndpointsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pageable list of resources along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a pageable list of resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataCollectionEndpointResourceInner>> listByResourceGroupSinglePageAsync(
@@ -259,7 +263,7 @@ public final class DataCollectionEndpointsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -288,7 +292,7 @@ public final class DataCollectionEndpointsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pageable list of resources as paginated response with {@link PagedFlux}.
+     * @return a pageable list of resources.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataCollectionEndpointResourceInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -305,7 +309,7 @@ public final class DataCollectionEndpointsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pageable list of resources as paginated response with {@link PagedFlux}.
+     * @return a pageable list of resources.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataCollectionEndpointResourceInner> listByResourceGroupAsync(
@@ -322,7 +326,7 @@ public final class DataCollectionEndpointsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pageable list of resources as paginated response with {@link PagedIterable}.
+     * @return a pageable list of resources.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataCollectionEndpointResourceInner> listByResourceGroup(String resourceGroupName) {
@@ -337,7 +341,7 @@ public final class DataCollectionEndpointsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pageable list of resources as paginated response with {@link PagedIterable}.
+     * @return a pageable list of resources.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataCollectionEndpointResourceInner> listByResourceGroup(
@@ -350,7 +354,7 @@ public final class DataCollectionEndpointsClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pageable list of resources along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a pageable list of resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataCollectionEndpointResourceInner>> listSinglePageAsync() {
@@ -366,7 +370,7 @@ public final class DataCollectionEndpointsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -392,7 +396,7 @@ public final class DataCollectionEndpointsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pageable list of resources along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a pageable list of resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataCollectionEndpointResourceInner>> listSinglePageAsync(Context context) {
@@ -408,7 +412,7 @@ public final class DataCollectionEndpointsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -429,7 +433,7 @@ public final class DataCollectionEndpointsClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pageable list of resources as paginated response with {@link PagedFlux}.
+     * @return a pageable list of resources.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataCollectionEndpointResourceInner> listAsync() {
@@ -444,7 +448,7 @@ public final class DataCollectionEndpointsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pageable list of resources as paginated response with {@link PagedFlux}.
+     * @return a pageable list of resources.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataCollectionEndpointResourceInner> listAsync(Context context) {
@@ -457,7 +461,7 @@ public final class DataCollectionEndpointsClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pageable list of resources as paginated response with {@link PagedIterable}.
+     * @return a pageable list of resources.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataCollectionEndpointResourceInner> list() {
@@ -471,7 +475,7 @@ public final class DataCollectionEndpointsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pageable list of resources as paginated response with {@link PagedIterable}.
+     * @return a pageable list of resources.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataCollectionEndpointResourceInner> list(Context context) {
@@ -486,8 +490,7 @@ public final class DataCollectionEndpointsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of ARM tracked top level resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return definition of ARM tracked top level resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataCollectionEndpointResourceInner>> getByResourceGroupWithResponseAsync(
@@ -514,7 +517,7 @@ public final class DataCollectionEndpointsClientImpl
                     new IllegalArgumentException(
                         "Parameter dataCollectionEndpointName is required and cannot be null."));
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -540,8 +543,7 @@ public final class DataCollectionEndpointsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of ARM tracked top level resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return definition of ARM tracked top level resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataCollectionEndpointResourceInner>> getByResourceGroupWithResponseAsync(
@@ -568,7 +570,7 @@ public final class DataCollectionEndpointsClientImpl
                     new IllegalArgumentException(
                         "Parameter dataCollectionEndpointName is required and cannot be null."));
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -590,13 +592,20 @@ public final class DataCollectionEndpointsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of ARM tracked top level resource on successful completion of {@link Mono}.
+     * @return definition of ARM tracked top level resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataCollectionEndpointResourceInner> getByResourceGroupAsync(
         String resourceGroupName, String dataCollectionEndpointName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, dataCollectionEndpointName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<DataCollectionEndpointResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -624,7 +633,7 @@ public final class DataCollectionEndpointsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of ARM tracked top level resource along with {@link Response}.
+     * @return definition of ARM tracked top level resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataCollectionEndpointResourceInner> getByResourceGroupWithResponse(
@@ -641,8 +650,7 @@ public final class DataCollectionEndpointsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of ARM tracked top level resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return definition of ARM tracked top level resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataCollectionEndpointResourceInner>> createWithResponseAsync(
@@ -672,7 +680,7 @@ public final class DataCollectionEndpointsClientImpl
         if (body != null) {
             body.validate();
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -700,8 +708,7 @@ public final class DataCollectionEndpointsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of ARM tracked top level resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return definition of ARM tracked top level resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataCollectionEndpointResourceInner>> createWithResponseAsync(
@@ -734,7 +741,7 @@ public final class DataCollectionEndpointsClientImpl
         if (body != null) {
             body.validate();
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -758,13 +765,20 @@ public final class DataCollectionEndpointsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of ARM tracked top level resource on successful completion of {@link Mono}.
+     * @return definition of ARM tracked top level resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataCollectionEndpointResourceInner> createAsync(
         String resourceGroupName, String dataCollectionEndpointName, DataCollectionEndpointResourceInner body) {
         return createWithResponseAsync(resourceGroupName, dataCollectionEndpointName, body)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<DataCollectionEndpointResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -775,14 +789,21 @@ public final class DataCollectionEndpointsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of ARM tracked top level resource on successful completion of {@link Mono}.
+     * @return definition of ARM tracked top level resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataCollectionEndpointResourceInner> createAsync(
         String resourceGroupName, String dataCollectionEndpointName) {
         final DataCollectionEndpointResourceInner body = null;
         return createWithResponseAsync(resourceGroupName, dataCollectionEndpointName, body)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<DataCollectionEndpointResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -811,7 +832,7 @@ public final class DataCollectionEndpointsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of ARM tracked top level resource along with {@link Response}.
+     * @return definition of ARM tracked top level resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataCollectionEndpointResourceInner> createWithResponse(
@@ -827,16 +848,15 @@ public final class DataCollectionEndpointsClientImpl
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionEndpointName The name of the data collection endpoint. The name is case insensitive.
-     * @param body The payload.
+     * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of ARM tracked top level resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return definition of ARM tracked top level resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataCollectionEndpointResourceInner>> updateWithResponseAsync(
-        String resourceGroupName, String dataCollectionEndpointName, ResourceForUpdate body) {
+        String resourceGroupName, String dataCollectionEndpointName, Map<String, String> tags) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -859,11 +879,14 @@ public final class DataCollectionEndpointsClientImpl
                     new IllegalArgumentException(
                         "Parameter dataCollectionEndpointName is required and cannot be null."));
         }
-        if (body != null) {
-            body.validate();
-        }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
+        ResourceForUpdate bodyInternal = null;
+        if (tags != null) {
+            bodyInternal = new ResourceForUpdate();
+            bodyInternal.withTags(tags);
+        }
+        ResourceForUpdate body = bodyInternal;
         return FluxUtil
             .withContext(
                 context ->
@@ -885,17 +908,16 @@ public final class DataCollectionEndpointsClientImpl
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionEndpointName The name of the data collection endpoint. The name is case insensitive.
-     * @param body The payload.
+     * @param tags Resource tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of ARM tracked top level resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return definition of ARM tracked top level resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataCollectionEndpointResourceInner>> updateWithResponseAsync(
-        String resourceGroupName, String dataCollectionEndpointName, ResourceForUpdate body, Context context) {
+        String resourceGroupName, String dataCollectionEndpointName, Map<String, String> tags, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -918,11 +940,14 @@ public final class DataCollectionEndpointsClientImpl
                     new IllegalArgumentException(
                         "Parameter dataCollectionEndpointName is required and cannot be null."));
         }
-        if (body != null) {
-            body.validate();
-        }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
+        ResourceForUpdate bodyInternal = null;
+        if (tags != null) {
+            bodyInternal = new ResourceForUpdate();
+            bodyInternal.withTags(tags);
+        }
+        ResourceForUpdate body = bodyInternal;
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -941,17 +966,24 @@ public final class DataCollectionEndpointsClientImpl
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionEndpointName The name of the data collection endpoint. The name is case insensitive.
-     * @param body The payload.
+     * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of ARM tracked top level resource on successful completion of {@link Mono}.
+     * @return definition of ARM tracked top level resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataCollectionEndpointResourceInner> updateAsync(
-        String resourceGroupName, String dataCollectionEndpointName, ResourceForUpdate body) {
-        return updateWithResponseAsync(resourceGroupName, dataCollectionEndpointName, body)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        String resourceGroupName, String dataCollectionEndpointName, Map<String, String> tags) {
+        return updateWithResponseAsync(resourceGroupName, dataCollectionEndpointName, tags)
+            .flatMap(
+                (Response<DataCollectionEndpointResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -962,14 +994,21 @@ public final class DataCollectionEndpointsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of ARM tracked top level resource on successful completion of {@link Mono}.
+     * @return definition of ARM tracked top level resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataCollectionEndpointResourceInner> updateAsync(
         String resourceGroupName, String dataCollectionEndpointName) {
-        final ResourceForUpdate body = null;
-        return updateWithResponseAsync(resourceGroupName, dataCollectionEndpointName, body)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        final Map<String, String> tags = null;
+        return updateWithResponseAsync(resourceGroupName, dataCollectionEndpointName, tags)
+            .flatMap(
+                (Response<DataCollectionEndpointResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -984,8 +1023,8 @@ public final class DataCollectionEndpointsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataCollectionEndpointResourceInner update(String resourceGroupName, String dataCollectionEndpointName) {
-        final ResourceForUpdate body = null;
-        return updateAsync(resourceGroupName, dataCollectionEndpointName, body).block();
+        final Map<String, String> tags = null;
+        return updateAsync(resourceGroupName, dataCollectionEndpointName, tags).block();
     }
 
     /**
@@ -993,17 +1032,17 @@ public final class DataCollectionEndpointsClientImpl
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionEndpointName The name of the data collection endpoint. The name is case insensitive.
-     * @param body The payload.
+     * @param tags Resource tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of ARM tracked top level resource along with {@link Response}.
+     * @return definition of ARM tracked top level resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataCollectionEndpointResourceInner> updateWithResponse(
-        String resourceGroupName, String dataCollectionEndpointName, ResourceForUpdate body, Context context) {
-        return updateWithResponseAsync(resourceGroupName, dataCollectionEndpointName, body, context).block();
+        String resourceGroupName, String dataCollectionEndpointName, Map<String, String> tags, Context context) {
+        return updateWithResponseAsync(resourceGroupName, dataCollectionEndpointName, tags, context).block();
     }
 
     /**
@@ -1014,7 +1053,7 @@ public final class DataCollectionEndpointsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String dataCollectionEndpointName) {
@@ -1040,7 +1079,7 @@ public final class DataCollectionEndpointsClientImpl
                     new IllegalArgumentException(
                         "Parameter dataCollectionEndpointName is required and cannot be null."));
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1066,7 +1105,7 @@ public final class DataCollectionEndpointsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1093,7 +1132,7 @@ public final class DataCollectionEndpointsClientImpl
                     new IllegalArgumentException(
                         "Parameter dataCollectionEndpointName is required and cannot be null."));
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1115,11 +1154,12 @@ public final class DataCollectionEndpointsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String dataCollectionEndpointName) {
-        return deleteWithResponseAsync(resourceGroupName, dataCollectionEndpointName).flatMap(ignored -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, dataCollectionEndpointName)
+            .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -1145,7 +1185,7 @@ public final class DataCollectionEndpointsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -1156,12 +1196,11 @@ public final class DataCollectionEndpointsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pageable list of resources along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a pageable list of resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataCollectionEndpointResourceInner>> listByResourceGroupNextSinglePageAsync(
@@ -1194,13 +1233,12 @@ public final class DataCollectionEndpointsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pageable list of resources along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a pageable list of resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataCollectionEndpointResourceInner>> listByResourceGroupNextSinglePageAsync(
@@ -1232,12 +1270,11 @@ public final class DataCollectionEndpointsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pageable list of resources along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a pageable list of resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataCollectionEndpointResourceInner>> listBySubscriptionNextSinglePageAsync(
@@ -1270,13 +1307,12 @@ public final class DataCollectionEndpointsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pageable list of resources along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a pageable list of resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataCollectionEndpointResourceInner>> listBySubscriptionNextSinglePageAsync(

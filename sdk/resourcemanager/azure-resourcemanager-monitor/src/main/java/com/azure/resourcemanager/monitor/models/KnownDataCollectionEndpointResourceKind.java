@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The kind of the resource. */
+/** Defines values for KnownDataCollectionEndpointResourceKind. */
 public final class KnownDataCollectionEndpointResourceKind
     extends ExpandableStringEnum<KnownDataCollectionEndpointResourceKind> {
     /** Static value Linux for KnownDataCollectionEndpointResourceKind. */
@@ -28,11 +28,7 @@ public final class KnownDataCollectionEndpointResourceKind
         return fromString(name, KnownDataCollectionEndpointResourceKind.class);
     }
 
-    /**
-     * Gets known KnownDataCollectionEndpointResourceKind values.
-     *
-     * @return known KnownDataCollectionEndpointResourceKind values.
-     */
+    /** @return known KnownDataCollectionEndpointResourceKind values. */
     public static Collection<KnownDataCollectionEndpointResourceKind> values() {
         return values(KnownDataCollectionEndpointResourceKind.class);
     }

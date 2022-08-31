@@ -5,26 +5,30 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.monitor.fluent.models.ActionGroupPatch;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** An action group object for the body of patch operations. */
+@JsonFlatten
 @Fluent
-public final class ActionGroupPatchBody {
+public class ActionGroupPatchBody {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ActionGroupPatchBody.class);
+
     /*
      * Resource tags
      */
     @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
-     * The action group settings for an update operation.
+     * Indicates whether this action group is enabled. If an action group is
+     * not enabled, then none of its actions will be activated.
      */
-    @JsonProperty(value = "properties")
-    private ActionGroupPatch innerProperties;
+    @JsonProperty(value = "properties.enabled")
+    private Boolean enabled;
 
     /**
      * Get the tags property: Resource tags.
@@ -47,22 +51,13 @@ public final class ActionGroupPatchBody {
     }
 
     /**
-     * Get the innerProperties property: The action group settings for an update operation.
-     *
-     * @return the innerProperties value.
-     */
-    private ActionGroupPatch innerProperties() {
-        return this.innerProperties;
-    }
-
-    /**
      * Get the enabled property: Indicates whether this action group is enabled. If an action group is not enabled, then
      * none of its actions will be activated.
      *
      * @return the enabled value.
      */
     public Boolean enabled() {
-        return this.innerProperties() == null ? null : this.innerProperties().enabled();
+        return this.enabled;
     }
 
     /**
@@ -73,10 +68,7 @@ public final class ActionGroupPatchBody {
      * @return the ActionGroupPatchBody object itself.
      */
     public ActionGroupPatchBody withEnabled(Boolean enabled) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ActionGroupPatch();
-        }
-        this.innerProperties().withEnabled(enabled);
+        this.enabled = enabled;
         return this;
     }
 
@@ -86,8 +78,5 @@ public final class ActionGroupPatchBody {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
-        }
     }
 }

@@ -21,6 +21,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.PrivateLinkScopeOperationStatusClient;
 import com.azure.resourcemanager.monitor.fluent.models.OperationStatusInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -29,6 +30,8 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in PrivateLinkScopeOperationStatusClient. */
 public final class PrivateLinkScopeOperationStatusClientImpl
     implements InnerSupportsGet<OperationStatusInner>, PrivateLinkScopeOperationStatusClient {
+    private final ClientLogger logger = new ClientLogger(PrivateLinkScopeOperationStatusClientImpl.class);
+
     /** The proxy service used to perform REST calls. */
     private final PrivateLinkScopeOperationStatusService service;
 
@@ -76,13 +79,12 @@ public final class PrivateLinkScopeOperationStatusClientImpl
     /**
      * Get the status of an azure asynchronous operation associated with a private link scope operation.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param asyncOperationId The operation Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of an azure asynchronous operation associated with a private link scope operation along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * @return the status of an azure asynchronous operation associated with a private link scope operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<OperationStatusInner>> getByResourceGroupWithResponseAsync(
@@ -107,7 +109,7 @@ public final class PrivateLinkScopeOperationStatusClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01-preview";
+        final String apiVersion = "2019-10-17-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -127,14 +129,13 @@ public final class PrivateLinkScopeOperationStatusClientImpl
     /**
      * Get the status of an azure asynchronous operation associated with a private link scope operation.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param asyncOperationId The operation Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of an azure asynchronous operation associated with a private link scope operation along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * @return the status of an azure asynchronous operation associated with a private link scope operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OperationStatusInner>> getByResourceGroupWithResponseAsync(
@@ -159,7 +160,7 @@ public final class PrivateLinkScopeOperationStatusClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01-preview";
+        final String apiVersion = "2019-10-17-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -176,24 +177,30 @@ public final class PrivateLinkScopeOperationStatusClientImpl
     /**
      * Get the status of an azure asynchronous operation associated with a private link scope operation.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param asyncOperationId The operation Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of an azure asynchronous operation associated with a private link scope operation on
-     *     successful completion of {@link Mono}.
+     * @return the status of an azure asynchronous operation associated with a private link scope operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OperationStatusInner> getByResourceGroupAsync(String resourceGroupName, String asyncOperationId) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, asyncOperationId)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<OperationStatusInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Get the status of an azure asynchronous operation associated with a private link scope operation.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param asyncOperationId The operation Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -208,14 +215,13 @@ public final class PrivateLinkScopeOperationStatusClientImpl
     /**
      * Get the status of an azure asynchronous operation associated with a private link scope operation.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName The name of the resource group.
      * @param asyncOperationId The operation Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of an azure asynchronous operation associated with a private link scope operation along with
-     *     {@link Response}.
+     * @return the status of an azure asynchronous operation associated with a private link scope operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationStatusInner> getByResourceGroupWithResponse(

@@ -6,11 +6,14 @@ package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The localizable string class. */
 @Fluent
 public final class LocalizableStringInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocalizableStringInner.class);
+
     /*
      * the invariant value.
      */
@@ -70,11 +73,9 @@ public final class LocalizableStringInner {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model LocalizableStringInner"));
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(LocalizableStringInner.class);
 }

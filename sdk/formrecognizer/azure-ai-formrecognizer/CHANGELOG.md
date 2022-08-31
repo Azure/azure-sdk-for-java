@@ -4,11 +4,10 @@
 This version of the SDK defaults to the latest supported API version, which currently is 2021-09-30-preview.
 
 ### Features Added
-- Added a method `getWords()` on model `DocumentLine`.
 
 ### Breaking Changes
 - Removed property `kind` from model `DocumentPage`
-- Removed model `DocumentPageKind`, `DocumentEntity`, `DocumentFootnote`, and `DocumentCaption`.
+- Removed model `DocumentPageKind`
 - Renamed models `ModelOperationDetails`, `ModelOperationSummary`, `ModelOperationKind` and `ModelOperationStatus`
 to `DocumentModelOperationDetails`, `DocumentModelOperationSummary`, `DocumentOperationKind` and `DocumentModelOperationStatus` 
 respectively.

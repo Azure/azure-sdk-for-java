@@ -44,7 +44,7 @@ public final class DocumentKeyValueElement {
      * @param content the content value to set.
      * @return the DocumentKeyValueElement object itself.
      */
-    private void setContent(String content) {
+    void setContent(String content) {
         this.content = content;
     }
 
@@ -63,7 +63,7 @@ public final class DocumentKeyValueElement {
      * @param boundingRegions the boundingRegions value to set.
      * @return the DocumentKeyValueElement object itself.
      */
-    private void setBoundingRegions(List<BoundingRegion> boundingRegions) {
+    void setBoundingRegions(List<BoundingRegion> boundingRegions) {
         this.boundingRegions = boundingRegions;
     }
 
@@ -82,7 +82,7 @@ public final class DocumentKeyValueElement {
      * @param spans the spans value to set.
      * @return the DocumentKeyValueElement object itself.
      */
-    private void setSpans(List<DocumentSpan> spans) {
+    void setSpans(List<DocumentSpan> spans) {
         this.spans = spans;
     }
 

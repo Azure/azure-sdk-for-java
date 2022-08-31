@@ -44,7 +44,7 @@ public class SendLinkHandlerTest {
     @Mock
     private Target target;
 
-    private final SendLinkHandler handler = new SendLinkHandler(CONNECTION_ID, HOSTNAME, LINK_NAME, ENTITY_PATH, null);
+    private final SendLinkHandler handler = new SendLinkHandler(CONNECTION_ID, HOSTNAME, LINK_NAME, ENTITY_PATH);
 
     private AutoCloseable mocksCloseable;
 
@@ -73,13 +73,13 @@ public class SendLinkHandlerTest {
     public void constructor() {
         // Act
         assertThrows(NullPointerException.class,
-            () -> new SendLinkHandler(null, HOSTNAME, LINK_NAME, ENTITY_PATH, null));
+            () -> new SendLinkHandler(null, HOSTNAME, LINK_NAME, ENTITY_PATH));
         assertThrows(NullPointerException.class,
-            () -> new SendLinkHandler(CONNECTION_ID, null, LINK_NAME, ENTITY_PATH, null));
+            () -> new SendLinkHandler(CONNECTION_ID, null, LINK_NAME, ENTITY_PATH));
         assertThrows(NullPointerException.class,
-            () -> new SendLinkHandler(CONNECTION_ID, HOSTNAME, null, ENTITY_PATH, null));
+            () -> new SendLinkHandler(CONNECTION_ID, HOSTNAME, null, ENTITY_PATH));
         assertThrows(NullPointerException.class,
-            () -> new SendLinkHandler(CONNECTION_ID, HOSTNAME, LINK_NAME, null, null));
+            () -> new SendLinkHandler(CONNECTION_ID, HOSTNAME, LINK_NAME, null));
     }
 
     /**

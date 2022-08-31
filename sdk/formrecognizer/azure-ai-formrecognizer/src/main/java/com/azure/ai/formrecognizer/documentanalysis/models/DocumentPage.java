@@ -76,7 +76,7 @@ public final class DocumentPage {
      * @param pageNumber the pageNumber value to set.
      * @return the DocumentPage object itself.
      */
-    private void setPageNumber(int pageNumber) {
+    void setPageNumber(int pageNumber) {
         this.pageNumber = pageNumber;
     }
 
@@ -97,7 +97,7 @@ public final class DocumentPage {
      * @param angle the angle value to set.
      * @return the DocumentPage object itself.
      */
-    private void setAngle(Float angle) {
+    void setAngle(Float angle) {
         this.angle = angle;
     }
 
@@ -116,7 +116,7 @@ public final class DocumentPage {
      * @param width the width value to set.
      * @return the DocumentPage object itself.
      */
-    private void setWidth(Float width) {
+    void setWidth(Float width) {
         this.width = width;
     }
 
@@ -135,7 +135,7 @@ public final class DocumentPage {
      * @param height the height value to set.
      * @return the DocumentPage object itself.
      */
-    private void setHeight(Float height) {
+    void setHeight(Float height) {
         this.height = height;
     }
 
@@ -156,7 +156,7 @@ public final class DocumentPage {
      * @param unit the unit value to set.
      * @return the DocumentPage object itself.
      */
-    private void setUnit(LengthUnit unit) {
+    void setUnit(LengthUnit unit) {
         this.unit = unit;
     }
 
@@ -175,7 +175,7 @@ public final class DocumentPage {
      * @param spans the spans value to set.
      * @return the DocumentPage object itself.
      */
-    private void setSpans(List<DocumentSpan> spans) {
+    void setSpans(List<DocumentSpan> spans) {
         this.spans = spans;
     }
 
@@ -194,7 +194,7 @@ public final class DocumentPage {
      * @param words the words value to set.
      * @return the DocumentPage object itself.
      */
-    private void setWords(List<DocumentWord> words) {
+    void setWords(List<DocumentWord> words) {
         this.words = words;
     }
 
@@ -213,7 +213,7 @@ public final class DocumentPage {
      * @param selectionMarks the selectionMarks value to set.
      * @return the DocumentPage object itself.
      */
-    private void setSelectionMarks(List<DocumentSelectionMark> selectionMarks) {
+    void setSelectionMarks(List<DocumentSelectionMark> selectionMarks) {
         this.selectionMarks = selectionMarks;
     }
 
@@ -232,7 +232,7 @@ public final class DocumentPage {
      * @param lines the lines value to set.
      * @return the DocumentPage object itself.
      */
-    private void setLines(List<DocumentLine> lines) {
+    void setLines(List<DocumentLine> lines) {
         this.lines = lines;
     }
 

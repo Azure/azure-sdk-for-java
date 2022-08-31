@@ -8,10 +8,13 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** the criteria operator. */
+/** Defines values for Operator. */
 public final class Operator extends ExpandableStringEnum<Operator> {
     /** Static value Equals for Operator. */
     public static final Operator EQUALS = fromString("Equals");
+
+    /** Static value NotEquals for Operator. */
+    public static final Operator NOT_EQUALS = fromString("NotEquals");
 
     /** Static value GreaterThan for Operator. */
     public static final Operator GREATER_THAN = fromString("GreaterThan");
@@ -39,11 +42,7 @@ public final class Operator extends ExpandableStringEnum<Operator> {
         return fromString(name, Operator.class);
     }
 
-    /**
-     * Gets known Operator values.
-     *
-     * @return known Operator values.
-     */
+    /** @return known Operator values. */
     public static Collection<Operator> values() {
         return values(Operator.class);
     }

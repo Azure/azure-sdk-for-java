@@ -10,7 +10,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResour
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateLinkResource;
-import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
@@ -139,15 +138,6 @@ public interface KubernetesCluster
      * @return the completion.
      */
     Mono<Void> stopAsync();
-
-    /**
-     * Begins creating the agent pool resource.
-     *
-     * @param agentPoolName the name of the agent pool.
-     * @param agentPool the agent pool.
-     * @return the accepted create operation
-     */
-    Accepted<AgentPool> beginCreateAgentPool(String agentPoolName, AgentPoolData agentPool);
 
     // Fluent interfaces
 

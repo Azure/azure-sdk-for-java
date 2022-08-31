@@ -6,12 +6,15 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Specifies the log search query. */
 @Fluent
 public final class Source {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Source.class);
+
     /*
      * Log search query. Required for action type - AlertingAction
      */
@@ -123,11 +126,9 @@ public final class Source {
      */
     public void validate() {
         if (dataSourceId() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property dataSourceId in model Source"));
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(Source.class);
 }

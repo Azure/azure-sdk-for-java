@@ -5,16 +5,23 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /** Specifies the metric alert criteria for multiple resource that has multiple metric criteria. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata\\.type")
 @JsonTypeName("Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria")
+@JsonFlatten
 @Fluent
-public final class MetricAlertMultipleResourceMultipleMetricCriteria extends MetricAlertCriteria {
+public class MetricAlertMultipleResourceMultipleMetricCriteria extends MetricAlertCriteria {
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(MetricAlertMultipleResourceMultipleMetricCriteria.class);
+
     /*
      * the list of multiple metric criteria for this 'all of' operation.
      */

@@ -45,7 +45,7 @@ public final class DocumentParagraph {
      *
      * @param role the role value to set.
      */
-    private void setRole(ParagraphRole role) {
+    void setRole(ParagraphRole role) {
         this.role = role;
     }
 
@@ -63,7 +63,7 @@ public final class DocumentParagraph {
      *
      * @param content the content value to set.
      */
-    private void setContent(String content) {
+    void setContent(String content) {
         this.content = content;
     }
 
@@ -81,7 +81,7 @@ public final class DocumentParagraph {
      *
      * @param boundingRegions the boundingRegions value to set.
      */
-    private void setBoundingRegions(List<BoundingRegion> boundingRegions) {
+    void setBoundingRegions(List<BoundingRegion> boundingRegions) {
         this.boundingRegions = boundingRegions;
     }
 
@@ -99,7 +99,7 @@ public final class DocumentParagraph {
      *
      * @param spans the spans value to set.
      */
-    private void setSpans(List<DocumentSpan> spans) {
+    void setSpans(List<DocumentSpan> spans) {
         this.spans = spans;
     }
 

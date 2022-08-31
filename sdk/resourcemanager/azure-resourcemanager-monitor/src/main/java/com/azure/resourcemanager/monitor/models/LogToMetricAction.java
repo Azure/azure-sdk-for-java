@@ -5,19 +5,24 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /** Specify action need to be taken when rule type is converting log to metric. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata\\.type")
 @JsonTypeName(
     "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources"
         + ".ScheduledQueryRules.LogToMetricAction")
+@JsonFlatten
 @Fluent
-public final class LogToMetricAction extends Action {
+public class LogToMetricAction extends Action {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogToMetricAction.class);
+
     /*
      * Criteria of Metric
      */
@@ -53,13 +58,11 @@ public final class LogToMetricAction extends Action {
     public void validate() {
         super.validate();
         if (criteria() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property criteria in model LogToMetricAction"));
         } else {
             criteria().forEach(e -> e.validate());
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(LogToMetricAction.class);
 }

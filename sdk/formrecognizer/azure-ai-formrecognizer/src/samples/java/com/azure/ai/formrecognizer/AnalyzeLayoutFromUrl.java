@@ -8,12 +8,10 @@ import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientBuilde
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentTable;
-import com.azure.ai.formrecognizer.documentanalysis.models.Point;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Sample for analyzing content information from a document given through a URL.
@@ -47,9 +45,9 @@ public class AnalyzeLayoutFromUrl {
 
             // lines
             documentPage.getLines().forEach(documentLine ->
-                System.out.printf("Line '%s' is within a bounding polygon %s.%n",
+                System.out.printf("Line '%s' is within a bounding box %s.%n",
                     documentLine.getContent(),
-                    getBoundingCoordinates(documentLine.getBoundingPolygon())));
+                    documentLine.getBoundingPolygon().toString()));
 
             // words
             documentPage.getWords().forEach(documentWord ->
@@ -59,9 +57,9 @@ public class AnalyzeLayoutFromUrl {
 
             // selection marks
             documentPage.getSelectionMarks().forEach(documentSelectionMark ->
-                System.out.printf("Selection mark is '%s' and is within a bounding polygon %s with confidence %.2f.%n",
+                System.out.printf("Selection mark is '%s' and is within a bounding box %s with confidence %.2f.%n",
                     documentSelectionMark.getSelectionMarkState().toString(),
-                    getBoundingCoordinates(documentSelectionMark.getBoundingPolygon()),
+                    documentSelectionMark.getBoundingPolygon().toString(),
                     documentSelectionMark.getConfidence()));
         });
 
@@ -81,13 +79,5 @@ public class AnalyzeLayoutFromUrl {
         // styles
         analyzeLayoutResult.getStyles().forEach(documentStyle
             -> System.out.printf("Document is handwritten %s.%n", documentStyle.isHandwritten()));
-    }
-
-    /**
-     * Utility function to get the bounding polygon coordinates.
-     */
-    private static String getBoundingCoordinates(List<Point> boundingPolygon) {
-        return boundingPolygon.stream().map(point -> String.format("[%.2f, %.2f]", point.getX(),
-            point.getY())).collect(Collectors.joining(", "));
     }
 }

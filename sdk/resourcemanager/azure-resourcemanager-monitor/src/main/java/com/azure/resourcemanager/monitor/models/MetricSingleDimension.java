@@ -6,11 +6,14 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The metric dimension name and value. */
 @Fluent
 public final class MetricSingleDimension {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricSingleDimension.class);
+
     /*
      * Name of the dimension.
      */
@@ -70,16 +73,14 @@ public final class MetricSingleDimension {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model MetricSingleDimension"));
         }
         if (value() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model MetricSingleDimension"));
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(MetricSingleDimension.class);
 }

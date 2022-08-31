@@ -25,6 +25,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.ActivityLogsClient;
 import com.azure.resourcemanager.monitor.fluent.models.EventDataInner;
 import com.azure.resourcemanager.monitor.models.EventDataCollection;
@@ -32,6 +33,8 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ActivityLogsClient. */
 public final class ActivityLogsClientImpl implements ActivityLogsClient {
+    private final ClientLogger logger = new ClientLogger(ActivityLogsClientImpl.class);
+
     /** The proxy service used to perform REST calls. */
     private final ActivityLogsService service;
 
@@ -104,8 +107,7 @@ public final class ActivityLogsClientImpl implements ActivityLogsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of events along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return represents collection of events.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventDataInner>> listSinglePageAsync(String filter, String select) {
@@ -175,8 +177,7 @@ public final class ActivityLogsClientImpl implements ActivityLogsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of events along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return represents collection of events.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventDataInner>> listSinglePageAsync(String filter, String select, Context context) {
@@ -236,7 +237,7 @@ public final class ActivityLogsClientImpl implements ActivityLogsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of events as paginated response with {@link PagedFlux}.
+     * @return represents collection of events.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<EventDataInner> listAsync(String filter, String select) {
@@ -263,7 +264,7 @@ public final class ActivityLogsClientImpl implements ActivityLogsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of events as paginated response with {@link PagedFlux}.
+     * @return represents collection of events.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<EventDataInner> listAsync(String filter) {
@@ -297,7 +298,7 @@ public final class ActivityLogsClientImpl implements ActivityLogsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of events as paginated response with {@link PagedFlux}.
+     * @return represents collection of events.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventDataInner> listAsync(String filter, String select, Context context) {
@@ -324,7 +325,7 @@ public final class ActivityLogsClientImpl implements ActivityLogsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of events as paginated response with {@link PagedIterable}.
+     * @return represents collection of events.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventDataInner> list(String filter) {
@@ -357,7 +358,7 @@ public final class ActivityLogsClientImpl implements ActivityLogsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of events as paginated response with {@link PagedIterable}.
+     * @return represents collection of events.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventDataInner> list(String filter, String select, Context context) {
@@ -367,13 +368,11 @@ public final class ActivityLogsClientImpl implements ActivityLogsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of events along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return represents collection of events.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventDataInner>> listNextSinglePageAsync(String nextLink) {
@@ -404,14 +403,12 @@ public final class ActivityLogsClientImpl implements ActivityLogsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of events along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return represents collection of events.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventDataInner>> listNextSinglePageAsync(String nextLink, Context context) {

@@ -5,6 +5,7 @@ package com.azure.communication.callingserver.models;
 
 import com.azure.core.annotation.Fluent;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,7 +19,7 @@ public class StartRecordingOptions {
      */
     private final CallLocator callLocator;
 
-    private String recordingStateCallbackUrl;
+    private URI recordingStateCallbackUri;
 
     private RecordingChannel recordingChannel;
 
@@ -51,20 +52,20 @@ public class StartRecordingOptions {
     /**
      * Uri to send state change callbacks.
      *
-     * @return url to send state change callbacks.
+     * @return {@link URI} to send state change callbacks.
      */
-    public String getRecordingStateCallbackUrl() {
-        return recordingStateCallbackUrl;
+    public URI getRecordingStateCallbackUri() {
+        return recordingStateCallbackUri;
     }
 
     /**
-     * Set the recordingStateCallbackUrl
+     * Set the recordingStateCallbackUri
      *
-     * @param recordingStateCallbackUrl to send state change callbacks.
+     * @param recordingStateCallbackUri a {@link URI} to send state change callbacks.
      * @return the {@link StartRecordingOptions}
      */
-    public StartRecordingOptions setRecordingStateCallbackUrl(String recordingStateCallbackUrl) {
-        this.recordingStateCallbackUrl = recordingStateCallbackUrl;
+    public StartRecordingOptions setRecordingStateCallbackUri(URI recordingStateCallbackUri) {
+        this.recordingStateCallbackUri = recordingStateCallbackUri;
         return this;
     }
 

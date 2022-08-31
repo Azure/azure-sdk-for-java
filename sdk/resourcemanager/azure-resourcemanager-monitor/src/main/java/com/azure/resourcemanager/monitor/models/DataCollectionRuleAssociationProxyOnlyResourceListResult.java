@@ -7,12 +7,17 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.models.DataCollectionRuleAssociationProxyOnlyResourceInner;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A pageable list of resources. */
 @Fluent
 public final class DataCollectionRuleAssociationProxyOnlyResourceListResult {
+    @JsonIgnore
+    private final ClientLogger logger =
+        new ClientLogger(DataCollectionRuleAssociationProxyOnlyResourceListResult.class);
+
     /*
      * A list of resources.
      */
@@ -73,7 +78,7 @@ public final class DataCollectionRuleAssociationProxyOnlyResourceListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model"
@@ -82,7 +87,4 @@ public final class DataCollectionRuleAssociationProxyOnlyResourceListResult {
             value().forEach(e -> e.validate());
         }
     }
-
-    private static final ClientLogger LOGGER =
-        new ClientLogger(DataCollectionRuleAssociationProxyOnlyResourceListResult.class);
 }

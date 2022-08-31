@@ -26,7 +26,7 @@ public interface MetricsClient {
      *     has a comma in it then use %2 to indicate it. Eg: 'Metric,Name1' should be **'Metric%2Name1'**.
      * @param aggregation The list of aggregation types (comma separated) to retrieve.
      * @param top The maximum number of records to retrieve. Valid only if $filter is specified. Defaults to 10.
-     * @param orderBy The aggregation to use for sorting results and the direction of the sort. Only one order can be
+     * @param orderby The aggregation to use for sorting results and the direction of the sort. Only one order can be
      *     specified. Examples: sum asc.
      * @param filter The **$filter** is used to reduce the set of metric data returned. Example: Metric contains
      *     metadata A, B and C. - Return all time series of C where A = a1 and B = b1 or b2 **$filter=A eq 'a1' and B eq
@@ -44,7 +44,7 @@ public interface MetricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a metrics query along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response to a metrics query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ResponseInner>> listWithResponseAsync(
@@ -54,7 +54,7 @@ public interface MetricsClient {
         String metricnames,
         String aggregation,
         Integer top,
-        String orderBy,
+        String orderby,
         String filter,
         ResultType resultType,
         String metricnamespace);
@@ -70,7 +70,7 @@ public interface MetricsClient {
      *     has a comma in it then use %2 to indicate it. Eg: 'Metric,Name1' should be **'Metric%2Name1'**.
      * @param aggregation The list of aggregation types (comma separated) to retrieve.
      * @param top The maximum number of records to retrieve. Valid only if $filter is specified. Defaults to 10.
-     * @param orderBy The aggregation to use for sorting results and the direction of the sort. Only one order can be
+     * @param orderby The aggregation to use for sorting results and the direction of the sort. Only one order can be
      *     specified. Examples: sum asc.
      * @param filter The **$filter** is used to reduce the set of metric data returned. Example: Metric contains
      *     metadata A, B and C. - Return all time series of C where A = a1 and B = b1 or b2 **$filter=A eq 'a1' and B eq
@@ -88,7 +88,7 @@ public interface MetricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a metrics query on successful completion of {@link Mono}.
+     * @return the response to a metrics query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ResponseInner> listAsync(
@@ -98,7 +98,7 @@ public interface MetricsClient {
         String metricnames,
         String aggregation,
         Integer top,
-        String orderBy,
+        String orderby,
         String filter,
         ResultType resultType,
         String metricnamespace);
@@ -110,7 +110,7 @@ public interface MetricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a metrics query on successful completion of {@link Mono}.
+     * @return the response to a metrics query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ResponseInner> listAsync(String resourceUri);
@@ -138,7 +138,7 @@ public interface MetricsClient {
      *     has a comma in it then use %2 to indicate it. Eg: 'Metric,Name1' should be **'Metric%2Name1'**.
      * @param aggregation The list of aggregation types (comma separated) to retrieve.
      * @param top The maximum number of records to retrieve. Valid only if $filter is specified. Defaults to 10.
-     * @param orderBy The aggregation to use for sorting results and the direction of the sort. Only one order can be
+     * @param orderby The aggregation to use for sorting results and the direction of the sort. Only one order can be
      *     specified. Examples: sum asc.
      * @param filter The **$filter** is used to reduce the set of metric data returned. Example: Metric contains
      *     metadata A, B and C. - Return all time series of C where A = a1 and B = b1 or b2 **$filter=A eq 'a1' and B eq
@@ -157,7 +157,7 @@ public interface MetricsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a metrics query along with {@link Response}.
+     * @return the response to a metrics query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ResponseInner> listWithResponse(
@@ -167,7 +167,7 @@ public interface MetricsClient {
         String metricnames,
         String aggregation,
         Integer top,
-        String orderBy,
+        String orderby,
         String filter,
         ResultType resultType,
         String metricnamespace,

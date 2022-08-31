@@ -4,13 +4,11 @@
 package com.azure.core.util.metrics;
 
 import com.azure.core.util.MetricsOptions;
-import com.azure.core.util.TelemetryAttributes;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.ServiceLoader;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -18,8 +16,6 @@ final class DefaultMeterProvider implements MeterProvider {
     private static final MeterProvider INSTANCE = new DefaultMeterProvider();
     private static final RuntimeException ERROR;
     private static final ClientLogger LOGGER = new ClientLogger(DefaultMeterProvider.class);
-    private static final AutoCloseable NOOP_CLOSEABLE = () -> {
-    };
     private static MeterProvider meterProvider;
 
     private DefaultMeterProvider() {
@@ -73,16 +69,4 @@ final class DefaultMeterProvider implements MeterProvider {
 
         return NoopMeter.INSTANCE;
     }
-
-    static final LongGauge NOOP_GAUGE = new LongGauge() {
-        @Override
-        public AutoCloseable registerCallback(Supplier<Long> valueSupplier, TelemetryAttributes attributes) {
-            return NOOP_CLOSEABLE;
-        }
-
-        @Override
-        public boolean isEnabled() {
-            return false;
-        }
-    };
 }

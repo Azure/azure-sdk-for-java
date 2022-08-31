@@ -5,10 +5,6 @@ package com.azure.core.http.rest;
 
 import com.azure.core.util.paging.ContinuablePagedFlux;
 import com.azure.core.util.paging.ContinuablePagedIterable;
-import com.azure.core.util.paging.PageRetrieverSync;
-
-import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 public class OnlyOnePagedIterable extends ContinuablePagedIterable<Integer, Integer, OnlyOneContinuablePage> {
     public OnlyOnePagedIterable(ContinuablePagedFlux<Integer, Integer, OnlyOneContinuablePage> pagedFlux) {
@@ -18,10 +14,5 @@ public class OnlyOnePagedIterable extends ContinuablePagedIterable<Integer, Inte
     public OnlyOnePagedIterable(ContinuablePagedFlux<Integer, Integer, OnlyOneContinuablePage> pagedFlux,
         int batchSize) {
         super(pagedFlux, batchSize);
-    }
-
-    public OnlyOnePagedIterable(Supplier<PageRetrieverSync<Integer, OnlyOneContinuablePage>> pageRetrieverProvider,
-        Integer pageSize, Predicate<Integer> continuationPredicate) {
-        super(pageRetrieverProvider, pageSize, continuationPredicate);
     }
 }

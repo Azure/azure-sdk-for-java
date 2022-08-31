@@ -5,13 +5,17 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.models.AlertRuleResourceInner;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Represents a collection of alert rule resources. */
 @Fluent
 public final class AlertRuleResourceCollection {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AlertRuleResourceCollection.class);
+
     /*
      * the values for the alert rule resources.
      */

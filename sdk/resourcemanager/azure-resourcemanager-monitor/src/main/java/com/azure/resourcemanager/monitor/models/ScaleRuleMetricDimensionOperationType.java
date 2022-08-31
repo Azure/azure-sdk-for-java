@@ -8,10 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * the dimension operator. Only 'Equals' and 'NotEquals' are supported. 'Equals' being equal to any of the values.
- * 'NotEquals' being not equal to all of the values.
- */
+/** Defines values for ScaleRuleMetricDimensionOperationType. */
 public final class ScaleRuleMetricDimensionOperationType
     extends ExpandableStringEnum<ScaleRuleMetricDimensionOperationType> {
     /** Static value Equals for ScaleRuleMetricDimensionOperationType. */
@@ -31,11 +28,7 @@ public final class ScaleRuleMetricDimensionOperationType
         return fromString(name, ScaleRuleMetricDimensionOperationType.class);
     }
 
-    /**
-     * Gets known ScaleRuleMetricDimensionOperationType values.
-     *
-     * @return known ScaleRuleMetricDimensionOperationType values.
-     */
+    /** @return known ScaleRuleMetricDimensionOperationType values. */
     public static Collection<ScaleRuleMetricDimensionOperationType> values() {
         return values(ScaleRuleMetricDimensionOperationType.class);
     }

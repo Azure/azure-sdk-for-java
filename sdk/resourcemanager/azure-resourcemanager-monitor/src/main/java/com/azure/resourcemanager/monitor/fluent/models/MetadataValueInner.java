@@ -5,11 +5,15 @@
 package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents a metric metadata value. */
 @Fluent
 public final class MetadataValueInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetadataValueInner.class);
+
     /*
      * the name of the metadata.
      */

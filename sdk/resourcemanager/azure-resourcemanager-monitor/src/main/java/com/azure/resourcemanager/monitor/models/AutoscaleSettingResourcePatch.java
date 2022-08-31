@@ -5,28 +5,66 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.models.AutoscaleProfileInner;
-import com.azure.resourcemanager.monitor.fluent.models.AutoscaleSetting;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** The autoscale setting object for patch operations. */
+@JsonFlatten
 @Fluent
-public final class AutoscaleSettingResourcePatch {
+public class AutoscaleSettingResourcePatch {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoscaleSettingResourcePatch.class);
+
     /*
      * Resource tags
      */
     @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
-     * The autoscale setting properties of the update operation.
+     * the collection of automatic scaling profiles that specify different
+     * scaling parameters for different time periods. A maximum of 20 profiles
+     * can be specified.
      */
-    @JsonProperty(value = "properties")
-    private AutoscaleSetting innerProperties;
+    @JsonProperty(value = "properties.profiles")
+    private List<AutoscaleProfileInner> profiles;
+
+    /*
+     * the collection of notifications.
+     */
+    @JsonProperty(value = "properties.notifications")
+    private List<AutoscaleNotification> notifications;
+
+    /*
+     * the enabled flag. Specifies whether automatic scaling is enabled for the
+     * resource. The default value is 'true'.
+     */
+    @JsonProperty(value = "properties.enabled")
+    private Boolean enabled;
+
+    /*
+     * the name of the autoscale setting.
+     */
+    @JsonProperty(value = "properties.name")
+    private String name;
+
+    /*
+     * the resource identifier of the resource that the autoscale setting
+     * should be added to.
+     */
+    @JsonProperty(value = "properties.targetResourceUri")
+    private String targetResourceUri;
+
+    /*
+     * the location of the resource that the autoscale setting should be added
+     * to.
+     */
+    @JsonProperty(value = "properties.targetResourceLocation")
+    private String targetResourceLocation;
 
     /**
      * Get the tags property: Resource tags.
@@ -49,22 +87,13 @@ public final class AutoscaleSettingResourcePatch {
     }
 
     /**
-     * Get the innerProperties property: The autoscale setting properties of the update operation.
-     *
-     * @return the innerProperties value.
-     */
-    private AutoscaleSetting innerProperties() {
-        return this.innerProperties;
-    }
-
-    /**
      * Get the profiles property: the collection of automatic scaling profiles that specify different scaling parameters
      * for different time periods. A maximum of 20 profiles can be specified.
      *
      * @return the profiles value.
      */
     public List<AutoscaleProfileInner> profiles() {
-        return this.innerProperties() == null ? null : this.innerProperties().profiles();
+        return this.profiles;
     }
 
     /**
@@ -75,10 +104,7 @@ public final class AutoscaleSettingResourcePatch {
      * @return the AutoscaleSettingResourcePatch object itself.
      */
     public AutoscaleSettingResourcePatch withProfiles(List<AutoscaleProfileInner> profiles) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AutoscaleSetting();
-        }
-        this.innerProperties().withProfiles(profiles);
+        this.profiles = profiles;
         return this;
     }
 
@@ -88,7 +114,7 @@ public final class AutoscaleSettingResourcePatch {
      * @return the notifications value.
      */
     public List<AutoscaleNotification> notifications() {
-        return this.innerProperties() == null ? null : this.innerProperties().notifications();
+        return this.notifications;
     }
 
     /**
@@ -98,59 +124,29 @@ public final class AutoscaleSettingResourcePatch {
      * @return the AutoscaleSettingResourcePatch object itself.
      */
     public AutoscaleSettingResourcePatch withNotifications(List<AutoscaleNotification> notifications) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AutoscaleSetting();
-        }
-        this.innerProperties().withNotifications(notifications);
+        this.notifications = notifications;
         return this;
     }
 
     /**
      * Get the enabled property: the enabled flag. Specifies whether automatic scaling is enabled for the resource. The
-     * default value is 'false'.
+     * default value is 'true'.
      *
      * @return the enabled value.
      */
     public Boolean enabled() {
-        return this.innerProperties() == null ? null : this.innerProperties().enabled();
+        return this.enabled;
     }
 
     /**
      * Set the enabled property: the enabled flag. Specifies whether automatic scaling is enabled for the resource. The
-     * default value is 'false'.
+     * default value is 'true'.
      *
      * @param enabled the enabled value to set.
      * @return the AutoscaleSettingResourcePatch object itself.
      */
     public AutoscaleSettingResourcePatch withEnabled(Boolean enabled) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AutoscaleSetting();
-        }
-        this.innerProperties().withEnabled(enabled);
-        return this;
-    }
-
-    /**
-     * Get the predictiveAutoscalePolicy property: the predictive autoscale policy mode.
-     *
-     * @return the predictiveAutoscalePolicy value.
-     */
-    public PredictiveAutoscalePolicy predictiveAutoscalePolicy() {
-        return this.innerProperties() == null ? null : this.innerProperties().predictiveAutoscalePolicy();
-    }
-
-    /**
-     * Set the predictiveAutoscalePolicy property: the predictive autoscale policy mode.
-     *
-     * @param predictiveAutoscalePolicy the predictiveAutoscalePolicy value to set.
-     * @return the AutoscaleSettingResourcePatch object itself.
-     */
-    public AutoscaleSettingResourcePatch withPredictiveAutoscalePolicy(
-        PredictiveAutoscalePolicy predictiveAutoscalePolicy) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AutoscaleSetting();
-        }
-        this.innerProperties().withPredictiveAutoscalePolicy(predictiveAutoscalePolicy);
+        this.enabled = enabled;
         return this;
     }
 
@@ -160,7 +156,7 @@ public final class AutoscaleSettingResourcePatch {
      * @return the name value.
      */
     public String name() {
-        return this.innerProperties() == null ? null : this.innerProperties().name();
+        return this.name;
     }
 
     /**
@@ -170,10 +166,7 @@ public final class AutoscaleSettingResourcePatch {
      * @return the AutoscaleSettingResourcePatch object itself.
      */
     public AutoscaleSettingResourcePatch withName(String name) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AutoscaleSetting();
-        }
-        this.innerProperties().withName(name);
+        this.name = name;
         return this;
     }
 
@@ -184,7 +177,7 @@ public final class AutoscaleSettingResourcePatch {
      * @return the targetResourceUri value.
      */
     public String targetResourceUri() {
-        return this.innerProperties() == null ? null : this.innerProperties().targetResourceUri();
+        return this.targetResourceUri;
     }
 
     /**
@@ -195,10 +188,7 @@ public final class AutoscaleSettingResourcePatch {
      * @return the AutoscaleSettingResourcePatch object itself.
      */
     public AutoscaleSettingResourcePatch withTargetResourceUri(String targetResourceUri) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AutoscaleSetting();
-        }
-        this.innerProperties().withTargetResourceUri(targetResourceUri);
+        this.targetResourceUri = targetResourceUri;
         return this;
     }
 
@@ -209,7 +199,7 @@ public final class AutoscaleSettingResourcePatch {
      * @return the targetResourceLocation value.
      */
     public String targetResourceLocation() {
-        return this.innerProperties() == null ? null : this.innerProperties().targetResourceLocation();
+        return this.targetResourceLocation;
     }
 
     /**
@@ -220,10 +210,7 @@ public final class AutoscaleSettingResourcePatch {
      * @return the AutoscaleSettingResourcePatch object itself.
      */
     public AutoscaleSettingResourcePatch withTargetResourceLocation(String targetResourceLocation) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AutoscaleSetting();
-        }
-        this.innerProperties().withTargetResourceLocation(targetResourceLocation);
+        this.targetResourceLocation = targetResourceLocation;
         return this;
     }
 
@@ -233,8 +220,11 @@ public final class AutoscaleSettingResourcePatch {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (profiles() != null) {
+            profiles().forEach(e -> e.validate());
+        }
+        if (notifications() != null) {
+            notifications().forEach(e -> e.validate());
         }
     }
 }

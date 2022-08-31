@@ -6,14 +6,17 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Azure mobile App push notification receiver. */
 @Fluent
 public final class AzureAppPushReceiver {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureAppPushReceiver.class);
+
     /*
-     * The name of the Azure mobile app push receiver. Names must be unique across all receivers within an action
-     * group.
+     * The name of the Azure mobile app push receiver. Names must be unique
+     * across all receivers within an action group.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -73,17 +76,15 @@ public final class AzureAppPushReceiver {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model AzureAppPushReceiver"));
         }
         if (emailAddress() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property emailAddress in model AzureAppPushReceiver"));
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AzureAppPushReceiver.class);
 }

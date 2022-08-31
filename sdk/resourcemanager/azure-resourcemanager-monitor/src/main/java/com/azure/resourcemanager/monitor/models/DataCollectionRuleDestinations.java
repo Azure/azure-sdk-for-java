@@ -5,11 +5,15 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 
 /** The specification of destinations. */
 @Fluent
 public final class DataCollectionRuleDestinations extends DestinationsSpec {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataCollectionRuleDestinations.class);
+
     /** {@inheritDoc} */
     @Override
     public DataCollectionRuleDestinations withLogAnalytics(List<LogAnalyticsDestination> logAnalytics) {

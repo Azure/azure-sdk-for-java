@@ -49,7 +49,7 @@ public final class DocumentSelectionMark {
      * @param selectionMarkState the state value to set.
      * @return the DocumentSelectionMark object itself.
      */
-    private void setSelectionMarkState(SelectionMarkState selectionMarkState) {
+    void setSelectionMarkState(SelectionMarkState selectionMarkState) {
         this.selectionMarkState = selectionMarkState;
     }
 
@@ -72,7 +72,7 @@ public final class DocumentSelectionMark {
      * @param boundingPolygon the boundingPolygon value to set.
      * @return the DocumentSelectionMark object itself.
      */
-    private void setBoundingPolygon(List<Point> boundingPolygon) {
+    void setBoundingPolygon(List<Point> boundingPolygon) {
         this.boundingPolygon = boundingPolygon;
     }
 
@@ -91,7 +91,7 @@ public final class DocumentSelectionMark {
      * @param span the span value to set.
      * @return the DocumentSelectionMark object itself.
      */
-    private void setSpan(DocumentSpan span) {
+    void setSpan(DocumentSpan span) {
         this.span = span;
     }
 
@@ -110,7 +110,7 @@ public final class DocumentSelectionMark {
      * @param confidence the confidence value to set.
      * @return the DocumentSelectionMark object itself.
      */
-    private void setConfidence(float confidence) {
+    void setConfidence(float confidence) {
         this.confidence = confidence;
     }
 

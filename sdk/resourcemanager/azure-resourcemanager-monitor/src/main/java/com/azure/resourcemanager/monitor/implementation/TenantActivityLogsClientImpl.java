@@ -25,6 +25,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.TenantActivityLogsClient;
 import com.azure.resourcemanager.monitor.fluent.models.EventDataInner;
 import com.azure.resourcemanager.monitor.models.EventDataCollection;
@@ -32,6 +33,8 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in TenantActivityLogsClient. */
 public final class TenantActivityLogsClientImpl implements TenantActivityLogsClient {
+    private final ClientLogger logger = new ClientLogger(TenantActivityLogsClientImpl.class);
+
     /** The proxy service used to perform REST calls. */
     private final TenantActivityLogsService service;
 
@@ -106,11 +109,7 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Activity Logs for the Tenant.&lt;br&gt;Everything that is applicable to the API to get the Activity
-     *     Logs for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to
-     *     point out here is that this API does *not* retrieve the logs at the individual subscription of the tenant but
-     *     only surfaces the logs that were generated at the tenant level along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * @return the Activity Logs for the Tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventDataInner>> listSinglePageAsync(String filter, String select) {
@@ -165,11 +164,7 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Activity Logs for the Tenant.&lt;br&gt;Everything that is applicable to the API to get the Activity
-     *     Logs for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to
-     *     point out here is that this API does *not* retrieve the logs at the individual subscription of the tenant but
-     *     only surfaces the logs that were generated at the tenant level along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * @return the Activity Logs for the Tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventDataInner>> listSinglePageAsync(String filter, String select, Context context) {
@@ -222,10 +217,7 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Activity Logs for the Tenant.&lt;br&gt;Everything that is applicable to the API to get the Activity
-     *     Logs for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to
-     *     point out here is that this API does *not* retrieve the logs at the individual subscription of the tenant but
-     *     only surfaces the logs that were generated at the tenant level as paginated response with {@link PagedFlux}.
+     * @return the Activity Logs for the Tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<EventDataInner> listAsync(String filter, String select) {
@@ -241,10 +233,7 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Activity Logs for the Tenant.&lt;br&gt;Everything that is applicable to the API to get the Activity
-     *     Logs for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to
-     *     point out here is that this API does *not* retrieve the logs at the individual subscription of the tenant but
-     *     only surfaces the logs that were generated at the tenant level as paginated response with {@link PagedFlux}.
+     * @return the Activity Logs for the Tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<EventDataInner> listAsync() {
@@ -282,10 +271,7 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Activity Logs for the Tenant.&lt;br&gt;Everything that is applicable to the API to get the Activity
-     *     Logs for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to
-     *     point out here is that this API does *not* retrieve the logs at the individual subscription of the tenant but
-     *     only surfaces the logs that were generated at the tenant level as paginated response with {@link PagedFlux}.
+     * @return the Activity Logs for the Tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventDataInner> listAsync(String filter, String select, Context context) {
@@ -301,11 +287,7 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Activity Logs for the Tenant.&lt;br&gt;Everything that is applicable to the API to get the Activity
-     *     Logs for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to
-     *     point out here is that this API does *not* retrieve the logs at the individual subscription of the tenant but
-     *     only surfaces the logs that were generated at the tenant level as paginated response with {@link
-     *     PagedIterable}.
+     * @return the Activity Logs for the Tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventDataInner> list() {
@@ -342,11 +324,7 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Activity Logs for the Tenant.&lt;br&gt;Everything that is applicable to the API to get the Activity
-     *     Logs for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to
-     *     point out here is that this API does *not* retrieve the logs at the individual subscription of the tenant but
-     *     only surfaces the logs that were generated at the tenant level as paginated response with {@link
-     *     PagedIterable}.
+     * @return the Activity Logs for the Tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventDataInner> list(String filter, String select, Context context) {
@@ -356,13 +334,11 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of events along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return represents collection of events.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventDataInner>> listNextSinglePageAsync(String nextLink) {
@@ -393,14 +369,12 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of events along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return represents collection of events.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventDataInner>> listNextSinglePageAsync(String nextLink, Context context) {

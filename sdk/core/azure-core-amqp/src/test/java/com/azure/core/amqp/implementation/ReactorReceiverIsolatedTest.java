@@ -94,14 +94,14 @@ public class ReactorReceiverIsolatedTest {
 
         final String entityPath = "test-entity-path";
         receiverHandler = new ReceiveLinkHandler("test-connection-id", "test-host",
-            "test-receiver-name", entityPath, null);
+            "test-receiver-name", entityPath);
 
         when(tokenManager.getAuthorizationResults()).thenReturn(authorizationResults.flux());
 
         when(amqpConnection.getShutdownSignals()).thenReturn(shutdownSignals.flux());
 
         reactorReceiver = new ReactorReceiver(amqpConnection, entityPath, receiver, receiverHandler, tokenManager,
-            reactorDispatcher, retryOptions, AmqpMetricsProvider.noop());
+            reactorDispatcher, retryOptions);
     }
 
     @AfterEach

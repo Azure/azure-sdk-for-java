@@ -7,12 +7,15 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.models.AzureMonitorPrivateLinkScopeInner;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes the list of Azure Monitor PrivateLinkScope resources. */
 @Fluent
 public final class AzureMonitorPrivateLinkScopeListResult {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureMonitorPrivateLinkScopeListResult.class);
+
     /*
      * List of Azure Monitor PrivateLinkScope definitions.
      */
@@ -20,8 +23,9 @@ public final class AzureMonitorPrivateLinkScopeListResult {
     private List<AzureMonitorPrivateLinkScopeInner> value;
 
     /*
-     * The URI to get the next set of Azure Monitor PrivateLinkScope definitions if too many PrivateLinkScopes where
-     * returned in the result set.
+     * The URI to get the next set of Azure Monitor PrivateLinkScope
+     * definitions if too many PrivateLinkScopes where returned in the result
+     * set.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -75,7 +79,7 @@ public final class AzureMonitorPrivateLinkScopeListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
+            throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model AzureMonitorPrivateLinkScopeListResult"));
@@ -83,6 +87,4 @@ public final class AzureMonitorPrivateLinkScopeListResult {
             value().forEach(e -> e.validate());
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorPrivateLinkScopeListResult.class);
 }
