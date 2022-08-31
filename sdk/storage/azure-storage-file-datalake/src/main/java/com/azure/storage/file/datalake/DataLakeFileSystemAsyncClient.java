@@ -53,7 +53,6 @@ import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
-import com.azure.storage.file.datalake.options.FileSystemRenameOptions;
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
