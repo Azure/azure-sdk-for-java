@@ -100,7 +100,7 @@ public final class PersonalizerAdministrationAsyncClient {
      *
      * @param evaluationId Id of the Offline Evaluation.
      * @return the Offline Evaluation associated with the Id on successful completion of {@link Mono}.
-     * @throws IllegalArgumentException thrown if the evaluationId is empty.
+     * @throws IllegalArgumentException thrown if the evaluationId is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PersonalizerEvaluation> getEvaluation(String evaluationId) {
@@ -113,7 +113,7 @@ public final class PersonalizerAdministrationAsyncClient {
      * @param evaluationId Id of the Offline Evaluation.
      * @return the Offline Evaluation associated with the Id along with {@link Response} on successful completion of
      * {@link Mono}.
-     * @throws IllegalArgumentException thrown if the evaluationId is empty.
+     * @throws IllegalArgumentException thrown if the evaluationId is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PersonalizerEvaluation>> getEvaluationWithResponse(String evaluationId) {
@@ -129,7 +129,7 @@ public final class PersonalizerAdministrationAsyncClient {
      *
      * @param evaluationId Id of the Offline Evaluation to delete.
      * @return the completion of {@link Mono}.
-     * @throws IllegalArgumentException thrown if the evaluationId is empty.
+     * @throws IllegalArgumentException thrown if the evaluationId is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteEvaluation(String evaluationId) {
@@ -141,7 +141,7 @@ public final class PersonalizerAdministrationAsyncClient {
      *
      * @param evaluationId Id of the Offline Evaluation to delete.
      * @return the {@link Response} on successful completion of {@link Mono}.
-     * @throws IllegalArgumentException thrown if the evaluationId is empty.
+     * @throws IllegalArgumentException thrown if the evaluationId is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteEvaluationWithResponse(String evaluationId) {
@@ -217,7 +217,7 @@ public final class PersonalizerAdministrationAsyncClient {
      *
      * @param serviceProperties The personalizer service serviceProperties.
      * @return the serviceProperties of the service with the completion of {@link Mono}.
-     * @throws IllegalArgumentException thrown if the serviceProperties is empty.
+     * @throws IllegalArgumentException thrown if the serviceProperties is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PersonalizerServiceProperties> updateProperties(PersonalizerServiceProperties serviceProperties) {
@@ -229,7 +229,7 @@ public final class PersonalizerAdministrationAsyncClient {
      *
      * @param serviceProperties The personalizer service serviceProperties.
      * @return the serviceProperties of the service along with {@link Response} on successful completion of {@link Mono}.
-     * @throws IllegalArgumentException thrown if the serviceProperties is empty.
+     * @throws IllegalArgumentException thrown if the serviceProperties is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PersonalizerServiceProperties>> updatePropertiesWithResponse(PersonalizerServiceProperties serviceProperties) {
@@ -246,7 +246,7 @@ public final class PersonalizerAdministrationAsyncClient {
      * @param serviceProperties The personalizer service serviceProperties.
      * @param context The context to associate with this operation.
      * @return the serviceProperties of the service along with {@link Response} on successful completion of {@link Mono}.
-     * @throws IllegalArgumentException thrown if the serviceProperties is empty.
+     * @throws IllegalArgumentException thrown if the serviceProperties is null.
      */
     Mono<Response<PersonalizerServiceProperties>> updatePropertiesWithResponse(PersonalizerServiceProperties serviceProperties, Context context) {
         if (serviceProperties == null) {
@@ -302,6 +302,7 @@ public final class PersonalizerAdministrationAsyncClient {
      * @param evaluationId EvaluationId of the evaluation.
      * @param policyName PolicyName of the policy within the evaluation.
      * @return the completion of {@link Mono}.
+     * @throws IllegalArgumentException thrown if evaluationId or policyName are null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> applyEvaluation(String evaluationId, String policyName) {
@@ -315,7 +316,7 @@ public final class PersonalizerAdministrationAsyncClient {
      * @param evaluationId EvaluationId of the evaluation.
      * @param policyName PolicyName of the policy within the evaluation.
      * @return the {@link Response} on successful completion of {@link Mono}.
-     * @throws IllegalArgumentException thrown if policyReferenceOptions is empty.
+     * @throws IllegalArgumentException thrown if evaluationId or policyName are null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> applyEvaluationWithResponse(String evaluationId, String policyName) {
@@ -326,22 +327,12 @@ public final class PersonalizerAdministrationAsyncClient {
         }
     }
 
-    /**
-     * Apply Learning Settings and model from a pre-existing Offline Evaluation, making them the current online Learning
-     * Settings and model and replacing the previous ones.
-     *
-     * @param evaluationId EvaluationId of the evaluation.
-     * @param policyName PolicyName of the policy within the evaluation.
-     * @param context The context to associate with this operation.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     * @throws IllegalArgumentException thrown if policyReferenceOptions is empty.
-     */
     Mono<Response<Void>> applyEvaluationWithResponse(String evaluationId, String policyName, Context context) {
-        if (evaluationId == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'evaluationId' is required and cannot be null"));
+        if (CoreUtils.isNullOrEmpty(evaluationId)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'evaluationId' is required and cannot be null or empty."));
         }
-        if (policyName == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'policyName' is required and cannot be null"));
+        if (CoreUtils.isNullOrEmpty(policyName)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'policyName' is required and cannot be null or empty."));
         }
 
         PersonalizerPolicyReferenceOptions options = new PersonalizerPolicyReferenceOptions()
@@ -454,14 +445,6 @@ public final class PersonalizerAdministrationAsyncClient {
         }
     }
 
-    /**
-     * Update the Learning Settings that the Personalizer service will use to train models.
-     *
-     * @param policy The learning settings.
-     * @param context The context to associate with this operation.
-     * @return learning settings specifying how to train the model along with {@link Response} on successful completion of {@link Mono}.
-     * @throws IllegalArgumentException thrown if policy is null.
-     */
     Mono<Response<PersonalizerPolicy>> updatePolicyWithResponse(PersonalizerPolicy policy, Context context) {
         if (policy == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'policy' is required and cannot be null"));

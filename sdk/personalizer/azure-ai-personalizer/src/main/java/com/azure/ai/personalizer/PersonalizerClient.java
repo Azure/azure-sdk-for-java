@@ -56,6 +56,7 @@ public final class PersonalizerClient {
      * @param rankOptions A Personalizer Rank request.
      * @return returns which action to use as rewardActionId, and additional information about each action as a result
      * of a Rank request.
+     * @throws IllegalArgumentException if rankOptions is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PersonalizerRankResult rank(PersonalizerRankOptions rankOptions) {
@@ -72,6 +73,7 @@ public final class PersonalizerClient {
      * @param context The context to associate with this operation.
      * @return returns which action to use as rewardActionId, and additional information about each action as a result
      * of a Rank request along with {@link Response}.
+     * @throws IllegalArgumentException if rankOptions is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PersonalizerRankResult> rankWithResponse(PersonalizerRankOptions rankOptions, Context context) {
@@ -86,6 +88,7 @@ public final class PersonalizerClient {
      *
      * @param eventId The event id this reward applies to.
      * @param rewardValue The reward should be a floating point number, typically between 0 and 1.
+     * @throws IllegalArgumentException if eventId is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void reward(String eventId, float rewardValue) {
@@ -102,6 +105,7 @@ public final class PersonalizerClient {
      * @param rewardValue The reward should be a floating point number, typically between 0 and 1.
      * @param context The context to associate with this operation.
      * @return the {@link Response}.
+     * @throws IllegalArgumentException if eventId is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> rewardWithResponse(String eventId, float rewardValue, Context context) {
@@ -115,6 +119,7 @@ public final class PersonalizerClient {
      * expected for it.
      *
      * @param eventId The event ID to be activated.
+     * @throws IllegalArgumentException if eventId is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void activate(String eventId) {
@@ -130,6 +135,7 @@ public final class PersonalizerClient {
      * @param eventId The event ID to be activated.
      * @param context The context to associate with this operation.
      * @return the {@link Response}.
+     * @throws IllegalArgumentException if eventId is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> activateWithResponse(String eventId, Context context) {
@@ -159,12 +165,13 @@ public final class PersonalizerClient {
      * <p>Submit a Personalizer multi-slot rank request. Receives a context, a list of actions, and a list of slots.
      * Returns which of the provided actions should be used in each slot, in each rewardActionId.
      *
-     * @param multiSlotOptions A Personalizer multi-slot Rank request.
+     * @param rankMultiSlotOptions A Personalizer multi-slot Rank request.
      * @return the response body.
+     * @throws IllegalArgumentException if rankMultiSlotOptions is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PersonalizerRankMultiSlotResult rankMultiSlot(PersonalizerRankMultiSlotOptions multiSlotOptions) {
-        return rankMultiSlotWithResponse(multiSlotOptions, Context.NONE).getValue();
+    public PersonalizerRankMultiSlotResult rankMultiSlot(PersonalizerRankMultiSlotOptions rankMultiSlotOptions) {
+        return rankMultiSlotWithResponse(rankMultiSlotOptions, Context.NONE).getValue();
     }
 
     /**
@@ -173,13 +180,14 @@ public final class PersonalizerClient {
      * <p>Submit a Personalizer multi-slot rank request. Receives a context, a list of actions, and a list of slots.
      * Returns which of the provided actions should be used in each slot, in each rewardActionId.
      *
-     * @param multiSlotOptions A Personalizer multi-slot Rank request.
+     * @param rankMultiSlotOptions A Personalizer multi-slot Rank request.
      * @param context The context to associate with this operation.
      * @return the response body along with {@link Response}.
+     * @throws IllegalArgumentException if rankMultiSlotOptions is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PersonalizerRankMultiSlotResult> rankMultiSlotWithResponse(PersonalizerRankMultiSlotOptions multiSlotOptions, Context context) {
-        return client.rankMultiSlotWithResponse(multiSlotOptions, context).block();
+    public Response<PersonalizerRankMultiSlotResult> rankMultiSlotWithResponse(PersonalizerRankMultiSlotOptions rankMultiSlotOptions, Context context) {
+        return client.rankMultiSlotWithResponse(rankMultiSlotOptions, context).block();
     }
 
     /**
@@ -208,6 +216,7 @@ public final class PersonalizerClient {
      * @param eventId The event id this reward applies to.
      * @param rewardMultiSlotOptions List of slot id and reward values. The reward should be a floating point number, typically
      *                               between 0 and 1.
+     * @throws IllegalArgumentException if rewardMultiSlotOptions is null or eventId is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void rewardMultiSlot(String eventId, PersonalizerRewardMultiSlotOptions rewardMultiSlotOptions) {
@@ -224,6 +233,7 @@ public final class PersonalizerClient {
      *                               between 0 and 1.
      * @param context The context to associate with this operation.
      * @return the {@link Response}.
+     * @throws IllegalArgumentException if rewardMultiSlotOptions is null or eventId is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> rewardMultiSlotWithResponse(String eventId, PersonalizerRewardMultiSlotOptions rewardMultiSlotOptions, Context context) {
@@ -237,6 +247,7 @@ public final class PersonalizerClient {
      * for it.
      *
      * @param eventId The event ID this activation applies to.
+     * @throws IllegalArgumentException if eventId is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void activateMultiSlot(String eventId) {
@@ -252,6 +263,7 @@ public final class PersonalizerClient {
      * @param eventId The event ID this activation applies to.
      * @param context The context to associate with this operation.
      * @return the {@link Response}.
+     * @throws IllegalArgumentException if eventId is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> activateMultiSlotWithResponse(String eventId, Context context) {

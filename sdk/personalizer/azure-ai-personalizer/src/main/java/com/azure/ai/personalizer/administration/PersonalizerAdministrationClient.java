@@ -77,7 +77,7 @@ public final class PersonalizerAdministrationClient {
      *
      * @param evaluationId Id of the Offline Evaluation.
      * @return the Offline Evaluation associated with the Id.
-     * @throws NullPointerException thrown if evaluationId is null.
+     * @throws IllegalArgumentException thrown if the evaluationId is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PersonalizerEvaluation getEvaluation(String evaluationId) {
@@ -90,7 +90,7 @@ public final class PersonalizerAdministrationClient {
      * @param evaluationId Id of the Offline Evaluation.
      * @param context The context to associate with this operation.
      * @return the Offline Evaluation associated with the Id along with {@link Response}.
-     * @throws IllegalArgumentException thrown if evaluationId is null.
+     * @throws IllegalArgumentException thrown if the evaluationId is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PersonalizerEvaluation> getEvaluationWithResponse(String evaluationId, Context context) {
@@ -101,7 +101,7 @@ public final class PersonalizerAdministrationClient {
      * Delete the Offline Evaluation associated with the Id.
      *
      * @param evaluationId Id of the Offline Evaluation to delete.
-     * @throws IllegalArgumentException thrown if evaluationId is null.
+     * @throws IllegalArgumentException thrown if the evaluationId is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteEvaluation(String evaluationId) {
@@ -114,7 +114,7 @@ public final class PersonalizerAdministrationClient {
      * @param evaluationId Id of the Offline Evaluation to delete.
      * @param context The context to associate with this operation.
      * @return the {@link Response}.
-     * @throws IllegalArgumentException thrown if evaluationId is null.
+     * @throws IllegalArgumentException thrown if the evaluationId is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteEvaluationWithResponse(String evaluationId, Context context) {
@@ -187,7 +187,7 @@ public final class PersonalizerAdministrationClient {
      *
      * @param serviceProperties The personalizer service serviceProperties.
      * @return the serviceProperties of the service.
-     * @throws IllegalArgumentException thrown if the serviceProperties is empty.
+     * @throws IllegalArgumentException thrown if the serviceProperties is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PersonalizerServiceProperties updateProperties(PersonalizerServiceProperties serviceProperties) {
@@ -200,7 +200,7 @@ public final class PersonalizerAdministrationClient {
      * @param serviceProperties The personalizer service serviceProperties.
      * @param context The context to associate with this operation.
      * @return the serviceProperties of the service along with {@link Response} on successful completion of {@link Mono}.
-     * @throws IllegalArgumentException thrown if the serviceProperties is empty.
+     * @throws IllegalArgumentException thrown if the serviceProperties is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PersonalizerServiceProperties> updatePropertiesWithResponse(PersonalizerServiceProperties serviceProperties, Context context) {
@@ -235,6 +235,7 @@ public final class PersonalizerAdministrationClient {
      *
      * @param evaluationId EvaluationId of the evaluation.
      * @param policyName PolicyName of the policy within the evaluation.
+     * @throws IllegalArgumentException thrown if evaluationId or policyName are null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void applyEvaluation(String evaluationId, String policyName) {
@@ -249,7 +250,7 @@ public final class PersonalizerAdministrationClient {
      * @param policyName PolicyName of the policy within the evaluation.
      * @param context The context to associate with this operation.
      * @return the {@link Response}.
-     * @throws IllegalArgumentException thrown if the policyReferenceOptions is empty.
+     * @throws IllegalArgumentException thrown if evaluationId or policyName are null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> applyEvaluationWithResponse(String evaluationId, String policyName, Context context) {

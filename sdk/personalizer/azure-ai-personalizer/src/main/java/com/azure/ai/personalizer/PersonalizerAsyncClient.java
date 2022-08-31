@@ -74,24 +74,25 @@ public final class PersonalizerAsyncClient {
      * <p>Submit a Personalizer rank request. Receives a context and a list of actions. Returns which of the provided
      * actions should be used by your application, in rewardActionId.
      *
-     * @param rankRequest A Personalizer Rank request.
+     * @param rankOptions A Personalizer Rank request.
      * @return returns which action to use as rewardActionId, and additional information about each action as a result
      * of a Rank request along with {@link Response} on successful completion of {@link Mono}.
+     * @throws IllegalArgumentException if rankOptions is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PersonalizerRankResult>> rankWithResponse(PersonalizerRankOptions rankRequest) {
+    public Mono<Response<PersonalizerRankResult>> rankWithResponse(PersonalizerRankOptions rankOptions) {
         try {
-            return withContext(context -> rankWithResponse(rankRequest, context));
+            return withContext(context -> rankWithResponse(rankOptions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<PersonalizerRankResult>> rankWithResponse(PersonalizerRankOptions rankRequest, Context context) {
-        if (rankRequest == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'rankRequest' is required and cannot be null"));
+    Mono<Response<PersonalizerRankResult>> rankWithResponse(PersonalizerRankOptions rankOptions, Context context) {
+        if (rankOptions == null) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'rankOptions' is required and cannot be null"));
         }
-        return service.rankWithResponseAsync(rankRequest, context)
+        return service.rankWithResponseAsync(rankOptions, context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
@@ -105,6 +106,7 @@ public final class PersonalizerAsyncClient {
      * @param eventId The event id this reward applies to.
      * @param rewardValue The reward should be a floating point number, typically between 0 and 1.
      * @return the completion of {@link Mono}.
+     * @throws IllegalArgumentException if eventId is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> reward(String eventId, float rewardValue) {
@@ -120,6 +122,7 @@ public final class PersonalizerAsyncClient {
      * @param eventId The event id this reward applies to.
      * @param rewardValue The reward should be a floating point number, typically between 0 and 1.
      * @return the {@link Response} on successful completion of {@link Mono}.
+     * @throws IllegalArgumentException if eventId is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> rewardWithResponse(String eventId, float rewardValue) {
@@ -147,6 +150,7 @@ public final class PersonalizerAsyncClient {
      *
      * @param eventId The event ID to be activated.
      * @return the completion of {@link Mono}.
+     * @throws IllegalArgumentException if eventId is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> activate(String eventId) {
@@ -161,6 +165,7 @@ public final class PersonalizerAsyncClient {
      *
      * @param eventId The event ID to be activated.
      * @return the {@link Response} on successful completion of {@link Mono}.
+     * @throws IllegalArgumentException if eventId is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> activateWithResponse(String eventId) {
@@ -186,12 +191,12 @@ public final class PersonalizerAsyncClient {
      * <p>Submit a Personalizer multi-slot rank request. Receives a context, a list of actions, and a list of slots.
      * Returns which of the provided actions should be used in each slot, in each rewardActionId.
      *
-     * @param rankRequest A Personalizer multi-slot Rank request.
+     * @param rankMultiSlotOptions A Personalizer multi-slot Rank request.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PersonalizerRankMultiSlotResult> rankMultiSlot(PersonalizerRankMultiSlotOptions rankRequest) {
-        return rankMultiSlotWithResponse(rankRequest).flatMap(FluxUtil::toMono);
+    public Mono<PersonalizerRankMultiSlotResult> rankMultiSlot(PersonalizerRankMultiSlotOptions rankMultiSlotOptions) {
+        return rankMultiSlotWithResponse(rankMultiSlotOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -200,23 +205,24 @@ public final class PersonalizerAsyncClient {
      * <p>Submit a Personalizer multi-slot rank request. Receives a context, a list of actions, and a list of slots.
      * Returns which of the provided actions should be used in each slot, in each rewardActionId.
      *
-     * @param rankRequest A Personalizer multi-slot Rank request.
+     * @param rankMultiSlotOptions A Personalizer multi-slot Rank request.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @throws IllegalArgumentException if rankMultiSlotOptions is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PersonalizerRankMultiSlotResult>> rankMultiSlotWithResponse(PersonalizerRankMultiSlotOptions rankRequest) {
+    public Mono<Response<PersonalizerRankMultiSlotResult>> rankMultiSlotWithResponse(PersonalizerRankMultiSlotOptions rankMultiSlotOptions) {
         try {
-            return withContext(context -> rankMultiSlotWithResponse(rankRequest, context));
+            return withContext(context -> rankMultiSlotWithResponse(rankMultiSlotOptions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<PersonalizerRankMultiSlotResult>> rankMultiSlotWithResponse(PersonalizerRankMultiSlotOptions rankRequest, Context context) {
-        if (rankRequest == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'rankRequest' is required and cannot be null"));
+    Mono<Response<PersonalizerRankMultiSlotResult>> rankMultiSlotWithResponse(PersonalizerRankMultiSlotOptions rankMultiSlotOptions, Context context) {
+        if (rankMultiSlotOptions == null) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'rankMultiSlotOptions' is required and cannot be null"));
         }
-        return service.getMultiSlots().rankWithResponseAsync(rankRequest, context)
+        return service.getMultiSlots().rankWithResponseAsync(rankMultiSlotOptions, context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
@@ -227,13 +233,14 @@ public final class PersonalizerAsyncClient {
      * <p>Report reward that resulted from using the action specified in rewardActionId for the slot.
      *
      * @param eventId The event id this reward applies to.
-     * @param rewardRequest List of slot id and reward values. The reward should be a floating point number, typically between 0
+     * @param rewardMultiSlotOptions List of slot id and reward values. The reward should be a floating point number, typically between 0
      *                      and 1.
      * @return the completion of {@link Mono}.
+     * @throws IllegalArgumentException if rewardMultiSlotOptions is null or eventId is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> rewardMultiSlot(String eventId, PersonalizerRewardMultiSlotOptions rewardRequest) {
-        return rewardMultiSlotWithResponse(eventId, rewardRequest).flatMap(FluxUtil::toMono);
+    public Mono<Void> rewardMultiSlot(String eventId, PersonalizerRewardMultiSlotOptions rewardMultiSlotOptions) {
+        return rewardMultiSlotWithResponse(eventId, rewardMultiSlotOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -242,27 +249,28 @@ public final class PersonalizerAsyncClient {
      * <p>Report reward that resulted from using the action specified in rewardActionId for the slot.
      *
      * @param eventId The event id this reward applies to.
-     * @param rewardRequest List of slot id and reward values. The reward should be a floating point number, typically between 0
+     * @param rewardMultiSlotOptions List of slot id and reward values. The reward should be a floating point number, typically between 0
      *                      and 1.
      * @return the {@link Response} on successful completion of {@link Mono}.
+     * @throws IllegalArgumentException if rewardMultiSlotOptions is null or eventId is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> rewardMultiSlotWithResponse(String eventId, PersonalizerRewardMultiSlotOptions rewardRequest) {
+    public Mono<Response<Void>> rewardMultiSlotWithResponse(String eventId, PersonalizerRewardMultiSlotOptions rewardMultiSlotOptions) {
         try {
-            return withContext(context -> rewardMultiSlotWithResponse(eventId, rewardRequest, context));
+            return withContext(context -> rewardMultiSlotWithResponse(eventId, rewardMultiSlotOptions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<Void>> rewardMultiSlotWithResponse(String eventId, PersonalizerRewardMultiSlotOptions rewardRequest, Context context) {
+    Mono<Response<Void>> rewardMultiSlotWithResponse(String eventId, PersonalizerRewardMultiSlotOptions rewardMultiSlotOptions, Context context) {
         if (CoreUtils.isNullOrEmpty(eventId)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'eventId' is required and cannot be null or empty"));
         }
-        if (rewardRequest == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'rewardRequest' is required and cannot be null"));
+        if (rewardMultiSlotOptions == null) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'rewardMultiSlotOptions' is required and cannot be null"));
         }
-        return service.getMultiSlotEvents().rewardWithResponseAsync(eventId, rewardRequest, context)
+        return service.getMultiSlotEvents().rewardWithResponseAsync(eventId, rewardMultiSlotOptions, context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -275,6 +283,7 @@ public final class PersonalizerAsyncClient {
      *
      * @param eventId The event ID this activation applies to.
      * @return the completion of {@link Mono}.
+     * @throws IllegalArgumentException if eventId is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> activateMultiSlot(String eventId) {
@@ -289,11 +298,12 @@ public final class PersonalizerAsyncClient {
      *
      * @param eventId The event ID this activation applies to.
      * @return the {@link Response} on successful completion of {@link Mono}.
+     * @throws IllegalArgumentException if eventId is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> activateMultiSlotWithResponse(String eventId) {
         try {
-            return withContext(context -> activateWithResponse(eventId, context));
+            return withContext(context -> activateMultiSlotWithResponse(eventId, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

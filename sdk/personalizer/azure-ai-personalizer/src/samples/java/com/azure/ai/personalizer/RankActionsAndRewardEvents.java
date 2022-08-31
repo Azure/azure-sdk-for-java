@@ -21,8 +21,10 @@ public class RankActionsAndRewardEvents {
      * Main method to invoke this demo.
      *
      * @param args Unused. Arguments to the program.
+     * @throws IllegalArgumentException Exception thrown when endpoint or key is empty.
+     * @throws NullPointerException Exception thrown when endpoint or key is null.
      */
-    public static void main(final String[] args) {
+    public static void main(final String[] args) throws IllegalArgumentException, NullPointerException {
         // Instantiate a client that will be used to call the service.
         PersonalizerClient client = new PersonalizerClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
