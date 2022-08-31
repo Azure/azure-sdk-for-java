@@ -9,9 +9,14 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
+import org.junit.jupiter.params.provider.Arguments;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
+import java.util.stream.Stream;
 
 
 public class EmailTestBase extends TestBase {
@@ -70,5 +75,16 @@ public class EmailTestBase extends TestBase {
         } else {
             return TestMode.PLAYBACK;
         }
+    }
+
+    static Stream<Arguments> getTestParameters() {
+        // When this issues is closed, the newer version of junit will have better support for cartesian product of
+        // arguments - https://github.com/junit-team/junit5/issues/1427
+        List<Arguments> argumentsList = new ArrayList<>();
+
+        getHttpClients()
+            .forEach(httpClient -> Arguments.of(httpClient));
+
+        return argumentsList.stream();
     }
 }
