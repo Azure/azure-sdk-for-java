@@ -5,7 +5,6 @@ package com.azure.xml;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
-import java.io.Closeable;
 import java.util.Base64;
 import java.util.Objects;
 import java.util.function.Function;
@@ -13,7 +12,7 @@ import java.util.function.Function;
 /**
  * Reads an XML encoded value as a stream of tokens.
  */
-public abstract class XmlReader implements Closeable {
+public abstract class XmlReader implements AutoCloseable {
     /**
      * Gets the {@link XmlToken} that the reader points to currently.
      * <p>
@@ -36,6 +35,14 @@ public abstract class XmlReader implements Closeable {
      * @throws XMLStreamException If the next element cannot be determined.
      */
     public abstract XmlToken nextElement() throws XMLStreamException;
+
+    /**
+     * Closes the XML stream.
+     *
+     * @throws XMLStreamException If the underlying content store fails to close.
+     */
+    @Override
+    public abstract void close() throws XMLStreamException;
 
     /**
      * Gets the {@link QName} for the current XML element.

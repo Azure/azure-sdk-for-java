@@ -9,7 +9,6 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
@@ -179,12 +178,8 @@ public final class DefaultXmlReader extends XmlReader {
     }
 
     @Override
-    public void close() throws IOException {
-        try {
-            reader.close();
-        } catch (XMLStreamException e) {
-            throw new IOException(e);
-        }
+    public void close() throws XMLStreamException {
+        reader.close();
     }
 
     private static XmlToken convertEventToToken(int event) {

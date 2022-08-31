@@ -6,7 +6,6 @@ package com.azure.xml;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
@@ -123,11 +122,7 @@ public final class DefaultXmlWriter extends XmlWriter {
     }
 
     @Override
-    public void close() throws IOException {
-        try {
-            writer.close();
-        } catch (XMLStreamException e) {
-            throw new IOException(e);
-        }
+    public void close() throws XMLStreamException {
+        writer.close();
     }
 }

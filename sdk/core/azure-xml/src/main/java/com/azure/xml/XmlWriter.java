@@ -4,15 +4,13 @@
 package com.azure.xml;
 
 import javax.xml.stream.XMLStreamException;
-import java.io.Closeable;
-import java.io.IOException;
 import java.util.Base64;
 
 /**
  * Writes an XML encoded value to a stream.
  */
 @SuppressWarnings("resource")
-public abstract class XmlWriter implements Closeable {
+public abstract class XmlWriter implements AutoCloseable {
     /**
      * Writes the XML document start ({@code <?xml version="1.0" encoding="utf-8?>}).
      * <p>
@@ -812,10 +810,10 @@ public abstract class XmlWriter implements Closeable {
     /**
      * Closes the XML stream.
      *
-     * @throws IOException If the underlying content store fails to close.
+     * @throws XMLStreamException If the underlying content store fails to close.
      */
     @Override
-    public abstract void close() throws IOException;
+    public abstract void close() throws XMLStreamException;
 
     private static String convertBytesToString(byte[] bytes) {
         if (bytes == null) {

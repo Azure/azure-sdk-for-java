@@ -37,6 +37,14 @@ public abstract class JsonReader implements Closeable {
     public abstract JsonToken nextToken() throws IOException;
 
     /**
+     * Closes the JSON stream.
+     *
+     * @throws IOException If the underlying content store fails to close.
+     */
+    @Override
+    public abstract void close() throws IOException;
+
+    /**
      * Whether the {@link #currentToken()} is {@link JsonToken#START_ARRAY} or {@link JsonToken#START_OBJECT}.
      *
      * @return Whether the {@link #currentToken()} is {@link JsonToken#START_ARRAY} or {@link JsonToken#START_OBJECT}.
