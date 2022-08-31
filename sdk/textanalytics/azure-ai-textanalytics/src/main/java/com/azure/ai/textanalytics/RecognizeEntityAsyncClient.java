@@ -31,7 +31,7 @@ import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRAC
 import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
-import static com.azure.ai.textanalytics.implementation.Utility.throwIfLegacyApiVersion;
+import static com.azure.ai.textanalytics.implementation.Utility.throwIfTargetServiceVersionFound;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsException;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -190,7 +190,7 @@ class RecognizeEntityAsyncClient {
 
     private void throwIfCallingNotAvailableFeatureInOptions(TextAnalyticsRequestOptions options) {
         if (options != null && options.isServiceLogsDisabled()) {
-            throwIfLegacyApiVersion(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+            throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
                 "'disableServiceLogs' is only available for API version v3.1 and up.");
         }
     }

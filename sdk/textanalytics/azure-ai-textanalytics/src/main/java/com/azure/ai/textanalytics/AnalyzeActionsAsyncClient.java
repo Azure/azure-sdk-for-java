@@ -137,7 +137,7 @@ import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INT
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
 import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
-import static com.azure.ai.textanalytics.implementation.Utility.throwIfLegacyApiVersion;
+import static com.azure.ai.textanalytics.implementation.Utility.throwIfTargetServiceVersionFound;
 import static com.azure.ai.textanalytics.implementation.Utility.toAnalyzeHealthcareEntitiesResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toAnalyzeSentimentResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toCategoriesFilter;
@@ -200,7 +200,7 @@ class AnalyzeActionsAsyncClient {
         Context context) {
         try {
             Objects.requireNonNull(actions, "'actions' cannot be null.");
-            throwIfLegacyApiVersion(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+            throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
                 "'beginAnalyzeActions' is only available for API version v3.1 and up.");
             inputDocumentsValidation(documents);
             options = getNotNullAnalyzeActionsOptions(options);
@@ -209,9 +209,6 @@ class AnalyzeActionsAsyncClient {
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
 
             if (service != null) {
-                throwIfLegacyApiVersionForActions(actions,
-                    Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1),
-                    this.serviceVersion);
                 final AnalyzeTextJobsInput analyzeTextJobsInput =
                     new AnalyzeTextJobsInput()
                         .setDisplayName(actions.getDisplayName())
@@ -240,9 +237,8 @@ class AnalyzeActionsAsyncClient {
                 );
             }
 
-            throwIfLegacyApiVersionForActions(actions,
-                Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1),
-                this.serviceVersion);
+            throwIfTargetServiceVersionFoundForActions(this.serviceVersion,
+                Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1), actions);
             final AnalyzeBatchInput analyzeBatchInput =
                 new AnalyzeBatchInput()
                     .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)))
@@ -277,7 +273,7 @@ class AnalyzeActionsAsyncClient {
         Context context) {
         try {
             Objects.requireNonNull(actions, "'actions' cannot be null.");
-            throwIfLegacyApiVersion(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+            throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
                 "'beginAnalyzeActions' is only available for API version v3.1 and up.");
             inputDocumentsValidation(documents);
             options = getNotNullAnalyzeActionsOptions(options);
@@ -291,9 +287,6 @@ class AnalyzeActionsAsyncClient {
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
 
             if (service != null) {
-                throwIfLegacyApiVersionForActions(actions,
-                    Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1),
-                    this.serviceVersion);
                 return new PollerFlux<>(
                     DEFAULT_POLL_INTERVAL,
                     activationOperation(
@@ -320,9 +313,8 @@ class AnalyzeActionsAsyncClient {
                 );
             }
 
-            throwIfLegacyApiVersionForActions(actions,
-                Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1),
-                this.serviceVersion);
+            throwIfTargetServiceVersionFoundForActions(this.serviceVersion,
+                Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1), actions);
             return new PollerFlux<>(
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(
@@ -1307,25 +1299,25 @@ class AnalyzeActionsAsyncClient {
         return taskNameIdPair;
     }
 
-    private void throwIfLegacyApiVersionForActions(TextAnalyticsActions actions,
-        List<TextAnalyticsServiceVersion> targetVersions, TextAnalyticsServiceVersion version) {
+    private void throwIfTargetServiceVersionFoundForActions(TextAnalyticsServiceVersion sourceVersion,
+        List<TextAnalyticsServiceVersion> targetVersions, TextAnalyticsActions actions) {
         if (actions.getMultiLabelClassifyActions() != null) {
-            throwIfLegacyApiVersion(version, targetVersions,
+            throwIfTargetServiceVersionFound(sourceVersion, targetVersions,
                 "'MultiLabelClassifyAction' is only available for API version 2022-05-01 and up.");
         }
 
         if (actions.getSingleLabelClassifyActions() != null) {
-            throwIfLegacyApiVersion(version, targetVersions,
+            throwIfTargetServiceVersionFound(sourceVersion, targetVersions,
                 "'SingleLabelClassifyAction' is only available for API version 2022-05-01 and up.");
         }
 
         if (actions.getRecognizeCustomEntitiesActions() != null) {
-            throwIfLegacyApiVersion(version, targetVersions,
+            throwIfTargetServiceVersionFound(sourceVersion, targetVersions,
                 "'RecognizeCustomEntitiesAction' is only available for API version 2022-05-01 and up.");
         }
 
         if (actions.getAnalyzeHealthcareEntitiesActions() != null) {
-            throwIfLegacyApiVersion(version, targetVersions,
+            throwIfTargetServiceVersionFound(sourceVersion, targetVersions,
                 "'AnalyzeHealthcareEntitiesAction' is only available for API version 2022-05-01 and up.");
         }
     }

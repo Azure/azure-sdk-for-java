@@ -58,7 +58,7 @@ import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContex
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
 import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
-import static com.azure.ai.textanalytics.implementation.Utility.throwIfLegacyApiVersion;
+import static com.azure.ai.textanalytics.implementation.Utility.throwIfTargetServiceVersionFound;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toRecognizeCustomEntitiesResultCollection;
 import static com.azure.ai.textanalytics.implementation.models.State.CANCELLED;
@@ -84,7 +84,7 @@ class RecognizeCustomEntitiesAsyncClient {
         Iterable<TextDocumentInput> documents, String projectName, String deploymentName,
         RecognizeCustomEntitiesOptions options, Context context) {
         try {
-            throwIfLegacyApiVersion(this.serviceVersion,
+            throwIfTargetServiceVersionFound(this.serviceVersion,
                 Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1),
                 "'beginRecognizeCustomEntities' is only available for API version 2022-05-01 and up.");
             inputDocumentsValidation(documents);
@@ -135,7 +135,7 @@ class RecognizeCustomEntitiesAsyncClient {
         recognizeCustomEntitiesPagedIterable(Iterable<TextDocumentInput> documents,
             String projectName, String deploymentName, RecognizeCustomEntitiesOptions options, Context context) {
         try {
-            throwIfLegacyApiVersion(this.serviceVersion,
+            throwIfTargetServiceVersionFound(this.serviceVersion,
                 Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1),
                 "'beginRecognizeCustomEntities' is only available for API version 2022-05-01 and up.");
             inputDocumentsValidation(documents);

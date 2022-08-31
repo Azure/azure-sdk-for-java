@@ -31,7 +31,7 @@ import java.util.Objects;
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
-import static com.azure.ai.textanalytics.implementation.Utility.throwIfLegacyApiVersion;
+import static com.azure.ai.textanalytics.implementation.Utility.throwIfTargetServiceVersionFound;
 import static com.azure.ai.textanalytics.implementation.Utility.toCategoriesFilter;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsException;
@@ -76,7 +76,7 @@ class RecognizePiiEntityAsyncClient {
     Mono<PiiEntityCollection> recognizePiiEntities(String document, String language,
         RecognizePiiEntitiesOptions options) {
         try {
-            throwIfLegacyApiVersion(this.serviceVersion,
+            throwIfTargetServiceVersionFound(this.serviceVersion,
                 Arrays.asList(TextAnalyticsServiceVersion.V3_0),
                 "'recognizePiiEntities' is only available for API version v3.1 and up.");
             Objects.requireNonNull(document, "'document' cannot be null.");
@@ -147,10 +147,11 @@ class RecognizePiiEntityAsyncClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A mono {@link Response} that contains {@link RecognizePiiEntitiesResultCollection}.
+     *
      */
     private Mono<Response<RecognizePiiEntitiesResultCollection>> getRecognizePiiEntitiesResponse(
         Iterable<TextDocumentInput> documents, RecognizePiiEntitiesOptions options, Context context) {
-        throwIfLegacyApiVersion(this.serviceVersion,
+        throwIfTargetServiceVersionFound(this.serviceVersion,
             Arrays.asList(TextAnalyticsServiceVersion.V3_0),
             "'recognizePiiEntitiesBatch' is only available for API version v3.1 and up.");
         inputDocumentsValidation(documents);

@@ -1350,12 +1350,12 @@ public final class Utility {
         return assessments.get(assessmentIndex);
     }
 
-    public static void throwIfLegacyApiVersion(TextAnalyticsServiceVersion version,
-                                               List<TextAnalyticsServiceVersion> targetVersions,
-                                               String errorMessage) {
+    public static void throwIfTargetServiceVersionFound(TextAnalyticsServiceVersion sourceVersion,
+                                                        List<TextAnalyticsServiceVersion> targetVersions,
+                                                        String errorMessage) {
         for (TextAnalyticsServiceVersion targetVersion : targetVersions) {
-            if (targetVersion != null && version != null
-                && targetVersion.getVersion().equals(version.getVersion())) {
+            if (targetVersion != null && sourceVersion != null
+                && targetVersion.getVersion().equals(sourceVersion.getVersion())) {
                 throw LOGGER.logExceptionAsError(new IllegalStateException(errorMessage));
             }
         }
