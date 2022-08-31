@@ -87,8 +87,8 @@ class RecognizeCustomEntitiesAsyncClient {
         try {
             throwIfTargetServiceVersionFound(this.serviceVersion,
                 Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1),
-                getUnsupportedServiceApiVersionMessage("beginRecognizeCustomEntities",
-                    TextAnalyticsServiceVersion.V2022_05_01.getVersion()));
+                getUnsupportedServiceApiVersionMessage("beginRecognizeCustomEntities", serviceVersion,
+                    TextAnalyticsServiceVersion.V2022_05_01));
             inputDocumentsValidation(documents);
             options = getNotNullRecognizeCustomEntitiesOptions(options);
             final Context finalContext = getNotNullContext(context)
@@ -139,8 +139,8 @@ class RecognizeCustomEntitiesAsyncClient {
         try {
             throwIfTargetServiceVersionFound(this.serviceVersion,
                 Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1),
-                getUnsupportedServiceApiVersionMessage("beginRecognizeCustomEntities",
-                    TextAnalyticsServiceVersion.V2022_05_01.getVersion()));
+                getUnsupportedServiceApiVersionMessage("beginRecognizeCustomEntities", serviceVersion,
+                    TextAnalyticsServiceVersion.V2022_05_01));
             inputDocumentsValidation(documents);
             options = getNotNullRecognizeCustomEntitiesOptions(options);
             final Context finalContext = getNotNullContext(context)

@@ -202,8 +202,8 @@ class AnalyzeActionsAsyncClient {
         try {
             Objects.requireNonNull(actions, "'actions' cannot be null.");
             throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
-                getUnsupportedServiceApiVersionMessage("beginAnalyzeActions",
-                    TextAnalyticsServiceVersion.V3_1.getVersion()));
+                getUnsupportedServiceApiVersionMessage("beginAnalyzeActions", serviceVersion,
+                    TextAnalyticsServiceVersion.V3_1));
             inputDocumentsValidation(documents);
             options = getNotNullAnalyzeActionsOptions(options);
             final Context finalContext = getNotNullContext(context)
@@ -276,8 +276,8 @@ class AnalyzeActionsAsyncClient {
         try {
             Objects.requireNonNull(actions, "'actions' cannot be null.");
             throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
-                getUnsupportedServiceApiVersionMessage("beginAnalyzeActions",
-                    TextAnalyticsServiceVersion.V3_1.getVersion()));
+                getUnsupportedServiceApiVersionMessage("beginAnalyzeActions", serviceVersion,
+                    TextAnalyticsServiceVersion.V3_1));
             inputDocumentsValidation(documents);
             options = getNotNullAnalyzeActionsOptions(options);
             final Context finalContext = getNotNullContext(context)
@@ -1306,26 +1306,26 @@ class AnalyzeActionsAsyncClient {
         List<TextAnalyticsServiceVersion> targetVersions, TextAnalyticsActions actions) {
         if (actions.getMultiLabelClassifyActions() != null) {
             throwIfTargetServiceVersionFound(sourceVersion, targetVersions,
-                getUnsupportedServiceApiVersionMessage("MultiLabelClassifyAction",
-                    TextAnalyticsServiceVersion.V2022_05_01.getVersion()));
+                getUnsupportedServiceApiVersionMessage("MultiLabelClassifyAction", serviceVersion,
+                    TextAnalyticsServiceVersion.V2022_05_01));
         }
 
         if (actions.getSingleLabelClassifyActions() != null) {
             throwIfTargetServiceVersionFound(sourceVersion, targetVersions,
-                getUnsupportedServiceApiVersionMessage("SingleLabelClassifyAction",
-                    TextAnalyticsServiceVersion.V2022_05_01.getVersion()));
+                getUnsupportedServiceApiVersionMessage("SingleLabelClassifyAction", serviceVersion,
+                    TextAnalyticsServiceVersion.V2022_05_01));
         }
 
         if (actions.getRecognizeCustomEntitiesActions() != null) {
             throwIfTargetServiceVersionFound(sourceVersion, targetVersions,
-                getUnsupportedServiceApiVersionMessage("RecognizeCustomEntitiesAction",
-                    TextAnalyticsServiceVersion.V2022_05_01.getVersion()));
+                getUnsupportedServiceApiVersionMessage("RecognizeCustomEntitiesAction", serviceVersion,
+                    TextAnalyticsServiceVersion.V2022_05_01));
         }
 
         if (actions.getAnalyzeHealthcareEntitiesActions() != null) {
             throwIfTargetServiceVersionFound(sourceVersion, targetVersions,
-                getUnsupportedServiceApiVersionMessage("AnalyzeHealthcareEntitiesAction",
-                    TextAnalyticsServiceVersion.V2022_05_01.getVersion()));
+                getUnsupportedServiceApiVersionMessage("AnalyzeHealthcareEntitiesAction", serviceVersion,
+                    TextAnalyticsServiceVersion.V2022_05_01));
         }
     }
 }

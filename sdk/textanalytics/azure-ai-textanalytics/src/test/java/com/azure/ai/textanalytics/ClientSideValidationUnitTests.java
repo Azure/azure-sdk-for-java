@@ -34,45 +34,51 @@ public class ClientSideValidationUnitTests {
     static TextAnalyticsAsyncClient asyncClientV30;
     static TextAnalyticsAsyncClient asyncClientV31;
     static List<String> dummyDocument = Arrays.asList("A tree", "Be good");
-
-    static final String MIN_V3_1_ERROR_MESSAGE = " is only available for API version v3.1 and newer.";
     static final String DISABLE_SERVICE_LOGS_ERROR_MESSAGE =
         getUnsupportedServiceApiVersionMessage("TextAnalyticsRequestOptions.disableServiceLogs",
-            TextAnalyticsServiceVersion.V3_1.getVersion());
+            TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1);
     static final String RECOGNIZE_PII_ENTITIES_ERROR_MESSAGE =
-        getUnsupportedServiceApiVersionMessage("recognizePiiEntitiesBatch",
-            TextAnalyticsServiceVersion.V3_1.getVersion());
+        getUnsupportedServiceApiVersionMessage("recognizePiiEntitiesBatch", TextAnalyticsServiceVersion.V3_0,
+            TextAnalyticsServiceVersion.V3_1);
     static final String OPINION_MINING_ERROR_MESSAGE =
         getUnsupportedServiceApiVersionMessage("AnalyzeSentimentOptions.includeOpinionMining",
-            TextAnalyticsServiceVersion.V3_1.getVersion());
+            TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1);
     static final String ANALYZE_ACTIONS_ERROR_MESSAGE =
-        getUnsupportedServiceApiVersionMessage("beginAnalyzeActions",
-            TextAnalyticsServiceVersion.V3_1.getVersion());
+        getUnsupportedServiceApiVersionMessage("beginAnalyzeActions", TextAnalyticsServiceVersion.V3_0,
+            TextAnalyticsServiceVersion.V3_1);
     static final String HEALTHCARE_ENTITIES_ACTION_ERROR_MESSAGE =
-        getUnsupportedServiceApiVersionMessage("AnalyzeHealthcareEntitiesAction",
-            TextAnalyticsServiceVersion.V2022_05_01.getVersion());
+        getUnsupportedServiceApiVersionMessage("AnalyzeHealthcareEntitiesAction", TextAnalyticsServiceVersion.V3_1,
+            TextAnalyticsServiceVersion.V2022_05_01);
     static final String CUSTOM_ENTITIES_ACTION_ERROR_MESSAGE =
-        getUnsupportedServiceApiVersionMessage("RecognizeCustomEntitiesAction",
-            TextAnalyticsServiceVersion.V2022_05_01.getVersion());
+        getUnsupportedServiceApiVersionMessage("RecognizeCustomEntitiesAction", TextAnalyticsServiceVersion.V3_1,
+            TextAnalyticsServiceVersion.V2022_05_01);
     static final String SINGLE_LABEL_ACTION_ERROR_MESSAGE =
-        getUnsupportedServiceApiVersionMessage("SingleLabelClassifyAction",
-            TextAnalyticsServiceVersion.V2022_05_01.getVersion());
+        getUnsupportedServiceApiVersionMessage("SingleLabelClassifyAction", TextAnalyticsServiceVersion.V3_1,
+            TextAnalyticsServiceVersion.V2022_05_01);
     static final String MULTI_LABEL_ACTION_ERROR_MESSAGE =
-        getUnsupportedServiceApiVersionMessage("MultiLabelClassifyAction",
-        TextAnalyticsServiceVersion.V2022_05_01.getVersion());
+        getUnsupportedServiceApiVersionMessage("MultiLabelClassifyAction", TextAnalyticsServiceVersion.V3_1,
+            TextAnalyticsServiceVersion.V2022_05_01);
     static final String ANALYZE_HEALTHCARE_ENTITIES_ERROR_MESSAGE =
         getUnsupportedServiceApiVersionMessage("beginAnalyzeHealthcareEntities",
-            TextAnalyticsServiceVersion.V3_1.getVersion());
-    static final String RECOGNIZE_CUSTOM_ENTITIES_ERROR_MESSAGE =
+            TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1);
+    static final String RECOGNIZE_CUSTOM_ENTITIES_ERROR_MESSAGE_30 =
         getUnsupportedServiceApiVersionMessage("beginRecognizeCustomEntities",
-            TextAnalyticsServiceVersion.V2022_05_01.getVersion());
-    static final String SINGLE_LABEL_CLASSIFY_ERROR_MESSAGE =
-        getUnsupportedServiceApiVersionMessage("beginSingleLabelClassify",
-            TextAnalyticsServiceVersion.V2022_05_01.getVersion());
-    static final String MULTI_LABEL_CLASSIFY_ERROR_MESSAGE =
-        getUnsupportedServiceApiVersionMessage("beginMultiLabelClassify",
-            TextAnalyticsServiceVersion.V2022_05_01.getVersion());
-
+            TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V2022_05_01);
+    static final String RECOGNIZE_CUSTOM_ENTITIES_ERROR_MESSAGE_31 =
+        getUnsupportedServiceApiVersionMessage("beginRecognizeCustomEntities",
+            TextAnalyticsServiceVersion.V3_1, TextAnalyticsServiceVersion.V2022_05_01);
+    static final String SINGLE_LABEL_CLASSIFY_ERROR_MESSAGE_30 =
+        getUnsupportedServiceApiVersionMessage("beginSingleLabelClassify", TextAnalyticsServiceVersion.V3_0,
+            TextAnalyticsServiceVersion.V2022_05_01);
+    static final String SINGLE_LABEL_CLASSIFY_ERROR_MESSAGE_31 =
+        getUnsupportedServiceApiVersionMessage("beginSingleLabelClassify", TextAnalyticsServiceVersion.V3_1,
+            TextAnalyticsServiceVersion.V2022_05_01);
+    static final String MULTI_LABEL_CLASSIFY_ERROR_MESSAGE_30 =
+        getUnsupportedServiceApiVersionMessage("beginMultiLabelClassify", TextAnalyticsServiceVersion.V3_0,
+            TextAnalyticsServiceVersion.V2022_05_01);
+    static final String MULTI_LABEL_CLASSIFY_ERROR_MESSAGE_31 =
+        getUnsupportedServiceApiVersionMessage("beginMultiLabelClassify", TextAnalyticsServiceVersion.V3_1,
+            TextAnalyticsServiceVersion.V2022_05_01);
     static final String PROJECT_NAME = "project-name";
     static final String DEPLOYMENT_NAME = "deployment-name";
     static final String LANGUAGE_EN = "en";
@@ -302,22 +308,22 @@ public class ClientSideValidationUnitTests {
                 null, null))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalStateException.class, exception.getClass());
-                assertEquals(RECOGNIZE_CUSTOM_ENTITIES_ERROR_MESSAGE, exception.getMessage());
+                assertEquals(RECOGNIZE_CUSTOM_ENTITIES_ERROR_MESSAGE_30, exception.getMessage());
             });
         StepVerifier.create(asyncClientV31.beginRecognizeCustomEntities(dummyDocument, PROJECT_NAME, DEPLOYMENT_NAME,
                 null, null))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalStateException.class, exception.getClass());
-                assertEquals(RECOGNIZE_CUSTOM_ENTITIES_ERROR_MESSAGE, exception.getMessage());
+                assertEquals(RECOGNIZE_CUSTOM_ENTITIES_ERROR_MESSAGE_31, exception.getMessage());
             });
         // Sync
         IllegalStateException exception30 = assertThrows(IllegalStateException.class,
             () -> clientV30.beginRecognizeCustomEntities(dummyDocument, PROJECT_NAME, DEPLOYMENT_NAME, null, null));
-        assertEquals(RECOGNIZE_CUSTOM_ENTITIES_ERROR_MESSAGE, exception30.getMessage());
+        assertEquals(RECOGNIZE_CUSTOM_ENTITIES_ERROR_MESSAGE_30, exception30.getMessage());
 
         IllegalStateException exception31 = assertThrows(IllegalStateException.class,
             () -> clientV31.beginRecognizeCustomEntities(dummyDocument, PROJECT_NAME, DEPLOYMENT_NAME, null, null));
-        assertEquals(RECOGNIZE_CUSTOM_ENTITIES_ERROR_MESSAGE, exception31.getMessage());
+        assertEquals(RECOGNIZE_CUSTOM_ENTITIES_ERROR_MESSAGE_31, exception31.getMessage());
     }
 
     @Test
@@ -327,23 +333,23 @@ public class ClientSideValidationUnitTests {
                 null, null))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalStateException.class, exception.getClass());
-                assertEquals(SINGLE_LABEL_CLASSIFY_ERROR_MESSAGE, exception.getMessage());
+                assertEquals(SINGLE_LABEL_CLASSIFY_ERROR_MESSAGE_30, exception.getMessage());
             });
         StepVerifier.create(asyncClientV31.beginSingleLabelClassify(dummyDocument, PROJECT_NAME, DEPLOYMENT_NAME,
                 null, null))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalStateException.class, exception.getClass());
-                assertEquals(SINGLE_LABEL_CLASSIFY_ERROR_MESSAGE, exception.getMessage());
+                assertEquals(SINGLE_LABEL_CLASSIFY_ERROR_MESSAGE_31, exception.getMessage());
             });
 
         // Sync
         IllegalStateException exception30 = assertThrows(IllegalStateException.class,
             () -> clientV30.beginSingleLabelClassify(dummyDocument, PROJECT_NAME, DEPLOYMENT_NAME, null, null));
-        assertEquals(SINGLE_LABEL_CLASSIFY_ERROR_MESSAGE, exception30.getMessage());
+        assertEquals(SINGLE_LABEL_CLASSIFY_ERROR_MESSAGE_30, exception30.getMessage());
 
         IllegalStateException exception31 = assertThrows(IllegalStateException.class,
             () -> clientV31.beginSingleLabelClassify(dummyDocument, PROJECT_NAME, DEPLOYMENT_NAME, null, null));
-        assertEquals(SINGLE_LABEL_CLASSIFY_ERROR_MESSAGE, exception31.getMessage());
+        assertEquals(SINGLE_LABEL_CLASSIFY_ERROR_MESSAGE_31, exception31.getMessage());
     }
 
     @Test
@@ -353,22 +359,22 @@ public class ClientSideValidationUnitTests {
                 null, null))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalStateException.class, exception.getClass());
-                assertEquals(MULTI_LABEL_CLASSIFY_ERROR_MESSAGE, exception.getMessage());
+                assertEquals(MULTI_LABEL_CLASSIFY_ERROR_MESSAGE_30, exception.getMessage());
             });
         StepVerifier.create(asyncClientV31.beginMultiLabelClassify(dummyDocument, PROJECT_NAME, DEPLOYMENT_NAME,
                 null, null))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalStateException.class, exception.getClass());
-                assertEquals(MULTI_LABEL_CLASSIFY_ERROR_MESSAGE, exception.getMessage());
+                assertEquals(MULTI_LABEL_CLASSIFY_ERROR_MESSAGE_31, exception.getMessage());
             });
 
         // Sync
         IllegalStateException exception30 = assertThrows(IllegalStateException.class,
             () -> clientV30.beginMultiLabelClassify(dummyDocument, PROJECT_NAME, DEPLOYMENT_NAME, null, null));
-        assertEquals(MULTI_LABEL_CLASSIFY_ERROR_MESSAGE, exception30.getMessage());
+        assertEquals(MULTI_LABEL_CLASSIFY_ERROR_MESSAGE_30, exception30.getMessage());
 
         IllegalStateException exception31 = assertThrows(IllegalStateException.class,
             () -> clientV31.beginMultiLabelClassify(dummyDocument, PROJECT_NAME,  DEPLOYMENT_NAME, null, null));
-        assertEquals(MULTI_LABEL_CLASSIFY_ERROR_MESSAGE, exception31.getMessage());
+        assertEquals(MULTI_LABEL_CLASSIFY_ERROR_MESSAGE_31, exception31.getMessage());
     }
 }

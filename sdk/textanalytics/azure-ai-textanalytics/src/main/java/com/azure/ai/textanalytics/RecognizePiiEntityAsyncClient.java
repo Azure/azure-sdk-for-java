@@ -79,8 +79,8 @@ class RecognizePiiEntityAsyncClient {
         try {
             throwIfTargetServiceVersionFound(this.serviceVersion,
                 Arrays.asList(TextAnalyticsServiceVersion.V3_0),
-                getUnsupportedServiceApiVersionMessage("recognizePiiEntitiesBatch",
-                    TextAnalyticsServiceVersion.V3_1.getVersion()));
+                getUnsupportedServiceApiVersionMessage("recognizePiiEntitiesBatch", serviceVersion,
+                    TextAnalyticsServiceVersion.V3_1));
             Objects.requireNonNull(document, "'document' cannot be null.");
             return recognizePiiEntitiesBatch(
                 Collections.singletonList(new TextDocumentInput("0", document).setLanguage(language)), options)
@@ -155,8 +155,8 @@ class RecognizePiiEntityAsyncClient {
         Iterable<TextDocumentInput> documents, RecognizePiiEntitiesOptions options, Context context) {
         throwIfTargetServiceVersionFound(this.serviceVersion,
             Arrays.asList(TextAnalyticsServiceVersion.V3_0),
-            getUnsupportedServiceApiVersionMessage("recognizePiiEntitiesBatch",
-                TextAnalyticsServiceVersion.V3_1.getVersion()));
+            getUnsupportedServiceApiVersionMessage("recognizePiiEntitiesBatch", serviceVersion,
+                TextAnalyticsServiceVersion.V3_1));
         inputDocumentsValidation(documents);
         options = options == null ? new RecognizePiiEntitiesOptions() : options;
         final Context finalContext = getNotNullContext(context)

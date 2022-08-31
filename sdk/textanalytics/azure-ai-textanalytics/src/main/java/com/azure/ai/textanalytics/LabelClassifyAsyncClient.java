@@ -89,8 +89,8 @@ class LabelClassifyAsyncClient {
         try {
             throwIfTargetServiceVersionFound(this.serviceVersion,
                 Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1),
-                getUnsupportedServiceApiVersionMessage("beginSingleLabelClassify",
-                    TextAnalyticsServiceVersion.V2022_05_01.getVersion()));
+                getUnsupportedServiceApiVersionMessage("beginSingleLabelClassify", serviceVersion,
+                    TextAnalyticsServiceVersion.V2022_05_01));
             inputDocumentsValidation(documents);
             options = getNotNullSingleLabelClassifyOptions(options);
             final Context finalContext = getNotNullContext(context)
@@ -140,8 +140,8 @@ class LabelClassifyAsyncClient {
         try {
             throwIfTargetServiceVersionFound(this.serviceVersion,
                 Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1),
-                getUnsupportedServiceApiVersionMessage("beginSingleLabelClassify",
-                    TextAnalyticsServiceVersion.V2022_05_01.getVersion()));
+                getUnsupportedServiceApiVersionMessage("beginSingleLabelClassify", serviceVersion,
+                    TextAnalyticsServiceVersion.V2022_05_01));
             inputDocumentsValidation(documents);
             options = getNotNullSingleLabelClassifyOptions(options);
             final Context finalContext = getNotNullContext(context)
@@ -191,8 +191,8 @@ class LabelClassifyAsyncClient {
         try {
             throwIfTargetServiceVersionFound(this.serviceVersion,
                 Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1),
-                getUnsupportedServiceApiVersionMessage("beginMultiLabelClassify",
-                    TextAnalyticsServiceVersion.V2022_05_01.getVersion()));
+                getUnsupportedServiceApiVersionMessage("beginMultiLabelClassify", serviceVersion,
+                    TextAnalyticsServiceVersion.V2022_05_01));
             inputDocumentsValidation(documents);
             options = getNotNullMultiLabelClassifyOptions(options);
             final Context finalContext = getNotNullContext(context)
@@ -242,8 +242,8 @@ class LabelClassifyAsyncClient {
         try {
             throwIfTargetServiceVersionFound(this.serviceVersion,
                 Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1),
-                getUnsupportedServiceApiVersionMessage("beginMultiLabelClassify",
-                    TextAnalyticsServiceVersion.V2022_05_01.getVersion()));
+                getUnsupportedServiceApiVersionMessage("beginMultiLabelClassify", serviceVersion,
+                    TextAnalyticsServiceVersion.V2022_05_01));
             inputDocumentsValidation(documents);
             options = getNotNullMultiLabelClassifyOptions(options);
             final Context finalContext = getNotNullContext(context)

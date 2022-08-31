@@ -98,8 +98,8 @@ class AnalyzeHealthcareEntityAsyncClient {
         try {
             throwIfTargetServiceVersionFound(this.serviceVersion,
                 Arrays.asList(TextAnalyticsServiceVersion.V3_0),
-                getUnsupportedServiceApiVersionMessage("beginAnalyzeHealthcareEntities",
-                    TextAnalyticsServiceVersion.V3_1.getVersion()));
+                getUnsupportedServiceApiVersionMessage("beginAnalyzeHealthcareEntities", serviceVersion,
+                    TextAnalyticsServiceVersion.V3_1));
             inputDocumentsValidation(documents);
             options = getNotNullAnalyzeHealthcareEntitiesOptions(options);
             final Context finalContext = getNotNullContext(context)
@@ -175,8 +175,8 @@ class AnalyzeHealthcareEntityAsyncClient {
         try {
             throwIfTargetServiceVersionFound(this.serviceVersion,
                 Arrays.asList(TextAnalyticsServiceVersion.V3_0),
-                getUnsupportedServiceApiVersionMessage("beginAnalyzeHealthcareEntities",
-                    TextAnalyticsServiceVersion.V3_1.getVersion()));
+                getUnsupportedServiceApiVersionMessage("beginAnalyzeHealthcareEntities", serviceVersion,
+                    TextAnalyticsServiceVersion.V3_1));
             inputDocumentsValidation(documents);
             options = getNotNullAnalyzeHealthcareEntitiesOptions(options);
             final Context finalContext = getNotNullContext(context)

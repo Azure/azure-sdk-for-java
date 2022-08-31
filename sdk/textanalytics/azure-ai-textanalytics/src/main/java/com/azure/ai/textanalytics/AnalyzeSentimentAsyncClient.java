@@ -163,12 +163,12 @@ class AnalyzeSentimentAsyncClient {
         if (options.isIncludeOpinionMining()) {
             throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
                 getUnsupportedServiceApiVersionMessage("AnalyzeSentimentOptions.includeOpinionMining",
-                    TextAnalyticsServiceVersion.V3_1.getVersion()));
+                    serviceVersion, TextAnalyticsServiceVersion.V3_1));
         }
         if (options.isServiceLogsDisabled()) {
             throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
                 getUnsupportedServiceApiVersionMessage("TextAnalyticsRequestOptions.disableServiceLogs",
-                    TextAnalyticsServiceVersion.V3_1.getVersion()));
+                    serviceVersion, TextAnalyticsServiceVersion.V3_1));
         }
     }
 }

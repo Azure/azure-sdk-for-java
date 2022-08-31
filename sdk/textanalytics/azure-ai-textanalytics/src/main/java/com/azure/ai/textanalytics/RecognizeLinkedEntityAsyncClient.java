@@ -194,7 +194,7 @@ class RecognizeLinkedEntityAsyncClient {
         if (options != null && options.isServiceLogsDisabled()) {
             throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
                 getUnsupportedServiceApiVersionMessage("TextAnalyticsRequestOptions.disableServiceLogs",
-                    TextAnalyticsServiceVersion.V3_1.getVersion()));
+                    serviceVersion, TextAnalyticsServiceVersion.V3_1));
         }
     }
 }

@@ -1373,12 +1373,13 @@ public final class Utility {
      * Retrieve custom unsupported Service API version error message.
      *
      * @param unsupportedName The unsupported API or property name that the not available in 'minSupportedVersion'.
+     * @param sourceVersion The source service API version that client is using.
      * @param minSupportedVersion The minimum supported Service API version.
-     *
      * @return The error message.
      */
-    public static String getUnsupportedServiceApiVersionMessage(String unsupportedName, String minSupportedVersion) {
+    public static String getUnsupportedServiceApiVersionMessage(String unsupportedName,
+        TextAnalyticsServiceVersion sourceVersion, TextAnalyticsServiceVersion minSupportedVersion) {
         return String.format("'%s' is not available in API version %s. Use service API version '%s' or newer.",
-            unsupportedName, minSupportedVersion, minSupportedVersion);
+            unsupportedName, sourceVersion, minSupportedVersion);
     }
 }
