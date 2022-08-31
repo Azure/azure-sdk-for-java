@@ -46,9 +46,6 @@ extends:
         mvn --version
       displayName: Print Java Versions
     ${{ if contains(parameters.AdditionalArguments, '--profiling') }}:
-      PreRunSteps:
-        - pwsh: |
-            New-Item -Path $(Agent.BuildDirectory)/s -Name "java-profiling" -ItemType "directory"
       PostRunSteps:
         - pwsh: |
             [System.IO.Compression.ZipFile]::CreateFromDirectory("$(Agent.BuildDirectory)/s/java-profiling","$(Agent.BuildDirectory)/s/java-profiling.zip")
