@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.Locale;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("appconfiguration")
 public class AppConfigurationIT {
@@ -30,7 +32,9 @@ public class AppConfigurationIT {
     @Test
     public void testAppConfigurationOperation() {
         LOGGER.info("AppConfigurationIT begin.");
-        LOGGER.info("The set appconfiguration endpoint is [{}]", endpoint);
+        LOGGER.info("The set appconfiguration endpoint is [{}]", endpoint.toUpperCase(Locale.ROOT));
+        LOGGER.info("The set appconfiguration endpoint is [{}]", endpoint.substring(0, 5));
+        LOGGER.info("The set appconfiguration endpoint is [{}]", endpoint.substring(5));
         client.addConfigurationSetting(SAMPLE_KEY, SAMPLE_LABEL, SAMPLE_VALUE);
         ConfigurationSetting configurationSetting = client.getConfigurationSetting(SAMPLE_KEY, SAMPLE_LABEL);
         Assertions.assertEquals(SAMPLE_VALUE, configurationSetting.getValue());
