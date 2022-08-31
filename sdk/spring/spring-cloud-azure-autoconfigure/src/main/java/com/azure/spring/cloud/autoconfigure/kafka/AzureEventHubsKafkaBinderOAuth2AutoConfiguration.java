@@ -5,7 +5,6 @@ package com.azure.spring.cloud.autoconfigure.kafka;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.stream.binder.kafka.config.KafkaBinderConfiguration;
 import org.springframework.context.annotation.Bean;
 
@@ -18,7 +17,6 @@ import org.springframework.context.annotation.Bean;
  * @since 4.4.0
  */
 @ConditionalOnClass(KafkaBinderConfiguration.class)
-@ConditionalOnProperty(value = "spring.cloud.azure.eventhubs.kafka.enabled", havingValue = "true", matchIfMissing = true)
 public class AzureEventHubsKafkaBinderOAuth2AutoConfiguration {
 
     @Bean

@@ -51,15 +51,6 @@ abstract class AbstractAzureKafkaOAuth2AutoConfigurationTests {
     }
 
     @Test
-    void shouldNotConfigureWhenKafkaDisabled() {
-        this.contextRunner
-                .withPropertyValues("spring.cloud.azure.eventhubs.kafka.enabled=false")
-                .run(context -> {
-                    assertThat(context).doesNotHaveBean(AzureEventHubsKafkaOAuth2AutoConfiguration.class);
-                });
-    }
-
-    @Test
     void shouldConfigureFactoryCustomizersAndBPP() {
         this.contextRunner
                 .run(context -> {
