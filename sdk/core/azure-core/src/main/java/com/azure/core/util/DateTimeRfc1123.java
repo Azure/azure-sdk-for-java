@@ -178,183 +178,173 @@ public final class DateTimeRfc1123 {
         // ensure datetime is UTC offset.
         dateTime = dateTime.withOffsetSameInstant(ZoneOffset.UTC);
 
-        int index = 0;
         byte[] bytes = new byte[29];
         final DayOfWeek dayOfWeek = dateTime.getDayOfWeek();
         switch (dayOfWeek) {
             case MONDAY:
-                bytes[index++] = 'M';
-                bytes[index++] = 'o';
-                bytes[index++] = 'n';
+                bytes[0] = 'M';
+                bytes[1] = 'o';
+                bytes[2] = 'n';
                 break;
 
             case TUESDAY:
-                bytes[index++] = 'T';
-                bytes[index++] = 'u';
-                bytes[index++] = 'e';
+                bytes[0] = 'T';
+                bytes[1] = 'u';
+                bytes[2] = 'e';
                 break;
 
             case WEDNESDAY:
-                bytes[index++] = 'W';
-                bytes[index++] = 'e';
-                bytes[index++] = 'd';
+                bytes[0] = 'W';
+                bytes[1] = 'e';
+                bytes[2] = 'd';
                 break;
 
             case THURSDAY:
-                bytes[index++] = 'T';
-                bytes[index++] = 'h';
-                bytes[index++] = 'u';
+                bytes[0] = 'T';
+                bytes[1] = 'h';
+                bytes[2] = 'u';
                 break;
 
             case FRIDAY:
-                bytes[index++] = 'F';
-                bytes[index++] = 'r';
-                bytes[index++] = 'i';
+                bytes[0] = 'F';
+                bytes[1] = 'r';
+                bytes[2] = 'i';
                 break;
 
             case SATURDAY:
-                bytes[index++] = 'S';
-                bytes[index++] = 'a';
-                bytes[index++] = 't';
+                bytes[0] = 'S';
+                bytes[1] = 'a';
+                bytes[2] = 't';
                 break;
 
             case SUNDAY:
-                bytes[index++] = 'S';
-                bytes[index++] = 'u';
-                bytes[index++] = 'n';
+                bytes[0] = 'S';
+                bytes[1] = 'u';
+                bytes[2] = 'n';
                 break;
 
-            default: throw new IllegalArgumentException("Unknown day of week " + dayOfWeek);
+            default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown day of week " + dayOfWeek));
         }
 
-        bytes[index++] = ',';
-        bytes[index++] = ' ';
+        bytes[3] = ',';
+        bytes[4] = ' ';
 
-        zeroPad(dateTime.getDayOfMonth(), bytes, index);
-        index += 2;
+        zeroPad(dateTime.getDayOfMonth(), bytes, 5);
 
-        bytes[index++] = ' ';
+        bytes[7] = ' ';
         final Month month = dateTime.getMonth();
         switch (month) {
             case JANUARY:
-                bytes[index++] = 'J';
-                bytes[index++] = 'a';
-                bytes[index++] = 'n';
+                bytes[8] = 'J';
+                bytes[9] = 'a';
+                bytes[10] = 'n';
                 break;
 
             case FEBRUARY:
-                bytes[index++] = 'F';
-                bytes[index++] = 'e';
-                bytes[index++] = 'b';
+                bytes[8] = 'F';
+                bytes[9] = 'e';
+                bytes[10] = 'b';
                 break;
 
             case MARCH:
-                bytes[index++] = 'M';
-                bytes[index++] = 'a';
-                bytes[index++] = 'r';
+                bytes[8] = 'M';
+                bytes[9] = 'a';
+                bytes[10] = 'r';
                 break;
 
             case APRIL:
-                bytes[index++] = 'A';
-                bytes[index++] = 'p';
-                bytes[index++] = 'r';
+                bytes[8] = 'A';
+                bytes[9] = 'p';
+                bytes[10] = 'r';
                 break;
 
             case MAY:
-                bytes[index++] = 'M';
-                bytes[index++] = 'a';
-                bytes[index++] = 'y';
+                bytes[8] = 'M';
+                bytes[9] = 'a';
+                bytes[10] = 'y';
                 break;
 
             case JUNE:
-                bytes[index++] = 'J';
-                bytes[index++] = 'u';
-                bytes[index++] = 'n';
+                bytes[8] = 'J';
+                bytes[9] = 'u';
+                bytes[10] = 'n';
                 break;
 
             case JULY:
-                bytes[index++] = 'J';
-                bytes[index++] = 'u';
-                bytes[index++] = 'l';
+                bytes[8] = 'J';
+                bytes[9] = 'u';
+                bytes[10] = 'l';
                 break;
 
             case AUGUST:
-                bytes[index++] = 'A';
-                bytes[index++] = 'u';
-                bytes[index++] = 'g';
+                bytes[8] = 'A';
+                bytes[9] = 'u';
+                bytes[10] = 'g';
                 break;
 
             case SEPTEMBER:
-                bytes[index++] = 'S';
-                bytes[index++] = 'e';
-                bytes[index++] = 'p';
+                bytes[8] = 'S';
+                bytes[9] = 'e';
+                bytes[10] = 'p';
                 break;
 
             case OCTOBER:
-                bytes[index++] = 'O';
-                bytes[index++] = 'c';
-                bytes[index++] = 't';
+                bytes[8] = 'O';
+                bytes[9] = 'c';
+                bytes[10] = 't';
                 break;
 
             case NOVEMBER:
-                bytes[index++] = 'N';
-                bytes[index++] = 'o';
-                bytes[index++] = 'v';
+                bytes[8] = 'N';
+                bytes[9] = 'o';
+                bytes[10] = 'v';
                 break;
 
             case DECEMBER:
-                bytes[index++] = 'D';
-                bytes[index++] = 'e';
-                bytes[index++] = 'c';
+                bytes[8] = 'D';
+                bytes[9] = 'e';
+                bytes[10] = 'c';
                 break;
 
-            default: throw new IllegalArgumentException("Unknown month " + month);
+            default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + month));
         }
-        bytes[index++] = ' ';
+        bytes[11] = ' ';
 
         int year = dateTime.getYear();
-        bytes[index++] = (byte) ('0' + (year / 1000));
-        year = moduloLessDecimalStepDown(year, 1000);
-        bytes[index++] = (byte) ('0' + (year / 100));
-        year = moduloLessDecimalStepDown(year, 100);
-        bytes[index++] = (byte) ('0' + (year / 10));
-        year = moduloLessDecimalStepDown(year, 10);
-        bytes[index++] = (byte) ('0' + year);
+        int round = year / 1000;
+        bytes[12] = (byte) ('0' + round);
+        year = year - (1000 * round);
+        round = year / 100;
+        bytes[13] = (byte) ('0' + round);
+        year = year - (100 * round);
+        round = year / 10;
+        bytes[14] = (byte) ('0' + round);
+        bytes[15] = (byte) ('0' + (year - (10 * round)));
 
-        bytes[index++] = ' ';
+        bytes[16] = ' ';
 
-        zeroPad(dateTime.getHour(), bytes, index);
-        index += 2;
-        bytes[index++] = ':';
-        zeroPad(dateTime.getMinute(), bytes, index);
-        index += 2;
-        bytes[index++] = ':';
-        zeroPad(dateTime.getSecond(), bytes, index);
-        index += 2;
-        bytes[index++] = ' ';
-        bytes[index++] = 'G';
-        bytes[index++] = 'M';
-        bytes[index] = 'T';
+        zeroPad(dateTime.getHour(), bytes, 17);
+        bytes[19] = ':';
+        zeroPad(dateTime.getMinute(), bytes, 20);
+        bytes[22] = ':';
+        zeroPad(dateTime.getSecond(), bytes, 23);
+        bytes[25] = ' ';
+        bytes[26] = 'G';
+        bytes[27] = 'M';
+        bytes[28] = 'T';
 
         return new String(bytes, StandardCharsets.US_ASCII);
     }
 
     private static void zeroPad(int value, byte[] bytes, int index) {
         if (value < 10) {
-            bytes[index] = '0';
-            bytes[index + 1] = (byte) ('0' + value);
+            bytes[index++] = '0';
+            bytes[index] = (byte) ('0' + value);
         } else {
-            bytes[index] = (byte) ('0' + (value / 10));
-            bytes[index + 1] = (byte) ('0' + (moduloLessDecimalStepDown(value, 10)));
+            int high = value / 10;
+            bytes[index++] = (byte) ('0' + high);
+            bytes[index] = (byte) ('0' + (value - (10 * high)));
         }
-    }
-
-    private static int moduloLessDecimalStepDown(int value, int mod) {
-        while (value >= mod) {
-            value -= mod;
-        }
-
-        return value;
     }
 
     @Override
