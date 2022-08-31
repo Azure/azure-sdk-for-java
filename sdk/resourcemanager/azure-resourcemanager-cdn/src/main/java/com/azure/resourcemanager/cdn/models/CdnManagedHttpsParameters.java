@@ -6,7 +6,6 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,11 +15,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Cdn")
 @Fluent
 public final class CdnManagedHttpsParameters extends CustomDomainHttpsParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CdnManagedHttpsParameters.class);
-
     /*
-     * Defines the certificate source parameters using CDN managed certificate
-     * for enabling SSL.
+     * Defines the certificate source parameters using CDN managed certificate for enabling SSL.
      */
     @JsonProperty(value = "certificateSourceParameters", required = true)
     private CdnCertificateSourceParameters certificateSourceParameters;
@@ -71,7 +67,7 @@ public final class CdnManagedHttpsParameters extends CustomDomainHttpsParameters
     public void validate() {
         super.validate();
         if (certificateSourceParameters() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property certificateSourceParameters in model CdnManagedHttpsParameters"));
@@ -79,4 +75,6 @@ public final class CdnManagedHttpsParameters extends CustomDomainHttpsParameters
             certificateSourceParameters().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CdnManagedHttpsParameters.class);
 }

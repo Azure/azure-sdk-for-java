@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cdn.fluent.RuleSetsClient;
@@ -43,8 +42,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RuleSetsClient. */
 public final class RuleSetsClientImpl implements RuleSetsClient {
-    private final ClientLogger logger = new ClientLogger(RuleSetsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RuleSetsService service;
 
@@ -481,14 +478,7 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RuleSetInner> getAsync(String resourceGroupName, String profileName, String ruleSetName) {
         return getWithResponseAsync(resourceGroupName, profileName, ruleSetName)
-            .flatMap(
-                (Response<RuleSetInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -655,14 +645,7 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RuleSetInner> createAsync(String resourceGroupName, String profileName, String ruleSetName) {
         return createWithResponseAsync(resourceGroupName, profileName, ruleSetName)
-            .flatMap(
-                (Response<RuleSetInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -974,7 +957,7 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
     }
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of the given AzureFrontDoor rule set under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
@@ -1038,7 +1021,7 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
     }
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of the given AzureFrontDoor rule set under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
@@ -1100,7 +1083,7 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
     }
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of the given AzureFrontDoor rule set under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
@@ -1120,7 +1103,7 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
     }
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of the given AzureFrontDoor rule set under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
@@ -1141,7 +1124,7 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
     }
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of the given AzureFrontDoor rule set under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
@@ -1159,7 +1142,7 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
     }
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of the given AzureFrontDoor rule set under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
@@ -1180,7 +1163,8 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1216,7 +1200,8 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1253,7 +1238,8 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1289,7 +1275,8 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

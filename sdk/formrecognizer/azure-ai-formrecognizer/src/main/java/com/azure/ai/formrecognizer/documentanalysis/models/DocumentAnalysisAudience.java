@@ -3,12 +3,14 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Collection;
 
 /** Defines values for DocumentAnalysisAudience. */
-public class DocumentAnalysisAudience extends ExpandableStringEnum<DocumentAnalysisAudience> {
+@Immutable
+public final class DocumentAnalysisAudience extends ExpandableStringEnum<DocumentAnalysisAudience> {
     /** Static value AZURE_RESOURCE_MANAGER_CHINA for DocumentAnalysisAudience. */
     public static final DocumentAnalysisAudience AZURE_RESOURCE_MANAGER_CHINA = fromString("https://cognitiveservices.azure.cn");
 

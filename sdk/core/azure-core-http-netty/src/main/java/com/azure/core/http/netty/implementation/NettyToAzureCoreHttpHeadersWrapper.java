@@ -5,6 +5,7 @@ package com.azure.core.http.netty.implementation;
 
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.HashMap;
@@ -125,7 +126,7 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     public Map<String, String> toMap() {
         if (abstractMap == null) {
             abstractMap = new DeferredCacheImmutableMap<>(LOGGER, new HashMap<>(), nettyHeaders,
-                getAll -> String.join(",", getAll));
+                getAll -> CoreUtils.stringJoin(",", getAll));
         }
         return abstractMap;
     }

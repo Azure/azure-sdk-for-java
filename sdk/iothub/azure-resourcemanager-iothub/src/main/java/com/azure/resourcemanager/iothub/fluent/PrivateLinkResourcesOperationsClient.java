@@ -14,7 +14,9 @@ import com.azure.resourcemanager.iothub.fluent.models.PrivateLinkResourcesInner;
 /** An instance of this class provides access to all the operations defined in PrivateLinkResourcesOperationsClient. */
 public interface PrivateLinkResourcesOperationsClient {
     /**
-     * List private link resources for the given IotHub.
+     * List private link resources
+     *
+     * <p>List private link resources for the given IotHub.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -28,7 +30,9 @@ public interface PrivateLinkResourcesOperationsClient {
     PrivateLinkResourcesInner list(String resourceGroupName, String resourceName);
 
     /**
-     * List private link resources for the given IotHub.
+     * List private link resources
+     *
+     * <p>List private link resources for the given IotHub.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -44,7 +48,9 @@ public interface PrivateLinkResourcesOperationsClient {
         String resourceGroupName, String resourceName, Context context);
 
     /**
-     * Get the specified private link resource for the given IotHub.
+     * Get the specified private link resource
+     *
+     * <p>Get the specified private link resource for the given IotHub.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
@@ -59,7 +65,9 @@ public interface PrivateLinkResourcesOperationsClient {
     GroupIdInformationInner get(String resourceGroupName, String resourceName, String groupId);
 
     /**
-     * Get the specified private link resource for the given IotHub.
+     * Get the specified private link resource
+     *
+     * <p>Get the specified private link resource for the given IotHub.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.

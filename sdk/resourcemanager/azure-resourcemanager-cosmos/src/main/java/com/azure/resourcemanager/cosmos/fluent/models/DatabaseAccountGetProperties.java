@@ -29,15 +29,12 @@ import java.util.List;
 @Fluent
 public final class DatabaseAccountGetProperties {
     /*
-     * The status of the Cosmos DB account at the time the operation was
-     * called. The status can be one of following. 'Creating' – the Cosmos DB
-     * account is being created. When an account is in Creating state, only
-     * properties that are specified as input for the Create Cosmos DB account
-     * operation are returned. 'Succeeded' – the Cosmos DB account is active
-     * for use. 'Updating' – the Cosmos DB account is being updated. 'Deleting'
-     * – the Cosmos DB account is being deleted. 'Failed' – the Cosmos DB
-     * account failed creation. 'DeletionFailed' – the Cosmos DB account
-     * deletion failed.
+     * The status of the Cosmos DB account at the time the operation was called. The status can be one of following.
+     * 'Creating' – the Cosmos DB account is being created. When an account is in Creating state, only properties that
+     * are specified as input for the Create Cosmos DB account operation are returned. 'Succeeded' – the Cosmos DB
+     * account is active for use. 'Updating' – the Cosmos DB account is being updated. 'Deleting' – the Cosmos DB
+     * account is being deleted. 'Failed' – the Cosmos DB account failed creation. 'DeletionFailed' – the Cosmos DB
+     * account deletion failed.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
@@ -49,8 +46,7 @@ public final class DatabaseAccountGetProperties {
     private String documentEndpoint;
 
     /*
-     * The offer type for the Cosmos DB database account. Default value:
-     * Standard.
+     * The offer type for the Cosmos DB database account. Default value: Standard.
      */
     @JsonProperty(value = "databaseAccountOfferType", access = JsonProperty.Access.WRITE_ONLY)
     private DatabaseAccountOfferType databaseAccountOfferType;
@@ -68,10 +64,9 @@ public final class DatabaseAccountGetProperties {
     private Boolean isVirtualNetworkFilterEnabled;
 
     /*
-     * Enables automatic failover of the write region in the rare event that
-     * the region is unavailable due to an outage. Automatic failover will
-     * result in a new write region for the account and is chosen based on the
-     * failover priorities configured for the account.
+     * Enables automatic failover of the write region in the rare event that the region is unavailable due to an
+     * outage. Automatic failover will result in a new write region for the account and is chosen based on the failover
+     * priorities configured for the account.
      */
     @JsonProperty(value = "enableAutomaticFailover")
     private Boolean enableAutomaticFailover;
@@ -95,15 +90,13 @@ public final class DatabaseAccountGetProperties {
     private List<Location> writeLocations;
 
     /*
-     * An array that contains of the read locations enabled for the Cosmos DB
-     * account.
+     * An array that contains of the read locations enabled for the Cosmos DB account.
      */
     @JsonProperty(value = "readLocations", access = JsonProperty.Access.WRITE_ONLY)
     private List<Location> readLocations;
 
     /*
-     * An array that contains all of the locations enabled for the Cosmos DB
-     * account.
+     * An array that contains all of the locations enabled for the Cosmos DB account.
      */
     @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
     private List<Location> locations;
@@ -121,8 +114,7 @@ public final class DatabaseAccountGetProperties {
     private List<VirtualNetworkRule> virtualNetworkRules;
 
     /*
-     * List of Private Endpoint Connections configured for the Cosmos DB
-     * account.
+     * List of Private Endpoint Connections configured for the Cosmos DB account.
      */
     @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
@@ -140,15 +132,13 @@ public final class DatabaseAccountGetProperties {
     private Boolean enableCassandraConnector;
 
     /*
-     * The cassandra connector offer type for the Cosmos DB database C*
-     * account.
+     * The cassandra connector offer type for the Cosmos DB database C* account.
      */
     @JsonProperty(value = "connectorOffer")
     private ConnectorOffer connectorOffer;
 
     /*
-     * Disable write operations on metadata resources (databases, containers,
-     * throughput) via account keys
+     * Disable write operations on metadata resources (databases, containers, throughput) via account keys
      */
     @JsonProperty(value = "disableKeyBasedMetadataWriteAccess")
     private Boolean disableKeyBasedMetadataWriteAccess;
@@ -160,10 +150,8 @@ public final class DatabaseAccountGetProperties {
     private String keyVaultKeyUri;
 
     /*
-     * The default identity for accessing key vault used in features like
-     * customer managed keys. The default identity needs to be explicitly set
-     * by the users. It can be "FirstPartyIdentity", "SystemAssignedIdentity"
-     * and more.
+     * The default identity for accessing key vault used in features like customer managed keys. The default identity
+     * needs to be explicitly set by the users. It can be "FirstPartyIdentity", "SystemAssignedIdentity" and more.
      */
     @JsonProperty(value = "defaultIdentity")
     private String defaultIdentity;
@@ -235,22 +223,19 @@ public final class DatabaseAccountGetProperties {
     private NetworkAclBypass networkAclBypass;
 
     /*
-     * An array that contains the Resource Ids for Network Acl Bypass for the
-     * Cosmos DB account.
+     * An array that contains the Resource Ids for Network Acl Bypass for the Cosmos DB account.
      */
     @JsonProperty(value = "networkAclBypassResourceIds")
     private List<String> networkAclBypassResourceIds;
 
     /*
-     * Opt-out of local authentication and ensure only MSI and AAD can be used
-     * exclusively for authentication.
+     * Opt-out of local authentication and ensure only MSI and AAD can be used exclusively for authentication.
      */
     @JsonProperty(value = "disableLocalAuth")
     private Boolean disableLocalAuth;
 
     /*
-     * The object that represents all properties related to capacity
-     * enforcement on an account.
+     * The object that represents all properties related to capacity enforcement on an account.
      */
     @JsonProperty(value = "capacity")
     private Capacity capacity;

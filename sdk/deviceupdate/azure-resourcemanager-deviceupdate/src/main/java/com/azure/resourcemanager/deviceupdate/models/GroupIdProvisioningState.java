@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for GroupIdProvisioningState. */
+/** The provisioning state of private link group ID. */
 public final class GroupIdProvisioningState extends ExpandableStringEnum<GroupIdProvisioningState> {
     /** Static value Succeeded for GroupIdProvisioningState. */
     public static final GroupIdProvisioningState SUCCEEDED = fromString("Succeeded");

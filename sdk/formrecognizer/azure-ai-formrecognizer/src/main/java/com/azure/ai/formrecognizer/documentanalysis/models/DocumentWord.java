@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentWordHelper;
+import com.azure.core.annotation.Immutable;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
  * A word object consisting of a contiguous sequence of characters. For non-space delimited languages, such as Chinese,
  * Japanese, and Korean, each character is represented as its own word.
  */
+@Immutable
 public final class DocumentWord {
     /*
      * Text content of the word.
@@ -47,7 +49,7 @@ public final class DocumentWord {
      * @param content the content value to set.
      * @return the DocumentWord object itself.
      */
-    void setContent(String content) {
+    private void setContent(String content) {
         this.content = content;
     }
 
@@ -70,7 +72,7 @@ public final class DocumentWord {
      * @param boundingPolygon the boundingPolygon value to set.
      * @return the DocumentWord object itself.
      */
-    void setBoundingPolygon(List<Point> boundingPolygon) {
+    private void setBoundingPolygon(List<Point> boundingPolygon) {
         this.boundingPolygon = boundingPolygon;
     }
 
@@ -89,7 +91,7 @@ public final class DocumentWord {
      * @param span the span value to set.
      * @return the DocumentWord object itself.
      */
-    void setSpan(DocumentSpan span) {
+    private void setSpan(DocumentSpan span) {
         this.span = span;
     }
 
@@ -108,7 +110,7 @@ public final class DocumentWord {
      * @param confidence the confidence value to set.
      * @return the DocumentWord object itself.
      */
-    void setConfidence(float confidence) {
+    private void setConfidence(float confidence) {
         this.confidence = confidence;
     }
 

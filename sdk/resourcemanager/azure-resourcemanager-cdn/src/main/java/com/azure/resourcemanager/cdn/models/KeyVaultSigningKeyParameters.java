@@ -6,14 +6,11 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the parameters for using a user's KeyVault for URL Signing Key. */
 @Fluent
 public final class KeyVaultSigningKeyParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultSigningKeyParameters.class);
-
     /*
      * The typeName property.
      */
@@ -182,34 +179,36 @@ public final class KeyVaultSigningKeyParameters {
      */
     public void validate() {
         if (subscriptionId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property subscriptionId in model KeyVaultSigningKeyParameters"));
         }
         if (resourceGroupName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property resourceGroupName in model KeyVaultSigningKeyParameters"));
         }
         if (vaultName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property vaultName in model KeyVaultSigningKeyParameters"));
         }
         if (secretName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property secretName in model KeyVaultSigningKeyParameters"));
         }
         if (secretVersion() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property secretVersion in model KeyVaultSigningKeyParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(KeyVaultSigningKeyParameters.class);
 }
