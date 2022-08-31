@@ -45,7 +45,7 @@ import org.springframework.web.client.RestOperations;
  */
 @Configuration(proxyBeanMethods = false)
 @Conditional(ClientRegistrationCondition.class)
-@Import(CommonConfiguration.class)
+@Import(AadRestOperationConfiguration.class)
 public class AadOAuth2ClientConfiguration {
 
     /**

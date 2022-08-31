@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.aad;
 
 import com.azure.spring.cloud.autoconfigure.aad.configuration.AadPropertiesConfiguration;
-import com.azure.spring.cloud.autoconfigure.aad.configuration.CommonConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.configuration.AadRestOperationConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.filter.AadAppRoleStatelessAuthenticationFilter;
 import com.azure.spring.cloud.autoconfigure.aad.filter.AadAuthenticationFilter;
 import com.azure.spring.cloud.autoconfigure.aad.filter.UserPrincipalManager;
@@ -40,7 +40,7 @@ import java.util.concurrent.TimeUnit;
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnExpression("${spring.cloud.azure.active-directory.enabled:false}")
 @ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken" })
-@Import({AadPropertiesConfiguration.class, CommonConfiguration.class})
+@Import({AadPropertiesConfiguration.class, AadRestOperationConfiguration.class})
 public class AadAuthenticationFilterAutoConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AadAuthenticationProperties.class);

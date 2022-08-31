@@ -41,7 +41,7 @@ import java.util.List;
  */
 @Configuration(proxyBeanMethods = false)
 @Conditional(ResourceServerCondition.class)
-@Import(CommonConfiguration.class)
+@Import(AadRestOperationConfiguration.class)
 public class AadResourceServerConfiguration {
 
     /**

@@ -18,7 +18,7 @@ import java.util.Arrays;
  * Common bean used for Azure AD and Azure AD B2C
  */
 @Configuration(proxyBeanMethods = false)
-public class CommonConfiguration {
+public class AadRestOperationConfiguration {
 
     /**
      * Declare RestOperations bean used by various OAuth2AccessTokenResponseClient.

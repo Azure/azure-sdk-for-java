@@ -3,7 +3,7 @@
 package com.azure.spring.cloud.autoconfigure.aadb2c;
 
 import com.azure.spring.cloud.autoconfigure.aad.AadTrustedIssuerRepository;
-import com.azure.spring.cloud.autoconfigure.aad.configuration.CommonConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.configuration.AadRestOperationConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadJwtClaimNames;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.AadIssuerJwsKeySelector;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.RestOperationsResourceRetriever;
@@ -46,7 +46,7 @@ import java.util.List;
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnProperty(value = "spring.cloud.azure.active-directory.b2c.enabled", havingValue = "true")
 @ConditionalOnClass(BearerTokenAuthenticationToken.class)
-@Import({ AadB2cPropertiesConfiguration.class, AadB2cOAuth2ClientConfiguration.class, CommonConfiguration.class})
+@Import({ AadB2cPropertiesConfiguration.class, AadB2cOAuth2ClientConfiguration.class, AadRestOperationConfiguration.class})
 public class AadB2cResourceServerAutoConfiguration {
 
     private final AadB2cProperties properties;
