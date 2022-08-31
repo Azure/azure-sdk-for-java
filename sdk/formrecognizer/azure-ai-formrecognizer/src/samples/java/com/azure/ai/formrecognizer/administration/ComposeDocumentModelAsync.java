@@ -5,10 +5,10 @@ package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient;
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeModelOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeDocumentModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
  * the most accurate one.
  * </p>
  */
-public class ComposeModelAsync {
+public class ComposeDocumentModelAsync {
 
     /**
      * Main method to invoke this demo.
@@ -44,20 +44,20 @@ public class ComposeModelAsync {
         // Build custom document analysis model
         String model1TrainingFiles = "{SAS_URL_of_your_container_in_blob_storage_for_model_1}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
-        PollerFlux<DocumentOperationResult, DocumentModelDetails> model1Poller =
-            client.beginBuildModel(model1TrainingFiles, DocumentModelBuildMode.TEMPLATE);
+        PollerFlux<OperationResult, DocumentModelDetails> model1Poller =
+            client.beginBuildDocumentModel(model1TrainingFiles, DocumentModelBuildMode.TEMPLATE);
 
         // Build custom document analysis model
         String model2TrainingFiles = "{SAS_URL_of_your_container_in_blob_storage_for_model_2}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
-        PollerFlux<DocumentOperationResult, DocumentModelDetails> model2Poller =
-            client.beginBuildModel(model2TrainingFiles, DocumentModelBuildMode.TEMPLATE);
+        PollerFlux<OperationResult, DocumentModelDetails> model2Poller =
+            client.beginBuildDocumentModel(model2TrainingFiles, DocumentModelBuildMode.TEMPLATE);
 
         String labeledModelId1 = model1Poller.getSyncPoller().getFinalResult().getModelId();
         String labeledModelId2 = model2Poller.getSyncPoller().getFinalResult().getModelId();
 
-        client.beginComposeModel(Arrays.asList(labeledModelId1, labeledModelId2),
-                new ComposeModelOptions().setDescription("my composed model desc"))
+        client.beginComposeDocumentModel(Arrays.asList(labeledModelId1, labeledModelId2),
+                new ComposeDocumentModelOptions().setDescription("my composed model desc"))
             .setPollInterval(Duration.ofSeconds(5))
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(documentModel -> {

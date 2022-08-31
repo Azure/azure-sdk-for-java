@@ -1,6 +1,6 @@
 # Release History
 
-## 4.0.0-beta.7 (Unreleased)
+## 4.0.0 (2022-09-07)
 This version of the SDK defaults to the latest supported API version, which currently is 2021-09-30-preview.
 
 ### Features Added
@@ -16,8 +16,17 @@ This version of the SDK defaults to the latest supported API version, which curr
   - `ModelOperationSummary` to `OperationSummary` 
   - `ModelOperationKind` to `OperationKind`
   - `ModelOperationStatus` to `OperationStatus` 
+  - `DocumentOperationKind` to `OperationKind`
+  - `BuildModelOptions` to `BuildDocumentModelOptions`
+  - `ComposeModelOptions` to `ComposeDocumentModelOptions`
 - Renamed properties `documentModelCount` and `documentModelLimit` to `customDocumentModelCount` 
 and `customDocumentModelLimit` on model `ResourceDetails`.
+- Renamed clients methods:
+  - `getModel` to `getDocumentModel`
+  - `listModels` to `listDocumentModels`
+  - `deleteModel` to `deleteDocumentModel`
+  - `beginBuildModel` to `beginBuildDocumentModel`
+  - `beginComposeModel` to `beginComposeDocumentModel`
 
 ### Bugs Fixed
 

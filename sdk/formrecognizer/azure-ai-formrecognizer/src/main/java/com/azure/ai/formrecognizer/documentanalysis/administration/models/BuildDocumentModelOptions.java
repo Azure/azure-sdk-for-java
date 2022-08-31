@@ -8,10 +8,10 @@ import com.azure.core.annotation.Fluent;
 import java.util.Map;
 
 /**
- * Options that may be passed using build model APIs on Document Administration client.
+ * Options that may be passed to build document models.
  */
 @Fluent
-public final class BuildModelOptions {
+public final class BuildDocumentModelOptions {
     private String description;
 
     private Map<String, String> tags;
@@ -31,9 +31,9 @@ public final class BuildModelOptions {
      * Set the model description.
      *
      * @param description the model description value to set.
-     * @return the BuildModelOptions object itself.
+     * @return the BuildDocumentModelOptions object itself.
      */
-    public BuildModelOptions setDescription(String description) {
+    public BuildDocumentModelOptions setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -51,9 +51,9 @@ public final class BuildModelOptions {
      * Set the user defined attributes associated with the model.
      *
      * @param tags the tags value to set.
-     * @return the BuildModelOptions object itself.
+     * @return the BuildDocumentModelOptions object itself.
      */
-    public BuildModelOptions setTags(Map<String, String> tags) {
+    public BuildDocumentModelOptions setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -71,9 +71,9 @@ public final class BuildModelOptions {
      * Set the unique model identifier for the model. If not specified, a model ID will be created for you.
      *
      * @param modelId a unique model identifier
-     * @return the BuildModelOptions object itself.
+     * @return the BuildDocumentModelOptions object itself.
      */
-    public BuildModelOptions setModelId(String modelId) {
+    public BuildDocumentModelOptions setModelId(String modelId) {
         this.modelId = modelId;
         return this;
     }

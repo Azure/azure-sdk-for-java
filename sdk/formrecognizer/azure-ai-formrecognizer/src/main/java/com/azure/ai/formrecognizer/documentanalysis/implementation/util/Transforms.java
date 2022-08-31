@@ -29,7 +29,7 @@ import com.azure.ai.formrecognizer.documentanalysis.models.DocumentKeyValueEleme
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentKeyValuePair;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentLanguage;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentLine;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentPage;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentParagraph;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSelectionMark;
@@ -576,9 +576,6 @@ public class Transforms {
             }
             OperationDetailsHelper.setOperationId(operationDetails, innerOperationDetails.getOperationId());
             OperationDetailsHelper.setCreatedOn(operationDetails, innerOperationDetails.getCreatedDateTime());
-            // operationDetails does not return kind but is of kind subclasses, should we expose this to get kind from instance type?
-            // OperationDetailsHelper.setKind(documentModelOperationDetails,
-            //     OperationKind.fromString(operationDetails.getKind().toString()));
             OperationDetailsHelper.setLastUpdatedOn(operationDetails, innerOperationDetails.getLastUpdatedDateTime());
             OperationDetailsHelper.setPercentCompleted(operationDetails,
                 innerOperationDetails.getPercentCompleted() == null ? Integer.valueOf(0)
@@ -613,14 +610,14 @@ public class Transforms {
             }).collect(Collectors.toList());
     }
 
-    public static DocumentOperationResult toDocumentOperationResult(
+    public static OperationResult toDocumentOperationResult(
         String operationLocation) {
-        DocumentOperationResult documentOperationResult = new DocumentOperationResult();
-        DocumentOperationResultHelper.setResultId(
-            documentOperationResult,
+        OperationResult operationResult = new OperationResult();
+        OperationResultHelper.setResultId(
+            operationResult,
             Utility.parseResultId(operationLocation));
 
-        return documentOperationResult;
+        return operationResult;
     }
 
     private static ResponseError toResponseError(com.azure.ai.formrecognizer.documentanalysis.implementation.models.Error error) {

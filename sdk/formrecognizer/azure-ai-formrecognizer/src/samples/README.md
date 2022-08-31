@@ -40,10 +40,10 @@ All of these samples need the endpoint to your Form Recognizer resource ([instru
 | [AnalyzeReceiptsFromUrl][analyze_receipts_from_url] and [AnalyzeReceiptsFromUrlAsync][analyze_receipts_from_url_async]                           | Analyze data from a URL of a US sales receipt using a prebuilt model                                                             |
 | [AnalyzeTaxW2][analyze_w2] and [AnalyzeTaxW2Async][analyze_w2_async]                                                                             | Analyze data from a file of a US W2 Tax document using a prebuilt model                                                          |
 | [AnalyzeCustomDocumentFromUrl][analyze_custom_documents] and [AnalyzeCustomDocumentAsync][analyze_custom_documents_async]                        | Analyze forms with your custom model                                                                                             |
-| [BuildModel][build_model] and [BuildModelAsync][build_model_async]                                                                               | Build a custom document analysis model                                                                                           |
+| [BuildDocumentModel][build_model] and [BuildDocumentModelAsync][build_model_async]                                                                               | Build a custom document analysis model                                                                                           |
 | [ManageCustomModels][manage_custom_models] and [ManageCustomModelsAsync][manage_custom_models_async]                                             | Manage the custom models in your account                                                                                         |
-| [CopyModel][copy_model] and [CopyModelAsync][copy_model_async]                                                                                   | Copy custom model from one Form Recognizer resource to another                                                                   |
-| [ComposeModel][compose_model] and [ComposeModelAsync][compose_model_async]                                                                       | Creates a composed model from a collection of existing built models with labels                                                  |
+| [CopyDocumentModel][copy_model] and [CopyDocumentModelAsync][copy_model_async]                                                                                   | Copy custom model from one Form Recognizer resource to another                                                                   |
+| [ComposeDocumentModel][compose_model] and [ComposeDocumentModelAsync][compose_model_async]                                                                       | Creates a composed model from a collection of existing built models with labels                                                  |
 | [GetOperation][get_operation] and [GetOperationAsync][get_operation_async]                                                                       | Get/list all document model associated with the Form Recognizer resource                                                         |
 
 ## Troubleshooting
@@ -68,8 +68,6 @@ Guidelines][SDK_README_CONTRIBUTING] for more information.
 [get-endpoint-instructions]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer#create-a-form-recognizer-resource
 [get-key-instructions]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer#create-a-form-recognizer-client-using-azurekeycredential
 
-[compose_model]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/ComposeModel.java
-[compose_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/ComposeModelAsync.java
 [authentication_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/Authentication.java
 [manage_custom_models]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/ManageCustomModels.java
 [manage_custom_models_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/ManageCustomModelsAsync.java
@@ -97,10 +95,6 @@ Guidelines][SDK_README_CONTRIBUTING] for more information.
 [analyze_receipts_from_url_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeReceiptsFromUrlAsync.java
 [analyze_w2]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeTaxW2.java
 [analyze_w2_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeTaxW2Async.java
-[build_model]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/BuildModel.java
-[build_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/BuildModelAsync.java
-[copy_model]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CopyModel.java
-[copy_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CopyModelAsync.java
 [get_operation]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/GetOperationSummary.java
 [get_operation_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/GetOperationSummaryAsync.java
 

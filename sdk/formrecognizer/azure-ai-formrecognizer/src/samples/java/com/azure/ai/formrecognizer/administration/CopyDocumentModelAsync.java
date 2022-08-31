@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Async sample for copying a custom document analysis model from a source Form Recognizer resource to a target Form Recognizer resource.
  */
-public class CopyModelAsync {
+public class CopyDocumentModelAsync {
 
     /**
      * Main method to invoke this demo.
@@ -41,7 +41,7 @@ public class CopyModelAsync {
         targetClient.getCopyAuthorization()
             // Start copy operation from the source client
             // The ID of the model that needs to be copied to the target resource
-            .subscribe(copyAuthorization -> sourceClient.beginCopyModelTo(copyModelId, copyAuthorization)
+            .subscribe(copyAuthorization -> sourceClient.beginCopyDocumentModelTo(copyModelId, copyAuthorization)
                 .filter(pollResponse -> pollResponse.getStatus().isComplete())
                 .flatMap(AsyncPollResponse::getFinalResult)
                     .subscribe(documentModelInfo -> {
@@ -50,7 +50,7 @@ public class CopyModelAsync {
                             documentModelInfo.getCreatedOn());
 
                         // Get the copied model from the target resource
-                        targetClient.getModel(copyAuthorization.getTargetModelId()).subscribe(documentModel ->
+                        targetClient.getDocumentModel(copyAuthorization.getTargetModelId()).subscribe(documentModel ->
                             System.out.printf("Copied model has model ID: %s was created on: %s.%n",
                                 documentModel.getModelId(),
                                 documentModel.getCreatedOn()));

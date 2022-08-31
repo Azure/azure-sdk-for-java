@@ -5,8 +5,8 @@ package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient;
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildModelOptions;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeModelOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeDocumentModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorizationOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
@@ -61,12 +61,12 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginBuildModel(String, DocumentModelBuildMode)}
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginBuildDocumentModel(String, DocumentModelBuildMode)}
      */
     public void beginBuildModel() {
-        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentModelBuildMode
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.beginBuildDocumentModel#String-DocumentModelBuildMode
         String blobContainerUrl = "{SAS-URL-of-your-container-in-blob-storage}";
-        documentModelAdministrationAsyncClient.beginBuildModel(blobContainerUrl,
+        documentModelAdministrationAsyncClient.beginBuildDocumentModel(blobContainerUrl,
                 DocumentModelBuildMode.TEMPLATE
             )
             // if polling operation completed, retrieve the final result.
@@ -82,25 +82,25 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                     });
                 });
             });
-        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentModelBuildMode
+        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.beginBuildDocumentModel#String-DocumentModelBuildMode
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginBuildModel(String, DocumentModelBuildMode, String, BuildModelOptions)}
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginBuildDocumentModel(String, DocumentModelBuildMode, String, BuildDocumentModelOptions)}
      * with options
      */
     public void beginBuildModelWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentModelBuildMode-String-BuildModelOptions
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.beginBuildDocumentModel#String-DocumentModelBuildMode-String-BuildDocumentModelOptions
         String blobContainerUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         String modelId = "model-id";
         Map<String, String> attrs = new HashMap<String, String>();
         attrs.put("createdBy", "sample");
         String prefix = "Invoice";
 
-        documentModelAdministrationAsyncClient.beginBuildModel(blobContainerUrl,
+        documentModelAdministrationAsyncClient.beginBuildDocumentModel(blobContainerUrl,
                 DocumentModelBuildMode.TEMPLATE,
                 prefix,
-                new BuildModelOptions()
+                new BuildDocumentModelOptions()
                     .setModelId(modelId)
                     .setDescription("model desc")
                     .setTags(attrs))
@@ -119,32 +119,32 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                     });
                 });
             });
-        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentModelBuildMode-String-BuildModelOptions
+        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.beginBuildDocumentModel#String-DocumentModelBuildMode-String-BuildDocumentModelOptions
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationAsyncClient#deleteModel}
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#deleteDocumentModel}
      */
     public void deleteModel() {
-        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.deleteModel#string
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.deleteDocumentModel#string
         String modelId = "{model_id}";
-        documentModelAdministrationAsyncClient.deleteModel(modelId)
+        documentModelAdministrationAsyncClient.deleteDocumentModel(modelId)
             .subscribe(ignored -> System.out.printf("Model ID: %s is deleted%n", modelId));
-        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.deleteModel#string
+        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.deleteDocumentModel#string
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationAsyncClient#deleteModelWithResponse(String)}
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#deleteDocumentModelWithResponse(String)}
      */
     public void deleteModelWithResponse() {
-        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.deleteModelWithResponse#string
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.deleteDocumentModelWithResponse#string
         String modelId = "{model_id}";
-        documentModelAdministrationAsyncClient.deleteModelWithResponse(modelId)
+        documentModelAdministrationAsyncClient.deleteDocumentModelWithResponse(modelId)
             .subscribe(response -> {
                 System.out.printf("Response Status Code: %d.", response.getStatusCode());
                 System.out.printf("Model ID: %s is deleted.%n", modelId);
             });
-        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.deleteModelWithResponse#string
+        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.deleteDocumentModelWithResponse#string
     }
 
     /**
@@ -226,13 +226,13 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginComposeModel(List)}
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginComposeDocumentModel(List)}
      */
     public void beginCreateComposedModel() {
-        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.beginComposeModel#list
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.beginComposeDocumentModel#list
         String modelId1 = "{model_Id_1}";
         String modelId2 = "{model_Id_2}";
-        documentModelAdministrationAsyncClient.beginComposeModel(Arrays.asList(modelId1, modelId2)
+        documentModelAdministrationAsyncClient.beginComposeDocumentModel(Arrays.asList(modelId1, modelId2)
             )
             // if polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
@@ -247,23 +247,23 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                     });
                 });
             });
-        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.beginComposeModel#list
+        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.beginComposeDocumentModel#list
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginComposeModel(List, ComposeModelOptions)}
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginComposeDocumentModel(List, ComposeDocumentModelOptions)}
      * with options
      */
     public void beginCreateComposedModelWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.beginComposeModel#list-composeModelOptions
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.beginComposeDocumentModel#list-composeDocumentModelOptions
         String modelId1 = "{model_Id_1}";
         String modelId2 = "{model_Id_2}";
         String modelId = "my-composed-model";
         Map<String, String> attrs = new HashMap<String, String>();
         attrs.put("createdBy", "sample");
 
-        documentModelAdministrationAsyncClient.beginComposeModel(Arrays.asList(modelId1, modelId2),
-                new ComposeModelOptions()
+        documentModelAdministrationAsyncClient.beginComposeDocumentModel(Arrays.asList(modelId1, modelId2),
+                new ComposeDocumentModelOptions()
                     .setModelId(modelId)
                     .setDescription("model-desc")
                     .setTags(attrs))
@@ -282,20 +282,20 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                     });
                 });
             });
-        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.beginComposeModel#list-composeModelOptions
+        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.beginComposeDocumentModel#list-composeDocumentModelOptions
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginCopyModelTo(String, CopyAuthorization)}
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginCopyDocumentModelTo(String, CopyAuthorization)}
      */
     public void beginCopy() {
-        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.beginCopyModelTo#string-copyAuthorization
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.beginCopyDocumentModelTo#string-copyAuthorization
         String copyModelId = "copy-model";
         // Get authorization to copy the model to target resource
         documentModelAdministrationAsyncClient.getCopyAuthorization()
             // Start copy operation from the source client
             // The ID of the model that needs to be copied to the target resource
-            .subscribe(copyAuthorization -> documentModelAdministrationAsyncClient.beginCopyModelTo(copyModelId,
+            .subscribe(copyAuthorization -> documentModelAdministrationAsyncClient.beginCopyDocumentModelTo(copyModelId,
                     copyAuthorization)
                 .filter(pollResponse -> pollResponse.getStatus().isComplete())
                 .flatMap(AsyncPollResponse::getFinalResult)
@@ -304,30 +304,30 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                         documentModel.getModelId(),
                         documentModel.getCreatedOn())));
 
-        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.beginCopyModelTo#string-copyAuthorization
+        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.beginCopyDocumentModelTo#string-copyAuthorization
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationAsyncClient#listModels()}
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#listDocumentModels()}
      */
     public void listModels() {
-        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.listModels
-        documentModelAdministrationAsyncClient.listModels()
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.listDocumentModels
+        documentModelAdministrationAsyncClient.listDocumentModels()
             .subscribe(documentModelInfo ->
                 System.out.printf("Model ID: %s, Model description: %s, Created on: %s.%n",
                     documentModelInfo.getModelId(),
                     documentModelInfo.getDescription(),
                     documentModelInfo.getCreatedOn()));
-        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.listModels
+        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.listDocumentModels
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationAsyncClient#getModel(String)}
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#getDocumentModel(String)}
      */
     public void getModel() {
-        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.getModel#string
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.getDocumentModel#string
         String modelId = "{model_id}";
-        documentModelAdministrationAsyncClient.getModel(modelId).subscribe(documentModel -> {
+        documentModelAdministrationAsyncClient.getDocumentModel(modelId).subscribe(documentModel -> {
             System.out.printf("Model ID: %s%n", documentModel.getModelId());
             System.out.printf("Model Description: %s%n", documentModel.getDescription());
             System.out.printf("Model Created on: %s%n", documentModel.getCreatedOn());
@@ -339,16 +339,16 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                 });
             });
         });
-        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.getModel#string
+        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.getDocumentModel#string
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationAsyncClient#getModelWithResponse(String)}
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#getDocumentModelWithResponse(String)}
      */
     public void getModelWithResponse() {
-        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.getModelWithResponse#string
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.getDocumentModelWithResponse#string
         String modelId = "{model_id}";
-        documentModelAdministrationAsyncClient.getModelWithResponse(modelId).subscribe(response -> {
+        documentModelAdministrationAsyncClient.getDocumentModelWithResponse(modelId).subscribe(response -> {
             System.out.printf("Response Status Code: %d.", response.getStatusCode());
             DocumentModelDetails documentModelDetails = response.getValue();
             System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());
@@ -362,11 +362,11 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                 });
             });
         });
-        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.getModelWithResponse#string
+        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.getDocumentModelWithResponse#string
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationAsyncClient#getModel(String)}
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#getDocumentModel(String)}
      */
     public void getOperation() {
         // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.getOperation#string

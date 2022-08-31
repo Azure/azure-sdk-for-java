@@ -8,7 +8,7 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModel
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorizationOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
@@ -16,7 +16,7 @@ import com.azure.core.util.polling.SyncPoller;
 /**
  * Sample for copying a custom document analysis model from a source Form Recognizer resource to a target Form Recognizer resource.
  */
-public class CopyModel {
+public class CopyDocumentModel {
 
     /**
      * Main method to invoke this demo.
@@ -46,12 +46,12 @@ public class CopyModel {
         // The ID of the model that needs to be copied to the target resource
         String copyModelId = "copy-model-ID";
         // Start copy operation from the source client
-        SyncPoller<DocumentOperationResult, DocumentModelDetails> copyPoller = sourceClient.beginCopyModelTo(copyModelId,
+        SyncPoller<OperationResult, DocumentModelDetails> copyPoller = sourceClient.beginCopyDocumentModelTo(copyModelId,
             modelCopyAuthorization);
         copyPoller.waitForCompletion();
 
         // Get the copied model
-        DocumentModelDetails copiedModel = targetClient.getModel(modelCopyAuthorization.getTargetModelId());
+        DocumentModelDetails copiedModel = targetClient.getDocumentModel(modelCopyAuthorization.getTargetModelId());
 
         System.out.printf("Copied model has model ID: %s, was created on: %s.%n",
             copiedModel.getModelId(),

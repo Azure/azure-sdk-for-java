@@ -5,10 +5,10 @@ package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient;
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeModelOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeDocumentModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
@@ -26,7 +26,7 @@ import java.util.Arrays;
  * the most accurate one.
  * </p>
  */
-public class ComposeModel {
+public class ComposeDocumentModel {
 
     /**
      * Main method to invoke this demo.
@@ -43,21 +43,21 @@ public class ComposeModel {
         // Build custom document analysis model
         String model1TrainingFiles = "{SAS_URL_of_your_container_in_blob_storage_for_model_1}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
-        SyncPoller<DocumentOperationResult, DocumentModelDetails> model1Poller =
-            client.beginBuildModel(model1TrainingFiles, DocumentModelBuildMode.TEMPLATE);
+        SyncPoller<OperationResult, DocumentModelDetails> model1Poller =
+            client.beginBuildDocumentModel(model1TrainingFiles, DocumentModelBuildMode.TEMPLATE);
 
         // Build custom document analysis model
         String model2TrainingFiles = "{SAS_URL_of_your_container_in_blob_storage_for_model_2}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
-        SyncPoller<DocumentOperationResult, DocumentModelDetails> model2Poller =
-            client.beginBuildModel(model2TrainingFiles, DocumentModelBuildMode.TEMPLATE);
+        SyncPoller<OperationResult, DocumentModelDetails> model2Poller =
+            client.beginBuildDocumentModel(model2TrainingFiles, DocumentModelBuildMode.TEMPLATE);
 
         String labeledModelId1 = model1Poller.getFinalResult().getModelId();
         String labeledModelId2 = model2Poller.getFinalResult().getModelId();
         String composedModelId = "my-composed-model";
         final DocumentModelDetails documentModelDetails =
-            client.beginComposeModel(Arrays.asList(labeledModelId1, labeledModelId2),
-                    new ComposeModelOptions().setModelId(composedModelId).setDescription("my composed model description"),
+            client.beginComposeDocumentModel(Arrays.asList(labeledModelId1, labeledModelId2),
+                    new ComposeDocumentModelOptions().setModelId(composedModelId).setDescription("my composed model description"),
                     Context.NONE)
                 .setPollInterval(Duration.ofSeconds(5))
                 .getFinalResult();
