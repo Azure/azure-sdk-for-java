@@ -41,11 +41,7 @@ public final class TokenCredentialProviders {
             clazz = defaultProviderClass;
         }
 
-        TokenCredentialProvider tokenCredentialProvider = instantiateClass(clazz, options);
-        if (options.isCachedEnabled()) {
-            return new CacheableTokenCredentialProvider(tokenCredentialProvider, options);
-        }
-        return tokenCredentialProvider;
+        return instantiateClass(clazz, options);
     }
 
     public static void setDefaultProviderClass(Class<? extends TokenCredentialProvider> clazz) {
