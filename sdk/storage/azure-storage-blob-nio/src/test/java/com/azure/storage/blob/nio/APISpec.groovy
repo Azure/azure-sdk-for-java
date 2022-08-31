@@ -158,6 +158,13 @@ class APISpec extends StorageSpec {
         return config as Map<String, Object>
     }
 
+    AzureFileSystemConfig initializeConfigClass(HttpPipelinePolicy... policies) {
+        def config = new AzureFileSystemConfig([:])
+        config.httpClient = getHttpClient()
+        config.policyList.addAll(policies + getRecordPolicy())
+        return config
+    }
+
     def getFileSystemUri() {
         return new URI("azb://?endpoint=" + environment.primaryAccount.blobEndpoint)
     }
