@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.36.0-beta.1 (Unreleased)
+### 4.36.0-beta.1 (2022-08-31)
 
 #### Features Added
 * Added system property to turn on replica validation - See [PR 29767](https://github.com/Azure/azure-sdk-for-java/pull/29767)
