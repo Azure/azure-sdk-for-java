@@ -12,7 +12,7 @@ import java.util.Objects;
  * Extended options that may be passed when renaming a file system.
  */
 @Fluent
-public class FileSystemRenameOptions {
+class FileSystemRenameOptions {
 
     private final String destinationFileSystemName;
     private DataLakeRequestConditions requestConditions;
@@ -20,7 +20,7 @@ public class FileSystemRenameOptions {
     /**
      * @param destinationFileSystemName The new name of the file system.
      */
-    public FileSystemRenameOptions(String destinationFileSystemName) {
+    FileSystemRenameOptions(String destinationFileSystemName) {
         Objects.requireNonNull(destinationFileSystemName);
         this.destinationFileSystemName = destinationFileSystemName;
     }

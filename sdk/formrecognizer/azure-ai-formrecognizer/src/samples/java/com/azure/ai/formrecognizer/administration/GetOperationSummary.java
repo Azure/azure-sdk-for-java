@@ -5,9 +5,8 @@ package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient;
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildOperationDetails;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationDetails;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelOperationDetails;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentOperationStatus;
 import com.azure.core.credential.AzureKeyCredential;
 
 /**
@@ -38,13 +37,12 @@ public class GetOperationSummary {
             System.out.printf("Operation percent completion status: %d%n", modelOperationSummary.getPercentCompleted());
 
             // get the specific operation info
-            OperationDetails modelOperationDetails =
+            DocumentModelOperationDetails modelOperationDetails =
                 client.getOperation(modelOperationSummary.getOperationId());
-            if (OperationStatus.FAILED.equals(modelOperationSummary.getStatus())) {
+            if (DocumentOperationStatus.FAILED.equals(modelOperationSummary.getStatus())) {
                 System.out.printf("Operation fail error: %s%n", modelOperationDetails.getError().getMessage());
             } else {
-                System.out.printf("Model ID created with this operation: %s%n",
-                    ((DocumentModelBuildOperationDetails) modelOperationDetails).getResult().getModelId());
+                System.out.printf("Model ID created with this operation: %s%n", modelOperationDetails.getResult().getModelId());
             }
         });
 
