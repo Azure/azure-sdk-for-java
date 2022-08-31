@@ -49,12 +49,10 @@ extends:
       PreRunSteps:
         - pwsh: |
             New-Item -Path . -Name "java-profiling" -ItemType "directory"
-          workingDirectory: ${{ parameters.ServiceDirectory }}
       PostRunSteps:
         - pwsh: |
             [System.IO.Compression.ZipFile]::CreateFromDirectory("java-profiling","java-profiling.zip")
-          workingDirectory: ${{ parameters.ServiceDirectory }}
-        - publish: ${{ parameters.ServiceDirectory }}/java-profiling.zip
+        - publish: java-profiling.zip
           artifact: $(System.JobName)-$(System.JobAttempt)-java-profiling.zip
     ServiceDirectory: ${{ parameters.ServiceDirectory }}
     Services: ${{ parameters.Services }}
