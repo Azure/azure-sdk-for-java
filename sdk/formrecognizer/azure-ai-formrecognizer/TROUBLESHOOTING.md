@@ -4,7 +4,7 @@ This troubleshooting guide contains instructions to diagnose frequently encounte
 
 ## Table of Contents
 * [Troubleshooting Errors & Exceptions](#troubleshooting-errors--exceptions)
-    * [Handling HttpResponseException](#handling-httpResponseException)
+    * [Handling HttpResponseException](#handling-httpresponseexception)
     * [Build model error](#build-model-error)
        * [Invalid training dataset](#invalid-training-data-set)
        * [Invalid SAS URL](#invalid-sas-url)
@@ -51,7 +51,7 @@ com.azure.core.exception.HttpResponseException: Invalid model created with model
 
 #### Invalid training data set
 This error indicates that the provided data set does not match the training data requirements.
-Learn more about building a training data set, [here](https://docs.microsoft.com/en-us/azure/applied-ai-services/form-recognizer/how-to-guides/build-custom-model-v3)
+Learn more about building a training data set, [here](https://aka.ms/customModelV3)
 The error looks like this:
 
 ```json
