@@ -389,23 +389,13 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathInfo> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions,
         boolean overwrite) {
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions();
 
-        Mono<Void> overwriteCheck;
-        DataLakeRequestConditions requestConditions;
-
-        if (overwrite) {
-            overwriteCheck = Mono.empty();
-            requestConditions = null;
-        } else {
-            overwriteCheck = exists().flatMap(exists -> exists
-                ? monoError(LOGGER, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
-                : Mono.empty());
-            requestConditions = new DataLakeRequestConditions()
-                .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        if (!overwrite) {
+            requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
 
-        return overwriteCheck
-            .then(uploadWithResponse(data, parallelTransferOptions, null, null, requestConditions))
+        return uploadWithResponse(data, parallelTransferOptions, null, null, requestConditions)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -437,23 +427,14 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathInfo> upload(BinaryData data, ParallelTransferOptions parallelTransferOptions, boolean overwrite) {
-        Mono<Void> overwriteCheck;
-        DataLakeRequestConditions requestConditions;
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions();
 
-        if (overwrite) {
-            overwriteCheck = Mono.empty();
-            requestConditions = null;
-        } else {
-            overwriteCheck = exists().flatMap(exists -> exists
-                ? monoError(LOGGER, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
-                : Mono.empty());
-            requestConditions = new DataLakeRequestConditions()
-                .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        if (!overwrite) {
+            requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
 
-        return overwriteCheck
-            .then(uploadWithResponse(new FileParallelUploadOptions(data)
-                .setParallelTransferOptions(parallelTransferOptions).setRequestConditions(requestConditions)))
+        return uploadWithResponse(new FileParallelUploadOptions(data)
+                .setParallelTransferOptions(parallelTransferOptions).setRequestConditions(requestConditions))
             .flatMap(FluxUtil::toMono);
     }
 
