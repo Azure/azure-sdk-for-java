@@ -28,10 +28,10 @@ public enum AuthProperty {
         "Client secret to use when performing service principal authentication with Azure.",
         false),
     /**
-     * Path of a PEM certificate file to use when performing service principal authentication with Azure.
+     * Path of a PEM/PFX certificate file to use when performing service principal authentication with Azure.
      */
     CLIENT_CERTIFICATE_PATH("azure.clientCertificatePath",
-        "Path of a PEM certificate file to use when performing service principal authentication with Azure.",
+        "Path of a PEM/PFX certificate file to use when performing service principal authentication with Azure.",
         false),
     /**
      * Password of the certificate file.
@@ -100,12 +100,6 @@ public enum AuthProperty {
     TOKEN_CREDENTIAL_BEAN_NAME("azure.tokenCredentialBeanName",
         "springCloudAzureDefaultCredential",
         "The given bean name of a TokenCredential bean in the Spring context.",
-        false),
-    /**
-     * Whether to cache an access token.
-     */
-    CACHE_ENABLED("azure.cacheEnabled",
-        "Whether to cache an access token.",
         false);
 
     String propertyKey;

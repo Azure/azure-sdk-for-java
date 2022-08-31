@@ -17,7 +17,6 @@ public class AccessTokenResolverOptions {
     private String claims;
     private String tenantId;
     private String[] scopes;
-    private boolean cacheAccessToken;
 
     public AccessTokenResolverOptions() {
 
@@ -29,7 +28,6 @@ public class AccessTokenResolverOptions {
 
         String scopeProperty = AuthProperty.SCOPES.get(properties);
         this.scopes = scopeProperty == null ?  new String[0] : scopeProperty.split(",");
-        this.cacheAccessToken = Boolean.TRUE.equals(AuthProperty.CACHE_ENABLED.getBoolean(properties));
     }
 
     public String getClaims() {
@@ -54,14 +52,6 @@ public class AccessTokenResolverOptions {
 
     public void setScopes(String[] scopes) {
         this.scopes = scopes.clone();
-    }
-
-    public boolean isCacheAccessToken() {
-        return cacheAccessToken;
-    }
-
-    public void setCacheAccessToken(boolean cacheAccessToken) {
-        this.cacheAccessToken = cacheAccessToken;
     }
 
 }
