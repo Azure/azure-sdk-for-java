@@ -11,9 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ManagedClusterManagedOutboundIpProfile {
     /*
-     * The desired number of outbound IPs created/managed by Azure. Allowed
-     * values must be in the range of 1 to 16 (inclusive). The default value is
-     * 1.
+     * The desired number of outbound IPs created/managed by Azure. Allowed values must be in the range of 1 to 16
+     * (inclusive). The default value is 1.
      */
     @JsonProperty(value = "count")
     private Integer count;

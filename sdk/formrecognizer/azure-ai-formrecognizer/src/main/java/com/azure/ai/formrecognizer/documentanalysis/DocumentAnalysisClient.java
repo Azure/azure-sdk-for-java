@@ -3,8 +3,8 @@
 
 package com.azure.ai.formrecognizer.documentanalysis;
 
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AnalyzeResultOperation;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeDocumentOptions;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;

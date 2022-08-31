@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for KubeletDiskType. */
+/** Determines the placement of emptyDir volumes, container runtime data root, and Kubelet ephemeral storage. */
 public final class KubeletDiskType extends ExpandableStringEnum<KubeletDiskType> {
     /** Static value OS for KubeletDiskType. */
     public static final KubeletDiskType OS = fromString("OS");
