@@ -5,7 +5,7 @@
 package com.azure.analytics.synapse.artifacts.implementation;
 
 import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
-import com.azure.analytics.synapse.artifacts.models.LibraryListResponse;
+import com.azure.analytics.synapse.artifacts.implementation.models.LibraryListResponse;
 import com.azure.analytics.synapse.artifacts.models.LibraryResource;
 import com.azure.analytics.synapse.artifacts.models.LibraryResourceInfo;
 import com.azure.core.annotation.BodyParam;

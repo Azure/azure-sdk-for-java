@@ -9,4 +9,6 @@ module com.azure.analytics.synapse.artifacts {
 
     opens com.azure.analytics.synapse.artifacts.models to com.fasterxml.jackson.databind;
 
+    opens com.azure.analytics.synapse.artifacts.implementation.models to com.fasterxml.jackson.databind;
+
 }

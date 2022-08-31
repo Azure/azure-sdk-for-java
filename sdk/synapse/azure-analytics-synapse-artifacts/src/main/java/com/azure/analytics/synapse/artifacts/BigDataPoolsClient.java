@@ -6,7 +6,7 @@ package com.azure.analytics.synapse.artifacts;
 
 import com.azure.analytics.synapse.artifacts.implementation.BigDataPoolsImpl;
 import com.azure.analytics.synapse.artifacts.models.BigDataPoolResourceInfo;
-import com.azure.analytics.synapse.artifacts.models.BigDataPoolResourceInfoListResult;
+import com.azure.analytics.synapse.artifacts.implementation.models.BigDataPoolResourceInfoListResult;
 import com.azure.analytics.synapse.artifacts.models.ErrorContractException;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;

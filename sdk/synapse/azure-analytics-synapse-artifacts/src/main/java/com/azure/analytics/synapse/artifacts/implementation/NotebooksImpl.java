@@ -6,7 +6,7 @@ package com.azure.analytics.synapse.artifacts.implementation;
 
 import com.azure.analytics.synapse.artifacts.models.ArtifactRenameRequest;
 import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
-import com.azure.analytics.synapse.artifacts.models.NotebookListResponse;
+import com.azure.analytics.synapse.artifacts.implementation.models.NotebookListResponse;
 import com.azure.analytics.synapse.artifacts.models.NotebookResource;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;

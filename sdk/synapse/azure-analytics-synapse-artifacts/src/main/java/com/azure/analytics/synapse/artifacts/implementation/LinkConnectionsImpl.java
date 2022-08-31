@@ -7,7 +7,7 @@ package com.azure.analytics.synapse.artifacts.implementation;
 import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.EditTablesRequest;
 import com.azure.analytics.synapse.artifacts.models.LinkConnectionDetailedStatus;
-import com.azure.analytics.synapse.artifacts.models.LinkConnectionListResponse;
+import com.azure.analytics.synapse.artifacts.implementation.models.LinkConnectionListResponse;
 import com.azure.analytics.synapse.artifacts.models.LinkConnectionQueryTableStatus;
 import com.azure.analytics.synapse.artifacts.models.LinkConnectionResource;
 import com.azure.analytics.synapse.artifacts.models.LinkTableListResponse;

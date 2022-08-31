@@ -6,7 +6,7 @@ package com.azure.analytics.synapse.artifacts;
 
 import com.azure.analytics.synapse.artifacts.implementation.IntegrationRuntimesImpl;
 import com.azure.analytics.synapse.artifacts.models.ErrorContractException;
-import com.azure.analytics.synapse.artifacts.models.IntegrationRuntimeListResponse;
+import com.azure.analytics.synapse.artifacts.implementation.models.IntegrationRuntimeListResponse;
 import com.azure.analytics.synapse.artifacts.models.IntegrationRuntimeResource;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;

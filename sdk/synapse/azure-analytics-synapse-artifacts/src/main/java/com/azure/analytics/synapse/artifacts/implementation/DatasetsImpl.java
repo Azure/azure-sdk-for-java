@@ -6,7 +6,7 @@ package com.azure.analytics.synapse.artifacts.implementation;
 
 import com.azure.analytics.synapse.artifacts.models.ArtifactRenameRequest;
 import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
-import com.azure.analytics.synapse.artifacts.models.DatasetListResponse;
+import com.azure.analytics.synapse.artifacts.implementation.models.DatasetListResponse;
 import com.azure.analytics.synapse.artifacts.models.DatasetResource;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
