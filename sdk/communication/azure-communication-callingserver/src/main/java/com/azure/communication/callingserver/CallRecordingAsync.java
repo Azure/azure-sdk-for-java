@@ -169,8 +169,7 @@ public class CallRecordingAsync {
                 .stream()
                 .map(c -> new ChannelAffinityInternal()
                     .setChannel(c.getChannel())
-                    .setParticipant(CommunicationIdentifierConverter.convert(c.getParticipant())
-                        .setRawId(c.getParticipant().getRawId())))
+                    .setParticipant(CommunicationIdentifierConverter.convert(c.getParticipant())))
                 .collect(Collectors.toList());
             request.setChannelAffinity(channelAffinityInternal);
         }
