@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0 (Unreleased)
 
 ### Features Added
 - Added filter to listDeviceClasses device management method
