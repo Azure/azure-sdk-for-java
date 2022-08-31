@@ -11,6 +11,9 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.Compos
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorizationOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildOperationDetails;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelComposeOperationDetails;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelCopyToOperationDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
@@ -474,7 +477,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
 
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
         List<String> operationIdList = new ArrayList<>();
-        StepVerifier.create(client.listOperations().byPage().take(10))
+        StepVerifier.create(client.listOperations().byPage().take(4))
             .thenConsumeWhile(modelOperationInfoPagedResponse ->          {
                 modelOperationInfoPagedResponse.getValue().forEach(modelOperationInfo -> {
                     operationIdList.add(modelOperationInfo.getOperationId());
@@ -491,9 +494,16 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
 
         if (!CoreUtils.isNullOrEmpty(operationIdList)) {
             operationIdList.forEach(operationId -> StepVerifier.create(client.getOperation(operationId))
-                .assertNext(modelOperationDetails -> {
-                    assertNotNull(modelOperationDetails.getOperationId());
-                    assertNotNull(modelOperationDetails.getCreatedOn());
+                .assertNext(operationDetails -> {
+                    assertNotNull(operationDetails.getOperationId());
+                    assertNotNull(operationDetails.getCreatedOn());
+                    if (operationDetails instanceof DocumentModelBuildOperationDetails) {
+                        assertNotNull(((DocumentModelBuildOperationDetails) operationDetails).getResult());
+                    } else if (operationDetails instanceof DocumentModelComposeOperationDetails) {
+                        assertNotNull(((DocumentModelComposeOperationDetails) operationDetails).getResult());
+                    } else if (operationDetails instanceof DocumentModelCopyToOperationDetails) {
+                        assertNotNull(((DocumentModelCopyToOperationDetails) operationDetails).getResult());
+                    }
                 })
                 .verifyComplete());
         }

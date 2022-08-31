@@ -1204,7 +1204,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             AnalyzeResult analyzeResult = syncPoller.getFinalResult();
             Assertions.assertNotNull(analyzeResult);
             Assertions.assertNotNull(analyzeResult.getLanguages());
-            Assertions.assertEquals(9, analyzeResult.getLanguages().size());
+            Assertions.assertEquals(2, analyzeResult.getLanguages().size());
         }, INVOICE_PDF);
     }
 

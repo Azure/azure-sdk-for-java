@@ -4,10 +4,12 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentOperationResultHelper;
+import com.azure.core.annotation.Immutable;
 
 /**
  * The DocumentOperationResult model.
  */
+@Immutable
 public final class DocumentOperationResult {
     /**
      * Identifier which contains the result of the model/analyze operation.
@@ -24,7 +26,7 @@ public final class DocumentOperationResult {
         return this.resultId;
     }
 
-    void setResultId(String resultId) {
+    private void setResultId(String resultId) {
         this.resultId = resultId;
     }
 

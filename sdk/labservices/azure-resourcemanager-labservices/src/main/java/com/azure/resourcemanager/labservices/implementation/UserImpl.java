@@ -69,6 +69,10 @@ public final class UserImpl implements User, User.Definition, User.Update {
         return this.innerModel().additionalUsageQuota();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public UserInner innerModel() {
         return this.innerObject;
     }
