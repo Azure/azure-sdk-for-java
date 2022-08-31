@@ -59,7 +59,7 @@ public class TestGauge implements LongGauge {
         }
 
         /**
-         * Records value. Tests shoudl call into this method explicitly.
+         * Records value. Tests should call into this method explicitly.
          */
         public void measure() {
             if (!closed) {
@@ -74,7 +74,7 @@ public class TestGauge implements LongGauge {
         }
 
         /**
-         * Gets all measurements reported with this histogram.
+         * Gets all measurements reported with this subscription.
          *
          * @return list of all measurements
          */

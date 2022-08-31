@@ -186,7 +186,7 @@ public class AmqpMetricsProvider {
     }
 
     /**
-     * Records the message was received.
+     * Creates gauge subscription to report latest sequence number value.
      */
     public AutoCloseable trackPrefetchSequenceNumber(Supplier<Long> valueSupplier) {
         if (!isEnabled || !prefetchedSequenceNumber.isEnabled()) {
