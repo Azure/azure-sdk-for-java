@@ -11,20 +11,18 @@ import com.azure.core.util.TelemetryAttributes;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.metrics.DoubleHistogram;
 import com.azure.core.util.metrics.LongCounter;
+import com.azure.core.util.metrics.LongGauge;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.metrics.MeterProvider;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
-import org.apache.qpid.proton.message.Message;
 
 import java.time.Instant;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
+import java.util.function.Supplier;
 
 /**
  * Helper class responsible for efficient reporting metrics in AMQP core. It's efficient and safe to use when there is no
@@ -34,7 +32,6 @@ public class AmqpMetricsProvider {
     public static final String STATUS_CODE_KEY = "amqpStatusCode";
     public static final String MANAGEMENT_OPERATION_KEY = "amqpOperation";
     private static final ClientLogger LOGGER = new ClientLogger(AmqpMetricsProvider.class);
-    private static final Symbol ENQUEUED_TIME_ANNOTATION = Symbol.valueOf(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
 
     private static final String AZURE_CORE_AMQP_PROPERTIES_NAME = "azure-core.properties";
     private static final String AZURE_CORE_AMQP_PROPERTIES_VERSION_KEY = "version";
@@ -42,6 +39,9 @@ public class AmqpMetricsProvider {
     private static final String AZURE_CORE_VERSION = CoreUtils
         .getProperties(AZURE_CORE_AMQP_PROPERTIES_NAME)
         .getOrDefault(AZURE_CORE_AMQP_PROPERTIES_VERSION_KEY, null);
+
+    private static final AutoCloseable NOOP_CLOSEABLE = () -> {
+    };
 
     // all delivery state + 1 for `null` - we'll treat it as an error - no delivery was received
     private static final int DELIVERY_STATES_COUNT = DeliveryState.DeliveryStateType.values().length + 1;
@@ -59,7 +59,7 @@ public class AmqpMetricsProvider {
     private LongCounter sessionErrors = null;
     private LongCounter linkErrors = null;
     private LongCounter transportErrors = null;
-    private DoubleHistogram receivedLag = null;
+    private LongGauge prefetchedSequenceNumber = null;
     private LongCounter addCredits = null;
 
     /**
@@ -131,7 +131,7 @@ public class AmqpMetricsProvider {
             this.linkErrors = this.meter.createLongCounter("messaging.az.amqp.client.link.errors", "AMQP link errors", "errors");
             this.transportErrors = this.meter.createLongCounter("messaging.az.amqp.client.transport.errors", "AMQP session errors", "errors");
             this.addCredits = this.meter.createLongCounter("messaging.az.amqp.consumer.credits.requested", "Number of requested credits", "credits");
-            this.receivedLag = this.meter.createDoubleHistogram("messaging.az.amqp.consumer.lag", "Approximate lag between time message was received and time it was enqueued on the broker.", "sec");
+            this.prefetchedSequenceNumber = this.meter.createLongGauge("messaging.az.amqp.prefetch.sequence_number", "Last prefetched sequence number", "seqNo");
         }
     }
 
@@ -140,11 +140,19 @@ public class AmqpMetricsProvider {
     }
 
     /**
-     * Checks if record delivers is enabled (for micro-optimizations).
+     * Checks if send delivery metric is enabled (for micro-optimizations).
      */
     public boolean isSendDeliveryEnabled() {
         return isEnabled && sendDuration.isEnabled();
     }
+
+    /**
+     * Checks if prefetched sequence number is enabled (for micro-optimizations).
+     */
+    public boolean isPrefetchedSequenceNumberEnabled() {
+        return isEnabled && prefetchedSequenceNumber.isEnabled();
+    }
+
 
     /**
      * Records duration of AMQP send call.
@@ -180,26 +188,12 @@ public class AmqpMetricsProvider {
     /**
      * Records the message was received.
      */
-    public void recordReceivedMessage(Message message) {
-        if (!isEnabled || !receivedLag.isEnabled()
-            || message == null
-            || message.getMessageAnnotations() == null
-            || message.getBody() == null) {
-            return;
+    public AutoCloseable trackPrefetchSequenceNumber(Supplier<Long> valueSupplier) {
+        if (!isEnabled || !prefetchedSequenceNumber.isEnabled()) {
+            return NOOP_CLOSEABLE;
         }
 
-        Map<Symbol, Object> properties = message.getMessageAnnotations().getValue();
-        Object enqueuedTimeDate = properties != null ? properties.get(ENQUEUED_TIME_ANNOTATION) : null;
-        if (enqueuedTimeDate instanceof Date) {
-            Instant enqueuedTime = ((Date) enqueuedTimeDate).toInstant();
-            long deltaMs = Instant.now().toEpochMilli() - enqueuedTime.toEpochMilli();
-            if (deltaMs < 0) {
-                deltaMs = 0;
-            }
-            receivedLag.record(deltaMs / 1000d, commonAttributes, Context.NONE);
-        } else if (enqueuedTimeDate != null) {
-            LOGGER.verbose("Received message has unexpected `x-opt-enqueued-time` annotation value - `{}`. Ignoring it.", enqueuedTimeDate);
-        }
+        return prefetchedSequenceNumber.registerCallback(valueSupplier, commonAttributes);
     }
 
     /**
