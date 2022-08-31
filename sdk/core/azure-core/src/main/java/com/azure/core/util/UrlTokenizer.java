@@ -40,12 +40,11 @@ class UrlTokenizer {
         }
     }
 
-    private String peekCharacters(int charactersToPeek) {
-        int endIndex = currentIndex + charactersToPeek;
-        if (textLength < endIndex) {
-            endIndex = textLength;
-        }
-        return text.substring(currentIndex, endIndex);
+    /*
+     * Checks if the next range of characters matches the scheme-host separator (://)
+     */
+    private boolean peekMatchesSchemeSeparator() {
+        return "://".regionMatches(0, text, currentIndex, 3);
     }
 
     UrlToken current() {
@@ -73,7 +72,7 @@ class UrlTokenizer {
                         currentToken = UrlToken.host(schemeOrHost);
                         state = UrlTokenizerState.DONE;
                     } else if (currentCharacter() == ':') {
-                        if (peekCharacters(3).equals("://")) {
+                        if (peekMatchesSchemeSeparator()) {
                             currentToken = UrlToken.scheme(schemeOrHost);
                             state = UrlTokenizerState.HOST;
                         } else {
@@ -90,7 +89,7 @@ class UrlTokenizer {
                     break;
 
                 case HOST:
-                    if (peekCharacters(3).equals("://")) {
+                    if (peekMatchesSchemeSeparator()) {
                         nextCharacter(3);
                     }
 
@@ -155,52 +154,43 @@ class UrlTokenizer {
     }
 
     private String readUntilNotLetterOrDigit() {
-        String result = "";
-
-        if (hasCurrentCharacter()) {
-            final StringBuilder builder = new StringBuilder();
-            while (hasCurrentCharacter()) {
-                final char currentCharacter = currentCharacter();
-                if (!Character.isLetterOrDigit(currentCharacter)) {
-                    break;
-                } else {
-                    builder.append(currentCharacter);
-                    nextCharacter();
-                }
-            }
-            result = builder.toString();
+        if (!hasCurrentCharacter()) {
+            return "";
         }
 
-        return result;
+        int start = currentIndex;
+
+        while (hasCurrentCharacter()) {
+            final char currentCharacter = currentCharacter();
+            if (!Character.isLetterOrDigit(currentCharacter)) {
+                return text.substring(start, currentIndex);
+            }
+
+            nextCharacter();
+        }
+
+        return text.substring(start);
     }
 
     private String readUntilCharacter(char... terminatingCharacters) {
-        String result = "";
-
-        if (hasCurrentCharacter()) {
-            final StringBuilder builder = new StringBuilder();
-            boolean foundTerminator = false;
-            while (hasCurrentCharacter()) {
-                final char currentCharacter = currentCharacter();
-
-                for (final char terminatingCharacter : terminatingCharacters) {
-                    if (currentCharacter == terminatingCharacter) {
-                        foundTerminator = true;
-                        break;
-                    }
-                }
-
-                if (foundTerminator) {
-                    break;
-                } else {
-                    builder.append(currentCharacter);
-                    nextCharacter();
-                }
-            }
-            result = builder.toString();
+        if (!hasCurrentCharacter()) {
+            return "";
         }
 
-        return result;
+        int start = currentIndex;
+
+        while (hasCurrentCharacter()) {
+            char currentCharacter = currentCharacter();
+            for (char terminatingCharacter : terminatingCharacters) {
+                if (currentCharacter == terminatingCharacter) {
+                    return text.substring(start, currentIndex);
+                }
+            }
+
+            nextCharacter();
+        }
+
+        return text.substring(start);
     }
 
     private String readRemaining() {

@@ -386,6 +386,7 @@ public final class PathsImpl {
                 @HeaderParam("x-ms-encryption-key") String encryptionKey,
                 @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
                 @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
+                @QueryParam("flush") Boolean flush,
                 @BodyParam("application/octet-stream") Flux<ByteBuffer> body,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -409,6 +410,7 @@ public final class PathsImpl {
                 @HeaderParam("x-ms-encryption-key") String encryptionKey,
                 @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
                 @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
+                @QueryParam("flush") Boolean flush,
                 @BodyParam("application/octet-stream") BinaryData body,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -1753,6 +1755,7 @@ public final class PathsImpl {
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when storage analytics logging is enabled.
+     * @param flush If file should be flushed after the append.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
@@ -1770,6 +1773,7 @@ public final class PathsImpl {
             Long contentLength,
             byte[] transactionalContentCrc64,
             String requestId,
+            Boolean flush,
             PathHttpHeaders pathHttpHeaders,
             LeaseAccessConditions leaseAccessConditions,
             CpkInfo cpkInfo,
@@ -1819,6 +1823,7 @@ public final class PathsImpl {
                 encryptionKey,
                 encryptionKeySha256,
                 encryptionAlgorithm,
+                flush,
                 body,
                 accept,
                 context);
@@ -1842,6 +1847,7 @@ public final class PathsImpl {
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when storage analytics logging is enabled.
+     * @param flush If file should be flushed after the append.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
@@ -1859,6 +1865,7 @@ public final class PathsImpl {
             Long contentLength,
             byte[] transactionalContentCrc64,
             String requestId,
+            Boolean flush,
             PathHttpHeaders pathHttpHeaders,
             LeaseAccessConditions leaseAccessConditions,
             CpkInfo cpkInfo,
@@ -1908,6 +1915,7 @@ public final class PathsImpl {
                 encryptionKey,
                 encryptionKeySha256,
                 encryptionAlgorithm,
+                flush,
                 body,
                 accept,
                 context);

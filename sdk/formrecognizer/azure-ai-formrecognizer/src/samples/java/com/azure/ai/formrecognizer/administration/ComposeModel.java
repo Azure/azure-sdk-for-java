@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.formrecognizer.documentanalysis.administration;
+package com.azure.ai.formrecognizer.administration;
 
+import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient;
+import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
@@ -55,7 +57,7 @@ public class ComposeModel {
         String composedModelId = "my-composed-model";
         final DocumentModelDetails documentModelDetails =
             client.beginComposeModel(Arrays.asList(labeledModelId1, labeledModelId2),
-                    new ComposeModelOptions().setDescription("my composed model description"),
+                    new ComposeModelOptions().setModelId(composedModelId).setDescription("my composed model description"),
                     Context.NONE)
                 .setPollInterval(Duration.ofSeconds(5))
                 .getFinalResult();

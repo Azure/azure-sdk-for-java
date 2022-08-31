@@ -7,7 +7,7 @@ package com.azure.resourcemanager.communication.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for KeyType. */
+/** The keyType to regenerate. Must be either 'primary' or 'secondary'(case-insensitive). */
 public enum KeyType {
     /** Enum value Primary. */
     PRIMARY("Primary"),
@@ -30,6 +30,9 @@ public enum KeyType {
      */
     @JsonCreator
     public static KeyType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         KeyType[] items = KeyType.values();
         for (KeyType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum KeyType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

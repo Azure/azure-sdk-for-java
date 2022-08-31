@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.administration.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentModelSummaryHelper;
+import com.azure.core.annotation.Immutable;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -11,6 +12,7 @@ import java.util.Map;
 /**
  * Model summary for the built and prebuilt models.
  */
+@Immutable
 public final class DocumentModelSummary {
     /*
      * Unique model identifier.

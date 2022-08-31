@@ -417,7 +417,7 @@ class FileAPITests extends APISpec {
 
         data.defaultBytes == stream.toByteArray()
     }
-    
+
     def "Download all null"() {
         given:
         primaryFileClient.create(data.defaultDataSizeLong)
@@ -1824,6 +1824,7 @@ class FileAPITests extends APISpec {
         thrown(ShareStorageException)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_02_12")
     def "Rename sas token"() {
         setup:
         def permissions = new ShareFileSasPermission()

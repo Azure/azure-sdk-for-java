@@ -3,19 +3,22 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.administration.models;
 
+import com.azure.core.annotation.Immutable;
+
 import java.time.OffsetDateTime;
 
 /**
  * Authorization to copy a model to the specified target resource and modelId.
  */
+@Immutable
 public final class CopyAuthorization {
     /*
-     * Id of the target Azure resource where the model should be copied to.
+     * ID of the target Azure resource where the document model should be copied to.
      */
     private final String targetResourceId;
 
     /*
-     * Location of the target Azure resource where the model should be copied
+     * Location of the target Azure resource where the document model should be copied
      * to.
      */
     private final String targetResourceRegion;
@@ -26,7 +29,7 @@ public final class CopyAuthorization {
     private final String targetModelId;
 
     /*
-     * URL of the copied model in the target account.
+     * URL of the copied document model in the target account.
      */
     private final String targetModelLocation;
 
@@ -61,7 +64,7 @@ public final class CopyAuthorization {
     }
 
     /**
-     * Get the identifier of the target Azure resource where the model should be copied to.
+     * Get the identifier of the target Azure resource where the document model should be copied to.
      *
      * @return the targetResourceId value.
      */
@@ -70,7 +73,7 @@ public final class CopyAuthorization {
     }
 
     /**
-     * Get the location of the target Azure resource where the model should be copied to.
+     * Get the location of the target Azure resource where the document model should be copied to.
      *
      * @return the targetResourceRegion value.
      */
@@ -79,7 +82,7 @@ public final class CopyAuthorization {
     }
 
     /**
-     * Get the identifier of the target model.
+     * Get the identifier of the target document model.
      *
      * @return the targetModelId value.
      */
@@ -88,7 +91,7 @@ public final class CopyAuthorization {
     }
 
     /**
-     * Get the URL of the copied model in the target account.
+     * Get the URL of the copied document model in the target account.
      *
      * @return the targetModelLocation value.
      */

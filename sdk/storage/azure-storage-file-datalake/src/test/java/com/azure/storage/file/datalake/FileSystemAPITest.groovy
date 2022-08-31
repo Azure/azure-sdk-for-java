@@ -5,6 +5,10 @@ import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.common.Utility
+import com.azure.storage.common.sas.AccountSasPermission
+import com.azure.storage.common.sas.AccountSasResourceType
+import com.azure.storage.common.sas.AccountSasService
+import com.azure.storage.common.sas.AccountSasSignatureValues
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy
@@ -24,6 +28,8 @@ import com.azure.storage.file.datalake.options.DataLakePathCreateOptions
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions
 import com.azure.storage.file.datalake.options.DataLakePathScheduleDeletionOptions
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions
+import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions
+import com.azure.storage.file.datalake.options.FileSystemRenameOptions
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -112,6 +118,65 @@ class FileSystemAPITest extends APISpec {
         e.getServiceMessage().contains("The specified container already exists.")
     }
 
+    def "Create encryption scope"() {
+        setup:
+        def encryptionScope = new FileSystemEncryptionScopeOptions()
+            .setDefaultEncryptionScope(encryptionScopeString)
+            .setEncryptionScopeOverridePrevented(true)
+
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+
+        def client = getFileSystemClientBuilder(fsc.getFileSystemUrl())
+            .credential(environment.dataLakeAccount.credential)
+            .fileSystemEncryptionScopeOptions(encryptionScope)
+            .buildClient()
+
+        when:
+        client.create()
+        def properties = client.getProperties()
+
+        then:
+        properties.getEncryptionScope() == encryptionScopeString
+        properties.isEncryptionScopeOverridePrevented()
+    }
+
+    def "Create metadata encryption scope"() {
+        setup:
+        def encryptionScope = new FileSystemEncryptionScopeOptions()
+            .setDefaultEncryptionScope(encryptionScopeString)
+            .setEncryptionScopeOverridePrevented(true)
+
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+
+        def client = getFileSystemClientBuilder(fsc.getFileSystemUrl())
+            .credential(environment.dataLakeAccount.credential)
+            .fileSystemEncryptionScopeOptions(encryptionScope)
+            .buildClient()
+
+        def metadata = new HashMap<String, String>()
+        if (key1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null) {
+            metadata.put(key2, value2)
+        }
+
+        when:
+        client.createWithResponse(metadata, null, null, null)
+        def properties = client.getProperties()
+
+        then:
+        properties.getEncryptionScope() == encryptionScopeString
+        properties.isEncryptionScopeOverridePrevented()
+        properties.getMetadata() == metadata
+
+        where:
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
+        "testFoo" | "testBar" | "testFizz" | "testBuzz"
+    }
+
     def "Create if not exists all null"() {
         setup:
         // Overwrite the existing fsc, which has already been created
@@ -193,6 +258,28 @@ class FileSystemAPITest extends APISpec {
         then:
         initialResponse.getStatusCode() == 201
         secondResponse.getStatusCode() == 409
+    }
+
+    def "Create if not exists encryption scope"() {
+        setup:
+        def encryptionScope = new FileSystemEncryptionScopeOptions()
+            .setDefaultEncryptionScope(encryptionScopeString)
+            .setEncryptionScopeOverridePrevented(true)
+
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+
+        def client = getFileSystemClientBuilder(fsc.getFileSystemUrl())
+            .credential(environment.dataLakeAccount.credential)
+            .fileSystemEncryptionScopeOptions(encryptionScope)
+            .buildClient()
+
+        when:
+        client.createIfNotExists()
+        def properties = client.getProperties()
+
+        then:
+        properties.getEncryptionScope() == encryptionScopeString
+        properties.isEncryptionScopeOverridePrevented()
     }
 
     def "Get properties null"() {
@@ -2317,6 +2404,56 @@ class FileSystemAPITest extends APISpec {
         }
     }
 
+    def "List paths encryption scope"() {
+        setup:
+        def encryptionScope = new FileSystemEncryptionScopeOptions()
+            .setDefaultEncryptionScope(encryptionScopeString)
+            .setEncryptionScopeOverridePrevented(true)
+
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+
+        def client = getFileSystemClientBuilder(fsc.getFileSystemUrl())
+            .credential(environment.dataLakeAccount.credential)
+            .fileSystemEncryptionScopeOptions(encryptionScope)
+            .buildClient()
+
+        client.create()
+
+        def dirName = generatePathName()
+        client.getDirectoryClient(dirName).create()
+
+        def fileName = generatePathName()
+        def fileClient = fsc.getFileClient(fileName)
+        fileClient.create()
+
+        when:
+        def response = fsc.listPaths().iterator()
+
+        then:
+        def dirPath = response.next()
+        dirPath.getName() == dirName
+        dirPath.getETag()
+        dirPath.getGroup()
+        dirPath.getLastModified()
+        dirPath.getOwner()
+        dirPath.getPermissions()
+        dirPath.isDirectory()
+        dirPath.getEncryptionScope() == encryptionScopeString
+
+        response.hasNext()
+        def filePath = response.next()
+        filePath.getName() == fileName
+        filePath.getETag()
+        filePath.getGroup()
+        filePath.getLastModified()
+        filePath.getOwner()
+        filePath.getPermissions()
+        filePath.getEncryptionScope() == encryptionScopeString
+        !filePath.isDirectory()
+
+        !response.hasNext()
+    }
+
     def "Async list paths max results by page"() {
         setup:
         def dirName = generatePathName()
@@ -2622,102 +2759,115 @@ class FileSystemAPITest extends APISpec {
         response.getHeaders().getValue("x-ms-version") == "2019-02-02"
     }
 
-//    def "Rename"() {
-//        setup:
-//        def newName = generateFileSystemName()
-//
-//        when:
-//        def renamedContainer = fsc.rename(newName)
-//
-//        then:
-//        renamedContainer.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
-//
-//        cleanup:
-//        renamedContainer.delete()
-//    }
-//
-//    def "Rename sas"() {
-//        setup:
-//        def newName = generateFileSystemName()
-//        def sas = primaryDataLakeServiceClient.generateAccountSas(new AccountSasSignatureValues(namer.getUtcNow().plusHours(1), AccountSasPermission.parse("rwdxlacuptf"), AccountSasService.parse("b"), AccountSasResourceType.parse("c")))
-//        def sasClient = getFileSystemClient(sas, fsc.getFileSystemUrl())
-//
-//        when:
-//        def renamedContainer = sasClient.rename(newName)
-//
-//        then:
-//        renamedContainer.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
-//
-//        cleanup:
-//        renamedContainer.delete()
-//    }
-//
-//    @Unroll
-//    def "Rename AC"() {
-//        setup:
-//        leaseID = setupFileSystemLeaseCondition(fsc, leaseID)
-//        def cac = new DataLakeRequestConditions()
-//            .setLeaseId(leaseID)
-//
-//        expect:
-//        fsc.renameWithResponse(new FileSystemRenameOptions(generateFileSystemName()).setRequestConditions(cac),
-//            null, null).getStatusCode() == 200
-//
-//        where:
-//        leaseID         || _
-//        null            || _
-//        receivedLeaseID || _
-//    }
-//
-//    @Unroll
-//    def "Rename AC fail"() {
-//        setup:
-//        def cac = new DataLakeRequestConditions()
-//            .setLeaseId(leaseID)
-//
-//        when:
-//        fsc.renameWithResponse(new FileSystemRenameOptions(generateFileSystemName()).setRequestConditions(cac),
-//            null, null)
-//
-//        then:
-//        thrown(BlobStorageException)
-//
-//        where:
-//        leaseID         || _
-//        garbageLeaseID  || _
-//    }
-//
-//    @Unroll
-//    def "Rename AC illegal"() {
-//        setup:
-//        def ac = new DataLakeRequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch).setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
-//
-//        when:
-//        fsc.renameWithResponse(new FileSystemRenameOptions(generateFileSystemName()).setRequestConditions(ac),
-//            null, null)
-//
-//        then:
-//        thrown(UnsupportedOperationException)
-//
-//        where:
-//        modified | unmodified | match        | noneMatch
-//        oldDate  | null       | null         | null
-//        null     | newDate    | null         | null
-//        null     | null       | receivedEtag | null
-//        null     | null       | null         | garbageEtag
-//        null     | null       | null         | null
-//    }
-//
-//    def "Rename error"() {
-//        setup:
-//        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
-//        def newName = generateFileSystemName()
-//
-//        when:
-//        fsc.rename(newName)
-//
-//        then:
-//        thrown(BlobStorageException)
-//    }
+    def "Rename"() {
+        setup:
+        def newName = generateFileSystemName()
+
+        when:
+        def renamedContainer = fsc.rename(newName)
+
+        then:
+        renamedContainer.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
+
+        cleanup:
+        renamedContainer.delete()
+    }
+
+    def "Rename sas"() {
+        setup:
+        def service = new AccountSasService()
+            .setBlobAccess(true)
+        def resourceType = new AccountSasResourceType()
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
+        def permissions = new AccountSasPermission()
+            .setReadPermission(true)
+            .setCreatePermission(true)
+            .setWritePermission(true)
+            .setDeletePermission(true)
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        def newName = generateFileSystemName()
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+        def sas = primaryDataLakeServiceClient.generateAccountSas(sasValues)
+        def sasClient = getFileSystemClient(sas, fsc.getFileSystemUrl())
+
+        when:
+        def renamedContainer = sasClient.rename(newName)
+
+        then:
+        renamedContainer.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
+
+        cleanup:
+        renamedContainer.delete()
+    }
+
+    @Unroll
+    def "Rename AC"() {
+        setup:
+        leaseID = setupFileSystemLeaseCondition(fsc, leaseID)
+        def cac = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+
+        expect:
+        fsc.renameWithResponse(new FileSystemRenameOptions(generateFileSystemName()).setRequestConditions(cac),
+            null, null).getStatusCode() == 200
+
+        where:
+        leaseID         || _
+        null            || _
+        receivedLeaseID || _
+    }
+
+    @Unroll
+    def "Rename AC fail"() {
+        setup:
+        def cac = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+
+        when:
+        fsc.renameWithResponse(new FileSystemRenameOptions(generateFileSystemName()).setRequestConditions(cac),
+            null, null)
+
+        then:
+        thrown(DataLakeStorageException)
+
+        where:
+        leaseID         || _
+        garbageLeaseID  || _
+    }
+
+    @Unroll
+    def "Rename AC illegal"() {
+        setup:
+        def ac = new DataLakeRequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch).setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
+
+        when:
+        fsc.renameWithResponse(new FileSystemRenameOptions(generateFileSystemName()).setRequestConditions(ac),
+            null, null)
+
+        then:
+        thrown(UnsupportedOperationException)
+
+        where:
+        modified | unmodified | match        | noneMatch
+        oldDate  | null       | null         | null
+        null     | newDate    | null         | null
+        null     | null       | receivedEtag | null
+        null     | null       | null         | garbageEtag
+    }
+
+    def "Rename error"() {
+        setup:
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+        def newName = generateFileSystemName()
+
+        when:
+        fsc.rename(newName)
+
+        then:
+        thrown(DataLakeStorageException)
+    }
 
 }
