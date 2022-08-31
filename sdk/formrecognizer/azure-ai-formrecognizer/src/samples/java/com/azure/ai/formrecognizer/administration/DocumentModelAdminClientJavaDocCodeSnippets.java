@@ -5,16 +5,17 @@ package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient;
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelOperationDetails;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelOperationSummary;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorizationOptions;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentOperationStatus;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildOperationDetails;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationSummary;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationDetails;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -376,15 +377,15 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     public void getOperation() {
         // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getOperation#string
         String operationId = "{operation-id}";
-        DocumentModelOperationDetails documentModelOperationDetails
+        OperationDetails operationDetails
             = documentModelAdministrationClient.getOperation(operationId);
-        System.out.printf("Operation ID: %s%n", documentModelOperationDetails.getOperationId());
-        System.out.printf("Operation Kind: %s%n", documentModelOperationDetails.getKind());
-        System.out.printf("Operation Status: %s%n", documentModelOperationDetails.getStatus());
+        System.out.printf("Operation ID: %s%n", operationDetails.getOperationId());
+        System.out.printf("Operation Kind: %s%n", operationDetails.getKind());
+        System.out.printf("Operation Status: %s%n", operationDetails.getStatus());
         System.out.printf("Model ID created with this operation: %s%n",
-            documentModelOperationDetails.getResult().getModelId());
-        if (DocumentOperationStatus.FAILED.equals(documentModelOperationDetails.getStatus())) {
-            System.out.printf("Operation fail error: %s%n", documentModelOperationDetails.getError().getMessage());
+            ((DocumentModelBuildOperationDetails) operationDetails).getResult().getModelId());
+        if (OperationStatus.FAILED.equals(operationDetails.getStatus())) {
+            System.out.printf("Operation fail error: %s%n", operationDetails.getError().getMessage());
         }
         // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getOperation#string
     }
@@ -395,17 +396,17 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     public void getOperationWithResponse() {
         // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getOperationWithResponse#string-Context
         String operationId = "{operation-id}";
-        Response<DocumentModelOperationDetails> response =
+        Response<OperationDetails> response =
             documentModelAdministrationClient.getOperationWithResponse(operationId, Context.NONE);
         System.out.printf("Response Status Code: %d.", response.getStatusCode());
-        DocumentModelOperationDetails documentModelOperationDetails = response.getValue();
-        System.out.printf("Operation ID: %s%n", documentModelOperationDetails.getOperationId());
-        System.out.printf("Operation Kind: %s%n", documentModelOperationDetails.getKind());
-        System.out.printf("Operation Status: %s%n", documentModelOperationDetails.getStatus());
+        OperationDetails operationDetails = response.getValue();
+        System.out.printf("Operation ID: %s%n", operationDetails.getOperationId());
+        System.out.printf("Operation Kind: %s%n", operationDetails.getKind());
+        System.out.printf("Operation Status: %s%n", operationDetails.getStatus());
         System.out.printf("Model ID created with this operation: %s%n",
-            documentModelOperationDetails.getResult().getModelId());
-        if (DocumentOperationStatus.FAILED.equals(documentModelOperationDetails.getStatus())) {
-            System.out.printf("Operation fail error: %s%n", documentModelOperationDetails.getError().getMessage());
+            ((DocumentModelBuildOperationDetails) operationDetails).getResult().getModelId());
+        if (OperationStatus.FAILED.equals(operationDetails.getStatus())) {
+            System.out.printf("Operation fail error: %s%n", operationDetails.getError().getMessage());
         }
         // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getOperationWithResponse#string-Context
     }
@@ -415,7 +416,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
      */
     public void listOperations() {
         // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.listOperations
-        PagedIterable<DocumentModelOperationSummary>
+        PagedIterable<OperationSummary>
             modelOperationInfo = documentModelAdministrationClient.listOperations();
         modelOperationInfo.forEach(modelOperationSummary -> {
             System.out.printf("Operation ID: %s%n", modelOperationSummary.getOperationId());
@@ -434,7 +435,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
      */
     public void listOperationsWithContext() {
         // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.listOperations#Context
-        PagedIterable<DocumentModelOperationSummary>
+        PagedIterable<OperationSummary>
             modelOperationInfo = documentModelAdministrationClient.listOperations(Context.NONE);
         modelOperationInfo.forEach(modelOperationSummary -> {
             System.out.printf("Operation ID: %s%n", modelOperationSummary.getOperationId());
