@@ -1,19 +1,20 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.adu.microsoft.com/deviceUpdate/sdkinstance/management/deviceClasses/foo?api-version=2022-07-01-preview",
+    "Uri" : "https://REDACTED.api.adu.microsoft.com/deviceUpdate/sdkinstance/management/deviceClasses/foo?api-version=2022-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-iot-deviceupdate/1.0.0-beta.4 (1.8.0_342; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "d6c3871d-a699-444e-b532-ad187e06110a"
+      "x-ms-client-request-id" : "f4a62a6f-c155-45cd-991e-85ad58d54084"
     },
     "Response" : {
       "content-length" : "183",
-      "traceparent" : "00-3d2de5742b1f63418ec917e63671ed3c-bf973415e017fd49-00",
-      "mise-correlation-id" : "e41385cb-a18c-4a06-bed6-a73874d928e7",
+      "Cache-Control" : "max-age=30, private",
+      "traceparent" : "00-72f2187e677ce649acff224dd4898308-43f0b05a7877eb43-00",
+      "mise-correlation-id" : "538df075-0010-47b1-ad14-2e25c0d1a78c",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Body" : "{\r\n  \"type\": \"https://tools.ietf.org/html/rfc7231#section-6.5.4\",\r\n  \"title\": \"Not Found\",\r\n  \"status\": 404,\r\n  \"traceId\": \"00-3d2de5742b1f63418ec917e63671ed3c-a61caffc351b6e44-00\"\r\n}",
-      "Date" : "Wed, 24 Aug 2022 18:05:55 GMT",
+      "Body" : "{\r\n  \"type\": \"https://tools.ietf.org/html/rfc7231#section-6.5.4\",\r\n  \"title\": \"Not Found\",\r\n  \"status\": 404,\r\n  \"traceId\": \"00-72f2187e677ce649acff224dd4898308-77d3f1e8b3617bea-00\"\r\n}",
+      "Date" : "Wed, 31 Aug 2022 20:16:24 GMT",
       "Content-Type" : "application/problem+json; charset=utf-8"
     },
     "Exception" : null

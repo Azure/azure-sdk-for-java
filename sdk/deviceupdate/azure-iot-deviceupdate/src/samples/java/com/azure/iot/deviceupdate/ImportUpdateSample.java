@@ -36,8 +36,8 @@ public class ImportUpdateSample {
             String content = String.format("[{\"importManifest\": {\"url\": \"%s\", \"sizeInBytes\": %s, \"hashes\": { \"sha256\": \"%s\" }}, "
                     + "\"files\": [{\"fileName\": \"%s\", \"url\": \"%s\" }]"
                     + "}]",
-                manifestUrl, GetFileSize(manifestFile), GetFileHash(manifestFile),
-                GetFileName(payloadFile), payloadUrl);
+                manifestUrl, getFileSize(manifestFile), getFileHash(manifestFile),
+                getFileName(payloadFile), payloadUrl);
 
             // BEGIN: com.azure.iot.deviceupdate.DeviceUpdateClient.ImportUpdate
             SyncPoller<BinaryData, BinaryData> response = client.beginImportUpdate(BinaryData.fromString(content), null);
@@ -54,20 +54,20 @@ public class ImportUpdateSample {
         }
     }
 
-    private static long GetFileSize(String payloadLocalFile) {
+    private static long getFileSize(String payloadLocalFile) {
         File file = new File(payloadLocalFile);
         return file.length();
     }
 
-    private static String GetFileName(String payloadLocalFile) {
+    private static String getFileName(String payloadLocalFile) {
         File file = new File(payloadLocalFile);
         return file.getName();
     }
 
-    private static String GetFileHash(String payloadLocalFile) throws IOException {
+    private static String getFileHash(String payloadLocalFile) throws IOException {
         try {
             MessageDigest mDigest = MessageDigest.getInstance("SHA-256");
-            String payload = ReadAllTextFromFile(payloadLocalFile);
+            String payload = readAllTextFromFile(payloadLocalFile);
             byte[] result = mDigest.digest(payload.getBytes());
 
             return Base64.getEncoder().encodeToString(result);
@@ -76,7 +76,7 @@ public class ImportUpdateSample {
         }
     }
 
-    private static String ReadAllTextFromFile(String filePath) throws IOException {
+    private static String readAllTextFromFile(String filePath) throws IOException {
         String content = new String(Files.readAllBytes(Paths.get(filePath)));
         return content;
     }

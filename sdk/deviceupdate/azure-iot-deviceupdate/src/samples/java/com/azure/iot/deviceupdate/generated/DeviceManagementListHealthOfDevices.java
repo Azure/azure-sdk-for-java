@@ -8,20 +8,21 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.iot.deviceupdate.DeviceUpdateClient;
-import com.azure.iot.deviceupdate.DeviceUpdateClientBuilder;
+import com.azure.iot.deviceupdate.DeviceManagementClient;
+import com.azure.iot.deviceupdate.DeviceManagementClientBuilder;
 
-public class DeviceUpdateListOperations {
+public class DeviceManagementListHealthOfDevices {
     public static void main(String[] args) {
-        DeviceUpdateClient deviceUpdateClient =
-                new DeviceUpdateClientBuilder()
+        DeviceManagementClient deviceManagementClient =
+                new DeviceManagementClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("contoso.api.adu.microsoft.com")
                         .instanceId("blue")
                         .buildClient();
-        // BEGIN:com.azure.iot.deviceupdate.generated.deviceupdatelistoperations.deviceupdatelistoperations
+        // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementlisthealthofdevices.devicemanagementlisthealthofdevices
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = deviceUpdateClient.listOperations(requestOptions);
-        // END:com.azure.iot.deviceupdate.generated.deviceupdatelistoperations.deviceupdatelistoperations
+        PagedIterable<BinaryData> response =
+                deviceManagementClient.listHealthOfDevices("state eq 'unhealthy'", requestOptions);
+        // END:com.azure.iot.deviceupdate.generated.devicemanagementlisthealthofdevices.devicemanagementlisthealthofdevices
     }
 }

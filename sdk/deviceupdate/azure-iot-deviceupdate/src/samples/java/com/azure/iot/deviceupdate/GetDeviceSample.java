@@ -9,6 +9,10 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
 
 public class GetDeviceSample {
     public static void main(String[] args) {
@@ -26,7 +30,7 @@ public class GetDeviceSample {
             // BEGIN: com.azure.iot.deviceupdate.DeviceManagementClient.EnumerateDevices
             PagedIterable<BinaryData> devices = client.listDevices(null);
             for (BinaryData d: devices) {
-                System.out.println(d);
+                System.out.println(new ObjectMapper().readTree(d.toBytes()).get("deviceId").asText());
             }
             // END: com.azure.iot.deviceupdate.DeviceManagementClient.EnumerateDevices
 
@@ -34,7 +38,7 @@ public class GetDeviceSample {
             // BEGIN: com.azure.iot.deviceupdate.DeviceManagementClient.EnumerateGroups
             PagedIterable<BinaryData> groups = client.listGroups(null);
             for (BinaryData g: groups) {
-                System.out.println(g);
+                System.out.println(new ObjectMapper().readTree(g.toBytes()).get("groupId").asText());
             }
             // END: com.azure.iot.deviceupdate.DeviceManagementClient.EnumerateGroups
 
@@ -42,16 +46,21 @@ public class GetDeviceSample {
             // BEGIN: com.azure.iot.deviceupdate.DeviceManagementClient.EnumerateDeviceClasses
             PagedIterable<BinaryData> deviceClasses = client.listDeviceClasses(null);
             for (BinaryData dc: deviceClasses) {
-                System.out.println(dc);
+                System.out.println(new ObjectMapper().readTree(dc.toBytes()).get("deviceClassId").asText());
             }
             // END: com.azure.iot.deviceupdate.DeviceManagementClient.EnumerateDeviceClasses
 
             String groupId = Configuration.getGlobalConfiguration().get("DEVICEUPDATE_DEVICE_GROUP");
-            System.out.println("\nFor group '" + groupId + "' the best updates are:");
+            System.out.println("\nBest updates:");
             // BEGIN: com.azure.iot.deviceupdate.DeviceManagementClient.GetBestUpdates
             PagedIterable<BinaryData> bestUpdates = client.listBestUpdatesForGroup(groupId, null);
             for (BinaryData bu: bestUpdates) {
-                System.out.println(bu);
+                JsonNode json = new ObjectMapper().readTree(bu.toBytes());
+                System.out.println(String.format("For device class '%s' in group '%s', the best update is:",
+                    json.get("deviceClassId").asText(), groupId));
+                System.out.println("  Provider: " + json.get("update").get("updateId").get("provider").asText());
+                System.out.println("  Name: " + json.get("update").get("updateId").get("name").asText());
+                System.out.println("  Version: " + json.get("update").get("updateId").get("version").asText());
             }
             // END: com.azure.iot.deviceupdate.DeviceManagementClient.GetBestUpdates
 
@@ -60,6 +69,8 @@ public class GetDeviceSample {
                 // update does not exist
                 System.out.println("update does not exist");
             }
+        } catch (IOException e) {
+            System.out.println("no response");
         }
     }
 }

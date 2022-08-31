@@ -1522,8 +1522,8 @@ public final class DeviceManagementClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getOperationWithResponse(String operationId, RequestOptions requestOptions) {
-        return this.client.getOperationWithResponse(operationId, requestOptions).block();
+    public Response<BinaryData> getOperationStatusWithResponse(String operationId, RequestOptions requestOptions) {
+        return this.client.getOperationStatusWithResponse(operationId, requestOptions).block();
     }
 
     /**
@@ -1582,8 +1582,8 @@ public final class DeviceManagementClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listOperations(RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listOperations(requestOptions));
+    public PagedIterable<BinaryData> listOperationStatuses(RequestOptions requestOptions) {
+        return new PagedIterable<>(this.client.listOperationStatuses(requestOptions));
     }
 
     /**
@@ -1740,7 +1740,7 @@ public final class DeviceManagementClient {
      * }
      * }</pre>
      *
-     * @param operationId Operation identifier.
+     * @param logCollectionId Log collection identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1751,8 +1751,8 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getLogCollectionDetailedStatusWithResponse(
-            String operationId, RequestOptions requestOptions) {
-        return this.client.getLogCollectionDetailedStatusWithResponse(operationId, requestOptions).block();
+            String logCollectionId, RequestOptions requestOptions) {
+        return this.client.getLogCollectionDetailedStatusWithResponse(logCollectionId, requestOptions).block();
     }
 
     /**
@@ -1791,7 +1791,7 @@ public final class DeviceManagementClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listDeviceHealth(String filter, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listDeviceHealth(filter, requestOptions));
+    public PagedIterable<BinaryData> listHealthOfDevices(String filter, RequestOptions requestOptions) {
+        return new PagedIterable<>(this.client.listHealthOfDevices(filter, requestOptions));
     }
 }

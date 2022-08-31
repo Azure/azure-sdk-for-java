@@ -513,8 +513,8 @@ public final class DeviceUpdateClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listOperations(RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listOperations(requestOptions));
+    public PagedIterable<BinaryData> listOperationStatuses(RequestOptions requestOptions) {
+        return new PagedIterable<>(this.client.listOperationStatuses(requestOptions));
     }
 
     /**
@@ -578,7 +578,7 @@ public final class DeviceUpdateClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getOperationWithResponse(String operationId, RequestOptions requestOptions) {
-        return this.client.getOperationWithResponse(operationId, requestOptions).block();
+    public Response<BinaryData> getOperationStatusWithResponse(String operationId, RequestOptions requestOptions) {
+        return this.client.getOperationStatusWithResponse(operationId, requestOptions).block();
     }
 }

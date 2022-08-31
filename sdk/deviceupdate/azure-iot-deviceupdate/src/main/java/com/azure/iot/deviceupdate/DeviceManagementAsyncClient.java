@@ -1515,8 +1515,9 @@ public final class DeviceManagementAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getOperationWithResponse(String operationId, RequestOptions requestOptions) {
-        return this.serviceClient.getOperationWithResponseAsync(operationId, requestOptions);
+    public Mono<Response<BinaryData>> getOperationStatusWithResponse(
+            String operationId, RequestOptions requestOptions) {
+        return this.serviceClient.getOperationStatusWithResponseAsync(operationId, requestOptions);
     }
 
     /**
@@ -1575,8 +1576,8 @@ public final class DeviceManagementAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listOperations(RequestOptions requestOptions) {
-        return this.serviceClient.listOperationsAsync(requestOptions);
+    public PagedFlux<BinaryData> listOperationStatuses(RequestOptions requestOptions) {
+        return this.serviceClient.listOperationStatusesAsync(requestOptions);
     }
 
     /**
@@ -1735,7 +1736,7 @@ public final class DeviceManagementAsyncClient {
      * }
      * }</pre>
      *
-     * @param operationId Operation identifier.
+     * @param logCollectionId Log collection identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1746,8 +1747,8 @@ public final class DeviceManagementAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLogCollectionDetailedStatusWithResponse(
-            String operationId, RequestOptions requestOptions) {
-        return this.serviceClient.getLogCollectionDetailedStatusWithResponseAsync(operationId, requestOptions);
+            String logCollectionId, RequestOptions requestOptions) {
+        return this.serviceClient.getLogCollectionDetailedStatusWithResponseAsync(logCollectionId, requestOptions);
     }
 
     /**
@@ -1786,7 +1787,7 @@ public final class DeviceManagementAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listDeviceHealth(String filter, RequestOptions requestOptions) {
-        return this.serviceClient.listDeviceHealthAsync(filter, requestOptions);
+    public PagedFlux<BinaryData> listHealthOfDevices(String filter, RequestOptions requestOptions) {
+        return this.serviceClient.listHealthOfDevicesAsync(filter, requestOptions);
     }
 }

@@ -4,14 +4,14 @@
 
 package com.azure.iot.deviceupdate.generated;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.iot.deviceupdate.DeviceManagementClient;
 import com.azure.iot.deviceupdate.DeviceManagementClientBuilder;
 
-public class DeviceManagementListDeviceHealth {
+public class DeviceManagementGetOperationStatus {
     public static void main(String[] args) {
         DeviceManagementClient deviceManagementClient =
                 new DeviceManagementClientBuilder()
@@ -19,10 +19,11 @@ public class DeviceManagementListDeviceHealth {
                         .endpoint("contoso.api.adu.microsoft.com")
                         .instanceId("blue")
                         .buildClient();
-        // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementlistdevicehealth.devicemanagementlistdevicehealth
+        // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementgetoperationstatus.devicemanagementgetoperationstatus
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response =
-                deviceManagementClient.listDeviceHealth("state eq 'unhealthy'", requestOptions);
-        // END:com.azure.iot.deviceupdate.generated.devicemanagementlistdevicehealth.devicemanagementlistdevicehealth
+        Response<BinaryData> response =
+                deviceManagementClient.getOperationStatusWithResponse(
+                        "e4491c54-916f-443d-9094-bcca546ace2f", requestOptions);
+        // END:com.azure.iot.deviceupdate.generated.devicemanagementgetoperationstatus.devicemanagementgetoperationstatus
     }
 }

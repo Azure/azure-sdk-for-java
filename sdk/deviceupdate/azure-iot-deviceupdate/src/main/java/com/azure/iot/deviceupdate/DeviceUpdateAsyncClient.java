@@ -516,8 +516,8 @@ public final class DeviceUpdateAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listOperations(RequestOptions requestOptions) {
-        return this.serviceClient.listOperationsAsync(requestOptions);
+    public PagedFlux<BinaryData> listOperationStatuses(RequestOptions requestOptions) {
+        return this.serviceClient.listOperationStatusesAsync(requestOptions);
     }
 
     /**
@@ -581,7 +581,8 @@ public final class DeviceUpdateAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getOperationWithResponse(String operationId, RequestOptions requestOptions) {
-        return this.serviceClient.getOperationWithResponseAsync(operationId, requestOptions);
+    public Mono<Response<BinaryData>> getOperationStatusWithResponse(
+            String operationId, RequestOptions requestOptions) {
+        return this.serviceClient.getOperationStatusWithResponseAsync(operationId, requestOptions);
     }
 }

@@ -109,7 +109,7 @@ public final class DeviceUpdatesImpl {
                 Context context);
 
         @Get("/deviceUpdate/{instanceId}/updates/providers/{provider}/names/{name}/versions/{version}")
-        @ExpectedResponses({200, 304})
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
                 code = {401})
@@ -241,7 +241,7 @@ public final class DeviceUpdatesImpl {
                 Context context);
 
         @Get("/deviceUpdate/{instanceId}/updates/providers/{provider}/names/{name}/versions/{version}/files/{fileId}")
-        @ExpectedResponses({200, 304})
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
                 code = {401})
@@ -276,7 +276,7 @@ public final class DeviceUpdatesImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listOperations(
+        Mono<Response<BinaryData>> listOperationStatuses(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @QueryParam("api-version") String apiVersion,
@@ -285,7 +285,7 @@ public final class DeviceUpdatesImpl {
                 Context context);
 
         @Get("/deviceUpdate/{instanceId}/updates/operations/{operationId}")
-        @ExpectedResponses({200, 304})
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
                 code = {401})
@@ -296,7 +296,7 @@ public final class DeviceUpdatesImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getOperation(
+        Mono<Response<BinaryData>> getOperationStatus(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("operationId") String operationId,
@@ -412,7 +412,7 @@ public final class DeviceUpdatesImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listOperationsNext(
+        Mono<Response<BinaryData>> listOperationStatusesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -578,99 +578,6 @@ public final class DeviceUpdatesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of all updates that have been imported to Device Update for IoT Hub along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listUpdatesSinglePageAsync(RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.listUpdates(
-                        this.client.getEndpoint(),
-                        this.client.getInstanceId(),
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
-    }
-
-    /**
-     * Get a list of all updates that have been imported to Device Update for IoT Hub.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>search</td><td>String</td><td>No</td><td>Request updates matching a free-text search expression.</td></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Optional to filter updates by isDeployable property.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Required): [
-     *          (Required){
-     *             updateId (Required): {
-     *                 provider: String (Required)
-     *                 name: String (Required)
-     *                 version: String (Required)
-     *             }
-     *             description: String (Optional)
-     *             friendlyName: String (Optional)
-     *             isDeployable: Boolean (Optional)
-     *             updateType: String (Optional)
-     *             installedCriteria: String (Optional)
-     *             compatibility (Required): [
-     *                  (Required){
-     *                     String: String (Required)
-     *                 }
-     *             ]
-     *             instructions (Optional): {
-     *                 steps (Required): [
-     *                      (Required){
-     *                         type: String(Inline/Reference) (Optional)
-     *                         description: String (Optional)
-     *                         handler: String (Optional)
-     *                         handlerProperties: Object (Optional)
-     *                         files (Optional): [
-     *                             String (Optional)
-     *                         ]
-     *                         updateId (Optional): (recursive schema, see updateId above)
-     *                     }
-     *                 ]
-     *             }
-     *             referencedBy (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *             scanResult: String (Optional)
-     *             manifestVersion: String (Required)
-     *             importedDateTime: OffsetDateTime (Required)
-     *             createdDateTime: OffsetDateTime (Required)
-     *             etag: String (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -688,90 +595,6 @@ public final class DeviceUpdatesImpl {
         return new PagedFlux<>(
                 () -> listUpdatesSinglePageAsync(requestOptions),
                 nextLink -> listUpdatesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
-    }
-
-    /**
-     * Get a list of all updates that have been imported to Device Update for IoT Hub.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>search</td><td>String</td><td>No</td><td>Request updates matching a free-text search expression.</td></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Optional to filter updates by isDeployable property.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Required): [
-     *          (Required){
-     *             updateId (Required): {
-     *                 provider: String (Required)
-     *                 name: String (Required)
-     *                 version: String (Required)
-     *             }
-     *             description: String (Optional)
-     *             friendlyName: String (Optional)
-     *             isDeployable: Boolean (Optional)
-     *             updateType: String (Optional)
-     *             installedCriteria: String (Optional)
-     *             compatibility (Required): [
-     *                  (Required){
-     *                     String: String (Required)
-     *                 }
-     *             ]
-     *             instructions (Optional): {
-     *                 steps (Required): [
-     *                      (Required){
-     *                         type: String(Inline/Reference) (Optional)
-     *                         description: String (Optional)
-     *                         handler: String (Optional)
-     *                         handlerProperties: Object (Optional)
-     *                         files (Optional): [
-     *                             String (Optional)
-     *                         ]
-     *                         updateId (Optional): (recursive schema, see updateId above)
-     *                     }
-     *                 ]
-     *             }
-     *             referencedBy (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *             scanResult: String (Optional)
-     *             manifestVersion: String (Required)
-     *             importedDateTime: OffsetDateTime (Required)
-     *             createdDateTime: OffsetDateTime (Required)
-     *             etag: String (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of all updates that have been imported to Device Update for IoT Hub as paginated response with
-     *     {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listUpdatesAsync(RequestOptions requestOptions, Context context) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listUpdatesSinglePageAsync(requestOptions, context),
-                nextLink -> listUpdatesNextSinglePageAsync(nextLink, requestOptionsForNextPage, context));
     }
 
     /**
@@ -932,57 +755,6 @@ public final class DeviceUpdatesImpl {
      * @param updateToImport The update to be imported (see schema
      *     https://json.schemastore.org/azure-deviceupdate-import-manifest-5.0.json for details).
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> importUpdateWithResponseAsync(
-            BinaryData updateToImport, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.importUpdate(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                this.client.getServiceVersion().getVersion(),
-                updateToImport,
-                accept,
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Import new update version. This is a long-running-operation; use Operation-Location response header value to
-     * check for operation status.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         importManifest (Required): {
-     *             url: String (Required)
-     *             sizeInBytes: long (Required)
-     *             hashes (Required): {
-     *                 String: String (Required)
-     *             }
-     *         }
-     *         friendlyName: String (Optional)
-     *         files (Optional): [
-     *              (Optional){
-     *                 filename: String (Required)
-     *                 url: String (Required)
-     *             }
-     *         ]
-     *     }
-     * ]
-     * }</pre>
-     *
-     * @param updateToImport The update to be imported (see schema
-     *     https://json.schemastore.org/azure-deviceupdate-import-manifest-5.0.json for details).
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -1003,63 +775,8 @@ public final class DeviceUpdatesImpl {
                         requestOptions != null && requestOptions.getContext() != null
                                 ? requestOptions.getContext()
                                 : Context.NONE),
-                new TypeReferenceBinaryData(),
-                new TypeReferenceBinaryData());
-    }
-
-    /**
-     * Import new update version. This is a long-running-operation; use Operation-Location response header value to
-     * check for operation status.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         importManifest (Required): {
-     *             url: String (Required)
-     *             sizeInBytes: long (Required)
-     *             hashes (Required): {
-     *                 String: String (Required)
-     *             }
-     *         }
-     *         friendlyName: String (Optional)
-     *         files (Optional): [
-     *              (Optional){
-     *                 filename: String (Required)
-     *                 url: String (Required)
-     *             }
-     *         ]
-     *     }
-     * ]
-     * }</pre>
-     *
-     * @param updateToImport The update to be imported (see schema
-     *     https://json.schemastore.org/azure-deviceupdate-import-manifest-5.0.json for details).
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginImportUpdateAsync(
-            BinaryData updateToImport, RequestOptions requestOptions, Context context) {
-        return PollerFlux.create(
-                Duration.ofSeconds(1),
-                () -> this.importUpdateWithResponseAsync(updateToImport, requestOptions, context),
-                new OperationResourcePollingStrategyWithEndpoint<>(
-                        this.client.getHttpPipeline(),
-                        "https://" + this.client.getEndpoint(),
-                        null,
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
-                new TypeReferenceBinaryData(),
-                new TypeReferenceBinaryData());
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -1250,90 +967,6 @@ public final class DeviceUpdatesImpl {
      * @param name Update name.
      * @param version Update version.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specific update version along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getUpdateWithResponseAsync(
-            String provider, String name, String version, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.getUpdate(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                provider,
-                name,
-                version,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Get a specific update version.
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will be performed only if the ETag on the server does not match this value.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     updateId (Required): {
-     *         provider: String (Required)
-     *         name: String (Required)
-     *         version: String (Required)
-     *     }
-     *     description: String (Optional)
-     *     friendlyName: String (Optional)
-     *     isDeployable: Boolean (Optional)
-     *     updateType: String (Optional)
-     *     installedCriteria: String (Optional)
-     *     compatibility (Required): [
-     *          (Required){
-     *             String: String (Required)
-     *         }
-     *     ]
-     *     instructions (Optional): {
-     *         steps (Required): [
-     *              (Required){
-     *                 type: String(Inline/Reference) (Optional)
-     *                 description: String (Optional)
-     *                 handler: String (Optional)
-     *                 handlerProperties: Object (Optional)
-     *                 files (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 updateId (Optional): (recursive schema, see updateId above)
-     *             }
-     *         ]
-     *     }
-     *     referencedBy (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     scanResult: String (Optional)
-     *     manifestVersion: String (Required)
-     *     importedDateTime: OffsetDateTime (Required)
-     *     createdDateTime: OffsetDateTime (Required)
-     *     etag: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param version Update version.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -1386,37 +1019,6 @@ public final class DeviceUpdatesImpl {
      * @param name Update name.
      * @param version Update version.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteUpdateWithResponseAsync(
-            String provider, String name, String version, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.deleteUpdate(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                provider,
-                name,
-                version,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Delete a specific update version. This is a long-running-operation; use Operation-Location response header value
-     * to check for operation status.
-     *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param version Update version.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -1437,41 +1039,8 @@ public final class DeviceUpdatesImpl {
                         requestOptions != null && requestOptions.getContext() != null
                                 ? requestOptions.getContext()
                                 : Context.NONE),
-                new TypeReferenceBinaryData(),
-                new TypeReferenceBinaryData());
-    }
-
-    /**
-     * Delete a specific update version. This is a long-running-operation; use Operation-Location response header value
-     * to check for operation status.
-     *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param version Update version.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginDeleteUpdateAsync(
-            String provider, String name, String version, RequestOptions requestOptions, Context context) {
-        return PollerFlux.create(
-                Duration.ofSeconds(1),
-                () -> this.deleteUpdateWithResponseAsync(provider, name, version, requestOptions, context),
-                new OperationResourcePollingStrategyWithEndpoint<>(
-                        this.client.getHttpPipeline(),
-                        "https://" + this.client.getEndpoint(),
-                        null,
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
-                new TypeReferenceBinaryData(),
-                new TypeReferenceBinaryData());
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -1554,51 +1123,6 @@ public final class DeviceUpdatesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of all update providers that have been imported to Device Update for IoT Hub along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listProvidersSinglePageAsync(
-            RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.listProviders(
-                        this.client.getEndpoint(),
-                        this.client.getInstanceId(),
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
-    }
-
-    /**
-     * Get a list of all update providers that have been imported to Device Update for IoT Hub.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Required): [
-     *         String (Required)
-     *     ]
-     *     nextLink: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -1616,41 +1140,6 @@ public final class DeviceUpdatesImpl {
         return new PagedFlux<>(
                 () -> listProvidersSinglePageAsync(requestOptions),
                 nextLink -> listProvidersNextSinglePageAsync(nextLink, requestOptionsForNextPage));
-    }
-
-    /**
-     * Get a list of all update providers that have been imported to Device Update for IoT Hub.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Required): [
-     *         String (Required)
-     *     ]
-     *     nextLink: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of all update providers that have been imported to Device Update for IoT Hub as paginated response
-     *     with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listProvidersAsync(RequestOptions requestOptions, Context context) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listProvidersSinglePageAsync(requestOptions, context),
-                nextLink -> listProvidersNextSinglePageAsync(nextLink, requestOptionsForNextPage, context));
     }
 
     /**
@@ -1743,53 +1232,6 @@ public final class DeviceUpdatesImpl {
      *
      * @param provider Update provider.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of all update names that match the specified provider along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listNamesSinglePageAsync(
-            String provider, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.listNames(
-                        this.client.getEndpoint(),
-                        this.client.getInstanceId(),
-                        provider,
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
-    }
-
-    /**
-     * Get a list of all update names that match the specified provider.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Required): [
-     *         String (Required)
-     *     ]
-     *     nextLink: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param provider Update provider.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -1807,42 +1249,6 @@ public final class DeviceUpdatesImpl {
         return new PagedFlux<>(
                 () -> listNamesSinglePageAsync(provider, requestOptions),
                 nextLink -> listNamesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
-    }
-
-    /**
-     * Get a list of all update names that match the specified provider.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Required): [
-     *         String (Required)
-     *     ]
-     *     nextLink: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param provider Update provider.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of all update names that match the specified provider as paginated response with {@link
-     *     PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listNamesAsync(String provider, RequestOptions requestOptions, Context context) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listNamesSinglePageAsync(provider, requestOptions, context),
-                nextLink -> listNamesNextSinglePageAsync(nextLink, requestOptionsForNextPage, context));
     }
 
     /**
@@ -1960,65 +1366,6 @@ public final class DeviceUpdatesImpl {
      * @param provider Update provider.
      * @param name Update name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of all update versions that match the specified provider and name along with {@link PagedResponse}
-     *     on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listVersionsSinglePageAsync(
-            String provider, String name, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.listVersions(
-                        this.client.getEndpoint(),
-                        this.client.getInstanceId(),
-                        provider,
-                        name,
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
-    }
-
-    /**
-     * Get a list of all update versions that match the specified provider and name.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Optional to filter updates by isDeployable property.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Required): [
-     *         String (Required)
-     *     ]
-     *     nextLink: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -2036,54 +1383,6 @@ public final class DeviceUpdatesImpl {
         return new PagedFlux<>(
                 () -> listVersionsSinglePageAsync(provider, name, requestOptions),
                 nextLink -> listVersionsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
-    }
-
-    /**
-     * Get a list of all update versions that match the specified provider and name.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Optional to filter updates by isDeployable property.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Required): [
-     *         String (Required)
-     *     ]
-     *     nextLink: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of all update versions that match the specified provider and name as paginated response with
-     *     {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listVersionsAsync(
-            String provider, String name, RequestOptions requestOptions, Context context) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listVersionsSinglePageAsync(provider, name, requestOptions, context),
-                nextLink -> listVersionsNextSinglePageAsync(nextLink, requestOptionsForNextPage, context));
     }
 
     /**
@@ -2195,57 +1494,6 @@ public final class DeviceUpdatesImpl {
      * @param name Update name.
      * @param version Update version.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of all update file identifiers for the specified version along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listFilesSinglePageAsync(
-            String provider, String name, String version, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.listFiles(
-                        this.client.getEndpoint(),
-                        this.client.getInstanceId(),
-                        provider,
-                        name,
-                        version,
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
-    }
-
-    /**
-     * Get a list of all update file identifiers for the specified version.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Required): [
-     *         String (Required)
-     *     ]
-     *     nextLink: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param version Update version.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -2264,45 +1512,6 @@ public final class DeviceUpdatesImpl {
         return new PagedFlux<>(
                 () -> listFilesSinglePageAsync(provider, name, version, requestOptions),
                 nextLink -> listFilesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
-    }
-
-    /**
-     * Get a list of all update file identifiers for the specified version.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Required): [
-     *         String (Required)
-     *     ]
-     *     nextLink: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param version Update version.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of all update file identifiers for the specified version as paginated response with {@link
-     *     PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listFilesAsync(
-            String provider, String name, String version, RequestOptions requestOptions, Context context) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listFilesSinglePageAsync(provider, name, version, requestOptions, context),
-                nextLink -> listFilesNextSinglePageAsync(nextLink, requestOptionsForNextPage, context));
     }
 
     /**
@@ -2474,92 +1683,6 @@ public final class DeviceUpdatesImpl {
      * @param version Update version.
      * @param fileId File identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a specific update file from the version along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getFileWithResponseAsync(
-            String provider,
-            String name,
-            String version,
-            String fileId,
-            RequestOptions requestOptions,
-            Context context) {
-        final String accept = "application/json";
-        return service.getFile(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                provider,
-                name,
-                version,
-                fileId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Get a specific update file from the version.
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will be performed only if the ETag on the server does not match this value.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     fileName: String (Required)
-     *     sizeInBytes: long (Required)
-     *     hashes (Required): {
-     *         String: String (Required)
-     *     }
-     *     mimeType: String (Optional)
-     *     scanResult: String (Optional)
-     *     scanDetails: String (Optional)
-     *     properties (Optional): {
-     *         String: String (Optional)
-     *     }
-     *     fileId: String (Required)
-     *     relatedFiles (Optional): [
-     *          (Optional){
-     *             fileName: String (Required)
-     *             sizeInBytes: long (Required)
-     *             hashes (Required): {
-     *                 String: String (Required)
-     *             }
-     *             mimeType: String (Optional)
-     *             scanResult: String (Optional)
-     *             scanDetails: String (Optional)
-     *             properties (Optional): {
-     *                 String: String (Optional)
-     *             }
-     *         }
-     *     ]
-     *     downloadHandler (Optional): {
-     *         id: String (Required)
-     *     }
-     *     etag: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param version Update version.
-     * @param fileId File identifier.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -2639,11 +1762,11 @@ public final class DeviceUpdatesImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listOperationsSinglePageAsync(RequestOptions requestOptions) {
+    public Mono<PagedResponse<BinaryData>> listOperationStatusesSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.listOperations(
+                                service.listOperationStatuses(
                                         this.client.getEndpoint(),
                                         this.client.getInstanceId(),
                                         this.client.getServiceVersion().getVersion(),
@@ -2720,95 +1843,6 @@ public final class DeviceUpdatesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of all import update operations along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listOperationsSinglePageAsync(
-            RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.listOperations(
-                        this.client.getEndpoint(),
-                        this.client.getInstanceId(),
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
-    }
-
-    /**
-     * Get a list of all import update operations. Completed operations are kept for 7 days before auto-deleted. Delete
-     * operations are not returned by this API version.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Optional to filter operations by status property. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Required): [
-     *          (Required){
-     *             operationId: String (Required)
-     *             status: String(NotStarted/Running/Succeeded/Failed) (Required)
-     *             update (Optional): {
-     *                 updateId (Required): {
-     *                     provider: String (Required)
-     *                     name: String (Required)
-     *                     version: String (Required)
-     *                 }
-     *                 description: String (Optional)
-     *                 friendlyName: String (Optional)
-     *             }
-     *             resourceLocation: String (Optional)
-     *             error (Optional): {
-     *                 code: String (Required)
-     *                 message: String (Required)
-     *                 target: String (Optional)
-     *                 details (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *                 innererror (Optional): {
-     *                     code: String (Required)
-     *                     message: String (Optional)
-     *                     errorDetail: String (Optional)
-     *                     innerError (Optional): (recursive schema, see innerError above)
-     *                 }
-     *                 occurredDateTime: OffsetDateTime (Optional)
-     *             }
-     *             traceId: String (Optional)
-     *             lastActionDateTime: OffsetDateTime (Required)
-     *             createdDateTime: OffsetDateTime (Required)
-     *             etag: String (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -2816,93 +1850,15 @@ public final class DeviceUpdatesImpl {
      * @return a list of all import update operations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listOperationsAsync(RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listOperationStatusesAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
                 requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()
                         : Context.NONE);
         return new PagedFlux<>(
-                () -> listOperationsSinglePageAsync(requestOptions),
-                nextLink -> listOperationsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
-    }
-
-    /**
-     * Get a list of all import update operations. Completed operations are kept for 7 days before auto-deleted. Delete
-     * operations are not returned by this API version.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Optional to filter operations by status property. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Required): [
-     *          (Required){
-     *             operationId: String (Required)
-     *             status: String(NotStarted/Running/Succeeded/Failed) (Required)
-     *             update (Optional): {
-     *                 updateId (Required): {
-     *                     provider: String (Required)
-     *                     name: String (Required)
-     *                     version: String (Required)
-     *                 }
-     *                 description: String (Optional)
-     *                 friendlyName: String (Optional)
-     *             }
-     *             resourceLocation: String (Optional)
-     *             error (Optional): {
-     *                 code: String (Required)
-     *                 message: String (Required)
-     *                 target: String (Optional)
-     *                 details (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *                 innererror (Optional): {
-     *                     code: String (Required)
-     *                     message: String (Optional)
-     *                     errorDetail: String (Optional)
-     *                     innerError (Optional): (recursive schema, see innerError above)
-     *                 }
-     *                 occurredDateTime: OffsetDateTime (Optional)
-     *             }
-     *             traceId: String (Optional)
-     *             lastActionDateTime: OffsetDateTime (Required)
-     *             createdDateTime: OffsetDateTime (Required)
-     *             etag: String (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of all import update operations as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listOperationsAsync(RequestOptions requestOptions, Context context) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listOperationsSinglePageAsync(requestOptions, context),
-                nextLink -> listOperationsNextSinglePageAsync(nextLink, requestOptionsForNextPage, context));
+                () -> listOperationStatusesSinglePageAsync(requestOptions),
+                nextLink -> listOperationStatusesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -2971,8 +1927,8 @@ public final class DeviceUpdatesImpl {
      * @return a list of all import update operations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listOperations(RequestOptions requestOptions) {
-        return new PagedIterable<>(listOperationsAsync(requestOptions));
+    public PagedIterable<BinaryData> listOperationStatuses(RequestOptions requestOptions) {
+        return new PagedIterable<>(listOperationStatusesAsync(requestOptions));
     }
 
     /**
@@ -3035,11 +1991,12 @@ public final class DeviceUpdatesImpl {
      * @return operation metadata along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getOperationWithResponseAsync(String operationId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getOperationStatusWithResponseAsync(
+            String operationId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.getOperation(
+                        service.getOperationStatus(
                                 this.client.getEndpoint(),
                                 this.client.getInstanceId(),
                                 operationId,
@@ -3102,80 +2059,6 @@ public final class DeviceUpdatesImpl {
      *
      * @param operationId Operation identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return operation metadata along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getOperationWithResponseAsync(
-            String operationId, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.getOperation(
-                this.client.getEndpoint(),
-                this.client.getInstanceId(),
-                operationId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Retrieve operation status.
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will be performed only if the ETag on the server does not match this value.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     operationId: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed) (Required)
-     *     update (Optional): {
-     *         updateId (Required): {
-     *             provider: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
-     *         }
-     *         description: String (Optional)
-     *         friendlyName: String (Optional)
-     *     }
-     *     resourceLocation: String (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Required)
-     *             message: String (Optional)
-     *             errorDetail: String (Optional)
-     *             innerError (Optional): (recursive schema, see innerError above)
-     *         }
-     *         occurredDateTime: OffsetDateTime (Optional)
-     *     }
-     *     traceId: String (Optional)
-     *     lastActionDateTime: OffsetDateTime (Required)
-     *     createdDateTime: OffsetDateTime (Required)
-     *     etag: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param operationId Operation identifier.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -3183,8 +2066,8 @@ public final class DeviceUpdatesImpl {
      * @return operation metadata along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getOperationWithResponse(String operationId, RequestOptions requestOptions) {
-        return getOperationWithResponseAsync(operationId, requestOptions).block();
+    public Response<BinaryData> getOperationStatusWithResponse(String operationId, RequestOptions requestOptions) {
+        return getOperationStatusWithResponseAsync(operationId, requestOptions).block();
     }
 
     /**
@@ -3239,7 +2122,8 @@ public final class DeviceUpdatesImpl {
      * }
      * }</pre>
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3274,90 +2158,14 @@ public final class DeviceUpdatesImpl {
      * <pre>{@code
      * {
      *     value (Required): [
-     *          (Required){
-     *             updateId (Required): {
-     *                 provider: String (Required)
-     *                 name: String (Required)
-     *                 version: String (Required)
-     *             }
-     *             description: String (Optional)
-     *             friendlyName: String (Optional)
-     *             isDeployable: Boolean (Optional)
-     *             updateType: String (Optional)
-     *             installedCriteria: String (Optional)
-     *             compatibility (Required): [
-     *                  (Required){
-     *                     String: String (Required)
-     *                 }
-     *             ]
-     *             instructions (Optional): {
-     *                 steps (Required): [
-     *                      (Required){
-     *                         type: String(Inline/Reference) (Optional)
-     *                         description: String (Optional)
-     *                         handler: String (Optional)
-     *                         handlerProperties: Object (Optional)
-     *                         files (Optional): [
-     *                             String (Optional)
-     *                         ]
-     *                         updateId (Optional): (recursive schema, see updateId above)
-     *                     }
-     *                 ]
-     *             }
-     *             referencedBy (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *             scanResult: String (Optional)
-     *             manifestVersion: String (Required)
-     *             importedDateTime: OffsetDateTime (Required)
-     *             createdDateTime: OffsetDateTime (Required)
-     *             etag: String (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param nextLink The nextLink parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of updates along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listUpdatesNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.listUpdatesNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Required): [
      *         String (Required)
      *     ]
      *     nextLink: String (Optional)
      * }
      * }</pre>
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3399,47 +2207,8 @@ public final class DeviceUpdatesImpl {
      * }
      * }</pre>
      *
-     * @param nextLink The nextLink parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of strings with server paging support along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listProvidersNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.listProvidersNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Required): [
-     *         String (Required)
-     *     ]
-     *     nextLink: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3481,47 +2250,8 @@ public final class DeviceUpdatesImpl {
      * }
      * }</pre>
      *
-     * @param nextLink The nextLink parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of strings with server paging support along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listNamesNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.listNamesNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Required): [
-     *         String (Required)
-     *     ]
-     *     nextLink: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3563,47 +2293,8 @@ public final class DeviceUpdatesImpl {
      * }
      * }</pre>
      *
-     * @param nextLink The nextLink parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of strings with server paging support along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listVersionsNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.listVersionsNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Required): [
-     *         String (Required)
-     *     ]
-     *     nextLink: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3639,46 +2330,6 @@ public final class DeviceUpdatesImpl {
      * <pre>{@code
      * {
      *     value (Required): [
-     *         String (Required)
-     *     ]
-     *     nextLink: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param nextLink The nextLink parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of strings with server paging support along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listFilesNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.listFilesNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Required): [
      *          (Required){
      *             operationId: String (Required)
      *             status: String(NotStarted/Running/Succeeded/Failed) (Required)
@@ -3717,7 +2368,8 @@ public final class DeviceUpdatesImpl {
      * }
      * }</pre>
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3727,12 +2379,12 @@ public final class DeviceUpdatesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listOperationsNextSinglePageAsync(
+    public Mono<PagedResponse<BinaryData>> listOperationStatusesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.listOperationsNext(
+                                service.listOperationStatusesNext(
                                         nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
@@ -3743,82 +2395,6 @@ public final class DeviceUpdatesImpl {
                                         getValues(res.getValue(), "value"),
                                         getNextLink(res.getValue(), "nextLink"),
                                         null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Required): [
-     *          (Required){
-     *             operationId: String (Required)
-     *             status: String(NotStarted/Running/Succeeded/Failed) (Required)
-     *             update (Optional): {
-     *                 updateId (Required): {
-     *                     provider: String (Required)
-     *                     name: String (Required)
-     *                     version: String (Required)
-     *                 }
-     *                 description: String (Optional)
-     *                 friendlyName: String (Optional)
-     *             }
-     *             resourceLocation: String (Optional)
-     *             error (Optional): {
-     *                 code: String (Required)
-     *                 message: String (Required)
-     *                 target: String (Optional)
-     *                 details (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *                 innererror (Optional): {
-     *                     code: String (Required)
-     *                     message: String (Optional)
-     *                     errorDetail: String (Optional)
-     *                     innerError (Optional): (recursive schema, see innerError above)
-     *                 }
-     *                 occurredDateTime: OffsetDateTime (Optional)
-     *             }
-     *             traceId: String (Optional)
-     *             lastActionDateTime: OffsetDateTime (Required)
-     *             createdDateTime: OffsetDateTime (Required)
-     *             etag: String (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param nextLink The nextLink parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the list of operations with server paging support along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listOperationsNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.listOperationsNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
-    }
-
-    private static final class TypeReferenceBinaryData extends TypeReference<BinaryData> {
-        // empty
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {

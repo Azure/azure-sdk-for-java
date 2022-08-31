@@ -113,8 +113,15 @@ String updateVersion = Configuration.getGlobalConfiguration().get("DEVICEUPDATE_
 Now we get request the specific update metadata:
 
 ``` java com.azure.iot.deviceupdate.DeviceUpdateClient.GetUpdate
-Response<BinaryData> response = client.getUpdateWithResponse(updateProvider, updateName, updateVersion, null);
-System.out.println(response.getValue());
+System.out.println("Update:");
+Response<BinaryData> updateResponse = client.getUpdateWithResponse(updateProvider, updateName, updateVersion, null);
+ObjectMapper updateMapper = new ObjectMapper();
+JsonNode updateJsonNode = updateMapper.readTree(updateResponse.getValue().toBytes());
+System.out.println("  Provider: " + updateJsonNode.get("updateId").get("provider").asText());
+System.out.println("  Name: " + updateJsonNode.get("updateId").get("name").asText());
+System.out.println("  Version: " + updateJsonNode.get("updateId").get("version").asText());
+System.out.println("Metadata:");
+System.out.println(updateResponse.getValue());
 ```
 
 ### Enumerate update files
@@ -123,8 +130,12 @@ To enumerate all update files corresponding to our device update:
 
 ``` java com.azure.iot.deviceupdate.DeviceUpdateClient.EnumerateUpdateFiles
 PagedIterable<BinaryData> items = client.listFiles(updateProvider, updateName, updateVersion, null);
+List<String> fileIds = new ArrayList<String>();
 for (BinaryData i: items) {
-    System.out.println(i);
+    ObjectMapper fileIdMapper = new ObjectMapper();
+    String fileId = fileIdMapper.readTree(i.toBytes()).asText();
+    System.out.println(fileId);
+    fileIds.add(fileId);
 }
 ```
 
@@ -134,8 +145,13 @@ Now that we know update file identities, we can retrieve their metadata:
 
 ``` java com.azure.iot.deviceupdate.DeviceUpdateClient.GetFiles
 PagedIterable<BinaryData> files = client.listFiles(updateProvider, updateName, updateVersion, null);
-for (BinaryData f: files) {
-    Response<BinaryData> fileResponse  = client.getFileWithResponse(updateProvider, updateName, updateVersion, f.toString(), null);
+for (String fileId: fileIds) {
+    System.out.println("File:");
+    Response<BinaryData> fileResponse  = client.getFileWithResponse(updateProvider, updateName, updateVersion, fileId, null);
+    ObjectMapper fileMapper = new ObjectMapper();
+    JsonNode fileJsonNode = fileMapper.readTree(fileResponse.getValue().toBytes());
+    System.out.println("  FileId: " + fileJsonNode.get("fileId").asText());
+    System.out.println("Metadata:");
     System.out.println(fileResponse.getValue());
 }
 ```
@@ -147,7 +163,7 @@ To enumerate all registered devices and print their device identifiers:
 ``` java com.azure.iot.deviceupdate.DeviceManagementClient.EnumerateDevices
 PagedIterable<BinaryData> devices = client.listDevices(null);
 for (BinaryData d: devices) {
-    System.out.println(d);
+    System.out.println(new ObjectMapper().readTree(d.toBytes()).get("deviceId").asText());
 }
 ```
 
@@ -158,7 +174,7 @@ To enumerate all available device groups and print their group identifiers:
 ``` java com.azure.iot.deviceupdate.DeviceManagementClient.EnumerateGroups
 PagedIterable<BinaryData> groups = client.listGroups(null);
 for (BinaryData g: groups) {
-    System.out.println(g);
+    System.out.println(new ObjectMapper().readTree(g.toBytes()).get("groupId").asText());
 }
 ```
 
@@ -169,7 +185,7 @@ To enumerate all available device classes and print their device class identifie
 ``` java com.azure.iot.deviceupdate.DeviceManagementClient.EnumerateDeviceClasses
 PagedIterable<BinaryData> deviceClasses = client.listDeviceClasses(null);
 for (BinaryData dc: deviceClasses) {
-    System.out.println(dc);
+    System.out.println(new ObjectMapper().readTree(dc.toBytes()).get("deviceClassId").asText());
 }
 ```
 
@@ -180,7 +196,12 @@ Finally, lets find out all best updates for all devices in a specific group, gro
 ``` java com.azure.iot.deviceupdate.DeviceManagementClient.GetBestUpdates
 PagedIterable<BinaryData> bestUpdates = client.listBestUpdatesForGroup(groupId, null);
 for (BinaryData bu: bestUpdates) {
-    System.out.println(bu);
+    JsonNode json = new ObjectMapper().readTree(bu.toBytes());
+    System.out.println(String.format("For device class '%s' in group '%s', the best update is:",
+        json.get("deviceClassId").asText(), groupId));
+    System.out.println("  Provider: " + json.get("update").get("updateId").get("provider").asText());
+    System.out.println("  Name: " + json.get("update").get("updateId").get("name").asText());
+    System.out.println("  Version: " + json.get("update").get("updateId").get("version").asText());
 }
 ```
 

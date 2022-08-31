@@ -4,14 +4,14 @@
 
 package com.azure.iot.deviceupdate.generated;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.iot.deviceupdate.DeviceManagementClient;
 import com.azure.iot.deviceupdate.DeviceManagementClientBuilder;
 
-public class DeviceManagementGetOperation {
+public class DeviceManagementListOperationStatuses {
     public static void main(String[] args) {
         DeviceManagementClient deviceManagementClient =
                 new DeviceManagementClientBuilder()
@@ -19,10 +19,9 @@ public class DeviceManagementGetOperation {
                         .endpoint("contoso.api.adu.microsoft.com")
                         .instanceId("blue")
                         .buildClient();
-        // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementgetoperation.devicemanagementgetoperation
+        // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementlistoperationstatuses.devicemanagementlistoperationstatuses
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response =
-                deviceManagementClient.getOperationWithResponse("e4491c54-916f-443d-9094-bcca546ace2f", requestOptions);
-        // END:com.azure.iot.deviceupdate.generated.devicemanagementgetoperation.devicemanagementgetoperation
+        PagedIterable<BinaryData> response = deviceManagementClient.listOperationStatuses(requestOptions);
+        // END:com.azure.iot.deviceupdate.generated.devicemanagementlistoperationstatuses.devicemanagementlistoperationstatuses
     }
 }
