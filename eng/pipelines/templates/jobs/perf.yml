@@ -48,11 +48,11 @@ extends:
     ${{ if contains(parameters.AdditionalArguments, '--profiling') }}:
       PreRunSteps:
         - pwsh: |
-            New-Item -Path . -Name "java-profiling" -ItemType "directory"
+            New-Item -Path $(Agent.BuildDirectory)/s -Name "java-profiling" -ItemType "directory"
       PostRunSteps:
         - pwsh: |
-            [System.IO.Compression.ZipFile]::CreateFromDirectory("java-profiling","java-profiling.zip")
-        - publish: java-profiling.zip
+            [System.IO.Compression.ZipFile]::CreateFromDirectory("$(Agent.BuildDirectory)/s/java-profiling","$(Agent.BuildDirectory)/s/java-profiling.zip")
+        - publish: $(Agent.BuildDirectory)/s/java-profiling.zip
           artifact: $(System.JobName)-$(System.JobAttempt)-java-profiling.zip
     ServiceDirectory: ${{ parameters.ServiceDirectory }}
     Services: ${{ parameters.Services }}
