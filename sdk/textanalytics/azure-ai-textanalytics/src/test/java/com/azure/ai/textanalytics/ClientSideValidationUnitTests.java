@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.azure.ai.textanalytics.TestUtils.VALID_HTTPS_LOCALHOST;
+import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -34,28 +35,43 @@ public class ClientSideValidationUnitTests {
     static TextAnalyticsAsyncClient asyncClientV31;
     static List<String> dummyDocument = Arrays.asList("A tree", "Be good");
 
-    static final String MIN_V3_1_ERROR_MESSAGE = " is only available for API version v3.1 and up.";
-    static final String MIN_V2022_05_01_ERROR_MESSAGE = " is only available for API version 2022-05-01 and up.";
-    static final String DISABLE_SERVICE_LOGS_ERROR_MESSAGE = "'disableServiceLogs'" + MIN_V3_1_ERROR_MESSAGE;
-    static final String RECOGNIZE_PII_ENTITIES_ERROR_MESSAGE = "'recognizePiiEntitiesBatch'" + MIN_V3_1_ERROR_MESSAGE;
-    static final String OPINION_MINING_ERROR_MESSAGE = "'includeOpinionMining'" + MIN_V3_1_ERROR_MESSAGE;
-    static final String ANALYZE_ACTIONS_ERROR_MESSAGE = "'beginAnalyzeActions'" + MIN_V3_1_ERROR_MESSAGE;
+    static final String MIN_V3_1_ERROR_MESSAGE = " is only available for API version v3.1 and newer.";
+    static final String DISABLE_SERVICE_LOGS_ERROR_MESSAGE =
+        getUnsupportedServiceApiVersionMessage("TextAnalyticsRequestOptions.disableServiceLogs",
+            TextAnalyticsServiceVersion.V3_1.getVersion());
+    static final String RECOGNIZE_PII_ENTITIES_ERROR_MESSAGE =
+        getUnsupportedServiceApiVersionMessage("recognizePiiEntitiesBatch",
+            TextAnalyticsServiceVersion.V3_1.getVersion());
+    static final String OPINION_MINING_ERROR_MESSAGE =
+        getUnsupportedServiceApiVersionMessage("AnalyzeSentimentOptions.includeOpinionMining",
+            TextAnalyticsServiceVersion.V3_1.getVersion());
+    static final String ANALYZE_ACTIONS_ERROR_MESSAGE =
+        getUnsupportedServiceApiVersionMessage("beginAnalyzeActions",
+            TextAnalyticsServiceVersion.V3_1.getVersion());
     static final String HEALTHCARE_ENTITIES_ACTION_ERROR_MESSAGE =
-        "'AnalyzeHealthcareEntitiesAction'" + MIN_V2022_05_01_ERROR_MESSAGE;
+        getUnsupportedServiceApiVersionMessage("AnalyzeHealthcareEntitiesAction",
+            TextAnalyticsServiceVersion.V2022_05_01.getVersion());
     static final String CUSTOM_ENTITIES_ACTION_ERROR_MESSAGE =
-        "'RecognizeCustomEntitiesAction'" + MIN_V2022_05_01_ERROR_MESSAGE;
+        getUnsupportedServiceApiVersionMessage("RecognizeCustomEntitiesAction",
+            TextAnalyticsServiceVersion.V2022_05_01.getVersion());
     static final String SINGLE_LABEL_ACTION_ERROR_MESSAGE =
-        "'SingleLabelClassifyAction'" + MIN_V2022_05_01_ERROR_MESSAGE;
+        getUnsupportedServiceApiVersionMessage("SingleLabelClassifyAction",
+            TextAnalyticsServiceVersion.V2022_05_01.getVersion());
     static final String MULTI_LABEL_ACTION_ERROR_MESSAGE =
-        "'MultiLabelClassifyAction'" + MIN_V2022_05_01_ERROR_MESSAGE;
+        getUnsupportedServiceApiVersionMessage("MultiLabelClassifyAction",
+        TextAnalyticsServiceVersion.V2022_05_01.getVersion());
     static final String ANALYZE_HEALTHCARE_ENTITIES_ERROR_MESSAGE =
-        "'beginAnalyzeHealthcareEntities'" + MIN_V3_1_ERROR_MESSAGE;
+        getUnsupportedServiceApiVersionMessage("beginAnalyzeHealthcareEntities",
+            TextAnalyticsServiceVersion.V3_1.getVersion());
     static final String RECOGNIZE_CUSTOM_ENTITIES_ERROR_MESSAGE =
-        "'beginRecognizeCustomEntities'" + MIN_V2022_05_01_ERROR_MESSAGE;
+        getUnsupportedServiceApiVersionMessage("beginRecognizeCustomEntities",
+            TextAnalyticsServiceVersion.V2022_05_01.getVersion());
     static final String SINGLE_LABEL_CLASSIFY_ERROR_MESSAGE =
-        "'beginSingleLabelClassify'" + MIN_V2022_05_01_ERROR_MESSAGE;
+        getUnsupportedServiceApiVersionMessage("beginSingleLabelClassify",
+            TextAnalyticsServiceVersion.V2022_05_01.getVersion());
     static final String MULTI_LABEL_CLASSIFY_ERROR_MESSAGE =
-        "'beginMultiLabelClassify'" + MIN_V2022_05_01_ERROR_MESSAGE;
+        getUnsupportedServiceApiVersionMessage("beginMultiLabelClassify",
+            TextAnalyticsServiceVersion.V2022_05_01.getVersion());
 
     static final String PROJECT_NAME = "project-name";
     static final String DEPLOYMENT_NAME = "deployment-name";
@@ -195,13 +211,13 @@ public class ClientSideValidationUnitTests {
     public void analyzeActionsClientSideValidation() {
         TextAnalyticsActions actions = new TextAnalyticsActions();
         // Async
-        // beginAnalyzeActions is only supported in 3.1 and up
+        // beginAnalyzeActions is only supported in 3.1 and newer
         StepVerifier.create(asyncClientV30.beginAnalyzeActions(dummyDocument, actions, LANGUAGE_EN, null))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalStateException.class, exception.getClass());
                 assertEquals(ANALYZE_ACTIONS_ERROR_MESSAGE, exception.getMessage());
             });
-        // AnalyzeHealthcareEntitiesAction is only supported in 2022-05-01 and up
+        // AnalyzeHealthcareEntitiesAction is only supported in 2022-05-01 and newer
         TextAnalyticsActions healthcareEntitiesActions =
             new TextAnalyticsActions()
                 .setAnalyzeHealthcareEntitiesActions(new AnalyzeHealthcareEntitiesAction());
@@ -211,7 +227,7 @@ public class ClientSideValidationUnitTests {
                 assertEquals(IllegalStateException.class, exception.getClass());
                 assertEquals(HEALTHCARE_ENTITIES_ACTION_ERROR_MESSAGE, exception.getMessage());
             });
-        // RecognizeCustomEntitiesAction is only supported in 2022-05-01 and up
+        // RecognizeCustomEntitiesAction is only supported in 2022-05-01 and newer
         TextAnalyticsActions customEntitiesActions =
             new TextAnalyticsActions()
                 .setRecognizeCustomEntitiesActions(new RecognizeCustomEntitiesAction(PROJECT_NAME, DEPLOYMENT_NAME));
@@ -221,7 +237,7 @@ public class ClientSideValidationUnitTests {
                 assertEquals(IllegalStateException.class, exception.getClass());
                 assertEquals(CUSTOM_ENTITIES_ACTION_ERROR_MESSAGE, exception.getMessage());
             });
-        // SingleLabelClassifyAction is only supported in 2022-05-01 and up
+        // SingleLabelClassifyAction is only supported in 2022-05-01 and newer
         TextAnalyticsActions singleLabelClassifyActions =
             new TextAnalyticsActions()
                 .setSingleLabelClassifyActions(new SingleLabelClassifyAction(PROJECT_NAME, DEPLOYMENT_NAME));
@@ -231,7 +247,7 @@ public class ClientSideValidationUnitTests {
                 assertEquals(IllegalStateException.class, exception.getClass());
                 assertEquals(SINGLE_LABEL_ACTION_ERROR_MESSAGE, exception.getMessage());
             });
-        // MultiLabelClassifyAction is only supported in 2022-05-01 and up
+        // MultiLabelClassifyAction is only supported in 2022-05-01 and newer
         TextAnalyticsActions multiLabelClassifyActions =
             new TextAnalyticsActions()
                 .setMultiLabelClassifyActions(new MultiLabelClassifyAction(PROJECT_NAME, DEPLOYMENT_NAME));
@@ -243,23 +259,23 @@ public class ClientSideValidationUnitTests {
             });
 
         // Sync
-        // beginAnalyzeActions is only supported in 3.1 and up
+        // beginAnalyzeActions is only supported in 3.1 and newer
         IllegalStateException exception = assertThrows(IllegalStateException.class,
             () -> clientV30.beginAnalyzeActions(dummyDocument, actions, LANGUAGE_EN, null));
         assertEquals(ANALYZE_ACTIONS_ERROR_MESSAGE, exception.getMessage());
-        // AnalyzeHealthcareEntitiesAction is only supported in 2022-05-01 and up
+        // AnalyzeHealthcareEntitiesAction is only supported in 2022-05-01 and newer
         IllegalStateException healthcareEntitiesActionsException = assertThrows(IllegalStateException.class,
             () -> clientV31.beginAnalyzeActions(dummyDocument, healthcareEntitiesActions, LANGUAGE_EN, null));
         assertEquals(HEALTHCARE_ENTITIES_ACTION_ERROR_MESSAGE, healthcareEntitiesActionsException.getMessage());
-        // RecognizeCustomEntitiesAction is only supported in 2022-05-01 and up
+        // RecognizeCustomEntitiesAction is only supported in 2022-05-01 and newer
         IllegalStateException customEntitiesActionsException = assertThrows(IllegalStateException.class,
             () -> clientV31.beginAnalyzeActions(dummyDocument, customEntitiesActions, LANGUAGE_EN, null));
         assertEquals(CUSTOM_ENTITIES_ACTION_ERROR_MESSAGE, customEntitiesActionsException.getMessage());
-        // SingleLabelClassifyAction is only supported in 2022-05-01 and up
+        // SingleLabelClassifyAction is only supported in 2022-05-01 and newer
         IllegalStateException singleLabelClassifyActionsException = assertThrows(IllegalStateException.class,
             () -> clientV31.beginAnalyzeActions(dummyDocument, singleLabelClassifyActions, LANGUAGE_EN, null));
         assertEquals(SINGLE_LABEL_ACTION_ERROR_MESSAGE, singleLabelClassifyActionsException.getMessage());
-        // MultiLabelClassifyAction is only supported in 2022-05-01 and up
+        // MultiLabelClassifyAction is only supported in 2022-05-01 and newer
         IllegalStateException multiLabelClassifyActionsException = assertThrows(IllegalStateException.class,
             () -> clientV31.beginAnalyzeActions(dummyDocument, multiLabelClassifyActions, LANGUAGE_EN, null));
         assertEquals(MULTI_LABEL_ACTION_ERROR_MESSAGE, multiLabelClassifyActionsException.getMessage());

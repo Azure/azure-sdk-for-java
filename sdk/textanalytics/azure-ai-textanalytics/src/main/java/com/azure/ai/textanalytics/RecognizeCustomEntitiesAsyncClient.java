@@ -55,6 +55,7 @@ import java.util.stream.Collectors;
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
+import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
 import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
@@ -86,7 +87,8 @@ class RecognizeCustomEntitiesAsyncClient {
         try {
             throwIfTargetServiceVersionFound(this.serviceVersion,
                 Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1),
-                "'beginRecognizeCustomEntities' is only available for API version 2022-05-01 and up.");
+                getUnsupportedServiceApiVersionMessage("beginRecognizeCustomEntities",
+                    TextAnalyticsServiceVersion.V2022_05_01.getVersion()));
             inputDocumentsValidation(documents);
             options = getNotNullRecognizeCustomEntitiesOptions(options);
             final Context finalContext = getNotNullContext(context)
@@ -137,7 +139,8 @@ class RecognizeCustomEntitiesAsyncClient {
         try {
             throwIfTargetServiceVersionFound(this.serviceVersion,
                 Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1),
-                "'beginRecognizeCustomEntities' is only available for API version 2022-05-01 and up.");
+                getUnsupportedServiceApiVersionMessage("beginRecognizeCustomEntities",
+                    TextAnalyticsServiceVersion.V2022_05_01.getVersion()));
             inputDocumentsValidation(documents);
             options = getNotNullRecognizeCustomEntitiesOptions(options);
             final Context finalContext = getNotNullContext(context)

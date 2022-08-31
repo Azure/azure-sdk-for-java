@@ -26,6 +26,7 @@ import java.util.Arrays;
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
+import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.throwIfTargetServiceVersionFound;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
@@ -161,11 +162,13 @@ class AnalyzeSentimentAsyncClient {
         }
         if (options.isIncludeOpinionMining()) {
             throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
-                "'includeOpinionMining' is only available for API version v3.1 and up.");
+                getUnsupportedServiceApiVersionMessage("AnalyzeSentimentOptions.includeOpinionMining",
+                    TextAnalyticsServiceVersion.V3_1.getVersion()));
         }
         if (options.isServiceLogsDisabled()) {
             throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
-                "'disableServiceLogs' is only available for API version v3.1 and up.");
+                getUnsupportedServiceApiVersionMessage("TextAnalyticsRequestOptions.disableServiceLogs",
+                    TextAnalyticsServiceVersion.V3_1.getVersion()));
         }
     }
 }

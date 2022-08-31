@@ -30,6 +30,7 @@ import java.util.Objects;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
+import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.throwIfTargetServiceVersionFound;
 import static com.azure.ai.textanalytics.implementation.Utility.toCategoriesFilter;
@@ -78,7 +79,8 @@ class RecognizePiiEntityAsyncClient {
         try {
             throwIfTargetServiceVersionFound(this.serviceVersion,
                 Arrays.asList(TextAnalyticsServiceVersion.V3_0),
-                "'recognizePiiEntities' is only available for API version v3.1 and up.");
+                getUnsupportedServiceApiVersionMessage("recognizePiiEntitiesBatch",
+                    TextAnalyticsServiceVersion.V3_1.getVersion()));
             Objects.requireNonNull(document, "'document' cannot be null.");
             return recognizePiiEntitiesBatch(
                 Collections.singletonList(new TextDocumentInput("0", document).setLanguage(language)), options)
@@ -153,7 +155,8 @@ class RecognizePiiEntityAsyncClient {
         Iterable<TextDocumentInput> documents, RecognizePiiEntitiesOptions options, Context context) {
         throwIfTargetServiceVersionFound(this.serviceVersion,
             Arrays.asList(TextAnalyticsServiceVersion.V3_0),
-            "'recognizePiiEntitiesBatch' is only available for API version v3.1 and up.");
+            getUnsupportedServiceApiVersionMessage("recognizePiiEntitiesBatch",
+                TextAnalyticsServiceVersion.V3_1.getVersion()));
         inputDocumentsValidation(documents);
         options = options == null ? new RecognizePiiEntitiesOptions() : options;
         final Context finalContext = getNotNullContext(context)

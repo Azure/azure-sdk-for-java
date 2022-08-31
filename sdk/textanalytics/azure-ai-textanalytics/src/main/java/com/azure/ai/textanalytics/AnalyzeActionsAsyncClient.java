@@ -134,6 +134,7 @@ import java.util.regex.Pattern;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
+import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
 import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
@@ -201,7 +202,8 @@ class AnalyzeActionsAsyncClient {
         try {
             Objects.requireNonNull(actions, "'actions' cannot be null.");
             throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
-                "'beginAnalyzeActions' is only available for API version v3.1 and up.");
+                getUnsupportedServiceApiVersionMessage("beginAnalyzeActions",
+                    TextAnalyticsServiceVersion.V3_1.getVersion()));
             inputDocumentsValidation(documents);
             options = getNotNullAnalyzeActionsOptions(options);
             final Context finalContext = getNotNullContext(context)
@@ -274,7 +276,8 @@ class AnalyzeActionsAsyncClient {
         try {
             Objects.requireNonNull(actions, "'actions' cannot be null.");
             throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
-                "'beginAnalyzeActions' is only available for API version v3.1 and up.");
+                getUnsupportedServiceApiVersionMessage("beginAnalyzeActions",
+                    TextAnalyticsServiceVersion.V3_1.getVersion()));
             inputDocumentsValidation(documents);
             options = getNotNullAnalyzeActionsOptions(options);
             final Context finalContext = getNotNullContext(context)
@@ -1303,22 +1306,26 @@ class AnalyzeActionsAsyncClient {
         List<TextAnalyticsServiceVersion> targetVersions, TextAnalyticsActions actions) {
         if (actions.getMultiLabelClassifyActions() != null) {
             throwIfTargetServiceVersionFound(sourceVersion, targetVersions,
-                "'MultiLabelClassifyAction' is only available for API version 2022-05-01 and up.");
+                getUnsupportedServiceApiVersionMessage("MultiLabelClassifyAction",
+                    TextAnalyticsServiceVersion.V2022_05_01.getVersion()));
         }
 
         if (actions.getSingleLabelClassifyActions() != null) {
             throwIfTargetServiceVersionFound(sourceVersion, targetVersions,
-                "'SingleLabelClassifyAction' is only available for API version 2022-05-01 and up.");
+                getUnsupportedServiceApiVersionMessage("SingleLabelClassifyAction",
+                    TextAnalyticsServiceVersion.V2022_05_01.getVersion()));
         }
 
         if (actions.getRecognizeCustomEntitiesActions() != null) {
             throwIfTargetServiceVersionFound(sourceVersion, targetVersions,
-                "'RecognizeCustomEntitiesAction' is only available for API version 2022-05-01 and up.");
+                getUnsupportedServiceApiVersionMessage("RecognizeCustomEntitiesAction",
+                    TextAnalyticsServiceVersion.V2022_05_01.getVersion()));
         }
 
         if (actions.getAnalyzeHealthcareEntitiesActions() != null) {
             throwIfTargetServiceVersionFound(sourceVersion, targetVersions,
-                "'AnalyzeHealthcareEntitiesAction' is only available for API version 2022-05-01 and up.");
+                getUnsupportedServiceApiVersionMessage("AnalyzeHealthcareEntitiesAction",
+                    TextAnalyticsServiceVersion.V2022_05_01.getVersion()));
         }
     }
 }

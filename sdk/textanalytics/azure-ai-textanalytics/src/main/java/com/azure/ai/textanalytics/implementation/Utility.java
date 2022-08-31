@@ -1350,6 +1350,14 @@ public final class Utility {
         return assessments.get(assessmentIndex);
     }
 
+    /**
+     * Throw exception if sourceVersion is one of target API versions.
+     *
+     * @param sourceVersion The service version that client is using when calling service API.
+     * @param targetVersions The target versions that used to verify if sourceVersion is unsupported version.
+     *                       Throw exception if target versions contains the source version.
+     * @param errorMessage The error message.
+     */
     public static void throwIfTargetServiceVersionFound(TextAnalyticsServiceVersion sourceVersion,
                                                         List<TextAnalyticsServiceVersion> targetVersions,
                                                         String errorMessage) {
@@ -1359,5 +1367,18 @@ public final class Utility {
                 throw LOGGER.logExceptionAsError(new IllegalStateException(errorMessage));
             }
         }
+    }
+
+    /**
+     * Retrieve custom unsupported Service API version error message.
+     *
+     * @param unsupportedName The unsupported API or property name that the not available in 'minSupportedVersion'.
+     * @param minSupportedVersion The minimum supported Service API version.
+     *
+     * @return The error message.
+     */
+    public static String getUnsupportedServiceApiVersionMessage(String unsupportedName, String minSupportedVersion) {
+        return String.format("'%s' is not available in API version %s. Use service API version '%s' or newer.",
+            unsupportedName, minSupportedVersion, minSupportedVersion);
     }
 }
