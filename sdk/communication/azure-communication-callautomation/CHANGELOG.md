@@ -57,5 +57,5 @@ This is a Public Preview version, so breaking changes are possible in subsequent
 - Recording download apis.
 
 <!-- LINKS -->
-[read_me]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/communication/azure-communication-callingserver/README.md
+[read_me]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/communication/azure-communication-callautomation/README.md
 [DTMF]: https://en.wikipedia.org/wiki/Dual-tone_multi-frequency_signaling

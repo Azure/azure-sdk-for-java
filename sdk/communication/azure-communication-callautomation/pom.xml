@@ -13,14 +13,14 @@
   </parent>
 
   <groupId>com.azure</groupId>
-  <artifactId>azure-communication-callingserver</artifactId>
+  <artifactId>azure-communication-callautomation</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-communication-callingserver;current} -->
+  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-communication-callautomation;current} -->
 
   <name>Microsoft Azure client library for CallingServer service</name>
   <description>
     This package contains clients and data structures used to make call with Azure Communication CallingServer Service.
-    For this release, see notes - https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-callingserver/README.md and https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-callingserver/CHANGELOG.md.
+    For this release, see notes - https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-callautomation/README.md and https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-callautomation/CHANGELOG.md.
   </description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
@@ -45,7 +45,7 @@
     <jacoco.skip>false</jacoco.skip>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
-      --add-opens com.azure.communication.callingserver/com.azure.communication.callingserver.implementation=ALL-UNNAMED
+      --add-opens com.azure.communication.callautomation/com.azure.communication.callautomation.implementation=ALL-UNNAMED
       --add-opens com.azure.communication.common/com.azure.communication.common.implementation=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
@@ -143,7 +143,7 @@
         <version>0.8.8</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <configuration>
           <includes>
-            <include>com/azure/communication/callingserver/*.class</include>
+            <include>com/azure/communication/callautomation/*.class</include>
           </includes>
         </configuration>
         <executions>

@@ -8,10 +8,10 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/communication/azure-communication-callingserver
+      - sdk/communication/azure-communication-callautomation
     exclude:
-      - sdk/communication/azure-communication-callingserver/pom.xml
-  
+      - sdk/communication/azure-communication-callautomation/pom.xml
+
 pr:
   branches:
     include:
@@ -21,16 +21,16 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/communication/azure-communication-callingserver/
+      - sdk/communication/azure-communication-callautomation/
     exclude:
-      - sdk/communication/azure-communication-callingserver/pom.xml
+      - sdk/communication/azure-communication-callautomation/pom.xml
 
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: communication
     Artifacts:
-      - name: azure-communication-callingserver
+      - name: azure-communication-callautomation
         groupId: com.azure
-        safeName: azurecommunicationcallingserver
+        safeName: azurecommunicationcallautomation
 

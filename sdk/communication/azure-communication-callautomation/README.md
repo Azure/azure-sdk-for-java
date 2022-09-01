@@ -16,11 +16,11 @@ This package contains a Java SDK for Azure Communication CallingServer Service. 
 
 ### Include the package
 
-[//]: # ({x-version-update-start;com.azure:azure-communication-callingserver;current})
+[//]: # ({x-version-update-start;com.azure:azure-communication-callautomation;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-communication-callingserver</artifactId>
+    <artifactId>azure-communication-callautomation</artifactId>
     <version>1.0.0-beta.5</version>
 </dependency>
 ```
@@ -76,4 +76,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [call_automation_apis_overview]:https://docs.microsoft.com/azure/communication-services/concepts/voice-video-calling/call-automation-apis
 [call_recording_overview]:https://docs.microsoft.com/azure/communication-services/concepts/voice-video-calling/call-recording
 [record_and_download_calls_with_event_grid]:https://docs.microsoft.com/azure/communication-services/quickstarts/voice-video-calling/download-recording-file-sample
-[source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/communication/azure-communication-callingserver/src
+[source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/communication/azure-communication-callautomation/src
