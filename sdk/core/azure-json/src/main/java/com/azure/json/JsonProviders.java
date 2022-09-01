@@ -53,34 +53,35 @@ public final class JsonProviders {
      * Creates an instance of {@link JsonReader} that reads a {@code byte[]}.
      * <p>
      * If a provider could not be found on the classpath this will use the default implementation, effectively the
-     * equivalent to {@link #createReader(byte[], boolean) createReader(json, true)}.
+     * equivalent to {@link #createReader(byte[], JsonOptions, boolean) createReader(json, new JsonOptions(), true)}.
      *
      * @param json The JSON represented as a {@code byte[]}.
      * @return A new instance of {@link JsonReader}.
      * @throws NullPointerException If {@code json} is null.
      */
     public static JsonReader createReader(byte[] json) {
-        return createReader(json, true);
+        return createReader(json, JsonOptions.DEFAULT_OPTIONS, true);
     }
 
     /**
      * Creates an instance of {@link JsonReader} that reads a {@code byte[]}.
      *
      * @param json The JSON represented as a {@code byte[]}.
+     * @param options {@link JsonOptions} to configure the creation of the {@link JsonReader}.
      * @param useDefault Whether the default implementation should be used if one could not be found on the classpath.
      * @return A new instance of {@link JsonReader}.
      * @throws NullPointerException If {@code json} is null.
      * @throws IllegalStateException If a provider could not be found on the classpath and {@code useDefault} is false.
      */
-    public static JsonReader createReader(byte[] json, boolean useDefault) {
+    public static JsonReader createReader(byte[] json, JsonOptions options, boolean useDefault) {
         if (defaultProvider == null) {
             if (useDefault) {
-                return DefaultJsonReader.fromBytes(json);
+                return DefaultJsonReader.fromBytes(json, options);
             } else {
                 throw new IllegalStateException(CANNOT_FIND_JSON);
             }
         } else {
-            return defaultProvider.createReader(json);
+            return defaultProvider.createReader(json, options);
         }
     }
 
@@ -88,34 +89,35 @@ public final class JsonProviders {
      * Creates an instance of {@link JsonReader} that reads a {@link String}.
      * <p>
      * If a provider could not be found on the classpath this will use the default implementation, effectively the
-     * equivalent to {@link #createReader(String, boolean) createReader(json, true)}.
+     * equivalent to {@link #createReader(String, JsonOptions, boolean) createReader(json, new JsonOptions(), true)}.
      *
      * @param json The JSON represented as a {@link String}.
      * @return A new instance of {@link JsonReader}.
      * @throws NullPointerException If {@code json} is null.
      */
     public static JsonReader createReader(String json) {
-        return createReader(json, true);
+        return createReader(json, JsonOptions.DEFAULT_OPTIONS, true);
     }
 
     /**
      * Creates an instance of {@link JsonReader} that reads a {@link String}.
      *
      * @param json The JSON represented as a {@link String}.
+     * @param options {@link JsonOptions} to configure the creation of the {@link JsonReader}.
      * @param useDefault Whether the default implementation should be used if one could not be found on the classpath.
      * @return A new instance of {@link JsonReader}.
      * @throws NullPointerException If {@code json} is null.
      * @throws IllegalStateException If a provider could not be found on the classpath and {@code useDefault} is false.
      */
-    public static JsonReader createReader(String json, boolean useDefault) {
+    public static JsonReader createReader(String json, JsonOptions options, boolean useDefault) {
         if (defaultProvider == null) {
             if (useDefault) {
-                return DefaultJsonReader.fromString(json);
+                return DefaultJsonReader.fromString(json, options);
             } else {
                 throw new IllegalStateException(CANNOT_FIND_JSON);
             }
         } else {
-            return defaultProvider.createReader(json);
+            return defaultProvider.createReader(json, options);
         }
     }
 
@@ -123,34 +125,36 @@ public final class JsonProviders {
      * Creates an instance of {@link JsonReader} that reads a {@link InputStream}.
      * <p>
      * If a provider could not be found on the classpath this will use the default implementation, effectively the
-     * equivalent to {@link #createReader(InputStream, boolean) createReader(json, true)}.
+     * equivalent to
+     * {@link #createReader(InputStream, JsonOptions, boolean) createReader(json, new JsonOptions(), true)}.
      *
      * @param json The JSON represented as a {@link InputStream}.
      * @return A new instance of {@link JsonReader}.
      * @throws NullPointerException If {@code json} is null.
      */
     public static JsonReader createReader(InputStream json) {
-        return createReader(json, true);
+        return createReader(json, JsonOptions.DEFAULT_OPTIONS, true);
     }
 
     /**
      * Creates an instance of {@link JsonReader} that reads a {@link InputStream}.
      *
      * @param json The JSON represented as a {@link InputStream}.
+     * @param options {@link JsonOptions} to configure the creation of the {@link JsonReader}.
      * @param useDefault Whether the default implementation should be used if one could not be found on the classpath.
      * @return A new instance of {@link JsonReader}.
      * @throws NullPointerException If {@code json} is null.
      * @throws IllegalStateException If a provider could not be found on the classpath and {@code useDefault} is false.
      */
-    public static JsonReader createReader(InputStream json, boolean useDefault) {
+    public static JsonReader createReader(InputStream json, JsonOptions options, boolean useDefault) {
         if (defaultProvider == null) {
             if (useDefault) {
-                return DefaultJsonReader.fromStream(json);
+                return DefaultJsonReader.fromStream(json, options);
             } else {
                 throw new IllegalStateException(CANNOT_FIND_JSON);
             }
         } else {
-            return defaultProvider.createReader(json);
+            return defaultProvider.createReader(json, options);
         }
     }
 
@@ -158,34 +162,35 @@ public final class JsonProviders {
      * Creates an instance of {@link JsonReader} that reads a {@link Reader}.
      * <p>
      * If a provider could not be found on the classpath this will use the default implementation, effectively the
-     * equivalent to {@link #createReader(Reader, boolean) createReader(json, true)}.
+     * equivalent to {@link #createReader(Reader, JsonOptions, boolean) createReader(json, new JsonOptions(), true)}.
      *
      * @param json The JSON represented as a {@link Reader}.
      * @return A new instance of {@link JsonReader}.
      * @throws NullPointerException If {@code json} is null.
      */
     public static JsonReader createReader(Reader json) {
-        return createReader(json, true);
+        return createReader(json, JsonOptions.DEFAULT_OPTIONS, true);
     }
 
     /**
      * Creates an instance of {@link JsonReader} that reads a {@link Reader}.
      *
      * @param json The JSON represented as a {@link Reader}.
+     * @param options {@link JsonOptions} to configure the creation of the {@link JsonReader}.
      * @param useDefault Whether the default implementation should be used if one could not be found on the classpath.
      * @return A new instance of {@link JsonReader}.
      * @throws NullPointerException If {@code json} is null.
      * @throws IllegalStateException If a provider could not be found on the classpath and {@code useDefault} is false.
      */
-    public static JsonReader createReader(Reader json, boolean useDefault) {
+    public static JsonReader createReader(Reader json, JsonOptions options, boolean useDefault) {
         if (defaultProvider == null) {
             if (useDefault) {
-                return DefaultJsonReader.fromReader(json);
+                return DefaultJsonReader.fromReader(json, options);
             } else {
                 throw new IllegalStateException(CANNOT_FIND_JSON);
             }
         } else {
-            return defaultProvider.createReader(json);
+            return defaultProvider.createReader(json, options);
         }
     }
 
@@ -193,34 +198,36 @@ public final class JsonProviders {
      * Creates an instance of {@link JsonWriter} that writes to an {@link OutputStream}.
      * <p>
      * If a provider could not be found on the classpath this will use the default implementation, effectively the
-     * equivalent to {@link #createWriter(OutputStream, boolean) createWriter(json, true)}.
+     * equivalent to
+     * {@link #createWriter(OutputStream, JsonOptions, boolean) createWriter(json, new JsonOptions(), true)}.
      *
      * @param json The JSON represented as an {@link OutputStream}.
      * @return A new instance of {@link JsonWriter}.
      * @throws NullPointerException If {@code json} is null.
      */
     public static JsonWriter createWriter(OutputStream json) {
-        return createWriter(json, true);
+        return createWriter(json, JsonOptions.DEFAULT_OPTIONS, true);
     }
 
     /**
      * Creates an instance of {@link JsonWriter} that writes to an {@link OutputStream}.
      *
      * @param json The JSON represented as an {@link OutputStream}.
+     * @param options {@link JsonOptions} to configure the creation of the {@link JsonWriter}.
      * @param useDefault Whether the default implementation should be used if one could not be found on the classpath.
      * @return A new instance of {@link JsonWriter}.
      * @throws NullPointerException If {@code json} is null.
      * @throws IllegalStateException If a provider could not be found on the classpath and {@code useDefault} is false.
      */
-    public static JsonWriter createWriter(OutputStream json, boolean useDefault) {
+    public static JsonWriter createWriter(OutputStream json, JsonOptions options, boolean useDefault) {
         if (defaultProvider == null) {
             if (useDefault) {
-                return DefaultJsonWriter.toStream(json);
+                return DefaultJsonWriter.toStream(json, options);
             } else {
                 throw new IllegalStateException(CANNOT_FIND_JSON);
             }
         } else {
-            return defaultProvider.createWriter(json);
+            return defaultProvider.createWriter(json, options);
         }
     }
 
@@ -228,34 +235,35 @@ public final class JsonProviders {
      * Creates an instance of {@link JsonWriter} that writes to an {@link Writer}.
      * <p>
      * If a provider could not be found on the classpath this will use the default implementation, effectively the
-     * equivalent to {@link #createWriter(Writer, boolean) createWriter(json, true)}.
+     * equivalent to {@link #createWriter(Writer, JsonOptions, boolean) createWriter(json, new JsonOptions(), true)}.
      *
      * @param json The JSON represented as an {@link Writer}.
      * @return A new instance of {@link JsonWriter}.
      * @throws NullPointerException If {@code json} is null.
      */
     public static JsonWriter createWriter(Writer json) {
-        return createWriter(json, true);
+        return createWriter(json, JsonOptions.DEFAULT_OPTIONS, true);
     }
 
     /**
      * Creates an instance of {@link JsonWriter} that writes to an {@link Writer}.
      *
      * @param json The JSON represented as an {@link Writer}.
+     * @param options {@link JsonOptions} to configure the creation of the {@link JsonWriter}.
      * @param useDefault Whether the default implementation should be used if one could not be found on the classpath.
      * @return A new instance of {@link JsonWriter}.
      * @throws NullPointerException If {@code json} is null.
      * @throws IllegalStateException If a provider could not be found on the classpath and {@code useDefault} is false.
      */
-    public static JsonWriter createWriter(Writer json, boolean useDefault) {
+    public static JsonWriter createWriter(Writer json, JsonOptions options, boolean useDefault) {
         if (defaultProvider == null) {
             if (useDefault) {
-                return DefaultJsonWriter.toWriter(json);
+                return DefaultJsonWriter.toWriter(json, options);
             } else {
                 throw new IllegalStateException(CANNOT_FIND_JSON);
             }
         } else {
-            return defaultProvider.createWriter(json);
+            return defaultProvider.createWriter(json, options);
         }
     }
 }

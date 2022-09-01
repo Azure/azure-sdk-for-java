@@ -3,6 +3,7 @@
 
 package com.azure.json.gson;
 
+import com.azure.json.JsonOptions;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 
@@ -25,6 +26,7 @@ public final class GsonJsonReader extends JsonReader {
     private final byte[] jsonBytes;
     private final String jsonString;
     private final boolean resetSupported;
+    private final boolean nonNumericNumbersSupported;
 
     private JsonToken currentToken;
     private boolean consumed = false;
@@ -34,49 +36,61 @@ public final class GsonJsonReader extends JsonReader {
      * Constructs an instance of {@link GsonJsonReader} from a {@code byte[]}.
      *
      * @param json JSON {@code byte[]}.
+     * @param options {@link JsonOptions} to configure the creation of the {@link JsonReader}.
      * @return An instance of {@link GsonJsonReader}.
      */
-    public static JsonReader fromBytes(byte[] json) {
+    public static JsonReader fromBytes(byte[] json, JsonOptions options) {
         return new GsonJsonReader(new InputStreamReader(new ByteArrayInputStream(json), StandardCharsets.UTF_8),
-            true, json, null);
+            true, json, null, options);
     }
 
     /**
      * Constructs an instance of {@link GsonJsonReader} from a String.
      *
      * @param json JSON String.
+     * @param options {@link JsonOptions} to configure the creation of the {@link JsonReader}.
      * @return An instance of {@link GsonJsonReader}.
      */
-    public static JsonReader fromString(String json) {
-        return new GsonJsonReader(new StringReader(json), true, null, json);
+    public static JsonReader fromString(String json, JsonOptions options) {
+        return new GsonJsonReader(new StringReader(json), true, null, json, options);
     }
 
     /**
      * Constructs an instance of {@link GsonJsonReader} from an {@link InputStream}.
      *
      * @param json JSON {@link InputStream}.
+     * @param options {@link JsonOptions} to configure the creation of the {@link JsonReader}.
      * @return An instance of {@link GsonJsonReader}.
      */
-    public static JsonReader fromStream(InputStream json) {
-        return new GsonJsonReader(new InputStreamReader(json, StandardCharsets.UTF_8), json.markSupported(), null, null);
+    public static JsonReader fromStream(InputStream json, JsonOptions options) {
+        return new GsonJsonReader(new InputStreamReader(json, StandardCharsets.UTF_8), json.markSupported(), null, null,
+            options);
     }
 
     /**
      * Constructs an instance of {@link GsonJsonReader} from a {@link Reader}.
      *
      * @param json JSON {@link Reader}.
+     * @param options {@link JsonOptions} to configure the creation of the {@link JsonReader}.
      * @return An instance of {@link GsonJsonReader}.
      */
-    public static JsonReader fromReader(Reader json) {
-        return new GsonJsonReader(json, json.markSupported(), null, null);
+    public static JsonReader fromReader(Reader json, JsonOptions options) {
+        return new GsonJsonReader(json, json.markSupported(), null, null, options);
     }
 
-    private GsonJsonReader(Reader reader, boolean resetSupported, byte[] jsonBytes, String jsonString) {
+    private GsonJsonReader(Reader reader, boolean resetSupported, byte[] jsonBytes, String jsonString,
+        JsonOptions options) {
+        this(reader, resetSupported, jsonBytes, jsonString, options.isNonNumericNumbersSupported());
+    }
+
+    private GsonJsonReader(Reader reader, boolean resetSupported, byte[] jsonBytes, String jsonString,
+        boolean nonNumericNumbersSupported) {
         this.reader = new com.google.gson.stream.JsonReader(reader);
-        this.reader.setLenient(true);
+        this.reader.setLenient(nonNumericNumbersSupported);
         this.resetSupported = resetSupported;
         this.jsonBytes = jsonBytes;
         this.jsonString = jsonString;
+        this.nonNumericNumbersSupported = nonNumericNumbersSupported;
     }
 
     @Override
@@ -256,7 +270,8 @@ public final class GsonJsonReader extends JsonReader {
             consumed = true;
             StringBuilder bufferedObject = new StringBuilder();
             readChildren(bufferedObject);
-            return GsonJsonReader.fromString(bufferedObject.toString());
+            String json = bufferedObject.toString();
+            return new GsonJsonReader(new StringReader(json), true, null, json, nonNumericNumbersSupported);
         } else {
             throw new IllegalStateException("Cannot buffer a JSON object from a non-object, non-field name "
                 + "starting location. Starting location: " + currentToken());
@@ -275,9 +290,11 @@ public final class GsonJsonReader extends JsonReader {
         }
 
         if (jsonBytes != null) {
-            return GsonJsonReader.fromBytes(jsonBytes);
+            return new GsonJsonReader(
+                new InputStreamReader(new ByteArrayInputStream(jsonBytes), StandardCharsets.UTF_8), true, jsonBytes,
+                null, nonNumericNumbersSupported);
         } else {
-            return GsonJsonReader.fromString(jsonString);
+            return new GsonJsonReader(new StringReader(jsonString), true, null, jsonString, nonNumericNumbersSupported);
         }
     }
 

@@ -3,6 +3,7 @@
 
 package com.azure.json.gson;
 
+import com.azure.json.JsonOptions;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriteContext;
 import com.azure.json.JsonWriter;
@@ -32,11 +33,11 @@ public final class GsonJsonWriter extends JsonWriter {
      * isn't the owner of the stream.
      *
      * @param stream The {@link OutputStream} that will be written.
+     * @param options {@link JsonOptions} to configure the creation of the {@link JsonWriter}.
      * @return An instance of {@link GsonJsonWriter}.
      */
-    public static JsonWriter toStream(OutputStream stream) {
-        return new GsonJsonWriter(new com.google.gson.stream.JsonWriter(
-            new OutputStreamWriter(stream, StandardCharsets.UTF_8)));
+    public static JsonWriter toStream(OutputStream stream, JsonOptions options) {
+        return new GsonJsonWriter(new OutputStreamWriter(stream, StandardCharsets.UTF_8), options);
     }
 
     /**
@@ -46,14 +47,16 @@ public final class GsonJsonWriter extends JsonWriter {
      * isn't the owner of the stream.
      *
      * @param writer The {@link Writer} that will be written.
+     * @param options {@link JsonOptions} to configure the creation of the {@link JsonWriter}.
      * @return An instance of {@link GsonJsonWriter}.
      */
-    public static JsonWriter toWriter(Writer writer) {
-        return new GsonJsonWriter(new com.google.gson.stream.JsonWriter(writer));
+    public static JsonWriter toWriter(Writer writer, JsonOptions options) {
+        return new GsonJsonWriter(writer, options);
     }
 
-    private GsonJsonWriter(com.google.gson.stream.JsonWriter writer) {
-        this.writer = writer;
+    private GsonJsonWriter(Writer writer, JsonOptions options) {
+        this.writer = new com.google.gson.stream.JsonWriter(writer);
+        this.writer.setLenient(options.isNonNumericNumbersSupported());
     }
 
     @Override
