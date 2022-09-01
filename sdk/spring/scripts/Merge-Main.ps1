@@ -14,19 +14,29 @@ param(
 $mergeExcludes = @($Merge | ForEach-Object { ":(top,glob,exclude)$_" })
 $ourExcludes = @($Ours | ForEach-Object { ":(top,glob,exclude)$_" })
 
+function ErrorExit($exitCode) {
+    Write-Host "`nError creating merge commit`n" `
+    "  Your local repository is in an unknown state`n" `
+    "  Run `"git reset --hard`" to revert the partial merge"
+
+    exit $exitCode
+}
+
 # start a merge, but leave it open
 git merge $Source --no-ff --no-commit
-if ($LASTEXITCODE) { exit $LASTEXITCODE }
+if ($LASTEXITCODE) { ErrorExit $LASTEXITCODE }
 
 # update paths matching "theirs" except for "ours" and "merge" to the state in $Source
 git restore -s $Source --staged --worktree -- ":(top,glob)$Theirs" $ourExcludes $mergeExcludes
-if ($LASTEXITCODE) { exit $LASTEXITCODE }
+if ($LASTEXITCODE) { ErrorExit $LASTEXITCODE }
 
 # update paths matching "ours" except for "merge" to their pre-merge state
 git restore -s (git rev-parse HEAD) --staged --worktree -- ":(top,glob)$Ours" $mergeExcludes
-if ($LASTEXITCODE) { exit $LASTEXITCODE }
+if ($LASTEXITCODE) { ErrorExit $LASTEXITCODE }
 
 Write-Host "Merge commit started`n" `
 "  Use `"git reset --hard`" to revert the partial merge`n" `
 "  Use `"git commit --no-edit`" to complete the merge with the default merge message`n" `
 "  Use `"git commit -m <message>`" to complete the merge with a custom message"
+
+exit 0
