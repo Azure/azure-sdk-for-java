@@ -1913,7 +1913,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             syncPoller = setPollInterval(syncPoller);
             PollResponse<AnalyzeHealthcareEntitiesOperationDetail> pollResponse = syncPoller.waitForCompletion();
             if (isValidApiVersionForDisplayName) {
-                assertEquals("operationName", pollResponse.getValue().getDisplayName());
+                assertEquals(options.getDisplayName(), pollResponse.getValue().getDisplayName());
             }
             AnalyzeHealthcareEntitiesPagedFlux analyzeHealthcareEntitiesPagedFlux = syncPoller.getFinalResult();
             validateAnalyzeHealthcareEntitiesResultCollectionList(
@@ -2543,12 +2543,14 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void recognizeCustomEntities(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         recognizeCustomEntitiesRunner((documents, parameters) -> {
+            RecognizeCustomEntitiesOptions options = new RecognizeCustomEntitiesOptions()
+                .setDisplayName("operationName");
             SyncPoller<RecognizeCustomEntitiesOperationDetail, RecognizeCustomEntitiesPagedFlux> syncPoller =
-                client.beginRecognizeCustomEntities(documents, parameters.get(0), parameters.get(1), "en",
-                    new RecognizeCustomEntitiesOptions().setDisplayName("operationName")).getSyncPoller();
+                client.beginRecognizeCustomEntities(documents, parameters.get(0), parameters.get(1), "en", options)
+                    .getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             PollResponse<RecognizeCustomEntitiesOperationDetail> pollResponse = syncPoller.waitForCompletion();
-            assertEquals("operationName", pollResponse.getValue().getDisplayName());
+            assertEquals(options.getDisplayName(), pollResponse.getValue().getDisplayName());
             RecognizeCustomEntitiesPagedFlux pagedFlux = syncPoller.getFinalResult();
             pagedFlux.toStream().collect(Collectors.toList()).forEach(resultCollection ->
                 resultCollection.forEach(documentResult ->
@@ -2561,12 +2563,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void singleLabelClassification(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         classifyCustomSingleLabelRunner((documents, parameters) -> {
+            SingleLabelClassifyOptions options = new SingleLabelClassifyOptions().setDisplayName("operationName");
             SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedFlux> syncPoller =
-                client.beginSingleLabelClassify(documents, parameters.get(0), parameters.get(1), "en",
-                    new SingleLabelClassifyOptions().setDisplayName("operationName")).getSyncPoller();
+                client.beginSingleLabelClassify(documents, parameters.get(0), parameters.get(1), "en", options)
+                    .getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             PollResponse<ClassifyDocumentOperationDetail> pollResponse = syncPoller.waitForCompletion();
-            assertEquals("operationName", pollResponse.getValue().getDisplayName());
+            assertEquals(options.getDisplayName(), pollResponse.getValue().getDisplayName());
             ClassifyDocumentPagedFlux pagedFlux = syncPoller.getFinalResult();
             pagedFlux.toStream().collect(Collectors.toList()).forEach(resultCollection ->
                 resultCollection.forEach(documentResult -> validateLabelClassificationResult(documentResult)));
@@ -2578,12 +2581,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void multiLabelClassification(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         classifyCustomMultiLabelRunner((documents, parameters) -> {
+            MultiLabelClassifyOptions options = new MultiLabelClassifyOptions().setDisplayName("operationName");
             SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedFlux> syncPoller =
-                client.beginMultiLabelClassify(documents, parameters.get(0), parameters.get(1), "en",
-                    new MultiLabelClassifyOptions().setDisplayName("operationName")).getSyncPoller();
+                client.beginMultiLabelClassify(documents, parameters.get(0), parameters.get(1), "en", options)
+                    .getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
             PollResponse<ClassifyDocumentOperationDetail> pollResponse = syncPoller.waitForCompletion();
-            assertEquals("operationName", pollResponse.getValue().getDisplayName());
+            assertEquals(options.getDisplayName(), pollResponse.getValue().getDisplayName());
             ClassifyDocumentPagedFlux pagedFlux = syncPoller.getFinalResult();
             pagedFlux.toStream().collect(Collectors.toList()).forEach(resultCollection ->
                 resultCollection.forEach(documentResult -> validateLabelClassificationResult(documentResult)));
