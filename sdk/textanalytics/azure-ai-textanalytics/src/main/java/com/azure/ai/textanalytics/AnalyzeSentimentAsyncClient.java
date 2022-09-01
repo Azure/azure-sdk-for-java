@@ -112,7 +112,7 @@ class AnalyzeSentimentAsyncClient {
      */
     private Mono<Response<AnalyzeSentimentResultCollection>> getAnalyzedSentimentResponse(
         Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options, Context context) {
-        throwIfCallingNotAvailableFeatureInAnalyzeSentimentOptions(options);
+        throwIfCallingNotAvailableFeatureInOptions(options);
         inputDocumentsValidation(documents);
         options = options == null ? new AnalyzeSentimentOptions() : options;
 
@@ -156,7 +156,7 @@ class AnalyzeSentimentAsyncClient {
             .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
     }
 
-    private void throwIfCallingNotAvailableFeatureInAnalyzeSentimentOptions(AnalyzeSentimentOptions options) {
+    private void throwIfCallingNotAvailableFeatureInOptions(AnalyzeSentimentOptions options) {
         if (options == null) {
             return;
         }
