@@ -267,7 +267,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         String endpoint = extractAccountEndpointOrGetDefault(uri);
         if (this.openFileSystems.containsKey(endpoint)) {
             return this.openFileSystems.get(endpoint);
-        } else if (autoCreateFileSystems && defaultConfigurations != null) {
+        } else if (autoCreateFileSystems && defaultConfigurations.isSufficient()) {
             synchronized (this.openFileSystems) {
                 if (!this.openFileSystems.containsKey(endpoint)) {
                     FileSystem newSystem = null;

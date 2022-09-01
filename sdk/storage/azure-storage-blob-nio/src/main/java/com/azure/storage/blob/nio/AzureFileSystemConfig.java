@@ -100,6 +100,14 @@ class AzureFileSystemConfig {
             Boolean::valueOf);
     }
 
+    /**
+     * Determines whether this config contains minimum required info to create an AzureFileSystem.
+     * @return true if minimum configuration is met, false otherwise.
+     */
+    public boolean isSufficient() {
+        return (sasCredential != null || sharedKeyCredential != null) && !fileStoreNames.isEmpty();
+    }
+
     private static <T> T getConfigFromStringConfiguration(
         Configuration config, String key, Function<String, T> parseValue) {
         String rawValue = config.get(key);
