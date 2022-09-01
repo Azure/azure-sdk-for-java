@@ -438,7 +438,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             CATEGORIZED_ENTITY_INPUTS.get(1)
         );
     }
-
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeEntitiesEmojiFamilyWIthSkinToneModifier(HttpClient httpClient,
