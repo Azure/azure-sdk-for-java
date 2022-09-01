@@ -94,7 +94,6 @@ class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTests<Ser
         Topics topics = mock(Topics.class);
         when(namespace.topics()).thenReturn(topics);
         Assert.isNull(namespace.topics().getByName(TOPIC_NAME));
-
     }
 
     @Test
@@ -112,12 +111,19 @@ class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTests<Ser
         Assert.isNull(namespace.topics().getByName(TOPIC_NAME));
         when(topics.getByName(TOPIC_NAME)).thenReturn(topic);
 
+        ServiceBusSubscriptions serviceBusSubscriptions = mock(ServiceBusSubscriptions.class);
+        ServiceBusSubscription serviceBusSubscription = mock(ServiceBusSubscription.class);
+        when(topic.subscriptions()).thenReturn(serviceBusSubscriptions);
+        when(serviceBusSubscriptions.getByName(getKey().getT2())).thenReturn(serviceBusSubscription);
+
         Topic.DefinitionStages.Blank define = mock(Topic.DefinitionStages.Blank.class);
         when(topics.define(TOPIC_NAME)).thenReturn(define);
 
         Topic.DefinitionStages.WithCreate create = mock(Topic.DefinitionStages.WithCreate.class);
         when(define.withNewSubscription(SUBSCRIPTION_NAME)).thenReturn(create);
         when(create.create()).thenReturn(topic);
+        Assert.notNull(topic);
+        Assert.notNull(topic.subscriptions());
     }
 
 }
