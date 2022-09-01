@@ -975,7 +975,6 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 authorizationTokenProvider,
                 null,
                 httpClientWrapper.getSpyHttpClient(),
-                true,
                 null,
                 null,
                 ConnectionPolicy.getDefaultPolicy(),

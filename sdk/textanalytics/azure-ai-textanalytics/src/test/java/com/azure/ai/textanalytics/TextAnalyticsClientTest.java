@@ -15,12 +15,15 @@ import com.azure.ai.textanalytics.models.EntityConditionality;
 import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
+import com.azure.ai.textanalytics.models.MultiLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomain;
 import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesOperationDetail;
+import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
+import com.azure.ai.textanalytics.models.SingleLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
@@ -39,6 +42,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -438,7 +442,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             CATEGORIZED_ENTITY_INPUTS.get(1)
         );
     }
-
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeEntitiesEmojiFamilyWIthSkinToneModifier(HttpClient httpClient,
@@ -1815,10 +1818,18 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void healthcareLroWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         healthcareLroRunner((documents, options) -> {
+            boolean isValidApiVersionForDisplayName = serviceVersion != TextAnalyticsServiceVersion.V3_0
+                && serviceVersion != TextAnalyticsServiceVersion.V3_1;
+            if (isValidApiVersionForDisplayName) {
+                options.setDisplayName("operationName");
+            }
             SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedIterable>
                 syncPoller = client.beginAnalyzeHealthcareEntities(documents, options, Context.NONE);
             syncPoller = setPollInterval(syncPoller);
-            syncPoller.waitForCompletion();
+            PollResponse<AnalyzeHealthcareEntitiesOperationDetail> pollResponse = syncPoller.waitForCompletion();
+            if (isValidApiVersionForDisplayName) {
+                assertEquals(options.getDisplayName(), pollResponse.getValue().getDisplayName());
+            }
             AnalyzeHealthcareEntitiesPagedIterable analyzeHealthcareEntitiesPagedIterable = syncPoller.getFinalResult();
             validateAnalyzeHealthcareEntitiesResultCollectionList(
                 options.isIncludeStatistics(),
@@ -2470,10 +2481,13 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void recognizeCustomEntities(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         recognizeCustomEntitiesRunner((documents, parameters) -> {
+            RecognizeCustomEntitiesOptions options = new RecognizeCustomEntitiesOptions()
+                .setDisplayName("operationName");
             SyncPoller<RecognizeCustomEntitiesOperationDetail, RecognizeCustomEntitiesPagedIterable> syncPoller =
-                client.beginRecognizeCustomEntities(documents, parameters.get(0), parameters.get(1), "en", null);
+                client.beginRecognizeCustomEntities(documents, parameters.get(0), parameters.get(1), "en", options);
             syncPoller = setPollInterval(syncPoller);
-            syncPoller.waitForCompletion();
+            PollResponse<RecognizeCustomEntitiesOperationDetail> pollResponse = syncPoller.waitForCompletion();
+            assertEquals(options.getDisplayName(), pollResponse.getValue().getDisplayName());
             RecognizeCustomEntitiesPagedIterable pagedIterable = syncPoller.getFinalResult();
             pagedIterable.forEach(resultCollection ->
                 resultCollection.forEach(documentResult ->
@@ -2486,10 +2500,12 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void singleLabelClassification(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         classifyCustomSingleLabelRunner((documents, parameters) -> {
+            SingleLabelClassifyOptions options = new SingleLabelClassifyOptions().setDisplayName("operationName");
             SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable> syncPoller =
-                client.beginSingleLabelClassify(documents, parameters.get(0), parameters.get(1), "en", null);
+                client.beginSingleLabelClassify(documents, parameters.get(0), parameters.get(1), "en", options);
             syncPoller = setPollInterval(syncPoller);
-            syncPoller.waitForCompletion();
+            PollResponse<ClassifyDocumentOperationDetail> pollResponse = syncPoller.waitForCompletion();
+            assertEquals(options.getDisplayName(), pollResponse.getValue().getDisplayName());
             ClassifyDocumentPagedIterable pagedIterable = syncPoller.getFinalResult();
             pagedIterable.forEach(resultCollection ->
                 resultCollection.forEach(documentResult -> validateLabelClassificationResult(documentResult)));
@@ -2501,10 +2517,12 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void multiLabelClassification(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         classifyCustomMultiLabelRunner((documents, parameters) -> {
+            MultiLabelClassifyOptions options = new MultiLabelClassifyOptions().setDisplayName("operationName");
             SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable> syncPoller =
-                client.beginMultiLabelClassify(documents, parameters.get(0), parameters.get(1), "en", null);
+                client.beginMultiLabelClassify(documents, parameters.get(0), parameters.get(1), "en", options);
             syncPoller = setPollInterval(syncPoller);
-            syncPoller.waitForCompletion();
+            PollResponse<ClassifyDocumentOperationDetail> pollResponse = syncPoller.waitForCompletion();
+            assertEquals(options.getDisplayName(), pollResponse.getValue().getDisplayName());
             ClassifyDocumentPagedIterable pagedIterable = syncPoller.getFinalResult();
             pagedIterable.forEach(resultCollection ->
                 resultCollection.forEach(documentResult -> validateLabelClassificationResult(documentResult)));

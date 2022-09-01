@@ -10,7 +10,29 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public final class AnalyzeHealthcareEntitiesOptions extends TextAnalyticsRequestOptions {
+    private String displayName;
     private Boolean disableServiceLogs;
+
+    /**
+     * Gets display name of the operation.
+     *
+     * @return Display name of the operation.
+     */
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    /**
+     * Sets display name of the operation.
+     *
+     * @param displayName Display name of the operation.
+     *
+     * @return The {@link AnalyzeHealthcareEntitiesOptions} object itself.
+     */
+    public AnalyzeHealthcareEntitiesOptions setDisplayName(String displayName) {
+        this.displayName = displayName;
+        return this;
+    }
 
     /**
      * Sets the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".
