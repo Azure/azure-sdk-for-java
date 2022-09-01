@@ -27,6 +27,7 @@ import java.time.Duration;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.data.tables.implementation.TableUtils.blockWithOptionalTimeout;
+import static com.azure.data.tables.implementation.TableUtils.mapThrowableToIllegalArgumentExceptionWhenTableNamePresent;
 
 /**
  * Provides a synchronous service client for accessing the Azure Tables service.
@@ -189,6 +190,8 @@ public final class TableServiceClient {
         try {
             return client.getImplementation().getTables().createWithResponseAsync(properties, null,
                 ResponseFormat.RETURN_NO_CONTENT, null, context)
+                .onErrorMap(ex -> mapThrowableToIllegalArgumentExceptionWhenTableNamePresent(
+                    ex, tableName, this.getServiceEndpoint()))
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response -> new SimpleResponse<>(response, getTableClient(tableName)));
         } catch (RuntimeException ex) {

@@ -132,6 +132,51 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
     }
 
     @Test
+    public void serviceClientCreateTableFailsWithIllegalArgumentExceptionIfTableNameInURI() {
+        // Arrange
+        String assertionString = "Table name found within client endpoint URI. Remove table name from endpoint.";
+        String tableName = testResourceNamer.randomName("test", 20);
+        final ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+            .clientId(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_ID", "clientId"))
+            .clientSecret(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_SECRET", "clientSecret"))
+            .tenantId(testResourceNamer.randomUuid())
+            .build();
+
+        TableServiceClient malformedClient = getClientBuilder(Configuration.getGlobalConfiguration().get(
+            "TABLES_ENDPOINT","https://tablestests.table.core.windows.com")+"/"+tableName,credential,true)
+            .buildClient();
+
+        Duration timeout = Duration.ofSeconds(120);
+        // Act & Assert
+        assertThrows(IllegalArgumentException.class, () -> {
+            Response<TableClient> tableClientResponse = malformedClient.createTableWithResponse(tableName,timeout,null);
+        }, assertionString);
+    }
+
+    @Test
+    public void serviceClientDeleteTableFailsWithIllegalArgumentExceptionIfTableNameInURI() {
+        // Arrange
+        String assertionString = "Table name found within client endpoint URI. Remove table name from endpoint.";
+        String tableName = testResourceNamer.randomName("test", 20);
+        serviceClient.createTable(tableName);
+        final ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+            .clientId(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_ID", "clientId"))
+            .clientSecret(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_SECRET", "clientSecret"))
+            .tenantId(testResourceNamer.randomUuid())
+            .build();
+
+        TableServiceClient malformedClient = getClientBuilder(Configuration.getGlobalConfiguration().get(
+            "TABLES_ENDPOINT","https://tablestests.table.core.windows.com")+"/"+tableName,credential,true)
+            .buildClient();
+
+        Duration timeout = Duration.ofSeconds(120);
+        // Act & Assert
+        assertThrows(IllegalArgumentException.class, ()-> {
+            Response<Void> voidResponse = malformedClient.deleteTableWithResponse(tableName,timeout,null);
+        }, assertionString);
+    }
+
+    @Test
     public void serviceCreateTableIfNotExists() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);

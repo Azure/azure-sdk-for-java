@@ -147,16 +147,6 @@ public final class TableServiceClientBuilder implements
 
         AzureNamedKeyCredential namedKeyCredential = null;
 
-        // If 'endpoint' was provided and reflects Storage acct., validate its format to end with the appropriate suffix
-        if (endpoint != null && endpoint.contains(suffix)) {
-            String trimmedEndpoint = endpoint.endsWith("/") ? endpoint.substring(0, endpoint.length() - 1) : endpoint;
-            if (!trimmedEndpoint.endsWith(suffix)) {
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Cannot build a TableServiceClient, the 'endpoint' provided is not " +
-                        "valid. Please try again with using just the account URI."));
-            }
-        }
-
         // If 'connectionString' was provided, extract the endpoint and sasToken.
         if (connectionString != null) {
             StorageConnectionString storageConnectionString = StorageConnectionString.create(connectionString, logger);

@@ -58,8 +58,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.data.tables.implementation.TableUtils.applyOptionalTimeout;
-import static com.azure.data.tables.implementation.TableUtils.swallowExceptionForStatusCode;
+import static com.azure.data.tables.implementation.TableUtils.*;
 
 /**
  * Provides an asynchronous service client for accessing the Azure Tables service.
@@ -267,10 +266,11 @@ public final class TableServiceAsyncClient {
     Mono<Response<TableAsyncClient>> createTableWithResponse(String tableName, Context context) {
         context = context == null ? Context.NONE : context;
         final TableProperties properties = new TableProperties().setTableName(tableName);
-
         try {
             return implementation.getTables()
                 .createWithResponseAsync(properties, null, ResponseFormat.RETURN_NO_CONTENT, null, context)
+                .onErrorMap(ex -> mapThrowableToIllegalArgumentExceptionWhenTableNamePresent(
+                    ex, tableName, this.getServiceEndpoint()))
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response -> new SimpleResponse<>(response, getTableClient(tableName)));
         } catch (RuntimeException ex) {
@@ -404,6 +404,8 @@ public final class TableServiceAsyncClient {
         try {
             return implementation.getTables().deleteWithResponseAsync(tableName, null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
+                .onErrorMap(ex -> mapThrowableToIllegalArgumentExceptionWhenTableNamePresent(
+                    ex, tableName, this.getServiceEndpoint()))
                 .map(response -> (Response<Void>) new SimpleResponse<Void>(response, null))
                 .onErrorResume(TableServiceException.class, e -> swallowExceptionForStatusCode(404, e, logger));
         } catch (RuntimeException ex) {

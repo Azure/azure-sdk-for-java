@@ -98,6 +98,26 @@ public final class TableUtils {
     }
 
     /**
+     * Map a {@link Throwable} to {@link IllegalArgumentException} if the endpoint
+     * the table name, else it returns the original throwable
+     * @param throwable A throwable exception
+     * @param tableName The name of the Table intended to be operated on
+     * @param endpoint The endpoint of the {@link com.azure.data.tables.TableServiceClient},
+     *                 {@link com.azure.data.tables.TableServiceAsyncClient}
+     * @return A Throwable that is either an instance of {@link IllegalArgumentException} or the original throwable.
+     */
+    public static Throwable mapThrowableToIllegalArgumentExceptionWhenTableNamePresent(Throwable throwable,
+                                                                                       String tableName,
+                                                                                       String endpoint) {
+        if (endpoint.contains(tableName)) {
+            return new IllegalArgumentException(
+                "Table name found within client endpoint URI. Remove table name from endpoint.");
+        }
+        return throwable;
+    }
+
+
+    /**
      * Applies a timeout to a {@link Mono publisher} if the given timeout is not null.
      *
      * @param publisher {@link Mono} to apply optional timeout to.
