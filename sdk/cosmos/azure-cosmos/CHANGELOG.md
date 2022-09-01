@@ -1,7 +1,6 @@
 ## Release History
 
 ### 4.36.0-beta.1 (2022-08-31)
-
 #### Features Added
 * Added system property to turn on replica validation - See [PR 29767](https://github.com/Azure/azure-sdk-for-java/pull/29767)
 
@@ -16,7 +15,7 @@
 
 ### 4.35.0 (2022-08-19)
 #### Other Changes
-* Updated netty library version to `4.1.79.Final`.
+* Updated netty library version to `4.1.79.Final`.![img.png](img.png)
 * Updated `reactor-core` version to `3.4.21`.
 
 ### 4.34.0 (2022-08-05)
