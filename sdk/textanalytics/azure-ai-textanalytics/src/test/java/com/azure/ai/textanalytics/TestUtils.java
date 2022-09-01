@@ -899,23 +899,14 @@ final class TestUtils {
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity2,
             IterableStream.of(Collections.emptyList()));
         final HealthcareEntity healthcareEntity3 = new HealthcareEntity();
-        HealthcareEntityPropertiesHelper.setText(healthcareEntity3, "ST depressions");
-        HealthcareEntityPropertiesHelper.setNormalizedText(healthcareEntity3, "ST segment depression (finding)");
+        HealthcareEntityPropertiesHelper.setText(healthcareEntity3, "ST depressions in the anterior lateral leads");
+//        HealthcareEntityPropertiesHelper.setNormalizedText(healthcareEntity3, null);
         HealthcareEntityPropertiesHelper.setCategory(healthcareEntity3, HealthcareEntityCategory.SYMPTOM_OR_SIGN);
         HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity3, 1.0);
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity3, 46);
-        HealthcareEntityPropertiesHelper.setLength(healthcareEntity3, 14);
+        HealthcareEntityPropertiesHelper.setLength(healthcareEntity3, 44);
         // there are too many healthcare entity data sources, we can just assert it is not null.
         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity3,
-            IterableStream.of(Collections.emptyList()));
-        final HealthcareEntity healthcareEntity4 = new HealthcareEntity();
-        HealthcareEntityPropertiesHelper.setText(healthcareEntity4, "anterior lateral");
-        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity4, HealthcareEntityCategory.DIRECTION);
-        HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity4, 0.6);
-        HealthcareEntityPropertiesHelper.setOffset(healthcareEntity4, 68);
-        HealthcareEntityPropertiesHelper.setLength(healthcareEntity4, 16);
-        // there are too many healthcare entity data sources, we can just assert it is not null.
-        HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity4,
             IterableStream.of(Collections.emptyList()));
         final HealthcareEntity healthcareEntity5 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity5, "fatigue");
@@ -952,7 +943,7 @@ final class TestUtils {
         final AnalyzeHealthcareEntitiesResult healthcareEntitiesResult = new AnalyzeHealthcareEntitiesResult("1",
             textDocumentStatistics, null);
         AnalyzeHealthcareEntitiesResultPropertiesHelper.setEntities(healthcareEntitiesResult,
-            new IterableStream<>(asList(healthcareEntity1, healthcareEntity2, healthcareEntity3, healthcareEntity4,
+            new IterableStream<>(asList(healthcareEntity1, healthcareEntity2, healthcareEntity3,
                 healthcareEntity5, healthcareEntity6, healthcareEntity7)));
 
         // HealthcareEntityRelations
@@ -976,18 +967,8 @@ final class TestUtils {
             HealthcareEntityRelationType.QUALIFIER_OF_CONDITION);
         HealthcareEntityRelationPropertiesHelper.setRoles(healthcareEntityRelation2,
             IterableStream.of(asList(role3, role2)));
-
-        final HealthcareEntityRelation healthcareEntityRelation3 = new HealthcareEntityRelation();
-        final HealthcareEntityRelationRole role4 = new HealthcareEntityRelationRole();
-        HealthcareEntityRelationRolePropertiesHelper.setName(role4, "Direction");
-        HealthcareEntityRelationRolePropertiesHelper.setEntity(role4, healthcareEntity4);
-        HealthcareEntityRelationPropertiesHelper.setRelationType(healthcareEntityRelation3,
-            HealthcareEntityRelationType.DIRECTION_OF_CONDITION);
-        HealthcareEntityRelationPropertiesHelper.setRoles(healthcareEntityRelation3,
-            IterableStream.of(asList(role2, role4)));
-
         AnalyzeHealthcareEntitiesResultPropertiesHelper.setEntityRelations(healthcareEntitiesResult,
-            IterableStream.of(asList(healthcareEntityRelation1, healthcareEntityRelation2, healthcareEntityRelation3)));
+            IterableStream.of(asList(healthcareEntityRelation1, healthcareEntityRelation2)));
         return healthcareEntitiesResult;
     }
 

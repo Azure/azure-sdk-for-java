@@ -110,6 +110,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     DiagnosticsClientContext {
     private static final String tempMachineId = "uuid:" + UUID.randomUUID();
     private static final AtomicInteger activeClientsCnt = new AtomicInteger(0);
+    private static final Map<String, Integer> clientMap = new ConcurrentHashMap<>();
     private static final AtomicInteger clientIdGenerator = new AtomicInteger(0);
     private static final Range<String> RANGE_INCLUDING_ALL_PARTITION_KEY_RANGES = new Range<>(
         PartitionKeyInternalHelper.MinimumInclusiveEffectivePartitionKey,
@@ -332,9 +333,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         activeClientsCnt.incrementAndGet();
         this.clientId = clientIdGenerator.incrementAndGet();
+        clientMap.put(serviceEndpoint.toString(), clientMap.getOrDefault(serviceEndpoint.toString(), 0) + 1);
         this.diagnosticsClientConfig = new DiagnosticsClientConfig();
         this.diagnosticsClientConfig.withClientId(this.clientId);
         this.diagnosticsClientConfig.withActiveClientCounter(activeClientsCnt);
+        this.diagnosticsClientConfig.withClientMap(clientMap);
 
         this.diagnosticsClientConfig.withConnectionSharingAcrossClientsEnabled(connectionSharingAcrossClientsEnabled);
         this.diagnosticsClientConfig.withConsistency(consistencyLevel);
