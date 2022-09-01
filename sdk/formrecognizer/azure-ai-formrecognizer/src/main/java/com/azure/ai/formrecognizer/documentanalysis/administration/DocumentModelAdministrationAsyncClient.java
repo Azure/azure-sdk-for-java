@@ -258,8 +258,8 @@ public final class DocumentModelAdministrationAsyncClient {
                                                                               BuildDocumentModelOptions buildDocumentModelOptions,
                                                                               Context context) {
 
-        buildDocumentModelOptions =  buildDocumentModelOptions == null ? new BuildDocumentModelOptions() :
-            buildDocumentModelOptions;
+        buildDocumentModelOptions =  buildDocumentModelOptions == null
+            ? new BuildDocumentModelOptions() : buildDocumentModelOptions;
         String modelId = buildDocumentModelOptions.getModelId();
         if (modelId == null) {
             modelId = Utility.generateRandomModelID();
