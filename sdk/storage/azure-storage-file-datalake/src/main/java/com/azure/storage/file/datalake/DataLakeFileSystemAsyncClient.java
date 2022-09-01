@@ -53,7 +53,6 @@ import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
-import com.azure.storage.file.datalake.options.FileSystemRenameOptions;
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
@@ -1825,73 +1824,39 @@ public class DataLakeFileSystemAsyncClient {
                 Transforms.toFileSystemAccessPolicies(response.getValue())));
     }
 
-    /**
-     * Renames an existing file system.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.rename#String -->
-     * <pre>
-     * DataLakeFileSystemAsyncClient fileSystemAsyncClient =
-     *     client.rename&#40;&quot;newFileSystemName&quot;&#41;
-     *         .block&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.rename#String -->
-     *
-     * @param destinationContainerName The new name of the file system.
-     * @return A {@link Mono} containing a {@link DataLakeFileSystemAsyncClient} used to interact with the renamed file system.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DataLakeFileSystemAsyncClient> rename(String destinationContainerName) {
-        return renameWithResponse(new FileSystemRenameOptions(destinationContainerName)).flatMap(FluxUtil::toMono);
-    }
+    // TODO: Reintroduce this API once service starts supporting it.
+//    Mono<DataLakeFileSystemAsyncClient> rename(String destinationContainerName) {
+//        return renameWithResponse(new FileSystemRenameOptions(destinationContainerName)).flatMap(FluxUtil::toMono);
+//    }
 
-    /**
-     * Renames an existing file system.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.renameWithResponse#FileSystemRenameOptions -->
-     * <pre>
-     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;.setLeaseId&#40;&quot;lease-id&quot;&#41;;
-     * DataLakeFileSystemAsyncClient fileSystemAsyncClient = client
-     *     .renameWithResponse&#40;new FileSystemRenameOptions&#40; &quot;newFileSystemName&quot;&#41;
-     *         .setRequestConditions&#40;requestConditions&#41;&#41;.block&#40;&#41;.getValue&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.renameWithResponse#FileSystemRenameOptions -->
-     *
-     * @param options {@link FileSystemRenameOptions}
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a
-     * {@link DataLakeFileSystemAsyncClient} used to interact with the renamed file system.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DataLakeFileSystemAsyncClient>> renameWithResponse(FileSystemRenameOptions options) {
-        try {
-            return blobContainerAsyncClient.renameWithResponse(Transforms.toBlobContainerRenameOptions(options))
-                .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
-                .map(response -> new SimpleResponse<>(response,
-                    this.getFileSystemAsyncClient(options.getDestinationFileSystemName())));
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
-    }
+    // TODO: Reintroduce this API once service starts supporting it.
+//    Mono<Response<DataLakeFileSystemAsyncClient>> renameWithResponse(FileSystemRenameOptions options) {
+//        try {
+//            return blobContainerAsyncClient.renameWithResponse(Transforms.toBlobContainerRenameOptions(options))
+//                .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
+//                .map(response -> new SimpleResponse<>(response,
+//                    this.getFileSystemAsyncClient(options.getDestinationFileSystemName())));
+//        } catch (RuntimeException ex) {
+//            return monoError(LOGGER, ex);
+//        }
+//    }
 
-    /**
-     * Takes in a destination and creates a DataLakeFileSystemAsyncClient with a new path
-     * @param destinationFileSystem The destination file system
-     * @return A DataLakeFileSystemAsyncClient
-     */
-    DataLakeFileSystemAsyncClient getFileSystemAsyncClient(String destinationFileSystem) {
-        if (CoreUtils.isNullOrEmpty(destinationFileSystem)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'destinationFileSystem' can not be set to null"));
-        }
-        // Get current Datalake URL and replace current filesystem with user provided filesystem
-        String newDfsEndpoint = BlobUrlParts.parse(getFileSystemUrl())
-            .setContainerName(destinationFileSystem).toUrl().toString();
-
-        return new DataLakeFileSystemAsyncClient(getHttpPipeline(), newDfsEndpoint, serviceVersion, accountName,
-            destinationFileSystem, prepareBuilderReplacePath(destinationFileSystem).buildAsyncClient(), sasToken);
-    }
+//    /**
+//     * Takes in a destination and creates a DataLakeFileSystemAsyncClient with a new path
+//     * @param destinationFileSystem The destination file system
+//     * @return A DataLakeFileSystemAsyncClient
+//     */
+//    DataLakeFileSystemAsyncClient getFileSystemAsyncClient(String destinationFileSystem) {
+//        if (CoreUtils.isNullOrEmpty(destinationFileSystem)) {
+//            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'destinationFileSystem' can not be set to null"));
+//        }
+//        // Get current Datalake URL and replace current filesystem with user provided filesystem
+//        String newDfsEndpoint = BlobUrlParts.parse(getFileSystemUrl())
+//            .setContainerName(destinationFileSystem).toUrl().toString();
+//
+//        return new DataLakeFileSystemAsyncClient(getHttpPipeline(), newDfsEndpoint, serviceVersion, accountName,
+//            destinationFileSystem, prepareBuilderReplacePath(destinationFileSystem).buildAsyncClient(), sasToken);
+//    }
 
     /**
      * Takes in a destination path and creates a ContainerClientBuilder with a new path name
@@ -1912,9 +1877,9 @@ public class DataLakeFileSystemAsyncClient {
             .serviceVersion(TransformUtils.toBlobServiceVersion(getServiceVersion()));
     }
 
-    BlobContainerAsyncClient getBlobContainerAsyncClient() {
-        return blobContainerAsyncClient;
-    }
+//    BlobContainerAsyncClient getBlobContainerAsyncClient() {
+//        return blobContainerAsyncClient;
+//    }
 
     /**
      * Generates a user delegation SAS for the file system using the specified
