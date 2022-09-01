@@ -552,11 +552,6 @@
       <artifactId>spring-cloud-azure-starter-cosmos</artifactId>
       <version>6.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-cosmos;current} -->
     </dependency>
-    <!--<dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>spring-cloud-azure-starter-data-cosmos</artifactId>
-      <version>6.0.0-beta.1</version> &lt;!&ndash; {x-version-update;com.azure.spring:spring-cloud-azure-starter-data-cosmos;current} &ndash;&gt;
-    </dependency>-->
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-storage</artifactId>
@@ -632,13 +627,6 @@
       <artifactId>spring-cloud-azure-stream-binder-eventhubs-core</artifactId>
       <version>6.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-eventhubs-core;current} -->
     </dependency>
-    <!--
-    Due to compatibility with Spring Boot 3, temporarily excluded in 'feature/spring-cloud-azure-6.x' branch.
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-spring-data-cosmos</artifactId>
-      <version>3.27.0-beta.1</version> &lt;!&ndash; {x-version-update;com.azure:azure-spring-data-cosmos;current} &ndash;&gt;
-    </dependency>-->
 	  <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-digitaltwins-core</artifactId>

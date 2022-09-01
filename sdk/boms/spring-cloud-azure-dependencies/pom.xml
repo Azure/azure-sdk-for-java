@@ -105,12 +105,6 @@
         <artifactId>azure-storage-queue</artifactId>
         <version>12.14.1</version>
       </dependency>
-
-      <!--<dependency>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-spring-data-cosmos</artifactId>
-        <version>3.26.0</version> &lt;!&ndash; {x-version-update;com.azure:azure-spring-data-cosmos;dependency} &ndash;&gt;
-      </dependency>-->
       <dependency>
         <groupId>com.azure.resourcemanager</groupId>
         <artifactId>azure-resourcemanager</artifactId>
@@ -178,13 +172,6 @@
         <artifactId>spring-cloud-azure-starter-cosmos</artifactId>
         <version>${project.version}</version>
       </dependency>
-      <!--
-      Due to compatibility with Spring Boot 3, temporarily excluded in 'feature/spring-cloud-azure-6.x' branch.
-      <dependency>
-        <groupId>com.azure.spring</groupId>
-        <artifactId>spring-cloud-azure-starter-data-cosmos</artifactId>
-        <version>${project.version}</version>
-      </dependency>-->
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-eventhubs</artifactId>

@@ -129,13 +129,6 @@
       <version>3.0.0-M5</version> <!-- {x-version-update;org.springframework.data:spring-data-redis;external_dependency} -->
       <optional>true</optional>
     </dependency>
-    <!-- Cosmos -->
-    <!--<dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-spring-data-cosmos</artifactId>
-      <version>3.26.0</version> &lt;!&ndash; {x-version-update;com.azure:azure-spring-data-cosmos;dependency} &ndash;&gt;
-      <optional>true</optional>
-    </dependency>-->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-tx</artifactId>
