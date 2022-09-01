@@ -148,6 +148,7 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         Assertions.assertTrue(export.isSuccess());
     }
 
+    @SuppressWarnings("try")
     private static List<TelemetryItem> generateTraces(String testName) throws Exception {
         CountDownLatch traceExporterCountDown = new CountDownLatch(1);
         CustomValidationPolicy customValidationPolicy =

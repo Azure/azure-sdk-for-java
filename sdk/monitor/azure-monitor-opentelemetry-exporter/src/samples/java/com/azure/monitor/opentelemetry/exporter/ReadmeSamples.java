@@ -13,6 +13,7 @@ import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
+import io.opentelemetry.sdk.trace.export.SpanExporter;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -31,7 +32,7 @@ public class ReadmeSamples {
      */
     public void createExporter() {
         // BEGIN: readme-sample-createExporter
-        AzureMonitorTraceExporter azureMonitorTraceExporter = new AzureMonitorExporterBuilder()
+        SpanExporter azureMonitorTraceExporter = new AzureMonitorExporterBuilder()
             .connectionString("{connection-string}")
             .buildTraceExporter();
         // END: readme-sample-createExporter
@@ -44,7 +45,7 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-setupExporter
         // Create Azure Monitor exporter and configure OpenTelemetry tracer to use this exporter
         // This should be done just once when application starts up
-        AzureMonitorTraceExporter exporter = new AzureMonitorExporterBuilder()
+        SpanExporter exporter = new AzureMonitorExporterBuilder()
             .connectionString("{connection-string}")
             .buildTraceExporter();
 

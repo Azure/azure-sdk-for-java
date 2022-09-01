@@ -11,6 +11,7 @@ import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
+import io.opentelemetry.sdk.trace.export.SpanExporter;
 
 /**
  * Sample to demonstrate using {@link AzureMonitorTraceExporter} to export telemetry events when setting a configuration
@@ -34,7 +35,7 @@ public class AppConfigurationAzureMonitorExporterSample {
      * @return The OpenTelemetry {@link Tracer} instance.
      */
     private static Tracer configureAzureMonitorExporter() {
-        AzureMonitorTraceExporter exporter = new AzureMonitorExporterBuilder()
+        SpanExporter exporter = new AzureMonitorExporterBuilder()
             .connectionString("{connection-string}")
             .buildTraceExporter();
 
