@@ -86,12 +86,14 @@ class RecognizeCustomEntitiesAsyncClient {
             final StringIndexType finalStringIndexType = StringIndexType.UTF16CODE_UNIT;
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
+            final String displayName = options.getDisplayName();
 
             return new PollerFlux<>(
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(
                     service.submitJobWithResponseAsync(
                         new AnalyzeTextJobsInput()
+                            .setDisplayName(displayName)
                             .setAnalysisInput(
                                 new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
                             .setTasks(Arrays.asList(
@@ -134,12 +136,14 @@ class RecognizeCustomEntitiesAsyncClient {
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             final StringIndexType finalStringIndexType = StringIndexType.UTF16CODE_UNIT;
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
+            final String displayName = options.getDisplayName();
 
             return new PollerFlux<>(
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(
                     service.submitJobWithResponseAsync(
                         new AnalyzeTextJobsInput()
+                            .setDisplayName(displayName)
                             .setAnalysisInput(
                                 new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
                             .setTasks(Arrays.asList(
@@ -338,7 +342,8 @@ class RecognizeCustomEntitiesAsyncClient {
             status = LongRunningOperationStatus.fromString(
                 analyzeOperationResultResponse.getValue().getStatus().toString(), true);
         }
-
+        RecognizeCustomEntitiesOperationDetailPropertiesHelper.setDisplayName(operationResultPollResponse.getValue(),
+            analyzeOperationResultResponse.getValue().getDisplayName());
         RecognizeCustomEntitiesOperationDetailPropertiesHelper.setCreatedAt(operationResultPollResponse.getValue(),
             analyzeOperationResultResponse.getValue().getCreatedDateTime());
         RecognizeCustomEntitiesOperationDetailPropertiesHelper.setLastModifiedAt(

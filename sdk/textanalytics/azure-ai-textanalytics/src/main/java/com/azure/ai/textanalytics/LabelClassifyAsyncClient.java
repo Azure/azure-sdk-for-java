@@ -88,12 +88,14 @@ class LabelClassifyAsyncClient {
                 .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
+            final String displayName = options.getDisplayName();
 
             return new PollerFlux<>(
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(
                     service.submitJobWithResponseAsync(
                         new AnalyzeTextJobsInput()
+                            .setDisplayName(displayName)
                             .setAnalysisInput(
                                 new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
                             .setTasks(Arrays.asList(
@@ -135,12 +137,14 @@ class LabelClassifyAsyncClient {
                 .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
+            final String displayName = options.getDisplayName();
 
             return new PollerFlux<>(
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(
                     service.submitJobWithResponseAsync(
                         new AnalyzeTextJobsInput()
+                            .setDisplayName(displayName)
                             .setAnalysisInput(
                                 new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
                             .setTasks(Arrays.asList(
@@ -182,12 +186,14 @@ class LabelClassifyAsyncClient {
                 .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
+            final String displayName = options.getDisplayName();
 
             return new PollerFlux<>(
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(
                     service.submitJobWithResponseAsync(
                         new AnalyzeTextJobsInput()
+                            .setDisplayName(displayName)
                             .setAnalysisInput(
                                 new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
                             .setTasks(Arrays.asList(
@@ -229,12 +235,14 @@ class LabelClassifyAsyncClient {
                 .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
+            final String displayName = options.getDisplayName();
 
             return new PollerFlux<>(
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(
                     service.submitJobWithResponseAsync(
                         new AnalyzeTextJobsInput()
+                            .setDisplayName(displayName)
                             .setAnalysisInput(
                                 new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
                             .setTasks(Arrays.asList(
@@ -443,7 +451,8 @@ class LabelClassifyAsyncClient {
             status = LongRunningOperationStatus.fromString(
                 analyzeOperationResultResponse.getValue().getStatus().toString(), true);
         }
-
+        ClassifyDocumentOperationDetailPropertiesHelper.setDisplayName(operationResultPollResponse.getValue(),
+            analyzeOperationResultResponse.getValue().getDisplayName());
         ClassifyDocumentOperationDetailPropertiesHelper.setCreatedAt(operationResultPollResponse.getValue(),
             analyzeOperationResultResponse.getValue().getCreatedDateTime());
         ClassifyDocumentOperationDetailPropertiesHelper.setLastModifiedAt(
