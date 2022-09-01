@@ -3,6 +3,7 @@
 
 package com.azure.spring.data.cosmos.domain;
 
+import com.azure.spring.data.cosmos.common.*;
 import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.CosmosIndexingPolicy;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-@Container()
+@Container(ru = TestConstants.MULTI_PARTITION_THROUGHPUT, autoScale = true)
 @CosmosIndexingPolicy()
 public class Person {
     private String id;

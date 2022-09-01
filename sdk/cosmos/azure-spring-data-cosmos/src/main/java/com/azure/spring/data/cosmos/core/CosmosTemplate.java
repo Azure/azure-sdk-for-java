@@ -771,7 +771,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                 .byPage(feedResponseContentSize);
         }
 
-        final FeedResponse<JsonNode> feedResponse = feedResponseFlux
+        FeedResponse<JsonNode> feedResponse = feedResponseFlux
             .publishOn(Schedulers.parallel())
             .doOnNext(propertiesFeedResponse ->
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
@@ -783,7 +783,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .block();
 
         assert feedResponse != null;
-        final Iterator<JsonNode> it = feedResponse.getResults().iterator();
+        Iterator<JsonNode> it = feedResponse.getResults().iterator();
 
         /*
          * We only use offset on the first page because of the use of continuation tokens.
@@ -801,38 +801,51 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         }
 
         final List<T> result = new ArrayList<>();
-        for (int index = 0; it.hasNext()
-            && index < pageable.getPageSize() + offsetForPageWithoutContToken; index++) {
+        while (result.size() < pageable.getPageSize() && it.hasNext()) {
+            for (int index = 0; it.hasNext()
+                && index < pageable.getPageSize() + offsetForPageWithoutContToken; index++) {
 
-            final JsonNode jsonNode = it.next();
-            if (jsonNode == null) {
-                continue;
+                final JsonNode jsonNode = it.next();
+                if (jsonNode == null) {
+                    continue;
+                }
+
+                if (index >= offsetForPageWithoutContToken) {
+                    maybeEmitEvent(new AfterLoadEvent<>(jsonNode, returnType, containerName));
+                    final T entity = mappingCosmosConverter.read(returnType, jsonNode);
+                    result.add(entity);
+                }
             }
 
-            if (index >= offsetForPageWithoutContToken) {
-                maybeEmitEvent(new AfterLoadEvent<>(jsonNode, returnType, containerName));
-                final T entity = mappingCosmosConverter.read(returnType, jsonNode);
-                result.add(entity);
+            if (result.size() < pageable.getPageSize() && feedResponse.getContinuationToken() != null) {
+                feedResponseContentSize = pageable.getPageSize() - result.size();
+                feedResponseFlux = container
+                        .queryItems(querySpec, cosmosQueryRequestOptions, JsonNode.class)
+                        .byPage(feedResponse.getContinuationToken(), feedResponseContentSize);
+
+                feedResponse = feedResponseFlux
+                    .publishOn(Schedulers.parallel())
+                    .doOnNext(propertiesFeedResponse ->
+                        CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
+                            propertiesFeedResponse.getCosmosDiagnostics(), propertiesFeedResponse))
+                    .onErrorResume(throwable ->
+                        CosmosExceptionUtils.exceptionHandler("Failed to query items", throwable,
+                            this.responseDiagnosticsProcessor))
+                    .next()
+                    .block();
+
+                assert feedResponse != null;
+                it = feedResponse.getResults().iterator();
+            } else {
+                break;
             }
-        }
-
-        final int contentSize = result.size();
-
-        int additionalPages = 0;
-        if (pageable instanceof CosmosPageRequest) {
-            additionalPages = ((CosmosPageRequest) pageable).getAdditionalPages();
-        }
-        if (contentSize < pageable.getPageSize()
-            && contentSize > 0) {
-            additionalPages++;
         }
 
         final CosmosPageRequest pageRequest = CosmosPageRequest.of(pageable.getOffset(),
             pageable.getPageNumber(),
             pageable.getPageSize(),
             feedResponse.getContinuationToken(),
-            sort,
-            additionalPages);
+            sort);
 
         return new CosmosSliceImpl<>(result, pageRequest, feedResponse.getContinuationToken() != null);
     }

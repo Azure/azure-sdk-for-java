@@ -55,6 +55,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -440,11 +441,87 @@ public class CosmosTemplateIT {
         final List<Person> expected2 = Lists.newArrayList(TEST_PERSON_3);
         assertThat(resultPage2.size()).isEqualTo(expected2.size());
         assertThat(resultPage2).containsAll(expected2);
-        PageTestUtils.validateLastPage(page2, PAGE_SIZE_1);
+        PageTestUtils.validateLastPage(page2, PAGE_SIZE_2);
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+    }
+
+    @Test
+    public void testFindAllPageableMultiPagesMultiPartition() {
+        cosmosTemplate.insert(TEST_PERSON_2,
+            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
+        cosmosTemplate.insert(TEST_PERSON_3,
+            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_3)));
+        final List<Person> expected = Lists.newArrayList(TEST_PERSON, TEST_PERSON_2, TEST_PERSON_3);
+
+        for (int i=4; i<=10; i++) {
+            Person temp = new Person("id_" + i, "fred", LAST_NAME + "_" + i, HOBBIES,
+                ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
+            insertPerson(temp);
+            expected.add(temp);
+        }
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+
+        final CosmosPageRequest pageRequest = new CosmosPageRequest(0, 100, null);
+        final Page<Person> page1 = cosmosTemplate.findAll(pageRequest, Person.class, containerName);
+
+        final List<Person> resultPage1 = TestUtils.toList(page1);
+        assertThat(resultPage1.size()).isEqualTo(expected.size());
+        assertThat(resultPage1).containsAll(expected);
+        PageTestUtils.validateLastPage(page1, 100);
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+    }
+
+    @Test
+    public void testFindAllPageableMultiPagesMultiPartition2() {
+        cosmosTemplate.insert(TEST_PERSON_2,
+            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
+        cosmosTemplate.insert(TEST_PERSON_3,
+            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_3)));
+        final List<Person> expected = Lists.newArrayList(TEST_PERSON, TEST_PERSON_2, TEST_PERSON_3);
+
+        for (int i=4; i<=10; i++) {
+            Person temp = new Person("id_" + i, "fred", LAST_NAME + "_" + i, HOBBIES,
+                ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
+            insertPerson(temp);
+            expected.add(temp);
+        }
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+
+        final CosmosPageRequest pageRequest = new CosmosPageRequest(0, 7, null);
+        final Page<Person> page1 = cosmosTemplate.findAll(pageRequest, Person.class, containerName);
+
+        final List<Person> resultPage1 = TestUtils.toList(page1);
+        assertThat(resultPage1.size()).isEqualTo(7);
+        PageTestUtils.validateNonLastPage(page1, 7);
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+
+        final Page<Person> page2 = cosmosTemplate.findAll(page1.nextPageable(), Person.class, containerName);
+
+        final List<Person> resultPage2 = TestUtils.toList(page2);
+        assertThat(resultPage2.size()).isEqualTo(3);
+        PageTestUtils.validateLastPage(page2, 7);
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+
+        final List<Person> allResults = new ArrayList<>();
+        allResults.addAll(resultPage1);
+        allResults.addAll(resultPage2);
+        assertThat(allResults).containsAll(expected);
     }
 
     @Test
@@ -462,7 +539,7 @@ public class CosmosTemplateIT {
 
         final Page<Person> page = cosmosTemplate.paginationQuery(query, Person.class, containerName);
         assertThat(page.getContent().size()).isEqualTo(1);
-        PageTestUtils.validateLastPage(page, page.getContent().size());
+        PageTestUtils.validateLastPage(page, PAGE_SIZE_2);
 
         // add ignore case testing
         final Criteria criteriaIgnoreCase = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
@@ -472,7 +549,7 @@ public class CosmosTemplateIT {
         final Page<Person> pageIgnoreCase = cosmosTemplate.paginationQuery(queryIgnoreCase, Person.class,
             containerName);
         assertThat(pageIgnoreCase.getContent().size()).isEqualTo(1);
-        PageTestUtils.validateLastPage(pageIgnoreCase, pageIgnoreCase.getContent().size());
+        PageTestUtils.validateLastPage(pageIgnoreCase, PAGE_SIZE_2);
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
@@ -601,7 +678,7 @@ public class CosmosTemplateIT {
             containerName);
 
         assertThat(secondPage.getContent().size()).isEqualTo(2);
-        PageTestUtils.validateLastPage(secondPage, secondPage.getContent().size());
+        PageTestUtils.validateLastPage(secondPage, PAGE_SIZE_3);
 
         final List<Person> secondPageResults = secondPage.getContent();
         assertThat(secondPageResults.get(0).getFirstName()).isEqualTo(NEW_FIRST_NAME);
