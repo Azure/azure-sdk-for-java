@@ -87,9 +87,9 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
                     (exception) -> {
                         logger.debug("refresh cache [{}] resulted in error", key, exception);
 
-                        if (initialLazyValue.shouldRemoveFromCache() && exception instanceof CosmosException) {
-                            // In some scenarios when a background failure occurs like a 404 the initial cache value should be removed.
-                            if (removeNotFoundFromCacheException((CosmosException)exception)) {
+                        // In some scenarios when a background failure occurs like a 404 the initial cache value should be removed.
+                        if (exception instanceof CosmosException && removeNotFoundFromCacheException((CosmosException) exception)) {
+                            if (initialLazyValue.shouldRemoveFromCache()) {
                                 this.remove(key);
                             }
                         }
@@ -97,9 +97,7 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
                     }
                 );
             }).onErrorResume((exception) -> {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("cache[{}] resulted in error", key, exception);
-                }
+                logger.debug("cache[{}] resulted in error", key, exception);
                 if (initialLazyValue.shouldRemoveFromCache()) {
                     this.remove(key);
                 }
@@ -107,9 +105,7 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
             });
         }
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("cache[{}] doesn't exist, computing new value", key);
-        }
+        logger.debug("cache[{}] doesn't exist, computing new value", key);
         AsyncLazyWithRefresh<TValue> asyncLazyWithRefresh = new AsyncLazyWithRefresh<TValue>(singleValueInitFunc);
         AsyncLazyWithRefresh<TValue> preResult = this.values.putIfAbsent(key, asyncLazyWithRefresh);
         if (preResult == null) {
@@ -119,9 +115,7 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
 
         return result.getValueAsync().onErrorResume(
             (exception) -> {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("cache[{}] resulted in error", key, exception);
-                }
+                logger.debug("cache[{}] resulted in error", key, exception);
                 // Remove the failed task from the dictionary so future requests can send other calls.
                 if (result.shouldRemoveFromCache()) {
                     this.remove(key);
@@ -132,9 +126,7 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
     }
 
     public void set(TKey key, TValue value) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("set cache[{}]={}", key, value);
-        }
+        logger.debug("set cache[{}]={}", key, value);
         AsyncLazyWithRefresh<TValue> updatedValue = new AsyncLazyWithRefresh<TValue>(value);
         this.values.put(key, updatedValue);
     }

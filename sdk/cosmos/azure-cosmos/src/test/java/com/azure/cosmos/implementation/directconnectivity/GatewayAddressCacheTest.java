@@ -1178,9 +1178,12 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
 
         AddressInformation[] cachedAddresses = new AddressInformation[] { address1, address2, address3, address4 };
+        // when decide to whether to use cached addressInformation, it will compare physical uri, protocol, isPrimary
+        AddressInformation address7 = new AddressInformation(true, true, "rntbd://127.0.0.1:2", Protocol.TCP);
+
         AddressInformation[] newAddresses = new AddressInformation[] {
                 new AddressInformation(true, true, "rntbd://127.0.0.1:1", Protocol.TCP),
-                new AddressInformation(true, true, "rntbd://127.0.0.1:2", Protocol.TCP),
+                address7,
                 address5,
                 address6 };
 
@@ -1193,7 +1196,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 (AddressInformation[]) mergeAddressesMethod.invoke(cache, new Object[]{ newAddresses, cachedAddresses });
 
         assertThat(mergedAddresses).hasSize(newAddresses.length)
-                .containsExactly(address1, address2, address5, address6);
+                .containsExactly(address1, address7, address5, address6);
     }
 
     public static void assertSameAs(List<AddressInformation> actual, List<Address> expected) {
