@@ -62,6 +62,7 @@ public final class PersonalizerAsyncClient {
      * @param rankRequest A Personalizer Rank request.
      * @return returns which action to use as rewardActionId, and additional information about each action as a result
      * of a Rank request.
+     * @throws IllegalArgumentException if rankOptions is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PersonalizerRankResult> rank(PersonalizerRankOptions rankRequest) {
