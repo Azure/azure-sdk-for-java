@@ -18,7 +18,6 @@ class AzureFileStoreTest extends APISpec {
         def config = initializeConfigClass()
         config.sharedKeyCredential = environment.primaryAccount.credential
         config.fileStoreNames << generateContainerName() << generateContainerName()
-        config.skipInitialContainerCheck = true
         fs = new AzureFileSystem(new AzureFileSystemProvider(), environment.primaryAccount.blobEndpoint, config)
     }
 

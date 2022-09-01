@@ -25,7 +25,7 @@ class AzureFileSystemConfig {
     // BlobServiceClient configs
     StorageSharedKeyCredential sharedKeyCredential;
     AzureSasCredential sasCredential;
-    HttpLogOptions logOptions;
+    HttpLogOptions logOptions = new HttpLogOptions();
     RequestRetryOptions retryOptions;
     HttpClient httpClient;
     final List<HttpPipelinePolicy> policyList = new ArrayList<>();
@@ -43,7 +43,7 @@ class AzureFileSystemConfig {
     public AzureFileSystemConfig(Map<String, ?> config) {
         sharedKeyCredential = (StorageSharedKeyCredential) config.get(AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL);
         sasCredential = (AzureSasCredential) config.get(AzureFileSystem.AZURE_STORAGE_SAS_TOKEN_CREDENTIAL);
-        logOptions = new HttpLogOptions().setLogLevel(
+        logOptions.setLogLevel(
             (HttpLogDetailLevel) config.get(AzureFileSystem.AZURE_STORAGE_HTTP_LOG_DETAIL_LEVEL));
         retryOptions = new RequestRetryOptions(
             (RetryPolicyType) config.get(AzureFileSystem.AZURE_STORAGE_RETRY_POLICY_TYPE),
@@ -79,8 +79,8 @@ class AzureFileSystemConfig {
         sasCredential = getConfigFromStringConfiguration(config, ENVIRONMENT_DEFAULT_SAS_TOKEN,
             AzureSasCredential::new);
 
-        // HttpLogOptions constructor does the environment read for us
-        logOptions = new HttpLogOptions();
+        // HttpLogOptions initialized already and constructor does the environment read for us
+
         retryOptions = RequestRetryOptions.fromConfiguration(config,
             config.get(ENVIRONMENT_DEFAULT_BLOB_ENDPOINT_SECONDARY));
         httpClient = null; // cannot load from environment

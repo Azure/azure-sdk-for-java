@@ -159,7 +159,7 @@ class APISpec extends StorageSpec {
     }
 
     AzureFileSystemConfig initializeConfigClass(HttpPipelinePolicy... policies) {
-        def config = new AzureFileSystemConfig([:])
+        def config = new AzureFileSystemConfig()
         config.httpClient = getHttpClient()
         config.policyList.addAll(policies + getRecordPolicy())
         return config
@@ -187,6 +187,13 @@ class APISpec extends StorageSpec {
 
         return new AzureFileSystem(new AzureFileSystemProvider(), environment.primaryAccount.blobEndpoint,
             new AzureFileSystemConfig(config))
+    }
+
+    def createFS(AzureFileSystemConfig config) {
+        config.fileStoreNames << generateContainerName() << generateContainerName()
+        config.sharedKeyCredential = environment.primaryAccount.credential
+
+        return new AzureFileSystem(new AzureFileSystemProvider(), environment.primaryAccount.blobEndpoint, config)
     }
 
     byte[] getRandomByteArray(int size) {

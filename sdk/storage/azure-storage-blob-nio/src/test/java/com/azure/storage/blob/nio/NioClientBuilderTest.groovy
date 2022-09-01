@@ -32,14 +32,13 @@ class NioClientBuilderTest extends Specification {
 
     def "AzureFileSystem ServiceClient"() {
         setup:
-        def config = [:]
-        config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = String.join(",", ["containerName"])
-        config[AzureFileSystem.AZURE_STORAGE_HTTP_CLIENT] = new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + clientName + "/" + clientVersion + " " + "(.)*")
-        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = new StorageSharedKeyCredential("accountName", "accountKey")
+        def config = new AzureFileSystemConfig()
+        config.fileStoreNames << "containerName"
+        config.httpClient = new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + clientName + "/" + clientVersion + " " + "(.)*")
+        config.sharedKeyCredential = new StorageSharedKeyCredential("accountName", "accountKey")
 
         when:
-        def fileSystem = new AzureFileSystem(new AzureFileSystemProvider(), "https://accountName.blob.core.windows.net",
-            new AzureFileSystemConfig(config))
+        def fileSystem = new AzureFileSystem(new AzureFileSystemProvider(), "https://accountName.blob.core.windows.net", config)
         def pipeline = fileSystem.blobServiceClient.getHttpPipeline()
         def foundPolicy = false
         for (int i = 0; i < pipeline.getPolicyCount(); i++)
@@ -55,12 +54,11 @@ class NioClientBuilderTest extends Specification {
 
     def "AzureFileStore ContainerClient"() {
         setup:
-        def config = [:]
-        config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = String.join(",", ["containerName"])
-        config[AzureFileSystem.AZURE_STORAGE_HTTP_CLIENT] = new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + clientName + "/" + clientVersion + " " + "(.)*")
-        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = new StorageSharedKeyCredential("accountName", "accountKey")
-        def fileSystem = new AzureFileSystem(new AzureFileSystemProvider(), "https://accountName.blob.core.windows.net",
-            new AzureFileSystemConfig(config))
+        def config = new AzureFileSystemConfig()
+        config.fileStoreNames << "containerName"
+        config.httpClient = new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + clientName + "/" + clientVersion + " " + "(.)*")
+        config.sharedKeyCredential = new StorageSharedKeyCredential("accountName", "accountKey")
+        def fileSystem = new AzureFileSystem(new AzureFileSystemProvider(), "https://accountName.blob.core.windows.net", config)
 
         when:
         AzureFileStore fileStore = fileSystem.getFileStore("containerName")
@@ -79,12 +77,11 @@ class NioClientBuilderTest extends Specification {
 
     def "AzureResource BlobClient"() {
         setup:
-        def config = [:]
-        config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = String.join(",", ["containerName"])
-        config[AzureFileSystem.AZURE_STORAGE_HTTP_CLIENT] = new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + clientName + "/" + clientVersion + " " + "(.)*")
-        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = new StorageSharedKeyCredential("accountName", "accountKey")
-        def fileSystem = new AzureFileSystem(new AzureFileSystemProvider(), "https://accountName.blob.core.windows.net",
-            new AzureFileSystemConfig(config))
+        def config = new AzureFileSystemConfig()
+        config.fileStoreNames << "containerName"
+        config.httpClient = new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + clientName + "/" + clientVersion + " " + "(.)*")
+        config.sharedKeyCredential = new StorageSharedKeyCredential("accountName", "accountKey")
+        def fileSystem = new AzureFileSystem(new AzureFileSystemProvider(), "https://accountName.blob.core.windows.net", config)
         AzurePath path = fileSystem.getPath("blobName")
 
         when:
