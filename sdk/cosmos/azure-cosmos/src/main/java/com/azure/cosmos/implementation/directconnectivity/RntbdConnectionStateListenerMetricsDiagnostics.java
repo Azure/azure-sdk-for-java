@@ -9,10 +9,11 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.time.Instant;
 
 @JsonSerialize(using = RntbdConnectionStateListenerMetricsDiagnostics.RntbdConnectionStateListenerDiagnosticsJsonSerializer.class)
-public class RntbdConnectionStateListenerMetricsDiagnostics {
+public class RntbdConnectionStateListenerMetricsDiagnostics implements Serializable {
     private static final long serialVersionUID = 1L;
     private final Instant lastCallTimestamp;
     private final Pair<Instant, Integer> lastActionableContext;

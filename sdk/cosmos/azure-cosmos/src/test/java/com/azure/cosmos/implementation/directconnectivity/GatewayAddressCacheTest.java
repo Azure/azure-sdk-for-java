@@ -959,6 +959,69 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         System.clearProperty("COSMOS.REPLICA_ADDRESS_VALIDATION_ENABLED");
     }
 
+    @Test(groups = { "direct" },  timeOut = TIMEOUT)
+    public void tryGetAddress_failedEndpointTests() throws Exception {
+        Configs configs = ConfigsBuilder.instance().withProtocol(Protocol.TCP).build();
+        URI serviceEndpoint = new URI(TestConfigurations.HOST);
+        IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
+        HttpClientUnderTestWrapper httpClientWrapper = getHttpClientUnderTestWrapper(configs);
+        IOpenConnectionsHandler openConnectionsHandlerMock = Mockito.mock(IOpenConnectionsHandler.class);
+        Mockito.when(openConnectionsHandlerMock.openConnections(Mockito.any())).thenReturn(Flux.empty()); // what returned here does not really matter
+
+        GatewayAddressCache cache = new GatewayAddressCache(
+                mockDiagnosticsClientContext(),
+                serviceEndpoint,
+                Protocol.TCP,
+                authorizationTokenProvider,
+                null,
+                httpClientWrapper.getSpyHttpClient(),
+                true,
+                null,
+                null,
+                ConnectionPolicy.getDefaultPolicy(),
+                openConnectionsHandlerMock);
+
+        RxDocumentServiceRequest req =
+                RxDocumentServiceRequest.create(
+                        mockDiagnosticsClientContext(),
+                        OperationType.Create,
+                        ResourceType.Document,
+                        getCollectionSelfLink(),
+                        new Database(),
+                        new HashMap<>());
+
+        PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity(createdCollection.getResourceId(), "0");
+        boolean forceRefreshPartitionAddresses = false;
+
+        Mono<Utils.ValueHolder<AddressInformation[]>> addressesInfosFromCacheObs =
+                cache.tryGetAddresses(req, partitionKeyRangeIdentity, forceRefreshPartitionAddresses);
+
+        ArrayList<AddressInformation> addressInfosFromCache =
+                Lists.newArrayList(getSuccessResult(addressesInfosFromCacheObs, TIMEOUT).v);
+
+        assertThat(httpClientWrapper.capturedRequests)
+                .describedAs("getAddress will read addresses from gateway")
+                .asList().hasSize(1);
+
+        // Mark all the uris in connected status
+        // Setup request failedEndpoints, and then refresh addresses again(with forceRefresh = false), confirm the failed endpoint uri is marked as unhealthy
+        httpClientWrapper.capturedRequests.clear();
+        Mockito.clearInvocations(openConnectionsHandlerMock);
+        for (AddressInformation address : addressInfosFromCache) {
+            address.getPhysicalUri().setConnected();
+        }
+
+        req.requestContext.getFailedEndpoints().add(addressInfosFromCache.get(0).getPhysicalUri());
+
+        ArrayList<AddressInformation> refreshedAddresses =
+                Lists.newArrayList(getSuccessResult(cache.tryGetAddresses(req, partitionKeyRangeIdentity, false), TIMEOUT).v);
+        assertThat(httpClientWrapper.capturedRequests)
+                .describedAs("getAddress will read from cache")
+                .asList().hasSize(0);
+        assertThat(refreshedAddresses).hasSize(addressInfosFromCache.size()).containsAll(addressInfosFromCache);
+        assertThat(refreshedAddresses.get(0).getPhysicalUri().getHealthStatus()).isEqualTo(Uri.HealthStatus.Unhealthy);
+    }
+
     @Test(groups = { "direct" }, timeOut = TIMEOUT)
     public void tryGetAddress_unhealthyStatus_forceRefresh() throws Exception {
         Configs configs = ConfigsBuilder.instance().withProtocol(Protocol.TCP).build();

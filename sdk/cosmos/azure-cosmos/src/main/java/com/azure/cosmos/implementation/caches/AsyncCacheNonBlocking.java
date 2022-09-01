@@ -87,7 +87,7 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
                     (exception) -> {
                         logger.debug("refresh cache [{}] resulted in error", key, exception);
 
-                        if (initialLazyValue.shouldRemoveFromCache()) {
+                        if (initialLazyValue.shouldRemoveFromCache() && exception instanceof CosmosException) {
                             // In some scenarios when a background failure occurs like a 404 the initial cache value should be removed.
                             if (removeNotFoundFromCacheException((CosmosException)exception)) {
                                 this.remove(key);
