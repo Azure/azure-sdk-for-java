@@ -14,7 +14,6 @@ import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
-import com.azure.storage.file.datalake.options.FileSystemRenameOptions;
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import com.azure.storage.file.datalake.sas.FileSystemSasPermission;
 import reactor.core.publisher.Mono;
@@ -724,27 +723,27 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteDirectoryIfExistsWithResponse#String-DataLakePathDeleteOptions
     }
 
-    /**
-     * Code snippet for {@link DataLakeFileSystemAsyncClient#rename(String)}
-     */
-    public void renameFileSystem() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.rename#String
-        DataLakeFileSystemAsyncClient fileSystemAsyncClient =
-            client.rename("newFileSystemName")
-                .block();
-        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.rename#String
-    }
+//    /**
+//     * Code snippet for {@link DataLakeFileSystemAsyncClient#rename(String)}
+//     */
+//    public void renameFileSystem() {
+//        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.rename#String
+//        DataLakeFileSystemAsyncClient fileSystemAsyncClient =
+//            client.rename("newFileSystemName")
+//                .block();
+//        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.rename#String
+//    }
 
-    /**
-     * Code snippet for {@link DataLakeFileSystemAsyncClient#renameWithResponse(FileSystemRenameOptions)}
-     */
-    public void renameFileSystemWithResponse() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.renameWithResponse#FileSystemRenameOptions
-        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setLeaseId("lease-id");
-        DataLakeFileSystemAsyncClient fileSystemAsyncClient = client
-            .renameWithResponse(new FileSystemRenameOptions("newFileSystemName")
-                .setRequestConditions(requestConditions)).block().getValue();
-        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.renameWithResponse#FileSystemRenameOptions
-    }
+//    /**
+//     * Code snippet for {@link DataLakeFileSystemAsyncClient#renameWithResponse(FileSystemRenameOptions)}
+//     */
+//    public void renameFileSystemWithResponse() {
+//        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.renameWithResponse#FileSystemRenameOptions
+//        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setLeaseId("lease-id");
+//        DataLakeFileSystemAsyncClient fileSystemAsyncClient = client
+//            .renameWithResponse(new FileSystemRenameOptions("newFileSystemName")
+//                .setRequestConditions(requestConditions)).block().getValue();
+//        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.renameWithResponse#FileSystemRenameOptions
+//    }
 
 }
