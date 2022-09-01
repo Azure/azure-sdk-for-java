@@ -389,13 +389,21 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions,
         boolean overwrite) {
-        BlobRequestConditions requestConditions = new BlobRequestConditions();
+        Mono<Void> overwriteCheck;
+        BlobRequestConditions requestConditions;
 
-        if (!overwrite) {
-            requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        if (overwrite) {
+            overwriteCheck = Mono.empty();
+            requestConditions = null;
+        } else {
+            overwriteCheck = exists().flatMap(exists -> exists
+                ? monoError(LOGGER, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
+                : Mono.empty());
+            requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
 
-        return uploadWithResponse(data, parallelTransferOptions, null, null, null, requestConditions)
+        return overwriteCheck
+            .then(uploadWithResponse(data, parallelTransferOptions, null, null, null, requestConditions))
             .flatMap(FluxUtil::toMono);
     }
 
@@ -441,12 +449,21 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> upload(BinaryData data, boolean overwrite) {
-        BlobRequestConditions requestConditions = new BlobRequestConditions();
+        Mono<Void> overwriteCheck;
+        BlobRequestConditions requestConditions;
 
-        if (!overwrite) {
-            requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        if (overwrite) {
+            overwriteCheck = Mono.empty();
+            requestConditions = null;
+        } else {
+            overwriteCheck = exists().flatMap(exists -> exists
+                ? monoError(LOGGER, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
+                : Mono.empty());
+            requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
-        return uploadWithResponse(data.toFluxByteBuffer(), null, null, null, null, requestConditions)
+
+        return overwriteCheck
+            .then(uploadWithResponse(data.toFluxByteBuffer(), null, null, null, null, requestConditions))
             .flatMap(FluxUtil::toMono);
     }
 
