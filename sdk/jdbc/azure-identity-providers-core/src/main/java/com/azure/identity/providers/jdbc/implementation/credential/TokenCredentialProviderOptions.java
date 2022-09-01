@@ -25,7 +25,6 @@ public class TokenCredentialProviderOptions {
     private boolean managedIdentityEnabled;
     private String tokenCredentialProviderClassName;
     private String tokenCredentialBeanName;
-    private boolean cachedEnabled;
 
     public TokenCredentialProviderOptions() {
 
@@ -42,7 +41,6 @@ public class TokenCredentialProviderOptions {
         this.managedIdentityEnabled = Boolean.TRUE.equals(AuthProperty.MANAGED_IDENTITY_ENABLED.getBoolean(properties));
         this.tokenCredentialProviderClassName = AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.get(properties);
         this.tokenCredentialBeanName = AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.get(properties);
-        this.cachedEnabled = Boolean.TRUE.equals(AuthProperty.CACHE_ENABLED.getBoolean(properties));
         this.authorityHost = AuthProperty.AUTHORITY_HOST.get(properties);
     }
 
@@ -124,14 +122,6 @@ public class TokenCredentialProviderOptions {
 
     public void setTokenCredentialBeanName(String tokenCredentialBeanName) {
         this.tokenCredentialBeanName = tokenCredentialBeanName;
-    }
-
-    public boolean isCachedEnabled() {
-        return cachedEnabled;
-    }
-
-    public void setCachedEnabled(boolean cachedEnabled) {
-        this.cachedEnabled = cachedEnabled;
     }
 
     public String getAuthorityHost() {

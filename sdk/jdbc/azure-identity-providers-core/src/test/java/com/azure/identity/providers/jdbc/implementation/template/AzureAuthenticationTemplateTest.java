@@ -10,7 +10,6 @@ import com.azure.identity.providers.jdbc.implementation.credential.provider.Toke
 import com.azure.identity.providers.jdbc.implementation.token.AccessTokenResolver;
 import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
 import com.azure.identity.providers.jdbc.implementation.credential.TokenCredentialProviderOptions;
-import com.azure.identity.providers.jdbc.implementation.credential.provider.CacheableTokenCredentialProvider;
 import com.azure.identity.providers.jdbc.implementation.token.AccessTokenResolverOptions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -18,7 +17,6 @@ import reactor.core.publisher.Mono;
 import java.time.OffsetDateTime;
 import java.util.Properties;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -61,41 +59,6 @@ class AzureAuthenticationTemplateTest {
     }
 
     @Test
-    void testTokenAsPasswordWithCache() {
-
-        TokenCredentialProvider tokenCredentialProvider = getCachedTokenCredentialProvider();
-        AccessTokenResolver accessTokenResolver = getAccessTokenResolver();
-
-        Properties properties = new Properties();
-        AzureAuthenticationTemplate template1 = new AzureAuthenticationTemplate(tokenCredentialProvider, accessTokenResolver);
-        template1.init(properties);
-
-        AzureAuthenticationTemplate template2 = new AzureAuthenticationTemplate(tokenCredentialProvider, accessTokenResolver);
-        template2.init(properties);
-
-        assertNotEquals(template1.getTokenAsPasswordAsync(), template2.getTokenAsPasswordAsync());
-        assertEquals(template1.getTokenAsPassword(), template2.getTokenAsPassword());
-
-    }
-
-    @Test
-    void testTokenAsPasswordWithoutCache() {
-
-        AccessTokenResolver accessTokenResolver = getAccessTokenResolver();
-        TokenCredentialProvider tokenCredentialProvider = getTokenCredentialProvider();
-
-        Properties properties = new Properties();
-        AzureAuthenticationTemplate template1 = new AzureAuthenticationTemplate(tokenCredentialProvider, accessTokenResolver);
-        template1.init(properties);
-
-        AzureAuthenticationTemplate template2 = new AzureAuthenticationTemplate(tokenCredentialProvider, accessTokenResolver);
-        template2.init(properties);
-
-        assertNotEquals(template1.getTokenAsPasswordAsync(), template2.getTokenAsPasswordAsync());
-        assertNotEquals(template1.getTokenAsPassword(), template2.getTokenAsPassword());
-    }
-
-    @Test
     void testGetTokenAsPasswordAsync() {
         Properties properties = new Properties();
 
@@ -119,14 +82,6 @@ class AzureAuthenticationTemplateTest {
         return delegate;
     }
 
-    private static TokenCredentialProvider getCachedTokenCredentialProvider() {
-        TokenCredentialProviderOptions providerOptions = getProviderOptions();
-        ClientSecretCredential credential = getClientSecretCredential();
-
-        TokenCredentialProvider provider = mock(TokenCredentialProvider.class);
-        when(provider.get()).thenReturn(credential);
-        return new CacheableTokenCredentialProvider(provider, providerOptions);
-    }
 
     private static TokenCredentialProvider getTokenCredentialProvider() {
         ClientSecretCredential credential = getClientSecretCredential();
@@ -149,7 +104,6 @@ class AzureAuthenticationTemplateTest {
         providerOptions.setClientId("fake-client-id");
         providerOptions.setClientSecret("fake-client-secret");
         providerOptions.setAuthorityHost("fake-authority-host");
-        providerOptions.setCachedEnabled(true);
         return providerOptions;
     }
 }

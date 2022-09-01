@@ -33,9 +33,6 @@ class MySqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigura
     private static final String AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY
         = AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName();
 
-    private static final String AUTHPROPERTY_CACHEENABLED_PROPERTY
-        = AuthProperty.CACHE_ENABLED.getPropertyKey() + "=" + "true";
-
     private static final String AUTHPROPERTY_CREDENTIAL_BEAN_NAME
         = AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.getPropertyKey() + "=" + "credentialFreeTokenCredential";
 
@@ -73,11 +70,10 @@ class MySqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigura
             .run((context) -> {
                 DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
 
-                String expectedUrl = String.format("%s?%s&%s&%s&%s&%s&%s", connectionString,
+                String expectedUrl = String.format("%s?%s&%s&%s&%s&%s", connectionString,
                     MYSQL_AUTH_PLUGIN_PROPERTY,
                     AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
                     MYSQL_DEFAULT_PLUGIN_PROPERTY,
-                    AUTHPROPERTY_CACHEENABLED_PROPERTY,
                     MYSQL_SSL_MODE_PROPERTY,
                     MYSQL_USE_SSL_PROPERTY
                 );
@@ -98,12 +94,11 @@ class MySqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigura
             .run((context) -> {
                 DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
 
-                String expectedUrl = String.format("%s?%s&%s&%s&%s&%s&%s&%s", connectionString,
+                String expectedUrl = String.format("%s?%s&%s&%s&%s&%s&%s", connectionString,
                     AUTHPROPERTY_CREDENTIAL_BEAN_NAME,
                     MYSQL_AUTH_PLUGIN_PROPERTY,
                     AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
                     MYSQL_DEFAULT_PLUGIN_PROPERTY,
-                    AUTHPROPERTY_CACHEENABLED_PROPERTY,
                     MYSQL_SSL_MODE_PROPERTY,
                     MYSQL_USE_SSL_PROPERTY
                 );

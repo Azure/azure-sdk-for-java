@@ -100,7 +100,6 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
             applicationContext.registerBean(CREDENTIAL_FREE_TOKEN_BEAN_NAME, TokenCredential.class, () -> tokenCredential);
         }
 
-        AuthProperty.CACHE_ENABLED.setProperty(result, "true");
         AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.setProperty(result, SPRING_TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME);
 
         databaseType.setDefaultEnhancedProperties(result);
