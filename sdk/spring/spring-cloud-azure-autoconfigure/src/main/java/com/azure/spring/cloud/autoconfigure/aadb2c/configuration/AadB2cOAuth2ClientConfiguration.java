@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aadb2c.configuration;
 
-import com.azure.spring.cloud.autoconfigure.aad.configuration.AadRestOperationConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestOperationConfiguration;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cClientRegistrationRepository;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cConditions;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cUrl;

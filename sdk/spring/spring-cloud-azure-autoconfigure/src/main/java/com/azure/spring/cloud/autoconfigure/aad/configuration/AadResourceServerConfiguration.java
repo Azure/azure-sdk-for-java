@@ -4,6 +4,7 @@ package com.azure.spring.cloud.autoconfigure.aad.configuration;
 
 
 import com.azure.spring.cloud.autoconfigure.aad.AadResourceServerWebSecurityConfigurerAdapter;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestOperationConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.ResourceServerCondition;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadJwtClaimNames;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.validator.AadJwtIssuerValidator;

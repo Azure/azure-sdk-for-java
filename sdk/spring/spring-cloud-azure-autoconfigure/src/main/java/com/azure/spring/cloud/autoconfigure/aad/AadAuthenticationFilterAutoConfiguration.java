@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.aad;
 
 import com.azure.spring.cloud.autoconfigure.aad.configuration.AadPropertiesConfiguration;
-import com.azure.spring.cloud.autoconfigure.aad.configuration.AadRestOperationConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestOperationConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.filter.AadAppRoleStatelessAuthenticationFilter;
 import com.azure.spring.cloud.autoconfigure.aad.filter.AadAuthenticationFilter;
 import com.azure.spring.cloud.autoconfigure.aad.filter.UserPrincipalManager;

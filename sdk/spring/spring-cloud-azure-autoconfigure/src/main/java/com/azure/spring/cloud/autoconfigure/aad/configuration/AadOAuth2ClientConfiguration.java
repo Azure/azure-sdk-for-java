@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.aad.configuration;
 
 import com.azure.spring.cloud.autoconfigure.aad.AadClientRegistrationRepository;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestOperationConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.ClientCertificatePropertiesCondition;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.ClientRegistrationCondition;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.AadJwtClientAuthenticationParametersConverter;

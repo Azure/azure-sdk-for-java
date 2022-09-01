@@ -1,9 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.aad.configuration;
+package com.azure.spring.cloud.autoconfigure.aad.implementation;
 
 import com.azure.spring.cloud.autoconfigure.aad.AadAuthenticationFilterAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.configuration.AadResourceServerConfiguration;
 import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cOAuth2ClientConfiguration;
 import com.nimbusds.jose.util.ResourceRetriever;
