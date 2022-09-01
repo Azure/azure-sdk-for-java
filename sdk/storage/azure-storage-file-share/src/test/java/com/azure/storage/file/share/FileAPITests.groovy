@@ -8,6 +8,7 @@ import com.azure.core.util.Context
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.polling.LongRunningOperationStatus
 import com.azure.core.util.polling.SyncPoller
+import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
@@ -43,6 +44,7 @@ import spock.lang.Unroll
 import java.nio.charset.StandardCharsets
 import java.nio.file.FileAlreadyExistsException
 import java.nio.file.NoSuchFileException
+import java.time.Duration
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -1326,9 +1328,107 @@ class FileAPITests extends APISpec {
         false        | false         | false     | true
     }
 
-    @Ignore
     def "Abort copy"() {
-        //TODO: Need to find a way of mocking pending copy status
+        given:
+        def fileSize = Constants.MB
+        def bytes = new byte[fileSize]
+        InputStream data = new ByteArrayInputStream(bytes)
+        ShareFileClient primaryFileClient = fileBuilderHelper(shareName, filePath).buildFileClient()
+        primaryFileClient.create(fileSize)
+        primaryFileClient.uploadWithResponse(new ShareFileUploadOptions(data), null, null)
+
+        def sourceURL = primaryFileClient.getFileUrl()
+
+        ShareFileClient dest = fileBuilderHelper(shareName, filePath).buildFileClient()
+        dest.create(fileSize)
+
+        when:
+        SyncPoller<ShareFileCopyInfo, Void> poller = dest.beginCopy(sourceURL, null, null)
+
+        def pollResponse = poller.poll()
+
+        assert pollResponse != null
+        assert pollResponse.getValue() != null
+        dest.abortCopy(pollResponse.getValue().getCopyId())
+
+        then:
+        // This exception is intentional. It is difficult to test abortCopy in a deterministic way.
+        // Exception thrown: "NoPendingCopyOperation"
+        thrown(ShareStorageException)
+    }
+
+    def "Abort copy lease"() {
+        given:
+        def fileSize = Constants.MB
+        def bytes = new byte[fileSize]
+        InputStream data = new ByteArrayInputStream(bytes)
+        ShareFileClient primaryFileClient = fileBuilderHelper(shareName, filePath).buildFileClient()
+        primaryFileClient.create(fileSize)
+        primaryFileClient.uploadWithResponse(new ShareFileUploadOptions(data), null, null)
+
+        def sourceURL = primaryFileClient.getFileUrl()
+
+        ShareFileClient dest = fileBuilderHelper(shareName, filePath).buildFileClient()
+        dest.create(fileSize)
+
+        // obtain lease
+        def leaseId = createLeaseClient(primaryFileClient).acquireLease()
+        def requestConditions = new ShareRequestConditions().setLeaseId(leaseId)
+        when:
+        SyncPoller<ShareFileCopyInfo, Void> poller = dest.beginCopy(
+            sourceURL, new ShareFileCopyOptions().setDestinationRequestConditions(requestConditions), null)
+
+        def pollResponse = poller.poll()
+
+        assert pollResponse != null
+        assert pollResponse.getValue() != null
+        dest.abortCopyWithResponse(pollResponse.getValue().getCopyId(), requestConditions, null, null)
+
+        then:
+        // This exception is intentional. It is difficult to test abortCopy in a deterministic way.
+        // Exception thrown: "NoPendingCopyOperation"
+        thrown(ShareStorageException)
+    }
+
+    def "Abort copy invalid lease"() {
+        given:
+        def fileSize = Constants.MB
+        def bytes = new byte[fileSize]
+        InputStream data = new ByteArrayInputStream(bytes)
+        ShareFileClient primaryFileClient = fileBuilderHelper(shareName, filePath).buildFileClient()
+        primaryFileClient.create(fileSize)
+        primaryFileClient.uploadWithResponse(new ShareFileUploadOptions(data), null, null)
+
+        def sourceURL = primaryFileClient.getFileUrl()
+
+        ShareFileClient dest = fileBuilderHelper(shareName, filePath).buildFileClient()
+        dest.create(fileSize)
+
+        // create invalid lease
+        def leaseId = namer.getRandomUuid()
+        def requestConditions = new ShareRequestConditions().setLeaseId(leaseId)
+        when:
+        SyncPoller<ShareFileCopyInfo, Void> poller = dest.beginCopy(
+            sourceURL, new ShareFileCopyOptions().setDestinationRequestConditions(requestConditions), null)
+
+        def pollResponse = poller.poll()
+
+        assert pollResponse != null
+        assert pollResponse.getValue() != null
+        dest.abortCopyWithResponse(pollResponse.getValue().getCopyId(), requestConditions, null, null)
+
+        then:
+        // exception: LeaseNotPresentWithFileOperation
+        thrown(ShareStorageException)
+    }
+
+    def "Abort copy error"() {
+        when:
+        primaryFileClient.abortCopy("randomId")
+
+        then:
+        // Exception thrown: "InvalidQueryParameterValue"
+        thrown(ShareStorageException)
     }
 
     def "Delete file"() {
