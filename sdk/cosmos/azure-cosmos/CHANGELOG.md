@@ -11,6 +11,11 @@
 #### Other Changes
 * Update isReadRequestsFallbackEnabled() to have a default value - See [PR 30693](https://github.com/Azure/azure-sdk-for-java/pull/30693)
 
+### 4.35.1 (2022-08-29)
+#### Other Changes
+* Added non-blocking async lazy cache to improve upgrade and scaling scenarios - See [PR 29322](https://github.com/Azure/azure-sdk-for-java/pull/29322)
+* Improved performance of `StoreResponse` using array headers - See [PR 30596](https://github.com/Azure/azure-sdk-for-java/pull/30596)
+
 ### 4.35.0 (2022-08-19)
 #### Other Changes
 * Updated netty library version to `4.1.79.Final`.
