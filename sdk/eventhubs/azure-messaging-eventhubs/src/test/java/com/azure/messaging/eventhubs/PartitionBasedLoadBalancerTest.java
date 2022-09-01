@@ -7,6 +7,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.ErrorContext;
+import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionContext;
@@ -42,14 +43,16 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -391,7 +394,7 @@ public class PartitionBasedLoadBalancerTest {
     }
 
     @Test
-    public void testCheckpointStoreFailure() {
+    public void testCheckpointStoreListOwnershipFailure() {
         TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
         CheckpointStore checkpointStore = mock(CheckpointStore.class);
         when(checkpointStore.listOwnership(any(), any(), any())).thenReturn(Flux.error(new Exception("Listing "
@@ -414,6 +417,70 @@ public class PartitionBasedLoadBalancerTest {
         verify(partitionProcessor, never()).processEvent(any(EventContext.class));
         verify(partitionProcessor, never()).processError(any(ErrorContext.class));
         verify(eventHubConsumer, never()).close();
+    }
+
+    /**
+     * Adds test to ensure we are not calling user's error handler for checkpoint errors that they cannot action.
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testCheckpointStoreClaimOwnershipFailure() {
+        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
+
+        final PartitionOwnership claim1 = getPartitionOwnership(PARTITION_1, OWNER_ID_1);
+        final PartitionOwnership claim2 = getPartitionOwnership(PARTITION_2, OWNER_ID_1);
+
+        final CheckpointStore mockCheckpointStore = mock(CheckpointStore.class);
+        when(mockCheckpointStore.listOwnership(FQ_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP_NAME))
+            .thenAnswer(invocation -> {
+                return Flux.just(claim1, claim2);
+            });
+        when(mockCheckpointStore.claimOwnership(any())).thenReturn(Flux.just(claim1),
+            Flux.error(new IllegalStateException("Unable to claim partition.")));
+        when(mockCheckpointStore.listCheckpoints(FQ_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP_NAME)).thenReturn(Flux.empty());
+
+        doAnswer(invocation -> {
+            return null;
+        }).when(partitionProcessor).processEvent(any(EventContext.class));
+        doAnswer(invocation -> {
+            return null;
+        }).when(partitionProcessor).processEventBatch(any(EventBatchContext.class));
+        doAnswer(invocation -> {
+            return null;
+        }).when(partitionProcessor).processError(any(ErrorContext.class));
+
+        when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(PARTITION_IDS_2));
+        when(eventHubAsyncClient.createConsumer(anyString(), anyInt())).thenReturn(eventHubConsumer);
+
+        when(eventHubConsumer.receiveFromPartition(any(), any(), any(ReceiveOptions.class)))
+            .thenReturn(Flux.interval(Duration.ofSeconds(1)).map(index -> {
+                int i = index.intValue() % eventDataList.size();
+                return new PartitionEvent(PARTITION_CONTEXT, eventDataList.get(i), null);
+            }));
+
+        final PartitionPumpManager partitionPumpManager = new PartitionPumpManager(mockCheckpointStore,
+            () -> partitionProcessor, eventHubClientBuilder, false, tracerProvider,
+            Collections.emptyMap(), 1, null, BATCH_RECEIVE_MODE);
+        final PartitionBasedLoadBalancer loadBalancer = new PartitionBasedLoadBalancer(mockCheckpointStore,
+            eventHubAsyncClient, FQ_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP_NAME, "owner",
+            TimeUnit.SECONDS.toSeconds(5),
+            partitionPumpManager, ec -> fail("Should not have called error context: " + ec),
+            LoadBalancingStrategy.BALANCED);
+
+        // Act
+        loadBalancer.loadBalance();
+        sleep(5);
+        loadBalancer.loadBalance();
+        sleep(5);
+
+        // Assert
+        verify(eventHubAsyncClient, atLeast(1)).getPartitionIds();
+        verify(eventHubAsyncClient).createConsumer(anyString(), anyInt());
+
+        verify(partitionProcessor, atLeastOnce()).processEvent(any(EventContext.class));
+        verify(partitionProcessor, never()).processError(any(ErrorContext.class));
+
+        verify(mockCheckpointStore, atLeastOnce()).claimOwnership(any());
     }
 
     @Test
@@ -569,78 +636,8 @@ public class PartitionBasedLoadBalancerTest {
                 .verifyComplete();
         } finally {
             scheduler.dispose();
+            scheduler2.dispose();
         }
-    }
-
-    @Test
-    public void testOwnershipRenewalFailure() {
-        PartitionOwnership claim1 = getPartitionOwnership("1", OWNER_ID_1);
-        PartitionOwnership claim2 = getPartitionOwnership("2", OWNER_ID_1);
-        checkpointStore.claimOwnership(Arrays.asList(claim1, claim2)).collectList().block();
-
-        List<PartitionOwnership> ownershipList = checkpointStore.listOwnership(FQ_NAMESPACE, EVENT_HUB_NAME,
-            CONSUMER_GROUP_NAME).collectList().block();
-
-        assertNotNull(ownershipList, "'ownershipList' should not be null.");
-
-        Map<String, String> partitionEtag = new HashMap<>();
-        ownershipList.forEach(ownership -> partitionEtag.put(ownership.getPartitionId(), ownership.getETag()));
-
-        when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(PARTITION_IDS_2));
-
-        PartitionPumpManager partitionPumpManager = getPartitionPumpManager(tracerProvider);
-        final Scheduler scheduler = Schedulers.newSingle("test");
-        final Scheduler scheduler2 = Schedulers.newSingle("test2");
-        final PartitionPump pump1 = new PartitionPump("1", eventHubConsumer, scheduler);
-        final PartitionPump pump2 = new PartitionPump("1", eventHubConsumer, scheduler2);
-
-        try {
-            partitionPumpManager.getPartitionPumps().put("1", pump1);
-            partitionPumpManager.getPartitionPumps().put("2", pump2);
-            PartitionBasedLoadBalancer partitionBasedLoadBalancer = new PartitionBasedLoadBalancer(checkpointStore,
-                eventHubAsyncClient, FQ_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP_NAME, "owner1",
-                TimeUnit.SECONDS.toSeconds(10), partitionPumpManager,
-                ec -> {
-                }, LoadBalancingStrategy.BALANCED);
-
-            partitionBasedLoadBalancer.loadBalance();
-            // after first iteration, both partitions are owned by owner1, so both partitions should be renewed
-            ownershipList = checkpointStore.listOwnership(FQ_NAMESPACE, EVENT_HUB_NAME,
-                CONSUMER_GROUP_NAME).collectList().block();
-
-            assertNotNull(ownershipList, "'ownershipList' should not be null.");
-
-            ownershipList.forEach(
-                ownership -> assertFalse(partitionEtag.get(ownership.getPartitionId()).equals(ownership.getETag())));
-            ownershipList.forEach(ownership -> partitionEtag.put(ownership.getPartitionId(), ownership.getETag()));
-
-            // Owner2 steals partition 2
-            claim2.setOwnerId("owner2");
-            checkpointStore.claimOwnership(Arrays.asList(claim1, claim2)).collectList().block()
-                .forEach(ownership -> partitionEtag.put(ownership.getPartitionId(), ownership.getETag()));
-
-
-            // Now, this iteration of load balance on owner1 should renew only partition 1, even if partition pump manager
-            // is still processing both partitions.
-            partitionBasedLoadBalancer.loadBalance();
-            ownershipList = checkpointStore.listOwnership(FQ_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP_NAME).collectList()
-                .block();
-
-            ownershipList.forEach(ownership -> {
-                // only partition 1's etag should be updated because owner1 renewed the ownership.
-                // partition 2's etag should not be updated
-                if (ownership.getPartitionId().equals("2")) {
-                    assertTrue(partitionEtag.get(ownership.getPartitionId()).equals(ownership.getETag()));
-                    assertTrue(ownership.getOwnerId().equals("owner2"));
-                } else {
-                    assertFalse(partitionEtag.get(ownership.getPartitionId()).equals(ownership.getETag()));
-                    assertTrue(ownership.getOwnerId().equals(OWNER_ID_1));
-                }
-            });
-        } finally {
-            scheduler.dispose();
-        }
-
     }
 
     private PartitionOwnership getPartitionOwnership(String partitionId, String ownerId) {
