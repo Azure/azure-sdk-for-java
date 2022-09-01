@@ -54,7 +54,7 @@ class AzureFileSystemTest extends APISpec {
 
         when:
         def fileSystem = new AzureFileSystem(new AzureFileSystemProvider(), environment.primaryAccount.blobEndpoint,
-            config)
+            new AzureFileSystemConfig(config))
 
         then:
         Flux.fromIterable(fileSystem.getFileStores()).count().block().intValue() == containerNames.size()
@@ -84,7 +84,8 @@ class AzureFileSystemTest extends APISpec {
         }
 
         when:
-        new AzureFileSystem(new AzureFileSystemProvider(), environment.primaryAccount.name, config)
+        new AzureFileSystem(new AzureFileSystemProvider(), environment.primaryAccount.name,
+            new AzureFileSystemConfig(config))
 
         then:
         thrown(IllegalArgumentException)
@@ -105,7 +106,8 @@ class AzureFileSystemTest extends APISpec {
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
 
         when:
-        new AzureFileSystem(new AzureFileSystemProvider(), environment.primaryAccount.blobEndpoint, config)
+        new AzureFileSystem(new AzureFileSystemProvider(), environment.primaryAccount.blobEndpoint,
+            new AzureFileSystemConfig(config))
 
         then:
         thrown(IOException)
@@ -123,7 +125,8 @@ class AzureFileSystemTest extends APISpec {
 
         when:
         // This would fail, but we skipped the check
-        new AzureFileSystem(new AzureFileSystemProvider(), environment.primaryAccount.blobEndpoint, config)
+        new AzureFileSystem(new AzureFileSystemProvider(), environment.primaryAccount.blobEndpoint,
+            new AzureFileSystemConfig(config))
 
         then:
         notThrown(IOException)

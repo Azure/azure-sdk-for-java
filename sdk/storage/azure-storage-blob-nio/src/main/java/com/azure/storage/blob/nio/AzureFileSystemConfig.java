@@ -23,20 +23,22 @@ import static com.azure.storage.common.implementation.Constants.NioConstants.*;
 
 class AzureFileSystemConfig {
     // BlobServiceClient configs
-    final StorageSharedKeyCredential sharedKeyCredential;
-    final AzureSasCredential sasCredential;
-    final HttpLogOptions logOptions;
-    final RequestRetryOptions retryOptions;
-    final HttpClient httpClient;
+    StorageSharedKeyCredential sharedKeyCredential;
+    AzureSasCredential sasCredential;
+    HttpLogOptions logOptions;
+    RequestRetryOptions retryOptions;
+    HttpClient httpClient;
     final List<HttpPipelinePolicy> policyList = new ArrayList<>();
 
     // nio configs
-    final Long blockSize;
-    final Long putBlobThreshold;
-    final Integer maxConcurrencyPerRequest;
-    final Integer downloadResumeRetries;
+    Long blockSize;
+    Long putBlobThreshold;
+    Integer maxConcurrencyPerRequest;
+    Integer downloadResumeRetries;
     final List<String> fileStoreNames = new ArrayList<>();
-    final Boolean skipInitialContainerCheck;
+    Boolean skipInitialContainerCheck;
+
+    AzureFileSystemConfig() {}
 
     public AzureFileSystemConfig(Map<String, ?> config) {
         sharedKeyCredential = (StorageSharedKeyCredential) config.get(AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL);

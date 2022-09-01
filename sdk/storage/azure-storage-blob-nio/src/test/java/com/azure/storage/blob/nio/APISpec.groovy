@@ -185,7 +185,8 @@ class APISpec extends StorageSpec {
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName() + "," + generateContainerName()
         config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = environment.primaryAccount.credential
 
-        return new AzureFileSystem(new AzureFileSystemProvider(), environment.primaryAccount.blobEndpoint, config)
+        return new AzureFileSystem(new AzureFileSystemProvider(), environment.primaryAccount.blobEndpoint,
+            new AzureFileSystemConfig(config))
     }
 
     byte[] getRandomByteArray(int size) {

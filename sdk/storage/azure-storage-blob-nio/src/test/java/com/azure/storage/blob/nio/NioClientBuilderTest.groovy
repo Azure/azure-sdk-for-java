@@ -38,7 +38,8 @@ class NioClientBuilderTest extends Specification {
         config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = new StorageSharedKeyCredential("accountName", "accountKey")
 
         when:
-        def fileSystem = new AzureFileSystem(new AzureFileSystemProvider(), "https://accountName.blob.core.windows.net", config)
+        def fileSystem = new AzureFileSystem(new AzureFileSystemProvider(), "https://accountName.blob.core.windows.net",
+            new AzureFileSystemConfig(config))
         def pipeline = fileSystem.blobServiceClient.getHttpPipeline()
         def foundPolicy = false
         for (int i = 0; i < pipeline.getPolicyCount(); i++)
@@ -58,7 +59,8 @@ class NioClientBuilderTest extends Specification {
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = String.join(",", ["containerName"])
         config[AzureFileSystem.AZURE_STORAGE_HTTP_CLIENT] = new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + clientName + "/" + clientVersion + " " + "(.)*")
         config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = new StorageSharedKeyCredential("accountName", "accountKey")
-        def fileSystem = new AzureFileSystem(new AzureFileSystemProvider(), "https://accountName.blob.core.windows.net", config)
+        def fileSystem = new AzureFileSystem(new AzureFileSystemProvider(), "https://accountName.blob.core.windows.net",
+            new AzureFileSystemConfig(config))
 
         when:
         AzureFileStore fileStore = fileSystem.getFileStore("containerName")
@@ -81,7 +83,8 @@ class NioClientBuilderTest extends Specification {
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = String.join(",", ["containerName"])
         config[AzureFileSystem.AZURE_STORAGE_HTTP_CLIENT] = new UAStringTestClient("azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]* azsdk-java-" + clientName + "/" + clientVersion + " " + "(.)*")
         config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = new StorageSharedKeyCredential("accountName", "accountKey")
-        def fileSystem = new AzureFileSystem(new AzureFileSystemProvider(), "https://accountName.blob.core.windows.net", config)
+        def fileSystem = new AzureFileSystem(new AzureFileSystemProvider(), "https://accountName.blob.core.windows.net",
+            new AzureFileSystemConfig(config))
         AzurePath path = fileSystem.getPath("blobName")
 
         when:

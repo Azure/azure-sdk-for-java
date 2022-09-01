@@ -15,9 +15,10 @@ class AzureFileStoreTest extends APISpec {
 
     // Just need one fs instance for creating the stores.
     def setup() {
-        def config = initializeConfigMap()
-        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = environment.primaryAccount.credential
-        config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName() + "," + generateContainerName()
+        def config = initializeConfigClass()
+        config.sharedKeyCredential = environment.primaryAccount.credential
+        config.fileStoreNames << generateContainerName() << generateContainerName()
+        config.skipInitialContainerCheck = true
         fs = new AzureFileSystem(new AzureFileSystemProvider(), environment.primaryAccount.blobEndpoint, config)
     }
 
