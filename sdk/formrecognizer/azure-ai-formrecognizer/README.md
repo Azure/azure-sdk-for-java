@@ -57,7 +57,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-formrecognizer</artifactId>
-    <version>3.1.14</version>
+    <version>4.0.0-beta.7</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -224,7 +224,7 @@ Callers should wait for the operation to be completed by calling `getFinalResult
 The following section provides several code snippets covering some of the most common Form Recognizer tasks, including:
 
 * [Extract Layout](#extract-layout "Extract Layout")
-* [Use a General Document Model]()
+* [Use a General Document Model](#use-a-general-document-model)
 * [Use Prebuilt Models](#use-prebuilt-models)
 * [Build a Document Model](#build-a-document-model "Build a Document Model")
 * [Analyze Documents using a Custom Model](#analyze-documents-using-a-custom-model "Analyze Documents using a Custom Model")
