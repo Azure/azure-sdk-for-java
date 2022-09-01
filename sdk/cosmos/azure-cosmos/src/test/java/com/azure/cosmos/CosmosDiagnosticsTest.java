@@ -383,6 +383,65 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
     }
 
+    @Test(groups = {"simple"})
+    public void databaseAccountToClients() {
+        CosmosClient testClient = null;
+        try {
+            testClient = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .directMode()
+                .buildClient();
+            CosmosContainer cosmosContainer =
+                testClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
+            InternalObjectNode internalObjectNode = getInternalObjectNode();
+            CosmosItemResponse<InternalObjectNode> createResponse = cosmosContainer.createItem(internalObjectNode);
+            String diagnostics = createResponse.getDiagnostics().toString();
+
+            // assert diagnostics shows the correct format for tracking client instances
+            assertThat(diagnostics).contains(String.format("\"clientEndpoints\"" +
+                    ":{\"%s\"", TestConfigurations.HOST));
+            // track number of clients currently mapped to account
+            int clientsIndex = diagnostics.indexOf("\"clientEndpoints\":");
+            // we do end at +120 to ensure we grab the bracket even if the account is very long or if
+            // we have hundreds of clients (triple digit ints) running at once in the pipelines
+            String[] substrings = diagnostics.substring(clientsIndex, clientsIndex + 120)
+                .split("}")[0].split(":");
+            String intString = substrings[substrings.length-1];
+            int intValue = Integer.parseInt(intString);
+
+
+            CosmosClient testClient2 = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .directMode()
+                .buildClient();
+
+            internalObjectNode = getInternalObjectNode();
+            createResponse = cosmosContainer.createItem(internalObjectNode);
+            diagnostics = createResponse.getDiagnostics().toString();
+            // assert diagnostics shows the correct format for tracking client instances
+            assertThat(diagnostics).contains(String.format("\"clientEndpoints\"" +
+                ":{\"%s\"", TestConfigurations.HOST));
+            // grab new value and assert one additional client is mapped to the same account used previously
+            clientsIndex = diagnostics.indexOf("\"clientEndpoints\":");
+            substrings = diagnostics.substring(clientsIndex, clientsIndex + 120)
+                .split("}")[0].split(":");
+            intString = substrings[substrings.length-1];
+            assertThat(Integer.parseInt(intString)).isEqualTo(intValue+1);
+
+            //close second client
+            testClient2.close();
+
+        } finally {
+            if (testClient != null) {
+                testClient.close();
+            }
+        }
+    }
+
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void queryPlanDiagnostics() throws JsonProcessingException {
         CosmosContainer cosmosContainer = directClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
