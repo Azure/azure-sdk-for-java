@@ -1,8 +1,8 @@
-## 1.0.0-beta.1 (Unreleased)
+## 1.0.0-beta.1 (2022-09-01)
 
 ### Features Added
 
-- Initial version
+- Initial release. Please see the README for more information.
 
 ### Breaking Changes
 
