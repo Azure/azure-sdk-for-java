@@ -525,6 +525,73 @@ public class CosmosTemplateIT {
     }
 
     @Test
+    public void testFindAllPageableMultiPagesMultiPartition3() {
+        cosmosTemplate.insert(TEST_PERSON_2,
+            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
+        cosmosTemplate.insert(TEST_PERSON_3,
+            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_3)));
+        final List<Person> expected = Lists.newArrayList(TEST_PERSON, TEST_PERSON_2, TEST_PERSON_3);
+
+        for (int i=4; i<=10; i++) {
+            Person temp = new Person("id_" + i, "fred", LAST_NAME + "_" + i, HOBBIES,
+                ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
+            insertPerson(temp);
+            expected.add(temp);
+        }
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+
+        final CosmosPageRequest pageRequest = new CosmosPageRequest(0, 3, null);
+        final Page<Person> page1 = cosmosTemplate.findAll(pageRequest, Person.class, containerName);
+
+        final List<Person> resultPage1 = TestUtils.toList(page1);
+        assertThat(resultPage1.size()).isEqualTo(3);
+        PageTestUtils.validateNonLastPage(page1, 3);
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+
+        final Page<Person> page2 = cosmosTemplate.findAll(page1.nextPageable(), Person.class, containerName);
+
+        final List<Person> resultPage2 = TestUtils.toList(page2);
+        assertThat(resultPage2.size()).isEqualTo(3);
+        PageTestUtils.validateNonLastPage(page2, 3);
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+
+        final Page<Person> page3 = cosmosTemplate.findAll(page2.nextPageable(), Person.class, containerName);
+
+        final List<Person> resultPage3 = TestUtils.toList(page3);
+        assertThat(resultPage3.size()).isEqualTo(3);
+        PageTestUtils.validateNonLastPage(page3, 3);
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+
+        final Page<Person> page4 = cosmosTemplate.findAll(page3.nextPageable(), Person.class, containerName);
+
+        final List<Person> resultPage4 = TestUtils.toList(page4);
+        assertThat(resultPage4.size()).isEqualTo(1);
+        PageTestUtils.validateLastPage(page4, 3);
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+
+        final List<Person> allResults = new ArrayList<>();
+        allResults.addAll(resultPage1);
+        allResults.addAll(resultPage2);
+        allResults.addAll(resultPage3);
+        allResults.addAll(resultPage4);
+        assertThat(allResults).containsAll(expected);
+    }
+
+    @Test
     public void testPaginationQuery() {
         cosmosTemplate.insert(TEST_PERSON_2,
             new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
