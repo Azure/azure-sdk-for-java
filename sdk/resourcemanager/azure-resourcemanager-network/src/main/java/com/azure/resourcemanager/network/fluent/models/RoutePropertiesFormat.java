@@ -26,8 +26,8 @@ public final class RoutePropertiesFormat {
     private RouteNextHopType nextHopType;
 
     /*
-     * The IP address packets should be forwarded to. Next hop values are only
-     * allowed in routes where the next hop type is VirtualAppliance.
+     * The IP address packets should be forwarded to. Next hop values are only allowed in routes where the next hop
+     * type is VirtualAppliance.
      */
     @JsonProperty(value = "nextHopIpAddress")
     private String nextHopIpAddress;
@@ -39,8 +39,7 @@ public final class RoutePropertiesFormat {
     private ProvisioningState provisioningState;
 
     /*
-     * A value indicating whether this route overrides overlapping BGP routes
-     * regardless of LPM.
+     * A value indicating whether this route overrides overlapping BGP routes regardless of LPM.
      */
     @JsonProperty(value = "hasBgpOverride")
     private Boolean hasBgpOverride;

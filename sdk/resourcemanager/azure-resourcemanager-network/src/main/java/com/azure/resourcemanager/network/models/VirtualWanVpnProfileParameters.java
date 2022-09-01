@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class VirtualWanVpnProfileParameters {
     /*
-     * VpnServerConfiguration partial resource uri with which VirtualWan is
-     * associated to.
+     * VpnServerConfiguration partial resource uri with which VirtualWan is associated to.
      */
     @JsonProperty(value = "vpnServerConfigurationResourceId")
     private String vpnServerConfigurationResourceId;

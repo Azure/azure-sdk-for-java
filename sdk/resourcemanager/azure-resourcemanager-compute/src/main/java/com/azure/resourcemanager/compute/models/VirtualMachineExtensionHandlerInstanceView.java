@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class VirtualMachineExtensionHandlerInstanceView {
     /*
-     * Specifies the type of the extension; an example is
-     * "CustomScriptExtension".
+     * Specifies the type of the extension; an example is "CustomScriptExtension".
      */
     @JsonProperty(value = "type")
     private String type;

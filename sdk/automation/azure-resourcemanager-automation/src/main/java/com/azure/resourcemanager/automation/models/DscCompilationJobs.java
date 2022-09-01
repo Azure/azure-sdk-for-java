@@ -34,7 +34,7 @@ public interface DscCompilationJobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the Dsc Compilation job.
+     * @return definition of the Dsc Compilation job along with {@link Response}.
      */
     Response<DscCompilationJob> getWithResponse(
         String resourceGroupName, String automationAccountName, String compilationJobName, Context context);
@@ -47,7 +47,7 @@ public interface DscCompilationJobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list job operation.
+     * @return the response model for the list job operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DscCompilationJob> listByAutomationAccount(String resourceGroupName, String automationAccountName);
 
@@ -61,7 +61,7 @@ public interface DscCompilationJobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list job operation.
+     * @return the response model for the list job operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DscCompilationJob> listByAutomationAccount(
         String resourceGroupName, String automationAccountName, String filter, Context context);
@@ -91,7 +91,7 @@ public interface DscCompilationJobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job stream.
+     * @return definition of the job stream along with {@link Response}.
      */
     Response<JobStream> getStreamWithResponse(
         String resourceGroupName, String automationAccountName, UUID jobId, String jobStreamId, Context context);
@@ -103,7 +103,7 @@ public interface DscCompilationJobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the Dsc Compilation job.
+     * @return definition of the Dsc Compilation job along with {@link Response}.
      */
     DscCompilationJob getById(String id);
 
@@ -115,7 +115,7 @@ public interface DscCompilationJobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the Dsc Compilation job.
+     * @return definition of the Dsc Compilation job along with {@link Response}.
      */
     Response<DscCompilationJob> getByIdWithResponse(String id, Context context);
 

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SharedGalleryImageVersions List. */
 public final class SharedGalleryImageVersionsListSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/sharedGalleryExamples/SharedGalleryImageVersions_List.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-01-03/examples/sharedGalleryExamples/SharedGalleryImageVersions_List.json
      */
     /**
      * Sample code: List shared gallery image versions.

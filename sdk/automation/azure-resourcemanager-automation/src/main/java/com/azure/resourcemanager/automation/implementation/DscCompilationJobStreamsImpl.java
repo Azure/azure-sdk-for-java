@@ -12,11 +12,10 @@ import com.azure.resourcemanager.automation.fluent.DscCompilationJobStreamsClien
 import com.azure.resourcemanager.automation.fluent.models.JobStreamListResultInner;
 import com.azure.resourcemanager.automation.models.DscCompilationJobStreams;
 import com.azure.resourcemanager.automation.models.JobStreamListResult;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.UUID;
 
 public final class DscCompilationJobStreamsImpl implements DscCompilationJobStreams {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DscCompilationJobStreamsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DscCompilationJobStreamsImpl.class);
 
     private final DscCompilationJobStreamsClient innerClient;
 

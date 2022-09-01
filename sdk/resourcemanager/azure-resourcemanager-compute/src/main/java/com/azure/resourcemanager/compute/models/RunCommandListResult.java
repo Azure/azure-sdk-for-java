@@ -20,8 +20,8 @@ public final class RunCommandListResult {
     private List<RunCommandDocumentBaseInner> value;
 
     /*
-     * The uri to fetch the next page of run commands. Call ListNext() with
-     * this to fetch the next page of run commands.
+     * The uri to fetch the next page of run commands. Call ListNext() with this to fetch the next page of run
+     * commands.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;

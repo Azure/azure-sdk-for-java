@@ -15,8 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class FlowLogInformationInner {
     /*
-     * The ID of the resource to configure for flow log and traffic analytics
-     * (optional) .
+     * The ID of the resource to configure for flow log and traffic analytics (optional) .
      */
     @JsonProperty(value = "targetResourceId", required = true)
     private String targetResourceId;

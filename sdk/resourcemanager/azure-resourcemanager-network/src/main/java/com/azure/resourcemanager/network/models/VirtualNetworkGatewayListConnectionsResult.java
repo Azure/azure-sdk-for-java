@@ -13,8 +13,7 @@ import java.util.List;
 @Fluent
 public final class VirtualNetworkGatewayListConnectionsResult {
     /*
-     * A list of VirtualNetworkGatewayConnection resources that exists in a
-     * resource group.
+     * A list of VirtualNetworkGatewayConnection resources that exists in a resource group.
      */
     @JsonProperty(value = "value")
     private List<VirtualNetworkGatewayConnectionListEntityInner> value;

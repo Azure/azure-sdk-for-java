@@ -59,6 +59,9 @@ parameters:
 - name: TestMode
   type: string
   default: 'LIVE'
+- name: TestVersionSupport
+  type: boolean
+  default: false
 - name: CloudConfig
   type: object
   default:
@@ -101,9 +104,6 @@ parameters:
 - name: TestOptions
   type: string
   default: $(TestOptions)
-- name: AdditionalBuildOptions
-  type: string
-  default: $(AdditionalBuildOptions)
 - name: LtsVersion
   type: string
   default: $(JavaTestVersion)
@@ -138,13 +138,13 @@ stages:
               TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
               TestSetupSteps: ${{ parameters.TestSetupSteps }}
               TestMode: ${{ parameters.TestMode }}
+              TestVersionSupport: ${{ parameters.TestVersionSupport }}
               Artifacts: ${{ parameters.Artifacts }}
               AdditionalModules: ${{ parameters.AdditionalModules }}
               TestResultsFiles: ${{ parameters.TestResultsFiles }}
               DisableAzureResourceCreation: ${{ parameters.DisableAzureResourceCreation }}
               TestGoals: ${{ parameters.TestGoals }}
               TestOptions: ${{ parameters.TestOptions }}
-              AdditionalBuildOptions: ${{ parameters.AdditionalBuildOptions }}
 
             MatrixConfigs:
               # Enumerate platforms and additional platforms based on supported clouds (sparse platform<-->cloud matrix).

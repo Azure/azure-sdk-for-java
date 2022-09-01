@@ -10,6 +10,19 @@
 
 ### Other Changes
 
+## 4.4.6 (2022-08-17)
+
+### Bugs Fixed
+- Fixed an issue where requests sent by sync clients that should include a body could have an empty body instead. ([#30512](https://github.com/Azure/azure-sdk-for-java/pull/30512))
+
+## 4.4.5 (2022-08-15)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.31.0`.
+- Upgraded `azure-core-http-netty` dependency to `1.12.4`.
+
 ## 4.4.4 (2022-07-06)
 
 ### Other Changes

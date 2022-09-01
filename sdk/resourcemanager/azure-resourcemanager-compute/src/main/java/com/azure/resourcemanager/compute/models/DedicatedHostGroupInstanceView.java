@@ -12,8 +12,7 @@ import java.util.List;
 @Fluent
 public final class DedicatedHostGroupInstanceView {
     /*
-     * List of instance view of the dedicated hosts under the dedicated host
-     * group.
+     * List of instance view of the dedicated hosts under the dedicated host group.
      */
     @JsonProperty(value = "hosts")
     private List<DedicatedHostInstanceViewWithName> hosts;

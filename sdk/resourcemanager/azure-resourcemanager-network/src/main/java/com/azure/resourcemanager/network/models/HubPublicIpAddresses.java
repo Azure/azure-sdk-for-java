@@ -12,8 +12,7 @@ import java.util.List;
 @Fluent
 public final class HubPublicIpAddresses {
     /*
-     * The list of Public IP addresses associated with azure firewall or IP
-     * addresses to be retained.
+     * The list of Public IP addresses associated with azure firewall or IP addresses to be retained.
      */
     @JsonProperty(value = "addresses")
     private List<AzureFirewallPublicIpAddress> addresses;

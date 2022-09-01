@@ -14,11 +14,10 @@ import java.util.List;
 @Fluent
 public final class MaintenanceConfigurationProperties {
     /*
-     * Time slots during the week when planned maintenance is allowed to
-     * proceed.
+     * Time slots during the week when planned maintenance is allowed to proceed.
      *
-     * If two array entries specify the same day of the week, the applied
-     * configuration is the union of times in both entries.
+     * If two array entries specify the same day of the week, the applied configuration is the union of times in both
+     * entries.
      */
     @JsonProperty(value = "timeInWeek")
     private List<TimeInWeek> timeInWeek;

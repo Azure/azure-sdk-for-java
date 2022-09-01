@@ -6,7 +6,6 @@ package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import java.util.List;
-import java.util.Map;
 
 /** The HealthcareResultDocumentsItem model. */
 @Fluent
@@ -22,13 +21,6 @@ public final class HealthcareResultDocumentsItem extends HealthcareEntitiesDocum
     @Override
     public HealthcareResultDocumentsItem setRelations(List<HealthcareRelation> relations) {
         super.setRelations(relations);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public HealthcareResultDocumentsItem setFhirBundle(Map<String, Object> fhirBundle) {
-        super.setFhirBundle(fhirBundle);
         return this;
     }
 

@@ -13,8 +13,11 @@ import com.azure.spring.data.cosmos.repository.query.CosmosParameterParameterAcc
 import com.azure.spring.data.cosmos.repository.query.CosmosQueryMethod;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.Parameter;
 import org.springframework.data.repository.query.ResultProcessor;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -49,13 +52,29 @@ public class StringBasedCosmosQuery extends AbstractCosmosQuery {
         final CosmosParameterAccessor accessor = new CosmosParameterParameterAccessor(getQueryMethod(), parameters);
         final ResultProcessor processor = getQueryMethod().getResultProcessor().withDynamicProjection(accessor);
 
-        List<SqlParameter> sqlParameters = getQueryMethod().getParameters().stream()
-                            .filter(p -> !Pageable.class.isAssignableFrom(p.getType()) && !Sort.class.isAssignableFrom(p.getType()))
-                            .map(p -> new SqlParameter("@" + p.getName().orElse(""),
-                                                       toCosmosDbValue(parameters[p.getIndex()])))
-                            .collect(Collectors.toList());
+        String expandedQuery = query;
+        List<SqlParameter> sqlParameters = new ArrayList<>();
+        for (int paramIndex = 0; paramIndex < parameters.length; paramIndex++) {
+            Parameter queryParam = getQueryMethod().getParameters().getParameter(paramIndex);
+            if (parameters[paramIndex] instanceof Collection) {
+                List<String> expandParam = ((Collection<?>) parameters[paramIndex]).stream()
+                    .map(Object::toString).collect(Collectors.toList());
+                List<String> expandedParamKeys = new ArrayList<>();
+                for (int arrayIndex = 0; arrayIndex < expandParam.size(); arrayIndex++) {
+                    String paramName = "@" + queryParam.getName().orElse("") + arrayIndex;
+                    expandedParamKeys.add(paramName);
+                    sqlParameters.add(new SqlParameter(paramName, toCosmosDbValue(expandParam.get(arrayIndex))));
+                }
+                expandedQuery = expandedQuery.replaceAll("@" + queryParam.getName().orElse(""), String.join(",", expandedParamKeys));
+            } else {
+                if (!Pageable.class.isAssignableFrom(queryParam.getType())
+                    && !Sort.class.isAssignableFrom(queryParam.getType())) {
+                    sqlParameters.add(new SqlParameter("@" + queryParam.getName().orElse(""), toCosmosDbValue(parameters[paramIndex])));
+                }
+            }
+        }
 
-        SqlQuerySpec querySpec = new SqlQuerySpec(query, sqlParameters);
+        SqlQuerySpec querySpec = new SqlQuerySpec(expandedQuery, sqlParameters);
         if (isPageQuery()) {
             return this.operations.runPaginationQuery(querySpec, accessor.getPageable(), processor.getReturnedType().getDomainType(),
                                                       processor.getReturnedType().getReturnedType());

@@ -57,8 +57,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.function.Predicate;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.azure.core.implementation.TypeUtil.getRawClass;
@@ -69,7 +70,6 @@ import static com.azure.core.implementation.TypeUtil.typeImplementsInterface;
  * {@link RestProxy}.
  */
 public class SwaggerMethodParser implements HttpResponseDecodeData {
-    private static final Pattern PATTERN_COLON_SLASH_SLASH = Pattern.compile("://");
     private static final List<Class<? extends Annotation>> REQUIRED_HTTP_METHODS =
         Arrays.asList(Delete.class, Get.class, Head.class, Options.class, Patch.class, Post.class, Put.class);
 
@@ -82,8 +82,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private final String fullyQualifiedMethodName;
     private final HttpMethod httpMethod;
     private final String relativePath;
-    final List<Substitution> hostSubstitutions = new ArrayList<>();
-    private final List<Substitution> pathSubstitutions = new ArrayList<>();
+    final List<RangeReplaceSubstitution> hostSubstitutions = new ArrayList<>();
+    private final List<RangeReplaceSubstitution> pathSubstitutions = new ArrayList<>();
     private final List<QuerySubstitution> querySubstitutions = new ArrayList<>();
     private final List<Substitution> formSubstitutions = new ArrayList<>();
     private final List<Substitution> headerSubstitutions = new ArrayList<>();
@@ -212,12 +212,12 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                 final Class<? extends Annotation> annotationType = annotation.annotationType();
                 if (annotationType.equals(HostParam.class)) {
                     final HostParam hostParamAnnotation = (HostParam) annotation;
-                    hostSubstitutions.add(new Substitution(hostParamAnnotation.value(), parameterIndex,
-                        !hostParamAnnotation.encoded()));
+                    hostSubstitutions.add(new RangeReplaceSubstitution(hostParamAnnotation.value(), parameterIndex,
+                        !hostParamAnnotation.encoded(), rawHost));
                 } else if (annotationType.equals(PathParam.class)) {
                     final PathParam pathParamAnnotation = (PathParam) annotation;
-                    pathSubstitutions.add(new Substitution(pathParamAnnotation.value(), parameterIndex,
-                        !pathParamAnnotation.encoded()));
+                    pathSubstitutions.add(new RangeReplaceSubstitution(pathParamAnnotation.value(), parameterIndex,
+                        !pathParamAnnotation.encoded(), relativePath));
                 } else if (annotationType.equals(QueryParam.class)) {
                     final QueryParam queryParamAnnotation = (QueryParam) annotation;
                     querySubstitutions.add(new QuerySubstitution(queryParamAnnotation.value(), parameterIndex,
@@ -305,20 +305,21 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         setSchemeAndHost(rawHost, hostSubstitutions, swaggerMethodArguments, urlBuilder, serializer);
     }
 
-    static void setSchemeAndHost(String rawHost, List<Substitution> hostSubstitutions, Object[] swaggerMethodArguments,
-        UrlBuilder urlBuilder, SerializerAdapter serializer) {
+    static void setSchemeAndHost(String rawHost, List<RangeReplaceSubstitution> hostSubstitutions,
+        Object[] swaggerMethodArguments, UrlBuilder urlBuilder, SerializerAdapter serializer) {
         final String substitutedHost = applySubstitutions(rawHost, hostSubstitutions, swaggerMethodArguments,
             serializer);
-        final String[] substitutedHostParts = PATTERN_COLON_SLASH_SLASH.split(substitutedHost);
-
-        if (substitutedHostParts.length >= 2) {
-            urlBuilder.setScheme(substitutedHostParts[0]);
-            urlBuilder.setHost(substitutedHostParts[1]);
-        } else if (substitutedHostParts.length == 1) {
-            urlBuilder.setScheme(substitutedHostParts[0]);
+        int index = substitutedHost.indexOf("://");
+        if (index == -1) {
             urlBuilder.setHost(substitutedHost);
         } else {
-            urlBuilder.setHost(substitutedHost);
+            urlBuilder.setScheme(substitutedHost.substring(0, index));
+            String host = substitutedHost.substring(index + 3);
+            if (!CoreUtils.isNullOrEmpty(host)) {
+                urlBuilder.setHost(host);
+            } else {
+                urlBuilder.setHost(substitutedHost);
+            }
         }
     }
 
@@ -593,17 +594,18 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         return shouldEncode ? UrlEscapers.FORM_ESCAPER.escape(serializedValue) : serializedValue;
     }
 
-    private static String applySubstitutions(String originalValue, Iterable<Substitution> substitutions,
-                                      Object[] methodArguments, SerializerAdapter serializer) {
-        String result = originalValue;
-
-        if (methodArguments == null) {
-            return result;
+    private static String applySubstitutions(String originalValue, List<RangeReplaceSubstitution> substitutions,
+        Object[] methodArguments, SerializerAdapter serializer) {
+        if (methodArguments == null || CoreUtils.isNullOrEmpty(substitutions)) {
+            return originalValue;
         }
 
-        for (Substitution substitution : substitutions) {
+        int originalSize = originalValue.length();
+        int substitutionSize = originalSize;
+        SortedMap<RangeReplaceSubstitution.Range, String> replacements = new TreeMap<>();
+        for (RangeReplaceSubstitution substitution : substitutions) {
             final int substitutionParameterIndex = substitution.getMethodParameterIndex();
-            if (0 <= substitutionParameterIndex && substitutionParameterIndex < methodArguments.length) {
+            if (substitutionParameterIndex >= 0 && substitutionParameterIndex < methodArguments.length) {
                 final Object methodArgument = methodArguments[substitutionParameterIndex];
 
                 String substitutionValue = serialize(serializer, methodArgument);
@@ -615,11 +617,30 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                 if (substitutionValue == null) {
                     substitutionValue = "";
                 }
-                result = result.replace("{" + substitution.getUrlParameterName() + "}", substitutionValue);
+
+                for (RangeReplaceSubstitution.Range range : substitution.getRanges()) {
+                    substitutionSize += substitutionValue.length() - range.getSize();
+                    replacements.put(range, substitutionValue);
+                }
             }
         }
 
-        return result;
+        int last = 0;
+        StringBuilder builder = new StringBuilder(substitutionSize);
+        for (Map.Entry<RangeReplaceSubstitution.Range, String> replacement : replacements.entrySet()) {
+            if (last < replacement.getKey().getStart()) {
+                builder.append(originalValue, last, replacement.getKey().getStart());
+            }
+
+            builder.append(replacement.getValue());
+            last = replacement.getKey().getEnd();
+        }
+
+        if (last < originalSize) {
+            builder.append(originalValue, last, originalSize);
+        }
+
+        return builder.toString();
     }
 
     private Map<Integer, UnexpectedExceptionInformation> processUnexpectedResponseExceptionTypes() {

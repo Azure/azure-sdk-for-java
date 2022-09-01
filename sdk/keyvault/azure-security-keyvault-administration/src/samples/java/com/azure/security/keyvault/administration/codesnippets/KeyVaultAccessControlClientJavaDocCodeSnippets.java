@@ -30,7 +30,7 @@ public class KeyVaultAccessControlClientJavaDocCodeSnippets {
     public KeyVaultAccessControlClient createClient() {
         // BEGIN: com.azure.security.keyvault.administration.keyVaultAccessControlClient.instantiation
         KeyVaultAccessControlClient keyVaultAccessControlClient = new KeyVaultAccessControlClientBuilder()
-            .vaultUrl("https://myaccount.managedhsm.azure.net/")
+            .vaultUrl("<your-managed-hsm-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
         // END: com.azure.security.keyvault.administration.keyVaultAccessControlClient.instantiation

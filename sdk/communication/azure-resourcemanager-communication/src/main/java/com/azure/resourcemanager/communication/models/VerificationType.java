@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VerificationType. */
+/** Type of verification. */
 public final class VerificationType extends ExpandableStringEnum<VerificationType> {
     /** Static value Domain for VerificationType. */
     public static final VerificationType DOMAIN = fromString("Domain");

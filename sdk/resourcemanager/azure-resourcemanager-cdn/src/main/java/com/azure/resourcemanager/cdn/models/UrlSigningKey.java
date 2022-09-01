@@ -6,17 +6,14 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Url signing key. */
 @Fluent
 public final class UrlSigningKey {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UrlSigningKey.class);
-
     /*
-     * Defines the customer defined key Id. This id will exist in the incoming
-     * request to indicate the key used to form the hash.
+     * Defines the customer defined key Id. This id will exist in the incoming request to indicate the key used to form
+     * the hash.
      */
     @JsonProperty(value = "keyId", required = true)
     private String keyId;
@@ -76,12 +73,12 @@ public final class UrlSigningKey {
      */
     public void validate() {
         if (keyId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property keyId in model UrlSigningKey"));
         }
         if (keySourceParameters() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property keySourceParameters in model UrlSigningKey"));
@@ -89,4 +86,6 @@ public final class UrlSigningKey {
             keySourceParameters().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UrlSigningKey.class);
 }

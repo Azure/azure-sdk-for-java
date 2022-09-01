@@ -12,9 +12,8 @@ import java.util.List;
 @Fluent
 public final class SharingProfile {
     /*
-     * This property allows you to specify the permission of sharing gallery.
-     * <br><br> Possible values are: <br><br> **Private** <br><br> **Groups**
-     * <br><br> **Community**
+     * This property allows you to specify the permission of sharing gallery. <br><br> Possible values are: <br><br>
+     * **Private** <br><br> **Groups** <br><br> **Community**
      */
     @JsonProperty(value = "permissions")
     private GallerySharingPermissionTypes permissions;
@@ -26,8 +25,7 @@ public final class SharingProfile {
     private List<SharingProfileGroup> groups;
 
     /*
-     * Information of community gallery if current gallery is shared to
-     * community.
+     * Information of community gallery if current gallery is shared to community.
      */
     @JsonProperty(value = "communityGalleryInfo")
     private CommunityGalleryInfo communityGalleryInfo;
