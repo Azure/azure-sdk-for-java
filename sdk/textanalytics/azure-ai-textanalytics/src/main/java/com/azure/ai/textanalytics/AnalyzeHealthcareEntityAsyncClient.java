@@ -564,7 +564,7 @@ class AnalyzeHealthcareEntityAsyncClient {
     }
 
     private void throwIfCallingNotAvailableFeatureInOptions(AnalyzeHealthcareEntitiesOptions options) {
-        if (options.getDisplayName() != null) {
+        if (options != null && options.getDisplayName() != null) {
             throwIfTargetServiceVersionFound(serviceVersion,
                 Arrays.asList(TextAnalyticsServiceVersion.V3_1),
                 getUnsupportedServiceApiVersionMessage("AnalyzeHealthcareEntitiesOptions.displayName",
