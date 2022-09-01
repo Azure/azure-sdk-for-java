@@ -120,6 +120,7 @@ io.lettuce:lettuce-core;6.2.0.RELEASE
 org.redisson:redisson;3.17.0
 net.bytebuddy:byte-buddy;1.12.13
 
+
 ## Spring boot dependency versions
 org.springframework.boot:spring-boot-dependencies;2.7.3
 org.springframework.boot:spring-boot-actuator;2.7.3
@@ -397,3 +398,11 @@ storage_com.microsoft.azure:azure-storage;8.4.0
 
 # sdk\appconfiguration\azure-spring-cloud-test-appconfiguration-config\pom.xml
 spring_com.microsoft.azure:azure;1.34.0
+
+# sdk\monitor\azure-monitor-opentelemetry-exporter\pom.xml
+uk.org.webcompere:system-stubs-jupiter:jar:2.0.1
+io.opentelemetry:opentelemetry-semconv:jar:1.17.0-alpha
+io.opentelemetry.instrumentation:opentelemetry-instrumentation-api:jar:1.17.0-alpha
+io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv:jar:1.17.0-alpha
+io.opentelemetry:opentelemetry-sdk-logs:jar:1.17.0-alpha
+com.github.spotbugs:spotbugs-annotations:jar:4.7.1

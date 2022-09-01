@@ -21,16 +21,15 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.ExceptionDetailBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.Exceptions;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryExceptionDetails;
-import org.junit.jupiter.api.Test;
-
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 public class ExceptionsTest {
 
@@ -48,6 +47,22 @@ public class ExceptionsTest {
         TelemetryExceptionDetails details = list.get(0).build();
         assertThat(details.getTypeName()).isEqualTo(IllegalStateException.class.getName());
         assertThat(details.getMessage()).isEqualTo("test");
+    }
+
+    @Test
+    public void testMinimalParseWithColonInMessage() {
+        // given
+        String str = toString(new IllegalStateException("hello: world"));
+
+        // when
+        List<ExceptionDetailBuilder> list = Exceptions.minimalParse(str);
+
+        // then
+        assertThat(list.size()).isEqualTo(1);
+
+        TelemetryExceptionDetails details = list.get(0).build();
+        assertThat(details.getTypeName()).isEqualTo(IllegalStateException.class.getName());
+        assertThat(details.getMessage()).isEqualTo("hello: world");
     }
 
     @Test

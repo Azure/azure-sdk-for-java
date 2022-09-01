@@ -1,7 +1,27 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+/*
+ * ApplicationInsights-Java
+ * Copyright (c) Microsoft Corporation
+ * All rights reserved.
+ *
+ * MIT License
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this
+ * software and associated documentation files (the ""Software""), to deal in the Software
+ * without restriction, including without limitation the rights to use, copy, modify, merge,
+ * publish, distribute, sublicense, and/or sell copies of the Software, and to permit
+ * persons to whom the Software is furnished to do so, subject to the following conditions:
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ * THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ * PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+ * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
 
 package com.azure.monitor.opentelemetry.exporter;
+
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 import com.azure.core.util.Configuration;
 import io.opentelemetry.api.common.Attributes;
@@ -19,20 +39,16 @@ import io.opentelemetry.sdk.trace.data.EventData;
 import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.data.StatusData;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
+import io.opentelemetry.sdk.trace.export.SpanExporter;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
-
-/**
- * Unit tests for {@AzureMonitorExporter}.
- */
+/** Unit tests for {@link AzureMonitorTraceExporter}. */
 public class AzureMonitorTraceExporterTest extends MonitorExporterClientTestBase {
 
     private static final String TRACE_ID = TraceId.fromLongs(10L, 2L);
@@ -41,18 +57,19 @@ public class AzureMonitorTraceExporterTest extends MonitorExporterClientTestBase
 
     @Test
     public void testExportRequestData() {
-        String connectionStringTemplate = "InstrumentationKey=ikey;IngestionEndpoint=https://testendpoint.com";
-        String connectionString = Configuration.getGlobalConfiguration()
-            .get("APPLICATIONINSIGHTS_CONNECTION_STRING", connectionStringTemplate);
-        AzureMonitorTraceExporter azureMonitorTraceExporter = getClientBuilder()
-            .connectionString(connectionString)
-            .buildTraceExporter();
-        CompletableResultCode export = azureMonitorTraceExporter.export(Collections.singleton(new RequestSpanData()));
+        String connectionStringTemplate =
+            "InstrumentationKey=ikey;IngestionEndpoint=https://testendpoint.com";
+        String connectionString =
+            Configuration.getGlobalConfiguration()
+                .get("APPLICATIONINSIGHTS_CONNECTION_STRING", connectionStringTemplate);
+        SpanExporter azureMonitorTraceExporter =
+            getClientBuilder().connectionString(connectionString).buildTraceExporter();
+        CompletableResultCode export =
+            azureMonitorTraceExporter.export(Collections.singleton(new RequestSpanData()));
         export.join(30, TimeUnit.SECONDS);
         Assertions.assertTrue(export.isDone());
         Assertions.assertTrue(export.isSuccess());
     }
-
 
     static class RequestSpanData implements SpanData {
 
@@ -83,7 +100,7 @@ public class AzureMonitorTraceExporterTest extends MonitorExporterClientTestBase
 
         @Override
         public Resource getResource() {
-            return null;
+            return Resource.create(Attributes.empty());
         }
 
         @Override
@@ -93,7 +110,7 @@ public class AzureMonitorTraceExporterTest extends MonitorExporterClientTestBase
 
         @Override
         public InstrumentationScopeInfo getInstrumentationScopeInfo() {
-            return InstrumentationScopeInfo.create("TestLib", "1", "2");
+            return InstrumentationScopeInfo.create("TestLib", "1", null);
         }
 
         @Override

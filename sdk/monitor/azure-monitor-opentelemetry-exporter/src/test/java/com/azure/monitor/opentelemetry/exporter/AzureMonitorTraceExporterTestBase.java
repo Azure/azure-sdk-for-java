@@ -11,6 +11,7 @@ import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
+import io.opentelemetry.sdk.trace.export.SpanExporter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,9 +31,9 @@ public class AzureMonitorTraceExporterTestBase extends TestBase {
     }
 
     Tracer configureAzureMonitorExporter(HttpPipelinePolicy validator) {
-        AzureMonitorTraceExporter exporter = new AzureMonitorExporterBuilder()
+        SpanExporter exporter = new AzureMonitorExporterBuilder()
             .connectionString(System.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING"))
-            .addPolicy(validator)
+            .addHttpPipelinePolicy(validator)
             .buildTraceExporter();
 
         SdkTracerProvider tracerProvider = SdkTracerProvider.builder()

@@ -21,11 +21,11 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 
+import static java.util.concurrent.TimeUnit.NANOSECONDS;
+
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-
-import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 public final class FormattedTime {
 
@@ -41,6 +41,5 @@ public final class FormattedTime {
         return Instant.ofEpochMilli(epochMillis).atOffset(ZoneOffset.UTC);
     }
 
-    private FormattedTime() {
-    }
+    private FormattedTime() {}
 }

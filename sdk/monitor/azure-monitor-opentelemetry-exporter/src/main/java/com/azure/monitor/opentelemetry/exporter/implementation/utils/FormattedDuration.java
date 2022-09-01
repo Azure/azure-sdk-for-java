@@ -103,6 +103,5 @@ public final class FormattedDuration {
         sb.append(value);
     }
 
-    private FormattedDuration() {
-    }
+    private FormattedDuration() {}
 }

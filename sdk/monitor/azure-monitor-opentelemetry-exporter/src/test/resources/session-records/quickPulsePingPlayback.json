@@ -1,0 +1,22 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.services.visualstudio.com/QuickPulseService.svc/ping?ikey=ikey123",
+    "Headers" : { },
+    "Response" : {
+      "content-length" : "0",
+      "Access-Control-Expose-Headers" : "Request-Context",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-IIS/10.0",
+      "x-ms-qps-subscribed" : "true",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 17 Aug 2021 19:16:11 GMT",
+      "Request-Context" : "appId=cid-v1:f2ce62bd-2d53-4529-bb5c-c9826082918f",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

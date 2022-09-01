@@ -122,6 +122,5 @@ public class UrlParser {
         return len;
     }
 
-    private UrlParser() {
-    }
+    private UrlParser() {}
 }
