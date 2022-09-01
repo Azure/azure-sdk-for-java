@@ -28,10 +28,6 @@ and `customDocumentModelLimit` on model `ResourceDetails`.
   - `beginBuildModel` to `beginBuildDocumentModel`
   - `beginComposeModel` to `beginComposeDocumentModel`
 
-### Bugs Fixed
-
-### Other Changes
-
 ## 3.1.14 (2022-08-11)
 
 ### Other Changes
