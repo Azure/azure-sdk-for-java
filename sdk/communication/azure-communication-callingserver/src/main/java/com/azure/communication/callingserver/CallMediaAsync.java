@@ -140,8 +140,8 @@ public class CallMediaAsync {
                 dtmfConfigurationsInternal = new DtmfConfigurationsInternal()
                     .setMaxTonesToCollect(dtmfConfigurations.getMaxTonesToCollect());
 
-                if (dtmfConfigurations.getInterToneTimeoutInSeconds() != null) {
-                    dtmfConfigurationsInternal.setInterToneTimeoutInSeconds((int) dtmfConfigurations.getInterToneTimeoutInSeconds().getSeconds());
+                if (dtmfConfigurations.getInterToneTimeout() != null) {
+                    dtmfConfigurationsInternal.setInterToneTimeoutInSeconds((int) dtmfConfigurations.getInterToneTimeout().getSeconds());
                 }
                 if (dtmfConfigurations.getStopTones() != null) {
                     dtmfConfigurationsInternal
