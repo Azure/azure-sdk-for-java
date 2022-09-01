@@ -15,7 +15,6 @@ module com.azure.monitor.opentelemetry.exporter {
     requires com.github.spotbugs.annotations;
     requires jsr305;
     requires io.netty.handler;
-    requires opentelemetry.instrumentation.api;
     requires io.opentelemetry.context;
     requires java.management;
 

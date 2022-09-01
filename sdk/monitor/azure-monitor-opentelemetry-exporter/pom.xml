@@ -133,12 +133,6 @@
     </dependency>
     <dependency>
       <groupId>io.opentelemetry.instrumentation</groupId>
-      <artifactId>opentelemetry-instrumentation-api</artifactId>
-      <version>1.14.0-alpha</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-instrumentation-api;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.opentelemetry.instrumentation</groupId>
       <artifactId>opentelemetry-instrumentation-api-semconv</artifactId>
       <version>1.14.0-alpha</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv;external_dependency} -->
     </dependency>
@@ -201,7 +195,6 @@
                 <include>io.opentelemetry:opentelemetry-sdk:[1.14.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
                 <include>uk.org.webcompere:system-stubs-jupiter:[2.0.1]</include> <!-- {x-include-update;uk.org.webcompere:system-stubs-jupiter;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-semconv:[1.14.0-alpha]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-semconv;external_dependency} -->
-                <include>io.opentelemetry.instrumentation:opentelemetry-instrumentation-api:[1.14.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-instrumentation-api;external_dependency} -->
                 <include>io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv:[1.14.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk-logs:[1.14.0-alpha]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-logs;external_dependency} -->
                 <include>com.github.spotbugs:spotbugs-annotations:[4.2.2]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
