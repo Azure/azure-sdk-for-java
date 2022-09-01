@@ -364,7 +364,7 @@ public class RequestResponseChannel implements AsyncCloseable {
                         sendLink.advance();
                     });
                 } catch (IOException | RejectedExecutionException e) {
-                    recordDelivery(sink.contextView(), null);
+                    recordDelivery(getSinkContext(sink), null);
                     sink.error(e);
                 }
             })));
@@ -407,7 +407,7 @@ public class RequestResponseChannel implements AsyncCloseable {
             return;
         }
 
-        recordDelivery(sink.contextView(), message);
+        recordDelivery(getSinkContext(sink), message);
         sink.success(message);
     }
 
@@ -490,7 +490,7 @@ public class RequestResponseChannel implements AsyncCloseable {
         while ((next = unconfirmedSends.pollFirstEntry()) != null) {
             // pollFirstEntry: atomic retrieve and remove of each entry.
             MonoSink<Message> sink = next.getValue();
-            recordDelivery(sink.contextView(), null);
+            recordDelivery(getSinkContext(sink), null);
             sink.error(error);
             count++;
         }
@@ -519,6 +519,11 @@ public class RequestResponseChannel implements AsyncCloseable {
         }
 
         return publisher;
+    }
+
+    @SuppressWarnings("deprecation")
+    private static ContextView getSinkContext(MonoSink<?> sink) {
+        return sink.currentContext();
     }
 
     /**
