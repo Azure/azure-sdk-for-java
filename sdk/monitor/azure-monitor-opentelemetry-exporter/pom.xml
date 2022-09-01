@@ -202,6 +202,7 @@
                 <include>io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv:[1.17.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk-logs:[1.17.0-alpha]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-logs;external_dependency} -->
                 <include>com.github.spotbugs:spotbugs-annotations:[4.7.1]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
+                <include>javax.annotation:javax.annotation-api:[1.3.2]</include> <!-- {x-include-update;javax.annotation:javax.annotation-api;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
