@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.json;
+package com.azure.json.implementation;
 
+import com.azure.json.JsonOptions;
+import com.azure.json.JsonWriter;
 import com.azure.json.contract.JsonWriterContractTests;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -20,7 +22,7 @@ public class DefaultJsonWriterContractTests extends JsonWriterContractTests {
     @BeforeEach
     public void beforeEach() {
         this.outputStream = new ByteArrayOutputStream();
-        this.writer = DefaultJsonWriter.toStream(outputStream);
+        this.writer = DefaultJsonWriter.toStream(outputStream, new JsonOptions());
     }
 
     @Override
