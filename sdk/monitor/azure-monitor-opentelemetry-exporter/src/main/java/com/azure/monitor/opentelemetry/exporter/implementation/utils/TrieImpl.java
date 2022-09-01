@@ -102,6 +102,7 @@ public final class TrieImpl<V> implements Trie<V> {
     }
   }
 
+  @SuppressWarnings({"unchecked", "rawtypes"})
   static final class NodeBuilder<V> {
     final Map<Character, NodeBuilder<V>> children = new HashMap<>();
     V value;

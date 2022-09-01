@@ -45,6 +45,7 @@ public final class CpuPerformanceCounterCalculator {
 
   private ObjectName osBean;
 
+  @SuppressWarnings("try")
   // this is not normalized by number of cores, so can be 800% with 8 cores
   @Nullable
   public Double getCpuPercentage() {

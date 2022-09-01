@@ -42,6 +42,7 @@ public class HostName {
    *
    * @return the local hostname, or null
    */
+  @SuppressWarnings("try")
   @Nullable
   public static String get() {
     try {

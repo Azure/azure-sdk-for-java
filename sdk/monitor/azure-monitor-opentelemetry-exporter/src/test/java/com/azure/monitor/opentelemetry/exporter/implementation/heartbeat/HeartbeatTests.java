@@ -38,7 +38,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 class HeartbeatTests {
-
+  @SuppressWarnings("unchecked")
   private final Consumer<List<TelemetryItem>> telemetryItemsConsumer = mock(Consumer.class);
 
   @Test
@@ -92,6 +92,7 @@ class HeartbeatTests {
     assertThat(data.getMetrics().get(0).getValue()).isEqualTo(2);
   }
 
+  @SuppressWarnings("unchecked")
   @Test
   void sentHeartbeatContainsExpectedDefaultFields() throws Exception {
     HeartbeatExporter mockProvider = Mockito.mock(HeartbeatExporter.class);
@@ -129,6 +130,7 @@ class HeartbeatTests {
     assertThat(provider.addHeartBeatProperty("test01", "test val 2", true)).isFalse();
   }
 
+  @SuppressWarnings("unchecked")
   @Test
   void cannotAddUnknownDefaultProperty() throws Exception {
     DefaultHeartBeatPropertyProvider base = new DefaultHeartBeatPropertyProvider();

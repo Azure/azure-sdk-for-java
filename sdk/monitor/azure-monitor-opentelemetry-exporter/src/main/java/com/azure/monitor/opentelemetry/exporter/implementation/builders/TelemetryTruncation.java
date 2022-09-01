@@ -38,6 +38,7 @@ final class TelemetryTruncation {
     private static final Set<String> alreadyLoggedAttributeNames = ConcurrentHashMap.newKeySet();
     private static final Set<String> alreadyLoggedPropertyKeys = ConcurrentHashMap.newKeySet();
 
+    @SuppressWarnings("try")
     static String truncateTelemetry(@Nullable String value, int maxLength, String attributeName) {
         if (value == null || value.length() <= maxLength) {
             return value;
@@ -59,6 +60,7 @@ final class TelemetryTruncation {
         return value.substring(0, maxLength);
     }
 
+    @SuppressWarnings("try")
     static String truncatePropertyValue(@Nullable String value, int maxLength, String propertyKey) {
         if (value == null || value.length() <= maxLength) {
             return value;

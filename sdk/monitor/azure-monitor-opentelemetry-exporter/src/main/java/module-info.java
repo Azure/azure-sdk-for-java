@@ -17,6 +17,7 @@ module com.azure.monitor.opentelemetry.exporter {
     requires java.management;
     requires io.netty.handler;
     requires opentelemetry.instrumentation.api;
+    requires io.opentelemetry.context;
 
     exports com.azure.monitor.opentelemetry.exporter;
 

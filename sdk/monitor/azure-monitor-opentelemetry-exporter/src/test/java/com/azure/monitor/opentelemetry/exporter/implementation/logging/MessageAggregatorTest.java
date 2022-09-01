@@ -26,6 +26,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static com.azure.monitor.opentelemetry.exporter.implementation.utils.AzureMonitorMsgId.INGESTION_ERROR;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class MessageAggregatorTest {
   private static OperationLogger networkExceptionStats;

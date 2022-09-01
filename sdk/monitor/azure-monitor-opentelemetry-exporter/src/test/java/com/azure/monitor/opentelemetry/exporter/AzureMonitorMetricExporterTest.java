@@ -143,6 +143,7 @@ public class AzureMonitorMetricExporterTest {
     assertThat(metricData.getName()).isEqualTo("testDoubleGauge");
   }
 
+  @SuppressWarnings("unchecked")
   @Test
   public void testLongCounter() throws InterruptedException {
     LongCounter counter = meter.counterBuilder("testLongCounter").build();
