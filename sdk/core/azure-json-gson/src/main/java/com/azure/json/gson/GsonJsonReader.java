@@ -39,7 +39,7 @@ public final class GsonJsonReader extends JsonReader {
      * @param options {@link JsonOptions} to configure the creation of the {@link JsonReader}.
      * @return An instance of {@link GsonJsonReader}.
      */
-    public static JsonReader fromBytes(byte[] json, JsonOptions options) {
+    static JsonReader fromBytes(byte[] json, JsonOptions options) {
         return new GsonJsonReader(new InputStreamReader(new ByteArrayInputStream(json), StandardCharsets.UTF_8),
             true, json, null, options);
     }
@@ -51,7 +51,7 @@ public final class GsonJsonReader extends JsonReader {
      * @param options {@link JsonOptions} to configure the creation of the {@link JsonReader}.
      * @return An instance of {@link GsonJsonReader}.
      */
-    public static JsonReader fromString(String json, JsonOptions options) {
+    static JsonReader fromString(String json, JsonOptions options) {
         return new GsonJsonReader(new StringReader(json), true, null, json, options);
     }
 
@@ -62,7 +62,7 @@ public final class GsonJsonReader extends JsonReader {
      * @param options {@link JsonOptions} to configure the creation of the {@link JsonReader}.
      * @return An instance of {@link GsonJsonReader}.
      */
-    public static JsonReader fromStream(InputStream json, JsonOptions options) {
+    static JsonReader fromStream(InputStream json, JsonOptions options) {
         return new GsonJsonReader(new InputStreamReader(json, StandardCharsets.UTF_8), json.markSupported(), null, null,
             options);
     }
@@ -74,7 +74,7 @@ public final class GsonJsonReader extends JsonReader {
      * @param options {@link JsonOptions} to configure the creation of the {@link JsonReader}.
      * @return An instance of {@link GsonJsonReader}.
      */
-    public static JsonReader fromReader(Reader json, JsonOptions options) {
+    static JsonReader fromReader(Reader json, JsonOptions options) {
         return new GsonJsonReader(json, json.markSupported(), null, null, options);
     }
 

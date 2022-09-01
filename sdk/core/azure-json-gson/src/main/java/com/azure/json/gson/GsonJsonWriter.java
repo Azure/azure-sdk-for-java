@@ -36,7 +36,7 @@ public final class GsonJsonWriter extends JsonWriter {
      * @param options {@link JsonOptions} to configure the creation of the {@link JsonWriter}.
      * @return An instance of {@link GsonJsonWriter}.
      */
-    public static JsonWriter toStream(OutputStream stream, JsonOptions options) {
+    static JsonWriter toStream(OutputStream stream, JsonOptions options) {
         return new GsonJsonWriter(new OutputStreamWriter(stream, StandardCharsets.UTF_8), options);
     }
 
@@ -50,7 +50,7 @@ public final class GsonJsonWriter extends JsonWriter {
      * @param options {@link JsonOptions} to configure the creation of the {@link JsonWriter}.
      * @return An instance of {@link GsonJsonWriter}.
      */
-    public static JsonWriter toWriter(Writer writer, JsonOptions options) {
+    static JsonWriter toWriter(Writer writer, JsonOptions options) {
         return new GsonJsonWriter(writer, options);
     }
 
