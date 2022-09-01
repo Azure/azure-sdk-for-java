@@ -16,7 +16,7 @@ import reactor.util.function.Tuples;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTests<ServiceBusSubscription,
+class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTests<ServiceBusSubscription,
     Tuple3<String, String, String>> {
 
     private static final String NAMESPACE = "namespace";

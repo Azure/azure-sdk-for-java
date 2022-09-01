@@ -17,7 +17,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 ### Spring Cloud Azure Resource Manager
 
 #### Bugs Fixed
-- Fix bug: Service Bus stream binder cannot automatically create Topic/Subscriptions from consumer.
+- Fix the Service Bus stream binder cannot automatically create Topic/Subscriptions from consumer. [#30722](https://github.com/Azure/azure-sdk-for-java/pull/30722).
 
 ## 4.3.0 (2022-06-29)
 - This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.9, 2.7.0-2.7.1. (Note: 2.5.x (x>14), 2.6.y (y>9) and 2.7.z (z>1) should be supported, but they aren't tested with this release.)
