@@ -32,8 +32,7 @@ public class AadRestOperationConfiguration {
 
     /**
      * Declare {@link RestOperations} bean which will be used when send http request to Azure AD and Azure AD B2C.
-     * <p>
-     * <p/>
+     * <br/>
      * For example:
      * <ul>
      *     <li> In {@link ResourceRetriever} declared in {@link AadAuthenticationFilterAutoConfiguration}.
@@ -56,12 +55,10 @@ public class AadRestOperationConfiguration {
 
     /**
      * Declare {@link HttpMessageConverters} bean which can be used in {@link RestTemplateAutoConfiguration}.
-     * <p>
-     * <p/>
+     * <br/>
      * {@link FormHttpMessageConverter} and {@link OAuth2AccessTokenResponseHttpMessageConverter} is necessary for
      * kinds of {@link OAuth2AccessTokenResponseClient} implementations(like
      * {@link DefaultAuthorizationCodeTokenResponseClient})
-     * .
      *
      * @return HttpMessageConverters bean
      */
