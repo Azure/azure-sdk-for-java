@@ -110,11 +110,13 @@ class AnalyzeHealthcareEntityAsyncClient {
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
 
             if (service != null) {
+                final String displayName = options.getDisplayName();
                 return new PollerFlux<>(
                     DEFAULT_POLL_INTERVAL,
                     activationOperation(
                         service.submitJobWithResponseAsync(
                             new AnalyzeTextJobsInput()
+                                .setDisplayName(displayName)
                                 .setAnalysisInput(
                                     new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
                                 .setTasks(Arrays.asList(
@@ -187,11 +189,13 @@ class AnalyzeHealthcareEntityAsyncClient {
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
 
             if (service != null) {
+                final String displayName = options.getDisplayName();
                 return new PollerFlux<>(
                     DEFAULT_POLL_INTERVAL,
                     activationOperation(
                         service.submitJobWithResponseAsync(
                             new AnalyzeTextJobsInput()
+                                .setDisplayName(displayName)
                                 .setAnalysisInput(
                                     new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
                                 .setTasks(Arrays.asList(
@@ -541,7 +545,8 @@ class AnalyzeHealthcareEntityAsyncClient {
             status = LongRunningOperationStatus.fromString(
                 analyzeOperationResultResponse.getValue().getStatus().toString(), true);
         }
-
+        AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setDisplayName(operationResultPollResponse.getValue(),
+            analyzeOperationResultResponse.getValue().getDisplayName());
         AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setCreatedAt(operationResultPollResponse.getValue(),
             analyzeOperationResultResponse.getValue().getCreatedDateTime());
         AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setLastModifiedAt(
