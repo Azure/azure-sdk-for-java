@@ -1,7 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.xml;
+package com.azure.xml.implementation;
+
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
@@ -12,6 +16,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.Objects;
 
 /**
  * Default {@link XmlWriter} implementation based on {@link XMLStreamReader}.
@@ -34,10 +39,12 @@ public final class DefaultXmlReader extends XmlReader {
      *
      * @param xml The XML to parse.
      * @return A new {@link XmlReader} instance.
+     * @throws NullPointerException If {@code xml} is null.
      * @throws XMLStreamException If an {@link XmlReader} cannot be instantiated.
      */
     public static XmlReader fromBytes(byte[] xml) throws XMLStreamException {
-        return fromInputStream(new ByteArrayInputStream(xml));
+        Objects.requireNonNull(xml, "'xml' cannot be null.");
+        return fromStream(new ByteArrayInputStream(xml));
     }
 
     /**
@@ -45,9 +52,11 @@ public final class DefaultXmlReader extends XmlReader {
      *
      * @param xml The XML to parse.
      * @return A new {@link XmlReader} instance.
+     * @throws NullPointerException If {@code xml} is null.
      * @throws XMLStreamException If an {@link XmlReader} cannot be instantiated.
      */
     public static XmlReader fromString(String xml) throws XMLStreamException {
+        Objects.requireNonNull(xml, "'xml' cannot be null.");
         return fromReader(new StringReader(xml));
     }
 
@@ -56,9 +65,11 @@ public final class DefaultXmlReader extends XmlReader {
      *
      * @param xml The XML to parse.
      * @return A new {@link XmlReader} instance.
+     * @throws NullPointerException If {@code xml} is null.
      * @throws XMLStreamException If an {@link XmlReader} cannot be instantiated.
      */
-    public static XmlReader fromInputStream(InputStream xml) throws XMLStreamException {
+    public static XmlReader fromStream(InputStream xml) throws XMLStreamException {
+        Objects.requireNonNull(xml, "'xml' cannot be null.");
         return new DefaultXmlReader(XML_INPUT_FACTORY.createXMLStreamReader(xml));
     }
 
@@ -67,9 +78,11 @@ public final class DefaultXmlReader extends XmlReader {
      *
      * @param xml The XML to parse.
      * @return A new {@link XmlReader} instance.
+     * @throws NullPointerException If {@code xml} is null.
      * @throws XMLStreamException If an {@link XmlReader} cannot be instantiated.
      */
     public static XmlReader fromReader(Reader xml) throws XMLStreamException {
+        Objects.requireNonNull(xml, "'xml' cannot be null.");
         return new DefaultXmlReader(XML_INPUT_FACTORY.createXMLStreamReader(xml));
     }
 

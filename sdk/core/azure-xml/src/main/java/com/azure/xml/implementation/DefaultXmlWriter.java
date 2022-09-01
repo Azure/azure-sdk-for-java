@@ -1,13 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.xml;
+package com.azure.xml.implementation;
+
+import com.azure.xml.XmlWriter;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
@@ -24,13 +27,28 @@ public final class DefaultXmlWriter extends XmlWriter {
     /**
      * Creates an instance of {@link XmlWriter} that writes to the provided {@link OutputStream}.
      *
-     * @param outputStream The {@link OutputStream} where content will be written.
+     * @param xml The {@link OutputStream} where content will be written.
      * @return A new instance of {@link XmlWriter}.
+     * @throws NullPointerException If {@code xml} is null.
      * @throws XMLStreamException If an {@link XmlWriter} cannot be instantiated.
      */
-    public static XmlWriter toOutputStream(OutputStream outputStream) throws XMLStreamException {
+    public static XmlWriter toStream(OutputStream xml) throws XMLStreamException {
+        Objects.requireNonNull(xml, "'xml' cannot be null.");
         return new DefaultXmlWriter(XML_OUTPUT_FACTORY.createXMLStreamWriter(
-            new OutputStreamWriter(outputStream, StandardCharsets.UTF_8)));
+            new OutputStreamWriter(xml, StandardCharsets.UTF_8)));
+    }
+
+    /**
+     * Creates an instance of {@link XmlWriter} that writes to the provided {@link Writer}.
+     *
+     * @param xml The {@link Writer} where content will be written.
+     * @return A new instance of {@link XmlWriter}.
+     * @throws NullPointerException If {@code xml} is null.
+     * @throws XMLStreamException If an {@link XmlWriter} cannot be instantiated.
+     */
+    public static XmlWriter toWriter(Writer xml) throws XMLStreamException {
+        Objects.requireNonNull(xml, "'xml' cannot be null.");
+        return new DefaultXmlWriter(XML_OUTPUT_FACTORY.createXMLStreamWriter(xml));
     }
 
     private DefaultXmlWriter(XMLStreamWriter writer) {

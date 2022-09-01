@@ -4,6 +4,7 @@
 package com.azure.xml;
 
 import com.azure.xml.contract.XmlReaderContractTests;
+import com.azure.xml.implementation.DefaultXmlReader;
 
 import javax.xml.stream.XMLStreamException;
 

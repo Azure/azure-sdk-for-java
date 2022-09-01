@@ -3,6 +3,7 @@
 
 package com.azure.json.gson;
 
+import com.azure.json.JsonOptions;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriteContext;
 import com.azure.json.JsonWriter;
@@ -10,6 +11,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Objects;
@@ -29,18 +31,36 @@ public final class GsonJsonWriter extends JsonWriter {
      * The passed {@link OutputStream} won't be closed when {@link #close()} is called as the {@link GsonJsonWriter}
      * isn't the owner of the stream.
      *
-     * @param stream The {@link OutputStream} that will be written.
+     * @param json The {@link OutputStream} that will be written.
+     * @param options {@link JsonOptions} to configure the creation of the {@link JsonWriter}.
      * @return An instance of {@link GsonJsonWriter}.
-     * @throws IOException If a {@link JsonWriter} fails to be created targeting the {@code stream} as the content
-     * container.
+     * @throws NullPointerException If {@code json} is null.
+     *
      */
-    public static JsonWriter toStream(OutputStream stream) throws IOException {
-        return new GsonJsonWriter(new com.google.gson.stream.JsonWriter(
-            new OutputStreamWriter(stream, StandardCharsets.UTF_8)));
+    static JsonWriter toStream(OutputStream json, JsonOptions options) {
+        Objects.requireNonNull(json, "'json' cannot be null.");
+        return new GsonJsonWriter(new OutputStreamWriter(json, StandardCharsets.UTF_8), options);
     }
 
-    private GsonJsonWriter(com.google.gson.stream.JsonWriter writer) {
-        this.writer = writer;
+    /**
+     * Creates a {@link GsonJsonWriter} that writes the given {@link Writer}.
+     * <p>
+     * The passed {@link Writer} won't be closed when {@link #close()} is called as the {@link GsonJsonWriter}
+     * isn't the owner of the stream.
+     *
+     * @param json The {@link Writer} that will be written.
+     * @param options {@link JsonOptions} to configure the creation of the {@link JsonWriter}.
+     * @return An instance of {@link GsonJsonWriter}.
+     * @throws NullPointerException If {@code json} is null.
+     */
+    static JsonWriter toWriter(Writer json, JsonOptions options) {
+        Objects.requireNonNull(json, "'json' cannot be null.");
+        return new GsonJsonWriter(json, options);
+    }
+
+    private GsonJsonWriter(Writer writer, JsonOptions options) {
+        this.writer = new com.google.gson.stream.JsonWriter(writer);
+        this.writer.setLenient(options.isNonNumericNumbersSupported());
     }
 
     @Override
