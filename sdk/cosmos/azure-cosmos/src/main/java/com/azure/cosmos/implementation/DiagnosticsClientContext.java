@@ -77,6 +77,7 @@ public interface DiagnosticsClientContext {
         private int clientId;
 
         private ConsistencyLevel consistencyLevel;
+        private boolean readRequestsFallbackEnabled;
         private boolean connectionSharingAcrossClientsEnabled;
         private String consistencyRelatedConfigAsString;
         private String httpConfigAsString;
@@ -133,6 +134,11 @@ public interface DiagnosticsClientContext {
             return this;
         }
 
+        public DiagnosticsClientConfig withReadRequestsFallbackEnabled(boolean readRequestsFallbackEnabled)
+        {
+            this.readRequestsFallbackEnabled = readRequestsFallbackEnabled;
+            return this;
+        }
         public DiagnosticsClientConfig withRntbdOptions(String rntbdConfigAsString) {
             this.rntbdConfigAsString = rntbdConfigAsString;
             return this;

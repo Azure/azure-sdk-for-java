@@ -190,12 +190,6 @@ public interface AsyncDocumentClient {
             return this;
         }
 
-        public Builder withReadRequestsFallbackEnabled(boolean readRequestsFallbackEnabled)
-        {
-            this.readRequestsFallbackEnabled = readRequestsFallbackEnabled;
-            return this;
-        }
-
         /**
          * This method will accept functional interface TokenResolver which helps in generation authorization
          * token per request. AsyncDocumentClient can be successfully initialized with this API without passing any MasterKey, ResourceToken or PermissionFeed.
