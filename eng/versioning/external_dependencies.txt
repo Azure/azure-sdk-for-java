@@ -18,7 +18,6 @@ com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.13.3
 com.fasterxml.jackson.module:jackson-module-parameter-names;2.13.3
 com.fasterxml.jackson.module:jackson-module-scala_2.12;2.13.3
 com.github.spotbugs:spotbugs;4.2.2
-com.github.spotbugs:spotbugs-annotations;4.2.2
 com.github.spotbugs:spotbugs-maven-plugin;4.2.2
 com.google.code.gson:gson;2.9.1
 com.google.guava:guava;30.1.1-jre
@@ -71,7 +70,6 @@ io.vertx:vertx-codegen;4.2.7
 io.vertx:vertx-core;4.2.7
 jakarta.validation:jakarta.validation-api;2.0.2
 jakarta.xml.bind:jakarta.xml.bind-api;2.3.3
-javax.annotation:javax.annotation-api;1.3.2
 javax.json:javax.json-api;1.1.4
 javax.servlet:javax.servlet-api;4.0.1
 javax.validation:validation-api;2.0.1.Final
@@ -405,6 +403,6 @@ io.opentelemetry:opentelemetry-semconv;1.14.0-alpha
 io.opentelemetry.instrumentation:opentelemetry-instrumentation-api;1.14.0-alpha
 io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv;1.14.0-alpha
 io.opentelemetry:opentelemetry-sdk-logs;1.14.0-alpha
-com.github.spotbugs:spotbugs-annotations;4.7.1
+com.github.spotbugs:spotbugs-annotations;4.2.2
 javax.annotation:javax.annotation-api;1.3.2
 io.github.hakky54:logcaptor;2.7.9
