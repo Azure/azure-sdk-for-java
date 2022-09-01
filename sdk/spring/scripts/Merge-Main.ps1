@@ -15,13 +15,16 @@ $mergeExcludes = @($Merge | ForEach-Object { ":(top,glob,exclude)$_" })
 $ourExcludes = @($Ours | ForEach-Object { ":(top,glob,exclude)$_" })
 
 # start a merge, but leave it open
-&git merge $Source --no-ff --no-commit
+git merge $Source --no-ff --no-commit
+if ($LASTEXITCODE) { exit $LASTEXITCODE }
 
 # update paths matching "theirs" except for "ours" and "merge" to the state in $Source
-&git restore -s $Source --staged --worktree -- ":(top,glob)$Theirs" $ourExcludes $mergeExcludes
+git restore -s $Source --staged --worktree -- ":(top,glob)$Theirs" $ourExcludes $mergeExcludes
+if ($LASTEXITCODE) { exit $LASTEXITCODE }
 
 # update paths matching "ours" except for "merge" to their pre-merge state
-&git restore -s (git rev-parse HEAD) --staged --worktree -- ":(top,glob)$Ours" $mergeExcludes
+git restore -s (git rev-parse HEAD) --staged --worktree -- ":(top,glob)$Ours" $mergeExcludes
+if ($LASTEXITCODE) { exit $LASTEXITCODE }
 
 Write-Host "Merge commit started`n" `
 "  Use `"git reset --hard`" to revert the partial merge`n" `
