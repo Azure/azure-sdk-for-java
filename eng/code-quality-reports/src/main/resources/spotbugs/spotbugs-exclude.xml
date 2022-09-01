@@ -150,7 +150,7 @@
         <Method name="getX509Thumbprint"/>
       </And>
       <And>
-        <Class name="com.azure.json.DefaultJsonReader"/>
+        <Class name="com.azure.json.implementation.DefaultJsonReader"/>
         <Method name="getBinary"/>
       </And>
       <And>
@@ -2732,7 +2732,7 @@
   </Match>
 
   <Match>
-    <Class name="com.azure.xml.DefaultXmlReader"/>
+    <Class name="com.azure.xml.implementation.DefaultXmlReader"/>
     <Bug pattern="XXE_XMLSTREAMREADER"/>
   </Match>
 
