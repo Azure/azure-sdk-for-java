@@ -793,6 +793,17 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             isValidJSON(diagnostics);
             validateTransportRequestTimelineDirect(diagnostics);
             validateRegionContacted(createResponse.getDiagnostics(), client.asyncClient());
+
+            // TODO: add better store result diagnostic validation on exception
+            ObjectNode diagnosticsNode = (ObjectNode) OBJECT_MAPPER.readTree(diagnostics);
+            JsonNode responseStatisticsList = diagnosticsNode.get("responseStatisticsList");
+            assertThat(responseStatisticsList.isArray()).isTrue();
+            assertThat(responseStatisticsList.size()).isGreaterThan(0);
+            JsonNode storeResult = responseStatisticsList.get(0).get("storeResult");
+            assertThat(storeResult).isNotNull();
+            JsonNode replicaStatusList = storeResult.get("replicaStatusList");
+            assertThat(replicaStatusList.isArray()).isTrue();
+            assertThat(replicaStatusList.size()).isGreaterThan(0);
         } finally {
             if (client != null) {
                 client.close();
@@ -1042,6 +1053,9 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
         assertThat(storeResult.get("channelTaskQueueSize").asInt(-1)).isGreaterThanOrEqualTo(0);
         assertThat(storeResult.get("pendingRequestsCount").asInt(-1)).isGreaterThanOrEqualTo(0);
+        JsonNode replicaStatusList = storeResult.get("replicaStatusList");
+        assertThat(replicaStatusList.isArray()).isTrue();
+        assertThat(replicaStatusList.size()).isGreaterThan(0);
 
         JsonNode serviceEndpointStatistics = storeResult.get("serviceEndpointStatistics");
         assertThat(serviceEndpointStatistics).isNotNull();
