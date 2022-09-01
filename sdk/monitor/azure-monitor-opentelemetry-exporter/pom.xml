@@ -54,27 +54,27 @@
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-api</artifactId>
-      <version>1.17.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+      <version>1.14.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk</artifactId>
-      <version>1.17.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+      <version>1.14.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk-logs</artifactId>
-      <version>1.17.0-alpha</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+      <version>1.14.0-alpha</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-semconv</artifactId>
-      <version>1.17.0-alpha</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+      <version>1.14.0-alpha</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.github.spotbugs</groupId>
       <artifactId>spotbugs-annotations</artifactId>
-      <version>4.7.1</version>
+      <version>4.7.1</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
@@ -110,34 +110,34 @@
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.23.1</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
+      <version>3.22.0</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>4.6.1</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
+      <version>4.6.1</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>uk.org.webcompere</groupId>
       <artifactId>system-stubs-jupiter</artifactId>
-      <version>2.0.1</version>
+      <version>2.0.1</version> <!-- {x-version-update;uk.org.webcompere:system-stubs-jupiter;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk-testing</artifactId>
-      <version>1.17.0</version>
+      <version>1.14.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry.instrumentation</groupId>
       <artifactId>opentelemetry-instrumentation-api</artifactId>
-      <version>1.17.0-alpha</version>
+      <version>1.14.0-alpha</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-instrumentation-api;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry.instrumentation</groupId>
       <artifactId>opentelemetry-instrumentation-api-semconv</artifactId>
-      <version>1.17.0-alpha</version>
+      <version>1.14.0-alpha</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -178,13 +178,13 @@
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk-testing</artifactId>
-      <version>1.14.0</version>
+      <version>1.14.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-testing;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.github.hakky54</groupId>
       <artifactId>logcaptor</artifactId>
-      <version>2.7.9</version>
+      <version>2.7.9</version> <!-- {x-version-update;io.github.hakky54:logcaptor;dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -200,13 +200,13 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.opentelemetry:opentelemetry-api:[1.17.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-sdk:[1.17.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-api:[1.14.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk:[1.14.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
                 <include>uk.org.webcompere:system-stubs-jupiter:[2.0.1]</include> <!-- {x-include-update;uk.org.webcompere:system-stubs-jupiter;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-semconv:[1.17.0-alpha]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-semconv;external_dependency} -->
-                <include>io.opentelemetry.instrumentation:opentelemetry-instrumentation-api:[1.17.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-instrumentation-api;external_dependency} -->
-                <include>io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv:[1.17.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-sdk-logs:[1.17.0-alpha]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-logs;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-semconv:[1.14.0-alpha]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-semconv;external_dependency} -->
+                <include>io.opentelemetry.instrumentation:opentelemetry-instrumentation-api:[1.14.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-instrumentation-api;external_dependency} -->
+                <include>io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv:[1.14.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk-logs:[1.14.0-alpha]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-logs;external_dependency} -->
                 <include>com.github.spotbugs:spotbugs-annotations:[4.7.1]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
                 <include>javax.annotation:javax.annotation-api:[1.3.2]</include> <!-- {x-include-update;javax.annotation:javax.annotation-api;external_dependency} -->
                 <include>io.github.hakky54:logcaptor:[2.7.9]</include> <!-- {x-include-update;io.github.hakky54:logcaptor;external_dependency} -->
