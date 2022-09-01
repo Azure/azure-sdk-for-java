@@ -163,11 +163,6 @@ public final class AzureFileSystem extends FileSystem {
     private FileStore defaultFileStore;
     private boolean closed;
 
-    AzureFileSystem(AzureFileSystemProvider parentFileSystemProvider, String endpoint, Map<String, ?> config)
-            throws IOException {
-        this(parentFileSystemProvider, endpoint, new AzureFileSystemConfig(config));
-    }
-
     AzureFileSystem(AzureFileSystemProvider parentFileSystemProvider, String endpoint, AzureFileSystemConfig config)
             throws IOException {
         // A FileSystem should only ever be instantiated by a provider.
