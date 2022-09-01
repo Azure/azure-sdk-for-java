@@ -22,8 +22,8 @@
 package com.azure.monitor.opentelemetry.exporter.implementation;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import reactor.util.annotation.Nullable;
 
+import javax.annotation.Nullable;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**

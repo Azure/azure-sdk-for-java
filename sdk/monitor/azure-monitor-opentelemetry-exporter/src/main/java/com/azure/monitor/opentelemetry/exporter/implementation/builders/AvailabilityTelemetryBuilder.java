@@ -22,8 +22,8 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.builders;
 
 import com.azure.monitor.opentelemetry.exporter.implementation.models.AvailabilityData;
-import reactor.util.annotation.Nullable;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 

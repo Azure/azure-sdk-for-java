@@ -38,8 +38,8 @@ import io.opentelemetry.sdk.metrics.data.PointData;
 import io.opentelemetry.sdk.resources.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.util.annotation.Nullable;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;

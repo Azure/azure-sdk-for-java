@@ -21,7 +21,7 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 
-import reactor.util.annotation.Nullable;
+import javax.annotation.Nullable;
 
 public class UrlParser {
 

@@ -51,7 +51,7 @@ public class TelemetryPipeline {
       Collections.synchronizedMap(
           new LinkedHashMap<String, URL>() {
             @Override
-            protected boolean removeEldestEntry(Map.Entry eldest) {
+            protected boolean removeEldestEntry(Map.Entry<String, URL> eldest) {
               return size() > 100;
             }
           });

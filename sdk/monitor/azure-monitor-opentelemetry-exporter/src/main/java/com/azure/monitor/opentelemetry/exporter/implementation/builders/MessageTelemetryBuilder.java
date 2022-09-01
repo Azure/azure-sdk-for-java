@@ -25,8 +25,8 @@ import static com.azure.monitor.opentelemetry.exporter.implementation.builders.T
 
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MessageData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.SeverityLevel;
-import reactor.util.annotation.Nullable;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 

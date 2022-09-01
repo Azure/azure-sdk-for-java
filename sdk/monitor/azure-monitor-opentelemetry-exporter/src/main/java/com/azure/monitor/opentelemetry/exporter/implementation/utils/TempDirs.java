@@ -24,8 +24,8 @@ package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 import com.azure.core.util.CoreUtils;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.slf4j.Logger;
-import reactor.util.annotation.Nullable;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
