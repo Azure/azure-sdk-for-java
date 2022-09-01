@@ -841,16 +841,28 @@ public class GatewayAddressCache implements IAddressCache {
         }
 
         List<AddressInformation> mergedAddresses = new ArrayList<>();
-        Map<Uri, AddressInformation> cachedAddressMap =
+        Map<Uri, List<AddressInformation>> cachedAddressMap =
                 Arrays
                     .stream(cachedAddresses)
-                    .collect(Collectors.toMap(address -> address.getPhysicalUri(), address -> address));
+                    .collect(Collectors.groupingBy(AddressInformation::getPhysicalUri));
 
-        for (AddressInformation addressInformation : newAddresses) {
-            if (cachedAddressMap.containsKey(addressInformation.getPhysicalUri())) {
-                mergedAddresses.add(cachedAddressMap.get(addressInformation.getPhysicalUri()));
-            } else {
-                mergedAddresses.add(addressInformation);
+        for (AddressInformation newAddress : newAddresses) {
+            boolean useCachedAddress = false;
+            if (cachedAddressMap.containsKey(newAddress.getPhysicalUri())) {
+                for (AddressInformation cachedAddress : cachedAddressMap.get(newAddress.getPhysicalUri())) {
+                    if (newAddress.getProtocol() == cachedAddress.getProtocol()
+                            && newAddress.isPublic() == cachedAddress.isPublic()
+                            && newAddress.isPrimary() == cachedAddress.isPrimary()) {
+
+                        useCachedAddress = true;
+                        mergedAddresses.add(cachedAddress);
+                        break;
+                    }
+                }
+            }
+
+            if (!useCachedAddress) {
+                mergedAddresses.add(newAddress);
             }
         }
 
