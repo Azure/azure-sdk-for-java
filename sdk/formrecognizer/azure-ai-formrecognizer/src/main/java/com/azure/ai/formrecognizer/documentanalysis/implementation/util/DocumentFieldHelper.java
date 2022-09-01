@@ -7,7 +7,6 @@ import com.azure.ai.formrecognizer.documentanalysis.models.BoundingRegion;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentField;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSpan;
-import com.azure.ai.formrecognizer.documentanalysis.models.TypedDocumentField;
 
 import java.util.List;
 
