@@ -100,6 +100,7 @@ class AnalyzeHealthcareEntityAsyncClient {
                 Arrays.asList(TextAnalyticsServiceVersion.V3_0),
                 getUnsupportedServiceApiVersionMessage("beginAnalyzeHealthcareEntities", serviceVersion,
                     TextAnalyticsServiceVersion.V3_1));
+            throwIfCallingNotAvailableFeatureInOptions(options);
             inputDocumentsValidation(documents);
             options = getNotNullAnalyzeHealthcareEntitiesOptions(options);
             final Context finalContext = getNotNullContext(context)
@@ -179,6 +180,7 @@ class AnalyzeHealthcareEntityAsyncClient {
                 Arrays.asList(TextAnalyticsServiceVersion.V3_0),
                 getUnsupportedServiceApiVersionMessage("beginAnalyzeHealthcareEntities", serviceVersion,
                     TextAnalyticsServiceVersion.V3_1));
+            throwIfCallingNotAvailableFeatureInOptions(options);
             inputDocumentsValidation(documents);
             options = getNotNullAnalyzeHealthcareEntitiesOptions(options);
             final Context finalContext = getNotNullContext(context)
@@ -559,5 +561,14 @@ class AnalyzeHealthcareEntityAsyncClient {
     private AnalyzeHealthcareEntitiesOptions getNotNullAnalyzeHealthcareEntitiesOptions(
         AnalyzeHealthcareEntitiesOptions options) {
         return options == null ? new AnalyzeHealthcareEntitiesOptions() : options;
+    }
+
+    private void throwIfCallingNotAvailableFeatureInOptions(AnalyzeHealthcareEntitiesOptions options) {
+        if (options.getDisplayName() != null) {
+            throwIfTargetServiceVersionFound(serviceVersion,
+                Arrays.asList(TextAnalyticsServiceVersion.V3_1),
+                getUnsupportedServiceApiVersionMessage("AnalyzeHealthcareEntitiesOptions.displayName",
+                    serviceVersion, TextAnalyticsServiceVersion.V2022_05_01));
+        }
     }
 }
