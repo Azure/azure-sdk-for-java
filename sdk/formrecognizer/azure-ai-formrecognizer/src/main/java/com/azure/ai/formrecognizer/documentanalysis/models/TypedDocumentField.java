@@ -3,6 +3,8 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
+import com.azure.ai.formrecognizer.documentanalysis.implementation.util.TypedDocumentFieldHelper;
+
 import java.util.List;
 
 /**
@@ -68,5 +70,66 @@ public class TypedDocumentField<T> {
      */
     public Float getConfidence() {
         return this.confidence;
+    }
+
+    void setValue(T value) {
+        this.value = value;
+    }
+
+    void setType(DocumentFieldType type) {
+        this.type = type;
+    }
+
+    void setContent(String content) {
+        this.content = content;
+    }
+
+    void setBoundingRegions(List<BoundingRegion> boundingRegions) {
+        this.boundingRegions = boundingRegions;
+    }
+
+    void setSpans(List<DocumentSpan> spans) {
+        this.spans = spans;
+    }
+
+    void setConfidence(Float confidence) {
+        this.confidence = confidence;
+    }
+
+    static {
+        TypedDocumentFieldHelper.setAccessor(new TypedDocumentFieldHelper.TypedDocumentFieldAccessor() {
+
+            @Override
+            public <T> void setValue(TypedDocumentField<T> typedDocumentField, T value) {
+                typedDocumentField.setValue(value);
+            }
+
+            @Override
+            public <T> void setType(TypedDocumentField<T> typedDocumentField, DocumentFieldType type) {
+                typedDocumentField.setType(type);
+            }
+
+            @Override
+            public <T> void setContent(TypedDocumentField<T> typedDocumentField, String content) {
+                typedDocumentField.setContent(content);
+            }
+
+            @Override
+            public <T> void setBoundingRegions(TypedDocumentField<T> typedDocumentField,
+                                               List<BoundingRegion> boundingRegions) {
+                typedDocumentField.setBoundingRegions(boundingRegions);
+            }
+
+            @Override
+            public <T> void setSpans(TypedDocumentField<T> typedDocumentField, List<DocumentSpan> spans) {
+                typedDocumentField.setSpans(spans);
+
+            }
+
+            @Override
+            public <T> void setConfidence(TypedDocumentField<T> typedDocumentField, Float confidence) {
+                typedDocumentField.setConfidence(confidence);
+            }
+        });
     }
 }
