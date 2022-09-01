@@ -14,10 +14,10 @@ module com.azure.monitor.opentelemetry.exporter {
     requires io.opentelemetry.sdk.metrics;
     requires com.github.spotbugs.annotations;
     requires jsr305;
-    requires java.management;
     requires io.netty.handler;
     requires opentelemetry.instrumentation.api;
     requires io.opentelemetry.context;
+    requires rt;
 
     exports com.azure.monitor.opentelemetry.exporter;
 
