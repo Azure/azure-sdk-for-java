@@ -193,7 +193,7 @@ stages:
                     path: azure-sdk-build-tools
                   - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                     parameters:
-                      SkipDefaultCheckout: true
+                      SkipCheckoutNone: true
                       Repositories:
                         - Name: Azure/azure-sdk-for-java
                           Commitish: $(Build.SourceVersion)
@@ -411,7 +411,7 @@ stages:
           path: azure-sdk-build-tools
         - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
           parameters:
-            SkipDefaultCheckout: true
+            SkipCheckoutNone: true
             Repositories:
               - Name: Azure/azure-sdk-for-java
                 Commitish: $(Build.SourceVersion)
