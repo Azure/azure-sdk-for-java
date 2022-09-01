@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.CallAutomationAsyncClient;
-import com.azure.communication.callautomation.CallAutomationClientBuilder;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;

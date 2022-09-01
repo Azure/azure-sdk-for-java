@@ -3,7 +3,6 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.CallAutomationClientBuilder;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
