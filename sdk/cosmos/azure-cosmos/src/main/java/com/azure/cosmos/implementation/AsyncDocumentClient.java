@@ -90,6 +90,7 @@ public interface AsyncDocumentClient {
         boolean sessionCapturingOverride;
         boolean transportClientSharing;
         boolean contentResponseOnWriteEnabled;
+        boolean readRequestsFallbackEnabled;
         private CosmosClientMetadataCachesSnapshot state;
         private ApiType apiType;
         ClientTelemetryConfig clientTelemetryConfig;
@@ -186,6 +187,12 @@ public interface AsyncDocumentClient {
 
         public Builder withContentResponseOnWriteEnabled(boolean contentResponseOnWriteEnabled) {
             this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
+            return this;
+        }
+
+        public Builder withReadRequestsFallbackEnabled(boolean readRequestsFallbackEnabled)
+        {
+            this.readRequestsFallbackEnabled = readRequestsFallbackEnabled;
             return this;
         }
 

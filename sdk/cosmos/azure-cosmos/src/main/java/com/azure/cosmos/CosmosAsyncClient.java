@@ -70,6 +70,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final ClientTelemetryConfig clientTelemetryConfig;
     private final TracerProvider tracerProvider;
     private final boolean contentResponseOnWriteEnabled;
+    private final boolean readRequestsFallbackEnabled;
     private static final Tracer TRACER;
     private final ApiType apiType;
 
@@ -97,6 +98,7 @@ public final class CosmosAsyncClient implements Closeable {
         this.enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
         this.clientTelemetryConfig = builder.getClientTelemetryConfig();
         this.contentResponseOnWriteEnabled = builder.isContentResponseOnWriteEnabled();
+        this.readRequestsFallbackEnabled = builder.isReadRequestsFallbackEnabled();
         this.tracerProvider = new TracerProvider(TRACER);
         this.apiType = builder.apiType();
 
@@ -121,6 +123,7 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withCredential(this.credential)
                                        .withTransportClientSharing(this.enableTransportClientSharing)
                                        .withContentResponseOnWriteEnabled(this.contentResponseOnWriteEnabled)
+                                       .withReadRequestsFallbackEnabled(this.readRequestsFallbackEnabled)
                                        .withTokenCredential(this.tokenCredential)
                                        .withState(builder.metadataCaches())
                                        .withPermissionFeed(permissionList)

@@ -116,12 +116,14 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
             .contentResponseOnWriteEnabled(true)
+            .readRequestsFallbackEnabled(true)
             .gatewayMode()
             .buildClient();
         directClient = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
             .contentResponseOnWriteEnabled(true)
+            .readRequestsFallbackEnabled(true)
             .directMode()
             .buildClient();
         cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(this.gatewayClient.asyncClient());
@@ -210,6 +212,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(diagnostics).containsPattern("(?s).*?\"activityId\":\"[^\\s\"]+\".*");
             assertThat(createResponse.getDiagnostics().getDuration()).isNotNull();
             assertThat(createResponse.getDiagnostics().getContactedRegionNames()).isNotNull();
+            assertThat(diagnostics).contains("\"readRequestsFallbackEnabled\":\"true\"");
             // TODO: (nakumars) - Uncomment the following line after your client telemetry fix
             // assertThat(createResponse.getDiagnostics().getRegionsContacted()).isNotEmpty();
             validateTransportRequestTimelineGateway(diagnostics);
@@ -312,6 +315,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             // assertThat(diagnostics).contains("\"transportRequestChannelAcquisitionContext\"");
             assertThat(createResponse.getDiagnostics().getContactedRegionNames()).isNotEmpty();
             assertThat(createResponse.getDiagnostics().getDuration()).isNotNull();
+            assertThat(diagnostics).contains("\"readRequestsFallbackEnabled\":\"true\"");
             validateTransportRequestTimelineDirect(diagnostics);
             validateRegionContacted(createResponse.getDiagnostics(), testDirectClient.asyncClient());
             isValidJSON(diagnostics);
