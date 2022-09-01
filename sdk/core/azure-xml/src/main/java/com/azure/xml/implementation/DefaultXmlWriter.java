@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.xml;
+package com.azure.xml.implementation;
+
+import com.azure.xml.XmlWriter;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -9,6 +11,7 @@ import javax.xml.stream.XMLStreamWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
@@ -29,10 +32,25 @@ public final class DefaultXmlWriter extends XmlWriter {
      * @return A new instance of {@link XmlWriter}.
      * @throws RuntimeException If an {@link XmlWriter} cannot be instantiated.
      */
-    public static XmlWriter toOutputStream(OutputStream outputStream) {
+    public static XmlWriter toStream(OutputStream outputStream) {
         try {
             return new DefaultXmlWriter(XML_OUTPUT_FACTORY.createXMLStreamWriter(
                 new OutputStreamWriter(outputStream, StandardCharsets.UTF_8)));
+        } catch (XMLStreamException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    /**
+     * Creates an instance of {@link XmlWriter} that writes to the provided {@link Writer}.
+     *
+     * @param writer The {@link Writer} where content will be written.
+     * @return A new instance of {@link XmlWriter}.
+     * @throws RuntimeException If an {@link XmlWriter} cannot be instantiated.
+     */
+    public static XmlWriter toWriter(Writer writer) {
+        try {
+            return new DefaultXmlWriter(XML_OUTPUT_FACTORY.createXMLStreamWriter(writer));
         } catch (XMLStreamException ex) {
             throw new RuntimeException(ex);
         }

@@ -3,6 +3,7 @@
 
 package com.azure.json.gson;
 
+import com.azure.json.JsonOptions;
 import com.azure.json.JsonReader;
 import com.azure.json.contract.JsonReaderContractTests;
 
@@ -12,6 +13,6 @@ import com.azure.json.contract.JsonReaderContractTests;
 public class GsonJsonReaderContractTests extends JsonReaderContractTests {
     @Override
     public JsonReader getJsonReader(String json) {
-        return GsonJsonReader.fromString(json);
+        return GsonJsonReader.fromString(json, new JsonOptions());
     }
 }
