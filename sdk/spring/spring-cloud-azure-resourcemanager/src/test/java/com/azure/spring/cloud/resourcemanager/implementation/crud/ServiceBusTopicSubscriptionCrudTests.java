@@ -17,7 +17,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTests<ServiceBusSubscription,
-    Tuple3<String, String, String>>{
+    Tuple3<String, String, String>> {
 
     private static final String NAMESPACE = "namespace";
     private static final String TOPIC_NAME = "topic";
@@ -77,7 +77,7 @@ public class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTe
 
     @Override
     Tuple3<String, String, String> getKey() {
-       return Tuples.of(NAMESPACE, TOPIC_NAME, SUBSCRIPTION_NAME);
+        return Tuples.of(NAMESPACE, TOPIC_NAME, SUBSCRIPTION_NAME);
     }
 
 }

@@ -37,7 +37,7 @@ public class ServiceBusTopicSubscriptionCrud extends AbstractResourceCrud<Servic
         try {
             Topic topic = new ServiceBusTopicCrud(this.resourceManager, this.resourceMetadata)
                 .get(Tuples.of(subscriptionCoordinate.getT1(), subscriptionCoordinate.getT2()));
-            return topic == null ? null :topic
+            return topic == null ? null : topic
                 .subscriptions()
                 .getByName(subscriptionCoordinate.getT2());
         } catch (ManagementException e) {
