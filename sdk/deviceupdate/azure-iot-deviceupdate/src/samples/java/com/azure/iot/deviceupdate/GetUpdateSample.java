@@ -50,8 +50,8 @@ public class GetUpdateSample {
             // BEGIN: com.azure.iot.deviceupdate.DeviceUpdateClient.EnumerateUpdateFiles
             PagedIterable<BinaryData> items = client.listFiles(updateProvider, updateName, updateVersion, null);
             List<String> fileIds = new ArrayList<String>();
+            ObjectMapper fileIdMapper = new ObjectMapper();
             for (BinaryData i: items) {
-                ObjectMapper fileIdMapper = new ObjectMapper();
                 String fileId = fileIdMapper.readTree(i.toBytes()).asText();
                 System.out.println(fileId);
                 fileIds.add(fileId);
@@ -61,10 +61,10 @@ public class GetUpdateSample {
             System.out.println("\nGet file data...");
             // BEGIN: com.azure.iot.deviceupdate.DeviceUpdateClient.GetFiles
             PagedIterable<BinaryData> files = client.listFiles(updateProvider, updateName, updateVersion, null);
+            ObjectMapper fileMapper = new ObjectMapper();
             for (String fileId: fileIds) {
                 System.out.println("File:");
                 Response<BinaryData> fileResponse  = client.getFileWithResponse(updateProvider, updateName, updateVersion, fileId, null);
-                ObjectMapper fileMapper = new ObjectMapper();
                 JsonNode fileJsonNode = fileMapper.readTree(fileResponse.getValue().toBytes());
                 System.out.println("  FileId: " + fileJsonNode.get("fileId").asText());
                 System.out.println("Metadata:");

@@ -131,8 +131,8 @@ To enumerate all update files corresponding to our device update:
 ``` java com.azure.iot.deviceupdate.DeviceUpdateClient.EnumerateUpdateFiles
 PagedIterable<BinaryData> items = client.listFiles(updateProvider, updateName, updateVersion, null);
 List<String> fileIds = new ArrayList<String>();
+ObjectMapper fileIdMapper = new ObjectMapper();
 for (BinaryData i: items) {
-    ObjectMapper fileIdMapper = new ObjectMapper();
     String fileId = fileIdMapper.readTree(i.toBytes()).asText();
     System.out.println(fileId);
     fileIds.add(fileId);
@@ -145,10 +145,10 @@ Now that we know update file identities, we can retrieve their metadata:
 
 ``` java com.azure.iot.deviceupdate.DeviceUpdateClient.GetFiles
 PagedIterable<BinaryData> files = client.listFiles(updateProvider, updateName, updateVersion, null);
+ObjectMapper fileMapper = new ObjectMapper();
 for (String fileId: fileIds) {
     System.out.println("File:");
     Response<BinaryData> fileResponse  = client.getFileWithResponse(updateProvider, updateName, updateVersion, fileId, null);
-    ObjectMapper fileMapper = new ObjectMapper();
     JsonNode fileJsonNode = fileMapper.readTree(fileResponse.getValue().toBytes());
     System.out.println("  FileId: " + fileJsonNode.get("fileId").asText());
     System.out.println("Metadata:");
@@ -195,8 +195,9 @@ Finally, lets find out all best updates for all devices in a specific group, gro
 
 ``` java com.azure.iot.deviceupdate.DeviceManagementClient.GetBestUpdates
 PagedIterable<BinaryData> bestUpdates = client.listBestUpdatesForGroup(groupId, null);
+ObjectMapper updateMapper = new ObjectMapper();
 for (BinaryData bu: bestUpdates) {
-    JsonNode json = new ObjectMapper().readTree(bu.toBytes());
+    JsonNode json = updateMapper.readTree(bu.toBytes());
     System.out.println(String.format("For device class '%s' in group '%s', the best update is:",
         json.get("deviceClassId").asText(), groupId));
     System.out.println("  Provider: " + json.get("update").get("updateId").get("provider").asText());

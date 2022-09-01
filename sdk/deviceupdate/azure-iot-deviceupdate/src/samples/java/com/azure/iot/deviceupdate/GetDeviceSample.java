@@ -54,8 +54,9 @@ public class GetDeviceSample {
             System.out.println("\nBest updates:");
             // BEGIN: com.azure.iot.deviceupdate.DeviceManagementClient.GetBestUpdates
             PagedIterable<BinaryData> bestUpdates = client.listBestUpdatesForGroup(groupId, null);
+            ObjectMapper updateMapper = new ObjectMapper();
             for (BinaryData bu: bestUpdates) {
-                JsonNode json = new ObjectMapper().readTree(bu.toBytes());
+                JsonNode json = updateMapper.readTree(bu.toBytes());
                 System.out.println(String.format("For device class '%s' in group '%s', the best update is:",
                     json.get("deviceClassId").asText(), groupId));
                 System.out.println("  Provider: " + json.get("update").get("updateId").get("provider").asText());
