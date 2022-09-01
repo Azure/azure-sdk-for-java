@@ -523,6 +523,8 @@ public class RequestResponseChannel implements AsyncCloseable {
 
     @SuppressWarnings("deprecation")
     private static ContextView getSinkContext(MonoSink<?> sink) {
+        // Use currentContext instead of contextView as it's supported back to Reactor 3.4.0 and gives the widest
+        // range of support possible.
         return sink.currentContext();
     }
 
