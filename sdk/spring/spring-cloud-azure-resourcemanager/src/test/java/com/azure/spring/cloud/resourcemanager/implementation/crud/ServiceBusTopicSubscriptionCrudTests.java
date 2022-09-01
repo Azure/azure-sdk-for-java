@@ -10,6 +10,8 @@ import com.azure.resourcemanager.servicebus.models.ServiceBusSubscription;
 import com.azure.resourcemanager.servicebus.models.ServiceBusSubscriptions;
 import com.azure.resourcemanager.servicebus.models.Topic;
 import com.azure.resourcemanager.servicebus.models.Topics;
+import org.junit.jupiter.api.Test;
+import org.springframework.util.Assert;
 import reactor.util.function.Tuple3;
 import reactor.util.function.Tuples;
 
@@ -78,6 +80,44 @@ class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTests<Ser
     @Override
     Tuple3<String, String, String> getKey() {
         return Tuples.of(NAMESPACE, TOPIC_NAME, SUBSCRIPTION_NAME);
+    }
+
+    @Test
+    void topicDoesNotExistReturnNull(){
+        ServiceBusNamespaces namespaces = mock(ServiceBusNamespaces.class);
+        ServiceBusNamespace namespace = mock(ServiceBusNamespace.class);
+
+        when(resourceManager.serviceBusNamespaces()).thenReturn(namespaces);
+        when(namespaces.getByResourceGroup(resourceMetadata.getResourceGroup(), NAMESPACE))
+            .thenReturn(namespace);
+
+        Topics topics = mock(Topics.class);
+        when(namespace.topics()).thenReturn(topics);
+        Assert.isNull(namespace.topics().getByName(TOPIC_NAME));
+
+    }
+
+    @Test
+    void topicDoesNotExistReturnNullToCreate(){
+        ServiceBusNamespaces namespaces = mock(ServiceBusNamespaces.class);
+        ServiceBusNamespace namespace = mock(ServiceBusNamespace.class);
+
+        when(resourceManager.serviceBusNamespaces()).thenReturn(namespaces);
+        when(namespaces.getByResourceGroup(resourceMetadata.getResourceGroup(), NAMESPACE))
+            .thenReturn(namespace);
+
+        Topics topics = mock(Topics.class);
+        Topic topic = mock(Topic.class);
+        when(namespace.topics()).thenReturn(topics);
+        Assert.isNull(namespace.topics().getByName(TOPIC_NAME));
+        when(topics.getByName(TOPIC_NAME)).thenReturn(topic);
+
+        Topic.DefinitionStages.Blank define = mock(Topic.DefinitionStages.Blank.class);
+        when(topics.define(TOPIC_NAME)).thenReturn(define);
+
+        Topic.DefinitionStages.WithCreate create = mock(Topic.DefinitionStages.WithCreate.class);
+        when(define.withNewSubscription(SUBSCRIPTION_NAME)).thenReturn(create);
+        when(create.create()).thenReturn(topic);
     }
 
 }
