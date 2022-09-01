@@ -1,14 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.json;
+package com.azure.json.implementation;
 
+import com.azure.json.JsonOptions;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriteContext;
+import com.azure.json.JsonWriter;
 import com.azure.json.implementation.jackson.core.JsonFactory;
 import com.azure.json.implementation.jackson.core.JsonGenerator;
+import com.azure.json.implementation.jackson.core.json.JsonWriteFeature;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
+import java.io.Writer;
 import java.util.Objects;
 
 /**
@@ -29,20 +35,43 @@ public final class DefaultJsonWriter extends JsonWriter {
      * isn't the owner of the stream.
      *
      * @param stream The {@link OutputStream} that will be written.
+     * @param options {@link JsonOptions} to configure the creation of the {@link JsonWriter}.
      * @return An instance of {@link DefaultJsonWriter}.
      * @throws UncheckedIOException If a {@link DefaultJsonWriter} wasn't able to be constructed from the
      * {@link OutputStream}.
      */
-    public static JsonWriter toStream(OutputStream stream) {
+    public static JsonWriter toStream(OutputStream stream, JsonOptions options) {
         try {
-            return new DefaultJsonWriter(FACTORY.createGenerator(stream));
+            return new DefaultJsonWriter(FACTORY.createGenerator(stream), options);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
     }
 
-    private DefaultJsonWriter(JsonGenerator generator) {
+    /**
+     * Creates a {@link DefaultJsonWriter} that writes the given {@link Writer}.
+     * <p>
+     * The passed {@link Writer} won't be closed when {@link #close()} is called as the {@link DefaultJsonWriter}
+     * isn't the owner of the stream.
+     *
+     * @param writer The {@link Writer} that will be written.
+     * @param options {@link JsonOptions} to configure the creation of the {@link JsonWriter}.
+     * @return An instance of {@link DefaultJsonWriter}.
+     * @throws UncheckedIOException If a {@link DefaultJsonWriter} wasn't able to be constructed from the
+     * {@link Writer}.
+     */
+    public static JsonWriter toWriter(Writer writer, JsonOptions options) {
+        try {
+            return new DefaultJsonWriter(FACTORY.createGenerator(writer), options);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    private DefaultJsonWriter(JsonGenerator generator, JsonOptions options) {
         this.generator = generator;
+        this.generator.configure(JsonWriteFeature.WRITE_NAN_AS_STRINGS.mappedFeature(),
+            options.isNonNumericNumbersSupported());
     }
 
     @Override
