@@ -12,13 +12,12 @@ import com.azure.resourcemanager.iothub.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.iothub.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.iothub.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.iothub.models.PrivateEndpointConnections;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConnections {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateEndpointConnectionsImpl.class);
 
     private final PrivateEndpointConnectionsClient innerClient;
 

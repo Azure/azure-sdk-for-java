@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/map/copyright/caption/json?api-version=2.1",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaRenderSDK/2.1 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "content-length" : "81",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-azuremaps-region" : "West US 2",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "X-MSEdge-Ref" : "Ref A: 517A95204C3A4F51857E68CA69860B04 Ref B: PAOEDGE0611 Ref C: 2022-08-18T20:36:09Z",
+      "Date" : "Thu, 18 Aug 2022 20:36:09 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "max-age=86400",
+      "ETag" : "W/\"f3cfa19fc3c68912b94faa097ee62351\"",
+      "Body" : "{\n   \"formatVersion\": \"0.0.1\",\n   \"copyrightsCaption\": \"© 1992 - 2022 TomTom.\"\n}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

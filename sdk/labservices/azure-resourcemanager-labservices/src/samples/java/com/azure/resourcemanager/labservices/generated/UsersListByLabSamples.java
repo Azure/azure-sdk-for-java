@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Users ListByLab. */
 public final class UsersListByLabSamples {
     /*
-     * x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Users/listUser.json
+     * x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/Users/listUser.json
      */
     /**
      * Sample code: listUser.

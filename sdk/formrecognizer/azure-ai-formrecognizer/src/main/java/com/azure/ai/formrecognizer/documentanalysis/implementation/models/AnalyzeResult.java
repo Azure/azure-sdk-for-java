@@ -18,7 +18,7 @@ public final class AnalyzeResult {
     private ApiVersion apiVersion;
 
     /*
-     * Model ID used to produce this result.
+     * Document model ID used to produce this result.
      */
     @JsonProperty(value = "modelId", required = true)
     private String modelId;
@@ -99,7 +99,7 @@ public final class AnalyzeResult {
     }
 
     /**
-     * Get the modelId property: Model ID used to produce this result.
+     * Get the modelId property: Document model ID used to produce this result.
      *
      * @return the modelId value.
      */
@@ -108,7 +108,7 @@ public final class AnalyzeResult {
     }
 
     /**
-     * Set the modelId property: Model ID used to produce this result.
+     * Set the modelId property: Document model ID used to produce this result.
      *
      * @param modelId the modelId value to set.
      * @return the AnalyzeResult object itself.

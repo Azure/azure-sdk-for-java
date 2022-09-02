@@ -4,12 +4,14 @@
 package com.azure.ai.formrecognizer.documentanalysis.administration.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentTypeDetailsHelper;
+import com.azure.core.annotation.Immutable;
 
 import java.util.Map;
 
 /**
  * The DocumentTypeDetails model representing detailed information about the document type.
  */
+@Immutable
 public final class DocumentTypeDetails {
     /*
      * Model description.
@@ -43,7 +45,7 @@ public final class DocumentTypeDetails {
      *
      * @param description the description value to set.
      */
-    void setDescription(String description) {
+    private void setDescription(String description) {
         this.description = description;
     }
 
@@ -61,7 +63,7 @@ public final class DocumentTypeDetails {
      *
      * @param fieldSchema the fieldSchema value to set.
      */
-    void setFieldSchema(Map<String, DocumentFieldSchema> fieldSchema) {
+    private void setFieldSchema(Map<String, DocumentFieldSchema> fieldSchema) {
         this.fieldSchema = fieldSchema;
     }
 
@@ -79,7 +81,7 @@ public final class DocumentTypeDetails {
      *
      * @param fieldConfidence the fieldConfidence value to set.
      */
-    void setFieldConfidence(Map<String, Float> fieldConfidence) {
+    private void setFieldConfidence(Map<String, Float> fieldConfidence) {
         this.fieldConfidence = fieldConfidence;
     }
 
@@ -92,7 +94,7 @@ public final class DocumentTypeDetails {
         return buildMode;
     }
 
-    void setBuildMode(DocumentModelBuildMode buildMode) {
+    private void setBuildMode(DocumentModelBuildMode buildMode) {
         this.buildMode = buildMode;
     }
 
