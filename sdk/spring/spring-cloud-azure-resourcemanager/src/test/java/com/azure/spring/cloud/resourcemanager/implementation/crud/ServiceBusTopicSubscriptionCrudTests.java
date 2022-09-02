@@ -4,15 +4,13 @@
 package com.azure.spring.cloud.resourcemanager.implementation.crud;
 
 import com.azure.core.management.exception.ManagementException;
-import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
-import com.azure.resourcemanager.servicebus.models.ServiceBusNamespaces;
 import com.azure.resourcemanager.servicebus.models.ServiceBusSubscription;
 import com.azure.resourcemanager.servicebus.models.ServiceBusSubscriptions;
 import com.azure.resourcemanager.servicebus.models.Topic;
-import com.azure.resourcemanager.servicebus.models.Topics;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import reactor.util.function.Tuple2;
 import reactor.util.function.Tuple3;
 import reactor.util.function.Tuples;
 
@@ -39,58 +37,49 @@ class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTests<Ser
     }
 
     @Override
-    void getStubManagementException(int statusCode, String message) {
-        ManagementException exception = getManagementException(statusCode, message);
-        Topic topic = mock(Topic.class);
-        ServiceBusSubscriptions serviceBusSubscriptions = mock(ServiceBusSubscriptions.class);
-
-        when(this.topicCrud.get(Tuples.of(getKey().getT1(),getKey().getT2()))).thenReturn(topic);
-        when(topic.subscriptions()).thenReturn(serviceBusSubscriptions);
-        when(serviceBusSubscriptions.getByName(getKey().getT3())).thenThrow(exception);
-    }
-
-    @Override
-    void createStubManagementException() {
-        ServiceBusNamespaces namespaces = mock(ServiceBusNamespaces.class);
-        ServiceBusNamespace namespace = mock(ServiceBusNamespace.class);
-        when(resourceManager.serviceBusNamespaces()).thenReturn(namespaces);
-        ManagementException exception = getManagementException(500, "Create service bus namespace exception");
-        when(namespaces.getByResourceGroup(resourceMetadata.getResourceGroup(), getKey().getT1()))
-            .thenReturn(namespace);
-
-        Topics topics = mock(Topics.class);
-        Topic topic = mock(Topic.class);
-        ServiceBusSubscriptions serviceBusSubscriptions = mock(ServiceBusSubscriptions.class);
-        when(namespace.topics()).thenReturn(topics);
-        when(topics.getByName(getKey().getT2())).thenReturn(topic);
-        when(topic.subscriptions()).thenReturn(serviceBusSubscriptions);
-        when(serviceBusSubscriptions.getByName(getKey().getT3())).thenThrow(exception);
-
-        ServiceBusSubscription.DefinitionStages.Blank define = mock(ServiceBusSubscription.DefinitionStages.Blank.class);
-        when(serviceBusSubscriptions.define(SUBSCRIPTION_NAME)).thenReturn(define);
-        when(define.create()).thenThrow(exception);
-    }
-
-    @Override
     Tuple3<String, String, String> getKey() {
         return Tuples.of(NAMESPACE, TOPIC_NAME, SUBSCRIPTION_NAME);
     }
 
+    @Override
+    void getStubManagementException(int statusCode, String message) {
+        ManagementException exception = createManagementException(statusCode, message);
+        Topic topic = mock(Topic.class);
+        ServiceBusSubscriptions serviceBusSubscriptions = mock(ServiceBusSubscriptions.class);
+
+        Tuple3<String, String, String> subscriptionKey = getKey();
+
+        when(this.topicCrud.get(Tuples.of(subscriptionKey.getT1(), subscriptionKey.getT2()))).thenReturn(topic);
+        when(topic.subscriptions()).thenReturn(serviceBusSubscriptions);
+        when(serviceBusSubscriptions.getByName(subscriptionKey.getT3())).thenThrow(exception);
+    }
+
+    @Override
+    void createStubManagementException() {
+        ManagementException exception = createManagementException(500, "Create service bus namespace exception");
+        Topic topic = mock(Topic.class);
+        ServiceBusSubscriptions serviceBusSubscriptions = mock(ServiceBusSubscriptions.class);
+        ServiceBusSubscription.DefinitionStages.Blank define = mock(ServiceBusSubscription.DefinitionStages.Blank.class);
+
+        Tuple3<String, String, String> subscriptionKey = getKey();
+
+        when(this.topicCrud.getOrCreate(Tuples.of(subscriptionKey.getT1(), subscriptionKey.getT2()))).thenReturn(topic);
+        when(topic.subscriptions()).thenReturn(serviceBusSubscriptions);
+        when(serviceBusSubscriptions.define(SUBSCRIPTION_NAME)).thenReturn(define);
+        when(define.create()).thenThrow(exception);
+    }
+
     @Test
     void topicDoesNotExistReturnNull() {
-        ServiceBusTopicSubscriptionCrud topicSubCrud = new ServiceBusTopicSubscriptionCrud(this.resourceManager,
-            this.resourceMetadata, topicCrud);
-
         when(topicCrud.get(Tuples.of(NAMESPACE, TOPIC_NAME))).thenReturn(null);
-
-        ServiceBusSubscription actualGet = topicSubCrud.get(getKey());
+        ServiceBusSubscription actualGet = getResourceCrud().get(getKey());
         Assertions.assertNull(actualGet);
     }
 
     @Test
-    void topicDoesNotExistReturnNullToCreate() {
-        ServiceBusTopicSubscriptionCrud topicSubCrud = new ServiceBusTopicSubscriptionCrud(this.resourceManager,
-            this.resourceMetadata, topicCrud);
+    void topicDoesNotExistsShouldReturnNullTopicAndCreateSub() {
+        Tuple3<String, String, String> subscriptionKey = getKey();
+        Tuple2<String, String> topicKey = Tuples.of(subscriptionKey.getT1(), subscriptionKey.getT2());
 
         Topic topic = mock(Topic.class);
         ServiceBusSubscriptions serviceBusSubscriptions = mock(ServiceBusSubscriptions.class);
@@ -98,53 +87,42 @@ class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTests<Ser
 
         ServiceBusSubscription.DefinitionStages.Blank define =
             mock(ServiceBusSubscription.DefinitionStages.Blank.class);
-        when(serviceBusSubscriptions.define(SUBSCRIPTION_NAME)).thenReturn(define);
+        when(serviceBusSubscriptions.define(subscriptionKey.getT3())).thenReturn(define);
         ServiceBusSubscription serviceBusSubscription = mock(ServiceBusSubscription.class);
         when(define.create()).thenReturn(serviceBusSubscription);
-        when(topicCrud.get(Tuples.of(NAMESPACE, TOPIC_NAME))).thenReturn(null);
-        when(topicCrud.getOrCreate(Tuples.of(NAMESPACE, TOPIC_NAME))).thenReturn(topic);
+        when(topicCrud.get(topicKey)).thenReturn(null);
+        when(topicCrud.getOrCreate(topicKey)).thenReturn(topic);
 
-        ServiceBusSubscription actualGet = topicSubCrud.get(getKey());
-        ServiceBusSubscription actualCreate = topicSubCrud.create(getKey());
+        ServiceBusSubscription actualGet = getResourceCrud().get(subscriptionKey);
+        ServiceBusSubscription actualCreate = getResourceCrud().create(subscriptionKey);
         Assertions.assertNull(actualGet);
         Assertions.assertNotNull(actualCreate);
         Assertions.assertEquals(serviceBusSubscription, actualCreate);
     }
 
     @Test
-    void topicExistSubscriptionDoesNotExist() {
-        ServiceBusNamespaceCrud namespaceCrud = mock(ServiceBusNamespaceCrud.class);
-        ServiceBusTopicCrud topicCrud = new ServiceBusTopicCrud(this.resourceManager,
-            this.resourceMetadata);
-        ServiceBusTopicSubscriptionCrud topicSubCrud = new ServiceBusTopicSubscriptionCrud(this.resourceManager,
-            this.resourceMetadata, topicCrud);
+    void topicExistsSubscriptionDoesNotExistShouldReturnNonNullTopicAndCreateSub() {
+        Tuple3<String, String, String> subscriptionKey = getKey();
+        Tuple2<String, String> topicKey = Tuples.of(subscriptionKey.getT1(), subscriptionKey.getT2());
 
-        ServiceBusNamespaces namespaces = mock(ServiceBusNamespaces.class);
-        ServiceBusNamespace namespace = mock(ServiceBusNamespace.class);
-        when(resourceManager.serviceBusNamespaces()).thenReturn(namespaces);
-        when(namespaces.getByResourceGroup(resourceMetadata.getResourceGroup(), getKey().getT1()))
-            .thenReturn(namespace);
-
-        Topics topics = mock(Topics.class);
-        when(namespace.topics()).thenReturn(topics);
         Topic topic = mock(Topic.class);
-        when(topics.getByName(getKey().getT2())).thenReturn(topic);
         ServiceBusSubscriptions serviceBusSubscriptions = mock(ServiceBusSubscriptions.class);
+        ServiceBusSubscription subscription = mock(ServiceBusSubscription.class);
+        ServiceBusSubscription.DefinitionStages.Blank define =
+            mock(ServiceBusSubscription.DefinitionStages.Blank.class);
+
+        when(this.topicCrud.getOrCreate(topicKey)).thenReturn(topic);
         when(topic.subscriptions()).thenReturn(serviceBusSubscriptions);
+        when(serviceBusSubscriptions.getByName(subscriptionKey.getT3())).thenReturn(null);
+        when(serviceBusSubscriptions.define(subscriptionKey.getT3())).thenReturn(define);
+        when(define.create()).thenReturn(subscription);
 
-        Topic.DefinitionStages.Blank define = mock(Topic.DefinitionStages.Blank.class);
-        when(topics.define(TOPIC_NAME)).thenReturn(define);
-        when(define.create()).thenReturn(topic);
-        when(namespaceCrud.get(NAMESPACE)).thenReturn(namespace);
-        when(namespaceCrud.getOrCreate(NAMESPACE)).thenReturn(namespace);
+        ServiceBusSubscription actualGet = getResourceCrud().get(subscriptionKey);
+        ServiceBusSubscription actualCreate = getResourceCrud().create(subscriptionKey);
 
-        Topic actualGetTopic = topicCrud.get(getKey());
-        Topic actualCreateTopic = topicCrud.create(getKey());
-        Assertions.assertNotNull(actualGetTopic);
-        Assertions.assertNotNull(actualCreateTopic);
-
-        ServiceBusSubscription actualGetSub = topicSubCrud.get(getKey());
-        Assertions.assertNull(actualGetSub);
+        Assertions.assertNull(actualGet);
+        Assertions.assertNotNull(actualCreate);
+        Assertions.assertEquals(subscription, actualCreate);
     }
 
 }
