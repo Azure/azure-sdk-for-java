@@ -80,7 +80,7 @@ public class HeartbeatExporter {
 
         // Submit task to set properties to dictionary using separate thread. we do not wait for the
         // results to come out as some I/O bound properties may take time.
-        propertyUpdateService.submit(HeartbeatDefaultPayload.populateDefaultPayload(this));
+        propertyUpdateService.execute(HeartbeatDefaultPayload.populateDefaultPayload(this));
 
         heartBeatSenderService.scheduleAtFixedRate(
             this::send, intervalSeconds, intervalSeconds, TimeUnit.SECONDS);

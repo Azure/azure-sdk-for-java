@@ -29,8 +29,8 @@ import io.opentelemetry.sdk.trace.ReadableSpan;
 import io.opentelemetry.sdk.trace.data.EventData;
 import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.data.SpanData;
-
 import reactor.util.annotation.Nullable;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -686,7 +686,7 @@ public final class SpanDataMapper {
         // passing max value because we don't know what the default port would be in this case,
         // so we always want the port included
         String target = getTargetOrNull(attributes, Integer.MAX_VALUE);
-        if (!target.isEmpty()) {
+        if (target != null) {
             telemetryBuilder.setTarget(target);
             return;
         }

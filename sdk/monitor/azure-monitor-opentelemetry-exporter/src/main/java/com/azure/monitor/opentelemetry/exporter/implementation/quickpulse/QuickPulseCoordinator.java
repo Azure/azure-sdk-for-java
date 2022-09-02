@@ -6,7 +6,6 @@ package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
 import org.slf4j.MDC;
-
 import reactor.util.annotation.Nullable;
 
 import static com.azure.monitor.opentelemetry.exporter.implementation.utils.AzureMonitorMsgId.QUICK_PULSE_PING_ERROR;
@@ -36,7 +35,7 @@ final class QuickPulseCoordinator implements Runnable {
 
         waitBetweenPingsInMillis = initData.waitBetweenPingsInMillis;
         waitBetweenPostsInMillis = initData.waitBetweenPostsInMillis;
-        waitOnErrorInMillis = initData.waitBetweenPingsInMillis;
+        waitOnErrorInMillis = initData.waitOnErrorInMillis;
         qpsServiceRedirectedEndpoint = null;
         qpsServicePollingIntervalHintMillis = -1;
     }

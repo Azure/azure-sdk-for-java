@@ -9,7 +9,6 @@ import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Callable;
 
 /**
  * <h1>WebApp Heartbeat Property Provider</h1>
@@ -58,15 +57,14 @@ public class WebAppsHeartbeatProvider implements HeartBeatPayloadProviderInterfa
     }
 
     @Override
-    public Callable<Boolean> setDefaultPayload(HeartbeatExporter provider) {
-        return new Callable<Boolean>() {
+    public Runnable setDefaultPayload(HeartbeatExporter provider) {
+        return new Runnable() {
 
             final Set<String> enabledProperties = defaultFields;
 
             @Override
-            public Boolean call() {
+            public void run() {
 
-                boolean hasSetValues = false;
                 // update environment variable to account for
                 updateEnvironmentVariableMap();
                 for (String fieldName : enabledProperties) {
@@ -78,7 +76,6 @@ public class WebAppsHeartbeatProvider implements HeartBeatPayloadProviderInterfa
                                     break;
                                 }
                                 provider.addHeartBeatProperty(fieldName, webSiteName, true);
-                                hasSetValues = true;
                                 break;
                             case WEBSITE_HOSTNAME:
                                 String webSiteHostName = getWebsiteHostName();
@@ -86,7 +83,6 @@ public class WebAppsHeartbeatProvider implements HeartBeatPayloadProviderInterfa
                                     break;
                                 }
                                 provider.addHeartBeatProperty(fieldName, webSiteHostName, true);
-                                hasSetValues = true;
                                 break;
                             case WEBSITE_HOME_STAMPNAME:
                                 String websiteHomeStampName = getWebsiteHomeStampName();
@@ -94,7 +90,6 @@ public class WebAppsHeartbeatProvider implements HeartBeatPayloadProviderInterfa
                                     break;
                                 }
                                 provider.addHeartBeatProperty(fieldName, websiteHomeStampName, true);
-                                hasSetValues = true;
                                 break;
                             case WEBSITE_OWNER_NAME:
                                 String websiteOwnerName = getWebsiteOwnerName();
@@ -102,7 +97,6 @@ public class WebAppsHeartbeatProvider implements HeartBeatPayloadProviderInterfa
                                     break;
                                 }
                                 provider.addHeartBeatProperty(fieldName, websiteOwnerName, true);
-                                hasSetValues = true;
                                 break;
                             case WEBSITE_RESOURCE_GROUP:
                                 String websiteResourceGroup = getWebsiteResourceGroup();
@@ -110,7 +104,6 @@ public class WebAppsHeartbeatProvider implements HeartBeatPayloadProviderInterfa
                                     break;
                                 }
                                 provider.addHeartBeatProperty(fieldName, websiteResourceGroup, true);
-                                hasSetValues = true;
                                 break;
                             case WEBSITE_SLOT_NAME:
                                 String websiteSlotName = getWebsiteSlotName();
@@ -118,7 +111,6 @@ public class WebAppsHeartbeatProvider implements HeartBeatPayloadProviderInterfa
                                     break;
                                 }
                                 provider.addHeartBeatProperty(fieldName, websiteSlotName, true);
-                                hasSetValues = true;
                                 break;
                             default:
                                 logger.verbose("Unknown web apps property encountered");
@@ -128,7 +120,6 @@ public class WebAppsHeartbeatProvider implements HeartBeatPayloadProviderInterfa
                         logger.warning("Failed to obtain heartbeat property", e);
                     }
                 }
-                return hasSetValues;
             }
         };
     }

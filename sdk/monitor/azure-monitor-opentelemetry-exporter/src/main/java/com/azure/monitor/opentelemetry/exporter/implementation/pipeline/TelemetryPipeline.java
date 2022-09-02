@@ -29,14 +29,7 @@ public class TelemetryPipeline {
     private final HttpPipeline pipeline;
 
     // key is connectionString, value is redirectUrl
-    private final Map<String, URL> redirectCache =
-        Collections.synchronizedMap(
-            new LinkedHashMap<String, URL>() {
-                @Override
-                protected boolean removeEldestEntry(Map.Entry<String, URL> eldest) {
-                    return size() > 100;
-                }
-            });
+    private final Map<String, URL> redirectCache = Collections.synchronizedMap(new BoundedHashMap<>(100));
 
     public TelemetryPipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
@@ -144,6 +137,22 @@ public class TelemetryPipeline {
             result.succeed();
         } else {
             result.fail();
+        }
+    }
+
+    private static class BoundedHashMap<K, V> extends LinkedHashMap<K, V> {
+
+        private static final long serialVersionUID = 1L;
+
+        private final int bound;
+
+        private BoundedHashMap(int bound) {
+            this.bound = bound;
+        }
+
+        @Override
+        protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
+            return size() > bound;
         }
     }
 }

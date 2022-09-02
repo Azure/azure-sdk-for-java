@@ -4,9 +4,11 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.configuration;
 
 import reactor.util.annotation.Nullable;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -59,7 +61,7 @@ public final class StatsbeatConnectionString {
         if (instrumentationKey == null || instrumentationKey.isEmpty()) {
             InstrumentationKeyEndpointPair pair =
                 StatsbeatConnectionString.getInstrumentationKeyAndEndpointPair(
-                    connectionString.getIngestionEndpoint().toString());
+                    connectionString.getIngestionEndpoint());
             instrumentationKey = pair.instrumentationKey;
             ingestionEndpoint = pair.endpoint;
         }
@@ -81,7 +83,7 @@ public final class StatsbeatConnectionString {
     static InstrumentationKeyEndpointPair getInstrumentationKeyAndEndpointPair(
         String customerEndpoint) {
         String geo = getGeoWithoutStampSpecific(customerEndpoint);
-        if (EU_REGION_GEO_SET.contains(geo.toLowerCase())) {
+        if (geo != null && EU_REGION_GEO_SET.contains(geo.toLowerCase(Locale.ROOT))) {
             return new InstrumentationKeyEndpointPair(
                 EU_REGION_STATSBEAT_IKEY, EU_REGION_STATSBEAT_ENDPOINT);
         }

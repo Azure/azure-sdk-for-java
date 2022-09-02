@@ -96,7 +96,7 @@ class HeartbeatTests {
                     });
         DefaultHeartBeatPropertyProvider defaultProvider = new DefaultHeartBeatPropertyProvider();
 
-        HeartbeatDefaultPayload.populateDefaultPayload(mockProvider).call();
+        HeartbeatDefaultPayload.populateDefaultPayload(mockProvider).run();
         Field field = defaultProvider.getClass().getDeclaredField("defaultFields");
         field.setAccessible(true);
         Set<String> defaultFields = (Set<String>) field.get(defaultProvider);
@@ -131,7 +131,7 @@ class HeartbeatTests {
         HeartbeatExporter provider = new HeartbeatExporter(60, (b, r) -> {
         }, telemetryItemsConsumer);
 
-        base.setDefaultPayload(provider).call();
+        base.setDefaultPayload(provider).run();
         MetricsData data = (MetricsData) provider.gatherData().getData().getBaseData();
         assertThat(data.getProperties().containsKey("testKey")).isFalse();
     }

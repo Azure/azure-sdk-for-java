@@ -131,6 +131,11 @@ class QuickPulseDataFetcher {
         try {
             QuickPulseDataCollector.FinalCounters counters = collector.getAndRestart();
 
+            if (counters == null) {
+                // this shouldn't happen
+                return;
+            }
+
             Date currentDate = new Date();
             String endpointPrefix =
                 Strings.isNullOrEmpty(redirectedEndpoint) ? getQuickPulseEndpoint() : redirectedEndpoint;

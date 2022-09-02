@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.Callable;
 
 /**
  * <h1>Base Heartbeat Property Provider</h1>
@@ -32,7 +31,7 @@ public class DefaultHeartBeatPropertyProvider implements HeartBeatPayloadProvide
      * have a new GUID. If the application is unstable and goes through frequent restarts this will
      * help us identify instability in the analytics backend.
      */
-    private static UUID uniqueProcessId;
+    private static volatile UUID uniqueProcessId;
     /**
      * Collection holding default properties for this default provider.
      */
@@ -88,33 +87,28 @@ public class DefaultHeartBeatPropertyProvider implements HeartBeatPayloadProvide
     }
 
     @Override
-    public Callable<Boolean> setDefaultPayload(HeartbeatExporter provider) {
-        return new Callable<Boolean>() {
+    public Runnable setDefaultPayload(HeartbeatExporter provider) {
+        return new Runnable() {
 
             final Set<String> enabledProperties = defaultFields;
 
             @Override
-            public Boolean call() {
-                boolean hasSetValues = false;
+            public void run() {
                 for (String fieldName : enabledProperties) {
                     try {
                         switch (fieldName) {
                             case JRE_VERSION:
                                 provider.addHeartBeatProperty(fieldName, getJreVersion(), true);
-                                hasSetValues = true;
                                 break;
                             case SDK_VERSION:
                                 provider.addHeartBeatProperty(fieldName, getSdkVersion(), true);
-                                hasSetValues = true;
                                 break;
                             case OS_VERSION:
                             case OS_TYPE:
                                 provider.addHeartBeatProperty(fieldName, getOsVersion(), true);
-                                hasSetValues = true;
                                 break;
                             case PROCESS_SESSION_ID:
                                 provider.addHeartBeatProperty(fieldName, getProcessSessionId(), true);
-                                hasSetValues = true;
                                 break;
                             default:
                                 // We won't accept unknown properties in default providers.
@@ -127,7 +121,6 @@ public class DefaultHeartBeatPropertyProvider implements HeartBeatPayloadProvide
                         }
                     }
                 }
-                return hasSetValues;
             }
         };
     }
