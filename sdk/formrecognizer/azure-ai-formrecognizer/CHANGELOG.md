@@ -5,6 +5,8 @@ This version of the SDK defaults to the latest supported API version, which curr
 
 ### Features Added
 - Added a method `getWords()` on model `DocumentLine`.
+- Added `TypedDocumentField<T>` model for strongly typed representation of `Fields` on analyzed documents.
+`DocumentField` extends from `TypedDocumentField<T>`.
 
 ### Breaking Changes
 - Removed property `kind` from model `DocumentPage`

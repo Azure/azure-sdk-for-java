@@ -134,9 +134,11 @@ import java.util.regex.Pattern;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
+import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
 import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
+import static com.azure.ai.textanalytics.implementation.Utility.throwIfTargetServiceVersionFound;
 import static com.azure.ai.textanalytics.implementation.Utility.toAnalyzeHealthcareEntitiesResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toAnalyzeSentimentResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toCategoriesFilter;
@@ -174,19 +176,24 @@ class AnalyzeActionsAsyncClient {
     private final ClientLogger logger = new ClientLogger(AnalyzeActionsAsyncClient.class);
     private final TextAnalyticsClientImpl legacyService;
     private final AnalyzeTextsImpl service;
+
+    private final TextAnalyticsServiceVersion serviceVersion;
+
     private static final Pattern PATTERN;
     static {
         PATTERN = Pattern.compile(REGEX_ACTION_ERROR_TARGET, Pattern.MULTILINE);
     }
 
-    AnalyzeActionsAsyncClient(TextAnalyticsClientImpl legacyService) {
+    AnalyzeActionsAsyncClient(TextAnalyticsClientImpl legacyService, TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = legacyService;
         this.service = null;
+        this.serviceVersion = serviceVersion;
     }
 
-    AnalyzeActionsAsyncClient(AnalyzeTextsImpl service) {
+    AnalyzeActionsAsyncClient(AnalyzeTextsImpl service, TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = null;
         this.service = service;
+        this.serviceVersion = serviceVersion;
     }
 
     PollerFlux<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> beginAnalyzeActions(
@@ -194,6 +201,9 @@ class AnalyzeActionsAsyncClient {
         Context context) {
         try {
             Objects.requireNonNull(actions, "'actions' cannot be null.");
+            throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+                getUnsupportedServiceApiVersionMessage("beginAnalyzeActions", serviceVersion,
+                    TextAnalyticsServiceVersion.V3_1));
             inputDocumentsValidation(documents);
             options = getNotNullAnalyzeActionsOptions(options);
             final Context finalContext = getNotNullContext(context)
@@ -229,6 +239,8 @@ class AnalyzeActionsAsyncClient {
                 );
             }
 
+            throwIfTargetServiceVersionFoundForActions(this.serviceVersion,
+                Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1), actions);
             final AnalyzeBatchInput analyzeBatchInput =
                 new AnalyzeBatchInput()
                     .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)))
@@ -263,6 +275,9 @@ class AnalyzeActionsAsyncClient {
         Context context) {
         try {
             Objects.requireNonNull(actions, "'actions' cannot be null.");
+            throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+                getUnsupportedServiceApiVersionMessage("beginAnalyzeActions", serviceVersion,
+                    TextAnalyticsServiceVersion.V3_1));
             inputDocumentsValidation(documents);
             options = getNotNullAnalyzeActionsOptions(options);
             final Context finalContext = getNotNullContext(context)
@@ -301,6 +316,8 @@ class AnalyzeActionsAsyncClient {
                 );
             }
 
+            throwIfTargetServiceVersionFoundForActions(this.serviceVersion,
+                Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1), actions);
             return new PollerFlux<>(
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(
@@ -1283,5 +1300,32 @@ class AnalyzeActionsAsyncClient {
             taskNameIdPair[1] = matcher.group(2);
         }
         return taskNameIdPair;
+    }
+
+    private void throwIfTargetServiceVersionFoundForActions(TextAnalyticsServiceVersion sourceVersion,
+        List<TextAnalyticsServiceVersion> targetVersions, TextAnalyticsActions actions) {
+        if (actions.getMultiLabelClassifyActions() != null) {
+            throwIfTargetServiceVersionFound(sourceVersion, targetVersions,
+                getUnsupportedServiceApiVersionMessage("MultiLabelClassifyAction", serviceVersion,
+                    TextAnalyticsServiceVersion.V2022_05_01));
+        }
+
+        if (actions.getSingleLabelClassifyActions() != null) {
+            throwIfTargetServiceVersionFound(sourceVersion, targetVersions,
+                getUnsupportedServiceApiVersionMessage("SingleLabelClassifyAction", serviceVersion,
+                    TextAnalyticsServiceVersion.V2022_05_01));
+        }
+
+        if (actions.getRecognizeCustomEntitiesActions() != null) {
+            throwIfTargetServiceVersionFound(sourceVersion, targetVersions,
+                getUnsupportedServiceApiVersionMessage("RecognizeCustomEntitiesAction", serviceVersion,
+                    TextAnalyticsServiceVersion.V2022_05_01));
+        }
+
+        if (actions.getAnalyzeHealthcareEntitiesActions() != null) {
+            throwIfTargetServiceVersionFound(sourceVersion, targetVersions,
+                getUnsupportedServiceApiVersionMessage("AnalyzeHealthcareEntitiesAction", serviceVersion,
+                    TextAnalyticsServiceVersion.V2022_05_01));
+        }
     }
 }

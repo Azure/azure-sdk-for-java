@@ -44,7 +44,6 @@ import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
-import com.azure.storage.blob.options.BlobContainerRenameOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -1538,80 +1537,44 @@ public final class BlobContainerAsyncClient {
             });
     }
 
-    /**
-     * Renames an existing blob container.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.storage.blob.BlobContainerAsyncClient.rename#String -->
-     * <pre>
-     * BlobContainerAsyncClient blobContainerAsyncClient =
-     *     client.rename&#40;&quot;newContainerName&quot;&#41;
-     *         .block&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.rename#String -->
-     *
-     * @param destinationContainerName The new name of the container.
-     * @return A {@link Mono} containing a {@link BlobContainerAsyncClient} used to interact with the renamed container.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlobContainerAsyncClient> rename(String destinationContainerName) {
-        return renameWithResponse(new BlobContainerRenameOptions(destinationContainerName)).flatMap(FluxUtil::toMono);
-    }
+    // TODO: Reintroduce this API once service starts supporting it.
+//    Mono<BlobContainerAsyncClient> rename(String destinationContainerName) {
+//        return renameWithResponse(new BlobContainerRenameOptions(destinationContainerName)).flatMap(FluxUtil::toMono);
+//    }
 
-    /**
-     * Renames an existing blob container.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.storage.blob.BlobContainerAsyncClient.renameWithResponse#BlobContainerRenameOptions -->
-     * <pre>
-     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;.setLeaseId&#40;&quot;lease-id&quot;&#41;;
-     * BlobContainerAsyncClient containerClient =
-     *     client.renameWithResponse&#40;new BlobContainerRenameOptions&#40;&quot;newContainerName&quot;&#41;
-     *         .setRequestConditions&#40;requestConditions&#41;&#41;.block&#40;&#41;.getValue&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.renameWithResponse#BlobContainerRenameOptions -->
-     *
-     * @param options {@link BlobContainerRenameOptions}
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a
-     * {@link BlobContainerAsyncClient} used to interact with the renamed container.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BlobContainerAsyncClient>> renameWithResponse(BlobContainerRenameOptions options) {
-        try {
-            return withContext(context -> this.renameWithResponse(options, context));
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
-    }
+    // TODO: Reintroduce this API once service starts supporting it.
+//    Mono<Response<BlobContainerAsyncClient>> renameWithResponse(BlobContainerRenameOptions options) {
+//        try {
+//            return withContext(context -> this.renameWithResponse(options, context));
+//        } catch (RuntimeException ex) {
+//            return monoError(LOGGER, ex);
+//        }
+//    }
 
-    Mono<Response<BlobContainerAsyncClient>> renameWithResponse(BlobContainerRenameOptions options, Context context) {
-        // TODO (gapra) : Change this when we have migrated to new generator. There will be a cleaner way to do this by
-        //  calling the container constructor directly instead of needing to do URI surgery
-        BlobContainerAsyncClient destinationContainerClient = getServiceAsyncClient()
-            .getBlobContainerAsyncClient(options.getDestinationContainerName());
-        return destinationContainerClient.renameWithResponseHelper(this.getBlobContainerName(), options, context);
-    }
+//    Mono<Response<BlobContainerAsyncClient>> renameWithResponse(BlobContainerRenameOptions options, Context context) {
+//        BlobContainerAsyncClient destinationContainerClient = getServiceAsyncClient()
+//            .getBlobContainerAsyncClient(options.getDestinationContainerName());
+//        return destinationContainerClient.renameWithResponseHelper(this.getBlobContainerName(), options, context);
+//    }
 
-    Mono<Response<BlobContainerAsyncClient>> renameWithResponseHelper(String sourceContainerName,
-        BlobContainerRenameOptions options, Context context) {
-        StorageImplUtils.assertNotNull("options", options);
-        BlobRequestConditions requestConditions = options.getRequestConditions() == null ? new BlobRequestConditions()
-            : options.getRequestConditions();
-        context = context == null ? Context.NONE : context;
-
-        if (!validateNoETag(requestConditions) || !validateNoTime(requestConditions)
-            || requestConditions.getTagsConditions() != null) {
-            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
-                "Lease-Id is the only HTTP access condition supported for this API"));
-        }
-
-        return this.azureBlobStorage.getContainers().renameWithResponseAsync(containerName,
-            sourceContainerName, null, null, requestConditions.getLeaseId(),
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(response -> new SimpleResponse<>(response, this));
-    }
+//    Mono<Response<BlobContainerAsyncClient>> renameWithResponseHelper(String sourceContainerName,
+//        BlobContainerRenameOptions options, Context context) {
+//        StorageImplUtils.assertNotNull("options", options);
+//        BlobRequestConditions requestConditions = options.getRequestConditions() == null ? new BlobRequestConditions()
+//            : options.getRequestConditions();
+//        context = context == null ? Context.NONE : context;
+//
+//        if (!validateNoETag(requestConditions) || !validateNoTime(requestConditions)
+//            || requestConditions.getTagsConditions() != null) {
+//            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+//                "Lease-Id is the only HTTP access condition supported for this API"));
+//        }
+//
+//        return this.azureBlobStorage.getContainers().renameWithResponseAsync(containerName,
+//            sourceContainerName, null, null, requestConditions.getLeaseId(),
+//            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+//            .map(response -> new SimpleResponse<>(response, this));
+//    }
 
     /**
      * Generates a user delegation SAS for the container using the specified {@link BlobServiceSasSignatureValues}.
@@ -1741,11 +1704,11 @@ public final class BlobContainerAsyncClient {
         return modifiedRequestConditions.getIfMatch() == null && modifiedRequestConditions.getIfNoneMatch() == null;
     }
 
-    private boolean validateNoTime(BlobRequestConditions modifiedRequestConditions) {
-        if (modifiedRequestConditions == null) {
-            return true;
-        }
-        return modifiedRequestConditions.getIfModifiedSince() == null
-            && modifiedRequestConditions.getIfUnmodifiedSince() == null;
-    }
+//    private boolean validateNoTime(BlobRequestConditions modifiedRequestConditions) {
+//        if (modifiedRequestConditions == null) {
+//            return true;
+//        }
+//        return modifiedRequestConditions.getIfModifiedSince() == null
+//            && modifiedRequestConditions.getIfUnmodifiedSince() == null;
+//    }
 }

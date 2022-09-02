@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 1.1.20 (2022-09-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.31.0` to `1.32.0`.
+- Upgraded GSON from `2.9.0` to `2.9.1`.
+
 ## 1.1.19 (2022-08-05)
 
 ### Other Changes
