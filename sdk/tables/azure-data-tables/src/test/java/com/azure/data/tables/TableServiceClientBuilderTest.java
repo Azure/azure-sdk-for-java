@@ -220,16 +220,6 @@ public class TableServiceClientBuilderTest {
             .buildAsyncClient());
     }
 
-    // Tests if the endpoint is malformed, like in the case it includes the tableName
-    @Test
-    public void malformedEndpointThrowsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> new TableServiceClientBuilder()
-            .credential(new AzureNamedKeyCredential("name", "key"))
-            .endpoint("https://myAccount.table.core.windows.net/tableName")
-            .buildAsyncClient()
-        );
-    }
-
     @Test
     public void multipleFormsOfAuthenticationPresent() {
         assertThrows(IllegalStateException.class, () -> new TableServiceClientBuilder()
