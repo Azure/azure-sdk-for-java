@@ -1,7 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.xml;
+package com.azure.xml.implementation;
+
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
@@ -37,7 +41,7 @@ public final class DefaultXmlReader extends XmlReader {
      * @return A new {@link XmlReader} instance.
      */
     public static XmlReader fromBytes(byte[] xml) {
-        return fromInputStream(new ByteArrayInputStream(xml));
+        return fromStream(new ByteArrayInputStream(xml));
     }
 
     /**
@@ -57,7 +61,7 @@ public final class DefaultXmlReader extends XmlReader {
      * @return A new {@link XmlReader} instance.
      * @throws RuntimeException If an {@link XmlReader} cannot be instantiated.
      */
-    public static XmlReader fromInputStream(InputStream xml) {
+    public static XmlReader fromStream(InputStream xml) {
         try {
             return new DefaultXmlReader(XML_INPUT_FACTORY.createXMLStreamReader(xml));
         } catch (XMLStreamException e) {

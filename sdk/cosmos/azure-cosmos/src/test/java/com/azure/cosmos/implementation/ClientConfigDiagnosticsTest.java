@@ -17,6 +17,7 @@ import org.testng.annotations.Test;
 
 import java.io.StringWriter;
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -35,6 +36,7 @@ public class ClientConfigDiagnosticsTest {
         diagnosticsClientConfig.withClientId(1);
         diagnosticsClientConfig.withConnectionMode(ConnectionMode.DIRECT);
         diagnosticsClientConfig.withActiveClientCounter(new AtomicInteger(2));
+        diagnosticsClientConfig.withClientMap(new HashMap<>());
 
         Mockito.doReturn(diagnosticsClientConfig).when(clientContext).getConfig();
 
@@ -67,6 +69,7 @@ public class ClientConfigDiagnosticsTest {
         diagnosticsClientConfig.withActiveClientCounter(new AtomicInteger(2));
         diagnosticsClientConfig.withRntbdOptions( new RntbdTransportClient.Options.Builder(ConnectionPolicy.getDefaultPolicy()).build().toDiagnosticsString());
         diagnosticsClientConfig.withGatewayHttpClientConfig(new HttpClientConfig(new Configs()).toDiagnosticsString());
+        diagnosticsClientConfig.withClientMap(new HashMap<>());
 
         Mockito.doReturn(diagnosticsClientConfig).when(clientContext).getConfig();
 
@@ -101,6 +104,7 @@ public class ClientConfigDiagnosticsTest {
         httpConfig.withMaxIdleConnectionTimeout(Duration.ofSeconds(17));
         httpConfig.withNetworkRequestTimeout(Duration.ofSeconds(18));
         diagnosticsClientConfig.withGatewayHttpClientConfig(httpConfig.toDiagnosticsString());
+        diagnosticsClientConfig.withClientMap(new HashMap<>());
 
         Mockito.doReturn(diagnosticsClientConfig).when(clientContext).getConfig();
 
@@ -139,6 +143,7 @@ public class ClientConfigDiagnosticsTest {
         diagnosticsClientConfig.withPreferredRegions(ImmutableList.of("west us 1", "west us 2"));
         diagnosticsClientConfig.withConnectionSharingAcrossClientsEnabled(true);
         diagnosticsClientConfig.withEndpointDiscoveryEnabled(true);
+        diagnosticsClientConfig.withClientMap(new HashMap<>());
 
         Mockito.doReturn(diagnosticsClientConfig).when(clientContext).getConfig();
 

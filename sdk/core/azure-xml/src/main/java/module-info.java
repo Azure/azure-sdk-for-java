@@ -5,4 +5,7 @@ module com.azure.xml {
     requires java.xml;
 
     exports com.azure.xml;
+    exports com.azure.xml.implementation;
+
+    uses com.azure.xml.XmlProvider;
 }

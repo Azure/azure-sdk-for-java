@@ -64,10 +64,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -98,9 +95,6 @@ public class GatewayAddressCache implements IAddressCache {
     private volatile Pair<PartitionKeyRangeIdentity, AddressInformation[]> masterPartitionAddressCache;
     private volatile Instant suboptimalMasterPartitionTimestamp;
 
-    private final ConcurrentHashMap<URI, Set<PartitionKeyRangeIdentity>> serverPartitionAddressToPkRangeIdMap;
-    private final boolean tcpConnectionEndpointRediscoveryEnabled;
-
     private final ConcurrentHashMap<String, ForcedRefreshMetadata> lastForcedRefreshMap;
     private final GlobalEndpointManager globalEndpointManager;
     private IOpenConnectionsHandler openConnectionsHandler;
@@ -116,7 +110,6 @@ public class GatewayAddressCache implements IAddressCache {
         UserAgentContainer userAgent,
         HttpClient httpClient,
         long suboptimalPartitionForceRefreshIntervalInSeconds,
-        boolean tcpConnectionEndpointRediscoveryEnabled,
         ApiType apiType,
         GlobalEndpointManager globalEndpointManager,
         ConnectionPolicy connectionPolicy,
@@ -158,8 +151,6 @@ public class GatewayAddressCache implements IAddressCache {
         // Set requested API version header for version enforcement.
         defaultRequestHeaders.put(HttpConstants.HttpHeaders.VERSION, HttpConstants.Versions.CURRENT_VERSION);
 
-        this.serverPartitionAddressToPkRangeIdMap = new ConcurrentHashMap<>();
-        this.tcpConnectionEndpointRediscoveryEnabled = tcpConnectionEndpointRediscoveryEnabled;
         this.lastForcedRefreshMap = new ConcurrentHashMap<>();
         this.globalEndpointManager = globalEndpointManager;
         this.openConnectionsHandler = openConnectionsHandler;
@@ -178,7 +169,6 @@ public class GatewayAddressCache implements IAddressCache {
         IAuthorizationTokenProvider tokenProvider,
         UserAgentContainer userAgent,
         HttpClient httpClient,
-        boolean tcpConnectionEndpointRediscoveryEnabled,
         ApiType apiType,
         GlobalEndpointManager globalEndpointManager,
         ConnectionPolicy connectionPolicy,
@@ -190,40 +180,10 @@ public class GatewayAddressCache implements IAddressCache {
                 userAgent,
                 httpClient,
                 DefaultSuboptimalPartitionForceRefreshIntervalInSeconds,
-                tcpConnectionEndpointRediscoveryEnabled,
                 apiType,
                 globalEndpointManager,
                 connectionPolicy,
                 openConnectionsHandler);
-    }
-
-    @Override
-    public int updateAddresses(final URI serverKey) {
-
-        Objects.requireNonNull(serverKey, "expected non-null serverKey");
-
-        AtomicInteger updatedCacheEntryCount = new AtomicInteger(0);
-
-        if (this.tcpConnectionEndpointRediscoveryEnabled) {
-            this.serverPartitionAddressToPkRangeIdMap.computeIfPresent(serverKey, (uri, partitionKeyRangeIdentitySet) -> {
-
-                for (PartitionKeyRangeIdentity partitionKeyRangeIdentity : partitionKeyRangeIdentitySet) {
-                    if (partitionKeyRangeIdentity.getPartitionKeyRangeId().equals(PartitionKeyRange.MASTER_PARTITION_KEY_RANGE_ID)) {
-                        this.masterPartitionAddressCache = null;
-                    } else {
-                        this.serverPartitionAddressCache.remove(partitionKeyRangeIdentity);
-                    }
-
-                    updatedCacheEntryCount.incrementAndGet();
-                }
-
-                return null;
-            });
-        } else {
-            logger.warn("tcpConnectionEndpointRediscovery is not enabled, should not reach here.");
-        }
-
-        return updatedCacheEntryCount.get();
     }
 
     @Override
@@ -918,26 +878,6 @@ public class GatewayAddressCache implements IAddressCache {
                     .map(addr -> GatewayAddressCache.toAddressInformation(addr))
                     .collect(Collectors.toList())
                     .toArray(new AddressInformation[addresses.size()]);
-
-        if (this.tcpConnectionEndpointRediscoveryEnabled) {
-            for (AddressInformation addressInfo : addressInfos) {
-                if (logger.isDebugEnabled()) {
-                    logger.debug(
-                        "Added address to serverPartitionAddressToPkRangeIdMap: ({\"partitionKeyRangeIdentity\":{},\"address\":{}})",
-                        partitionKeyRangeIdentity,
-                        addressInfo);
-                }
-
-                this.serverPartitionAddressToPkRangeIdMap.compute(addressInfo.getServerKey(), (serverKey, partitionKeyRangeIdentitySet) -> {
-                    if (partitionKeyRangeIdentitySet == null) {
-                        partitionKeyRangeIdentitySet = ConcurrentHashMap.newKeySet();
-                    }
-
-                    partitionKeyRangeIdentitySet.add(partitionKeyRangeIdentity);
-                    return partitionKeyRangeIdentitySet;
-                });
-            }
-        }
 
         return Pair.of(partitionKeyRangeIdentity, addressInfos);
     }
