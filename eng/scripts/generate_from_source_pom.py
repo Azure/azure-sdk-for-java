@@ -54,11 +54,6 @@ sdk_string = "/sdk/"
 
 # Exclude artifacts list when build from source.These artifacts may be not compatible with current dependencies.
 exclude_artifacts_list = [
-    'azure-spring-cloud-appconfiguration-config',
-    'azure-spring-cloud-appconfiguration-config-web',
-    'azure-spring-cloud-feature-management-web',
-    'azure-spring-cloud-starter-appconfiguration-config',
-    'azure-spring-cloud-test-appconfiguration-config',
     'azure-spring-data-cosmos',
     'azure-spring-data-cosmos-test',
     'spring-cloud-azure-starter-data-cosmos'
