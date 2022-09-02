@@ -4,6 +4,7 @@
 package com.azure.xml;
 
 import com.azure.xml.contract.XmlWriterContractTests;
+import com.azure.xml.implementation.DefaultXmlWriter;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.io.ByteArrayOutputStream;
@@ -20,7 +21,7 @@ public final class DefaultXmlWriterContractTests extends XmlWriterContractTests 
     @BeforeEach
     public void beforeEach() {
         this.outputStream = new ByteArrayOutputStream();
-        this.writer = DefaultXmlWriter.toOutputStream(outputStream);
+        this.writer = DefaultXmlWriter.toStream(outputStream);
     }
 
     @Override
