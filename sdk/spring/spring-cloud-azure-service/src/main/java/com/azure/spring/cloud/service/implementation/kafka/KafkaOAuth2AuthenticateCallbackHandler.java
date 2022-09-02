@@ -2,25 +2,25 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.service.implementation.kafka;
 
-import java.net.URI;
-import java.time.Duration;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-
-import javax.security.auth.callback.Callback;
-import javax.security.auth.callback.UnsupportedCallbackException;
-import javax.security.auth.login.AppConfigurationEntry;
-
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.cloud.core.implementation.factory.credential.DefaultAzureCredentialBuilderFactory;
 import com.azure.spring.cloud.core.properties.AzureProperties;
+import com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreeProperties;
 import org.apache.kafka.common.security.auth.AuthenticateCallbackHandler;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerTokenCallback;
 import reactor.core.publisher.Mono;
+
+import javax.security.auth.callback.Callback;
+import javax.security.auth.callback.UnsupportedCallbackException;
+import javax.security.auth.login.AppConfigurationEntry;
+import java.net.URI;
+import java.time.Duration;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.AZURE_TOKEN_CREDENTIAL;
 import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG;
@@ -33,7 +33,7 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
     private static final Duration ACCESS_TOKEN_REQUEST_BLOCK_TIME = Duration.ofSeconds(30);
     private static final String TOKEN_AUDIENCE_FORMAT = "%s://%s/.default";
 
-    private final AzureKafkaProperties properties;
+    private final AzureCredentialFreeProperties properties;
     private final AzureCredentialResolver<TokenCredential> externalTokenCredentialResolver;
 
     private AzureCredentialResolver<TokenCredential> tokenCredentialResolver;
@@ -43,8 +43,8 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
         this(null, null);
     }
 
-    public KafkaOAuth2AuthenticateCallbackHandler(AzureKafkaProperties properties, AzureCredentialResolver<TokenCredential> externalTokenCredentialResolver) {
-        this.properties = properties == null ? new AzureKafkaProperties() : properties;
+    public KafkaOAuth2AuthenticateCallbackHandler(AzureCredentialFreeProperties properties, AzureCredentialResolver<TokenCredential> externalTokenCredentialResolver) {
+        this.properties = properties == null ? new AzureCredentialFreeProperties() : properties;
         this.externalTokenCredentialResolver = externalTokenCredentialResolver == null ? new AzureTokenCredentialResolver() : externalTokenCredentialResolver;
     }
 

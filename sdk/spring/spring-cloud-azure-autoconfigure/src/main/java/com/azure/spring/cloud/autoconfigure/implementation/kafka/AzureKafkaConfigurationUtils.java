@@ -3,7 +3,7 @@
 package com.azure.spring.cloud.autoconfigure.implementation.kafka;
 
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
-import com.azure.spring.cloud.service.implementation.kafka.AzureKafkaProperties;
+import com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreeProperties;
 import com.azure.spring.cloud.service.implementation.kafka.KafkaOAuth2AuthenticateCallbackHandler;
 import org.apache.kafka.common.message.ApiVersionsRequestData;
 import org.apache.kafka.common.requests.ApiVersionsRequest;
@@ -20,10 +20,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.convertConfigMapToAzureProperties;
+import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils.copyPropertiesIgnoreNull;
 import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier.AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH;
 import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier.VERSION;
-import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils.copyPropertiesIgnoreNull;
+import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.convertConfigMapToAzureProperties;
 import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG;
 import static org.apache.kafka.clients.CommonClientConfigs.SECURITY_PROTOCOL_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_JAAS_CONFIG;
@@ -150,18 +150,18 @@ public final class AzureKafkaConfigurationUtils {
     }
 
     /**
-     * Build {@link AzureKafkaProperties} from Kafka custom properties and {@link AzureGlobalProperties}.
+     * Build {@link AzureCredentialFreeProperties} from Kafka custom properties and {@link AzureGlobalProperties}.
      *
      * @param kafkaProperties the kafka custom property map
      * @param azureGlobalProperties Azure global properties
-     * @return a {@link AzureKafkaProperties}
+     * @return a {@link AzureCredentialFreeProperties}
      */
-    public static AzureKafkaProperties buildAzureProperties(Map<String, Object> kafkaProperties,
-                                                            AzureGlobalProperties azureGlobalProperties) {
-        AzureKafkaProperties azureKafkaProperties = new AzureKafkaProperties();
-        copyPropertiesIgnoreNull(azureGlobalProperties.getProfile(), azureKafkaProperties.getProfile());
-        copyPropertiesIgnoreNull(azureGlobalProperties.getCredential(), azureKafkaProperties.getCredential());
-        convertConfigMapToAzureProperties(kafkaProperties, azureKafkaProperties);
-        return azureKafkaProperties;
+    public static AzureCredentialFreeProperties buildAzureProperties(Map<String, Object> kafkaProperties,
+                                                                     AzureGlobalProperties azureGlobalProperties) {
+        AzureCredentialFreeProperties azureCredentialFreeProperties = new AzureCredentialFreeProperties();
+        copyPropertiesIgnoreNull(azureGlobalProperties.getProfile(), azureCredentialFreeProperties.getProfile());
+        copyPropertiesIgnoreNull(azureGlobalProperties.getCredential(), azureCredentialFreeProperties.getCredential());
+        convertConfigMapToAzureProperties(kafkaProperties, azureCredentialFreeProperties);
+        return azureCredentialFreeProperties;
     }
 }

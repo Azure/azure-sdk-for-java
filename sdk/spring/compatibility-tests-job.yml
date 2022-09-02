@@ -20,6 +20,7 @@ jobs:
             - 'sdk/spring'
             - 'sdk/boms/spring-cloud-azure-dependencies'
             - 'sdk/parents/azure-client-sdk-parent'
+            - 'sdk/jdbc'
       - script: |
           pip install termcolor
         displayName: 'Python module install'
