@@ -169,7 +169,7 @@ org.springframework.retry:spring-retry;1.3.3
 org.springframework.boot:spring-boot-starter-parent;2.7.3
 
 ## azure-identity dependency versions used in sdk/jdbc
-com.azure:jdbc-azure-identity;1.6.0-beta.1
+jdbc_com.azure:azure-identity;1.6.0-beta.1
 
 ## Spring cloud dependency versions
 org.springframework.cloud:spring-cloud-dependencies;2021.0.3
