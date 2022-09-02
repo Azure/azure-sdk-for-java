@@ -21,10 +21,14 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
+
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
+import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
+import static com.azure.ai.textanalytics.implementation.Utility.throwIfTargetServiceVersionFound;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -38,14 +42,19 @@ class AnalyzeSentimentAsyncClient {
     private final TextAnalyticsClientImpl legacyService;
     private final MicrosoftCognitiveLanguageServiceTextAnalysisImpl service;
 
-    AnalyzeSentimentAsyncClient(TextAnalyticsClientImpl legacyService) {
+    private final TextAnalyticsServiceVersion serviceVersion;
+
+    AnalyzeSentimentAsyncClient(TextAnalyticsClientImpl legacyService, TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = legacyService;
         this.service = null;
+        this.serviceVersion = serviceVersion;
     }
 
-    AnalyzeSentimentAsyncClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service) {
+    AnalyzeSentimentAsyncClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
+                                TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = null;
         this.service = service;
+        this.serviceVersion = serviceVersion;
     }
 
     /**
@@ -64,7 +73,6 @@ class AnalyzeSentimentAsyncClient {
     public Mono<Response<AnalyzeSentimentResultCollection>> analyzeSentimentBatch(
         Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options) {
         try {
-            inputDocumentsValidation(documents);
             return withContext(context -> getAnalyzedSentimentResponse(documents, options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -85,7 +93,6 @@ class AnalyzeSentimentAsyncClient {
     Mono<Response<AnalyzeSentimentResultCollection>> analyzeSentimentBatchWithContext(
         Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options, Context context) {
         try {
-            inputDocumentsValidation(documents);
             return getAnalyzedSentimentResponse(documents, options, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -105,6 +112,8 @@ class AnalyzeSentimentAsyncClient {
      */
     private Mono<Response<AnalyzeSentimentResultCollection>> getAnalyzedSentimentResponse(
         Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options, Context context) {
+        throwIfCallingNotAvailableFeatureInOptions(options);
+        inputDocumentsValidation(documents);
         options = options == null ? new AnalyzeSentimentOptions() : options;
 
         if (service != null) {
@@ -145,5 +154,21 @@ class AnalyzeSentimentAsyncClient {
             .doOnError(error -> logger.warning("Failed to analyze sentiment - {}", error))
             .map(Utility::toAnalyzeSentimentResultCollectionResponse)
             .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+    }
+
+    private void throwIfCallingNotAvailableFeatureInOptions(AnalyzeSentimentOptions options) {
+        if (options == null) {
+            return;
+        }
+        if (options.isIncludeOpinionMining()) {
+            throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+                getUnsupportedServiceApiVersionMessage("AnalyzeSentimentOptions.includeOpinionMining",
+                    serviceVersion, TextAnalyticsServiceVersion.V3_1));
+        }
+        if (options.isServiceLogsDisabled()) {
+            throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+                getUnsupportedServiceApiVersionMessage("TextAnalyticsRequestOptions.disableServiceLogs",
+                    serviceVersion, TextAnalyticsServiceVersion.V3_1));
+        }
     }
 }

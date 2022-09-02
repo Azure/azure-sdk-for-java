@@ -1,8 +1,6 @@
 # Release History
 
-## 1.32.0-beta.1 (Unreleased)
-
-- Added `com.azure.core.util.metrics.LongGauge` instrument support to metrics.
+## 1.33.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -11,6 +9,22 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.32.0 (2022-09-01)
+
+### Features Added
+
+- Added new constructor overloads to `PagedIterable` and introduced `PageRetrieverSync`.
+- Added `com.azure.core.util.metrics.LongGauge` instrument support to metrics.
+- Added `CoreUtils.stringJoin` which optimizes `String.join` for small `List`s.
+
+### Other Changes
+
+- Miscellaneous performance improvements.
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.4.2` to `3.4.22`.
 
 ## 1.31.0 (2022-08-05)
 

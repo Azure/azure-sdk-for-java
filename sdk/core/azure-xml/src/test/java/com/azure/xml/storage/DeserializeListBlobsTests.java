@@ -3,7 +3,7 @@
 
 package com.azure.xml.storage;
 
-import com.azure.xml.DefaultXmlReader;
+import com.azure.xml.implementation.DefaultXmlReader;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

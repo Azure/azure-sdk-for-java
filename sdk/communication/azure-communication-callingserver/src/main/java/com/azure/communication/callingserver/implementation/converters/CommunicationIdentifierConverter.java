@@ -73,6 +73,7 @@ public class CommunicationIdentifierConverter {
         if (identifier instanceof CommunicationUserIdentifier) {
             CommunicationUserIdentifier communicationUserIdentifier = (CommunicationUserIdentifier) identifier;
             return new CommunicationIdentifierModel()
+                .setRawId(communicationUserIdentifier.getRawId())
                 .setCommunicationUser(
                     new CommunicationUserIdentifierModel().setId(communicationUserIdentifier.getId()));
         }

@@ -5,6 +5,7 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesAction;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
@@ -17,11 +18,14 @@ import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
+import com.azure.ai.textanalytics.models.MultiLabelClassifyAction;
 import com.azure.ai.textanalytics.models.MultiLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
+import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
+import com.azure.ai.textanalytics.models.SingleLabelClassifyAction;
 import com.azure.ai.textanalytics.models.SingleLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
@@ -247,6 +251,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@link TextAnalyticsRequestOptions#isServiceLogsDisabled()} is true in service
+     *   API version {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} is only available for API
+     *   version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DetectLanguageResultCollection detectLanguageBatch(
@@ -306,6 +313,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@link TextAnalyticsRequestOptions#isServiceLogsDisabled()} is true in service
+     *   API version {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} is only available for API
+     *   version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DetectLanguageResultCollection> detectLanguageBatchWithResponse(
@@ -427,6 +437,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@link TextAnalyticsRequestOptions#isServiceLogsDisabled()} is true in service
+     *   API version {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} is only available for API
+     *   version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecognizeEntitiesResultCollection recognizeEntitiesBatch(
@@ -481,6 +494,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@link TextAnalyticsRequestOptions#isServiceLogsDisabled()} is true in service
+     *   API version {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} is only available for API
+     *   version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecognizeEntitiesResultCollection> recognizeEntitiesBatchWithResponse(
@@ -522,6 +538,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
+     * @throws IllegalStateException if {@code recognizePiiEntities} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code recognizePiiEntities} is only available for
+     *   API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PiiEntityCollection recognizePiiEntities(String document) {
@@ -559,6 +578,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
+     * @throws IllegalStateException if {@code recognizePiiEntities} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code recognizePiiEntities} is only available for
+     *   API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PiiEntityCollection recognizePiiEntities(String document, String language) {
@@ -600,6 +622,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
+     * @throws IllegalStateException if {@code recognizePiiEntities} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code recognizePiiEntities} is only available for
+     *   API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PiiEntityCollection recognizePiiEntities(String document, String language,
@@ -652,6 +677,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@code recognizePiiEntitiesBatch} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code recognizePiiEntitiesBatch} is only available for
+     *   API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecognizePiiEntitiesResultCollection recognizePiiEntitiesBatch(
@@ -707,6 +735,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@code recognizePiiEntitiesBatchWithResponse} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code recognizePiiEntitiesBatchWithResponse} is only available for
+     *   API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecognizePiiEntitiesResultCollection> recognizePiiEntitiesBatchWithResponse(
@@ -843,6 +874,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@link TextAnalyticsRequestOptions#isServiceLogsDisabled()} is true in service
+     *   API version {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} is only available for API
+     *   version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecognizeLinkedEntitiesResultCollection recognizeLinkedEntitiesBatch(
@@ -905,6 +939,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@link TextAnalyticsRequestOptions#isServiceLogsDisabled()} is true in service
+     *   API version {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} is only available for API
+     *   version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecognizeLinkedEntitiesResultCollection> recognizeLinkedEntitiesBatchWithResponse(
@@ -1025,6 +1062,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@link TextAnalyticsRequestOptions#isServiceLogsDisabled()} is true in service
+     *   API version {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} is only available for API
+     *   version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExtractKeyPhrasesResultCollection extractKeyPhrasesBatch(
@@ -1086,6 +1126,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@link TextAnalyticsRequestOptions#isServiceLogsDisabled()} is true in service
+     *   API version {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} is only available for API
+     *   version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExtractKeyPhrasesResultCollection> extractKeyPhrasesBatchWithResponse(
@@ -1233,6 +1276,10 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
+     * @throws IllegalStateException if {@link AnalyzeSentimentOptions#isServiceLogsDisabled()} or
+     *   {@link AnalyzeSentimentOptions#isIncludeOpinionMining()} is true in service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} and {@code includeOpinionMining} are only
+     *   available for API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentSentiment analyzeSentiment(String document, String language, AnalyzeSentimentOptions options) {
@@ -1360,6 +1407,10 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@link AnalyzeSentimentOptions#isServiceLogsDisabled()} or
+     *   {@link AnalyzeSentimentOptions#isIncludeOpinionMining()} is true in service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} and {@code includeOpinionMining} are only
+     *   available for API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AnalyzeSentimentResultCollection analyzeSentimentBatch(Iterable<String> documents,
@@ -1515,6 +1566,10 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@link AnalyzeSentimentOptions#isServiceLogsDisabled()} or
+     *   {@link AnalyzeSentimentOptions#isIncludeOpinionMining()} is true in service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} and {@code includeOpinionMining} are only
+     *   available for API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AnalyzeSentimentResultCollection> analyzeSentimentBatchWithResponse(
@@ -1541,6 +1596,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@code beginAnalyzeHealthcareEntities} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code beginAnalyzeHealthcareEntities} is only available for API
+     *   version v3.1 and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1642,6 +1700,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@code beginAnalyzeHealthcareEntities} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code beginAnalyzeHealthcareEntities} is only available for API
+     *   version v3.1 and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1706,6 +1767,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@code beginRecognizeCustomEntities} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0} or {@link TextAnalyticsServiceVersion#V3_1}.
+     *   {@code beginRecognizeCustomEntities} is only available for API version 2022-05-01 and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1774,6 +1838,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@code beginRecognizeCustomEntities} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0} or {@link TextAnalyticsServiceVersion#V3_1}.
+     *   {@code beginRecognizeCustomEntities} is only available for API version 2022-05-01 and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1841,6 +1908,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@code beginSingleLabelClassify} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0} or {@link TextAnalyticsServiceVersion#V3_1}.
+     *   {@code beginSingleLabelClassify} is only available for API version 2022-05-01 and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1907,6 +1977,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@code beginSingleLabelClassify} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0} or {@link TextAnalyticsServiceVersion#V3_1}.
+     *   {@code beginSingleLabelClassify} is only available for API version 2022-05-01 and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1968,6 +2041,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@code beginMultiLabelClassify} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0} or {@link TextAnalyticsServiceVersion#V3_1}.
+     *   {@code beginMultiLabelClassify} is only available for API version 2022-05-01 and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -2030,6 +2106,9 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@code beginMultiLabelClassify} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0} or {@link TextAnalyticsServiceVersion#V3_1}.
+     *   {@code beginMultiLabelClassify} is only available for API version 2022-05-01 and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -2109,6 +2188,13 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@code beginAnalyzeActions} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code beginAnalyzeActions} is only available for API version
+     *   v3.1 and newer.
+     * @throws IllegalStateException if request {@link AnalyzeHealthcareEntitiesAction},
+     *   {@link RecognizeCustomEntitiesAction}, {@link SingleLabelClassifyAction}, or {@link MultiLabelClassifyAction}
+     *   in service API version {@link TextAnalyticsServiceVersion#V3_0} or {@link TextAnalyticsServiceVersion#V3_1}.
+     *   Those actions are only available for API version 2022-05-01 and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -2188,6 +2274,13 @@ public final class TextAnalyticsClient {
      *
      * @throws NullPointerException if {@code documents} or {@code actions} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@code beginAnalyzeActions} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code beginAnalyzeActions} is only available for API version
+     *   v3.1 and newer.
+     * @throws IllegalStateException if request {@link AnalyzeHealthcareEntitiesAction},
+     *   {@link RecognizeCustomEntitiesAction}, {@link SingleLabelClassifyAction}, or {@link MultiLabelClassifyAction}
+     *   in service API version {@link TextAnalyticsServiceVersion#V3_0} or {@link TextAnalyticsServiceVersion#V3_1}.
+     *   Those actions are only available for API version 2022-05-01 and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)

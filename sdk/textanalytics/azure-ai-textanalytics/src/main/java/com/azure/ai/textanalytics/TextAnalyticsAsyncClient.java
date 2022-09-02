@@ -8,6 +8,7 @@ import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServi
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesAction;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
@@ -20,11 +21,14 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
+import com.azure.ai.textanalytics.models.MultiLabelClassifyAction;
 import com.azure.ai.textanalytics.models.MultiLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
+import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
+import com.azure.ai.textanalytics.models.SingleLabelClassifyAction;
 import com.azure.ai.textanalytics.models.SingleLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
@@ -121,16 +125,16 @@ public final class TextAnalyticsAsyncClient {
         this.serviceVersion = serviceVersion;
         this.defaultCountryHint = defaultCountryHint;
         this.defaultLanguage = defaultLanguage;
-        this.detectLanguageAsyncClient = new DetectLanguageAsyncClient(legacyService);
-        this.analyzeSentimentAsyncClient = new AnalyzeSentimentAsyncClient(legacyService);
-        this.extractKeyPhraseAsyncClient = new ExtractKeyPhraseAsyncClient(legacyService);
-        this.recognizeEntityAsyncClient = new RecognizeEntityAsyncClient(legacyService);
-        this.recognizePiiEntityAsyncClient = new RecognizePiiEntityAsyncClient(legacyService);
-        this.recognizeLinkedEntityAsyncClient = new RecognizeLinkedEntityAsyncClient(legacyService);
-        this.recognizeCustomEntitiesAsyncClient = new RecognizeCustomEntitiesAsyncClient(null);
-        this.analyzeHealthcareEntityAsyncClient = new AnalyzeHealthcareEntityAsyncClient(legacyService);
-        this.analyzeActionsAsyncClient = new AnalyzeActionsAsyncClient(legacyService);
-        this.labelClassifyAsyncClient = new LabelClassifyAsyncClient(null);
+        this.detectLanguageAsyncClient = new DetectLanguageAsyncClient(legacyService, serviceVersion);
+        this.analyzeSentimentAsyncClient = new AnalyzeSentimentAsyncClient(legacyService, serviceVersion);
+        this.extractKeyPhraseAsyncClient = new ExtractKeyPhraseAsyncClient(legacyService, serviceVersion);
+        this.recognizeEntityAsyncClient = new RecognizeEntityAsyncClient(legacyService, serviceVersion);
+        this.recognizePiiEntityAsyncClient = new RecognizePiiEntityAsyncClient(legacyService, serviceVersion);
+        this.recognizeLinkedEntityAsyncClient = new RecognizeLinkedEntityAsyncClient(legacyService, serviceVersion);
+        this.recognizeCustomEntitiesAsyncClient = new RecognizeCustomEntitiesAsyncClient(null, serviceVersion);
+        this.analyzeHealthcareEntityAsyncClient = new AnalyzeHealthcareEntityAsyncClient(legacyService, serviceVersion);
+        this.analyzeActionsAsyncClient = new AnalyzeActionsAsyncClient(legacyService, serviceVersion);
+        this.labelClassifyAsyncClient = new LabelClassifyAsyncClient(null, serviceVersion);
     }
 
     TextAnalyticsAsyncClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
@@ -140,16 +144,18 @@ public final class TextAnalyticsAsyncClient {
         this.serviceVersion = serviceVersion;
         this.defaultCountryHint = defaultCountryHint;
         this.defaultLanguage = defaultLanguage;
-        this.detectLanguageAsyncClient = new DetectLanguageAsyncClient(service);
-        this.analyzeSentimentAsyncClient = new AnalyzeSentimentAsyncClient(service);
-        this.extractKeyPhraseAsyncClient = new ExtractKeyPhraseAsyncClient(service);
-        this.recognizeEntityAsyncClient = new RecognizeEntityAsyncClient(service);
-        this.recognizePiiEntityAsyncClient = new RecognizePiiEntityAsyncClient(service);
-        this.recognizeLinkedEntityAsyncClient = new RecognizeLinkedEntityAsyncClient(service);
-        this.recognizeCustomEntitiesAsyncClient = new RecognizeCustomEntitiesAsyncClient(new AnalyzeTextsImpl(service));
-        this.analyzeHealthcareEntityAsyncClient = new AnalyzeHealthcareEntityAsyncClient(new AnalyzeTextsImpl(service));
-        this.analyzeActionsAsyncClient = new AnalyzeActionsAsyncClient(new AnalyzeTextsImpl(service));
-        this.labelClassifyAsyncClient = new LabelClassifyAsyncClient(new AnalyzeTextsImpl(service));
+        this.detectLanguageAsyncClient = new DetectLanguageAsyncClient(service, serviceVersion);
+        this.analyzeSentimentAsyncClient = new AnalyzeSentimentAsyncClient(service, serviceVersion);
+        this.extractKeyPhraseAsyncClient = new ExtractKeyPhraseAsyncClient(service, serviceVersion);
+        this.recognizeEntityAsyncClient = new RecognizeEntityAsyncClient(service, serviceVersion);
+        this.recognizePiiEntityAsyncClient = new RecognizePiiEntityAsyncClient(service, serviceVersion);
+        this.recognizeLinkedEntityAsyncClient = new RecognizeLinkedEntityAsyncClient(service, serviceVersion);
+        this.recognizeCustomEntitiesAsyncClient = new RecognizeCustomEntitiesAsyncClient(
+            new AnalyzeTextsImpl(service), serviceVersion);
+        this.analyzeHealthcareEntityAsyncClient = new AnalyzeHealthcareEntityAsyncClient(new AnalyzeTextsImpl(service),
+            serviceVersion);
+        this.analyzeActionsAsyncClient = new AnalyzeActionsAsyncClient(new AnalyzeTextsImpl(service), serviceVersion);
+        this.labelClassifyAsyncClient = new LabelClassifyAsyncClient(new AnalyzeTextsImpl(service), serviceVersion);
     }
 
     /**
@@ -300,6 +306,9 @@ public final class TextAnalyticsAsyncClient {
      * @return A {@link Mono} contains a {@link DetectLanguageResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalStateException if {@link TextAnalyticsRequestOptions#isServiceLogsDisabled()} is true in service
+     *   API version {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} is only available for API
+     *   version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DetectLanguageResultCollection> detectLanguageBatch(
@@ -364,6 +373,9 @@ public final class TextAnalyticsAsyncClient {
      * @return A {@link Mono} contains a {@link Response} which contains a {@link DetectLanguageResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalStateException if {@link TextAnalyticsRequestOptions#isServiceLogsDisabled()} is true in service
+     *   API version {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} is only available for API
+     *   version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DetectLanguageResultCollection>> detectLanguageBatchWithResponse(
@@ -490,6 +502,9 @@ public final class TextAnalyticsAsyncClient {
      * @return A {@link Mono} contains a {@link RecognizeEntitiesResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalStateException if {@link TextAnalyticsRequestOptions#isServiceLogsDisabled()} is true in service
+     *   API version {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} is only available for API
+     *   version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecognizeEntitiesResultCollection> recognizeEntitiesBatch(
@@ -552,6 +567,9 @@ public final class TextAnalyticsAsyncClient {
      * @return A {@link Mono} contains a {@link Response} which contains a {@link RecognizeEntitiesResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalStateException if {@link TextAnalyticsRequestOptions#isServiceLogsDisabled()} is true in service
+     *   API version {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} is only available for API
+     *   version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecognizeEntitiesResultCollection>> recognizeEntitiesBatchWithResponse(
@@ -595,6 +613,9 @@ public final class TextAnalyticsAsyncClient {
      *
      * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
+     * @throws IllegalStateException if {@code recognizePiiEntities} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code recognizePiiEntities} is only available for
+     *   API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PiiEntityCollection> recognizePiiEntities(String document) {
@@ -635,6 +656,9 @@ public final class TextAnalyticsAsyncClient {
      *
      * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
+     * @throws IllegalStateException if {@code recognizePiiEntities} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code recognizePiiEntities} is only available for
+     *   API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PiiEntityCollection> recognizePiiEntities(String document, String language) {
@@ -679,6 +703,9 @@ public final class TextAnalyticsAsyncClient {
      *
      * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
+     * @throws IllegalStateException if {@code recognizePiiEntities} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code recognizePiiEntities} is only available for
+     *   API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PiiEntityCollection> recognizePiiEntities(String document, String language,
@@ -735,6 +762,9 @@ public final class TextAnalyticsAsyncClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@code recognizePiiEntitiesBatch} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code recognizePiiEntitiesBatch} is only available for
+     *   API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecognizePiiEntitiesResultCollection> recognizePiiEntitiesBatch(
@@ -801,6 +831,9 @@ public final class TextAnalyticsAsyncClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@code recognizePiiEntitiesBatchWithResponse} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code recognizePiiEntitiesBatchWithResponse} is only available for
+     *   API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecognizePiiEntitiesResultCollection>> recognizePiiEntitiesBatchWithResponse(
@@ -938,6 +971,9 @@ public final class TextAnalyticsAsyncClient {
      * @return A {@link Mono} contains a {@link RecognizeLinkedEntitiesResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalStateException if {@link TextAnalyticsRequestOptions#isServiceLogsDisabled()} is true in service
+     *   API version {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} is only available for API
+     *   version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecognizeLinkedEntitiesResultCollection> recognizeLinkedEntitiesBatch(
@@ -1006,6 +1042,9 @@ public final class TextAnalyticsAsyncClient {
      * {@link RecognizeLinkedEntitiesResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalStateException if {@link TextAnalyticsRequestOptions#isServiceLogsDisabled()} is true in service
+     *   API version {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} is only available for API
+     *   version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecognizeLinkedEntitiesResultCollection>> recognizeLinkedEntitiesBatchWithResponse(
@@ -1120,6 +1159,9 @@ public final class TextAnalyticsAsyncClient {
      * @return A {@link Mono} contains a {@link ExtractKeyPhrasesResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalStateException if {@link TextAnalyticsRequestOptions#isServiceLogsDisabled()} is true in service
+     *   API version {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} is only available for API
+     *   version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExtractKeyPhrasesResultCollection> extractKeyPhrasesBatch(
@@ -1182,6 +1224,9 @@ public final class TextAnalyticsAsyncClient {
      * @return A {@link Mono} contains a {@link Response} that contains a {@link ExtractKeyPhrasesResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalStateException if {@link TextAnalyticsRequestOptions#isServiceLogsDisabled()} is true in service
+     *   API version {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} is only available for API
+     *   version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExtractKeyPhrasesResultCollection>> extractKeyPhrasesBatchWithResponse(
@@ -1324,6 +1369,10 @@ public final class TextAnalyticsAsyncClient {
      *
      * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
+     * @throws IllegalStateException if {@link AnalyzeSentimentOptions#isServiceLogsDisabled()} or
+     *   {@link AnalyzeSentimentOptions#isIncludeOpinionMining()} is true in service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} and {@code includeOpinionMining} are only
+     *   available for API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentSentiment> analyzeSentiment(String document, String language, AnalyzeSentimentOptions options) {
@@ -1479,6 +1528,10 @@ public final class TextAnalyticsAsyncClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@link AnalyzeSentimentOptions#isServiceLogsDisabled()} or
+     *   {@link AnalyzeSentimentOptions#isIncludeOpinionMining()} is true in service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} and {@code includeOpinionMining} are only
+     *   available for API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeSentimentResultCollection> analyzeSentimentBatch(Iterable<String> documents,
@@ -1624,6 +1677,10 @@ public final class TextAnalyticsAsyncClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@link AnalyzeSentimentOptions#isServiceLogsDisabled()} or
+     *   {@link AnalyzeSentimentOptions#isIncludeOpinionMining()} is true in service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code disableServiceLogs} and {@code includeOpinionMining} are only
+     *   available for API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeSentimentResultCollection>> analyzeSentimentBatchWithResponse(
@@ -1651,6 +1708,9 @@ public final class TextAnalyticsAsyncClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@code beginAnalyzeHealthcareEntities} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code beginAnalyzeHealthcareEntities} is only available for API
+     *   version v3.1 and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1752,6 +1812,9 @@ public final class TextAnalyticsAsyncClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@code beginAnalyzeHealthcareEntities} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code beginAnalyzeHealthcareEntities} is only available for API
+     *   version v3.1 and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1829,6 +1892,9 @@ public final class TextAnalyticsAsyncClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@code beginRecognizeCustomEntities} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0} or {@link TextAnalyticsServiceVersion#V3_1}.
+     *   {@code beginRecognizeCustomEntities} is only available for API version 2022-05-01 and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1906,6 +1972,9 @@ public final class TextAnalyticsAsyncClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@code beginRecognizeCustomEntities} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0} or {@link TextAnalyticsServiceVersion#V3_1}.
+     *   {@code beginRecognizeCustomEntities} is only available for API version 2022-05-01 and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1987,6 +2056,9 @@ public final class TextAnalyticsAsyncClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@code beginSingleLabelClassify} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0} or {@link TextAnalyticsServiceVersion#V3_1}.
+     *   {@code beginSingleLabelClassify} is only available for API version 2022-05-01 and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -2065,6 +2137,9 @@ public final class TextAnalyticsAsyncClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@code beginSingleLabelClassify} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0} or {@link TextAnalyticsServiceVersion#V3_1}.
+     *   {@code beginSingleLabelClassify} is only available for API version 2022-05-01 and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -2141,6 +2216,9 @@ public final class TextAnalyticsAsyncClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@code beginMultiLabelClassify} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0} or {@link TextAnalyticsServiceVersion#V3_1}.
+     *   {@code beginMultiLabelClassify} is only available for API version 2022-05-01 and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -2215,6 +2293,9 @@ public final class TextAnalyticsAsyncClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@code beginMultiLabelClassify} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0} or {@link TextAnalyticsServiceVersion#V3_1}.
+     *   {@code beginMultiLabelClassify} is only available for API version 2022-05-01 and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -2291,6 +2372,13 @@ public final class TextAnalyticsAsyncClient {
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@code beginAnalyzeActions} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code beginAnalyzeActions} is only available for API version
+     *   v3.1 and newer.
+     * @throws IllegalStateException if request {@link AnalyzeHealthcareEntitiesAction},
+     *   {@link RecognizeCustomEntitiesAction}, {@link SingleLabelClassifyAction}, or {@link MultiLabelClassifyAction}
+     *   in service API version {@link TextAnalyticsServiceVersion#V3_0} or {@link TextAnalyticsServiceVersion#V3_1}.
+     *   Those actions are only available for API version 2022-05-01 and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -2367,6 +2455,13 @@ public final class TextAnalyticsAsyncClient {
      *
      * @throws NullPointerException if {@code documents} or {@code actions} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws IllegalStateException if {@code beginAnalyzeActions} is called with service API version
+     *   {@link TextAnalyticsServiceVersion#V3_0}. {@code beginAnalyzeActions} is only available for API version
+     *   v3.1 and newer.
+     * @throws IllegalStateException if request {@link AnalyzeHealthcareEntitiesAction},
+     *   {@link RecognizeCustomEntitiesAction}, {@link SingleLabelClassifyAction}, or {@link MultiLabelClassifyAction}
+     *   in service API version {@link TextAnalyticsServiceVersion#V3_0} or {@link TextAnalyticsServiceVersion#V3_1}.
+     *   Those actions are only available for API version 2022-05-01 and newer.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)

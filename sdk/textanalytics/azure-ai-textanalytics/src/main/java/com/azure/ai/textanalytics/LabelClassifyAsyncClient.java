@@ -58,9 +58,11 @@ import java.util.stream.Collectors;
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
+import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
 import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
+import static com.azure.ai.textanalytics.implementation.Utility.throwIfTargetServiceVersionFound;
 import static com.azure.ai.textanalytics.implementation.Utility.toLabelClassificationResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.models.State.CANCELLED;
@@ -74,26 +76,35 @@ class LabelClassifyAsyncClient {
     private static final ClientLogger LOGGER = new ClientLogger(LabelClassifyAsyncClient.class);
     private final AnalyzeTextsImpl service;
 
-    LabelClassifyAsyncClient(AnalyzeTextsImpl service) {
+    private final TextAnalyticsServiceVersion serviceVersion;
+
+    LabelClassifyAsyncClient(AnalyzeTextsImpl service, TextAnalyticsServiceVersion serviceVersion) {
         this.service = service;
+        this.serviceVersion = serviceVersion;
     }
 
     PollerFlux<ClassifyDocumentOperationDetail, ClassifyDocumentPagedFlux> singleLabelClassify(
         Iterable<TextDocumentInput> documents, String projectName, String deploymentName,
         SingleLabelClassifyOptions options, Context context) {
         try {
+            throwIfTargetServiceVersionFound(this.serviceVersion,
+                Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1),
+                getUnsupportedServiceApiVersionMessage("beginSingleLabelClassify", serviceVersion,
+                    TextAnalyticsServiceVersion.V2022_05_01));
             inputDocumentsValidation(documents);
             options = getNotNullSingleLabelClassifyOptions(options);
             final Context finalContext = getNotNullContext(context)
                 .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
+            final String displayName = options.getDisplayName();
 
             return new PollerFlux<>(
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(
                     service.submitJobWithResponseAsync(
                         new AnalyzeTextJobsInput()
+                            .setDisplayName(displayName)
                             .setAnalysisInput(
                                 new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
                             .setTasks(Arrays.asList(
@@ -129,18 +140,24 @@ class LabelClassifyAsyncClient {
         Iterable<TextDocumentInput> documents, String projectName, String deploymentName,
         SingleLabelClassifyOptions options, Context context) {
         try {
+            throwIfTargetServiceVersionFound(this.serviceVersion,
+                Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1),
+                getUnsupportedServiceApiVersionMessage("beginSingleLabelClassify", serviceVersion,
+                    TextAnalyticsServiceVersion.V2022_05_01));
             inputDocumentsValidation(documents);
             options = getNotNullSingleLabelClassifyOptions(options);
             final Context finalContext = getNotNullContext(context)
                 .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
+            final String displayName = options.getDisplayName();
 
             return new PollerFlux<>(
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(
                     service.submitJobWithResponseAsync(
                         new AnalyzeTextJobsInput()
+                            .setDisplayName(displayName)
                             .setAnalysisInput(
                                 new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
                             .setTasks(Arrays.asList(
@@ -176,18 +193,24 @@ class LabelClassifyAsyncClient {
         Iterable<TextDocumentInput> documents, String projectName, String deploymentName,
         MultiLabelClassifyOptions options, Context context) {
         try {
+            throwIfTargetServiceVersionFound(this.serviceVersion,
+                Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1),
+                getUnsupportedServiceApiVersionMessage("beginMultiLabelClassify", serviceVersion,
+                    TextAnalyticsServiceVersion.V2022_05_01));
             inputDocumentsValidation(documents);
             options = getNotNullMultiLabelClassifyOptions(options);
             final Context finalContext = getNotNullContext(context)
                 .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
+            final String displayName = options.getDisplayName();
 
             return new PollerFlux<>(
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(
                     service.submitJobWithResponseAsync(
                         new AnalyzeTextJobsInput()
+                            .setDisplayName(displayName)
                             .setAnalysisInput(
                                 new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
                             .setTasks(Arrays.asList(
@@ -223,18 +246,24 @@ class LabelClassifyAsyncClient {
         Iterable<TextDocumentInput> documents, String projectName, String deploymentName,
         MultiLabelClassifyOptions options, Context context) {
         try {
+            throwIfTargetServiceVersionFound(this.serviceVersion,
+                Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1),
+                getUnsupportedServiceApiVersionMessage("beginMultiLabelClassify", serviceVersion,
+                    TextAnalyticsServiceVersion.V2022_05_01));
             inputDocumentsValidation(documents);
             options = getNotNullMultiLabelClassifyOptions(options);
             final Context finalContext = getNotNullContext(context)
                 .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
+            final String displayName = options.getDisplayName();
 
             return new PollerFlux<>(
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(
                     service.submitJobWithResponseAsync(
                         new AnalyzeTextJobsInput()
+                            .setDisplayName(displayName)
                             .setAnalysisInput(
                                 new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
                             .setTasks(Arrays.asList(
@@ -443,7 +472,8 @@ class LabelClassifyAsyncClient {
             status = LongRunningOperationStatus.fromString(
                 analyzeOperationResultResponse.getValue().getStatus().toString(), true);
         }
-
+        ClassifyDocumentOperationDetailPropertiesHelper.setDisplayName(operationResultPollResponse.getValue(),
+            analyzeOperationResultResponse.getValue().getDisplayName());
         ClassifyDocumentOperationDetailPropertiesHelper.setCreatedAt(operationResultPollResponse.getValue(),
             analyzeOperationResultResponse.getValue().getCreatedDateTime());
         ClassifyDocumentOperationDetailPropertiesHelper.setLastModifiedAt(

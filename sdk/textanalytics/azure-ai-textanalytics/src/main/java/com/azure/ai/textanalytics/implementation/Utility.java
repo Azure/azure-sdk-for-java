@@ -3,6 +3,7 @@
 
 package com.azure.ai.textanalytics.implementation;
 
+import com.azure.ai.textanalytics.TextAnalyticsServiceVersion;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextTaskResult;
 import com.azure.ai.textanalytics.implementation.models.Association;
 import com.azure.ai.textanalytics.implementation.models.Certainty;
@@ -63,6 +64,7 @@ import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.ClassificationCategory;
+import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
@@ -79,7 +81,6 @@ import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelationRole;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
-import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
@@ -104,9 +105,9 @@ import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
+import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
-import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
@@ -1347,5 +1348,38 @@ public final class Utility {
                 String.format("Invalid assessment index '%s' in '%s'.", assessmentIndex, assessmentPointer)));
         }
         return assessments.get(assessmentIndex);
+    }
+
+    /**
+     * Throw exception if sourceVersion is one of target API versions.
+     *
+     * @param sourceVersion The service version that client is using when calling service API.
+     * @param targetVersions The target versions that used to verify if sourceVersion is unsupported version.
+     *                       Throw exception if target versions contains the source version.
+     * @param errorMessage The error message.
+     */
+    public static void throwIfTargetServiceVersionFound(TextAnalyticsServiceVersion sourceVersion,
+                                                        List<TextAnalyticsServiceVersion> targetVersions,
+                                                        String errorMessage) {
+        for (TextAnalyticsServiceVersion targetVersion : targetVersions) {
+            if (targetVersion != null && sourceVersion != null
+                && targetVersion.getVersion().equals(sourceVersion.getVersion())) {
+                throw LOGGER.logExceptionAsError(new IllegalStateException(errorMessage));
+            }
+        }
+    }
+
+    /**
+     * Retrieve custom unsupported Service API version error message.
+     *
+     * @param unsupportedName The unsupported API or property name that the not available in 'minSupportedVersion'.
+     * @param sourceVersion The source service API version that client is using.
+     * @param minSupportedVersion The minimum supported Service API version.
+     * @return The error message.
+     */
+    public static String getUnsupportedServiceApiVersionMessage(String unsupportedName,
+        TextAnalyticsServiceVersion sourceVersion, TextAnalyticsServiceVersion minSupportedVersion) {
+        return String.format("'%s' is not available in API version %s. Use service API version '%s' or newer.",
+            unsupportedName, sourceVersion, minSupportedVersion);
     }
 }
