@@ -299,12 +299,14 @@ public class Transforms {
 
     public static DocumentModelDetails toDocumentModelDetails(com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelDetails modelDetails) {
         DocumentModelDetails documentModelDetails = new DocumentModelDetails();
-        DocumentModelDetailsHelper.setModelId(documentModelDetails, modelDetails.getModelId());
-        DocumentModelDetailsHelper.setDescription(documentModelDetails, modelDetails.getDescription());
-        Map<String, DocumentTypeDetails> docTypeMap = getStringDocTypeInfoMap(modelDetails);
-        DocumentModelDetailsHelper.setDocTypes(documentModelDetails, docTypeMap);
-        DocumentModelDetailsHelper.setCreatedOn(documentModelDetails, modelDetails.getCreatedDateTime());
-        DocumentModelDetailsHelper.setTags(documentModelDetails, modelDetails.getTags());
+        if (modelDetails != null) {
+            DocumentModelDetailsHelper.setModelId(documentModelDetails, modelDetails.getModelId());
+            DocumentModelDetailsHelper.setDescription(documentModelDetails, modelDetails.getDescription());
+            Map<String, DocumentTypeDetails> docTypeMap = getStringDocTypeInfoMap(modelDetails);
+            DocumentModelDetailsHelper.setDocTypes(documentModelDetails, docTypeMap);
+            DocumentModelDetailsHelper.setCreatedOn(documentModelDetails, modelDetails.getCreatedDateTime());
+            DocumentModelDetailsHelper.setTags(documentModelDetails, modelDetails.getTags());
+        }
         return documentModelDetails;
     }
 
