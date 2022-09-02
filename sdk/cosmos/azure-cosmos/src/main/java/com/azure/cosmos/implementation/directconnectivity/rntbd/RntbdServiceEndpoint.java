@@ -123,8 +123,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         this.maxConcurrentRequests = config.maxConcurrentRequestsPerEndpoint();
 
         this.connectionStateListener = this.provider.addressResolver != null && config.isConnectionEndpointRediscoveryEnabled()
-            ? new RntbdConnectionStateListener(this.provider.addressResolver, this)
-            : null;
+            ? new RntbdConnectionStateListener(this) : null;
 
         this.channelPool = new RntbdClientChannelPool(this, bootstrap, config, clientTelemetry, this.connectionStateListener);
         this.clientTelemetry = clientTelemetry;
@@ -270,6 +269,10 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
         int concurrentRequestSnapshot = this.concurrentRequests.incrementAndGet();
 
+        if (this.connectionStateListener != null) {
+            this.connectionStateListener.onBeforeSendRequest(args.physicalAddressUri());
+        }
+
         RntbdEndpointStatistics stat = endpointMetricsSnapshot(concurrentRequestSnapshot);
 
         if (concurrentRequestSnapshot > this.maxConcurrentRequests) {
@@ -306,6 +309,10 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         checkNotNull(addressUri, "Argument 'addressUri' should not be null");
 
         this.throwIfClosed();
+
+        if (this.connectionStateListener != null) {
+            this.connectionStateListener.onBeforeSendRequest(addressUri);
+        }
 
         OpenConnectionRntbdRequestRecord requestRecord = new OpenConnectionRntbdRequestRecord(addressUri);
         final Future<Channel> openChannelFuture = this.channelPool.acquire(requestRecord);
