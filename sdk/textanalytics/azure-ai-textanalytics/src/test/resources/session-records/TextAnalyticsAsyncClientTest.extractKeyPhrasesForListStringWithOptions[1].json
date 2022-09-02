@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-04-01-preview&showStats=true",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-05-01&showStats=true",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.3 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "335178df-a136-4d87-813d-496f1d50efe7",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.4 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c8456d19-929b-4ceb-b00c-2b350da21db3",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "452",
-      "x-envoy-upstream-service-time" : "14",
+      "x-envoy-upstream-service-time" : "13",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
       "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=2,CognitiveServices.TextAnalytics.TextRecords=2",
-      "apim-request-id" : "dea529f0-7658-42b8-9004-adff3ceb57c8",
+      "apim-request-id" : "a54cc652-c244-494e-a3db-de19f5261fe9",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"kind\":\"KeyPhraseExtractionResults\",\"results\":{\"statistics\":{\"documentsCount\":2,\"validDocumentsCount\":2,\"erroneousDocumentsCount\":0,\"transactionsCount\":2},\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"Hello world\",\"input text\"],\"statistics\":{\"charactersCount\":49,\"transactionsCount\":1},\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Bonjour\",\"monde\"],\"statistics\":{\"charactersCount\":21,\"transactionsCount\":1},\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-06-01\"}}",
-      "Date" : "Fri, 06 May 2022 17:55:26 GMT",
+      "Body" : "{\"kind\":\"KeyPhraseExtractionResults\",\"results\":{\"statistics\":{\"documentsCount\":2,\"validDocumentsCount\":2,\"erroneousDocumentsCount\":0,\"transactionsCount\":2},\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"Hello world\",\"input text\"],\"statistics\":{\"charactersCount\":49,\"transactionsCount\":1},\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Bonjour\",\"monde\"],\"statistics\":{\"charactersCount\":21,\"transactionsCount\":1},\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-07-01\"}}",
+      "Date" : "Fri, 05 Aug 2022 20:45:10 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

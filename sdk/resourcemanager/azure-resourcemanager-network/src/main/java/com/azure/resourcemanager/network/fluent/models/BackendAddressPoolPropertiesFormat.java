@@ -40,8 +40,7 @@ public final class BackendAddressPoolPropertiesFormat {
     private List<NetworkInterfaceIpConfigurationInner> backendIpConfigurations;
 
     /*
-     * An array of references to load balancing rules that use this backend
-     * address pool.
+     * An array of references to load balancing rules that use this backend address pool.
      */
     @JsonProperty(value = "loadBalancingRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> loadBalancingRules;
@@ -53,15 +52,13 @@ public final class BackendAddressPoolPropertiesFormat {
     private SubResource outboundRule;
 
     /*
-     * An array of references to outbound rules that use this backend address
-     * pool.
+     * An array of references to outbound rules that use this backend address pool.
      */
     @JsonProperty(value = "outboundRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> outboundRules;
 
     /*
-     * An array of references to inbound NAT rules that use this backend
-     * address pool.
+     * An array of references to inbound NAT rules that use this backend address pool.
      */
     @JsonProperty(value = "inboundNatRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> inboundNatRules;
@@ -73,8 +70,7 @@ public final class BackendAddressPoolPropertiesFormat {
     private ProvisioningState provisioningState;
 
     /*
-     * Amount of seconds Load Balancer waits for before sending RESET to client
-     * and backend address.
+     * Amount of seconds Load Balancer waits for before sending RESET to client and backend address.
      */
     @JsonProperty(value = "drainPeriodInSeconds")
     private Integer drainPeriodInSeconds;

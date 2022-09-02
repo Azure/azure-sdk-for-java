@@ -27,8 +27,7 @@ public final class PrivateLinkServiceProperties {
     private List<PrivateLinkServiceIpConfigurationInner> ipConfigurations;
 
     /*
-     * An array of references to the network interfaces created for this
-     * private link service.
+     * An array of references to the network interfaces created for this private link service.
      */
     @JsonProperty(value = "networkInterfaces", access = JsonProperty.Access.WRITE_ONLY)
     private List<NetworkInterfaceInner> networkInterfaces;

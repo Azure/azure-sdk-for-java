@@ -3,6 +3,7 @@
 
 package com.azure.json.gson;
 
+import com.azure.json.JsonOptions;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriteContext;
 import com.azure.json.JsonWriter;
@@ -11,8 +12,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UncheckedIOException;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.Objects;
 
 /**
  * GSON-based implementation of {@link JsonWriter}.
@@ -30,15 +33,30 @@ public final class GsonJsonWriter extends JsonWriter {
      * isn't the owner of the stream.
      *
      * @param stream The {@link OutputStream} that will be written.
+     * @param options {@link JsonOptions} to configure the creation of the {@link JsonWriter}.
      * @return An instance of {@link GsonJsonWriter}.
      */
-    public static JsonWriter toStream(OutputStream stream) {
-        return new GsonJsonWriter(new com.google.gson.stream.JsonWriter(
-            new OutputStreamWriter(stream, StandardCharsets.UTF_8)));
+    static JsonWriter toStream(OutputStream stream, JsonOptions options) {
+        return new GsonJsonWriter(new OutputStreamWriter(stream, StandardCharsets.UTF_8), options);
     }
 
-    private GsonJsonWriter(com.google.gson.stream.JsonWriter writer) {
-        this.writer = writer;
+    /**
+     * Creates a {@link GsonJsonWriter} that writes the given {@link Writer}.
+     * <p>
+     * The passed {@link Writer} won't be closed when {@link #close()} is called as the {@link GsonJsonWriter}
+     * isn't the owner of the stream.
+     *
+     * @param writer The {@link Writer} that will be written.
+     * @param options {@link JsonOptions} to configure the creation of the {@link JsonWriter}.
+     * @return An instance of {@link GsonJsonWriter}.
+     */
+    static JsonWriter toWriter(Writer writer, JsonOptions options) {
+        return new GsonJsonWriter(writer, options);
+    }
+
+    private GsonJsonWriter(Writer writer, JsonOptions options) {
+        this.writer = new com.google.gson.stream.JsonWriter(writer);
+        this.writer.setLenient(options.isNonNumericNumbersSupported());
     }
 
     @Override
@@ -125,6 +143,8 @@ public final class GsonJsonWriter extends JsonWriter {
 
     @Override
     public JsonWriter writeFieldName(String fieldName) {
+        Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
+
         context.validateToken(JsonToken.FIELD_NAME);
 
         try {
@@ -251,6 +271,8 @@ public final class GsonJsonWriter extends JsonWriter {
 
     @Override
     public JsonWriter writeRawValue(String value) {
+        Objects.requireNonNull(value, "'value' cannot be null.");
+
         context.validateToken(JsonToken.STRING);
 
         try {
@@ -260,124 +282,6 @@ public final class GsonJsonWriter extends JsonWriter {
         }
 
         context = context.updateContext(JsonToken.STRING);
-        return this;
-    }
-
-    @Override
-    public JsonWriter writeBinaryField(String fieldName, byte[] value) {
-        context.validateToken(JsonToken.FIELD_NAME);
-
-        try {
-            writer.name(fieldName);
-            writeBinaryInternal(value);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-
-        return this;
-    }
-
-    @Override
-    public JsonWriter writeBooleanField(String fieldName, boolean value) {
-        context.validateToken(JsonToken.FIELD_NAME);
-
-        try {
-            writer.name(fieldName).value(value);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-
-        return this;
-    }
-
-    @Override
-    public JsonWriter writeDoubleField(String fieldName, double value) {
-        context.validateToken(JsonToken.FIELD_NAME);
-
-        try {
-            writer.name(fieldName).value(value);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-
-        return this;
-    }
-
-    @Override
-    public JsonWriter writeFloatField(String fieldName, float value) {
-        context.validateToken(JsonToken.FIELD_NAME);
-
-        try {
-            writer.name(fieldName).value(value);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-
-        return this;
-    }
-
-    @Override
-    public JsonWriter writeIntField(String fieldName, int value) {
-        context.validateToken(JsonToken.FIELD_NAME);
-
-        try {
-            writer.name(fieldName).value(value);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-
-        return this;
-    }
-
-    @Override
-    public JsonWriter writeLongField(String fieldName, long value) {
-        context.validateToken(JsonToken.FIELD_NAME);
-
-        try {
-            writer.name(fieldName).value(value);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-
-        return this;
-    }
-
-    @Override
-    public JsonWriter writeNullField(String fieldName) {
-        context.validateToken(JsonToken.FIELD_NAME);
-
-        try {
-            writer.name(fieldName).nullValue();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-
-        return this;
-    }
-
-    @Override
-    public JsonWriter writeStringField(String fieldName, String value) {
-        context.validateToken(JsonToken.FIELD_NAME);
-
-        try {
-            writer.name(fieldName).value(value);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-
-        return this;
-    }
-
-    @Override
-    public JsonWriter writeRawField(String fieldName, String value) {
-        context.validateToken(JsonToken.FIELD_NAME);
-
-        try {
-            writer.name(fieldName).jsonValue(value);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-
         return this;
     }
 

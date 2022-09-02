@@ -11,28 +11,38 @@ import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
+import com.azure.ai.textanalytics.models.ClassificationCategory;
+import com.azure.ai.textanalytics.models.ClassifyDocumentOperationDetail;
+import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
+import com.azure.ai.textanalytics.models.MultiLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomain;
+import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesOperationDetail;
+import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesAction;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
+import com.azure.ai.textanalytics.models.SingleLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
+import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedIterable;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
+import com.azure.ai.textanalytics.util.ClassifyDocumentPagedIterable;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
-import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedIterable;
+import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesPagedIterable;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
@@ -905,6 +915,202 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             });
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeHealthcareEntities#Iterable-AnalyzeHealthcareEntitiesOptions-Context
+    }
+
+    // Custom Entities Recognition
+    /**
+     * Code snippet for {@link TextAnalyticsClient#beginRecognizeCustomEntities(Iterable, String, String, String, RecognizeCustomEntitiesOptions)}
+     */
+    public void recognizeCustomEntitiesStringInput() {
+        // BEGIN: Client.beginRecognizeCustomEntities#Iterable-String-String-String-RecognizeCustomEntitiesOptions
+        List<String> documents = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            documents.add(
+                "A recent report by the Government Accountability Office (GAO) found that the dramatic increase "
+                    + "in oil and natural gas development on federal lands over the past six years has stretched the"
+                    + " staff of the BLM to a point that it has been unable to meet its environmental protection "
+                    + "responsibilities."); }
+        RecognizeCustomEntitiesOptions options = new RecognizeCustomEntitiesOptions().setIncludeStatistics(true);
+        SyncPoller<RecognizeCustomEntitiesOperationDetail, RecognizeCustomEntitiesPagedIterable> syncPoller =
+            textAnalyticsClient.beginRecognizeCustomEntities(documents, "{project_name}",
+                "{deployment_name}", "en", options);
+        syncPoller.waitForCompletion();
+        syncPoller.getFinalResult().forEach(documentsResults -> {
+            System.out.printf("Project name: %s, deployment name: %s.%n",
+                documentsResults.getProjectName(), documentsResults.getDeploymentName());
+            for (RecognizeEntitiesResult documentResult : documentsResults) {
+                System.out.println("Document ID: " + documentResult.getId());
+                for (CategorizedEntity entity : documentResult.getEntities()) {
+                    System.out.printf(
+                        "\tText: %s, category: %s, confidence score: %f.%n",
+                        entity.getText(), entity.getCategory(), entity.getConfidenceScore());
+                }
+            }
+        });
+        // END: Client.beginRecognizeCustomEntities#Iterable-String-String-String-RecognizeCustomEntitiesOptions
+    }
+
+    /**
+     * Code snippet for {@link TextAnalyticsClient#beginRecognizeCustomEntities(Iterable, String, String, RecognizeCustomEntitiesOptions, Context)}
+     */
+    public void recognizeCustomEntitiesMaxOverload() {
+        // BEGIN: Client.beginRecognizeCustomEntities#Iterable-String-String-RecognizeCustomEntitiesOptions-Context
+        List<TextDocumentInput> documents = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            documents.add(new TextDocumentInput(Integer.toString(i),
+                "A recent report by the Government Accountability Office (GAO) found that the dramatic increase "
+                    + "in oil and natural gas development on federal lands over the past six years has stretched the"
+                    + " staff of the BLM to a point that it has been unable to meet its environmental protection "
+                    + "responsibilities."));
+            RecognizeCustomEntitiesOptions options = new RecognizeCustomEntitiesOptions().setIncludeStatistics(true);
+            SyncPoller<RecognizeCustomEntitiesOperationDetail, RecognizeCustomEntitiesPagedIterable> syncPoller =
+                textAnalyticsClient.beginRecognizeCustomEntities(documents, "{project_name}",
+                    "{deployment_name}", options, Context.NONE);
+            syncPoller.waitForCompletion();
+            syncPoller.getFinalResult().forEach(documentsResults -> {
+                System.out.printf("Project name: %s, deployment name: %s.%n",
+                    documentsResults.getProjectName(), documentsResults.getDeploymentName());
+                for (RecognizeEntitiesResult documentResult : documentsResults) {
+                    System.out.println("Document ID: " + documentResult.getId());
+                    for (CategorizedEntity entity : documentResult.getEntities()) {
+                        System.out.printf(
+                            "\tText: %s, category: %s, confidence score: %f.%n",
+                            entity.getText(), entity.getCategory(), entity.getConfidenceScore());
+                    }
+                }
+            });
+        }
+        // END: Client.beginRecognizeCustomEntities#Iterable-String-String-RecognizeCustomEntitiesOptions-Context
+    }
+
+    // Single-Label Classification
+    /**
+     * Code snippet for {@link TextAnalyticsClient#beginSingleLabelClassify(Iterable, String, String, String, SingleLabelClassifyOptions)}
+     */
+    public void singleLabelClassificationStringInput() {
+        // BEGIN: Client.beginSingleLabelClassify#Iterable-String-String-String-SingleLabelClassifyOptions
+        List<String> documents = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            documents.add(
+                "A recent report by the Government Accountability Office (GAO) found that the dramatic increase "
+                    + "in oil and natural gas development on federal lands over the past six years has stretched the"
+                    + " staff of the BLM to a point that it has been unable to meet its environmental protection "
+                    + "responsibilities."
+            );
+        }
+        SingleLabelClassifyOptions options = new SingleLabelClassifyOptions().setIncludeStatistics(true);
+        // See the service documentation for regional support and how to train a model to classify your documents,
+        // see https://aka.ms/azsdk/textanalytics/customfunctionalities
+        SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable> syncPoller =
+            textAnalyticsClient.beginSingleLabelClassify(documents, "{project_name}", "{deployment_name}",
+                "en", options);
+        syncPoller.waitForCompletion();
+        syncPoller.getFinalResult().forEach(documentsResults -> {
+            System.out.printf("Project name: %s, deployment name: %s.%n",
+                documentsResults.getProjectName(), documentsResults.getDeploymentName());
+            for (ClassifyDocumentResult documentResult : documentsResults) {
+                System.out.println("Document ID: " + documentResult.getId());
+                for (ClassificationCategory classification : documentResult.getClassifications()) {
+                    System.out.printf("\tCategory: %s, confidence score: %f.%n",
+                        classification.getCategory(), classification.getConfidenceScore());
+                }
+            }
+        });
+        // END: Client.beginSingleLabelClassify#Iterable-String-String-String-SingleLabelClassifyOptions
+    }
+
+    /**
+     * Code snippet for {@link TextAnalyticsClient#beginSingleLabelClassify(Iterable, String, String, SingleLabelClassifyOptions, Context)}
+     */
+    public void singleLabelClassificationMaxOverload() {
+        // BEGIN: Client.beginSingleLabelClassify#Iterable-String-String-SingleLabelClassifyOptions-Context
+        List<TextDocumentInput> documents = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            documents.add(new TextDocumentInput(Integer.toString(i),
+                "A recent report by the Government Accountability Office (GAO) found that the dramatic increase "
+                    + "in oil and natural gas development on federal lands over the past six years has stretched the"
+                    + " staff of the BLM to a point that it has been unable to meet its environmental protection "
+                    + "responsibilities."));
+        }
+        SingleLabelClassifyOptions options = new SingleLabelClassifyOptions().setIncludeStatistics(true);
+        // See the service documentation for regional support and how to train a model to classify your documents,
+        // see https://aka.ms/azsdk/textanalytics/customfunctionalities
+        SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable> syncPoller =
+            textAnalyticsClient.beginSingleLabelClassify(documents, "{project_name}", "{deployment_name}",
+                options, Context.NONE);
+        syncPoller.waitForCompletion();
+        syncPoller.getFinalResult().forEach(documentsResults -> {
+            System.out.printf("Project name: %s, deployment name: %s.%n",
+                documentsResults.getProjectName(), documentsResults.getDeploymentName());
+            for (ClassifyDocumentResult documentResult : documentsResults) {
+                System.out.println("Document ID: " + documentResult.getId());
+                for (ClassificationCategory classification : documentResult.getClassifications()) {
+                    System.out.printf("\tCategory: %s, confidence score: %f.%n",
+                        classification.getCategory(), classification.getConfidenceScore());
+                }
+            }
+        });
+        // END: Client.beginSingleLabelClassify#Iterable-String-String-SingleLabelClassifyOptions-Context
+    }
+
+    // Multi-Label classification
+    /**
+     * Code snippet for {@link TextAnalyticsClient#beginMultiLabelClassify(Iterable, String, String, String, MultiLabelClassifyOptions)}
+     */
+    public void multiLabelClassificationStringInput() {
+        // BEGIN: Client.beginMultiLabelClassify#Iterable-String-String-String-MultiLabelClassifyOptions
+        List<String> documents = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            documents.add(
+                "I need a reservation for an indoor restaurant in China. Please don't stop the music."
+                    + " Play music and add it to my playlist");
+        }
+        MultiLabelClassifyOptions options = new MultiLabelClassifyOptions().setIncludeStatistics(true);
+        SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable> syncPoller =
+            textAnalyticsClient.beginMultiLabelClassify(documents, "{project_name}", "{deployment_name}", "en", options);
+        syncPoller.waitForCompletion();
+        syncPoller.getFinalResult().forEach(documentsResults -> {
+            System.out.printf("Project name: %s, deployment name: %s.%n",
+                documentsResults.getProjectName(), documentsResults.getDeploymentName());
+            for (ClassifyDocumentResult documentResult : documentsResults) {
+                System.out.println("Document ID: " + documentResult.getId());
+                for (ClassificationCategory classification : documentResult.getClassifications()) {
+                    System.out.printf("\tCategory: %s, confidence score: %f.%n",
+                        classification.getCategory(), classification.getConfidenceScore());
+                }
+            }
+        });
+        // END: Client.beginMultiLabelClassify#Iterable-String-String-String-MultiLabelClassifyOptions
+    }
+
+    /**
+     * Code snippet for {@link TextAnalyticsClient#beginMultiLabelClassify(Iterable, String, String, MultiLabelClassifyOptions, Context)}
+     */
+    public void multiLabelClassificationMaxOverload() {
+        // BEGIN: Client.beginMultiLabelClassify#Iterable-String-String-MultiLabelClassifyOptions-Context
+        List<TextDocumentInput> documents = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            documents.add(new TextDocumentInput(Integer.toString(i),
+                "I need a reservation for an indoor restaurant in China. Please don't stop the music."
+                    + " Play music and add it to my playlist"));
+        }
+        MultiLabelClassifyOptions options = new MultiLabelClassifyOptions().setIncludeStatistics(true);
+        SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable> syncPoller =
+            textAnalyticsClient.beginMultiLabelClassify(documents, "{project_name}", "{deployment_name}",
+                options, Context.NONE);
+        syncPoller.waitForCompletion();
+        syncPoller.getFinalResult().forEach(documentsResults -> {
+            System.out.printf("Project name: %s, deployment name: %s.%n",
+                documentsResults.getProjectName(), documentsResults.getDeploymentName());
+            for (ClassifyDocumentResult documentResult : documentsResults) {
+                System.out.println("Document ID: " + documentResult.getId());
+                for (ClassificationCategory classification : documentResult.getClassifications()) {
+                    System.out.printf("\tCategory: %s, confidence score: %f.%n",
+                        classification.getCategory(), classification.getConfidenceScore());
+                }
+            }
+        });
+        // END: Client.beginMultiLabelClassify#Iterable-String-String-MultiLabelClassifyOptions-Context
     }
 
     // Analyze actions

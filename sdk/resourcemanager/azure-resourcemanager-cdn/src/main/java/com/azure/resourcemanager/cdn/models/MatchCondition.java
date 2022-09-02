@@ -6,15 +6,12 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Define match conditions. */
 @Fluent
 public final class MatchCondition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MatchCondition.class);
-
     /*
      * Match variable to compare against.
      */
@@ -22,8 +19,7 @@ public final class MatchCondition {
     private WafMatchVariable matchVariable;
 
     /*
-     * Selector can used to match a specific key for QueryString, Cookies,
-     * RequestHeader or PostArgs.
+     * Selector can used to match a specific key for QueryString, Cookies, RequestHeader or PostArgs.
      */
     @JsonProperty(value = "selector")
     private String selector;
@@ -181,19 +177,21 @@ public final class MatchCondition {
      */
     public void validate() {
         if (matchVariable() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property matchVariable in model MatchCondition"));
         }
         if (operator() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property operator in model MatchCondition"));
         }
         if (matchValue() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property matchValue in model MatchCondition"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MatchCondition.class);
 }

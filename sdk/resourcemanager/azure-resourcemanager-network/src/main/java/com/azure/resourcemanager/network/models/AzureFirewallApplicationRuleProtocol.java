@@ -17,8 +17,7 @@ public final class AzureFirewallApplicationRuleProtocol {
     private AzureFirewallApplicationRuleProtocolType protocolType;
 
     /*
-     * Port number for the protocol, cannot be greater than 64000. This field
-     * is optional.
+     * Port number for the protocol, cannot be greater than 64000. This field is optional.
      */
     @JsonProperty(value = "port")
     private Integer port;

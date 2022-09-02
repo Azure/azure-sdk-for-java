@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.ActivatedResourceReference;
 import com.azure.resourcemanager.cdn.models.AfdEndpointProtocols;
 import com.azure.resourcemanager.cdn.models.AfdRouteCacheConfiguration;
@@ -14,15 +13,12 @@ import com.azure.resourcemanager.cdn.models.ForwardingProtocol;
 import com.azure.resourcemanager.cdn.models.HttpsRedirect;
 import com.azure.resourcemanager.cdn.models.LinkToDefaultDomain;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The JSON object that contains the properties of the domain to create. */
 @Fluent
 public class RouteUpdatePropertiesParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RouteUpdatePropertiesParameters.class);
-
     /*
      * The name of the endpoint which holds the route.
      */
@@ -42,8 +38,8 @@ public class RouteUpdatePropertiesParameters {
     private ResourceReference originGroup;
 
     /*
-     * A directory path on the origin that AzureFrontDoor can use to retrieve
-     * content from, e.g. contoso.cloudapp.net/originpath.
+     * A directory path on the origin that AzureFrontDoor can use to retrieve content from, e.g.
+     * contoso.cloudapp.net/originpath.
      */
     @JsonProperty(value = "originPath")
     private String originPath;
@@ -67,8 +63,7 @@ public class RouteUpdatePropertiesParameters {
     private List<String> patternsToMatch;
 
     /*
-     * The caching configuration for this route. To disable caching, do not
-     * provide a cacheConfiguration object.
+     * The caching configuration for this route. To disable caching, do not provide a cacheConfiguration object.
      */
     @JsonProperty(value = "cacheConfiguration")
     private AfdRouteCacheConfiguration cacheConfiguration;
@@ -86,16 +81,14 @@ public class RouteUpdatePropertiesParameters {
     private LinkToDefaultDomain linkToDefaultDomain;
 
     /*
-     * Whether to automatically redirect HTTP traffic to HTTPS traffic. Note
-     * that this is a easy way to set up this rule and it will be the first
-     * rule that gets executed.
+     * Whether to automatically redirect HTTP traffic to HTTPS traffic. Note that this is a easy way to set up this
+     * rule and it will be the first rule that gets executed.
      */
     @JsonProperty(value = "httpsRedirect")
     private HttpsRedirect httpsRedirect;
 
     /*
-     * Whether to enable use of this rule. Permitted values are 'Enabled' or
-     * 'Disabled'
+     * Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'
      */
     @JsonProperty(value = "enabledState")
     private EnabledState enabledState;

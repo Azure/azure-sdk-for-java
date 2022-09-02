@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.fluent.models.RouteUpdatePropertiesParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The domain JSON object required for domain creation or update. */
 @Fluent
 public final class RouteUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RouteUpdateParameters.class);
-
     /*
      * The JSON object that contains the properties of the domain to create.
      */
