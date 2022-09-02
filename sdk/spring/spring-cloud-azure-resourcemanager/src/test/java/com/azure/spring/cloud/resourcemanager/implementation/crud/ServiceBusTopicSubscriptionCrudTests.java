@@ -11,6 +11,7 @@ import com.azure.resourcemanager.servicebus.models.ServiceBusSubscriptions;
 import com.azure.resourcemanager.servicebus.models.Topic;
 import com.azure.resourcemanager.servicebus.models.Topics;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.util.function.Tuple3;
 import reactor.util.function.Tuples;
@@ -24,29 +25,28 @@ class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTests<Ser
     private static final String NAMESPACE = "namespace";
     private static final String TOPIC_NAME = "topic";
     private static final String SUBSCRIPTION_NAME = "subscription";
+    private ServiceBusTopicCrud topicCrud;
+
+    @BeforeEach
+    void beforeEach() {
+        topicCrud = mock(ServiceBusTopicCrud.class);
+        super.beforeEach();
+    }
 
     @Override
     AbstractResourceCrud<ServiceBusSubscription, Tuple3<String, String, String>> getResourceCrud() {
-        return new ServiceBusTopicSubscriptionCrud(resourceManager, resourceMetadata);
+        return new ServiceBusTopicSubscriptionCrud(resourceManager, resourceMetadata, this.topicCrud);
     }
 
     @Override
     void getStubManagementException(int statusCode, String message) {
-        ServiceBusNamespaces namespaces = mock(ServiceBusNamespaces.class);
-        ServiceBusNamespace namespace = mock(ServiceBusNamespace.class);
-
-        when(resourceManager.serviceBusNamespaces()).thenReturn(namespaces);
         ManagementException exception = getManagementException(statusCode, message);
-        when(namespaces.getByResourceGroup(resourceMetadata.getResourceGroup(), getKey().getT1()))
-            .thenReturn(namespace);
-
-        Topics topics = mock(Topics.class);
         Topic topic = mock(Topic.class);
         ServiceBusSubscriptions serviceBusSubscriptions = mock(ServiceBusSubscriptions.class);
-        when(namespace.topics()).thenReturn(topics);
-        when(topics.getByName(getKey().getT2())).thenReturn(topic);
+
+        when(this.topicCrud.get(Tuples.of(getKey().getT1(),getKey().getT2()))).thenReturn(topic);
         when(topic.subscriptions()).thenReturn(serviceBusSubscriptions);
-        when(serviceBusSubscriptions.getByName(getKey().getT2())).thenThrow(exception);
+        when(serviceBusSubscriptions.getByName(getKey().getT3())).thenThrow(exception);
     }
 
     @Override
@@ -78,7 +78,6 @@ class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTests<Ser
 
     @Test
     void topicDoesNotExistReturnNull() {
-        ServiceBusTopicCrud topicCrud = mock(ServiceBusTopicCrud.class);
         ServiceBusTopicSubscriptionCrud topicSubCrud = new ServiceBusTopicSubscriptionCrud(this.resourceManager,
             this.resourceMetadata, topicCrud);
 
@@ -90,7 +89,6 @@ class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTests<Ser
 
     @Test
     void topicDoesNotExistReturnNullToCreate() {
-        ServiceBusTopicCrud topicCrud = mock(ServiceBusTopicCrud.class);
         ServiceBusTopicSubscriptionCrud topicSubCrud = new ServiceBusTopicSubscriptionCrud(this.resourceManager,
             this.resourceMetadata, topicCrud);
 
