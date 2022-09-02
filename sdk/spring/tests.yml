@@ -7,6 +7,7 @@ stages:
       Clouds: 'Public,UsGov,China'
       TestResourceDirectories:
         - spring/spring-cloud-azure-integration-tests/test-resources/appconfiguration
+        - spring/spring-cloud-azure-integration-tests/test-resources/cosmos
         - spring/spring-cloud-azure-integration-tests/test-resources/eventhubs
         - spring/spring-cloud-azure-integration-tests/test-resources/keyvault
         - spring/spring-cloud-azure-integration-tests/test-resources/servicebus
