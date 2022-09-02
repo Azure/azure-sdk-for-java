@@ -173,12 +173,8 @@
                 <include>io.opentelemetry:opentelemetry-api:[1.14.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk:[1.14.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
                 <include>uk.org.webcompere:system-stubs-jupiter:[2.0.1]</include> <!-- {x-include-update;uk.org.webcompere:system-stubs-jupiter;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-semconv:[1.14.0-alpha]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-semconv;external_dependency} -->
-                <include>io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv:[1.14.0-alpha]
-                </include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk-logs:[1.14.0-alpha]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-logs;external_dependency} -->
                 <include>com.github.spotbugs:spotbugs-annotations:[4.2.2]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
-                <include>javax.annotation:javax.annotation-api:[1.3.2]</include> <!-- {x-include-update;javax.annotation:javax.annotation-api;external_dependency} -->
                 <include>io.github.hakky54:logcaptor:[2.7.9]</include> <!-- {x-include-update;io.github.hakky54:logcaptor;external_dependency} -->
               </includes>
             </bannedDependencies>
