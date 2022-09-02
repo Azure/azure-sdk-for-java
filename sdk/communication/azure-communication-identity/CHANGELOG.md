@@ -109,7 +109,7 @@
 ## 1.2.0-beta.1 (2021-10-29)
 
 ### Features Added
-- Added support for Microsoft 365 Teams identities
+- Added support to integrate communication as Teams user with Azure Communication Services.
 
 ## 1.1.3 (2021-10-08)
 
