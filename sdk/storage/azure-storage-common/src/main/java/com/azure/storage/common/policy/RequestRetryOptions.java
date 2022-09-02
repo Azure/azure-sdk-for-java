@@ -297,8 +297,7 @@ public final class RequestRetryOptions {
             getValueFromConfiguration(configuration, Constants.ConfigurationConstants.RETRY_OPTIONS_MAX_RETRY, Integer::valueOf),
             getValueFromConfiguration(configuration, Constants.ConfigurationConstants.RETRY_OPTIONS_TIMEOUT_SECONDS, Integer::valueOf),
             getValueFromConfiguration(configuration, Constants.ConfigurationConstants.RETRY_OPTIONS_DELAY_MS, Long::valueOf),
-            // compiler confused without final cast
-            (Long) getValueFromConfiguration(configuration, Constants.ConfigurationConstants.RETRY_OPTIONS_MAX_DELAY_MS, Long::valueOf),
+            getValueFromConfiguration(configuration, Constants.ConfigurationConstants.RETRY_OPTIONS_MAX_DELAY_MS, Long::valueOf),
             secondaryEndpoint
         );
     }
