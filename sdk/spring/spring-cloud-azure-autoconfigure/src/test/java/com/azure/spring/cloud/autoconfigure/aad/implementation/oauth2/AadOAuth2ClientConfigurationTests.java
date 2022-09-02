@@ -3,13 +3,11 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2;
 
-import com.azure.spring.cloud.autoconfigure.aad.AadAuthenticationFilterAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.AadClientRegistrationRepository;
 import com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.TestJwks;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.AadJwtBearerGrantRequestEntityConverter;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
-import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.util.Base64URL;
