@@ -24,9 +24,6 @@ token as a password to connect with MySQL.
 If you encounter any bugs, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java/issues).
 
 ## Next steps
-Other useful packages are:
-* [azure-identity-providers-jdbc-mysql][azure-identity-providers-jdbc-mysql]:  Azure identity JDBC MySQL plugin library for Java.
-* [azure-identity-providers-jdbc-postgresql][azure-identity-providers-jdbc-postgresql]:  Azure identity JDBC PostgreSQL plugin library for Java.
 
 ## Contributing
 
@@ -40,5 +37,3 @@ For details on contributing to this repository, see the [contributing guide](htt
 
 
 <!-- LINKS -->
-[azure-identity-providers-jdbc-mysql]: https://github.com/Azure/azure-sdk-for-java/tree/release/spring-cloud-azure-4.4.0-beta.1/sdk/jdbc/azure-identity-providers-jdbc-mysql
-[azure-identity-providers-jdbc-postgresql]: https://github.com/Azure/azure-sdk-for-java/tree/release/spring-cloud-azure-4.4.0-beta.1/sdk/jdbc//azure-identity-providers-jdbc-postgresql
