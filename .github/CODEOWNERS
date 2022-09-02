@@ -309,7 +309,7 @@
 #/<NotInRepo>/          @swiftarrow11
 
 # ServiceLabel: %Cognitive - Personalizer %Service Attention
-#/<NotInRepo>/          @dwaijam
+/sdk/personalizer/      @sharathmalladi
 
 # ServiceLabel: %Cognitive - Immersive Reader %Service Attention
 #/<NotInRepo>/          @metanMSFT
