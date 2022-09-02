@@ -39,14 +39,17 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
     private static final String WWW_AUTHENTICATE = "WWW-Authenticate";
     private static final ConcurrentMap<String, ChallengeParameters> CHALLENGE_CACHE = new ConcurrentHashMap<>();
     private ChallengeParameters challenge;
+    private final boolean verifyChallengeResource;
 
     /**
      * Creates a {@link KeyVaultCredentialPolicy}.
      *
      * @param credential The token credential to authenticate the request.
      */
-    public KeyVaultCredentialPolicy(TokenCredential credential) {
+    public KeyVaultCredentialPolicy(TokenCredential credential, boolean verifyChallengeResource) {
         super(credential);
+
+        this.verifyChallengeResource = verifyChallengeResource;
     }
 
     /**
@@ -90,6 +93,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         return (!CoreUtils.isNullOrEmpty(authenticateHeader)
             && authenticateHeader.toLowerCase(Locale.ROOT).startsWith(authChallengePrefix.toLowerCase(Locale.ROOT)));
     }
+
     @Override
     public Mono<Void> authorizeRequest(HttpPipelineCallContext context) {
         return Mono.defer(() -> {
@@ -161,6 +165,12 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                     return Mono.just(false);
                 }
             } else {
+                if (verifyChallengeResource) {
+                    if (!isChallengeResourceValid(request, scope)) {
+                        return Mono.just(false);
+                    }
+                }
+
                 String authorization = challengeAttributes.get("authorization");
 
                 if (authorization == null) {
@@ -207,6 +217,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                 .setTenantId(this.challenge.getTenantId());
 
             setAuthorizationHeaderSync(context, tokenRequestContext);
+            return;
         }
 
         // The body is removed from the initial request because Key Vault supports other authentication schemes which
@@ -216,8 +227,8 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
 
         // Do not overwrite previous contents if retrying after initial request failed (e.g. timeout).
         if (!context.getData(KEY_VAULT_STASHED_CONTENT_KEY).isPresent()) {
-            if (request.getBody() != null) {
-                context.setData(KEY_VAULT_STASHED_CONTENT_KEY, request.getBody());
+            if (request.getBodyAsBinaryData() != null) {
+                context.setData(KEY_VAULT_STASHED_CONTENT_KEY, request.getBodyAsBinaryData());
                 context.setData(KEY_VAULT_STASHED_CONTENT_LENGTH_KEY,
                     request.getHeaders().getValue(CONTENT_LENGTH_HEADER));
                 request.setHeader(CONTENT_LENGTH_HEADER, "0");
@@ -234,7 +245,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         Optional<Object> contentLengthOptional = context.getData(KEY_VAULT_STASHED_CONTENT_LENGTH_KEY);
 
         if (request.getBody() == null && contentOptional.isPresent() && contentLengthOptional.isPresent()) {
-            request.setBody(BinaryData.fromObject(contentOptional.get()));
+            request.setBody((BinaryData) (contentOptional.get()));
             request.setHeader(CONTENT_LENGTH_HEADER, (String) contentLengthOptional.get());
         }
 
@@ -256,6 +267,12 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                 return false;
             }
         } else {
+            if (verifyChallengeResource) {
+                if (!isChallengeResourceValid(request, scope)) {
+                    return false;
+                }
+            }
+
             String authorization = challengeAttributes.get("authorization");
 
             if (authorization == null) {
@@ -326,6 +343,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
      * Gets the host name and port of the Key Vault or Managed HSM endpoint.
      *
      * @param request The {@link HttpRequest} to extract the host name and port from.
+     *
      * @return The host name and port of the Key Vault or Managed HSM endpoint.
      */
     private static String getRequestAuthority(HttpRequest request) {
@@ -339,5 +357,25 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         }
 
         return authority;
+    }
+
+    private static boolean isChallengeResourceValid(HttpRequest request, String scope) {
+        final URI scopeUri;
+
+        try {
+            scopeUri = new URI(scope);
+        } catch (URISyntaxException e) {
+            // The challenge contains an invalid scope.
+            return false;
+        }
+
+        if (!request.getUrl().getHost().toLowerCase(Locale.ROOT)
+            .endsWith("." + scopeUri.getHost().toLowerCase(Locale.ROOT))) {
+
+            // The host specified in the scope does not match the requested domain.
+            return false;
+        }
+
+        return true;
     }
 }

@@ -69,7 +69,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
         CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder()
             .keyIdentifier("<your-key-id>")
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .addPolicy(new KeyVaultCredentialPolicy(new DefaultAzureCredentialBuilder().build()))
+            .addPolicy(new KeyVaultCredentialPolicy(new DefaultAzureCredentialBuilder().build(), true))
             .httpClient(HttpClient.createDefault())
             .buildAsyncClient();
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withHttpClient.instantiation
@@ -85,7 +85,8 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
     public CryptographyAsyncClient createAsyncClientWithPipeline() {
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withPipeline.instantiation
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(new KeyVaultCredentialPolicy(new DefaultAzureCredentialBuilder().build()), new RetryPolicy())
+            .policies(
+                new KeyVaultCredentialPolicy(new DefaultAzureCredentialBuilder().build(), true), new RetryPolicy())
             .build();
         CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder()
             .pipeline(pipeline)

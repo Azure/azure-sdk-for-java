@@ -76,7 +76,8 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
     public KeyAsyncClient createAsyncClientWithPipeline() {
         // BEGIN: com.azure.security.keyvault.keys.KeyAsyncClient.instantiation.withPipeline
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(new KeyVaultCredentialPolicy(new DefaultAzureCredentialBuilder().build()), new RetryPolicy())
+            .policies(
+                new KeyVaultCredentialPolicy(new DefaultAzureCredentialBuilder().build(), true), new RetryPolicy())
             .build();
         KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
             .pipeline(pipeline)

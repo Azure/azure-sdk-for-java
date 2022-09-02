@@ -149,6 +149,7 @@ public final class CryptographyClientBuilder implements
     private RetryOptions retryOptions;
     private String keyId;
     private TokenCredential credential;
+    private boolean verifyChallengeResource = true;
 
     /**
      * The constructor with defaults.
@@ -263,7 +264,7 @@ public final class CryptographyClientBuilder implements
         // Add retry policy.
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
 
-        policies.add(new KeyVaultCredentialPolicy(credential));
+        policies.add(new KeyVaultCredentialPolicy(credential, verifyChallengeResource));
 
         // Add per retry additional policies.
         policies.addAll(perRetryPolicies);
@@ -543,6 +544,19 @@ public final class CryptographyClientBuilder implements
     @Override
     public CryptographyClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+
+        return this;
+    }
+
+    /** Gets or sets whether to verify the authentication challenge resource matches the Key Vault or Managed HSM
+     * domain. The default is set to {@code true}.
+     *
+     * @param verifyChallengeResource A flag indicating if the authentication challenge resource must be verified.
+     *
+     * @return The updated {@link CryptographyClientBuilder} object.
+     */
+    public CryptographyClientBuilder verifyChallengeResource(boolean verifyChallengeResource) {
+        this.verifyChallengeResource = verifyChallengeResource;
 
         return this;
     }

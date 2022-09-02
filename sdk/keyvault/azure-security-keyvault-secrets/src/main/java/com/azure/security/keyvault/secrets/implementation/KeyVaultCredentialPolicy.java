@@ -39,14 +39,17 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
     private static final String WWW_AUTHENTICATE = "WWW-Authenticate";
     private static final ConcurrentMap<String, ChallengeParameters> CHALLENGE_CACHE = new ConcurrentHashMap<>();
     private ChallengeParameters challenge;
+    private final boolean verifyChallengeResource;
 
     /**
      * Creates a {@link KeyVaultCredentialPolicy}.
      *
      * @param credential The token credential to authenticate the request.
      */
-    public KeyVaultCredentialPolicy(TokenCredential credential) {
+    public KeyVaultCredentialPolicy(TokenCredential credential, boolean verifyChallengeResource) {
         super(credential);
+
+        this.verifyChallengeResource = verifyChallengeResource;
     }
 
     /**
@@ -162,6 +165,12 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                     return Mono.just(false);
                 }
             } else {
+                if (verifyChallengeResource) {
+                    if (!isChallengeResourceValid(request, scope)) {
+                        return Mono.just(false);
+                    }
+                }
+
                 String authorization = challengeAttributes.get("authorization");
 
                 if (authorization == null) {
@@ -258,6 +267,12 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                 return false;
             }
         } else {
+            if (verifyChallengeResource) {
+                if (!isChallengeResourceValid(request, scope)) {
+                    return false;
+                }
+            }
+
             String authorization = challengeAttributes.get("authorization");
 
             if (authorization == null) {
@@ -328,6 +343,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
      * Gets the host name and port of the Key Vault or Managed HSM endpoint.
      *
      * @param request The {@link HttpRequest} to extract the host name and port from.
+     *
      * @return The host name and port of the Key Vault or Managed HSM endpoint.
      */
     private static String getRequestAuthority(HttpRequest request) {
@@ -341,5 +357,25 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         }
 
         return authority;
+    }
+
+    private static boolean isChallengeResourceValid(HttpRequest request, String scope) {
+        final URI scopeUri;
+
+        try {
+            scopeUri = new URI(scope);
+        } catch (URISyntaxException e) {
+            // The challenge contains an invalid scope.
+            return false;
+        }
+
+        if (!request.getUrl().getHost().toLowerCase(Locale.ROOT)
+            .endsWith("." + scopeUri.getHost().toLowerCase(Locale.ROOT))) {
+
+            // The host specified in the scope does not match the requested domain.
+            return false;
+        }
+
+        return true;
     }
 }

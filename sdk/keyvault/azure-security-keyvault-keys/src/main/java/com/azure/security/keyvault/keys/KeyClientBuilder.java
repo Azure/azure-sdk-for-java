@@ -128,6 +128,7 @@ public final class KeyClientBuilder implements
     private Configuration configuration;
     private KeyServiceVersion version;
     private ClientOptions clientOptions;
+    private boolean verifyChallengeResource = true;
 
     /**
      * The constructor with defaults.
@@ -229,7 +230,7 @@ public final class KeyClientBuilder implements
         // Add retry policy.
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
 
-        policies.add(new KeyVaultCredentialPolicy(credential));
+        policies.add(new KeyVaultCredentialPolicy(credential, verifyChallengeResource));
         // Add per retry additional policies.
         policies.addAll(perRetryPolicies);
 
@@ -481,6 +482,19 @@ public final class KeyClientBuilder implements
     @Override
     public KeyClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+
+        return this;
+    }
+
+    /** Gets or sets whether to verify the authentication challenge resource matches the Key Vault or Managed HSM
+     * domain. The default is set to {@code true}.
+     *
+     * @param verifyChallengeResource A flag indicating if the authentication challenge resource must be verified.
+     *
+     * @return The updated {@link KeyClientBuilder} object.
+     */
+    public KeyClientBuilder verifyChallengeResource(boolean verifyChallengeResource) {
+        this.verifyChallengeResource = verifyChallengeResource;
 
         return this;
     }

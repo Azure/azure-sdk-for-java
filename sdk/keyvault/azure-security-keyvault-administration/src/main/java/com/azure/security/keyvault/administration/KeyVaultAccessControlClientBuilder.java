@@ -95,6 +95,7 @@ public final class KeyVaultAccessControlClientBuilder implements
     private Configuration configuration;
     private ClientOptions clientOptions;
     private KeyVaultAdministrationServiceVersion serviceVersion;
+    private boolean verifyChallengeResource = true;
 
     /**
      * Creates a {@link KeyVaultAccessControlClientBuilder} instance that is able to configure and construct
@@ -183,7 +184,7 @@ public final class KeyVaultAccessControlClientBuilder implements
         // Add retry policy.
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
 
-        policies.add(new KeyVaultCredentialPolicy(credential));
+        policies.add(new KeyVaultCredentialPolicy(credential, verifyChallengeResource));
 
         // Add per retry additional policies.
         policies.addAll(perRetryPolicies);
@@ -434,6 +435,19 @@ public final class KeyVaultAccessControlClientBuilder implements
      */
     public KeyVaultAccessControlClientBuilder serviceVersion(KeyVaultAdministrationServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
+
+        return this;
+    }
+
+    /** Gets or sets whether to verify the authentication challenge resource matches the Key Vault or Managed HSM
+     * domain. The default is set to {@code true}.
+     *
+     * @param verifyChallengeResource A flag indicating if the authentication challenge resource must be verified.
+     *
+     * @return The updated {@link KeyVaultAccessControlClientBuilder} object.
+     */
+    public KeyVaultAccessControlClientBuilder verifyChallengeResource(boolean verifyChallengeResource) {
+        this.verifyChallengeResource = verifyChallengeResource;
 
         return this;
     }
