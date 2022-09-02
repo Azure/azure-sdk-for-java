@@ -36,8 +36,8 @@ If you encounter any bugs, please file issues via [Issues](https://github.com/Az
 
 ## Next steps
 Other useful packages are:
-* [azure-identity-providers-core](../azure-identity-providers-core): Contains core classes and functionality used by this library.
-* [azure-identity-providers-jdbc-mysql](../azure-identity-providers-jdbc-mysql): Azure identity JDBC MySQL plugin library for Java.
+* [azure-identity-providers-core](../azure-identity-providers-core/README.md): Contains core classes and functionality used by this library.
+* [azure-identity-providers-jdbc-mysql](../azure-identity-providers-jdbc-mysql/README.md): Azure identity JDBC MySQL plugin library for Java.
 
 ## Contributing
 

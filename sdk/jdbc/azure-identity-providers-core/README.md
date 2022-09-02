@@ -25,8 +25,8 @@ If you encounter any bugs, please file issues via [Issues](https://github.com/Az
 
 ## Next steps
 Other useful packages are:
-* [azure-identity-providers-jdbc-mysql](../azure-identity-providers-jdbc-mysql):  Azure identity JDBC MySQL plugin library for Java.
-* [azure-identity-providers-jdbc-postgresql](../azure-identity-providers-jdbc-postgresql):  Azure identity JDBC PostgreSQL plugin library for Java.
+* [azure-identity-providers-jdbc-mysql](../azure-identity-providers-jdbc-mysql/README.md):  Azure identity JDBC MySQL plugin library for Java.
+* [azure-identity-providers-jdbc-postgresql](../azure-identity-providers-jdbc-postgresql/README.md):  Azure identity JDBC PostgreSQL plugin library for Java.
 
 ## Contributing
 
