@@ -19,14 +19,17 @@ import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.WritableByteChannel;
 
-import static com.azure.core.http.jdk.httpclient.JdkAsyncHttpClient.fromJdkHttpHeaders;
+import static com.azure.core.http.jdk.httpclient.JdkHttpClient.fromJdkHttpHeaders;
 
 final class JdkSyncHttpResponse extends JdkHttpResponseBase {
-    private final static ClientLogger LOGGER = new ClientLogger(JdkSyncHttpResponse.class);
+    private static final ClientLogger LOGGER = new ClientLogger(JdkSyncHttpResponse.class);
+    private BinaryData binaryData = null;
     public static final int STREAM_READ_SIZE = 8192;
-    private byte[] bodyBytes;
-    private final InputStream bodyStream;
 
+    private final InputStream bodyStream;
+    private byte[] bodyBytes;
+
+    private volatile boolean disposed = false;
     JdkSyncHttpResponse(final HttpRequest request, int statusCode, HttpHeaders headers, byte[] bytes) {
         super(request, statusCode, headers);
         this.bodyStream = null;
@@ -41,51 +44,60 @@ final class JdkSyncHttpResponse extends JdkHttpResponseBase {
 
     @Override
     public Flux<ByteBuffer> getBody() {
-        if (bodyBytes == null) {
+        if (bodyBytes != null) {
+            return Mono.fromSupplier(() -> ByteBuffer.wrap(bodyBytes)).flux();
+        } else {
             return FluxUtil.toFluxByteBuffer(bodyStream).doFinally(ignored -> close());
         }
-
-        return Mono.fromSupplier(() -> ByteBuffer.wrap(bodyBytes)).flux();
     }
 
     @Override
     public Mono<byte[]> getBodyAsByteArray() {
-        if (bodyBytes == null) {
-            bodyBytes = getBytes();
-            this.close();
+        if (bodyBytes != null) {
+            return Mono.just(bodyBytes);
+        } else {
+            return super.getBodyAsByteArray();
         }
-
-        return Mono.just(bodyBytes);
     }
 
     @Override
     public BinaryData getBodyAsBinaryData() {
-        if (bodyBytes == null) {
-            return BinaryData.fromStream(bodyStream);
+        if (bodyBytes != null) {
+            return BinaryData.fromBytes(bodyBytes);
+        } else {
+            // we shouldn't create multiple binary data instances for a single stream
+            return getBinaryData();
         }
-
-        return BinaryData.fromBytes(bodyBytes);
     }
 
     @Override
     public void writeBodyTo(WritableByteChannel channel) throws IOException {
-        if (bodyBytes == null) {
-            bodyBytes = getBytes();
+        if (bodyBytes != null) {
+            channel.write(ByteBuffer.wrap(bodyBytes));
+        } else {
+            try {
+                int nRead;
+                byte[] data = new byte[STREAM_READ_SIZE];
+                while ((nRead = bodyStream.read(data, 0, data.length)) != -1) {
+                    channel.write(ByteBuffer.wrap(data, 0, nRead));
+                }
+            } catch (IOException ex) {
+                throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+            }
+
             this.close();
         }
-
-        channel.write(ByteBuffer.wrap(bodyBytes));
     }
 
     @Override
     public void close() {
-        if (this.bodyStream == null) {
-            return;
-        }
-        try {
-            this.bodyStream.close();
-        } catch (IOException e) {
-            LOGGER.logExceptionAsError(new UncheckedIOException(e));
+        if (!disposed && this.bodyStream != null) {
+            disposed = true;
+            try {
+                this.bodyStream.close();
+            } catch (IOException e) {
+                LOGGER.logExceptionAsError(new UncheckedIOException(e));
+            }
         }
     }
 
@@ -111,5 +123,12 @@ final class JdkSyncHttpResponse extends JdkHttpResponseBase {
         } catch (IOException ex) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
+    }
+
+    private BinaryData getBinaryData() {
+        if (binaryData == null) {
+            binaryData = BinaryData.fromStream(bodyStream);
+        }
+        return binaryData;
     }
 }

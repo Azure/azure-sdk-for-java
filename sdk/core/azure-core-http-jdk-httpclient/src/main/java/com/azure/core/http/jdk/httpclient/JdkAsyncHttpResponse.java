@@ -4,16 +4,14 @@
 package com.azure.core.http.jdk.httpclient;
 
 import com.azure.core.http.HttpRequest;
-import com.azure.core.util.FluxUtil;
 import reactor.adapter.JdkFlowAdapter;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.concurrent.Flow;
 
-import static com.azure.core.http.jdk.httpclient.JdkAsyncHttpClient.fromJdkHttpHeaders;
+import static com.azure.core.http.jdk.httpclient.JdkHttpClient.fromJdkHttpHeaders;
 
 final class JdkAsyncHttpResponse extends JdkHttpResponseBase {
     private final Flux<ByteBuffer> contentFlux;
@@ -31,14 +29,6 @@ final class JdkAsyncHttpResponse extends JdkHttpResponseBase {
         return this.contentFlux.doFinally(signalType -> disposed = true);
     }
 
-    @Override
-    public Mono<byte[]> getBodyAsByteArray() {
-        return FluxUtil.collectBytesFromNetworkResponse(getBody(), getHeaders())
-            // Map empty byte[] into Mono.empty, this matches how the other HttpResponse implementations handle this.
-            .flatMap(bytes -> (bytes == null || bytes.length == 0)
-                ? Mono.empty()
-                : Mono.just(bytes));
-    }
 
     @Override
     public void close() {

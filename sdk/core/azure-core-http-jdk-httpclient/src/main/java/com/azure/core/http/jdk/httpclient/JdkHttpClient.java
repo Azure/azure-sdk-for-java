@@ -38,14 +38,14 @@ import static java.net.http.HttpResponse.BodyHandlers.ofPublisher;
 /**
  * HttpClient implementation for the JDK HttpClient.
  */
-class JdkAsyncHttpClient implements HttpClient {
-    private static final ClientLogger LOGGER = new ClientLogger(JdkAsyncHttpClient.class);
+class JdkHttpClient implements HttpClient {
+    private static final ClientLogger LOGGER = new ClientLogger(JdkHttpClient.class);
 
     private final java.net.http.HttpClient jdkHttpClient;
 
     private final Set<String> restrictedHeaders;
 
-    JdkAsyncHttpClient(java.net.http.HttpClient httpClient, Set<String> restrictedHeaders) {
+    JdkHttpClient(java.net.http.HttpClient httpClient, Set<String> restrictedHeaders) {
         this.jdkHttpClient = httpClient;
         int javaVersion = getJavaVersion();
         if (javaVersion <= 11) {
@@ -109,9 +109,7 @@ class JdkAsyncHttpClient implements HttpClient {
      * @return the HttpRequest
      */
     private java.net.http.HttpRequest toJdkHttpRequest(HttpRequest request, Context context) {
-        boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
-
 
         final java.net.http.HttpRequest.Builder builder = java.net.http.HttpRequest.newBuilder();
         try {
