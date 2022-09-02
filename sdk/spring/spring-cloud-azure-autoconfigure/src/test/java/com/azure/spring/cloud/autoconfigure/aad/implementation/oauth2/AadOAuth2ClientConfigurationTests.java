@@ -3,15 +3,20 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2;
 
+import com.azure.spring.cloud.autoconfigure.aad.AadAuthenticationFilterAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.AadClientRegistrationRepository;
 import com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.TestJwks;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.AadJwtBearerGrantRequestEntityConverter;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.util.Base64URL;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.oauth2.client.JwtBearerOAuth2AuthorizedClientProvider;
@@ -47,6 +52,9 @@ class AadOAuth2ClientConfigurationTests {
     @Test
     void testWithoutAnyPropertiesSet() {
         new WebApplicationContextRunner()
+             .withConfiguration(AutoConfigurations.of(
+                 HttpMessageConvertersAutoConfiguration.class,
+                 RestTemplateAutoConfiguration.class))
             .withUserConfiguration(AadOAuth2ClientConfiguration.class)
             .run(context -> {
                 assertThat(context).doesNotHaveBean(AadAuthenticationProperties.class);

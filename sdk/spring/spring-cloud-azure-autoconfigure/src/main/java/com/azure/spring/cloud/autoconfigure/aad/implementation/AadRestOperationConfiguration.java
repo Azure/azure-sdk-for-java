@@ -10,12 +10,11 @@ import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfi
 import com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cOAuth2ClientConfiguration;
 import com.nimbusds.jose.util.ResourceRetriever;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
+import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
@@ -23,13 +22,10 @@ import org.springframework.security.oauth2.core.http.converter.OAuth2AccessToken
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.web.client.RestOperations;
 
-import java.util.Arrays;
-
 /**
  * Configure RestOperation bean used for accessing Azure AD and Azure AD B2C
  */
 @Configuration(proxyBeanMethods = false)
-@Import(RestTemplateAutoConfiguration.class)
 public class AadRestOperationConfiguration {
 
     /**
@@ -56,19 +52,28 @@ public class AadRestOperationConfiguration {
     }
 
     /**
-     * Declare {@link HttpMessageConverters} bean which can be used in {@link RestTemplateAutoConfiguration}.
-     * <br/>
-     * {@link FormHttpMessageConverter} and {@link OAuth2AccessTokenResponseHttpMessageConverter} is necessary for
-     * kinds of {@link OAuth2AccessTokenResponseClient} implementations(like
-     * {@link DefaultAuthorizationCodeTokenResponseClient})
-     *
-     * @return HttpMessageConverters bean
+     * {@link FormHttpMessageConverter} is necessary for kinds of {@link OAuth2AccessTokenResponseClient}
+     * implementations(like {@link DefaultAuthorizationCodeTokenResponseClient}). This bean will be used in
+     * {@link HttpMessageConvertersAutoConfiguration}.
+     * @return FormHttpMessageConverter bean
      */
     @Bean
-    @ConditionalOnMissingBean(HttpMessageConverters.class)
-    public HttpMessageConverters httpMessageConverters() {
-        return new HttpMessageConverters(
-                Arrays.asList(new FormHttpMessageConverter(), new OAuth2AccessTokenResponseHttpMessageConverter()));
+    @ConditionalOnMissingBean
+    FormHttpMessageConverter formHttpMessageConverter() {
+        return new FormHttpMessageConverter();
+    }
+
+    /**
+     * {@link OAuth2AccessTokenResponseHttpMessageConverter} is necessary for kinds of
+     * {@link OAuth2AccessTokenResponseClient} implementations(like
+     * {@link DefaultAuthorizationCodeTokenResponseClient}).  This bean will be used in
+     * {@link HttpMessageConvertersAutoConfiguration}.
+     * @return OAuth2AccessTokenResponseHttpMessageConverter bean
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public OAuth2AccessTokenResponseHttpMessageConverter oAuth2AccessTokenResponseHttpMessageConverter() {
+        return new OAuth2AccessTokenResponseHttpMessageConverter();
     }
 
 }

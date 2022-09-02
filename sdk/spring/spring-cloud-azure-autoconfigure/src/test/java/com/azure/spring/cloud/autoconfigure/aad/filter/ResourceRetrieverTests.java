@@ -9,6 +9,8 @@ import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoCon
 import com.nimbusds.jose.util.ResourceRetriever;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
@@ -17,7 +19,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class ResourceRetrieverTests {
     private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AzureGlobalPropertiesAutoConfiguration.class, AadAuthenticationFilterAutoConfiguration.class))
+        .withConfiguration(AutoConfigurations.of(
+                AzureGlobalPropertiesAutoConfiguration.class,
+                AadAuthenticationFilterAutoConfiguration.class,
+                HttpMessageConvertersAutoConfiguration.class,
+                RestTemplateAutoConfiguration.class))
         .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
         .withPropertyValues(
             "spring.cloud.azure.active-directory.enabled=true",
