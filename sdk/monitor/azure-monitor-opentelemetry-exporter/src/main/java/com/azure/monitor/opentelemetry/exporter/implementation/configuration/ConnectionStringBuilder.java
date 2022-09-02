@@ -153,6 +153,7 @@ class ConnectionStringBuilder {
         static final String INGESTION_ENDPOINT = "IngestionEndpoint";
         static final String LIVE_ENDPOINT = "LiveEndpoint";
         static final String PROFILER_ENDPOINT = "ProfilerEndpoint";
+
         private Keywords() {
         }
     }
@@ -162,6 +163,7 @@ class ConnectionStringBuilder {
         static final String INGESTION_ENDPOINT_PREFIX = "dc";
         static final String LIVE_ENDPOINT_PREFIX = "live";
         static final String PROFILER_ENDPOINT_PREFIX = "profiler";
+
         private EndpointPrefixes() {
         }
     }

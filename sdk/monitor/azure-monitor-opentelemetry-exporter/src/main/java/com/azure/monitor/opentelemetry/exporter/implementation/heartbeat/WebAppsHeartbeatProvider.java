@@ -59,7 +59,7 @@ public class WebAppsHeartbeatProvider implements HeartBeatPayloadProviderInterfa
 
     @Override
     public Callable<Boolean> setDefaultPayload(HeartbeatExporter provider) {
-        return new Callable<>() {
+        return new Callable<Boolean>() {
 
             final Set<String> enabledProperties = defaultFields;
 

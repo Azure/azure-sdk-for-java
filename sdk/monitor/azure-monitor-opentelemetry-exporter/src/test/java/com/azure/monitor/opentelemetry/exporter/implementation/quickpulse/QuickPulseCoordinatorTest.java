@@ -110,11 +110,11 @@ class QuickPulseCoordinatorTest {
 
         Mockito.doNothing().when(mockFetcher).prepareQuickPulseDataForSend(notNull());
         Mockito.doReturn(
-            new QuickPulseHeaderInfo(QuickPulseStatus.QP_IS_ON, "https://new.endpoint.com", 100))
+                new QuickPulseHeaderInfo(QuickPulseStatus.QP_IS_ON, "https://new.endpoint.com", 100))
             .when(mockPingSender)
             .ping(any());
         Mockito.doReturn(
-            new QuickPulseHeaderInfo(QuickPulseStatus.QP_IS_OFF, "https://new.endpoint.com", 400))
+                new QuickPulseHeaderInfo(QuickPulseStatus.QP_IS_OFF, "https://new.endpoint.com", 400))
             .when(mockSender)
             .getQuickPulseHeaderInfo();
 

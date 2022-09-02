@@ -23,11 +23,12 @@ import static com.azure.monitor.opentelemetry.exporter.implementation.utils.Azur
  * This class is an implementation of OpenTelemetry {@link LogExporter} that allows different
  * logging services to export recorded data for sampled logs in their own format.
  */
-class AzureMonitorLogExporter implements LogExporter {
+public class AzureMonitorLogExporter implements LogExporter {
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorLogExporter.class);
-    private static final OperationLogger exportingLogLogger =
+    private static final OperationLogger OPERATION_LOGGER =
         new OperationLogger(AzureMonitorLogExporter.class, "Exporting log");
+
     private final AtomicBoolean stopped = new AtomicBoolean();
     private final LogDataMapper mapper;
     private final TelemetryItemExporter telemetryItemExporter;
@@ -56,9 +57,9 @@ class AzureMonitorLogExporter implements LogExporter {
             try {
                 String stack = log.getAttributes().get(SemanticAttributes.EXCEPTION_STACKTRACE);
                 telemetryItems.add(mapper.map(log, stack, null));
-                exportingLogLogger.recordSuccess();
+                OPERATION_LOGGER.recordSuccess();
             } catch (Throwable t) {
-                exportingLogLogger.recordFailure(t.getMessage(), t, EXPORTER_MAPPING_ERROR);
+                OPERATION_LOGGER.recordFailure(t.getMessage(), t, EXPORTER_MAPPING_ERROR);
                 return CompletableResultCode.ofFailure();
             }
         }

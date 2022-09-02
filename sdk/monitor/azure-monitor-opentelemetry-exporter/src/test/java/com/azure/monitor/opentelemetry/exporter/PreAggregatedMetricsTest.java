@@ -70,7 +70,7 @@ public class PreAggregatedMetricsTest {
             expectedMap.put(DEPENDENCY_TYPE, "grpc");
         }
         expectedMap.put(DEPENDENCY_TARGET, target);
-        // TODO test cloud_role_name and cloud_role_instance
+        // TODO (heya) test cloud_role_name and cloud_role_instance
         //    expectedMap.put(
         //        CLOUD_ROLE_NAME,
         // telemetryItem.getTags().get(ContextTagKeys.AI_CLOUD_ROLE.toString()));
@@ -89,7 +89,7 @@ public class PreAggregatedMetricsTest {
         if ("http".equals(type)) {
             expectedMap.put(REQUEST_RESULT_CODE, "200");
         }
-        // TODO test cloud_role_name and cloud_role_instance
+        // TODO (heya) test cloud_role_name and cloud_role_instance
         //    expectedMap.put(
         //        CLOUD_ROLE_NAME,
         // telemetryItem.getTags().get(ContextTagKeys.AI_CLOUD_ROLE.toString()));

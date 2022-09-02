@@ -84,8 +84,8 @@ class HeartbeatTests {
         HeartbeatExporter mockProvider = Mockito.mock(HeartbeatExporter.class);
         ConcurrentMap<String, String> props = new ConcurrentHashMap<>();
         Mockito.when(
-            mockProvider.addHeartBeatProperty(
-                Mockito.anyString(), Mockito.anyString(), Mockito.anyBoolean()))
+                mockProvider.addHeartBeatProperty(
+                    Mockito.anyString(), Mockito.anyString(), Mockito.anyBoolean()))
             .then(
                 (Answer<Boolean>)
                     invocation -> {

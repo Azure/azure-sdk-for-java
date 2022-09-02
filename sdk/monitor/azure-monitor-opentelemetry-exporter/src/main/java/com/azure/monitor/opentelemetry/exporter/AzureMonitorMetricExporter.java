@@ -25,11 +25,12 @@ import static com.azure.monitor.opentelemetry.exporter.implementation.utils.Azur
 /**
  * This class is an implementation of OpenTelemetry {@link MetricExporter}
  */
-class AzureMonitorMetricExporter implements MetricExporter {
+public class AzureMonitorMetricExporter implements MetricExporter {
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorMetricExporter.class);
-    private static final OperationLogger exportingMetricLogger =
+    private static final OperationLogger OPERATION_LOGGER =
         new OperationLogger(AzureMonitorMetricExporter.class, "Exporting metric");
+
     private final AtomicBoolean stopped = new AtomicBoolean();
     private final MetricDataMapper mapper;
     private final TelemetryItemExporter telemetryItemExporter;
@@ -66,9 +67,9 @@ class AzureMonitorMetricExporter implements MetricExporter {
             LOGGER.verbose("exporting metric: {}", metricData);
             try {
                 mapper.map(metricData, telemetryItems::add);
-                exportingMetricLogger.recordSuccess();
+                OPERATION_LOGGER.recordSuccess();
             } catch (Throwable t) {
-                exportingMetricLogger.recordFailure(t.getMessage(), t, EXPORTER_MAPPING_ERROR);
+                OPERATION_LOGGER.recordFailure(t.getMessage(), t, EXPORTER_MAPPING_ERROR);
                 return CompletableResultCode.ofFailure();
             }
         }

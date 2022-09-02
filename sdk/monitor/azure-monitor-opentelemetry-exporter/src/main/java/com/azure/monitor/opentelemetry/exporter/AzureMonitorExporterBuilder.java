@@ -52,15 +52,16 @@ import static java.util.concurrent.TimeUnit.MINUTES;
  */
 public final class AzureMonitorExporterBuilder {
 
-    private static final ClientLogger logger = new ClientLogger(AzureMonitorExporterBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorExporterBuilder.class);
 
     private static final String APPLICATIONINSIGHTS_CONNECTION_STRING =
         "APPLICATIONINSIGHTS_CONNECTION_STRING";
     private static final String APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE =
         "https://monitor.azure.com//.default";
 
-    private static final Map<String, String> properties =
+    private static final Map<String, String> PROPERTIES =
         CoreUtils.getProperties("azure-monitor-opentelemetry-exporter.properties");
+
     private final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
     private String instrumentationKey;
     private String connectionString;
@@ -86,7 +87,7 @@ public final class AzureMonitorExporterBuilder {
      * settings are ignored.
      *
      * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving
-     *                     responses.
+     * responses.
      * @return The updated {@link AzureMonitorExporterBuilder} object.
      */
     public AzureMonitorExporterBuilder httpPipeline(HttpPipeline httpPipeline) {
@@ -111,7 +112,7 @@ public final class AzureMonitorExporterBuilder {
      * <p>If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.
      *
      * @param httpLogOptions The logging configuration to use when sending and receiving HTTP
-     *                       requests/responses.
+     * requests/responses.
      * @return The updated {@link AzureMonitorExporterBuilder} object.
      */
     public AzureMonitorExporterBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
@@ -178,7 +179,7 @@ public final class AzureMonitorExporterBuilder {
      *
      * @param connectionString The connection string for the Azure Monitor resource.
      * @return The updated {@link AzureMonitorExporterBuilder} object.
-     * @throws NullPointerException     If the connection string is {@code null}.
+     * @throws NullPointerException If the connection string is {@code null}.
      * @throws IllegalArgumentException If the connection string is invalid.
      */
     public AzureMonitorExporterBuilder connectionString(String connectionString) {
@@ -217,9 +218,9 @@ public final class AzureMonitorExporterBuilder {
      *
      * @return An instance of {@link AzureMonitorTraceExporter}.
      * @throws NullPointerException if the connection string is not set on this builder or if the
-     *                              environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
+     * environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
      */
-    public SpanExporter buildTraceExporter() {
+    public AzureMonitorTraceExporter buildTraceExporter() {
         SpanDataMapper mapper =
             new SpanDataMapper(
                 true, this::populateDefaults, (event, instrumentationName) -> false, () -> null);
@@ -236,9 +237,9 @@ public final class AzureMonitorExporterBuilder {
      *
      * @return An instance of {@link AzureMonitorMetricExporter}.
      * @throws NullPointerException if the connection string is not set on this builder or if the
-     *                              environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
+     * environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
      */
-    public MetricExporter buildMetricExporter() {
+    public AzureMonitorMetricExporter buildMetricExporter() {
         TelemetryItemExporter telemetryItemExporter = initExporterBuilder();
         HeartbeatExporter.start(
             MINUTES.toSeconds(15), this::populateDefaults, telemetryItemExporter::send);
@@ -252,9 +253,9 @@ public final class AzureMonitorExporterBuilder {
      *
      * @return An instance of {@link AzureMonitorLogExporter}.
      * @throws NullPointerException if the connection string is not set on this builder or if the
-     *                              environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
+     * environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
      */
-    public LogExporter buildLogExporter() {
+    public AzureMonitorLogExporter buildLogExporter() {
         return new AzureMonitorLogExporter(
             new LogDataMapper(true, this::populateDefaults), initExporterBuilder());
     }
@@ -286,7 +287,7 @@ public final class AzureMonitorExporterBuilder {
 
         File tempDir =
             TempDirs.getApplicationInsightsTempDir(
-                logger,
+                LOGGER,
                 "Telemetry will not be stored to disk and retried later"
                     + " on sporadic network failures");
 
@@ -318,8 +319,8 @@ public final class AzureMonitorExporterBuilder {
             clientOptions = new ClientOptions();
         }
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        String clientName = properties.getOrDefault("name", "UnknownName");
-        String clientVersion = properties.getOrDefault("version", "UnknownVersion");
+        String clientName = PROPERTIES.getOrDefault("name", "UnknownName");
+        String clientVersion = PROPERTIES.getOrDefault("version", "UnknownVersion");
 
         String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
 

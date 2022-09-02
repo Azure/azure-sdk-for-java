@@ -22,12 +22,10 @@ import static com.azure.monitor.opentelemetry.exporter.implementation.utils.Azur
  * This class is an implementation of OpenTelemetry {@link SpanExporter} that allows different
  * tracing services to export recorded data for sampled spans in their own format.
  */
-// TODO (trask) move this class into internal package
 final class AzureMonitorTraceExporter implements SpanExporter {
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorTraceExporter.class);
-
-    private static final OperationLogger exportingSpanLogger =
+    private static final OperationLogger OPERATION_LOGGER =
         new OperationLogger(AzureMonitorTraceExporter.class, "Exporting span");
 
     private final TelemetryItemExporter telemetryItemExporter;
@@ -54,9 +52,9 @@ final class AzureMonitorTraceExporter implements SpanExporter {
             LOGGER.verbose("exporting span: {}", span);
             try {
                 mapper.map(span, telemetryItems::add);
-                exportingSpanLogger.recordSuccess();
+                OPERATION_LOGGER.recordSuccess();
             } catch (Throwable t) {
-                exportingSpanLogger.recordFailure(t.getMessage(), t, EXPORTER_MAPPING_ERROR);
+                OPERATION_LOGGER.recordFailure(t.getMessage(), t, EXPORTER_MAPPING_ERROR);
                 return CompletableResultCode.ofFailure();
             }
         }

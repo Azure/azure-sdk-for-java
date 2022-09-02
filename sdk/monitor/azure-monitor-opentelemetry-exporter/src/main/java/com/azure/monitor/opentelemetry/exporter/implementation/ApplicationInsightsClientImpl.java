@@ -71,7 +71,7 @@ public final class ApplicationInsightsClientImpl {
      * Initializes an instance of ApplicationInsightsClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param host         Breeze endpoint: https://dc.services.visualstudio.com.
+     * @param host Breeze endpoint: https://dc.services.visualstudio.com.
      */
     ApplicationInsightsClientImpl(HttpPipeline httpPipeline, String host) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), host);
@@ -80,9 +80,9 @@ public final class ApplicationInsightsClientImpl {
     /**
      * Initializes an instance of ApplicationInsightsClient client.
      *
-     * @param httpPipeline      The HTTP pipeline to send requests through.
+     * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param host              Breeze endpoint: https://dc.services.visualstudio.com.
+     * @param host Breeze endpoint: https://dc.services.visualstudio.com.
      */
     ApplicationInsightsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String host) {
         this.httpPipeline = httpPipeline;
@@ -126,9 +126,9 @@ public final class ApplicationInsightsClientImpl {
      * @param body The list of telemetry events to track.
      * @return response containing the status of each telemetry item.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ExportResultException    thrown if the request is rejected by server.
-     * @throws ExportResultException    thrown if the request is rejected by server on status code 400, 402, 429, 500, 503.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws ExportResultException thrown if the request is rejected by server.
+     * @throws ExportResultException thrown if the request is rejected by server on status code 400, 402, 429, 500, 503.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExportResult>> trackWithResponseAsync(List<TelemetryItem> body) {
@@ -139,13 +139,13 @@ public final class ApplicationInsightsClientImpl {
     /**
      * This operation sends a sequence of telemetry events that will be monitored by Azure Monitor.
      *
-     * @param body    The list of telemetry events to track.
+     * @param body The list of telemetry events to track.
      * @param context The context to associate with this operation.
      * @return response containing the status of each telemetry item.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ExportResultException    thrown if the request is rejected by server.
-     * @throws ExportResultException    thrown if the request is rejected by server on status code 400, 402, 429, 500, 503.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws ExportResultException thrown if the request is rejected by server.
+     * @throws ExportResultException thrown if the request is rejected by server on status code 400, 402, 429, 500, 503.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExportResult>> trackWithResponseAsync(List<TelemetryItem> body, Context context) {
@@ -159,9 +159,9 @@ public final class ApplicationInsightsClientImpl {
      * @param body The list of telemetry events to track.
      * @return response containing the status of each telemetry item.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ExportResultException    thrown if the request is rejected by server.
-     * @throws ExportResultException    thrown if the request is rejected by server on status code 400, 402, 429, 500, 503.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws ExportResultException thrown if the request is rejected by server.
+     * @throws ExportResultException thrown if the request is rejected by server on status code 400, 402, 429, 500, 503.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExportResult> trackAsync(List<TelemetryItem> body) {
@@ -179,13 +179,13 @@ public final class ApplicationInsightsClientImpl {
     /**
      * This operation sends a sequence of telemetry events that will be monitored by Azure Monitor.
      *
-     * @param body    The list of telemetry events to track.
+     * @param body The list of telemetry events to track.
      * @param context The context to associate with this operation.
      * @return response containing the status of each telemetry item.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ExportResultException    thrown if the request is rejected by server.
-     * @throws ExportResultException    thrown if the request is rejected by server on status code 400, 402, 429, 500, 503.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws ExportResultException thrown if the request is rejected by server.
+     * @throws ExportResultException thrown if the request is rejected by server on status code 400, 402, 429, 500, 503.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExportResult> trackAsync(List<TelemetryItem> body, Context context) {

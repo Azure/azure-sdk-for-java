@@ -13,7 +13,7 @@ public final class ExportResultException extends HttpResponseException {
     /**
      * Initializes a new instance of the ExportResultException class.
      *
-     * @param message  the exception message or the response content if a message is not available.
+     * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      */
     public ExportResultException(String message, HttpResponse response) {
@@ -23,9 +23,9 @@ public final class ExportResultException extends HttpResponseException {
     /**
      * Initializes a new instance of the ExportResultException class.
      *
-     * @param message  the exception message or the response content if a message is not available.
+     * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
-     * @param value    the deserialized response value.
+     * @param value the deserialized response value.
      */
     public ExportResultException(String message, HttpResponse response, ExportResult value) {
         super(message, response, value);

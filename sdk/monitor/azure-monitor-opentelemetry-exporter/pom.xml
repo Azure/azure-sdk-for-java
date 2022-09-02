@@ -2,7 +2,7 @@
      Licensed under the MIT License. -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -77,12 +77,6 @@
       <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
     </dependency>
     <dependency>
-      <groupId>com.google.code.findbugs</groupId>
-      <artifactId>jsr305</artifactId>
-      <version>3.0.2</version> <!-- {x-version-update;com.google.code.findbugs:jsr305;external_dependency} -->
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
       <groupId>javax.annotation</groupId>
       <artifactId>javax.annotation-api</artifactId>
       <version>1.3.2</version> <!-- {x-version-update;javax.annotation:javax.annotation-api;external_dependency} -->
@@ -155,10 +149,10 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-core-test</artifactId>
-        <version>1.11.0</version>  <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
-        <scope>test</scope>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-test</artifactId>
+      <version>1.11.0</version>  <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -195,7 +189,8 @@
                 <include>io.opentelemetry:opentelemetry-sdk:[1.14.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
                 <include>uk.org.webcompere:system-stubs-jupiter:[2.0.1]</include> <!-- {x-include-update;uk.org.webcompere:system-stubs-jupiter;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-semconv:[1.14.0-alpha]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-semconv;external_dependency} -->
-                <include>io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv:[1.14.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv;external_dependency} -->
+                <include>io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv:[1.14.0-alpha]
+                </include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk-logs:[1.14.0-alpha]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-logs;external_dependency} -->
                 <include>com.github.spotbugs:spotbugs-annotations:[4.2.2]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
                 <include>javax.annotation:javax.annotation-api:[1.3.2]</include> <!-- {x-include-update;javax.annotation:javax.annotation-api;external_dependency} -->
