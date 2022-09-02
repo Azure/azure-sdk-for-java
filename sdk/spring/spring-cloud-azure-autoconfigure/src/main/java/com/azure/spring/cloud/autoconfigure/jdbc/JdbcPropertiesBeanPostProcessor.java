@@ -7,6 +7,7 @@ import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.DatabaseType;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionString;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
+import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreeProperties;
 import com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider;
 import org.slf4j.Logger;
@@ -21,9 +22,15 @@ import org.springframework.context.EnvironmentAware;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.util.StringUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_ATTRIBUTE_EXTENSION_VERSION;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_DELIMITER;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_KV_DELIMITER;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_NAME_CONNECTION_ATTRIBUTES;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_NAME_APPLICATION_NAME;
 import static com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider.CREDENTIAL_FREE_TOKEN_BEAN_NAME;
 
 
@@ -78,6 +85,7 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
                 return bean;
             }
 
+
             try {
                 Map<String, String> enhancedProperties = buildEnhancedProperties(databaseType, properties);
                 String enhancedUrl = connectionString.enhanceConnectionString(enhancedProperties);
@@ -87,6 +95,27 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
             }
         }
         return bean;
+    }
+
+    private void addUserAgent(DatabaseType databaseType, JdbcConnectionString connectionString) {
+        if (DatabaseType.MYSQL == databaseType) {
+            boolean added = connectionString.addAttributeToProperty(
+                MYSQL_PROPERTY_NAME_CONNECTION_ATTRIBUTES,
+                MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_ATTRIBUTE_EXTENSION_VERSION,
+                AzureSpringIdentifier.AZURE_SPRING_MYSQL_OAUTH,
+                MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_DELIMITER,
+                MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_KV_DELIMITER
+            );
+            if (!added) {
+                LOGGER.debug("Fail to add user agent for MySQL.");
+            }
+        } else if (DatabaseType.POSTGRESQL == databaseType) {
+            boolean added = connectionString.addProperty(POSTGRESQL_PROPERTY_NAME_APPLICATION_NAME,
+                AzureSpringIdentifier.AZURE_SPRING_POSTGRESQL_OAUTH);
+            if (!added) {
+                LOGGER.debug("Fail to add user agent for PostgreSQL.");
+            }
+        }
     }
 
     private Map<String, String> buildEnhancedProperties(DatabaseType databaseType, AzureCredentialFreeProperties properties) {

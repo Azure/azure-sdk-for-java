@@ -94,6 +94,10 @@ public enum DatabaseType {
         map.putAll(getDefaultEnhancedProperties());
     }
 
+    public void addUserAgent() {
+
+    }
+
     private boolean isPostgresqlPluginAvailable() {
         return isOnClasspath(JdbcPropertyConstants.POSTGRES_AUTH_PLUGIN_CLASS_NAME)
             && isOnClasspath(JdbcPropertyConstants.POSTGRES_AUTH_PLUGIN_INTERFACE_CLASS_NAME)

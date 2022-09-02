@@ -110,6 +110,36 @@ public final class JdbcConnectionString {
         return enhancedUrl.substring(0, enhancedUrl.length() - 1);
     }
 
+    public boolean addAttributeToProperty(String propertyKey, String attributeKey, String attributeValue,
+                                       String attributeDelimiter, String attributeKeyValueDelimiter) {
+        String attribute = attributeKey + attributeKeyValueDelimiter + attributeValue;
+        if (this.properties.containsKey(propertyKey)) {
+            String value = this.properties.get(propertyKey);
+            String[] attributes = value.split(attributeDelimiter);
+            for (String attributePair : attributes) {
+                String[] split = attributePair.split(attributeKeyValueDelimiter);
+                if (split.length > 1 && attributeKey.equals(split[0])) {
+                    LOGGER.debug("The attribute {} in property {} is already set", attributeKey, propertyKey);
+                    return false;
+                }
+            }
+            this.properties.put(propertyKey, value + attributeDelimiter + attribute);
+        } else {
+            this.properties.put(propertyKey, attribute);
+        }
+        return true;
+    }
+
+    public boolean addProperty(String propertyKey, String value) {
+        if (this.properties.containsKey(propertyKey)) {
+            LOGGER.debug("The property {} is already set", propertyKey);
+            return false;
+        } else {
+            this.properties.put(propertyKey, value);
+            return true;
+        }
+    }
+
     public String getProperty(String key) {
         return this.properties.get(key);
     }
