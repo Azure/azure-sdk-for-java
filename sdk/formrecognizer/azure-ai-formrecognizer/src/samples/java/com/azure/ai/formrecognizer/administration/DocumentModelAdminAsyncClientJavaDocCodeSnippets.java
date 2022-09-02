@@ -7,13 +7,13 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModel
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeDocumentModelOptions;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorizationOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildOperationDetails;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelCopyAuthorization;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationDetails;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipeline;
@@ -286,7 +286,7 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginCopyDocumentModelTo(String, CopyAuthorization)}
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginCopyDocumentModelTo(String, DocumentModelCopyAuthorization)}
      */
     public void beginCopy() {
         // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.beginCopyDocumentModelTo#string-copyAuthorization

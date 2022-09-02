@@ -7,8 +7,8 @@ import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient;
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeDocumentModelOptions;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelCopyAuthorization;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelSummary;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
@@ -237,7 +237,7 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
             syncPoller.waitForCompletion();
             DocumentModelDetails actualModel = syncPoller.getFinalResult();
 
-            CopyAuthorization target =
+            DocumentModelCopyAuthorization target =
                 client.getCopyAuthorization();
             SyncPoller<OperationResult, DocumentModelDetails>
                 copyPoller = client.beginCopyDocumentModelTo(actualModel.getModelId(), target)

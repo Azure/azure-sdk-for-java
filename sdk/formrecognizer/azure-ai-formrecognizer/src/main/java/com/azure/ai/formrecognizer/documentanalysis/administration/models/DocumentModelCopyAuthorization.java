@@ -8,10 +8,10 @@ import com.azure.core.annotation.Immutable;
 import java.time.OffsetDateTime;
 
 /**
- * Authorization to copy a model to the specified target resource and modelId.
+ * Authorization to copy a document model to the specified target resource and modelId.
  */
 @Immutable
-public final class CopyAuthorization {
+public final class DocumentModelCopyAuthorization {
     /*
      * ID of the target Azure resource where the document model should be copied to.
      */
@@ -44,7 +44,7 @@ public final class CopyAuthorization {
     private final OffsetDateTime expiresOn;
 
     /**
-     * Creates an instance of a {@link CopyAuthorization} model.
+     * Creates an instance of a {@link DocumentModelCopyAuthorization} model.
      *
      * @param targetResourceId the identifier of the target Azure resource where the model should be copied to.
      * @param targetResourceRegion the location of the target Azure resource where the model should be copied to.
@@ -53,8 +53,8 @@ public final class CopyAuthorization {
      * @param accessToken the token used to authorize the request.
      * @param expiresOn the Date/time when the access token expires.
      */
-    public CopyAuthorization(String targetResourceId, String targetResourceRegion, String targetModelId,
-                             String targetModelLocation, String accessToken, OffsetDateTime expiresOn) {
+    public DocumentModelCopyAuthorization(String targetResourceId, String targetResourceRegion, String targetModelId,
+                                          String targetModelLocation, String accessToken, OffsetDateTime expiresOn) {
         this.targetResourceId = targetResourceId;
         this.targetResourceRegion = targetResourceRegion;
         this.targetModelId = targetModelId;

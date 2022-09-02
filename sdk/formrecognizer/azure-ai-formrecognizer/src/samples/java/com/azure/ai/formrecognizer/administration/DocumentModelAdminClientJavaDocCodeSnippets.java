@@ -7,14 +7,14 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModel
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeDocumentModelOptions;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorizationOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildOperationDetails;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelCopyAuthorization;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationSummary;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationDetails;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationSummary;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
@@ -149,7 +149,8 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     public void deleteModelWithResponse() {
         // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.deleteDocumentModelWithResponse#string-Context
         String modelId = "{custom-model-id}";
-        Response<Void> response = documentModelAdministrationClient.deleteDocumentModelWithResponse(modelId, Context.NONE);
+        Response<Void> response
+            = documentModelAdministrationClient.deleteDocumentModelWithResponse(modelId, Context.NONE);
         System.out.printf("Response Status Code: %d.", response.getStatusCode());
         System.out.printf("Model ID: %s is deleted.%n", modelId);
         // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.deleteDocumentModelWithResponse#string-Context
@@ -160,14 +161,15 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
      */
     public void getCopyAuthorization() {
         // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getCopyAuthorization
-        CopyAuthorization copyAuthorization = documentModelAdministrationClient.getCopyAuthorization();
+        DocumentModelCopyAuthorization documentModelCopyAuthorization
+            = documentModelAdministrationClient.getCopyAuthorization();
         System.out.printf("Copy Authorization for model id: %s, access token: %s, expiration time: %s, "
                 + "target resource ID; %s, target resource region: %s%n",
-            copyAuthorization.getTargetModelId(),
-            copyAuthorization.getAccessToken(),
-            copyAuthorization.getExpiresOn(),
-            copyAuthorization.getTargetResourceId(),
-            copyAuthorization.getTargetResourceRegion()
+            documentModelCopyAuthorization.getTargetModelId(),
+            documentModelCopyAuthorization.getAccessToken(),
+            documentModelCopyAuthorization.getExpiresOn(),
+            documentModelCopyAuthorization.getTargetResourceId(),
+            documentModelCopyAuthorization.getTargetResourceRegion()
         );
         // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getCopyAuthorization
     }
@@ -181,7 +183,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         Map<String, String> attrs = new HashMap<String, String>();
         attrs.put("createdBy", "sample");
 
-        Response<CopyAuthorization> copyAuthorizationResponse =
+        Response<DocumentModelCopyAuthorization> copyAuthorizationResponse =
             documentModelAdministrationClient.getCopyAuthorizationWithResponse(
                 new CopyAuthorizationOptions()
                     .setModelId(modelId)
@@ -191,14 +193,14 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
 
         System.out.printf("Copy Authorization operation returned with status: %s",
             copyAuthorizationResponse.getStatusCode());
-        CopyAuthorization copyAuthorization = copyAuthorizationResponse.getValue();
+        DocumentModelCopyAuthorization documentModelCopyAuthorization = copyAuthorizationResponse.getValue();
         System.out.printf("Copy Authorization for model id: %s, access token: %s, "
                 + "expiration time: %s, target resource ID; %s, target resource region: %s%n",
-            copyAuthorization.getTargetModelId(),
-            copyAuthorization.getAccessToken(),
-            copyAuthorization.getExpiresOn(),
-            copyAuthorization.getTargetResourceId(),
-            copyAuthorization.getTargetResourceRegion()
+            documentModelCopyAuthorization.getTargetModelId(),
+            documentModelCopyAuthorization.getAccessToken(),
+            documentModelCopyAuthorization.getExpiresOn(),
+            documentModelCopyAuthorization.getTargetResourceId(),
+            documentModelCopyAuthorization.getTargetResourceRegion()
         );
         // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getCopyAuthorizationWithResponse#CopyAuthorizationOptions-Context
     }
@@ -264,16 +266,18 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#beginCopyDocumentModelTo(String, CopyAuthorization)}
+     * Code snippet for {@link DocumentModelAdministrationClient#beginCopyDocumentModelTo(String, DocumentModelCopyAuthorization)}
      */
     public void beginCopy() {
         // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.beginCopyDocumentModelTo#string-copyAuthorization
         String copyModelId = "copy-model";
         // Get authorization to copy the model to target resource
-        CopyAuthorization copyAuthorization = documentModelAdministrationClient.getCopyAuthorization();
+        DocumentModelCopyAuthorization documentModelCopyAuthorization
+            = documentModelAdministrationClient.getCopyAuthorization();
         // Start copy operation from the source client
-        DocumentModelDetails documentModelDetails =
-            documentModelAdministrationClient.beginCopyDocumentModelTo(copyModelId, copyAuthorization).getFinalResult();
+        DocumentModelDetails documentModelDetails
+            = documentModelAdministrationClient.beginCopyDocumentModelTo(copyModelId, documentModelCopyAuthorization)
+                .getFinalResult();
         System.out.printf("Copied model has model ID: %s, was created on: %s.%n,",
             documentModelDetails.getModelId(),
             documentModelDetails.getCreatedOn());
@@ -281,16 +285,19 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#beginCopyDocumentModelTo(String, CopyAuthorization, Context)}
+     * Code snippet for {@link DocumentModelAdministrationClient#beginCopyDocumentModelTo(String, DocumentModelCopyAuthorization, Context)}
      */
     public void beginCopyOverload() {
         // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.beginCopyDocumentModelTo#string-copyAuthorization-Context
         String copyModelId = "copy-model";
         // Get authorization to copy the model to target resource
-        CopyAuthorization copyAuthorization = documentModelAdministrationClient.getCopyAuthorization();
+        DocumentModelCopyAuthorization documentModelCopyAuthorization
+            = documentModelAdministrationClient.getCopyAuthorization();
         // Start copy operation from the source client
         DocumentModelDetails documentModelDetails =
-            documentModelAdministrationClient.beginCopyDocumentModelTo(copyModelId, copyAuthorization, Context.NONE)
+            documentModelAdministrationClient.beginCopyDocumentModelTo(copyModelId,
+                    documentModelCopyAuthorization,
+                    Context.NONE)
                 .getFinalResult();
         System.out.printf("Copied model has model ID: %s, was created on: %s.%n,",
             documentModelDetails.getModelId(),

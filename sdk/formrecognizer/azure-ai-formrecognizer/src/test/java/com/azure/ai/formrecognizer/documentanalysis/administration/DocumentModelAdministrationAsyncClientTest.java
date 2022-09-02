@@ -8,11 +8,11 @@ import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersi
 import com.azure.ai.formrecognizer.documentanalysis.TestUtils;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeDocumentModelOptions;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorizationOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildOperationDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelComposeOperationDetails;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelCopyAuthorization;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelCopyToOperationDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
@@ -357,8 +357,8 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             syncPoller1.waitForCompletion();
             DocumentModelDetails actualModel = syncPoller1.getFinalResult();
 
-            Mono<CopyAuthorization> targetMono = client.getCopyAuthorization();
-            CopyAuthorization target = targetMono.block();
+            Mono<DocumentModelCopyAuthorization> targetMono = client.getCopyAuthorization();
+            DocumentModelCopyAuthorization target = targetMono.block();
             if (actualModel == null) {
                 fail();
                 return;
@@ -390,13 +390,13 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             syncPoller1.waitForCompletion();
             DocumentModelDetails actualModel = syncPoller1.getFinalResult();
 
-            Mono<Response<CopyAuthorization>> targetMono = client.getCopyAuthorizationWithResponse(
+            Mono<Response<DocumentModelCopyAuthorization>> targetMono = client.getCopyAuthorizationWithResponse(
                 new CopyAuthorizationOptions()
                     .setModelId(modelId)
                     .setDescription(TestUtils.EXPECTED_DESC)
                     .setTags(TestUtils.EXPECTED_MODEL_TAGS));
 
-            CopyAuthorization target = targetMono.block().getValue();
+            DocumentModelCopyAuthorization target = targetMono.block().getValue();
             if (actualModel == null) {
                 fail();
                 return;

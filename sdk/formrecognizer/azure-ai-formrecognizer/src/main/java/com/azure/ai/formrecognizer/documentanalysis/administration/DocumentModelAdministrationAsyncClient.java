@@ -8,14 +8,14 @@ import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientBuilde
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeDocumentModelOptions;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorizationOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelCopyAuthorization;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationDetails;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationSummary;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelSummary;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationSummary;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AuthorizeCopyRequest;
@@ -392,20 +392,20 @@ public final class DocumentModelAdministrationAsyncClient {
     /**
      * Generate authorization for copying a custom document analysis model into the target Form Recognizer resource.
      * <p> This should be called by the target resource (where the model will be copied to) and the output can be passed as
-     * the target parameter into {@link DocumentModelAdministrationAsyncClient#beginCopyDocumentModelTo(String, CopyAuthorization)}.
+     * the target parameter into {@link DocumentModelAdministrationAsyncClient#beginCopyDocumentModelTo(String, DocumentModelCopyAuthorization)}.
      * </p>
      *
-     * @return The {@link CopyAuthorization} that could be used to authorize copying model between resources.
+     * @return The {@link DocumentModelCopyAuthorization} that could be used to authorize copying model between resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CopyAuthorization> getCopyAuthorization() {
+    public Mono<DocumentModelCopyAuthorization> getCopyAuthorization() {
         return getCopyAuthorizationWithResponse(null).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Generate authorization for copying a custom document analysis model into the target Form Recognizer resource.
      * <p>This should be called by the target resource (where the model will be copied to) and the output can be passed as
-     * the target parameter into {@link DocumentModelAdministrationAsyncClient#beginCopyDocumentModelTo(String, CopyAuthorization)}.
+     * the target parameter into {@link DocumentModelAdministrationAsyncClient#beginCopyDocumentModelTo(String, DocumentModelCopyAuthorization)}.
      * </p>
      *
      * @param copyAuthorizationOptions The configurable {@link CopyAuthorizationOptions options} to pass when
@@ -435,10 +435,10 @@ public final class DocumentModelAdministrationAsyncClient {
      *         &#41;&#41;;
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.getCopyAuthorizationWithResponse#CopyAuthorizationOptions -->
-     * @return The {@link CopyAuthorization} that could be used to authorize copying model between resources.
+     * @return The {@link DocumentModelCopyAuthorization} that could be used to authorize copying model between resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CopyAuthorization>> getCopyAuthorizationWithResponse(
+    public Mono<Response<DocumentModelCopyAuthorization>> getCopyAuthorizationWithResponse(
         CopyAuthorizationOptions copyAuthorizationOptions) {
         try {
             return withContext(context -> getCopyAuthorizationWithResponse(copyAuthorizationOptions, context));
@@ -447,7 +447,7 @@ public final class DocumentModelAdministrationAsyncClient {
         }
     }
 
-    Mono<Response<CopyAuthorization>> getCopyAuthorizationWithResponse(
+    Mono<Response<DocumentModelCopyAuthorization>> getCopyAuthorizationWithResponse(
         CopyAuthorizationOptions copyAuthorizationOptions,
         Context context) {
         copyAuthorizationOptions = copyAuthorizationOptions == null
@@ -644,12 +644,12 @@ public final class DocumentModelAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<OperationResult, DocumentModelDetails> beginCopyDocumentModelTo(String sourceModelId,
-                                                                                      CopyAuthorization target) {
+                                                                                      DocumentModelCopyAuthorization target) {
         return beginCopyDocumentModelTo(sourceModelId, target, null);
     }
 
     PollerFlux<OperationResult, DocumentModelDetails> beginCopyDocumentModelTo(String sourceModelId,
-                                                                               CopyAuthorization target, Context context) {
+                                                                               DocumentModelCopyAuthorization target, Context context) {
         return new PollerFlux<OperationResult, DocumentModelDetails>(
             DEFAULT_POLL_INTERVAL,
             getCopyActivationOperation(sourceModelId, target, context),
@@ -986,7 +986,7 @@ public final class DocumentModelAdministrationAsyncClient {
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>>
         getCopyActivationOperation(
-        String modelId, CopyAuthorization target, Context context) {
+        String modelId, DocumentModelCopyAuthorization target, Context context) {
         return (pollingContext) -> {
             try {
                 Objects.requireNonNull(modelId, "'modelId' cannot be null.");

@@ -7,9 +7,9 @@ import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient;
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientBuilder;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeDocumentModelOptions;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorizationOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelCopyAuthorization;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelSummary;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationDetails;
@@ -262,7 +262,8 @@ public final class DocumentModelAdministrationClient {
      * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.deleteDocumentModelWithResponse#string-Context -->
      * <pre>
      * String modelId = &quot;&#123;custom-model-id&#125;&quot;;
-     * Response&lt;Void&gt; response = documentModelAdministrationClient.deleteDocumentModelWithResponse&#40;modelId, Context.NONE&#41;;
+     * Response&lt;Void&gt; response
+     *     = documentModelAdministrationClient.deleteDocumentModelWithResponse&#40;modelId, Context.NONE&#41;;
      * System.out.printf&#40;&quot;Response Status Code: %d.&quot;, response.getStatusCode&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Model ID: %s is deleted.%n&quot;, modelId&#41;;
      * </pre>
@@ -282,20 +283,34 @@ public final class DocumentModelAdministrationClient {
     /**
      * Generate authorization for copying a custom model into the target Form Recognizer resource.
      * <p> This should be called by the target resource (where the model will be copied to) and the output can be passed as
-     * the target parameter into {@link DocumentModelAdministrationClient#beginCopyDocumentModelTo(String, CopyAuthorization)}.
+     * the target parameter into {@link DocumentModelAdministrationClient#beginCopyDocumentModelTo(String, DocumentModelCopyAuthorization)}.
      * </p>
-     *
-     * @return The {@link CopyAuthorization}
+     * <p><strong>Code sample</strong></p>
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getCopyAuthorization -->
+     * <pre>
+     * DocumentModelCopyAuthorization documentModelCopyAuthorization
+     *     = documentModelAdministrationClient.getCopyAuthorization&#40;&#41;;
+     * System.out.printf&#40;&quot;Copy Authorization for model id: %s, access token: %s, expiration time: %s, &quot;
+     *         + &quot;target resource ID; %s, target resource region: %s%n&quot;,
+     *     documentModelCopyAuthorization.getTargetModelId&#40;&#41;,
+     *     documentModelCopyAuthorization.getAccessToken&#40;&#41;,
+     *     documentModelCopyAuthorization.getExpiresOn&#40;&#41;,
+     *     documentModelCopyAuthorization.getTargetResourceId&#40;&#41;,
+     *     documentModelCopyAuthorization.getTargetResourceRegion&#40;&#41;
+     * &#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getCopyAuthorization -->
+     * @return The {@link DocumentModelCopyAuthorization}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CopyAuthorization getCopyAuthorization() {
+    public DocumentModelCopyAuthorization getCopyAuthorization() {
         return getCopyAuthorizationWithResponse(null, Context.NONE).getValue();
     }
 
     /**
      * Generate authorization for copying a custom model into the target Form Recognizer resource.
      * <p> This should be called by the target resource (where the model will be copied to) and the output can be passed as
-     * the target parameter into {@link DocumentModelAdministrationClient#beginCopyDocumentModelTo(String, CopyAuthorization)}.
+     * the target parameter into {@link DocumentModelAdministrationClient#beginCopyDocumentModelTo(String, DocumentModelCopyAuthorization)}.
      * </p>
      *
      * @param copyAuthorizationOptions The configurable {@link CopyAuthorizationOptions options} to pass when
@@ -309,7 +324,7 @@ public final class DocumentModelAdministrationClient {
      * Map&lt;String, String&gt; attrs = new HashMap&lt;String, String&gt;&#40;&#41;;
      * attrs.put&#40;&quot;createdBy&quot;, &quot;sample&quot;&#41;;
      *
-     * Response&lt;CopyAuthorization&gt; copyAuthorizationResponse =
+     * Response&lt;DocumentModelCopyAuthorization&gt; copyAuthorizationResponse =
      *     documentModelAdministrationClient.getCopyAuthorizationWithResponse&#40;
      *         new CopyAuthorizationOptions&#40;&#41;
      *             .setModelId&#40;modelId&#41;
@@ -319,22 +334,22 @@ public final class DocumentModelAdministrationClient {
      *
      * System.out.printf&#40;&quot;Copy Authorization operation returned with status: %s&quot;,
      *     copyAuthorizationResponse.getStatusCode&#40;&#41;&#41;;
-     * CopyAuthorization copyAuthorization = copyAuthorizationResponse.getValue&#40;&#41;;
+     * DocumentModelCopyAuthorization documentModelCopyAuthorization = copyAuthorizationResponse.getValue&#40;&#41;;
      * System.out.printf&#40;&quot;Copy Authorization for model id: %s, access token: %s, &quot;
      *         + &quot;expiration time: %s, target resource ID; %s, target resource region: %s%n&quot;,
-     *     copyAuthorization.getTargetModelId&#40;&#41;,
-     *     copyAuthorization.getAccessToken&#40;&#41;,
-     *     copyAuthorization.getExpiresOn&#40;&#41;,
-     *     copyAuthorization.getTargetResourceId&#40;&#41;,
-     *     copyAuthorization.getTargetResourceRegion&#40;&#41;
+     *     documentModelCopyAuthorization.getTargetModelId&#40;&#41;,
+     *     documentModelCopyAuthorization.getAccessToken&#40;&#41;,
+     *     documentModelCopyAuthorization.getExpiresOn&#40;&#41;,
+     *     documentModelCopyAuthorization.getTargetResourceId&#40;&#41;,
+     *     documentModelCopyAuthorization.getTargetResourceRegion&#40;&#41;
      * &#41;;
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getCopyAuthorizationWithResponse#CopyAuthorizationOptions-Context -->
      *
-     * @return A {@link Response} containing the {@link CopyAuthorization}
+     * @return A {@link Response} containing the {@link DocumentModelCopyAuthorization}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CopyAuthorization> getCopyAuthorizationWithResponse(
+    public Response<DocumentModelCopyAuthorization> getCopyAuthorizationWithResponse(
         CopyAuthorizationOptions copyAuthorizationOptions,
         Context context) {
         return client.getCopyAuthorizationWithResponse(copyAuthorizationOptions, context).block();
@@ -460,10 +475,12 @@ public final class DocumentModelAdministrationClient {
      * <pre>
      * String copyModelId = &quot;copy-model&quot;;
      * &#47;&#47; Get authorization to copy the model to target resource
-     * CopyAuthorization copyAuthorization = documentModelAdministrationClient.getCopyAuthorization&#40;&#41;;
+     * DocumentModelCopyAuthorization documentModelCopyAuthorization
+     *     = documentModelAdministrationClient.getCopyAuthorization&#40;&#41;;
      * &#47;&#47; Start copy operation from the source client
-     * DocumentModelDetails documentModelDetails =
-     *     documentModelAdministrationClient.beginCopyDocumentModelTo&#40;copyModelId, copyAuthorization&#41;.getFinalResult&#40;&#41;;
+     * DocumentModelDetails documentModelDetails
+     *     = documentModelAdministrationClient.beginCopyDocumentModelTo&#40;copyModelId, documentModelCopyAuthorization&#41;
+     *         .getFinalResult&#40;&#41;;
      * System.out.printf&#40;&quot;Copied model has model ID: %s, was created on: %s.%n,&quot;,
      *     documentModelDetails.getModelId&#40;&#41;,
      *     documentModelDetails.getCreatedOn&#40;&#41;&#41;;
@@ -479,7 +496,7 @@ public final class DocumentModelAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<OperationResult, DocumentModelDetails> beginCopyDocumentModelTo(String sourceModelId,
-                                                                                      CopyAuthorization target) {
+                                                                                      DocumentModelCopyAuthorization target) {
         return beginCopyDocumentModelTo(sourceModelId, target, Context.NONE);
     }
 
@@ -499,10 +516,13 @@ public final class DocumentModelAdministrationClient {
      * <pre>
      * String copyModelId = &quot;copy-model&quot;;
      * &#47;&#47; Get authorization to copy the model to target resource
-     * CopyAuthorization copyAuthorization = documentModelAdministrationClient.getCopyAuthorization&#40;&#41;;
+     * DocumentModelCopyAuthorization documentModelCopyAuthorization
+     *     = documentModelAdministrationClient.getCopyAuthorization&#40;&#41;;
      * &#47;&#47; Start copy operation from the source client
      * DocumentModelDetails documentModelDetails =
-     *     documentModelAdministrationClient.beginCopyDocumentModelTo&#40;copyModelId, copyAuthorization, Context.NONE&#41;
+     *     documentModelAdministrationClient.beginCopyDocumentModelTo&#40;copyModelId,
+     *             documentModelCopyAuthorization,
+     *             Context.NONE&#41;
      *         .getFinalResult&#40;&#41;;
      * System.out.printf&#40;&quot;Copied model has model ID: %s, was created on: %s.%n,&quot;,
      *     documentModelDetails.getModelId&#40;&#41;,
@@ -520,7 +540,7 @@ public final class DocumentModelAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<OperationResult, DocumentModelDetails> beginCopyDocumentModelTo(String sourceModelId,
-                                                                                      CopyAuthorization target,
+                                                                                      DocumentModelCopyAuthorization target,
                                                                                       Context context) {
         return client.beginCopyDocumentModelTo(sourceModelId, target, context).getSyncPoller();
     }
