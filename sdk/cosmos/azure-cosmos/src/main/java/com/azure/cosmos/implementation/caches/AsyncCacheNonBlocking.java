@@ -201,8 +201,7 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
                         .flatMap(cachedValue -> createRefreshFunction.apply(cachedValue))
                         .flatMap(response -> {
                             this.refreshInProgress.set(null);
-                            this.value.set(Mono.just(response));
-                            return this.value.get();
+                            return this.value.updateAndGet(existingValue -> Mono.just(response));
                         })
                         .doOnError(throwable -> {
                             logger.warn("Background refresh task failed", throwable);
