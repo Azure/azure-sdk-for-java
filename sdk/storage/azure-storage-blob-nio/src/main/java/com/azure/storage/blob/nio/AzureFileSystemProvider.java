@@ -216,15 +216,15 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
     private final ConcurrentMap<String, FileSystem> openFileSystems;
 
-    static final AzureFileSystemConfig defaultConfigurations = readEnvironmentConfiguration();
-    static final String defaultEndpoint = readEnvironmentEndpoint();
+    static final AzureFileSystemConfig DEFAULT_CONFIGURATIONS = readEnvironmentConfiguration();
+    static final String DEFAULT_ENDPOINT = readEnvironmentEndpoint();
 
     /**
      * NIO contractually expects the caller to explicitly create file systems as needed, instead of automatically
      * creating them based on URI. This disagrees with how several workflows actually use NIO. This flag allows developers
      * to opt-in to this non-contractual behavior.
      */
-    static final boolean autoCreateFileSystems = readEnvironmentAutoCreateFileSystems();
+    static final boolean AUTO_CREATE_FILE_SYSTEMS = readEnvironmentAutoCreateFileSystems();
 
     // Specs require a public zero argument constructor.
     /**
@@ -263,7 +263,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     @Override
     public FileSystem newFileSystem(URI uri, Map<String, ?> config) throws IOException {
         String endpoint = extractAccountEndpointOrGetDefault(uri);
-        AzureFileSystemConfig azureConfig = config != null ? new AzureFileSystemConfig(config) : defaultConfigurations;
+        AzureFileSystemConfig azureConfig = config != null ? new AzureFileSystemConfig(config) : DEFAULT_CONFIGURATIONS;
 
         if (this.openFileSystems.containsKey(endpoint)) {
             throw LoggingUtility.logError(ClientLoggerHolder.LOGGER,
@@ -298,12 +298,12 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         String endpoint = extractAccountEndpointOrGetDefault(uri);
         if (this.openFileSystems.containsKey(endpoint)) {
             return this.openFileSystems.get(endpoint);
-        } else if (autoCreateFileSystems && defaultConfigurations.isSufficient()) {
+        } else if (AUTO_CREATE_FILE_SYSTEMS && DEFAULT_CONFIGURATIONS.isSufficient()) {
             synchronized (this.openFileSystems) {
                 if (!this.openFileSystems.containsKey(endpoint)) {
                     FileSystem newSystem = null;
                     try {
-                        newSystem = new AzureFileSystem(this, endpoint, defaultConfigurations);
+                        newSystem = new AzureFileSystem(this, endpoint, DEFAULT_CONFIGURATIONS);
                     } catch (IOException e) {
                         throw new UncheckedIOException("Failed to open new FileSystem", e);
                     }
@@ -1214,7 +1214,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             throw LoggingUtility.logError(ClientLoggerHolder.LOGGER, new IllegalArgumentException(
                 "URI scheme does not match this provider"));
         }
-        if (CoreUtils.isNullOrEmpty(uri.getQuery()) && CoreUtils.isNullOrEmpty(defaultEndpoint)) {
+        if (CoreUtils.isNullOrEmpty(uri.getQuery()) && CoreUtils.isNullOrEmpty(DEFAULT_ENDPOINT)) {
             throw LoggingUtility.logError(ClientLoggerHolder.LOGGER,
                 new IllegalArgumentException("URI does not contain a query component. FileSystems require a URI of "
                     + "the format \"azb://?endpoint=<account_endpoint>\"."));
@@ -1223,7 +1223,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         String endpoint = Arrays.stream((uri.getQuery() != null ? uri.getQuery() : "").split("&"))
             .filter(s -> s.startsWith(ENDPOINT_QUERY_KEY + "="))
             .map(s -> s.substring(ENDPOINT_QUERY_KEY.length() + 1)) // Trim the query key and =
-            .findFirst().orElse(defaultEndpoint);
+            .findFirst().orElse(DEFAULT_ENDPOINT);
 
         if (CoreUtils.isNullOrEmpty(endpoint)) {
             throw LoggingUtility.logError(ClientLoggerHolder.LOGGER,
