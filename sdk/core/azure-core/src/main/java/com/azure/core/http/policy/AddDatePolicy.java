@@ -7,6 +7,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.implementation.http.HttpHeadersHelper;
 import com.azure.core.util.DateTimeRfc1123;
 import reactor.core.publisher.Mono;
 
@@ -29,9 +30,11 @@ public class AddDatePolicy implements HttpPipelinePolicy {
         protected void beforeSendingRequest(HttpPipelineCallContext context) {
             OffsetDateTime now = OffsetDateTime.now();
             try {
-                context.getHttpRequest().getHeaders().set("Date", DateTimeRfc1123.toRfc1123String(now));
+                HttpHeadersHelper.setNoKeyFormat(context.getHttpRequest().getHeaders(), "date", "Date",
+                    DateTimeRfc1123.toRfc1123String(now));
             } catch (IllegalArgumentException ignored) {
-                context.getHttpRequest().getHeaders().set("Date", FORMATTER.format(now));
+                HttpHeadersHelper.setNoKeyFormat(context.getHttpRequest().getHeaders(), "date", "Date",
+                    FORMATTER.format(now));
             }
         }
     };

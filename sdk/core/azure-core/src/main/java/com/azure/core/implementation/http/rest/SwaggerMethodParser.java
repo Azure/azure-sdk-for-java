@@ -32,6 +32,7 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.implementation.TypeUtil;
+import com.azure.core.implementation.http.HttpHeadersHelper;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.implementation.serializer.HttpResponseDecodeData;
 import com.azure.core.util.Base64Url;
@@ -86,7 +87,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private final List<RangeReplaceSubstitution> pathSubstitutions = new ArrayList<>();
     private final List<QuerySubstitution> querySubstitutions = new ArrayList<>();
     private final List<Substitution> formSubstitutions = new ArrayList<>();
-    private final List<Substitution> headerSubstitutions = new ArrayList<>();
+    private final List<HeaderSubstitution> headerSubstitutions = new ArrayList<>();
     private final HttpHeaders headers = new HttpHeaders();
     private final Integer bodyContentMethodParameterIndex;
     private final String bodyContentType;
@@ -224,7 +225,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                         !queryParamAnnotation.encoded(), queryParamAnnotation.multipleQueryParams()));
                 } else if (annotationType.equals(HeaderParam.class)) {
                     final HeaderParam headerParamAnnotation = (HeaderParam) annotation;
-                    headerSubstitutions.add(new Substitution(headerParamAnnotation.value(), parameterIndex,
+                    headerSubstitutions.add(new HeaderSubstitution(headerParamAnnotation.value(), parameterIndex,
                         false));
                 } else if (annotationType.equals(BodyParam.class)) {
                     final BodyParam bodyParamAnnotation = (BodyParam) annotation;
@@ -385,7 +386,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             return;
         }
 
-        for (Substitution headerSubstitution : headerSubstitutions) {
+        for (HeaderSubstitution headerSubstitution : headerSubstitutions) {
             final int parameterIndex = headerSubstitution.getMethodParameterIndex();
             if (0 <= parameterIndex && parameterIndex < swaggerMethodArguments.length) {
                 final Object methodArgument = swaggerMethodArguments[headerSubstitution.getMethodParameterIndex()];
@@ -401,10 +402,10 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                         }
                     }
                 } else {
-                    final String headerName = headerSubstitution.getUrlParameterName();
                     final String headerValue = serialize(serializer, methodArgument);
                     if (headerValue != null) {
-                        httpHeaders.set(headerName, headerValue);
+                        HttpHeadersHelper.setNoKeyFormat(httpHeaders, headerSubstitution.getLowerCaseHeaderName(),
+                            headerSubstitution.getUrlParameterName(), headerValue);
                     }
                 }
             }

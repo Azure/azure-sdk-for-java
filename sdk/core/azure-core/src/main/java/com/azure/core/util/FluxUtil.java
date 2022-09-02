@@ -11,6 +11,7 @@ import com.azure.core.implementation.ByteBufferCollector;
 import com.azure.core.implementation.OutputStreamWriteSubscriber;
 import com.azure.core.implementation.RetriableDownloadFlux;
 import com.azure.core.implementation.TypeUtil;
+import com.azure.core.implementation.http.HttpHeadersHelper;
 import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LoggingEventBuilder;
@@ -155,7 +156,7 @@ public final class FluxUtil {
     public static Mono<byte[]> collectBytesFromNetworkResponse(Flux<ByteBuffer> stream, HttpHeaders headers) {
         Objects.requireNonNull(headers, "'headers' cannot be null.");
 
-        String contentLengthHeader = headers.getValue("Content-Length");
+        String contentLengthHeader = HttpHeadersHelper.getValueNoKeyFormat(headers, "content-length");
 
         if (contentLengthHeader == null) {
             return FluxUtil.collectBytesInByteBufferStream(stream);

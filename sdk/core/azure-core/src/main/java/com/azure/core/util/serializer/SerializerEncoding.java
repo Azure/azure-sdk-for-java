@@ -4,6 +4,7 @@
 package com.azure.core.util.serializer;
 
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.implementation.http.HttpHeadersHelper;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Map;
@@ -50,7 +51,7 @@ public enum SerializerEncoding {
      * unrecognized Content-Type encoding is returned.
      */
     public static SerializerEncoding fromHeaders(HttpHeaders headers) {
-        final String mimeContentType = headers.getValue(CONTENT_TYPE);
+        final String mimeContentType = HttpHeadersHelper.getValueNoKeyFormat(headers, "content-type");
         if (mimeContentType == null || mimeContentType.isEmpty()) {
             LOGGER.warning("'{}' not found. Returning default encoding: {}", CONTENT_TYPE, DEFAULT_ENCODING);
             return DEFAULT_ENCODING;

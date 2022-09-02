@@ -3,6 +3,7 @@
 
 package com.azure.core.http;
 
+import com.azure.core.implementation.http.HttpHeadersHelper;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.util.BinaryData;
@@ -262,12 +263,12 @@ public class HttpRequest {
     }
 
     private void setContentLength(long contentLength) {
-        headers.set("Content-Length", String.valueOf(contentLength));
+        HttpHeadersHelper.setNoKeyFormat(headers, "content-length", "Content-Length", String.valueOf(contentLength));
     }
 
     /**
      * Creates a copy of the request.
-     *
+     * <p>
      * The main purpose of this is so that this HttpRequest can be changed and the resulting HttpRequest can be a
      * backup. This means that the cloned HttpHeaders and body must not be able to change from side effects of this
      * HttpRequest.
