@@ -21,15 +21,15 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.builders;
 
-import static com.azure.monitor.opentelemetry.exporter.implementation.utils.AzureMonitorMsgId.TELEMETRY_TRUNCATION_ERROR;
-
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
 import javax.annotation.Nullable;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static com.azure.monitor.opentelemetry.exporter.implementation.utils.AzureMonitorMsgId.TELEMETRY_TRUNCATION_ERROR;
 
 final class TelemetryTruncation {
 
@@ -37,6 +37,9 @@ final class TelemetryTruncation {
 
     private static final Set<String> alreadyLoggedAttributeNames = ConcurrentHashMap.newKeySet();
     private static final Set<String> alreadyLoggedPropertyKeys = ConcurrentHashMap.newKeySet();
+
+    private TelemetryTruncation() {
+    }
 
     @SuppressWarnings("try")
     static String truncateTelemetry(@Nullable String value, int maxLength, String attributeName) {
@@ -86,6 +89,4 @@ final class TelemetryTruncation {
         }
         return value.substring(0, 80) + "...";
     }
-
-    private TelemetryTruncation() {}
 }

@@ -32,48 +32,51 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class SamplingScoreGeneratorV2 {
 
-  /**
-   * This method takes the telemetry and returns the hash of the operation id if it is present
-   * already or uses the random number generator to generate the sampling score.
-   *
-   * @return [0.0, 1.0)
-   */
-  @SuppressFBWarnings(
-      value = "SECPR", // Predictable pseudorandom number generator
-      justification = "Predictable random is ok for sampling score")
-  public static double getSamplingScore(@Nullable String operationId) {
-    if (operationId != null && !operationId.isEmpty()) {
-      return 100 * ((double) getSamplingHashCode(operationId) / Integer.MAX_VALUE);
-    } else {
-      return 100 * ThreadLocalRandom.current().nextDouble();
-    }
-  }
-
-  /** Returns value in [0, Integer.MAX_VALUE). */
-  private static int getSamplingHashCode(String operationId) {
-
-    CharSequence opId;
-    if (operationId.length() < 8) {
-      StringBuilder opIdBuilder = new StringBuilder(operationId);
-      while (opIdBuilder.length() < 8) {
-        opIdBuilder.append(operationId);
-      }
-      opId = opIdBuilder;
-    } else {
-      opId = operationId;
+    private SamplingScoreGeneratorV2() {
     }
 
-    int hash = 5381;
-
-    for (int i = 0; i < opId.length(); ++i) {
-      hash = ((hash << 5) + hash) + (int) opId.charAt(i);
+    /**
+     * This method takes the telemetry and returns the hash of the operation id if it is present
+     * already or uses the random number generator to generate the sampling score.
+     *
+     * @return [0.0, 1.0)
+     */
+    @SuppressFBWarnings(
+        value = "SECPR", // Predictable pseudorandom number generator
+        justification = "Predictable random is ok for sampling score")
+    public static double getSamplingScore(@Nullable String operationId) {
+        if (operationId != null && !operationId.isEmpty()) {
+            return 100 * ((double) getSamplingHashCode(operationId) / Integer.MAX_VALUE);
+        } else {
+            return 100 * ThreadLocalRandom.current().nextDouble();
+        }
     }
 
-    if (hash == Integer.MIN_VALUE || hash == Integer.MAX_VALUE) {
-      return Integer.MAX_VALUE - 1;
-    }
-    return Math.abs(hash);
-  }
+    /**
+     * Returns value in [0, Integer.MAX_VALUE).
+     */
+    private static int getSamplingHashCode(String operationId) {
 
-  private SamplingScoreGeneratorV2() {}
+        CharSequence opId;
+        if (operationId.length() < 8) {
+            StringBuilder opIdBuilder = new StringBuilder(operationId);
+            while (opIdBuilder.length() < 8) {
+                opIdBuilder.append(operationId);
+            }
+            opId = opIdBuilder;
+        } else {
+            opId = operationId;
+        }
+
+        int hash = 5381;
+
+        for (int i = 0; i < opId.length(); ++i) {
+            hash = ((hash << 5) + hash) + (int) opId.charAt(i);
+        }
+
+        if (hash == Integer.MIN_VALUE || hash == Integer.MAX_VALUE) {
+            return Integer.MAX_VALUE - 1;
+        }
+        return Math.abs(hash);
+    }
 }

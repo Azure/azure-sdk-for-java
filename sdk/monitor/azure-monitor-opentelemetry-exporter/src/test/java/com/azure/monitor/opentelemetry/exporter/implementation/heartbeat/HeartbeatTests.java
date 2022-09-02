@@ -38,113 +38,119 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 class HeartbeatTests {
-  @SuppressWarnings("unchecked")
-  private final Consumer<List<TelemetryItem>> telemetryItemsConsumer = mock(Consumer.class);
+    @SuppressWarnings("unchecked")
+    private final Consumer<List<TelemetryItem>> telemetryItemsConsumer = mock(Consumer.class);
 
-  @Test
-  void heartBeatPayloadContainsDataByDefault() throws InterruptedException {
-    // given
-    HeartbeatExporter provider = new HeartbeatExporter(60, (b, r) -> {}, telemetryItemsConsumer);
+    @Test
+    void heartBeatPayloadContainsDataByDefault() throws InterruptedException {
+        // given
+        HeartbeatExporter provider = new HeartbeatExporter(60, (b, r) -> {
+        }, telemetryItemsConsumer);
 
-    // some of the initialization above happens in a separate thread
-    Thread.sleep(500);
+        // some of the initialization above happens in a separate thread
+        Thread.sleep(500);
 
-    // then
-    MetricsData data = (MetricsData) provider.gatherData().getData().getBaseData();
-    assertThat(data).isNotNull();
-    assertThat(data.getProperties().size() > 0).isTrue();
-  }
+        // then
+        MetricsData data = (MetricsData) provider.gatherData().getData().getBaseData();
+        assertThat(data).isNotNull();
+        assertThat(data.getProperties().size() > 0).isTrue();
+    }
 
-  @Test
-  void heartBeatPayloadContainsSpecificProperties() {
-    // given
-    HeartbeatExporter provider = new HeartbeatExporter(60, (b, r) -> {}, telemetryItemsConsumer);
+    @Test
+    void heartBeatPayloadContainsSpecificProperties() {
+        // given
+        HeartbeatExporter provider = new HeartbeatExporter(60, (b, r) -> {
+        }, telemetryItemsConsumer);
 
-    // then
-    assertThat(provider.addHeartBeatProperty("test", "testVal", true)).isTrue();
+        // then
+        assertThat(provider.addHeartBeatProperty("test", "testVal", true)).isTrue();
 
-    MetricsData data = (MetricsData) provider.gatherData().getData().getBaseData();
-    assertThat(data.getProperties()).containsEntry("test", "testVal");
-  }
+        MetricsData data = (MetricsData) provider.gatherData().getData().getBaseData();
+        assertThat(data.getProperties()).containsEntry("test", "testVal");
+    }
 
-  @Test
-  void heartbeatMetricIsNonZeroWhenFailureConditionPresent() {
-    // given
-    HeartbeatExporter provider = new HeartbeatExporter(60, (b, r) -> {}, telemetryItemsConsumer);
+    @Test
+    void heartbeatMetricIsNonZeroWhenFailureConditionPresent() {
+        // given
+        HeartbeatExporter provider = new HeartbeatExporter(60, (b, r) -> {
+        }, telemetryItemsConsumer);
 
-    // then
-    assertThat(provider.addHeartBeatProperty("test", "testVal", false)).isTrue();
+        // then
+        assertThat(provider.addHeartBeatProperty("test", "testVal", false)).isTrue();
 
-    MetricsData data = (MetricsData) provider.gatherData().getData().getBaseData();
-    assertThat(data.getMetrics().get(0).getValue()).isEqualTo(1);
-  }
+        MetricsData data = (MetricsData) provider.gatherData().getData().getBaseData();
+        assertThat(data.getMetrics().get(0).getValue()).isEqualTo(1);
+    }
 
-  @Test
-  void heartbeatMetricCountsForAllFailures() {
-    // given
-    HeartbeatExporter provider = new HeartbeatExporter(60, (b, r) -> {}, telemetryItemsConsumer);
+    @Test
+    void heartbeatMetricCountsForAllFailures() {
+        // given
+        HeartbeatExporter provider = new HeartbeatExporter(60, (b, r) -> {
+        }, telemetryItemsConsumer);
 
-    // then
-    assertThat(provider.addHeartBeatProperty("test", "testVal", false)).isTrue();
-    assertThat(provider.addHeartBeatProperty("test1", "testVal1", false)).isTrue();
+        // then
+        assertThat(provider.addHeartBeatProperty("test", "testVal", false)).isTrue();
+        assertThat(provider.addHeartBeatProperty("test1", "testVal1", false)).isTrue();
 
-    MetricsData data = (MetricsData) provider.gatherData().getData().getBaseData();
-    assertThat(data.getMetrics().get(0).getValue()).isEqualTo(2);
-  }
+        MetricsData data = (MetricsData) provider.gatherData().getData().getBaseData();
+        assertThat(data.getMetrics().get(0).getValue()).isEqualTo(2);
+    }
 
-  @SuppressWarnings("unchecked")
-  @Test
-  void sentHeartbeatContainsExpectedDefaultFields() throws Exception {
-    HeartbeatExporter mockProvider = Mockito.mock(HeartbeatExporter.class);
-    ConcurrentMap<String, String> props = new ConcurrentHashMap<>();
-    Mockito.when(
+    @SuppressWarnings("unchecked")
+    @Test
+    void sentHeartbeatContainsExpectedDefaultFields() throws Exception {
+        HeartbeatExporter mockProvider = Mockito.mock(HeartbeatExporter.class);
+        ConcurrentMap<String, String> props = new ConcurrentHashMap<>();
+        Mockito.when(
             mockProvider.addHeartBeatProperty(
                 Mockito.anyString(), Mockito.anyString(), Mockito.anyBoolean()))
-        .then(
-            (Answer<Boolean>)
-                invocation -> {
-                  props.put(
-                      invocation.getArgument(0, String.class),
-                      invocation.getArgument(1, String.class));
-                  return true;
-                });
-    DefaultHeartBeatPropertyProvider defaultProvider = new DefaultHeartBeatPropertyProvider();
+            .then(
+                (Answer<Boolean>)
+                    invocation -> {
+                        props.put(
+                            invocation.getArgument(0, String.class),
+                            invocation.getArgument(1, String.class));
+                        return true;
+                    });
+        DefaultHeartBeatPropertyProvider defaultProvider = new DefaultHeartBeatPropertyProvider();
 
-    HeartbeatDefaultPayload.populateDefaultPayload(mockProvider).call();
-    Field field = defaultProvider.getClass().getDeclaredField("defaultFields");
-    field.setAccessible(true);
-    Set<String> defaultFields = (Set<String>) field.get(defaultProvider);
-    for (String fieldName : defaultFields) {
-      assertThat(props.containsKey(fieldName)).isTrue();
-      assertThat(props.get(fieldName).length() > 0).isTrue();
+        HeartbeatDefaultPayload.populateDefaultPayload(mockProvider).call();
+        Field field = defaultProvider.getClass().getDeclaredField("defaultFields");
+        field.setAccessible(true);
+        Set<String> defaultFields = (Set<String>) field.get(defaultProvider);
+        for (String fieldName : defaultFields) {
+            assertThat(props.containsKey(fieldName)).isTrue();
+            assertThat(props.get(fieldName).length() > 0).isTrue();
+        }
     }
-  }
 
-  @Test
-  void heartBeatProviderDoesNotAllowDuplicateProperties() {
-    // given
-    HeartbeatExporter provider = new HeartbeatExporter(60, (b, r) -> {}, telemetryItemsConsumer);
+    @Test
+    void heartBeatProviderDoesNotAllowDuplicateProperties() {
+        // given
+        HeartbeatExporter provider = new HeartbeatExporter(60, (b, r) -> {
+        }, telemetryItemsConsumer);
 
-    // then
-    provider.addHeartBeatProperty("test01", "test val", true);
-    assertThat(provider.addHeartBeatProperty("test01", "test val 2", true)).isFalse();
-  }
+        // then
+        provider.addHeartBeatProperty("test01", "test val", true);
+        assertThat(provider.addHeartBeatProperty("test01", "test val 2", true)).isFalse();
+    }
 
-  @SuppressWarnings("unchecked")
-  @Test
-  void cannotAddUnknownDefaultProperty() throws Exception {
-    DefaultHeartBeatPropertyProvider base = new DefaultHeartBeatPropertyProvider();
-    String testKey = "testKey";
+    @SuppressWarnings("unchecked")
+    @Test
+    void cannotAddUnknownDefaultProperty() throws Exception {
+        DefaultHeartBeatPropertyProvider base = new DefaultHeartBeatPropertyProvider();
+        String testKey = "testKey";
 
-    Field field = base.getClass().getDeclaredField("defaultFields");
-    field.setAccessible(true);
-    Set<String> defaultFields = (Set<String>) field.get(base);
-    defaultFields.add(testKey);
+        Field field = base.getClass().getDeclaredField("defaultFields");
+        field.setAccessible(true);
+        Set<String> defaultFields = (Set<String>) field.get(base);
+        defaultFields.add(testKey);
 
-    HeartbeatExporter provider = new HeartbeatExporter(60, (b, r) -> {}, telemetryItemsConsumer);
+        HeartbeatExporter provider = new HeartbeatExporter(60, (b, r) -> {
+        }, telemetryItemsConsumer);
 
-    base.setDefaultPayload(provider).call();
-    MetricsData data = (MetricsData) provider.gatherData().getData().getBaseData();
-    assertThat(data.getProperties().containsKey("testKey")).isFalse();
-  }
+        base.setDefaultPayload(provider).call();
+        MetricsData data = (MetricsData) provider.gatherData().getData().getBaseData();
+        assertThat(data.getProperties().containsKey("testKey")).isFalse();
+    }
 }

@@ -22,7 +22,7 @@ import java.util.Collections;
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
  * ARE USED TO EXTRACT APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING
  * LINE NUMBERS OF EXISTING CODE SAMPLES.
- *
+ * <p>
  * Code samples for the README.md
  */
 public class ReadmeSamples {
@@ -80,6 +80,7 @@ public class ReadmeSamples {
 
     /**
      * Method to make the sample compilable but is not visible in README code snippet.
+     *
      * @return An empty collection.
      */
     private Collection<SpanData> getSpanDataCollection() {

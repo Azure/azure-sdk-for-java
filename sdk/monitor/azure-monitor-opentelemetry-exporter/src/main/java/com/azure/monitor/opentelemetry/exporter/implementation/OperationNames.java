@@ -25,19 +25,20 @@ import io.opentelemetry.sdk.trace.ReadableSpan;
 
 public final class OperationNames {
 
-  public static String getOperationName(ReadableSpan span) {
-    String operationName = span.getAttribute(AiSemanticAttributes.OPERATION_NAME);
-    if (operationName != null) {
-      return operationName;
+    private OperationNames() {
     }
 
-    String spanName = span.getName();
-    String httpMethod = span.getAttribute(SemanticAttributes.HTTP_METHOD);
-    if (httpMethod != null && !httpMethod.isEmpty() && spanName.startsWith("/")) {
-      return httpMethod + " " + spanName;
-    }
-    return spanName;
-  }
+    public static String getOperationName(ReadableSpan span) {
+        String operationName = span.getAttribute(AiSemanticAttributes.OPERATION_NAME);
+        if (operationName != null) {
+            return operationName;
+        }
 
-  private OperationNames() {}
+        String spanName = span.getName();
+        String httpMethod = span.getAttribute(SemanticAttributes.HTTP_METHOD);
+        if (httpMethod != null && !httpMethod.isEmpty() && spanName.startsWith("/")) {
+            return httpMethod + " " + spanName;
+        }
+        return spanName;
+    }
 }

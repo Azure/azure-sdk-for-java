@@ -43,55 +43,61 @@ import static com.azure.monitor.opentelemetry.exporter.implementation.utils.Azur
  */
 class AzureMonitorLogExporter implements LogExporter {
 
-  private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorLogExporter.class);
-  private static final OperationLogger exportingLogLogger =
-      new OperationLogger(AzureMonitorLogExporter.class, "Exporting log");
-  private final AtomicBoolean stopped = new AtomicBoolean();
-  private final LogDataMapper mapper;
-  private final TelemetryItemExporter telemetryItemExporter;
+    private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorLogExporter.class);
+    private static final OperationLogger exportingLogLogger =
+        new OperationLogger(AzureMonitorLogExporter.class, "Exporting log");
+    private final AtomicBoolean stopped = new AtomicBoolean();
+    private final LogDataMapper mapper;
+    private final TelemetryItemExporter telemetryItemExporter;
 
-  /**
-   * Creates an instance of log exporter that is configured with given exporter client that sends
-   * telemetry events to Application Insights resource identified by the instrumentation key.
-   */
-  AzureMonitorLogExporter(LogDataMapper mapper, TelemetryItemExporter telemetryItemExporter) {
-    this.mapper = mapper;
-    this.telemetryItemExporter = telemetryItemExporter;
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public CompletableResultCode export(Collection<LogData> logs) {
-    if (stopped.get()) {
-      return CompletableResultCode.ofFailure();
+    /**
+     * Creates an instance of log exporter that is configured with given exporter client that sends
+     * telemetry events to Application Insights resource identified by the instrumentation key.
+     */
+    AzureMonitorLogExporter(LogDataMapper mapper, TelemetryItemExporter telemetryItemExporter) {
+        this.mapper = mapper;
+        this.telemetryItemExporter = telemetryItemExporter;
     }
 
-    List<TelemetryItem> telemetryItems = new ArrayList<>();
-    for (LogData log : logs) {
-      LOGGER.verbose("exporting log: {}", log);
-      try {
-        String stack = log.getAttributes().get(SemanticAttributes.EXCEPTION_STACKTRACE);
-        telemetryItems.add(mapper.map(log, stack, null));
-        exportingLogLogger.recordSuccess();
-      } catch (Throwable t) {
-        exportingLogLogger.recordFailure(t.getMessage(), t, EXPORTER_MAPPING_ERROR);
-        return CompletableResultCode.ofFailure();
-      }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CompletableResultCode export(Collection<LogData> logs) {
+        if (stopped.get()) {
+            return CompletableResultCode.ofFailure();
+        }
+
+        List<TelemetryItem> telemetryItems = new ArrayList<>();
+        for (LogData log : logs) {
+            LOGGER.verbose("exporting log: {}", log);
+            try {
+                String stack = log.getAttributes().get(SemanticAttributes.EXCEPTION_STACKTRACE);
+                telemetryItems.add(mapper.map(log, stack, null));
+                exportingLogLogger.recordSuccess();
+            } catch (Throwable t) {
+                exportingLogLogger.recordFailure(t.getMessage(), t, EXPORTER_MAPPING_ERROR);
+                return CompletableResultCode.ofFailure();
+            }
+        }
+
+        return telemetryItemExporter.send(telemetryItems);
     }
 
-    return telemetryItemExporter.send(telemetryItems);
-  }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CompletableResultCode flush() {
+        return telemetryItemExporter.flush();
+    }
 
-  /** {@inheritDoc} */
-  @Override
-  public CompletableResultCode flush() {
-    return telemetryItemExporter.flush();
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public CompletableResultCode shutdown() {
-    stopped.set(true);
-    return telemetryItemExporter.shutdown();
-  }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CompletableResultCode shutdown() {
+        stopped.set(true);
+        return telemetryItemExporter.shutdown();
+    }
 }

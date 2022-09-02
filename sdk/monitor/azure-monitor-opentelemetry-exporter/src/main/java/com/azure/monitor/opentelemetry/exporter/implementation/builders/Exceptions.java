@@ -21,11 +21,14 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.builders;
 
-import static java.util.Collections.singletonList;
-
 import java.util.List;
 
+import static java.util.Collections.singletonList;
+
 public final class Exceptions {
+
+    private Exceptions() {
+    }
 
     public static List<ExceptionDetailBuilder> minimalParse(String str) {
         ExceptionDetailBuilder builder = new ExceptionDetailBuilder();
@@ -57,6 +60,4 @@ public final class Exceptions {
         builder.setStack(str);
         return singletonList(builder);
     }
-
-    private Exceptions() {}
 }

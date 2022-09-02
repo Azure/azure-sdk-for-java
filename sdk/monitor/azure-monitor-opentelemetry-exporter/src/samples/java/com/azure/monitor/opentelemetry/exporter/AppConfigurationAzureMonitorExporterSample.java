@@ -24,6 +24,7 @@ public class AppConfigurationAzureMonitorExporterSample {
 
     /**
      * The main method to run the application.
+     *
      * @param args Ignored args.
      */
     public static void main(String[] args) {
@@ -32,6 +33,7 @@ public class AppConfigurationAzureMonitorExporterSample {
 
     /**
      * Configure the OpenTelemetry {@link AzureMonitorTraceExporter} to enable tracing.
+     *
      * @return The OpenTelemetry {@link Tracer} instance.
      */
     private static Tracer configureAzureMonitorExporter() {
@@ -44,8 +46,8 @@ public class AppConfigurationAzureMonitorExporterSample {
             .build();
 
         OpenTelemetrySdk openTelemetrySdk = OpenTelemetrySdk.builder()
-                .setTracerProvider(tracerProvider)
-                .buildAndRegisterGlobal();
+            .setTracerProvider(tracerProvider)
+            .buildAndRegisterGlobal();
 
         return openTelemetrySdk.getTracer("Sample");
     }

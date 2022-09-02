@@ -21,9 +21,6 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
-import static com.azure.core.util.tracing.Tracer.DISABLE_TRACING_KEY;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
@@ -40,10 +37,6 @@ import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
-import java.nio.charset.StandardCharsets;
-import java.util.Optional;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,7 +45,30 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Optional;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+import static com.azure.core.util.tracing.Tracer.DISABLE_TRACING_KEY;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class AppConfigurationExporterIntegrationTest extends TestBase {
+
+    private static ConfigurationClient getConfigurationClient(CountDownLatch appConfigCountDown) {
+        return new ConfigurationClientBuilder()
+            .connectionString(System.getenv("AZURE_APPCONFIG_CONNECTION_STRING"))
+            .addPolicy(
+                (context, next) -> {
+                    Optional<Object> data =
+                        context.getData(com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY);
+                    if (data.isPresent() && data.get().equals("Microsoft.AppConfiguration")) {
+                        appConfigCountDown.countDown();
+                    }
+                    return next.process();
+                })
+            .buildClient();
+    }
 
     @Override
     @BeforeEach
@@ -115,21 +131,6 @@ public class AppConfigurationExporterIntegrationTest extends TestBase {
         }
         assertTrue(appConfigCountDown.await(60, TimeUnit.SECONDS));
         assertTrue(exporterCountDown.await(60, TimeUnit.SECONDS));
-    }
-
-    private static ConfigurationClient getConfigurationClient(CountDownLatch appConfigCountDown) {
-        return new ConfigurationClientBuilder()
-            .connectionString(System.getenv("AZURE_APPCONFIG_CONNECTION_STRING"))
-            .addPolicy(
-                (context, next) -> {
-                    Optional<Object> data =
-                        context.getData(com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY);
-                    if (data.isPresent() && data.get().equals("Microsoft.AppConfiguration")) {
-                        appConfigCountDown.countDown();
-                    }
-                    return next.process();
-                })
-            .buildClient();
     }
 
     static class ValidationPolicy implements HttpPipelinePolicy {

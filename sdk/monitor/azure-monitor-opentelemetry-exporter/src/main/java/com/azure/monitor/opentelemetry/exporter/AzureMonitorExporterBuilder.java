@@ -21,8 +21,6 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
-import static java.util.concurrent.TimeUnit.MINUTES;
-
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -56,12 +54,15 @@ import io.opentelemetry.sdk.logs.export.LogExporter;
 import io.opentelemetry.sdk.metrics.export.MetricExporter;
 import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import org.slf4j.LoggerFactory;
+
+import static java.util.concurrent.TimeUnit.MINUTES;
 
 /**
  * This class provides a fluent builder API to instantiate {@link AzureMonitorTraceExporter} that
@@ -76,33 +77,32 @@ public final class AzureMonitorExporterBuilder {
 
     private static final Map<String, String> properties =
         CoreUtils.getProperties("azure-monitor-opentelemetry-exporter.properties");
-
+    private final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
     private String instrumentationKey;
     private String connectionString;
     private TokenCredential credential;
-
     // suppress warnings is needed in ApplicationInsights-Java repo, can be removed when upstreaming
     @SuppressWarnings({"UnusedVariable", "FieldCanBeLocal"})
     private AzureMonitorExporterServiceVersion serviceVersion;
-
     private HttpPipeline httpPipeline;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
     private RetryPolicy retryPolicy;
-    private final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
-
     private Configuration configuration;
     private ClientOptions clientOptions;
 
-    /** Creates an instance of {@link AzureMonitorExporterBuilder}. */
-    public AzureMonitorExporterBuilder() {}
+    /**
+     * Creates an instance of {@link AzureMonitorExporterBuilder}.
+     */
+    public AzureMonitorExporterBuilder() {
+    }
 
     /**
      * Sets the HTTP pipeline to use for the service client. If {@code httpPipeline} is set, all other
      * settings are ignored.
      *
      * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving
-     *     responses.
+     *                     responses.
      * @return The updated {@link AzureMonitorExporterBuilder} object.
      */
     public AzureMonitorExporterBuilder httpPipeline(HttpPipeline httpPipeline) {
@@ -127,7 +127,7 @@ public final class AzureMonitorExporterBuilder {
      * <p>If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.
      *
      * @param httpLogOptions The logging configuration to use when sending and receiving HTTP
-     *     requests/responses.
+     *                       requests/responses.
      * @return The updated {@link AzureMonitorExporterBuilder} object.
      */
     public AzureMonitorExporterBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
@@ -194,7 +194,7 @@ public final class AzureMonitorExporterBuilder {
      *
      * @param connectionString The connection string for the Azure Monitor resource.
      * @return The updated {@link AzureMonitorExporterBuilder} object.
-     * @throws NullPointerException If the connection string is {@code null}.
+     * @throws NullPointerException     If the connection string is {@code null}.
      * @throws IllegalArgumentException If the connection string is invalid.
      */
     public AzureMonitorExporterBuilder connectionString(String connectionString) {
@@ -233,7 +233,7 @@ public final class AzureMonitorExporterBuilder {
      *
      * @return An instance of {@link AzureMonitorTraceExporter}.
      * @throws NullPointerException if the connection string is not set on this builder or if the
-     *     environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
+     *                              environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
      */
     public SpanExporter buildTraceExporter() {
         SpanDataMapper mapper =
@@ -252,7 +252,7 @@ public final class AzureMonitorExporterBuilder {
      *
      * @return An instance of {@link AzureMonitorMetricExporter}.
      * @throws NullPointerException if the connection string is not set on this builder or if the
-     *     environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
+     *                              environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
      */
     public MetricExporter buildMetricExporter() {
         TelemetryItemExporter telemetryItemExporter = initExporterBuilder();
@@ -268,7 +268,7 @@ public final class AzureMonitorExporterBuilder {
      *
      * @return An instance of {@link AzureMonitorLogExporter}.
      * @throws NullPointerException if the connection string is not set on this builder or if the
-     *     environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
+     *                              environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
      */
     public LogExporter buildLogExporter() {
         return new AzureMonitorLogExporter(

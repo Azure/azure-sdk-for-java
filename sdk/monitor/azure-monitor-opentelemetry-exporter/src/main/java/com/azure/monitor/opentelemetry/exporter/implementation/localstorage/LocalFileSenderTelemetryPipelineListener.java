@@ -31,32 +31,32 @@ import java.io.File;
 
 class LocalFileSenderTelemetryPipelineListener implements TelemetryPipelineListener {
 
-  private final LocalFileLoader localFileLoader;
-  private final File file;
+    private final LocalFileLoader localFileLoader;
+    private final File file;
 
-  LocalFileSenderTelemetryPipelineListener(LocalFileLoader localFileLoader, File file) {
-    this.localFileLoader = localFileLoader;
-    this.file = file;
-  }
-
-  @Override
-  public void onResponse(TelemetryPipelineRequest request, TelemetryPipelineResponse response) {
-    int responseCode = response.getStatusCode();
-    if (responseCode == 200) {
-      localFileLoader.updateProcessedFileStatus(true, file);
-    } else {
-      localFileLoader.updateProcessedFileStatus(!StatusCode.isRetryable(responseCode), file);
+    LocalFileSenderTelemetryPipelineListener(LocalFileLoader localFileLoader, File file) {
+        this.localFileLoader = localFileLoader;
+        this.file = file;
     }
-  }
 
-  @Override
-  public void onException(
-      TelemetryPipelineRequest request, String errorMessage, Throwable throwable) {
-    localFileLoader.updateProcessedFileStatus(false, file);
-  }
+    @Override
+    public void onResponse(TelemetryPipelineRequest request, TelemetryPipelineResponse response) {
+        int responseCode = response.getStatusCode();
+        if (responseCode == 200) {
+            localFileLoader.updateProcessedFileStatus(true, file);
+        } else {
+            localFileLoader.updateProcessedFileStatus(!StatusCode.isRetryable(responseCode), file);
+        }
+    }
 
-  @Override
-  public CompletableResultCode shutdown() {
-    return CompletableResultCode.ofSuccess();
-  }
+    @Override
+    public void onException(
+        TelemetryPipelineRequest request, String errorMessage, Throwable throwable) {
+        localFileLoader.updateProcessedFileStatus(false, file);
+    }
+
+    @Override
+    public CompletableResultCode shutdown() {
+        return CompletableResultCode.ofSuccess();
+    }
 }

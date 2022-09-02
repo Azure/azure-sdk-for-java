@@ -27,35 +27,36 @@ import java.util.Map;
 
 public final class Strings {
 
-  public static boolean isNullOrEmpty(@Nullable String string) {
-    return string == null || string.isEmpty();
-  }
-
-  @Nullable
-  public static String trimAndEmptyToNull(@Nullable String str) {
-    if (str == null) {
-      return null;
+    private Strings() {
     }
-    String trimmed = str.trim();
-    return trimmed.isEmpty() ? null : trimmed;
-  }
 
-  public static Map<String, String> splitToMap(String str) {
-    Map<String, String> map = new HashMap<>();
-    for (String part : str.split(";")) {
-      if (part.trim().isEmpty()) {
-        continue;
-      }
-      int index = part.indexOf('=');
-      if (index == -1) {
-        throw new IllegalArgumentException();
-      }
-      String key = part.substring(0, index);
-      String value = part.substring(index + 1);
-      map.put(key, value);
+    public static boolean isNullOrEmpty(@Nullable String string) {
+        return string == null || string.isEmpty();
     }
-    return map;
-  }
 
-  private Strings() {}
+    @Nullable
+    public static String trimAndEmptyToNull(@Nullable String str) {
+        if (str == null) {
+            return null;
+        }
+        String trimmed = str.trim();
+        return trimmed.isEmpty() ? null : trimmed;
+    }
+
+    public static Map<String, String> splitToMap(String str) {
+        Map<String, String> map = new HashMap<>();
+        for (String part : str.split(";")) {
+            if (part.trim().isEmpty()) {
+                continue;
+            }
+            int index = part.indexOf('=');
+            if (index == -1) {
+                throw new IllegalArgumentException();
+            }
+            String key = part.substring(0, index);
+            String value = part.substring(index + 1);
+            map.put(key, value);
+        }
+        return map;
+    }
 }

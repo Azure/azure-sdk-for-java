@@ -32,31 +32,32 @@ import static com.azure.monitor.opentelemetry.exporter.implementation.preaggrega
 
 public final class DependencyExtractor {
 
-  // visible for testing
-  public static final String DEPENDENCIES_DURATION = "dependencies/duration";
-  public static final String DEPENDENCY_TYPE = "Dependency.Type";
-  public static final String DEPENDENCY_SUCCESS = "Dependency.Success";
-  public static final String DEPENDENCY_TARGET = "dependency/target";
-  public static final String DEPENDENCY_RESULT_CODE = "dependency/resultCode";
+    // visible for testing
+    public static final String DEPENDENCIES_DURATION = "dependencies/duration";
+    public static final String DEPENDENCY_TYPE = "Dependency.Type";
+    public static final String DEPENDENCY_SUCCESS = "Dependency.Success";
+    public static final String DEPENDENCY_TARGET = "dependency/target";
+    public static final String DEPENDENCY_RESULT_CODE = "dependency/resultCode";
 
-  public static void extract(
-      MetricTelemetryBuilder metricBuilder,
-      @Nullable Long statusCode,
-      boolean success,
-      String type,
-      String target,
-      @Nullable Boolean isSynthetic) {
-    extractCommon(metricBuilder, isSynthetic);
-
-    metricBuilder.addProperty(MS_METRIC_ID, DEPENDENCIES_DURATION);
-    // TODO OTEL will provide rpc.grpc.status_code & rpc.success, http.success
-    if (statusCode != null) {
-      metricBuilder.addProperty(DEPENDENCY_RESULT_CODE, String.valueOf(statusCode));
+    private DependencyExtractor() {
     }
-    metricBuilder.addProperty(DEPENDENCY_SUCCESS, success ? TRUE : FALSE);
-    metricBuilder.addProperty(DEPENDENCY_TYPE, type);
-    metricBuilder.addProperty(DEPENDENCY_TARGET, target);
-  }
 
-  private DependencyExtractor() {}
+    public static void extract(
+        MetricTelemetryBuilder metricBuilder,
+        @Nullable Long statusCode,
+        boolean success,
+        String type,
+        String target,
+        @Nullable Boolean isSynthetic) {
+        extractCommon(metricBuilder, isSynthetic);
+
+        metricBuilder.addProperty(MS_METRIC_ID, DEPENDENCIES_DURATION);
+        // TODO OTEL will provide rpc.grpc.status_code & rpc.success, http.success
+        if (statusCode != null) {
+            metricBuilder.addProperty(DEPENDENCY_RESULT_CODE, String.valueOf(statusCode));
+        }
+        metricBuilder.addProperty(DEPENDENCY_SUCCESS, success ? TRUE : FALSE);
+        metricBuilder.addProperty(DEPENDENCY_TYPE, type);
+        metricBuilder.addProperty(DEPENDENCY_TARGET, target);
+    }
 }

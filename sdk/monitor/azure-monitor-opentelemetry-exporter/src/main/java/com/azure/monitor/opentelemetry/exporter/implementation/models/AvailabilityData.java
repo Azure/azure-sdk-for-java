@@ -23,9 +23,12 @@ package com.azure.monitor.opentelemetry.exporter.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Map;
 
-/** Instances of AvailabilityData represent the result of executing an availability test. */
+/**
+ * Instances of AvailabilityData represent the result of executing an availability test.
+ */
 @Fluent
 public final class AvailabilityData extends MonitorDomain {
     /*

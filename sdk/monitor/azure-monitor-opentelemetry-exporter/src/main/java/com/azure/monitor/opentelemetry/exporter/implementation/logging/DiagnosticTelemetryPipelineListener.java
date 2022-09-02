@@ -43,125 +43,125 @@ import static java.util.Collections.singleton;
 
 public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineListener {
 
-  private static final Class<?> FOR_CLASS = TelemetryPipeline.class;
-  private static final Logger logger = LoggerFactory.getLogger(FOR_CLASS);
+    private static final Class<?> FOR_CLASS = TelemetryPipeline.class;
+    private static final Logger logger = LoggerFactory.getLogger(FOR_CLASS);
 
-  // share this across multiple pipelines
-  private static final AtomicBoolean friendlyExceptionThrown = new AtomicBoolean();
+    // share this across multiple pipelines
+    private static final AtomicBoolean friendlyExceptionThrown = new AtomicBoolean();
 
-  private final OperationLogger operationLogger;
-  private final boolean suppressWarningsOnRetryableFailures;
+    private final OperationLogger operationLogger;
+    private final boolean suppressWarningsOnRetryableFailures;
 
-  // e.g. "Sending telemetry to the ingestion service"
-  public DiagnosticTelemetryPipelineListener(
-      String operation, boolean suppressWarningsOnRetryableFailures) {
-    operationLogger = new OperationLogger(FOR_CLASS, operation);
-    this.suppressWarningsOnRetryableFailures = suppressWarningsOnRetryableFailures;
-  }
+    // e.g. "Sending telemetry to the ingestion service"
+    public DiagnosticTelemetryPipelineListener(
+        String operation, boolean suppressWarningsOnRetryableFailures) {
+        operationLogger = new OperationLogger(FOR_CLASS, operation);
+        this.suppressWarningsOnRetryableFailures = suppressWarningsOnRetryableFailures;
+    }
 
-  @Override
-  public void onResponse(TelemetryPipelineRequest request, TelemetryPipelineResponse response) {
-    int responseCode = response.getStatusCode();
-    switch (responseCode) {
-      case 200: // SUCCESS
-        operationLogger.recordSuccess();
-        break;
-      case 206: // PARTIAL CONTENT, Breeze-specific: PARTIAL SUCCESS
-      case 400: // breeze returns if json content is bad (e.g. missing required field)
-        Set<String> errors = getErrors(response.getBody());
-        if (!errors.isEmpty()) {
-          operationLogger.recordFailure(
-              "Received response code " + responseCode + " (" + String.join(", ", errors) + ")",
-              INGESTION_ERROR);
+    private static Set<String> getErrors(String body) {
+        JsonNode jsonNode;
+        try {
+            jsonNode = new ObjectMapper().readTree(body);
+        } catch (JsonProcessingException e) {
+            // fallback to generic message
+            return singleton("Could not parse response");
         }
-        break;
-      case 307:
-      case 308:
-        operationLogger.recordFailure("Too many redirects", INGESTION_ERROR);
-        break;
-      case 401: // breeze returns if aad enabled and no authentication token provided
-      case 403: // breeze returns if aad enabled or disabled (both cases) and
-        if (!suppressWarningsOnRetryableFailures) {
-          operationLogger.recordFailure(
-              getErrorMessageFromCredentialRelatedResponse(responseCode, response.getBody()),
-              INGESTION_ERROR);
+        List<JsonNode> errorNodes = new ArrayList<>();
+        jsonNode.get("errors").forEach(errorNodes::add);
+        return errorNodes.stream()
+            .map(errorNode -> errorNode.get("message").asText())
+            .filter(s -> !s.equals("Telemetry sampled out."))
+            .collect(Collectors.toSet());
+    }
+
+    private static String getErrorMessageFromCredentialRelatedResponse(
+        int responseCode, String responseBody) {
+        JsonNode jsonNode;
+        try {
+            jsonNode = new ObjectMapper().readTree(responseBody);
+        } catch (JsonProcessingException e) {
+            return "Ingestion service returned "
+                + responseCode
+                + ", but could not parse response as json: "
+                + responseBody;
         }
-        break;
-      case 408: // REQUEST TIMEOUT
-      case 429: // TOO MANY REQUESTS
-      case 500: // INTERNAL SERVER ERROR
-      case 503: // SERVICE UNAVAILABLE
-        if (!suppressWarningsOnRetryableFailures) {
-          operationLogger.recordFailure(
-              "Received response code "
-                  + responseCode
-                  + " (telemetry will be stored to disk and retried later)",
-              INGESTION_ERROR);
+        String action =
+            responseCode == 401
+                ? ". Please provide Azure Active Directory credentials"
+                : ". Please check your Azure Active Directory credentials, they might be incorrect or expired";
+        List<JsonNode> errors = new ArrayList<>();
+        jsonNode.get("errors").forEach(errors::add);
+        return errors.get(0).get("message").asText()
+            + action
+            + " (telemetry will be stored to disk and retried later)";
+    }
+
+    @Override
+    public void onResponse(TelemetryPipelineRequest request, TelemetryPipelineResponse response) {
+        int responseCode = response.getStatusCode();
+        switch (responseCode) {
+            case 200: // SUCCESS
+                operationLogger.recordSuccess();
+                break;
+            case 206: // PARTIAL CONTENT, Breeze-specific: PARTIAL SUCCESS
+            case 400: // breeze returns if json content is bad (e.g. missing required field)
+                Set<String> errors = getErrors(response.getBody());
+                if (!errors.isEmpty()) {
+                    operationLogger.recordFailure(
+                        "Received response code " + responseCode + " (" + String.join(", ", errors) + ")",
+                        INGESTION_ERROR);
+                }
+                break;
+            case 307:
+            case 308:
+                operationLogger.recordFailure("Too many redirects", INGESTION_ERROR);
+                break;
+            case 401: // breeze returns if aad enabled and no authentication token provided
+            case 403: // breeze returns if aad enabled or disabled (both cases) and
+                if (!suppressWarningsOnRetryableFailures) {
+                    operationLogger.recordFailure(
+                        getErrorMessageFromCredentialRelatedResponse(responseCode, response.getBody()),
+                        INGESTION_ERROR);
+                }
+                break;
+            case 408: // REQUEST TIMEOUT
+            case 429: // TOO MANY REQUESTS
+            case 500: // INTERNAL SERVER ERROR
+            case 503: // SERVICE UNAVAILABLE
+                if (!suppressWarningsOnRetryableFailures) {
+                    operationLogger.recordFailure(
+                        "Received response code "
+                            + responseCode
+                            + " (telemetry will be stored to disk and retried later)",
+                        INGESTION_ERROR);
+                }
+                break;
+            case 402: // Breeze-specific: New Daily Quota Exceeded
+                operationLogger.recordFailure(
+                    "Received response code 402 (daily quota exceeded and throttled over extended time)",
+                    INGESTION_ERROR);
+                break;
+            case 439: // Breeze-specific: Deprecated Daily Quota Exceeded
+                operationLogger.recordFailure(
+                    "Received response code 439 (daily quota exceeded and throttled over extended time)",
+                    INGESTION_ERROR);
+                break;
+            default:
+                operationLogger.recordFailure("received response code: " + responseCode, INGESTION_ERROR);
         }
-        break;
-      case 402: // Breeze-specific: New Daily Quota Exceeded
-        operationLogger.recordFailure(
-            "Received response code 402 (daily quota exceeded and throttled over extended time)",
-            INGESTION_ERROR);
-        break;
-      case 439: // Breeze-specific: Deprecated Daily Quota Exceeded
-        operationLogger.recordFailure(
-            "Received response code 439 (daily quota exceeded and throttled over extended time)",
-            INGESTION_ERROR);
-        break;
-      default:
-        operationLogger.recordFailure("received response code: " + responseCode, INGESTION_ERROR);
     }
-  }
 
-  @Override
-  public void onException(TelemetryPipelineRequest request, String reason, Throwable throwable) {
-    if (!NetworkFriendlyExceptions.logSpecialOneTimeFriendlyException(
-        throwable, request.getUrl().toString(), friendlyExceptionThrown, logger)) {
-      operationLogger.recordFailure(reason, throwable, INGESTION_ERROR);
+    @Override
+    public void onException(TelemetryPipelineRequest request, String reason, Throwable throwable) {
+        if (!NetworkFriendlyExceptions.logSpecialOneTimeFriendlyException(
+            throwable, request.getUrl().toString(), friendlyExceptionThrown, logger)) {
+            operationLogger.recordFailure(reason, throwable, INGESTION_ERROR);
+        }
     }
-  }
 
-  @Override
-  public CompletableResultCode shutdown() {
-    return CompletableResultCode.ofSuccess();
-  }
-
-  private static Set<String> getErrors(String body) {
-    JsonNode jsonNode;
-    try {
-      jsonNode = new ObjectMapper().readTree(body);
-    } catch (JsonProcessingException e) {
-      // fallback to generic message
-      return singleton("Could not parse response");
+    @Override
+    public CompletableResultCode shutdown() {
+        return CompletableResultCode.ofSuccess();
     }
-    List<JsonNode> errorNodes = new ArrayList<>();
-    jsonNode.get("errors").forEach(errorNodes::add);
-    return errorNodes.stream()
-        .map(errorNode -> errorNode.get("message").asText())
-        .filter(s -> !s.equals("Telemetry sampled out."))
-        .collect(Collectors.toSet());
-  }
-
-  private static String getErrorMessageFromCredentialRelatedResponse(
-      int responseCode, String responseBody) {
-    JsonNode jsonNode;
-    try {
-      jsonNode = new ObjectMapper().readTree(responseBody);
-    } catch (JsonProcessingException e) {
-      return "Ingestion service returned "
-          + responseCode
-          + ", but could not parse response as json: "
-          + responseBody;
-    }
-    String action =
-        responseCode == 401
-            ? ". Please provide Azure Active Directory credentials"
-            : ". Please check your Azure Active Directory credentials, they might be incorrect or expired";
-    List<JsonNode> errors = new ArrayList<>();
-    jsonNode.get("errors").forEach(errors::add);
-    return errors.get(0).get("message").asText()
-        + action
-        + " (telemetry will be stored to disk and retried later)";
-  }
 }

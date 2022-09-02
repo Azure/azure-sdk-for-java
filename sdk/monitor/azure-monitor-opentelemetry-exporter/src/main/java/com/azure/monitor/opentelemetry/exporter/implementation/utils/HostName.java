@@ -33,28 +33,29 @@ import static com.azure.monitor.opentelemetry.exporter.implementation.utils.Azur
 
 public class HostName {
 
-  private static final Logger logger = LoggerFactory.getLogger(HostName.class);
+    private static final Logger logger = LoggerFactory.getLogger(HostName.class);
 
-  /**
-   * Returns the hostname using {@link InetAddress#getHostName()} on {@link
-   * InetAddress#getLocalHost()}. If an error is encountered, the error is logged and it returns
-   * null.
-   *
-   * @return the local hostname, or null
-   */
-  @SuppressWarnings("try")
-  @Nullable
-  public static String get() {
-    try {
-      InetAddress addr = InetAddress.getLocalHost();
-      return addr.getHostName();
-    } catch (UnknownHostException ex) {
-      try (MDC.MDCCloseable ignored = HOSTNAME_ERROR.makeActive()) {
-        logger.warn("Error resolving hostname", ex);
-      }
-      return null;
+    private HostName() {
     }
-  }
 
-  private HostName() {}
+    /**
+     * Returns the hostname using {@link InetAddress#getHostName()} on {@link
+     * InetAddress#getLocalHost()}. If an error is encountered, the error is logged and it returns
+     * null.
+     *
+     * @return the local hostname, or null
+     */
+    @SuppressWarnings("try")
+    @Nullable
+    public static String get() {
+        try {
+            InetAddress addr = InetAddress.getLocalHost();
+            return addr.getHostName();
+        } catch (UnknownHostException ex) {
+            try (MDC.MDCCloseable ignored = HOSTNAME_ERROR.makeActive()) {
+                logger.warn("Error resolving hostname", ex);
+            }
+            return null;
+        }
+    }
 }

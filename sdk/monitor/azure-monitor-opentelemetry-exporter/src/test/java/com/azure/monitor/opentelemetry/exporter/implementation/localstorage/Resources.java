@@ -28,22 +28,23 @@ import java.nio.charset.StandardCharsets;
 
 class Resources {
 
-  static String readString(String resourceName) throws IOException {
-    return new String(readBytes(resourceName), StandardCharsets.UTF_8);
-  }
-
-  static byte[] readBytes(String resourceName) throws IOException {
-    try (InputStream in =
-        IntegrationTests.class.getClassLoader().getResourceAsStream(resourceName)) {
-      ByteArrayOutputStream result = new ByteArrayOutputStream();
-      byte[] buffer = new byte[1024];
-      int length;
-      while ((length = in.read(buffer)) != -1) {
-        result.write(buffer, 0, length);
-      }
-      return result.toByteArray();
+    private Resources() {
     }
-  }
 
-  private Resources() {}
+    static String readString(String resourceName) throws IOException {
+        return new String(readBytes(resourceName), StandardCharsets.UTF_8);
+    }
+
+    static byte[] readBytes(String resourceName) throws IOException {
+        try (InputStream in =
+                 IntegrationTests.class.getClassLoader().getResourceAsStream(resourceName)) {
+            ByteArrayOutputStream result = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = in.read(buffer)) != -1) {
+                result.write(buffer, 0, length);
+            }
+            return result.toByteArray();
+        }
+    }
 }

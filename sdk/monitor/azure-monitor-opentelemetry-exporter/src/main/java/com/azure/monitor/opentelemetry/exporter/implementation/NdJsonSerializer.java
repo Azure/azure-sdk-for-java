@@ -15,10 +15,14 @@ import java.util.List;
  */
 public class NdJsonSerializer extends StdSerializer<List<?>> {
 
-    /** NDJSON is JSON (non-pretty printed) with a new line delimiter after each line. */
+    /**
+     * NDJSON is JSON (non-pretty printed) with a new line delimiter after each line.
+     */
     private static final String NEW_LINE_DELIMITER = System.lineSeparator();
 
-    /** Classes serial ID. */
+    /**
+     * Classes serial ID.
+     */
     private static final long serialVersionUID = 1L;
 
     /**

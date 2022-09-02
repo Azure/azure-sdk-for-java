@@ -21,8 +21,6 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
-import static com.azure.monitor.opentelemetry.exporter.implementation.utils.AzureMonitorMsgId.EXPORTER_MAPPING_ERROR;
-
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.SpanDataMapper;
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.OperationLogger;
@@ -31,9 +29,12 @@ import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.Telemetr
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import static com.azure.monitor.opentelemetry.exporter.implementation.utils.AzureMonitorMsgId.EXPORTER_MAPPING_ERROR;
 
 /**
  * This class is an implementation of OpenTelemetry {@link SpanExporter} that allows different
@@ -60,7 +61,9 @@ final class AzureMonitorTraceExporter implements SpanExporter {
         this.telemetryItemExporter = telemetryItemExporter;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CompletableResultCode export(Collection<SpanData> spans) {
         List<TelemetryItem> telemetryItems = new ArrayList<>();
@@ -79,13 +82,17 @@ final class AzureMonitorTraceExporter implements SpanExporter {
         return telemetryItemExporter.send(telemetryItems);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CompletableResultCode flush() {
         return telemetryItemExporter.flush();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CompletableResultCode shutdown() {
         return telemetryItemExporter.shutdown();

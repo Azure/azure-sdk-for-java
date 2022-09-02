@@ -28,43 +28,43 @@ import java.util.List;
 
 class ByteBufferOutputStream extends OutputStream {
 
-  private final AppInsightsByteBufferPool byteBufferPool;
+    private final AppInsightsByteBufferPool byteBufferPool;
 
-  private final List<ByteBuffer> byteBuffers = new ArrayList<>();
+    private final List<ByteBuffer> byteBuffers = new ArrayList<>();
 
-  private ByteBuffer current;
+    private ByteBuffer current;
 
-  ByteBufferOutputStream(AppInsightsByteBufferPool byteBufferPool) {
-    this.byteBufferPool = byteBufferPool;
-    current = byteBufferPool.remove();
-    byteBuffers.add(current);
-  }
-
-  @Override
-  public void write(int b) {
-    ensureSomeCapacity();
-    current.put((byte) b);
-  }
-
-  @Override
-  public void write(byte[] bytes, int off, int len) {
-    ensureSomeCapacity();
-    int numBytesWritten = Math.min(current.remaining(), len);
-    current.put(bytes, off, numBytesWritten);
-    if (numBytesWritten < len) {
-      write(bytes, off + numBytesWritten, len - numBytesWritten);
+    ByteBufferOutputStream(AppInsightsByteBufferPool byteBufferPool) {
+        this.byteBufferPool = byteBufferPool;
+        current = byteBufferPool.remove();
+        byteBuffers.add(current);
     }
-  }
 
-  void ensureSomeCapacity() {
-    if (current.remaining() > 0) {
-      return;
+    @Override
+    public void write(int b) {
+        ensureSomeCapacity();
+        current.put((byte) b);
     }
-    current = byteBufferPool.remove();
-    byteBuffers.add(current);
-  }
 
-  List<ByteBuffer> getByteBuffers() {
-    return byteBuffers;
-  }
+    @Override
+    public void write(byte[] bytes, int off, int len) {
+        ensureSomeCapacity();
+        int numBytesWritten = Math.min(current.remaining(), len);
+        current.put(bytes, off, numBytesWritten);
+        if (numBytesWritten < len) {
+            write(bytes, off + numBytesWritten, len - numBytesWritten);
+        }
+    }
+
+    void ensureSomeCapacity() {
+        if (current.remaining() > 0) {
+            return;
+        }
+        current = byteBufferPool.remove();
+        byteBuffers.add(current);
+    }
+
+    List<ByteBuffer> getByteBuffers() {
+        return byteBuffers;
+    }
 }

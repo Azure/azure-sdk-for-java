@@ -36,6 +36,7 @@ public class EventHubsAzureMonitorExporterSample {
 
     /**
      * The main method to run the application.
+     *
      * @param args Ignored args.
      */
     public static void main(String[] args) {
@@ -44,6 +45,7 @@ public class EventHubsAzureMonitorExporterSample {
 
     /**
      * Configure the OpenTelemetry {@link AzureMonitorTraceExporter} to enable tracing.
+     *
      * @return The OpenTelemetry {@link Tracer} instance.
      */
     private static Tracer configureAzureMonitorExporter() {
@@ -123,11 +125,11 @@ public class EventHubsAzureMonitorExporterSample {
                     }
                 })
                 .subscribe(unused -> System.out.println("Complete"),
-                    error -> System.out.println("Error sending events: " + error),
-                    () -> {
-                        System.out.println("Completed sending events.");
-                        span.end();
-                    });
+                           error -> System.out.println("Error sending events: " + error),
+                           () -> {
+                               System.out.println("Completed sending events.");
+                               span.end();
+                           });
 
 
             // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep

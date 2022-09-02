@@ -30,67 +30,69 @@ import static java.util.Arrays.asList;
 
 public interface TelemetryPipelineListener {
 
-  void onResponse(TelemetryPipelineRequest request, TelemetryPipelineResponse response);
-
-  void onException(TelemetryPipelineRequest request, String errorMessage, Throwable throwable);
-
-  CompletableResultCode shutdown();
-
-  static TelemetryPipelineListener composite(TelemetryPipelineListener... delegates) {
-    return new CompositeTelemetryPipelineListener(asList(delegates));
-  }
-
-  static TelemetryPipelineListener noop() {
-    return NoopTelemetryPipelineListener.INSTANCE;
-  }
-
-  class CompositeTelemetryPipelineListener implements TelemetryPipelineListener {
-
-    private final List<TelemetryPipelineListener> delegates;
-
-    public CompositeTelemetryPipelineListener(List<TelemetryPipelineListener> delegates) {
-      this.delegates = delegates;
+    static TelemetryPipelineListener composite(TelemetryPipelineListener... delegates) {
+        return new CompositeTelemetryPipelineListener(asList(delegates));
     }
 
-    @Override
-    public void onResponse(TelemetryPipelineRequest request, TelemetryPipelineResponse response) {
-      for (TelemetryPipelineListener delegate : delegates) {
-        delegate.onResponse(request, response);
-      }
+    static TelemetryPipelineListener noop() {
+        return NoopTelemetryPipelineListener.INSTANCE;
     }
 
-    @Override
-    public void onException(
-        TelemetryPipelineRequest request, String errorMessage, Throwable throwable) {
-      for (TelemetryPipelineListener delegate : delegates) {
-        delegate.onException(request, errorMessage, throwable);
-      }
+    void onResponse(TelemetryPipelineRequest request, TelemetryPipelineResponse response);
+
+    void onException(TelemetryPipelineRequest request, String errorMessage, Throwable throwable);
+
+    CompletableResultCode shutdown();
+
+    class CompositeTelemetryPipelineListener implements TelemetryPipelineListener {
+
+        private final List<TelemetryPipelineListener> delegates;
+
+        public CompositeTelemetryPipelineListener(List<TelemetryPipelineListener> delegates) {
+            this.delegates = delegates;
+        }
+
+        @Override
+        public void onResponse(TelemetryPipelineRequest request, TelemetryPipelineResponse response) {
+            for (TelemetryPipelineListener delegate : delegates) {
+                delegate.onResponse(request, response);
+            }
+        }
+
+        @Override
+        public void onException(
+            TelemetryPipelineRequest request, String errorMessage, Throwable throwable) {
+            for (TelemetryPipelineListener delegate : delegates) {
+                delegate.onException(request, errorMessage, throwable);
+            }
+        }
+
+        @Override
+        public CompletableResultCode shutdown() {
+            List<CompletableResultCode> results = new ArrayList<>();
+            for (TelemetryPipelineListener delegate : delegates) {
+                results.add(delegate.shutdown());
+            }
+            return CompletableResultCode.ofAll(results);
+        }
     }
 
-    @Override
-    public CompletableResultCode shutdown() {
-      List<CompletableResultCode> results = new ArrayList<>();
-      for (TelemetryPipelineListener delegate : delegates) {
-        results.add(delegate.shutdown());
-      }
-      return CompletableResultCode.ofAll(results);
+    class NoopTelemetryPipelineListener implements TelemetryPipelineListener {
+
+        static final TelemetryPipelineListener INSTANCE = new NoopTelemetryPipelineListener();
+
+        @Override
+        public void onResponse(TelemetryPipelineRequest request, TelemetryPipelineResponse response) {
+        }
+
+        @Override
+        public void onException(
+            TelemetryPipelineRequest request, String errorMessage, Throwable throwable) {
+        }
+
+        @Override
+        public CompletableResultCode shutdown() {
+            return CompletableResultCode.ofSuccess();
+        }
     }
-  }
-
-  class NoopTelemetryPipelineListener implements TelemetryPipelineListener {
-
-    static final TelemetryPipelineListener INSTANCE = new NoopTelemetryPipelineListener();
-
-    @Override
-    public void onResponse(TelemetryPipelineRequest request, TelemetryPipelineResponse response) {}
-
-    @Override
-    public void onException(
-        TelemetryPipelineRequest request, String errorMessage, Throwable throwable) {}
-
-    @Override
-    public CompletableResultCode shutdown() {
-      return CompletableResultCode.ofSuccess();
-    }
-  }
 }

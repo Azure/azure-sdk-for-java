@@ -28,10 +28,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import java.util.HashMap;
 import java.util.Map;
 
-/** The abstract common base of all domains. */
+/**
+ * The abstract common base of all domains.
+ */
 @Fluent
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({
@@ -51,7 +54,8 @@ public class MonitorDomain {
     /*
      * The abstract common base of all domains.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
     /**
      * Get the version property: Schema version.

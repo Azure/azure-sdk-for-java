@@ -28,24 +28,24 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 class AppInsightsByteBufferPool {
 
-  private static final int BYTE_BUFFER_SIZE = 65536;
-  private static final int MAX_RETAINED = 10;
+    private static final int BYTE_BUFFER_SIZE = 65536;
+    private static final int MAX_RETAINED = 10;
 
-  private final Queue<ByteBuffer> queue = new ArrayBlockingQueue<>(MAX_RETAINED);
+    private final Queue<ByteBuffer> queue = new ArrayBlockingQueue<>(MAX_RETAINED);
 
-  ByteBuffer remove() {
-    ByteBuffer byteBuffer = queue.poll();
-    if (byteBuffer != null) {
-      byteBuffer.clear();
-      return byteBuffer;
+    ByteBuffer remove() {
+        ByteBuffer byteBuffer = queue.poll();
+        if (byteBuffer != null) {
+            byteBuffer.clear();
+            return byteBuffer;
+        }
+        return ByteBuffer.allocate(BYTE_BUFFER_SIZE);
     }
-    return ByteBuffer.allocate(BYTE_BUFFER_SIZE);
-  }
 
-  void offer(List<ByteBuffer> byteBuffers) {
-    // TODO(trask) batch offer?
-    for (ByteBuffer byteBuffer : byteBuffers) {
-      queue.offer(byteBuffer);
+    void offer(List<ByteBuffer> byteBuffers) {
+        // TODO(trask) batch offer?
+        for (ByteBuffer byteBuffer : byteBuffers) {
+            queue.offer(byteBuffer);
+        }
     }
-  }
 }

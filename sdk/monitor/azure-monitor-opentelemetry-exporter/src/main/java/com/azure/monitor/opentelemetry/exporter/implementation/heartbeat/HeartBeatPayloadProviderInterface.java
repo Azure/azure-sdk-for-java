@@ -24,8 +24,6 @@ package com.azure.monitor.opentelemetry.exporter.implementation.heartbeat;
 import java.util.concurrent.Callable;
 
 /**
- *
- *
  * <h1>Interface for setting default properties</h1>
  *
  * <p>This interface is used to set the default payload of a provider and defines implementation for
@@ -36,11 +34,11 @@ import java.util.concurrent.Callable;
  */
 public interface HeartBeatPayloadProviderInterface {
 
-  /**
-   * Returns a callable which can be executed to set the payload based on the parameters.
-   *
-   * @param provider The current heartbeat provider
-   * @return Callable which can be executed to add the payload
-   */
-  Callable<Boolean> setDefaultPayload(HeartbeatExporter provider);
+    /**
+     * Returns a callable which can be executed to set the payload based on the parameters.
+     *
+     * @param provider The current heartbeat provider
+     * @return Callable which can be executed to add the payload
+     */
+    Callable<Boolean> setDefaultPayload(HeartbeatExporter provider);
 }

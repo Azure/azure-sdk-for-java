@@ -24,7 +24,9 @@ package com.azure.monitor.opentelemetry.exporter.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The error details. */
+/**
+ * The error details.
+ */
 @Fluent
 public final class TelemetryErrorDetails {
     /*

@@ -25,7 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/** A builder for creating a new instance of the ApplicationInsightsClient type. */
+/**
+ * A builder for creating a new instance of the ApplicationInsightsClient type.
+ */
 @ServiceClientBuilder(serviceClients = {ApplicationInsightsClientImpl.class})
 public final class ApplicationInsightsClientImplBuilder {
     private static final String SDK_NAME = "name";
@@ -33,18 +35,49 @@ public final class ApplicationInsightsClientImplBuilder {
     private static final String SDK_VERSION = "version";
 
     private final Map<String, String> properties =
-            CoreUtils.getProperties("azure-monitor-opentelemetry-exporter.properties");
+        CoreUtils.getProperties("azure-monitor-opentelemetry-exporter.properties");
+    /*
+     * The list of Http pipeline policies to add.
+     */
+    private final List<HttpPipelinePolicy> pipelinePolicies;
     private ClientOptions clientOptions;
-
-    /** Create an instance of the ApplicationInsightsClientImplBuilder. */
-    public ApplicationInsightsClientImplBuilder() {
-        this.pipelinePolicies = new ArrayList<>();
-    }
-
     /*
      * Breeze endpoint: https://dc.services.visualstudio.com
      */
     private String host;
+    /*
+     * The HTTP pipeline to send requests through
+     */
+    private HttpPipeline pipeline;
+    /*
+     * The serializer to serialize an object into a string
+     */
+    private SerializerAdapter serializerAdapter;
+    /*
+     * The HTTP client used to send the request.
+     */
+    private HttpClient httpClient;
+    /*
+     * The configuration store that is used during construction of the service
+     * client.
+     */
+    private Configuration configuration;
+    /*
+     * The logging configuration for HTTP requests and responses.
+     */
+    private HttpLogOptions httpLogOptions;
+    /*
+     * The retry policy that will attempt to retry failed requests, if
+     * applicable.
+     */
+    private RetryPolicy retryPolicy;
+
+    /**
+     * Create an instance of the ApplicationInsightsClientImplBuilder.
+     */
+    public ApplicationInsightsClientImplBuilder() {
+        this.pipelinePolicies = new ArrayList<>();
+    }
 
     /**
      * Sets Breeze endpoint: https://dc.services.visualstudio.com.
@@ -57,11 +90,6 @@ public final class ApplicationInsightsClientImplBuilder {
         return this;
     }
 
-    /*
-     * The HTTP pipeline to send requests through
-     */
-    private HttpPipeline pipeline;
-
     /**
      * Sets The HTTP pipeline to send requests through.
      *
@@ -72,11 +100,6 @@ public final class ApplicationInsightsClientImplBuilder {
         this.pipeline = pipeline;
         return this;
     }
-
-    /*
-     * The serializer to serialize an object into a string
-     */
-    private SerializerAdapter serializerAdapter;
 
     /**
      * Sets The serializer to serialize an object into a string.
@@ -89,11 +112,6 @@ public final class ApplicationInsightsClientImplBuilder {
         return this;
     }
 
-    /*
-     * The HTTP client used to send the request.
-     */
-    private HttpClient httpClient;
-
     /**
      * Sets The HTTP client used to send the request.
      *
@@ -104,12 +122,6 @@ public final class ApplicationInsightsClientImplBuilder {
         this.httpClient = httpClient;
         return this;
     }
-
-    /*
-     * The configuration store that is used during construction of the service
-     * client.
-     */
-    private Configuration configuration;
 
     /**
      * Sets The configuration store that is used during construction of the service client.
@@ -122,11 +134,6 @@ public final class ApplicationInsightsClientImplBuilder {
         return this;
     }
 
-    /*
-     * The logging configuration for HTTP requests and responses.
-     */
-    private HttpLogOptions httpLogOptions;
-
     /**
      * Sets The logging configuration for HTTP requests and responses.
      *
@@ -138,12 +145,6 @@ public final class ApplicationInsightsClientImplBuilder {
         return this;
     }
 
-    /*
-     * The retry policy that will attempt to retry failed requests, if
-     * applicable.
-     */
-    private RetryPolicy retryPolicy;
-
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
      *
@@ -154,11 +155,6 @@ public final class ApplicationInsightsClientImplBuilder {
         this.retryPolicy = retryPolicy;
         return this;
     }
-
-    /*
-     * The list of Http pipeline policies to add.
-     */
-    private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /**
      * Adds a custom Http pipeline policy.
@@ -203,7 +199,7 @@ public final class ApplicationInsightsClientImplBuilder {
 
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration =
-                (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+            (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         if (httpLogOptions == null) {
             httpLogOptions = new HttpLogOptions();
         }
@@ -224,10 +220,10 @@ public final class ApplicationInsightsClientImplBuilder {
         policies.addAll(this.pipelinePolicies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
         HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                        .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                        .httpClient(httpClient)
-                        .build();
+            new HttpPipelineBuilder()
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .httpClient(httpClient)
+                .build();
         return httpPipeline;
     }
 }

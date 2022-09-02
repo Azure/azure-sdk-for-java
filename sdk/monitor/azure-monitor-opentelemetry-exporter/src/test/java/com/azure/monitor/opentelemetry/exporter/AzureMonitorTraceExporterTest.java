@@ -21,8 +21,6 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
-
 import com.azure.core.util.Configuration;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.SpanContext;
@@ -40,15 +38,20 @@ import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.data.StatusData;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
-/** Unit tests for {@link AzureMonitorTraceExporter}. */
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+
+/**
+ * Unit tests for {@link AzureMonitorTraceExporter}.
+ */
 public class AzureMonitorTraceExporterTest extends MonitorExporterClientTestBase {
 
     private static final String TRACE_ID = TraceId.fromLongs(10L, 2L);

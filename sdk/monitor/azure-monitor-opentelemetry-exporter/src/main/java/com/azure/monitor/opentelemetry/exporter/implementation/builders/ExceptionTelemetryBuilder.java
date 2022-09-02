@@ -21,8 +21,6 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.builders;
 
-import static com.azure.monitor.opentelemetry.exporter.implementation.builders.TelemetryTruncation.truncateTelemetry;
-
 import com.azure.monitor.opentelemetry.exporter.implementation.models.SeverityLevel;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryExceptionData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryExceptionDetails;
@@ -33,19 +31,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.azure.monitor.opentelemetry.exporter.implementation.builders.TelemetryTruncation.truncateTelemetry;
+
 public final class ExceptionTelemetryBuilder extends AbstractTelemetryBuilder {
 
     private static final int MAX_PROBLEM_ID_LENGTH = 1024;
 
     private final TelemetryExceptionData data;
 
-    public static ExceptionTelemetryBuilder create() {
-        return new ExceptionTelemetryBuilder(new TelemetryExceptionData());
-    }
-
     private ExceptionTelemetryBuilder(TelemetryExceptionData data) {
         super(data, "Exception", "ExceptionData");
         this.data = data;
+    }
+
+    public static ExceptionTelemetryBuilder create() {
+        return new ExceptionTelemetryBuilder(new TelemetryExceptionData());
     }
 
     public void setExceptions(List<ExceptionDetailBuilder> builders) {

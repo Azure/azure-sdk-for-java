@@ -32,24 +32,25 @@ import static com.azure.monitor.opentelemetry.exporter.implementation.preaggrega
 
 public final class RequestExtractor {
 
-  // visible for testing
-  public static final String REQUESTS_DURATION = "requests/duration";
-  public static final String REQUEST_RESULT_CODE = "request/resultCode";
-  public static final String REQUEST_SUCCESS = "Request.Success";
+    // visible for testing
+    public static final String REQUESTS_DURATION = "requests/duration";
+    public static final String REQUEST_RESULT_CODE = "request/resultCode";
+    public static final String REQUEST_SUCCESS = "Request.Success";
 
-  public static void extract(
-      MetricTelemetryBuilder metricBuilder,
-      @Nullable Long statusCode,
-      boolean success,
-      @Nullable Boolean isSynthetic) {
-    extractCommon(metricBuilder, isSynthetic);
-
-    metricBuilder.addProperty(MS_METRIC_ID, REQUESTS_DURATION);
-    if (statusCode != null) {
-      metricBuilder.addProperty(REQUEST_RESULT_CODE, String.valueOf(statusCode));
+    private RequestExtractor() {
     }
-    metricBuilder.addProperty(REQUEST_SUCCESS, success ? TRUE : FALSE);
-  }
 
-  private RequestExtractor() {}
+    public static void extract(
+        MetricTelemetryBuilder metricBuilder,
+        @Nullable Long statusCode,
+        boolean success,
+        @Nullable Boolean isSynthetic) {
+        extractCommon(metricBuilder, isSynthetic);
+
+        metricBuilder.addProperty(MS_METRIC_ID, REQUESTS_DURATION);
+        if (statusCode != null) {
+            metricBuilder.addProperty(REQUEST_RESULT_CODE, String.valueOf(statusCode));
+        }
+        metricBuilder.addProperty(REQUEST_SUCCESS, success ? TRUE : FALSE);
+    }
 }

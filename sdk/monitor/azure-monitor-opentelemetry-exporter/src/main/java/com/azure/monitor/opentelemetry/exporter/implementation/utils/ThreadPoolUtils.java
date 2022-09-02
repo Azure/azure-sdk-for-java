@@ -26,33 +26,34 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public final class ThreadPoolUtils {
 
-  /**
-   * {@code poolName} will be appended with a hyphen and the unique name.
-   *
-   * @param clazz The class holding the thread pool
-   * @param uniqueId The identifier of the instance of {@code clazz}
-   */
-  public static ThreadFactory createDaemonThreadFactory(Class<?> clazz, String uniqueId) {
-    return createNamedDaemonThreadFactory(String.format("%s_%s", clazz.getSimpleName(), uniqueId));
-  }
+    private ThreadPoolUtils() {
+    }
 
-  public static ThreadFactory createDaemonThreadFactory(Class<?> clazz) {
-    return createNamedDaemonThreadFactory(clazz.getSimpleName());
-  }
+    /**
+     * {@code poolName} will be appended with a hyphen and the unique name.
+     *
+     * @param clazz    The class holding the thread pool
+     * @param uniqueId The identifier of the instance of {@code clazz}
+     */
+    public static ThreadFactory createDaemonThreadFactory(Class<?> clazz, String uniqueId) {
+        return createNamedDaemonThreadFactory(String.format("%s_%s", clazz.getSimpleName(), uniqueId));
+    }
 
-  public static ThreadFactory createNamedDaemonThreadFactory(String poolName) {
-    return new ThreadFactory() {
-      private final AtomicInteger threadId = new AtomicInteger();
+    public static ThreadFactory createDaemonThreadFactory(Class<?> clazz) {
+        return createNamedDaemonThreadFactory(clazz.getSimpleName());
+    }
 
-      @Override
-      public Thread newThread(Runnable r) {
-        Thread thread = new Thread(r);
-        thread.setName(String.format("%s-%d", poolName, threadId.getAndIncrement()));
-        thread.setDaemon(true);
-        return thread;
-      }
-    };
-  }
+    public static ThreadFactory createNamedDaemonThreadFactory(String poolName) {
+        return new ThreadFactory() {
+            private final AtomicInteger threadId = new AtomicInteger();
 
-  private ThreadPoolUtils() {}
+            @Override
+            public Thread newThread(Runnable r) {
+                Thread thread = new Thread(r);
+                thread.setName(String.format("%s-%d", poolName, threadId.getAndIncrement()));
+                thread.setDaemon(true);
+                return thread;
+            }
+        };
+    }
 }

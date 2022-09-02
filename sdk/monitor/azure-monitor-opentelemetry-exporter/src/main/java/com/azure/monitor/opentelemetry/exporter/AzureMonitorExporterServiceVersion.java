@@ -23,20 +23,19 @@ package com.azure.monitor.opentelemetry.exporter;
 
 import com.azure.core.util.ServiceVersion;
 
-/** The versions of Azure Monitor service supported by this client library. */
+/**
+ * The versions of Azure Monitor service supported by this client library.
+ */
 public enum AzureMonitorExporterServiceVersion implements ServiceVersion {
-    /** Service version {@code 2020-09-15_Preview}. */
+    /**
+     * Service version {@code 2020-09-15_Preview}.
+     */
     V2020_09_15_PREVIEW("2020-09-15_Preview");
 
     private final String version;
 
     AzureMonitorExporterServiceVersion(String version) {
         this.version = version;
-    }
-
-    @Override
-    public String getVersion() {
-        return version;
     }
 
     /**
@@ -46,5 +45,10 @@ public enum AzureMonitorExporterServiceVersion implements ServiceVersion {
      */
     public static AzureMonitorExporterServiceVersion getLatest() {
         return V2020_09_15_PREVIEW;
+    }
+
+    @Override
+    public String getVersion() {
+        return version;
     }
 }

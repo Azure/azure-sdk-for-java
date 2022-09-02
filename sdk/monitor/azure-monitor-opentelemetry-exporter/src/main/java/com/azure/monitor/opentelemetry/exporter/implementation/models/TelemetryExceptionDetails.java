@@ -23,9 +23,12 @@ package com.azure.monitor.opentelemetry.exporter.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** Exception details of the exception in a chain. */
+/**
+ * Exception details of the exception in a chain.
+ */
 @Fluent
 public final class TelemetryExceptionDetails {
     /*

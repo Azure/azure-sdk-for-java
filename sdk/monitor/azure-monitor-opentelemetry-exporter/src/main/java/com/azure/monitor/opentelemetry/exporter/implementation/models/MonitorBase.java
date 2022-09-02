@@ -24,7 +24,9 @@ package com.azure.monitor.opentelemetry.exporter.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Data struct to contain only C section with custom fields. */
+/**
+ * Data struct to contain only C section with custom fields.
+ */
 @Fluent
 public final class MonitorBase {
     /*

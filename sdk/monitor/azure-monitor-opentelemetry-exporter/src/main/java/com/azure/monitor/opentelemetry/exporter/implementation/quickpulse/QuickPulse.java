@@ -37,123 +37,123 @@ import java.util.function.Supplier;
 
 public class QuickPulse {
 
-  static final int QP_INVARIANT_VERSION = 1;
+    static final int QP_INVARIANT_VERSION = 1;
 
-  private volatile QuickPulseDataCollector collector;
+    private volatile QuickPulseDataCollector collector;
 
-  public static QuickPulse create(
-      HttpPipeline httpPipeline,
-      Supplier<URL> endpointUrl,
-      Supplier<String> instrumentationKey,
-      @Nullable String roleName,
-      @Nullable String roleInstance,
-      boolean useNormalizedValueForNonNormalizedCpuPercentage,
-      String sdkVersion) {
+    public static QuickPulse create(
+        HttpPipeline httpPipeline,
+        Supplier<URL> endpointUrl,
+        Supplier<String> instrumentationKey,
+        @Nullable String roleName,
+        @Nullable String roleInstance,
+        boolean useNormalizedValueForNonNormalizedCpuPercentage,
+        String sdkVersion) {
 
-    QuickPulse quickPulse = new QuickPulse();
+        QuickPulse quickPulse = new QuickPulse();
 
-    // initialization is delayed and performed in the background because initializing the random
-    // seed via UUID.randomUUID() below can cause slowness during startup in some environments
-    Executors.newSingleThreadExecutor(ThreadPoolUtils.createDaemonThreadFactory(QuickPulse.class))
-        .execute(
-            () -> {
-              try {
-                Thread.sleep(5000);
-              } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-              }
-              quickPulse.initialize(
-                  httpPipeline,
-                  endpointUrl,
-                  instrumentationKey,
-                  roleName,
-                  roleInstance,
-                  useNormalizedValueForNonNormalizedCpuPercentage,
-                  sdkVersion);
-            });
+        // initialization is delayed and performed in the background because initializing the random
+        // seed via UUID.randomUUID() below can cause slowness during startup in some environments
+        Executors.newSingleThreadExecutor(ThreadPoolUtils.createDaemonThreadFactory(QuickPulse.class))
+            .execute(
+                () -> {
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                    quickPulse.initialize(
+                        httpPipeline,
+                        endpointUrl,
+                        instrumentationKey,
+                        roleName,
+                        roleInstance,
+                        useNormalizedValueForNonNormalizedCpuPercentage,
+                        sdkVersion);
+                });
 
-    return quickPulse;
-  }
-
-  public boolean isEnabled() {
-    return collector.isEnabled();
-  }
-
-  public void add(TelemetryItem telemetryItem) {
-    if (collector != null) {
-      collector.add(telemetryItem);
-    }
-  }
-
-  private void initialize(
-      HttpPipeline httpPipeline,
-      Supplier<URL> endpointUrl,
-      Supplier<String> instrumentationKey,
-      @Nullable String roleName,
-      @Nullable String roleInstance,
-      boolean useNormalizedValueForNonNormalizedCpuPercentage,
-      String sdkVersion) {
-
-    String quickPulseId = UUID.randomUUID().toString().replace("-", "");
-    ArrayBlockingQueue<HttpRequest> sendQueue = new ArrayBlockingQueue<>(256, true);
-
-    QuickPulseDataSender quickPulseDataSender = new QuickPulseDataSender(httpPipeline, sendQueue);
-
-    String instanceName = roleInstance;
-    String machineName = HostName.get();
-
-    if (Strings.isNullOrEmpty(instanceName)) {
-      instanceName = machineName;
-    }
-    if (Strings.isNullOrEmpty(instanceName)) {
-      instanceName = "Unknown host";
+        return quickPulse;
     }
 
-    QuickPulseDataCollector collector =
-        new QuickPulseDataCollector(useNormalizedValueForNonNormalizedCpuPercentage);
+    public boolean isEnabled() {
+        return collector.isEnabled();
+    }
 
-    QuickPulsePingSender quickPulsePingSender =
-        new QuickPulsePingSender(
-            httpPipeline,
-            endpointUrl,
-            instrumentationKey,
-            roleName,
-            instanceName,
-            machineName,
-            quickPulseId,
-            sdkVersion);
-    QuickPulseDataFetcher quickPulseDataFetcher =
-        new QuickPulseDataFetcher(
-            collector,
-            sendQueue,
-            endpointUrl,
-            instrumentationKey,
-            roleName,
-            instanceName,
-            machineName,
-            quickPulseId);
+    public void add(TelemetryItem telemetryItem) {
+        if (collector != null) {
+            collector.add(telemetryItem);
+        }
+    }
 
-    QuickPulseCoordinatorInitData coordinatorInitData =
-        new QuickPulseCoordinatorInitDataBuilder()
-            .withPingSender(quickPulsePingSender)
-            .withDataFetcher(quickPulseDataFetcher)
-            .withDataSender(quickPulseDataSender)
-            .withCollector(collector)
-            .build();
+    private void initialize(
+        HttpPipeline httpPipeline,
+        Supplier<URL> endpointUrl,
+        Supplier<String> instrumentationKey,
+        @Nullable String roleName,
+        @Nullable String roleInstance,
+        boolean useNormalizedValueForNonNormalizedCpuPercentage,
+        String sdkVersion) {
 
-    QuickPulseCoordinator coordinator = new QuickPulseCoordinator(coordinatorInitData);
+        String quickPulseId = UUID.randomUUID().toString().replace("-", "");
+        ArrayBlockingQueue<HttpRequest> sendQueue = new ArrayBlockingQueue<>(256, true);
 
-    Thread senderThread =
-        new Thread(quickPulseDataSender, QuickPulseDataSender.class.getSimpleName());
-    senderThread.setDaemon(true);
-    senderThread.start();
+        QuickPulseDataSender quickPulseDataSender = new QuickPulseDataSender(httpPipeline, sendQueue);
 
-    Thread thread = new Thread(coordinator, QuickPulseCoordinator.class.getSimpleName());
-    thread.setDaemon(true);
-    thread.start();
+        String instanceName = roleInstance;
+        String machineName = HostName.get();
 
-    collector.enable(instrumentationKey);
+        if (Strings.isNullOrEmpty(instanceName)) {
+            instanceName = machineName;
+        }
+        if (Strings.isNullOrEmpty(instanceName)) {
+            instanceName = "Unknown host";
+        }
 
-    this.collector = collector;
-  }
+        QuickPulseDataCollector collector =
+            new QuickPulseDataCollector(useNormalizedValueForNonNormalizedCpuPercentage);
+
+        QuickPulsePingSender quickPulsePingSender =
+            new QuickPulsePingSender(
+                httpPipeline,
+                endpointUrl,
+                instrumentationKey,
+                roleName,
+                instanceName,
+                machineName,
+                quickPulseId,
+                sdkVersion);
+        QuickPulseDataFetcher quickPulseDataFetcher =
+            new QuickPulseDataFetcher(
+                collector,
+                sendQueue,
+                endpointUrl,
+                instrumentationKey,
+                roleName,
+                instanceName,
+                machineName,
+                quickPulseId);
+
+        QuickPulseCoordinatorInitData coordinatorInitData =
+            new QuickPulseCoordinatorInitDataBuilder()
+                .withPingSender(quickPulsePingSender)
+                .withDataFetcher(quickPulseDataFetcher)
+                .withDataSender(quickPulseDataSender)
+                .withCollector(collector)
+                .build();
+
+        QuickPulseCoordinator coordinator = new QuickPulseCoordinator(coordinatorInitData);
+
+        Thread senderThread =
+            new Thread(quickPulseDataSender, QuickPulseDataSender.class.getSimpleName());
+        senderThread.setDaemon(true);
+        senderThread.start();
+
+        Thread thread = new Thread(coordinator, QuickPulseCoordinator.class.getSimpleName());
+        thread.setDaemon(true);
+        thread.start();
+
+        collector.enable(instrumentationKey);
+
+        this.collector = collector;
+    }
 }

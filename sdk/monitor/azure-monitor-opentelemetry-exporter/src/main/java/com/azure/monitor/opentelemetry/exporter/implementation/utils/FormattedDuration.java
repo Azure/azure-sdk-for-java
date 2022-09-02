@@ -37,6 +37,9 @@ public final class FormattedDuration {
     private static final ThreadLocal<StringBuilder> reusableStringBuilder =
         ThreadLocal.withInitial(StringBuilder::new);
 
+    private FormattedDuration() {
+    }
+
     public static String fromNanos(long durationNanos) {
         long remainingNanos = durationNanos;
 
@@ -102,6 +105,4 @@ public final class FormattedDuration {
         }
         sb.append(value);
     }
-
-    private FormattedDuration() {}
 }

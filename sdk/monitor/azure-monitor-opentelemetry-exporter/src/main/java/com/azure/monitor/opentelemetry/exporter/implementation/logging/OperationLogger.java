@@ -31,58 +31,59 @@ import javax.annotation.Nullable;
 // e.g. sending telemetry to the portal, storing telemetry to disk, ...
 public class OperationLogger {
 
-  public static final OperationLogger NOOP = new OperationLogger(null);
+    public static final OperationLogger NOOP = new OperationLogger(null);
 
-  @Nullable private final AggregatingLogger aggregatingLogger;
+    @Nullable
+    private final AggregatingLogger aggregatingLogger;
 
-  public OperationLogger(Class<?> source, String operation) {
-    this(source, operation, 300);
-  }
-
-  // visible for testing
-  OperationLogger(Class<?> source, String operation, int intervalSeconds) {
-    this(new AggregatingLogger(source, operation, true, intervalSeconds));
-  }
-
-  private OperationLogger(@Nullable AggregatingLogger aggregatingLogger) {
-    this.aggregatingLogger = aggregatingLogger;
-  }
-
-  public void recordSuccess() {
-    if (aggregatingLogger != null) {
-      aggregatingLogger.recordSuccess();
+    public OperationLogger(Class<?> source, String operation) {
+        this(source, operation, 300);
     }
-  }
 
-  @SuppressWarnings("try")
-  // failureMessage should have low cardinality
-  public void recordFailure(String failureMessage, AzureMonitorMsgId msgId) {
-    if (aggregatingLogger != null) {
-      try (MDC.MDCCloseable ignored = msgId.makeActive()) {
-        aggregatingLogger.recordWarning(failureMessage);
-      }
+    // visible for testing
+    OperationLogger(Class<?> source, String operation, int intervalSeconds) {
+        this(new AggregatingLogger(source, operation, true, intervalSeconds));
     }
-  }
 
-  // failureMessage should have low cardinality
-  public void recordFailure(String failureMessage) {
-    if (aggregatingLogger != null) {
-      aggregatingLogger.recordWarning(failureMessage, null);
+    private OperationLogger(@Nullable AggregatingLogger aggregatingLogger) {
+        this.aggregatingLogger = aggregatingLogger;
     }
-  }
 
-  public void recordFailure(String failureMessage, Throwable exception) {
-    if (aggregatingLogger != null) {
-      aggregatingLogger.recordWarning(failureMessage, exception);
+    public void recordSuccess() {
+        if (aggregatingLogger != null) {
+            aggregatingLogger.recordSuccess();
+        }
     }
-  }
 
     @SuppressWarnings("try")
     // failureMessage should have low cardinality
-  public void recordFailure(
-      String failureMessage, @Nullable Throwable exception, AzureMonitorMsgId msgId) {
-    try (MDC.MDCCloseable ignored = msgId.makeActive()) {
-      recordFailure(failureMessage, exception);
+    public void recordFailure(String failureMessage, AzureMonitorMsgId msgId) {
+        if (aggregatingLogger != null) {
+            try (MDC.MDCCloseable ignored = msgId.makeActive()) {
+                aggregatingLogger.recordWarning(failureMessage);
+            }
+        }
     }
-  }
+
+    // failureMessage should have low cardinality
+    public void recordFailure(String failureMessage) {
+        if (aggregatingLogger != null) {
+            aggregatingLogger.recordWarning(failureMessage, null);
+        }
+    }
+
+    public void recordFailure(String failureMessage, Throwable exception) {
+        if (aggregatingLogger != null) {
+            aggregatingLogger.recordWarning(failureMessage, exception);
+        }
+    }
+
+    @SuppressWarnings("try")
+    // failureMessage should have low cardinality
+    public void recordFailure(
+        String failureMessage, @Nullable Throwable exception, AzureMonitorMsgId msgId) {
+        try (MDC.MDCCloseable ignored = msgId.makeActive()) {
+            recordFailure(failureMessage, exception);
+        }
+    }
 }

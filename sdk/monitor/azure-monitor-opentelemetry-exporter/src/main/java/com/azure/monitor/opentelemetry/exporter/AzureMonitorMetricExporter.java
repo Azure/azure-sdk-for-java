@@ -40,64 +40,74 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.monitor.opentelemetry.exporter.implementation.utils.AzureMonitorMsgId.EXPORTER_MAPPING_ERROR;
 
-/** This class is an implementation of OpenTelemetry {@link MetricExporter} */
+/**
+ * This class is an implementation of OpenTelemetry {@link MetricExporter}
+ */
 class AzureMonitorMetricExporter implements MetricExporter {
 
-  private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorMetricExporter.class);
-  private static final OperationLogger exportingMetricLogger =
-      new OperationLogger(AzureMonitorMetricExporter.class, "Exporting metric");
-  private final AtomicBoolean stopped = new AtomicBoolean();
-  private final MetricDataMapper mapper;
-  private final TelemetryItemExporter telemetryItemExporter;
+    private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorMetricExporter.class);
+    private static final OperationLogger exportingMetricLogger =
+        new OperationLogger(AzureMonitorMetricExporter.class, "Exporting metric");
+    private final AtomicBoolean stopped = new AtomicBoolean();
+    private final MetricDataMapper mapper;
+    private final TelemetryItemExporter telemetryItemExporter;
 
-  /**
-   * Creates an instance of metric exporter that is configured with given exporter client that sends
-   * metrics to Application Insights resource identified by the instrumentation key.
-   */
-  AzureMonitorMetricExporter(MetricDataMapper mapper, TelemetryItemExporter telemetryItemExporter) {
-    this.mapper = mapper;
-    this.telemetryItemExporter = telemetryItemExporter;
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public AggregationTemporality getAggregationTemporality(InstrumentType instrumentType) {
-    return AggregationTemporalitySelector.deltaPreferred()
-        .getAggregationTemporality(instrumentType);
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public CompletableResultCode export(Collection<MetricData> metrics) {
-    if (stopped.get()) {
-      return CompletableResultCode.ofFailure();
+    /**
+     * Creates an instance of metric exporter that is configured with given exporter client that sends
+     * metrics to Application Insights resource identified by the instrumentation key.
+     */
+    AzureMonitorMetricExporter(MetricDataMapper mapper, TelemetryItemExporter telemetryItemExporter) {
+        this.mapper = mapper;
+        this.telemetryItemExporter = telemetryItemExporter;
     }
 
-    List<TelemetryItem> telemetryItems = new ArrayList<>();
-    for (MetricData metricData : metrics) {
-      LOGGER.verbose("exporting metric: {}", metricData);
-      try {
-        mapper.map(metricData, telemetryItems::add);
-        exportingMetricLogger.recordSuccess();
-      } catch (Throwable t) {
-        exportingMetricLogger.recordFailure(t.getMessage(), t, EXPORTER_MAPPING_ERROR);
-        return CompletableResultCode.ofFailure();
-      }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AggregationTemporality getAggregationTemporality(InstrumentType instrumentType) {
+        return AggregationTemporalitySelector.deltaPreferred()
+            .getAggregationTemporality(instrumentType);
     }
 
-    return telemetryItemExporter.send(telemetryItems);
-  }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CompletableResultCode export(Collection<MetricData> metrics) {
+        if (stopped.get()) {
+            return CompletableResultCode.ofFailure();
+        }
 
-  /** {@inheritDoc} */
-  @Override
-  public CompletableResultCode flush() {
-    return telemetryItemExporter.flush();
-  }
+        List<TelemetryItem> telemetryItems = new ArrayList<>();
+        for (MetricData metricData : metrics) {
+            LOGGER.verbose("exporting metric: {}", metricData);
+            try {
+                mapper.map(metricData, telemetryItems::add);
+                exportingMetricLogger.recordSuccess();
+            } catch (Throwable t) {
+                exportingMetricLogger.recordFailure(t.getMessage(), t, EXPORTER_MAPPING_ERROR);
+                return CompletableResultCode.ofFailure();
+            }
+        }
 
-  /** {@inheritDoc} */
-  @Override
-  public CompletableResultCode shutdown() {
-    stopped.set(true);
-    return telemetryItemExporter.shutdown();
-  }
+        return telemetryItemExporter.send(telemetryItems);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CompletableResultCode flush() {
+        return telemetryItemExporter.flush();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CompletableResultCode shutdown() {
+        stopped.set(true);
+        return telemetryItemExporter.shutdown();
+    }
 }

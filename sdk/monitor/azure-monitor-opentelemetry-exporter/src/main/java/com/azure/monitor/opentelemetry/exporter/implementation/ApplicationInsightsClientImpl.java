@@ -25,20 +25,74 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import java.util.List;
-
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ExportResult;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ExportResultException;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the ApplicationInsightsClient type. */
+import java.util.List;
+
+/**
+ * Initializes a new instance of the ApplicationInsightsClient type.
+ */
 public final class ApplicationInsightsClientImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ApplicationInsightsClientService service;
 
-    /** Breeze endpoint: https://dc.services.visualstudio.com. */
+    /**
+     * Breeze endpoint: https://dc.services.visualstudio.com.
+     */
     private final String host;
+    /**
+     * The HTTP pipeline to send requests through.
+     */
+    private final HttpPipeline httpPipeline;
+    /**
+     * The serializer to serialize an object into a string.
+     */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Initializes an instance of ApplicationInsightsClient client.
+     *
+     * @param host Breeze endpoint: https://dc.services.visualstudio.com.
+     */
+    ApplicationInsightsClientImpl(String host) {
+        this(
+            new HttpPipelineBuilder()
+                .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                .build(),
+            JacksonAdapter.createDefaultSerializerAdapter(),
+            host);
+    }
+
+    /**
+     * Initializes an instance of ApplicationInsightsClient client.
+     *
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param host         Breeze endpoint: https://dc.services.visualstudio.com.
+     */
+    ApplicationInsightsClientImpl(HttpPipeline httpPipeline, String host) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), host);
+    }
+
+    /**
+     * Initializes an instance of ApplicationInsightsClient client.
+     *
+     * @param httpPipeline      The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param host              Breeze endpoint: https://dc.services.visualstudio.com.
+     */
+    ApplicationInsightsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String host) {
+        this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
+        this.host = host;
+        this.service =
+            RestProxy.create(
+                ApplicationInsightsClientService.class, this.httpPipeline, this.getSerializerAdapter());
+    }
 
     /**
      * Gets Breeze endpoint: https://dc.services.visualstudio.com.
@@ -49,9 +103,6 @@ public final class ApplicationInsightsClientImpl {
         return this.host;
     }
 
-    /** The HTTP pipeline to send requests through. */
-    private final HttpPipeline httpPipeline;
-
     /**
      * Gets The HTTP pipeline to send requests through.
      *
@@ -60,9 +111,6 @@ public final class ApplicationInsightsClientImpl {
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
-
-    /** The serializer to serialize an object into a string. */
-    private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
@@ -74,43 +122,83 @@ public final class ApplicationInsightsClientImpl {
     }
 
     /**
-     * Initializes an instance of ApplicationInsightsClient client.
+     * This operation sends a sequence of telemetry events that will be monitored by Azure Monitor.
      *
-     * @param host Breeze endpoint: https://dc.services.visualstudio.com.
+     * @param body The list of telemetry events to track.
+     * @return response containing the status of each telemetry item.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ExportResultException    thrown if the request is rejected by server.
+     * @throws ExportResultException    thrown if the request is rejected by server on status code 400, 402, 429, 500, 503.
+     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
      */
-    ApplicationInsightsClientImpl(String host) {
-        this(
-                new HttpPipelineBuilder()
-                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                        .build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                host);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ExportResult>> trackWithResponseAsync(List<TelemetryItem> body) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.track(this.getHost(), body, accept, context));
     }
 
     /**
-     * Initializes an instance of ApplicationInsightsClient client.
+     * This operation sends a sequence of telemetry events that will be monitored by Azure Monitor.
      *
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param host Breeze endpoint: https://dc.services.visualstudio.com.
+     * @param body    The list of telemetry events to track.
+     * @param context The context to associate with this operation.
+     * @return response containing the status of each telemetry item.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ExportResultException    thrown if the request is rejected by server.
+     * @throws ExportResultException    thrown if the request is rejected by server on status code 400, 402, 429, 500, 503.
+     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
      */
-    ApplicationInsightsClientImpl(HttpPipeline httpPipeline, String host) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), host);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ExportResult>> trackWithResponseAsync(List<TelemetryItem> body, Context context) {
+        final String accept = "application/json";
+        return service.track(this.getHost(), body, accept, context);
     }
 
     /**
-     * Initializes an instance of ApplicationInsightsClient client.
+     * This operation sends a sequence of telemetry events that will be monitored by Azure Monitor.
      *
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param host Breeze endpoint: https://dc.services.visualstudio.com.
+     * @param body The list of telemetry events to track.
+     * @return response containing the status of each telemetry item.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ExportResultException    thrown if the request is rejected by server.
+     * @throws ExportResultException    thrown if the request is rejected by server on status code 400, 402, 429, 500, 503.
+     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
      */
-    ApplicationInsightsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String host) {
-        this.httpPipeline = httpPipeline;
-        this.serializerAdapter = serializerAdapter;
-        this.host = host;
-        this.service =
-                RestProxy.create(
-                        ApplicationInsightsClientService.class, this.httpPipeline, this.getSerializerAdapter());
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ExportResult> trackAsync(List<TelemetryItem> body) {
+        return trackWithResponseAsync(body)
+            .flatMap(
+                (Response<ExportResult> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * This operation sends a sequence of telemetry events that will be monitored by Azure Monitor.
+     *
+     * @param body    The list of telemetry events to track.
+     * @param context The context to associate with this operation.
+     * @return response containing the status of each telemetry item.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ExportResultException    thrown if the request is rejected by server.
+     * @throws ExportResultException    thrown if the request is rejected by server on status code 400, 402, 429, 500, 503.
+     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ExportResult> trackAsync(List<TelemetryItem> body, Context context) {
+        return trackWithResponseAsync(body, context)
+            .flatMap(
+                (Response<ExportResult> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -123,93 +211,13 @@ public final class ApplicationInsightsClientImpl {
         @Post("/track")
         @ExpectedResponses({200, 206})
         @UnexpectedResponseExceptionType(
-                value = ExportResultException.class,
-                code = {400, 402, 429, 500, 503})
+            value = ExportResultException.class,
+            code = {400, 402, 429, 500, 503})
         @UnexpectedResponseExceptionType(ExportResultException.class)
         Mono<Response<ExportResult>> track(
-                @HostParam("Host") String host,
-                @BodyParam("application/json") List<TelemetryItem> body,
-                @HeaderParam("Accept") String accept,
-                Context context);
-    }
-
-    /**
-     * This operation sends a sequence of telemetry events that will be monitored by Azure Monitor.
-     *
-     * @param body The list of telemetry events to track.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ExportResultException thrown if the request is rejected by server.
-     * @throws ExportResultException thrown if the request is rejected by server on status code 400, 402, 429, 500, 503.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the status of each telemetry item.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ExportResult>> trackWithResponseAsync(List<TelemetryItem> body) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.track(this.getHost(), body, accept, context));
-    }
-
-    /**
-     * This operation sends a sequence of telemetry events that will be monitored by Azure Monitor.
-     *
-     * @param body The list of telemetry events to track.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ExportResultException thrown if the request is rejected by server.
-     * @throws ExportResultException thrown if the request is rejected by server on status code 400, 402, 429, 500, 503.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the status of each telemetry item.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ExportResult>> trackWithResponseAsync(List<TelemetryItem> body, Context context) {
-        final String accept = "application/json";
-        return service.track(this.getHost(), body, accept, context);
-    }
-
-    /**
-     * This operation sends a sequence of telemetry events that will be monitored by Azure Monitor.
-     *
-     * @param body The list of telemetry events to track.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ExportResultException thrown if the request is rejected by server.
-     * @throws ExportResultException thrown if the request is rejected by server on status code 400, 402, 429, 500, 503.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the status of each telemetry item.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExportResult> trackAsync(List<TelemetryItem> body) {
-        return trackWithResponseAsync(body)
-                .flatMap(
-                        (Response<ExportResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * This operation sends a sequence of telemetry events that will be monitored by Azure Monitor.
-     *
-     * @param body The list of telemetry events to track.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ExportResultException thrown if the request is rejected by server.
-     * @throws ExportResultException thrown if the request is rejected by server on status code 400, 402, 429, 500, 503.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the status of each telemetry item.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExportResult> trackAsync(List<TelemetryItem> body, Context context) {
-        return trackWithResponseAsync(body, context)
-                .flatMap(
-                        (Response<ExportResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            @HostParam("Host") String host,
+            @BodyParam("application/json") List<TelemetryItem> body,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 }

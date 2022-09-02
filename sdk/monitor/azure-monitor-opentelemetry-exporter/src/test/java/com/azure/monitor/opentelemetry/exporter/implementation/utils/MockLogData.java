@@ -32,6 +32,7 @@ import io.opentelemetry.sdk.logs.data.Body;
 import io.opentelemetry.sdk.logs.data.LogData;
 import io.opentelemetry.sdk.logs.data.Severity;
 import io.opentelemetry.sdk.resources.Resource;
+
 import java.time.Instant;
 
 public class MockLogData implements LogData {

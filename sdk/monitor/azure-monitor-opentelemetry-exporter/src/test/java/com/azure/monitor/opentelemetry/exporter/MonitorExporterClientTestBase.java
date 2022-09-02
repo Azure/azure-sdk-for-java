@@ -36,6 +36,9 @@ import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorDom
 import com.azure.monitor.opentelemetry.exporter.implementation.models.RequestData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.FormattedDuration;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInfo;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -44,10 +47,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.TestInfo;
 
-/** Base test class for Monitor Exporter client tests */
+/**
+ * Base test class for Monitor Exporter client tests
+ */
 public class MonitorExporterClientTestBase extends TestBase {
 
     @Override

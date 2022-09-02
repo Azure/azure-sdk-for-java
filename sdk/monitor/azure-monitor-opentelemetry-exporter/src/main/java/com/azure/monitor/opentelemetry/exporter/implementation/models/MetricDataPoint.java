@@ -24,7 +24,9 @@ package com.azure.monitor.opentelemetry.exporter.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Metric data single measurement. */
+/**
+ * Metric data single measurement.
+ */
 @Fluent
 public final class MetricDataPoint {
     /*

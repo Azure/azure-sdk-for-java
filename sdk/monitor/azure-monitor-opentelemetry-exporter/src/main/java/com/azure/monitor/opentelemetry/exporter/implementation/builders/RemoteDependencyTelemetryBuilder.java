@@ -21,13 +21,13 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.builders;
 
-import static com.azure.monitor.opentelemetry.exporter.implementation.builders.TelemetryTruncation.truncateTelemetry;
-
 import com.azure.monitor.opentelemetry.exporter.implementation.models.RemoteDependencyData;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.azure.monitor.opentelemetry.exporter.implementation.builders.TelemetryTruncation.truncateTelemetry;
 
 public final class RemoteDependencyTelemetryBuilder extends AbstractTelemetryBuilder {
 
@@ -38,13 +38,13 @@ public final class RemoteDependencyTelemetryBuilder extends AbstractTelemetryBui
 
     private final RemoteDependencyData data;
 
-    public static RemoteDependencyTelemetryBuilder create() {
-        return new RemoteDependencyTelemetryBuilder(new RemoteDependencyData());
-    }
-
     private RemoteDependencyTelemetryBuilder(RemoteDependencyData data) {
         super(data, "RemoteDependency", "RemoteDependencyData");
         this.data = data;
+    }
+
+    public static RemoteDependencyTelemetryBuilder create() {
+        return new RemoteDependencyTelemetryBuilder(new RemoteDependencyData());
     }
 
     public void setId(String id) {

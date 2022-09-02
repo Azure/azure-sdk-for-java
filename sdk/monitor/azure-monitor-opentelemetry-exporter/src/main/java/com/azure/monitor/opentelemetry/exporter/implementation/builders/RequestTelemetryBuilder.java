@@ -21,13 +21,13 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.builders;
 
-import static com.azure.monitor.opentelemetry.exporter.implementation.builders.TelemetryTruncation.truncateTelemetry;
-
 import com.azure.monitor.opentelemetry.exporter.implementation.models.RequestData;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.azure.monitor.opentelemetry.exporter.implementation.builders.TelemetryTruncation.truncateTelemetry;
 
 public final class RequestTelemetryBuilder extends AbstractTelemetryBuilder {
 
@@ -37,13 +37,13 @@ public final class RequestTelemetryBuilder extends AbstractTelemetryBuilder {
 
     private final RequestData data;
 
-    public static RequestTelemetryBuilder create() {
-        return new RequestTelemetryBuilder(new RequestData());
-    }
-
     private RequestTelemetryBuilder(RequestData data) {
         super(data, "Request", "RequestData");
         this.data = data;
+    }
+
+    public static RequestTelemetryBuilder create() {
+        return new RequestTelemetryBuilder(new RequestData());
     }
 
     public void setId(String id) {

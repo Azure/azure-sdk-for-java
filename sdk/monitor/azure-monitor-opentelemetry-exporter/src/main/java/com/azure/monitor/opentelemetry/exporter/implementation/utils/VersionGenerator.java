@@ -22,9 +22,12 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 
 import com.azure.core.util.CoreUtils;
+
 import java.util.Map;
 
-/** This class contains several utility functions to populate sdk version string */
+/**
+ * This class contains several utility functions to populate sdk version string
+ */
 public final class VersionGenerator {
     private static final String UNKNOWN_VERSION_VALUE = "unknown";
 
@@ -49,6 +52,9 @@ public final class VersionGenerator {
                 + ":"
                 + "ext"
                 + artifactVersion;
+    }
+
+    private VersionGenerator() {
     }
 
     /**
@@ -92,6 +98,4 @@ public final class VersionGenerator {
         String version = properties.get("sdk.version");
         return version != null ? version : UNKNOWN_VERSION_VALUE;
     }
-
-    private VersionGenerator() {}
 }

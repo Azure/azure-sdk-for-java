@@ -59,108 +59,108 @@ import java.util.regex.Pattern;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class QuickPulseTestBase extends TestBase {
-  private static final String APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE =
-      "https://monitor.azure.com//.default";
+    private static final String APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE =
+        "https://monitor.azure.com//.default";
 
-  @Override
-  @BeforeEach
-  public void setupTest(TestInfo testInfo) {
-    this.testContextManager =
-        new TestContextManager(testInfo.getTestMethod().get(), TestMode.PLAYBACK);
-    String playbackRecordName = "quickPulsePingPlayback";
-    if (testInfo.getTestMethod().get().getName().toLowerCase(Locale.ROOT).contains("post")) {
-      playbackRecordName = "quickPulsePingAndPostPlayback";
+    public static TelemetryItem createRequestTelemetry(
+        String name, Date timestamp, long durationMillis, String responseCode, boolean success) {
+        RequestTelemetryBuilder telemetryBuilder = RequestTelemetryBuilder.create();
+        telemetryBuilder.addProperty("customProperty", "customValue");
+        telemetryBuilder.setName(name);
+        telemetryBuilder.setDuration(FormattedDuration.fromNanos(MILLISECONDS.toNanos(durationMillis)));
+        telemetryBuilder.setResponseCode(responseCode);
+        telemetryBuilder.setSuccess(success);
+        telemetryBuilder.setUrl("foo");
+        telemetryBuilder.setTime(FormattedTime.offSetDateTimeFromEpochMillis(timestamp.getTime()));
+        return telemetryBuilder.build();
     }
-    interceptorManager =
-        new InterceptorManager(
-            testContextManager.getTestName(),
-            new HashMap<>(),
-            testContextManager.doNotRecordTest(),
-            playbackRecordName);
-    testResourceNamer =
-        new TestResourceNamer(testContextManager, interceptorManager.getRecordedData());
-    beforeTest();
-  }
 
-  HttpPipeline getHttpPipelineWithAuthentication() {
-    if (getTestMode() == TestMode.RECORD || getTestMode() == TestMode.LIVE) {
-      TokenCredential credential =
-          new ClientSecretCredentialBuilder()
-              .tenantId(System.getenv("AZURE_TENANT_ID"))
-              .clientSecret(System.getenv("AZURE_CLIENT_SECRET"))
-              .clientId(System.getenv("AZURE_CLIENT_ID"))
-              .build();
-      return getHttpPipeline(
-          new BearerTokenAuthenticationPolicy(
-              credential, APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE));
-    } else {
-      return getHttpPipeline();
-    }
-  }
-
-  HttpPipeline getHttpPipeline(HttpPipelinePolicy... policies) {
-    HttpClient httpClient;
-    if (getTestMode() == TestMode.RECORD || getTestMode() == TestMode.LIVE) {
-      httpClient = HttpClient.createDefault();
-    } else {
-      httpClient = interceptorManager.getPlaybackClient();
-    }
-    List<HttpPipelinePolicy> allPolicies = new ArrayList<>();
-    allPolicies.add(interceptorManager.getRecordPolicy());
-    allPolicies.addAll(Arrays.asList(policies));
-    return new HttpPipelineBuilder()
-        .httpClient(httpClient)
-        .policies(allPolicies.toArray(new HttpPipelinePolicy[0]))
-        .build();
-  }
-
-  public static TelemetryItem createRequestTelemetry(
-      String name, Date timestamp, long durationMillis, String responseCode, boolean success) {
-    RequestTelemetryBuilder telemetryBuilder = RequestTelemetryBuilder.create();
-    telemetryBuilder.addProperty("customProperty", "customValue");
-    telemetryBuilder.setName(name);
-    telemetryBuilder.setDuration(FormattedDuration.fromNanos(MILLISECONDS.toNanos(durationMillis)));
-    telemetryBuilder.setResponseCode(responseCode);
-    telemetryBuilder.setSuccess(success);
-    telemetryBuilder.setUrl("foo");
-    telemetryBuilder.setTime(FormattedTime.offSetDateTimeFromEpochMillis(timestamp.getTime()));
-    return telemetryBuilder.build();
-  }
-
-  public static TelemetryItem createRemoteDependencyTelemetry(
-      String name, String command, long durationMillis, boolean success) {
-    RemoteDependencyTelemetryBuilder telemetryBuilder = RemoteDependencyTelemetryBuilder.create();
-    telemetryBuilder.addProperty("customProperty", "customValue");
-    telemetryBuilder.setName(name);
-    telemetryBuilder.setData(command);
-    telemetryBuilder.setDuration(FormattedDuration.fromNanos(MILLISECONDS.toNanos(durationMillis)));
-    telemetryBuilder.setSuccess(success);
-    return telemetryBuilder.build();
-  }
-
-  static class ValidationPolicy implements HttpPipelinePolicy {
-
-    private final CountDownLatch countDown;
-    private final String expectedRequestBody;
-
-    ValidationPolicy(CountDownLatch countDown, String expectedRequestBody) {
-      this.countDown = countDown;
-      this.expectedRequestBody = expectedRequestBody;
+    public static TelemetryItem createRemoteDependencyTelemetry(
+        String name, String command, long durationMillis, boolean success) {
+        RemoteDependencyTelemetryBuilder telemetryBuilder = RemoteDependencyTelemetryBuilder.create();
+        telemetryBuilder.addProperty("customProperty", "customValue");
+        telemetryBuilder.setName(name);
+        telemetryBuilder.setData(command);
+        telemetryBuilder.setDuration(FormattedDuration.fromNanos(MILLISECONDS.toNanos(durationMillis)));
+        telemetryBuilder.setSuccess(success);
+        return telemetryBuilder.build();
     }
 
     @Override
-    public Mono<HttpResponse> process(
-        HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-      Mono<String> asyncString =
-          FluxUtil.collectBytesInByteBufferStream(context.getHttpRequest().getBody())
-              .map(bytes -> new String(bytes, StandardCharsets.UTF_8));
-      asyncString.subscribe(
-          value -> {
-            if (Pattern.matches(expectedRequestBody, value)) {
-              countDown.countDown();
-            }
-          });
-      return next.process();
+    @BeforeEach
+    public void setupTest(TestInfo testInfo) {
+        this.testContextManager =
+            new TestContextManager(testInfo.getTestMethod().get(), TestMode.PLAYBACK);
+        String playbackRecordName = "quickPulsePingPlayback";
+        if (testInfo.getTestMethod().get().getName().toLowerCase(Locale.ROOT).contains("post")) {
+            playbackRecordName = "quickPulsePingAndPostPlayback";
+        }
+        interceptorManager =
+            new InterceptorManager(
+                testContextManager.getTestName(),
+                new HashMap<>(),
+                testContextManager.doNotRecordTest(),
+                playbackRecordName);
+        testResourceNamer =
+            new TestResourceNamer(testContextManager, interceptorManager.getRecordedData());
+        beforeTest();
     }
-  }
+
+    HttpPipeline getHttpPipelineWithAuthentication() {
+        if (getTestMode() == TestMode.RECORD || getTestMode() == TestMode.LIVE) {
+            TokenCredential credential =
+                new ClientSecretCredentialBuilder()
+                    .tenantId(System.getenv("AZURE_TENANT_ID"))
+                    .clientSecret(System.getenv("AZURE_CLIENT_SECRET"))
+                    .clientId(System.getenv("AZURE_CLIENT_ID"))
+                    .build();
+            return getHttpPipeline(
+                new BearerTokenAuthenticationPolicy(
+                    credential, APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE));
+        } else {
+            return getHttpPipeline();
+        }
+    }
+
+    HttpPipeline getHttpPipeline(HttpPipelinePolicy... policies) {
+        HttpClient httpClient;
+        if (getTestMode() == TestMode.RECORD || getTestMode() == TestMode.LIVE) {
+            httpClient = HttpClient.createDefault();
+        } else {
+            httpClient = interceptorManager.getPlaybackClient();
+        }
+        List<HttpPipelinePolicy> allPolicies = new ArrayList<>();
+        allPolicies.add(interceptorManager.getRecordPolicy());
+        allPolicies.addAll(Arrays.asList(policies));
+        return new HttpPipelineBuilder()
+            .httpClient(httpClient)
+            .policies(allPolicies.toArray(new HttpPipelinePolicy[0]))
+            .build();
+    }
+
+    static class ValidationPolicy implements HttpPipelinePolicy {
+
+        private final CountDownLatch countDown;
+        private final String expectedRequestBody;
+
+        ValidationPolicy(CountDownLatch countDown, String expectedRequestBody) {
+            this.countDown = countDown;
+            this.expectedRequestBody = expectedRequestBody;
+        }
+
+        @Override
+        public Mono<HttpResponse> process(
+            HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+            Mono<String> asyncString =
+                FluxUtil.collectBytesInByteBufferStream(context.getHttpRequest().getBody())
+                    .map(bytes -> new String(bytes, StandardCharsets.UTF_8));
+            asyncString.subscribe(
+                value -> {
+                    if (Pattern.matches(expectedRequestBody, value)) {
+                        countDown.countDown();
+                    }
+                });
+            return next.process();
+        }
+    }
 }

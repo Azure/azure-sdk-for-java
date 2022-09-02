@@ -37,6 +37,7 @@ import io.opentelemetry.sdk.metrics.export.PeriodicMetricReader;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
+
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,6 +45,9 @@ import java.util.List;
 import java.util.Map;
 
 public final class TestUtils {
+
+    private TestUtils() {
+    }
 
     public static TelemetryItem createMetricTelemetry(
         String name, int value, String connectionString) {
@@ -111,6 +115,4 @@ public final class TestUtils {
 
         return openTelemetry.getMeter("Sample");
     }
-
-    private TestUtils() {}
 }

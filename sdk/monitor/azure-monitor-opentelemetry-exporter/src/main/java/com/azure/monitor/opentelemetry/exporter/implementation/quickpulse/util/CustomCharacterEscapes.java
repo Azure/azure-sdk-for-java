@@ -29,27 +29,27 @@ import javax.annotation.Nullable;
 
 public class CustomCharacterEscapes extends CharacterEscapes {
 
-  private final int[] asciiEscapes;
+    private final int[] asciiEscapes;
 
-  public CustomCharacterEscapes() {
-    asciiEscapes = standardAsciiEscapesForJSON();
-    // By default jackson doesn't escape forward slashes (`/`), but the quick pulse backend requires
-    // them to be escaped.
-    asciiEscapes['/'] = CharacterEscapes.ESCAPE_CUSTOM;
-  }
-
-  @Override
-  public int[] getEscapeCodesForAscii() {
-    return asciiEscapes;
-  }
-
-  @Override
-  @Nullable
-  public SerializableString getEscapeSequence(int i) {
-    if (i == '/') {
-      return new SerializedString("\\/");
-    } else {
-      return null;
+    public CustomCharacterEscapes() {
+        asciiEscapes = standardAsciiEscapesForJSON();
+        // By default jackson doesn't escape forward slashes (`/`), but the quick pulse backend requires
+        // them to be escaped.
+        asciiEscapes['/'] = CharacterEscapes.ESCAPE_CUSTOM;
     }
-  }
+
+    @Override
+    public int[] getEscapeCodesForAscii() {
+        return asciiEscapes;
+    }
+
+    @Override
+    @Nullable
+    public SerializableString getEscapeSequence(int i) {
+        if (i == '/') {
+            return new SerializedString("\\/");
+        } else {
+            return null;
+        }
+    }
 }

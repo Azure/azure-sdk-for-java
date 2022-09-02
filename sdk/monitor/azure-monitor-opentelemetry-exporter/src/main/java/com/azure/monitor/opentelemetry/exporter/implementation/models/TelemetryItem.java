@@ -26,10 +26,13 @@ import com.azure.monitor.opentelemetry.exporter.implementation.configuration.Con
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.StatsbeatConnectionString;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** System variables for a telemetry item. */
+/**
+ * System variables for a telemetry item.
+ */
 @Fluent
 public final class TelemetryItem {
     /*
@@ -79,7 +82,8 @@ public final class TelemetryItem {
     @JsonProperty(value = "iKey")
     private String instrumentationKey;
 
-    @JsonIgnore private String connectionString;
+    @JsonIgnore
+    private String connectionString;
 
     /*
      * Key/value collection of context properties. See ContextTagKeys for

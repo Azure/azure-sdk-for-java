@@ -21,12 +21,13 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.builders;
 
-import static com.azure.monitor.opentelemetry.exporter.implementation.builders.TelemetryTruncation.truncateTelemetry;
-
 import com.azure.monitor.opentelemetry.exporter.implementation.models.StackFrame;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryExceptionDetails;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.azure.monitor.opentelemetry.exporter.implementation.builders.TelemetryTruncation.truncateTelemetry;
 
 public final class ExceptionDetailBuilder {
 

@@ -21,9 +21,6 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.data.MapEntry.entry;
-
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
@@ -46,15 +43,6 @@ import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.logs.export.LogExporter;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-import java.util.zip.GZIPInputStream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -64,43 +52,27 @@ import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
 import uk.org.webcompere.systemstubs.jupiter.SystemStub;
 import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.zip.GZIPInputStream;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.data.MapEntry.entry;
+
 @ExtendWith(SystemStubsExtension.class)
 public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTestBase {
-
-    @SystemStub EnvironmentVariables envVars = new EnvironmentVariables();
 
     private static final String TRACE_CONNECTION_STRING =
         "InstrumentationKey=00000000-0000-0000-0000-000000000000";
     private static final String INSTRUMENTATION_KEY = "00000000-0000-0000-0000-0FEEDDADBEEF";
-
-    @BeforeEach
-    public void setup() {
-        envVars.set(
-            "APPLICATIONINSIGHTS_CONNECTION_STRING", "InstrumentationKey=" + INSTRUMENTATION_KEY);
-    }
-
-    @Test
-    public void testBuildMetricExporter() throws Exception {
-        validateMetricExporterEndToEnd("testBuildMetricExporter");
-    }
-
-    @Test
-    public void testBuildTraceExporter() throws Exception {
-        validateTraceExporterEndToEnd("testBuildTraceExporter");
-    }
-
-    // OpenTelemetry doesn't have a Log API
-    @Test
-    public void testBuildLogExporter() throws Exception {
-        validateLogExporterEndToEnd();
-    }
-
-    @Test
-    public void testBuildTraceMetricLogExportersConsecutively() throws Exception {
-        validateTraceExporterEndToEnd("testBuildTraceMetricLogExportersConsecutively");
-        validateMetricExporterEndToEnd("testBuildTraceMetricLogExportersConsecutively");
-        validateLogExporterEndToEnd();
-    }
+    @SystemStub
+    EnvironmentVariables envVars = new EnvironmentVariables();
 
     private static void validateMetricExporterEndToEnd(String testName) throws Exception {
         List<TelemetryItem> actualTelemetryItems = generateMetrics(testName);
@@ -138,16 +110,6 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
             .containsExactly(entry("color", "red"), entry("name", "apple"));
     }
 
-    private void validateLogExporterEndToEnd() throws Exception {
-        LogExporter azureMonitorLogExporter =
-            getClientBuilder().connectionString(TRACE_CONNECTION_STRING).buildLogExporter();
-        CompletableResultCode export =
-            azureMonitorLogExporter.export(Collections.singleton(new MockLogData()));
-        export.join(10, TimeUnit.SECONDS);
-        Assertions.assertTrue(export.isDone());
-        Assertions.assertTrue(export.isSuccess());
-    }
-
     @SuppressWarnings("try")
     private static List<TelemetryItem> generateTraces(String testName) throws Exception {
         CountDownLatch traceExporterCountDown = new CountDownLatch(1);
@@ -179,6 +141,45 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         return customValidationPolicy.actualTelemetryItems;
     }
 
+    @BeforeEach
+    public void setup() {
+        envVars.set(
+            "APPLICATIONINSIGHTS_CONNECTION_STRING", "InstrumentationKey=" + INSTRUMENTATION_KEY);
+    }
+
+    @Test
+    public void testBuildMetricExporter() throws Exception {
+        validateMetricExporterEndToEnd("testBuildMetricExporter");
+    }
+
+    @Test
+    public void testBuildTraceExporter() throws Exception {
+        validateTraceExporterEndToEnd("testBuildTraceExporter");
+    }
+
+    // OpenTelemetry doesn't have a Log API
+    @Test
+    public void testBuildLogExporter() throws Exception {
+        validateLogExporterEndToEnd();
+    }
+
+    @Test
+    public void testBuildTraceMetricLogExportersConsecutively() throws Exception {
+        validateTraceExporterEndToEnd("testBuildTraceMetricLogExportersConsecutively");
+        validateMetricExporterEndToEnd("testBuildTraceMetricLogExportersConsecutively");
+        validateLogExporterEndToEnd();
+    }
+
+    private void validateLogExporterEndToEnd() throws Exception {
+        LogExporter azureMonitorLogExporter =
+            getClientBuilder().connectionString(TRACE_CONNECTION_STRING).buildLogExporter();
+        CompletableResultCode export =
+            azureMonitorLogExporter.export(Collections.singleton(new MockLogData()));
+        export.join(10, TimeUnit.SECONDS);
+        Assertions.assertTrue(export.isDone());
+        Assertions.assertTrue(export.isSuccess());
+    }
+
     private static class CustomValidationPolicy implements HttpPipelinePolicy {
 
         private final CountDownLatch countDown;
@@ -186,28 +187,6 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
 
         CustomValidationPolicy(CountDownLatch countDown) {
             this.countDown = countDown;
-        }
-
-        @Override
-        public Mono<HttpResponse> process(
-            HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-            Mono<String> asyncBytes =
-                FluxUtil.collectBytesInByteBufferStream(context.getHttpRequest().getBody())
-                    .map(CustomValidationPolicy::ungzip);
-            asyncBytes.subscribe(
-                value -> {
-                    ObjectMapper objectMapper = createObjectMapper();
-                    try (MappingIterator<TelemetryItem> i =
-                             objectMapper.readerFor(TelemetryItem.class).readValues(value)) {
-                        while (i.hasNext()) {
-                            actualTelemetryItems.add(i.next());
-                        }
-                        countDown.countDown();
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-            return next.process();
         }
 
         // decode gzipped request raw bytes back to original request body
@@ -231,6 +210,28 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
             // dependency and not (de)serialize Instant as timestamps that it does by default
             objectMapper.findAndRegisterModules().disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
             return objectMapper;
+        }
+
+        @Override
+        public Mono<HttpResponse> process(
+            HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+            Mono<String> asyncBytes =
+                FluxUtil.collectBytesInByteBufferStream(context.getHttpRequest().getBody())
+                    .map(CustomValidationPolicy::ungzip);
+            asyncBytes.subscribe(
+                value -> {
+                    ObjectMapper objectMapper = createObjectMapper();
+                    try (MappingIterator<TelemetryItem> i =
+                             objectMapper.readerFor(TelemetryItem.class).readValues(value)) {
+                        while (i.hasNext()) {
+                            actualTelemetryItems.add(i.next());
+                        }
+                        countDown.countDown();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+            return next.process();
         }
     }
 }

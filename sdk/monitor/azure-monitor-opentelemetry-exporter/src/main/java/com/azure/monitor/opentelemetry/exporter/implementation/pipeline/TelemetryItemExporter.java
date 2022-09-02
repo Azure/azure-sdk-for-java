@@ -48,136 +48,134 @@ import static com.azure.monitor.opentelemetry.exporter.implementation.utils.Azur
 
 public class TelemetryItemExporter {
 
-  // the number 100 was calculated as the max number of concurrent exports that the single worker
-  // thread can drive, so anything higher than this should not increase throughput
-  private static final int MAX_CONCURRENT_EXPORTS = 100;
+    // the number 100 was calculated as the max number of concurrent exports that the single worker
+    // thread can drive, so anything higher than this should not increase throughput
+    private static final int MAX_CONCURRENT_EXPORTS = 100;
 
-  private static final Logger logger = LoggerFactory.getLogger(TelemetryItemExporter.class);
+    private static final Logger logger = LoggerFactory.getLogger(TelemetryItemExporter.class);
 
-  private static final OperationLogger operationLogger =
-      new OperationLogger(
-          TelemetryItemExporter.class,
-          "Put export into the background (don't wait for it to return)");
+    private static final OperationLogger operationLogger =
+        new OperationLogger(
+            TelemetryItemExporter.class,
+            "Put export into the background (don't wait for it to return)");
 
-  private static final ObjectMapper mapper = createObjectMapper();
+    private static final ObjectMapper mapper = createObjectMapper();
 
-  private static final AppInsightsByteBufferPool byteBufferPool = new AppInsightsByteBufferPool();
+    private static final AppInsightsByteBufferPool byteBufferPool = new AppInsightsByteBufferPool();
 
-  private static final OperationLogger encodeBatchOperationLogger =
-      new OperationLogger(TelemetryItemExporter.class, "Encoding telemetry batch into json");
+    private static final OperationLogger encodeBatchOperationLogger =
+        new OperationLogger(TelemetryItemExporter.class, "Encoding telemetry batch into json");
+    private final TelemetryPipeline telemetryPipeline;
+    private final TelemetryPipelineListener listener;
+    private final Set<CompletableResultCode> activeExportResults =
+        Collections.newSetFromMap(new ConcurrentHashMap<>());
 
-  private static ObjectMapper createObjectMapper() {
-    ObjectMapper mapper = new ObjectMapper();
-    mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-    // it's important to pass in the "agent class loader" since TelemetryItemPipeline is initialized
-    // lazily and can be initialized via an application thread, in which case the thread context
-    // class loader is used to look up jsr305 module and its not found
-    mapper.registerModules(ObjectMapper.findModules(TelemetryItemExporter.class.getClassLoader()));
-    mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-    return mapper;
-  }
-
-  private final TelemetryPipeline telemetryPipeline;
-  private final TelemetryPipelineListener listener;
-
-  private final Set<CompletableResultCode> activeExportResults =
-      Collections.newSetFromMap(new ConcurrentHashMap<>());
-
-  // e.g. construct with diagnostic listener and local storage listener
-  public TelemetryItemExporter(
-      TelemetryPipeline telemetryPipeline, TelemetryPipelineListener listener) {
-    this.telemetryPipeline = telemetryPipeline;
-    this.listener = listener;
-  }
-
-  public CompletableResultCode send(List<TelemetryItem> telemetryItems) {
-    Map<String, List<TelemetryItem>> groupings = new HashMap<>();
-    for (TelemetryItem telemetryItem : telemetryItems) {
-      groupings
-          .computeIfAbsent(telemetryItem.getConnectionString(), k -> new ArrayList<>())
-          .add(telemetryItem);
-    }
-    List<CompletableResultCode> resultCodeList = new ArrayList<>();
-    for (Map.Entry<String, List<TelemetryItem>> entry : groupings.entrySet()) {
-      resultCodeList.add(internalSendByConnectionString(entry.getValue(), entry.getKey()));
-    }
-    return maybeAddToActiveExportResults(resultCodeList);
-  }
-
-  private CompletableResultCode maybeAddToActiveExportResults(List<CompletableResultCode> results) {
-    if (activeExportResults.size() >= MAX_CONCURRENT_EXPORTS) {
-      // this is just a failsafe to limit concurrent exports, it's not ideal because it blocks
-      // waiting for the most recent export instead of waiting for the first export to return
-      operationLogger.recordFailure(
-          "Hit max " + MAX_CONCURRENT_EXPORTS + " active concurrent requests",
-          TELEMETRY_ITEM_EXPORTER_ERROR);
-      return CompletableResultCode.ofAll(results);
+    // e.g. construct with diagnostic listener and local storage listener
+    public TelemetryItemExporter(
+        TelemetryPipeline telemetryPipeline, TelemetryPipelineListener listener) {
+        this.telemetryPipeline = telemetryPipeline;
+        this.listener = listener;
     }
 
-    operationLogger.recordSuccess();
-
-    activeExportResults.addAll(results);
-    for (CompletableResultCode result : results) {
-      result.whenComplete(() -> activeExportResults.remove(result));
+    private static ObjectMapper createObjectMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        // it's important to pass in the "agent class loader" since TelemetryItemPipeline is initialized
+        // lazily and can be initialized via an application thread, in which case the thread context
+        // class loader is used to look up jsr305 module and its not found
+        mapper.registerModules(ObjectMapper.findModules(TelemetryItemExporter.class.getClassLoader()));
+        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        return mapper;
     }
 
-    return CompletableResultCode.ofSuccess();
-  }
-
-  public CompletableResultCode flush() {
-    return CompletableResultCode.ofAll(activeExportResults);
-  }
-
-  public CompletableResultCode shutdown() {
-    return listener.shutdown();
-  }
-
-  CompletableResultCode internalSendByConnectionString(
-      List<TelemetryItem> telemetryItems, String connectionString) {
-    List<ByteBuffer> byteBuffers;
-    try {
-      byteBuffers = encode(telemetryItems);
-      encodeBatchOperationLogger.recordSuccess();
-    } catch (Throwable t) {
-      encodeBatchOperationLogger.recordFailure(t.getMessage(), t);
-      return CompletableResultCode.ofFailure();
-    }
-    return telemetryPipeline.send(byteBuffers, connectionString, listener);
-  }
-
-  List<ByteBuffer> encode(List<TelemetryItem> telemetryItems) throws IOException {
-
-    if (logger.isDebugEnabled()) {
-      StringWriter debug = new StringWriter();
-      try (JsonGenerator jg = mapper.createGenerator(debug)) {
-        writeTelemetryItems(jg, telemetryItems);
-      }
-      logger.debug("sending telemetry to ingestion service:\n{}", debug);
+    private static void writeTelemetryItems(JsonGenerator jg, List<TelemetryItem> telemetryItems)
+        throws IOException {
+        jg.setRootValueSeparator(new SerializedString("\n"));
+        for (TelemetryItem telemetryItem : telemetryItems) {
+            mapper.writeValue(jg, telemetryItem);
+        }
     }
 
-    ByteBufferOutputStream out = new ByteBufferOutputStream(byteBufferPool);
-
-    try (JsonGenerator jg = mapper.createGenerator(new GZIPOutputStream(out))) {
-      writeTelemetryItems(jg, telemetryItems);
-    } catch (IOException e) {
-      byteBufferPool.offer(out.getByteBuffers());
-      throw e;
+    public CompletableResultCode send(List<TelemetryItem> telemetryItems) {
+        Map<String, List<TelemetryItem>> groupings = new HashMap<>();
+        for (TelemetryItem telemetryItem : telemetryItems) {
+            groupings
+                .computeIfAbsent(telemetryItem.getConnectionString(), k -> new ArrayList<>())
+                .add(telemetryItem);
+        }
+        List<CompletableResultCode> resultCodeList = new ArrayList<>();
+        for (Map.Entry<String, List<TelemetryItem>> entry : groupings.entrySet()) {
+            resultCodeList.add(internalSendByConnectionString(entry.getValue(), entry.getKey()));
+        }
+        return maybeAddToActiveExportResults(resultCodeList);
     }
 
-    out.close(); // closing ByteBufferOutputStream is a no-op, but this line makes LGTM happy
+    private CompletableResultCode maybeAddToActiveExportResults(List<CompletableResultCode> results) {
+        if (activeExportResults.size() >= MAX_CONCURRENT_EXPORTS) {
+            // this is just a failsafe to limit concurrent exports, it's not ideal because it blocks
+            // waiting for the most recent export instead of waiting for the first export to return
+            operationLogger.recordFailure(
+                "Hit max " + MAX_CONCURRENT_EXPORTS + " active concurrent requests",
+                TELEMETRY_ITEM_EXPORTER_ERROR);
+            return CompletableResultCode.ofAll(results);
+        }
 
-    List<ByteBuffer> byteBuffers = out.getByteBuffers();
-    for (ByteBuffer byteBuffer : byteBuffers) {
-      byteBuffer.flip();
-    }
-    return byteBuffers;
-  }
+        operationLogger.recordSuccess();
 
-  private static void writeTelemetryItems(JsonGenerator jg, List<TelemetryItem> telemetryItems)
-      throws IOException {
-    jg.setRootValueSeparator(new SerializedString("\n"));
-    for (TelemetryItem telemetryItem : telemetryItems) {
-      mapper.writeValue(jg, telemetryItem);
+        activeExportResults.addAll(results);
+        for (CompletableResultCode result : results) {
+            result.whenComplete(() -> activeExportResults.remove(result));
+        }
+
+        return CompletableResultCode.ofSuccess();
     }
-  }
+
+    public CompletableResultCode flush() {
+        return CompletableResultCode.ofAll(activeExportResults);
+    }
+
+    public CompletableResultCode shutdown() {
+        return listener.shutdown();
+    }
+
+    CompletableResultCode internalSendByConnectionString(
+        List<TelemetryItem> telemetryItems, String connectionString) {
+        List<ByteBuffer> byteBuffers;
+        try {
+            byteBuffers = encode(telemetryItems);
+            encodeBatchOperationLogger.recordSuccess();
+        } catch (Throwable t) {
+            encodeBatchOperationLogger.recordFailure(t.getMessage(), t);
+            return CompletableResultCode.ofFailure();
+        }
+        return telemetryPipeline.send(byteBuffers, connectionString, listener);
+    }
+
+    List<ByteBuffer> encode(List<TelemetryItem> telemetryItems) throws IOException {
+
+        if (logger.isDebugEnabled()) {
+            StringWriter debug = new StringWriter();
+            try (JsonGenerator jg = mapper.createGenerator(debug)) {
+                writeTelemetryItems(jg, telemetryItems);
+            }
+            logger.debug("sending telemetry to ingestion service:\n{}", debug);
+        }
+
+        ByteBufferOutputStream out = new ByteBufferOutputStream(byteBufferPool);
+
+        try (JsonGenerator jg = mapper.createGenerator(new GZIPOutputStream(out))) {
+            writeTelemetryItems(jg, telemetryItems);
+        } catch (IOException e) {
+            byteBufferPool.offer(out.getByteBuffers());
+            throw e;
+        }
+
+        out.close(); // closing ByteBufferOutputStream is a no-op, but this line makes LGTM happy
+
+        List<ByteBuffer> byteBuffers = out.getByteBuffers();
+        for (ByteBuffer byteBuffer : byteBuffers) {
+            byteBuffer.flip();
+        }
+        return byteBuffers;
+    }
 }

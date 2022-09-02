@@ -41,68 +41,67 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class LocalFileWriterTests {
 
-  private static final String CONNECTION_STRING =
-      "InstrumentationKey=00000000-0000-0000-0000-0FEEDDADBEEF;IngestionEndpoint=http://foo.bar/";
+    private static final String CONNECTION_STRING =
+        "InstrumentationKey=00000000-0000-0000-0000-0FEEDDADBEEF;IngestionEndpoint=http://foo.bar/";
+    @TempDir
+    File tempFolder;
+    private LocalFileCache localFileCache;
 
-  private LocalFileCache localFileCache;
-
-  @TempDir File tempFolder;
-
-  @BeforeEach
-  public void setup() {
-    localFileCache = new LocalFileCache(tempFolder);
-  }
-
-  @Test
-  public void testWriteByteBuffersList() throws IOException {
-    String content = Resources.readString("write-transmission.txt");
-
-    List<ByteBuffer> byteBuffers = new ArrayList<>();
-    String[] telemetries = content.split("\n");
-    for (int i = 0; i < telemetries.length; i++) {
-      ByteArrayOutputStream baos = new ByteArrayOutputStream();
-      baos.write(telemetries[i].getBytes(UTF_8));
-      if (i < telemetries.length - 1) {
-        baos.write('\r');
-      }
-      byteBuffers.add(ByteBuffer.wrap(baos.toByteArray()));
+    @BeforeEach
+    public void setup() {
+        localFileCache = new LocalFileCache(tempFolder);
     }
 
-    assertThat(byteBuffers.size()).isEqualTo(10);
+    @Test
+    public void testWriteByteBuffersList() throws IOException {
+        String content = Resources.readString("write-transmission.txt");
 
-    LocalFileWriter writer = new LocalFileWriter(50, localFileCache, tempFolder, null, false);
-    writer.writeToDisk(CONNECTION_STRING, byteBuffers);
-    assertThat(localFileCache.getPersistedFilesCache().size()).isEqualTo(1);
-  }
-
-  @Test
-  public void testWriteRawByteArray() throws IOException {
-    LocalFileWriter writer = new LocalFileWriter(50, localFileCache, tempFolder, null, false);
-    byte[] content = Resources.readBytes("write-transmission.txt");
-    writer.writeToDisk(CONNECTION_STRING, singletonList(ByteBuffer.wrap(content)));
-    assertThat(localFileCache.getPersistedFilesCache().size()).isEqualTo(1);
-  }
-
-  @Test
-  public void testWriteUnderMultipleThreadsEnvironment() throws InterruptedException {
-    String telemetry =
-        "{\"ver\":1,\"name\":\"Metric\",\"time\":\"2021-06-14T17:24:28.983-0700\",\"sampleRate\":100,\"iKey\":\"00000000-0000-0000-0000-0FEEDDADBEEF\",\"tags\":{\"ai.internal.sdkVersion\":\"java:3.1.1\",\"ai.internal.nodeName\":\"test-role-name\",\"ai.cloud.roleInstance\":\"test-role-instance\"},\"data\":{\"baseType\":\"MetricData\",\"baseData\":{\"ver\":2,\"metrics\":[{\"name\":\"jvm_threads_states\",\"kind\":0,\"value\":3}],\"properties\":{\"state\":\"blocked\"}}}}";
-
-    ExecutorService executorService = Executors.newFixedThreadPool(100);
-    for (int i = 0; i < 100; i++) {
-      executorService.execute(
-          () -> {
-            for (int j = 0; j < 10; j++) {
-              LocalFileWriter writer =
-                  new LocalFileWriter(50, localFileCache, tempFolder, null, false);
-              writer.writeToDisk(
-                  CONNECTION_STRING, singletonList(ByteBuffer.wrap(telemetry.getBytes(UTF_8))));
+        List<ByteBuffer> byteBuffers = new ArrayList<>();
+        String[] telemetries = content.split("\n");
+        for (int i = 0; i < telemetries.length; i++) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            baos.write(telemetries[i].getBytes(UTF_8));
+            if (i < telemetries.length - 1) {
+                baos.write('\r');
             }
-          });
+            byteBuffers.add(ByteBuffer.wrap(baos.toByteArray()));
+        }
+
+        assertThat(byteBuffers.size()).isEqualTo(10);
+
+        LocalFileWriter writer = new LocalFileWriter(50, localFileCache, tempFolder, null, false);
+        writer.writeToDisk(CONNECTION_STRING, byteBuffers);
+        assertThat(localFileCache.getPersistedFilesCache().size()).isEqualTo(1);
     }
 
-    executorService.shutdown();
-    executorService.awaitTermination(10, TimeUnit.MINUTES);
-    assertThat(localFileCache.getPersistedFilesCache().size()).isEqualTo(1000);
-  }
+    @Test
+    public void testWriteRawByteArray() throws IOException {
+        LocalFileWriter writer = new LocalFileWriter(50, localFileCache, tempFolder, null, false);
+        byte[] content = Resources.readBytes("write-transmission.txt");
+        writer.writeToDisk(CONNECTION_STRING, singletonList(ByteBuffer.wrap(content)));
+        assertThat(localFileCache.getPersistedFilesCache().size()).isEqualTo(1);
+    }
+
+    @Test
+    public void testWriteUnderMultipleThreadsEnvironment() throws InterruptedException {
+        String telemetry =
+            "{\"ver\":1,\"name\":\"Metric\",\"time\":\"2021-06-14T17:24:28.983-0700\",\"sampleRate\":100,\"iKey\":\"00000000-0000-0000-0000-0FEEDDADBEEF\",\"tags\":{\"ai.internal.sdkVersion\":\"java:3.1.1\",\"ai.internal.nodeName\":\"test-role-name\",\"ai.cloud.roleInstance\":\"test-role-instance\"},\"data\":{\"baseType\":\"MetricData\",\"baseData\":{\"ver\":2,\"metrics\":[{\"name\":\"jvm_threads_states\",\"kind\":0,\"value\":3}],\"properties\":{\"state\":\"blocked\"}}}}";
+
+        ExecutorService executorService = Executors.newFixedThreadPool(100);
+        for (int i = 0; i < 100; i++) {
+            executorService.execute(
+                () -> {
+                    for (int j = 0; j < 10; j++) {
+                        LocalFileWriter writer =
+                            new LocalFileWriter(50, localFileCache, tempFolder, null, false);
+                        writer.writeToDisk(
+                            CONNECTION_STRING, singletonList(ByteBuffer.wrap(telemetry.getBytes(UTF_8))));
+                    }
+                });
+        }
+
+        executorService.shutdown();
+        executorService.awaitTermination(10, TimeUnit.MINUTES);
+        assertThat(localFileCache.getPersistedFilesCache().size()).isEqualTo(1000);
+    }
 }

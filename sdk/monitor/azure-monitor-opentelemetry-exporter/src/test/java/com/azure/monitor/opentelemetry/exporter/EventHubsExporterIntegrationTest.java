@@ -21,8 +21,6 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.FluxUtil;
@@ -41,9 +39,6 @@ import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
-import java.nio.charset.StandardCharsets;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,6 +46,12 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import reactor.core.publisher.Mono;
+
+import java.nio.charset.StandardCharsets;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class EventHubsExporterIntegrationTest extends TestBase {
 
@@ -167,7 +168,8 @@ public class EventHubsExporterIntegrationTest extends TestBase {
                         event.updateCheckpoint();
                         eventCountDown.countDown();
                     })
-                .processError(error -> {})
+                .processError(error -> {
+                })
                 .loadBalancingStrategy(LoadBalancingStrategy.GREEDY)
                 .checkpointStore(new BlobCheckpointStore(blobContainerAsyncClient))
                 .buildEventProcessorClient();

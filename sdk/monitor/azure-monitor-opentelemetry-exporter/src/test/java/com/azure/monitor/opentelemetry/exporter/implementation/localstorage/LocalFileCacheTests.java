@@ -37,46 +37,47 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class LocalFileCacheTests {
 
-  private static final Queue<Long> sortedLastModified = new ConcurrentLinkedDeque<>();
-  @TempDir File tempFolder;
+    private static final Queue<Long> sortedLastModified = new ConcurrentLinkedDeque<>();
+    @TempDir
+    File tempFolder;
 
-  @BeforeEach
-  public void setup() throws Exception {
-    List<File> unsortedFiles = new ArrayList<>();
-    for (int i = 0; i < 100; i++) {
-      File tempFile = createTempFile(tempFolder);
-      File trnFile = new File(tempFolder, FileUtil.getBaseName(tempFile) + ".trn");
-      tempFile.renameTo(trnFile);
-      unsortedFiles.add(trnFile);
+    private static File createTempFile(File folder) throws IOException {
+        String prefix = System.currentTimeMillis() + "-";
+        return File.createTempFile(prefix, null, folder);
     }
 
-    unsortedFiles.sort(Comparator.comparing(File::lastModified));
-    for (File file : unsortedFiles) {
-      sortedLastModified.add(file.lastModified());
+    @BeforeEach
+    public void setup() throws Exception {
+        List<File> unsortedFiles = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            File tempFile = createTempFile(tempFolder);
+            File trnFile = new File(tempFolder, FileUtil.getBaseName(tempFile) + ".trn");
+            tempFile.renameTo(trnFile);
+            unsortedFiles.add(trnFile);
+        }
+
+        unsortedFiles.sort(Comparator.comparing(File::lastModified));
+        for (File file : unsortedFiles) {
+            sortedLastModified.add(file.lastModified());
+        }
+
+        List<File> files = FileUtil.listTrnFiles(tempFolder);
+        assertThat(files.size()).isEqualTo(100);
+        assertThat(files.size()).isEqualTo(sortedLastModified.size());
     }
 
-    List<File> files = FileUtil.listTrnFiles(tempFolder);
-    assertThat(files.size()).isEqualTo(100);
-    assertThat(files.size()).isEqualTo(sortedLastModified.size());
-  }
+    @Test
+    public void testSortPersistedFiles() {
+        LocalFileCache cache = new LocalFileCache(tempFolder);
+        Queue<File> sortedPersistedFile = cache.getPersistedFilesCache();
 
-  @Test
-  public void testSortPersistedFiles() {
-    LocalFileCache cache = new LocalFileCache(tempFolder);
-    Queue<File> sortedPersistedFile = cache.getPersistedFilesCache();
+        assertThat(sortedPersistedFile.size()).isEqualTo(sortedLastModified.size());
 
-    assertThat(sortedPersistedFile.size()).isEqualTo(sortedLastModified.size());
-
-    while (sortedPersistedFile.peek() != null && sortedLastModified.peek() != null) {
-      File actualFile = sortedPersistedFile.poll();
-      Long actualLastModified = actualFile.lastModified();
-      Long expectedLastModified = sortedLastModified.poll();
-      assertThat(actualLastModified).isEqualTo(expectedLastModified);
+        while (sortedPersistedFile.peek() != null && sortedLastModified.peek() != null) {
+            File actualFile = sortedPersistedFile.poll();
+            Long actualLastModified = actualFile.lastModified();
+            Long expectedLastModified = sortedLastModified.poll();
+            assertThat(actualLastModified).isEqualTo(expectedLastModified);
+        }
     }
-  }
-
-  private static File createTempFile(File folder) throws IOException {
-    String prefix = System.currentTimeMillis() + "-";
-    return File.createTempFile(prefix, null, folder);
-  }
 }

@@ -24,6 +24,7 @@ package com.azure.monitor.opentelemetry.exporter.implementation.builders;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricDataPoint;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.FormattedTime;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +33,11 @@ import java.util.Map;
 public final class MetricTelemetryBuilder extends AbstractTelemetryBuilder {
 
     private final MetricsData data;
+
+    private MetricTelemetryBuilder(MetricsData data) {
+        super(data, "Metric", "MetricData");
+        this.data = data;
+    }
 
     public static MetricTelemetryBuilder create() {
         return new MetricTelemetryBuilder(new MetricsData());
@@ -49,11 +55,6 @@ public final class MetricTelemetryBuilder extends AbstractTelemetryBuilder {
         telemetryBuilder.setTime(FormattedTime.offSetDateTimeFromNow());
 
         return telemetryBuilder;
-    }
-
-    private MetricTelemetryBuilder(MetricsData data) {
-        super(data, "Metric", "MetricData");
-        this.data = data;
     }
 
     public void setMetricPoint(MetricPointBuilder point) {

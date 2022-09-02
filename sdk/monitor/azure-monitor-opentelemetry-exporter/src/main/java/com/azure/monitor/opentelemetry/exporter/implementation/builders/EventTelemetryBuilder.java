@@ -21,13 +21,13 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.builders;
 
-import static com.azure.monitor.opentelemetry.exporter.implementation.builders.TelemetryTruncation.truncateTelemetry;
-
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryEventData;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.azure.monitor.opentelemetry.exporter.implementation.builders.TelemetryTruncation.truncateTelemetry;
 
 public final class EventTelemetryBuilder extends AbstractTelemetryBuilder {
 
@@ -35,13 +35,13 @@ public final class EventTelemetryBuilder extends AbstractTelemetryBuilder {
 
     private final TelemetryEventData data;
 
-    public static EventTelemetryBuilder create() {
-        return new EventTelemetryBuilder(new TelemetryEventData());
-    }
-
     private EventTelemetryBuilder(TelemetryEventData data) {
         super(data, "Event", "EventData");
         this.data = data;
+    }
+
+    public static EventTelemetryBuilder create() {
+        return new EventTelemetryBuilder(new TelemetryEventData());
     }
 
     public void setName(String name) {

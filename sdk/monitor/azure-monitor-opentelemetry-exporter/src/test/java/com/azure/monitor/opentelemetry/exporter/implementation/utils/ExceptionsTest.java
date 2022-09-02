@@ -21,17 +21,24 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.ExceptionDetailBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.Exceptions;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryExceptionDetails;
+import org.junit.jupiter.api.Test;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
-import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ExceptionsTest {
+
+    private static String toString(Throwable t) {
+        StringWriter out = new StringWriter();
+        t.printStackTrace(new PrintWriter(out));
+        return out.toString();
+    }
 
     @Test
     public void testMinimalParse() {
@@ -95,12 +102,6 @@ public class ExceptionsTest {
         TelemetryExceptionDetails details = list.get(0).build();
         assertThat(details.getTypeName()).isEqualTo(ProblematicException.class.getName());
         assertThat(details.getMessage()).isEqualTo(ProblematicException.class.getName());
-    }
-
-    private static String toString(Throwable t) {
-        StringWriter out = new StringWriter();
-        t.printStackTrace(new PrintWriter(out));
-        return out.toString();
     }
 
     @SuppressWarnings("OverrideThrowableToString")

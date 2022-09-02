@@ -23,9 +23,12 @@ package com.azure.monitor.opentelemetry.exporter.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** Response containing the status of each telemetry item. */
+/**
+ * Response containing the status of each telemetry item.
+ */
 @Fluent
 public final class ExportResult {
     /*

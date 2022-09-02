@@ -22,30 +22,30 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 
 final class QuickPulseCoordinatorInitData {
-  final QuickPulsePingSender pingSender;
-  final QuickPulseDataFetcher dataFetcher;
-  final QuickPulseDataSender dataSender;
-  final QuickPulseDataCollector collector;
+    final QuickPulsePingSender pingSender;
+    final QuickPulseDataFetcher dataFetcher;
+    final QuickPulseDataSender dataSender;
+    final QuickPulseDataCollector collector;
 
-  final long waitBetweenPingsInMillis;
-  final long waitBetweenPostsInMillis;
-  final long waitOnErrorInMillis;
+    final long waitBetweenPingsInMillis;
+    final long waitBetweenPostsInMillis;
+    final long waitOnErrorInMillis;
 
-  QuickPulseCoordinatorInitData(
-      QuickPulsePingSender pingSender,
-      QuickPulseDataFetcher dataFetcher,
-      QuickPulseDataSender dataSender,
-      QuickPulseDataCollector collector,
-      long waitBetweenPingsInMillis,
-      long waitBetweenPostsInMillis,
-      long waitOnErrorInMillis) {
+    QuickPulseCoordinatorInitData(
+        QuickPulsePingSender pingSender,
+        QuickPulseDataFetcher dataFetcher,
+        QuickPulseDataSender dataSender,
+        QuickPulseDataCollector collector,
+        long waitBetweenPingsInMillis,
+        long waitBetweenPostsInMillis,
+        long waitOnErrorInMillis) {
 
-    this.pingSender = pingSender;
-    this.dataFetcher = dataFetcher;
-    this.dataSender = dataSender;
-    this.collector = collector;
-    this.waitBetweenPingsInMillis = waitBetweenPingsInMillis;
-    this.waitBetweenPostsInMillis = waitBetweenPostsInMillis;
-    this.waitOnErrorInMillis = waitOnErrorInMillis;
-  }
+        this.pingSender = pingSender;
+        this.dataFetcher = dataFetcher;
+        this.dataSender = dataSender;
+        this.collector = collector;
+        this.waitBetweenPingsInMillis = waitBetweenPingsInMillis;
+        this.waitBetweenPostsInMillis = waitBetweenPostsInMillis;
+        this.waitOnErrorInMillis = waitOnErrorInMillis;
+    }
 }

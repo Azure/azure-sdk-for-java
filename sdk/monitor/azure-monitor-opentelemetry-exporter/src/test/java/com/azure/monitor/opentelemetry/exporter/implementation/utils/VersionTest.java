@@ -21,10 +21,10 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 
+import org.junit.jupiter.api.Test;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import org.junit.jupiter.api.Test;
 
 public class VersionTest {
     @Test

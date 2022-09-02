@@ -25,35 +25,36 @@ import javax.annotation.Nullable;
 
 class QuickPulseHeaderInfo {
 
-  private final QuickPulseStatus quickPulseStatus;
-  @Nullable private final String qpsServiceEndpointRedirect;
-  private final long qpsServicePollingInterval;
+    private final QuickPulseStatus quickPulseStatus;
+    @Nullable
+    private final String qpsServiceEndpointRedirect;
+    private final long qpsServicePollingInterval;
 
-  QuickPulseHeaderInfo(
-      QuickPulseStatus quickPulseStatus,
-      @Nullable String qpsServiceEndpointRedirect,
-      long qpsServicePollingIntervalHint) {
+    QuickPulseHeaderInfo(
+        QuickPulseStatus quickPulseStatus,
+        @Nullable String qpsServiceEndpointRedirect,
+        long qpsServicePollingIntervalHint) {
 
-    this.quickPulseStatus = quickPulseStatus;
-    this.qpsServiceEndpointRedirect = qpsServiceEndpointRedirect;
-    this.qpsServicePollingInterval = qpsServicePollingIntervalHint;
-  }
+        this.quickPulseStatus = quickPulseStatus;
+        this.qpsServiceEndpointRedirect = qpsServiceEndpointRedirect;
+        this.qpsServicePollingInterval = qpsServicePollingIntervalHint;
+    }
 
-  QuickPulseHeaderInfo(QuickPulseStatus quickPulseStatus) {
-    this.quickPulseStatus = quickPulseStatus;
-    this.qpsServiceEndpointRedirect = null;
-    this.qpsServicePollingInterval = -1;
-  }
+    QuickPulseHeaderInfo(QuickPulseStatus quickPulseStatus) {
+        this.quickPulseStatus = quickPulseStatus;
+        this.qpsServiceEndpointRedirect = null;
+        this.qpsServicePollingInterval = -1;
+    }
 
-  long getQpsServicePollingInterval() {
-    return qpsServicePollingInterval;
-  }
+    long getQpsServicePollingInterval() {
+        return qpsServicePollingInterval;
+    }
 
-  String getQpsServiceEndpointRedirect() {
-    return qpsServiceEndpointRedirect;
-  }
+    String getQpsServiceEndpointRedirect() {
+        return qpsServiceEndpointRedirect;
+    }
 
-  QuickPulseStatus getQuickPulseStatus() {
-    return quickPulseStatus;
-  }
+    QuickPulseStatus getQuickPulseStatus() {
+        return quickPulseStatus;
+    }
 }

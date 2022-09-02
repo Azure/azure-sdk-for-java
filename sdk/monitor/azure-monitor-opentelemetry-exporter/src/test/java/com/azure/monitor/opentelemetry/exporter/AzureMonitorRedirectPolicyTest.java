@@ -44,7 +44,7 @@ public class AzureMonitorRedirectPolicyTest {
             .build();
 
         HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
-            new URL("http://localhost/"))).block();
+                                                              new URL("http://localhost/"))).block();
 
         assertEquals(2, httpClient.getCount());
         assertEquals(200, response.getStatusCode());
@@ -65,7 +65,7 @@ public class AzureMonitorRedirectPolicyTest {
             .build();
 
         HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
-            new URL("http://localhost/"))).block();
+                                                              new URL("http://localhost/"))).block();
         // redirect is captured only 3 times
         assertEquals(11, httpClient.getCount());
         assertEquals(308, response.getStatusCode());
@@ -91,13 +91,13 @@ public class AzureMonitorRedirectPolicyTest {
 
         assertEquals(0, httpClient.getCount());
         HttpResponse response1 = pipeline.send(new HttpRequest(HttpMethod.GET,
-            new URL("http://localhost/"))).block();
+                                                               new URL("http://localhost/"))).block();
         assertEquals(200, response1.getStatusCode());
         assertEquals(2, httpClient.getCount());
 
         httpClient.resetCount();
         HttpResponse response2 = pipeline.send(new HttpRequest(HttpMethod.GET,
-            new URL("http://localhost/"))).block();
+                                                               new URL("http://localhost/"))).block();
         assertEquals(200, response2.getStatusCode());
         //Make sure the future requests are sent directly to http://redirecthost/
         assertEquals(1, httpClient.getCount());

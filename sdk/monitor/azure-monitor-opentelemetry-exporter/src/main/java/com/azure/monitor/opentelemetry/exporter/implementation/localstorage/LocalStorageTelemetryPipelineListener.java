@@ -33,55 +33,55 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineListener {
 
-  private final LocalFileWriter localFileWriter;
-  private final LocalFileSender localFileSender;
-  private final LocalFilePurger localFilePurger;
+    private final LocalFileWriter localFileWriter;
+    private final LocalFileSender localFileSender;
+    private final LocalFilePurger localFilePurger;
 
-  private final AtomicBoolean shutdown = new AtomicBoolean();
+    private final AtomicBoolean shutdown = new AtomicBoolean();
 
-  // telemetryFolder must already exist and be writable
-  public LocalStorageTelemetryPipelineListener(
-      int diskPersistenceMaxSizeMb,
-      File telemetryFolder,
-      TelemetryPipeline pipeline,
-      LocalStorageStats stats,
-      boolean suppressWarnings) { // used to suppress warnings from statsbeat
+    // telemetryFolder must already exist and be writable
+    public LocalStorageTelemetryPipelineListener(
+        int diskPersistenceMaxSizeMb,
+        File telemetryFolder,
+        TelemetryPipeline pipeline,
+        LocalStorageStats stats,
+        boolean suppressWarnings) { // used to suppress warnings from statsbeat
 
-    LocalFileCache localFileCache = new LocalFileCache(telemetryFolder);
-    LocalFileLoader loader =
-        new LocalFileLoader(localFileCache, telemetryFolder, stats, suppressWarnings);
-    localFileWriter =
-        new LocalFileWriter(
-            diskPersistenceMaxSizeMb, localFileCache, telemetryFolder, stats, suppressWarnings);
+        LocalFileCache localFileCache = new LocalFileCache(telemetryFolder);
+        LocalFileLoader loader =
+            new LocalFileLoader(localFileCache, telemetryFolder, stats, suppressWarnings);
+        localFileWriter =
+            new LocalFileWriter(
+                diskPersistenceMaxSizeMb, localFileCache, telemetryFolder, stats, suppressWarnings);
 
-    // send persisted telemetries from local disk every 30 seconds by default.
-    // if diskPersistenceMaxSizeMb is greater than 50, it will get changed to 10 seconds.
-    long intervalSeconds = diskPersistenceMaxSizeMb > 50 ? 10 : 30;
-    localFileSender = new LocalFileSender(intervalSeconds, loader, pipeline, suppressWarnings);
-    localFilePurger = new LocalFilePurger(telemetryFolder, suppressWarnings);
-  }
-
-  @Override
-  public void onResponse(TelemetryPipelineRequest request, TelemetryPipelineResponse response) {
-    if (StatusCode.isRetryable(response.getStatusCode())) {
-      localFileWriter.writeToDisk(request.getConnectionString(), request.getTelemetry());
+        // send persisted telemetries from local disk every 30 seconds by default.
+        // if diskPersistenceMaxSizeMb is greater than 50, it will get changed to 10 seconds.
+        long intervalSeconds = diskPersistenceMaxSizeMb > 50 ? 10 : 30;
+        localFileSender = new LocalFileSender(intervalSeconds, loader, pipeline, suppressWarnings);
+        localFilePurger = new LocalFilePurger(telemetryFolder, suppressWarnings);
     }
-  }
 
-  @Override
-  public void onException(
-      TelemetryPipelineRequest request, String errorMessage, Throwable throwable) {
-    localFileWriter.writeToDisk(request.getConnectionString(), request.getTelemetry());
-  }
-
-  @Override
-  public CompletableResultCode shutdown() {
-    // guarding against multiple shutdown calls because this can get called if statsbeat shuts down
-    // early because it cannot reach breeze and later on real shut down (when running not as agent)
-    if (!shutdown.getAndSet(true)) {
-      localFileSender.shutdown();
-      localFilePurger.shutdown();
+    @Override
+    public void onResponse(TelemetryPipelineRequest request, TelemetryPipelineResponse response) {
+        if (StatusCode.isRetryable(response.getStatusCode())) {
+            localFileWriter.writeToDisk(request.getConnectionString(), request.getTelemetry());
+        }
     }
-    return CompletableResultCode.ofSuccess();
-  }
+
+    @Override
+    public void onException(
+        TelemetryPipelineRequest request, String errorMessage, Throwable throwable) {
+        localFileWriter.writeToDisk(request.getConnectionString(), request.getTelemetry());
+    }
+
+    @Override
+    public CompletableResultCode shutdown() {
+        // guarding against multiple shutdown calls because this can get called if statsbeat shuts down
+        // early because it cannot reach breeze and later on real shut down (when running not as agent)
+        if (!shutdown.getAndSet(true)) {
+            localFileSender.shutdown();
+            localFilePurger.shutdown();
+        }
+        return CompletableResultCode.ofSuccess();
+    }
 }
