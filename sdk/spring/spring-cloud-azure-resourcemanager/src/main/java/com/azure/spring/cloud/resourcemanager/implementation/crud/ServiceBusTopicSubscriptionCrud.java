@@ -17,11 +17,20 @@ import reactor.util.function.Tuples;
 public class ServiceBusTopicSubscriptionCrud extends AbstractResourceCrud<ServiceBusSubscription,
     Tuple3<String, String, String>> {
 
-
+    private ServiceBusTopicCrud serviceBusTopicCrud;
     public ServiceBusTopicSubscriptionCrud(AzureResourceManager azureResourceManager,
                                            AzureResourceMetadata azureResourceMetadata) {
-        super(azureResourceManager, azureResourceMetadata);
+        this(azureResourceManager, azureResourceMetadata,
+            new ServiceBusTopicCrud(azureResourceManager, azureResourceMetadata));
     }
+
+    ServiceBusTopicSubscriptionCrud(AzureResourceManager azureResourceManager,
+                                    AzureResourceMetadata azureResourceMetadata,
+                                    ServiceBusTopicCrud serviceBusTopicCrud) {
+        super(azureResourceManager, azureResourceMetadata);
+        this.serviceBusTopicCrud = serviceBusTopicCrud;
+    }
+
     @Override
     String getResourceName(Tuple3<String, String, String> key) {
         return key.getT3();
@@ -35,7 +44,7 @@ public class ServiceBusTopicSubscriptionCrud extends AbstractResourceCrud<Servic
     @Override
     public ServiceBusSubscription internalGet(Tuple3<String, String, String> subscriptionCoordinate) {
         try {
-            Topic topic = new ServiceBusTopicCrud(this.resourceManager, this.resourceMetadata)
+            Topic topic = this.serviceBusTopicCrud
                 .get(Tuples.of(subscriptionCoordinate.getT1(), subscriptionCoordinate.getT2()));
             return topic == null ? null : topic
                 .subscriptions()
@@ -51,7 +60,7 @@ public class ServiceBusTopicSubscriptionCrud extends AbstractResourceCrud<Servic
 
     @Override
     public ServiceBusSubscription internalCreate(Tuple3<String, String, String> subscriptionCoordinate) {
-        return new ServiceBusTopicCrud(this.resourceManager, this.resourceMetadata)
+        return this.serviceBusTopicCrud
             .getOrCreate(Tuples.of(subscriptionCoordinate.getT1(), subscriptionCoordinate.getT2()))
             .subscriptions()
             .define(subscriptionCoordinate.getT3())
