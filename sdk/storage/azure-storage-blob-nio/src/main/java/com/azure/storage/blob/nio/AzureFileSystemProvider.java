@@ -12,6 +12,7 @@ import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.policy.RequestRetryOptions;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -105,7 +106,6 @@ import java.util.function.Supplier;
  *     <li>{@code AzureStorageMaxRetryDelayInMs:}{@link Long}</li>
  *     <li>{@code AzureStorageRetryPolicyType:}{@link com.azure.storage.common.policy.RetryPolicyType}</li>
  *     <li>{@code AzureStorageSecondaryHost:}{@link String}</li>
- *     <li>{@code AzureStorageSecondaryHost:}{@link Integer}</li>
  *     <li>{@code AzureStorageBlockSize:}{@link Long}</li>
  *     <li>{@code AzureStoragePutBlobThreshold:}{@link Long}</li>
  *     <li>{@code AzureStorageMaxConcurrencyPerRequest:}{@link Integer}</li>
@@ -114,6 +114,37 @@ import java.util.function.Supplier;
  *     <li>{@code AzureStorageSkipInitialContainerCheck:}{@link Boolean}. Indicates that the initial check which
  *     confirms the existence of the containers meant to act as file stores should be skipped. This can be useful in
  *     cases where a sas token that is scoped to only one file is used to authenticate.</li>
+ * </ul>
+ * <p>
+ * Default configurations for file systems can be set in your environment variables. Note that due to the naming
+ * conventions of environment variables and the serialized nature of their values, they differ slightly from the
+ * list above. Some settings cannot be configured via environment variable due to this serialized nature.
+ * <ul>
+ *     <li>{@code AZURE_STORAGE_NIO_AUTO_CREATE_FILESYSTEMS}: Optional boolean. Whether to automatically create a new
+ *         filesystem when attempting to access one that has yet to be created. Defaults to false.</li>
+ *     <li>{@code AZURE_STORAGE_NIO_BLOB_ENDPOINT}: default endpoint to use when accessing a FileSystem and no endpoint
+ *         is specified</li>
+ *     <li>{@code AZURE_STORAGE_NIO_BLOB_ENDPOINT_SECONDARY}: secondary endpoint to the provided default endpoint.</li>
+ *     <li>{@code AZURE_STORAGE_NIO_ACCOUNT_NAME}: account name to construct a
+ *         {@link com.azure.storage.common.StorageSharedKeyCredential} for accessing the endpoint.</li>
+ *     <li>{@code AZURE_STORAGE_NIO_ACCOUNT_KEY}: base64 encoded account key to construct a
+ *         {@link com.azure.storage.common.StorageSharedKeyCredential} for accessing the endpoint.</li>
+ *     <li>{@code AZURE_STORAGE_NIO_SAS}: shared access signature for accessing the endpoint.</li>
+ *     <li>{@code AZURE_HTTP_LOG_DETAIL_LEVEL}: name of {@link com.azure.core.http.policy.HttpLogDetailLevel} value for
+ *         the Azure SDK clients used by the FileSystem.</li>
+ *     <li>{@code AZURE_STORAGE_MAX_RETRIES}: {@link RequestRetryOptions#getMaxTries}.</li>
+ *     <li>{@code AZURE_STORAGE_REQUEST_TIMEOUT_SECONDS}: {@link RequestRetryOptions#getTryTimeout()}.</li>
+ *     <li>{@code AZURE_STORAGE_RETRY_DELAY_MS}: {@link RequestRetryOptions#getRetryDelayInMs()}.</li>
+ *     <li>{@code AZURE_STORAGE_MAX_RETRY_DELAY_MS}: {@link RequestRetryOptions#getMaxRetryDelayInMs()}.</li>
+ *     <li>{@code AZURE_STORAGE_NIO_BLOCK_SIZE}: {@link Long}.</li>
+ *     <li>{@code AZURE_STORAGE_NIO_PUT_BLOB_THRESHOLD}: {@link Long}.</li>
+ *     <li>{@code AZURE_STORAGE_NIO_PER_REQUEST_CONCURRENCY}: {@link Integer}.</li>
+ *     <li>{@code AZURE_STORAGE_NIO_RESUME_RETRIES}: {@link Integer}.</li>
+ *     <li>{@code AZURE_STORAGE_NIO_FILE_STORES}: {@link String} of comma-separated file store (blob container) names.
+ *         </li>
+ *     <li>{@code AZURE_STORAGE_NIO_SKIP_CONTAINER_CHECK}: {@link Boolean}. Indicates that the initial check which
+ *         confirms the existence of the containers meant to act as file stores should be skipped. This can be useful in
+ *         cases where a sas token that is scoped to only one file is used to authenticate.</li>
  * </ul>
  * <p>
  * Either an account key or a sas token must be specified. If both are provided, the account key will be preferred. If
