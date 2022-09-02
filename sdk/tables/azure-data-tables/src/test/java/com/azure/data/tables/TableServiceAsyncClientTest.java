@@ -99,7 +99,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
             .build();
 
         TableServiceAsyncClient malformedClient = getClientBuilder(Configuration.getGlobalConfiguration().get(
-            "TABLES_ENDPOINT","https://tablestests.table.core.windows.com")+"/"+tableName,credential,true)
+            "TABLES_ENDPOINT", "https://tablestests.table.core.windows.com") + "/" + tableName, credential, true)
             .buildAsyncClient();
 
         // Act & Assert
