@@ -20,8 +20,8 @@ public final class GalleryImageVersionList {
     private List<GalleryImageVersionInner> value;
 
     /*
-     * The uri to fetch the next page of gallery image versions. Call
-     * ListNext() with this to fetch the next page of gallery image versions.
+     * The uri to fetch the next page of gallery image versions. Call ListNext() with this to fetch the next page of
+     * gallery image versions.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;

@@ -33,6 +33,6 @@ class AksExchangeTokenCredential extends ManagedIdentityServiceCredential {
                 + " 'AZURE_CLIENT_ID' environment variable or through the credential builder."
                 + " Please ensure client id is provided to authenticate via token exchange in AKS environment.")));
         }
-        return identityClient.authenticateWithExchangeToken(request);
+        return identityClient.authenticateWithManagedIdentityConfidentialClient(request);
     }
 }

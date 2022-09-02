@@ -1474,7 +1474,7 @@ public class UTF8DataInputJsonParser
                     // Nope, escape sequence
                     ch = _decodeEscaped();
                 }
-                /* Oh crap. May need to UTF-8 (re-)encode it, if it's
+                /* May need to UTF-8 (re-)encode it, if it's
                  * beyond 7-bit ascii. Gets pretty messy.
                  * If this happens often, may want to use different name
                  * canonicalization to avoid these hits.
@@ -1649,7 +1649,7 @@ public class UTF8DataInputJsonParser
                     // Nope, escape sequence
                     ch = _decodeEscaped();
                 }
-                /* Oh crap. May need to UTF-8 (re-)encode it, if it's  beyond
+                /* May need to UTF-8 (re-)encode it, if it's  beyond
                  * 7-bit ASCII. Gets pretty messy. If this happens often, may want
                  * to use different name canonicalization to avoid these hits.
                  */

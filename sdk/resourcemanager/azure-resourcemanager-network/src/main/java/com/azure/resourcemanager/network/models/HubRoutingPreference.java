@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HubRoutingPreference. */
+/** The hub routing preference gateway types. */
 public final class HubRoutingPreference extends ExpandableStringEnum<HubRoutingPreference> {
     /** Static value ExpressRoute for HubRoutingPreference. */
     public static final HubRoutingPreference EXPRESS_ROUTE = fromString("ExpressRoute");

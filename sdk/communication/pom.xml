@@ -18,7 +18,9 @@
       <module>azure-communication-networktraversal</module>
       <module>azure-communication-phonenumbers</module>
       <module>azure-communication-sms</module>
+      <module>azure-communication-rooms</module>
       <module>azure-resourcemanager-communication</module>
       <module>azure-communication-common-perf</module>
+      <module>azure-communication-jobrouter</module>
   </modules>
 </project>

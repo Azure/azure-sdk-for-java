@@ -1,6 +1,6 @@
 # Release History
 
-## 2.18.0-beta.1 (Unreleased)
+## 2.19.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,22 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.18.0 (2022-08-26)
+
+### Features Added
+
+- Supported setting default `WebApplicationFirewall` when selected `ApplicationGatewayTier` is `ApplicationGatewayTier.WAF_v2`.
+
+### Breaking Changes
+
+- Rename class `ExplicitProxySettings` to `ExplicitProxy`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-01-01`.
 
 ## 2.17.0 (2022-07-25)
 

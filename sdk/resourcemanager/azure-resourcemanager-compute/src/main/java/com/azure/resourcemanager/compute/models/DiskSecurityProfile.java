@@ -17,8 +17,8 @@ public final class DiskSecurityProfile {
     private DiskSecurityTypes securityType;
 
     /*
-     * ResourceId of the disk encryption set associated to Confidential VM
-     * supported disk encrypted with customer managed key
+     * ResourceId of the disk encryption set associated to Confidential VM supported disk encrypted with customer
+     * managed key
      */
     @JsonProperty(value = "secureVMDiskEncryptionSetId")
     private String secureVMDiskEncryptionSetId;

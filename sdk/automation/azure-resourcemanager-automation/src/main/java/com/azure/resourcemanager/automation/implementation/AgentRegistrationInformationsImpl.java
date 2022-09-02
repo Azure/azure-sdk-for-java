@@ -13,10 +13,9 @@ import com.azure.resourcemanager.automation.fluent.models.AgentRegistrationInner
 import com.azure.resourcemanager.automation.models.AgentRegistration;
 import com.azure.resourcemanager.automation.models.AgentRegistrationInformations;
 import com.azure.resourcemanager.automation.models.AgentRegistrationRegenerateKeyParameter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AgentRegistrationInformationsImpl implements AgentRegistrationInformations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AgentRegistrationInformationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AgentRegistrationInformationsImpl.class);
 
     private final AgentRegistrationInformationsClient innerClient;
 

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CommunicationServices ListByResourceGroup. */
 public final class CommunicationServicesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2021-10-01-preview/examples/communicationServices/listByResourceGroup.json
+     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2022-07-01-preview/examples/communicationServices/listByResourceGroup.json
      */
     /**
      * Sample code: List by resource group.

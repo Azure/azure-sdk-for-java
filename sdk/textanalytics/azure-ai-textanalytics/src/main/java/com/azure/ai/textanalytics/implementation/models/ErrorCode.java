@@ -54,6 +54,18 @@ public final class ErrorCode extends ExpandableStringEnum<ErrorCode> {
     /** Static value ServiceUnavailable for ErrorCode. */
     public static final ErrorCode SERVICE_UNAVAILABLE = fromString("ServiceUnavailable");
 
+    /** Static value Timeout for ErrorCode. */
+    public static final ErrorCode TIMEOUT = fromString("Timeout");
+
+    /** Static value QuotaExceeded for ErrorCode. */
+    public static final ErrorCode QUOTA_EXCEEDED = fromString("QuotaExceeded");
+
+    /** Static value Conflict for ErrorCode. */
+    public static final ErrorCode CONFLICT = fromString("Conflict");
+
+    /** Static value Warning for ErrorCode. */
+    public static final ErrorCode WARNING = fromString("Warning");
+
     /**
      * Creates or finds a ErrorCode from its string representation.
      *

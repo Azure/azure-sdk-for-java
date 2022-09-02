@@ -283,7 +283,9 @@ public interface CommunicationServiceResource {
     CommunicationServiceResource refresh(Context context);
 
     /**
-     * Links an Azure Notification Hub to this communication service.
+     * Link Notification Hub
+     *
+     * <p>Links an Azure Notification Hub to this communication service.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -292,7 +294,9 @@ public interface CommunicationServiceResource {
     LinkedNotificationHub linkNotificationHub();
 
     /**
-     * Links an Azure Notification Hub to this communication service.
+     * Link Notification Hub
+     *
+     * <p>Links an Azure Notification Hub to this communication service.
      *
      * @param linkNotificationHubParameters Parameters supplied to the operation.
      * @param context The context to associate with this operation.
@@ -305,7 +309,9 @@ public interface CommunicationServiceResource {
         LinkNotificationHubParameters linkNotificationHubParameters, Context context);
 
     /**
-     * Get the access keys of the CommunicationService resource.
+     * List Keys
+     *
+     * <p>Get the access keys of the CommunicationService resource.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -314,7 +320,9 @@ public interface CommunicationServiceResource {
     CommunicationServiceKeys listKeys();
 
     /**
-     * Get the access keys of the CommunicationService resource.
+     * List Keys
+     *
+     * <p>Get the access keys of the CommunicationService resource.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -325,7 +333,10 @@ public interface CommunicationServiceResource {
     Response<CommunicationServiceKeys> listKeysWithResponse(Context context);
 
     /**
-     * Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
+     * Regenerate Key
+     *
+     * <p>Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same
+     * time.
      *
      * @param parameters Parameter that describes the Regenerate Key Operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -336,7 +347,10 @@ public interface CommunicationServiceResource {
     CommunicationServiceKeys regenerateKey(RegenerateKeyParameters parameters);
 
     /**
-     * Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
+     * Regenerate Key
+     *
+     * <p>Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same
+     * time.
      *
      * @param parameters Parameter that describes the Regenerate Key Operation.
      * @param context The context to associate with this operation.

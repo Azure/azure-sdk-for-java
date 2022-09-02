@@ -19,8 +19,8 @@ public final class ManagedClusterSku {
     /*
      * The tier of a managed cluster SKU.
      *
-     * If not specified, the default is 'Free'. See [uptime
-     * SLA](https://docs.microsoft.com/azure/aks/uptime-sla) for more details.
+     * If not specified, the default is 'Free'. See [uptime SLA](https://docs.microsoft.com/azure/aks/uptime-sla) for
+     * more details.
      */
     @JsonProperty(value = "tier")
     private ManagedClusterSkuTier tier;
