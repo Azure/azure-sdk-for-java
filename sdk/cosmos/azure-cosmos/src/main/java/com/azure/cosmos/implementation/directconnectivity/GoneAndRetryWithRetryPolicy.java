@@ -46,8 +46,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             waitTimeInSeconds,
             this.retryContext
         );
-        this.retryWithRetryPolicy = new RetryWithRetryPolicy(
-            waitTimeInSeconds, this.retryContext);
+        this.retryWithRetryPolicy = new RetryWithRetryPolicy(waitTimeInSeconds, this.retryContext);
         this.start = Instant.now();
     }
 

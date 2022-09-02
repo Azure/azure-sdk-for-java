@@ -9,6 +9,14 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Added system property to turn on replica validation - See [PR 29767](https://github.com/Azure/azure-sdk-for-java/pull/29767)
+* Added improvement to avoid retry on same replica that previously failed with 410, 408 and  >= 500 status codes - See [PR 29767](https://github.com/Azure/azure-sdk-for-java/pull/29767)
+* Improvement when `connectionEndpointRediscoveryEnabled` is enabled - See [PR 30281](https://github.com/Azure/azure-sdk-for-java/pull/30281)
+
+### 4.35.1 (2022-08-29)
+#### Other Changes
+* Added non-blocking async lazy cache to improve upgrade and scaling scenarios - See [PR 29322](https://github.com/Azure/azure-sdk-for-java/pull/29322)
+* Improved performance of `StoreResponse` using array headers - See [PR 30596](https://github.com/Azure/azure-sdk-for-java/pull/30596)
 
 ### 4.35.0 (2022-08-19)
 #### Other Changes

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for GpuInstanceProfile. */
+/** GPUInstanceProfile to be used to specify GPU MIG instance profile for supported GPU VM SKU. */
 public final class GpuInstanceProfile extends ExpandableStringEnum<GpuInstanceProfile> {
     /** Static value MIG1g for GpuInstanceProfile. */
     public static final GpuInstanceProfile MIG1G = fromString("MIG1g");

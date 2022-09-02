@@ -12,9 +12,10 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAu
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorizationOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelOperationSummary;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationDetails;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationSummary;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelSummary;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelOperationDetails;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AuthorizeCopyRequest;
@@ -22,8 +23,6 @@ import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureB
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.BuildDocumentModelRequest;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ComponentDocumentModelDetails;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ComposeDocumentModelRequest;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationDetails;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisAudience;
@@ -281,9 +280,9 @@ public final class DocumentModelAdministrationAsyncClient {
      * documentModelAdministrationAsyncClient.getResourceDetails&#40;&#41;
      *     .subscribe&#40;resourceInfo -&gt; &#123;
      *         System.out.printf&#40;&quot;Max number of models that can be build for this account: %d%n&quot;,
-     *             resourceInfo.getDocumentModelLimit&#40;&#41;&#41;;
+     *             resourceInfo.getCustomDocumentModelLimit&#40;&#41;&#41;;
      *         System.out.printf&#40;&quot;Current count of built document analysis models: %d%n&quot;,
-     *             resourceInfo.getDocumentModelCount&#40;&#41;&#41;;
+     *             resourceInfo.getCustomDocumentModelCount&#40;&#41;&#41;;
      *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.getResourceDetails -->
@@ -306,9 +305,9 @@ public final class DocumentModelAdministrationAsyncClient {
      *         System.out.printf&#40;&quot;Response Status Code: %d.&quot;, response.getStatusCode&#40;&#41;&#41;;
      *         ResourceDetails resourceDetails = response.getValue&#40;&#41;;
      *         System.out.printf&#40;&quot;Max number of models that can be build for this account: %d%n&quot;,
-     *             resourceDetails.getDocumentModelLimit&#40;&#41;&#41;;
+     *             resourceDetails.getCustomDocumentModelLimit&#40;&#41;&#41;;
      *         System.out.printf&#40;&quot;Current count of built document analysis models: %d%n&quot;,
-     *             resourceDetails.getDocumentModelCount&#40;&#41;&#41;;
+     *             resourceDetails.getCustomDocumentModelCount&#40;&#41;&#41;;
      *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.getResourceDetailsWithResponse -->
@@ -796,14 +795,14 @@ public final class DocumentModelAdministrationAsyncClient {
      * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.getOperation#string -->
      * <pre>
      * String operationId = &quot;&#123;operation_Id&#125;&quot;;
-     * documentModelAdministrationAsyncClient.getOperation&#40;operationId&#41;.subscribe&#40;modelOperationDetails -&gt; &#123;
-     *     System.out.printf&#40;&quot;Operation ID: %s%n&quot;, modelOperationDetails.getOperationId&#40;&#41;&#41;;
-     *     System.out.printf&#40;&quot;Operation Kind: %s%n&quot;, modelOperationDetails.getKind&#40;&#41;&#41;;
-     *     System.out.printf&#40;&quot;Operation Status: %s%n&quot;, modelOperationDetails.getStatus&#40;&#41;&#41;;
+     * documentModelAdministrationAsyncClient.getOperation&#40;operationId&#41;.subscribe&#40;operationDetails -&gt; &#123;
+     *     System.out.printf&#40;&quot;Operation ID: %s%n&quot;, operationDetails.getOperationId&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Operation Kind: %s%n&quot;, operationDetails.getKind&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Operation Status: %s%n&quot;, operationDetails.getStatus&#40;&#41;&#41;;
      *     System.out.printf&#40;&quot;Model ID created with this operation: %s%n&quot;,
-     *         modelOperationDetails.getResult&#40;&#41;.getModelId&#40;&#41;&#41;;
-     *     if &#40;ModelOperationStatus.FAILED.equals&#40;modelOperationDetails.getStatus&#40;&#41;&#41;&#41; &#123;
-     *         System.out.printf&#40;&quot;Operation fail error: %s%n&quot;, modelOperationDetails.getError&#40;&#41;.getMessage&#40;&#41;&#41;;
+     *         &#40;&#40;DocumentModelBuildOperationDetails&#41; operationDetails&#41;.getResult&#40;&#41;.getModelId&#40;&#41;&#41;;
+     *     if &#40;OperationStatus.FAILED.equals&#40;operationDetails.getStatus&#40;&#41;&#41;&#41; &#123;
+     *         System.out.printf&#40;&quot;Operation fail error: %s%n&quot;, operationDetails.getError&#40;&#41;.getMessage&#40;&#41;&#41;;
      *     &#125;
      * &#125;&#41;;
      * </pre>
@@ -814,7 +813,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * @throws IllegalArgumentException If {@code operationId} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentModelOperationDetails> getOperation(String operationId) {
+    public Mono<OperationDetails> getOperation(String operationId) {
         return getOperationWithResponse(operationId).flatMap(FluxUtil::toMono);
     }
 
@@ -828,25 +827,25 @@ public final class DocumentModelAdministrationAsyncClient {
      * String operationId = &quot;&#123;operation_Id&#125;&quot;;
      * documentModelAdministrationAsyncClient.getOperationWithResponse&#40;operationId&#41;.subscribe&#40;response -&gt; &#123;
      *     System.out.printf&#40;&quot;Response Status Code: %d.&quot;, response.getStatusCode&#40;&#41;&#41;;
-     *     DocumentModelOperationDetails documentModelOperationDetails = response.getValue&#40;&#41;;
-     *     System.out.printf&#40;&quot;Operation ID: %s%n&quot;, documentModelOperationDetails.getOperationId&#40;&#41;&#41;;
-     *     System.out.printf&#40;&quot;Operation Kind: %s%n&quot;, documentModelOperationDetails.getKind&#40;&#41;&#41;;
-     *     System.out.printf&#40;&quot;Operation Status: %s%n&quot;, documentModelOperationDetails.getStatus&#40;&#41;&#41;;
+     *     OperationDetails operationDetails = response.getValue&#40;&#41;;
+     *     System.out.printf&#40;&quot;Operation ID: %s%n&quot;, operationDetails.getOperationId&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Operation Kind: %s%n&quot;, operationDetails.getKind&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Operation Status: %s%n&quot;, operationDetails.getStatus&#40;&#41;&#41;;
      *     System.out.printf&#40;&quot;Model ID created with this operation: %s%n&quot;,
-     *         documentModelOperationDetails.getResult&#40;&#41;.getModelId&#40;&#41;&#41;;
-     *     if &#40;ModelOperationStatus.FAILED.equals&#40;documentModelOperationDetails.getStatus&#40;&#41;&#41;&#41; &#123;
-     *         System.out.printf&#40;&quot;Operation fail error: %s%n&quot;, documentModelOperationDetails.getError&#40;&#41;.getMessage&#40;&#41;&#41;;
+     *         &#40;&#40;DocumentModelBuildOperationDetails&#41; operationDetails&#41;.getResult&#40;&#41;.getModelId&#40;&#41;&#41;;
+     *     if &#40;OperationStatus.FAILED.equals&#40;operationDetails.getStatus&#40;&#41;&#41;&#41; &#123;
+     *         System.out.printf&#40;&quot;Operation fail error: %s%n&quot;, operationDetails.getError&#40;&#41;.getMessage&#40;&#41;&#41;;
      *     &#125;
      * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.getOperationWithResponse#string -->
      *
      * @param operationId Unique operation ID.
-     * @return A {@link Response} containing the requested {@link DocumentModelOperationDetails}.
+     * @return A {@link Response} containing the requested {@link OperationDetails}.
      * @throws IllegalArgumentException If {@code operationId} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentModelOperationDetails>> getOperationWithResponse(String operationId) {
+    public Mono<Response<OperationDetails>> getOperationWithResponse(String operationId) {
         try {
             return withContext(context -> getOperationWithResponse(operationId, context));
         } catch (RuntimeException ex) {
@@ -854,14 +853,14 @@ public final class DocumentModelAdministrationAsyncClient {
         }
     }
 
-    Mono<Response<DocumentModelOperationDetails>> getOperationWithResponse(String operationId, Context context) {
+    Mono<Response<OperationDetails>> getOperationWithResponse(String operationId, Context context) {
         if (CoreUtils.isNullOrEmpty(operationId)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'operationId' is required and cannot"
                 + " be null or empty"));
         }
         return service.getOperationWithResponseAsync(operationId, context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
-            .map(response -> new SimpleResponse<>(response, Transforms.toModelOperationDetails(response.getValue())));
+            .map(response -> new SimpleResponse<>(response, Transforms.toOperationDetails(response.getValue())));
     }
 
     /**
@@ -883,10 +882,10 @@ public final class DocumentModelAdministrationAsyncClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient.listOperations -->
      *
-     * @return {@link PagedFlux} of {@link DocumentModelOperationDetails}.
+     * @return {@link PagedFlux} of {@link OperationDetails}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DocumentModelOperationSummary> listOperations() {
+    public PagedFlux<OperationSummary> listOperations() {
         try {
             return new PagedFlux<>(() -> withContext(this::listFirstPageOperationInfo),
                 continuationToken -> withContext(context -> listNextPageOperationInfo(continuationToken, context)));
@@ -895,7 +894,7 @@ public final class DocumentModelAdministrationAsyncClient {
         }
     }
 
-    PagedFlux<DocumentModelOperationSummary> listOperations(Context context) {
+    PagedFlux<OperationSummary> listOperations(Context context) {
         return new PagedFlux<>(() -> listFirstPageOperationInfo(context),
             continuationToken -> listNextPageOperationInfo(continuationToken, context));
     }
@@ -906,7 +905,7 @@ public final class DocumentModelAdministrationAsyncClient {
             try {
                 final String modelId = pollingContext.getLatestResponse().getValue().getResultId();
                 return service.getOperationWithResponseAsync(modelId, context)
-                    .map(modelSimpleResponse -> Transforms.toDocumentModel(modelSimpleResponse.getValue()))
+                    .map(modelSimpleResponse -> Transforms.toDocumentModelFromOperationId(modelSimpleResponse.getValue()))
                     .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
@@ -960,7 +959,7 @@ public final class DocumentModelAdministrationAsyncClient {
     }
 
     private Mono<PollResponse<DocumentOperationResult>> processBuildingModelResponse(
-        OperationDetails getOperationResponse,
+        com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationDetails getOperationResponse,
         PollResponse<DocumentOperationResult> trainingModelOperationResponse) {
         LongRunningOperationStatus status;
         switch (getOperationResponse.getStatus()) {
@@ -1044,7 +1043,7 @@ public final class DocumentModelAdministrationAsyncClient {
                 null));
     }
 
-    private Mono<PagedResponse<DocumentModelOperationSummary>> listFirstPageOperationInfo(Context context) {
+    private Mono<PagedResponse<OperationSummary>> listFirstPageOperationInfo(Context context) {
         return service.getOperationsSinglePageAsync(context)
             .doOnRequest(ignoredValue -> logger.info("Listing information for all operations"))
             .doOnSuccess(response -> logger.info("Listed all operations"))
@@ -1054,12 +1053,12 @@ public final class DocumentModelAdministrationAsyncClient {
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                Transforms.toModelOperationSummary(res.getValue()),
+                Transforms.toOperationSummary(res.getValue()),
                 res.getContinuationToken(),
                 null));
     }
 
-    private Mono<PagedResponse<DocumentModelOperationSummary>> listNextPageOperationInfo(String nextPageLink, Context context) {
+    private Mono<PagedResponse<OperationSummary>> listNextPageOperationInfo(String nextPageLink, Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
         }
@@ -1073,7 +1072,7 @@ public final class DocumentModelAdministrationAsyncClient {
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                Transforms.toModelOperationSummary(res.getValue()),
+                Transforms.toOperationSummary(res.getValue()),
                 res.getContinuationToken(),
                 null));
     }

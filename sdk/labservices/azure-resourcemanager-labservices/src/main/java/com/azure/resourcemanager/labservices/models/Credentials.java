@@ -6,14 +6,11 @@ package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Credentials for a user on a lab VM. */
 @Fluent
 public final class Credentials {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Credentials.class);
-
     /*
      * The username to use when signing in to lab VMs.
      */
@@ -21,8 +18,7 @@ public final class Credentials {
     private String username;
 
     /*
-     * The password for the user. This is required for the TemplateVM
-     * createOption.
+     * The password for the user. This is required for the TemplateVM createOption.
      */
     @JsonProperty(value = "password")
     private String password;
@@ -74,9 +70,11 @@ public final class Credentials {
      */
     public void validate() {
         if (username() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property username in model Credentials"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Credentials.class);
 }

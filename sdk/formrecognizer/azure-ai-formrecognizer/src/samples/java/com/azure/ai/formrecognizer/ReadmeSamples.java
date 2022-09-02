@@ -377,7 +377,7 @@ public class ReadmeSamples {
         // First, we see how many models we have, and what our limit is
         ResourceDetails resourceDetails = documentModelAdminClient.getResourceDetails();
         System.out.printf("The resource has %s models, and we can have at most %s models",
-            resourceDetails.getDocumentModelCount(), resourceDetails.getDocumentModelLimit());
+            resourceDetails.getCustomDocumentModelCount(), resourceDetails.getCustomDocumentModelLimit());
 
         // Next, we get a paged list of all of our models
         PagedIterable<DocumentModelSummary> customDocumentModels = documentModelAdminClient.listModels();

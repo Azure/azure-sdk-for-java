@@ -3,21 +3,17 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.net.URI;
 
 public interface IAddressResolver {
 
     Mono<AddressInformation[]> resolveAsync(
             RxDocumentServiceRequest request,
             boolean forceRefreshPartitionAddresses);
-
-    int updateAddresses(URI serverKey);
 
     /***
      * Warm up caches and open connections to all replicas of the container for the current read region.
