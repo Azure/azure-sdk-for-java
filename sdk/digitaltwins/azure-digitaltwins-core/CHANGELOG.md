@@ -1,14 +1,12 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.3.2 (2022-09-06)
 
 ### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.32.0`
+- Upgraded `azure-core-http-netty` dependency to `1.12.5`.
+- Upgraded `azure-core-serializer-json-jackson` dependency to `1.2.21`.
 
 ## 1.3.1 (2022-08-10)
 
