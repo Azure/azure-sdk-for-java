@@ -88,7 +88,7 @@ public final class DeviceUpdatesImpl {
                 Context context);
 
         @Post("/deviceUpdate/{instanceId}/updates:import")
-        @ExpectedResponses({202})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
                 code = {401})
@@ -99,7 +99,7 @@ public final class DeviceUpdatesImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> importUpdate(
+        Mono<Response<BinaryData>> importUpdate(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @QueryParam("api-version") String apiVersion,
@@ -700,6 +700,50 @@ public final class DeviceUpdatesImpl {
      * ]
      * }</pre>
      *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     updateId (Required): {
+     *         provider: String (Required)
+     *         name: String (Required)
+     *         version: String (Required)
+     *     }
+     *     description: String (Optional)
+     *     friendlyName: String (Optional)
+     *     isDeployable: Boolean (Optional)
+     *     updateType: String (Optional)
+     *     installedCriteria: String (Optional)
+     *     compatibility (Required): [
+     *          (Required){
+     *             String: String (Required)
+     *         }
+     *     ]
+     *     instructions (Optional): {
+     *         steps (Required): [
+     *              (Required){
+     *                 type: String(Inline/Reference) (Optional)
+     *                 description: String (Optional)
+     *                 handler: String (Optional)
+     *                 handlerProperties: Object (Optional)
+     *                 files (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 updateId (Optional): (recursive schema, see updateId above)
+     *             }
+     *         ]
+     *     }
+     *     referencedBy (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     scanResult: String (Optional)
+     *     manifestVersion: String (Required)
+     *     importedDateTime: OffsetDateTime (Required)
+     *     createdDateTime: OffsetDateTime (Required)
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
      * @param updateToImport The update to be imported (see schema
      *     https://json.schemastore.org/azure-deviceupdate-import-manifest-5.0.json for details).
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -707,10 +751,10 @@ public final class DeviceUpdatesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return update metadata along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> importUpdateWithResponseAsync(
+    private Mono<Response<BinaryData>> importUpdateWithResponseAsync(
             BinaryData updateToImport, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -752,6 +796,50 @@ public final class DeviceUpdatesImpl {
      * ]
      * }</pre>
      *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     updateId (Required): {
+     *         provider: String (Required)
+     *         name: String (Required)
+     *         version: String (Required)
+     *     }
+     *     description: String (Optional)
+     *     friendlyName: String (Optional)
+     *     isDeployable: Boolean (Optional)
+     *     updateType: String (Optional)
+     *     installedCriteria: String (Optional)
+     *     compatibility (Required): [
+     *          (Required){
+     *             String: String (Required)
+     *         }
+     *     ]
+     *     instructions (Optional): {
+     *         steps (Required): [
+     *              (Required){
+     *                 type: String(Inline/Reference) (Optional)
+     *                 description: String (Optional)
+     *                 handler: String (Optional)
+     *                 handlerProperties: Object (Optional)
+     *                 files (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 updateId (Optional): (recursive schema, see updateId above)
+     *             }
+     *         ]
+     *     }
+     *     referencedBy (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     scanResult: String (Optional)
+     *     manifestVersion: String (Required)
+     *     importedDateTime: OffsetDateTime (Required)
+     *     createdDateTime: OffsetDateTime (Required)
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
      * @param updateToImport The update to be imported (see schema
      *     https://json.schemastore.org/azure-deviceupdate-import-manifest-5.0.json for details).
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -759,7 +847,7 @@ public final class DeviceUpdatesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of update metadata.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginImportUpdateAsync(
@@ -806,6 +894,50 @@ public final class DeviceUpdatesImpl {
      * ]
      * }</pre>
      *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     updateId (Required): {
+     *         provider: String (Required)
+     *         name: String (Required)
+     *         version: String (Required)
+     *     }
+     *     description: String (Optional)
+     *     friendlyName: String (Optional)
+     *     isDeployable: Boolean (Optional)
+     *     updateType: String (Optional)
+     *     installedCriteria: String (Optional)
+     *     compatibility (Required): [
+     *          (Required){
+     *             String: String (Required)
+     *         }
+     *     ]
+     *     instructions (Optional): {
+     *         steps (Required): [
+     *              (Required){
+     *                 type: String(Inline/Reference) (Optional)
+     *                 description: String (Optional)
+     *                 handler: String (Optional)
+     *                 handlerProperties: Object (Optional)
+     *                 files (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 updateId (Optional): (recursive schema, see updateId above)
+     *             }
+     *         ]
+     *     }
+     *     referencedBy (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     scanResult: String (Optional)
+     *     manifestVersion: String (Required)
+     *     importedDateTime: OffsetDateTime (Required)
+     *     createdDateTime: OffsetDateTime (Required)
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
      * @param updateToImport The update to be imported (see schema
      *     https://json.schemastore.org/azure-deviceupdate-import-manifest-5.0.json for details).
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -813,7 +945,7 @@ public final class DeviceUpdatesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of update metadata.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginImportUpdate(

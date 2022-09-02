@@ -44,13 +44,10 @@ public class ImportUpdateSample {
             response.waitForCompletion();
             // END: com.azure.iot.deviceupdate.DeviceUpdateClient.ImportUpdate
 
-            System.out.println(response.getFinalResult());
+            System.out.println(response.getFinalResult().toString());
 
         } catch (HttpResponseException e) {
-            if (e.getResponse().getStatusCode() == 404) {
-                // update does not exist
-                System.out.println("update does not exist");
-            }
+            System.out.println("import failed");
         }
     }
 
