@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import static com.azure.storage.common.implementation.Constants.NioConstants.*;
+import static com.azure.storage.common.implementation.Constants.ConfigurationConstants.Nio.*;
 
 class AzureFileSystemConfig {
     // BlobServiceClient configs

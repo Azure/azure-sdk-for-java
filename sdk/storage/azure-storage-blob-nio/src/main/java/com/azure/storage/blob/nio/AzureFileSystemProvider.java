@@ -1240,11 +1240,11 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
     static String readEnvironmentEndpoint() {
         return com.azure.core.util.Configuration.getGlobalConfiguration().get(
-            Constants.NioConstants.ENVIRONMENT_DEFAULT_BLOB_ENDPOINT);
+            Constants.ConfigurationConstants.Nio.ENVIRONMENT_DEFAULT_BLOB_ENDPOINT);
     }
 
     static boolean readEnvironmentAutoCreateFileSystems() {
         return Boolean.parseBoolean(com.azure.core.util.Configuration.getGlobalConfiguration().get(
-            Constants.NioConstants.ENVIRONMENT_AUTO_CREATE_FILESYSTEM));
+            Constants.ConfigurationConstants.Nio.ENVIRONMENT_AUTO_CREATE_FILESYSTEM));
     }
 }
