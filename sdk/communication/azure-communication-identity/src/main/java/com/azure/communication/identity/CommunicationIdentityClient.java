@@ -15,7 +15,9 @@ import com.azure.communication.identity.implementation.models.CommunicationIdent
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenRequest;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenResult;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityCreateRequest;
-import com.azure.communication.identity.models.*;
+import com.azure.communication.identity.models.CommunicationTokenScope;
+import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
+import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;

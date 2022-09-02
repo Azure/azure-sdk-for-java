@@ -11,7 +11,9 @@ import java.util.HashSet;
 import java.util.concurrent.ExecutionException;
 
 import com.azure.communication.common.CommunicationUserIdentifier;
-import com.azure.communication.identity.models.*;
+import com.azure.communication.identity.models.CommunicationTokenScope;
+import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
+import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;

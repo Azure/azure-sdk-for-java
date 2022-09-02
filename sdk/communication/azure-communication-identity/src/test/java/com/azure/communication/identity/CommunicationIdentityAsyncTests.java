@@ -344,9 +344,9 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
                         return asyncClient.getToken(communicationUser, scopes, tokenExpiresAfter);
                     }))
             .verifyErrorSatisfies(throwable -> {
-            assertNotNull(throwable.getMessage());
-            assertTrue(throwable.getMessage().contains("400"));
-        });
+                assertNotNull(throwable.getMessage());
+                assertTrue(throwable.getMessage().contains("400"));
+            });
     }
 
     @Test

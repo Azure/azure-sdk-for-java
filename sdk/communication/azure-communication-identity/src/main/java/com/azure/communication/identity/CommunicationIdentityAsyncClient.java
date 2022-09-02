@@ -11,7 +11,11 @@ import com.azure.communication.identity.implementation.models.CommunicationIdent
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenResult;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityCreateRequest;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessToken;
-import com.azure.communication.identity.models.*;
+import com.azure.communication.identity.models.CommunicationTokenScope;
+import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
+import com.azure.communication.identity.models.IdentityError;
+import com.azure.communication.identity.models.IdentityErrorResponseException;
+import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -167,7 +171,7 @@ public final class CommunicationIdentityAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CommunicationUserIdentifierAndToken>>
-    createUserAndTokenWithResponse(Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresAfter) {
+        createUserAndTokenWithResponse(Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresAfter) {
         try {
             Objects.requireNonNull(scopes);
             final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
