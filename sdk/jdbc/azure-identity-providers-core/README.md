@@ -25,8 +25,8 @@ If you encounter any bugs, please file issues via [Issues](https://github.com/Az
 
 ## Next steps
 Other useful packages are:
-* [azure-identity-providers-jdbc-mysql](../azure-identity-providers-jdbc-mysql/README.md):  Azure identity JDBC MySQL plugin library for Java.
-* [azure-identity-providers-jdbc-postgresql](../azure-identity-providers-jdbc-postgresql/README.md):  Azure identity JDBC PostgreSQL plugin library for Java.
+* [azure-identity-providers-jdbc-mysql][azure-identity-providers-jdbc-mysql]:  Azure identity JDBC MySQL plugin library for Java.
+* [azure-identity-providers-jdbc-postgresql][azure-identity-providers-jdbc-postgresql]:  Azure identity JDBC PostgreSQL plugin library for Java.
 
 ## Contributing
 
@@ -40,5 +40,5 @@ For details on contributing to this repository, see the [contributing guide](htt
 
 
 <!-- LINKS -->
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
-[azure_subscription]: https://azure.microsoft.com/free/
+[azure-identity-providers-jdbc-mysql]: https://github.com/Azure/azure-sdk-for-java/tree/release/spring-cloud-azure-4.4.0-beta.1/sdk/jdbc/azure-identity-providers-jdbc-mysql
+[azure-identity-providers-jdbc-postgresql]: https://github.com/Azure/azure-sdk-for-java/tree/release/spring-cloud-azure-4.4.0-beta.1/sdk/jdbc//azure-identity-providers-jdbc-postgresql
