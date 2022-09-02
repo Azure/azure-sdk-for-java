@@ -1,18 +1,17 @@
 # Azure identity JDBC MySQL plugin library for Java
 
-Azure identity JDBC MySQL plugin library for Java.
-
-This package contains the authentication plugin to authenticate with Azure AD for Azure hosted MySQL services.
+This package contains the jdbc authentication plugin to authenticate with Azure AD for Azure hosted MySQL services.
 
 ## Getting started
 
 ### Prerequisites
 
-- [Java Development Kit (JDK)][jdk] with version 8 or above
-- [Azure Subscription][azure_subscription]
+- An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?WT.mc_id=A261C142F).
+- [Java Development Kit (JDK)][jdk] with version 8 or above.
+- [Apache Maven](https://maven.apache.org/download.cgi).
 
 
-### Adding the package to your product
+### Include the package
 
 [//]: # ({x-version-update-start;com.azure:azure-identity-providers-jdbc-mysql;current})
 ```xml
@@ -26,12 +25,20 @@ This package contains the authentication plugin to authenticate with Azure AD fo
 
 ## Key concepts
 
+This picture shows how the jdbc authentication plugin for MySQL authenticating with MSI.
+
+![mysql_design.png](img/mysql_design.png)
+
 ## Examples
-For documentation on how to use this package, please see [Spring Cloud Azure MySQL support](https://aka.ms/spring/mysqlsupport).
+For documentation on how to use this package, please refer to [Quickstart:Use Java and JDBC with Azure Database for MySQL](https://aka.ms/quickstart-jdbc-mysql).
 
 ## Troubleshooting
+If you encounter any bugs, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java/issues).
 
 ## Next steps
+Other useful packages are:
+* [azure-identity-providers-core](../azure-identity-providers-core): Contains core classes and functionality used by this library.
+* [azure-identity-providers-jdbc-postgresql](../azure-identity-providers-jdbc-postgresql): Azure identity JDBC PostgreSQL plugin library for Java.
 
 ## Contributing
 
