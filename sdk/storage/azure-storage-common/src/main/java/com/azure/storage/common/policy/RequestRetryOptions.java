@@ -292,12 +292,17 @@ public final class RequestRetryOptions {
      * @return The {@link RequestRetryOptions}
      */
     public static RequestRetryOptions fromConfiguration(Configuration configuration, String secondaryEndpoint) {
+        // pull into variable to avoid confusing compiler
+        Integer maxRetry = getValueFromConfiguration(configuration, Constants.ConfigurationConstants.RETRY_OPTIONS_MAX_RETRY, Integer::valueOf);
+        Integer timeout = getValueFromConfiguration(configuration, Constants.ConfigurationConstants.RETRY_OPTIONS_TIMEOUT_SECONDS, Integer::valueOf);
+        Long delay = getValueFromConfiguration(configuration, Constants.ConfigurationConstants.RETRY_OPTIONS_DELAY_MS, Long::valueOf);
+        Long maxDelay = getValueFromConfiguration(configuration, Constants.ConfigurationConstants.RETRY_OPTIONS_MAX_DELAY_MS, Long::valueOf);
         return new RequestRetryOptions(
             RetryPolicyType.fromConfiguration(configuration),
-            getValueFromConfiguration(configuration, Constants.ConfigurationConstants.RETRY_OPTIONS_MAX_RETRY, Integer::valueOf),
-            getValueFromConfiguration(configuration, Constants.ConfigurationConstants.RETRY_OPTIONS_TIMEOUT_SECONDS, Integer::valueOf),
-            getValueFromConfiguration(configuration, Constants.ConfigurationConstants.RETRY_OPTIONS_DELAY_MS, Long::valueOf),
-            getValueFromConfiguration(configuration, Constants.ConfigurationConstants.RETRY_OPTIONS_MAX_DELAY_MS, Long::valueOf),
+            maxRetry,
+            timeout,
+            delay,
+            maxDelay,
             secondaryEndpoint
         );
     }
