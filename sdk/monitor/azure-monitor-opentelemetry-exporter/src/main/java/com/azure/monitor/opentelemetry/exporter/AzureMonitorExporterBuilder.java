@@ -223,7 +223,7 @@ public final class AzureMonitorExporterBuilder {
      * @throws NullPointerException if the connection string is not set on this builder or if the
      * environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
      */
-    public SpanExporter buildTraceExporter() {
+    public AzureMonitorTraceExporter buildTraceExporter() {
         SpanDataMapper mapper =
             new SpanDataMapper(
                 true, this::populateDefaults, (event, instrumentationName) -> false, () -> null);
@@ -242,7 +242,7 @@ public final class AzureMonitorExporterBuilder {
      * @throws NullPointerException if the connection string is not set on this builder or if the
      * environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
      */
-    public MetricExporter buildMetricExporter() {
+    public AzureMonitorMetricExporter buildMetricExporter() {
         TelemetryItemExporter telemetryItemExporter = initExporterBuilder();
         HeartbeatExporter.start(
             MINUTES.toSeconds(15), this::populateDefaults, telemetryItemExporter::send);
@@ -258,7 +258,7 @@ public final class AzureMonitorExporterBuilder {
      * @throws NullPointerException if the connection string is not set on this builder or if the
      * environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
      */
-    public LogExporter buildLogExporter() {
+    public AzureMonitorLogExporter buildLogExporter() {
         return new AzureMonitorLogExporter(
             new LogDataMapper(true, this::populateDefaults), initExporterBuilder());
     }
