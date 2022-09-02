@@ -66,15 +66,9 @@ class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTests<Ser
         when(topic.subscriptions()).thenReturn(serviceBusSubscriptions);
         when(serviceBusSubscriptions.getByName(getKey().getT3())).thenThrow(exception);
 
-        ServiceBusTopicCrud serviceBusTopicCrud = mock(ServiceBusTopicCrud.class);
-        when(serviceBusTopicCrud.get(Tuples.of(NAMESPACE, TOPIC_NAME))).thenReturn(null);
-
         ServiceBusSubscription.DefinitionStages.Blank define = mock(ServiceBusSubscription.DefinitionStages.Blank.class);
         when(serviceBusSubscriptions.define(SUBSCRIPTION_NAME)).thenReturn(define);
         when(define.create()).thenThrow(exception);
-
-        ServiceBusSubscription.DefinitionStages.WithCreate create = mock(ServiceBusSubscription.DefinitionStages.WithCreate.class);
-        when(create.create()).thenThrow(exception);
     }
 
     @Override
@@ -117,6 +111,42 @@ class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTests<Ser
         Assertions.assertNull(actualGet);
         Assertions.assertNotNull(actualCreate);
         Assertions.assertEquals(serviceBusSubscription, actualCreate);
+    }
+
+    @Test
+    void topicExistSubscriptionDoesNotExist() {
+        ServiceBusNamespaceCrud namespaceCrud = mock(ServiceBusNamespaceCrud.class);
+        ServiceBusTopicCrud topicCrud = new ServiceBusTopicCrud(this.resourceManager,
+            this.resourceMetadata);
+        ServiceBusTopicSubscriptionCrud topicSubCrud = new ServiceBusTopicSubscriptionCrud(this.resourceManager,
+            this.resourceMetadata, topicCrud);
+
+        ServiceBusNamespaces namespaces = mock(ServiceBusNamespaces.class);
+        ServiceBusNamespace namespace = mock(ServiceBusNamespace.class);
+        when(resourceManager.serviceBusNamespaces()).thenReturn(namespaces);
+        when(namespaces.getByResourceGroup(resourceMetadata.getResourceGroup(), getKey().getT1()))
+            .thenReturn(namespace);
+
+        Topics topics = mock(Topics.class);
+        when(namespace.topics()).thenReturn(topics);
+        Topic topic = mock(Topic.class);
+        when(topics.getByName(getKey().getT2())).thenReturn(topic);
+        ServiceBusSubscriptions serviceBusSubscriptions = mock(ServiceBusSubscriptions.class);
+        when(topic.subscriptions()).thenReturn(serviceBusSubscriptions);
+
+        Topic.DefinitionStages.Blank define = mock(Topic.DefinitionStages.Blank.class);
+        when(topics.define(TOPIC_NAME)).thenReturn(define);
+        when(define.create()).thenReturn(topic);
+        when(namespaceCrud.get(NAMESPACE)).thenReturn(namespace);
+        when(namespaceCrud.getOrCreate(NAMESPACE)).thenReturn(namespace);
+
+        Topic actualGetTopic = topicCrud.get(getKey());
+        Topic actualCreateTopic = topicCrud.create(getKey());
+        Assertions.assertNotNull(actualGetTopic);
+        Assertions.assertNotNull(actualCreateTopic);
+
+        ServiceBusSubscription actualGetSub = topicSubCrud.get(getKey());
+        Assertions.assertNull(actualGetSub);
     }
 
 }
