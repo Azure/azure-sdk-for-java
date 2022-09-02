@@ -81,7 +81,6 @@ public final class TableServiceClientBuilder implements
     HttpTrait<TableServiceClientBuilder>,
     ConfigurationTrait<TableServiceClientBuilder>,
     EndpointTrait<TableServiceClientBuilder> {
-    static private final String suffix = "core.windows.net";
     private final ClientLogger logger = new ClientLogger(TableServiceClientBuilder.class);
     private final SerializerAdapter serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
