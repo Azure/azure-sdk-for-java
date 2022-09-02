@@ -12,26 +12,15 @@ import io.opentelemetry.semconv.resource.attributes.ResourceAttributes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.parallel.Execution;
 import reactor.util.annotation.Nullable;
-import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
-import uk.org.webcompere.systemstubs.jupiter.SystemStub;
-import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
 
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.MapEntry.entry;
-import static org.junit.jupiter.api.parallel.ExecutionMode.SAME_THREAD;
 
 @Disabled
-@Execution(SAME_THREAD)
-@ExtendWith(SystemStubsExtension.class)
 class ResourceParserTest {
-
-    @SystemStub
-    EnvironmentVariables envVars = new EnvironmentVariables();
 
     private static final String DEFAULT_ROLE_INSTANCE = "fake-hostname";
     private MetricTelemetryBuilder builder;
@@ -39,8 +28,6 @@ class ResourceParserTest {
     @BeforeEach
     void setup() {
         builder = MetricTelemetryBuilder.create();
-        envVars.set("HOSTNAME", DEFAULT_ROLE_INSTANCE);
-        assertThat(System.getenv("HOSTNAME")).isEqualTo(DEFAULT_ROLE_INSTANCE);
     }
 
     @Test
@@ -116,10 +103,11 @@ class ResourceParserTest {
             .isEqualTo("myroleinstance");
     }
 
+    @Disabled
     @Test
     void testWebsiteSiteNameAndWebsiteInstanceId() {
-        envVars.set("WEBSITE_SITE_NAME", "test_website_site_name");
-        envVars.set("WEBSITE_INSTANCE_ID", "test_website_instance_id");
+//        envVars.set("WEBSITE_SITE_NAME", "test_website_site_name");
+//        envVars.set("WEBSITE_INSTANCE_ID", "test_website_instance_id");
         Resource resource = createTestResource(null, null, null);
         ResourceParser.updateRoleNameAndInstance(builder, resource);
         Map<String, String> tags = builder.build().getTags();

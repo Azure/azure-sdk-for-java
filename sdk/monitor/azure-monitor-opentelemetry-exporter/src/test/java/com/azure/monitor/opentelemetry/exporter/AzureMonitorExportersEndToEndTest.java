@@ -26,15 +26,9 @@ import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.logs.export.LogExporter;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.parallel.Execution;
 import reactor.core.publisher.Mono;
-import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
-import uk.org.webcompere.systemstubs.jupiter.SystemStub;
-import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -50,23 +44,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.MapEntry.entry;
 import static org.junit.jupiter.api.parallel.ExecutionMode.SAME_THREAD;
 
-@Disabled
 @Execution(SAME_THREAD)
-@ExtendWith(SystemStubsExtension.class)
 public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTestBase {
-
-    @SystemStub
-    EnvironmentVariables envVars = new EnvironmentVariables();
 
     private static final String TRACE_CONNECTION_STRING =
         "InstrumentationKey=00000000-0000-0000-0000-000000000000";
     private static final String INSTRUMENTATION_KEY = "00000000-0000-0000-0000-0FEEDDADBEEF";
-
-    @BeforeEach
-    public void setup() {
-        envVars.set(
-            "APPLICATIONINSIGHTS_CONNECTION_STRING", "InstrumentationKey=" + INSTRUMENTATION_KEY);
-    }
 
     @Test
     public void testBuildMetricExporter() throws Exception {

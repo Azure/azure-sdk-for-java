@@ -28,6 +28,8 @@ import java.util.Map;
 
 public final class TestUtils {
 
+    private static final String CONNECTION_STRING = "InstrumentationKey=00000000-0000-0000-0000-0FEEDDADBEEF";
+
     public static TelemetryItem createMetricTelemetry(
         String name, int value, String connectionString) {
         TelemetryItem telemetry = new TelemetryItem();
@@ -66,7 +68,7 @@ public final class TestUtils {
     public static Tracer configureAzureMonitorTraceExporter(HttpPipelinePolicy validator) {
         SpanExporter exporter =
             new AzureMonitorExporterBuilder()
-                .connectionString(System.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING"))
+                .connectionString(CONNECTION_STRING)
                 .addHttpPipelinePolicy(validator)
                 .buildTraceExporter();
 
@@ -81,7 +83,7 @@ public final class TestUtils {
     public static Meter configureAzureMonitorMetricExporter(HttpPipelinePolicy policy) {
         MetricExporter exporter =
             new AzureMonitorExporterBuilder()
-                .connectionString(System.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING"))
+                .connectionString(CONNECTION_STRING)
                 .addHttpPipelinePolicy(policy)
                 .buildMetricExporter();
 

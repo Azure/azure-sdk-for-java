@@ -104,12 +104,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>uk.org.webcompere</groupId>
-      <artifactId>system-stubs-jupiter</artifactId>
-      <version>2.0.1</version> <!-- {x-version-update;uk.org.webcompere:system-stubs-jupiter;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk-testing</artifactId>
       <version>1.14.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
@@ -151,12 +145,6 @@
       <version>1.5.4</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>io.github.hakky54</groupId>
-      <artifactId>logcaptor</artifactId>
-      <version>2.7.9</version> <!-- {x-version-update;io.github.hakky54:logcaptor;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
 
   </dependencies>
 
@@ -172,10 +160,8 @@
               <includes>
                 <include>io.opentelemetry:opentelemetry-api:[1.14.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk:[1.14.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
-                <include>uk.org.webcompere:system-stubs-jupiter:[2.0.1]</include> <!-- {x-include-update;uk.org.webcompere:system-stubs-jupiter;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk-logs:[1.14.0-alpha]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-logs;external_dependency} -->
                 <include>com.github.spotbugs:spotbugs-annotations:[4.2.2]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
-                <include>io.github.hakky54:logcaptor:[2.7.9]</include> <!-- {x-include-update;io.github.hakky54:logcaptor;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
