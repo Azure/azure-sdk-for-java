@@ -19,8 +19,8 @@ import io.opentelemetry.sdk.metrics.data.MetricData;
 import io.opentelemetry.sdk.metrics.data.MetricDataType;
 import io.opentelemetry.sdk.metrics.data.PointData;
 import io.opentelemetry.sdk.resources.Resource;
-
 import reactor.util.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -170,13 +170,6 @@ public class MetricDataMapper {
         return Integer.MAX_VALUE;
     }
 
-    private static boolean isSuccess(Long statusCode, boolean captureHttpServer4xxAsError) {
-        if (captureHttpServer4xxAsError) {
-            return statusCode == null || statusCode < 400;
-        }
-        return statusCode == null || statusCode < 500;
-    }
-
     public void map(MetricData metricData, Consumer<TelemetryItem> consumer) {
         if (EXCLUDED_METRIC_NAMES.contains(metricData.getName())) {
             return;
@@ -198,6 +191,13 @@ public class MetricDataMapper {
         } else {
             logger.warning("metric data type {} is not supported yet.", metricData.getType());
         }
+    }
+
+    private static boolean isSuccess(Long statusCode, boolean captureHttpServer4xxAsError) {
+        if (captureHttpServer4xxAsError) {
+            return statusCode == null || statusCode < 400;
+        }
+        return statusCode == null || statusCode < 500;
     }
 
     private List<TelemetryItem> convertOtelMetricToAzureMonitorMetric(

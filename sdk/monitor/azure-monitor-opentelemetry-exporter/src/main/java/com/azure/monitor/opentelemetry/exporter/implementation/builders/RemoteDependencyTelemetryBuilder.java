@@ -4,8 +4,8 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.builders;
 
 import com.azure.monitor.opentelemetry.exporter.implementation.models.RemoteDependencyData;
-
 import reactor.util.annotation.Nullable;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,13 +20,13 @@ public final class RemoteDependencyTelemetryBuilder extends AbstractTelemetryBui
 
     private final RemoteDependencyData data;
 
+    public static RemoteDependencyTelemetryBuilder create() {
+        return new RemoteDependencyTelemetryBuilder(new RemoteDependencyData());
+    }
+
     private RemoteDependencyTelemetryBuilder(RemoteDependencyData data) {
         super(data, "RemoteDependency", "RemoteDependencyData");
         this.data = data;
-    }
-
-    public static RemoteDependencyTelemetryBuilder create() {
-        return new RemoteDependencyTelemetryBuilder(new RemoteDependencyData());
     }
 
     public void setId(String id) {
