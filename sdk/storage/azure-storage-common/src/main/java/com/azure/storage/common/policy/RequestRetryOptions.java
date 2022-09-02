@@ -11,6 +11,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.time.Duration;
@@ -293,11 +294,11 @@ public final class RequestRetryOptions {
     public static RequestRetryOptions fromConfiguration(Configuration configuration, String secondaryEndpoint) {
         return new RequestRetryOptions(
             RetryPolicyType.fromConfiguration(configuration),
-            getValueFromConfiguration(configuration, "AZURE_STORAGE_MAX_RETRIES", Integer::valueOf),
-            getValueFromConfiguration(configuration, "AZURE_STORAGE_REQUEST_TIMEOUT_SECONDS", Integer::valueOf),
-            getValueFromConfiguration(configuration, "AZURE_STORAGE_RETRY_DELAY_MS", Long::valueOf),
+            getValueFromConfiguration(configuration, Constants.ConfigurationConstants.RETRY_OPTIONS_MAX_RETRY, Integer::valueOf),
+            getValueFromConfiguration(configuration, Constants.ConfigurationConstants.RETRY_OPTIONS_TIMEOUT_SECONDS, Integer::valueOf),
+            getValueFromConfiguration(configuration, Constants.ConfigurationConstants.RETRY_OPTIONS_DELAY_MS, Long::valueOf),
             // compiler confused without final cast
-            (Long) getValueFromConfiguration(configuration, "AZURE_STORAGE_MAX_RETRY_DELAY_MS", Long::valueOf),
+            (Long) getValueFromConfiguration(configuration, Constants.ConfigurationConstants.RETRY_OPTIONS_MAX_DELAY_MS, Long::valueOf),
             secondaryEndpoint
         );
     }
