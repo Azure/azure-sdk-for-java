@@ -107,7 +107,7 @@ public class IntegrationTests {
 
         assertThat(localFileCache.getPersistedFilesCache().size()).isEqualTo(100);
 
-        String expected = Resources.readString("ungzip-source.txt");
+        String expected = Resources.readString("ungzip-source.txt").replace("\r\n", "\n");
 
         for (int i = 100; i > 0; i--) {
             LocalFileLoader.PersistedFile file = localFileLoader.loadTelemetriesFromDisk();
