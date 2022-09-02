@@ -771,16 +771,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                 .byPage(feedResponseContentSize);
         }
 
-        FeedResponse<JsonNode> feedResponse = feedResponseFlux
-            .publishOn(Schedulers.parallel())
-            .doOnNext(propertiesFeedResponse ->
-                CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                    propertiesFeedResponse.getCosmosDiagnostics(), propertiesFeedResponse))
-            .onErrorResume(throwable ->
-                CosmosExceptionUtils.exceptionHandler("Failed to query items", throwable,
-                    this.responseDiagnosticsProcessor))
-            .next()
-            .block();
+        FeedResponse<JsonNode> feedResponse = generateFeedResponse(feedResponseFlux);
 
         assert feedResponse != null;
         Iterator<JsonNode> it = feedResponse.getResults().iterator();
@@ -823,16 +814,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                         .queryItems(querySpec, cosmosQueryRequestOptions, JsonNode.class)
                         .byPage(feedResponse.getContinuationToken(), feedResponseContentSize);
 
-                feedResponse = feedResponseFlux
-                    .publishOn(Schedulers.parallel())
-                    .doOnNext(propertiesFeedResponse ->
-                        CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                            propertiesFeedResponse.getCosmosDiagnostics(), propertiesFeedResponse))
-                    .onErrorResume(throwable ->
-                        CosmosExceptionUtils.exceptionHandler("Failed to query items", throwable,
-                            this.responseDiagnosticsProcessor))
-                    .next()
-                    .block();
+                feedResponse = generateFeedResponse(feedResponseFlux);
 
                 assert feedResponse != null;
                 it = feedResponse.getResults().iterator();
@@ -1042,6 +1024,19 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
     private boolean canPublishEvent() {
         return this.applicationContext != null;
+    }
+
+    private FeedResponse<JsonNode> generateFeedResponse(Flux<FeedResponse<JsonNode>> feedResponseFlux) {
+        return feedResponseFlux
+            .publishOn(Schedulers.parallel())
+            .doOnNext(propertiesFeedResponse ->
+                CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
+                    propertiesFeedResponse.getCosmosDiagnostics(), propertiesFeedResponse))
+            .onErrorResume(throwable ->
+                CosmosExceptionUtils.exceptionHandler("Failed to query items", throwable,
+                    this.responseDiagnosticsProcessor))
+            .next()
+            .block();
     }
 
 }
