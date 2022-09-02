@@ -70,7 +70,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
 
     private DocumentAnalysisAsyncClient getDocumentAnalysisAsyncClient(HttpClient httpClient,
                                                                        DocumentAnalysisServiceVersion serviceVersion) {
-        return getDocumentAnalysisBuilder(httpClient, serviceVersion, true).buildAsyncClient();
+        return getDocumentAnalysisBuilder(httpClient, serviceVersion, false).buildAsyncClient();
     }
 
     // Receipt recognition

@@ -77,12 +77,12 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
 
     private DocumentAnalysisClient getDocumentAnalysisClient(HttpClient httpClient,
                                                              DocumentAnalysisServiceVersion serviceVersion) {
-        return getDocumentAnalysisBuilder(httpClient, serviceVersion, true).buildClient();
+        return getDocumentAnalysisBuilder(httpClient, serviceVersion, false).buildClient();
     }
 
     private DocumentModelAdministrationClient getDocumentModelAdminClient(HttpClient httpClient,
                                                                           DocumentAnalysisServiceVersion serviceVersion) {
-        return getDocumentModelAdminClientBuilder(httpClient, serviceVersion, true).buildClient();
+        return getDocumentModelAdminClientBuilder(httpClient, serviceVersion, false).buildClient();
     }
 
     // Receipt recognition
