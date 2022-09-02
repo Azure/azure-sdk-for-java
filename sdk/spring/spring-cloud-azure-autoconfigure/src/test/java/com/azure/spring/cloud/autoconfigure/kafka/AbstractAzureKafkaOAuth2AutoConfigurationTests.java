@@ -6,21 +6,20 @@ import java.util.Map;
 
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration;
+
 import org.junit.jupiter.api.Test;
 
-import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.kafka.DefaultKafkaConsumerFactoryCustomizer;
 import org.springframework.boot.autoconfigure.kafka.DefaultKafkaProducerFactoryCustomizer;
-import org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.assertj.AssertableApplicationContext;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.kafka.core.KafkaTemplate;
 
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaAutoconfigurationUtils.SASL_JAAS_CONFIG_OAUTH;
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaAutoconfigurationUtils.SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH;
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaAutoconfigurationUtils.SASL_MECHANISM_OAUTH;
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaAutoconfigurationUtils.SECURITY_PROTOCOL_CONFIG_SASL;
+import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.SASL_JAAS_CONFIG_OAUTH;
+import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH;
+import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.SASL_MECHANISM_OAUTH;
+import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.SECURITY_PROTOCOL_CONFIG_SASL;
 import static org.apache.kafka.clients.CommonClientConfigs.SECURITY_PROTOCOL_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_JAAS_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_LOGIN_CALLBACK_HANDLER_CLASS;
@@ -36,35 +35,21 @@ abstract class AbstractAzureKafkaOAuth2AutoConfigurationTests {
     protected static final String CLIENT_ID = "azure.credential.client-id";
     protected static final String MANAGED_IDENTITY_ENABLED = "azure.credential.managed-identity-enabled";
 
-    protected final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AzureEventHubsKafkaOAuth2AutoConfiguration.class,
-                    AzureGlobalPropertiesAutoConfiguration.class, AzureTokenCredentialAutoConfiguration.class,
-                    KafkaAutoConfiguration.class, AzureKafkaSpringCloudStreamConfiguration.class));
-
+    protected abstract ApplicationContextRunner getContextRunner();
 
     @Test
     void shouldNotConfigureWithoutKafkaTemplate() {
-        this.contextRunner
+        getContextRunner()
                 .withClassLoader(new FilteredClassLoader(KafkaTemplate.class))
                 .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsKafkaOAuth2AutoConfiguration.class));
     }
 
     @Test
     void shouldNotConfigureWhenKafkaDisabled() {
-        this.contextRunner
+        getContextRunner()
                 .withPropertyValues("spring.cloud.azure.eventhubs.kafka.enabled=false")
                 .run(context -> {
                     assertThat(context).doesNotHaveBean(AzureEventHubsKafkaOAuth2AutoConfiguration.class);
-                });
-    }
-
-    @Test
-    void shouldConfigureFactoryCustomizersAndBPP() {
-        this.contextRunner
-                .run(context -> {
-                    assertThat(context).hasSingleBean(DefaultKafkaConsumerFactoryCustomizer.class);
-                    assertThat(context).hasSingleBean(DefaultKafkaProducerFactoryCustomizer.class);
-                    assertThat(context).hasSingleBean(KafkaBinderConfigurationPropertiesBeanPostProcessor.class);
                 });
     }
 
@@ -89,7 +74,7 @@ abstract class AbstractAzureKafkaOAuth2AutoConfigurationTests {
     }
 
     protected ApplicationContextRunner configureCustomConfiguration() {
-        return this.contextRunner;
+        return getContextRunner();
     }
 
     protected abstract void assertBootPropertiesConfigureCorrectly(AssertableApplicationContext context);
