@@ -19,6 +19,9 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.net.URISyntaxException;
 import java.net.http.HttpRequest.BodyPublisher;
 import java.nio.ByteBuffer;
@@ -29,6 +32,7 @@ import java.util.concurrent.Flow;
 
 import static java.net.http.HttpRequest.BodyPublishers.fromPublisher;
 import static java.net.http.HttpRequest.BodyPublishers.noBody;
+import static java.net.http.HttpResponse.BodyHandlers.ofInputStream;
 import static java.net.http.HttpResponse.BodyHandlers.ofPublisher;
 
 /**
@@ -61,71 +65,91 @@ class JdkAsyncHttpClient implements HttpClient {
     @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
         boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
-        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
 
-        return toJdkHttpRequest(request, progressReporter)
+        return Mono.fromCallable(() -> toJdkHttpRequest(request, context))
             .flatMap(jdkRequest -> Mono.fromCompletionStage(jdkHttpClient.sendAsync(jdkRequest, ofPublisher()))
-                .flatMap(innerResponse -> {
+                .flatMap(jdKResponse -> {
                     if (eagerlyReadResponse) {
-                        int statusCode = innerResponse.statusCode();
-                        HttpHeaders headers = fromJdkHttpHeaders(innerResponse.headers());
+                        HttpHeaders headers = fromJdkHttpHeaders(jdKResponse.headers());
+                        int statusCode = jdKResponse.statusCode();
 
                         return FluxUtil.collectBytesFromNetworkResponse(JdkFlowAdapter
-                            .flowPublisherToFlux(innerResponse.body())
+                            .flowPublisherToFlux(jdKResponse.body())
                             .flatMapSequential(Flux::fromIterable), headers)
-                            .map(bytes -> new BufferedJdkHttpResponse(request, statusCode, headers, bytes));
-                    } else {
-                        return Mono.just(new JdkHttpResponse(request, innerResponse));
+                            .map(bytes -> new JdkSyncHttpResponse(request, statusCode, headers, bytes));
                     }
+
+                    return Mono.just(new JdkAsyncHttpResponse(request, jdKResponse));
                 }));
+    }
+
+    @Override
+    public HttpResponse sendSync(HttpRequest request, Context context) {
+        boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
+
+        java.net.http.HttpRequest jdkRequest = toJdkHttpRequest(request, context);
+        try {
+            java.net.http.HttpResponse<InputStream> jdKResponse = jdkHttpClient.send(jdkRequest, ofInputStream());
+            if (eagerlyReadResponse) {
+                return new JdkSyncHttpResponse(request, jdKResponse).buffer();
+            }
+
+            return new JdkSyncHttpResponse(request, jdKResponse);
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+        } catch (InterruptedException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 
     /**
      * Converts the given azure-core request to the JDK HttpRequest type.
      *
      * @param request the azure-core request
-     * @return the Mono emitting HttpRequest
+     * @return the HttpRequest
      */
-    private Mono<java.net.http.HttpRequest> toJdkHttpRequest(HttpRequest request, ProgressReporter progressReporter) {
-        return Mono.fromCallable(() -> {
-            final java.net.http.HttpRequest.Builder builder = java.net.http.HttpRequest.newBuilder();
-            try {
-                builder.uri(request.getUrl().toURI());
-            } catch (URISyntaxException e) {
-                throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
-            }
-            final HttpHeaders headers = request.getHeaders();
-            if (headers != null) {
-                for (HttpHeader header : headers) {
-                    final String headerName = header.getName();
-                    if (!restrictedHeaders.contains(headerName)) {
-                        header.getValuesList().forEach(headerValue -> builder.header(headerName, headerValue));
-                    } else {
-                        LOGGER.warning("The header '" + headerName + "' is restricted by default in JDK HttpClient 12 "
-                            + "and above. This header can be added to allow list in JAVA_HOME/conf/net.properties "
-                            + "or in System.setProperty() or in Configuration. Use the key 'jdk.httpclient"
-                            + ".allowRestrictedHeaders' and a comma separated list of header names.");
-                    }
+    private java.net.http.HttpRequest toJdkHttpRequest(HttpRequest request, Context context) {
+        boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
+        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
+
+
+        final java.net.http.HttpRequest.Builder builder = java.net.http.HttpRequest.newBuilder();
+        try {
+            builder.uri(request.getUrl().toURI());
+        } catch (URISyntaxException e) {
+            throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
+        }
+        final HttpHeaders headers = request.getHeaders();
+        if (headers != null) {
+            for (HttpHeader header : headers) {
+                final String headerName = header.getName();
+                if (!restrictedHeaders.contains(headerName)) {
+                    header.getValuesList().forEach(headerValue -> builder.header(headerName, headerValue));
+                } else {
+                    LOGGER.warning("The header '" + headerName + "' is restricted by default in JDK HttpClient 12 "
+                        + "and above. This header can be added to allow list in JAVA_HOME/conf/net.properties "
+                        + "or in System.setProperty() or in Configuration. Use the key 'jdk.httpclient"
+                        + ".allowRestrictedHeaders' and a comma separated list of header names.");
                 }
             }
-            switch (request.getHttpMethod()) {
-                case GET:
-                    return builder.GET().build();
-                case HEAD:
-                    return builder.method("HEAD", noBody()).build();
-                default:
-                    final String contentLength = request.getHeaders().getValue("content-length");
-                    Flux<ByteBuffer> body = request.getBody();
-                    if (progressReporter != null) {
-                        body = body.map(buffer -> {
-                            progressReporter.reportProgress(buffer.remaining());
-                            return buffer;
-                        });
-                    }
-                    final BodyPublisher bodyPublisher = toBodyPublisher(body, contentLength);
-                    return builder.method(request.getHttpMethod().toString(), bodyPublisher).build();
-            }
-        });
+        }
+        switch (request.getHttpMethod()) {
+            case GET:
+                return builder.GET().build();
+            case HEAD:
+                return builder.method("HEAD", noBody()).build();
+            default:
+                final String contentLength = request.getHeaders().getValue("content-length");
+                Flux<ByteBuffer> body = request.getBody();
+                if (progressReporter != null) {
+                    body = body.map(buffer -> {
+                        progressReporter.reportProgress(buffer.remaining());
+                        return buffer;
+                    });
+                }
+                final BodyPublisher bodyPublisher = toBodyPublisher(body, contentLength);
+                return builder.method(request.getHttpMethod().toString(), bodyPublisher).build();
+        }
     }
 
     /**
