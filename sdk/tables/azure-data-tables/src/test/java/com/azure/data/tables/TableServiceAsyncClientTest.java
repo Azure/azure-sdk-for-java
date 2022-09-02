@@ -88,7 +88,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
 
 
     @Test
-    public void serviceAsyncClientCreateTableFailsWithIllegalArgumentExceptionIfTableNameInURI() {
+    public void serviceAsyncClientCreateTableFailsWithIllegalArgumentExceptionIfTableNameInUri() {
         // Arrange
         String assertionString = "Table name found within client endpoint URI. Remove table name from endpoint.";
         String tableName = testResourceNamer.randomName("test", 20);
