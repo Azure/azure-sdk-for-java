@@ -144,7 +144,7 @@ class DefaultTokenCredentialProviderTest {
     }
 
     @Test
-    void testManagedIdentityCredential(){
+    void testManagedIdentityCredential() {
         // setUp
         TokenCredentialProviderOptions options = new TokenCredentialProviderOptions();
         options.setManagedIdentityEnabled(true);
