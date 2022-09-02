@@ -4,8 +4,8 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.builders;
 
 import com.azure.monitor.opentelemetry.exporter.implementation.models.AvailabilityData;
-
 import reactor.util.annotation.Nullable;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,13 +18,13 @@ public final class AvailabilityTelemetryBuilder extends AbstractTelemetryBuilder
 
     private final AvailabilityData data;
 
+    public static AvailabilityTelemetryBuilder create() {
+        return new AvailabilityTelemetryBuilder(new AvailabilityData());
+    }
+
     private AvailabilityTelemetryBuilder(AvailabilityData data) {
         super(data, "Availability", "AvailabilityData");
         this.data = data;
-    }
-
-    public static AvailabilityTelemetryBuilder create() {
-        return new AvailabilityTelemetryBuilder(new AvailabilityData());
     }
 
     public void setId(String id) {

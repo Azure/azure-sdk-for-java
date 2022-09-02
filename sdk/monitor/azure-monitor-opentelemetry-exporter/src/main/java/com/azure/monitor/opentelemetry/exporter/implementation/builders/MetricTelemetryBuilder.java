@@ -16,11 +16,6 @@ public final class MetricTelemetryBuilder extends AbstractTelemetryBuilder {
 
     private final MetricsData data;
 
-    private MetricTelemetryBuilder(MetricsData data) {
-        super(data, "Metric", "MetricData");
-        this.data = data;
-    }
-
     public static MetricTelemetryBuilder create() {
         return new MetricTelemetryBuilder(new MetricsData());
     }
@@ -37,6 +32,11 @@ public final class MetricTelemetryBuilder extends AbstractTelemetryBuilder {
         telemetryBuilder.setTime(FormattedTime.offSetDateTimeFromNow());
 
         return telemetryBuilder;
+    }
+
+    private MetricTelemetryBuilder(MetricsData data) {
+        super(data, "Metric", "MetricData");
+        this.data = data;
     }
 
     public void setMetricPoint(MetricPointBuilder point) {

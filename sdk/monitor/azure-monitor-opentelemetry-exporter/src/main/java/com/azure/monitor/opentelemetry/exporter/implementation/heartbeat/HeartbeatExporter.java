@@ -35,6 +35,7 @@ public class HeartbeatExporter {
      * The name of the heartbeat metric.
      */
     private static final String HEARTBEAT_SYNTHETIC_METRIC_NAME = "HeartbeatState";
+
     /**
      * Map to hold heartbeat properties.
      */
@@ -43,29 +44,34 @@ public class HeartbeatExporter {
      * Telemetry item exporter used to send heartbeat.
      */
     private final Consumer<List<TelemetryItem>> telemetryItemsConsumer;
+
     /**
      * Telemetry builder consumer used to populate defaults properties.
      */
     private final BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer;
+
     /**
      * ThreadPool used for adding properties to concurrent dictionary.
      */
     private final ExecutorService propertyUpdateService;
+
     /**
      * Threadpool used to send data heartbeat telemetry.
      */
     private final ScheduledExecutorService heartBeatSenderService;
-    /**
-     * The counter for heartbeat sent to portal.
-     */
-    private long heartbeatsSent;
+
+    public static void start(
+        long intervalSeconds,
+        BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer,
+        Consumer<List<TelemetryItem>> telemetryItemsConsumer) {
+        new HeartbeatExporter(intervalSeconds, telemetryInitializer, telemetryItemsConsumer);
+    }
 
     public HeartbeatExporter(
         long intervalSeconds,
         BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer,
         Consumer<List<TelemetryItem>> telemetryItemsConsumer) {
         this.heartbeatProperties = new ConcurrentHashMap<>();
-        this.heartbeatsSent = 0;
         this.propertyUpdateService =
             Executors.newCachedThreadPool(
                 ThreadPoolUtils.createDaemonThreadFactory(
@@ -84,13 +90,6 @@ public class HeartbeatExporter {
 
         heartBeatSenderService.scheduleAtFixedRate(
             this::send, intervalSeconds, intervalSeconds, TimeUnit.SECONDS);
-    }
-
-    public static void start(
-        long intervalSeconds,
-        BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer,
-        Consumer<List<TelemetryItem>> telemetryItemsConsumer) {
-        new HeartbeatExporter(intervalSeconds, telemetryInitializer, telemetryItemsConsumer);
     }
 
     public boolean addHeartBeatProperty(

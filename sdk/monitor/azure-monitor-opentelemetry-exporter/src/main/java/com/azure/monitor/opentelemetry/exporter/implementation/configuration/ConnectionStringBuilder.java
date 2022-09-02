@@ -35,6 +35,17 @@ class ConnectionStringBuilder {
         }
     }
 
+    ConnectionStringBuilder setConnectionString(String connectionString) {
+        originalString = connectionString;
+        mapToConnectionConfiguration(getKeyValuePairs(connectionString));
+        return this;
+    }
+
+    ConnectionString build() {
+        return new ConnectionString(
+            instrumentationKey, ingestionEndpoint, liveEndpoint, profilerEndpoint, originalString);
+    }
+
     private static Map<String, String> getKeyValuePairs(String connectionString) {
         if (connectionString.length() > CONNECTION_STRING_MAX_LENGTH) { // guard against malicious input
             throw new IllegalArgumentException(
@@ -65,34 +76,6 @@ class ConnectionStringBuilder {
             }
         }
         return keyValues;
-    }
-
-    private static URL toUrlOrThrow(String url, String field) {
-        if (!url.endsWith("/")) {
-            url += "/";
-        }
-        try {
-            URL result = new URL(url);
-            String scheme = result.getProtocol();
-            if (!"http".equalsIgnoreCase(scheme) && !"https".equalsIgnoreCase(scheme)) {
-                throw new IllegalArgumentException(
-                    field + " must specify supported protocol, either 'http' or 'https': \"" + url + "\"");
-            }
-            return result;
-        } catch (MalformedURLException e) {
-            throw new IllegalArgumentException(field + " is invalid: \"" + url + "\"", e);
-        }
-    }
-
-    ConnectionStringBuilder setConnectionString(String connectionString) {
-        originalString = connectionString;
-        mapToConnectionConfiguration(getKeyValuePairs(connectionString));
-        return this;
-    }
-
-    ConnectionString build() {
-        return new ConnectionString(
-            instrumentationKey, ingestionEndpoint, liveEndpoint, profilerEndpoint, originalString);
     }
 
     private void mapToConnectionConfiguration(Map<String, String> kvps) {
@@ -143,28 +126,45 @@ class ConnectionStringBuilder {
         this.profilerEndpoint = toUrlOrThrow(profilerEndpoint, Keywords.PROFILER_ENDPOINT);
     }
 
+    private static URL toUrlOrThrow(String url, String field) {
+        if (!url.endsWith("/")) {
+            url += "/";
+        }
+        try {
+            URL result = new URL(url);
+            String scheme = result.getProtocol();
+            if (!"http".equalsIgnoreCase(scheme) && !"https".equalsIgnoreCase(scheme)) {
+                throw new IllegalArgumentException(
+                    field + " must specify supported protocol, either 'http' or 'https': \"" + url + "\"");
+            }
+            return result;
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException(field + " is invalid: \"" + url + "\"", e);
+        }
+    }
+
     /**
      * All tokens are lowercase. Parsing should be case insensitive.
      */
     // visible for testing
     static class Keywords {
+        private Keywords() {
+        }
+
         static final String INSTRUMENTATION_KEY = "InstrumentationKey";
         static final String ENDPOINT_SUFFIX = "EndpointSuffix";
         static final String INGESTION_ENDPOINT = "IngestionEndpoint";
         static final String LIVE_ENDPOINT = "LiveEndpoint";
         static final String PROFILER_ENDPOINT = "ProfilerEndpoint";
-
-        private Keywords() {
-        }
     }
 
     // visible for testing
     static class EndpointPrefixes {
+        private EndpointPrefixes() {
+        }
+
         static final String INGESTION_ENDPOINT_PREFIX = "dc";
         static final String LIVE_ENDPOINT_PREFIX = "live";
         static final String PROFILER_ENDPOINT_PREFIX = "profiler";
-
-        private EndpointPrefixes() {
-        }
     }
 }

@@ -16,12 +16,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ExceptionsTest {
 
-    private static String toString(Throwable t) {
-        StringWriter out = new StringWriter();
-        t.printStackTrace(new PrintWriter(out));
-        return out.toString();
-    }
-
     @Test
     public void testMinimalParse() {
         // given
@@ -84,6 +78,12 @@ public class ExceptionsTest {
         TelemetryExceptionDetails details = list.get(0).build();
         assertThat(details.getTypeName()).isEqualTo(ProblematicException.class.getName());
         assertThat(details.getMessage()).isEqualTo(ProblematicException.class.getName());
+    }
+
+    private static String toString(Throwable t) {
+        StringWriter out = new StringWriter();
+        t.printStackTrace(new PrintWriter(out));
+        return out.toString();
     }
 
     @SuppressWarnings("OverrideThrowableToString")

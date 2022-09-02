@@ -13,9 +13,10 @@ class QuickPulseDataSender implements Runnable {
 
     private final QuickPulseNetworkHelper networkHelper = new QuickPulseNetworkHelper();
     private final HttpPipeline httpPipeline;
-    private final ArrayBlockingQueue<HttpRequest> sendQueue;
     private volatile QuickPulseHeaderInfo quickPulseHeaderInfo;
     private long lastValidTransmission = 0;
+
+    private final ArrayBlockingQueue<HttpRequest> sendQueue;
 
     QuickPulseDataSender(HttpPipeline httpPipeline, ArrayBlockingQueue<HttpRequest> sendQueue) {
         this.httpPipeline = httpPipeline;

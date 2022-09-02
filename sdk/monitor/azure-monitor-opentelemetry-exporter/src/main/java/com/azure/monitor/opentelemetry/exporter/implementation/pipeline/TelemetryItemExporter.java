@@ -47,8 +47,21 @@ public class TelemetryItemExporter {
 
     private static final OperationLogger encodeBatchOperationLogger =
         new OperationLogger(TelemetryItemExporter.class, "Encoding telemetry batch into json");
+
+    private static ObjectMapper createObjectMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        // it's important to pass in the "agent class loader" since TelemetryItemPipeline is initialized
+        // lazily and can be initialized via an application thread, in which case the thread context
+        // class loader is used to look up jsr305 module and its not found
+        mapper.registerModules(ObjectMapper.findModules(TelemetryItemExporter.class.getClassLoader()));
+        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        return mapper;
+    }
+
     private final TelemetryPipeline telemetryPipeline;
     private final TelemetryPipelineListener listener;
+
     private final Set<CompletableResultCode> activeExportResults =
         Collections.newSetFromMap(new ConcurrentHashMap<>());
 
@@ -57,25 +70,6 @@ public class TelemetryItemExporter {
         TelemetryPipeline telemetryPipeline, TelemetryPipelineListener listener) {
         this.telemetryPipeline = telemetryPipeline;
         this.listener = listener;
-    }
-
-    private static ObjectMapper createObjectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        // it's important to pass in the "agent class loader" since TelemetryItemPipeline is initialized
-        // lazily and can be initialized via an application thread, in which case the thread context
-        // class loader is used to look up jsr305 module, and it's not found
-        mapper.registerModules(ObjectMapper.findModules(TelemetryItemExporter.class.getClassLoader()));
-        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        return mapper;
-    }
-
-    private static void writeTelemetryItems(JsonGenerator jg, List<TelemetryItem> telemetryItems)
-        throws IOException {
-        jg.setRootValueSeparator(new SerializedString("\n"));
-        for (TelemetryItem telemetryItem : telemetryItems) {
-            mapper.writeValue(jg, telemetryItem);
-        }
     }
 
     public CompletableResultCode send(List<TelemetryItem> telemetryItems) {
@@ -159,5 +153,13 @@ public class TelemetryItemExporter {
             byteBuffer.flip();
         }
         return byteBuffers;
+    }
+
+    private static void writeTelemetryItems(JsonGenerator jg, List<TelemetryItem> telemetryItems)
+        throws IOException {
+        jg.setRootValueSeparator(new SerializedString("\n"));
+        for (TelemetryItem telemetryItem : telemetryItems) {
+            mapper.writeValue(jg, telemetryItem);
+        }
     }
 }

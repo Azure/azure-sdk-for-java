@@ -19,6 +19,7 @@ import static java.util.Collections.singletonList;
 class LocalFileSender implements Runnable {
 
     private static final ClientLogger logger = new ClientLogger(LocalFileSender.class);
+
     private final LocalFileLoader localFileLoader;
     private final TelemetryPipeline telemetryPipeline;
     private final ScheduledExecutorService scheduledExecutor =

@@ -22,9 +22,6 @@ public class HeartbeatDefaultPayload {
         defaultPayloadProviders.add(new WebAppsHeartbeatProvider());
     }
 
-    private HeartbeatDefaultPayload() {
-    }
-
     /**
      * Callable which delegates calls to providers for adding payload.
      *
@@ -34,11 +31,14 @@ public class HeartbeatDefaultPayload {
     public static Runnable populateDefaultPayload(HeartbeatExporter provider) {
         return new Runnable() {
             @Override
-            public void run()  {
+            public void run() {
                 for (HeartBeatPayloadProviderInterface payloadProvider : defaultPayloadProviders) {
                     payloadProvider.setDefaultPayload(provider).run();
                 }
             }
         };
+    }
+
+    private HeartbeatDefaultPayload() {
     }
 }

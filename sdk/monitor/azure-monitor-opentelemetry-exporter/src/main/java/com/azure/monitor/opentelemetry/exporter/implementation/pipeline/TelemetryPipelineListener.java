@@ -12,6 +12,12 @@ import static java.util.Arrays.asList;
 
 public interface TelemetryPipelineListener {
 
+    void onResponse(TelemetryPipelineRequest request, TelemetryPipelineResponse response);
+
+    void onException(TelemetryPipelineRequest request, String errorMessage, Throwable throwable);
+
+    CompletableResultCode shutdown();
+
     static TelemetryPipelineListener composite(TelemetryPipelineListener... delegates) {
         return new CompositeTelemetryPipelineListener(asList(delegates));
     }
@@ -19,12 +25,6 @@ public interface TelemetryPipelineListener {
     static TelemetryPipelineListener noop() {
         return NoopTelemetryPipelineListener.INSTANCE;
     }
-
-    void onResponse(TelemetryPipelineRequest request, TelemetryPipelineResponse response);
-
-    void onException(TelemetryPipelineRequest request, String errorMessage, Throwable throwable);
-
-    CompletableResultCode shutdown();
 
     class CompositeTelemetryPipelineListener implements TelemetryPipelineListener {
 

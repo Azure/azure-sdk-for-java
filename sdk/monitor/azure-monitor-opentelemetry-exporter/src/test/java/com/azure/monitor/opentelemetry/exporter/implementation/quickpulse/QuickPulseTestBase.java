@@ -44,30 +44,6 @@ public class QuickPulseTestBase extends TestBase {
     private static final String APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE =
         "https://monitor.azure.com//.default";
 
-    public static TelemetryItem createRequestTelemetry(
-        String name, Date timestamp, long durationMillis, String responseCode, boolean success) {
-        RequestTelemetryBuilder telemetryBuilder = RequestTelemetryBuilder.create();
-        telemetryBuilder.addProperty("customProperty", "customValue");
-        telemetryBuilder.setName(name);
-        telemetryBuilder.setDuration(FormattedDuration.fromNanos(MILLISECONDS.toNanos(durationMillis)));
-        telemetryBuilder.setResponseCode(responseCode);
-        telemetryBuilder.setSuccess(success);
-        telemetryBuilder.setUrl("foo");
-        telemetryBuilder.setTime(FormattedTime.offSetDateTimeFromEpochMillis(timestamp.getTime()));
-        return telemetryBuilder.build();
-    }
-
-    public static TelemetryItem createRemoteDependencyTelemetry(
-        String name, String command, long durationMillis, boolean success) {
-        RemoteDependencyTelemetryBuilder telemetryBuilder = RemoteDependencyTelemetryBuilder.create();
-        telemetryBuilder.addProperty("customProperty", "customValue");
-        telemetryBuilder.setName(name);
-        telemetryBuilder.setData(command);
-        telemetryBuilder.setDuration(FormattedDuration.fromNanos(MILLISECONDS.toNanos(durationMillis)));
-        telemetryBuilder.setSuccess(success);
-        return telemetryBuilder.build();
-    }
-
     @Override
     @BeforeEach
     public void setupTest(TestInfo testInfo) {
@@ -118,6 +94,30 @@ public class QuickPulseTestBase extends TestBase {
             .httpClient(httpClient)
             .policies(allPolicies.toArray(new HttpPipelinePolicy[0]))
             .build();
+    }
+
+    public static TelemetryItem createRequestTelemetry(
+        String name, Date timestamp, long durationMillis, String responseCode, boolean success) {
+        RequestTelemetryBuilder telemetryBuilder = RequestTelemetryBuilder.create();
+        telemetryBuilder.addProperty("customProperty", "customValue");
+        telemetryBuilder.setName(name);
+        telemetryBuilder.setDuration(FormattedDuration.fromNanos(MILLISECONDS.toNanos(durationMillis)));
+        telemetryBuilder.setResponseCode(responseCode);
+        telemetryBuilder.setSuccess(success);
+        telemetryBuilder.setUrl("foo");
+        telemetryBuilder.setTime(FormattedTime.offSetDateTimeFromEpochMillis(timestamp.getTime()));
+        return telemetryBuilder.build();
+    }
+
+    public static TelemetryItem createRemoteDependencyTelemetry(
+        String name, String command, long durationMillis, boolean success) {
+        RemoteDependencyTelemetryBuilder telemetryBuilder = RemoteDependencyTelemetryBuilder.create();
+        telemetryBuilder.addProperty("customProperty", "customValue");
+        telemetryBuilder.setName(name);
+        telemetryBuilder.setData(command);
+        telemetryBuilder.setDuration(FormattedDuration.fromNanos(MILLISECONDS.toNanos(durationMillis)));
+        telemetryBuilder.setSuccess(success);
+        return telemetryBuilder.build();
     }
 
     static class ValidationPolicy implements HttpPipelinePolicy {

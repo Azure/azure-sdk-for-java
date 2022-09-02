@@ -6,6 +6,7 @@ package com.azure.monitor.opentelemetry.exporter.implementation.heartbeat;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
 
@@ -17,11 +18,11 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 
 class HeartbeatTests {
-    @SuppressWarnings("unchecked")
-    private final Consumer<List<TelemetryItem>> telemetryItemsConsumer = mock(Consumer.class);
+
+    @Mock
+    private Consumer<List<TelemetryItem>> telemetryItemsConsumer;
 
     @Test
     void heartBeatPayloadContainsDataByDefault() throws InterruptedException {
@@ -78,7 +79,6 @@ class HeartbeatTests {
         assertThat(data.getMetrics().get(0).getValue()).isEqualTo(2);
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     void sentHeartbeatContainsExpectedDefaultFields() throws Exception {
         HeartbeatExporter mockProvider = Mockito.mock(HeartbeatExporter.class);
@@ -99,6 +99,7 @@ class HeartbeatTests {
         HeartbeatDefaultPayload.populateDefaultPayload(mockProvider).run();
         Field field = defaultProvider.getClass().getDeclaredField("defaultFields");
         field.setAccessible(true);
+        @SuppressWarnings("unchecked")
         Set<String> defaultFields = (Set<String>) field.get(defaultProvider);
         for (String fieldName : defaultFields) {
             assertThat(props.containsKey(fieldName)).isTrue();
@@ -117,7 +118,6 @@ class HeartbeatTests {
         assertThat(provider.addHeartBeatProperty("test01", "test val 2", true)).isFalse();
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     void cannotAddUnknownDefaultProperty() throws Exception {
         DefaultHeartBeatPropertyProvider base = new DefaultHeartBeatPropertyProvider();
@@ -125,6 +125,7 @@ class HeartbeatTests {
 
         Field field = base.getClass().getDeclaredField("defaultFields");
         field.setAccessible(true);
+        @SuppressWarnings("unchecked")
         Set<String> defaultFields = (Set<String>) field.get(base);
         defaultFields.add(testKey);
 

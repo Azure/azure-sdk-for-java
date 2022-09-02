@@ -14,17 +14,6 @@ import java.util.stream.Stream;
  * Unit tests for {@link AzureMonitorExporterBuilder}.
  */
 public class AzureMonitorExporterBuilderTest {
-    private static Stream<Arguments> getInvalidConnectionStrings() {
-        return Stream.of(
-            Arguments.of(null, NullPointerException.class),
-            Arguments.of("", IllegalArgumentException.class),
-            Arguments.of("InstrumentationKey=;IngestionEndpoint=url", IllegalArgumentException.class),
-            Arguments.of("Instrumentation=iKey;IngestionEndpoint=url", IllegalArgumentException.class),
-            Arguments.of("InstrumentationKey;IngestionEndpoint=url", IllegalArgumentException.class),
-            Arguments.of("InstrumentationKey;IngestionEndpoint=url", IllegalArgumentException.class),
-            Arguments.of("IngestionEndpoint=url", IllegalArgumentException.class));
-    }
-
     @ParameterizedTest
     @MethodSource("getInvalidConnectionStrings")
     public <T extends RuntimeException> void testInvalidConnectionStrings(
@@ -35,5 +24,16 @@ public class AzureMonitorExporterBuilderTest {
                 new AzureMonitorExporterBuilder()
                     .connectionString(connectionString)
                     .buildTraceExporter());
+    }
+
+    private static Stream<Arguments> getInvalidConnectionStrings() {
+        return Stream.of(
+            Arguments.of(null, NullPointerException.class),
+            Arguments.of("", IllegalArgumentException.class),
+            Arguments.of("InstrumentationKey=;IngestionEndpoint=url", IllegalArgumentException.class),
+            Arguments.of("Instrumentation=iKey;IngestionEndpoint=url", IllegalArgumentException.class),
+            Arguments.of("InstrumentationKey;IngestionEndpoint=url", IllegalArgumentException.class),
+            Arguments.of("InstrumentationKey;IngestionEndpoint=url", IllegalArgumentException.class),
+            Arguments.of("IngestionEndpoint=url", IllegalArgumentException.class));
     }
 }

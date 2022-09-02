@@ -23,11 +23,6 @@ public class LocalFileCacheTests {
     @TempDir
     File tempFolder;
 
-    private static File createTempFile(File folder) throws IOException {
-        String prefix = System.currentTimeMillis() + "-";
-        return File.createTempFile(prefix, null, folder);
-    }
-
     @BeforeEach
     public void setup() throws Exception {
         List<File> unsortedFiles = new ArrayList<>();
@@ -61,5 +56,10 @@ public class LocalFileCacheTests {
             Long expectedLastModified = sortedLastModified.poll();
             assertThat(actualLastModified).isEqualTo(expectedLastModified);
         }
+    }
+
+    private static File createTempFile(File folder) throws IOException {
+        String prefix = System.currentTimeMillis() + "-";
+        return File.createTempFile(prefix, null, folder);
     }
 }

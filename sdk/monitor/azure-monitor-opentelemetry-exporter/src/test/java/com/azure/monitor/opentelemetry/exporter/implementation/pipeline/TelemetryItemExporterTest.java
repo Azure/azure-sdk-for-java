@@ -51,6 +51,15 @@ public class TelemetryItemExporterTest {
     @TempDir
     File tempFolder;
 
+    private TelemetryItemExporter getExporter() {
+        HttpPipelineBuilder pipelineBuilder = new HttpPipelineBuilder().httpClient(recordingHttpClient);
+        TelemetryPipeline telemetryPipeline = new TelemetryPipeline(pipelineBuilder.build());
+
+        return new TelemetryItemExporter(
+            telemetryPipeline,
+            new LocalStorageTelemetryPipelineListener(50, tempFolder, telemetryPipeline, null, false));
+    }
+
     private static String getRequestBodyString(Flux<ByteBuffer> requestBody) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         byte[] compressed = FluxUtil.collectBytesInByteBufferStream(requestBody).block();
@@ -74,15 +83,6 @@ public class TelemetryItemExporterTest {
             // style guide.
         }
         return requestBodyString;
-    }
-
-    private TelemetryItemExporter getExporter() {
-        HttpPipelineBuilder pipelineBuilder = new HttpPipelineBuilder().httpClient(recordingHttpClient);
-        TelemetryPipeline telemetryPipeline = new TelemetryPipeline(pipelineBuilder.build());
-
-        return new TelemetryItemExporter(
-            telemetryPipeline,
-            new LocalStorageTelemetryPipelineListener(50, tempFolder, telemetryPipeline, null, false));
     }
 
     @BeforeEach

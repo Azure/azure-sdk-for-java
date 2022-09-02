@@ -16,12 +16,6 @@ public final class StatsbeatTelemetryBuilder extends AbstractTelemetryBuilder {
 
     private final MetricsData data;
 
-    private StatsbeatTelemetryBuilder(MetricsData data) {
-        // not using the default telemetry name for metrics (which is "Metric")
-        super(data, "Statsbeat", "MetricData");
-        this.data = data;
-    }
-
     public static StatsbeatTelemetryBuilder create(String name, double value) {
         StatsbeatTelemetryBuilder telemetryBuilder = new StatsbeatTelemetryBuilder(new MetricsData());
 
@@ -33,6 +27,12 @@ public final class StatsbeatTelemetryBuilder extends AbstractTelemetryBuilder {
         telemetryBuilder.setTime(FormattedTime.offSetDateTimeFromNow());
 
         return telemetryBuilder;
+    }
+
+    private StatsbeatTelemetryBuilder(MetricsData data) {
+        // not using the default telemetry name for metrics (which is "Metric")
+        super(data, "Statsbeat", "MetricData");
+        this.data = data;
     }
 
     public void setMetricDataPoint(MetricDataPoint point) {

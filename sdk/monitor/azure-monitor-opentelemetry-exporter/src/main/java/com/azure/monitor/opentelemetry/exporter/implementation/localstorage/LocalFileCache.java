@@ -32,6 +32,20 @@ class LocalFileCache {
         persistedFilesCache.addAll(loadPersistedFiles(folder));
     }
 
+    // Track the newly persisted filename to the concurrent hashmap.
+    void addPersistedFile(File file) {
+        persistedFilesCache.add(file);
+    }
+
+    File poll() {
+        return persistedFilesCache.poll();
+    }
+
+    // only used by tests
+    Queue<File> getPersistedFilesCache() {
+        return persistedFilesCache;
+    }
+
     // load existing files that are not older than 48 hours
     // this will avoid data loss in the case of app crashes and restarts.
     private static List<File> loadPersistedFiles(File folder) {
@@ -59,19 +73,5 @@ class LocalFileCache {
         Date expirationDate = new Date(System.currentTimeMillis() - 1000 * expiredIntervalSeconds);
         Date fileDate = new Date(timestamp);
         return fileDate.before(expirationDate);
-    }
-
-    // Track the newly persisted filename to the concurrent hashmap.
-    void addPersistedFile(File file) {
-        persistedFilesCache.add(file);
-    }
-
-    File poll() {
-        return persistedFilesCache.poll();
-    }
-
-    // only used by tests
-    Queue<File> getPersistedFilesCache() {
-        return persistedFilesCache;
     }
 }

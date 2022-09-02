@@ -38,23 +38,14 @@ public class IntegrationTests {
 
     private static final String CONNECTION_STRING =
         "InstrumentationKey=00000000-0000-0000-0000-0FEEDDADBEEF;IngestionEndpoint=http://foo.bar/";
-    // TODO (trask) test with both
-    private static final boolean testWithException = false;
-    @TempDir
-    File tempFolder;
+
     private TelemetryItemExporter telemetryItemExporter;
 
-    private static String ungzip(byte[] rawBytes) throws Exception {
-        try (GZIPInputStream in = new GZIPInputStream(new ByteArrayInputStream(rawBytes))) {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            byte[] data = new byte[1024];
-            int read;
-            while ((read = in.read(data, 0, data.length)) != -1) {
-                baos.write(data, 0, read);
-            }
-            return new String(baos.toByteArray(), StandardCharsets.UTF_8);
-        }
-    }
+    @TempDir
+    File tempFolder;
+
+    // TODO (trask) test with both
+    private static final boolean testWithException = false;
 
     @BeforeEach
     public void setup() {
@@ -126,5 +117,17 @@ public class IntegrationTests {
         }
 
         assertThat(localFileCache.getPersistedFilesCache().size()).isEqualTo(0);
+    }
+
+    private static String ungzip(byte[] rawBytes) throws Exception {
+        try (GZIPInputStream in = new GZIPInputStream(new ByteArrayInputStream(rawBytes))) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            byte[] data = new byte[1024];
+            int read;
+            while ((read = in.read(data, 0, data.length)) != -1) {
+                baos.write(data, 0, read);
+            }
+            return new String(baos.toByteArray(), StandardCharsets.UTF_8);
+        }
     }
 }

@@ -4,7 +4,6 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.preaggregatedmetrics;
 
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.MetricTelemetryBuilder;
-
 import reactor.util.annotation.Nullable;
 
 import static com.azure.monitor.opentelemetry.exporter.implementation.preaggregatedmetrics.ExtractorHelper.FALSE;
@@ -19,9 +18,6 @@ public final class RequestExtractor {
     public static final String REQUEST_RESULT_CODE = "request/resultCode";
     public static final String REQUEST_SUCCESS = "Request.Success";
 
-    private RequestExtractor() {
-    }
-
     public static void extract(
         MetricTelemetryBuilder metricBuilder,
         @Nullable Long statusCode,
@@ -34,5 +30,8 @@ public final class RequestExtractor {
             metricBuilder.addProperty(REQUEST_RESULT_CODE, String.valueOf(statusCode));
         }
         metricBuilder.addProperty(REQUEST_SUCCESS, success ? TRUE : FALSE);
+    }
+
+    private RequestExtractor() {
     }
 }

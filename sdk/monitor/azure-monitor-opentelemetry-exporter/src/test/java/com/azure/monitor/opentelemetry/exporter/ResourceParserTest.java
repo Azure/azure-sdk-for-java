@@ -10,42 +10,31 @@ import io.opentelemetry.api.common.AttributesBuilder;
 import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.semconv.resource.attributes.ResourceAttributes;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.parallel.Execution;
+import reactor.util.annotation.Nullable;
 import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
 import uk.org.webcompere.systemstubs.jupiter.SystemStub;
 import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
 
-import reactor.util.annotation.Nullable;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.MapEntry.entry;
+import static org.junit.jupiter.api.parallel.ExecutionMode.SAME_THREAD;
 
+@Disabled
+@Execution(SAME_THREAD)
 @ExtendWith(SystemStubsExtension.class)
 class ResourceParserTest {
 
-    private static final String DEFAULT_ROLE_INSTANCE = "fake-hostname";
     @SystemStub
     EnvironmentVariables envVars = new EnvironmentVariables();
-    private MetricTelemetryBuilder builder;
 
-    private static Resource createTestResource(
-        @Nullable String serviceName,
-        @Nullable String serviceNameSpace,
-        @Nullable String serviceInstance) {
-        AttributesBuilder builder = Attributes.builder();
-        if (serviceName != null) {
-            builder.put(ResourceAttributes.SERVICE_NAME, serviceName);
-        }
-        if (serviceNameSpace != null) {
-            builder.put(ResourceAttributes.SERVICE_NAMESPACE, serviceNameSpace);
-        }
-        if (serviceInstance != null) {
-            builder.put(ResourceAttributes.SERVICE_INSTANCE_ID, serviceInstance);
-        }
-        return Resource.create(builder.build());
-    }
+    private static final String DEFAULT_ROLE_INSTANCE = "fake-hostname";
+    private MetricTelemetryBuilder builder;
 
     @BeforeEach
     void setup() {
@@ -138,5 +127,22 @@ class ResourceParserTest {
             .isEqualTo("test_website_site_name");
         assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString()))
             .isEqualTo("test_website_instance_id");
+    }
+
+    private static Resource createTestResource(
+        @Nullable String serviceName,
+        @Nullable String serviceNameSpace,
+        @Nullable String serviceInstance) {
+        AttributesBuilder builder = Attributes.builder();
+        if (serviceName != null) {
+            builder.put(ResourceAttributes.SERVICE_NAME, serviceName);
+        }
+        if (serviceNameSpace != null) {
+            builder.put(ResourceAttributes.SERVICE_NAMESPACE, serviceNameSpace);
+        }
+        if (serviceInstance != null) {
+            builder.put(ResourceAttributes.SERVICE_INSTANCE_ID, serviceInstance);
+        }
+        return Resource.create(builder.build());
     }
 }

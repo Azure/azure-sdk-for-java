@@ -49,47 +49,6 @@ final class LocalFileWriter {
                 "Writing telemetry to disk (telemetry is discarded on failure)");
     }
 
-    private static void write(File file, String connectionString, List<ByteBuffer> buffers)
-        throws IOException {
-
-        try (FileOutputStream fileOut = new FileOutputStream(file);
-             DataOutputStream dataOut = new DataOutputStream(fileOut)) {
-            dataOut.writeInt(1); // version
-            dataOut.writeUTF(connectionString);
-
-            int numBytes = buffers.stream().mapToInt(ByteBuffer::remaining).sum();
-            dataOut.writeInt(numBytes);
-
-            FileChannel fileChannel = fileOut.getChannel();
-            for (ByteBuffer byteBuffer : buffers) {
-                fileChannel.write(byteBuffer);
-            }
-        }
-    }
-
-    @SuppressFBWarnings(
-        value = "SECPTI", // Potential Path Traversal
-        justification =
-            "The constructed file path cannot be controlled by an end user of the instrumented application")
-    private static File createTempFile(File telemetryFolder) throws IOException {
-        String prefix = System.currentTimeMillis() + "-";
-        return File.createTempFile(prefix, null, telemetryFolder);
-    }
-
-    private static long getTotalSizeOfPersistedFiles(File telemetryFolder) {
-        if (!telemetryFolder.exists()) {
-            return 0;
-        }
-
-        long sum = 0;
-        List<File> files = FileUtil.listTrnFiles(telemetryFolder);
-        for (File file : files) {
-            sum += file.length();
-        }
-
-        return sum;
-    }
-
     @SuppressFBWarnings(
         value = "SECPTI", // Potential Path Traversal
         justification =
@@ -142,5 +101,46 @@ final class LocalFileWriter {
         localFileCache.addPersistedFile(permanentFile);
 
         operationLogger.recordSuccess();
+    }
+
+    private static void write(File file, String connectionString, List<ByteBuffer> buffers)
+        throws IOException {
+
+        try (FileOutputStream fileOut = new FileOutputStream(file);
+             DataOutputStream dataOut = new DataOutputStream(fileOut)) {
+            dataOut.writeInt(1); // version
+            dataOut.writeUTF(connectionString);
+
+            int numBytes = buffers.stream().mapToInt(ByteBuffer::remaining).sum();
+            dataOut.writeInt(numBytes);
+
+            FileChannel fileChannel = fileOut.getChannel();
+            for (ByteBuffer byteBuffer : buffers) {
+                fileChannel.write(byteBuffer);
+            }
+        }
+    }
+
+    @SuppressFBWarnings(
+        value = "SECPTI", // Potential Path Traversal
+        justification =
+            "The constructed file path cannot be controlled by an end user of the instrumented application")
+    private static File createTempFile(File telemetryFolder) throws IOException {
+        String prefix = System.currentTimeMillis() + "-";
+        return File.createTempFile(prefix, null, telemetryFolder);
+    }
+
+    private static long getTotalSizeOfPersistedFiles(File telemetryFolder) {
+        if (!telemetryFolder.exists()) {
+            return 0;
+        }
+
+        long sum = 0;
+        List<File> files = FileUtil.listTrnFiles(telemetryFolder);
+        for (File file : files) {
+            sum += file.length();
+        }
+
+        return sum;
     }
 }

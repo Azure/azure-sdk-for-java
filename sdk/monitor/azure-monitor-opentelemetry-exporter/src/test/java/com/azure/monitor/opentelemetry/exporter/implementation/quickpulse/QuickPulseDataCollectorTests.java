@@ -21,20 +21,6 @@ class QuickPulseDataCollectorTests {
     private static final ConnectionString FAKE_CONNECTION_STRING =
         ConnectionString.parse("InstrumentationKey=" + FAKE_INSTRUMENTATION_KEY);
 
-    private static void assertCountersReset(QuickPulseDataCollector.FinalCounters counters) {
-        assertThat(counters).isNotNull();
-
-        assertThat(counters.rdds).isEqualTo(0);
-        assertThat(counters.rddsDuration).isEqualTo(0);
-        assertThat(counters.unsuccessfulRdds).isEqualTo(0);
-
-        assertThat(counters.requests).isEqualTo(0);
-        assertThat(counters.requestsDuration).isEqualTo(0);
-        assertThat(counters.unsuccessfulRequests).isEqualTo(0);
-
-        assertThat(counters.exceptions).isEqualTo(0);
-    }
-
     @Test
     void initialStateIsDisabled() {
         assertThat(new QuickPulseDataCollector(true).peek()).isNull();
@@ -226,6 +212,20 @@ class QuickPulseDataCollectorTests {
                     .plusSeconds(44)
                     .plusMillis(123)
                     .toMillis());
+    }
+
+    private static void assertCountersReset(QuickPulseDataCollector.FinalCounters counters) {
+        assertThat(counters).isNotNull();
+
+        assertThat(counters.rdds).isEqualTo(0);
+        assertThat(counters.rddsDuration).isEqualTo(0);
+        assertThat(counters.unsuccessfulRdds).isEqualTo(0);
+
+        assertThat(counters.requests).isEqualTo(0);
+        assertThat(counters.requestsDuration).isEqualTo(0);
+        assertThat(counters.unsuccessfulRequests).isEqualTo(0);
+
+        assertThat(counters.exceptions).isEqualTo(0);
     }
 
     @Test

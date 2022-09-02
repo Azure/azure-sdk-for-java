@@ -14,18 +14,22 @@ import static com.azure.monitor.opentelemetry.exporter.implementation.utils.Azur
 final class QuickPulseCoordinator implements Runnable {
 
     private static final ClientLogger logger = new ClientLogger(QuickPulseCoordinator.class);
+
+    @Nullable
+    private String qpsServiceRedirectedEndpoint;
+    private long qpsServicePollingIntervalHintMillis;
+
+    private volatile boolean stopped = false;
+    private volatile boolean pingMode = true;
+
     private final QuickPulseDataCollector collector;
     private final QuickPulsePingSender pingSender;
     private final QuickPulseDataFetcher dataFetcher;
     private final QuickPulseDataSender dataSender;
+
     private final long waitBetweenPingsInMillis;
     private final long waitBetweenPostsInMillis;
     private final long waitOnErrorInMillis;
-    @Nullable
-    private String qpsServiceRedirectedEndpoint;
-    private long qpsServicePollingIntervalHintMillis;
-    private volatile boolean stopped = false;
-    private volatile boolean pingMode = true;
 
     QuickPulseCoordinator(QuickPulseCoordinatorInitData initData) {
         dataSender = initData.dataSender;

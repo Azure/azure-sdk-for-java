@@ -21,25 +21,71 @@ public class DefaultHeartBeatPropertyProvider implements HeartBeatPayloadProvide
 
     private static final Logger logger =
         LoggerFactory.getLogger(DefaultHeartBeatPropertyProvider.class);
-    private static final String JRE_VERSION = "jreVersion";
-    private static final String SDK_VERSION = "sdkVersion";
-    private static final String OS_VERSION = "osVersion";
-    private static final String PROCESS_SESSION_ID = "processSessionId";
-    private static final String OS_TYPE = "osType";
+
+    /**
+     * Collection holding default properties for this default provider.
+     */
+    private final Set<String> defaultFields;
+
     /**
      * Random GUID that would help in analysis when app has stopped and restarted. Each restart will
      * have a new GUID. If the application is unstable and goes through frequent restarts this will
      * help us identify instability in the analytics backend.
      */
     private static volatile UUID uniqueProcessId;
-    /**
-     * Collection holding default properties for this default provider.
-     */
-    private final Set<String> defaultFields;
+
+    private static final String JRE_VERSION = "jreVersion";
+
+    private static final String SDK_VERSION = "sdkVersion";
+
+    private static final String OS_VERSION = "osVersion";
+
+    private static final String PROCESS_SESSION_ID = "processSessionId";
+
+    private static final String OS_TYPE = "osType";
 
     public DefaultHeartBeatPropertyProvider() {
         defaultFields = new HashSet<>();
         initializeDefaultFields(defaultFields);
+    }
+
+    @Override
+    public Runnable setDefaultPayload(HeartbeatExporter provider) {
+        return new Runnable() {
+
+            final Set<String> enabledProperties = defaultFields;
+
+            @Override
+            public void run() {
+                for (String fieldName : enabledProperties) {
+                    try {
+                        switch (fieldName) {
+                            case JRE_VERSION:
+                                provider.addHeartBeatProperty(fieldName, getJreVersion(), true);
+                                break;
+                            case SDK_VERSION:
+                                provider.addHeartBeatProperty(fieldName, getSdkVersion(), true);
+                                break;
+                            case OS_VERSION:
+                            case OS_TYPE:
+                                provider.addHeartBeatProperty(fieldName, getOsVersion(), true);
+                                break;
+                            case PROCESS_SESSION_ID:
+                                provider.addHeartBeatProperty(fieldName, getProcessSessionId(), true);
+                                break;
+                            default:
+                                // We won't accept unknown properties in default providers.
+                                logger.trace("Encountered unknown default property");
+                                break;
+                        }
+                    } catch (RuntimeException e) {
+                        if (logger.isWarnEnabled()) {
+                            logger.warn("Failed to obtain heartbeat property", e);
+                        }
+                    }
+                }
+            }
+        };
     }
 
     /**
@@ -84,44 +130,5 @@ public class DefaultHeartBeatPropertyProvider implements HeartBeatPayloadProvide
             uniqueProcessId = UUID.randomUUID();
         }
         return uniqueProcessId.toString();
-    }
-
-    @Override
-    public Runnable setDefaultPayload(HeartbeatExporter provider) {
-        return new Runnable() {
-
-            final Set<String> enabledProperties = defaultFields;
-
-            @Override
-            public void run() {
-                for (String fieldName : enabledProperties) {
-                    try {
-                        switch (fieldName) {
-                            case JRE_VERSION:
-                                provider.addHeartBeatProperty(fieldName, getJreVersion(), true);
-                                break;
-                            case SDK_VERSION:
-                                provider.addHeartBeatProperty(fieldName, getSdkVersion(), true);
-                                break;
-                            case OS_VERSION:
-                            case OS_TYPE:
-                                provider.addHeartBeatProperty(fieldName, getOsVersion(), true);
-                                break;
-                            case PROCESS_SESSION_ID:
-                                provider.addHeartBeatProperty(fieldName, getProcessSessionId(), true);
-                                break;
-                            default:
-                                // We won't accept unknown properties in default providers.
-                                logger.trace("Encountered unknown default property");
-                                break;
-                        }
-                    } catch (RuntimeException e) {
-                        if (logger.isWarnEnabled()) {
-                            logger.warn("Failed to obtain heartbeat property", e);
-                        }
-                    }
-                }
-            }
-        };
     }
 }

@@ -16,8 +16,8 @@ import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseExceptionDocument;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseRequestDocument;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.CpuPerformanceCounterCalculator;
-
 import reactor.util.annotation.Nullable;
+
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 import java.lang.management.MemoryUsage;
@@ -57,90 +57,6 @@ final class QuickPulseDataCollector {
         return new CpuPerformanceCounterCalculator();
     }
 
-    @Nullable
-    private static String getOperationName(TelemetryItem telemetryItem) {
-        Map<String, String> tags = telemetryItem.getTags();
-        return tags == null ? null : tags.get(ContextTagKeys.AI_OPERATION_NAME.toString());
-    }
-
-    private static Map<String, String> aggregateProperties(
-        @Nullable Map<String, String> properties, @Nullable Map<String, Double> measurements) {
-        Map<String, String> aggregatedProperties = new HashMap<>();
-        if (measurements != null) {
-            measurements.forEach((k, v) -> aggregatedProperties.put(k, String.valueOf(v)));
-        }
-        if (properties != null) {
-            aggregatedProperties.putAll(properties);
-        }
-        return aggregatedProperties;
-    }
-
-    // TODO (trask) optimization: move live metrics request capture to OpenTelemetry layer so don't
-    // have to parse String duration
-    // visible for testing
-    static long parseDurationToMillis(String duration) {
-        // format is DD.HH:MM:SS.MMMMMM
-        return startingAtDaysOrHours(duration);
-    }
-
-    private static long startingAtDaysOrHours(String duration) {
-        int i = 0;
-        char c = duration.charAt(i++);
-        long daysOrHours = charToInt(c);
-
-        c = duration.charAt(i++);
-        while (c != ':' && c != '.') {
-            daysOrHours = 10 * daysOrHours + charToInt(c);
-            c = duration.charAt(i++);
-        }
-        if (c == ':') {
-            // was really hours
-            return startingAtMinutes(duration, i, daysOrHours);
-        } else {
-            return startingAtHours(duration, i, daysOrHours);
-        }
-    }
-
-    private static long startingAtHours(String duration, int i, long runningTotalInDays) {
-        char c1 = duration.charAt(i++);
-        char c2 = duration.charAt(i++);
-        int hours = 10 * charToInt(c1) + charToInt(c2);
-        return startingAtMinutes(duration, i + 1, 24 * runningTotalInDays + hours);
-    }
-
-    private static long startingAtMinutes(String duration, int i, long runningTotalInHours) {
-        char c1 = duration.charAt(i++);
-        char c2 = duration.charAt(i++);
-        int minutes = 10 * charToInt(c1) + charToInt(c2);
-        // next char must be ':'
-        return startingAtSeconds(duration, i + 1, 60 * runningTotalInHours + minutes);
-    }
-
-    private static long startingAtSeconds(String duration, int i, long runningTotalInMinutes) {
-        char c1 = duration.charAt(i++);
-        char c2 = duration.charAt(i++);
-        int seconds = 10 * charToInt(c1) + charToInt(c2);
-        return startingAtMicros(duration, i + 1, 60 * runningTotalInMinutes + seconds);
-    }
-
-    private static long startingAtMicros(String duration, int i, long runningTotalInSeconds) {
-        int millis = 0;
-        // only care about milliseconds
-        for (int j = i; j < i + 3; j++) {
-            char c = duration.charAt(j);
-            millis = 10 * millis + charToInt(c);
-        }
-        return 1000 * runningTotalInSeconds + millis;
-    }
-
-    private static int charToInt(char c) {
-        int x = c - '0';
-        if (x < 0 || x > 9) {
-            throw new AssertionError("Unexpected char '" + c + "'");
-        }
-        return x;
-    }
-
     synchronized void disable() {
         counters.set(null);
         quickPulseStatus = QuickPulseStatus.QP_IS_OFF;
@@ -151,13 +67,13 @@ final class QuickPulseDataCollector {
         counters.set(new Counters());
     }
 
+    synchronized void setQuickPulseStatus(QuickPulseStatus quickPulseStatus) {
+        this.quickPulseStatus = quickPulseStatus;
+    }
+
     // Used only in tests
     synchronized QuickPulseStatus getQuickPulseStatus() {
         return this.quickPulseStatus;
-    }
-
-    synchronized void setQuickPulseStatus(QuickPulseStatus quickPulseStatus) {
-        this.quickPulseStatus = quickPulseStatus;
     }
 
     @Nullable
@@ -210,6 +126,12 @@ final class QuickPulseDataCollector {
 
     boolean isEnabled() {
         return quickPulseStatus == QuickPulseStatus.QP_IS_ON;
+    }
+
+    @Nullable
+    private static String getOperationName(TelemetryItem telemetryItem) {
+        Map<String, String> tags = telemetryItem.getTags();
+        return tags == null ? null : tags.get(ContextTagKeys.AI_OPERATION_NAME.toString());
     }
 
     private void addDependency(RemoteDependencyData telemetry, int itemCount) {
@@ -313,41 +235,82 @@ final class QuickPulseDataCollector {
         }
     }
 
-    static class CountAndDuration {
-        final long count;
-        final long duration;
+    private static Map<String, String> aggregateProperties(
+        @Nullable Map<String, String> properties, @Nullable Map<String, Double> measurements) {
+        Map<String, String> aggregatedProperties = new HashMap<>();
+        if (measurements != null) {
+            measurements.forEach((k, v) -> aggregatedProperties.put(k, String.valueOf(v)));
+        }
+        if (properties != null) {
+            aggregatedProperties.putAll(properties);
+        }
+        return aggregatedProperties;
+    }
 
-        private CountAndDuration(long count, long duration) {
-            this.count = count;
-            this.duration = duration;
+    // TODO (trask) optimization: move live metrics request capture to OpenTelemetry layer so don't
+    // have to parse String duration
+    // visible for testing
+    static long parseDurationToMillis(String duration) {
+        // format is DD.HH:MM:SS.MMMMMM
+        return startingAtDaysOrHours(duration);
+    }
+
+    private static long startingAtDaysOrHours(String duration) {
+        int i = 0;
+        char c = duration.charAt(i++);
+        long daysOrHours = charToInt(c);
+
+        c = duration.charAt(i++);
+        while (c != ':' && c != '.') {
+            daysOrHours = 10 * daysOrHours + charToInt(c);
+            c = duration.charAt(i++);
+        }
+        if (c == ':') {
+            // was really hours
+            return startingAtMinutes(duration, i, daysOrHours);
+        } else {
+            return startingAtHours(duration, i, daysOrHours);
         }
     }
 
-    static class Counters {
-        private static final long MAX_COUNT = 524287L;
-        private static final long MAX_DURATION = 17592186044415L;
-        private static final int MAX_DOCUMENTS_SIZE = 1000;
+    private static long startingAtHours(String duration, int i, long runningTotalInDays) {
+        char c1 = duration.charAt(i++);
+        char c2 = duration.charAt(i++);
+        int hours = 10 * charToInt(c1) + charToInt(c2);
+        return startingAtMinutes(duration, i + 1, 24 * runningTotalInDays + hours);
+    }
 
-        final AtomicInteger exceptions = new AtomicInteger(0);
+    private static long startingAtMinutes(String duration, int i, long runningTotalInHours) {
+        char c1 = duration.charAt(i++);
+        char c2 = duration.charAt(i++);
+        int minutes = 10 * charToInt(c1) + charToInt(c2);
+        // next char must be ':'
+        return startingAtSeconds(duration, i + 1, 60 * runningTotalInHours + minutes);
+    }
 
-        final AtomicLong requestsAndDurations = new AtomicLong(0);
-        final AtomicInteger unsuccessfulRequests = new AtomicInteger(0);
+    private static long startingAtSeconds(String duration, int i, long runningTotalInMinutes) {
+        char c1 = duration.charAt(i++);
+        char c2 = duration.charAt(i++);
+        int seconds = 10 * charToInt(c1) + charToInt(c2);
+        return startingAtMicros(duration, i + 1, 60 * runningTotalInMinutes + seconds);
+    }
 
-        final AtomicLong rddsAndDuations = new AtomicLong(0);
-        final AtomicInteger unsuccessfulRdds = new AtomicInteger(0);
-        final List<QuickPulseDocument> documentList = new ArrayList<>();
-
-        static long encodeCountAndDuration(long count, long duration) {
-            if (count > MAX_COUNT || duration > MAX_DURATION) {
-                return 0;
-            }
-
-            return (count << 44) + duration;
+    private static long startingAtMicros(String duration, int i, long runningTotalInSeconds) {
+        int millis = 0;
+        // only care about milliseconds
+        for (int j = i; j < i + 3; j++) {
+            char c = duration.charAt(j);
+            millis = 10 * millis + charToInt(c);
         }
+        return 1000 * runningTotalInSeconds + millis;
+    }
 
-        static CountAndDuration decodeCountAndDuration(long countAndDuration) {
-            return new CountAndDuration(countAndDuration >> 44, countAndDuration & MAX_DURATION);
+    private static int charToInt(char c) {
+        int x = c - '0';
+        if (x < 0 || x > 9) {
+            throw new AssertionError("Unexpected char '" + c + "'");
         }
+        return x;
     }
 
     class FinalCounters {
@@ -411,6 +374,43 @@ final class QuickPulseDataCollector {
             }
 
             return cpuDatum;
+        }
+    }
+
+    static class CountAndDuration {
+        final long count;
+        final long duration;
+
+        private CountAndDuration(long count, long duration) {
+            this.count = count;
+            this.duration = duration;
+        }
+    }
+
+    static class Counters {
+        private static final long MAX_COUNT = 524287L;
+        private static final long MAX_DURATION = 17592186044415L;
+        private static final int MAX_DOCUMENTS_SIZE = 1000;
+
+        final AtomicInteger exceptions = new AtomicInteger(0);
+
+        final AtomicLong requestsAndDurations = new AtomicLong(0);
+        final AtomicInteger unsuccessfulRequests = new AtomicInteger(0);
+
+        final AtomicLong rddsAndDuations = new AtomicLong(0);
+        final AtomicInteger unsuccessfulRdds = new AtomicInteger(0);
+        final List<QuickPulseDocument> documentList = new ArrayList<>();
+
+        static long encodeCountAndDuration(long count, long duration) {
+            if (count > MAX_COUNT || duration > MAX_DURATION) {
+                return 0;
+            }
+
+            return (count << 44) + duration;
+        }
+
+        static CountAndDuration decodeCountAndDuration(long countAndDuration) {
+            return new CountAndDuration(countAndDuration >> 44, countAndDuration & MAX_DURATION);
         }
     }
 }

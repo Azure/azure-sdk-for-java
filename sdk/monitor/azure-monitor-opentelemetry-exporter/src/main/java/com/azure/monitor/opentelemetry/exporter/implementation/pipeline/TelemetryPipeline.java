@@ -29,18 +29,11 @@ public class TelemetryPipeline {
     private final HttpPipeline pipeline;
 
     // key is connectionString, value is redirectUrl
-    private final Map<String, URL> redirectCache = Collections.synchronizedMap(new BoundedHashMap<>(100));
+    private final Map<String, URL> redirectCache =
+        Collections.synchronizedMap(new BoundedHashMap<>(100));
 
     public TelemetryPipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
-    }
-
-    private static URL getFullIngestionUrl(String ingestionEndpoint) {
-        try {
-            return new URL(new URL(ingestionEndpoint), "v2.1/track");
-        } catch (MalformedURLException e) {
-            throw new IllegalArgumentException("Invalid endpoint: " + ingestionEndpoint, e);
-        }
     }
 
     public CompletableResultCode send(
@@ -63,6 +56,14 @@ public class TelemetryPipeline {
         } catch (Throwable t) {
             listener.onException(request, t.getMessage() + " (" + request.getUrl() + ")", t);
             return CompletableResultCode.ofFailure();
+        }
+    }
+
+    private static URL getFullIngestionUrl(String ingestionEndpoint) {
+        try {
+            return new URL(new URL(ingestionEndpoint), "v2.1/track");
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException("Invalid endpoint: " + ingestionEndpoint, e);
         }
     }
 

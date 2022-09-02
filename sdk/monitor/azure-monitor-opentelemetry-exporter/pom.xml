@@ -67,19 +67,9 @@
       <version>1.14.0-alpha</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-logs;external_dependency} -->
     </dependency>
     <dependency>
-      <groupId>io.opentelemetry</groupId>
-      <artifactId>opentelemetry-semconv</artifactId>
-      <version>1.14.0-alpha</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-semconv;external_dependency} -->
-    </dependency>
-    <dependency>
       <groupId>com.github.spotbugs</groupId>
       <artifactId>spotbugs-annotations</artifactId>
       <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>javax.annotation</groupId>
-      <artifactId>javax.annotation-api</artifactId>
-      <version>1.3.2</version> <!-- {x-version-update;javax.annotation:javax.annotation-api;external_dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
@@ -124,11 +114,6 @@
       <artifactId>opentelemetry-sdk-testing</artifactId>
       <version>1.14.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.opentelemetry.instrumentation</groupId>
-      <artifactId>opentelemetry-instrumentation-api-semconv</artifactId>
-      <version>1.14.0-alpha</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-instrumentation-api-semconv;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

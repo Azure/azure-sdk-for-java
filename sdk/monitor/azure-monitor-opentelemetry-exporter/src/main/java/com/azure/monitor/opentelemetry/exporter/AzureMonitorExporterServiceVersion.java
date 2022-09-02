@@ -20,6 +20,11 @@ public enum AzureMonitorExporterServiceVersion implements ServiceVersion {
         this.version = version;
     }
 
+    @Override
+    public String getVersion() {
+        return version;
+    }
+
     /**
      * Gets the latest service version supported by this client library.
      *
@@ -27,10 +32,5 @@ public enum AzureMonitorExporterServiceVersion implements ServiceVersion {
      */
     public static AzureMonitorExporterServiceVersion getLatest() {
         return V2020_09_15_PREVIEW;
-    }
-
-    @Override
-    public String getVersion() {
-        return version;
     }
 }

@@ -17,18 +17,14 @@ import io.opentelemetry.api.trace.SpanContext;
 import io.opentelemetry.sdk.logs.data.LogData;
 import io.opentelemetry.sdk.logs.data.Severity;
 import io.opentelemetry.sdk.resources.Resource;
-import io.opentelemetry.semconv.trace.attributes.SemanticAttributes;
-
 import reactor.util.annotation.Nullable;
+
 import java.util.function.BiConsumer;
 
 public class LogDataMapper {
 
     private static final ClientLogger logger = new ClientLogger(LogDataMapper.class);
-    private static final String LOG4J1_2_MDC_PREFIX = "log4j.mdc.";
-    private static final String LOG4J2_CONTEXT_DATA_PREFIX = "log4j.context_data.";
-    private static final String LOGBACK_MDC_PREFIX = "logback.mdc.";
-    private static final String JBOSS_LOGGING_MDC_PREFIX = "jboss-logmanager.mdc.";
+
     private final boolean captureLoggingLevelAsCustomDimension;
     private final BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer;
 
@@ -37,6 +33,71 @@ public class LogDataMapper {
         BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer) {
         this.captureLoggingLevelAsCustomDimension = captureLoggingLevelAsCustomDimension;
         this.telemetryInitializer = telemetryInitializer;
+    }
+
+    public TelemetryItem map(LogData log, @Nullable String stack, @Nullable Long itemCount) {
+        if (stack == null) {
+            return createMessageTelemetryItem(log, itemCount);
+        } else {
+            return createExceptionTelemetryItem(log, itemCount, stack);
+        }
+    }
+
+    private TelemetryItem createMessageTelemetryItem(LogData log, @Nullable Long itemCount) {
+        MessageTelemetryBuilder telemetryBuilder = MessageTelemetryBuilder.create();
+        telemetryInitializer.accept(telemetryBuilder, log.getResource());
+
+        // set standard properties
+        setOperationTags(telemetryBuilder, log);
+        setTime(telemetryBuilder, log.getEpochNanos());
+        setItemCount(telemetryBuilder, log, itemCount);
+
+        // update tags
+        Attributes attributes = log.getAttributes();
+        setExtraAttributes(telemetryBuilder, attributes);
+
+        telemetryBuilder.setSeverityLevel(toSeverityLevel(log.getSeverity()));
+        telemetryBuilder.setMessage(log.getBody().asString());
+
+        // set message-specific properties
+        setLoggerProperties(
+            telemetryBuilder,
+            log.getInstrumentationScopeInfo().getName(),
+            attributes.get(SemanticAttributes.THREAD_NAME),
+            log.getSeverity());
+
+        return telemetryBuilder.build();
+    }
+
+    private TelemetryItem createExceptionTelemetryItem(
+        LogData log, @Nullable Long itemCount, String stack) {
+        ExceptionTelemetryBuilder telemetryBuilder = ExceptionTelemetryBuilder.create();
+        telemetryInitializer.accept(telemetryBuilder, log.getResource());
+
+        // set standard properties
+        setOperationTags(telemetryBuilder, log);
+        setTime(telemetryBuilder, log.getEpochNanos());
+        setItemCount(telemetryBuilder, log, itemCount);
+
+        // update tags
+        Attributes attributes = log.getAttributes();
+        setExtraAttributes(telemetryBuilder, attributes);
+
+        telemetryBuilder.setExceptions(Exceptions.minimalParse(stack));
+        telemetryBuilder.setSeverityLevel(toSeverityLevel(log.getSeverity()));
+
+        // set exception-specific properties
+        setLoggerProperties(
+            telemetryBuilder,
+            log.getInstrumentationScopeInfo().getName(),
+            attributes.get(SemanticAttributes.THREAD_NAME),
+            log.getSeverity());
+
+        if (log.getBody() != null) {
+            telemetryBuilder.addProperty("Logger Message", log.getBody().asString());
+        }
+
+        return telemetryBuilder.build();
     }
 
     private static void setOperationTags(AbstractTelemetryBuilder telemetryBuilder, LogData log) {
@@ -70,6 +131,11 @@ public class LogDataMapper {
             telemetryBuilder.setSampleRate(100.0f / itemCount);
         }
     }
+
+    private static final String LOG4J1_2_MDC_PREFIX = "log4j.mdc.";
+    private static final String LOG4J2_CONTEXT_DATA_PREFIX = "log4j.context_data.";
+    private static final String LOGBACK_MDC_PREFIX = "logback.mdc.";
+    private static final String JBOSS_LOGGING_MDC_PREFIX = "jboss-logmanager.mdc.";
 
     static void setExtraAttributes(AbstractTelemetryBuilder telemetryBuilder, Attributes attributes) {
         attributes.forEach(
@@ -112,6 +178,29 @@ public class LogDataMapper {
                     telemetryBuilder.addProperty(attributeKey.getKey(), val);
                 }
             });
+    }
+
+    private void setLoggerProperties(
+        AbstractTelemetryBuilder telemetryBuilder,
+        @Nullable String loggerName,
+        @Nullable String threadName,
+        Severity severity) {
+
+        telemetryBuilder.addProperty("SourceType", "Logger");
+
+        if (captureLoggingLevelAsCustomDimension) {
+            String loggingLevel = mapSeverityToLoggingLevel(severity);
+            if (loggingLevel != null) {
+                telemetryBuilder.addProperty("LoggingLevel", loggingLevel);
+            }
+        }
+
+        if (loggerName != null) {
+            telemetryBuilder.addProperty("LoggerName", loggerName);
+        }
+        if (threadName != null) {
+            telemetryBuilder.addProperty("ThreadName", threadName);
+        }
     }
 
     @Nullable
@@ -193,94 +282,6 @@ public class LogDataMapper {
             default:
                 logger.error("Unexpected severity {}", severity);
                 return null;
-        }
-    }
-
-    public TelemetryItem map(LogData log, @Nullable String stack, @Nullable Long itemCount) {
-        if (stack == null) {
-            return createMessageTelemetryItem(log, itemCount);
-        } else {
-            return createExceptionTelemetryItem(log, itemCount, stack);
-        }
-    }
-
-    private TelemetryItem createMessageTelemetryItem(LogData log, @Nullable Long itemCount) {
-        MessageTelemetryBuilder telemetryBuilder = MessageTelemetryBuilder.create();
-        telemetryInitializer.accept(telemetryBuilder, log.getResource());
-
-        // set standard properties
-        setOperationTags(telemetryBuilder, log);
-        setTime(telemetryBuilder, log.getEpochNanos());
-        setItemCount(telemetryBuilder, log, itemCount);
-
-        // update tags
-        Attributes attributes = log.getAttributes();
-        setExtraAttributes(telemetryBuilder, attributes);
-
-        telemetryBuilder.setSeverityLevel(toSeverityLevel(log.getSeverity()));
-        telemetryBuilder.setMessage(log.getBody().asString());
-
-        // set message-specific properties
-        setLoggerProperties(
-            telemetryBuilder,
-            log.getInstrumentationScopeInfo().getName(),
-            attributes.get(SemanticAttributes.THREAD_NAME),
-            log.getSeverity());
-
-        return telemetryBuilder.build();
-    }
-
-    private TelemetryItem createExceptionTelemetryItem(
-        LogData log, @Nullable Long itemCount, String stack) {
-        ExceptionTelemetryBuilder telemetryBuilder = ExceptionTelemetryBuilder.create();
-        telemetryInitializer.accept(telemetryBuilder, log.getResource());
-
-        // set standard properties
-        setOperationTags(telemetryBuilder, log);
-        setTime(telemetryBuilder, log.getEpochNanos());
-        setItemCount(telemetryBuilder, log, itemCount);
-
-        // update tags
-        Attributes attributes = log.getAttributes();
-        setExtraAttributes(telemetryBuilder, attributes);
-
-        telemetryBuilder.setExceptions(Exceptions.minimalParse(stack));
-        telemetryBuilder.setSeverityLevel(toSeverityLevel(log.getSeverity()));
-
-        // set exception-specific properties
-        setLoggerProperties(
-            telemetryBuilder,
-            log.getInstrumentationScopeInfo().getName(),
-            attributes.get(SemanticAttributes.THREAD_NAME),
-            log.getSeverity());
-
-        if (log.getBody() != null) {
-            telemetryBuilder.addProperty("Logger Message", log.getBody().asString());
-        }
-
-        return telemetryBuilder.build();
-    }
-
-    private void setLoggerProperties(
-        AbstractTelemetryBuilder telemetryBuilder,
-        @Nullable String loggerName,
-        @Nullable String threadName,
-        Severity severity) {
-
-        telemetryBuilder.addProperty("SourceType", "Logger");
-
-        if (captureLoggingLevelAsCustomDimension) {
-            String loggingLevel = mapSeverityToLoggingLevel(severity);
-            if (loggingLevel != null) {
-                telemetryBuilder.addProperty("LoggingLevel", loggingLevel);
-            }
-        }
-
-        if (loggerName != null) {
-            telemetryBuilder.addProperty("LoggerName", loggerName);
-        }
-        if (threadName != null) {
-            telemetryBuilder.addProperty("ThreadName", threadName);
         }
     }
 }

@@ -12,9 +12,6 @@ import static java.util.Arrays.asList;
 
 class FileUtil {
 
-    private FileUtil() {
-    }
-
     static List<File> listTrnFiles(File directory) {
         File[] files = directory.listFiles((dir, name) -> name.endsWith(".trn"));
         return files == null ? Collections.emptyList() : asList(files);
@@ -54,5 +51,8 @@ class FileUtil {
         }
 
         return true;
+    }
+
+    private FileUtil() {
     }
 }

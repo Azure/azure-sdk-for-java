@@ -6,8 +6,8 @@ package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
 import reactor.util.annotation.Nullable;
+
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,9 +17,6 @@ public class TempDirs {
 
     private static final List<String> CANDIDATE_USERNAME_ENVIRONMENT_VARIABLES =
         Collections.unmodifiableList(Arrays.asList("USER", "LOGNAME", "USERNAME"));
-
-    private TempDirs() {
-    }
 
     @Nullable
     public static File getApplicationInsightsTempDir(ClientLogger logger, String message) {
@@ -122,5 +119,8 @@ public class TempDirs {
         }
 
         return null;
+    }
+
+    private TempDirs() {
     }
 }

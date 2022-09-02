@@ -125,7 +125,6 @@ public class AzureMonitorMetricExporterTest {
         assertThat(metricData.getName()).isEqualTo("testDoubleGauge");
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testLongCounter() throws InterruptedException {
         LongCounter counter = meter.counterBuilder("testLongCounter").build();
@@ -159,12 +158,13 @@ public class AzureMonitorMetricExporterTest {
         List<MetricData> metricDataList = inMemoryMetricExporter.getFinishedMetricItems();
         assertThat(metricDataList.size()).isGreaterThanOrEqualTo(1);
         MetricData metricData = metricDataList.get(0);
+        @SuppressWarnings("unchecked")
         Collection<LongPointData> points = (Collection<LongPointData>) metricData.getData().getPoints();
         assertThat(points.size()).isEqualTo(3);
 
         points =
             points.stream()
-                .sorted(Comparator.comparing(o -> o.getValue()))
+                .sorted(Comparator.comparing(LongPointData::getValue))
                 .collect(Collectors.toList());
 
         Iterator<LongPointData> iterator = points.iterator();

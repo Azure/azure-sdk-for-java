@@ -8,19 +8,22 @@ import com.azure.monitor.opentelemetry.exporter.implementation.configuration.Sta
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorBase;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorDomain;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
-
 import reactor.util.annotation.Nullable;
+
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
 public abstract class AbstractTelemetryBuilder {
 
-    protected static final int MAX_MEASUREMENT_KEY_LENGTH = 150;
-    protected static final int MAX_NAME_LENGTH = 1024;
-    protected static final int MAX_ID_LENGTH = 512;
     private static final int MAX_PROPERTY_KEY_LENGTH = 150;
     private static final int MAX_PROPERTY_VALUE_LENGTH = 8192;
+
+    protected static final int MAX_MEASUREMENT_KEY_LENGTH = 150;
+
+    protected static final int MAX_NAME_LENGTH = 1024;
+    protected static final int MAX_ID_LENGTH = 512;
+
     private final TelemetryItem telemetryItem;
 
     protected AbstractTelemetryBuilder(MonitorDomain data, String telemetryName, String baseType) {

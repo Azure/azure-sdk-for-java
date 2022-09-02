@@ -15,8 +15,8 @@ import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-
 import reactor.util.annotation.Nullable;
+
 import java.net.URL;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -45,15 +45,16 @@ class QuickPulsePingSender {
 
     private final HttpPipeline httpPipeline;
     private final QuickPulseNetworkHelper networkHelper = new QuickPulseNetworkHelper();
+    private volatile QuickPulseEnvelope pingEnvelope; // cached for performance
+
     private final Supplier<URL> endpointUrl;
     private final Supplier<String> instrumentationKey;
     private final String roleName;
     private final String instanceName;
     private final String machineName;
     private final String quickPulseId;
-    private final String sdkVersion;
-    private volatile QuickPulseEnvelope pingEnvelope; // cached for performance
     private long lastValidTransmission = 0;
+    private final String sdkVersion;
 
     QuickPulsePingSender(
         HttpPipeline httpPipeline,

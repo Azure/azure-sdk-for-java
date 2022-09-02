@@ -19,21 +19,28 @@ import java.util.Set;
 public class WebAppsHeartbeatProvider implements HeartBeatPayloadProviderInterface {
 
     private static final ClientLogger logger = new ClientLogger(WebAppsHeartbeatProvider.class);
-    private static final String WEBSITE_SITE_NAME = "appSrv_SiteName";
-    private static final String WEBSITE_HOSTNAME = "appSrv_wsHost";
-    private static final String WEBSITE_HOME_STAMPNAME = "appSrv_wsStamp";
-    private static final String WEBSITE_OWNER_NAME = "appSrv_wsOwner";
-    private static final String WEBSITE_RESOURCE_GROUP = "appSrv_ResourceGroup";
-    // Only populated in Azure functions
-    private static final String WEBSITE_SLOT_NAME = "appSrv_SlotName";
+
     /**
      * Collection holding default properties for this default provider.
      */
     private final Set<String> defaultFields;
+
     /**
      * Map for storing environment variables.
      */
     private Map<String, String> environmentMap;
+
+    private static final String WEBSITE_SITE_NAME = "appSrv_SiteName";
+
+    private static final String WEBSITE_HOSTNAME = "appSrv_wsHost";
+
+    private static final String WEBSITE_HOME_STAMPNAME = "appSrv_wsStamp";
+
+    private static final String WEBSITE_OWNER_NAME = "appSrv_wsOwner";
+
+    private static final String WEBSITE_RESOURCE_GROUP = "appSrv_ResourceGroup";
+    // Only populated in Azure functions
+    private static final String WEBSITE_SLOT_NAME = "appSrv_SlotName";
 
     /**
      * Constructor that initializes fields and load environment variables.
@@ -42,18 +49,6 @@ public class WebAppsHeartbeatProvider implements HeartBeatPayloadProviderInterfa
         defaultFields = new HashSet<>();
         environmentMap = System.getenv();
         initializeDefaultFields(defaultFields);
-    }
-
-    /**
-     * Populates the default Fields with the properties.
-     */
-    private static void initializeDefaultFields(Set<String> defaultFields) {
-        defaultFields.add(WEBSITE_SITE_NAME);
-        defaultFields.add(WEBSITE_HOSTNAME);
-        defaultFields.add(WEBSITE_HOME_STAMPNAME);
-        defaultFields.add(WEBSITE_OWNER_NAME);
-        defaultFields.add(WEBSITE_RESOURCE_GROUP);
-        defaultFields.add(WEBSITE_SLOT_NAME);
     }
 
     @Override
@@ -122,6 +117,18 @@ public class WebAppsHeartbeatProvider implements HeartBeatPayloadProviderInterfa
                 }
             }
         };
+    }
+
+    /**
+     * Populates the default Fields with the properties.
+     */
+    private static void initializeDefaultFields(Set<String> defaultFields) {
+        defaultFields.add(WEBSITE_SITE_NAME);
+        defaultFields.add(WEBSITE_HOSTNAME);
+        defaultFields.add(WEBSITE_HOME_STAMPNAME);
+        defaultFields.add(WEBSITE_OWNER_NAME);
+        defaultFields.add(WEBSITE_RESOURCE_GROUP);
+        defaultFields.add(WEBSITE_SLOT_NAME);
     }
 
     /**

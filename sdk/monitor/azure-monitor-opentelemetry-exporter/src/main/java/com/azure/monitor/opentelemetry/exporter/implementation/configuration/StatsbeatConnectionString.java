@@ -45,11 +45,6 @@ public final class StatsbeatConnectionString {
     private final String ingestionEndpoint;
     private final String instrumentationKey;
 
-    private StatsbeatConnectionString(URL ingestionEndpoint, String instrumentationKey) {
-        this.ingestionEndpoint = ingestionEndpoint.toExternalForm();
-        this.instrumentationKey = instrumentationKey;
-    }
-
     public static StatsbeatConnectionString create(
         ConnectionString connectionString,
         @Nullable String instrumentationKey,
@@ -79,6 +74,19 @@ public final class StatsbeatConnectionString {
         return new StatsbeatConnectionString(endpointUrl, instrumentationKey);
     }
 
+    private StatsbeatConnectionString(URL ingestionEndpoint, String instrumentationKey) {
+        this.ingestionEndpoint = ingestionEndpoint.toExternalForm();
+        this.instrumentationKey = instrumentationKey;
+    }
+
+    public String getIngestionEndpoint() {
+        return ingestionEndpoint;
+    }
+
+    public String getInstrumentationKey() {
+        return instrumentationKey;
+    }
+
     // visible for testing
     static InstrumentationKeyEndpointPair getInstrumentationKeyAndEndpointPair(
         String customerEndpoint) {
@@ -101,14 +109,6 @@ public final class StatsbeatConnectionString {
         }
 
         return null;
-    }
-
-    public String getIngestionEndpoint() {
-        return ingestionEndpoint;
-    }
-
-    public String getInstrumentationKey() {
-        return instrumentationKey;
     }
 
     static class InstrumentationKeyEndpointPair {

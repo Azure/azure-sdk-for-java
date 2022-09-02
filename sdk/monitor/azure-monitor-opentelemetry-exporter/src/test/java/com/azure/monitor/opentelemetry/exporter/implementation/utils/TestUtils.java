@@ -28,9 +28,6 @@ import java.util.Map;
 
 public final class TestUtils {
 
-    private TestUtils() {
-    }
-
     public static TelemetryItem createMetricTelemetry(
         String name, int value, String connectionString) {
         TelemetryItem telemetry = new TelemetryItem();
@@ -96,5 +93,8 @@ public final class TestUtils {
             OpenTelemetrySdk.builder().setMeterProvider(meterProvider).build();
 
         return openTelemetry.getMeter("Sample");
+    }
+
+    private TestUtils() {
     }
 }

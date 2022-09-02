@@ -4,8 +4,8 @@
 package com.azure.monitor.opentelemetry.exporter.implementation;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
 import reactor.util.annotation.Nullable;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -13,9 +13,6 @@ import java.util.concurrent.ThreadLocalRandom;
  * preserve the correlated telemetry items.
  */
 public class SamplingScoreGeneratorV2 {
-
-    private SamplingScoreGeneratorV2() {
-    }
 
     /**
      * This method takes the telemetry and returns the hash of the operation id if it is present
@@ -60,5 +57,8 @@ public class SamplingScoreGeneratorV2 {
             return Integer.MAX_VALUE - 1;
         }
         return Math.abs(hash);
+    }
+
+    private SamplingScoreGeneratorV2() {
     }
 }

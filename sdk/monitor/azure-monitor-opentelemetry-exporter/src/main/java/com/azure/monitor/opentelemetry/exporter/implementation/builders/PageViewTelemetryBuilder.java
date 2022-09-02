@@ -4,8 +4,8 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.builders;
 
 import com.azure.monitor.opentelemetry.exporter.implementation.models.PageViewData;
-
 import reactor.util.annotation.Nullable;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,13 +17,13 @@ public final class PageViewTelemetryBuilder extends AbstractTelemetryBuilder {
 
     private final PageViewData data;
 
+    public static PageViewTelemetryBuilder create() {
+        return new PageViewTelemetryBuilder(new PageViewData());
+    }
+
     private PageViewTelemetryBuilder(PageViewData data) {
         super(data, "PageView", "PageViewData");
         this.data = data;
-    }
-
-    public static PageViewTelemetryBuilder create() {
-        return new PageViewTelemetryBuilder(new PageViewData());
     }
 
     public void setId(String id) {

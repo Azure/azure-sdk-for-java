@@ -6,8 +6,8 @@ package com.azure.monitor.opentelemetry.exporter.implementation.builders;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.SeverityLevel;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryExceptionData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryExceptionDetails;
-
 import reactor.util.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,13 +21,13 @@ public final class ExceptionTelemetryBuilder extends AbstractTelemetryBuilder {
 
     private final TelemetryExceptionData data;
 
+    public static ExceptionTelemetryBuilder create() {
+        return new ExceptionTelemetryBuilder(new TelemetryExceptionData());
+    }
+
     private ExceptionTelemetryBuilder(TelemetryExceptionData data) {
         super(data, "Exception", "ExceptionData");
         this.data = data;
-    }
-
-    public static ExceptionTelemetryBuilder create() {
-        return new ExceptionTelemetryBuilder(new TelemetryExceptionData());
     }
 
     public void setExceptions(List<ExceptionDetailBuilder> builders) {

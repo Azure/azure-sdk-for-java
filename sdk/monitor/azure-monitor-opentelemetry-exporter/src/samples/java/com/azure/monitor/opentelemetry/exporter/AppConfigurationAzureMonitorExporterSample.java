@@ -32,7 +32,7 @@ public class AppConfigurationAzureMonitorExporterSample {
     }
 
     /**
-     * Configure the OpenTelemetry {@link AzureMonitorTraceExporter} to enable tracing.
+     * Configure the OpenTelemetry {@link SpanExporter} to enable tracing.
      *
      * @return The OpenTelemetry {@link Tracer} instance.
      */

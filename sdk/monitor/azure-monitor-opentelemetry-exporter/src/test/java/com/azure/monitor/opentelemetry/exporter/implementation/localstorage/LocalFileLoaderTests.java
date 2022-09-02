@@ -41,13 +41,6 @@ public class LocalFileLoaderTests {
     @TempDir
     File tempFolder;
 
-    private static HttpClient getMockHttpClientSuccess() {
-        return new MockHttpClient(
-            request -> {
-                return Mono.just(new MockHttpResponse(request, 200));
-            });
-    }
-
     @Test
     public void testPersistedFileWithoutInstrumentationKey() throws IOException {
         File persistedFile = new File(tempFolder, GZIPPED_RAW_BYTES_WITHOUT_IKEY);
@@ -173,6 +166,13 @@ public class LocalFileLoaderTests {
         files = FileUtil.listTrnFiles(tempFolder);
         assertThat(files.size()).isEqualTo(10);
         assertThat(localFileCache.getPersistedFilesCache().size()).isEqualTo(10);
+    }
+
+    private static HttpClient getMockHttpClientSuccess() {
+        return new MockHttpClient(
+            request -> {
+                return Mono.just(new MockHttpResponse(request, 200));
+            });
     }
 
     private static class MockHttpClient implements HttpClient {

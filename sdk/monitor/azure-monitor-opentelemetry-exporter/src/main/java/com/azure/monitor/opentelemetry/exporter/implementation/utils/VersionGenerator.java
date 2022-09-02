@@ -36,9 +36,6 @@ public final class VersionGenerator {
                 + artifactVersion;
     }
 
-    private VersionGenerator() {
-    }
-
     /**
      * This method returns artifact name.
      *
@@ -79,5 +76,8 @@ public final class VersionGenerator {
         }
         String version = properties.get("sdk.version");
         return version != null ? version : UNKNOWN_VERSION_VALUE;
+    }
+
+    private VersionGenerator() {
     }
 }

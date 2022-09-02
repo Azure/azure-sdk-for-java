@@ -8,9 +8,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public final class ThreadPoolUtils {
 
-    private ThreadPoolUtils() {
-    }
-
     /**
      * {@code poolName} will be appended with a hyphen and the unique name.
      *
@@ -37,5 +34,8 @@ public final class ThreadPoolUtils {
                 return thread;
             }
         };
+    }
+
+    private ThreadPoolUtils() {
     }
 }

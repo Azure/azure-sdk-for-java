@@ -10,9 +10,6 @@ import java.nio.charset.StandardCharsets;
 
 class Resources {
 
-    private Resources() {
-    }
-
     static String readString(String resourceName) throws IOException {
         return new String(readBytes(resourceName), StandardCharsets.UTF_8);
     }
@@ -28,5 +25,8 @@ class Resources {
             }
             return result.toByteArray();
         }
+    }
+
+    private Resources() {
     }
 }

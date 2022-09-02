@@ -5,8 +5,8 @@ package com.azure.monitor.opentelemetry.exporter.implementation.preaggregatedmet
 
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.MetricTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
-
 import reactor.util.annotation.Nullable;
+
 import java.util.Map;
 
 public final class ExtractorHelper {
@@ -19,9 +19,6 @@ public final class ExtractorHelper {
     public static final String OPERATION_SYNTHETIC = "operation/synthetic";
     public static final String CLOUD_ROLE_NAME = "cloud/roleName";
     public static final String CLOUD_ROLE_INSTANCE = "cloud/roleInstance";
-
-    private ExtractorHelper() {
-    }
 
     static void extractCommon(MetricTelemetryBuilder metricBuilder, @Nullable Boolean isSynthetic) {
         metricBuilder.addProperty(MS_IS_AUTOCOLLECTED, TRUE);
@@ -40,5 +37,8 @@ public final class ExtractorHelper {
 
         metricBuilder.addProperty(
             OPERATION_SYNTHETIC, isSynthetic != null && isSynthetic ? TRUE : FALSE);
+    }
+
+    private ExtractorHelper() {
     }
 }

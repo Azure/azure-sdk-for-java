@@ -7,9 +7,6 @@ import io.opentelemetry.sdk.trace.ReadableSpan;
 
 public final class OperationNames {
 
-    private OperationNames() {
-    }
-
     public static String getOperationName(ReadableSpan span) {
         String operationName = span.getAttribute(AiSemanticAttributes.OPERATION_NAME);
         if (operationName != null) {
@@ -22,5 +19,8 @@ public final class OperationNames {
             return httpMethod + " " + spanName;
         }
         return spanName;
+    }
+
+    private OperationNames() {
     }
 }

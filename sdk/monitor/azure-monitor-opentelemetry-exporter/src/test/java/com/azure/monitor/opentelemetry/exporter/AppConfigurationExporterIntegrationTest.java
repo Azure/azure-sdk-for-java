@@ -37,21 +37,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AppConfigurationExporterIntegrationTest extends TestBase {
 
-    private static ConfigurationClient getConfigurationClient(CountDownLatch appConfigCountDown) {
-        return new ConfigurationClientBuilder()
-            .connectionString(System.getenv("AZURE_APPCONFIG_CONNECTION_STRING"))
-            .addPolicy(
-                (context, next) -> {
-                    Optional<Object> data =
-                        context.getData(com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY);
-                    if (data.isPresent() && data.get().equals("Microsoft.AppConfiguration")) {
-                        appConfigCountDown.countDown();
-                    }
-                    return next.process();
-                })
-            .buildClient();
-    }
-
     @Override
     @BeforeEach
     public void setupTest(TestInfo testInfo) {
@@ -113,6 +98,21 @@ public class AppConfigurationExporterIntegrationTest extends TestBase {
         }
         assertTrue(appConfigCountDown.await(60, TimeUnit.SECONDS));
         assertTrue(exporterCountDown.await(60, TimeUnit.SECONDS));
+    }
+
+    private static ConfigurationClient getConfigurationClient(CountDownLatch appConfigCountDown) {
+        return new ConfigurationClientBuilder()
+            .connectionString(System.getenv("AZURE_APPCONFIG_CONNECTION_STRING"))
+            .addPolicy(
+                (context, next) -> {
+                    Optional<Object> data =
+                        context.getData(com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY);
+                    if (data.isPresent() && data.get().equals("Microsoft.AppConfiguration")) {
+                        appConfigCountDown.countDown();
+                    }
+                    return next.process();
+                })
+            .buildClient();
     }
 
     static class ValidationPolicy implements HttpPipelinePolicy {

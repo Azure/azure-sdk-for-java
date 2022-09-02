@@ -43,6 +43,9 @@ public class MetricDataMapper {
 
     private static final ClientLogger logger = new ClientLogger(MetricDataMapper.class);
 
+    private final BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer;
+    private final boolean captureHttpServer4xxAsError;
+
     static {
         EXCLUDED_METRIC_NAMES.add("http.server.active_requests"); // Servlet
 
@@ -52,14 +55,55 @@ public class MetricDataMapper {
         OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("rpc.server.duration"); // gRPC
     }
 
-    private final BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer;
-    private final boolean captureHttpServer4xxAsError;
-
     public MetricDataMapper(
         BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer,
         boolean captureHttpServer4xxAsError) {
         this.telemetryInitializer = telemetryInitializer;
         this.captureHttpServer4xxAsError = captureHttpServer4xxAsError;
+    }
+
+    public void map(MetricData metricData, Consumer<TelemetryItem> consumer) {
+        if (EXCLUDED_METRIC_NAMES.contains(metricData.getName())) {
+            return;
+        }
+
+        MetricDataType type = metricData.getType();
+        if (type == DOUBLE_SUM
+            || type == DOUBLE_GAUGE
+            || type == LONG_SUM
+            || type == LONG_GAUGE
+            || type == HISTOGRAM) {
+            boolean isPreAggregatedStandardMetric =
+                OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.contains(metricData.getName());
+            List<TelemetryItem> telemetryItemList =
+                convertOtelMetricToAzureMonitorMetric(metricData, isPreAggregatedStandardMetric);
+            for (TelemetryItem telemetryItem : telemetryItemList) {
+                consumer.accept(telemetryItem);
+            }
+        } else {
+            logger.warning("metric data type {} is not supported yet.", metricData.getType());
+        }
+    }
+
+    private List<TelemetryItem> convertOtelMetricToAzureMonitorMetric(
+        MetricData metricData, boolean isPreAggregatedStandardMetric) {
+        List<TelemetryItem> telemetryItems = new ArrayList<>();
+
+        for (PointData pointData : metricData.getData().getPoints()) {
+            MetricTelemetryBuilder builder = MetricTelemetryBuilder.create();
+            telemetryInitializer.accept(builder, metricData.getResource());
+
+            builder.setTime(FormattedTime.offSetDateTimeFromEpochNanos(pointData.getEpochNanos()));
+            updateMetricPointBuilder(
+                builder,
+                metricData,
+                pointData,
+                captureHttpServer4xxAsError,
+                isPreAggregatedStandardMetric);
+
+            telemetryItems.add(builder.build());
+        }
+        return telemetryItems;
     }
 
     // visible for testing
@@ -170,54 +214,10 @@ public class MetricDataMapper {
         return Integer.MAX_VALUE;
     }
 
-    public void map(MetricData metricData, Consumer<TelemetryItem> consumer) {
-        if (EXCLUDED_METRIC_NAMES.contains(metricData.getName())) {
-            return;
-        }
-
-        MetricDataType type = metricData.getType();
-        if (type == DOUBLE_SUM
-            || type == DOUBLE_GAUGE
-            || type == LONG_SUM
-            || type == LONG_GAUGE
-            || type == HISTOGRAM) {
-            boolean isPreAggregatedStandardMetric =
-                OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.contains(metricData.getName());
-            List<TelemetryItem> telemetryItemList =
-                convertOtelMetricToAzureMonitorMetric(metricData, isPreAggregatedStandardMetric);
-            for (TelemetryItem telemetryItem : telemetryItemList) {
-                consumer.accept(telemetryItem);
-            }
-        } else {
-            logger.warning("metric data type {} is not supported yet.", metricData.getType());
-        }
-    }
-
     private static boolean isSuccess(Long statusCode, boolean captureHttpServer4xxAsError) {
         if (captureHttpServer4xxAsError) {
             return statusCode == null || statusCode < 400;
         }
         return statusCode == null || statusCode < 500;
-    }
-
-    private List<TelemetryItem> convertOtelMetricToAzureMonitorMetric(
-        MetricData metricData, boolean isPreAggregatedStandardMetric) {
-        List<TelemetryItem> telemetryItems = new ArrayList<>();
-
-        for (PointData pointData : metricData.getData().getPoints()) {
-            MetricTelemetryBuilder builder = MetricTelemetryBuilder.create();
-            telemetryInitializer.accept(builder, metricData.getResource());
-
-            builder.setTime(FormattedTime.offSetDateTimeFromEpochNanos(pointData.getEpochNanos()));
-            updateMetricPointBuilder(
-                builder,
-                metricData,
-                pointData,
-                captureHttpServer4xxAsError,
-                isPreAggregatedStandardMetric);
-
-            telemetryItems.add(builder.build());
-        }
-        return telemetryItems;
     }
 }

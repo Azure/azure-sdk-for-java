@@ -4,8 +4,8 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.builders;
 
 import com.azure.monitor.opentelemetry.exporter.implementation.models.RequestData;
-
 import reactor.util.annotation.Nullable;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,13 +19,13 @@ public final class RequestTelemetryBuilder extends AbstractTelemetryBuilder {
 
     private final RequestData data;
 
+    public static RequestTelemetryBuilder create() {
+        return new RequestTelemetryBuilder(new RequestData());
+    }
+
     private RequestTelemetryBuilder(RequestData data) {
         super(data, "Request", "RequestData");
         this.data = data;
-    }
-
-    public static RequestTelemetryBuilder create() {
-        return new RequestTelemetryBuilder(new RequestData());
     }
 
     public void setId(String id) {

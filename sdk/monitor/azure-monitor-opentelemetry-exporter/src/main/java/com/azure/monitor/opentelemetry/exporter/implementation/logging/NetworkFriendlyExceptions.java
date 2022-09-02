@@ -7,8 +7,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.handler.ssl.SslHandshakeTimeoutException;
 import org.slf4j.MDC;
-
 import reactor.util.annotation.Nullable;
+
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLHandshakeException;
 import javax.net.ssl.SSLSocketFactory;
@@ -39,9 +39,6 @@ public class NetworkFriendlyExceptions {
         } catch (NoSuchAlgorithmException e) {
             logger.verbose(e.getMessage(), e);
         }
-    }
-
-    private NetworkFriendlyExceptions() {
     }
 
     // returns true if the exception was "handled" and the caller should not log it
@@ -134,6 +131,27 @@ public class NetworkFriendlyExceptions {
             return new SslExceptionDetector();
         }
 
+        @Override
+        public boolean detect(Throwable error) {
+            if (error instanceof SslHandshakeTimeoutException) {
+                return false;
+            }
+            // we are getting lots of SSLHandshakeExceptions in app services, and we suspect some may not
+            // be certificate errors, so further restricting the condition to include the message
+            return hasCausedByOfType(error, SSLHandshakeException.class)
+                && hasCausedByWithMessage(
+                error, "unable to find valid certification path to requested target");
+        }
+
+        @Override
+        public String message(String url) {
+            return populateFriendlyMessage(
+                "Unable to find valid certification path to requested target.",
+                getSslFriendlyExceptionAction(url),
+                getFriendlyExceptionBanner(url),
+                "This message is only logged the first time it occurs after startup.");
+        }
+
         private static String getJavaCacertsPath() {
             String javaHome = System.getProperty("java.home");
             return new File(javaHome, "lib/security/cacerts").getPath();
@@ -165,39 +183,12 @@ public class NetworkFriendlyExceptions {
                 + "\n"
                 + "Learn more about importing the certificate here: https://go.microsoft.com/fwlink/?linkid=2151450";
         }
-
-        @Override
-        public boolean detect(Throwable error) {
-            if (error instanceof SslHandshakeTimeoutException) {
-                return false;
-            }
-            // we are getting lots of SSLHandshakeExceptions in app services, and we suspect some may not
-            // be certificate errors, so further restricting the condition to include the message
-            return hasCausedByOfType(error, SSLHandshakeException.class)
-                && hasCausedByWithMessage(
-                error, "unable to find valid certification path to requested target");
-        }
-
-        @Override
-        public String message(String url) {
-            return populateFriendlyMessage(
-                "Unable to find valid certification path to requested target.",
-                getSslFriendlyExceptionAction(url),
-                getFriendlyExceptionBanner(url),
-                "This message is only logged the first time it occurs after startup.");
-        }
     }
 
     static class UnknownHostExceptionDetector implements FriendlyExceptionDetector {
 
         static UnknownHostExceptionDetector create() {
             return new UnknownHostExceptionDetector();
-        }
-
-        private static String getUnknownHostFriendlyExceptionAction(String url) {
-            return "Please update your network configuration so that the host in this url can be resolved: "
-                + url
-                + "\nLearn more about troubleshooting unknown host exception here: https://go.microsoft.com/fwlink/?linkid=2185830";
         }
 
         @Override
@@ -213,6 +204,12 @@ public class NetworkFriendlyExceptions {
                 getFriendlyExceptionBanner(url),
                 "This message is only logged the first time it occurs after startup.");
         }
+
+        private static String getUnknownHostFriendlyExceptionAction(String url) {
+            return "Please update your network configuration so that the host in this url can be resolved: "
+                + url
+                + "\nLearn more about troubleshooting unknown host exception here: https://go.microsoft.com/fwlink/?linkid=2185830";
+        }
     }
 
     static class CipherExceptionDetector implements FriendlyExceptionDetector {
@@ -225,13 +222,13 @@ public class NetworkFriendlyExceptions {
                 "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256");
         private final List<String> cipherSuitesFromJvm;
 
-        CipherExceptionDetector(List<String> cipherSuitesFromJvm) {
-            this.cipherSuitesFromJvm = cipherSuitesFromJvm;
-        }
-
         static CipherExceptionDetector create() throws NoSuchAlgorithmException {
             SSLSocketFactory socketFactory = SSLContext.getDefault().getSocketFactory();
             return new CipherExceptionDetector(Arrays.asList(socketFactory.getSupportedCipherSuites()));
+        }
+
+        CipherExceptionDetector(List<String> cipherSuitesFromJvm) {
+            this.cipherSuitesFromJvm = cipherSuitesFromJvm;
         }
 
         @Override
@@ -302,5 +299,8 @@ public class NetworkFriendlyExceptions {
                     + " https://go.microsoft.com/fwlink/?linkid=2185426");
             return actionBuilder.toString();
         }
+    }
+
+    private NetworkFriendlyExceptions() {
     }
 }

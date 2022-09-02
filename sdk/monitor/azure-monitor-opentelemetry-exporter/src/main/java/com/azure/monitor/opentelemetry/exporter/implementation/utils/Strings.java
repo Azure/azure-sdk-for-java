@@ -4,13 +4,11 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 
 import reactor.util.annotation.Nullable;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public final class Strings {
-
-    private Strings() {
-    }
 
     public static boolean isNullOrEmpty(@Nullable String string) {
         return string == null || string.isEmpty();
@@ -40,5 +38,8 @@ public final class Strings {
             map.put(key, value);
         }
         return map;
+    }
+
+    private Strings() {
     }
 }

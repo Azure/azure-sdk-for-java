@@ -4,7 +4,6 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.preaggregatedmetrics;
 
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.MetricTelemetryBuilder;
-
 import reactor.util.annotation.Nullable;
 
 import static com.azure.monitor.opentelemetry.exporter.implementation.preaggregatedmetrics.ExtractorHelper.FALSE;
@@ -20,9 +19,6 @@ public final class DependencyExtractor {
     public static final String DEPENDENCY_SUCCESS = "Dependency.Success";
     public static final String DEPENDENCY_TARGET = "dependency/target";
     public static final String DEPENDENCY_RESULT_CODE = "dependency/resultCode";
-
-    private DependencyExtractor() {
-    }
 
     public static void extract(
         MetricTelemetryBuilder metricBuilder,
@@ -41,5 +37,8 @@ public final class DependencyExtractor {
         metricBuilder.addProperty(DEPENDENCY_SUCCESS, success ? TRUE : FALSE);
         metricBuilder.addProperty(DEPENDENCY_TYPE, type);
         metricBuilder.addProperty(DEPENDENCY_TARGET, target);
+    }
+
+    private DependencyExtractor() {
     }
 }

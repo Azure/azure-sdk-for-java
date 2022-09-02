@@ -25,9 +25,11 @@ public class LocalFileWriterTests {
 
     private static final String CONNECTION_STRING =
         "InstrumentationKey=00000000-0000-0000-0000-0FEEDDADBEEF;IngestionEndpoint=http://foo.bar/";
+
+    private LocalFileCache localFileCache;
+
     @TempDir
     File tempFolder;
-    private LocalFileCache localFileCache;
 
     @BeforeEach
     public void setup() {

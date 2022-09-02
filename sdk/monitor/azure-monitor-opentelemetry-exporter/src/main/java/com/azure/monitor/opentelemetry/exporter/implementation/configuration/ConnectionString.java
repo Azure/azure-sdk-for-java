@@ -8,8 +8,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public final class ConnectionString {
+
     // TODO (trask) should this be bounded?
-    private static final Map<String, ConnectionString> map = new ConcurrentHashMap<>();
+    private static final Map<String, ConnectionString> cache = new ConcurrentHashMap<>();
 
     private final String instrumentationKey;
     private final String ingestionEndpoint;
@@ -32,7 +33,7 @@ public final class ConnectionString {
     }
 
     public static ConnectionString parse(String connectionString) {
-        return map.computeIfAbsent(
+        return cache.computeIfAbsent(
             connectionString, key -> new ConnectionStringBuilder().setConnectionString(key).build());
     }
 

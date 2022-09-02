@@ -35,9 +35,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
@@ -60,20 +58,6 @@ public final class SpanDataMapper {
 
     // TODO (trask) add to generated ContextTagKeys class
     private static final ContextTagKeys AI_DEVICE_OS = ContextTagKeys.fromString("ai.device.os");
-
-    private static final Map<String, ConnectionString> connectionStringCache = new ConcurrentHashMap<String, ConnectionString>(100);
-    private static final Set<String> DEFAULT_HTTP_SPAN_NAMES =
-        new HashSet<>(
-            Arrays.asList(
-                "HTTP OPTIONS",
-                "HTTP GET",
-                "HTTP HEAD",
-                "HTTP POST",
-                "HTTP PUT",
-                "HTTP DELETE",
-                "HTTP TRACE",
-                "HTTP CONNECT",
-                "HTTP PATCH"));
 
     static {
         Set<String> dbSystems = new HashSet<>();
@@ -125,6 +109,30 @@ public final class SpanDataMapper {
         this.appIdSupplier = appIdSupplier;
     }
 
+    public TelemetryItem map(SpanData span) {
+        long itemCount = getItemCount(span);
+        return map(span, itemCount);
+    }
+
+    public void map(SpanData span, Consumer<TelemetryItem> consumer) {
+        long itemCount = getItemCount(span);
+        TelemetryItem telemetryItem = map(span, itemCount);
+        consumer.accept(telemetryItem);
+        exportEvents(
+            span,
+            telemetryItem.getTags().get(ContextTagKeys.AI_OPERATION_NAME.toString()),
+            itemCount,
+            consumer);
+    }
+
+    public TelemetryItem map(SpanData span, long itemCount) {
+        if (isRequest(span)) {
+            return exportRequest(span, itemCount);
+        } else {
+            return exportRemoteDependency(span, span.getKind() == SpanKind.INTERNAL, itemCount);
+        }
+    }
+
     public static boolean isRequest(SpanData span) {
         return isRequest(
             span.getKind(),
@@ -173,6 +181,53 @@ public final class SpanDataMapper {
         return isPreAggregatedStandardMetric != null && isPreAggregatedStandardMetric;
     }
 
+    private TelemetryItem exportRemoteDependency(SpanData span, boolean inProc, long itemCount) {
+        RemoteDependencyTelemetryBuilder telemetryBuilder = RemoteDependencyTelemetryBuilder.create();
+        telemetryInitializer.accept(telemetryBuilder, span.getResource());
+
+        // set standard properties
+        setOperationTags(telemetryBuilder, span);
+        setTime(telemetryBuilder, span.getStartEpochNanos());
+        setItemCount(telemetryBuilder, itemCount);
+
+        // update tags
+        setExtraAttributes(telemetryBuilder, span.getAttributes());
+
+        addLinks(telemetryBuilder, span.getLinks());
+
+        // set dependency-specific properties
+        telemetryBuilder.setId(span.getSpanId());
+        telemetryBuilder.setName(getDependencyName(span));
+        telemetryBuilder.setDuration(
+            FormattedDuration.fromNanos(span.getEndEpochNanos() - span.getStartEpochNanos()));
+        telemetryBuilder.setSuccess(getSuccess(span));
+
+        if (inProc) {
+            telemetryBuilder.setType("InProc");
+        } else {
+            applySemanticConventions(telemetryBuilder, span);
+        }
+
+        if (checkIsPreAggregatedStandardMetric(span)) {
+            telemetryBuilder.addProperty(MS_PROCESSED_BY_METRIC_EXTRACTORS, "True");
+        }
+
+        return telemetryBuilder.build();
+    }
+
+    private static final Set<String> DEFAULT_HTTP_SPAN_NAMES =
+        new HashSet<>(
+            Arrays.asList(
+                "HTTP OPTIONS",
+                "HTTP GET",
+                "HTTP HEAD",
+                "HTTP POST",
+                "HTTP PUT",
+                "HTTP DELETE",
+                "HTTP TRACE",
+                "HTTP CONNECT",
+                "HTTP PATCH"));
+
     // the backend product prefers more detailed (but possibly infinite cardinality) name for http
     // dependencies
     private static String getDependencyName(SpanData span) {
@@ -197,6 +252,47 @@ public final class SpanDataMapper {
             return name;
         }
         return path.isEmpty() ? method + " /" : method + " " + path;
+    }
+
+    private void applySemanticConventions(
+        RemoteDependencyTelemetryBuilder telemetryBuilder, SpanData span) {
+        Attributes attributes = span.getAttributes();
+        String httpMethod = attributes.get(SemanticAttributes.HTTP_METHOD);
+        if (httpMethod != null) {
+            applyHttpClientSpan(telemetryBuilder, attributes);
+            return;
+        }
+        String rpcSystem = attributes.get(SemanticAttributes.RPC_SYSTEM);
+        if (rpcSystem != null) {
+            applyRpcClientSpan(telemetryBuilder, rpcSystem, attributes);
+            return;
+        }
+        String dbSystem = attributes.get(SemanticAttributes.DB_SYSTEM);
+        if (dbSystem != null) {
+            applyDatabaseClientSpan(telemetryBuilder, dbSystem, attributes);
+            return;
+        }
+        String messagingSystem = getMessagingSystem(attributes);
+        if (messagingSystem != null) {
+            applyMessagingClientSpan(telemetryBuilder, span.getKind(), messagingSystem, attributes);
+            return;
+        }
+
+        // passing max value because we don't know what the default port would be in this case,
+        // so we always want the port included
+        String target = getTargetOrNull(attributes, Integer.MAX_VALUE);
+        if (target != null) {
+            telemetryBuilder.setTarget(target);
+            return;
+        }
+
+        // with no target, the App Map falls back to creating a node based on the telemetry name,
+        // which is very confusing, e.g. when multiple unrelated nodes all point to a single node
+        // because they had dependencies with the same telemetry name
+        //
+        // so we mark these as InProc, even though they aren't INTERNAL spans,
+        // in order to prevent App Map from considering them
+        telemetryBuilder.setType("InProc");
     }
 
     @Nullable
@@ -237,6 +333,35 @@ public final class SpanDataMapper {
     private static void setOperationName(
         AbstractTelemetryBuilder telemetryBuilder, String operationName) {
         telemetryBuilder.addTag(ContextTagKeys.AI_OPERATION_NAME.toString(), operationName);
+    }
+
+    private void applyHttpClientSpan(
+        RemoteDependencyTelemetryBuilder telemetryBuilder, Attributes attributes) {
+
+        int defaultPort = getDefaultPortForHttpUrl(attributes.get(SemanticAttributes.HTTP_URL));
+        String target = getTargetOrDefault(attributes, defaultPort, "Http");
+
+        String targetAppId = getTargetAppId(attributes);
+
+        if (targetAppId == null || targetAppId.equals(appIdSupplier.get())) {
+            telemetryBuilder.setType("Http");
+            telemetryBuilder.setTarget(target);
+        } else {
+            // using "Http (tracked component)" is important for dependencies that go cross-component
+            // (have an appId in their target field)
+            // if you use just HTTP, Breeze will remove appid from the target
+            // TODO (trask) remove this once confirmed by zakima that it is no longer needed
+            telemetryBuilder.setType("Http (tracked component)");
+            telemetryBuilder.setTarget(target + " | " + targetAppId);
+        }
+
+        Long httpStatusCode = attributes.get(SemanticAttributes.HTTP_STATUS_CODE);
+        if (httpStatusCode != null) {
+            telemetryBuilder.setResultCode(Long.toString(httpStatusCode));
+        }
+
+        String url = attributes.get(SemanticAttributes.HTTP_URL);
+        telemetryBuilder.setData(url);
     }
 
     @Nullable
@@ -375,360 +500,6 @@ public final class SpanDataMapper {
         }
     }
 
-    @Nullable
-    public static String getHttpUrlFromServerSpan(Attributes attributes) {
-        String httpUrl = attributes.get(SemanticAttributes.HTTP_URL);
-        if (httpUrl != null) {
-            return httpUrl;
-        }
-        String scheme = attributes.get(SemanticAttributes.HTTP_SCHEME);
-        if (scheme == null) {
-            return null;
-        }
-        String host = attributes.get(SemanticAttributes.HTTP_HOST);
-        if (host == null) {
-            return null;
-        }
-        String target = attributes.get(SemanticAttributes.HTTP_TARGET);
-        if (target == null) {
-            return null;
-        }
-        return scheme + "://" + host + target;
-    }
-
-    @Nullable
-    private static String getMessagingTargetSource(Attributes attributes) {
-        if (isAzureSdkMessaging(attributes.get(AiSemanticAttributes.AZURE_SDK_NAMESPACE))) {
-            // special case needed until Azure SDK moves to OTel semantic conventions
-            String peerAddress = attributes.get(AiSemanticAttributes.AZURE_SDK_PEER_ADDRESS);
-            String destination = attributes.get(AiSemanticAttributes.AZURE_SDK_MESSAGE_BUS_DESTINATION);
-            return peerAddress + "/" + destination;
-        }
-        String messagingSystem = attributes.get(SemanticAttributes.MESSAGING_SYSTEM);
-        if (messagingSystem == null) {
-            return null;
-        }
-        // TODO (trask) AI mapping: should this pass default port for messaging.system?
-        String source =
-            nullAwareConcat(
-                getTargetOrNull(attributes, 0),
-                attributes.get(SemanticAttributes.MESSAGING_DESTINATION),
-                "/");
-        if (source != null) {
-            return source;
-        }
-        // fallback
-        return messagingSystem;
-    }
-
-    private static boolean isAzureSdkMessaging(String messagingSystem) {
-        return "Microsoft.EventHub".equals(messagingSystem)
-            || "Microsoft.ServiceBus".equals(messagingSystem);
-    }
-
-    private static String getOperationName(SpanData span) {
-        String operationName = span.getAttributes().get(AiSemanticAttributes.OPERATION_NAME);
-        if (operationName != null) {
-            return operationName;
-        }
-
-        String spanName = span.getName();
-        String httpMethod = span.getAttributes().get(SemanticAttributes.HTTP_METHOD);
-        if (httpMethod != null && !httpMethod.isEmpty() && spanName.startsWith("/")) {
-            return httpMethod + " " + spanName;
-        }
-        return spanName;
-    }
-
-    private static String nullAwareConcat(
-        @Nullable String str1, @Nullable String str2, String separator) {
-        if (str1 == null) {
-            return str2;
-        }
-        if (str2 == null) {
-            return str1;
-        }
-        return str1 + separator + str2;
-    }
-
-    private static void setTime(AbstractTelemetryBuilder telemetryBuilder, long epochNanos) {
-        telemetryBuilder.setTime(FormattedTime.offSetDateTimeFromEpochNanos(epochNanos));
-    }
-
-    private static void setItemCount(AbstractTelemetryBuilder telemetryBuilder, long itemCount) {
-        if (itemCount != 1) {
-            telemetryBuilder.setSampleRate(100.0f / itemCount);
-        }
-    }
-
-    private static long getItemCount(SpanData span) {
-        Long itemCount = span.getAttributes().get(AiSemanticAttributes.ITEM_COUNT);
-        return itemCount == null ? 1 : itemCount;
-    }
-
-    private static void addLinks(AbstractTelemetryBuilder telemetryBuilder, List<LinkData> links) {
-        if (links.isEmpty()) {
-            return;
-        }
-        StringBuilder sb = new StringBuilder();
-        sb.append("[");
-        boolean first = true;
-        for (LinkData link : links) {
-            if (!first) {
-                sb.append(",");
-            }
-            sb.append("{\"operation_Id\":\"");
-            sb.append(link.getSpanContext().getTraceId());
-            sb.append("\",\"id\":\"");
-            sb.append(link.getSpanContext().getSpanId());
-            sb.append("\"}");
-            first = false;
-        }
-        sb.append("]");
-        telemetryBuilder.addProperty("_MS.links", sb.toString());
-    }
-
-    private static void setExtraAttributes(
-        AbstractTelemetryBuilder telemetryBuilder, Attributes attributes) {
-        attributes.forEach(
-            (attributeKey, value) -> {
-                String key = attributeKey.getKey();
-                if (key.startsWith("applicationinsights.internal.")) {
-                    return;
-                }
-                if (key.equals(AiSemanticAttributes.AZURE_SDK_NAMESPACE.getKey())
-                    || key.equals(AiSemanticAttributes.AZURE_SDK_MESSAGE_BUS_DESTINATION.getKey())
-                    || key.equals(AiSemanticAttributes.AZURE_SDK_ENQUEUED_TIME.getKey())) {
-                    // these are from azure SDK (AZURE_SDK_PEER_ADDRESS gets filtered out automatically
-                    // since it uses the otel "peer." prefix)
-                    return;
-                }
-                if (key.equals(AiSemanticAttributes.KAFKA_RECORD_QUEUE_TIME_MS.getKey())
-                    || key.equals(AiSemanticAttributes.KAFKA_OFFSET.getKey())) {
-                    return;
-                }
-                if (key.equals(AiSemanticAttributes.REQUEST_CONTEXT.getKey())) {
-                    return;
-                }
-                if (key.equals(SemanticAttributes.HTTP_USER_AGENT.getKey()) && value instanceof String) {
-                    telemetryBuilder.addTag("ai.user.userAgent", (String) value);
-                    return;
-                }
-                if (applyCommonTags(telemetryBuilder, key, value)) {
-                    return;
-                }
-                if (STANDARD_ATTRIBUTE_PREFIX_TRIE.getOrDefault(key, false)
-                    && !key.startsWith("http.request.header.")
-                    && !key.startsWith("http.response.header.")) {
-                    return;
-                }
-                String val = convertToString(value, attributeKey.getType());
-                if (value != null) {
-                    telemetryBuilder.addProperty(attributeKey.getKey(), val);
-                }
-            });
-    }
-
-    static boolean applyCommonTags(
-        AbstractTelemetryBuilder telemetryBuilder, String key, Object value) {
-
-        if (key.equals(SemanticAttributes.ENDUSER_ID.getKey()) && value instanceof String) {
-            telemetryBuilder.addTag(ContextTagKeys.AI_USER_ID.toString(), (String) value);
-            return true;
-        }
-        if (applyConnectionStringAndRoleNameOverrides(telemetryBuilder, value, key)) {
-            return true;
-        }
-        if (key.equals(AiSemanticAttributes.ROLE_INSTANCE_ID.getKey()) && value instanceof String) {
-            telemetryBuilder.addTag(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString(), (String) value);
-            return true;
-        }
-        if (key.equals(AiSemanticAttributes.APPLICATION_VERSION.getKey()) && value instanceof String) {
-            telemetryBuilder.addTag(ContextTagKeys.AI_APPLICATION_VER.toString(), (String) value);
-            return true;
-        }
-        return false;
-    }
-
-    static boolean applyConnectionStringAndRoleNameOverrides(
-        AbstractTelemetryBuilder telemetryBuilder, Object value, String key) {
-        if (key.equals(AiSemanticAttributes.CONNECTION_STRING.getKey()) && value instanceof String) {
-            // intentionally letting exceptions from parse bubble up
-            telemetryBuilder.setConnectionString(
-                connectionStringCache.computeIfAbsent((String) value, ConnectionString::parse));
-            return true;
-        }
-        if (key.equals(AiSemanticAttributes.INSTRUMENTATION_KEY.getKey()) && value instanceof String) {
-            // intentionally letting exceptions from parse bubble up
-            telemetryBuilder.setConnectionString(
-                connectionStringCache.computeIfAbsent(
-                    "InstrumentationKey=" + value, ConnectionString::parse));
-            return true;
-        }
-        if (key.equals(AiSemanticAttributes.ROLE_NAME.getKey()) && value instanceof String) {
-            telemetryBuilder.addTag(ContextTagKeys.AI_CLOUD_ROLE.toString(), (String) value);
-            return true;
-        }
-        return false;
-    }
-
-    @Nullable
-    public static String convertToString(Object value, AttributeType type) {
-        switch (type) {
-            case STRING:
-            case BOOLEAN:
-            case LONG:
-            case DOUBLE:
-                return String.valueOf(value);
-            case STRING_ARRAY:
-            case BOOLEAN_ARRAY:
-            case LONG_ARRAY:
-            case DOUBLE_ARRAY:
-                return join((List<?>) value);
-        }
-        LOGGER.warning("unexpected attribute type: {}", type);
-        return null;
-    }
-
-    private static <T> String join(List<T> values) {
-        StringBuilder sb = new StringBuilder();
-        for (Object val : values) {
-            if (sb.length() > 0) {
-                sb.append(", ");
-            }
-            sb.append(val);
-        }
-        return sb.toString();
-    }
-
-    public TelemetryItem map(SpanData span) {
-        long itemCount = getItemCount(span);
-        return map(span, itemCount);
-    }
-
-    public void map(SpanData span, Consumer<TelemetryItem> consumer) {
-        long itemCount = getItemCount(span);
-        TelemetryItem telemetryItem = map(span, itemCount);
-        consumer.accept(telemetryItem);
-        exportEvents(
-            span,
-            telemetryItem.getTags().get(ContextTagKeys.AI_OPERATION_NAME.toString()),
-            itemCount,
-            consumer);
-    }
-
-    public TelemetryItem map(SpanData span, long itemCount) {
-        if (isRequest(span)) {
-            return exportRequest(span, itemCount);
-        } else {
-            return exportRemoteDependency(span, span.getKind() == SpanKind.INTERNAL, itemCount);
-        }
-    }
-
-    private TelemetryItem exportRemoteDependency(SpanData span, boolean inProc, long itemCount) {
-        RemoteDependencyTelemetryBuilder telemetryBuilder = RemoteDependencyTelemetryBuilder.create();
-        telemetryInitializer.accept(telemetryBuilder, span.getResource());
-
-        // set standard properties
-        setOperationTags(telemetryBuilder, span);
-        setTime(telemetryBuilder, span.getStartEpochNanos());
-        setItemCount(telemetryBuilder, itemCount);
-
-        // update tags
-        setExtraAttributes(telemetryBuilder, span.getAttributes());
-
-        addLinks(telemetryBuilder, span.getLinks());
-
-        // set dependency-specific properties
-        telemetryBuilder.setId(span.getSpanId());
-        telemetryBuilder.setName(getDependencyName(span));
-        telemetryBuilder.setDuration(
-            FormattedDuration.fromNanos(span.getEndEpochNanos() - span.getStartEpochNanos()));
-        telemetryBuilder.setSuccess(getSuccess(span));
-
-        if (inProc) {
-            telemetryBuilder.setType("InProc");
-        } else {
-            applySemanticConventions(telemetryBuilder, span);
-        }
-
-        if (checkIsPreAggregatedStandardMetric(span)) {
-            telemetryBuilder.addProperty(MS_PROCESSED_BY_METRIC_EXTRACTORS, "True");
-        }
-
-        return telemetryBuilder.build();
-    }
-
-    private void applySemanticConventions(
-        RemoteDependencyTelemetryBuilder telemetryBuilder, SpanData span) {
-        Attributes attributes = span.getAttributes();
-        String httpMethod = attributes.get(SemanticAttributes.HTTP_METHOD);
-        if (httpMethod != null) {
-            applyHttpClientSpan(telemetryBuilder, attributes);
-            return;
-        }
-        String rpcSystem = attributes.get(SemanticAttributes.RPC_SYSTEM);
-        if (rpcSystem != null) {
-            applyRpcClientSpan(telemetryBuilder, rpcSystem, attributes);
-            return;
-        }
-        String dbSystem = attributes.get(SemanticAttributes.DB_SYSTEM);
-        if (dbSystem != null) {
-            applyDatabaseClientSpan(telemetryBuilder, dbSystem, attributes);
-            return;
-        }
-        String messagingSystem = getMessagingSystem(attributes);
-        if (messagingSystem != null) {
-            applyMessagingClientSpan(telemetryBuilder, span.getKind(), messagingSystem, attributes);
-            return;
-        }
-
-        // passing max value because we don't know what the default port would be in this case,
-        // so we always want the port included
-        String target = getTargetOrNull(attributes, Integer.MAX_VALUE);
-        if (target != null) {
-            telemetryBuilder.setTarget(target);
-            return;
-        }
-
-        // with no target, the App Map falls back to creating a node based on the telemetry name,
-        // which is very confusing, e.g. when multiple unrelated nodes all point to a single node
-        // because they had dependencies with the same telemetry name
-        //
-        // so we mark these as InProc, even though they aren't INTERNAL spans,
-        // in order to prevent App Map from considering them
-        telemetryBuilder.setType("InProc");
-    }
-
-    private void applyHttpClientSpan(
-        RemoteDependencyTelemetryBuilder telemetryBuilder, Attributes attributes) {
-
-        int defaultPort = getDefaultPortForHttpUrl(attributes.get(SemanticAttributes.HTTP_URL));
-        String target = getTargetOrDefault(attributes, defaultPort, "Http");
-
-        String targetAppId = getTargetAppId(attributes);
-
-        if (targetAppId == null || targetAppId.equals(appIdSupplier.get())) {
-            telemetryBuilder.setType("Http");
-            telemetryBuilder.setTarget(target);
-        } else {
-            // using "Http (tracked component)" is important for dependencies that go cross-component
-            // (have an appId in their target field)
-            // if you use just HTTP, Breeze will remove appid from the target
-            // TODO (trask) remove this once confirmed by zakima that it is no longer needed
-            telemetryBuilder.setType("Http (tracked component)");
-            telemetryBuilder.setTarget(target + " | " + targetAppId);
-        }
-
-        Long httpStatusCode = attributes.get(SemanticAttributes.HTTP_STATUS_CODE);
-        if (httpStatusCode != null) {
-            telemetryBuilder.setResultCode(Long.toString(httpStatusCode));
-        }
-
-        String url = attributes.get(SemanticAttributes.HTTP_URL);
-        telemetryBuilder.setData(url);
-    }
-
     private TelemetryItem exportRequest(SpanData span, long itemCount) {
         RequestTelemetryBuilder telemetryBuilder = RequestTelemetryBuilder.create();
         telemetryInitializer.accept(telemetryBuilder, span.getResource());
@@ -855,6 +626,27 @@ public final class SpanDataMapper {
     }
 
     @Nullable
+    public static String getHttpUrlFromServerSpan(Attributes attributes) {
+        String httpUrl = attributes.get(SemanticAttributes.HTTP_URL);
+        if (httpUrl != null) {
+            return httpUrl;
+        }
+        String scheme = attributes.get(SemanticAttributes.HTTP_SCHEME);
+        if (scheme == null) {
+            return null;
+        }
+        String host = attributes.get(SemanticAttributes.HTTP_HOST);
+        if (host == null) {
+            return null;
+        }
+        String target = attributes.get(SemanticAttributes.HTTP_TARGET);
+        if (target == null) {
+            return null;
+        }
+        return scheme + "://" + host + target;
+    }
+
+    @Nullable
     private String getSource(Attributes attributes, @Nullable SpanContext spanContext) {
         // this is only used by the 2.x web interop bridge
         // for ThreadContext.getRequestTelemetryContext().getHttpRequestTelemetry().setSource()
@@ -869,6 +661,61 @@ public final class SpanDataMapper {
             return source;
         }
         return getMessagingTargetSource(attributes);
+    }
+
+    @Nullable
+    private static String getMessagingTargetSource(Attributes attributes) {
+        if (isAzureSdkMessaging(attributes.get(AiSemanticAttributes.AZURE_SDK_NAMESPACE))) {
+            // special case needed until Azure SDK moves to OTel semantic conventions
+            String peerAddress = attributes.get(AiSemanticAttributes.AZURE_SDK_PEER_ADDRESS);
+            String destination = attributes.get(AiSemanticAttributes.AZURE_SDK_MESSAGE_BUS_DESTINATION);
+            return peerAddress + "/" + destination;
+        }
+        String messagingSystem = attributes.get(SemanticAttributes.MESSAGING_SYSTEM);
+        if (messagingSystem == null) {
+            return null;
+        }
+        // TODO (trask) AI mapping: should this pass default port for messaging.system?
+        String source =
+            nullAwareConcat(
+                getTargetOrNull(attributes, 0),
+                attributes.get(SemanticAttributes.MESSAGING_DESTINATION),
+                "/");
+        if (source != null) {
+            return source;
+        }
+        // fallback
+        return messagingSystem;
+    }
+
+    private static boolean isAzureSdkMessaging(String messagingSystem) {
+        return "Microsoft.EventHub".equals(messagingSystem)
+            || "Microsoft.ServiceBus".equals(messagingSystem);
+    }
+
+    private static String getOperationName(SpanData span) {
+        String operationName = span.getAttributes().get(AiSemanticAttributes.OPERATION_NAME);
+        if (operationName != null) {
+            return operationName;
+        }
+
+        String spanName = span.getName();
+        String httpMethod = span.getAttributes().get(SemanticAttributes.HTTP_METHOD);
+        if (httpMethod != null && !httpMethod.isEmpty() && spanName.startsWith("/")) {
+            return httpMethod + " " + spanName;
+        }
+        return spanName;
+    }
+
+    private static String nullAwareConcat(
+        @Nullable String str1, @Nullable String str2, String separator) {
+        if (str1 == null) {
+            return str2;
+        }
+        if (str2 == null) {
+            return str1;
+        }
+        return str1 + separator + str2;
     }
 
     private void exportEvents(
@@ -944,5 +791,152 @@ public final class SpanDataMapper {
         telemetryBuilder.setExceptions(Exceptions.minimalParse(errorStack));
 
         return telemetryBuilder.build();
+    }
+
+    private static void setTime(AbstractTelemetryBuilder telemetryBuilder, long epochNanos) {
+        telemetryBuilder.setTime(FormattedTime.offSetDateTimeFromEpochNanos(epochNanos));
+    }
+
+    private static void setItemCount(AbstractTelemetryBuilder telemetryBuilder, long itemCount) {
+        if (itemCount != 1) {
+            telemetryBuilder.setSampleRate(100.0f / itemCount);
+        }
+    }
+
+    private static long getItemCount(SpanData span) {
+        Long itemCount = span.getAttributes().get(AiSemanticAttributes.ITEM_COUNT);
+        return itemCount == null ? 1 : itemCount;
+    }
+
+    private static void addLinks(AbstractTelemetryBuilder telemetryBuilder, List<LinkData> links) {
+        if (links.isEmpty()) {
+            return;
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        boolean first = true;
+        for (LinkData link : links) {
+            if (!first) {
+                sb.append(",");
+            }
+            sb.append("{\"operation_Id\":\"");
+            sb.append(link.getSpanContext().getTraceId());
+            sb.append("\",\"id\":\"");
+            sb.append(link.getSpanContext().getSpanId());
+            sb.append("\"}");
+            first = false;
+        }
+        sb.append("]");
+        telemetryBuilder.addProperty("_MS.links", sb.toString());
+    }
+
+    private static void setExtraAttributes(
+        AbstractTelemetryBuilder telemetryBuilder, Attributes attributes) {
+        attributes.forEach(
+            (attributeKey, value) -> {
+                String key = attributeKey.getKey();
+                if (key.startsWith("applicationinsights.internal.")) {
+                    return;
+                }
+                if (key.equals(AiSemanticAttributes.AZURE_SDK_NAMESPACE.getKey())
+                    || key.equals(AiSemanticAttributes.AZURE_SDK_MESSAGE_BUS_DESTINATION.getKey())
+                    || key.equals(AiSemanticAttributes.AZURE_SDK_ENQUEUED_TIME.getKey())) {
+                    // these are from azure SDK (AZURE_SDK_PEER_ADDRESS gets filtered out automatically
+                    // since it uses the otel "peer." prefix)
+                    return;
+                }
+                if (key.equals(AiSemanticAttributes.KAFKA_RECORD_QUEUE_TIME_MS.getKey())
+                    || key.equals(AiSemanticAttributes.KAFKA_OFFSET.getKey())) {
+                    return;
+                }
+                if (key.equals(AiSemanticAttributes.REQUEST_CONTEXT.getKey())) {
+                    return;
+                }
+                if (key.equals(SemanticAttributes.HTTP_USER_AGENT.getKey()) && value instanceof String) {
+                    telemetryBuilder.addTag("ai.user.userAgent", (String) value);
+                    return;
+                }
+                if (applyCommonTags(telemetryBuilder, key, value)) {
+                    return;
+                }
+                if (STANDARD_ATTRIBUTE_PREFIX_TRIE.getOrDefault(key, false)
+                    && !key.startsWith("http.request.header.")
+                    && !key.startsWith("http.response.header.")) {
+                    return;
+                }
+                String val = convertToString(value, attributeKey.getType());
+                if (value != null) {
+                    telemetryBuilder.addProperty(attributeKey.getKey(), val);
+                }
+            });
+    }
+
+    static boolean applyCommonTags(
+        AbstractTelemetryBuilder telemetryBuilder, String key, Object value) {
+
+        if (key.equals(SemanticAttributes.ENDUSER_ID.getKey()) && value instanceof String) {
+            telemetryBuilder.addTag(ContextTagKeys.AI_USER_ID.toString(), (String) value);
+            return true;
+        }
+        if (applyConnectionStringAndRoleNameOverrides(telemetryBuilder, value, key)) {
+            return true;
+        }
+        if (key.equals(AiSemanticAttributes.ROLE_INSTANCE_ID.getKey()) && value instanceof String) {
+            telemetryBuilder.addTag(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString(), (String) value);
+            return true;
+        }
+        if (key.equals(AiSemanticAttributes.APPLICATION_VERSION.getKey()) && value instanceof String) {
+            telemetryBuilder.addTag(ContextTagKeys.AI_APPLICATION_VER.toString(), (String) value);
+            return true;
+        }
+        return false;
+    }
+
+    static boolean applyConnectionStringAndRoleNameOverrides(
+        AbstractTelemetryBuilder telemetryBuilder, Object value, String key) {
+        if (key.equals(AiSemanticAttributes.CONNECTION_STRING.getKey()) && value instanceof String) {
+            // intentionally letting exceptions from parse bubble up
+            telemetryBuilder.setConnectionString(ConnectionString.parse((String) value));
+            return true;
+        }
+        if (key.equals(AiSemanticAttributes.INSTRUMENTATION_KEY.getKey()) && value instanceof String) {
+            // intentionally letting exceptions from parse bubble up
+            telemetryBuilder.setConnectionString(ConnectionString.parse("InstrumentationKey=" + value));
+            return true;
+        }
+        if (key.equals(AiSemanticAttributes.ROLE_NAME.getKey()) && value instanceof String) {
+            telemetryBuilder.addTag(ContextTagKeys.AI_CLOUD_ROLE.toString(), (String) value);
+            return true;
+        }
+        return false;
+    }
+
+    @Nullable
+    public static String convertToString(Object value, AttributeType type) {
+        switch (type) {
+            case STRING:
+            case BOOLEAN:
+            case LONG:
+            case DOUBLE:
+                return String.valueOf(value);
+            case STRING_ARRAY:
+            case BOOLEAN_ARRAY:
+            case LONG_ARRAY:
+            case DOUBLE_ARRAY:
+                return join((List<?>) value);
+        }
+        LOGGER.warning("unexpected attribute type: {}", type);
+        return null;
+    }
+
+    private static <T> String join(List<T> values) {
+        StringBuilder sb = new StringBuilder();
+        for (Object val : values) {
+            if (sb.length() > 0) {
+                sb.append(", ");
+            }
+            sb.append(val);
+        }
+        return sb.toString();
     }
 }

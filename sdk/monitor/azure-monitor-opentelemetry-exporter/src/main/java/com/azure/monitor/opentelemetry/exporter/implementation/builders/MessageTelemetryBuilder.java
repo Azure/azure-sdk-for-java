@@ -5,8 +5,8 @@ package com.azure.monitor.opentelemetry.exporter.implementation.builders;
 
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MessageData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.SeverityLevel;
-
 import reactor.util.annotation.Nullable;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,13 +18,13 @@ public final class MessageTelemetryBuilder extends AbstractTelemetryBuilder {
 
     private final MessageData data;
 
+    public static MessageTelemetryBuilder create() {
+        return new MessageTelemetryBuilder(new MessageData());
+    }
+
     private MessageTelemetryBuilder(MessageData data) {
         super(data, "Message", "MessageData");
         this.data = data;
-    }
-
-    public static MessageTelemetryBuilder create() {
-        return new MessageTelemetryBuilder(new MessageData());
     }
 
     public void setMessage(String message) {

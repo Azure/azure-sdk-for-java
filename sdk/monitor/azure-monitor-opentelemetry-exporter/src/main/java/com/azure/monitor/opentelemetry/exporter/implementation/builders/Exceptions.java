@@ -9,9 +9,6 @@ import static java.util.Collections.singletonList;
 
 public final class Exceptions {
 
-    private Exceptions() {
-    }
-
     public static List<ExceptionDetailBuilder> minimalParse(String str) {
         ExceptionDetailBuilder builder = new ExceptionDetailBuilder();
         int separator = -1;
@@ -41,5 +38,8 @@ public final class Exceptions {
         }
         builder.setStack(str);
         return singletonList(builder);
+    }
+
+    private Exceptions() {
     }
 }

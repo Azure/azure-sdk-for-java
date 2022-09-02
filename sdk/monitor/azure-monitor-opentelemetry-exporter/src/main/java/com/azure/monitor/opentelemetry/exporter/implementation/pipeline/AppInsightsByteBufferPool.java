@@ -28,9 +28,10 @@ class AppInsightsByteBufferPool {
 
     @SuppressFBWarnings(
         value = "RV_RETURN_VALUE_IGNORED_BAD_PRACTICE",
-        justification = "this is just best effort returning byte buffers to the pool," +
-            " so it's ok if the offer doesn't succeed," +
-            " so there's no need to check the return value")
+        justification =
+            "this is just best effort returning byte buffers to the pool,"
+                + " so it's ok if the offer doesn't succeed,"
+                + " so there's no need to check the return value")
     void offer(List<ByteBuffer> byteBuffers) {
         // TODO(trask) batch offer?
         for (ByteBuffer byteBuffer : byteBuffers) {

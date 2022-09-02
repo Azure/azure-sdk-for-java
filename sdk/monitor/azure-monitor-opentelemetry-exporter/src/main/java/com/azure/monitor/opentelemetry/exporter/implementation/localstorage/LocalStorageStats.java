@@ -7,11 +7,11 @@ package com.azure.monitor.opentelemetry.exporter.implementation.localstorage;
 // TODO (trask) revisit this once statsbeat is pulled over into azure-monitor-opentelemetry-exporter
 public interface LocalStorageStats {
 
-    static LocalStorageStats noop() {
-        return NoopLocalStorageStats.INSTANCE;
-    }
-
     void incrementReadFailureCount();
 
     void incrementWriteFailureCount();
+
+    static LocalStorageStats noop() {
+        return NoopLocalStorageStats.INSTANCE;
+    }
 }

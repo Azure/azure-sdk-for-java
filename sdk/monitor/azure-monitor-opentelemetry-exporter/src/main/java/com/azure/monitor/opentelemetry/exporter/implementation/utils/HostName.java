@@ -5,8 +5,8 @@ package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 
 import com.azure.core.util.logging.ClientLogger;
 import org.slf4j.MDC;
-
 import reactor.util.annotation.Nullable;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -16,9 +16,6 @@ public class HostName {
 
     private static final ClientLogger logger = new ClientLogger(HostName.class);
 
-    private HostName() {
-    }
-
     /**
      * Returns the hostname using {@link InetAddress#getHostName()} on {@link
      * InetAddress#getLocalHost()}. If an error is encountered, the error is logged and it returns
@@ -26,8 +23,8 @@ public class HostName {
      *
      * @return the local hostname, or null
      */
-    @SuppressWarnings("try")
     @Nullable
+    @SuppressWarnings("try")
     public static String get() {
         try {
             InetAddress addr = InetAddress.getLocalHost();
@@ -38,5 +35,8 @@ public class HostName {
             }
             return null;
         }
+    }
+
+    private HostName() {
     }
 }

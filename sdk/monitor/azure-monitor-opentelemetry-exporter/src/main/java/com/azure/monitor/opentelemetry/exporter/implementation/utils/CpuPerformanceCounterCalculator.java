@@ -6,8 +6,8 @@ package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
-
 import reactor.util.annotation.Nullable;
+
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 import java.lang.management.ManagementFactory;
@@ -27,9 +27,9 @@ public final class CpuPerformanceCounterCalculator {
 
     private ObjectName osBean;
 
-    @SuppressWarnings("try")
     // this is not normalized by number of cores, so can be 800% with 8 cores
     @Nullable
+    @SuppressWarnings("try")
     public Double getCpuPercentage() {
         try {
             long upTime = runtimeMxBean.getUptime();

@@ -7,9 +7,6 @@ import reactor.util.annotation.Nullable;
 
 public class UrlParser {
 
-    private UrlParser() {
-    }
-
     /**
      * Returns the "target" (host:port) portion of the url.
      *
@@ -105,5 +102,8 @@ public class UrlParser {
             }
         }
         return len;
+    }
+
+    private UrlParser() {
     }
 }

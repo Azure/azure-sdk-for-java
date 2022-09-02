@@ -4,8 +4,8 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.builders;
 
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryEventData;
-
 import reactor.util.annotation.Nullable;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,13 +17,13 @@ public final class EventTelemetryBuilder extends AbstractTelemetryBuilder {
 
     private final TelemetryEventData data;
 
+    public static EventTelemetryBuilder create() {
+        return new EventTelemetryBuilder(new TelemetryEventData());
+    }
+
     private EventTelemetryBuilder(TelemetryEventData data) {
         super(data, "Event", "EventData");
         this.data = data;
-    }
-
-    public static EventTelemetryBuilder create() {
-        return new EventTelemetryBuilder(new TelemetryEventData());
     }
 
     public void setName(String name) {

@@ -40,44 +40,6 @@ public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineLis
         this.suppressWarningsOnRetryableFailures = suppressWarningsOnRetryableFailures;
     }
 
-    private static Set<String> getErrors(String body) {
-        JsonNode jsonNode;
-        try {
-            jsonNode = new ObjectMapper().readTree(body);
-        } catch (JsonProcessingException e) {
-            // fallback to generic message
-            return singleton("Could not parse response");
-        }
-        List<JsonNode> errorNodes = new ArrayList<>();
-        jsonNode.get("errors").forEach(errorNodes::add);
-        return errorNodes.stream()
-            .map(errorNode -> errorNode.get("message").asText())
-            .filter(s -> !s.equals("Telemetry sampled out."))
-            .collect(Collectors.toSet());
-    }
-
-    private static String getErrorMessageFromCredentialRelatedResponse(
-        int responseCode, String responseBody) {
-        JsonNode jsonNode;
-        try {
-            jsonNode = new ObjectMapper().readTree(responseBody);
-        } catch (JsonProcessingException e) {
-            return "Ingestion service returned "
-                + responseCode
-                + ", but could not parse response as json: "
-                + responseBody;
-        }
-        String action =
-            responseCode == 401
-                ? ". Please provide Azure Active Directory credentials"
-                : ". Please check your Azure Active Directory credentials, they might be incorrect or expired";
-        List<JsonNode> errors = new ArrayList<>();
-        jsonNode.get("errors").forEach(errors::add);
-        return errors.get(0).get("message").asText()
-            + action
-            + " (telemetry will be stored to disk and retried later)";
-    }
-
     @Override
     public void onResponse(TelemetryPipelineRequest request, TelemetryPipelineResponse response) {
         int responseCode = response.getStatusCode();
@@ -144,5 +106,43 @@ public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineLis
     @Override
     public CompletableResultCode shutdown() {
         return CompletableResultCode.ofSuccess();
+    }
+
+    private static Set<String> getErrors(String body) {
+        JsonNode jsonNode;
+        try {
+            jsonNode = new ObjectMapper().readTree(body);
+        } catch (JsonProcessingException e) {
+            // fallback to generic message
+            return singleton("Could not parse response");
+        }
+        List<JsonNode> errorNodes = new ArrayList<>();
+        jsonNode.get("errors").forEach(errorNodes::add);
+        return errorNodes.stream()
+            .map(errorNode -> errorNode.get("message").asText())
+            .filter(s -> !s.equals("Telemetry sampled out."))
+            .collect(Collectors.toSet());
+    }
+
+    private static String getErrorMessageFromCredentialRelatedResponse(
+        int responseCode, String responseBody) {
+        JsonNode jsonNode;
+        try {
+            jsonNode = new ObjectMapper().readTree(responseBody);
+        } catch (JsonProcessingException e) {
+            return "Ingestion service returned "
+                + responseCode
+                + ", but could not parse response as json: "
+                + responseBody;
+        }
+        String action =
+            responseCode == 401
+                ? ". Please provide Azure Active Directory credentials"
+                : ". Please check your Azure Active Directory credentials, they might be incorrect or expired";
+        List<JsonNode> errors = new ArrayList<>();
+        jsonNode.get("errors").forEach(errors::add);
+        return errors.get(0).get("message").asText()
+            + action
+            + " (telemetry will be stored to disk and retried later)";
     }
 }

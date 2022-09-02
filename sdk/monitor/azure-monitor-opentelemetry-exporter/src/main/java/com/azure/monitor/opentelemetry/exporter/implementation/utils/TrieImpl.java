@@ -4,6 +4,7 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 
 import reactor.util.annotation.Nullable;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -84,7 +85,6 @@ public final class TrieImpl<V> implements Trie<V> {
         }
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     static final class NodeBuilder<V> {
         final Map<Character, NodeBuilder<V>> children = new HashMap<>();
         V value;
@@ -92,6 +92,7 @@ public final class TrieImpl<V> implements Trie<V> {
         Node<V> build() {
             int size = children.size();
             char[] chars = new char[size];
+            @SuppressWarnings({"unchecked", "rawtypes"})
             Node<V>[] nodes = new Node[size];
 
             int i = 0;

@@ -5,6 +5,7 @@ package com.azure.monitor.opentelemetry.exporter;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.LogDataMapper;
+import com.azure.monitor.opentelemetry.exporter.implementation.SemanticAttributes;
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.OperationLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemExporter;
@@ -23,7 +24,7 @@ import static com.azure.monitor.opentelemetry.exporter.implementation.utils.Azur
  * This class is an implementation of OpenTelemetry {@link LogExporter} that allows different
  * logging services to export recorded data for sampled logs in their own format.
  */
-public class AzureMonitorLogExporter implements LogExporter {
+class AzureMonitorLogExporter implements LogExporter {
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorLogExporter.class);
     private static final OperationLogger OPERATION_LOGGER =

@@ -6,8 +6,8 @@ package com.azure.monitor.opentelemetry.exporter.implementation.logging;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.ThreadPoolUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import reactor.util.annotation.Nullable;
+
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,13 +32,16 @@ class AggregatingLogger {
     private final boolean trackingOperations;
 
     private final AtomicBoolean firstFailure = new AtomicBoolean();
-    private final Object lock = new Object();
+
     // number of successes and failures in the 5-min window
     private long numSuccesses;
+
     // using MutableLong for two purposes
     // * so we don't need to get and set into map each time we want to increment
     // * avoid autoboxing for values above 128
     private Map<String, MutableLong> failureMessages = new HashMap<>();
+
+    private final Object lock = new Object();
 
     AggregatingLogger(Class<?> source, String operation, boolean trackingOperations) {
         this(source, operation, trackingOperations, 300);
@@ -51,14 +54,6 @@ class AggregatingLogger {
         this.grouping = operation;
         this.trackingOperations = trackingOperations;
         this.intervalSeconds = intervalSeconds;
-    }
-
-    private static long getTotalFailures(Map<String, MutableLong> failureMessages) {
-        long total = 0;
-        for (MutableLong value : failureMessages.values()) {
-            total += value.value;
-        }
-        return total;
     }
 
     void recordSuccess() {
@@ -183,5 +178,13 @@ class AggregatingLogger {
                 logger.warn(message.toString());
             }
         }
+    }
+
+    private static long getTotalFailures(Map<String, MutableLong> failureMessages) {
+        long total = 0;
+        for (MutableLong value : failureMessages.values()) {
+            total += value.value;
+        }
+        return total;
     }
 }

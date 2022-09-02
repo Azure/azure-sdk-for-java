@@ -13,11 +13,11 @@ import java.util.List;
 
 public class TelemetryPipelineRequest {
 
+    private volatile URL url;
     private final String connectionString;
     private final String instrumentationKey;
     private final List<ByteBuffer> telemetry;
     private final int contentLength;
-    private volatile URL url;
 
     TelemetryPipelineRequest(
         URL url, String connectionString, String instrumentationKey, List<ByteBuffer> telemetry) {
