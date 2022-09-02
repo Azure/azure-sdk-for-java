@@ -3,6 +3,8 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.pipeline;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.OperationLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -11,8 +13,6 @@ import com.fasterxml.jackson.core.io.SerializedString;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import io.opentelemetry.sdk.common.CompletableResultCode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -34,7 +34,7 @@ public class TelemetryItemExporter {
     // thread can drive, so anything higher than this should not increase throughput
     private static final int MAX_CONCURRENT_EXPORTS = 100;
 
-    private static final Logger logger = LoggerFactory.getLogger(TelemetryItemExporter.class);
+    private static final ClientLogger logger = new ClientLogger(TelemetryItemExporter.class);
 
     private static final OperationLogger operationLogger =
         new OperationLogger(
@@ -135,12 +135,12 @@ public class TelemetryItemExporter {
 
     List<ByteBuffer> encode(List<TelemetryItem> telemetryItems) throws IOException {
 
-        if (logger.isDebugEnabled()) {
+        if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
             StringWriter debug = new StringWriter();
             try (JsonGenerator jg = mapper.createGenerator(debug)) {
                 writeTelemetryItems(jg, telemetryItems);
             }
-            logger.debug("sending telemetry to ingestion service:\n{}", debug);
+            logger.verbose("sending telemetry to ingestion service:\n{}", debug);
         }
 
         ByteBufferOutputStream out = new ByteBufferOutputStream(byteBufferPool);

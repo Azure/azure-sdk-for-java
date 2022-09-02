@@ -3,6 +3,7 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.AbstractTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.ExceptionTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.Exceptions;
@@ -17,15 +18,13 @@ import io.opentelemetry.sdk.logs.data.LogData;
 import io.opentelemetry.sdk.logs.data.Severity;
 import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.semconv.trace.attributes.SemanticAttributes;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
 import java.util.function.BiConsumer;
 
 public class LogDataMapper {
 
-    private static final Logger logger = LoggerFactory.getLogger(LogDataMapper.class);
+    private static final ClientLogger logger = new ClientLogger(LogDataMapper.class);
     private static final String LOG4J1_2_MDC_PREFIX = "log4j.mdc.";
     private static final String LOG4J2_CONTEXT_DATA_PREFIX = "log4j.context_data.";
     private static final String LOGBACK_MDC_PREFIX = "logback.mdc.";

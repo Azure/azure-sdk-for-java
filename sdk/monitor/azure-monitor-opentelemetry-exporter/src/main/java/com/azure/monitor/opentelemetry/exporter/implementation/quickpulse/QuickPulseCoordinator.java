@@ -3,6 +3,7 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +16,7 @@ import static com.azure.monitor.opentelemetry.exporter.implementation.utils.Azur
 
 final class QuickPulseCoordinator implements Runnable {
 
-    private static final Logger logger = LoggerFactory.getLogger(QuickPulseCoordinator.class);
+    private static final ClientLogger logger = new ClientLogger(QuickPulseCoordinator.class);
     private final QuickPulseDataCollector collector;
     private final QuickPulsePingSender pingSender;
     private final QuickPulseDataFetcher dataFetcher;

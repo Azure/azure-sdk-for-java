@@ -3,6 +3,7 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.localstorage;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.DiagnosticTelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipeline;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineListener;
@@ -19,7 +20,7 @@ import static java.util.Collections.singletonList;
 
 class LocalFileSender implements Runnable {
 
-    private static final Logger logger = LoggerFactory.getLogger(LocalFileSender.class);
+    private static final ClientLogger logger = new ClientLogger(LocalFileSender.class);
     private final LocalFileLoader localFileLoader;
     private final TelemetryPipeline telemetryPipeline;
     private final ScheduledExecutorService scheduledExecutor =

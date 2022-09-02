@@ -3,6 +3,7 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.AbstractTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.MetricPointBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.MetricTelemetryBuilder;
@@ -42,7 +43,7 @@ public class MetricDataMapper {
     private static final Set<String> OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES = new HashSet<>(4);
     private static final List<String> EXCLUDED_METRIC_NAMES = new ArrayList<>();
 
-    private static final Logger logger = LoggerFactory.getLogger(MetricDataMapper.class);
+    private static final ClientLogger logger = new ClientLogger(MetricDataMapper.class);
 
     static {
         EXCLUDED_METRIC_NAMES.add("http.server.active_requests"); // Servlet
@@ -197,7 +198,7 @@ public class MetricDataMapper {
                 consumer.accept(telemetryItem);
             }
         } else {
-            logger.warn("metric data type {} is not supported yet.", metricData.getType());
+            logger.warning("metric data type {} is not supported yet.", metricData.getType());
         }
     }
 

@@ -4,6 +4,7 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.slf4j.Logger;
 
@@ -22,7 +23,7 @@ public class TempDirs {
     }
 
     @Nullable
-    public static File getApplicationInsightsTempDir(Logger logger, String message) {
+    public static File getApplicationInsightsTempDir(ClientLogger logger, String message) {
         File tempDir = new File(System.getProperty("java.io.tmpdir"));
         tempDir = maybeAddUserSubDir(tempDir);
         tempDir = new File(tempDir, "applicationinsights");

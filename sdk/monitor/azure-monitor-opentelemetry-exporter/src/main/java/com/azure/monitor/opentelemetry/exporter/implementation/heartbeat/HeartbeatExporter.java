@@ -3,25 +3,19 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.heartbeat;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.AbstractTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.MetricTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.ThreadPoolUtils;
 import io.opentelemetry.sdk.resources.Resource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -30,7 +24,7 @@ import java.util.function.Consumer;
  */
 public class HeartbeatExporter {
 
-    private static final Logger logger = LoggerFactory.getLogger(HeartbeatExporter.class);
+    private static final ClientLogger logger = new ClientLogger(HeartbeatExporter.class);
 
     /**
      * The name of the heartbeat metric.
@@ -98,7 +92,7 @@ public class HeartbeatExporter {
         String propertyName, String propertyValue, boolean isHealthy) {
 
         if (heartbeatProperties.containsKey(propertyName)) {
-            logger.trace(
+            logger.verbose(
                 "heartbeat property {} cannot be added twice. Please use setHeartBeatProperty instead to modify the value",
                 propertyName);
             return false;
@@ -108,7 +102,6 @@ public class HeartbeatExporter {
         payload.setHealthy(isHealthy);
         payload.setPayloadValue(propertyValue);
         heartbeatProperties.put(propertyName, payload);
-        logger.trace("added heartbeat property {} - {}", propertyName, propertyValue);
         return true;
     }
 
@@ -118,9 +111,8 @@ public class HeartbeatExporter {
     private void send() {
         try {
             telemetryItemsConsumer.accept(Collections.singletonList(gatherData()));
-            logger.trace("No of heartbeats sent, {}", ++heartbeatsSent);
         } catch (RuntimeException e) {
-            logger.warn("Error occured while sending heartbeat");
+            logger.warning("Error occured while sending heartbeat");
         }
     }
 

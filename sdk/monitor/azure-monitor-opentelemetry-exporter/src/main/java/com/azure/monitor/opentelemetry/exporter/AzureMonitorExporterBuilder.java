@@ -18,6 +18,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.LogDataMapper;
 import com.azure.monitor.opentelemetry.exporter.implementation.MetricDataMapper;
 import com.azure.monitor.opentelemetry.exporter.implementation.SpanDataMapper;
@@ -36,7 +37,6 @@ import io.opentelemetry.sdk.logs.export.LogExporter;
 import io.opentelemetry.sdk.metrics.export.MetricExporter;
 import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -51,6 +51,8 @@ import static java.util.concurrent.TimeUnit.MINUTES;
  * implements {@link SpanExporter} interface defined by OpenTelemetry API specification.
  */
 public final class AzureMonitorExporterBuilder {
+
+    private static final ClientLogger logger = new ClientLogger(AzureMonitorExporterBuilder.class);
 
     private static final String APPLICATIONINSIGHTS_CONNECTION_STRING =
         "APPLICATIONINSIGHTS_CONNECTION_STRING";
@@ -284,7 +286,7 @@ public final class AzureMonitorExporterBuilder {
 
         File tempDir =
             TempDirs.getApplicationInsightsTempDir(
-                LoggerFactory.getLogger(AzureMonitorExporterBuilder.class),
+                logger,
                 "Telemetry will not be stored to disk and retried later"
                     + " on sporadic network failures");
 

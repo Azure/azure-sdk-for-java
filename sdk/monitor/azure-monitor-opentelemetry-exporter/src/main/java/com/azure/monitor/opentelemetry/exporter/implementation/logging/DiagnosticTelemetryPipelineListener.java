@@ -3,6 +3,7 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.logging;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipeline;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineRequest;
@@ -26,7 +27,7 @@ import static java.util.Collections.singleton;
 public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineListener {
 
     private static final Class<?> FOR_CLASS = TelemetryPipeline.class;
-    private static final Logger logger = LoggerFactory.getLogger(FOR_CLASS);
+    private static final ClientLogger logger = new ClientLogger(FOR_CLASS);
 
     // share this across multiple pipelines
     private static final AtomicBoolean friendlyExceptionThrown = new AtomicBoolean();

@@ -4,6 +4,7 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 
 import com.azure.core.http.HttpRequest;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseEnvelope;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseMetrics;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.util.CustomCharacterEscapes;
@@ -11,8 +12,6 @@ import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
 import java.net.URL;
@@ -26,7 +25,7 @@ import static com.azure.monitor.opentelemetry.exporter.implementation.utils.Azur
 
 class QuickPulseDataFetcher {
 
-    private static final Logger logger = LoggerFactory.getLogger(QuickPulseDataFetcher.class);
+    private static final ClientLogger logger = new ClientLogger(QuickPulseDataFetcher.class);
 
     private static final ObjectMapper mapper;
 
@@ -69,12 +68,6 @@ class QuickPulseDataFetcher {
         this.quickPulseId = quickPulseId;
 
         sdkVersion = getCurrentSdkVersion();
-        if (logger.isTraceEnabled()) {
-            logger.trace(
-                "{} using endpoint {}",
-                QuickPulseDataFetcher.class.getSimpleName(),
-                getQuickPulseEndpoint());
-        }
     }
 
     private static List<QuickPulseMetrics> addMetricsToQuickPulseEnvelope(
@@ -146,7 +139,7 @@ class QuickPulseDataFetcher {
             request.setBody(buildPostEntity(counters));
 
             if (!sendQueue.offer(request)) {
-                logger.trace("Quick Pulse send queue is full");
+                logger.verbose("Quick Pulse send queue is full");
             }
         } catch (ThreadDeath td) {
             throw td;

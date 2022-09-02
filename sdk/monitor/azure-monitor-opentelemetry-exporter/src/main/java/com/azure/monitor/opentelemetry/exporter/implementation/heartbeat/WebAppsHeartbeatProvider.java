@@ -3,9 +3,8 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.heartbeat;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -20,7 +19,7 @@ import java.util.concurrent.Callable;
  */
 public class WebAppsHeartbeatProvider implements HeartBeatPayloadProviderInterface {
 
-    private static final Logger logger = LoggerFactory.getLogger(WebAppsHeartbeatProvider.class);
+    private static final ClientLogger logger = new ClientLogger(WebAppsHeartbeatProvider.class);
     private static final String WEBSITE_SITE_NAME = "appSrv_SiteName";
     private static final String WEBSITE_HOSTNAME = "appSrv_wsHost";
     private static final String WEBSITE_HOME_STAMPNAME = "appSrv_wsStamp";
@@ -60,7 +59,7 @@ public class WebAppsHeartbeatProvider implements HeartBeatPayloadProviderInterfa
 
     @Override
     public Callable<Boolean> setDefaultPayload(HeartbeatExporter provider) {
-        return new Callable<Boolean>() {
+        return new Callable<>() {
 
             final Set<String> enabledProperties = defaultFields;
 
@@ -122,13 +121,11 @@ public class WebAppsHeartbeatProvider implements HeartBeatPayloadProviderInterfa
                                 hasSetValues = true;
                                 break;
                             default:
-                                logger.trace("Unknown web apps property encountered");
+                                logger.verbose("Unknown web apps property encountered");
                                 break;
                         }
                     } catch (RuntimeException e) {
-                        if (logger.isWarnEnabled()) {
-                            logger.warn("Failed to obtain heartbeat property", e);
-                        }
+                        logger.warning("Failed to obtain heartbeat property", e);
                     }
                 }
                 return hasSetValues;

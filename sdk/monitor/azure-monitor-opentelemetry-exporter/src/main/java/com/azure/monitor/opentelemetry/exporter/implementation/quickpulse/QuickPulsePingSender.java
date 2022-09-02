@@ -6,6 +6,7 @@ package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.NetworkFriendlyExceptions;
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.OperationLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseEnvelope;
@@ -14,8 +15,6 @@ import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
 import java.net.URL;
@@ -27,7 +26,7 @@ import static com.azure.monitor.opentelemetry.exporter.implementation.utils.Azur
 
 class QuickPulsePingSender {
 
-    private static final Logger logger = LoggerFactory.getLogger(QuickPulsePingSender.class);
+    private static final ClientLogger logger = new ClientLogger(QuickPulsePingSender.class);
 
     private static final ObjectMapper mapper;
 
@@ -73,12 +72,6 @@ class QuickPulsePingSender {
         this.machineName = machineName;
         this.quickPulseId = quickPulseId;
         this.sdkVersion = sdkVersion;
-        if (logger.isTraceEnabled()) {
-            logger.trace(
-                "{} using endpoint {}",
-                QuickPulsePingSender.class.getSimpleName(),
-                getQuickPulseEndpoint());
-        }
     }
 
     QuickPulseHeaderInfo ping(String redirectedEndpoint) {

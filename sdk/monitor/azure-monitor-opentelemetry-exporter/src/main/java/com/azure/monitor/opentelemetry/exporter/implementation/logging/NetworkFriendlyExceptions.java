@@ -4,6 +4,7 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.logging;
 
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import io.netty.handler.ssl.SslHandshakeTimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +28,7 @@ import static com.azure.monitor.opentelemetry.exporter.implementation.utils.Azur
 public class NetworkFriendlyExceptions {
 
     private static final List<FriendlyExceptionDetector> DETECTORS;
-    private static final Logger logger = LoggerFactory.getLogger(NetworkFriendlyExceptions.class);
+    private static final ClientLogger logger = new ClientLogger(NetworkFriendlyExceptions.class);
 
     static {
         DETECTORS = new ArrayList<>();
@@ -38,7 +39,7 @@ public class NetworkFriendlyExceptions {
         try {
             DETECTORS.add(CipherExceptionDetector.create());
         } catch (NoSuchAlgorithmException e) {
-            logger.debug(e.getMessage(), e);
+            logger.verbose(e.getMessage(), e);
         }
     }
 
@@ -47,7 +48,7 @@ public class NetworkFriendlyExceptions {
 
     // returns true if the exception was "handled" and the caller should not log it
     public static boolean logSpecialOneTimeFriendlyException(
-        Throwable error, String url, AtomicBoolean alreadySeen, Logger logger) {
+        Throwable error, String url, AtomicBoolean alreadySeen, ClientLogger logger) {
         return logSpecialOneTimeFriendlyException(error, url, alreadySeen, logger, DETECTORS);
     }
 
@@ -56,7 +57,7 @@ public class NetworkFriendlyExceptions {
         Throwable error,
         String url,
         AtomicBoolean alreadySeen,
-        Logger logger,
+        ClientLogger logger,
         List<FriendlyExceptionDetector> detectors) {
 
         for (FriendlyExceptionDetector detector : detectors) {
