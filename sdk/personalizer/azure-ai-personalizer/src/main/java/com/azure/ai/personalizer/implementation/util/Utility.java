@@ -3,7 +3,7 @@
 
 package com.azure.ai.personalizer.implementation.util;
 
-import com.azure.ai.personalizer.PersonalizerAudience;
+import com.azure.ai.personalizer.models.PersonalizerAudience;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;

@@ -33,8 +33,6 @@ public class EvaluationTests extends PersonalizerTestBase {
     public final void listEvaluationsTest(HttpClient httpClient, PersonalizerServiceVersion serviceVersion) {
         PersonalizerAdministrationClient client = getAdministrationClient(httpClient, serviceVersion, true);
         PagedIterable<PersonalizerEvaluation> evaluations = client.listEvaluations();
-        // Purge old evaluations just in case.
-        deleteOldEvaluations(client, evaluations);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -63,12 +61,5 @@ public class EvaluationTests extends PersonalizerTestBase {
 
         client.deleteEvaluation(evaluationResult.getId()).block();
         System.out.println("Deleted the evaluation with Id: " + evaluationResult.getId());
-    }
-
-    private static void deleteOldEvaluations(PersonalizerAdministrationClient client, PagedIterable<PersonalizerEvaluation> evaluations) {
-        evaluations
-            .stream()
-            .filter(evaluation -> evaluation.getCreationTime().isBefore(OffsetDateTime.now().minusDays(7)))
-            .forEach(evaluation -> client.deleteEvaluation(evaluation.getId()));
     }
 }

@@ -6,6 +6,7 @@ package com.azure.ai.personalizer;
 import com.azure.ai.personalizer.implementation.PersonalizerClientV1Preview3Impl;
 import com.azure.ai.personalizer.implementation.PersonalizerClientV1Preview3ImplBuilder;
 import com.azure.ai.personalizer.implementation.util.Utility;
+import com.azure.ai.personalizer.models.PersonalizerAudience;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;

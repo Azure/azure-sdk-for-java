@@ -3,7 +3,7 @@
 
 package com.azure.ai.personalizer.administration;
 
-import com.azure.ai.personalizer.PersonalizerAudience;
+import com.azure.ai.personalizer.models.PersonalizerAudience;
 import com.azure.ai.personalizer.PersonalizerServiceVersion;
 import com.azure.ai.personalizer.implementation.PersonalizerClientV1Preview3Impl;
 import com.azure.ai.personalizer.implementation.PersonalizerClientV1Preview3ImplBuilder;

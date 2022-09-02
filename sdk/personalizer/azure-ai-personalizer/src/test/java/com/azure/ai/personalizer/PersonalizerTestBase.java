@@ -8,6 +8,7 @@ import com.azure.ai.personalizer.administration.PersonalizerAdministrationClient
 import com.azure.ai.personalizer.administration.PersonalizerAdministrationClientBuilder;
 import com.azure.ai.personalizer.administration.models.PersonalizerPolicy;
 import com.azure.ai.personalizer.administration.models.PersonalizerServiceProperties;
+import com.azure.ai.personalizer.models.PersonalizerAudience;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;

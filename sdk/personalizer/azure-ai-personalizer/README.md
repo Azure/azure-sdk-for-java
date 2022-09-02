@@ -18,7 +18,7 @@ Include the dependency in the dependencies' section. Ignoring the version tag wi
   <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-ai-personalizer</artifactId>
-      <version>1.0.0-beta.1</version>
+      <version>1.0.0-beta.1</version> <!-- {{x-version-update-start;com.azure:azure-ai-personalizer;current} -->
   </dependency>
 </dependencies>
 ```
