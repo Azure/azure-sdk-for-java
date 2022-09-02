@@ -55,6 +55,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -1114,6 +1115,9 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         ArrayList<AddressInformation> cachedAddresses =
                 Lists.newArrayList(getSuccessResult(cache.tryGetAddresses(req, partitionKeyRangeIdentity, false), TIMEOUT).v);
 
+        // since the refresh will happen asynchronously in the background, wait here some time for it to happen
+        Thread.sleep(500);
+
         // validate the cache will be refreshed
         assertThat(httpClientWrapper.capturedRequests)
                 .describedAs("getAddress will read addresses from gateway")
@@ -1163,7 +1167,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         healthStatus.set(UnhealthyPending);
 
         // Set the replica validation scope
-        List<Uri.HealthStatus> replicaValidationScopes = ReflectionUtils.getReplicaValidationScopes(cache);
+        Set<Uri.HealthStatus> replicaValidationScopes = ReflectionUtils.getReplicaValidationScopes(cache);
         replicaValidationScopes.add(Unknown);
         replicaValidationScopes.add(UnhealthyPending);
 

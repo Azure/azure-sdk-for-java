@@ -165,13 +165,13 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
         public AsyncLazyWithRefresh(TValue value) {
             this.value = new AtomicReference<>();
             this.value.set(Mono.just(value));
-            this.refreshInProgress = null;
+            this.refreshInProgress = new AtomicReference<>(null);
         }
 
         public AsyncLazyWithRefresh(Function<TValue, Mono<TValue>> taskFactory) {
             this.value = new AtomicReference<>();
             this.value.set(taskFactory.apply(null).cache());
-            this.refreshInProgress = null;
+            this.refreshInProgress = new AtomicReference<>(null);
         }
 
         public Mono<TValue> getValueAsync() {

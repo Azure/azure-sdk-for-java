@@ -49,6 +49,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.Duration;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -398,7 +399,7 @@ public class ReflectionUtils {
     }
 
     @SuppressWarnings("unchecked")
-    public static List<Uri.HealthStatus> getReplicaValidationScopes(GatewayAddressCache gatewayAddressCache) {
-        return get(List.class, gatewayAddressCache, "replicaValidationScopes");
+    public static Set<Uri.HealthStatus> getReplicaValidationScopes(GatewayAddressCache gatewayAddressCache) {
+        return get(Set.class, gatewayAddressCache, "replicaValidationScopes");
     }
 }
