@@ -86,22 +86,22 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
 
                 return refreshMono.onErrorResume(
                     (exception) -> {
-                        logger.debug("refresh cache [{}] resulted in error", key, exception);
-
                         // In some scenarios when a background failure occurs like a 404 the initial cache value should be removed.
                         if (exception instanceof CosmosException && removeNotFoundFromCacheException((CosmosException) exception)) {
                             if (initialLazyValue.shouldRemoveFromCache()) {
                                 this.remove(key);
                             }
                         }
+
+                        logger.debug("refresh cache [{}] resulted in error", key, exception);
                         return Mono.error(exception);
                     }
                 );
             }).onErrorResume((exception) -> {
-                logger.debug("cache[{}] resulted in error", key, exception);
                 if (initialLazyValue.shouldRemoveFromCache()) {
                     this.remove(key);
                 }
+                logger.debug("cache[{}] resulted in error", key, exception);
                 return Mono.error(exception);
             });
         }
@@ -116,11 +116,11 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
 
         return result.getValueAsync().onErrorResume(
             (exception) -> {
-                logger.debug("cache[{}] resulted in error", key, exception);
                 // Remove the failed task from the dictionary so future requests can send other calls.
                 if (result.shouldRemoveFromCache()) {
                     this.remove(key);
                 }
+                logger.debug("cache[{}] resulted in error", key, exception);
                 return Mono.error(exception);
             }
         );
@@ -157,7 +157,7 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
      * be used to update the value. This allows concurrent requests
      * to use the stale value while the refresh is occurring.
      */
-    private class AsyncLazyWithRefresh<TValue> {
+    private static class AsyncLazyWithRefresh<TValue> {
         private final AtomicBoolean removeFromCache = new AtomicBoolean(false);
         private final AtomicReference<Mono<TValue>> value;
         private final AtomicReference<Mono<TValue>> refreshInProgress;
@@ -183,29 +183,31 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
             return value.get();
         }
 
-        @SuppressWarnings("unchecked")
         public Mono<TValue> getOrCreateBackgroundRefreshTaskAsync(Function<TValue, Mono<TValue>> createRefreshFunction) {
-            if (this.refreshInProgress.compareAndSet(null, this.createBackgroundRefreshTask(createRefreshFunction))) {
-                logger.debug("Started a new background task");
-            } else {
-                logger.debug("Background refresh task is already in progress");
-            }
+            Mono<TValue> refreshInProgressSnapshot = this.refreshInProgress.updateAndGet(existingMono -> {
+                if (existingMono == null) {
+                    logger.debug("Started a new background task");
+                    return this.createBackgroundRefreshTask(createRefreshFunction);
+                } else {
+                    logger.debug("Background refresh task is already in progress");
+                }
 
-            Mono<TValue> refreshInProgressSnapshot = this.refreshInProgress.get();
+                return existingMono;
+            });
             return refreshInProgressSnapshot == null ? this.value.get() : refreshInProgressSnapshot;
         }
 
         private Mono<TValue> createBackgroundRefreshTask(Function<TValue, Mono<TValue>> createRefreshFunction) {
             return this.value
                         .get()
-                        .flatMap(cachedValue -> createRefreshFunction.apply(cachedValue))
+                        .flatMap(createRefreshFunction)
                         .flatMap(response -> {
                             this.refreshInProgress.set(null);
                             return this.value.updateAndGet(existingValue -> Mono.just(response));
                         })
                         .doOnError(throwable -> {
-                            logger.warn("Background refresh task failed", throwable);
                             this.refreshInProgress.set(null);
+                            logger.warn("Background refresh task failed", throwable);
                         })
                         .cache();
         }
@@ -223,7 +225,7 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
             }
 
             logger.debug("Background refresh task is already in progress, skip creating a new one");
-            return Mono.empty();
+            return null;
         }
 
         public boolean shouldRemoveFromCache() {

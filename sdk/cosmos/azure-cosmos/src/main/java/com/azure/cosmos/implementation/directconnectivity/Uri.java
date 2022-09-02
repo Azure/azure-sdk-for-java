@@ -160,7 +160,7 @@ public class Uri {
 
     public boolean shouldRefreshHealthStatus() {
         return this.healthStatus.get() == HealthStatus.Unhealthy
-                && Instant.now().compareTo(this.lastUnhealthyTimestamp.plusMillis(DEFAULT_NON_HEALTHY_RESET_TIME_IN_MILLISECONDS)) > 0;
+                && Instant.now().compareTo(this.lastUnhealthyTimestamp.plusMillis(DEFAULT_NON_HEALTHY_RESET_TIME_IN_MILLISECONDS)) >= 0;
     }
 
     public String getHealthStatusDiagnosticString() {
