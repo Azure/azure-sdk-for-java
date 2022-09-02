@@ -6,7 +6,7 @@ package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 import com.azure.core.util.logging.ClientLogger;
 import org.slf4j.MDC;
 
-import javax.annotation.Nullable;
+import reactor.util.annotation.Nullable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 

@@ -3,7 +3,7 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 
-import javax.annotation.Nullable;
+import reactor.util.annotation.Nullable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;

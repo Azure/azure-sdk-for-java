@@ -17,7 +17,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseRequestDocument;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.CpuPerformanceCounterCalculator;
 
-import javax.annotation.Nullable;
+import reactor.util.annotation.Nullable;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 import java.lang.management.MemoryUsage;

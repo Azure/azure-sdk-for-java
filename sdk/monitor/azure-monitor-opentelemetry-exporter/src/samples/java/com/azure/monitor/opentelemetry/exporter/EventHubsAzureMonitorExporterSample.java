@@ -95,29 +95,29 @@ public class EventHubsAzureMonitorExporterSample {
                 producer.createBatch(options).block(OPERATION_TIMEOUT));
 
             data.flatMap(event -> {
-                    final EventDataBatch batch = currentBatch.get();
-                    if (batch.tryAdd(event)) {
-                        return Mono.empty();
-                    }
+                final EventDataBatch batch = currentBatch.get();
+                if (batch.tryAdd(event)) {
+                    return Mono.empty();
+                }
 
-                    // The batch is full, so we create a new batch and send the batch. Mono.when completes when both
-                    // operations
-                    // have completed.
-                    return Mono.when(
-                        producer.send(batch),
-                        producer.createBatch(options).map(newBatch -> {
-                            currentBatch.set(newBatch);
+                // The batch is full, so we create a new batch and send the batch. Mono.when completes when both
+                // operations
+                // have completed.
+                return Mono.when(
+                    producer.send(batch),
+                    producer.createBatch(options).map(newBatch -> {
+                        currentBatch.set(newBatch);
 
-                            // Add that event that we couldn't before.
-                            if (!newBatch.tryAdd(event)) {
-                                throw Exceptions.propagate(new IllegalArgumentException(String.format(
-                                    "Event is too large for an empty batch. Max size: %s. Event: %s",
-                                    newBatch.getMaxSizeInBytes(), event.getBodyAsString())));
-                            }
+                        // Add that event that we couldn't before.
+                        if (!newBatch.tryAdd(event)) {
+                            throw Exceptions.propagate(new IllegalArgumentException(String.format(
+                                "Event is too large for an empty batch. Max size: %s. Event: %s",
+                                newBatch.getMaxSizeInBytes(), event.getBodyAsString())));
+                        }
 
-                            return newBatch;
-                        }));
-                }).then()
+                        return newBatch;
+                    }));
+            }).then()
                 .doFinally(signal -> {
                     final EventDataBatch batch = currentBatch.getAndSet(null);
                     if (batch != null) {

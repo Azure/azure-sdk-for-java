@@ -64,7 +64,7 @@ public class TelemetryItemExporter {
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         // it's important to pass in the "agent class loader" since TelemetryItemPipeline is initialized
         // lazily and can be initialized via an application thread, in which case the thread context
-        // class loader is used to look up jsr305 module and its not found
+        // class loader is used to look up jsr305 module, and it's not found
         mapper.registerModules(ObjectMapper.findModules(TelemetryItemExporter.class.getClassLoader()));
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         return mapper;

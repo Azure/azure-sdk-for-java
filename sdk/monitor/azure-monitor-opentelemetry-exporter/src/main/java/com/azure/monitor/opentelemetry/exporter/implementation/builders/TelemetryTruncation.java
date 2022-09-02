@@ -5,8 +5,8 @@ package com.azure.monitor.opentelemetry.exporter.implementation.builders;
 
 import com.azure.core.util.logging.ClientLogger;
 import org.slf4j.MDC;
+import reactor.util.annotation.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 

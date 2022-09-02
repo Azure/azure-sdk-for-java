@@ -7,7 +7,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.utils.ThreadPoolU
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nullable;
+import reactor.util.annotation.Nullable;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;

@@ -9,7 +9,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorBas
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorDomain;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 
-import javax.annotation.Nullable;
+import reactor.util.annotation.Nullable;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;

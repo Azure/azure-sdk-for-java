@@ -3,7 +3,7 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 
-import javax.annotation.Nullable;
+import reactor.util.annotation.Nullable;
 
 /**
  * A prefix tree that maps from the longest matching prefix to a value {@code V}.

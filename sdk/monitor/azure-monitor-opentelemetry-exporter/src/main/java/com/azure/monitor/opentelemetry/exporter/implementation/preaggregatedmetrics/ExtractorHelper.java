@@ -6,7 +6,7 @@ package com.azure.monitor.opentelemetry.exporter.implementation.preaggregatedmet
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.MetricTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
 
-import javax.annotation.Nullable;
+import reactor.util.annotation.Nullable;
 import java.util.Map;
 
 public final class ExtractorHelper {

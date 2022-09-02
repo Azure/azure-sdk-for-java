@@ -8,7 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import io.netty.handler.ssl.SslHandshakeTimeoutException;
 import org.slf4j.MDC;
 
-import javax.annotation.Nullable;
+import reactor.util.annotation.Nullable;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLHandshakeException;
 import javax.net.ssl.SSLSocketFactory;

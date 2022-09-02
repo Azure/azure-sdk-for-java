@@ -7,7 +7,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.models.SeverityLe
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryExceptionData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryExceptionDetails;
 
-import javax.annotation.Nullable;
+import reactor.util.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

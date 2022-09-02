@@ -3,7 +3,7 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.heartbeat;
 
-import javax.annotation.Nullable;
+import reactor.util.annotation.Nullable;
 
 /**
  * Defines the Payload class to store and send heartbeat properties and allowing to keep track of

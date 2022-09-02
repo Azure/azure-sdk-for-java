@@ -10,7 +10,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.utils.HostName;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.ThreadPoolUtils;
 
-import javax.annotation.Nullable;
+import reactor.util.annotation.Nullable;
 import java.net.URL;
 import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;

@@ -6,7 +6,7 @@ package com.azure.monitor.opentelemetry.exporter.implementation.localstorage;
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.OperationLogger;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
-import javax.annotation.Nullable;
+import reactor.util.annotation.Nullable;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.IOException;

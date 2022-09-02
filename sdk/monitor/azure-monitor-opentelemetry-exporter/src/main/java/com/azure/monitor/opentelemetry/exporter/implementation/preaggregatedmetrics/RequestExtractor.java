@@ -5,7 +5,7 @@ package com.azure.monitor.opentelemetry.exporter.implementation.preaggregatedmet
 
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.MetricTelemetryBuilder;
 
-import javax.annotation.Nullable;
+import reactor.util.annotation.Nullable;
 
 import static com.azure.monitor.opentelemetry.exporter.implementation.preaggregatedmetrics.ExtractorHelper.FALSE;
 import static com.azure.monitor.opentelemetry.exporter.implementation.preaggregatedmetrics.ExtractorHelper.MS_METRIC_ID;

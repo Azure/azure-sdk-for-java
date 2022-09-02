@@ -16,7 +16,7 @@ import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
 import uk.org.webcompere.systemstubs.jupiter.SystemStub;
 import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
 
-import javax.annotation.Nullable;
+import reactor.util.annotation.Nullable;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;

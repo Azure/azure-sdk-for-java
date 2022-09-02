@@ -7,7 +7,7 @@ import com.fasterxml.jackson.core.SerializableString;
 import com.fasterxml.jackson.core.io.CharacterEscapes;
 import com.fasterxml.jackson.core.io.SerializedString;
 
-import javax.annotation.Nullable;
+import reactor.util.annotation.Nullable;
 
 public class CustomCharacterEscapes extends CharacterEscapes {
 

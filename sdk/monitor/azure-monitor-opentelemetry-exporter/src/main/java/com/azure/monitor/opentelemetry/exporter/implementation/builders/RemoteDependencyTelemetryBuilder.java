@@ -5,7 +5,7 @@ package com.azure.monitor.opentelemetry.exporter.implementation.builders;
 
 import com.azure.monitor.opentelemetry.exporter.implementation.models.RemoteDependencyData;
 
-import javax.annotation.Nullable;
+import reactor.util.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 

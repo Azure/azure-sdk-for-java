@@ -3,7 +3,7 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 
-import javax.annotation.Nullable;
+import reactor.util.annotation.Nullable;
 
 class QuickPulseHeaderInfo {
 

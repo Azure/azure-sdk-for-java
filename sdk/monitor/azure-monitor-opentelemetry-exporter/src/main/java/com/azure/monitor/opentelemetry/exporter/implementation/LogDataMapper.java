@@ -19,7 +19,7 @@ import io.opentelemetry.sdk.logs.data.Severity;
 import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.semconv.trace.attributes.SemanticAttributes;
 
-import javax.annotation.Nullable;
+import reactor.util.annotation.Nullable;
 import java.util.function.BiConsumer;
 
 public class LogDataMapper {

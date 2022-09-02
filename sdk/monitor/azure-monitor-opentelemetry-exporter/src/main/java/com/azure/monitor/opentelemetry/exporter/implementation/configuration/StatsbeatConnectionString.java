@@ -3,7 +3,7 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.configuration;
 
-import javax.annotation.Nullable;
+import reactor.util.annotation.Nullable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashSet;

@@ -6,7 +6,7 @@ package com.azure.monitor.opentelemetry.exporter.implementation.logging;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.AzureMonitorMsgId;
 import org.slf4j.MDC;
 
-import javax.annotation.Nullable;
+import reactor.util.annotation.Nullable;
 
 // operation failure stats for a given 5-min window
 // each instance represents a logical grouping of errors that a user cares about and can understand,
