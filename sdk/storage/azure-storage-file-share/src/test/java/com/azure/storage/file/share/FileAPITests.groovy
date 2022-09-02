@@ -1329,14 +1329,14 @@ class FileAPITests extends APISpec {
         given:
         def fileSize = Constants.MB
         def bytes = new byte[fileSize]
-        InputStream data = new ByteArrayInputStream(bytes)
-        ShareFileClient primaryFileClient = fileBuilderHelper(shareName, filePath).buildFileClient()
+        def data = new ByteArrayInputStream(bytes)
+        def primaryFileClient = fileBuilderHelper(shareName, filePath).buildFileClient()
         primaryFileClient.create(fileSize)
         primaryFileClient.uploadWithResponse(new ShareFileUploadOptions(data), null, null)
 
         def sourceURL = primaryFileClient.getFileUrl()
 
-        ShareFileClient dest = fileBuilderHelper(shareName, filePath).buildFileClient()
+        def dest = fileBuilderHelper(shareName, filePath).buildFileClient()
         dest.create(fileSize)
 
         when:
@@ -1358,14 +1358,14 @@ class FileAPITests extends APISpec {
         given:
         def fileSize = Constants.MB
         def bytes = new byte[fileSize]
-        InputStream data = new ByteArrayInputStream(bytes)
-        ShareFileClient primaryFileClient = fileBuilderHelper(shareName, filePath).buildFileClient()
+        def data = new ByteArrayInputStream(bytes)
+        def primaryFileClient = fileBuilderHelper(shareName, filePath).buildFileClient()
         primaryFileClient.create(fileSize)
         primaryFileClient.uploadWithResponse(new ShareFileUploadOptions(data), null, null)
 
         def sourceURL = primaryFileClient.getFileUrl()
 
-        ShareFileClient dest = fileBuilderHelper(shareName, filePath).buildFileClient()
+        def dest = fileBuilderHelper(shareName, filePath).buildFileClient()
         dest.create(fileSize)
 
         // obtain lease
@@ -1391,14 +1391,14 @@ class FileAPITests extends APISpec {
         given:
         def fileSize = Constants.MB
         def bytes = new byte[fileSize]
-        InputStream data = new ByteArrayInputStream(bytes)
-        ShareFileClient primaryFileClient = fileBuilderHelper(shareName, filePath).buildFileClient()
+        def data = new ByteArrayInputStream(bytes)
+        def primaryFileClient = fileBuilderHelper(shareName, filePath).buildFileClient()
         primaryFileClient.create(fileSize)
         primaryFileClient.uploadWithResponse(new ShareFileUploadOptions(data), null, null)
 
         def sourceURL = primaryFileClient.getFileUrl()
 
-        ShareFileClient dest = fileBuilderHelper(shareName, filePath).buildFileClient()
+        def dest = fileBuilderHelper(shareName, filePath).buildFileClient()
         dest.create(fileSize)
 
         // create invalid lease
