@@ -2,7 +2,7 @@
 
 ## 1.0.0-beta.6 (Unreleased)
 
-### new Features
+### New Features
 - Add metrics exporter.
 - Add logs exporter.
 - Add disk persistence and retries for ingestion failures.
