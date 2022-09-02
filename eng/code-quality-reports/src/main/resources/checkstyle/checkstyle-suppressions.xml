@@ -360,6 +360,12 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.messaging.eventhubs.(EventHubConsumerClient|EventHubConsumerAsyncClient|EventHubProducerClient|EventHubProducerAsyncClient).java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck" files="com.azure.messaging.eventhubs.EventDataBatch.java"/>
 
+  <!-- jdbc sdk suppression -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
+            files="com.azure.identity.providers.(mysql|postgresql).(AzureIdentityMysqlAuthenticationPlugin|AzureIdentityPostgresqlAuthenticationPlugin).java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
+            files="com.azure.identity.providers.postgresql.AzureIdentityPostgresqlAuthenticationPlugin"/>
+
   <!-- ### begin: Spring related suppression -->
 
   <!-- The constant name is public static. -->

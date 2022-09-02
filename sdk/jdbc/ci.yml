@@ -1,0 +1,62 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+    branches:
+        include:
+            - main
+            - feature/*
+            - hotfix/*
+            - release/*
+    paths:
+        include:
+            - sdk/jdbc/
+pr:
+    branches:
+        include:
+            - main
+            - feature/*
+            - hotfix/*
+            - release/*
+    paths:
+        include:
+            - sdk/jdbc/
+
+# Note - the name parameter cannot contain dashes (-) which is why both
+# a name and displayName are required. Each parameter corresponds to a
+# library in the Artifacts list and uses the parameter to set the releaseInBatch
+# boolean for each library. Note: AdditionalModules are never to have
+# parameter entries as those are not releasing libraries.
+parameters:
+    - name: release_azureidentityproviderscore
+      displayName: 'azure-identity-providers-core'
+      type: boolean
+      default: true
+    - name: release_azureidentityprovidersjdbcmysql
+      displayName: 'azure-identity-providers-jdbc-mysql'
+      type: boolean
+      default: true
+    - name: release_azureidentityprovidersjdbcpostgresql
+      displayName: 'azure-identity-providers-jdbc-postgresql'
+      type: boolean
+      default: true
+
+
+extends:
+    template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+    parameters:
+        ServiceDirectory: jdbc
+        EnableBatchRelease: true
+        UseEsrpRelease: false
+        Artifacts:
+            - name: azure-identity-providers-core
+              groupId: com.azure
+              safeName: azureidentityproviderscore
+              releaseInBatch: ${{ parameters.release_azureidentityproviderscore }}
+            - name: azure-identity-providers-jdbc-mysql
+              groupId: com.azure
+              safeName: azureidentityprovidersjdbcmysql
+              releaseInBatch: ${{ parameters.release_azureidentityprovidersjdbcmysql }}
+            - name: azure-identity-providers-jdbc-postgresql
+              groupId: com.azure
+              safeName: azureidentityprovidersjdbcpostgresql
+              releaseInBatch: ${{ parameters.release_azureidentityprovidersjdbcpostgresql }}

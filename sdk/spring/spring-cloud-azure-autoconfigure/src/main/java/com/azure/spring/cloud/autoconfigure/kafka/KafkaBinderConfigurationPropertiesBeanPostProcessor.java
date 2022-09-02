@@ -3,7 +3,7 @@
 package com.azure.spring.cloud.autoconfigure.kafka;
 
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
-import com.azure.spring.cloud.service.implementation.kafka.AzureKafkaProperties;
+import com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreeProperties;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
@@ -14,7 +14,7 @@ import java.util.Map;
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaAutoconfigurationUtils.buildAzureProperties;
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaAutoconfigurationUtils.configureOAuthProperties;
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaAutoconfigurationUtils.needConfigureSaslOAuth;
-import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.convertAzurePropertiesToConfigMap;
+import static com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreePropertiesUtils.convertAzurePropertiesToConfigMap;
 import static org.springframework.cloud.stream.binder.kafka.provisioning.KafkaTopicProvisioner.normalalizeBootPropsWithBinder;
 
 /**
@@ -54,9 +54,9 @@ class KafkaBinderConfigurationPropertiesBeanPostProcessor implements BeanPostPro
 
     private void configureKafkaBinderProperties(Map<String, Object> mergedConfiguration, Map<String, String> sourceProperties) {
         if (needConfigureSaslOAuth(mergedConfiguration)) {
-            AzureKafkaProperties azureKafkaProperties =
+            AzureCredentialFreeProperties azureCredentialFreeProperties =
                 buildAzureProperties(mergedConfiguration, azureGlobalProperties);
-            convertAzurePropertiesToConfigMap(azureKafkaProperties, sourceProperties);
+            convertAzurePropertiesToConfigMap(azureCredentialFreeProperties, sourceProperties);
             configureOAuthProperties(sourceProperties);
         }
     }

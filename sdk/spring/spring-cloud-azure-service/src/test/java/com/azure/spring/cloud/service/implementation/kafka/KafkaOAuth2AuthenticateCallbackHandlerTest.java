@@ -12,13 +12,14 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.ManagedIdentityCredential;
+import com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreeProperties;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import org.springframework.test.util.ReflectionTestUtils;
 
-import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.AZURE_TOKEN_CREDENTIAL;
-import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.Mapping.managedIdentityEnabled;
+import static com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreePropertiesUtils.Mapping.managedIdentityEnabled;
+import static com.azure.spring.cloud.service.implementation.kafka.KafkaOAuth2AuthenticateCallbackHandler.AZURE_TOKEN_CREDENTIAL;
 import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -87,12 +88,12 @@ class KafkaOAuth2AuthenticateCallbackHandlerTest {
     void testCreateTokenCredentialByResolver() {
         Map<String, Object> configs = new HashMap<>();
         configs.put(BOOTSTRAP_SERVERS_CONFIG, KAFKA_BOOTSTRAP_SERVER);
-        configs.put(managedIdentityEnabled.propertyKey(), "true");
+        configs.put(managedIdentityEnabled.getAuthProperty().getPropertyKey(), "true");
 
         KafkaOAuth2AuthenticateCallbackHandler handler = new KafkaOAuth2AuthenticateCallbackHandler();
         handler.configure(configs, null, null);
 
-        AzureKafkaProperties properties = (AzureKafkaProperties) ReflectionTestUtils
+        AzureCredentialFreeProperties properties = (AzureCredentialFreeProperties) ReflectionTestUtils
             .getField(handler, AZURE_THIRD_PARTY_SERVICE_PROPERTIES_FIELD_NAME);
         assertTrue(properties.getCredential().isManagedIdentityEnabled());
         TokenCredential tokenCredential = (TokenCredential) ReflectionTestUtils.getField(handler, TOKEN_CREDENTIAL_FIELD_NAME);
