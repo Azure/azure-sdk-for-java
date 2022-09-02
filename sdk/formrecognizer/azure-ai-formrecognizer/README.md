@@ -281,7 +281,7 @@ for (int i = 0; i < tables.size(); i++) {
 ### Use a General Document Model 
 Analyze key-value pairs, tables, styles, and selection marks from documents using the general document model provided by
 the Form Recognizer service.
-Select the General Document Model by passing modelId="prebuilt-document" into the beginAnalyzeDocument method as follows:
+Select the General Document Model by passing modelId="prebuilt-document" into the beginAnalyzeDocumentFromUrl method as follows:
 ```java readme-sample-analyzePrebuiltDocument
 String documentUrl = "{document-url}";
 String modelId = "prebuilt-document";
@@ -350,7 +350,7 @@ Supported prebuilt models are:
 - Analyze identity documents using the `prebuilt-idDocuments` model (fields recognized by the service can be found [here][service_analyze_identity_documents_fields]).
 - Analyze US W2 tax forms using the `prebuilt-tax.us.w2` model. [Supported fields][service_analyze_w2_documents_fields].
 
-For example, to analyze fields from a sales receipt, into the `beginAnalyzeDocument` method:
+For example, to analyze fields from a sales receipt, into the `beginAnalyzeDocumentFromUrl` method:
 ```java readme-sample-analyzeReceiptFromUrl
 String receiptUrl = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer"
     + "/azure-ai-formrecognizer/src/samples/resources/sample-documents/receipts/contoso-allinone.jpg";
