@@ -17,12 +17,6 @@
         - `getTokenWithResponse(CommunicationUserIdentifier communicationUser, Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresAfter)`
 - Added a new API version `CommunicationIdentityServiceVersion.V2022_10_01` that is now the default API version.
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 1.3.0 (2022-08-10)
 
 ### Features Added
@@ -41,12 +35,6 @@
 - Added a new API version `CommunicationIdentityServiceVersion.V2022_06_01` that is now the default API version.
 - Added interfaces from `com.azure.core.client.traits` to `CommunicationIdentityClientBuilder`.
 - Added `retryOptions` to `CommunicationIdentityClientBuilder`.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.1.11 (2022-07-11)
 
