@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.caches;
 
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.Exceptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,26 +82,26 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
                     return Mono.just(value);
                 }
 
-                Mono<TValue> refreshMono = initialLazyValue.createAndWaitForBackgroundRefreshTaskAsync(key, singleValueInitFunc);
+                Mono<TValue> refreshMono = initialLazyValue.getOrCreateBackgroundRefreshTaskAsync(singleValueInitFunc);
 
                 return refreshMono.onErrorResume(
                     (exception) -> {
-                        logger.debug("refresh cache [{}] resulted in error", key, exception);
-
                         // In some scenarios when a background failure occurs like a 404 the initial cache value should be removed.
                         if (exception instanceof CosmosException && removeNotFoundFromCacheException((CosmosException) exception)) {
                             if (initialLazyValue.shouldRemoveFromCache()) {
                                 this.remove(key);
                             }
                         }
+
+                        logger.debug("refresh cache [{}] resulted in error", key, exception);
                         return Mono.error(exception);
                     }
                 );
             }).onErrorResume((exception) -> {
-                logger.debug("cache[{}] resulted in error", key, exception);
                 if (initialLazyValue.shouldRemoveFromCache()) {
                     this.remove(key);
                 }
+                logger.debug("cache[{}] resulted in error", key, exception);
                 return Mono.error(exception);
             });
         }
@@ -115,14 +116,30 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
 
         return result.getValueAsync().onErrorResume(
             (exception) -> {
-                logger.debug("cache[{}] resulted in error", key, exception);
                 // Remove the failed task from the dictionary so future requests can send other calls.
                 if (result.shouldRemoveFromCache()) {
                     this.remove(key);
                 }
+                logger.debug("cache[{}] resulted in error", key, exception);
                 return Mono.error(exception);
             }
         );
+    }
+
+    public void refresh(
+            TKey key,
+            Function<TValue, Mono<TValue>> singleValueInitFunc) {
+
+        logger.debug("refreshing cache[{}]", key);
+        AsyncLazyWithRefresh<TValue> initialLazyValue = values.get(key);
+        if (initialLazyValue != null) {
+            Mono<TValue> backgroundRefreshTask = initialLazyValue.refresh(singleValueInitFunc);
+            if (backgroundRefreshTask != null) {
+                backgroundRefreshTask
+                        .subscribeOn(CosmosSchedulers.ASYNC_CACHE_BACKGROUND_REFRESH_BOUNDED_ELASTIC)
+                        .subscribe();
+            }
+        }
     }
 
     public void set(TKey key, TValue value) {
@@ -140,23 +157,21 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
      * be used to update the value. This allows concurrent requests
      * to use the stale value while the refresh is occurring.
      */
-    private class AsyncLazyWithRefresh<TValue> {
-//        private final Function<TValue, Mono<TValue>> createValueFunc;
+    private static class AsyncLazyWithRefresh<TValue> {
         private final AtomicBoolean removeFromCache = new AtomicBoolean(false);
         private final AtomicReference<Mono<TValue>> value;
-        private Mono<TValue> refreshInProgress;
-        private final AtomicBoolean refreshInProgressCompleted = new AtomicBoolean(false);
+        private final AtomicReference<Mono<TValue>> refreshInProgress;
 
         public AsyncLazyWithRefresh(TValue value) {
             this.value = new AtomicReference<>();
             this.value.set(Mono.just(value));
-            this.refreshInProgress = null;
+            this.refreshInProgress = new AtomicReference<>(null);
         }
 
         public AsyncLazyWithRefresh(Function<TValue, Mono<TValue>> taskFactory) {
             this.value = new AtomicReference<>();
             this.value.set(taskFactory.apply(null).cache());
-            this.refreshInProgress = null;
+            this.refreshInProgress = new AtomicReference<>(null);
         }
 
         public Mono<TValue> getValueAsync() {
@@ -168,26 +183,59 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
             return value.get();
         }
 
-        @SuppressWarnings("unchecked")
-        public Mono<TValue> createAndWaitForBackgroundRefreshTaskAsync(TKey key, Function<TValue, Mono<TValue>> createRefreshFunction) {
-            Mono<TValue> valueMono = this.value.get();
-
-            return valueMono.flatMap(value -> {
-                if(this.refreshInProgressCompleted.compareAndSet(false, true)) {
-                    this.refreshInProgress = createRefreshFunction.apply(value).cache();
-                    return this.refreshInProgress
-                        .flatMap(response -> {
-                            this.value.set(Mono.just(response));
-                            this.refreshInProgressCompleted.set(false);
-                            return this.value.get();
-                        }).doOnError(e -> this.refreshInProgressCompleted.set(false));
-
+        public Mono<TValue> getOrCreateBackgroundRefreshTaskAsync(Function<TValue, Mono<TValue>> createRefreshFunction) {
+            Mono<TValue> refreshInProgressSnapshot = this.refreshInProgress.updateAndGet(existingMono -> {
+                if (existingMono == null) {
+                    logger.debug("Started a new background task");
+                    return this.createBackgroundRefreshTask(createRefreshFunction);
+                } else {
+                    logger.debug("Background refresh task is already in progress");
                 }
-                return this.refreshInProgress == null ? valueMono : refreshInProgress;
+
+                return existingMono;
             });
+            return refreshInProgressSnapshot == null ? this.value.get() : refreshInProgressSnapshot;
+        }
+
+        private Mono<TValue> createBackgroundRefreshTask(Function<TValue, Mono<TValue>> createRefreshFunction) {
+            return this.value
+                        .get()
+                        .flatMap(createRefreshFunction)
+                        .flatMap(response -> {
+                            this.refreshInProgress.set(null);
+                            return this.value.updateAndGet(existingValue -> Mono.just(response));
+                        })
+                        .doOnError(throwable -> {
+                            this.refreshInProgress.set(null);
+                            logger.warn("Background refresh task failed", throwable);
+                        })
+                        .cache();
+        }
+
+        /***
+         * If there is no refresh in progress background task, then create a new one, else skip
+         *
+         * @param createRefreshFunction the createRefreshFunction
+         * @return if there is already a refreshInProgress task ongoing, then return Mono.empty, else return the newly created background refresh task
+         */
+        public Mono<TValue> refresh(Function<TValue, Mono<TValue>> createRefreshFunction) {
+            if (this.refreshInProgress.compareAndSet(null, this.createBackgroundRefreshTask(createRefreshFunction))) {
+                logger.debug("Started a new background task");
+                return this.refreshInProgress.get();
+            }
+
+            logger.debug("Background refresh task is already in progress, skip creating a new one");
+            return null;
         }
 
         public boolean shouldRemoveFromCache() {
+            // Multiple threads could subscribe to the Mono, only one of them will be allowed to remove the Mono from the cache
+            // For example for the following scenario:
+            // Request1 -> getAsync -> Mono1
+            // Request2 -> getAsync -> Mono1
+            // Mono1 failed, and we decided to remove this entry from the cache. Request1 has removed the entry from the cache
+            // Request3 -> getAsync -> Mono2
+            // without this check, request2 will end up removing the cache entry created by request3
             return this.removeFromCache.compareAndSet(false, true);
         }
     }
