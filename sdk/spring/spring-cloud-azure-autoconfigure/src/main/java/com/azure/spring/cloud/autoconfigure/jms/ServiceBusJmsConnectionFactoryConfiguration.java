@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.jms;
 
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
+import jakarta.jms.ConnectionFactory;
 import org.apache.commons.pool2.PooledObject;
 import org.messaginghub.pooled.jms.JmsPoolConnectionFactory;
 import org.springframework.beans.factory.ObjectProvider;
@@ -16,7 +17,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.connection.CachingConnectionFactory;
 
-import javax.jms.ConnectionFactory;
 import java.util.stream.Collectors;
 
 /**

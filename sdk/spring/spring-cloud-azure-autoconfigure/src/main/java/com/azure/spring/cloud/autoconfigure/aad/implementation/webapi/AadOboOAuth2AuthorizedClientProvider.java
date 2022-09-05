@@ -12,6 +12,7 @@ import com.microsoft.aad.msal4j.OnBehalfOfParameters;
 import com.microsoft.aad.msal4j.UserAssertion;
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTParser;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -34,7 +35,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletResponse;
 import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.time.Clock;

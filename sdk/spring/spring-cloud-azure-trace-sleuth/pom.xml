@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-trace-sleuth</artifactId>
-  <version>4.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-trace-sleuth;current} -->
+  <version>6.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-trace-sleuth;current} -->
 
   <name>Spring Cloud Azure Trace on Sleuth</name>
   <url>https://microsoft.github.io/spring-cloud-azure</url>
@@ -31,12 +31,33 @@
     <system>GitHub</system>
     <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
   </issueManagement>
+  <!-- Repositories definitions -->
+  <repositories>
+    <repository>
+      <id>spring-milestones</id>
+      <name>Spring Milestones</name>
+      <url>https://repo.spring.io/milestone</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
 
+  <pluginRepositories>
+    <pluginRepository>
+      <id>spring-milestones</id>
+      <name>Spring Milestones</name>
+      <url>https://repo.spring.io/milestone</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-core</artifactId>
-      <version>4.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-core;current} -->
+      <version>6.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.cloud</groupId>
@@ -46,7 +67,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>4.5.1</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>4.6.1</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

@@ -146,7 +146,7 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.eventhubs.credential.client-id=eventhubs-client-id",
-                
+
                 "spring.cloud.azure.eventhubs.shared-connection=true",
                 "spring.cloud.azure.eventhubs.domain-name=fake-domain",
                 "spring.cloud.azure.eventhubs.namespace=fake-namespace",
@@ -191,7 +191,7 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventHubsProperties.class);
                 AzureEventHubsProperties properties = context.getBean(AzureEventHubsProperties.class);
-                
+
                 assertTrue(properties.getSharedConnection());
                 assertEquals("fake-domain", properties.getDomainName());
                 assertEquals("fake-namespace", properties.getNamespace());

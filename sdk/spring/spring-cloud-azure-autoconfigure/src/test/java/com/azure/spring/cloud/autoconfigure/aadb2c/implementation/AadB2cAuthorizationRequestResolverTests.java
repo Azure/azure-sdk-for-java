@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.aadb2c.implementation;
 import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAuthorizationRequestResolver;
 import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -16,7 +17,6 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 import org.springframework.util.Assert;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 
 class AadB2cAuthorizationRequestResolverTests {

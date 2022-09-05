@@ -13,9 +13,6 @@ com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfigurat
 com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.appconfiguration.AzureAppConfigurationAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.cosmos.AzureCosmosAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.data.cosmos.CosmosDataAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.data.cosmos.CosmosRepositoriesAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.data.cosmos.CosmosReactiveRepositoriesAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsMessagingAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.eventhubs.kafka.AzureEventHubsKafkaAutoConfiguration,\

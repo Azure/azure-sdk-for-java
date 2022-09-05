@@ -35,7 +35,7 @@
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-api</artifactId>
-      <version>1.14.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+      <version>1.16.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -53,14 +53,14 @@
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk</artifactId>
-      <version>1.14.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+      <version>1.16.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk-testing</artifactId>
-      <version>1.14.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
+      <version>1.16.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -91,7 +91,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>4.5.1</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>4.6.1</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -109,19 +109,19 @@
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.22.0</version>  <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
+      <version>3.23.1</version>  <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-exporter-otlp</artifactId>
-      <version>1.14.0</version>  <!-- {x-version-update;io.opentelemetry:opentelemetry-exporter-otlp;external_dependency} -->
+      <version>1.16.0</version>  <!-- {x-version-update;io.opentelemetry:opentelemetry-exporter-otlp;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk-extension-autoconfigure</artifactId>
-      <version>1.14.0-alpha</version>  <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
+      <version>1.15.0-alpha</version>  <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -136,13 +136,13 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.opentelemetry:opentelemetry-api:[1.14.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-sdk:[1.14.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-sdk-testing:[1.14.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-exporter-logging:[1.14.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-logging;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-exporter-otlp:[1.14.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-otlp;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-exporter-jaeger:[1.14.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-jaeger;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:[1.14.0-alpha]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-api:[1.16.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk:[1.16.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk-testing:[1.16.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-exporter-logging:[1.16.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-logging;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-exporter-otlp:[1.16.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-otlp;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-exporter-jaeger:[1.16.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-jaeger;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:[1.15.0-alpha]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

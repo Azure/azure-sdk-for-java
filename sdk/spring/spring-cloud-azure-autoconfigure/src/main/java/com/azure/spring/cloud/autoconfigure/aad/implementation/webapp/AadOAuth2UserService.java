@@ -8,6 +8,7 @@ import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.Authori
 import com.azure.spring.cloud.autoconfigure.aad.implementation.graph.GraphClient;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.graph.GroupInformation;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -30,7 +31,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpSession;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;

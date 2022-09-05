@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.aad.implementation.webapp;
 
 import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.Constants;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.ClientAuthorizationRequiredException;
 import org.springframework.security.oauth2.client.OAuth2AuthorizationContext;
@@ -19,7 +20,6 @@ import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;

@@ -7,6 +7,7 @@ import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.AadJwtClientA
 import com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.OAuth2ClientAuthenticationJwkResolver;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapp.AadOAuth2AuthorizationCodeGrantRequestEntityConverter;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
+import jakarta.servlet.Filter;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,8 +24,6 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequest
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.util.StringUtils;
-
-import javax.servlet.Filter;
 
 /**
  * Abstract configuration class, used to make AzureClientRegistrationRepository and AuthzCodeGrantRequestEntityConverter

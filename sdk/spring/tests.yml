@@ -20,3 +20,5 @@ stages:
       TestName: IntegrationTestInAzureGlobal
       TestGoals: 'verify'
       TestOptions: '-DskipSpringITs=false'
+      MatrixFilters:
+        - JavaTestVersion=^(?!1.8|1.11).*

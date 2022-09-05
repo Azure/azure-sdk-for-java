@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-messaging-azure-storage-queue</artifactId>
-  <version>4.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-storage-queue;current} -->
+  <version>6.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-storage-queue;current} -->
 
   <name>Spring Messaging Azure Storage Queue</name>
   <description>Spring Messaging Azure Storage Queue</description>
@@ -32,17 +32,38 @@
     <system>GitHub</system>
     <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
   </issueManagement>
+  <!-- Repositories definitions -->
+  <repositories>
+    <repository>
+      <id>spring-milestones</id>
+      <name>Spring Milestones</name>
+      <url>https://repo.spring.io/milestone</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
 
+  <pluginRepositories>
+    <pluginRepository>
+      <id>spring-milestones</id>
+      <name>Spring Milestones</name>
+      <url>https://repo.spring.io/milestone</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-messaging-azure</artifactId>
-      <version>4.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
+      <version>6.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-messaging-azure</artifactId>
-      <version>4.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
+      <version>6.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
@@ -55,7 +76,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>4.5.1</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>4.6.1</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -67,7 +88,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.7.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>3.0.0-M4</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

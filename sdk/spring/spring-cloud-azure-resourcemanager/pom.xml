@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-resourcemanager</artifactId>
-  <version>4.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-resourcemanager;current} -->
+  <version>6.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-resourcemanager;current} -->
 
   <name>Spring Cloud Azure Resource Manager</name>
   <description>Spring Cloud Azure Resource Manager</description>
@@ -33,11 +33,34 @@
     <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
   </issueManagement>
 
+  <!-- Repositories definitions -->
+  <repositories>
+    <repository>
+      <id>spring-milestones</id>
+      <name>Spring Milestones</name>
+      <url>https://repo.spring.io/milestone</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>spring-milestones</id>
+      <name>Spring Milestones</name>
+      <url>https://repo.spring.io/milestone</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
+
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-core</artifactId>
-      <version>4.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-core;current} -->
+      <version>6.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-core;current} -->
     </dependency>
 
     <dependency>
@@ -49,7 +72,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>4.5.1</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>4.6.1</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -61,7 +84,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>5.3.22</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
+      <version>6.0.0-M5</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
