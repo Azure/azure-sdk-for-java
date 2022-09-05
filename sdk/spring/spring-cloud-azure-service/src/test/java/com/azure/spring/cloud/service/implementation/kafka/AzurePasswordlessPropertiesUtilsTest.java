@@ -2,26 +2,26 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.service.implementation.kafka;
 
-import com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreeProperties;
-import com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreePropertiesUtils;
+import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
+import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessPropertiesUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreePropertiesUtils.Mapping.managedIdentityEnabled;
-import static com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreePropertiesUtils.convertAzurePropertiesToConfigMap;
-import static com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreePropertiesUtils.convertConfigMapToAzureProperties;
+import static com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessPropertiesUtils.Mapping.managedIdentityEnabled;
+import static com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessPropertiesUtils.convertAzurePropertiesToConfigMap;
+import static com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessPropertiesUtils.convertConfigMapToAzureProperties;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class AzureCredentialFreePropertiesUtilsTest {
+class AzurePasswordlessPropertiesUtilsTest {
 
     private Map<String, String> buildKafkaSourceConfigsFromAzureProperties() {
         Map<String, String> configs = new HashMap<>();
-        Arrays.stream(AzureCredentialFreePropertiesUtils.Mapping.values()).forEach(mapping ->
+        Arrays.stream(AzurePasswordlessPropertiesUtils.Mapping.values()).forEach(mapping ->
             configs.put(mapping.getAuthProperty().getPropertyKey(), mapping.getAuthProperty().getPropertyKey() + ".test"));
         configs.put(managedIdentityEnabled.getAuthProperty().getPropertyKey(), "true");
         return configs;
@@ -29,10 +29,10 @@ class AzureCredentialFreePropertiesUtilsTest {
 
     @Test
     void testConvertConfigMapToAzureProperties() {
-        AzureCredentialFreeProperties properties = new AzureCredentialFreeProperties();
+        AzurePasswordlessProperties properties = new AzurePasswordlessProperties();
         convertConfigMapToAzureProperties(buildKafkaSourceConfigsFromAzureProperties(), properties);
 
-        Arrays.stream(AzureCredentialFreePropertiesUtils.Mapping.values()).forEach(mapping -> {
+        Arrays.stream(AzurePasswordlessPropertiesUtils.Mapping.values()).forEach(mapping -> {
             if (mapping == managedIdentityEnabled) {
                 assertTrue(Boolean.valueOf(mapping.getGetter().apply(properties)));
             } else {
@@ -43,16 +43,16 @@ class AzureCredentialFreePropertiesUtilsTest {
 
     @Test
     void testConvertAzurePropertiesToConfigMapWithCustomValues() {
-        AzureCredentialFreeProperties properties = new AzureCredentialFreeProperties();
+        AzurePasswordlessProperties properties = new AzurePasswordlessProperties();
         Map<String, String> sourceConfigs = buildKafkaSourceConfigsFromAzureProperties();
         Map<String, String> customKafkaConfigs = new HashMap<>();
-        Arrays.stream(AzureCredentialFreePropertiesUtils.Mapping.values()).forEach(mapping ->
+        Arrays.stream(AzurePasswordlessPropertiesUtils.Mapping.values()).forEach(mapping ->
             customKafkaConfigs.put(mapping.getAuthProperty().getPropertyKey(), mapping.getAuthProperty().getPropertyKey() + ".override"));
         customKafkaConfigs.put(managedIdentityEnabled.getAuthProperty().getPropertyKey(), "false");
         convertConfigMapToAzureProperties(sourceConfigs, properties);
         convertAzurePropertiesToConfigMap(properties, customKafkaConfigs);
 
-        Arrays.stream(AzureCredentialFreePropertiesUtils.Mapping.values()).forEach(mapping -> {
+        Arrays.stream(AzurePasswordlessPropertiesUtils.Mapping.values()).forEach(mapping -> {
             if (mapping == managedIdentityEnabled) {
                 assertFalse(Boolean.valueOf(customKafkaConfigs.get(mapping.getAuthProperty().getPropertyKey())));
             } else {
@@ -63,13 +63,13 @@ class AzureCredentialFreePropertiesUtilsTest {
 
     @Test
     void testConvertAzurePropertiesToConfigMapWithoutCustomValues() {
-        AzureCredentialFreeProperties properties = new AzureCredentialFreeProperties();
+        AzurePasswordlessProperties properties = new AzurePasswordlessProperties();
         Map<String, String> sourceConfigs = buildKafkaSourceConfigsFromAzureProperties();
         Map<String, String> customKafkaConfigs = new HashMap<>();
         convertConfigMapToAzureProperties(sourceConfigs, properties);
         convertAzurePropertiesToConfigMap(properties, customKafkaConfigs);
 
-        Arrays.stream(AzureCredentialFreePropertiesUtils.Mapping.values()).forEach(mapping -> {
+        Arrays.stream(AzurePasswordlessPropertiesUtils.Mapping.values()).forEach(mapping -> {
             if (mapping == managedIdentityEnabled) {
                 assertTrue(Boolean.valueOf(customKafkaConfigs.get(mapping.getAuthProperty().getPropertyKey())));
             } else {

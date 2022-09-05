@@ -7,7 +7,7 @@ import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.SpringTokenCredentialProviderContextProvider;
-import com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreeProperties;
+import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
@@ -32,7 +32,7 @@ abstract class AbstractJdbcPropertiesBeanPostProcessorTest {
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureJdbcAutoConfiguration.class,
             DataSourceProperties.class,
-            AzureCredentialFreeProperties.class,
+            AzurePasswordlessProperties.class,
             AzureGlobalPropertiesAutoConfiguration.class,
             AzureTokenCredentialAutoConfiguration.class));
 
@@ -108,7 +108,7 @@ abstract class AbstractJdbcPropertiesBeanPostProcessorTest {
         assertThat(context).hasSingleBean(SpringTokenCredentialProviderContextProvider.class);
 
         ConfigurableEnvironment environment = context.getEnvironment();
-        AzureCredentialFreeProperties properties = Binder.get(environment).bindOrCreate(SPRING_CLOUD_AZURE_DATASOURCE_PREFIX, AzureCredentialFreeProperties.class);
+        AzurePasswordlessProperties properties = Binder.get(environment).bindOrCreate(SPRING_CLOUD_AZURE_DATASOURCE_PREFIX, AzurePasswordlessProperties.class);
 
         assertNotEquals("azure-client-id", properties.getCredential().getClientId());
         assertEquals("fake-jdbc-client-id", properties.getCredential().getClientId());

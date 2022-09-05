@@ -9,7 +9,7 @@ import java.util.Map;
 import com.azure.core.credential.TokenCredential;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
-import com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreeProperties;
+import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
 import org.apache.kafka.common.message.ApiVersionsRequestData;
 import org.apache.kafka.common.requests.ApiVersionsRequest;
 
@@ -77,16 +77,16 @@ public class AzureEventHubsKafkaOAuth2AutoConfiguration {
 
     private void configureOAuth2Properties(Map<String, Object> updateConfigs, Map<String, Object> sourceKafkaProperties) {
         if (needConfigureSaslOAuth(sourceKafkaProperties)) {
-            AzureCredentialFreeProperties azureCredentialFreeProperties = buildAzureProperties(sourceKafkaProperties,
+            AzurePasswordlessProperties azurePasswordlessProperties = buildAzureProperties(sourceKafkaProperties,
                     azureGlobalProperties);
-            updateConfigs.put(AZURE_TOKEN_CREDENTIAL, resolveSpringCloudAzureTokenCredential(azureCredentialFreeProperties));
+            updateConfigs.put(AZURE_TOKEN_CREDENTIAL, resolveSpringCloudAzureTokenCredential(azurePasswordlessProperties));
             updateConfigs.putAll(KAFKA_OAUTH_CONFIGS);
             logConfigureOAuthProperties();
         }
     }
 
-    private TokenCredential resolveSpringCloudAzureTokenCredential(AzureCredentialFreeProperties azureCredentialFreeProperties) {
-        TokenCredential tokenCredential = tokenCredentialResolver.resolve(azureCredentialFreeProperties);
+    private TokenCredential resolveSpringCloudAzureTokenCredential(AzurePasswordlessProperties azurePasswordlessProperties) {
+        TokenCredential tokenCredential = tokenCredentialResolver.resolve(azurePasswordlessProperties);
         return tokenCredential == null ? defaultTokenCredential : tokenCredential;
     }
 

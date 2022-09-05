@@ -34,7 +34,7 @@ class MySqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigura
         = AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName();
 
     private static final String AUTHPROPERTY_CREDENTIAL_BEAN_NAME
-        = AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.getPropertyKey() + "=" + "credentialFreeTokenCredential";
+        = AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.getPropertyKey() + "=" + "passwordlessTokenCredential";
 
     @Override
     void pluginNotOnClassPath() {
@@ -66,7 +66,7 @@ class MySqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigura
 
         this.contextRunner
             .withPropertyValues("spring.datasource.url = " + connectionString)
-            .withPropertyValues("spring.datasource.azure.credentialFreeEnabled = " + true)
+            .withPropertyValues("spring.datasource.azure.passwordlessEnabled = " + true)
             .run((context) -> {
                 DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
 
@@ -87,7 +87,7 @@ class MySqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigura
 
         this.contextRunner
             .withPropertyValues("spring.datasource.url = " + connectionString)
-            .withPropertyValues("spring.datasource.azure.credentialFreeEnabled = " + true)
+            .withPropertyValues("spring.datasource.azure.passwordlessEnabled = " + true)
             .withPropertyValues("spring.datasource.azure.profile.tenantId = " + "fake-tenantId")
             .withPropertyValues("spring.datasource.azure.credential.clientSecret = " + "fake-clientSecret")
             .withPropertyValues("spring.datasource.azure.credential.clientId = " + "fake-clientId")

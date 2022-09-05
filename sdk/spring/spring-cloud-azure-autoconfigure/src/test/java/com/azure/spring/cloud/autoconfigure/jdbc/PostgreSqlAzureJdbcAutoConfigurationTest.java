@@ -22,7 +22,7 @@ class PostgreSqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConf
     private static final String AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY
         = AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName();
     private static final String AUTHPROPERTY_CREDENTIAL_BEAN_NAME
-        = AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.getPropertyKey() + "=" + "credentialFreeTokenCredential";
+        = AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.getPropertyKey() + "=" + "passwordlessTokenCredential";
 
 
     @Override
@@ -55,7 +55,7 @@ class PostgreSqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConf
         String connectionString = "jdbc:postgresql://postgre:5432/test";
         this.contextRunner
             .withPropertyValues("spring.datasource.url = " + connectionString)
-            .withPropertyValues("spring.datasource.azure.credentialFreeEnabled = " + true)
+            .withPropertyValues("spring.datasource.azure.passwordlessEnabled = " + true)
             .run((context) -> {
                 DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
                 String expectedUrl = String.format("%s?%s&%s&%s", connectionString,
@@ -72,7 +72,7 @@ class PostgreSqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConf
         String connectionString = "jdbc:postgresql://postgre:5432/test";
         this.contextRunner
             .withPropertyValues("spring.datasource.url = " + connectionString)
-            .withPropertyValues("spring.datasource.azure.credentialFreeEnabled = " + true)
+            .withPropertyValues("spring.datasource.azure.passwordlessEnabled = " + true)
             .withPropertyValues("spring.datasource.azure.profile.tenantId = " + "fake-tenantId")
             .withPropertyValues("spring.datasource.azure.credential.clientSecret = " + "fake-clientSecret")
             .withPropertyValues("spring.datasource.azure.credential.clientId = " + "fake-clientId")

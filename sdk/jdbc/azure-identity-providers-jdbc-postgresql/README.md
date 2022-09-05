@@ -35,6 +35,9 @@ For documentation on how to use this package, please refer to [Quickstart:Use Ja
 If you encounter any bugs, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java/issues).
 
 ## Next steps
+Other useful packages are:
+* [azure-identity-providers-core][azure-identity-providers-core]: Contains core classes and functionality used by this library.
+* [azure-identity-providers-jdbc-mysql][azure-identity-providers-jdbc-mysql]:  Azure identity JDBC MySQL plugin library for Java.
 
 ## Contributing
 
@@ -49,4 +52,6 @@ For details on contributing to this repository, see the [contributing guide](htt
 
 <!-- LINKS -->
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
+[azure-identity-providers-jdbc-mysql]: https://github.com/Azure/azure-sdk-for-java/tree/release/spring-cloud-azure-4.4.0-beta.1/sdk/jdbc/azure-identity-providers-jdbc-mysql
+[azure-identity-providers-core]: https://github.com/Azure/azure-sdk-for-java/tree/release/spring-cloud-azure-4.4.0-beta.1/sdk/jdbc/azure-identity-providers-core
 

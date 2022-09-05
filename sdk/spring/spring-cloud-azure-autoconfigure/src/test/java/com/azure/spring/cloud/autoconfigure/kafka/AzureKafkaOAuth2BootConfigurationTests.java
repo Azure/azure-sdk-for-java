@@ -8,7 +8,7 @@ import java.util.Map;
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.ManagedIdentityCredential;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
-import com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreeProperties;
+import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
@@ -73,10 +73,10 @@ class AzureKafkaOAuth2BootConfigurationTests extends AbstractAzureKafkaOAuth2Aut
         assertEquals("kafka-client-id", kafkaProperties.buildConsumerProperties().get(CLIENT_ID));
         assertEquals("kafka-producer-client-id", kafkaProperties.buildProducerProperties().get(CLIENT_ID));
 
-        AzureCredentialFreeProperties azureBuiltKafkaConsumerProp = buildAzureProperties(
+        AzurePasswordlessProperties azureBuiltKafkaConsumerProp = buildAzureProperties(
                 kafkaProperties.buildConsumerProperties(), azureGlobalProperties);
         assertEquals("kafka-client-id", azureBuiltKafkaConsumerProp.getCredential().getClientId());
-        AzureCredentialFreeProperties azureBuiltKafkaProducerProp = buildAzureProperties(
+        AzurePasswordlessProperties azureBuiltKafkaProducerProp = buildAzureProperties(
                 kafkaProperties.buildProducerProperties(), azureGlobalProperties);
         assertEquals("kafka-producer-client-id", azureBuiltKafkaProducerProp.getCredential().getClientId());
     }
@@ -94,10 +94,10 @@ class AzureKafkaOAuth2BootConfigurationTests extends AbstractAzureKafkaOAuth2Aut
         assertNull(kafkaProperties.buildConsumerProperties().get(CLIENT_ID));
         assertNull(kafkaProperties.buildProducerProperties().get(CLIENT_ID));
 
-        AzureCredentialFreeProperties azureBuiltKafkaConsumerProp = buildAzureProperties(
+        AzurePasswordlessProperties azureBuiltKafkaConsumerProp = buildAzureProperties(
                 kafkaProperties.buildConsumerProperties(), azureGlobalProperties);
         assertEquals("azure-client-id", azureBuiltKafkaConsumerProp.getCredential().getClientId());
-        AzureCredentialFreeProperties azureBuiltKafkaProducerProp = buildAzureProperties(
+        AzurePasswordlessProperties azureBuiltKafkaProducerProp = buildAzureProperties(
                 kafkaProperties.buildProducerProperties(), azureGlobalProperties);
         assertEquals("azure-client-id", azureBuiltKafkaProducerProp.getCredential().getClientId());
     }
