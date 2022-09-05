@@ -10,6 +10,7 @@ import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -39,6 +40,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestOperationConfiguration.AZURE_AD_ACCESS_TOKEN_RETRIEVER_REST_OPERATIONS_BEAN_NAME;
 
 /**
  * Configuration for AAD B2C OAuth2 client support, when depends on the Spring OAuth2 Client module.
@@ -131,7 +134,7 @@ public class AadB2cOAuth2ClientConfiguration {
     /**
      * Declare OAuth2AuthorizedClientManager bean.
      *
-     * @param aadAuthRestOperations the RestOperation used to connect Azure AD
+     * @param restOperations the RestOperation used to get access token
      * @param clients the client registration repository
      * @param authorizedClients the OAuth2 authorized client repository
      * @return OAuth2AuthorizedClientManager bean
@@ -139,40 +142,43 @@ public class AadB2cOAuth2ClientConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public OAuth2AuthorizedClientManager authorizedClientManager(
-            RestOperations aadAuthRestOperations,
+            @Qualifier(AZURE_AD_ACCESS_TOKEN_RETRIEVER_REST_OPERATIONS_BEAN_NAME) RestOperations restOperations,
             ClientRegistrationRepository clients,
             OAuth2AuthorizedClientRepository authorizedClients) {
         OAuth2AuthorizedClientProvider authorizedClientProvider = OAuth2AuthorizedClientProviderBuilder.builder()
                 .authorizationCode()
-                .provider(azureRefreshTokenProvider(aadAuthRestOperations))
-                .provider(azureClientCredentialProvider(aadAuthRestOperations))
-                .provider(azurePasswordProvider(aadAuthRestOperations))
+                .provider(azureRefreshTokenProvider(restOperations))
+                .provider(azureClientCredentialProvider(restOperations))
+                .provider(azurePasswordProvider(restOperations))
                 .build();
         DefaultOAuth2AuthorizedClientManager manager = new DefaultOAuth2AuthorizedClientManager(clients, authorizedClients);
         manager.setAuthorizedClientProvider(authorizedClientProvider);
         return manager;
     }
 
-    private RefreshTokenOAuth2AuthorizedClientProvider azureRefreshTokenProvider(RestOperations aadAuthRestOperations) {
+    private RefreshTokenOAuth2AuthorizedClientProvider azureRefreshTokenProvider(
+            @Qualifier(AZURE_AD_ACCESS_TOKEN_RETRIEVER_REST_OPERATIONS_BEAN_NAME) RestOperations restOperations) {
         RefreshTokenOAuth2AuthorizedClientProvider provider = new RefreshTokenOAuth2AuthorizedClientProvider();
         DefaultRefreshTokenTokenResponseClient responseClient = new DefaultRefreshTokenTokenResponseClient();
-        responseClient.setRestOperations(aadAuthRestOperations);
+        responseClient.setRestOperations(restOperations);
         provider.setAccessTokenResponseClient(responseClient);
         return provider;
     }
 
-    private ClientCredentialsOAuth2AuthorizedClientProvider azureClientCredentialProvider(RestOperations aadAuthRestOperations) {
+    private ClientCredentialsOAuth2AuthorizedClientProvider azureClientCredentialProvider(
+            @Qualifier(AZURE_AD_ACCESS_TOKEN_RETRIEVER_REST_OPERATIONS_BEAN_NAME) RestOperations restOperations) {
         ClientCredentialsOAuth2AuthorizedClientProvider provider = new ClientCredentialsOAuth2AuthorizedClientProvider();
         DefaultClientCredentialsTokenResponseClient responseClient = new DefaultClientCredentialsTokenResponseClient();
-        responseClient.setRestOperations(aadAuthRestOperations);
+        responseClient.setRestOperations(restOperations);
         provider.setAccessTokenResponseClient(responseClient);
         return provider;
     }
 
-    private PasswordOAuth2AuthorizedClientProvider azurePasswordProvider(RestOperations aadAuthRestOperations) {
+    private PasswordOAuth2AuthorizedClientProvider azurePasswordProvider(
+            @Qualifier(AZURE_AD_ACCESS_TOKEN_RETRIEVER_REST_OPERATIONS_BEAN_NAME) RestOperations restOperations) {
         PasswordOAuth2AuthorizedClientProvider provider = new PasswordOAuth2AuthorizedClientProvider();
         DefaultPasswordTokenResponseClient responseClient = new DefaultPasswordTokenResponseClient();
-        responseClient.setRestOperations(aadAuthRestOperations);
+        responseClient.setRestOperations(restOperations);
         provider.setAccessTokenResponseClient(responseClient);
         return provider;
     }

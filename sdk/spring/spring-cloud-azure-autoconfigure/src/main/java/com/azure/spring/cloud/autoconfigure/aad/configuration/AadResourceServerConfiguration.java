@@ -10,6 +10,7 @@ import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadJwtC
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.validator.AadJwtIssuerValidator;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -34,6 +35,8 @@ import org.springframework.web.client.RestOperations;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestOperationConfiguration.AZURE_AD_ACCESS_TOKEN_VALIDATOR_REST_OPERATIONS_BEAN_NAME;
+
 /**
  * <p>
  * The configuration will not be activated if no {@link BearerTokenAuthenticationToken} class provided.
@@ -49,18 +52,18 @@ public class AadResourceServerConfiguration {
      * Use JwkKeySetUri to create JwtDecoder
      *
      * @param aadAuthenticationProperties the AAD properties
-     * @param aadAuthRestOperations the RestOperation used to connect Azure AD
+     * @param restOperations the RestOperation used to get key to validate access token.
      * @return Get the jwtDecoder instance.
      */
     @Bean
     @ConditionalOnMissingBean(JwtDecoder.class)
     public JwtDecoder jwtDecoder(AadAuthenticationProperties aadAuthenticationProperties,
-                                 RestOperations aadAuthRestOperations) {
+                                 @Qualifier(AZURE_AD_ACCESS_TOKEN_VALIDATOR_REST_OPERATIONS_BEAN_NAME) RestOperations restOperations) {
         AadAuthorizationServerEndpoints identityEndpoints = new AadAuthorizationServerEndpoints(
             aadAuthenticationProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint(), aadAuthenticationProperties.getProfile().getTenantId());
         NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder
             .withJwkSetUri(identityEndpoints.getJwkSetEndpoint())
-                .restOperations(aadAuthRestOperations)
+                .restOperations(restOperations)
                 .build();
         List<OAuth2TokenValidator<Jwt>> validators = createDefaultValidator(aadAuthenticationProperties);
         nimbusJwtDecoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(validators));

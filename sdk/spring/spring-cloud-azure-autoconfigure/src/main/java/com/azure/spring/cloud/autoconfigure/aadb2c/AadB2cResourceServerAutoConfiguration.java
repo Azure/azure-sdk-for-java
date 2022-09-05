@@ -17,6 +17,7 @@ import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
 import com.nimbusds.jwt.proc.JWTProcessor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -37,6 +38,8 @@ import org.springframework.web.client.RestOperations;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestOperationConfiguration.AZURE_AD_ACCESS_TOKEN_VALIDATOR_REST_OPERATIONS_BEAN_NAME;
 
 /**
  * Configure necessary beans for Azure AD B2C resource server beans, and import {@link AadB2cOAuth2ClientConfiguration} class for Azure AD
@@ -74,19 +77,20 @@ public class AadB2cResourceServerAutoConfiguration {
     /**
      * Declare JWT ResourceRetriever bean.
      *
-     * @param restOperations the rest operations used by the resource retriever.
+     * @param restOperations the restOperations used to get key to validate access token
      * @return JWT ResourceRetriever bean
      */
     @Bean
     @ConditionalOnMissingBean(ResourceRetriever.class)
-    public ResourceRetriever jwtResourceRetriever(RestOperations restOperations) {
+    public ResourceRetriever jwtResourceRetriever(
+            @Qualifier(AZURE_AD_ACCESS_TOKEN_VALIDATOR_REST_OPERATIONS_BEAN_NAME) RestOperations restOperations) {
         return new RestOperationsResourceRetriever(restOperations);
     }
 
     /**
      * Declare JWTClaimsSetAwareJWSKeySelector bean.
      *
-     * @param restOperations the rest operations
+     * @param restOperations the rest operations used to get key to validate access token
      * @param aadTrustedIssuerRepository the AAD trusted issuer repository
      * @param resourceRetriever the resource retriever
      * @return JWTClaimsSetAwareJWSKeySelector bean
@@ -94,7 +98,7 @@ public class AadB2cResourceServerAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public JWTClaimsSetAwareJWSKeySelector<SecurityContext> aadIssuerJwsKeySelector(
-        RestOperations restOperations,
+            @Qualifier(AZURE_AD_ACCESS_TOKEN_VALIDATOR_REST_OPERATIONS_BEAN_NAME) RestOperations restOperations,
         AadTrustedIssuerRepository aadTrustedIssuerRepository,
         ResourceRetriever resourceRetriever) {
         return new AadIssuerJwsKeySelector(
