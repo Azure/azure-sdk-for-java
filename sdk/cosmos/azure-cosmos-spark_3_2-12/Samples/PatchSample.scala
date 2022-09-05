@@ -1,8 +1,8 @@
 // Databricks notebook source
 import org.apache.spark.sql.functions.lit
 
-val cosmosEndpoint = "https://cosmos-hierarchical-demo.documents.azure.com:443/"
-val cosmosMasterKey = "AKTRqMQ8PvXScomS4V1xZ9kTKZDu4WtTo7CvUcfFTcI4ySoHvcklSObokH0vfhDoA9vq2X3DK9EceLtUPyv3Hg=="
+val cosmosEndpoint = "<cosmos-endpoint>"
+val cosmosMasterKey = "<cosmos-master-key>"
 val cosmosDatabaseName = "ContosoHospital"
 val cosmosContainerName = "Doctor"
 
@@ -277,7 +277,7 @@ dfAfterPatch.show()
 // patch bulk example 
 val predicate = "from c where c.department = 'Gynaecology'"
 
-val cfgPatch = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+val cfgBulkPatch = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
         "spark.cosmos.accountKey" -> cosmosMasterKey,
         "spark.cosmos.database" -> cosmosDatabaseName,
         "spark.cosmos.container" -> cosmosContainerName,
@@ -307,7 +307,7 @@ val patchDf = Seq(
 ("<document-id16>","true")
       ).toDF("id", "vaccinated")
 
-patchDf.write.format("cosmos.oltp").mode("Append").options(cfgPatch).save()
+patchDf.write.format("cosmos.oltp").mode("Append").options(cfgBulkPatch).save()
 val dfAfterPatch = spark.sql(s"select * from cosmosCatalog.${cosmosDatabaseName}.${cosmosContainerName} where id ='<document-id>';")
 println("document after patch operation")
 dfAfterPatch.show()
