@@ -113,7 +113,7 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
             Map<String, String> enhancedProperties = new HashMap<>();
             enhancedProperties.put(POSTGRESQL_PROPERTY_NAME_APPLICATION_NAME,
                 AzureSpringIdentifier.AZURE_SPRING_POSTGRESQL_OAUTH);
-            connectionString.enhanceProperties(enhancedProperties);
+            connectionString.enhanceProperties(enhancedProperties, true);
         }
     }
 

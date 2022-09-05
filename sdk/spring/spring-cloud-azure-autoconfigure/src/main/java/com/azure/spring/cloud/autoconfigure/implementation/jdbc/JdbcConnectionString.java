@@ -57,7 +57,7 @@ public final class JdbcConnectionString {
         }
 
         Optional<DatabaseType> optionalDatabaseType = Arrays.stream(DatabaseType.values())
-                                                            .filter(databaseType -> originalJdbcURL.startsWith(databaseType.getSchema()))
+                                                            .filter(databaseType -> originalJdbcURL.startsWith(databaseType.getSchema() + ":"))
                                                             .findAny();
         DatabaseType databaseType = optionalDatabaseType.orElseThrow(() -> new AzureUnsupportedDatabaseTypeException(String.format(UNSUPPORTED_DATABASE_TYPE_STRING_FORMAT, originalJdbcURL)));
 
@@ -115,6 +115,11 @@ public final class JdbcConnectionString {
     }
 
     public void enhanceProperties(Map<String, String> enhancedProperties) {
+        this.enhanceProperties(enhancedProperties, false);
+    }
+
+    public void enhanceProperties(Map<String, String> enhancedProperties,
+                                  boolean silentWhenInconsistentValuePresent) {
         for (Map.Entry<String, String> entry : enhancedProperties.entrySet()) {
             String key = entry.getKey(), value = entry.getValue();
             String valueProvidedInConnectionString = this.originalProperties.get(key);
@@ -122,8 +127,11 @@ public final class JdbcConnectionString {
             if (valueProvidedInConnectionString == null) {
                 this.enhancedProperties.put(key, value);
             } else if (!value.equals(valueProvidedInConnectionString)) {
-                LOGGER.debug("The property {} is set to another value than default {}", key, value);
-                throw new IllegalArgumentException("Inconsistent property detected");
+                if (silentWhenInconsistentValuePresent) {
+                    LOGGER.debug("The property {} is set to another value than default {}", key, value);
+                } else {
+                    throw new IllegalArgumentException("Inconsistent property of key [" + key +  "] detected");
+                }
             } else {
                 LOGGER.debug("The property {} is already set", key);
             }
@@ -141,17 +149,16 @@ public final class JdbcConnectionString {
                 .map(attr -> attr.split(attributeKeyValueDelimiter))
                 .collect(Collectors.toMap(pair -> pair[0], pair -> pair[1], (a, b) -> a));
 
-            Map<String, String> mergedAttributes = new TreeMap<>(originalAttributesMap);
-            enhancedAttributes.entrySet().forEach(entry -> {
-                LOGGER.debug("The attribute {} in property {} is already set", entry.getKey(), propertyKey);
-                mergedAttributes.putIfAbsent(entry.getKey(), entry.getValue());
+            TreeMap<String, String> actualEnhancedAttributes = new TreeMap<>(enhancedAttributes);
+            originalAttributesMap.keySet().forEach(key -> {
+                LOGGER.debug("The attribute {} in property {} is already set", key, propertyKey);
+                actualEnhancedAttributes.remove(key);
             });
-
-            this.enhancedProperties.put(propertyKey, buildPropertyValueFromAttributes(attributeDelimiter,
-                attributeKeyValueDelimiter, mergedAttributes));
+            this.enhancedProperties.put(propertyKey, buildPropertyValueFromAttributes(value, attributeDelimiter,
+                attributeKeyValueDelimiter, actualEnhancedAttributes));
         } else {
-            this.enhancedProperties.put(propertyKey, buildPropertyValueFromAttributes(attributeDelimiter,
-                attributeKeyValueDelimiter, enhancedAttributes));
+            this.enhancedProperties.put(propertyKey, buildPropertyValueFromAttributes(null, attributeDelimiter,
+                attributeKeyValueDelimiter, new TreeMap<>(enhancedAttributes)));
         }
     }
 
@@ -172,16 +179,19 @@ public final class JdbcConnectionString {
     }
 
     String getEnhancedProperty(String key) {
-        return originalProperties.get(key);
+        return this.enhancedProperties.get(key);
     }
 
-    private static String buildPropertyValueFromAttributes(String attributeDelimiter,
+    private static String buildPropertyValueFromAttributes(String baseAttributes,
+                                                           String attributeDelimiter,
                                                            String attributeKeyValueDelimiter,
-                                                           Map<String, String> mergedAttributes) {
-        return mergedAttributes.entrySet()
+                                                           TreeMap<String, String> enhancedAttributes) {
+        String enhancedString = enhancedAttributes
+            .entrySet()
             .stream()
             .map(entry -> entry.getKey() + attributeKeyValueDelimiter + entry.getValue())
             .collect(Collectors.joining(attributeDelimiter));
+        return baseAttributes == null ? enhancedString : (baseAttributes + attributeDelimiter + enhancedString);
     }
 
     public static JdbcConnectionString resolve(String url) {
