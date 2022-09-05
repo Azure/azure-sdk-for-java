@@ -118,7 +118,7 @@ public final class CommunicationIdentityClient {
             } catch (ArithmeticException ex) {
                 ArithmeticException overflowEx = new ArithmeticException(OVERFLOW_MESSAGE);
                 overflowEx.initCause(ex);
-                throw overflowEx;
+                throw logger.logExceptionAsError(overflowEx);
             }
 
             communicationIdentityCreateRequest.setExpiresInMinutes(expiresInMinutes);
@@ -167,7 +167,7 @@ public final class CommunicationIdentityClient {
             } catch (ArithmeticException ex) {
                 ArithmeticException overflowEx = new ArithmeticException(OVERFLOW_MESSAGE);
                 overflowEx.initCause(ex);
-                throw overflowEx;
+                throw logger.logExceptionAsError(overflowEx);
             }
 
             communicationIdentityCreateRequest.setExpiresInMinutes(expiresInMinutes);
@@ -281,7 +281,7 @@ public final class CommunicationIdentityClient {
             } catch (ArithmeticException ex) {
                 ArithmeticException overflowEx = new ArithmeticException(OVERFLOW_MESSAGE);
                 overflowEx.initCause(ex);
-                throw overflowEx;
+                throw logger.logExceptionAsError(overflowEx);
             }
 
             tokenRequest.setExpiresInMinutes(expiresInMinutes);
@@ -341,7 +341,7 @@ public final class CommunicationIdentityClient {
             } catch (ArithmeticException ex) {
                 ArithmeticException overflowEx = new ArithmeticException(OVERFLOW_MESSAGE);
                 overflowEx.initCause(ex);
-                throw overflowEx;
+                throw logger.logExceptionAsError(overflowEx);
             }
 
             tokenRequest.setExpiresInMinutes(expiresInMinutes);
