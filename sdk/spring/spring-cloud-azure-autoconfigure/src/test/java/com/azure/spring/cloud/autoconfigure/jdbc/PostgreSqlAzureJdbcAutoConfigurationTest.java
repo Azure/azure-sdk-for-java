@@ -4,10 +4,12 @@
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
 import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
+import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
 
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_NAME_APPLICATION_NAME;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_NAME_AUTHENTICATION_PLUGIN_CLASSNAME;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_NAME_SSL_MODE;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_VALUE_SSL_MODE;
@@ -23,6 +25,9 @@ class PostgreSqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConf
         = AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName();
     private static final String AUTHPROPERTY_CREDENTIAL_BEAN_NAME
         = AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.getPropertyKey() + "=" + "credentialFreeTokenCredential";
+
+    private static final String POSTGRESQL_USER_AGENT = POSTGRESQL_PROPERTY_NAME_APPLICATION_NAME + "="
+        + AzureSpringIdentifier.AZURE_SPRING_POSTGRESQL_OAUTH;
 
 
     @Override
@@ -58,10 +63,13 @@ class PostgreSqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConf
             .withPropertyValues("spring.datasource.azure.credentialFreeEnabled = " + true)
             .run((context) -> {
                 DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
-                String expectedUrl = String.format("%s?%s&%s&%s", connectionString,
-                    POSTGRESQL_SSLMODE_PROPERTY,
-                    POSTGRESQL_AUTHENTICATIONPLUGINCLASSNAME_PROPERTY,
-                    AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY
+                String expectedUrl = String.format("%s?%s", connectionString,
+                    buildSortedPropertiesString(
+                        POSTGRESQL_SSLMODE_PROPERTY,
+                        POSTGRESQL_AUTHENTICATIONPLUGINCLASSNAME_PROPERTY,
+                        AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
+                        POSTGRESQL_USER_AGENT
+                    )
                 );
                 assertEquals(expectedUrl, dataSourceProperties.getUrl());
             });
@@ -78,11 +86,14 @@ class PostgreSqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConf
             .withPropertyValues("spring.datasource.azure.credential.clientId = " + "fake-clientId")
             .run((context) -> {
                 DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
-                String expectedUrl = String.format("%s?%s&%s&%s&%s", connectionString,
-                    POSTGRESQL_SSLMODE_PROPERTY,
-                    AUTHPROPERTY_CREDENTIAL_BEAN_NAME,
-                    POSTGRESQL_AUTHENTICATIONPLUGINCLASSNAME_PROPERTY,
-                    AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY
+                String expectedUrl = String.format("%s?%s", connectionString,
+                    buildSortedPropertiesString(
+                        POSTGRESQL_SSLMODE_PROPERTY,
+                        AUTHPROPERTY_CREDENTIAL_BEAN_NAME,
+                        POSTGRESQL_AUTHENTICATIONPLUGINCLASSNAME_PROPERTY,
+                        AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
+                        POSTGRESQL_USER_AGENT
+                    )
                 );
                 assertEquals(expectedUrl, dataSourceProperties.getUrl());
             });

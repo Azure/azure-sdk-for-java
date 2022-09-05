@@ -1,10 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.jdbc;
+package com.azure.spring.cloud.autoconfigure.implementation.jdbc;
 
-import com.azure.spring.cloud.autoconfigure.implementation.jdbc.DatabaseType;
-import com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionString;
 import org.junit.jupiter.api.Assertions;
 
 import java.util.HashMap;
@@ -12,13 +10,13 @@ import java.util.Map;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionString.INVALID_PROPERTY_PAIR_FORMAT;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_AUTH_PLUGIN_CLASS_NAME;
-import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.NONE_VALUE;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_NAME_AUTHENTICATION_PLUGINS;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_NAME_DEFAULT_AUTHENTICATION_PLUGIN;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_NAME_SSL_MODE;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_NAME_USE_SSL;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_VALUE_SSL_MODE;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_VALUE_USE_SSL;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.NONE_VALUE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -35,8 +33,8 @@ public class MySqlJdbcConnectionStringTest extends AbstractJdbcConnectionStringT
         String connectionString = "jdbc:mysql://host/database?enableSwitch1&property1=value1";
         JdbcConnectionString jdbcConnectionString = JdbcConnectionString.resolve(connectionString);
         assertEquals(DatabaseType.MYSQL, jdbcConnectionString.getDatabaseType());
-        assertEquals(NONE_VALUE, jdbcConnectionString.getProperty("enableSwitch1"));
-        assertEquals("value1", jdbcConnectionString.getProperty("property1"));
+        assertEquals(NONE_VALUE, jdbcConnectionString.getOriginalProperty("enableSwitch1"));
+        assertEquals("value1", jdbcConnectionString.getOriginalProperty("property1"));
     }
 
     @Override
@@ -45,8 +43,8 @@ public class MySqlJdbcConnectionStringTest extends AbstractJdbcConnectionStringT
 
         JdbcConnectionString jdbcConnectionString = JdbcConnectionString.resolve(connectionString);
         assertEquals(DatabaseType.MYSQL, jdbcConnectionString.getDatabaseType());
-        assertEquals("value1", jdbcConnectionString.getProperty("property1"));
-        assertEquals("value2", jdbcConnectionString.getProperty("property2"));
+        assertEquals("value1", jdbcConnectionString.getOriginalProperty("property1"));
+        assertEquals("value2", jdbcConnectionString.getOriginalProperty("property2"));
     }
 
     @Override
@@ -55,7 +53,7 @@ public class MySqlJdbcConnectionStringTest extends AbstractJdbcConnectionStringT
 
         JdbcConnectionString jdbcConnectionString = JdbcConnectionString.resolve(connectionString);
         assertEquals(DatabaseType.MYSQL, jdbcConnectionString.getDatabaseType());
-        assertFalse(jdbcConnectionString.hasProperties());
+        assertFalse(jdbcConnectionString.hasOriginalProperties());
     }
 
     @Override
@@ -71,7 +69,7 @@ public class MySqlJdbcConnectionStringTest extends AbstractJdbcConnectionStringT
         JdbcConnectionString jdbcConnectionString = JdbcConnectionString.resolve(connectionString);
         Map<String, String> configMap = new HashMap<>();
         configMap.putAll(jdbcConnectionString.getDatabaseType().getDefaultEnhancedProperties());
-        assertThrows(IllegalArgumentException.class, () -> jdbcConnectionString.enhanceConnectionString(configMap));
+        assertThrows(IllegalArgumentException.class, () -> jdbcConnectionString.enhanceProperties(configMap));
     }
 
     @Override
@@ -79,7 +77,8 @@ public class MySqlJdbcConnectionStringTest extends AbstractJdbcConnectionStringT
         String connectionString = "jdbc:mysql://mockpostgresqlurl:3306/db?useSSL=true";
         JdbcConnectionString jdbcConnectionString = JdbcConnectionString.resolve(connectionString);
         Map<String, String> configMap = new HashMap<>();
-        assertNotNull(jdbcConnectionString.enhanceConnectionString(configMap));
+        jdbcConnectionString.enhanceProperties(configMap);
+        assertNotNull(jdbcConnectionString.getJdbcUrl());
     }
 
     @Override
@@ -87,7 +86,8 @@ public class MySqlJdbcConnectionStringTest extends AbstractJdbcConnectionStringT
         String connectionString = "jdbc:mysql://host/database";
         JdbcConnectionString jdbcConnectionString = JdbcConnectionString.resolve(connectionString);
 
-        String enhancedUrl = jdbcConnectionString.enhanceConnectionString(jdbcConnectionString.getDatabaseType().getDefaultEnhancedProperties());
+        jdbcConnectionString.enhanceProperties(jdbcConnectionString.getDatabaseType().getDefaultEnhancedProperties());
+        String enhancedUrl = jdbcConnectionString.getJdbcUrl();
         String expectedUrl = String.format("%s?%s&%s&%s&%s", connectionString,
             MYSQL_AUTH_PLUGIN_PROPERTY,
             MYSQL_DEFAULT_PLUGIN_PROPERTY,
@@ -101,11 +101,12 @@ public class MySqlJdbcConnectionStringTest extends AbstractJdbcConnectionStringT
         String connectionString = "jdbc:mysql://host/database?sslMode=REQUIRED";
         JdbcConnectionString jdbcConnectionString = JdbcConnectionString.resolve(connectionString);
 
-        String enhancedUrl = jdbcConnectionString.enhanceConnectionString(jdbcConnectionString.getDatabaseType().getDefaultEnhancedProperties());
+        jdbcConnectionString.enhanceProperties(jdbcConnectionString.getDatabaseType().getDefaultEnhancedProperties());
+        String enhancedUrl = jdbcConnectionString.getJdbcUrl();
         String expectedUrl = String.format("%s&%s&%s&%s", connectionString,
-            MYSQL_AUTH_PLUGIN_PROPERTY,
-            MYSQL_DEFAULT_PLUGIN_PROPERTY,
-            MYSQL_USE_SSL_PROPERTY);
+        MYSQL_AUTH_PLUGIN_PROPERTY,
+        MYSQL_DEFAULT_PLUGIN_PROPERTY,
+        MYSQL_USE_SSL_PROPERTY);
         Assertions.assertEquals(expectedUrl, enhancedUrl);
     }
 }

@@ -88,8 +88,9 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
 
             try {
                 Map<String, String> enhancedProperties = buildEnhancedProperties(databaseType, properties);
-                String enhancedUrl = connectionString.enhanceConnectionString(enhancedProperties);
-                ((DataSourceProperties) bean).setUrl(enhancedUrl);
+                connectionString.enhanceProperties(enhancedProperties);
+                enhanceUserAgent(databaseType, connectionString);
+                ((DataSourceProperties) bean).setUrl(connectionString.getJdbcUrl());
             } catch (IllegalArgumentException e) {
                 LOGGER.debug("Inconsistent properties detected, skip enhancing jdbc url.");
             }
@@ -97,24 +98,22 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
         return bean;
     }
 
-    private void addUserAgent(DatabaseType databaseType, JdbcConnectionString connectionString) {
+    private void enhanceUserAgent(DatabaseType databaseType, JdbcConnectionString connectionString) {
         if (DatabaseType.MYSQL == databaseType) {
-            boolean added = connectionString.addAttributeToProperty(
+            Map<String, String> enhancedAttributes = new HashMap<>();
+            enhancedAttributes.put(MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_ATTRIBUTE_EXTENSION_VERSION,
+                AzureSpringIdentifier.AZURE_SPRING_MYSQL_OAUTH);
+            connectionString.enhancePropertyAttributes(
                 MYSQL_PROPERTY_NAME_CONNECTION_ATTRIBUTES,
-                MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_ATTRIBUTE_EXTENSION_VERSION,
-                AzureSpringIdentifier.AZURE_SPRING_MYSQL_OAUTH,
+                enhancedAttributes,
                 MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_DELIMITER,
                 MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_KV_DELIMITER
             );
-            if (!added) {
-                LOGGER.debug("Fail to add user agent for MySQL.");
-            }
         } else if (DatabaseType.POSTGRESQL == databaseType) {
-            boolean added = connectionString.addProperty(POSTGRESQL_PROPERTY_NAME_APPLICATION_NAME,
+            Map<String, String> enhancedProperties = new HashMap<>();
+            enhancedProperties.put(POSTGRESQL_PROPERTY_NAME_APPLICATION_NAME,
                 AzureSpringIdentifier.AZURE_SPRING_POSTGRESQL_OAUTH);
-            if (!added) {
-                LOGGER.debug("Fail to add user agent for PostgreSQL.");
-            }
+            connectionString.enhanceProperties(enhancedProperties);
         }
     }
 

@@ -1,10 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.jdbc;
+package com.azure.spring.cloud.autoconfigure.implementation.jdbc;
 
-import com.azure.spring.cloud.autoconfigure.implementation.jdbc.DatabaseType;
-import com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionString;
 import org.junit.jupiter.api.Assertions;
 
 import java.util.HashMap;
@@ -30,8 +28,8 @@ public class PostgreSqlJdbcConnectionStringTest extends AbstractJdbcConnectionSt
         String connectionString = "jdbc:postgresql://host/database?enableSwitch1&property1=value1";
         JdbcConnectionString jdbcConnectionString = JdbcConnectionString.resolve(connectionString);
         assertEquals(DatabaseType.POSTGRESQL, jdbcConnectionString.getDatabaseType());
-        assertEquals(NONE_VALUE, jdbcConnectionString.getProperty("enableSwitch1"));
-        assertEquals("value1", jdbcConnectionString.getProperty("property1"));
+        assertEquals(NONE_VALUE, jdbcConnectionString.getOriginalProperty("enableSwitch1"));
+        assertEquals("value1", jdbcConnectionString.getOriginalProperty("property1"));
     }
 
     @Override
@@ -40,8 +38,8 @@ public class PostgreSqlJdbcConnectionStringTest extends AbstractJdbcConnectionSt
 
         JdbcConnectionString jdbcConnectionString = JdbcConnectionString.resolve(connectionString);
         assertEquals(DatabaseType.POSTGRESQL, jdbcConnectionString.getDatabaseType());
-        assertEquals("value1", jdbcConnectionString.getProperty("property1"));
-        assertEquals("value2", jdbcConnectionString.getProperty("property2"));
+        assertEquals("value1", jdbcConnectionString.getOriginalProperty("property1"));
+        assertEquals("value2", jdbcConnectionString.getOriginalProperty("property2"));
     }
 
     @Override
@@ -50,7 +48,7 @@ public class PostgreSqlJdbcConnectionStringTest extends AbstractJdbcConnectionSt
 
         JdbcConnectionString jdbcConnectionString = JdbcConnectionString.resolve(connectionString);
         assertEquals(DatabaseType.POSTGRESQL, jdbcConnectionString.getDatabaseType());
-        assertFalse(jdbcConnectionString.hasProperties());
+        assertFalse(jdbcConnectionString.hasOriginalProperties());
     }
 
     @Override
@@ -66,7 +64,7 @@ public class PostgreSqlJdbcConnectionStringTest extends AbstractJdbcConnectionSt
         JdbcConnectionString jdbcConnectionString = JdbcConnectionString.resolve(connectionString);
         Map<String, String> configMap = new HashMap<>();
         configMap.putAll(jdbcConnectionString.getDatabaseType().getDefaultEnhancedProperties());
-        assertThrows(IllegalArgumentException.class, () -> jdbcConnectionString.enhanceConnectionString(configMap));
+        assertThrows(IllegalArgumentException.class, () -> jdbcConnectionString.enhanceProperties(configMap));
     }
 
     @Override
@@ -74,7 +72,8 @@ public class PostgreSqlJdbcConnectionStringTest extends AbstractJdbcConnectionSt
         String connectionString = "jdbc:postgresql://mockpostgresqlurl:3306/db?useSSL=true";
         JdbcConnectionString jdbcConnectionString = JdbcConnectionString.resolve(connectionString);
         Map<String, String> configMap = new HashMap<>();
-        assertNotNull(jdbcConnectionString.enhanceConnectionString(configMap));
+        jdbcConnectionString.enhanceProperties(configMap);
+        assertNotNull(jdbcConnectionString.getJdbcUrl());
     }
 
     @Override
@@ -82,10 +81,11 @@ public class PostgreSqlJdbcConnectionStringTest extends AbstractJdbcConnectionSt
         String connectionString = "jdbc:postgresql://host/database";
         JdbcConnectionString jdbcConnectionString = JdbcConnectionString.resolve(connectionString);
 
-        String enhancedUrl = jdbcConnectionString.enhanceConnectionString(jdbcConnectionString.getDatabaseType().getDefaultEnhancedProperties());
+        jdbcConnectionString.enhanceProperties(jdbcConnectionString.getDatabaseType().getDefaultEnhancedProperties());
+        String enhancedUrl = jdbcConnectionString.getJdbcUrl();
         String expectedUrl = String.format("%s?%s&%s", connectionString,
-            POSTGRESQL_AUTH_PLUGIN_PROPERTY,
-            POSTGRESQL_SSL_MODE_PROPERTY);
+        POSTGRESQL_AUTH_PLUGIN_PROPERTY,
+        POSTGRESQL_SSL_MODE_PROPERTY);
         Assertions.assertEquals(expectedUrl, enhancedUrl);
     }
 
@@ -94,7 +94,8 @@ public class PostgreSqlJdbcConnectionStringTest extends AbstractJdbcConnectionSt
         String connectionString = "jdbc:postgresql://host/database?sslmode=require";
         JdbcConnectionString jdbcConnectionString = JdbcConnectionString.resolve(connectionString);
 
-        String enhancedUrl = jdbcConnectionString.enhanceConnectionString(jdbcConnectionString.getDatabaseType().getDefaultEnhancedProperties());
+        jdbcConnectionString.enhanceProperties(jdbcConnectionString.getDatabaseType().getDefaultEnhancedProperties());
+        String enhancedUrl = jdbcConnectionString.getJdbcUrl();
         String expectedUrl = String.format("%s&%s", connectionString,
             POSTGRESQL_AUTH_PLUGIN_PROPERTY);
         Assertions.assertEquals(expectedUrl, enhancedUrl);
