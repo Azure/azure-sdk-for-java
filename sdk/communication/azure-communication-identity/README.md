@@ -140,9 +140,9 @@ It's also possible to create a Communication Identity access token by customizin
 ```java readme-sample-issueTokenWithCustomExpiration
 // Define a list of Communication Identity access token scopes
 List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
-// Set custom validity period of the Communication Identity access token within <60,1440>
-// minutes range. If not provided, the default value of 1440 minutes (24 hours) will be used.
-Duration tokenExpiresAfter = Duration.ofMinutes(60);
+// Set custom validity period of the Communication Identity access token within [1,24]
+// hours range. If not provided, the default value of 24 hours will be used.
+Duration tokenExpiresAfter = Duration.ofHours(1);
 AccessToken userToken = communicationIdentityClient.getToken(user, scopes, tokenExpiresAfter);
 System.out.println("User token value: " + userToken.getToken());
 System.out.println("Expires at: " + userToken.getExpiresAt());
@@ -165,9 +165,9 @@ Here it's also possible to specify the expiration time for the Communication Ide
 ```java readme-sample-createNewUserAndTokenWithCustomExpiration
 // Define a list of communication token scopes
 List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
-// Set custom validity period of the Communication Identity access token within <60,1440>
-// minutes range. If not provided, the default value of 1440 minutes (24 hours) will be used.
-Duration tokenExpiresAfter = Duration.ofMinutes(60);
+// Set custom validity period of the Communication Identity access token within [1,24]
+// hours range. If not provided, the default value of 24 hours will be used.
+Duration tokenExpiresAfter = Duration.ofHours(1);
 CommunicationUserIdentifierAndToken result = communicationIdentityClient.createUserAndToken(scopes, tokenExpiresAfter);
 System.out.println("User id: " + result.getUser().getId());
 System.out.println("User token value: " + result.getUserToken().getToken());

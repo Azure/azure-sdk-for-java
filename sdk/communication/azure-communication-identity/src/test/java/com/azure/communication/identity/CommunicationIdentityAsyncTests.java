@@ -26,6 +26,7 @@ import static com.azure.communication.identity.CteTestHelper.skipExchangeAadTeam
 
 public class CommunicationIdentityAsyncTests extends CommunicationIdentityClientTestBase {
     private CommunicationIdentityAsyncClient asyncClient;
+    private static final String OVERFLOW_MESSAGE = "The tokenExpiresAfter argument is out of permitted bounds. Please refer to the documentation and set the value accordingly.";
 
     @Test
     public void createAsyncIdentityClientUsingConnectionString() {
@@ -125,6 +126,24 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             .verifyErrorSatisfies(throwable -> {
                 assertNotNull(throwable.getMessage());
                 assertTrue(throwable.getMessage().contains("400"));
+            });
+    }
+
+    @Test
+    public void createUserAndTokenWithOverflownCustomExpiration() {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        asyncClient = setupAsyncClient(builder, "createUserAndTokenWithOverflownCustomExpiration");
+        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+        Duration tokenExpiresAfter = Duration.ofDays(Integer.MAX_VALUE);
+
+        // Action & Assert
+        Mono<CommunicationUserIdentifierAndToken> createUserAndToken = asyncClient.createUserAndToken(scopes, tokenExpiresAfter);
+        StepVerifier.create(createUserAndToken)
+            .verifyErrorSatisfies(throwable -> {
+                assertTrue(throwable instanceof ArithmeticException);
+                assertNotNull(throwable.getMessage());
+                assertTrue(throwable.getMessage().equals(OVERFLOW_MESSAGE));
             });
     }
 
@@ -346,6 +365,26 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             .verifyErrorSatisfies(throwable -> {
                 assertNotNull(throwable.getMessage());
                 assertTrue(throwable.getMessage().contains("400"));
+            });
+    }
+
+    @Test
+    public void getTokenWithOverflownCustomExpiration() {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        asyncClient = setupAsyncClient(builder, "getTokenWithOverflownCustomExpiration");
+        Duration tokenExpiresAfter = Duration.ofDays(Integer.MAX_VALUE);
+        // Action & Assert
+        StepVerifier.create(
+                asyncClient.createUser()
+                    .flatMap(communicationUser -> {
+                        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+                        return asyncClient.getToken(communicationUser, scopes, tokenExpiresAfter);
+                    }))
+            .verifyErrorSatisfies(throwable -> {
+                assertTrue(throwable instanceof ArithmeticException);
+                assertNotNull(throwable.getMessage());
+                assertTrue(throwable.getMessage().equals(OVERFLOW_MESSAGE));
             });
     }
 

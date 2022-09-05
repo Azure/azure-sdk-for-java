@@ -53,6 +53,7 @@ import com.azure.core.util.logging.ClientLogger;
 @ServiceClient(builder = CommunicationIdentityClientBuilder.class, isAsync = false)
 public final class CommunicationIdentityClient {
 
+    private static final String OVERFLOW_MESSAGE = "The tokenExpiresAfter argument is out of permitted bounds. Please refer to the documentation and set the value accordingly.";
     private final CommunicationIdentitiesImpl client;
     private final ClientLogger logger = new ClientLogger(CommunicationIdentityClient.class);
 
@@ -97,8 +98,8 @@ public final class CommunicationIdentityClient {
      * Creates a new CommunicationUserIdentifier with token.
      *
      * @param scopes The list of scopes for the token.
-     * @param tokenExpiresAfter Custom validity period of the Communication Identity access token within &lt;60,1440&gt;
-     * minutes range. If not provided, the default value of 1440 minutes (24 hours) will be used.
+     * @param tokenExpiresAfter Custom validity period of the Communication Identity access token within [1,24]
+     * hours range. If not provided, the default value of 24 hours will be used.
      * @return The created communication user and token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -111,7 +112,15 @@ public final class CommunicationIdentityClient {
         communicationIdentityCreateRequest.setCreateTokenWithScopes(scopesInput);
 
         if (tokenExpiresAfter != null) {
-            Integer expiresInMinutes = Math.toIntExact(tokenExpiresAfter.toMinutes());
+            Integer expiresInMinutes;
+            try {
+                expiresInMinutes = Math.toIntExact(tokenExpiresAfter.toMinutes());
+            } catch (ArithmeticException ex) {
+                ArithmeticException overflowEx = new ArithmeticException(OVERFLOW_MESSAGE);
+                overflowEx.initCause(ex);
+                throw overflowEx;
+            }
+
             communicationIdentityCreateRequest.setExpiresInMinutes(expiresInMinutes);
         }
 
@@ -136,8 +145,8 @@ public final class CommunicationIdentityClient {
      * Creates a new CommunicationUserIdentifier with token with response.
      *
      * @param scopes The list of scopes for the token.
-     * @param tokenExpiresAfter Custom validity period of the Communication Identity access token within &lt;60,1440&gt;
-     * minutes range. If not provided, the default value of 1440 minutes (24 hours) will be used.
+     * @param tokenExpiresAfter Custom validity period of the Communication Identity access token within [1,24]
+     * hours range. If not provided, the default value of 24 hours will be used.
      * @param context A {@link Context} representing the request context.
      * @return The created communication user and token with response.
      */
@@ -152,7 +161,15 @@ public final class CommunicationIdentityClient {
         communicationIdentityCreateRequest.setCreateTokenWithScopes(scopesInput);
 
         if (tokenExpiresAfter != null) {
-            Integer expiresInMinutes = Math.toIntExact(tokenExpiresAfter.toMinutes());
+            Integer expiresInMinutes;
+            try {
+                expiresInMinutes = Math.toIntExact(tokenExpiresAfter.toMinutes());
+            } catch (ArithmeticException ex) {
+                ArithmeticException overflowEx = new ArithmeticException(OVERFLOW_MESSAGE);
+                overflowEx.initCause(ex);
+                throw overflowEx;
+            }
+
             communicationIdentityCreateRequest.setExpiresInMinutes(expiresInMinutes);
         }
 
@@ -241,8 +258,8 @@ public final class CommunicationIdentityClient {
      * @param communicationUser A {@link CommunicationUserIdentifier} from whom to issue a Communication Identity
      * access token.
      * @param scopes List of {@link CommunicationTokenScope} scopes for the Communication Identity access token.
-     * @param tokenExpiresAfter Custom validity period of the Communication Identity access token within &lt;60,1440&gt;
-     * minutes range. If not provided, the default value of 1440 minutes (24 hours) will be used.
+     * @param tokenExpiresAfter Custom validity period of the Communication Identity access token within [1,24]
+     * hours range. If not provided, the default value of 24 hours will be used.
      * @return the Communication Identity access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -258,7 +275,15 @@ public final class CommunicationIdentityClient {
         tokenRequest.setScopes(scopesInput);
 
         if (tokenExpiresAfter != null) {
-            Integer expiresInMinutes = Math.toIntExact(tokenExpiresAfter.toMinutes());
+            Integer expiresInMinutes;
+            try {
+                expiresInMinutes = Math.toIntExact(tokenExpiresAfter.toMinutes());
+            } catch (ArithmeticException ex) {
+                ArithmeticException overflowEx = new ArithmeticException(OVERFLOW_MESSAGE);
+                overflowEx.initCause(ex);
+                throw overflowEx;
+            }
+
             tokenRequest.setExpiresInMinutes(expiresInMinutes);
         }
 
@@ -290,8 +315,8 @@ public final class CommunicationIdentityClient {
      * @param communicationUser A {@link CommunicationUserIdentifier} from whom to issue a Communication Identity
      * access token.
      * @param scopes List of {@link CommunicationTokenScope} scopes for the Communication Identity access token.
-     * @param tokenExpiresAfter Custom validity period of the Communication Identity access token within &lt;60,1440&gt;
-     * minutes range. If not provided, the default value of 1440 minutes (24 hours) will be used.
+     * @param tokenExpiresAfter Custom validity period of the Communication Identity access token within [1,24]
+     * hours range. If not provided, the default value of 24 hours will be used.
      * @param context the context of the request. Can also be null or Context.NONE.
      * @return the Communication Identity access token with response.
      */
@@ -310,7 +335,15 @@ public final class CommunicationIdentityClient {
         tokenRequest.setScopes(scopesInput);
 
         if (tokenExpiresAfter != null) {
-            Integer expiresInMinutes = Math.toIntExact(tokenExpiresAfter.toMinutes());
+            Integer expiresInMinutes;
+            try {
+                expiresInMinutes = Math.toIntExact(tokenExpiresAfter.toMinutes());
+            } catch (ArithmeticException ex) {
+                ArithmeticException overflowEx = new ArithmeticException(OVERFLOW_MESSAGE);
+                overflowEx.initCause(ex);
+                throw overflowEx;
+            }
+
             tokenRequest.setExpiresInMinutes(expiresInMinutes);
         }
 

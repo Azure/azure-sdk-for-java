@@ -23,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CommunicationIdentityTests extends CommunicationIdentityClientTestBase {
     private static final String TEST_SUFFIX = "Sync";
     private CommunicationIdentityClient client;
+    private static final String OVERFLOW_MESSAGE = "The tokenExpiresAfter argument is out of permitted bounds. Please refer to the documentation and set the value accordingly.";
 
     @Test
     public void createIdentityClientUsingConnectionString() {
@@ -121,6 +122,24 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         } catch (Exception exception) {
             assertNotNull(exception.getMessage());
             assertTrue(exception.getMessage().contains("400"));
+            return;
+        }
+        fail("An exception should have been thrown.");
+    }
+
+    @Test
+    public void createUserAndTokenWithOverFlownExpiration() {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        client = setupClient(builder, "createUserAndTokenWithOverFlownExpiration" + TEST_SUFFIX);
+        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+        Duration tokenExpiresAfter = Duration.ofDays(Integer.MAX_VALUE);
+        // Action & Assert
+        try {
+            client.createUserAndToken(scopes, tokenExpiresAfter);
+        } catch (ArithmeticException exception) {
+            assertNotNull(exception.getMessage());
+            assertTrue(exception.getMessage().equals(OVERFLOW_MESSAGE));
             return;
         }
         fail("An exception should have been thrown.");
@@ -276,6 +295,25 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         } catch (Exception exception) {
             assertNotNull(exception.getMessage());
             assertTrue(exception.getMessage().contains("400"));
+            return;
+        }
+        fail("An exception should have been thrown.");
+    }
+
+    @Test
+    public void getTokenWithOverflownExpiration() {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        client = setupClient(builder, "getTokenWithOverflownExpiration" + TEST_SUFFIX);
+        CommunicationUserIdentifier communicationUser = client.createUser();
+        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+        Duration tokenExpiresAfter = Duration.ofDays(Integer.MAX_VALUE);
+        // Action & Assert
+        try {
+            client.getToken(communicationUser, scopes, tokenExpiresAfter);
+        } catch (ArithmeticException exception) {
+            assertNotNull(exception.getMessage());
+            assertTrue(exception.getMessage().equals(OVERFLOW_MESSAGE));
             return;
         }
         fail("An exception should have been thrown.");

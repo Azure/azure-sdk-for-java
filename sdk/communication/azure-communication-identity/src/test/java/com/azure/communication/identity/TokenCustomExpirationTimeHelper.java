@@ -14,9 +14,9 @@ public class TokenCustomExpirationTimeHelper {
 
     static Stream<Arguments> getValidExpirationTimes() {
         List<Arguments> argumentsList = new ArrayList<>();
-        argumentsList.add(Arguments.of("MinValidCustomExpiration", Duration.ofMinutes(60)));
-        argumentsList.add(Arguments.of("MaxValidCustomExpiration", Duration.ofMinutes(1440)));
-
+        argumentsList.add(Arguments.of("MinValidCustomExpiration", Duration.ofHours(1)));
+        argumentsList.add(Arguments.of("MaxValidCustomExpiration", Duration.ofHours(24)));
+        argumentsList.add(Arguments.of("NullExpiration", null));
         return argumentsList.stream();
     }
 

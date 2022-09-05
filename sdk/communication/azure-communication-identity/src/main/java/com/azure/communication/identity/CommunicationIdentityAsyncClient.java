@@ -61,6 +61,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 @ServiceClient(builder = CommunicationIdentityClientBuilder.class, isAsync = true)
 public final class CommunicationIdentityAsyncClient {
 
+    private static final String OVERFLOW_MESSAGE = "The tokenExpiresAfter argument is out of permitted bounds. Please refer to the documentation and set the value accordingly.";
     private final CommunicationIdentitiesImpl client;
     private final ClientLogger logger = new ClientLogger(CommunicationIdentityAsyncClient.class);
 
@@ -114,8 +115,8 @@ public final class CommunicationIdentityAsyncClient {
      * Creates a new CommunicationUserIdentifier with token.
      *
      * @param scopes The list of scopes for the token.
-     * @param tokenExpiresAfter Custom validity period of the Communication Identity access token within &lt;60,1440&gt;
-     * minutes range. If not provided, the default value of 1440 minutes (24 hours) will be used.
+     * @param tokenExpiresAfter Custom validity period of the Communication Identity access token within [1,24]
+     * hours range. If not provided, the default value of 24 hours will be used.
      * @return The created communication user and token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -139,7 +140,14 @@ public final class CommunicationIdentityAsyncClient {
                     (CommunicationIdentityAccessTokenResult result) -> {
                         return Mono.just(userWithAccessTokenResultConverter(result));
                     });
-        } catch (RuntimeException ex) {
+        }
+        catch (ArithmeticException ex)
+        {
+            ArithmeticException overflowEx = new ArithmeticException(OVERFLOW_MESSAGE);
+            overflowEx.initCause(ex);
+            return monoError(logger, overflowEx);
+        }
+        catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -165,8 +173,8 @@ public final class CommunicationIdentityAsyncClient {
      * Creates a new CommunicationUserIdentifier with token with response.
      *
      * @param scopes The list of scopes for the token.
-     * @param tokenExpiresAfter Custom validity period of the Communication Identity access token within &lt;60,1440&gt;
-     * minutes range. If not provided, the default value of 1440 minutes (24 hours) will be used.
+     * @param tokenExpiresAfter Custom validity period of the Communication Identity access token within [1,24]
+     * hours range. If not provided, the default value of 24 hours will be used.
      * @return The result with created communication user and token with response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -191,7 +199,14 @@ public final class CommunicationIdentityAsyncClient {
                         return Mono.just(new SimpleResponse<CommunicationUserIdentifierAndToken>(response,
                             userWithAccessTokenResultConverter(response.getValue())));
                     });
-        } catch (RuntimeException ex) {
+        }
+        catch (ArithmeticException ex)
+        {
+            ArithmeticException overflowEx = new ArithmeticException(OVERFLOW_MESSAGE);
+            overflowEx.initCause(ex);
+            return monoError(logger, overflowEx);
+        }
+        catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -289,8 +304,8 @@ public final class CommunicationIdentityAsyncClient {
      * @param communicationUser A {@link CommunicationUserIdentifier} from whom to issue a Communication Identity
      * access token.
      * @param scopes List of {@link CommunicationTokenScope} scopes for the Communication Identity access token.
-     * @param tokenExpiresAfter Custom validity period of the Communication Identity access token within &lt;60,1440&gt;
-     * minutes range. If not provided, the default value of 1440 minutes (24 hours) will be used.
+     * @param tokenExpiresAfter Custom validity period of the Communication Identity access token within [1,24]
+     * hours range. If not provided, the default value of 24 hours will be used.
      * @return the Communication Identity access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -316,7 +331,14 @@ public final class CommunicationIdentityAsyncClient {
                 .flatMap((CommunicationIdentityAccessToken rawToken) -> {
                     return Mono.just(new AccessToken(rawToken.getToken(), rawToken.getExpiresOn()));
                 });
-        } catch (RuntimeException ex) {
+        }
+        catch (ArithmeticException ex)
+        {
+            ArithmeticException overflowEx = new ArithmeticException(OVERFLOW_MESSAGE);
+            overflowEx.initCause(ex);
+            return monoError(logger, overflowEx);
+        }
+        catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -347,8 +369,8 @@ public final class CommunicationIdentityAsyncClient {
      * @param communicationUser A {@link CommunicationUserIdentifier} from whom to issue a Communication Identity
      * access token.
      * @param scopes List of {@link CommunicationTokenScope} scopes for the Communication Identity access token.
-     * @param tokenExpiresAfter Custom validity period of the Communication Identity access token within &lt;60,1440&gt;
-     * minutes range. If not provided, the default value of 1440 minutes (24 hours) will be used.
+     * @param tokenExpiresAfter Custom validity period of the Communication Identity access token within [1,24]
+     * hours range. If not provided, the default value of 24 hours will be used.
      * @return the Communication Identity access token with response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -375,7 +397,14 @@ public final class CommunicationIdentityAsyncClient {
                     AccessToken token = new AccessToken(response.getValue().getToken(), response.getValue().getExpiresOn());
                     return Mono.just(new SimpleResponse<AccessToken>(response, token));
                 });
-        } catch (RuntimeException ex) {
+        }
+        catch (ArithmeticException ex)
+        {
+            ArithmeticException overflowEx = new ArithmeticException(OVERFLOW_MESSAGE);
+            overflowEx.initCause(ex);
+            return monoError(logger, overflowEx);
+        }
+        catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }

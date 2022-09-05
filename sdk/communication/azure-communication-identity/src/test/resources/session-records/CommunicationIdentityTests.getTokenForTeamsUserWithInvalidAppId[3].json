@@ -3,8 +3,8 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.ppe.communication.azure.net/teamsUser/:exchangeAccessToken?api-version=2022-10-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-identity/1.4.0-beta.1 (17.0.2; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "4845802d-57c9-4973-a36b-7a2fbe39b467",
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.4.0 (17.0.2; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "189b9da3-6f38-4549-85ea-a3678905f19e",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -13,13 +13,13 @@
       "api-supported-versions" : "2021-10-31-preview, 2022-06-01, 2022-10-01",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "Date" : "Thu, 01 Sep 2022 15:47:02 GMT",
+      "Date" : "Mon, 05 Sep 2022 16:23:31 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
-      "X-Processing-Time" : "37ms",
-      "MS-CV" : "euOLG9+Er0GkRBuHqf8nBg.0",
-      "X-Azure-Ref" : "09tMQYwAAAABnsOYix9HTQ46n6ECAyHR9UFJHMDFFREdFMDkxNABmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
+      "X-Processing-Time" : "54ms",
+      "MS-CV" : "rZ4sGU4QOEOW72jpt1cbQA.0",
+      "X-Azure-Ref" : "0gyIWYwAAAACn+EX6ljRQRI2ZePTB3PdNUFJHMDFFREdFMDkyMABmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
       "Body" : "{\"error\":{\"code\":\"ValidationError\",\"message\":\"AAD application is not the expected one.\",\"target\":\"appId\"}}",
-      "x-ms-client-request-id" : "4845802d-57c9-4973-a36b-7a2fbe39b467",
+      "x-ms-client-request-id" : "189b9da3-6f38-4549-85ea-a3678905f19e",
       "Content-Type" : "application/json",
       "Request-Context" : "appId="
     },
