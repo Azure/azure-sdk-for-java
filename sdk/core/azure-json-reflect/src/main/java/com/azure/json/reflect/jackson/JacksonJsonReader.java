@@ -30,7 +30,6 @@ public class JacksonJsonReader extends JsonReader {
 	private static final MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
 	private static Object jsonFactory;
 	private static Class<?> jacksonTokenEnum = null;
-	
 	private final Object jacksonParser;
 	
     public JacksonJsonReader(Reader reader) {
@@ -55,11 +54,13 @@ public class JacksonJsonReader extends JsonReader {
 			// The jacksonJsonParser is the equivalent of the Gson JsonReader
 			Class<?> jacksonJsonParser = Class.forName("com.fasterxml.jackson.core.JsonParser");
 			
+			// Initializing the factory
 			MethodHandle jsonFactoryConstructor = publicLookup.findConstructor(jacksonJsonFactory, methodType(void.class));
 			createParseMethod = publicLookup.findVirtual(jacksonJsonFactory, "createParser", methodType(jacksonJsonParser, Reader.class));
 			jsonFactory = jsonFactoryConstructor.invoke();
 			
 			jacksonTokenEnum =  Class.forName("com.fasterxml.jackson.core.JsonToken");
+			// Initializing all the method handles.
 			parserCurrentToken = publicLookup.findVirtual(jacksonJsonParser, "currentToken", methodType(jacksonTokenEnum));
 			parserGetBoolean = publicLookup.findVirtual(jacksonJsonParser, "getBooleanValue", methodType(boolean.class));
 			parserGetFloatValue = publicLookup.findVirtual(jacksonJsonParser, "getFloatValue", methodType(float.class));
@@ -72,9 +73,11 @@ public class JacksonJsonReader extends JsonReader {
 	    	parserGetCurrentName = publicLookup.findVirtual(jacksonJsonParser, "getCurrentName", methodType(String.class));
 			parserSkipChildren = publicLookup.findVirtual(jacksonJsonParser, "skipChildren", methodType(jacksonJsonParser));
 	    	parserClose = publicLookup.findVirtual(jacksonJsonParser, "close", methodType(void.class));
+	    	// exceptions thrown by forName and findVirtual. 
     	} catch (NoSuchMethodException | IllegalAccessException | ClassNotFoundException e) {
     		throw new IllegalStateException("Incorrect library present.");
     	} catch (Throwable e) {
+    		// ioException is thrown by invoke
     		if (e instanceof IOException ioException) {
     			throw new UncheckedIOException (ioException);
     		} else {
@@ -89,8 +92,8 @@ public class JacksonJsonReader extends JsonReader {
         try {
 			return mapToken((Enum<?>) parserCurrentToken.invoke(jacksonParser));
 		} catch (Throwable e) {
-			if (e instanceof IOException) {
-                throw new UncheckedIOException((IOException) e);
+			if (e instanceof IOException ioException) {
+                throw new UncheckedIOException(ioException);
             } else {
                 throw new RuntimeException(e);
             }
@@ -102,8 +105,8 @@ public class JacksonJsonReader extends JsonReader {
     	try {
 			return mapToken((Enum<?>) parserNextToken.invoke(jacksonParser));
 		} catch (Throwable e) {
-			if (e instanceof IOException) {
-				throw new UncheckedIOException ((IOException) e);
+			if (e instanceof IOException ioException) {
+                throw new UncheckedIOException(ioException);
 			} else {
 				throw new RuntimeException(e);
 			}
@@ -119,8 +122,8 @@ public class JacksonJsonReader extends JsonReader {
     		}
 			return (byte[]) parserGetBinaryValue.invoke(jacksonParser);
 		} catch (Throwable e) {
-			if (e instanceof IOException) {
-				throw new UncheckedIOException ((IOException) e);
+			if (e instanceof IOException ioException) {
+                throw new UncheckedIOException(ioException);
 			} else {
 				throw new RuntimeException(e);
 			}
@@ -132,8 +135,8 @@ public class JacksonJsonReader extends JsonReader {
         try {
 			return (boolean) parserGetBoolean.invoke(jacksonParser);
 		} catch (Throwable e) {
-			if (e instanceof IOException) {
-                throw new UncheckedIOException((IOException) e);
+			if (e instanceof IOException ioException) {
+                throw new UncheckedIOException(ioException);
             } else {
                 throw new RuntimeException(e);
             }
@@ -145,8 +148,8 @@ public class JacksonJsonReader extends JsonReader {
         try {
 			return (float) parserGetFloatValue.invoke(jacksonParser);
 		} catch (Throwable e) {
-			if (e instanceof IOException) {
-				throw new UncheckedIOException ((IOException) e);
+			if (e instanceof IOException ioException) {
+                throw new UncheckedIOException(ioException);
 			} else {
 				throw new RuntimeException(e);
 			}
@@ -158,8 +161,8 @@ public class JacksonJsonReader extends JsonReader {
     	try {
 			return (double) parserGetDoubleValue.invoke(jacksonParser);
 		} catch (Throwable e) {
-			if (e instanceof IOException) {
-				throw new UncheckedIOException ((IOException) e);
+			if (e instanceof IOException ioException) {
+                throw new UncheckedIOException(ioException);
 			} else {
 				throw new RuntimeException(e);
 			}
@@ -171,8 +174,8 @@ public class JacksonJsonReader extends JsonReader {
     	try {
 			return (int) parserGetIntValue.invoke(jacksonParser);
 		} catch (Throwable e) {
-			if (e instanceof IOException) {
-				throw new UncheckedIOException ((IOException) e);
+			if (e instanceof IOException ioException) {
+                throw new UncheckedIOException(ioException);
 			} else {
 				throw new RuntimeException(e);
 			}
@@ -184,8 +187,8 @@ public class JacksonJsonReader extends JsonReader {
     	try {
 			return (long) parserGetLongValue.invoke(jacksonParser);
 		} catch (Throwable e) {
-			if (e instanceof IOException) {
-				throw new UncheckedIOException ((IOException) e);
+			if (e instanceof IOException ioException) {
+                throw new UncheckedIOException(ioException);
 			} else {
 				throw new RuntimeException(e);
 			}
@@ -197,8 +200,8 @@ public class JacksonJsonReader extends JsonReader {
         try {
         	return (String) parserGetValueAsString.invoke(jacksonParser);
         } catch (Throwable e) {
-        	if (e instanceof IOException) {
-        		throw new UncheckedIOException ((IOException) e);
+        	if (e instanceof IOException ioException) {
+                throw new UncheckedIOException(ioException);
         	} else {
         		throw new RuntimeException(e);
         	}
@@ -210,8 +213,8 @@ public class JacksonJsonReader extends JsonReader {
     	try {
         	return (String) parserGetCurrentName.invoke(jacksonParser);
         } catch (Throwable e) {
-        	if (e instanceof IOException) {
-        		throw new UncheckedIOException ((IOException) e);
+        	if (e instanceof IOException ioException) {
+                throw new UncheckedIOException(ioException);
         	} else {
         		throw new RuntimeException(e);
         	}
@@ -223,8 +226,8 @@ public class JacksonJsonReader extends JsonReader {
     	try {
         	parserSkipChildren.invoke(jacksonParser);
         } catch (Throwable e) {
-        	if (e instanceof IOException) {
-        		throw new UncheckedIOException ((IOException) e);
+        	if (e instanceof IOException ioException) {
+                throw new UncheckedIOException(ioException);
         	} else {
         		throw new RuntimeException(e);
         	}
@@ -248,7 +251,7 @@ public class JacksonJsonReader extends JsonReader {
     		boolean needsComa = false;
     		while (token != JsonToken.END_OBJECT) {
     			// Appending commas happens in the subsequent loop run to prevent the case 
-    			// of appending commas before the end of the object, e.g. {"fieldName":true,}
+    			// of appending commas before the end of the object, e.g. {"fieldName":true,} //NOSONAR
     			if (needsComa) {
     				bufferedObject.append(",");
     			}
@@ -270,7 +273,7 @@ public class JacksonJsonReader extends JsonReader {
     					// All other value types use text value.
     					bufferedObject.append(getText());
     				}
-    				// commas should happen after a field value.
+    				// Commas should happen after a field value.
     				needsComa = true;
     			}
     			token = nextToken();
@@ -299,8 +302,8 @@ public class JacksonJsonReader extends JsonReader {
     	try {
     		parserClose.invoke(jacksonParser);
         } catch (Throwable e) {
-        	if (e instanceof IOException) {
-        		throw new UncheckedIOException ((IOException) e);
+        	if (e instanceof IOException ioException) {
+        		throw new UncheckedIOException (ioException);
         	} else {
         		throw new RuntimeException(e);
         	}
@@ -320,6 +323,11 @@ public class JacksonJsonReader extends JsonReader {
     		throw new IllegalStateException("Unsupported enum, pass a Jackson JsonToken");
     	}
     	
+    	// Jackson has tokens which are not directly supported by JsonReader.
+    	// However, this mapping seems to work.
+    	// The following are Jackson tokens, but not JsonReader tokens.
+    	// NOT_AVAILABLE, VALUE_NUMBER_FLOAT, VALUE_NUMBER_INT, 
+    	// VALUE_TRUE
     	return switch(token.name()) {
     		case "END_ARRAY" -> JsonToken.END_ARRAY;
     		case "END_OBJECT" -> JsonToken.END_OBJECT;
