@@ -70,7 +70,7 @@ val query = s"select * from cosmosCatalog.${cosmosDatabaseName}.${cosmosContaine
 val dfBeforePatch = spark.sql(query)
 println("document before patch operation")
 dfBeforePatch.show()
-val df = dfBeforePatch.withColumn("directReports", lit("1"))
+val df = dfBeforePatch.withColumn("directReports", lit(1))
 df.write.format("cosmos.oltp").mode("Append").options(cfgPatch).save()
 val dfAfterPatch = spark.sql(query)
 println("document after patch operation")
