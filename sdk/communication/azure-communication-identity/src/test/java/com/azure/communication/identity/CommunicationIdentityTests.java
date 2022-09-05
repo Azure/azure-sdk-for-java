@@ -137,7 +137,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         // Action & Assert
         try {
             client.createUserAndToken(scopes, tokenExpiresAfter);
-        } catch (ArithmeticException exception) {
+        } catch (RuntimeException exception) {
             assertNotNull(exception.getMessage());
             assertTrue(exception.getMessage().equals(OVERFLOW_MESSAGE));
             return;
@@ -311,7 +311,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         // Action & Assert
         try {
             client.getToken(communicationUser, scopes, tokenExpiresAfter);
-        } catch (ArithmeticException exception) {
+        } catch (RuntimeException exception) {
             assertNotNull(exception.getMessage());
             assertTrue(exception.getMessage().equals(OVERFLOW_MESSAGE));
             return;

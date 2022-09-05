@@ -116,8 +116,7 @@ public final class CommunicationIdentityClient {
             try {
                 expiresInMinutes = Math.toIntExact(tokenExpiresAfter.toMinutes());
             } catch (ArithmeticException ex) {
-                ArithmeticException overflowEx = new ArithmeticException(OVERFLOW_MESSAGE);
-                overflowEx.initCause(ex);
+                RuntimeException overflowEx = new RuntimeException(OVERFLOW_MESSAGE, ex);
                 throw logger.logExceptionAsError(overflowEx);
             }
 
@@ -165,8 +164,7 @@ public final class CommunicationIdentityClient {
             try {
                 expiresInMinutes = Math.toIntExact(tokenExpiresAfter.toMinutes());
             } catch (ArithmeticException ex) {
-                ArithmeticException overflowEx = new ArithmeticException(OVERFLOW_MESSAGE);
-                overflowEx.initCause(ex);
+                RuntimeException overflowEx = new RuntimeException(OVERFLOW_MESSAGE, ex);
                 throw logger.logExceptionAsError(overflowEx);
             }
 
@@ -279,8 +277,7 @@ public final class CommunicationIdentityClient {
             try {
                 expiresInMinutes = Math.toIntExact(tokenExpiresAfter.toMinutes());
             } catch (ArithmeticException ex) {
-                ArithmeticException overflowEx = new ArithmeticException(OVERFLOW_MESSAGE);
-                overflowEx.initCause(ex);
+                RuntimeException overflowEx = new RuntimeException(OVERFLOW_MESSAGE, ex);
                 throw logger.logExceptionAsError(overflowEx);
             }
 
@@ -339,8 +336,7 @@ public final class CommunicationIdentityClient {
             try {
                 expiresInMinutes = Math.toIntExact(tokenExpiresAfter.toMinutes());
             } catch (ArithmeticException ex) {
-                ArithmeticException overflowEx = new ArithmeticException(OVERFLOW_MESSAGE);
-                overflowEx.initCause(ex);
+                RuntimeException overflowEx = new RuntimeException(OVERFLOW_MESSAGE, ex);
                 throw logger.logExceptionAsError(overflowEx);
             }
 
