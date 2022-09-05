@@ -15,7 +15,6 @@ import static java.lang.invoke.MethodType.methodType;
 public class JacksonJsonReader extends JsonReader {
 	private static boolean initialized = false;
 	private static MethodHandle createParseMethod;
-	private static MethodHandle jsonFactoryConstructor;
 	private static MethodHandle parserCurrentToken;
 	private static MethodHandle parserGetBoolean;
 	private static MethodHandle parserGetFloatValue;
@@ -36,11 +35,7 @@ public class JacksonJsonReader extends JsonReader {
 	
     public JacksonJsonReader(Reader reader) {
     	if (!initialized) {
-    		try {
-				initializeMethodHandles();
-			} catch (ReflectiveOperationException e) {
-				e.printStackTrace();
-			}
+			initializeMethodHandles();
     	}
     	try {
     		jacksonParser = createParseMethod.invoke(jsonFactory, reader);
@@ -53,38 +48,40 @@ public class JacksonJsonReader extends JsonReader {
     	}
     }
     
-    private static void initializeMethodHandles() throws ReflectiveOperationException{
-		// The jacksonJsonParser is made via the JsonFactory
-		Class<?> jacksonJsonFactory = Class.forName("com.fasterxml.jackson.core.JsonFactory");
-		// The jacksonJsonParser is the equivalent of the Gson JsonReader
-		Class<?> jacksonJsonParser = Class.forName("com.fasterxml.jackson.core.JsonParser");
-		
-		jsonFactoryConstructor = publicLookup.findConstructor(jacksonJsonFactory, methodType(void.class));
-		createParseMethod = publicLookup.findVirtual(jacksonJsonFactory, "createParser", methodType(jacksonJsonParser, Reader.class));
-		try {
+    private static void initializeMethodHandles() {
+    	try {
+			// The jacksonJsonParser is made via the JsonFactory
+			Class<?> jacksonJsonFactory = Class.forName("com.fasterxml.jackson.core.JsonFactory");
+			// The jacksonJsonParser is the equivalent of the Gson JsonReader
+			Class<?> jacksonJsonParser = Class.forName("com.fasterxml.jackson.core.JsonParser");
+			
+			MethodHandle jsonFactoryConstructor = publicLookup.findConstructor(jacksonJsonFactory, methodType(void.class));
+			createParseMethod = publicLookup.findVirtual(jacksonJsonFactory, "createParser", methodType(jacksonJsonParser, Reader.class));
 			jsonFactory = jsonFactoryConstructor.invoke();
-		} catch (Throwable e) {
-			if (e instanceof IOException) {
-                throw new UncheckedIOException((IOException) e);
-            } else {
-                throw new RuntimeException(e);
-            }
-		}
-		
-		jacksonTokenEnum =  Class.forName("com.fasterxml.jackson.core.JsonToken");
-		parserCurrentToken = publicLookup.findVirtual(jacksonJsonParser, "currentToken", methodType(jacksonTokenEnum));
-		parserGetBoolean = publicLookup.findVirtual(jacksonJsonParser, "getBooleanValue", methodType(boolean.class));
-		parserGetFloatValue = publicLookup.findVirtual(jacksonJsonParser, "getFloatValue", methodType(float.class));
-    	parserGetDoubleValue = publicLookup.findVirtual(jacksonJsonParser, "getDoubleValue", methodType(double.class));
-		parserGetIntValue = publicLookup.findVirtual(jacksonJsonParser, "getIntValue", methodType(int.class));
-    	parserGetLongValue = publicLookup.findVirtual(jacksonJsonParser, "getLongValue", methodType(long.class));
-		parserGetBinaryValue = publicLookup.findVirtual(jacksonJsonParser, "getBinaryValue", methodType(byte[].class));
-    	parserNextToken = publicLookup.findVirtual(jacksonJsonParser, "nextToken", methodType(jacksonTokenEnum));
-		parserGetValueAsString = publicLookup.findVirtual(jacksonJsonParser, "getValueAsString", methodType(String.class));
-    	parserGetCurrentName = publicLookup.findVirtual(jacksonJsonParser, "getCurrentName", methodType(String.class));
-		parserSkipChildren = publicLookup.findVirtual(jacksonJsonParser, "skipChildren", methodType(jacksonJsonParser));
-    	parserClose = publicLookup.findVirtual(jacksonJsonParser, "close", methodType(void.class));
-		initialized = true;	
+			
+			jacksonTokenEnum =  Class.forName("com.fasterxml.jackson.core.JsonToken");
+			parserCurrentToken = publicLookup.findVirtual(jacksonJsonParser, "currentToken", methodType(jacksonTokenEnum));
+			parserGetBoolean = publicLookup.findVirtual(jacksonJsonParser, "getBooleanValue", methodType(boolean.class));
+			parserGetFloatValue = publicLookup.findVirtual(jacksonJsonParser, "getFloatValue", methodType(float.class));
+	    	parserGetDoubleValue = publicLookup.findVirtual(jacksonJsonParser, "getDoubleValue", methodType(double.class));
+			parserGetIntValue = publicLookup.findVirtual(jacksonJsonParser, "getIntValue", methodType(int.class));
+	    	parserGetLongValue = publicLookup.findVirtual(jacksonJsonParser, "getLongValue", methodType(long.class));
+			parserGetBinaryValue = publicLookup.findVirtual(jacksonJsonParser, "getBinaryValue", methodType(byte[].class));
+	    	parserNextToken = publicLookup.findVirtual(jacksonJsonParser, "nextToken", methodType(jacksonTokenEnum));
+			parserGetValueAsString = publicLookup.findVirtual(jacksonJsonParser, "getValueAsString", methodType(String.class));
+	    	parserGetCurrentName = publicLookup.findVirtual(jacksonJsonParser, "getCurrentName", methodType(String.class));
+			parserSkipChildren = publicLookup.findVirtual(jacksonJsonParser, "skipChildren", methodType(jacksonJsonParser));
+	    	parserClose = publicLookup.findVirtual(jacksonJsonParser, "close", methodType(void.class));
+    	} catch (NoSuchMethodException | IllegalAccessException | ClassNotFoundException e) {
+    		throw new IllegalStateException("Incorrect library present.");
+    	} catch (Throwable e) {
+    		if (e instanceof IOException ioException) {
+    			throw new UncheckedIOException (ioException);
+    		} else {
+    			throw new RuntimeException(e);
+    		}
+    	}
+	    initialized = true;	
     }
 
     @Override
