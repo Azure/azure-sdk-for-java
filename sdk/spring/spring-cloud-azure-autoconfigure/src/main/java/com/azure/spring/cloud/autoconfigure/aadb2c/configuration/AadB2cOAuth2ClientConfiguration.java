@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aadb2c.configuration;
 
+import com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestOperationConfiguration;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cClientRegistrationRepository;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cConditions;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cUrl;
@@ -16,7 +17,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.oauth2.client.ClientCredentialsOAuth2AuthorizedClientProvider;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProvider;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProviderBuilder;
+import org.springframework.security.oauth2.client.PasswordOAuth2AuthorizedClientProvider;
+import org.springframework.security.oauth2.client.RefreshTokenOAuth2AuthorizedClientProvider;
+import org.springframework.security.oauth2.client.endpoint.DefaultClientCredentialsTokenResponseClient;
+import org.springframework.security.oauth2.client.endpoint.DefaultPasswordTokenResponseClient;
+import org.springframework.security.oauth2.client.endpoint.DefaultRefreshTokenTokenResponseClient;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedClientManager;
@@ -24,11 +33,12 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepo
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
+import org.springframework.web.client.RestOperations;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Configuration for AAD B2C OAuth2 client support, when depends on the Spring OAuth2 Client module.
@@ -36,7 +46,7 @@ import java.util.stream.Collectors;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(value = "spring.cloud.azure.active-directory.b2c.enabled", havingValue = "true")
 @Conditional(AadB2cConditions.ClientRegistrationCondition.class)
-@Import(AadB2cPropertiesConfiguration.class)
+@Import({AadB2cPropertiesConfiguration.class, AadRestOperationConfiguration.class})
 @ConditionalOnClass({ OAuth2LoginAuthenticationFilter.class })
 public class AadB2cOAuth2ClientConfiguration {
 
@@ -59,17 +69,18 @@ public class AadB2cOAuth2ClientConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public ClientRegistrationRepository clientRegistrationRepository() {
-        final List<ClientRegistration> clientRegistrations = new ArrayList<>();
-        clientRegistrations.addAll(properties.getUserFlows()
-                  .entrySet()
-                  .stream()
-                  .map(this::buildUserFlowClientRegistration)
-                  .collect(Collectors.toList()));
-        clientRegistrations.addAll(properties.getAuthorizationClients()
-                                             .entrySet()
-                                             .stream()
-                                             .map(this::buildClientRegistration)
-                                             .collect(Collectors.toList()));
+        Stream<ClientRegistration> clientRegistrationStream = properties.getUserFlows()
+                                                                        .entrySet()
+                                                                        .stream()
+                                                                        .map(this::buildUserFlowClientRegistration);
+
+        Stream<ClientRegistration> authorizationClientRegistrations = properties.getAuthorizationClients()
+                                                                                .entrySet()
+                                                                                .stream()
+                                                                                .map(this::buildClientRegistration);
+        final List<ClientRegistration> clientRegistrations = Stream.concat(clientRegistrationStream,
+                                                                       authorizationClientRegistrations)
+                                                                   .collect(Collectors.toList());
         return new AadB2cClientRegistrationRepository(properties.getLoginFlow(), clientRegistrations);
     }
 
@@ -120,14 +131,49 @@ public class AadB2cOAuth2ClientConfiguration {
     /**
      * Declare OAuth2AuthorizedClientManager bean.
      *
+     * @param aadAuthRestOperations the RestOperation used to connect Azure AD
      * @param clients the client registration repository
      * @param authorizedClients the OAuth2 authorized client repository
      * @return OAuth2AuthorizedClientManager bean
      */
     @Bean
     @ConditionalOnMissingBean
-    public OAuth2AuthorizedClientManager authorizedClientManager(ClientRegistrationRepository clients,
-                                                         OAuth2AuthorizedClientRepository authorizedClients) {
-        return new DefaultOAuth2AuthorizedClientManager(clients, authorizedClients);
+    public OAuth2AuthorizedClientManager authorizedClientManager(
+            RestOperations aadAuthRestOperations,
+            ClientRegistrationRepository clients,
+            OAuth2AuthorizedClientRepository authorizedClients) {
+        OAuth2AuthorizedClientProvider authorizedClientProvider = OAuth2AuthorizedClientProviderBuilder.builder()
+                .authorizationCode()
+                .provider(azureRefreshTokenProvider(aadAuthRestOperations))
+                .provider(azureClientCredentialProvider(aadAuthRestOperations))
+                .provider(azurePasswordProvider(aadAuthRestOperations))
+                .build();
+        DefaultOAuth2AuthorizedClientManager manager = new DefaultOAuth2AuthorizedClientManager(clients, authorizedClients);
+        manager.setAuthorizedClientProvider(authorizedClientProvider);
+        return manager;
+    }
+
+    private RefreshTokenOAuth2AuthorizedClientProvider azureRefreshTokenProvider(RestOperations aadAuthRestOperations) {
+        RefreshTokenOAuth2AuthorizedClientProvider provider = new RefreshTokenOAuth2AuthorizedClientProvider();
+        DefaultRefreshTokenTokenResponseClient responseClient = new DefaultRefreshTokenTokenResponseClient();
+        responseClient.setRestOperations(aadAuthRestOperations);
+        provider.setAccessTokenResponseClient(responseClient);
+        return provider;
+    }
+
+    private ClientCredentialsOAuth2AuthorizedClientProvider azureClientCredentialProvider(RestOperations aadAuthRestOperations) {
+        ClientCredentialsOAuth2AuthorizedClientProvider provider = new ClientCredentialsOAuth2AuthorizedClientProvider();
+        DefaultClientCredentialsTokenResponseClient responseClient = new DefaultClientCredentialsTokenResponseClient();
+        responseClient.setRestOperations(aadAuthRestOperations);
+        provider.setAccessTokenResponseClient(responseClient);
+        return provider;
+    }
+
+    private PasswordOAuth2AuthorizedClientProvider azurePasswordProvider(RestOperations aadAuthRestOperations) {
+        PasswordOAuth2AuthorizedClientProvider provider = new PasswordOAuth2AuthorizedClientProvider();
+        DefaultPasswordTokenResponseClient responseClient = new DefaultPasswordTokenResponseClient();
+        responseClient.setRestOperations(aadAuthRestOperations);
+        provider.setAccessTokenResponseClient(responseClient);
+        return provider;
     }
 }
