@@ -13,6 +13,7 @@ import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.rest.Response;
 
+import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -129,6 +130,43 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             });
     }
 
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("com.azure.communication.identity.TokenCustomExpirationTimeHelper#getValidExpirationTimes")
+    public void createUserAndTokenWithResponseWithValidCustomExpiration(String testName, Duration tokenExpiresAfter) {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        asyncClient = setupAsyncClient(builder, "createUserAndTokenWithResponseWithValidCustomExpiration" + testName);
+        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+
+        // Action & Assert
+        Mono<Response<CommunicationUserIdentifierAndToken>> createUserAndToken =
+            asyncClient.createUserAndTokenWithResponse(scopes, tokenExpiresAfter);
+        StepVerifier.create(createUserAndToken)
+            .assertNext(result -> {
+                assertEquals(201, result.getStatusCode());
+                assertNotNull(result.getValue().getUserToken());
+                assertNotNull(result.getValue().getUser());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("com.azure.communication.identity.TokenCustomExpirationTimeHelper#getInvalidExpirationTimes")
+    public void createUserAndTokenWithResponseWithInvalidCustomExpiration(String testName, Duration tokenExpiresAfter) {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        asyncClient = setupAsyncClient(builder, "createUserAndTokenWithResponseWithInvalidCustomExpiration" + testName);
+        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+
+        // Action & Assert
+        Mono<Response<CommunicationUserIdentifierAndToken>> createUserAndToken = asyncClient.createUserAndTokenWithResponse(scopes, tokenExpiresAfter);
+        StepVerifier.create(createUserAndToken)
+            .verifyErrorSatisfies(throwable -> {
+                assertNotNull(throwable.getMessage());
+                assertTrue(throwable.getMessage().contains("400"));
+            });
+    }
+
     @Test
     public void createUserAndTokenWithOverflownCustomExpiration() {
         // Arrange
@@ -139,6 +177,24 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
         // Action & Assert
         Mono<CommunicationUserIdentifierAndToken> createUserAndToken = asyncClient.createUserAndToken(scopes, tokenExpiresAfter);
+        StepVerifier.create(createUserAndToken)
+            .verifyErrorSatisfies(throwable -> {
+                assertTrue(throwable instanceof ArithmeticException);
+                assertNotNull(throwable.getMessage());
+                assertTrue(throwable.getMessage().equals(OVERFLOW_MESSAGE));
+            });
+    }
+
+    @Test
+    public void createUserAndTokenWithResponseWithOverflownCustomExpiration() {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        asyncClient = setupAsyncClient(builder, "createUserAndTokenWithResponseWithOverflownCustomExpiration");
+        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+        Duration tokenExpiresAfter = Duration.ofDays(Integer.MAX_VALUE);
+
+        // Action & Assert
+        Mono<Response<CommunicationUserIdentifierAndToken>> createUserAndToken = asyncClient.createUserAndTokenWithResponse(scopes, tokenExpiresAfter);
         StepVerifier.create(createUserAndToken)
             .verifyErrorSatisfies(throwable -> {
                 assertTrue(throwable instanceof ArithmeticException);
@@ -368,6 +424,47 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             });
     }
 
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("com.azure.communication.identity.TokenCustomExpirationTimeHelper#getValidExpirationTimes")
+    public void getTokenWithResponseWithValidCustomExpiration(String testName, Duration tokenExpiresAfter) {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        asyncClient = setupAsyncClient(builder, "getTokenWithResponseWithValidCustomExpiration" + testName);
+
+        // Action & Assert
+        StepVerifier.create(
+                asyncClient.createUser()
+                    .flatMap(communicationUser -> {
+                        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+                        return asyncClient.getTokenWithResponse(communicationUser, scopes, tokenExpiresAfter);
+                    }))
+            .assertNext(issuedToken -> {
+                verifyTokenNotEmpty(issuedToken.getValue());
+                assertEquals(issuedToken.getStatusCode(), 200);
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("com.azure.communication.identity.TokenCustomExpirationTimeHelper#getInvalidExpirationTimes")
+    public void getTokenWithResponseWithInvalidCustomExpiration(String testName, Duration tokenExpiresAfter) {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        asyncClient = setupAsyncClient(builder, "getTokenWithResponseWithInvalidCustomExpiration" + testName);
+
+        // Action & Assert
+        StepVerifier.create(
+                asyncClient.createUser()
+                    .flatMap(communicationUser -> {
+                        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+                        return asyncClient.getTokenWithResponse(communicationUser, scopes, tokenExpiresAfter);
+                    }))
+            .verifyErrorSatisfies(throwable -> {
+                assertNotNull(throwable.getMessage());
+                assertTrue(throwable.getMessage().contains("400"));
+            });
+    }
+
     @Test
     public void getTokenWithOverflownCustomExpiration() {
         // Arrange
@@ -380,6 +477,26 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
                     .flatMap(communicationUser -> {
                         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
                         return asyncClient.getToken(communicationUser, scopes, tokenExpiresAfter);
+                    }))
+            .verifyErrorSatisfies(throwable -> {
+                assertTrue(throwable instanceof ArithmeticException);
+                assertNotNull(throwable.getMessage());
+                assertTrue(throwable.getMessage().equals(OVERFLOW_MESSAGE));
+            });
+    }
+
+    @Test
+    public void getTokenWithResponseWithOverflownCustomExpiration() {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        asyncClient = setupAsyncClient(builder, "getTokenWithResponseWithOverflownCustomExpiration");
+        Duration tokenExpiresAfter = Duration.ofDays(Integer.MAX_VALUE);
+        // Action & Assert
+        StepVerifier.create(
+                asyncClient.createUser()
+                    .flatMap(communicationUser -> {
+                        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+                        return asyncClient.getTokenWithResponse(communicationUser, scopes, tokenExpiresAfter);
                     }))
             .verifyErrorSatisfies(throwable -> {
                 assertTrue(throwable instanceof ArithmeticException);
