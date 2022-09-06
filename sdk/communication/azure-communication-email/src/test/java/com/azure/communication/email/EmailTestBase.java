@@ -85,6 +85,9 @@ public class EmailTestBase extends TestBase {
         getHttpClients()
             .forEach(httpClient -> argumentsList.add(Arguments.of(httpClient)));
 
+        System.out.println("Yogesh - getParameters");
+        System.out.println(argumentsList.get(0).get().toString());
+
         return argumentsList.stream();
     }
 }
