@@ -5,6 +5,7 @@
 ### Bugs Fixed
 
 - Supported delayed retry on 404 for eventual consistency, after creating AAD service principal.
+- Improved the delayed retry on 400 for service principal, when creating role assignment. Now the retry will continue for only about a minute.
 
 ## 2.18.0 (2022-08-26)
 
