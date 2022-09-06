@@ -132,7 +132,7 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
     }
 
     @Test
-    public void serviceClientCreateTableFailsWithIllegalArgumentExceptionIfTableNameInURI() {
+    public void serviceClientCreateTableFailsWithIllegalArgumentExceptionIfTableNameInUri() {
         // Arrange
         String assertionString = "Table name found within client endpoint URI. Remove table name from endpoint.";
         String tableName = testResourceNamer.randomName("test", 20);

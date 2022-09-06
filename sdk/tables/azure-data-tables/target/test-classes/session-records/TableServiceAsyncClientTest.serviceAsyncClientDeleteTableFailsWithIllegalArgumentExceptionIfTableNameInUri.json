@@ -1,0 +1,49 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.table.core.windows.net/test70298d339e/Tables('test70298d339e')",
+    "Headers" : {
+      "x-ms-version" : "2020-12-06",
+      "User-Agent" : "azsdk-java-azure-data-tables/12.4.0-beta.1 (11.0.16; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "8af465fa-7769-4aa2-a2b1-7bc8f8524b7c"
+    },
+    "Response" : {
+      "content-length" : "281",
+      "x-ms-version" : "2020-12-06",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "WWW-Authenticate" : "Bearer authorization_uri=https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/oauth2/authorize resource_id=https://storage.azure.com",
+      "x-ms-error-code" : "NoAuthenticationInformation",
+      "retry-after" : "0",
+      "StatusCode" : "401",
+      "x-ms-request-id" : "8e784425-b002-007f-521e-c28a9c000000",
+      "Body" : "{\"odata.error\":{\"code\":\"NoAuthenticationInformation\",\"message\":{\"lang\":\"en-US\",\"value\":\"Server failed to authenticate the request. Please refer to the information in the www-authenticate header.\\nRequestId:8e784425-b002-007f-521e-c28a9c000000\\nTime:2022-09-06T18:26:07.2663185Z\"}}}",
+      "x-ms-client-request-id" : "8af465fa-7769-4aa2-a2b1-7bc8f8524b7c",
+      "Date" : "Tue, 06 Sep 2022 18:26:07 GMT",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.table.core.windows.net/test70298d339e/Tables('test70298d339e')",
+    "Headers" : {
+      "x-ms-version" : "2020-12-06",
+      "User-Agent" : "azsdk-java-azure-data-tables/12.4.0-beta.1 (11.0.16; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "8af465fa-7769-4aa2-a2b1-7bc8f8524b7c"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-12-06",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "8e7844a1-b002-007f-451e-c28a9c000000",
+      "Body" : "{\"odata.error\":{\"code\":\"TableNotFound\",\"message\":{\"lang\":\"en-US\",\"value\":\"The table specified does not exist.\\nRequestId:8e7844a1-b002-007f-451e-c28a9c000000\\nTime:2022-09-06T18:26:07.8539433Z\"}}}",
+      "x-ms-client-request-id" : "8af465fa-7769-4aa2-a2b1-7bc8f8524b7c",
+      "Date" : "Tue, 06 Sep 2022 18:26:07 GMT",
+      "Content-Type" : "application/json;odata=minimalmetadata;streaming=true;charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "test70298d339e", "176e247f-fd87-4fee-af7c-be31dbab4606" ]
+}
