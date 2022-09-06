@@ -103,23 +103,22 @@ class AzureFileSystemConfigTest extends Specification {
         def skipCheck = true
         def configSource = new TestConfigurationSource()
         [
-            (Constants.NioConstants.ENVIRONMENT_DEFAULT_BLOB_ENDPOINT)          : endpoint,
-            (Constants.NioConstants.ENVIRONMENT_DEFAULT_ACCOUNT_NAME)           : accountName,
-            (Constants.NioConstants.ENVIRONMENT_DEFAULT_ACCOUNT_KEY)            : accountKey,
-            (Constants.NioConstants.ENVIRONMENT_DEFAULT_SAS_TOKEN)              : sasToken,
-            // todo put keys in constants somewhere
-            ("AZURE_STORAGE_RETRY_TYPE")                                        : retryType,
-            ("AZURE_STORAGE_MAX_RETRIES")                                       : maxRetries,
-            ("AZURE_STORAGE_REQUEST_TIMEOUT_SECONDS")                           : timeout,
-            ("AZURE_STORAGE_RETRY_DELAY_MS")                                    : retryDelay,
-            ("AZURE_STORAGE_MAX_RETRY_DELAY_MS")                                : maxRetryDelay,
-            (Constants.NioConstants.ENVIRONMENT_DEFAULT_BLOB_ENDPOINT_SECONDARY): secondaryEndpoint,
-            (Constants.NioConstants.ENVIRONMENT_DEFAULT_BLOCK_SIZE)             : blockSize,
-            (Constants.NioConstants.ENVIRONMENT_DEFAULT_PUT_BLOB_THRESHOLD)     : putBlob,
-            (Constants.NioConstants.ENVIRONMENT_DEFAULT_PER_REQUEST_CONCURRENCY): concurrency,
-            (Constants.NioConstants.ENVIRONMENT_DEFAULT_RESUME_RETRIES)         : resume,
-            (Constants.NioConstants.ENVIRONMENT_DEFAULT_FILE_STORES)            : fileStores,
-            (Constants.NioConstants.ENVIRONMENT_DEFAULT_SKIP_CONTAINER_CHECK)   : skipCheck
+            (Constants.ConfigurationConstants.Nio.ENVIRONMENT_DEFAULT_BLOB_ENDPOINT)          : endpoint,
+            (Constants.ConfigurationConstants.Nio.ENVIRONMENT_DEFAULT_ACCOUNT_NAME)           : accountName,
+            (Constants.ConfigurationConstants.Nio.ENVIRONMENT_DEFAULT_ACCOUNT_KEY)            : accountKey,
+            (Constants.ConfigurationConstants.Nio.ENVIRONMENT_DEFAULT_SAS_TOKEN)              : sasToken,
+            (Constants.ConfigurationConstants.RETRY_OPTIONS_RETRY_STRATEGY)                   : retryType,
+            (Constants.ConfigurationConstants.RETRY_OPTIONS_MAX_RETRY)                        : maxRetries,
+            (Constants.ConfigurationConstants.RETRY_OPTIONS_TIMEOUT_SECONDS)                  : timeout,
+            (Constants.ConfigurationConstants.RETRY_OPTIONS_DELAY_MS)                         : retryDelay,
+            (Constants.ConfigurationConstants.RETRY_OPTIONS_MAX_DELAY_MS)                     : maxRetryDelay,
+            (Constants.ConfigurationConstants.Nio.ENVIRONMENT_DEFAULT_BLOB_ENDPOINT_SECONDARY): secondaryEndpoint,
+            (Constants.ConfigurationConstants.Nio.ENVIRONMENT_DEFAULT_BLOCK_SIZE)             : blockSize,
+            (Constants.ConfigurationConstants.Nio.ENVIRONMENT_DEFAULT_PUT_BLOB_THRESHOLD)     : putBlob,
+            (Constants.ConfigurationConstants.Nio.ENVIRONMENT_DEFAULT_PER_REQUEST_CONCURRENCY): concurrency,
+            (Constants.ConfigurationConstants.Nio.ENVIRONMENT_DEFAULT_RESUME_RETRIES)         : resume,
+            (Constants.ConfigurationConstants.Nio.ENVIRONMENT_DEFAULT_FILE_STORES)            : fileStores,
+            (Constants.ConfigurationConstants.Nio.ENVIRONMENT_DEFAULT_SKIP_CONTAINER_CHECK)   : skipCheck
         ].forEach((key, val) -> configSource.put(key, val as String))
 
         when:
