@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/personalizer/v1.1-preview.3/events/123456789/reward",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-personalizer/1.0.0-beta.1 (18.0.1.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "b3da94d2-f48b-4dde-b66c-00587946511a",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-envoy-upstream-service-time" : "23",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Cache-Control" : "no-cache, no-store, must-revalidate",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "82543ae5-ed81-402f-8374-6a9fe3246932",
+      "Expires" : "0",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "pragma" : "no-cache",
+      "Date" : "Thu, 25 Aug 2022 23:32:37 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/personalizer/v1.1-preview.3/events/123456789/activate",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-personalizer/1.0.0-beta.1 (18.0.1.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "412f22c4-1acd-4057-812f-72a9fbd9d44b"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-envoy-upstream-service-time" : "2",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Cache-Control" : "no-cache, no-store, must-revalidate",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "66c600c7-53d5-4da6-a979-78d16363e045",
+      "Expires" : "0",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "pragma" : "no-cache",
+      "Date" : "Thu, 25 Aug 2022 23:32:37 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
