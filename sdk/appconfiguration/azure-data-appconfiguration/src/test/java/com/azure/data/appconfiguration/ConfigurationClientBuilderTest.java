@@ -236,8 +236,8 @@ public class ConfigurationClientBuilderTest extends TestBase {
         assertThrows(HttpResponseException.class, () -> configurationClient.setConfigurationSetting(key, null, value));
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    @Test
+    @DoNotRecord
     public void notShareDefaultHttpPipeline(HttpClient httpClient) {
         final String key = "key1";
         final String label = "label1";
