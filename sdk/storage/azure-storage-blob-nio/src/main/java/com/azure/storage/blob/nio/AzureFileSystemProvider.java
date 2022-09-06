@@ -299,7 +299,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         if (this.openFileSystems.containsKey(endpoint)) {
             return this.openFileSystems.get(endpoint);
         } else if (AUTO_CREATE_FILE_SYSTEMS && DEFAULT_CONFIGURATIONS.isSufficient()) {
-            synchronized (this.openFileSystems) {
+            synchronized (AzureFileSystemProvider.class) {
                 if (!this.openFileSystems.containsKey(endpoint)) {
                     FileSystem newSystem = null;
                     try {
