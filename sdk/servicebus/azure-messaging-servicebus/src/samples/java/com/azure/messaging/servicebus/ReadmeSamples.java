@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.IterableStream;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -60,6 +61,21 @@ public class ReadmeSamples {
             .queueName("<<queue-name>>")
             .buildAsyncClient();
         // END: readme-sample-createAsynchronousServiceBusReceiverWithAzureIdentity
+    }
+
+    /**
+     * Code sample for creating an asynchronous Service Bus receiver using {@link AzureNamedKeyCredential}.
+     */
+    public void createAsynchronousServiceBusReceiverWithAzureNamedKeyCredential() {
+        // BEGIN: readme-sample-createAsynchronousServiceBusReceiverWithAzureNamedKeyCredential
+        AzureNamedKeyCredential azureNamedKeyCredential =
+            new AzureNamedKeyCredential("<<azure-service-sas-key-name>>", "<<azure-service-sas-key>>");
+        ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+            .credential(azureNamedKeyCredential)
+            .receiver()
+            .queueName("<<queue-name>>")
+            .buildAsyncClient();
+        // END: readme-sample-createAsynchronousServiceBusReceiverWithAzureNamedKeyCredential
     }
 
     /**
