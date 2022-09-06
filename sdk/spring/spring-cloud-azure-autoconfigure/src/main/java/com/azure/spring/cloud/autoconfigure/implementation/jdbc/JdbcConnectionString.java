@@ -16,8 +16,6 @@ import java.util.Optional;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.NONE_VALUE;
-
 public final class JdbcConnectionString {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcConnectionString.class);
@@ -83,7 +81,7 @@ public final class JdbcConnectionString {
                 throw new IllegalArgumentException(String.format(INVALID_PROPERTY_PAIR_FORMAT, tokenValuePair));
             }
             if (pair.length < 2) {
-                properties.put(key, NONE_VALUE);
+                properties.put(key, null);
             } else {
                 properties.put(key, pair[1]);
             }
@@ -104,14 +102,18 @@ public final class JdbcConnectionString {
         Map<String, String> mergedProperties = new TreeMap<>(originalProperties);
         mergedProperties.putAll(this.enhancedProperties);
 
-        this.orderedOriginalPropertyKeys.forEach(k -> builder.append(k)
-            .append("=")
-            .append(mergedProperties.remove(k))
+        this.orderedOriginalPropertyKeys.forEach(k -> builder
+            .append(constructPropertyString(k, mergedProperties.remove(k)))
             .append(databaseType.getQueryDelimiter()));
+
         mergedProperties.forEach((k, v) -> builder.append(k).append("=").append(v).append(databaseType.getQueryDelimiter()));
 
         String enhancedUrl = builder.toString();
         return enhancedUrl.substring(0, enhancedUrl.length() - 1);
+    }
+
+    private static String constructPropertyString(String key, String value) {
+        return value == null ? key : (key + "=" + value);
     }
 
     public void enhanceProperties(Map<String, String> enhancedProperties) {

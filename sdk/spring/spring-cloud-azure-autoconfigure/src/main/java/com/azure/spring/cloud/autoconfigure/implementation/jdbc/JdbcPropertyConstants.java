@@ -31,5 +31,4 @@ public final class JdbcPropertyConstants {
     public static final String MYSQL_PROPERTY_NAME_DEFAULT_AUTHENTICATION_PLUGIN = "defaultAuthenticationPlugin";
     public static final String MYSQL_PROPERTY_NAME_AUTHENTICATION_PLUGINS = "authenticationPlugins";
 
-    public static final String NONE_VALUE = "NONE_VALUE";
 }
