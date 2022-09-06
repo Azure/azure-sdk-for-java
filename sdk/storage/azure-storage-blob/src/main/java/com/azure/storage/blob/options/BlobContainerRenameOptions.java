@@ -12,7 +12,7 @@ import java.util.Objects;
  * Extended options that may be passed when renaming a blob container.
  */
 @Fluent
-public class BlobContainerRenameOptions {
+class BlobContainerRenameOptions {
 
     private final String destinationContainerName;
     private BlobRequestConditions requestConditions;
@@ -20,7 +20,7 @@ public class BlobContainerRenameOptions {
     /**
      * @param destinationContainerName The new name of the container.
      */
-    public BlobContainerRenameOptions(String destinationContainerName) {
+    BlobContainerRenameOptions(String destinationContainerName) {
         Objects.requireNonNull(destinationContainerName);
         this.destinationContainerName = destinationContainerName;
     }

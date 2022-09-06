@@ -39,7 +39,6 @@ import com.azure.storage.blob.models.ConsistentReadControl;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.StaticWebsite;
-import com.azure.storage.blob.options.BlobContainerRenameOptions;
 import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
@@ -94,7 +93,6 @@ import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
 import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
-import com.azure.storage.file.datalake.options.FileSystemRenameOptions;
 import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions;
 
 import java.time.Instant;
@@ -664,13 +662,13 @@ class Transforms {
 
     }
 
-    static BlobContainerRenameOptions toBlobContainerRenameOptions(FileSystemRenameOptions options) {
-        if (options == null) {
-            return null;
-        }
-        return new BlobContainerRenameOptions(options.getDestinationFileSystemName())
-            .setRequestConditions(toBlobRequestConditions(options.getRequestConditions()));
-    }
+//    static BlobContainerRenameOptions toBlobContainerRenameOptions(FileSystemRenameOptions options) {
+//        if (options == null) {
+//            return null;
+//        }
+//        return new BlobContainerRenameOptions(options.getDestinationFileSystemName())
+//            .setRequestConditions(toBlobRequestConditions(options.getRequestConditions()));
+//    }
 
     static UndeleteBlobContainerOptions toBlobContainerUndeleteOptions(FileSystemUndeleteOptions options) {
         if (options == null) {

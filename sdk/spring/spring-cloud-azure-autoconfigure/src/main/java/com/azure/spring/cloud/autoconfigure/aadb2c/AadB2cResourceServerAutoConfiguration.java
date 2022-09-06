@@ -3,13 +3,16 @@
 package com.azure.spring.cloud.autoconfigure.aadb2c;
 
 import com.azure.spring.cloud.autoconfigure.aad.AadTrustedIssuerRepository;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestOperationConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadJwtClaimNames;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.AadIssuerJwsKeySelector;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.RestOperationsResourceRetriever;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.validator.AadJwtIssuerValidator;
 import com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cOAuth2ClientConfiguration;
 import com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cPropertiesConfiguration;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties;
 import com.nimbusds.jose.proc.SecurityContext;
+import com.nimbusds.jose.util.ResourceRetriever;
 import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
@@ -30,6 +33,7 @@ import org.springframework.security.oauth2.jwt.JwtTimestampValidator;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestOperations;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +46,7 @@ import java.util.List;
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnProperty(value = "spring.cloud.azure.active-directory.b2c.enabled", havingValue = "true")
 @ConditionalOnClass(BearerTokenAuthenticationToken.class)
-@Import({ AadB2cPropertiesConfiguration.class, AadB2cOAuth2ClientConfiguration.class})
+@Import({ AadB2cPropertiesConfiguration.class, AadB2cOAuth2ClientConfiguration.class, AadRestOperationConfiguration.class})
 public class AadB2cResourceServerAutoConfiguration {
 
     private final AadB2cProperties properties;
@@ -68,20 +72,35 @@ public class AadB2cResourceServerAutoConfiguration {
     }
 
     /**
+     * Declare JWT ResourceRetriever bean.
+     *
+     * @param restOperations the rest operations used by the resource retriever.
+     * @return JWT ResourceRetriever bean
+     */
+    @Bean
+    @ConditionalOnMissingBean(ResourceRetriever.class)
+    public ResourceRetriever jwtResourceRetriever(RestOperations restOperations) {
+        return new RestOperationsResourceRetriever(restOperations);
+    }
+
+    /**
      * Declare JWTClaimsSetAwareJWSKeySelector bean.
      *
+     * @param restOperations the rest operations
      * @param aadTrustedIssuerRepository the AAD trusted issuer repository
+     * @param resourceRetriever the resource retriever
      * @return JWTClaimsSetAwareJWSKeySelector bean
      */
     @Bean
     @ConditionalOnMissingBean
     public JWTClaimsSetAwareJWSKeySelector<SecurityContext> aadIssuerJwsKeySelector(
-        AadTrustedIssuerRepository aadTrustedIssuerRepository) {
+        RestOperations restOperations,
+        AadTrustedIssuerRepository aadTrustedIssuerRepository,
+        ResourceRetriever resourceRetriever) {
         return new AadIssuerJwsKeySelector(
+            restOperations,
             aadTrustedIssuerRepository,
-            (int) properties.getJwtConnectTimeout().toMillis(),
-            (int) properties.getJwtReadTimeout().toMillis(),
-            properties.getJwtSizeLimit());
+            resourceRetriever);
     }
 
     /**
