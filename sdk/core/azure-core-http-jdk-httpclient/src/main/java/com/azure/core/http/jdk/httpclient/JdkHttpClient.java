@@ -23,15 +23,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.URISyntaxException;
-import java.net.http.HttpRequest.BodyPublisher;
-import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Flow;
 
-import static java.net.http.HttpRequest.BodyPublishers.fromPublisher;
 import static java.net.http.HttpRequest.BodyPublishers.noBody;
+import static java.net.http.HttpResponse.BodyHandlers.ofByteArray;
 import static java.net.http.HttpResponse.BodyHandlers.ofInputStream;
 import static java.net.http.HttpResponse.BodyHandlers.ofPublisher;
 
@@ -76,10 +73,10 @@ class JdkHttpClient implements HttpClient {
                         return FluxUtil.collectBytesFromNetworkResponse(JdkFlowAdapter
                             .flowPublisherToFlux(jdKResponse.body())
                             .flatMapSequential(Flux::fromIterable), headers)
-                            .map(bytes -> new JdkSyncHttpResponse(request, statusCode, headers, bytes));
+                            .map(bytes -> new JdkHttpResponseSync(request, statusCode, headers, bytes));
                     }
 
-                    return Mono.just(new JdkAsyncHttpResponse(request, jdKResponse));
+                    return Mono.just(new JdkHttpResponseAsync(request, jdKResponse));
                 }));
     }
 
@@ -89,13 +86,13 @@ class JdkHttpClient implements HttpClient {
 
         java.net.http.HttpRequest jdkRequest = toJdkHttpRequest(request, context);
         try {
-            java.net.http.HttpResponse<InputStream> jdKResponse = jdkHttpClient.send(jdkRequest, ofInputStream());
-            JdkSyncHttpResponse response = new JdkSyncHttpResponse(request, jdKResponse);
             if (eagerlyReadResponse) {
-                response.buffer();
+                java.net.http.HttpResponse<byte[]> jdKResponse = jdkHttpClient.send(jdkRequest, ofByteArray());
+                return new JdkHttpResponseSync(request, jdKResponse.statusCode(),  fromJdkHttpHeaders(jdKResponse.headers()), jdKResponse.body());
+            } else {
+                java.net.http.HttpResponse<InputStream> jdKResponse = jdkHttpClient.send(jdkRequest, ofInputStream());
+                return new JdkHttpResponseSync(request, jdKResponse);
             }
-
-            return response;
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         } catch (InterruptedException e) {
@@ -138,39 +135,8 @@ class JdkHttpClient implements HttpClient {
             case HEAD:
                 return builder.method("HEAD", noBody()).build();
             default:
-                final String contentLength = request.getHeaders().getValue("content-length");
-                Flux<ByteBuffer> body = request.getBody();
-                if (progressReporter != null) {
-                    body = body.map(buffer -> {
-                        progressReporter.reportProgress(buffer.remaining());
-                        return buffer;
-                    });
-                }
-                final BodyPublisher bodyPublisher = toBodyPublisher(body, contentLength);
+                java.net.http.HttpRequest.BodyPublisher bodyPublisher = BodyPublisherUtils.toBodyPublisher(request, progressReporter);
                 return builder.method(request.getHttpMethod().toString(), bodyPublisher).build();
-        }
-    }
-
-    /**
-     * Create BodyPublisher from the given java.nio.ByteBuffer publisher.
-     *
-     * @param bbPublisher stream of java.nio.ByteBuffer representing request content
-     * @return the request BodyPublisher
-     */
-    private static BodyPublisher toBodyPublisher(Flux<ByteBuffer> bbPublisher, String contentLength) {
-        if (bbPublisher == null) {
-            return noBody();
-        }
-        final Flow.Publisher<ByteBuffer> bbFlowPublisher = JdkFlowAdapter.publisherToFlowPublisher(bbPublisher);
-        if (CoreUtils.isNullOrEmpty(contentLength)) {
-            return fromPublisher(bbFlowPublisher);
-        } else {
-            long contentLengthLong = Long.parseLong(contentLength);
-            if (contentLengthLong < 1) {
-                return noBody();
-            } else {
-                return fromPublisher(bbFlowPublisher, contentLengthLong);
-            }
         }
     }
 

@@ -8,6 +8,8 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.Contexts;
+import com.azure.core.util.ProgressReporter;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.http.Fault;
@@ -34,6 +36,8 @@ import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.List;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
@@ -205,6 +209,45 @@ public class JdkHttpClientTests {
         StepVerifier.create(client.send(request))
             .expectErrorMessage("boo")
             .verify();
+    }
+
+    @Test
+    public void testProgressReporterAsync() {
+        HttpClient client = new JdkHttpClientProvider().createInstance();
+
+        ConcurrentLinkedDeque<Long> progress = new ConcurrentLinkedDeque();
+        HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
+            .setHeader("Content-Length", String.valueOf(SHORT_BODY.length + LONG_BODY.length))
+            .setBody(Flux.just(ByteBuffer.wrap(LONG_BODY))
+                .concatWith(Flux.just(ByteBuffer.wrap(SHORT_BODY))));
+
+        Contexts contexts = Contexts.with(Context.NONE).setHttpRequestProgressReporter(ProgressReporter.withProgressListener(p -> progress.add(p)));
+        StepVerifier.create(client.send(request, contexts.getContext()))
+            .expectNextCount(1)
+            .expectComplete()
+            .verify();
+
+        List<Long> progressList = progress.stream().toList();
+        assertEquals(LONG_BODY.length, progressList.get(0));
+        assertEquals(SHORT_BODY.length + LONG_BODY.length, progressList.get(1));
+    }
+
+    @Test
+    public void testProgressReporterSync() {
+        HttpClient client = new JdkHttpClientProvider().createInstance();
+
+        ConcurrentLinkedDeque<Long> progress = new ConcurrentLinkedDeque();
+        HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
+            .setHeader("Content-Length", String.valueOf(SHORT_BODY.length + LONG_BODY.length))
+            .setBody(Flux.just(ByteBuffer.wrap(LONG_BODY))
+                .concatWith(Flux.just(ByteBuffer.wrap(SHORT_BODY))));
+
+        Contexts contexts = Contexts.with(Context.NONE).setHttpRequestProgressReporter(ProgressReporter.withProgressListener(p -> progress.add(p)));
+        client.sendSync(request, contexts.getContext());
+
+        List<Long> progressList = progress.stream().toList();
+        assertEquals(LONG_BODY.length, progressList.get(0));
+        assertEquals(SHORT_BODY.length + LONG_BODY.length, progressList.get(1));
     }
 
     @Test

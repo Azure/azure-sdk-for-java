@@ -13,11 +13,11 @@ import java.util.concurrent.Flow;
 
 import static com.azure.core.http.jdk.httpclient.JdkHttpClient.fromJdkHttpHeaders;
 
-final class JdkAsyncHttpResponse extends JdkHttpResponseBase {
+final class JdkHttpResponseAsync extends JdkHttpResponseBase {
     private final Flux<ByteBuffer> contentFlux;
     private volatile boolean disposed = false;
 
-    JdkAsyncHttpResponse(final HttpRequest request,
+    JdkHttpResponseAsync(final HttpRequest request,
         java.net.http.HttpResponse<Flow.Publisher<List<ByteBuffer>>> response) {
         super(request, response.statusCode(), fromJdkHttpHeaders(response.headers()));
         this.contentFlux = JdkFlowAdapter.flowPublisherToFlux(response.body())

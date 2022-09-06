@@ -21,8 +21,8 @@ import java.nio.channels.WritableByteChannel;
 
 import static com.azure.core.http.jdk.httpclient.JdkHttpClient.fromJdkHttpHeaders;
 
-final class JdkSyncHttpResponse extends JdkHttpResponseBase {
-    private static final ClientLogger LOGGER = new ClientLogger(JdkSyncHttpResponse.class);
+final class JdkHttpResponseSync extends JdkHttpResponseBase {
+    private static final ClientLogger LOGGER = new ClientLogger(JdkHttpResponseSync.class);
     private BinaryData binaryData = null;
     public static final int STREAM_READ_SIZE = 8192;
 
@@ -30,13 +30,13 @@ final class JdkSyncHttpResponse extends JdkHttpResponseBase {
     private byte[] bodyBytes;
 
     private volatile boolean disposed = false;
-    JdkSyncHttpResponse(final HttpRequest request, int statusCode, HttpHeaders headers, byte[] bytes) {
+    JdkHttpResponseSync(final HttpRequest request, int statusCode, HttpHeaders headers, byte[] bytes) {
         super(request, statusCode, headers);
         this.bodyStream = null;
         this.bodyBytes = bytes;
     }
 
-    JdkSyncHttpResponse(final HttpRequest request, java.net.http.HttpResponse<InputStream> streamResponse) {
+    JdkHttpResponseSync(final HttpRequest request, java.net.http.HttpResponse<InputStream> streamResponse) {
         super(request, streamResponse.statusCode(), fromJdkHttpHeaders(streamResponse.headers()));
         this.bodyStream = streamResponse.body();
         this.bodyBytes = null;
