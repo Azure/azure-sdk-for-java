@@ -3,8 +3,13 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.compatibility;
 
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.boot.test.system.CapturedOutput;
+import org.springframework.boot.test.system.OutputCaptureExtension;
+
 
 import java.util.Collections;
 import java.util.List;
@@ -13,9 +18,11 @@ import static com.azure.spring.cloud.autoconfigure.implementation.compatibility.
 import static com.azure.spring.cloud.autoconfigure.implementation.compatibility.AzureSpringBootVersionVerifier.SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_2_6;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@ExtendWith({OutputCaptureExtension.class})
 class AzureSpringBootVersionVerifierTest {
 
     @ParameterizedTest
@@ -144,5 +151,24 @@ class AzureSpringBootVersionVerifierTest {
         };
 
         assertThrows(AzureCompatibilityNotMetException.class, versionVerifier::verify);
+    }
+
+    @Test
+    public void testVersionVerifierLog(CapturedOutput capturedOutput) {
+        List<String> acceptedVersions = List.of("2.5.x", "2.6.x", "2.7.x");
+        ClassNameResolverPredicate mockResolver = mock(ClassNameResolverPredicate.class);
+
+        AzureSpringBootVersionVerifier versionVerifier = new AzureSpringBootVersionVerifier(acceptedVersions,
+            mockResolver) {
+            String getVersionFromManifest() {
+                return "2.6.2";
+            }
+        };
+        versionVerifier.verify();
+        String allOutput = capturedOutput.getAll();
+        String format1 = String.format("Currently running on Spring Boot version [2.6.2], trying to match it in Spring Cloud Azure Supported Versions [2.5.x].");
+        String format2 = String.format("Currently running on Spring Boot version [2.6.2], trying to match it in Spring Cloud Azure Supported Versions [2.6.x].");
+        String format3 = String.format("Current Spring Boot version matching succeeds in Spring Cloud Azure supported versions [2.6.x].");
+        assertTrue(allOutput.contains(format1) && allOutput.contains(format2) && allOutput.contains(format3));
     }
 }
