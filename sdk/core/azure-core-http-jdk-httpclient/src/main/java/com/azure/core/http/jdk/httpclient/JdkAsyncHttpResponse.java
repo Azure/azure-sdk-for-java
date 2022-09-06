@@ -18,7 +18,7 @@ final class JdkAsyncHttpResponse extends JdkHttpResponseBase {
     private volatile boolean disposed = false;
 
     JdkAsyncHttpResponse(final HttpRequest request,
-                         java.net.http.HttpResponse<Flow.Publisher<List<ByteBuffer>>> response) {
+        java.net.http.HttpResponse<Flow.Publisher<List<ByteBuffer>>> response) {
         super(request, response.statusCode(), fromJdkHttpHeaders(response.headers()));
         this.contentFlux = JdkFlowAdapter.flowPublisherToFlux(response.body())
             .flatMapSequential(Flux::fromIterable);

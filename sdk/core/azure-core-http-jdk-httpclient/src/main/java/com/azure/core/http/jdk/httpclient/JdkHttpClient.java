@@ -90,11 +90,12 @@ class JdkHttpClient implements HttpClient {
         java.net.http.HttpRequest jdkRequest = toJdkHttpRequest(request, context);
         try {
             java.net.http.HttpResponse<InputStream> jdKResponse = jdkHttpClient.send(jdkRequest, ofInputStream());
+            JdkSyncHttpResponse response = new JdkSyncHttpResponse(request, jdKResponse);
             if (eagerlyReadResponse) {
-                return new JdkSyncHttpResponse(request, jdKResponse).buffer();
+                response.buffer();
             }
 
-            return new JdkSyncHttpResponse(request, jdKResponse);
+            return response;
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         } catch (InterruptedException e) {
