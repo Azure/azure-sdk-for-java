@@ -10,12 +10,12 @@ import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfi
 import com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cOAuth2ClientConfiguration;
 import com.nimbusds.jose.util.ResourceRetriever;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.FormHttpMessageConverter;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
 import org.springframework.security.oauth2.client.http.OAuth2ErrorResponseErrorHandler;
@@ -23,6 +23,8 @@ import org.springframework.security.oauth2.core.http.converter.OAuth2AccessToken
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 
 /**
  * Configure RestOperation bean used for accessing Azure AD and Azure AD B2C
@@ -72,6 +74,9 @@ public class AadRestOperationConfiguration {
     public RestOperations azureAdAccessTokenRetrieverRestOperations(RestTemplateBuilder builder) {
         RestTemplate restTemplate = builder.build();
         restTemplate.setErrorHandler(new OAuth2ErrorResponseErrorHandler());
+        List<HttpMessageConverter<?>> converters = restTemplate.getMessageConverters();
+        converters.add(new FormHttpMessageConverter());
+        converters.add(new OAuth2AccessTokenResponseHttpMessageConverter());
         return restTemplate;
     }
 
@@ -99,33 +104,6 @@ public class AadRestOperationConfiguration {
     @ConditionalOnMissingBean(name = AZURE_AD_ACCESS_TOKEN_VALIDATOR_REST_OPERATIONS_BEAN_NAME)
     public RestOperations azureAdAccessTokenValidatorRestOperations(RestTemplateBuilder builder) {
         return builder.build();
-    }
-
-    /**
-     * {@link FormHttpMessageConverter} is necessary for kinds of {@link OAuth2AccessTokenResponseClient}
-     * implementations(like {@link DefaultAuthorizationCodeTokenResponseClient}). This bean will be used in
-     * {@link HttpMessageConvertersAutoConfiguration}.
-     *
-     * @return FormHttpMessageConverter bean
-     */
-    @Bean
-    @ConditionalOnMissingBean
-    FormHttpMessageConverter formHttpMessageConverter() {
-        return new FormHttpMessageConverter();
-    }
-
-    /**
-     * {@link OAuth2AccessTokenResponseHttpMessageConverter} is necessary for kinds of
-     * {@link OAuth2AccessTokenResponseClient} implementations(like
-     * {@link DefaultAuthorizationCodeTokenResponseClient}).  This bean will be used in
-     * {@link HttpMessageConvertersAutoConfiguration}.
-     *
-     * @return OAuth2AccessTokenResponseHttpMessageConverter bean
-     */
-    @Bean
-    @ConditionalOnMissingBean
-    public OAuth2AccessTokenResponseHttpMessageConverter oAuth2AccessTokenResponseHttpMessageConverter() {
-        return new OAuth2AccessTokenResponseHttpMessageConverter();
     }
 
 }
