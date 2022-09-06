@@ -38,6 +38,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.stream.Collectors;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
@@ -215,7 +216,7 @@ public class JdkHttpClientTests {
     public void testProgressReporterAsync() {
         HttpClient client = new JdkHttpClientProvider().createInstance();
 
-        ConcurrentLinkedDeque<Long> progress = new ConcurrentLinkedDeque();
+        ConcurrentLinkedDeque<Long> progress = new ConcurrentLinkedDeque<>();
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
             .setHeader("Content-Length", String.valueOf(SHORT_BODY.length + LONG_BODY.length))
             .setBody(Flux.just(ByteBuffer.wrap(LONG_BODY))
@@ -227,7 +228,7 @@ public class JdkHttpClientTests {
             .expectComplete()
             .verify();
 
-        List<Long> progressList = progress.stream().toList();
+        List<Long> progressList = progress.stream().collect(Collectors.toList());
         assertEquals(LONG_BODY.length, progressList.get(0));
         assertEquals(SHORT_BODY.length + LONG_BODY.length, progressList.get(1));
     }
@@ -236,7 +237,7 @@ public class JdkHttpClientTests {
     public void testProgressReporterSync() {
         HttpClient client = new JdkHttpClientProvider().createInstance();
 
-        ConcurrentLinkedDeque<Long> progress = new ConcurrentLinkedDeque();
+        ConcurrentLinkedDeque<Long> progress = new ConcurrentLinkedDeque<>();
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
             .setHeader("Content-Length", String.valueOf(SHORT_BODY.length + LONG_BODY.length))
             .setBody(Flux.just(ByteBuffer.wrap(LONG_BODY))
@@ -245,7 +246,7 @@ public class JdkHttpClientTests {
         Contexts contexts = Contexts.with(Context.NONE).setHttpRequestProgressReporter(ProgressReporter.withProgressListener(p -> progress.add(p)));
         client.sendSync(request, contexts.getContext());
 
-        List<Long> progressList = progress.stream().toList();
+        List<Long> progressList = progress.stream().collect(Collectors.toList());
         assertEquals(LONG_BODY.length, progressList.get(0));
         assertEquals(SHORT_BODY.length + LONG_BODY.length, progressList.get(1));
     }

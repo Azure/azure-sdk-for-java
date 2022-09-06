@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.core.http.jdk.httpclient;
 
 import com.azure.core.implementation.util.BinaryDataContent;
@@ -27,18 +30,18 @@ import static java.net.http.HttpRequest.BodyPublishers.ofFile;
 import static java.net.http.HttpRequest.BodyPublishers.ofInputStream;
 import static java.net.http.HttpRequest.BodyPublishers.ofString;
 
-class BodyPublisherUtils {
+final class BodyPublisherUtils {
+    private static final ClientLogger LOGGER = new ClientLogger(BodyPublisherUtils.class);
 
     private BodyPublisherUtils() {
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(BodyPublisherUtils.class);
-
     /**
-     * Create BodyPublisher from the given java.nio.ByteBuffer publisher.
+     * Creates BodyPublisher depending on underlying body content type.
+     * If progress reporter is not null, configures it to track request body upload.
      *
      * @param request {@link com.azure.core.http.HttpRequest} instance
-     * @progressReporter optional progress reporter for request upload.
+     * @progressReporter optional progress reporter.
      * @return the request BodyPublisher
      */
     public static HttpRequest.BodyPublisher toBodyPublisher(com.azure.core.http.HttpRequest request, ProgressReporter progressReporter) {
@@ -47,8 +50,7 @@ class BodyPublisherUtils {
             BinaryDataContent bodyContent = BinaryDataHelper.getContent(body);
             if (bodyContent instanceof ByteArrayContent) {
                 return getPublisherWithReporter(ofByteArray(bodyContent.toBytes()), progressReporter);
-            } else if (bodyContent instanceof StringContent
-                || bodyContent instanceof SerializableContent) {
+            } else if (bodyContent instanceof StringContent || bodyContent instanceof SerializableContent) {
                 return getPublisherWithReporter(ofString(bodyContent.toString()), progressReporter);
             } else if (bodyContent instanceof FileContent) {
                 try {
@@ -99,10 +101,11 @@ class BodyPublisherUtils {
 
         private final HttpRequest.BodyPublisher downstream;
         private final ProgressReporter progressReporter;
-        public CountingPublisher(HttpRequest.BodyPublisher downstream, ProgressReporter progressReporter) {
+        CountingPublisher(HttpRequest.BodyPublisher downstream, ProgressReporter progressReporter) {
             this.downstream = downstream;
             this.progressReporter = progressReporter;
         }
+
         @Override
         public long contentLength() {
             return downstream.contentLength();
@@ -113,10 +116,11 @@ class BodyPublisherUtils {
             downstream.subscribe(new CountingSubscriber(subscriber, progressReporter));
         }
     }
-    private static class CountingSubscriber<T extends ByteBuffer> implements Flow.Subscriber<T> {
-        private final Flow.Subscriber<T> downstream;
+
+    private static class CountingSubscriber implements Flow.Subscriber<ByteBuffer> {
+        private final Flow.Subscriber<? super ByteBuffer> downstream;
         private final ProgressReporter progressReporter;
-        public CountingSubscriber(Flow.Subscriber<T> downstream, ProgressReporter progressReporter) {
+        CountingSubscriber(Flow.Subscriber<? super ByteBuffer> downstream, ProgressReporter progressReporter) {
             this.downstream = downstream;
             this.progressReporter = progressReporter;
         }
@@ -127,7 +131,7 @@ class BodyPublisherUtils {
         }
 
         @Override
-        public void onNext(T item) {
+        public void onNext(ByteBuffer item) {
             progressReporter.reportProgress(item.remaining());
             downstream.onNext(item);
         }
