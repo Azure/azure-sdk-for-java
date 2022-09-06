@@ -3,6 +3,7 @@
 
 package com.azure.core.util;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -55,8 +56,11 @@ class QueryParameter {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(values, "'values' cannot be null");
         this.name = name;
-        this.value = null;
-        this.values = new LinkedList<>(values);
+        if (values.size() == 1) {
+            this.value = values.get(0);
+        } else {
+            this.values = new ArrayList<>(values);
+        }
     }
 
     /**
