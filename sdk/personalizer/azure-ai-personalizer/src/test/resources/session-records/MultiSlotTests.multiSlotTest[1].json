@@ -1,0 +1,171 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/personalizer/v1.1-preview.3/configurations/policy",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-personalizer/1.0.0-beta.1 (18.0.1.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "b4c90d97-4f1a-47f6-9ade-bf9a58cce947"
+    },
+    "Response" : {
+      "content-length" : "155",
+      "x-envoy-upstream-service-time" : "16",
+      "apim-request-id" : "782ec1a7-bd60-4a2c-a7c2-142e2d341d46",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "Date" : "Thu, 25 Aug 2022 23:32:37 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Cache-Control" : "no-cache, no-store, must-revalidate",
+      "x-content-type-options" : "nosniff",
+      "Expires" : "0",
+      "timing-allow-origin" : "*",
+      "Body" : "{\n  \"name\": \"1f8622f33afb4845823480ac4aaa9a2d\",\n  \"arguments\": \"--ccb_explore_adf --epsilon 0.20000000298023224 --power_t 0 -l 0.001 --cb_type mtr -q ::\"\n}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/personalizer/v1.1-preview.3/multislot/rank",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-personalizer/1.0.0-beta.1 (18.0.1.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "b588329d-bb11-4e45-83c9-ff32d23517f1",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "230",
+      "x-envoy-upstream-service-time" : "9",
+      "apim-request-id" : "27542b5b-0ab5-4140-9077-18b878c9a878",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "Date" : "Thu, 25 Aug 2022 23:32:37 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Cache-Control" : "no-cache, no-store, must-revalidate",
+      "x-content-type-options" : "nosniff",
+      "csp-billing-usage" : "CognitiveServices.Personalizer.Transaction=1",
+      "Expires" : "0",
+      "timing-allow-origin" : "*",
+      "Body" : "{\n  \"slots\": [\n    {\n      \"id\": \"Main Article\",\n      \"rewardActionId\": \"NewsArticle\"\n    },\n    {\n      \"id\": \"Side Bar\",\n      \"rewardActionId\": \"SportsArticle\"\n    }\n  ],\n  \"eventId\": \"a21cc3ba33354152a9eb0c65a3209a60-aylOl\"\n}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/personalizer/v1.1-preview.3/multislot/rank",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-personalizer/1.0.0-beta.1 (18.0.1.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "a06294cc-4d1f-4b81-85f3-58c81fc2670f",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "230",
+      "x-envoy-upstream-service-time" : "3",
+      "apim-request-id" : "9a95c144-6497-4f3b-b5f8-2a90dcf4c39c",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "Date" : "Thu, 25 Aug 2022 23:32:36 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Cache-Control" : "no-cache, no-store, must-revalidate",
+      "x-content-type-options" : "nosniff",
+      "csp-billing-usage" : "CognitiveServices.Personalizer.Transaction=1",
+      "Expires" : "0",
+      "timing-allow-origin" : "*",
+      "Body" : "{\n  \"slots\": [\n    {\n      \"id\": \"Main Article\",\n      \"rewardActionId\": \"NewsArticle\"\n    },\n    {\n      \"id\": \"Side Bar\",\n      \"rewardActionId\": \"SportsArticle\"\n    }\n  ],\n  \"eventId\": \"77f1b95ae15548c6b4d7e2d14ec536b2-aylOl\"\n}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/personalizer/v1.1-preview.3/multislot/rank",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-personalizer/1.0.0-beta.1 (18.0.1.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "185e130d-bf50-4f9f-afc3-bcb3906d1c06",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "206",
+      "x-envoy-upstream-service-time" : "4",
+      "apim-request-id" : "5426b01f-7b20-45d3-ab7e-e00e04b8dc42",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "Date" : "Thu, 25 Aug 2022 23:32:37 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Cache-Control" : "no-cache, no-store, must-revalidate",
+      "x-content-type-options" : "nosniff",
+      "csp-billing-usage" : "CognitiveServices.Personalizer.Transaction=1",
+      "Expires" : "0",
+      "timing-allow-origin" : "*",
+      "Body" : "{\n  \"slots\": [\n    {\n      \"id\": \"Main Article\",\n      \"rewardActionId\": \"NewsArticle\"\n    },\n    {\n      \"id\": \"Side Bar\",\n      \"rewardActionId\": \"SportsArticle\"\n    }\n  ],\n  \"eventId\": \"sdkTestEventId\"\n}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/personalizer/v1.1-preview.3/multislot/events/123456789/reward",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-personalizer/1.0.0-beta.1 (18.0.1.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "2dd60f11-ee97-4ae7-b142-61488cf8a886",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-envoy-upstream-service-time" : "6",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Cache-Control" : "no-cache, no-store, must-revalidate",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "1c5cb6c4-14ba-4599-969d-98d15b02fa37",
+      "Expires" : "0",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "pragma" : "no-cache",
+      "Date" : "Thu, 25 Aug 2022 23:32:37 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/personalizer/v1.1-preview.3/multislot/events/123456789/reward",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-personalizer/1.0.0-beta.1 (18.0.1.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "f36c27d7-aaef-4ca3-8471-174955a555d6",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-envoy-upstream-service-time" : "2",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Cache-Control" : "no-cache, no-store, must-revalidate",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "a5fc2ff5-9a75-41d6-b602-66a3a6b2ad34",
+      "Expires" : "0",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "pragma" : "no-cache",
+      "Date" : "Thu, 25 Aug 2022 23:32:36 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/personalizer/v1.1-preview.3/multislot/events/123456789/activate",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-personalizer/1.0.0-beta.1 (18.0.1.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "b910c8aa-a49c-4a01-9d17-84b351ea7aab"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-envoy-upstream-service-time" : "2",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Cache-Control" : "no-cache, no-store, must-revalidate",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "f3b9dafb-3d16-4300-aad2-655f5851f0ce",
+      "Expires" : "0",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "pragma" : "no-cache",
+      "Date" : "Thu, 25 Aug 2022 23:32:37 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -123,8 +123,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         this.maxConcurrentRequests = config.maxConcurrentRequestsPerEndpoint();
 
         this.connectionStateListener = this.provider.addressResolver != null && config.isConnectionEndpointRediscoveryEnabled()
-            ? new RntbdConnectionStateListener(this.provider.addressResolver, this)
-            : null;
+            ? new RntbdConnectionStateListener(this) : null;
 
         this.channelPool = new RntbdClientChannelPool(this, bootstrap, config, clientTelemetry, this.connectionStateListener);
         this.clientTelemetry = clientTelemetry;
@@ -270,6 +269,10 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
         int concurrentRequestSnapshot = this.concurrentRequests.incrementAndGet();
 
+        if (this.connectionStateListener != null) {
+            this.connectionStateListener.onBeforeSendRequest(args.physicalAddressUri());
+        }
+
         RntbdEndpointStatistics stat = endpointMetricsSnapshot(concurrentRequestSnapshot);
 
         if (concurrentRequestSnapshot > this.maxConcurrentRequests) {
@@ -307,6 +310,10 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
         this.throwIfClosed();
 
+        if (this.connectionStateListener != null) {
+            this.connectionStateListener.onBeforeSendRequest(addressUri);
+        }
+
         OpenConnectionRntbdRequestRecord requestRecord = new OpenConnectionRntbdRequestRecord(addressUri);
         final Future<Channel> openChannelFuture = this.channelPool.acquire(requestRecord);
 
@@ -332,6 +339,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             // This is a very important step
             // Releasing the channel back to the pool so other requests can use it
             this.releaseToPool(channel);
+
+            requestRecord.getAddressUri().setConnected();
 
             openConnectionResponse = new OpenConnectionResponse(requestRecord.getAddressUri(), true);
         } else {
@@ -444,6 +453,9 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             this.releaseToPool(channel);
             requestRecord.channelTaskQueueLength(RntbdUtils.tryGetExecutorTaskQueueSize(channel.eventLoop()));
             channel.write(requestRecord.stage(RntbdRequestRecord.Stage.PIPELINED));
+
+            // mark address connected
+            requestRecord.args().physicalAddressUri().setConnected();
             return requestRecord;
         }
 

@@ -9,6 +9,10 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Added system property to turn on replica validation - See [PR 29767](https://github.com/Azure/azure-sdk-for-java/pull/29767)
+* Added improvement to avoid retry on same replica that previously failed with 410, 408 and  >= 500 status codes - See [PR 29767](https://github.com/Azure/azure-sdk-for-java/pull/29767)
+* Improvement when `connectionEndpointRediscoveryEnabled` is enabled - See [PR 30281](https://github.com/Azure/azure-sdk-for-java/pull/30281)
+* Added replica validation for Unknown status if `openConnectionsAndInitCaches` is used and replica validation is enabled - See [PR 30277](https://github.com/Azure/azure-sdk-for-java/pull/30277)
 
 ### 4.35.1 (2022-08-29)
 #### Other Changes

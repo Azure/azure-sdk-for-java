@@ -4,14 +4,15 @@
 package com.azure.spring.cloud.autoconfigure.aad;
 
 import com.azure.spring.cloud.autoconfigure.aad.configuration.AadPropertiesConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestOperationConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.filter.AadAppRoleStatelessAuthenticationFilter;
 import com.azure.spring.cloud.autoconfigure.aad.filter.AadAuthenticationFilter;
 import com.azure.spring.cloud.autoconfigure.aad.filter.UserPrincipalManager;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.RestOperationsResourceRetriever;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
 import com.nimbusds.jose.jwk.source.DefaultJWKSetCache;
 import com.nimbusds.jose.jwk.source.JWKSetCache;
-import com.nimbusds.jose.util.DefaultResourceRetriever;
 import com.nimbusds.jose.util.ResourceRetriever;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.web.client.RestOperations;
 
 import java.util.concurrent.TimeUnit;
 
@@ -38,7 +40,7 @@ import java.util.concurrent.TimeUnit;
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnExpression("${spring.cloud.azure.active-directory.enabled:false}")
 @ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken" })
-@Import(AadPropertiesConfiguration.class)
+@Import({AadPropertiesConfiguration.class, AadRestOperationConfiguration.class})
 public class AadAuthenticationFilterAutoConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AadAuthenticationProperties.class);
@@ -101,16 +103,13 @@ public class AadAuthenticationFilterAutoConfiguration {
     /**
      * Declare JWT ResourceRetriever bean.
      *
+     * @param restOperations the rest operations used by the resource retriever.
      * @return JWT ResourceRetriever bean
      */
     @Bean
     @ConditionalOnMissingBean(ResourceRetriever.class)
-    public ResourceRetriever jwtResourceRetriever() {
-        return new DefaultResourceRetriever(
-            (int) properties.getJwtConnectTimeout().toMillis(),
-            (int) properties.getJwtReadTimeout().toMillis(),
-            properties.getJwtSizeLimit()
-        );
+    public ResourceRetriever jwtResourceRetriever(RestOperations restOperations) {
+        return new RestOperationsResourceRetriever(restOperations);
     }
 
     /**
