@@ -45,7 +45,6 @@ import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.IterableStream;
-import com.azure.core.util.paging.ContinuablePagedFluxCore;
 import com.azure.core.util.polling.AsyncPollResponse;
 
 import java.util.ArrayList;
@@ -815,7 +814,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         }
         textAnalyticsAsyncClient.beginAnalyzeHealthcareEntities(documents)
             .flatMap(AsyncPollResponse::getFinalResult)
-            .flatMap(ContinuablePagedFluxCore::byPage)
+            .flatMap(pagedFlux -> pagedFlux.byPage())
             .subscribe(
                 pagedResponse -> pagedResponse.getElements().forEach(
                     analyzeHealthcareEntitiesResultCollection -> {
@@ -867,7 +866,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
         textAnalyticsAsyncClient.beginAnalyzeHealthcareEntities(documents, "en", options)
             .flatMap(AsyncPollResponse::getFinalResult)
-            .flatMap(ContinuablePagedFluxCore::byPage)
+            .flatMap(pagedFlux -> pagedFlux.byPage())
             .subscribe(
                 pagedResponse -> pagedResponse.getElements().forEach(
                     analyzeHealthcareEntitiesResultCollection -> {

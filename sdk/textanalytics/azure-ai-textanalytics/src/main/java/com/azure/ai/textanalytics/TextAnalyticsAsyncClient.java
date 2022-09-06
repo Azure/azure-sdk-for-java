@@ -1705,7 +1705,7 @@ public final class TextAnalyticsAsyncClient {
      * &#125;
      * textAnalyticsAsyncClient.beginAnalyzeHealthcareEntities&#40;documents&#41;
      *     .flatMap&#40;AsyncPollResponse::getFinalResult&#41;
-     *     .flatMap&#40;ContinuablePagedFluxCore::byPage&#41;
+     *     .flatMap&#40;pagedFlux -&gt; pagedFlux.byPage&#40;&#41;&#41;
      *     .subscribe&#40;
      *         pagedResponse -&gt; pagedResponse.getElements&#40;&#41;.forEach&#40;
      *             analyzeHealthcareEntitiesResultCollection -&gt; &#123;
@@ -1782,7 +1782,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * textAnalyticsAsyncClient.beginAnalyzeHealthcareEntities&#40;documents, &quot;en&quot;, options&#41;
      *     .flatMap&#40;AsyncPollResponse::getFinalResult&#41;
-     *     .flatMap&#40;ContinuablePagedFluxCore::byPage&#41;
+     *     .flatMap&#40;pagedFlux -&gt; pagedFlux.byPage&#40;&#41;&#41;
      *     .subscribe&#40;
      *         pagedResponse -&gt; pagedResponse.getElements&#40;&#41;.forEach&#40;
      *             analyzeHealthcareEntitiesResultCollection -&gt; &#123;
