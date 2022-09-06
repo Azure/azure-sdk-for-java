@@ -318,6 +318,11 @@ public final class StorageErrorCode extends ExpandableStringEnum<StorageErrorCod
     public static final StorageErrorCode INCREMENTAL_COPY_OF_ERALIER_VERSION_SNAPSHOT_NOT_ALLOWED = fromString("IncrementalCopyOfEralierVersionSnapshotNotAllowed");
 
     /**
+     * Static value IncrementalCopyOfEarlierVersionSnapshotNotAllowed for StorageErrorCode.
+     */
+    public static final StorageErrorCode INCREMENTAL_COPY_OF_EARLIER_VERSION_SNAPSHOT_NOT_ALLOWED = fromString("IncrementalCopyOfEarlierVersionSnapshotNotAllowed");
+
+    /**
      * Static value IncrementalCopySourceMustBeSnapshot for StorageErrorCode.
      */
     public static final StorageErrorCode INCREMENTAL_COPY_SOURCE_MUST_BE_SNAPSHOT = fromString("IncrementalCopySourceMustBeSnapshot");
