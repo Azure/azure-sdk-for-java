@@ -117,7 +117,7 @@ class ServicePrincipalImpl
             .flatMap(
                 servicePrincipal ->
                     submitCredentialsAsync(servicePrincipal, retry)
-                        // Microsoft.Authorization respond with 400 and code=PrincipalNotFound
+                        // retry for Microsoft.Authorization is done in RoleAssignmentImpl
                         .mergeWith(submitRolesAsync(servicePrincipal))
                         .last())
             .map(

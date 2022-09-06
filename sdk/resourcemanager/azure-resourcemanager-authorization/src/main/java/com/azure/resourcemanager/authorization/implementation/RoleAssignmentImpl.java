@@ -85,6 +85,7 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
                         .roleServiceClient()
                         .getRoleAssignments()
                         .createAsync(scope(), name(), roleAssignmentPropertiesInner)
+                        // if the service principal is newly created (also apply to the case that MSI is new), wait for eventual consistency from AAD
                         .retryWhen(RetryUtils.backoffRetryFor400PrincipalNotFound()))
             .map(innerToFluentMap(this));
     }
