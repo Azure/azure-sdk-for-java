@@ -100,7 +100,7 @@ public final class TableUtils {
     /**
      * Map a {@link Throwable} to {@link IllegalArgumentException} if the endpoint
      * contains a table name, else it returns the original throwable
-     * @param throwable A throwable exception
+     * @param throwable The throwable to map.
      * @param tableName The name of the Table intended to be operated on
      * @param endpoint The endpoint of the {@link com.azure.data.tables.TableServiceClient},
      *                 {@link com.azure.data.tables.TableServiceAsyncClient}
