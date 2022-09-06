@@ -4,6 +4,7 @@
 package com.azure.xml;
 
 import com.azure.xml.contract.XmlReaderContractTests;
+import com.azure.xml.implementation.DefaultXmlReader;
 
 /**
  * Tests {@link DefaultXmlReader} against the contract required by {@link XmlReader}.

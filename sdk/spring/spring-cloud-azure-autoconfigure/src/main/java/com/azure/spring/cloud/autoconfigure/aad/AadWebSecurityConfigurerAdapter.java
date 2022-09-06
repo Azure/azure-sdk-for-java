@@ -23,6 +23,7 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequest
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestOperations;
 
 import javax.servlet.Filter;
 
@@ -39,6 +40,13 @@ public abstract class AadWebSecurityConfigurerAdapter extends WebSecurityConfigu
      */
     @Autowired
     protected ClientRegistrationRepository repo;
+
+
+    /**
+     * RestOperations bean used by various OAuth2AccessTokenResponseClient.
+     */
+    @Autowired
+    protected RestOperations aadAuthRestOperations;
 
     /**
      * OIDC user service.
@@ -122,6 +130,7 @@ public abstract class AadWebSecurityConfigurerAdapter extends WebSecurityConfigu
      */
     protected OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
         DefaultAuthorizationCodeTokenResponseClient result = new DefaultAuthorizationCodeTokenResponseClient();
+        result.setRestOperations(aadAuthRestOperations);
         if (repo instanceof AadClientRegistrationRepository) {
             AadOAuth2AuthorizationCodeGrantRequestEntityConverter converter =
                 new AadOAuth2AuthorizationCodeGrantRequestEntityConverter(
