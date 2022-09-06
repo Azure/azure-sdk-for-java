@@ -95,7 +95,8 @@ class ServicePrincipalImpl
 
     @Override
     public Mono<ServicePrincipal> createResourceAsync() {
-        Retry retry = isInCreateMode() ? RetryUtils.backoffRetryFor404() : null;
+        Retry retry = isInCreateMode() ? RetryUtils.backoffRetryFor404ResourceNotFound() : null;
+        Retry retryForRbac = isInCreateMode() ? RetryUtils.backoffRetryFor400PrincipalNotFound() : null;
 
         Mono<ServicePrincipal> sp;
         if (isInCreateMode()) {
@@ -117,7 +118,8 @@ class ServicePrincipalImpl
             .flatMap(
                 servicePrincipal ->
                     submitCredentialsAsync(servicePrincipal, retry)
-                        .mergeWith(submitRolesAsync(servicePrincipal, retry))
+                        // Microsoft.Authorization respond with 400 and code=PrincipalNotFound
+                        .mergeWith(submitRolesAsync(servicePrincipal, retryForRbac))
                         .last())
             .map(
                 servicePrincipal -> {
@@ -166,7 +168,13 @@ class ServicePrincipalImpl
 //                                new ServicePrincipalsRemovePasswordRequestBody()
 //                                    .withKeyId(UUID.fromString(id))))
             )
-            .then(refreshAsync());
+            .then(Mono.defer(() -> {
+                Mono<ServicePrincipal> monoRefresh = refreshAsync();
+                if (retry != null) {
+                    monoRefresh = monoRefresh.retryWhen(retry);
+                }
+                return monoRefresh;
+            }));
     }
 
     private Mono<ServicePrincipal> submitRolesAsync(final ServicePrincipal servicePrincipal, Retry retry) {

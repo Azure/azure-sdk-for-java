@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.authorization.implementation;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.fluent.models.ApplicationsAddPasswordRequestBodyInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphApplicationInner;
@@ -14,15 +13,12 @@ import com.azure.resourcemanager.authorization.models.ApplicationAccountType;
 import com.azure.resourcemanager.authorization.models.CertificateCredential;
 import com.azure.resourcemanager.authorization.models.PasswordCredential;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
-import reactor.util.retry.RetryBackoffSpec;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -65,7 +61,7 @@ class ActiveDirectoryApplicationImpl
 
     @Override
     public Mono<ActiveDirectoryApplication> createResourceAsync() {
-        Retry retry = RetryUtils.backoffRetryFor404();
+        Retry retry = RetryUtils.backoffRetryFor404ResourceNotFound();
 
         return manager
             .serviceClient()

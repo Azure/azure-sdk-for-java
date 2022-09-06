@@ -2,13 +2,9 @@
 
 ## 2.19.0-beta.1 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
 ### Bugs Fixed
 
-### Other Changes
+- Supported delayed retry on 404 for eventual consistency, after creating AAD service principal.
 
 ## 2.18.0 (2022-08-26)
 
