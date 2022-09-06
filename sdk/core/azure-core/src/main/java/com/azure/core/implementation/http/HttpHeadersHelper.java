@@ -6,6 +6,8 @@ package com.azure.core.implementation.http;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 
+import java.util.Locale;
+
 /**
  * Helper class to access private methods of {@link HttpHeaders} across package boundaries.
  */
@@ -25,7 +27,7 @@ public final class HttpHeadersHelper {
          * @param value The HTTP header value.
          * @return The updated {@code headers} object.
          */
-        HttpHeaders setNoKeyFormat(HttpHeaders headers, String formattedName, String name, String value);
+        HttpHeaders setNoKeyFormatting(HttpHeaders headers, String formattedName, String name, String value);
 
         /**
          * Gets the HTTP header value for the formatted HTTP header name.
@@ -34,7 +36,7 @@ public final class HttpHeadersHelper {
          * @param formattedName The {@link HttpHeaders} formatted HTTP header name.
          * @return The header for the key, or null if it wasn't present.
          */
-        HttpHeader getNoKeyFormat(HttpHeaders headers, String formattedName);
+        HttpHeader getNoKeyFormatting(HttpHeaders headers, String formattedName);
 
         /**
          * Gets the HTTP header value for the formatted HTTP header name.
@@ -43,7 +45,7 @@ public final class HttpHeadersHelper {
          * @param formattedName The {@link HttpHeaders} formatted HTTP header name.
          * @return The header value for the key, or null if it wasn't present.
          */
-        String getValueNoKeyFormat(HttpHeaders headers, String formattedName);
+        String getValueNoKeyFormatting(HttpHeaders headers, String formattedName);
     }
 
     /**
@@ -56,6 +58,16 @@ public final class HttpHeadersHelper {
     }
 
     /**
+     * Gets the formatted version of {@code name} that is used internally by {@link HttpHeaders}.
+     *
+     * @param name The HTTP header name.
+     * @return The HTTP header name formatted to the internal use of {@link HttpHeaders}.
+     */
+    public static String formatKey(String name) {
+        return (name == null) ? null : name.toLowerCase(Locale.ROOT);
+    }
+
+    /**
      * Sets the HTTP header {@code name} with the specified {@code value} without formatting the {@code name}.
      *
      * @param headers The {@link HttpHeaders} having an HTTP header set.
@@ -64,12 +76,12 @@ public final class HttpHeadersHelper {
      * @param value The HTTP header value.
      * @return The updated {@code headers} object.
      */
-    public static HttpHeaders setNoKeyFormat(HttpHeaders headers, String formattedName, String name, String value) {
+    public static HttpHeaders setNoKeyFormatting(HttpHeaders headers, String formattedName, String name, String value) {
         if (headers.getClass() != HttpHeaders.class) {
             return headers.set(name, value);
         }
 
-        return accessor.setNoKeyFormat(headers, formattedName, name, value);
+        return accessor.setNoKeyFormatting(headers, formattedName, name, value);
     }
 
     /**
@@ -79,12 +91,12 @@ public final class HttpHeadersHelper {
      * @param formattedName The {@link HttpHeaders} formatted HTTP header name.
      * @return The header for the key, or null if it wasn't present.
      */
-    public static HttpHeader getNoKeyFormat(HttpHeaders headers, String formattedName) {
+    public static HttpHeader getNoKeyFormatting(HttpHeaders headers, String formattedName) {
         if (headers.getClass() != HttpHeaders.class) {
             return headers.get(formattedName);
         }
 
-        return accessor.getNoKeyFormat(headers, formattedName);
+        return accessor.getNoKeyFormatting(headers, formattedName);
     }
 
     /**
@@ -94,11 +106,11 @@ public final class HttpHeadersHelper {
      * @param formattedName The {@link HttpHeaders} formatted HTTP header name.
      * @return The header value for the key, or null if it wasn't present.
      */
-    public static String getValueNoKeyFormat(HttpHeaders headers, String formattedName) {
+    public static String getValueNoKeyFormatting(HttpHeaders headers, String formattedName) {
         if (headers.getClass() != HttpHeaders.class) {
             return headers.getValue(formattedName);
         }
 
-        return accessor.getValueNoKeyFormat(headers, formattedName);
+        return accessor.getValueNoKeyFormatting(headers, formattedName);
     }
 }

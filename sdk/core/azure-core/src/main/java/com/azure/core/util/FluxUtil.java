@@ -156,7 +156,7 @@ public final class FluxUtil {
     public static Mono<byte[]> collectBytesFromNetworkResponse(Flux<ByteBuffer> stream, HttpHeaders headers) {
         Objects.requireNonNull(headers, "'headers' cannot be null.");
 
-        String contentLengthHeader = HttpHeadersHelper.getValueNoKeyFormat(headers, "content-length");
+        String contentLengthHeader = HttpHeadersHelper.getValueNoKeyFormatting(headers, "content-length");
 
         if (contentLengthHeader == null) {
             return FluxUtil.collectBytesInByteBufferStream(stream);

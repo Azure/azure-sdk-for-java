@@ -189,7 +189,7 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
     }
 
     private static void setAuthorizationHeader(HttpHeaders headers, String token) {
-        HttpHeadersHelper.setNoKeyFormat(headers, AUTHORIZATION_HEADER_LOWER_CASE, AUTHORIZATION_HEADER,
+        HttpHeadersHelper.setNoKeyFormatting(headers, AUTHORIZATION_HEADER_LOWER_CASE, AUTHORIZATION_HEADER,
             BEARER + " " + token);
     }
 }

@@ -20,7 +20,7 @@ class QueryParameter {
 
     // this is the internal representation of a single value
     // for this parameter. this is the common case (vs. having name=a&name=b etc.)
-    private final String value;
+    private String value;
 
     // this is the actual internal representation of all values
     // in case we have name=a&name=b&name=c
@@ -74,6 +74,10 @@ class QueryParameter {
      * @return the value of this QueryParameter
      */
     public String getValue() {
+        if (value != null) {
+            return value;
+        }
+
         checkCachedStringValue();
         return cachedStringValue;
     }
@@ -84,12 +88,7 @@ class QueryParameter {
      * @return the values of this {@link QueryParameter} that are separated by a comma
      */
     public String[] getValues() {
-        if (values == null) {
-            // most common case
-            return new String[] {value};
-        } else {
-            return values.toArray(new String[] { });
-        }
+        return (value != null) ? new String[] {value} : values.toArray(new String[0]);
     }
 
     /**
@@ -119,6 +118,7 @@ class QueryParameter {
             // add current standalone value to the list
             // as the list is empty
             values.add(this.value);
+            this.value = null;
         }
 
         // add additional value to the parameter value list
@@ -133,12 +133,15 @@ class QueryParameter {
      */
     @Override
     public String toString() {
+        if (value != null) {
+            return name + "=" + value;
+        }
+
         checkCachedStringValue();
         return name + "=" + CACHED_STRING_VALUE_UPDATER.get(this);
     }
 
     private void checkCachedStringValue() {
-        CACHED_STRING_VALUE_UPDATER.compareAndSet(this, null,
-            (values == null) ? value : CoreUtils.stringJoin(",", values));
+        CACHED_STRING_VALUE_UPDATER.compareAndSet(this, null, CoreUtils.stringJoin(",", values));
     }
 }

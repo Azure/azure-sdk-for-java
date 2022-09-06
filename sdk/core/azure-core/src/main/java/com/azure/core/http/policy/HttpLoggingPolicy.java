@@ -208,7 +208,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 return;
             }
 
-            String contentType = HttpHeadersHelper.getValueNoKeyFormat(request.getHeaders(), "content-type");
+            String contentType = HttpHeadersHelper.getValueNoKeyFormatting(request.getHeaders(), "content-type");
             long contentLength = getContentLength(logger, request.getHeaders());
 
             logBuilder.addKeyValue(LoggingKeys.CONTENT_LENGTH_KEY, contentLength);
@@ -400,7 +400,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private static long getContentLength(ClientLogger logger, HttpHeaders headers) {
         long contentLength = 0;
 
-        String contentLengthString = HttpHeadersHelper.getValueNoKeyFormat(headers, "content-length");
+        String contentLengthString = HttpHeadersHelper.getValueNoKeyFormatting(headers, "content-length");
         if (CoreUtils.isNullOrEmpty(contentLengthString)) {
             return contentLength;
         }

@@ -100,7 +100,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
 
     @Override
     public Mono<Boolean> canPoll(Response<?> initialResponse) {
-        HttpHeader locationHeader = HttpHeadersHelper.getNoKeyFormat(initialResponse.getHeaders(),
+        HttpHeader locationHeader = HttpHeadersHelper.getNoKeyFormatting(initialResponse.getHeaders(),
             PollingConstants.LOCATION_LOWER_CASE);
         if (locationHeader != null) {
             try {
@@ -117,7 +117,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
     @Override
     public Mono<PollResponse<T>> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,
                                                    TypeReference<T> pollResponseType) {
-        HttpHeader locationHeader = HttpHeadersHelper.getNoKeyFormat(response.getHeaders(),
+        HttpHeader locationHeader = HttpHeadersHelper.getNoKeyFormatting(response.getHeaders(),
             PollingConstants.LOCATION_LOWER_CASE);
         if (locationHeader != null) {
             pollingContext.setData(PollingConstants.LOCATION,
@@ -148,7 +148,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
         return FluxUtil.withContext(context1 -> httpPipeline.send(request,
                 CoreUtils.mergeContexts(context1, this.context)))
             .flatMap(response -> {
-                HttpHeader locationHeader = HttpHeadersHelper.getNoKeyFormat(response.getHeaders(),
+                HttpHeader locationHeader = HttpHeadersHelper.getNoKeyFormatting(response.getHeaders(),
                     PollingConstants.LOCATION_LOWER_CASE);
                 if (locationHeader != null) {
                     pollingContext.setData(PollingConstants.LOCATION, locationHeader.getValue());

@@ -18,8 +18,11 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 public class Header {
     private final String name;
 
-    // this is the actual internal representation of all values
-    private final List<String> values;
+    // This is the internal representation of a single value.
+    private String value;
+
+    // This is the internal representation of multiple values.
+    private List<String> values;
 
     // but we also cache it to faster serve our public API
     private volatile String cachedStringValue;
@@ -36,8 +39,7 @@ public class Header {
     public Header(String name, String value) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         this.name = name;
-        this.values = new LinkedList<>();
-        this.values.add(value);
+        this.value = value;
     }
 
     /**
@@ -82,6 +84,10 @@ public class Header {
      * @return the value of this Header
      */
     public String getValue() {
+        if (value != null) {
+            return value;
+        }
+
         checkCachedStringValue();
         return CACHED_STRING_VALUE_UPDATER.get(this);
     }
@@ -92,7 +98,7 @@ public class Header {
      * @return the values of this {@link Header} that are separated by a comma
      */
     public String[] getValues() {
-        return values.toArray(new String[0]);
+        return (value != null) ? new String[] {value} : values.toArray(new String[0]);
     }
 
     /**
@@ -101,7 +107,7 @@ public class Header {
      * @return An unmodifiable list containing all values associated with this header.
      */
     public List<String> getValuesList() {
-        return Collections.unmodifiableList(values);
+        return (value != null) ? Collections.singletonList(value) : Collections.unmodifiableList(values);
     }
 
     /**
@@ -110,6 +116,12 @@ public class Header {
      * @param value the value to add
      */
     public void addValue(String value) {
+        if (values == null) {
+            values = new LinkedList<>();
+            values.add(this.value);
+            this.value = null;
+        }
+
         this.values.add(value);
         CACHED_STRING_VALUE_UPDATER.set(this, null);
     }
@@ -121,6 +133,10 @@ public class Header {
      */
     @Override
     public String toString() {
+        if (value != null) {
+            return name + ":" + value;
+        }
+
         checkCachedStringValue();
         return name + ":" + CACHED_STRING_VALUE_UPDATER.get(this);
     }

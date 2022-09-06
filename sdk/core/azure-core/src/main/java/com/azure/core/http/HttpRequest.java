@@ -263,7 +263,7 @@ public class HttpRequest {
     }
 
     private void setContentLength(long contentLength) {
-        HttpHeadersHelper.setNoKeyFormat(headers, "content-length", "Content-Length", String.valueOf(contentLength));
+        HttpHeadersHelper.setNoKeyFormatting(headers, "content-length", "Content-Length", String.valueOf(contentLength));
     }
 
     /**
