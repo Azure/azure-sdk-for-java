@@ -119,7 +119,7 @@ class AzureFileSystemConfigTest extends Specification {
             (Constants.ConfigurationConstants.Nio.ENVIRONMENT_DEFAULT_RESUME_RETRIES)         : resume,
             (Constants.ConfigurationConstants.Nio.ENVIRONMENT_DEFAULT_FILE_STORES)            : fileStores,
             (Constants.ConfigurationConstants.Nio.ENVIRONMENT_DEFAULT_SKIP_CONTAINER_CHECK)   : skipCheck
-        ].forEach((key, val) -> configSource.put(key, val as String))
+        ].each {configSource.put(it.key, it.value as String)}
 
         when:
         def c = new AzureFileSystemConfig(new ConfigurationBuilder(
