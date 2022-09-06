@@ -30,6 +30,7 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
@@ -423,9 +424,10 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    @Disabled
     public void listModels(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.listDocumentModels().byPage().take(4))
+        StepVerifier.create(client.listDocumentModels().byPage().take(1))
             .thenConsumeWhile(documentModelInfoPagedResponse -> {
                 documentModelInfoPagedResponse.getValue()
                     .forEach(documentModelInfo -> {
@@ -473,11 +475,12 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    @Disabled
     public void listOperations(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
 
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
         List<String> operationIdList = new ArrayList<>();
-        StepVerifier.create(client.listOperations().byPage().take(4))
+        StepVerifier.create(client.listOperations().byPage().take(1))
             .thenConsumeWhile(modelOperationInfoPagedResponse ->          {
                 modelOperationInfoPagedResponse.getValue().forEach(modelOperationInfo -> {
                     operationIdList.add(modelOperationInfo.getOperationId());
