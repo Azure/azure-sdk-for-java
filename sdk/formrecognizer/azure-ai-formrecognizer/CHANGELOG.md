@@ -1,7 +1,7 @@
 # Release History
 
-## 4.0.0-beta.7 (2022-09-08)
-This version of the SDK defaults to the latest supported API version, which currently is 2021-09-30-preview.
+## 4.0.0 (2022-09-08)
+This version of the SDK defaults 2022-08-31 going forward.
 
 ### Features Added
 - Added a method `getWords()` on model `DocumentLine`.
@@ -32,6 +32,13 @@ and `customDocumentModelLimit` on model `ResourceDetails`.
   - `deleteModel` to `deleteDocumentModel`
   - `beginBuildModel` to `beginBuildDocumentModel`
   - `beginComposeModel` to `beginComposeDocumentModel`
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.32.0`.
+- Upgraded `azure-core-http-netty` to `1.12.5`.
 
 ## 3.1.14 (2022-08-11)
 
