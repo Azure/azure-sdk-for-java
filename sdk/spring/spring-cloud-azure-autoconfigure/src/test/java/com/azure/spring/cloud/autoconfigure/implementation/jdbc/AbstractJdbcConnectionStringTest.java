@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionString.INVALID_PROPERTY_PAIR_FORMAT;
-import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionStringUtils.buildEnhancedPropertiesOrderedString;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionStringUtils.enhanceJdbcUrl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -120,10 +120,7 @@ abstract class AbstractJdbcConnectionStringTest {
         jdbcConnectionString.enhanceProperties(databaseType.getDefaultEnhancedProperties());
 
         String enhancedUrl = jdbcConnectionString.getJdbcUrl();
-        String expectedUrl = String.format("%s%s%s",
-            connectionString,
-            databaseType.getPathQueryDelimiter(),
-            buildDefaultEnhancedPropertiesOrderedString(databaseType));
+        String expectedUrl = enhanceJdbcUrl(databaseType, false, connectionString);
 
         Assertions.assertEquals(databaseType, jdbcConnectionString.getDatabaseType());
         Assertions.assertEquals(expectedUrl, enhancedUrl);
@@ -140,10 +137,7 @@ abstract class AbstractJdbcConnectionStringTest {
         jdbcConnectionString.enhanceProperties(databaseType.getDefaultEnhancedProperties());
 
         String enhancedUrl = jdbcConnectionString.getJdbcUrl();
-        String expectedUrl = String.format("%s%s%s",
-            connectionString,
-            databaseType.getQueryDelimiter(),
-            buildDefaultEnhancedPropertiesOrderedString(databaseType));
+        String expectedUrl = enhanceJdbcUrl(databaseType, connectionString);
 
         Assertions.assertEquals(databaseType, jdbcConnectionString.getDatabaseType());
         Assertions.assertEquals(expectedUrl, enhancedUrl);
@@ -278,8 +272,5 @@ abstract class AbstractJdbcConnectionStringTest {
         Assertions.assertEquals(String.format(PATH_WITH_QUERY_PATTERN, getDatabaseType().getSchema(), getDatabaseType().getPathQueryDelimiter(), newQueries), jdbcUrl);
     }
 
-    private String buildDefaultEnhancedPropertiesOrderedString(DatabaseType databaseType) {
-        return buildEnhancedPropertiesOrderedString(databaseType.getDefaultEnhancedProperties(),
-            databaseType.getQueryDelimiter());
-    }
+
 }
