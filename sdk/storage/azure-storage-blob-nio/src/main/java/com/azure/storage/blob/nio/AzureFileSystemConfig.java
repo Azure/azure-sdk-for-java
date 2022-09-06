@@ -15,7 +15,6 @@ import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RetryPolicyType;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +41,7 @@ class AzureFileSystemConfig {
 
     AzureFileSystemConfig() {}
 
-    public AzureFileSystemConfig(Map<String, ?> config) {
+    AzureFileSystemConfig(Map<String, ?> config) {
         sharedKeyCredential = (StorageSharedKeyCredential) config.get(AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL);
         sasCredential = (AzureSasCredential) config.get(AzureFileSystem.AZURE_STORAGE_SAS_TOKEN_CREDENTIAL);
         logOptions.setLogLevel(
@@ -70,7 +69,7 @@ class AzureFileSystemConfig {
         skipInitialContainerCheck = (Boolean) config.get(AzureFileSystem.AZURE_STORAGE_SKIP_INITIAL_CONTAINER_CHECK);
     }
 
-    public AzureFileSystemConfig(Configuration config) {
+    AzureFileSystemConfig(Configuration config) {
         if (!CoreUtils.isNullOrEmpty(config.get(Nio.ENVIRONMENT_DEFAULT_ACCOUNT_NAME))
             && !CoreUtils.isNullOrEmpty(config.get(Nio.ENVIRONMENT_DEFAULT_ACCOUNT_KEY))) {
             sharedKeyCredential = new StorageSharedKeyCredential(
