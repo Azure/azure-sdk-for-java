@@ -154,7 +154,7 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
     }
 
     @Test
-    public void serviceClientDeleteTableFailsWithIllegalArgumentExceptionIfTableNameInURI() {
+    public void serviceClientDeleteTableFailsWithIllegalArgumentExceptionIfTableNameInUri() {
         // Arrange
         String assertionString = "Table name found within client endpoint URI. Remove table name from endpoint.";
         String tableName = testResourceNamer.randomName("test", 20);
