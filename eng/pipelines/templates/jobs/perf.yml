@@ -54,9 +54,3 @@ extends:
     AdditionalArguments: ${{ parameters.AdditionalArguments }}
     EnvVars: ${{ parameters.EnvVars}}
     ToolsRepoCommitish: ${{ parameters.ToolsRepoCommitish }}
-    ${{ if contains(parameters.AdditionalArguments, '--profiling') }}:
-      PostRunSteps:
-        - pwsh: |
-            [System.IO.Compression.ZipFile]::CreateFromDirectory("$(Agent.BuildDirectory)/s/java-profiling","$(Agent.BuildDirectory)/s/java-profiling.zip")
-        - publish: $(Agent.BuildDirectory)/s/java-profiling.zip
-          artifact: $(System.JobName)-$(System.JobAttempt)-java-profiling.zip
