@@ -1,6 +1,6 @@
 # Release History
 
-## 12.15.0-beta.1 (Unreleased)
+## 12.16.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,24 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.16.0-beta.1 (2022-09-06)
+
+### Features Added
+- Added support for 2021-10-04 service version.
+
+### Bugs Fixed
+- Fixed a bug that would cause auth failures when trying to rename a file share/directory share while authenticating with a sas.
+
+## 12.15.0 (2022-08-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.30.0` to version `1.31.0`.
+- Upgraded `azure-core-http-netty` from `1.12.3` to version `1.12.4`.
+- Upgraded `azure-storage-common` from `12.17.0` to version `12.18.0-beta.1`.
 
 ## 12.14.0 (2022-07-07)
 

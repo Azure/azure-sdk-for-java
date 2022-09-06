@@ -12,15 +12,13 @@ import java.util.List;
 @Fluent
 public final class ApplicationGatewayProbeHealthResponseMatch {
     /*
-     * Body that must be contained in the health response. Default value is
-     * empty.
+     * Body that must be contained in the health response. Default value is empty.
      */
     @JsonProperty(value = "body")
     private String body;
 
     /*
-     * Allowed ranges of healthy status codes. Default range of healthy status
-     * codes is 200-399.
+     * Allowed ranges of healthy status codes. Default range of healthy status codes is 200-399.
      */
     @JsonProperty(value = "statusCodes")
     private List<String> statusCodes;

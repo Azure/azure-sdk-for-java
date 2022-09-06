@@ -32,7 +32,7 @@ public interface Modules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String automationAccountName, String moduleName, Context context);
@@ -60,7 +60,7 @@ public interface Modules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the module type.
+     * @return definition of the module type along with {@link Response}.
      */
     Response<Module> getWithResponse(
         String resourceGroupName, String automationAccountName, String moduleName, Context context);
@@ -94,7 +94,7 @@ public interface Modules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the module type.
+     * @return definition of the module type along with {@link Response}.
      */
     Response<Module> createOrUpdateWithResponse(
         String resourceGroupName,
@@ -129,7 +129,7 @@ public interface Modules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the module type.
+     * @return definition of the module type along with {@link Response}.
      */
     Response<Module> updateWithResponse(
         String resourceGroupName,
@@ -146,7 +146,7 @@ public interface Modules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list module operation.
+     * @return the response model for the list module operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Module> listByAutomationAccount(String resourceGroupName, String automationAccountName);
 
@@ -159,7 +159,7 @@ public interface Modules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list module operation.
+     * @return the response model for the list module operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Module> listByAutomationAccount(
         String resourceGroupName, String automationAccountName, Context context);

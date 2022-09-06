@@ -1,6 +1,26 @@
 # Release History
 
-## 12.19.0-beta.1 (Unreleased)
+## 12.20.0-beta.2 (Unreleased)
+
+### Features Added
+- Added ability to rename existing containers with `BlobContainerClient.rename()`.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 12.20.0-beta.1 (2022-09-06)
+
+### Features Added
+- Added support for 2021-10-04 service version.
+- Added new overload for `BlobClient.upload()` that takes in `InputStream` without specifying length.
+
+### Breaking Changes
+- `BlobItem.isPrefix()` now returns false if it is not a virtual directory instead of null.
+
+## 12.19.0 (2022-08-12)
 
 ### Features Added
 - Added `ParallelTransferOptions.getProgressListener` and `ParallelTransferOptions.setProgressListener`
@@ -12,10 +32,6 @@
   `BlockBlobAsyncClient.upload(BinaryData)`, `BlockBlobAsyncClient.upload(BinaryData, boolean)`,
   `BlockBlobClient.stageBlock(String, BinaryData)`, `BlockBlobClient.stageBlockWithResponse(BlockBlobStageBlockOptions, Duration, Context)`,
   `BlockBlobClient.upload(BinaryData)`, `BlockBlobClient.upload(BinaryData, boolean)`
-
-### Breaking Changes
-
-### Bugs Fixed
 
 ### Other Changes
 - `com.azure.storage.blob.ProgressReceiver` and `com.azure.storage.blob.ProgressReporter` are deprecated

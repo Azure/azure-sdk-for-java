@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The WafMetricsResponseSeriesItem model. */
 @Fluent
 public final class WafMetricsResponseSeriesItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WafMetricsResponseSeriesItem.class);
-
     /*
      * The metric property.
      */
@@ -37,7 +33,7 @@ public final class WafMetricsResponseSeriesItem {
      * The data property.
      */
     @JsonProperty(value = "data")
-    private List<Components18OrqelSchemasWafmetricsresponsePropertiesSeriesItemsPropertiesDataItems> data;
+    private List<WafMetricsResponseSeriesItemData> data;
 
     /**
      * Get the metric property: The metric property.
@@ -104,7 +100,7 @@ public final class WafMetricsResponseSeriesItem {
      *
      * @return the data value.
      */
-    public List<Components18OrqelSchemasWafmetricsresponsePropertiesSeriesItemsPropertiesDataItems> data() {
+    public List<WafMetricsResponseSeriesItemData> data() {
         return this.data;
     }
 
@@ -114,8 +110,7 @@ public final class WafMetricsResponseSeriesItem {
      * @param data the data value to set.
      * @return the WafMetricsResponseSeriesItem object itself.
      */
-    public WafMetricsResponseSeriesItem withData(
-        List<Components18OrqelSchemasWafmetricsresponsePropertiesSeriesItemsPropertiesDataItems> data) {
+    public WafMetricsResponseSeriesItem withData(List<WafMetricsResponseSeriesItemData> data) {
         this.data = data;
         return this;
     }

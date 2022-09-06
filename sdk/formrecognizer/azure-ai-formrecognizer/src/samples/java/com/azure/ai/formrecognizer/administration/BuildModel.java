@@ -3,10 +3,12 @@
 
 package com.azure.ai.formrecognizer.administration;
 
-import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
-import com.azure.ai.formrecognizer.administration.models.DocumentModelBuildMode;
-import com.azure.ai.formrecognizer.administration.models.DocumentModelDetails;
-import com.azure.ai.formrecognizer.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient;
+import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildModelOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;

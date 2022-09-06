@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ApiType. */
+/** Enum to indicate the API type of the restorable database account. */
 public final class ApiType extends ExpandableStringEnum<ApiType> {
     /** Static value MongoDB for ApiType. */
     public static final ApiType MONGO_DB = fromString("MongoDB");

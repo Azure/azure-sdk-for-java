@@ -3,9 +3,11 @@
 
 package com.azure.ai.formrecognizer.administration;
 
-import com.azure.ai.formrecognizer.administration.models.ResourceDetails;
-import com.azure.ai.formrecognizer.administration.models.DocumentModelDetails;
-import com.azure.ai.formrecognizer.administration.models.DocumentModelSummary;
+import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient;
+import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelSummary;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
@@ -35,7 +37,7 @@ public class ManageCustomModels {
         // First, we see how many models we have, and what our limit is
         ResourceDetails resourceDetails = client.getResourceDetails();
         System.out.printf("The resource has %s models, and we can have at most %s models",
-            resourceDetails.getDocumentModelCount(), resourceDetails.getDocumentModelLimit());
+            resourceDetails.getCustomDocumentModelCount(), resourceDetails.getCustomDocumentModelLimit());
 
         // Next, we get a paged list of all of our models
         PagedIterable<DocumentModelSummary> customDocumentModels = client.listModels();

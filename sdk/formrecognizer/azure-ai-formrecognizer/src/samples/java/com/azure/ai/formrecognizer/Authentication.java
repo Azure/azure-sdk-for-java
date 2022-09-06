@@ -3,14 +3,16 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient;
-import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClientBuilder;
-import com.azure.ai.formrecognizer.administration.models.ResourceDetails;
-import com.azure.ai.formrecognizer.models.AnalyzeResult;
-import com.azure.ai.formrecognizer.models.AnalyzedDocument;
-import com.azure.ai.formrecognizer.models.DocumentField;
-import com.azure.ai.formrecognizer.models.DocumentFieldType;
-import com.azure.ai.formrecognizer.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient;
+import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientBuilder;
+import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient;
+import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
+import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentField;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.AzureAuthorityHosts;
@@ -162,7 +164,7 @@ public class Authentication {
     private static void getResourceInfo(DocumentModelAdministrationClient documentModelAdminClient) {
         ResourceDetails resourceDetails = documentModelAdminClient.getResourceDetails();
         System.out.printf("Max number of models that can be trained for this account: %s%n",
-            resourceDetails.getDocumentModelLimit());
-        System.out.printf("Current count of built custom models: %d%n", resourceDetails.getDocumentModelCount());
+            resourceDetails.getCustomDocumentModelLimit());
+        System.out.printf("Current count of built custom models: %d%n", resourceDetails.getCustomDocumentModelCount());
     }
 }

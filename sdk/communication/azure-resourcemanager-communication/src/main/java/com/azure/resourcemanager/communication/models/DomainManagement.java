@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DomainManagement. */
+/** Describes how a Domains resource is being managed. */
 public final class DomainManagement extends ExpandableStringEnum<DomainManagement> {
     /** Static value AzureManaged for DomainManagement. */
     public static final DomainManagement AZURE_MANAGED = fromString("AzureManaged");

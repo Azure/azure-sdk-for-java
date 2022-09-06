@@ -195,6 +195,7 @@ public abstract class AbstractQueryGenerator {
             case GREATER_THAN:
             case GREATER_THAN_EQUAL:
             case CONTAINING:
+            case NOT_CONTAINING:
             case ENDS_WITH:
             case STARTS_WITH:
             case ARRAY_CONTAINS:

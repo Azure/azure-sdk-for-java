@@ -12,17 +12,13 @@ import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import com.azure.resourcemanager.cdn.models.DomainValidationProperties;
 import com.azure.resourcemanager.cdn.models.DomainValidationState;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The JSON object that contains the properties of the domain to create. */
 @Fluent
 public final class AfdDomainProperties extends AfdDomainUpdatePropertiesParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AfdDomainProperties.class);
-
     /*
-     * Provisioning substate shows the progress of custom HTTPS
-     * enabling/disabling process step by step. DCV stands for
+     * Provisioning substate shows the progress of custom HTTPS enabling/disabling process step by step. DCV stands for
      * DomainControlValidation.
      */
     @JsonProperty(value = "domainValidationState", access = JsonProperty.Access.WRITE_ONLY)
@@ -140,7 +136,7 @@ public final class AfdDomainProperties extends AfdDomainUpdatePropertiesParamete
     public void validate() {
         super.validate();
         if (hostname() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property hostname in model AfdDomainProperties"));
         }
@@ -148,4 +144,6 @@ public final class AfdDomainProperties extends AfdDomainUpdatePropertiesParamete
             validationProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AfdDomainProperties.class);
 }

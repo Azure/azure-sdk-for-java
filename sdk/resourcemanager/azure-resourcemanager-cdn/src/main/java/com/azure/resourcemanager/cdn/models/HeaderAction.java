@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HeaderAction. */
+/** Action to perform. */
 public final class HeaderAction extends ExpandableStringEnum<HeaderAction> {
     /** Static value Append for HeaderAction. */
     public static final HeaderAction APPEND = fromString("Append");
@@ -30,7 +30,11 @@ public final class HeaderAction extends ExpandableStringEnum<HeaderAction> {
         return fromString(name, HeaderAction.class);
     }
 
-    /** @return known HeaderAction values. */
+    /**
+     * Gets known HeaderAction values.
+     *
+     * @return known HeaderAction values.
+     */
     public static Collection<HeaderAction> values() {
         return values(HeaderAction.class);
     }

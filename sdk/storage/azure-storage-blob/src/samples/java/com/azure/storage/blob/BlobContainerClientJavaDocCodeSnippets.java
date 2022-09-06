@@ -509,7 +509,7 @@ public class BlobContainerClientJavaDocCodeSnippets {
         }
         // END: com.azure.storage.blob.BlobContainerClient.deleteIfExistsWithResponse#BlobRequestConditions-Duration-Context
     }
-//
+
 //    /**
 //     * Code snippet for {@link BlobContainerClient#rename(String)}
 //     */

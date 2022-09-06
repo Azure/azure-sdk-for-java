@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.fluent.ConnectionTypesClient;
 import com.azure.resourcemanager.automation.fluent.models.ConnectionTypeInner;
 import com.azure.resourcemanager.automation.models.ConnectionTypeCreateOrUpdateParameters;
@@ -37,8 +36,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ConnectionTypesClient. */
 public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
-    private final ClientLogger logger = new ClientLogger(ConnectionTypesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ConnectionTypesService service;
 
@@ -147,7 +144,7 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -176,7 +173,7 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -204,7 +201,7 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -233,7 +230,7 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -257,12 +254,12 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String automationAccountName, String connectionTypeName) {
         return deleteWithResponseAsync(resourceGroupName, automationAccountName, connectionTypeName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -290,7 +287,7 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -307,7 +304,7 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the connection type.
+     * @return definition of the connection type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectionTypeInner>> getWithResponseAsync(
@@ -336,7 +333,7 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -364,7 +361,7 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the connection type.
+     * @return definition of the connection type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectionTypeInner>> getWithResponseAsync(
@@ -393,7 +390,7 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -417,20 +414,13 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the connection type.
+     * @return definition of the connection type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConnectionTypeInner> getAsync(
         String resourceGroupName, String automationAccountName, String connectionTypeName) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, connectionTypeName)
-            .flatMap(
-                (Response<ConnectionTypeInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -459,7 +449,7 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the connection type.
+     * @return definition of the connection type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectionTypeInner> getWithResponse(
@@ -477,7 +467,7 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the connection type.
+     * @return definition of the connection type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectionTypeInner>> createOrUpdateWithResponseAsync(
@@ -514,7 +504,7 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -544,7 +534,7 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the connection type.
+     * @return definition of the connection type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectionTypeInner>> createOrUpdateWithResponseAsync(
@@ -582,7 +572,7 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -608,7 +598,7 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the connection type.
+     * @return definition of the connection type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConnectionTypeInner> createOrUpdateAsync(
@@ -617,14 +607,7 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
         String connectionTypeName,
         ConnectionTypeCreateOrUpdateParameters parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, automationAccountName, connectionTypeName, parameters)
-            .flatMap(
-                (Response<ConnectionTypeInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -659,7 +642,7 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the connection type.
+     * @return definition of the connection type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectionTypeInner> createOrUpdateWithResponse(
@@ -681,7 +664,8 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list connection type operation.
+     * @return the response model for the list connection type operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectionTypeInner>> listByAutomationAccountSinglePageAsync(
@@ -706,7 +690,7 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -741,7 +725,8 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list connection type operation.
+     * @return the response model for the list connection type operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectionTypeInner>> listByAutomationAccountSinglePageAsync(
@@ -766,7 +751,7 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -797,7 +782,7 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list connection type operation.
+     * @return the response model for the list connection type operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConnectionTypeInner> listByAutomationAccountAsync(
@@ -816,7 +801,7 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list connection type operation.
+     * @return the response model for the list connection type operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConnectionTypeInner> listByAutomationAccountAsync(
@@ -834,7 +819,8 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list connection type operation.
+     * @return the response model for the list connection type operation as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectionTypeInner> listByAutomationAccount(
@@ -851,7 +837,8 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list connection type operation.
+     * @return the response model for the list connection type operation as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectionTypeInner> listByAutomationAccount(
@@ -862,11 +849,13 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list connection type operation.
+     * @return the response model for the list connection type operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectionTypeInner>> listByAutomationAccountNextSinglePageAsync(String nextLink) {
@@ -898,12 +887,14 @@ public final class ConnectionTypesClientImpl implements ConnectionTypesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list connection type operation.
+     * @return the response model for the list connection type operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectionTypeInner>> listByAutomationAccountNextSinglePageAsync(

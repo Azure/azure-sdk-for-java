@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.35.0-beta.1 (Unreleased)
+### 4.36.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,9 +9,22 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Added system property to turn on replica validation - See [PR 29767](https://github.com/Azure/azure-sdk-for-java/pull/29767)
+* Added improvement to avoid retry on same replica that previously failed with 410, 408 and  >= 500 status codes - See [PR 29767](https://github.com/Azure/azure-sdk-for-java/pull/29767)
+* Improvement when `connectionEndpointRediscoveryEnabled` is enabled - See [PR 30281](https://github.com/Azure/azure-sdk-for-java/pull/30281)
+* Added replica validation for Unknown status if `openConnectionsAndInitCaches` is used and replica validation is enabled - See [PR 30277](https://github.com/Azure/azure-sdk-for-java/pull/30277)
+
+### 4.35.1 (2022-08-29)
+#### Other Changes
+* Added non-blocking async lazy cache to improve upgrade and scaling scenarios - See [PR 29322](https://github.com/Azure/azure-sdk-for-java/pull/29322)
+* Improved performance of `StoreResponse` using array headers - See [PR 30596](https://github.com/Azure/azure-sdk-for-java/pull/30596)
+
+### 4.35.0 (2022-08-19)
+#### Other Changes
+* Updated netty library version to `4.1.79.Final`.
+* Updated `reactor-core` version to `3.4.21`.
 
 ### 4.34.0 (2022-08-05)
-
 #### Features Added
 * GA of `DedicatedGatewayRequestOptions` API. See [PR 30142](https://github.com/Azure/azure-sdk-for-java/pull/30142)
 
@@ -20,7 +33,6 @@
 * Reverted changes of [PR 29944](https://github.com/Azure/azure-sdk-for-java/pull/29944) to avoid possible regression when customers use id with special characters and their account is on ComputeGateway already. - See [PR 30283](https://github.com/Azure/azure-sdk-for-java/pull/30283)
 
 ### 4.33.1 (2022-07-22)
-
 #### Bugs Fixed
 * Fixed issues with "id" encoding when using special characters that should be allowed in the "id" property of a document. - See [PR 29944](https://github.com/Azure/azure-sdk-for-java/pull/29944)
 * Fixed `NotFoundException` for `queryChangeFeed` with staled feed range after split - See [PR 29982](https://github.com/Azure/azure-sdk-for-java/pull/29982)

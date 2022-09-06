@@ -11,10 +11,9 @@ import com.azure.resourcemanager.automation.fluent.StatisticsOperationsClient;
 import com.azure.resourcemanager.automation.fluent.models.StatisticsInner;
 import com.azure.resourcemanager.automation.models.Statistics;
 import com.azure.resourcemanager.automation.models.StatisticsOperations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class StatisticsOperationsImpl implements StatisticsOperations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StatisticsOperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(StatisticsOperationsImpl.class);
 
     private final StatisticsOperationsClient innerClient;
 

@@ -195,6 +195,10 @@ public final class Region {
      */
     public static final Region UAE_CENTRAL = new Region("uaecentral", "UAE Central");
     /**
+     * Qatar Central (Middle East) (recommended)
+     */
+    public static final Region QATAR_CENTRAL = new Region("qatarcentral", "Qatar Central");
+    /**
      * South Africa North (Africa) (recommended)
      */
     public static final Region SOUTHAFRICA_NORTH = new Region("southafricanorth", "South Africa North");

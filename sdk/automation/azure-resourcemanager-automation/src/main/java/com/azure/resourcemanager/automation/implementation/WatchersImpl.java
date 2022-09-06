@@ -13,10 +13,9 @@ import com.azure.resourcemanager.automation.fluent.WatchersClient;
 import com.azure.resourcemanager.automation.fluent.models.WatcherInner;
 import com.azure.resourcemanager.automation.models.Watcher;
 import com.azure.resourcemanager.automation.models.Watchers;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WatchersImpl implements Watchers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WatchersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WatchersImpl.class);
 
     private final WatchersClient innerClient;
 
@@ -95,7 +94,7 @@ public final class WatchersImpl implements Watchers {
     public Watcher getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -103,7 +102,7 @@ public final class WatchersImpl implements Watchers {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -112,7 +111,7 @@ public final class WatchersImpl implements Watchers {
         }
         String watcherName = Utils.getValueFromIdByName(id, "watchers");
         if (watcherName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'watchers'.", id)));
@@ -123,7 +122,7 @@ public final class WatchersImpl implements Watchers {
     public Response<Watcher> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -131,7 +130,7 @@ public final class WatchersImpl implements Watchers {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -140,7 +139,7 @@ public final class WatchersImpl implements Watchers {
         }
         String watcherName = Utils.getValueFromIdByName(id, "watchers");
         if (watcherName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'watchers'.", id)));
@@ -151,7 +150,7 @@ public final class WatchersImpl implements Watchers {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -159,7 +158,7 @@ public final class WatchersImpl implements Watchers {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -168,18 +167,18 @@ public final class WatchersImpl implements Watchers {
         }
         String watcherName = Utils.getValueFromIdByName(id, "watchers");
         if (watcherName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'watchers'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, automationAccountName, watcherName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, automationAccountName, watcherName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -187,7 +186,7 @@ public final class WatchersImpl implements Watchers {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -196,7 +195,7 @@ public final class WatchersImpl implements Watchers {
         }
         String watcherName = Utils.getValueFromIdByName(id, "watchers");
         if (watcherName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'watchers'.", id)));

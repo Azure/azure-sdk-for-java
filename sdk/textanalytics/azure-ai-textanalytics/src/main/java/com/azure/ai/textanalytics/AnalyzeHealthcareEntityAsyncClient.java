@@ -15,7 +15,6 @@ import com.azure.ai.textanalytics.implementation.models.AnalyzeTextLROResult;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextsCancelJobHeaders;
 import com.azure.ai.textanalytics.implementation.models.CancelHealthJobHeaders;
 import com.azure.ai.textanalytics.implementation.models.Error;
-import com.azure.ai.textanalytics.implementation.models.FhirVersion;
 import com.azure.ai.textanalytics.implementation.models.HealthcareJobState;
 import com.azure.ai.textanalytics.implementation.models.HealthcareLROResult;
 import com.azure.ai.textanalytics.implementation.models.HealthcareLROTask;
@@ -24,6 +23,7 @@ import com.azure.ai.textanalytics.implementation.models.HealthcareTaskParameters
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageAnalysisInput;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
+import com.azure.ai.textanalytics.implementation.models.State;
 import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
@@ -58,12 +58,17 @@ import java.util.stream.Collectors;
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
+import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
 import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
+import static com.azure.ai.textanalytics.implementation.Utility.throwIfTargetServiceVersionFound;
 import static com.azure.ai.textanalytics.implementation.Utility.toAnalyzeHealthcareEntitiesResultCollection;
-import static com.azure.ai.textanalytics.implementation.Utility.toFhirVersion;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
+import static com.azure.ai.textanalytics.implementation.models.State.CANCELLED;
+import static com.azure.ai.textanalytics.implementation.models.State.NOT_STARTED;
+import static com.azure.ai.textanalytics.implementation.models.State.RUNNING;
+import static com.azure.ai.textanalytics.implementation.models.State.SUCCEEDED;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
@@ -72,20 +77,30 @@ class AnalyzeHealthcareEntityAsyncClient {
     private final TextAnalyticsClientImpl legacyService;
     private final AnalyzeTextsImpl service;
 
-    AnalyzeHealthcareEntityAsyncClient(TextAnalyticsClientImpl legacyService) {
+    private final TextAnalyticsServiceVersion serviceVersion;
+
+    AnalyzeHealthcareEntityAsyncClient(TextAnalyticsClientImpl legacyService,
+                                       TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = legacyService;
         this.service = null;
+        this.serviceVersion = serviceVersion;
     }
 
-    AnalyzeHealthcareEntityAsyncClient(AnalyzeTextsImpl service) {
+    AnalyzeHealthcareEntityAsyncClient(AnalyzeTextsImpl service, TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = null;
         this.service = service;
+        this.serviceVersion = serviceVersion;
     }
 
     PollerFlux<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedFlux>
         beginAnalyzeHealthcareEntities(Iterable<TextDocumentInput> documents, AnalyzeHealthcareEntitiesOptions options,
             Context context) {
         try {
+            throwIfTargetServiceVersionFound(this.serviceVersion,
+                Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+                getUnsupportedServiceApiVersionMessage("beginAnalyzeHealthcareEntities", serviceVersion,
+                    TextAnalyticsServiceVersion.V3_1));
+            throwIfCallingNotAvailableFeatureInOptions(options);
             inputDocumentsValidation(documents);
             options = getNotNullAnalyzeHealthcareEntitiesOptions(options);
             final Context finalContext = getNotNullContext(context)
@@ -94,23 +109,23 @@ class AnalyzeHealthcareEntityAsyncClient {
             final StringIndexType finalStringIndexType = StringIndexType.UTF16CODE_UNIT;
             final String finalModelVersion = options.getModelVersion();
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
-            final FhirVersion finalFhirVersion = toFhirVersion(options.getFhirVersion());
 
             if (service != null) {
+                final String displayName = options.getDisplayName();
                 return new PollerFlux<>(
                     DEFAULT_POLL_INTERVAL,
                     activationOperation(
                         service.submitJobWithResponseAsync(
                             new AnalyzeTextJobsInput()
+                                .setDisplayName(displayName)
                                 .setAnalysisInput(
                                     new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
                                 .setTasks(Arrays.asList(
                                     new HealthcareLROTask().setParameters(
                                         new HealthcareTaskParameters()
-                                                                       .setFhirVersion(finalFhirVersion)
-                                                                       .setStringIndexType(finalStringIndexType)
-                                                                       .setModelVersion(finalModelVersion)
-                                                                       .setLoggingOptOut(finalLoggingOptOut)))),
+                                            .setStringIndexType(finalStringIndexType)
+                                            .setModelVersion(finalModelVersion)
+                                            .setLoggingOptOut(finalLoggingOptOut)))),
                             finalContext)
                             .map(healthResponse -> {
                                 final AnalyzeHealthcareEntitiesOperationDetail operationDetail =
@@ -161,6 +176,11 @@ class AnalyzeHealthcareEntityAsyncClient {
         beginAnalyzeHealthcarePagedIterable(Iterable<TextDocumentInput> documents,
             AnalyzeHealthcareEntitiesOptions options, Context context) {
         try {
+            throwIfTargetServiceVersionFound(this.serviceVersion,
+                Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+                getUnsupportedServiceApiVersionMessage("beginAnalyzeHealthcareEntities", serviceVersion,
+                    TextAnalyticsServiceVersion.V3_1));
+            throwIfCallingNotAvailableFeatureInOptions(options);
             inputDocumentsValidation(documents);
             options = getNotNullAnalyzeHealthcareEntitiesOptions(options);
             final Context finalContext = getNotNullContext(context)
@@ -169,23 +189,23 @@ class AnalyzeHealthcareEntityAsyncClient {
             final StringIndexType finalStringIndexType = StringIndexType.UTF16CODE_UNIT;
             final String finalModelVersion = options.getModelVersion();
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
-            final FhirVersion finalFhirVersion = toFhirVersion(options.getFhirVersion());
 
             if (service != null) {
+                final String displayName = options.getDisplayName();
                 return new PollerFlux<>(
                     DEFAULT_POLL_INTERVAL,
                     activationOperation(
                         service.submitJobWithResponseAsync(
                             new AnalyzeTextJobsInput()
+                                .setDisplayName(displayName)
                                 .setAnalysisInput(
                                     new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
                                 .setTasks(Arrays.asList(
                                     new HealthcareLROTask().setParameters(
                                         new HealthcareTaskParameters()
-                                                                       .setFhirVersion(finalFhirVersion)
-                                                                       .setStringIndexType(finalStringIndexType)
-                                                                       .setModelVersion(finalModelVersion)
-                                                                       .setLoggingOptOut(finalLoggingOptOut)))),
+                                            .setStringIndexType(finalStringIndexType)
+                                            .setModelVersion(finalModelVersion)
+                                            .setLoggingOptOut(finalLoggingOptOut)))),
                             finalContext)
                             .map(healthResponse -> {
                                 final AnalyzeHealthcareEntitiesOperationDetail operationDetail =
@@ -491,21 +511,16 @@ class AnalyzeHealthcareEntityAsyncClient {
         Response<HealthcareJobState> analyzeOperationResultResponse,
         PollResponse<AnalyzeHealthcareEntitiesOperationDetail> operationResultPollResponse) {
         LongRunningOperationStatus status;
-        switch (analyzeOperationResultResponse.getValue().getStatus()) {
-            case NOT_STARTED:
-            case RUNNING:
-                status = LongRunningOperationStatus.IN_PROGRESS;
-                break;
-            case SUCCEEDED:
-                status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                break;
-            case CANCELLED:
-                status = LongRunningOperationStatus.USER_CANCELLED;
-                break;
-            default:
-                status = LongRunningOperationStatus.fromString(
-                    analyzeOperationResultResponse.getValue().getStatus().toString(), true);
-                break;
+        State state = analyzeOperationResultResponse.getValue().getStatus();
+        if (NOT_STARTED.equals(state) || RUNNING.equals(state)) {
+            status = LongRunningOperationStatus.IN_PROGRESS;
+        } else if (SUCCEEDED.equals(state)) {
+            status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+        } else if (CANCELLED.equals(state)) {
+            status = LongRunningOperationStatus.USER_CANCELLED;
+        } else {
+            status = LongRunningOperationStatus.fromString(
+                analyzeOperationResultResponse.getValue().getStatus().toString(), true);
         }
 
         AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setCreatedAt(operationResultPollResponse.getValue(),
@@ -521,27 +536,23 @@ class AnalyzeHealthcareEntityAsyncClient {
         Response<AnalyzeTextJobState> analyzeOperationResultResponse,
         PollResponse<AnalyzeHealthcareEntitiesOperationDetail> operationResultPollResponse) {
         LongRunningOperationStatus status;
-        switch (analyzeOperationResultResponse.getValue().getStatus()) {
-            case NOT_STARTED:
-            case RUNNING:
-                status = LongRunningOperationStatus.IN_PROGRESS;
-                break;
-            case SUCCEEDED:
-                status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                break;
-            case CANCELLED:
-                status = LongRunningOperationStatus.USER_CANCELLED;
-                break;
-            default:
-                status = LongRunningOperationStatus.fromString(
-                    analyzeOperationResultResponse.getValue().getStatus().toString(), true);
-                break;
+        State state = analyzeOperationResultResponse.getValue().getStatus();
+        if (NOT_STARTED.equals(state) || RUNNING.equals(state)) {
+            status = LongRunningOperationStatus.IN_PROGRESS;
+        } else if (SUCCEEDED.equals(state)) {
+            status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+        } else if (CANCELLED.equals(state)) {
+            status = LongRunningOperationStatus.USER_CANCELLED;
+        } else {
+            status = LongRunningOperationStatus.fromString(
+                analyzeOperationResultResponse.getValue().getStatus().toString(), true);
         }
-
+        AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setDisplayName(operationResultPollResponse.getValue(),
+            analyzeOperationResultResponse.getValue().getDisplayName());
         AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setCreatedAt(operationResultPollResponse.getValue(),
             analyzeOperationResultResponse.getValue().getCreatedDateTime());
         AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setLastModifiedAt(
-            operationResultPollResponse.getValue(), analyzeOperationResultResponse.getValue().getLastUpdateDateTime());
+            operationResultPollResponse.getValue(), analyzeOperationResultResponse.getValue().getLastUpdatedDateTime());
         AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setExpiresAt(operationResultPollResponse.getValue(),
             analyzeOperationResultResponse.getValue().getExpirationDateTime());
         return Mono.just(new PollResponse<>(status, operationResultPollResponse.getValue()));
@@ -550,5 +561,14 @@ class AnalyzeHealthcareEntityAsyncClient {
     private AnalyzeHealthcareEntitiesOptions getNotNullAnalyzeHealthcareEntitiesOptions(
         AnalyzeHealthcareEntitiesOptions options) {
         return options == null ? new AnalyzeHealthcareEntitiesOptions() : options;
+    }
+
+    private void throwIfCallingNotAvailableFeatureInOptions(AnalyzeHealthcareEntitiesOptions options) {
+        if (options != null && options.getDisplayName() != null) {
+            throwIfTargetServiceVersionFound(serviceVersion,
+                Arrays.asList(TextAnalyticsServiceVersion.V3_1),
+                getUnsupportedServiceApiVersionMessage("AnalyzeHealthcareEntitiesOptions.displayName",
+                    serviceVersion, TextAnalyticsServiceVersion.V2022_05_01));
+        }
     }
 }

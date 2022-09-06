@@ -1,10 +1,43 @@
 # Release History
 
-## 4.0.0-beta.6 (Unreleased)
+## 4.0.0-beta.7 (Unreleased)
+This version of the SDK defaults to the latest supported API version, which currently is 2021-09-30-preview.
+
+### Features Added
+- Added a method `getWords()` on model `DocumentLine`.
+- Added `TypedDocumentField<T>` model for strongly typed representation of `Fields` on analyzed documents.
+`DocumentField` extends from `TypedDocumentField<T>`.
+
+### Breaking Changes
+- Removed property `kind` from model `DocumentPage`
+- Removed model `DocumentPageKind`, `DocumentEntity`, `DocumentFootnote`, and `DocumentCaption`.
+- Renamed models:
+  - `ModelOperationDetails` to `OperationDetails`
+  - `ModelOperationSummary` to `OperationSummary` 
+  - `ModelOperationKind` to `OperationKind`
+  - `ModelOperationStatus` to `OperationStatus` 
+- Renamed properties `documentModelCount` and `documentModelLimit` to `customDocumentModelCount` 
+and `customDocumentModelLimit` on model `ResourceDetails`.
+
+### Bugs Fixed
+
+### Other Changes
+
+## 3.1.14 (2022-08-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.31.0`.
+- Upgraded `azure-core-http-netty` to `1.12.4`.
+
+## 4.0.0-beta.6 (2022-08-10)
 
 ### Features Added
 - Add a constructor to create an instance of `CopyAuthorization` model.
 - Added BinaryData support to document analysis client using `beginAnalyzeDocument(String modelId, BinaryData document, long length)`
+- Added support for V2.1 & V2.0 APIs by adding FormRecognizerClient and FormTrainingClient.
 
 ### Breaking Changes
 - Renamed `beginCreateComposedModel` method to `beginComposeModel` on DocumentModelAdministrationClient and DocumentModelAdministrationAsyncClient.
@@ -23,9 +56,11 @@
 - Changed method `beginBuildModel(String, DocumentModelBuildMode, BuildModelOptions)` to `beginBuildModel(String, DocumentModelBuildMode, String, BuildModelOptions)`
 - Removed `prefix` property on model `BuildModelOptions`
 
-### Bugs Fixed
-
 ### Other Changes
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.31.0`.
+- Upgraded `azure-core-http-netty` to `1.12.4`.
 
 ## 3.1.13 (2022-07-05)
 

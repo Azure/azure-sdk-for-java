@@ -50,5 +50,10 @@ public enum JsonToken {
     /**
      * String, in value context.
      */
-    STRING
+    STRING,
+
+    /**
+     * JSON document has completed.
+     */
+    END_DOCUMENT
 }

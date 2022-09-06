@@ -30,7 +30,11 @@ public final class WafGranularity extends ExpandableStringEnum<WafGranularity> {
         return fromString(name, WafGranularity.class);
     }
 
-    /** @return known WafGranularity values. */
+    /**
+     * Gets known WafGranularity values.
+     *
+     * @return known WafGranularity values.
+     */
     public static Collection<WafGranularity> values() {
         return values(WafGranularity.class);
     }

@@ -719,6 +719,15 @@ private[cosmos] class CosmosRowConverter(
         }
     }
 
+    private def parseTimestamp(objectNode: ObjectNode): Long = {
+      val currentNode = getCurrentOrPreviousNode(objectNode)
+      currentNode.get(TimestampAttributeName) match {
+        case valueNode: JsonNode =>
+          Option(valueNode).fold(-1L)(v => v.asLong(-1))
+        case _ => -1L
+      }
+    }
+
     private def parseETag(objectNode: ObjectNode): String = {
         val currentNode = getCurrentOrPreviousNode(objectNode)
         currentNode.get(ETagAttributeName) match {
@@ -736,10 +745,9 @@ private[cosmos] class CosmosRowConverter(
       currentNode
     }
 
-    //  Timestamp always returns the crts (conflict resolution timestamp).
     //  For single-master, crts will always be same as _ts
     //  For multi-master, crts will be the latest resolution timestamp of any conflicts
-    private def parseTimestamp(objectNode: ObjectNode): Long = {
+    private def parseCrts(objectNode: ObjectNode): Long = {
         objectNode.get(MetadataJsonBodyAttributeName) match {
             case metadataNode: JsonNode =>
                 metadataNode.get(CrtsAttributeName) match {
@@ -820,7 +828,7 @@ private[cosmos] class CosmosRowConverter(
             case StructField(CosmosTableSchemaInferrer.OperationTypeAttributeName, StringType, _, _) =>
               parseOperationType(objectNode)
             case StructField(CosmosTableSchemaInferrer.CrtsAttributeName, LongType, _, _) =>
-              parseTimestamp(objectNode)
+              parseCrts(objectNode)
             case StructField(CosmosTableSchemaInferrer.PreviousImageLsnAttributeName, LongType, _, _) =>
               parsePreviousImageLsn(objectNode)
             case StructField(name, dataType, _, _) =>

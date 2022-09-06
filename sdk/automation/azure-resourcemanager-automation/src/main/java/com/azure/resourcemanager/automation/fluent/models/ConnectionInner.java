@@ -5,50 +5,29 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.models.ConnectionTypeAssociationProperty;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** Definition of the connection. */
-@JsonFlatten
 @Fluent
-public class ConnectionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionInner.class);
-
+public final class ConnectionInner extends ProxyResource {
     /*
-     * Gets or sets the connectionType of the connection.
+     * Gets or sets the properties of the connection.
      */
-    @JsonProperty(value = "properties.connectionType")
-    private ConnectionTypeAssociationProperty connectionType;
+    @JsonProperty(value = "properties")
+    private ConnectionProperties innerProperties;
 
-    /*
-     * Gets the field definition values of the connection.
+    /**
+     * Get the innerProperties property: Gets or sets the properties of the connection.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.fieldDefinitionValues", access = JsonProperty.Access.WRITE_ONLY)
-    private Map<String, String> fieldDefinitionValues;
-
-    /*
-     * Gets the creation time.
-     */
-    @JsonProperty(value = "properties.creationTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationTime;
-
-    /*
-     * Gets the last modified time.
-     */
-    @JsonProperty(value = "properties.lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastModifiedTime;
-
-    /*
-     * Gets or sets the description.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    private ConnectionProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the connectionType property: Gets or sets the connectionType of the connection.
@@ -56,7 +35,7 @@ public class ConnectionInner extends ProxyResource {
      * @return the connectionType value.
      */
     public ConnectionTypeAssociationProperty connectionType() {
-        return this.connectionType;
+        return this.innerProperties() == null ? null : this.innerProperties().connectionType();
     }
 
     /**
@@ -66,7 +45,10 @@ public class ConnectionInner extends ProxyResource {
      * @return the ConnectionInner object itself.
      */
     public ConnectionInner withConnectionType(ConnectionTypeAssociationProperty connectionType) {
-        this.connectionType = connectionType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionProperties();
+        }
+        this.innerProperties().withConnectionType(connectionType);
         return this;
     }
 
@@ -76,7 +58,7 @@ public class ConnectionInner extends ProxyResource {
      * @return the fieldDefinitionValues value.
      */
     public Map<String, String> fieldDefinitionValues() {
-        return this.fieldDefinitionValues;
+        return this.innerProperties() == null ? null : this.innerProperties().fieldDefinitionValues();
     }
 
     /**
@@ -85,7 +67,7 @@ public class ConnectionInner extends ProxyResource {
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
-        return this.creationTime;
+        return this.innerProperties() == null ? null : this.innerProperties().creationTime();
     }
 
     /**
@@ -94,7 +76,7 @@ public class ConnectionInner extends ProxyResource {
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
-        return this.lastModifiedTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedTime();
     }
 
     /**
@@ -103,7 +85,7 @@ public class ConnectionInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -113,7 +95,10 @@ public class ConnectionInner extends ProxyResource {
      * @return the ConnectionInner object itself.
      */
     public ConnectionInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -123,8 +108,8 @@ public class ConnectionInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (connectionType() != null) {
-            connectionType().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

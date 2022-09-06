@@ -1,15 +1,30 @@
 # Release History
 
-## 12.12.0-beta.1 (Unreleased)
+## 12.13.0-beta.2 (Unreleased)
 
 ### Features Added
-- Added upload and append methods on DataLakeFileClient and DataLakeFileAsyncClient that support BinaryData.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.13.0-beta.1 (2022-09-06)
+
+### Features Added
+- Added support for 2021-10-04 service version.
+- Added support for flush parameter to `DataLakeFileClient.appendWithResponse()`
+- Added support for encryption scopes.
+- Added support for encryption scope SAS.
+- Added new method `DataLakeFileSystemClient.exists()` to determine whether file system exists.
+- Added `DataLakeServiceClientBuilder.connectionString()` to allow connection string to be set on the client builder.
+- Added `DataLakeFileClient.uploadFromFileWithResponse()` which returns a response of `PathItem` upon completion.
+
+## 12.12.0 (2022-08-12)
+
+### Features Added
+- Added upload and append methods on DataLakeFileClient and DataLakeFileAsyncClient that support BinaryData.
 
 ## 12.11.0 (2022-07-07)
 
