@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Definition of the network rules. */
 @Fluent
 public class NetworkRuleSet {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkRuleSet.class);
-
     /*
-     * The configuration to set whether network access from public internet to
-     * the endpoints are allowed.
+     * The configuration to set whether network access from public internet to the endpoints are allowed.
      */
     @JsonProperty(value = "publicNetworkAccess")
     private KnownPublicNetworkAccessOptions publicNetworkAccess;

@@ -8,6 +8,8 @@ import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoCon
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.http.HttpMethod;
@@ -27,7 +29,9 @@ class AadB2cAuthorizationRequestResolverTests {
             .withConfiguration(AutoConfigurations.of(
                 AzureGlobalPropertiesAutoConfiguration.class,
                 AbstractAadB2cOAuth2ClientTestConfigurations.WebOAuth2ClientApp.class,
-                AadB2cAutoConfiguration.class))
+                AadB2cAutoConfiguration.class,
+                HttpMessageConvertersAutoConfiguration.class,
+                RestTemplateAutoConfiguration.class))
             .withPropertyValues(
                 String.format("%s=%s", AadB2cConstants.TENANT_ID, AadB2cConstants.TEST_TENANT_ID),
                 String.format("%s=%s", AadB2cConstants.BASE_URI, AadB2cConstants.TEST_BASE_URI),
