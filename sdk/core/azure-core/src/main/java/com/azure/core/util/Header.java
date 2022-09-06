@@ -5,7 +5,6 @@ package com.azure.core.util;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
@@ -53,10 +52,11 @@ public class Header {
     public Header(String name, String... values) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         this.name = name;
-        if (values.length == 1) {
+        int length = values.length;
+        if (length == 1) {
             this.value = values[0];
         } else {
-            this.values = new ArrayList<>(values.length);
+            this.values = new ArrayList<>(Math.max(length + 2, 4));
             Collections.addAll(this.values, values);
         }
     }
@@ -71,10 +71,12 @@ public class Header {
     public Header(String name, List<String> values) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         this.name = name;
-        if (values.size() == 1) {
+        int size = values.size();
+        if (size == 1) {
             this.value = values.get(0);
         } else {
-            this.values = new ArrayList<>(values);
+            this.values = new ArrayList<>(Math.max(size + 2, 4));
+            this.values.addAll(values);
         }
     }
 
@@ -126,7 +128,7 @@ public class Header {
      */
     public void addValue(String value) {
         if (values == null) {
-            values = new LinkedList<>();
+            values = new ArrayList<>(4); // 4 was selected to add a buffer of 2 as seen in the constructor.
             values.add(this.value);
             this.value = null;
         }

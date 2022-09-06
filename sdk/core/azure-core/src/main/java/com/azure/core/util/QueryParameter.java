@@ -5,7 +5,6 @@ package com.azure.core.util;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
@@ -56,10 +55,12 @@ class QueryParameter {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(values, "'values' cannot be null");
         this.name = name;
-        if (values.size() == 1) {
+        int size = values.size();
+        if (size == 1) {
             this.value = values.get(0);
         } else {
-            this.values = new ArrayList<>(values);
+            this.values = new ArrayList<>(Math.max(size + 2, 4));
+            this.values.addAll(values);
         }
     }
 
@@ -118,7 +119,7 @@ class QueryParameter {
      */
     public void addValue(String newValue) {
         if (values == null) {
-            values = new LinkedList<>();
+            values = new ArrayList<>(4); // 4 was selected to add a buffer of 2 as seen in the constructor.
             // add current standalone value to the list
             // as the list is empty
             values.add(this.value);
