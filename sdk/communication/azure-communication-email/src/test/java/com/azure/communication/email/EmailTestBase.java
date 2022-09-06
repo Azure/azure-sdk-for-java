@@ -83,7 +83,7 @@ public class EmailTestBase extends TestBase {
         List<Arguments> argumentsList = new ArrayList<>();
 
         System.out.println("Configured HTTP Clients '" + Configuration.getGlobalConfiguration()
-            .get(AZURE_TEST_HTTP_CLIENTS) + "'");
+            .get("AZURE_TEST_HTTP_CLIENTS") + "'");
         getHttpClients()
             .forEach(httpClient -> argumentsList.add(Arguments.of(httpClient)));
 
