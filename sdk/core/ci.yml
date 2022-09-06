@@ -67,7 +67,7 @@ parameters:
 - name: release_azurecoremetricsopentelemetry
   displayName: 'azure-core-metrics-opentelemetry'
   type: boolean
-  default: false
+  default: true
 - name: release_azurecoreserializeravroapache
   displayName: 'azure-core-serializer-avro-apache'
   type: boolean

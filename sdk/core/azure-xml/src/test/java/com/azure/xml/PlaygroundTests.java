@@ -3,6 +3,8 @@
 
 package com.azure.xml;
 
+import com.azure.xml.implementation.DefaultXmlReader;
+import com.azure.xml.implementation.DefaultXmlWriter;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -63,7 +65,7 @@ public class PlaygroundTests {
         SignedIdentifiersWrapper wrapper = new SignedIdentifiersWrapper(Collections.singletonList(signedIdentifier));
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        try (XmlWriter xmlWriter = DefaultXmlWriter.toOutputStream(byteArrayOutputStream)) {
+        try (XmlWriter xmlWriter = DefaultXmlWriter.toStream(byteArrayOutputStream)) {
             xmlWriter.writeStartDocument();
             wrapper.toXml(xmlWriter);
         }
@@ -137,7 +139,7 @@ public class PlaygroundTests {
             .setContent(namespacePropertiesEntryContent);
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        try (XmlWriter xmlWriter = DefaultXmlWriter.toOutputStream(byteArrayOutputStream)) {
+        try (XmlWriter xmlWriter = DefaultXmlWriter.toStream(byteArrayOutputStream)) {
             xmlWriter.writeStartDocument();
             namespacePropertiesEntry.toXml(xmlWriter);
         }

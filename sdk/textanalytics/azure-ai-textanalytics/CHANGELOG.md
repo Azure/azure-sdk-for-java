@@ -3,6 +3,16 @@
 ## 5.2.0-beta.5 (Unreleased)
 
 ### Features Added
+- Added `displayName` property which is the name of long-running operation, to the following classes to 
+  set the optional display name:
+    - `AnalyzeHealthcareEntitiesOptions`
+    - `MultiLabelClassifyOptions`
+    - `RecognizeCustomEntitiesOptions`
+    - `SingleLabelClassifyOptions`
+- Added `displayName` property to the following operations to read the optional display name set on options classes above:
+    - `AnalyzeHealthcareEntitiesOperationDetail` from `AnalyzeHealthcareEntitiesOptions`
+    - `ClassifyDocumentOperationDetail` from `MultiLabelClassifyOptions` and `SingleLabelClassifyOptions`
+    - `RecognizeCustomEntitiesOperationDetail` from `RecognizeCustomEntitiesOptions`
 
 ### Breaking Changes
 

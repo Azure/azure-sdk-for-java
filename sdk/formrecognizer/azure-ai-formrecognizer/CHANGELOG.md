@@ -5,13 +5,17 @@ This version of the SDK defaults to the latest supported API version, which curr
 
 ### Features Added
 - Added a method `getWords()` on model `DocumentLine`.
+- Added `TypedDocumentField<T>` model for strongly typed representation of `Fields` on analyzed documents.
+`DocumentField` extends from `TypedDocumentField<T>`.
 
 ### Breaking Changes
 - Removed property `kind` from model `DocumentPage`
 - Removed model `DocumentPageKind`, `DocumentEntity`, `DocumentFootnote`, and `DocumentCaption`.
-- Renamed models `ModelOperationDetails`, `ModelOperationSummary`, `ModelOperationKind` and `ModelOperationStatus`
-to `DocumentModelOperationDetails`, `DocumentModelOperationSummary`, `DocumentOperationKind` and `DocumentModelOperationStatus` 
-respectively.
+- Renamed models:
+  - `ModelOperationDetails` to `OperationDetails`
+  - `ModelOperationSummary` to `OperationSummary` 
+  - `ModelOperationKind` to `OperationKind`
+  - `ModelOperationStatus` to `OperationStatus` 
 - Renamed properties `documentModelCount` and `documentModelLimit` to `customDocumentModelCount` 
 and `customDocumentModelLimit` on model `ResourceDetails`.
 
