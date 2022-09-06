@@ -21,7 +21,6 @@ import com.azure.search.documents.implementation.converters.SearchIndexConverter
 import com.azure.search.documents.implementation.util.FieldBuilder;
 import com.azure.search.documents.implementation.util.MappingUtils;
 import com.azure.search.documents.indexes.implementation.SearchServiceClientImpl;
-import com.azure.search.documents.indexes.implementation.SearchServiceClientImplBuilder;
 import com.azure.search.documents.indexes.implementation.models.ListSynonymMapsResult;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
@@ -82,11 +81,7 @@ public final class SearchIndexAsyncClient {
         this.httpPipeline = httpPipeline;
         this.serializer = serializer;
 
-        this.restClient = new SearchServiceClientImplBuilder()
-            .endpoint(endpoint)
-            //  .apiVersion(serviceVersion.getVersion())
-            .pipeline(httpPipeline)
-            .buildClient();
+        this.restClient = new SearchServiceClientImpl(httpPipeline, endpoint, serviceVersion.getVersion());
     }
 
     /**

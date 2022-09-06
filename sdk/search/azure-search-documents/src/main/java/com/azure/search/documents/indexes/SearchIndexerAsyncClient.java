@@ -17,7 +17,6 @@ import com.azure.search.documents.implementation.converters.SearchIndexerConvert
 import com.azure.search.documents.implementation.converters.SearchIndexerDataSourceConverter;
 import com.azure.search.documents.implementation.util.MappingUtils;
 import com.azure.search.documents.indexes.implementation.SearchServiceClientImpl;
-import com.azure.search.documents.indexes.implementation.SearchServiceClientImplBuilder;
 import com.azure.search.documents.indexes.implementation.models.ListDataSourcesResult;
 import com.azure.search.documents.indexes.implementation.models.ListIndexersResult;
 import com.azure.search.documents.indexes.implementation.models.ListSkillsetsResult;
@@ -69,11 +68,7 @@ public class SearchIndexerAsyncClient {
         this.serviceVersion = serviceVersion;
         this.httpPipeline = httpPipeline;
 
-        this.restClient = new SearchServiceClientImplBuilder()
-            .endpoint(endpoint)
-            //  .apiVersion(serviceVersion.getVersion())
-            .pipeline(httpPipeline)
-            .buildClient();
+        this.restClient = new SearchServiceClientImpl(httpPipeline, endpoint, serviceVersion.getVersion());
     }
 
     /**

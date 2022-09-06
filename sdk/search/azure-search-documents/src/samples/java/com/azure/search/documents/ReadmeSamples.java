@@ -8,6 +8,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.util.Context;
+import com.azure.identity.AzureAuthorityHosts;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.search.documents.indexes.SearchIndexAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
@@ -20,6 +22,7 @@ import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchSuggester;
+import com.azure.search.documents.models.SearchAudience;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.util.SearchPagedIterable;
@@ -241,5 +244,19 @@ public class ReadmeSamples {
     public void createIndexUseFieldBuilder() {
         List<SearchField> searchFields = SearchIndexClient.buildSearchFields(Hotel.class, null);
         searchIndexClient.createIndex(new SearchIndex("index", searchFields));
+    }
+
+    public void nationalCloud() {
+        // BEGIN: readme-sample-nationalCloud
+        // Create a SearchClient that will authenticate through AAD in the China national cloud.
+        SearchClient searchClient = new SearchClientBuilder()
+            .endpoint(endpoint)
+            .indexName(indexName)
+            .credential(new DefaultAzureCredentialBuilder()
+                .authorityHost(AzureAuthorityHosts.AZURE_CHINA)
+                .build())
+            .audience(SearchAudience.AZURE_CHINA)
+            .buildClient();
+        // END: readme-sample-nationalCloud
     }
 }
