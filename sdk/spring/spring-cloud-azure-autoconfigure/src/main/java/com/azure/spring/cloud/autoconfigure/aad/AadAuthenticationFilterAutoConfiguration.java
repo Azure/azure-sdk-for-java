@@ -106,7 +106,7 @@ public class AadAuthenticationFilterAutoConfiguration {
     /**
      * Declare JWT ResourceRetriever bean.
      *
-     * @param restOperations the RestOperations used to validate access token.
+     * @param restOperations the rest operations used to get key to validate access token
      * @return JWT ResourceRetriever bean
      */
     @Bean

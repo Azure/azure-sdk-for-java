@@ -52,8 +52,8 @@ public class AadResourceServerConfiguration {
      * Use JwkKeySetUri to create JwtDecoder
      *
      * @param aadAuthenticationProperties the AAD properties
-     * @param restOperations the RestOperation used to get key to validate access token.
-     * @return Get the jwtDecoder instance.
+     * @param restOperations the restOperations used to get key to validate access token
+     * @return Get the jwtDecoder instance
      */
     @Bean
     @ConditionalOnMissingBean(JwtDecoder.class)
