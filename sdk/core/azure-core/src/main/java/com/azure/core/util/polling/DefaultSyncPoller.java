@@ -3,14 +3,9 @@
 
 package com.azure.core.util.polling;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.implementation.PollContextRequiredException;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -25,14 +20,7 @@ import java.util.function.Function;
  * @param <U> The type of the final result of the long running operation
  */
 final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
-    private static final ClientLogger LOGGER = new ClientLogger(DefaultSyncPoller.class);
-    private final Function<PollingContext<T>, Mono<PollResponse<T>>> pollOperation;
-    private final BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancelOperation;
-    private final Function<PollingContext<T>, Mono<U>> fetchResultOperation;
-    private final PollResponse<T> activationResponse;
-    private final PollingContext<T> pollingContext = new PollingContext<>();
-    private volatile PollingContext<T> terminalPollContext;
-    private volatile Duration pollInterval;
+    private SyncPoller<T, U> syncPoller;
 
     /**
      * Creates DefaultSyncPoller.
@@ -57,220 +45,46 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
                              Function<PollingContext<T>, Mono<PollResponse<T>>> pollOperation,
                              BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancelOperation,
                              Function<PollingContext<T>, Mono<U>> fetchResultOperation) {
-        Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
-        if (pollInterval.isNegative() || pollInterval.isZero()) {
-            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(
-                "Negative or zero value for 'defaultPollInterval' is not allowed."));
-        }
-        this.pollInterval = pollInterval;
-        Objects.requireNonNull(syncActivationOperation, "'syncActivationOperation' cannot be null.");
-        this.pollOperation = Objects.requireNonNull(pollOperation, "'pollOperation' cannot be null.");
-        this.cancelOperation = Objects.requireNonNull(cancelOperation, "'cancelOperation' cannot be null.");
-        this.fetchResultOperation = Objects.requireNonNull(fetchResultOperation,
-            "'fetchResultOperation' cannot be null.");
-        this.activationResponse = syncActivationOperation.apply(this.pollingContext);
-        //
-        this.pollingContext.setOnetimeActivationResponse(this.activationResponse);
-        this.pollingContext.setLatestResponse(this.activationResponse);
-        if (this.activationResponse.getStatus().isComplete()) {
-            this.terminalPollContext = this.pollingContext;
-        }
+        syncPoller = new SyncOverAsyncPoller(pollInterval, syncActivationOperation, pollOperation, cancelOperation, fetchResultOperation);
     }
 
     @Override
     public PollResponse<T> poll() {
-        PollResponse<T> response = this.pollOperation
-            .apply(this.pollingContext)
-            .block();
-        this.pollingContext.setLatestResponse(response);
-        if (response.getStatus().isComplete()) {
-            this.terminalPollContext = this.pollingContext.copy();
-        }
-        return response;
+        return syncPoller.poll();
     }
 
     @Override
     public PollResponse<T> waitForCompletion() {
-        PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
-        if (currentTerminalPollContext != null) {
-            return currentTerminalPollContext.getLatestResponse();
-        } else {
-            PollingContext<T> context = this.pollingContext.copy();
-            AsyncPollResponse<T, U> finalAsyncPollResponse = pollingLoop(context)
-                    .blockLast();
-            PollResponse<T> response = toPollResponse(finalAsyncPollResponse);
-            this.terminalPollContext = context;
-            return response;
-        }
+        return syncPoller.waitForCompletion();
     }
 
     @Override
     public PollResponse<T> waitForCompletion(Duration timeout) {
-        PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
-        if (currentTerminalPollContext != null) {
-            return currentTerminalPollContext.getLatestResponse();
-        } else {
-            PollingContext<T> context = this.pollingContext.copy();
-            AsyncPollResponse<T, U> finalAsyncPollResponse = pollingLoop(context)
-                    .timeout(timeout)
-                    .blockLast();
-            PollResponse<T> response = toPollResponse(finalAsyncPollResponse);
-            this.terminalPollContext = context;
-            return response;
-        }
+        return syncPoller.waitForCompletion();
     }
 
     @Override
     public PollResponse<T> waitUntil(LongRunningOperationStatus statusToWaitFor) {
-        Objects.requireNonNull(statusToWaitFor, "'statusToWaitFor' cannot be null.");
-        PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
-        if (currentTerminalPollContext != null
-                && currentTerminalPollContext.getLatestResponse().getStatus() == statusToWaitFor) {
-            return currentTerminalPollContext.getLatestResponse();
-        } else {
-            PollingContext<T> context = this.pollingContext.copy();
-            AsyncPollResponse<T, U> asyncPollResponse = pollingLoop(context)
-                .takeUntil(apr -> matchStatus(apr, statusToWaitFor))
-                .last()
-                .switchIfEmpty(Mono.error(() -> new NoSuchElementException(
-                    "Polling completed without receiving the given status '" + statusToWaitFor + "'.")))
-                .block();
-            PollResponse<T> response = toPollResponse(asyncPollResponse);
-            if (response.getStatus().isComplete()) {
-                this.terminalPollContext = context;
-            }
-            return response;
-        }
+        return syncPoller.waitUntil(statusToWaitFor);
     }
 
     @Override
     public PollResponse<T> waitUntil(Duration timeout, LongRunningOperationStatus statusToWaitFor) {
-        Objects.requireNonNull(timeout, "'timeout' cannot be null.");
-        if (timeout.isNegative() || timeout.isZero()) {
-            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(
-                "Negative or zero value for timeout is not allowed."));
-        }
-        Objects.requireNonNull(statusToWaitFor, "'statusToWaitFor' cannot be null.");
-        PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
-        if (currentTerminalPollContext != null
-                && currentTerminalPollContext.getLatestResponse().getStatus() == statusToWaitFor) {
-            return currentTerminalPollContext.getLatestResponse();
-        } else {
-            PollingContext<T> context = this.pollingContext.copy();
-            AsyncPollResponse<T, U> asyncPollResponse = pollingLoop(context)
-                    .takeUntil(apr -> matchStatus(apr, statusToWaitFor))
-                    .last()
-                    .timeout(timeout)
-                    .switchIfEmpty(Mono.error(() -> new NoSuchElementException(
-                        "Polling completed without receiving the given status '" + statusToWaitFor + "'.")))
-                    .block();
-            PollResponse<T> response = toPollResponse(asyncPollResponse);
-            if (response.getStatus().isComplete()) {
-                this.terminalPollContext = context;
-            }
-            return response;
-        }
+        return syncPoller.waitUntil(timeout, statusToWaitFor);
     }
 
     @Override
     public U getFinalResult() {
-        PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
-        if (currentTerminalPollContext != null) {
-            return this.fetchResultOperation
-                .apply(currentTerminalPollContext)
-                .block();
-        } else {
-            PollingContext<T> context = this.pollingContext.copy();
-            AsyncPollResponse<T, U> finalAsyncPollResponse = pollingLoop(context)
-                    .blockLast();
-            this.terminalPollContext = context;
-            return finalAsyncPollResponse.getFinalResult().block();
-        }
+        return syncPoller.getFinalResult();
     }
 
     @Override
     public void cancelOperation() {
-        PollingContext<T> context1 = this.pollingContext.copy();
-        if (context1.getActivationResponse() == context1.getLatestResponse()) {
-            this.cancelOperation.apply(context1, context1.getActivationResponse())
-                .block();
-        } else {
-            try {
-                this.cancelOperation.apply(null, this.activationResponse).block();
-            } catch (PollContextRequiredException crp) {
-                PollingContext<T> context2 = this.pollingContext.copy();
-                pollingLoop(context2)
-                    .next()
-                    .block();
-                this.cancelOperation
-                    .apply(context2, this.activationResponse)
-                    .block();
-            }
-        }
+        syncPoller.cancelOperation();
     }
 
     @Override
     public SyncPoller<T, U> setPollInterval(Duration pollInterval) {
-        Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
-        if (pollInterval.isNegative() || pollInterval.isZero()) {
-            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(
-                "Negative or zero value for 'pollInterval' is not allowed."));
-        }
-        this.pollInterval = pollInterval;
-        return this;
-    }
-
-    private static <T, U> PollResponse<T> toPollResponse(AsyncPollResponse<T, U> asyncPollResponse) {
-        return new PollResponse<>(asyncPollResponse.getStatus(),
-            asyncPollResponse.getValue(),
-            asyncPollResponse.getRetryAfter());
-    }
-
-    private boolean matchStatus(AsyncPollResponse<T, U> currentPollResponse,
-                                LongRunningOperationStatus statusToWaitFor) {
-        if (currentPollResponse == null || statusToWaitFor == null) {
-            return false;
-        }
-        if (statusToWaitFor == currentPollResponse.getStatus()) {
-            return true;
-        }
-        return false;
-    }
-
-    private Flux<AsyncPollResponse<T, U>> pollingLoop(PollingContext<T> pollingContext) {
-        return Flux.using(
-            // Create a Polling Context per subscription
-            () -> pollingContext,
-            // Do polling
-            // set|read to|from context as needed, reactor guarantee thread-safety of cxt object.
-            cxt -> Mono.defer(() -> pollOperation.apply(cxt))
-                    .delaySubscription(getDelay(cxt.getLatestResponse()))
-                    .switchIfEmpty(Mono.error(() -> new IllegalStateException("PollOperation returned Mono.empty().")))
-                    .repeat()
-                    .takeUntil(currentPollResponse -> currentPollResponse.getStatus().isComplete())
-                    .concatMap(currentPollResponse -> {
-                        cxt.setLatestResponse(currentPollResponse);
-                        return Mono.just(new AsyncPollResponse<>(cxt,
-                                this.cancelOperation,
-                                this.fetchResultOperation));
-                    }),
-            cxt -> { });
-    }
-
-    /**
-     * Get the duration to wait before making next poll attempt.
-     *
-     * @param pollResponse the poll response to retrieve delay duration from
-     * @return the delay
-     */
-    private Duration getDelay(PollResponse<T> pollResponse) {
-        Duration retryAfter = pollResponse.getRetryAfter();
-        if (retryAfter == null) {
-            return this.pollInterval;
-        } else {
-            return retryAfter.compareTo(Duration.ZERO) > 0
-                    ? retryAfter
-                    : this.pollInterval;
-        }
+        return syncPoller.setPollInterval(pollInterval);
     }
 }
