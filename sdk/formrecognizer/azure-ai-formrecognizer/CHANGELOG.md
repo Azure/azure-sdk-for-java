@@ -7,6 +7,7 @@ This version of the SDK defaults to the latest supported API version, which curr
 - Added a method `getWords()` on model `DocumentLine`.
 - Added `TypedDocumentField<T>` model for strongly typed representation of `Fields` on analyzed documents.
 `DocumentField` extends from `TypedDocumentField<T>`.
+- Added interfaces from `com.azure.core.client.traits` to `FormRecognizerClientBuilder` and `FormTrainingClientBuilder`
 
 ### Breaking Changes
 - Removed property `kind` from model `DocumentPage`
