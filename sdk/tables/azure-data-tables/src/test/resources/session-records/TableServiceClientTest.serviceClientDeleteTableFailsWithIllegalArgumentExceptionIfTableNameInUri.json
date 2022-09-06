@@ -1,0 +1,74 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables",
+    "Headers" : {
+      "x-ms-version" : "2020-12-06",
+      "User-Agent" : "azsdk-java-azure-data-tables/12.4.0-beta.1 (11.0.16; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "6da11e0e-d487-42ef-a811-5ebd86580fea",
+      "Content-Type" : "application/json;odata=nometadata"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-12-06",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Tue, 06 Sep 2022 18:10:42 GMT",
+      "Cache-Control" : "no-cache",
+      "DataServiceId" : "https://jairmyreestoragetest.table.core.windows.net/Tables('test27968a658d')",
+      "x-ms-request-id" : "13b0815c-8002-0029-3b1b-c27b73000000",
+      "x-ms-client-request-id" : "6da11e0e-d487-42ef-a811-5ebd86580fea",
+      "Preference-Applied" : "return-no-content",
+      "Location" : "https://jairmyreestoragetest.table.core.windows.net/Tables('test27968a658d')"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.table.core.windows.net/test27968a658d/Tables('test27968a658d')",
+    "Headers" : {
+      "x-ms-version" : "2020-12-06",
+      "User-Agent" : "azsdk-java-azure-data-tables/12.4.0-beta.1 (11.0.16; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "7b2cd57e-f73d-41c8-b376-aba66e6ac5d5"
+    },
+    "Response" : {
+      "content-length" : "281",
+      "x-ms-version" : "2020-12-06",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "WWW-Authenticate" : "Bearer authorization_uri=https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/oauth2/authorize resource_id=https://storage.azure.com",
+      "x-ms-error-code" : "NoAuthenticationInformation",
+      "retry-after" : "0",
+      "StatusCode" : "401",
+      "x-ms-request-id" : "13b08179-8002-0029-541b-c27b73000000",
+      "Body" : "{\"odata.error\":{\"code\":\"NoAuthenticationInformation\",\"message\":{\"lang\":\"en-US\",\"value\":\"Server failed to authenticate the request. Please refer to the information in the www-authenticate header.\\nRequestId:13b08179-8002-0029-541b-c27b73000000\\nTime:2022-09-06T18:10:43.2583502Z\"}}}",
+      "x-ms-client-request-id" : "7b2cd57e-f73d-41c8-b376-aba66e6ac5d5",
+      "Date" : "Tue, 06 Sep 2022 18:10:42 GMT",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.table.core.windows.net/test27968a658d/Tables('test27968a658d')",
+    "Headers" : {
+      "x-ms-version" : "2020-12-06",
+      "User-Agent" : "azsdk-java-azure-data-tables/12.4.0-beta.1 (11.0.16; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "7b2cd57e-f73d-41c8-b376-aba66e6ac5d5"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-12-06",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "13b081d8-8002-0029-2d1b-c27b73000000",
+      "Body" : "{\"odata.error\":{\"code\":\"InvalidInput\",\"message\":{\"lang\":\"en-US\",\"value\":\"The number of keys specified in the URI does not match number of key properties for the resource 'jairmyreestoragetest.test27968a658d'.\\nRequestId:13b081d8-8002-0029-2d1b-c27b73000000\\nTime:2022-09-06T18:10:43.7523541Z\"}}}",
+      "x-ms-client-request-id" : "7b2cd57e-f73d-41c8-b376-aba66e6ac5d5",
+      "Date" : "Tue, 06 Sep 2022 18:10:43 GMT",
+      "Content-Type" : "application/json;odata=minimalmetadata;streaming=true;charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "test27968a658d", "ffd4e458-a6e7-4cf4-9d52-44f8a95a9f92" ]
+}
