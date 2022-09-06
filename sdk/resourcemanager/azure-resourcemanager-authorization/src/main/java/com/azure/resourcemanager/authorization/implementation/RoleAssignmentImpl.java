@@ -84,7 +84,8 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
                     manager()
                         .roleServiceClient()
                         .getRoleAssignments()
-                        .createAsync(scope(), name(), roleAssignmentPropertiesInner))
+                        .createAsync(scope(), name(), roleAssignmentPropertiesInner)
+                        .retryWhen(RetryUtils.backoffRetryFor400PrincipalNotFound()))
             .map(innerToFluentMap(this));
     }
 

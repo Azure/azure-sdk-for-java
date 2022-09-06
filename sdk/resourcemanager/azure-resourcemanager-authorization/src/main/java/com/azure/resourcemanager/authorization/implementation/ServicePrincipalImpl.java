@@ -96,7 +96,6 @@ class ServicePrincipalImpl
     @Override
     public Mono<ServicePrincipal> createResourceAsync() {
         Retry retry = isInCreateMode() ? RetryUtils.backoffRetryFor404ResourceNotFound() : null;
-        Retry retryForRbac = isInCreateMode() ? RetryUtils.backoffRetryFor400PrincipalNotFound() : null;
 
         Mono<ServicePrincipal> sp;
         if (isInCreateMode()) {
@@ -119,7 +118,7 @@ class ServicePrincipalImpl
                 servicePrincipal ->
                     submitCredentialsAsync(servicePrincipal, retry)
                         // Microsoft.Authorization respond with 400 and code=PrincipalNotFound
-                        .mergeWith(submitRolesAsync(servicePrincipal, retryForRbac))
+                        .mergeWith(submitRolesAsync(servicePrincipal))
                         .last())
             .map(
                 servicePrincipal -> {
@@ -177,7 +176,7 @@ class ServicePrincipalImpl
             }));
     }
 
-    private Mono<ServicePrincipal> submitRolesAsync(final ServicePrincipal servicePrincipal, Retry retry) {
+    private Mono<ServicePrincipal> submitRolesAsync(final ServicePrincipal servicePrincipal) {
         Mono<ServicePrincipal> create;
         if (rolesToCreate.isEmpty()) {
             create = Mono.just(servicePrincipal);
@@ -185,20 +184,13 @@ class ServicePrincipalImpl
             create =
                 Flux
                     .fromIterable(rolesToCreate.entrySet())
-                    .flatMap(
-                        roleEntry -> {
-                            Mono<RoleAssignment> monoRoleAssignment = manager()
-                                .roleAssignments()
-                                .define(this.manager().internalContext().randomUuid())
-                                .forServicePrincipal(servicePrincipal)
-                                .withBuiltInRole(roleEntry.getValue())
-                                .withScope(roleEntry.getKey())
-                                .createAsync();
-                            if (retry != null) {
-                                monoRoleAssignment = monoRoleAssignment.retryWhen(retry);
-                            }
-                            return monoRoleAssignment;
-                        })
+                    .flatMap(roleEntry -> manager()
+                        .roleAssignments()
+                        .define(this.manager().internalContext().randomUuid())
+                        .forServicePrincipal(servicePrincipal)
+                        .withBuiltInRole(roleEntry.getValue())
+                        .withScope(roleEntry.getKey())
+                        .createAsync())
                     .doOnNext(
                         indexable ->
                             cachedRoleAssignments.put(indexable.id(), indexable))
