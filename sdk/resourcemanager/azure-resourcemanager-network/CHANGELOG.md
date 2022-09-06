@@ -4,11 +4,7 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported service tag in `NetworkSecurityGroup`.
 
 ## 2.18.0 (2022-08-26)
 
