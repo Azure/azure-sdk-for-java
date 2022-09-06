@@ -5,7 +5,6 @@ package com.azure.core.util.polling;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.implementation.PollContextRequiredException;
-import reactor.core.Exceptions;
 
 import java.time.Duration;
 import java.util.NoSuchElementException;
@@ -21,7 +20,7 @@ import java.util.function.Function;
  * @param <T> The type of poll response value
  * @param <U> The type of the final result of the long running operation
  */
-public final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
+final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
     private static final ClientLogger LOGGER = new ClientLogger(SimpleSyncPoller.class);
     private final Function<PollingContext<T>, PollResponse<T>> pollOperation;
     private final BiFunction<PollingContext<T>, PollResponse<T>, T> cancelOperation;
@@ -49,7 +48,7 @@ public final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
      *     is same as final poll response value then implementer can choose to simply return value from provided
      *     final poll response.
      */
-    public SimpleSyncPoller(Duration pollInterval,
+    SimpleSyncPoller(Duration pollInterval,
                      Function<PollingContext<T>, PollResponse<T>> syncActivationOperation,
                      Function<PollingContext<T>, PollResponse<T>> pollOperation,
                      BiFunction<PollingContext<T>, PollResponse<T>, T> cancelOperation,
@@ -91,10 +90,9 @@ public final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
             return currentTerminalPollContext.getLatestResponse();
         } else {
             PollingContext<T> context = this.pollingContext.copy();
-            SyncPollResponse<T, U> finalAsyncPollResponse = pollingLoopSync(context);
-            PollResponse<T> response = toPollResponse(finalAsyncPollResponse);
+            PollResponse<T> pollResponse = pollingLoopSync(context);
             this.terminalPollContext = context;
-            return response;
+            return pollResponse;
         }
     }
 
@@ -105,10 +103,9 @@ public final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
             return currentTerminalPollContext.getLatestResponse();
         } else {
             PollingContext<T> context = this.pollingContext.copy();
-            SyncPollResponse<T, U> finalSyncPollResponse = pollingLoopSync(context, timeout);
-            PollResponse<T> response = toPollResponse(finalSyncPollResponse);
+            PollResponse<T> pollResponse = pollingLoopSync(context, timeout);
             this.terminalPollContext = context;
-            return response;
+            return pollResponse;
         }
     }
 
@@ -121,17 +118,16 @@ public final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
             return currentTerminalPollContext.getLatestResponse();
         } else {
             PollingContext<T> context = this.pollingContext.copy();
-            SyncPollResponse<T, U> syncPollResponse = pollingLoopSync(context, statusToWaitFor);
+            PollResponse<T> pollResponse = pollingLoopSync(context, statusToWaitFor);
 
-            if (!syncPollResponse.getStatus().equals(statusToWaitFor)) {
+            if (!pollResponse.getStatus().equals(statusToWaitFor)) {
                 throw LOGGER.logExceptionAsError(new NoSuchElementException("Polling completed without"
                     + " receiving the given status '" + statusToWaitFor + "'."));
             }
-            PollResponse<T> response = toPollResponse(syncPollResponse);
-            if (response.getStatus().isComplete()) {
+            if (pollResponse.getStatus().isComplete()) {
                 this.terminalPollContext = context;
             }
-            return response;
+            return pollResponse;
         }
     }
 
@@ -149,16 +145,15 @@ public final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
             return currentTerminalPollContext.getLatestResponse();
         } else {
             PollingContext<T> context = this.pollingContext.copy();
-            SyncPollResponse<T, U> syncPollResponse = pollingLoopSync(context, timeout, statusToWaitFor);
-            if (!syncPollResponse.getStatus().equals(statusToWaitFor)) {
+            PollResponse<T> pollResponse = pollingLoopSync(context, timeout, statusToWaitFor);
+            if (!pollResponse.getStatus().equals(statusToWaitFor)) {
                 throw LOGGER.logExceptionAsError(new NoSuchElementException("Polling completed without"
                     + " receiving the given status '" + statusToWaitFor + "'."));
             }
-            PollResponse<T> response = toPollResponse(syncPollResponse);
-            if (response.getStatus().isComplete()) {
+            if (pollResponse.getStatus().isComplete()) {
                 this.terminalPollContext = context;
             }
-            return response;
+            return pollResponse;
         }
     }
 
@@ -170,9 +165,9 @@ public final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
                 .apply(currentTerminalPollContext);
         } else {
             PollingContext<T> context = this.pollingContext.copy();
-            SyncPollResponse<T, U> finalAsyncPollResponse = pollingLoopSync(context);
+            pollingLoopSync(context);
             this.terminalPollContext = context;
-            return finalAsyncPollResponse.getFinalResult();
+            return getFinalResult();
         }
     }
 
@@ -204,80 +199,24 @@ public final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
         return this;
     }
 
-    private static <T, U> PollResponse<T> toPollResponse(SyncPollResponse<T, U> syncPollResponse) {
-        return new PollResponse<>(syncPollResponse.getStatus(),
-            syncPollResponse.getValue(),
-            syncPollResponse.getRetryAfter());
+    private PollResponse<T> pollingLoopSync(PollingContext<T> pollingContext) {
+        return PollingUtil.pollingLoop(pollingContext, Optional.empty(), Optional.empty(),
+            pollOperation, pollInterval);
     }
 
-    private boolean matchStatus(AsyncPollResponse<T, U> currentPollResponse,
-                                LongRunningOperationStatus statusToWaitFor) {
-        if (currentPollResponse == null || statusToWaitFor == null) {
-            return false;
-        }
-        if (statusToWaitFor == currentPollResponse.getStatus()) {
-            return true;
-        }
-        return false;
+    private PollResponse<T> pollingLoopSync(PollingContext<T> pollingContext, LongRunningOperationStatus statusToWaitFor) {
+        return PollingUtil.pollingLoop(pollingContext, Optional.empty(), Optional.of(statusToWaitFor),
+            pollOperation, pollInterval);
     }
 
-    private SyncPollResponse<T, U> pollingLoopSync(PollingContext<T> pollingContext) {
-        return this.pollingLoopSync(pollingContext, Optional.empty(), Optional.empty());
-    }
-
-    private SyncPollResponse<T, U> pollingLoopSync(PollingContext<T> pollingContext, LongRunningOperationStatus statusToWaitFor) {
-        return this.pollingLoopSync(pollingContext, Optional.empty(), Optional.of(statusToWaitFor));
-    }
-
-    private SyncPollResponse<T, U> pollingLoopSync(PollingContext<T> pollingContext, Duration timeout,
+    private PollResponse<T> pollingLoopSync(PollingContext<T> pollingContext, Duration timeout,
                                                    LongRunningOperationStatus statusToWaitFor) {
-        return this.pollingLoopSync(pollingContext, Optional.of(timeout), Optional.of(statusToWaitFor));
+        return PollingUtil.pollingLoop(pollingContext, Optional.of(timeout), Optional.of(statusToWaitFor),
+            pollOperation, pollInterval);
     }
 
-    private SyncPollResponse<T, U> pollingLoopSync(PollingContext<T> pollingContext, Duration timeout) {
-        return this.pollingLoopSync(pollingContext, Optional.of(timeout), Optional.empty());
-    }
-
-    private SyncPollResponse<T, U> pollingLoopSync(PollingContext<T> pollingContext, Optional<Duration> timeout,
-                                                   Optional<LongRunningOperationStatus> statusToWaitFor) {
-        boolean timeBound = timeout.isPresent();
-        long startTime = System.currentTimeMillis();
-        PollResponse<T> pollResponse = pollOperation.apply(pollingContext);
-        pollingContext.setLatestResponse(pollResponse);
-        SyncPollResponse<T, U> intermediatePollResponse = new SyncPollResponse<>(pollingContext, this.cancelOperation, this.fetchResultOperation);
-        while (!pollResponse.getStatus().isComplete()
-            && (timeBound ? (System.currentTimeMillis() - startTime) < timeout.get().toMillis() : true)) {
-            try {
-                if (statusToWaitFor.isPresent() && pollResponse.getStatus().equals(statusToWaitFor.get())) {
-                    return intermediatePollResponse;
-                }
-                Thread.sleep(getDelay(pollResponse).toMillis());
-                // Document that Poll operation respects timeout, cannot interrupt it from here.
-                pollResponse = pollOperation.apply(pollingContext);
-                pollingContext.setLatestResponse(pollResponse);
-                intermediatePollResponse = new SyncPollResponse<>(pollingContext, this.cancelOperation, this.fetchResultOperation);
-            } catch (InterruptedException ex) {
-                throw LOGGER.logExceptionAsError(Exceptions.propagate(ex));
-            }
-        }
-
-        return intermediatePollResponse;
-    }
-
-    /**
-     * Get the duration to wait before making next poll attempt.
-     *
-     * @param pollResponse the poll response to retrieve delay duration from
-     * @return the delay
-     */
-    private Duration getDelay(PollResponse<T> pollResponse) {
-        Duration retryAfter = pollResponse.getRetryAfter();
-        if (retryAfter == null) {
-            return this.pollInterval;
-        } else {
-            return retryAfter.compareTo(Duration.ZERO) > 0
-                    ? retryAfter
-                    : this.pollInterval;
-        }
+    private PollResponse<T> pollingLoopSync(PollingContext<T> pollingContext, Duration timeout) {
+        return PollingUtil.pollingLoop(pollingContext, Optional.of(timeout), Optional.empty(),
+            pollOperation, pollInterval);
     }
 }

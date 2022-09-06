@@ -19,11 +19,11 @@ import java.util.function.Function;
  * @param <T> The type of poll response value
  * @param <U> The type of the final result of the long running operation
  */
-final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
-    private SyncPoller<T, U> syncPoller;
+public final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
+    private final SyncPoller<T, U> syncPoller;
 
     /**
-     * Creates DefaultSyncPoller.
+     * Creates SimpleSyncPoller.
      *
      * @param pollInterval the polling interval.
      * @param syncActivationOperation the operation to synchronously activate (start) the long running operation,
@@ -40,12 +40,23 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
      *     is same as final poll response value then implementer can choose to simply return value from provided
      *     final poll response.
      */
-    DefaultSyncPoller(Duration pollInterval,
-                             Function<PollingContext<T>, PollResponse<T>> syncActivationOperation,
-                             Function<PollingContext<T>, Mono<PollResponse<T>>> pollOperation,
-                             BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancelOperation,
-                             Function<PollingContext<T>, Mono<U>> fetchResultOperation) {
-        syncPoller = new SyncOverAsyncPoller(pollInterval, syncActivationOperation, pollOperation, cancelOperation, fetchResultOperation);
+    public DefaultSyncPoller(Duration pollInterval,
+                            Function<PollingContext<T>, PollResponse<T>> syncActivationOperation,
+                            Function<PollingContext<T>, PollResponse<T>> pollOperation,
+                            BiFunction<PollingContext<T>, PollResponse<T>, T> cancelOperation,
+                            Function<PollingContext<T>, U> fetchResultOperation) {
+
+        syncPoller = new SimpleSyncPoller<>(pollInterval, syncActivationOperation, pollOperation, cancelOperation,
+            fetchResultOperation);
+    }
+
+
+    /**
+     * Creates an instance of Default Sync Poller.
+     * @param syncPoller the poller instance to use.
+     */
+    DefaultSyncPoller(SyncPoller<T, U> syncPoller) {
+        this.syncPoller = syncPoller;
     }
 
     @Override
@@ -86,5 +97,15 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
     @Override
     public SyncPoller<T, U> setPollInterval(Duration pollInterval) {
         return syncPoller.setPollInterval(pollInterval);
+    }
+
+    @SuppressWarnings("unchecked")
+    static <T, U> DefaultSyncPoller<T, U> createSyncOverAsyncPoller(Duration pollInterval,
+            Function<PollingContext<T>, PollResponse<T>> syncActivationOperation,
+            Function<PollingContext<T>, Mono<PollResponse<T>>> pollOperation,
+            BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancelOperation,
+            Function<PollingContext<T>, Mono<U>> fetchResultOperation)  {
+        return new DefaultSyncPoller<>(new SyncOverAsyncPoller<>(pollInterval, syncActivationOperation, pollOperation,
+            cancelOperation, fetchResultOperation));
     }
 }

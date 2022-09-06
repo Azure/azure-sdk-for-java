@@ -584,7 +584,7 @@ public class SecretClientImpl {
     }
 
     public SyncPoller<DeletedSecret, Void> beginDeleteSecret(String name, Context context) {
-        return new SimpleSyncPoller<>(getDefaultPollingInterval(),
+        return new DefaultSyncPoller<>(getDefaultPollingInterval(),
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation(name, context).apply(cxt)),
             createPollOperation(name, context),
             (pollingContext, firstResponse) -> null,
