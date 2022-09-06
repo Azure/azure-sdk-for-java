@@ -82,13 +82,8 @@ public class EmailTestBase extends TestBase {
         // arguments - https://github.com/junit-team/junit5/issues/1427
         List<Arguments> argumentsList = new ArrayList<>();
 
-        System.out.println("Configured HTTP Clients '" + Configuration.getGlobalConfiguration()
-            .get("AZURE_TEST_HTTP_CLIENTS") + "'");
         getHttpClients()
             .forEach(httpClient -> argumentsList.add(Arguments.of(httpClient)));
-
-        System.out.println("Yogesh - getParameters");
-        System.out.println(argumentsList.get(0).get().toString());
 
         return argumentsList.stream();
     }
