@@ -5,10 +5,10 @@ package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient;
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildModelOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
@@ -26,7 +26,7 @@ import com.azure.core.util.polling.SyncPoller;
  * <p>
  * Further, see AnalyzeCustomDocumentFromUrl.java to analyze a custom document with your built model.
  */
-public class BuildModel {
+public class BuildDocumentModel {
 
     /**
      * Main method to invoke this demo.
@@ -44,11 +44,11 @@ public class BuildModel {
         String blobContainerUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
         String prefix = "{blob_name_prefix}";
-        SyncPoller<DocumentOperationResult, DocumentModelDetails> buildOperationPoller =
-            client.beginBuildModel(blobContainerUrl,
+        SyncPoller<OperationResult, DocumentModelDetails> buildOperationPoller =
+            client.beginBuildDocumentModel(blobContainerUrl,
                 DocumentModelBuildMode.TEMPLATE,
                 prefix,
-                new BuildModelOptions()
+                new BuildDocumentModelOptions()
                     .setModelId("custom-model-id")
                     .setDescription("model desc"),
                 Context.NONE);

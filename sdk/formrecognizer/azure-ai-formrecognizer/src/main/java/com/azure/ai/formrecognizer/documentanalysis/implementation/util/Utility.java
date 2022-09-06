@@ -4,7 +4,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.util;
 
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisAudience;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -144,9 +144,9 @@ public final class Utility {
     /*
      * Poller's ACTIVATION operation that takes URL as input.
      */
-    public static Function<PollingContext<DocumentOperationResult>, Mono<DocumentOperationResult>>
+    public static Function<PollingContext<OperationResult>, Mono<OperationResult>>
         activationOperation(
-        Supplier<Mono<DocumentOperationResult>> activationOperation,
+        Supplier<Mono<OperationResult>> activationOperation,
         ClientLogger logger) {
         return pollingContext -> {
             try {

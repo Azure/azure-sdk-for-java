@@ -76,8 +76,8 @@ public final class DocumentField extends TypedDocumentField<Object> {
      *
      * @return the value.
      */
-    public SelectionMarkState getValueAsSelectionMark() {
-        return (SelectionMarkState) super.getValue();
+    public DocumentSelectionMarkState getValueAsSelectionMark() {
+        return (DocumentSelectionMarkState) super.getValue();
     }
 
     /**
