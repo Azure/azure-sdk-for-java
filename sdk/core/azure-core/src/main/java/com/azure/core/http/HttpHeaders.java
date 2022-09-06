@@ -96,7 +96,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @return The updated HttpHeaders object.
      */
     public HttpHeaders add(String name, String value) {
-        String caseInsensitiveName = HttpHeadersHelper.formatKey(name);
+        String caseInsensitiveName = mapOrFormatKey(name);
         if (caseInsensitiveName == null || value == null) {
             return this;
         }
@@ -138,7 +138,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @return The updated HttpHeaders object
      */
     public HttpHeaders set(String name, String value) {
-        return setInternal(HttpHeadersHelper.formatKey(name), name, value);
+        return setInternal(mapOrFormatKey(name), name, value);
     }
 
     private HttpHeaders setInternal(String formattedName, String name, String value) {
@@ -167,7 +167,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
         if (name == null) {
             return this;
         }
-        String caseInsensitiveName = HttpHeadersHelper.formatKey(name);
+        String caseInsensitiveName = mapOrFormatKey(name);
         if (CoreUtils.isNullOrEmpty(values)) {
             removeInternal(caseInsensitiveName);
         } else {
@@ -199,7 +199,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @return the header if found, null otherwise.
      */
     public HttpHeader get(String name) {
-        return getInternal(HttpHeadersHelper.formatKey(name));
+        return getInternal(mapOrFormatKey(name));
     }
 
     private HttpHeader getInternal(String formattedName) {
@@ -214,7 +214,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @return the header if removed, null otherwise.
      */
     public HttpHeader remove(String name) {
-        return removeInternal(HttpHeadersHelper.formatKey(name));
+        return removeInternal(mapOrFormatKey(name));
     }
 
     private HttpHeader removeInternal(String lowerCaseName) {
@@ -311,5 +311,35 @@ public class HttpHeaders implements Iterable<HttpHeader> {
         return this.stream()
             .map(header -> header.getName() + "=" + header.getValue())
             .collect(Collectors.joining(", "));
+    }
+
+    /*
+     * Helper function that maps well-known or formats HTTP header names to the internal representation.
+     *
+     * This reduces the number of calls to format key drastically, greatly improving runtime performance.
+     */
+    private static String mapOrFormatKey(String unformattedKey) {
+        if (unformattedKey == null) {
+            return null;
+        }
+
+        switch (unformattedKey) {
+            case "Accept": return "accept";
+            case "Content-Encoding": return "content-encoding";
+            case "Content-Language": return "content-language";
+            case "Content-Length": return "content-length";
+            case "Content-MD5": return "content-md5";
+            case "Content-Type": return "content-type";
+            case "Date": return "date";
+            case "ETag":
+            case "eTag": return "etag";
+            case "If-Match": return "if-match";
+            case "If-Modified-Since": return "if-modified-since";
+            case "If-None-Match": return "if-none-match";
+            case "If-Unmodified-Since": return "if-unmodified-since";
+            case "Range": return "range";
+
+            default: return HttpHeadersHelper.formatKey(unformattedKey);
+        }
     }
 }
