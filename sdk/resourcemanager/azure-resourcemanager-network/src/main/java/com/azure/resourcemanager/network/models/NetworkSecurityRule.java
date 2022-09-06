@@ -34,6 +34,9 @@ public interface NetworkSecurityRule extends HasInnerModel<SecurityRuleInner>, C
      */
     String sourceAddressPrefix();
 
+    /** @return the service tag the rule applies to */
+    ServiceTag sourceServiceTag();
+
     /**
      * @return the list of source address prefixes the rule applies to, expressed using the CIDR notation in the format:
      *     "###.###.###.###/##", and "*" means "any", or IP addresses
@@ -51,6 +54,9 @@ public interface NetworkSecurityRule extends HasInnerModel<SecurityRuleInner>, C
      *     "###.###.###.###/##", and "*" means "any"
      */
     String destinationAddressPrefix();
+
+    /** @return the destination service tag */
+    ServiceTag destinationServiceTag();
 
     /**
      * @return the list of destination address prefixes the rule applies to, expressed using the CIDR notation in the
@@ -209,6 +215,13 @@ public interface NetworkSecurityRule extends HasInnerModel<SecurityRuleInner>, C
              * @return the next stage of the definition
              */
             WithDestinationPort<ParentT> withDestinationApplicationSecurityGroup(String... ids);
+
+            /**
+             * Sets the traffic destination service tag to which this rule applies.
+             * @param serviceTag service tag
+             * @return the next stage of the definition
+             */
+            WithDestinationPort<ParentT> toServiceTag(ServiceTag serviceTag);
         }
 
         /**
@@ -296,6 +309,13 @@ public interface NetworkSecurityRule extends HasInnerModel<SecurityRuleInner>, C
              * @return the next stage of the definition
              */
             WithSourcePort<ParentT> withSourceApplicationSecurityGroup(String... ids);
+
+            /**
+             * Sets the service tag specified as source.
+             * @param serviceTag source service tag
+             * @return the next stage of the definition
+             */
+            WithSourcePort<ParentT> fromServiceTag(ServiceTag serviceTag);
         }
 
         /**
@@ -771,6 +791,13 @@ public interface NetworkSecurityRule extends HasInnerModel<SecurityRuleInner>, C
              * @return the next stage of the update
              */
             Update withoutSourceApplicationSecurityGroup(String id);
+
+            /**
+             * Sets the service tag specified as source.
+             * @param serviceTag service tag
+             * @return the next stage of the update
+             */
+            Update fromServiceTag(ServiceTag serviceTag);
         }
 
         /** The stage of the network rule description allowing the source port(s) to be specified. */
@@ -852,6 +879,13 @@ public interface NetworkSecurityRule extends HasInnerModel<SecurityRuleInner>, C
              * @return the next stage of the definition
              */
             Update withoutDestinationApplicationSecurityGroup(String id);
+
+            /**
+             * Sets the traffic destination service tag to which this rule applies.
+             * @param serviceTag destination service tag
+             * @return the next stage of the definition
+             */
+            Update toServiceTag(ServiceTag serviceTag);
         }
 
         /** The stage of the network rule description allowing the destination port(s) to be specified. */

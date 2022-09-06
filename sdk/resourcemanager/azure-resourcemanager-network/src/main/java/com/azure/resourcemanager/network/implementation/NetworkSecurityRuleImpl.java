@@ -10,6 +10,7 @@ import com.azure.resourcemanager.network.models.SecurityRuleDirection;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 import com.azure.resourcemanager.network.fluent.models.ApplicationSecurityGroupInner;
 import com.azure.resourcemanager.network.fluent.models.SecurityRuleInner;
+import com.azure.resourcemanager.network.models.ServiceTag;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import java.util.ArrayList;
@@ -75,6 +76,11 @@ class NetworkSecurityRuleImpl
     }
 
     @Override
+    public ServiceTag sourceServiceTag() {
+        return ServiceTag.fromName(this.innerModel().sourceAddressPrefix());
+    }
+
+    @Override
     public List<String> sourceAddressPrefixes() {
         return Collections.unmodifiableList(this.innerModel().sourceAddressPrefixes());
     }
@@ -92,6 +98,11 @@ class NetworkSecurityRuleImpl
     @Override
     public String destinationAddressPrefix() {
         return this.innerModel().destinationAddressPrefix();
+    }
+
+    @Override
+    public ServiceTag destinationServiceTag() {
+        return ServiceTag.fromName(this.innerModel().destinationAddressPrefix());
     }
 
     @Override
@@ -162,6 +173,9 @@ class NetworkSecurityRuleImpl
         this.innerModel().withSourceAddressPrefix(cidr);
         this.innerModel().withSourceAddressPrefixes(null);
         this.innerModel().withSourceApplicationSecurityGroups(null);
+        if (this.sourceAsgs != null) {
+            this.sourceAsgs.clear();
+        }
         return this;
     }
 
@@ -170,6 +184,9 @@ class NetworkSecurityRuleImpl
         this.innerModel().withSourceAddressPrefix("*");
         this.innerModel().withSourceAddressPrefixes(null);
         this.innerModel().withSourceApplicationSecurityGroups(null);
+        if (this.sourceAsgs != null) {
+            this.sourceAsgs.clear();
+        }
         return this;
     }
 
@@ -178,6 +195,9 @@ class NetworkSecurityRuleImpl
         this.innerModel().withSourceAddressPrefixes(Arrays.asList(addresses));
         this.innerModel().withSourceAddressPrefix(null);
         this.innerModel().withSourceApplicationSecurityGroups(null);
+        if (this.sourceAsgs != null) {
+            this.sourceAsgs.clear();
+        }
         return this;
     }
 
@@ -214,6 +234,9 @@ class NetworkSecurityRuleImpl
         this.innerModel().withDestinationAddressPrefix(cidr);
         this.innerModel().withDestinationAddressPrefixes(null);
         this.innerModel().withDestinationApplicationSecurityGroups(null);
+        if (this.destinationAsgs != null) {
+            this.destinationAsgs.clear();
+        }
         return this;
     }
 
@@ -222,6 +245,9 @@ class NetworkSecurityRuleImpl
         this.innerModel().withDestinationAddressPrefixes(Arrays.asList(addresses));
         this.innerModel().withDestinationAddressPrefix(null);
         this.innerModel().withDestinationApplicationSecurityGroups(null);
+        if (this.destinationAsgs != null) {
+            this.destinationAsgs.clear();
+        }
         return this;
     }
 
@@ -230,6 +256,9 @@ class NetworkSecurityRuleImpl
         this.innerModel().withDestinationAddressPrefix("*");
         this.innerModel().withDestinationAddressPrefixes(null);
         this.innerModel().withDestinationApplicationSecurityGroups(null);
+        if (this.destinationAsgs != null) {
+            this.destinationAsgs.clear();
+        }
         return this;
     }
 
@@ -304,6 +333,11 @@ class NetworkSecurityRuleImpl
     }
 
     @Override
+    public NetworkSecurityRuleImpl fromServiceTag(ServiceTag serviceTag) {
+        return fromAddress(serviceTag == null ? null : serviceTag.name());
+    }
+
+    @Override
     public NetworkSecurityRuleImpl withDestinationApplicationSecurityGroup(String id) {
         destinationAsgs.put(id, new ApplicationSecurityGroupInner().withId(id));
         innerModel().withDestinationAddressPrefix(null);
@@ -324,6 +358,11 @@ class NetworkSecurityRuleImpl
         innerModel().withDestinationAddressPrefix(null);
         innerModel().withDestinationAddressPrefixes(null);
         return this;
+    }
+
+    @Override
+    public NetworkSecurityRuleImpl toServiceTag(ServiceTag serviceTag) {
+        return toAddress(serviceTag == null ? null : serviceTag.name());
     }
 
     // Helpers
