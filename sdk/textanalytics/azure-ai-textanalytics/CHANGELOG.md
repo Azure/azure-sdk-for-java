@@ -1,6 +1,6 @@
 # Release History
 
-## 5.2.0-beta.5 (Unreleased)
+## 5.2.0 (Unreleased)
 
 ### Features Added
 - Added `displayName` property which is the name of long-running operation, to the following classes to 
