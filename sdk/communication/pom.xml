@@ -11,6 +11,7 @@
 
   <modules>
       <module>azure-communication-callingserver</module>
+      <module>azure-communication-callautomation</module>
       <module>azure-communication-chat</module>
       <module>azure-communication-common</module>
       <module>azure-communication-email</module>
