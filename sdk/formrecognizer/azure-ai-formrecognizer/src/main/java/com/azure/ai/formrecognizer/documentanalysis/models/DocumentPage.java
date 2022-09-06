@@ -38,7 +38,7 @@ public final class DocumentPage {
      * The unit used by the width, height, and boundingBox properties. For
      * images, the unit is "pixel". For PDF, the unit is "inch".
      */
-    private LengthUnit unit;
+    private DocumentPageLengthUnit unit;
 
     /*
      * Location of the page in the reading order concatenated content.
@@ -145,7 +145,7 @@ public final class DocumentPage {
      *
      * @return the unit value.
      */
-    public LengthUnit getUnit() {
+    public DocumentPageLengthUnit getUnit() {
         return this.unit;
     }
 
@@ -156,7 +156,7 @@ public final class DocumentPage {
      * @param unit the unit value to set.
      * @return the DocumentPage object itself.
      */
-    private void setUnit(LengthUnit unit) {
+    private void setUnit(DocumentPageLengthUnit unit) {
         this.unit = unit;
     }
 
@@ -259,7 +259,7 @@ public final class DocumentPage {
             }
 
             @Override
-            public void setUnit(DocumentPage documentPage, LengthUnit unit) {
+            public void setUnit(DocumentPage documentPage, DocumentPageLengthUnit unit) {
                 documentPage.setUnit(unit);
             }
 

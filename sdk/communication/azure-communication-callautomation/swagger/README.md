@@ -1,9 +1,9 @@
-# Azure Communication Calling Service client library for Java
+# Azure Communication Call Automation client library for Java
 
 > see https://aka.ms/autorest
 ## Getting Started
 
-To build the SDK for Server Calling Client, simply Install AutoRest and in this folder, run:
+To build the SDK for Call Automation Client, simply Install AutoRest and in this folder, run:
 
 ### Setup
 ```ps
@@ -24,10 +24,10 @@ cd <swagger-folder>
 autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/modelerfour@4.15.442
 ```
 
-## Update generated files for server calling service
-To update generated files for calling service, run the following command
+## Update generated files for call automation
+To update generated files for call automation, run the following command
 
-> autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/modelerfour@4.15.442
+> autorest README.md --java --v4
 
 ### Code generation settings
 ``` yaml

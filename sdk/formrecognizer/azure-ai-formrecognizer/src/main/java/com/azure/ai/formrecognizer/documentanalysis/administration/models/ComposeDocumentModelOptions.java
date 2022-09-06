@@ -8,10 +8,10 @@ import com.azure.core.annotation.Fluent;
 import java.util.Map;
 
 /**
- * The configurable options to pass when creating a composed model.
+ * The configurable options to pass when creating a composed document model.
  */
 @Fluent
-public final class ComposeModelOptions {
+public final class ComposeDocumentModelOptions {
     private String description;
     private Map<String, String> tags;
     private String modelId;
@@ -30,9 +30,9 @@ public final class ComposeModelOptions {
      *
      * @param description the user defined model description to set.
      *
-     * @return the updated {@code ComposeModelOptions} value.
+     * @return the updated {@code ComposeDocumentModelOptions} value.
      */
-    public ComposeModelOptions setDescription(final String description) {
+    public ComposeDocumentModelOptions setDescription(final String description) {
         this.description = description;
         return this;
     }
@@ -50,9 +50,9 @@ public final class ComposeModelOptions {
      * Set the user defined attributes associated with the model.
      *
      * @param tags the tags value to set.
-     * @return the ComposeModelOptions object itself.
+     * @return the ComposeDocumentModelOptions object itself.
      */
-    public ComposeModelOptions setTags(Map<String, String> tags) {
+    public ComposeDocumentModelOptions setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -70,9 +70,9 @@ public final class ComposeModelOptions {
      * Set the unique model identifier for the model. If not specified, a model ID will be created for you.
      *
      * @param modelId a unique model identifier
-     * @return the ComposeModelOptions object itself.
+     * @return the ComposeDocumentModelOptions object itself.
      */
-    public ComposeModelOptions setModelId(String modelId) {
+    public ComposeDocumentModelOptions setModelId(String modelId) {
         this.modelId = modelId;
         return this;
     }

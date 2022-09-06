@@ -5,10 +5,10 @@ package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient;
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildModelOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
  * <p>
  * Further, see AnalyzeCustomDocumentAsync.java to analyze a custom document with your built model.
  */
-public class BuildModelAsync {
+public class BuildDocumentModelAsync {
 
     /**
      * Main method to invoke this demo.
@@ -45,10 +45,10 @@ public class BuildModelAsync {
         String blobContainerUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
         String prefix = "{blob_name_prefix}";
-        PollerFlux<DocumentOperationResult, DocumentModelDetails> buildModelPoller =
-            client.beginBuildModel(blobContainerUrl,
+        PollerFlux<OperationResult, DocumentModelDetails> buildModelPoller =
+            client.beginBuildDocumentModel(blobContainerUrl,
                 DocumentModelBuildMode.TEMPLATE, prefix,
-                new BuildModelOptions()
+                new BuildDocumentModelOptions()
                     .setModelId("custom-model-id")
                     .setDescription("my custom model desc"));
 

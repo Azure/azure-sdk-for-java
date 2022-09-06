@@ -9,7 +9,7 @@ import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentField;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
 
@@ -19,8 +19,8 @@ import java.util.Map;
 
 /**
  * Sample for analyzing commonly found receipt fields from a file source URL.
- * See fields found on a receipt here:
- * https://aka.ms/formrecognizer/receiptfields
+ * See fields found on a receipt <a href="https://aka.ms/formrecognizer/receiptfields">here</a>.
+ *
  */
 public class AnalyzeReceiptsFromUrl {
 
@@ -40,7 +40,7 @@ public class AnalyzeReceiptsFromUrl {
             "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer"
                 + "/azure-ai-formrecognizer/src/samples/resources/sample-forms/receipts/contoso-allinone.jpg";
 
-        SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeReceiptPoller =
+        SyncPoller<OperationResult, AnalyzeResult> analyzeReceiptPoller =
             client.beginAnalyzeDocumentFromUrl("prebuilt-receipt", receiptUrl);
 
         AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult();

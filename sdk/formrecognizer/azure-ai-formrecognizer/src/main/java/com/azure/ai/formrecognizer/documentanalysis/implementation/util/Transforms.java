@@ -3,11 +3,11 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.util;
 
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentFieldSchema;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildOperationDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelComposeOperationDetails;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelCopyAuthorization;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelCopyToOperationDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelSummary;
@@ -29,10 +29,11 @@ import com.azure.ai.formrecognizer.documentanalysis.models.DocumentKeyValueEleme
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentKeyValuePair;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentLanguage;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentLine;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentPage;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentPageLengthUnit;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentParagraph;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSelectionMark;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSelectionMarkState;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSignatureType;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSpan;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentStyle;
@@ -40,10 +41,9 @@ import com.azure.ai.formrecognizer.documentanalysis.models.DocumentTable;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentTableCell;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentTableCellKind;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentWord;
-import com.azure.ai.formrecognizer.documentanalysis.models.LengthUnit;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.ParagraphRole;
 import com.azure.ai.formrecognizer.documentanalysis.models.Point;
-import com.azure.ai.formrecognizer.documentanalysis.models.SelectionMarkState;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.models.ResponseError;
 import com.azure.core.util.CoreUtils;
@@ -104,7 +104,7 @@ public class Transforms {
                 DocumentPageHelper.setWidth(documentPage, innerDocumentPage.getWidth());
                 DocumentPageHelper.setPageNumber(documentPage, innerDocumentPage.getPageNumber());
                 DocumentPageHelper.setUnit(documentPage, innerDocumentPage.getUnit() == null
-                    ? null : LengthUnit.fromString(innerDocumentPage.getUnit().toString()));
+                    ? null : DocumentPageLengthUnit.fromString(innerDocumentPage.getUnit().toString()));
                 DocumentPageHelper.setSpans(documentPage, toDocumentSpans(innerDocumentPage.getSpans()));
 
                 DocumentPageHelper.setSelectionMarks(documentPage, innerDocumentPage.getSelectionMarks() == null
@@ -120,7 +120,7 @@ public class Transforms {
                         DocumentSelectionMarkHelper.setSpan(documentSelectionMark,
                             getDocumentSpan(innerSelectionMark.getSpan()));
                         DocumentSelectionMarkHelper.setState(documentSelectionMark,
-                            SelectionMarkState.fromString(innerSelectionMark.getState().toString()));
+                            DocumentSelectionMarkState.fromString(innerSelectionMark.getState().toString()));
                         return documentSelectionMark;
                     })
                     .collect(Collectors.toList()));
@@ -259,9 +259,9 @@ public class Transforms {
         );
     }
 
-    public static CopyAuthorization toCopyAuthorization(
+    public static DocumentModelCopyAuthorization toCopyAuthorization(
         com.azure.ai.formrecognizer.documentanalysis.implementation.models.CopyAuthorization innerCopyAuthorization) {
-        return new CopyAuthorization(innerCopyAuthorization.getTargetResourceId(),
+        return new DocumentModelCopyAuthorization(innerCopyAuthorization.getTargetResourceId(),
             innerCopyAuthorization.getTargetResourceRegion(),
             innerCopyAuthorization.getTargetModelId(),
             innerCopyAuthorization.getTargetModelLocation(),
@@ -299,12 +299,14 @@ public class Transforms {
 
     public static DocumentModelDetails toDocumentModelDetails(com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelDetails modelDetails) {
         DocumentModelDetails documentModelDetails = new DocumentModelDetails();
-        DocumentModelDetailsHelper.setModelId(documentModelDetails, modelDetails.getModelId());
-        DocumentModelDetailsHelper.setDescription(documentModelDetails, modelDetails.getDescription());
-        Map<String, DocumentTypeDetails> docTypeMap = getStringDocTypeInfoMap(modelDetails);
-        DocumentModelDetailsHelper.setDocTypes(documentModelDetails, docTypeMap);
-        DocumentModelDetailsHelper.setCreatedOn(documentModelDetails, modelDetails.getCreatedDateTime());
-        DocumentModelDetailsHelper.setTags(documentModelDetails, modelDetails.getTags());
+        if (modelDetails != null) {
+            DocumentModelDetailsHelper.setModelId(documentModelDetails, modelDetails.getModelId());
+            DocumentModelDetailsHelper.setDescription(documentModelDetails, modelDetails.getDescription());
+            Map<String, DocumentTypeDetails> docTypeMap = getStringDocTypeInfoMap(modelDetails);
+            DocumentModelDetailsHelper.setDocTypes(documentModelDetails, docTypeMap);
+            DocumentModelDetailsHelper.setCreatedOn(documentModelDetails, modelDetails.getCreatedDateTime());
+            DocumentModelDetailsHelper.setTags(documentModelDetails, modelDetails.getTags());
+        }
         return documentModelDetails;
     }
 
@@ -426,7 +428,7 @@ public class Transforms {
                 DocumentFieldHelper.setValue(documentField, null);
             } else {
                 DocumentFieldHelper.setValue(documentField,
-                    SelectionMarkState.fromString(innerDocumentField.getValueSelectionMark().toString()));
+                    DocumentSelectionMarkState.fromString(innerDocumentField.getValueSelectionMark().toString()));
             }
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.COUNTRY_REGION.equals(
             innerDocumentField.getType())) {
@@ -576,9 +578,6 @@ public class Transforms {
             }
             OperationDetailsHelper.setOperationId(operationDetails, innerOperationDetails.getOperationId());
             OperationDetailsHelper.setCreatedOn(operationDetails, innerOperationDetails.getCreatedDateTime());
-            // operationDetails does not return kind but is of kind subclasses, should we expose this to get kind from instance type?
-            // OperationDetailsHelper.setKind(documentModelOperationDetails,
-            //     OperationKind.fromString(operationDetails.getKind().toString()));
             OperationDetailsHelper.setLastUpdatedOn(operationDetails, innerOperationDetails.getLastUpdatedDateTime());
             OperationDetailsHelper.setPercentCompleted(operationDetails,
                 innerOperationDetails.getPercentCompleted() == null ? Integer.valueOf(0)
@@ -613,14 +612,14 @@ public class Transforms {
             }).collect(Collectors.toList());
     }
 
-    public static DocumentOperationResult toDocumentOperationResult(
+    public static OperationResult toDocumentOperationResult(
         String operationLocation) {
-        DocumentOperationResult documentOperationResult = new DocumentOperationResult();
-        DocumentOperationResultHelper.setResultId(
-            documentOperationResult,
+        OperationResult operationResult = new OperationResult();
+        OperationResultHelper.setResultId(
+            operationResult,
             Utility.parseResultId(operationLocation));
 
-        return documentOperationResult;
+        return operationResult;
     }
 
     private static ResponseError toResponseError(com.azure.ai.formrecognizer.documentanalysis.implementation.models.Error error) {

@@ -5,10 +5,10 @@ package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient;
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorizationOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelCopyAuthorization;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
@@ -16,7 +16,7 @@ import com.azure.core.util.polling.SyncPoller;
 /**
  * Sample for copying a custom document analysis model from a source Form Recognizer resource to a target Form Recognizer resource.
  */
-public class CopyModel {
+public class CopyDocumentModel {
 
     /**
      * Main method to invoke this demo.
@@ -39,19 +39,19 @@ public class CopyModel {
         String copiedModelId = "my-copied-model";
 
         // Get authorization to copy the model to target resource
-        CopyAuthorization modelCopyAuthorization
+        DocumentModelCopyAuthorization modelDocumentModelCopyAuthorization
             = targetClient.getCopyAuthorizationWithResponse(new CopyAuthorizationOptions().setModelId(copiedModelId),
             Context.NONE).getValue();
 
         // The ID of the model that needs to be copied to the target resource
         String copyModelId = "copy-model-ID";
         // Start copy operation from the source client
-        SyncPoller<DocumentOperationResult, DocumentModelDetails> copyPoller = sourceClient.beginCopyModelTo(copyModelId,
-            modelCopyAuthorization);
+        SyncPoller<OperationResult, DocumentModelDetails> copyPoller = sourceClient.beginCopyDocumentModelTo(copyModelId,
+            modelDocumentModelCopyAuthorization);
         copyPoller.waitForCompletion();
 
         // Get the copied model
-        DocumentModelDetails copiedModel = targetClient.getModel(modelCopyAuthorization.getTargetModelId());
+        DocumentModelDetails copiedModel = targetClient.getDocumentModel(modelDocumentModelCopyAuthorization.getTargetModelId());
 
         System.out.printf("Copied model has model ID: %s, was created on: %s.%n",
             copiedModel.getModelId(),
