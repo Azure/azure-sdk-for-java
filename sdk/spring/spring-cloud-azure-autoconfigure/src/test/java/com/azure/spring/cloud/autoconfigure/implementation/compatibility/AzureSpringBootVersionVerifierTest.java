@@ -3,12 +3,14 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.compatibility;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -149,10 +151,9 @@ class AzureSpringBootVersionVerifierTest {
         assertThrows(AzureCompatibilityNotMetException.class, versionVerifier::verify);
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = {"2.5.x", "2.6.x", "2.7.x" })
-    public void testVersionVerifierLog(CapturedOutput capturedOutput, String acceptedVersion) {
-        List<String> acceptedVersions = Collections.singletonList(acceptedVersion);
+    @Test
+    public void testVersionVerifierLog(CapturedOutput capturedOutput) {
+        List<String> acceptedVersions = Arrays.asList("2.5.x", "2.6.x", "2.7.x");
         ClassNameResolverPredicate mockResolver = mock(ClassNameResolverPredicate.class);
 
         AzureSpringBootVersionVerifier versionVerifier = new AzureSpringBootVersionVerifier(acceptedVersions,
