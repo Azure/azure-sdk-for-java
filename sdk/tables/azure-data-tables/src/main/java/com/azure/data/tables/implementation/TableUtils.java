@@ -109,7 +109,13 @@ public final class TableUtils {
     public static Throwable mapThrowableToIllegalArgumentExceptionWhenTableNamePresent(Throwable throwable,
                                                                                        String tableName,
                                                                                        String endpoint) {
-        if (endpoint.contains(tableName)) {
+        /*if (endpoint.contains(tableName)) {
+            return new IllegalArgumentException(
+                "Table name found within client endpoint URI. Remove table name from endpoint.");
+        }
+        return throwable;*/
+        String adjustedEndpoint = (endpoint.endsWith("/")) ? endpoint.substring(0, endpoint.length() - 1) : endpoint;
+        if (adjustedEndpoint.endsWith(tableName)) {
             return new IllegalArgumentException(
                 "Table name found within client endpoint URI. Remove table name from endpoint.");
         }
