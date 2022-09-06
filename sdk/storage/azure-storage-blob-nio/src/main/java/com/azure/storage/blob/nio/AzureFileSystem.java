@@ -169,10 +169,10 @@ public final class AzureFileSystem extends FileSystem {
         // Read configurations and build client.
         try {
             this.blobServiceClient = this.buildBlobServiceClient(endpoint, config);
-            this.blockSize = config.blockSize;
-            this.putBlobThreshold = config.putBlobThreshold;
-            this.maxConcurrencyPerRequest = config.maxConcurrencyPerRequest;
-            this.downloadResumeRetries = config.downloadResumeRetries;
+            this.blockSize = config.getBlockSize();
+            this.putBlobThreshold = config.getPutBlobThreshold();
+            this.maxConcurrencyPerRequest = config.getMaxConcurrencyPerRequest();
+            this.downloadResumeRetries = config.getDownloadResumeRetries();
 
             // Initialize and ensure access to FileStores.
             this.fileStores = this.initializeFileStores(config);
@@ -387,10 +387,10 @@ public final class AzureFileSystem extends FileSystem {
                 .endpoint(endpoint);
 
         // Set the credentials.
-        if (config.sharedKeyCredential != null) {
-            builder.credential(config.sharedKeyCredential);
-        } else if (config.sasCredential != null) {
-            builder.credential(config.sasCredential);
+        if (config.getSharedKeyCredential() != null) {
+            builder.credential(config.getSharedKeyCredential());
+        } else if (config.getSasCredential() != null) {
+            builder.credential(config.getSasCredential());
         } else {
             throw LoggingUtility.logError(LOGGER, new IllegalArgumentException(String.format("No credentials were "
                     + "provided. Please specify one of the following when constructing an AzureFileSystem: %s, %s.",
@@ -398,14 +398,14 @@ public final class AzureFileSystem extends FileSystem {
         }
 
         // Configure options and client.
-        builder.httpLogOptions(config.logOptions);
-        builder.retryOptions(config.retryOptions);
-        builder.httpClient(config.httpClient);
+        builder.httpLogOptions(config.getLogOptions());
+        builder.retryOptions(config.getRetryOptions());
+        builder.httpClient(config.getHttpClient());
 
         // Add BlobUserAgentModificationPolicy
         builder.addPolicy(new BlobUserAgentModificationPolicy(CLIENT_NAME, CLIENT_VERSION));
 
-        for (HttpPipelinePolicy policy : config.policyList) {
+        for (HttpPipelinePolicy policy : config.getPolicyList()) {
             builder.addPolicy(policy);
         }
 
@@ -413,14 +413,14 @@ public final class AzureFileSystem extends FileSystem {
     }
 
     private Map<String, FileStore> initializeFileStores(AzureFileSystemConfig config) throws IOException {
-        if (config.fileStoreNames.isEmpty()) {
+        if (config.getFileStoreNames().isEmpty()) {
             throw LoggingUtility.logError(LOGGER, new IllegalArgumentException("The list of FileStores cannot be "
                 + "null."));
         }
 
         Map<String, FileStore> fileStores = new HashMap<>();
-        for (String fileStoreName : config.fileStoreNames) {
-            FileStore fs = new AzureFileStore(this, fileStoreName, config.skipInitialContainerCheck);
+        for (String fileStoreName : config.getFileStoreNames()) {
+            FileStore fs = new AzureFileStore(this, fileStoreName, config.getSkipInitialContainerCheck());
             if (this.defaultFileStore == null) {
                 this.defaultFileStore = fs;
             }

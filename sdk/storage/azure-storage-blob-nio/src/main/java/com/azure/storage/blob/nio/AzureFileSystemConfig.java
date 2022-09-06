@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob.nio;
 
 import com.azure.core.credential.AzureSasCredential;
@@ -12,29 +15,30 @@ import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RetryPolicyType;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import static com.azure.storage.common.implementation.Constants.ConfigurationConstants.Nio.*;
+import static com.azure.storage.common.implementation.Constants.ConfigurationConstants.Nio;
 
 class AzureFileSystemConfig {
     // BlobServiceClient configs
-    StorageSharedKeyCredential sharedKeyCredential;
-    AzureSasCredential sasCredential;
-    HttpLogOptions logOptions = new HttpLogOptions();
-    RequestRetryOptions retryOptions;
-    HttpClient httpClient;
-    final List<HttpPipelinePolicy> policyList = new ArrayList<>();
+    private StorageSharedKeyCredential sharedKeyCredential;
+    private AzureSasCredential sasCredential;
+    private HttpLogOptions logOptions = new HttpLogOptions();
+    private RequestRetryOptions retryOptions;
+    private HttpClient httpClient;
+    private final List<HttpPipelinePolicy> policyList = new ArrayList<>();
 
     // nio configs
-    Long blockSize;
-    Long putBlobThreshold;
-    Integer maxConcurrencyPerRequest;
-    Integer downloadResumeRetries;
-    final List<String> fileStoreNames = new ArrayList<>();
-    Boolean skipInitialContainerCheck;
+    private Long blockSize;
+    private Long putBlobThreshold;
+    private Integer maxConcurrencyPerRequest;
+    private Integer downloadResumeRetries;
+    private final List<String> fileStoreNames = new ArrayList<>();
+    private Boolean skipInitialContainerCheck;
 
     AzureFileSystemConfig() {}
 
@@ -67,37 +71,135 @@ class AzureFileSystemConfig {
     }
 
     public AzureFileSystemConfig(Configuration config) {
-        if (!CoreUtils.isNullOrEmpty(config.get(ENVIRONMENT_DEFAULT_ACCOUNT_NAME)) &&
-            !CoreUtils.isNullOrEmpty(config.get(ENVIRONMENT_DEFAULT_ACCOUNT_KEY))) {
+        if (!CoreUtils.isNullOrEmpty(config.get(Nio.ENVIRONMENT_DEFAULT_ACCOUNT_NAME))
+            && !CoreUtils.isNullOrEmpty(config.get(Nio.ENVIRONMENT_DEFAULT_ACCOUNT_KEY))) {
             sharedKeyCredential = new StorageSharedKeyCredential(
-                config.get(ENVIRONMENT_DEFAULT_ACCOUNT_NAME), config.get(ENVIRONMENT_DEFAULT_ACCOUNT_KEY));
+                config.get(Nio.ENVIRONMENT_DEFAULT_ACCOUNT_NAME), config.get(Nio.ENVIRONMENT_DEFAULT_ACCOUNT_KEY));
         } else {
             sharedKeyCredential = null;
         }
-        sasCredential = getConfigFromStringConfiguration(config, ENVIRONMENT_DEFAULT_SAS_TOKEN,
+        sasCredential = getConfigFromStringConfiguration(config, Nio.ENVIRONMENT_DEFAULT_SAS_TOKEN,
             AzureSasCredential::new);
 
         // HttpLogOptions initialized already and constructor does the environment read for us
 
         retryOptions = RequestRetryOptions.fromConfiguration(config,
-            config.get(ENVIRONMENT_DEFAULT_BLOB_ENDPOINT_SECONDARY));
+            config.get(Nio.ENVIRONMENT_DEFAULT_BLOB_ENDPOINT_SECONDARY));
         httpClient = null; // cannot load from environment
 
         // cannot load policies from environment
 
-        blockSize = getConfigFromStringConfiguration(config, ENVIRONMENT_DEFAULT_BLOCK_SIZE, Long::valueOf);
-        putBlobThreshold = getConfigFromStringConfiguration(config, ENVIRONMENT_DEFAULT_PUT_BLOB_THRESHOLD,
+        blockSize = getConfigFromStringConfiguration(config, Nio.ENVIRONMENT_DEFAULT_BLOCK_SIZE, Long::valueOf);
+        putBlobThreshold = getConfigFromStringConfiguration(config, Nio.ENVIRONMENT_DEFAULT_PUT_BLOB_THRESHOLD,
             Long::valueOf);
-        maxConcurrencyPerRequest = getConfigFromStringConfiguration(config, ENVIRONMENT_DEFAULT_PER_REQUEST_CONCURRENCY,
-            Integer::valueOf);
-        downloadResumeRetries = getConfigFromStringConfiguration(config, ENVIRONMENT_DEFAULT_RESUME_RETRIES,
+        maxConcurrencyPerRequest = getConfigFromStringConfiguration(config,
+            Nio.ENVIRONMENT_DEFAULT_PER_REQUEST_CONCURRENCY, Integer::valueOf);
+        downloadResumeRetries = getConfigFromStringConfiguration(config, Nio.ENVIRONMENT_DEFAULT_RESUME_RETRIES,
             Integer::valueOf);
 
-        String fileStores = config.get(ENVIRONMENT_DEFAULT_FILE_STORES);
+        String fileStores = config.get(Nio.ENVIRONMENT_DEFAULT_FILE_STORES);
         Collections.addAll(fileStoreNames, (fileStores != null ? fileStores : "").split(","));
 
-        skipInitialContainerCheck = getConfigFromStringConfiguration(config, ENVIRONMENT_DEFAULT_SKIP_CONTAINER_CHECK,
-            Boolean::valueOf);
+        skipInitialContainerCheck = getConfigFromStringConfiguration(config,
+            Nio.ENVIRONMENT_DEFAULT_SKIP_CONTAINER_CHECK, Boolean::valueOf);
+    }
+
+    public StorageSharedKeyCredential getSharedKeyCredential() {
+        return sharedKeyCredential;
+    }
+
+    public AzureFileSystemConfig setSharedKeyCredential(StorageSharedKeyCredential sharedKeyCredential) {
+        this.sharedKeyCredential = sharedKeyCredential;
+        return this;
+    }
+
+    public AzureSasCredential getSasCredential() {
+        return sasCredential;
+    }
+
+    public AzureFileSystemConfig setSasCredential(AzureSasCredential sasCredential) {
+        this.sasCredential = sasCredential;
+        return this;
+    }
+
+    public HttpLogOptions getLogOptions() {
+        return logOptions;
+    }
+
+    public AzureFileSystemConfig setLogOptions(HttpLogOptions logOptions) {
+        this.logOptions = logOptions;
+        return this;
+    }
+
+    public RequestRetryOptions getRetryOptions() {
+        return retryOptions;
+    }
+
+    public AzureFileSystemConfig setRetryOptions(RequestRetryOptions retryOptions) {
+        this.retryOptions = retryOptions;
+        return this;
+    }
+
+    public HttpClient getHttpClient() {
+        return httpClient;
+    }
+
+    public AzureFileSystemConfig setHttpClient(HttpClient httpClient) {
+        this.httpClient = httpClient;
+        return this;
+    }
+
+    public List<HttpPipelinePolicy> getPolicyList() {
+        return policyList;
+    }
+
+    public Long getBlockSize() {
+        return blockSize;
+    }
+
+    public AzureFileSystemConfig setBlockSize(Long blockSize) {
+        this.blockSize = blockSize;
+        return this;
+    }
+
+    public Long getPutBlobThreshold() {
+        return putBlobThreshold;
+    }
+
+    public AzureFileSystemConfig setPutBlobThreshold(Long putBlobThreshold) {
+        this.putBlobThreshold = putBlobThreshold;
+        return this;
+    }
+
+    public Integer getMaxConcurrencyPerRequest() {
+        return maxConcurrencyPerRequest;
+    }
+
+    public AzureFileSystemConfig setMaxConcurrencyPerRequest(Integer maxConcurrencyPerRequest) {
+        this.maxConcurrencyPerRequest = maxConcurrencyPerRequest;
+        return this;
+    }
+
+    public Integer getDownloadResumeRetries() {
+        return downloadResumeRetries;
+    }
+
+    public AzureFileSystemConfig setDownloadResumeRetries(Integer downloadResumeRetries) {
+        this.downloadResumeRetries = downloadResumeRetries;
+        return this;
+    }
+
+    public List<String> getFileStoreNames() {
+        return fileStoreNames;
+    }
+
+    public Boolean getSkipInitialContainerCheck() {
+        return skipInitialContainerCheck;
+    }
+
+    public AzureFileSystemConfig setSkipInitialContainerCheck(Boolean skipInitialContainerCheck) {
+        this.skipInitialContainerCheck = skipInitialContainerCheck;
+        return this;
     }
 
     /**
