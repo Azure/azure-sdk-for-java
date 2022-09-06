@@ -236,49 +236,6 @@ public class ConfigurationClientBuilderTest extends TestBase {
         assertThrows(HttpResponseException.class, () -> configurationClient.setConfigurationSetting(key, null, value));
     }
 
-    @Test
-    @DoNotRecord
-    public void notShareDefaultHttpPipeline(HttpClient httpClient) {
-        final String key = "key1";
-        final String label = "label1";
-        final String value = "value1";
-
-        ConfigurationClientBuilder builder = new ConfigurationClientBuilder()
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
-            .credential(new DefaultAzureCredentialBuilder().build());
-
-        if (!interceptorManager.isPlaybackMode()) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
-        }
-
-        // Build a new instance without custom pipeline should create a new pipeline each time.
-        // Endpoint: Does Not Exist
-        builder.endpoint("https://aaa.azconfig.io");
-        ConfigurationClient clientNotExist = builder.buildClient();
-
-        // Endpoint: Exists
-        String endpoint = null;
-        try {
-            endpoint = new ConfigurationClientCredentials(
-                Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING))
-                .getBaseUri();
-        } catch (NoSuchAlgorithmException | InvalidKeyException exception) {
-            assertTrue(false);
-        }
-
-        builder.endpoint(endpoint);
-        ConfigurationClient client = builder.buildClient();
-
-        // TODO: after Netty supports SyncStack, we should assert UnknownHostException type
-        try {
-            clientNotExist.setConfigurationSetting(key, label, value);
-        } catch (Exception e) {
-            assertTrue(e.getMessage().startsWith("java.net.UnknownHostException:"));
-        }
-        ConfigurationSetting configurationSetting = client.setConfigurationSetting(key, label, value);
-        Assertions.assertEquals(configurationSetting.getKey(), key);
-    }
-
     private static URI getURI(String endpointFormat, String namespace, String domainName) {
         try {
             return new URI(String.format(Locale.US, endpointFormat, namespace, domainName));
