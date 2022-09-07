@@ -22,7 +22,6 @@ import java.util.List;
 
 import static com.azure.ai.textanalytics.TestUtils.VALID_HTTPS_LOCALHOST;
 import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
-import static com.azure.ai.textanalytics.implementation.Utility.throwIfTargetServiceVersionFound;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -392,19 +391,5 @@ public class ClientSideValidationUnitTests {
         IllegalStateException exception31 = assertThrows(IllegalStateException.class,
             () -> clientV31.beginMultiLabelClassify(dummyDocument, PROJECT_NAME,  DEPLOYMENT_NAME, null, null));
         assertEquals(MULTI_LABEL_CLASSIFY_ERROR_MESSAGE_31, exception31.getMessage());
-    }
-
-
-    @Test
-    public void test() {
-        for (int i = 0; i < 5; i++) {
-            try {
-                throwIfTargetServiceVersionFound(TextAnalyticsServiceVersion.V3_0,
-                    Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_0),
-                    "a message");
-            } catch (IllegalStateException ex) {
-                System.out.println("i = " + i);
-            }
-        }
     }
 }

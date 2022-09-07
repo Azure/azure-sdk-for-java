@@ -10,11 +10,11 @@ import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisAudie
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentField;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentPage;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentPageLengthUnit;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSelectionMark;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSelectionMarkState;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentTable;
-import com.azure.ai.formrecognizer.documentanalysis.models.LengthUnit;
 import com.azure.ai.formrecognizer.documentanalysis.models.Point;
-import com.azure.ai.formrecognizer.documentanalysis.models.SelectionMarkState;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
@@ -477,7 +477,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
             assertNotNull(analyzeResult.getTables());
             Assertions.assertEquals(8.5f, documentPage.getWidth());
             Assertions.assertEquals(11f, documentPage.getHeight());
-            Assertions.assertEquals(LengthUnit.INCH, documentPage.getUnit());
+            Assertions.assertEquals(DocumentPageLengthUnit.INCH, documentPage.getUnit());
 
         });
 
@@ -501,7 +501,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
                 documentPage.getAngle() > -180.0 && documentPage.getAngle() < 180.0);
             Assertions.assertEquals(8.5f, documentPage.getWidth());
             Assertions.assertEquals(11f, documentPage.getHeight());
-            Assertions.assertEquals(LengthUnit.INCH, documentPage.getUnit());
+            Assertions.assertEquals(DocumentPageLengthUnit.INCH, documentPage.getUnit());
 
             assertNotNull(documentPage.getSelectionMarks());
             Assertions.assertEquals(3, documentPage.getSelectionMarks().size());
@@ -511,11 +511,11 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
                 validateBoundingBoxData(documentSelectionMark.getBoundingPolygon());
                 assertNotNull(documentSelectionMark.getSelectionMarkState());
                 if (i == 0) {
-                    Assertions.assertEquals(SelectionMarkState.UNSELECTED, documentSelectionMark.getSelectionMarkState());
+                    Assertions.assertEquals(DocumentSelectionMarkState.UNSELECTED, documentSelectionMark.getSelectionMarkState());
                 } else if (i == 1) {
-                    assertEquals(SelectionMarkState.SELECTED, documentSelectionMark.getSelectionMarkState());
+                    assertEquals(DocumentSelectionMarkState.SELECTED, documentSelectionMark.getSelectionMarkState());
                 } else {
-                    assertEquals(SelectionMarkState.UNSELECTED, documentSelectionMark.getSelectionMarkState());
+                    assertEquals(DocumentSelectionMarkState.UNSELECTED, documentSelectionMark.getSelectionMarkState());
                 }
             }
         });
@@ -533,7 +533,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
             assertNotNull(analyzeResult.getTables());
             Assertions.assertEquals(8.5f, documentPage.getWidth());
             Assertions.assertEquals(11f, documentPage.getHeight());
-            Assertions.assertEquals(LengthUnit.INCH, documentPage.getUnit());
+            Assertions.assertEquals(DocumentPageLengthUnit.INCH, documentPage.getUnit());
 
             validateDocumentPage(documentPage);
         });
@@ -561,7 +561,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
             assertNotNull(analyzeResult.getTables());
             Assertions.assertEquals(1700, documentPage.getWidth());
             Assertions.assertEquals(2200, documentPage.getHeight());
-            Assertions.assertEquals(LengthUnit.PIXEL, documentPage.getUnit());
+            Assertions.assertEquals(DocumentPageLengthUnit.PIXEL, documentPage.getUnit());
 
             validateDocumentPage(documentPage);
         });
@@ -700,7 +700,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         analyzeResult.getPages().forEach(actualDocumentPage -> {
             Assertions.assertEquals(8.5f, actualDocumentPage.getWidth());
             Assertions.assertEquals(11f, actualDocumentPage.getHeight());
-            Assertions.assertEquals(LengthUnit.INCH, actualDocumentPage.getUnit());
+            Assertions.assertEquals(DocumentPageLengthUnit.INCH, actualDocumentPage.getUnit());
 
             validateDocumentPage(actualDocumentPage);
         });
@@ -709,11 +709,11 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         analyzeResult.getDocuments().forEach(actualDocument ->
             actualDocument.getFields().forEach((key, documentField) -> {
                 if ("AMEX_SELECTION_MARK".equals(key)) {
-                    assertEquals(SelectionMarkState.SELECTED, documentField.getValueAsSelectionMark());
+                    assertEquals(DocumentSelectionMarkState.SELECTED, documentField.getValueAsSelectionMark());
                 } else if ("VISA_SELECTION_MARK".equals(key)) {
-                    assertEquals(SelectionMarkState.UNSELECTED, documentField.getValueAsSelectionMark());
+                    assertEquals(DocumentSelectionMarkState.UNSELECTED, documentField.getValueAsSelectionMark());
                 } else if ("MASTERCARD_SELECTION_MARK".equals(key)) {
-                    assertEquals(SelectionMarkState.UNSELECTED, documentField.getValueAsSelectionMark());
+                    assertEquals(DocumentSelectionMarkState.UNSELECTED, documentField.getValueAsSelectionMark());
                 } else {
                     throw new IllegalStateException("Unexpected value: " + key);
                 }

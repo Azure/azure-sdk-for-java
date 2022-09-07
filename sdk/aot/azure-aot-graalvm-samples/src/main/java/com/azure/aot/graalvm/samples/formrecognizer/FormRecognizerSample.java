@@ -9,7 +9,7 @@ import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentField;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
@@ -55,7 +55,7 @@ public class FormRecognizerSample {
 
         BinaryData targetData = BinaryData.fromStream(resourceAsStream);
 
-        SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeReceiptPoller =
+        SyncPoller<OperationResult, AnalyzeResult> analyzeReceiptPoller =
                 client.beginAnalyzeDocument("prebuilt-receipt", targetData, fileContent.length);
 
         AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult();
