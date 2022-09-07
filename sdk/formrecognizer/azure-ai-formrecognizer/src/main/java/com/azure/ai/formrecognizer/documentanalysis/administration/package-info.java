@@ -4,7 +4,7 @@
 /**
  * Package containing classes for creating a
  * {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient} and
- * {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient} to perform operations on
+ * {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient} to perform operations on
  * Azure Form Recognizer document model management operations.
  */
 package com.azure.ai.formrecognizer.documentanalysis.administration;
