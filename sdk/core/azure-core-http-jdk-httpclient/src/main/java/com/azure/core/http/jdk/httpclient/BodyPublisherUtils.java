@@ -17,8 +17,6 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.adapter.JdkFlowAdapter;
 import reactor.core.publisher.Flux;
 
-import java.io.FileNotFoundException;
-import java.io.UncheckedIOException;
 import java.net.http.HttpRequest;
 import java.nio.ByteBuffer;
 import java.util.concurrent.Flow;
@@ -26,7 +24,6 @@ import java.util.concurrent.Flow;
 import static java.net.http.HttpRequest.BodyPublishers.fromPublisher;
 import static java.net.http.HttpRequest.BodyPublishers.noBody;
 import static java.net.http.HttpRequest.BodyPublishers.ofByteArray;
-import static java.net.http.HttpRequest.BodyPublishers.ofFile;
 import static java.net.http.HttpRequest.BodyPublishers.ofInputStream;
 import static java.net.http.HttpRequest.BodyPublishers.ofString;
 
@@ -46,27 +43,28 @@ final class BodyPublisherUtils {
      */
     public static HttpRequest.BodyPublisher toBodyPublisher(com.azure.core.http.HttpRequest request, ProgressReporter progressReporter) {
         BinaryData body = request.getBodyAsBinaryData();
-        if (body != null) {
-            BinaryDataContent bodyContent = BinaryDataHelper.getContent(body);
-            if (bodyContent instanceof ByteArrayContent) {
-                return getPublisherWithReporter(ofByteArray(bodyContent.toBytes()), progressReporter);
-            } else if (bodyContent instanceof StringContent || bodyContent instanceof SerializableContent) {
-                return getPublisherWithReporter(ofString(bodyContent.toString()), progressReporter);
-            } else if (bodyContent instanceof FileContent) {
-                try {
-                    return getPublisherWithReporter(ofFile(((FileContent) bodyContent).getFile()), progressReporter);
-                } catch (FileNotFoundException e) {
-                    throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
-                }
-            } else if (bodyContent instanceof InputStreamContent) {
-                return getPublisherWithReporter(ofInputStream(bodyContent::toStream), progressReporter);
-            } else {
-                final String contentLength = request.getHeaders().getValue("content-length");
-                return getPublisherWithReporter(toBodyPublisher(request.getBody(), contentLength), progressReporter);
-            }
-        } else {
+        if (body == null) {
             return noBody();
         }
+
+        HttpRequest.BodyPublisher publisher = null;
+        BinaryDataContent bodyContent = BinaryDataHelper.getContent(body);
+        if (bodyContent instanceof ByteArrayContent) {
+            publisher = ofByteArray(bodyContent.toBytes());
+        } else if (bodyContent instanceof StringContent || bodyContent instanceof SerializableContent) {
+            publisher = ofString(bodyContent.toString());
+        } else if (bodyContent instanceof FileContent || bodyContent instanceof InputStreamContent) {
+            publisher = ofInputStream(bodyContent::toStream);
+            Long contentLength = bodyContent.getLength();
+            if (contentLength != null) {
+                publisher = fromPublisher(publisher, contentLength);
+            }
+        } else {
+            final String contentLength = request.getHeaders().getValue("content-length");
+            publisher = toBodyPublisher(request.getBody(), contentLength);
+        }
+
+        return getPublisherWithReporter(publisher, progressReporter);
     }
 
 

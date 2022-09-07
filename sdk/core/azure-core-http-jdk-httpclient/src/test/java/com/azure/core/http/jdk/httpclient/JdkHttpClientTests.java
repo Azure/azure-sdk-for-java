@@ -7,6 +7,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.ProgressReporter;
@@ -26,23 +27,32 @@ import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 import reactor.test.StepVerifierOptions;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.binaryEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -244,11 +254,65 @@ public class JdkHttpClientTests {
                 .concatWith(Flux.just(ByteBuffer.wrap(SHORT_BODY))));
 
         Contexts contexts = Contexts.with(Context.NONE).setHttpRequestProgressReporter(ProgressReporter.withProgressListener(p -> progress.add(p)));
-        client.sendSync(request, contexts.getContext());
-
+        HttpResponse response = client.sendSync(request, contexts.getContext());
+        assertEquals(200, response.getStatusCode());
         List<Long> progressList = progress.stream().collect(Collectors.toList());
         assertEquals(LONG_BODY.length, progressList.get(0));
         assertEquals(SHORT_BODY.length + LONG_BODY.length, progressList.get(1));
+    }
+
+    @Test
+    public void testFileUploadSync() throws IOException, InterruptedException, URISyntaxException {
+        WireMockServer local = new WireMockServer(WireMockConfiguration.options()
+            .dynamicPort()
+            .maxRequestJournalEntries(1)
+            .gzipDisabled(true));
+
+        local.stubFor(post("/shortPost").willReturn(aResponse().withStatus(200).withBody(SHORT_BODY)));
+        local.start();
+
+        Path tempFile = writeToTempFile(LONG_BODY);
+        tempFile.toFile().deleteOnExit();
+        BinaryData body = BinaryData.fromFile(tempFile, 1L, 42L);
+
+        HttpClient client = new JdkHttpClientProvider().createInstance();
+        HttpRequest request = new HttpRequest(HttpMethod.POST, url(local, "/shortPost"))
+            .setBody(body);
+
+        HttpResponse response = client.sendSync(request, Context.NONE);
+        assertEquals(200, response.getStatusCode());
+
+        local.verify(postRequestedFor(urlEqualTo("/shortPost")).withRequestBody(binaryEqualTo(body.toBytes())));
+        local.shutdown();
+    }
+
+    @Test
+    public void testStreamUploadAsync() throws IOException {
+        WireMockServer local = new WireMockServer(WireMockConfiguration.options()
+            .dynamicPort()
+            .maxRequestJournalEntries(1)
+            .gzipDisabled(true));
+
+        local.stubFor(post("/post").willReturn(aResponse().withStatus(200).withBody(SHORT_BODY)));
+        local.start();
+
+        HttpClient client = new JdkHttpClientProvider().createInstance();
+
+        InputStream requestBody = new ByteArrayInputStream(SHORT_BODY);
+        BinaryData body = BinaryData.fromStream(requestBody);
+        HttpRequest request = new HttpRequest(HttpMethod.POST, url(local, "/post"))
+            .setHeader("Content-Length", String.valueOf(SHORT_BODY.length))
+            .setBody(body);
+
+        StepVerifier.create(client.send(request))
+            .consumeNextWith(r -> {
+                assertEquals(200, r.getStatusCode());
+                local.verify(postRequestedFor(urlEqualTo("/post")).withRequestBody(binaryEqualTo(SHORT_BODY)));
+            })
+            .expectComplete()
+            .verify();
+
+        local.shutdown();
     }
 
     @Test
@@ -409,5 +473,15 @@ public class JdkHttpClientTests {
     private HttpResponse doRequestSync(HttpClient client, String path) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
         return client.sendSync(request, Context.NONE);
+    }
+
+    private static Path writeToTempFile(byte[] body) throws IOException {
+        Path tempFile = Files.createTempFile("data", null);
+        tempFile.toFile().deleteOnExit();
+        String tempFilePath = tempFile.toString();
+        FileOutputStream outputStream = new FileOutputStream(tempFilePath);
+        outputStream.write(body);
+        outputStream.close();
+        return tempFile;
     }
 }

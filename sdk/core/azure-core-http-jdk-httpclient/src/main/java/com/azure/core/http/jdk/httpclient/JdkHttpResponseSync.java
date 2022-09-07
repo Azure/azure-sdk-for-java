@@ -85,18 +85,18 @@ final class JdkHttpResponseSync extends JdkHttpResponseBase {
                 throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
             }
 
-            this.close();
+            close();
         }
     }
 
     @Override
     public void close() {
-        if (!disposed && this.bodyStream != null) {
+        if (!disposed && bodyStream != null) {
             disposed = true;
             try {
-                this.bodyStream.close();
+                bodyStream.close();
             } catch (IOException e) {
-                LOGGER.logExceptionAsError(new UncheckedIOException(e));
+                throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
             }
         }
     }

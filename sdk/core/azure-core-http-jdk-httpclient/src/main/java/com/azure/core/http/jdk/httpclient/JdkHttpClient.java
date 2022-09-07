@@ -88,7 +88,7 @@ class JdkHttpClient implements HttpClient {
         try {
             if (eagerlyReadResponse) {
                 java.net.http.HttpResponse<byte[]> jdKResponse = jdkHttpClient.send(jdkRequest, ofByteArray());
-                return new JdkHttpResponseSync(request, jdKResponse.statusCode(),  fromJdkHttpHeaders(jdKResponse.headers()), jdKResponse.body());
+                return new JdkHttpResponseSync(request, jdKResponse.statusCode(), fromJdkHttpHeaders(jdKResponse.headers()), jdKResponse.body());
             } else {
                 java.net.http.HttpResponse<InputStream> jdKResponse = jdkHttpClient.send(jdkRequest, ofInputStream());
                 return new JdkHttpResponseSync(request, jdKResponse);
