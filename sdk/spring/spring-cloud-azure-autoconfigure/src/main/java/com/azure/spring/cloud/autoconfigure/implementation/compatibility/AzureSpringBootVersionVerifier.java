@@ -88,7 +88,7 @@ public class AzureSpringBootVersionVerifier {
                 + "just set the property [spring.cloud.azure.compatibility-verifier.enabled=false].",
             this.acceptedVersions,
             "https://spring.io/projects/spring-boot#learn",
-            "https://github.com/Azure/azure-sdk-for-java/wiki/Spring-Versions-Mapping");
+            "https://aka.ms/spring/versions");
     }
 
     String getVersionFromManifest() {
@@ -99,8 +99,8 @@ public class AzureSpringBootVersionVerifier {
         for (String acceptedVersion : acceptedVersions) {
             try {
                 if (this.matchSpringBootVersionFromManifest(acceptedVersion)) {
-                    LOGGER.debug("Current Spring Boot version matching succeeds in Spring Cloud Azure supported "
-                        + "versions [{}].", acceptedVersion);
+                    LOGGER.debug("The current Spring Boot version matches Spring Cloud Azure accepted version [{}].",
+                        acceptedVersion);
                     return true;
                 }
             } catch (FileNotFoundException e) {
@@ -119,10 +119,9 @@ public class AzureSpringBootVersionVerifier {
 
     private boolean matchSpringBootVersionFromManifest(String acceptedVersion) throws FileNotFoundException {
         String version = this.getVersionFromManifest();
-        LOGGER.debug("Currently running on Spring Boot version [{}], trying to match it in Spring Cloud Azure "
-            + "Supported Versions [{}].", version, acceptedVersion);
+        LOGGER.debug("Currently running on Spring Boot version [{}], trying to match it with Spring Cloud Azure "
+            + "accepted version [{}].", version, acceptedVersion);
         if (!StringUtils.hasText(version)) {
-            LOGGER.info("Cannot check current Spring Boot version from Spring Cloud Azure supported versions.");
             throw new FileNotFoundException("Spring Boot version not found");
         } else {
             return version.startsWith(stripWildCardFromVersion(acceptedVersion));
