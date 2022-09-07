@@ -60,7 +60,7 @@ com.azure:azure-aot-graalvm-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-communication-chat;1.3.0;1.4.0-beta.1
 com.azure:azure-communication-callingserver;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-communication-callautomation;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-communication-common;1.2.0;1.3.0-beta.2
+com.azure:azure-communication-common;1.2.0;1.2.1
 com.azure:azure-communication-common-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-communication-sms;1.1.5;1.2.0-beta.1
 com.azure:azure-communication-identity;1.3.0;1.4.0-beta.1
@@ -100,15 +100,15 @@ com.azure:azure-data-schemaregistry;1.2.3;1.3.0-beta.1
 com.azure:azure-data-schemaregistry-apacheavro;1.0.3;1.1.0-beta.1
 com.azure:azure-data-tables;12.3.3;12.4.0-beta.1
 com.azure:azure-data-tables-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-digitaltwins-core;1.3.1;1.4.0-beta.1
+com.azure:azure-digitaltwins-core;1.3.2;1.4.0-beta.1
 com.azure:azure-e2e;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-identity;1.5.5;1.6.0-beta.2
 com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-iot-deviceupdate;1.0.0-beta.3;1.0.0
 com.azure:azure-iot-modelsrepository;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-maps-render;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-maps-route;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-maps-search;1.0.0-beta.1;1.0.0-beta.1
+com.azure:azure-maps-render;1.0.0-beta.1;1.0.0-beta.2
+com.azure:azure-maps-route;1.0.0-beta.1;1.0.0-beta.2
+com.azure:azure-maps-search;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-json;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-json-gson;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventgrid;4.12.1;4.13.0-beta.1
@@ -372,6 +372,7 @@ com.azure.resourcemanager:azure-resourcemanager-devcenter;1.0.0-beta.1;1.0.0-bet
 com.azure.resourcemanager:azure-resourcemanager-connectedvmware;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-alertsmanagement;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-nginx;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-agrifood;1.0.0-beta.1;1.0.0-beta.2
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0-beta.1;1.0.0-beta.2
 

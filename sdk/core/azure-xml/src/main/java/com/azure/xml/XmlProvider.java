@@ -3,6 +3,7 @@
 
 package com.azure.xml;
 
+import javax.xml.stream.XMLStreamException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
@@ -19,8 +20,9 @@ public interface XmlProvider {
      * @param json The JSON represented as a {@code byte[]}.
      * @return A new instance of {@link XmlReader}.
      * @throws NullPointerException If {@code json} is null.
+     * @throws XMLStreamException If an {@link XmlReader} cannot be instantiated.
      */
-    XmlReader createReader(byte[] json);
+    XmlReader createReader(byte[] json) throws XMLStreamException;
 
     /**
      * Creates an instance of {@link XmlReader} that reads a {@link String}.
@@ -28,8 +30,9 @@ public interface XmlProvider {
      * @param json The JSON represented as a {@link String}.
      * @return A new instance of {@link XmlReader}.
      * @throws NullPointerException If {@code json} is null.
+     * @throws XMLStreamException If an {@link XmlReader} cannot be instantiated.
      */
-    XmlReader createReader(String json);
+    XmlReader createReader(String json) throws XMLStreamException;
 
     /**
      * Creates an instance of {@link XmlReader} that reads a {@link InputStream}.
@@ -37,8 +40,9 @@ public interface XmlProvider {
      * @param json The JSON represented as a {@link InputStream}.
      * @return A new instance of {@link XmlReader}.
      * @throws NullPointerException If {@code json} is null.
+     * @throws XMLStreamException If an {@link XmlReader} cannot be instantiated.
      */
-    XmlReader createReader(InputStream json);
+    XmlReader createReader(InputStream json) throws XMLStreamException;
 
     /**
      * Creates an instance of {@link XmlReader} that reads a {@link Reader}.
@@ -46,8 +50,9 @@ public interface XmlProvider {
      * @param json The JSON represented as a {@link Reader}.
      * @return A new instance of {@link XmlReader}.
      * @throws NullPointerException If {@code json} is null.
+     * @throws XMLStreamException If an {@link XmlReader} cannot be instantiated.
      */
-    XmlReader createReader(Reader json);
+    XmlReader createReader(Reader json) throws XMLStreamException;
 
     /**
      * Creates an instance of {@link XmlWriter} that writes to an {@link OutputStream}.
@@ -55,8 +60,9 @@ public interface XmlProvider {
      * @param json The JSON represented as an {@link OutputStream}.
      * @return A new instance of {@link XmlWriter}.
      * @throws NullPointerException If {@code json} is null.
+     * @throws XMLStreamException If an {@link XmlWriter} cannot be instantiated.
      */
-    XmlWriter createWriter(OutputStream json);
+    XmlWriter createWriter(OutputStream json) throws XMLStreamException;
 
     /**
      * Creates an instance of {@link XmlWriter} that writes to an {@link Writer}.
@@ -64,6 +70,7 @@ public interface XmlProvider {
      * @param json The JSON represented as an {@link Writer}.
      * @return A new instance of {@link XmlWriter}.
      * @throws NullPointerException If {@code json} is null.
+     * @throws XMLStreamException If an {@link XmlWriter} cannot be instantiated.
      */
-    XmlWriter createWriter(Writer json);
+    XmlWriter createWriter(Writer json) throws XMLStreamException;
 }
