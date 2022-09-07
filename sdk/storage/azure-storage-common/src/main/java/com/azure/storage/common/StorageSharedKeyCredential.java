@@ -210,18 +210,27 @@ public final class StorageSharedKeyCredential {
             /* Culture-sensitive word sort */
             Collator.getInstance(Locale.ROOT)
         );
+
+        int stringBuilderSize = 0;
         for (HttpHeader header : headers) {
-            String name = header.getName().toLowerCase(Locale.ROOT);
-            if (name.startsWith("x-ms-")) {
-                sortedXmsHeaders.put(name, header.getValue());
+            String headerName = header.getName();
+            if (!"x-ms-".regionMatches(true, 0, headerName, 0, 5)) {
+                continue;
             }
+
+            String headerValue = header.getValue();
+            stringBuilderSize += headerName.length() + headerValue.length();
+
+            sortedXmsHeaders.put(headerName.toLowerCase(Locale.ROOT), headerValue);
         }
 
         if (sortedXmsHeaders.isEmpty()) {
             return "";
         }
 
-        final StringBuilder canonicalizedHeaders = new StringBuilder();
+        final StringBuilder canonicalizedHeaders = new StringBuilder(
+            stringBuilderSize + (2 * sortedXmsHeaders.size()) - 1);
+
         sortedXmsHeaders.forEach((name, value) -> {
             if (canonicalizedHeaders.length() > 0) {
                 canonicalizedHeaders.append('\n');

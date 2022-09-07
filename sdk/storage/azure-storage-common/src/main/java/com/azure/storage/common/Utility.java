@@ -289,11 +289,8 @@ public final class Utility {
      * @return The updated url.
      */
     public static String appendQueryParameter(String url, String key, String value) {
-        if (url.contains("?")) {
-            url = String.format("%s&%s=%s", url, key, value);
-        } else {
-            url = String.format("%s?%s=%s", url, key, value);
-        }
-        return url;
+        return (url.contains("?"))
+            ? url + "&" + key + "=" + value
+            : url + "?" + key + "=" + value;
     }
 }
