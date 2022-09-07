@@ -9,12 +9,12 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 public final class JdbcConnectionString {
 
@@ -25,27 +25,26 @@ public final class JdbcConnectionString {
         + "supported to enhance authentication with Azure AD by Spring Cloud Azure.";
     public static final String INVALID_PROPERTY_PAIR_FORMAT = "Connection string has invalid key value pair: %s";
     private static final String TOKEN_VALUE_SEPARATOR = "=";
-    private final String originalJdbcUrl;
+    private final String jdbcUrl;
 
     private final String baseUrl;
-    private final Map<String, String> originalProperties = new TreeMap<>();
-    private final List<String> orderedOriginalPropertyKeys = new ArrayList<>();
-    private final Map<String, String> enhancedProperties = new TreeMap<>();
+    private final Map<String, String> properties = new TreeMap<>();
+    private final List<String> orderedPropertyKeys = new ArrayList<>();
     private final DatabaseType databaseType;
 
-    private JdbcConnectionString(String originalJdbcUrl, String baseUrl, DatabaseType databaseType,
-                                 Map<String, String> originalProperties, List<String> orderedOriginalPropertyKeys) {
-        this.originalJdbcUrl = originalJdbcUrl;
+    private JdbcConnectionString(String jdbcUrl, String baseUrl, DatabaseType databaseType,
+                                 Map<String, String> properties, List<String> orderedPropertyKeys) {
+        this.jdbcUrl = jdbcUrl;
         this.baseUrl = baseUrl;
         this.databaseType = databaseType;
-        if (originalProperties != null) {
-            this.originalProperties.putAll(originalProperties);
-            this.orderedOriginalPropertyKeys.addAll(orderedOriginalPropertyKeys);
+        if (properties != null) {
+            this.properties.putAll(properties);
+            this.orderedPropertyKeys.addAll(orderedPropertyKeys);
         }
     }
 
-    private JdbcConnectionString(String originalJdbcUrl, String baseUrl, DatabaseType databaseType) {
-        this(originalJdbcUrl, baseUrl, databaseType, null, null);
+    private JdbcConnectionString(String jdbcUrl, String baseUrl, DatabaseType databaseType) {
+        this(jdbcUrl, baseUrl, databaseType, null, null);
     }
 
     private static JdbcConnectionString resolveSegments(String originalJdbcURL) {
@@ -91,109 +90,31 @@ public final class JdbcConnectionString {
     }
 
     public String getJdbcUrl() {
-        if (this.enhancedProperties.isEmpty()) {
-            return this.originalJdbcUrl;
-        }
-
-        LOGGER.debug("Trying to construct enhanced jdbc url for {}", databaseType);
-
-        StringBuilder builder = new StringBuilder(this.baseUrl).append(databaseType.getPathQueryDelimiter());
-
-        Map<String, String> mergedProperties = new TreeMap<>(originalProperties);
-        mergedProperties.putAll(this.enhancedProperties);
-
-        this.orderedOriginalPropertyKeys.forEach(k -> builder
-            .append(constructPropertyString(k, mergedProperties.remove(k)))
-            .append(databaseType.getQueryDelimiter()));
-
-        mergedProperties.forEach((k, v) -> builder.append(k).append("=").append(v).append(databaseType.getQueryDelimiter()));
-
-        String enhancedUrl = builder.toString();
-        return enhancedUrl.substring(0, enhancedUrl.length() - 1);
+        return jdbcUrl;
     }
 
-    private static String constructPropertyString(String key, String value) {
-        return value == null ? key : (key + "=" + value);
-    }
-
-    public void enhanceProperties(Map<String, String> enhancedProperties) {
-        this.enhanceProperties(enhancedProperties, false);
-    }
-
-    public void enhanceProperties(Map<String, String> enhancedProperties,
-                                  boolean silentWhenInconsistentValuePresent) {
-        for (Map.Entry<String, String> entry : enhancedProperties.entrySet()) {
-            String key = entry.getKey(), value = entry.getValue();
-            String valueProvidedInConnectionString = this.originalProperties.get(key);
-
-            if (valueProvidedInConnectionString == null) {
-                this.enhancedProperties.put(key, value);
-            } else if (!value.equals(valueProvidedInConnectionString)) {
-                if (silentWhenInconsistentValuePresent) {
-                    LOGGER.debug("The property {} is set to another value than default {}", key, value);
-                } else {
-                    throw new IllegalArgumentException("Inconsistent property of key [" + key +  "] detected");
-                }
-            } else {
-                LOGGER.debug("The property {} is already set", key);
-            }
-        }
-    }
-
-    public void enhancePropertyAttributes(String propertyKey, Map<String, String> enhancedAttributes,
-                                          String attributeDelimiter, String attributeKeyValueDelimiter) {
-        if (this.originalProperties.containsKey(propertyKey)) {
-
-            String value = this.originalProperties.get(propertyKey);
-            String[] attributes = value.split(attributeDelimiter);
-
-            Map<String, String> originalAttributesMap = Arrays.stream(attributes)
-                .map(attr -> attr.split(attributeKeyValueDelimiter))
-                .collect(Collectors.toMap(pair -> pair[0], pair -> pair[1], (a, b) -> a));
-
-            TreeMap<String, String> actualEnhancedAttributes = new TreeMap<>(enhancedAttributes);
-            originalAttributesMap.keySet().forEach(key -> {
-                LOGGER.debug("The attribute {} in property {} is already set", key, propertyKey);
-                actualEnhancedAttributes.remove(key);
-            });
-            this.enhancedProperties.put(propertyKey, buildPropertyValueFromAttributes(value, attributeDelimiter,
-                attributeKeyValueDelimiter, actualEnhancedAttributes));
-        } else {
-            this.enhancedProperties.put(propertyKey, buildPropertyValueFromAttributes(null, attributeDelimiter,
-                attributeKeyValueDelimiter, new TreeMap<>(enhancedAttributes)));
-        }
+    String getBaseUrl() {
+        return baseUrl;
     }
 
     public DatabaseType getDatabaseType() {
         return databaseType;
     }
 
-    String getOriginalProperty(String key) {
-        return originalProperties.get(key);
+    String getProperty(String key) {
+        return properties.get(key);
     }
 
-    boolean hasOriginalProperties() {
-        return !this.originalProperties.isEmpty();
+    Map<String, String> getProperties() {
+        return Collections.unmodifiableMap(this.properties);
     }
 
-    boolean hasEnhancedProperties() {
-        return !this.enhancedProperties.isEmpty();
+    List<String> getOrderedPropertyKeys() {
+        return Collections.unmodifiableList(this.orderedPropertyKeys);
     }
 
-    String getEnhancedProperty(String key) {
-        return this.enhancedProperties.get(key);
-    }
-
-    private static String buildPropertyValueFromAttributes(String baseAttributes,
-                                                           String attributeDelimiter,
-                                                           String attributeKeyValueDelimiter,
-                                                           TreeMap<String, String> enhancedAttributes) {
-        String enhancedString = enhancedAttributes
-            .entrySet()
-            .stream()
-            .map(entry -> entry.getKey() + attributeKeyValueDelimiter + entry.getValue())
-            .collect(Collectors.joining(attributeDelimiter));
-        return baseAttributes == null ? enhancedString : (baseAttributes + attributeDelimiter + enhancedString);
+    boolean hasProperties() {
+        return !properties.isEmpty();
     }
 
     public static JdbcConnectionString resolve(String url) {

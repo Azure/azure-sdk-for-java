@@ -6,6 +6,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.DatabaseType;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionString;
+import com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionStringEnhancer;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreeProperties;
@@ -87,10 +88,10 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
 
 
             try {
-                Map<String, String> enhancedProperties = buildEnhancedProperties(databaseType, properties);
-                connectionString.enhanceProperties(enhancedProperties);
-                enhanceUserAgent(databaseType, connectionString);
-                ((DataSourceProperties) bean).setUrl(connectionString.getJdbcUrl());
+                JdbcConnectionStringEnhancer enhancer = new JdbcConnectionStringEnhancer(connectionString);
+                enhancer.enhanceProperties(buildEnhancedProperties(databaseType, properties));
+                enhanceUserAgent(databaseType, enhancer);
+                ((DataSourceProperties) bean).setUrl(enhancer.getJdbcUrl());
             } catch (IllegalArgumentException e) {
                 LOGGER.debug("Inconsistent properties detected, skip enhancing jdbc url.");
             }
@@ -98,12 +99,12 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
         return bean;
     }
 
-    private void enhanceUserAgent(DatabaseType databaseType, JdbcConnectionString connectionString) {
+    private void enhanceUserAgent(DatabaseType databaseType, JdbcConnectionStringEnhancer enhancer) {
         if (DatabaseType.MYSQL == databaseType) {
             Map<String, String> enhancedAttributes = new HashMap<>();
             enhancedAttributes.put(MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_ATTRIBUTE_EXTENSION_VERSION,
                 AzureSpringIdentifier.AZURE_SPRING_MYSQL_OAUTH);
-            connectionString.enhancePropertyAttributes(
+            enhancer.enhancePropertyAttributes(
                 MYSQL_PROPERTY_NAME_CONNECTION_ATTRIBUTES,
                 enhancedAttributes,
                 MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_DELIMITER,
@@ -113,7 +114,7 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
             Map<String, String> enhancedProperties = new HashMap<>();
             enhancedProperties.put(POSTGRESQL_PROPERTY_NAME_APPLICATION_NAME,
                 AzureSpringIdentifier.AZURE_SPRING_POSTGRESQL_OAUTH);
-            connectionString.enhanceProperties(enhancedProperties, true);
+            enhancer.enhanceProperties(enhancedProperties, true);
         }
     }
 
