@@ -3,11 +3,10 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
 import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.PlayOptions;
-import com.azure.communication.callautomation.models.RecognizeConfigurations;
 import com.azure.communication.callautomation.models.RecognizeInputType;
-import com.azure.communication.callautomation.models.RecognizeOptions;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -70,7 +69,7 @@ public class CallMediaAsyncUnitTests {
 
     @Test
     public void recognizeWithResponse() {
-        RecognizeOptions recognizeOptions = new RecognizeOptions(RecognizeInputType.DTMF, new RecognizeConfigurations());
+        CallMediaRecognizeDtmfOptions recognizeOptions = new CallMediaRecognizeDtmfOptions(RecognizeInputType.DTMF);
         StepVerifier.create(
                 callMedia.recognizeWithResponse(recognizeOptions))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
