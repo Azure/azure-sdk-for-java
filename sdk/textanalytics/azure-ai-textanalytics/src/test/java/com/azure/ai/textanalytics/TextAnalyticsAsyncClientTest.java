@@ -7,7 +7,6 @@ import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.ClassifyDocumentOperationDetail;
-import com.azure.ai.textanalytics.models.MultiLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityDomain;
 import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesOperationDetail;
@@ -2666,16 +2665,25 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         System.out.println("------------------service version: " + serviceVersion.getVersion());
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         classifyCustomMultiLabelRunner((documents, parameters) -> {
-            MultiLabelClassifyOptions options = new MultiLabelClassifyOptions().setDisplayName("operationName");
+
+            String p0 = parameters.get(0);
+            String p1 = parameters.get(1);
+            System.out.println("---P0=" + p0 + ", p1 = " + p1);
+
+//            MultiLabelClassifyOptions options = new MultiLabelClassifyOptions().setDisplayName("operationName");
             SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedFlux> syncPoller =
-                client.beginMultiLabelClassify(documents, parameters.get(0), parameters.get(1), "en", options)
+                client.beginMultiLabelClassify(documents, p0, p1, "en", null)
                     .getSyncPoller();
+
+            System.out.println("--------after wait for completion");
+
             syncPoller = setPollInterval(syncPoller);
             PollResponse<ClassifyDocumentOperationDetail> pollResponse = syncPoller.waitForCompletion();
 
-            System.out.println("--------after wait for completion");
-            assertEquals(options.getDisplayName(), pollResponse.getValue().getDisplayName());
+//            assertEquals(options.getDisplayName(), pollResponse.getValue().getDisplayName());
             ClassifyDocumentPagedFlux pagedFlux = syncPoller.getFinalResult();
+            System.out.println("--------before listing paged flux");
+
             pagedFlux.toStream().collect(Collectors.toList()).forEach(resultCollection ->
                 resultCollection.forEach(documentResult -> validateLabelClassificationResult(documentResult)));
         });
