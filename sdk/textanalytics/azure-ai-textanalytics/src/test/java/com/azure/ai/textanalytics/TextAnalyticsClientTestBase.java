@@ -1285,15 +1285,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     TextAnalyticsClientBuilder getTextAnalyticsAsyncClientBuilder(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
-        String endpoint = getEndpoint();
-        System.out.println("Eeeeeeendpoint ======" + endpoint);
-
-
-        System.out.println("p-----0 ===" + Configuration.getGlobalConfiguration().get(
-            "AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_PROJECT_NAME"));
-
-
-
         TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder()
             .endpoint(getEndpoint())
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)

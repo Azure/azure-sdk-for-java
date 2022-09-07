@@ -434,6 +434,14 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
             String clientId = Configuration.getGlobalConfiguration().get("AZURE_CLIENT_ID");
             String clientKey = Configuration.getGlobalConfiguration().get("AZURE_CLIENT_SECRET");
             String tenantId = Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID");
+
+            System.out.println("====client -id ==="  + clientId);
+            System.out.println("====client -key ==="  + clientKey);
+            System.out.println("====tenant -id ==="  + tenantId);
+
+            System.out.println("p-----0 ===" + Configuration.getGlobalConfiguration().get(
+                "AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_PROJECT_NAME"));
+
             Objects.requireNonNull(clientId, "The client id cannot be null");
             Objects.requireNonNull(clientKey, "The client key cannot be null");
             Objects.requireNonNull(tenantId, "The tenant id cannot be null");
