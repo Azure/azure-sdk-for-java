@@ -282,13 +282,13 @@ public final class TestUtils {
         String authority = getAuthority(endpoint);
         switch (authority) {
             case AzureAuthorityHosts.AZURE_PUBLIC_CLOUD:
-                return DocumentAnalysisAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
+                return DocumentAnalysisAudience.AZURE_PUBLIC_CLOUD;
 
             case AzureAuthorityHosts.AZURE_CHINA:
-                return DocumentAnalysisAudience.AZURE_RESOURCE_MANAGER_CHINA;
+                return DocumentAnalysisAudience.AZURE_CHINA;
 
             case AzureAuthorityHosts.AZURE_GOVERNMENT:
-                return DocumentAnalysisAudience.AZURE_RESOURCE_MANAGER_US_GOVERNMENT;
+                return DocumentAnalysisAudience.AZURE_GOVERNMENT;
 
             default:
                 return null;

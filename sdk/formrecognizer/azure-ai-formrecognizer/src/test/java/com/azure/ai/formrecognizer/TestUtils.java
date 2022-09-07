@@ -69,13 +69,13 @@ final class TestUtils {
         String authority = getAuthority(endpoint);
         switch (authority) {
             case AzureAuthorityHosts.AZURE_PUBLIC_CLOUD:
-                return FormRecognizerAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
+                return FormRecognizerAudience.AZURE_PUBLIC_CLOUD;
 
             case AzureAuthorityHosts.AZURE_CHINA:
-                return FormRecognizerAudience.AZURE_RESOURCE_MANAGER_CHINA;
+                return FormRecognizerAudience.AZURE_CHINA;
 
             case AzureAuthorityHosts.AZURE_GOVERNMENT:
-                return FormRecognizerAudience.AZURE_RESOURCE_MANAGER_US_GOVERNMENT;
+                return FormRecognizerAudience.AZURE_GOVERNMENT;
 
             default:
                 return null;

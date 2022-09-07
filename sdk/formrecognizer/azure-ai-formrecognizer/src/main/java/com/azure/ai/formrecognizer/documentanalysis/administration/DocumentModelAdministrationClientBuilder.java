@@ -158,7 +158,7 @@ public final class DocumentModelAdministrationClientBuilder implements
         // Endpoint cannot be null, which is required in request authentication
         Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
         if (audience == null) {
-            audience = DocumentAnalysisAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
+            audience = DocumentAnalysisAudience.AZURE_PUBLIC_CLOUD;
         }
 
         // Global Env configuration store
@@ -460,7 +460,7 @@ public final class DocumentModelAdministrationClientBuilder implements
 
     /**
      * Sets the audience for the Azure Form Recognizer service.
-     * The default audience is {@link DocumentAnalysisAudience#AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD} when unset.
+     * The default audience is {@link DocumentAnalysisAudience#AZURE_PUBLIC_CLOUD} when unset.
      *
      * @param audience ARM management audience associated with the given form recognizer resource.
      * @throws NullPointerException If {@code audience} is null.

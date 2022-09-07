@@ -156,7 +156,7 @@ public final class FormTrainingClientBuilder implements
         // Endpoint cannot be null, which is required in request authentication
         Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
         if (audience == null) {
-            audience = FormRecognizerAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
+            audience = FormRecognizerAudience.AZURE_PUBLIC_CLOUD;
         }
         // Global Env configuration store
         final Configuration buildConfiguration = (configuration == null)
@@ -458,7 +458,7 @@ public final class FormTrainingClientBuilder implements
 
     /**
      * Sets the audience for the Azure Form Recognizer service.
-     * The default audience is {@link FormRecognizerAudience#AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD} when unset.
+     * The default audience is {@link FormRecognizerAudience#AZURE_PUBLIC_CLOUD} when unset.
      *
      * @param audience ARM management audience associated with the given form recognizer resource.
      * @throws NullPointerException If {@code audience} is null.
