@@ -54,7 +54,7 @@ public final class RestProxyUtils {
 
         return Mono.fromCallable(() -> {
             BinaryDataContent content = BinaryDataHelper.getContent(body);
-            long expectedLength = Long.parseLong(HttpHeadersHelper.getValue_noKeyFormatting(request.getHeaders(),
+            long expectedLength = Long.parseLong(HttpHeadersHelper.getValueNoKeyFormatting(request.getHeaders(),
                 "content-length"));
             if (content instanceof InputStreamContent) {
                 InputStream validatingInputStream = new LengthValidatingInputStream(
@@ -126,7 +126,7 @@ public final class RestProxyUtils {
             return null;
         }
 
-        final long expectedLength = Long.parseLong(HttpHeadersHelper.getValue_noKeyFormatting(request.getHeaders(),
+        final long expectedLength = Long.parseLong(HttpHeadersHelper.getValueNoKeyFormatting(request.getHeaders(),
             "content-length"));
         Long length = binaryData.getLength();
         BinaryDataContent bdc = BinaryDataHelper.getContent(binaryData);

@@ -36,7 +36,7 @@ public final class AzureKeyCredentialPolicy implements HttpPipelinePolicy {
                     new IllegalStateException("Key credentials require HTTPS to prevent leaking the key."));
             }
 
-            HttpHeadersHelper.set_noKeyFormatting(context.getHttpRequest().getHeaders(), nameLowerCase, name,
+            HttpHeadersHelper.setNoKeyFormatting(context.getHttpRequest().getHeaders(), nameLowerCase, name,
                 credential.getKey());
         }
     };

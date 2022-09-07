@@ -51,7 +51,7 @@ public enum SerializerEncoding {
      * unrecognized Content-Type encoding is returned.
      */
     public static SerializerEncoding fromHeaders(HttpHeaders headers) {
-        final String mimeContentType = HttpHeadersHelper.getValue_noKeyFormatting(headers, "content-type");
+        final String mimeContentType = HttpHeadersHelper.getValueNoKeyFormatting(headers, "content-type");
         if (mimeContentType == null || mimeContentType.isEmpty()) {
             LOGGER.warning("'{}' not found. Returning default encoding: {}", CONTENT_TYPE, DEFAULT_ENCODING);
             return DEFAULT_ENCODING;

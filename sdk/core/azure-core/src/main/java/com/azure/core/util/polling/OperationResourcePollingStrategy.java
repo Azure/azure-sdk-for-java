@@ -112,7 +112,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
 
     @Override
     public Mono<Boolean> canPoll(Response<?> initialResponse) {
-        HttpHeader operationLocationHeader = HttpHeadersHelper.get_noKeyFormatting(initialResponse.getHeaders(),
+        HttpHeader operationLocationHeader = HttpHeadersHelper.getNoKeyFormatting(initialResponse.getHeaders(),
             operationLocationHeaderNameLowerCase);
         if (operationLocationHeader != null) {
             try {
@@ -128,9 +128,9 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
     @Override
     public Mono<PollResponse<T>> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,
                                                    TypeReference<T> pollResponseType) {
-        HttpHeader operationLocationHeader = HttpHeadersHelper.get_noKeyFormatting(response.getHeaders(),
+        HttpHeader operationLocationHeader = HttpHeadersHelper.getNoKeyFormatting(response.getHeaders(),
             operationLocationHeaderNameLowerCase);
-        HttpHeader locationHeader = HttpHeadersHelper.get_noKeyFormatting(response.getHeaders(),
+        HttpHeader locationHeader = HttpHeadersHelper.getNoKeyFormatting(response.getHeaders(),
             PollingConstants.LOCATION_LOWER_CASE);
         if (operationLocationHeader != null) {
             pollingContext.setData(operationLocationHeaderName,

@@ -224,7 +224,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
      * @return the header value for the provided header name, {@code null} otherwise.
      */
     static String tryGetRedirectHeader(HttpHeaders headers, String headerName, String headerNameLowerCase) {
-        String headerValue = HttpHeadersHelper.getValue_noKeyFormatting(headers, headerNameLowerCase);
+        String headerValue = HttpHeadersHelper.getValueNoKeyFormatting(headers, headerNameLowerCase);
         if (CoreUtils.isNullOrEmpty(headerValue)) {
             LOGGER.atError()
                 .addKeyValue("headerName", headerName)

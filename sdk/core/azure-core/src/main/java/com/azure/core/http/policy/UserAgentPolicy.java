@@ -62,7 +62,7 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
                 userAgentValue = userAgent;
             }
 
-            HttpHeadersHelper.set_noKeyFormatting(context.getHttpRequest().getHeaders(), USER_AGENT_LOWER_CASE, USER_AGENT,
+            HttpHeadersHelper.setNoKeyFormatting(context.getHttpRequest().getHeaders(), USER_AGENT_LOWER_CASE, USER_AGENT,
                 userAgentValue);
         }
     };

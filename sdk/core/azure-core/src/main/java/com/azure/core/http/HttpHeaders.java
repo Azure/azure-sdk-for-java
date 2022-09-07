@@ -24,17 +24,17 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     static {
         HttpHeadersHelper.setAccessor(new HttpHeadersHelper.HttpHeadersAccessor() {
             @Override
-            public HttpHeaders set_noKeyFormatting(HttpHeaders headers, String formattedName, String name, String value) {
+            public HttpHeaders setNoKeyFormatting(HttpHeaders headers, String formattedName, String name, String value) {
                 return headers.setInternal(formattedName, name, value);
             }
 
             @Override
-            public HttpHeader get_noKeyFormatting(HttpHeaders headers, String formattedName) {
+            public HttpHeader getNoKeyFormatting(HttpHeaders headers, String formattedName) {
                 return headers.getInternal(formattedName);
             }
 
             @Override
-            public String getValue_noKeyFormatting(HttpHeaders headers, String formattedName) {
+            public String getValueNoKeyFormatting(HttpHeaders headers, String formattedName) {
                 return headers.getValueInternal(formattedName);
             }
         });

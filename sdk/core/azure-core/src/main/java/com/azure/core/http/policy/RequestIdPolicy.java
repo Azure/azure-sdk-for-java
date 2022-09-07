@@ -39,9 +39,9 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
         @Override
         protected void beforeSendingRequest(HttpPipelineCallContext context) {
             HttpHeaders headers = context.getHttpRequest().getHeaders();
-            String requestId = HttpHeadersHelper.getValue_noKeyFormatting(headers, requestIdHeaderNameLowerCase);
+            String requestId = HttpHeadersHelper.getValueNoKeyFormatting(headers, requestIdHeaderNameLowerCase);
             if (requestId == null) {
-                HttpHeadersHelper.set_noKeyFormatting(headers, requestIdHeaderNameLowerCase, requestIdHeaderName,
+                HttpHeadersHelper.setNoKeyFormatting(headers, requestIdHeaderNameLowerCase, requestIdHeaderName,
                     UUID.randomUUID().toString());
             }
         }

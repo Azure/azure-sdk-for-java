@@ -79,7 +79,7 @@ public final class ImplUtils {
 
     private static Duration tryGetRetryDelay(HttpHeaders headers, String headerNameLowerCase,
         Function<String, Duration> delayParser) {
-        String headerValue = HttpHeadersHelper.getValue_noKeyFormatting(headers, headerNameLowerCase);
+        String headerValue = HttpHeadersHelper.getValueNoKeyFormatting(headers, headerNameLowerCase);
 
         return CoreUtils.isNullOrEmpty(headerValue) ? null : delayParser.apply(headerValue);
     }

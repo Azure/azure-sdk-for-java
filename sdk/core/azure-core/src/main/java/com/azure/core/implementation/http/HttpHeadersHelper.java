@@ -27,7 +27,7 @@ public final class HttpHeadersHelper {
          * @param value The HTTP header value.
          * @return The updated {@code headers} object.
          */
-        HttpHeaders set_noKeyFormatting(HttpHeaders headers, String formattedName, String name, String value);
+        HttpHeaders setNoKeyFormatting(HttpHeaders headers, String formattedName, String name, String value);
 
         /**
          * Gets the HTTP header value for the formatted HTTP header name.
@@ -36,7 +36,7 @@ public final class HttpHeadersHelper {
          * @param formattedName The {@link HttpHeaders} formatted HTTP header name.
          * @return The header for the key, or null if it wasn't present.
          */
-        HttpHeader get_noKeyFormatting(HttpHeaders headers, String formattedName);
+        HttpHeader getNoKeyFormatting(HttpHeaders headers, String formattedName);
 
         /**
          * Gets the HTTP header value for the formatted HTTP header name.
@@ -45,7 +45,7 @@ public final class HttpHeadersHelper {
          * @param formattedName The {@link HttpHeaders} formatted HTTP header name.
          * @return The header value for the key, or null if it wasn't present.
          */
-        String getValue_noKeyFormatting(HttpHeaders headers, String formattedName);
+        String getValueNoKeyFormatting(HttpHeaders headers, String formattedName);
     }
 
     /**
@@ -76,12 +76,12 @@ public final class HttpHeadersHelper {
      * @param value The HTTP header value.
      * @return The updated {@code headers} object.
      */
-    public static HttpHeaders set_noKeyFormatting(HttpHeaders headers, String formattedName, String name, String value) {
+    public static HttpHeaders setNoKeyFormatting(HttpHeaders headers, String formattedName, String name, String value) {
         if (headers.getClass() != HttpHeaders.class) {
             return headers.set(name, value);
         }
 
-        return accessor.set_noKeyFormatting(headers, formattedName, name, value);
+        return accessor.setNoKeyFormatting(headers, formattedName, name, value);
     }
 
     /**
@@ -91,12 +91,12 @@ public final class HttpHeadersHelper {
      * @param formattedName The {@link HttpHeaders} formatted HTTP header name.
      * @return The header for the key, or null if it wasn't present.
      */
-    public static HttpHeader get_noKeyFormatting(HttpHeaders headers, String formattedName) {
+    public static HttpHeader getNoKeyFormatting(HttpHeaders headers, String formattedName) {
         if (headers.getClass() != HttpHeaders.class) {
             return headers.get(formattedName);
         }
 
-        return accessor.get_noKeyFormatting(headers, formattedName);
+        return accessor.getNoKeyFormatting(headers, formattedName);
     }
 
     /**
@@ -106,11 +106,11 @@ public final class HttpHeadersHelper {
      * @param formattedName The {@link HttpHeaders} formatted HTTP header name.
      * @return The header value for the key, or null if it wasn't present.
      */
-    public static String getValue_noKeyFormatting(HttpHeaders headers, String formattedName) {
+    public static String getValueNoKeyFormatting(HttpHeaders headers, String formattedName) {
         if (headers.getClass() != HttpHeaders.class) {
             return headers.getValue(formattedName);
         }
 
-        return accessor.getValue_noKeyFormatting(headers, formattedName);
+        return accessor.getValueNoKeyFormatting(headers, formattedName);
     }
 }
