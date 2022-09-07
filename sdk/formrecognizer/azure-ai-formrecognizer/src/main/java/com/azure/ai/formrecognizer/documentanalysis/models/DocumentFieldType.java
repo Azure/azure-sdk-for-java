@@ -27,7 +27,7 @@ public final class DocumentFieldType extends ExpandableStringEnum<DocumentFieldT
     public static final DocumentFieldType FLOAT = fromString("number");
 
     /** Static value integer for DocumentFieldType. */
-    public static final DocumentFieldType INTEGER = fromString("integer");
+    public static final DocumentFieldType LONG = fromString("integer");
 
     /** Static value selectionMark for DocumentFieldType. */
     public static final DocumentFieldType SELECTION_MARK = fromString("selectionMark");

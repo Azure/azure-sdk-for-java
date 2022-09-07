@@ -32,6 +32,8 @@ and `customDocumentModelLimit` on model `ResourceDetails`.
   - `deleteModel` to `deleteDocumentModel`
   - `beginBuildModel` to `beginBuildDocumentModel`
   - `beginComposeModel` to `beginComposeDocumentModel`
+- Renamed property `DocumentFieldType.INTEGER` to `DocumentFieldType.LONG`
+- Renamed method `getValueInteger` to `getValueLong` on `DocumentField` model
 
 ### Other Changes
 
