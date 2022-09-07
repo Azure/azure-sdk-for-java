@@ -80,7 +80,6 @@ class MySqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigura
             .run((context) -> {
                 DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
 
-
                 String expectedUrl = JdbcConnectionStringUtils.enhanceJdbcUrl(
                     DatabaseType.MYSQL,
                     false,

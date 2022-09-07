@@ -8,9 +8,9 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionString.INVALID_PROPERTY_PAIR_FORMAT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class JdbcConnectionStringTest {
 
@@ -51,7 +51,7 @@ class JdbcConnectionStringTest {
         JdbcConnectionString jdbcConnectionString = JdbcConnectionString.resolve(connectionString);
 
         assertEquals(databaseType, jdbcConnectionString.getDatabaseType());
-        assertFalse(jdbcConnectionString.hasProperties());
+        assertTrue(jdbcConnectionString.getProperties().isEmpty());
     }
 
     @ParameterizedTest

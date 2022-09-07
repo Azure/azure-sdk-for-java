@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.TreeMap;
 
 public final class JdbcConnectionString {
 
@@ -26,52 +25,37 @@ public final class JdbcConnectionString {
     public static final String INVALID_PROPERTY_PAIR_FORMAT = "Connection string has invalid key value pair: %s";
     private static final String TOKEN_VALUE_SEPARATOR = "=";
     private final String jdbcUrl;
-
-    private final String baseUrl;
-    private final Map<String, String> properties = new TreeMap<>();
+    private final Map<String, String> properties = new HashMap<>();
+    private DatabaseType databaseType = null;
+    private String baseUrl = null;
     private final List<String> orderedPropertyKeys = new ArrayList<>();
-    private final DatabaseType databaseType;
 
-    private JdbcConnectionString(String jdbcUrl, String baseUrl, DatabaseType databaseType,
-                                 Map<String, String> properties, List<String> orderedPropertyKeys) {
+    private JdbcConnectionString(String jdbcUrl) {
         this.jdbcUrl = jdbcUrl;
-        this.baseUrl = baseUrl;
-        this.databaseType = databaseType;
-        if (properties != null) {
-            this.properties.putAll(properties);
-            this.orderedPropertyKeys.addAll(orderedPropertyKeys);
-        }
     }
 
-    private JdbcConnectionString(String jdbcUrl, String baseUrl, DatabaseType databaseType) {
-        this(jdbcUrl, baseUrl, databaseType, null, null);
-    }
-
-    private static JdbcConnectionString resolveSegments(String originalJdbcURL) {
-        if (!StringUtils.hasText(originalJdbcURL)) {
+    private void resolveSegments() {
+        if (!StringUtils.hasText(this.jdbcUrl)) {
             LOGGER.warn("'connectionString' doesn't have text.");
-            throw new IllegalArgumentException(String.format(INVALID_CONNECTION_STRING_FORMAT, originalJdbcURL));
+            throw new IllegalArgumentException(String.format(INVALID_CONNECTION_STRING_FORMAT, this.jdbcUrl));
         }
 
         Optional<DatabaseType> optionalDatabaseType = Arrays.stream(DatabaseType.values())
-                                                            .filter(databaseType -> originalJdbcURL.startsWith(databaseType.getSchema() + ":"))
+                                                            .filter(databaseType -> this.jdbcUrl.startsWith(databaseType.getSchema() + ":"))
                                                             .findAny();
-        DatabaseType databaseType = optionalDatabaseType.orElseThrow(() -> new AzureUnsupportedDatabaseTypeException(String.format(UNSUPPORTED_DATABASE_TYPE_STRING_FORMAT, originalJdbcURL)));
+        this.databaseType = optionalDatabaseType.orElseThrow(() -> new AzureUnsupportedDatabaseTypeException(String.format(UNSUPPORTED_DATABASE_TYPE_STRING_FORMAT, this.jdbcUrl)));
 
-        int pathQueryDelimiterIndex = originalJdbcURL.indexOf(databaseType.getPathQueryDelimiter());
+        int pathQueryDelimiterIndex = this.jdbcUrl.indexOf(this.databaseType.getPathQueryDelimiter());
 
         if (pathQueryDelimiterIndex < 0) {
-            return new JdbcConnectionString(originalJdbcURL, originalJdbcURL, databaseType);
+            this.baseUrl = jdbcUrl;
+            return;
         }
 
-        String baseURL = originalJdbcURL.substring(0, pathQueryDelimiterIndex);
+        this.baseUrl = this.jdbcUrl.substring(0, pathQueryDelimiterIndex);
+        String properties = this.jdbcUrl.substring(pathQueryDelimiterIndex + 1);
 
-        final String[] tokenValuePairs = originalJdbcURL
-            .substring(pathQueryDelimiterIndex + 1)
-            .split(databaseType.getQueryDelimiter());
-
-        Map<String, String> properties = new HashMap<>();
-        List<String> originalPropertiesOrder = new ArrayList<>();
+        final String[] tokenValuePairs = properties.split(this.databaseType.getQueryDelimiter());
 
         for (String tokenValuePair : tokenValuePairs) {
             final String[] pair = tokenValuePair.split(TOKEN_VALUE_SEPARATOR, 2);
@@ -80,25 +64,24 @@ public final class JdbcConnectionString {
                 throw new IllegalArgumentException(String.format(INVALID_PROPERTY_PAIR_FORMAT, tokenValuePair));
             }
             if (pair.length < 2) {
-                properties.put(key, null);
+                this.properties.put(key, null);
             } else {
-                properties.put(key, pair[1]);
+                this.properties.put(key, pair[1]);
             }
-            originalPropertiesOrder.add(key);
+            this.orderedPropertyKeys.add(key);
         }
-        return new JdbcConnectionString(originalJdbcURL, baseURL, databaseType, properties, originalPropertiesOrder);
     }
 
     public String getJdbcUrl() {
         return jdbcUrl;
     }
 
-    String getBaseUrl() {
-        return baseUrl;
-    }
-
     public DatabaseType getDatabaseType() {
         return databaseType;
+    }
+
+    String getBaseUrl() {
+        return baseUrl;
     }
 
     String getProperty(String key) {
@@ -113,17 +96,15 @@ public final class JdbcConnectionString {
         return Collections.unmodifiableList(this.orderedPropertyKeys);
     }
 
-    boolean hasProperties() {
-        return !properties.isEmpty();
-    }
-
     public static JdbcConnectionString resolve(String url) {
+        JdbcConnectionString jdbcConnectionString = new JdbcConnectionString(url);
         try {
-            return resolveSegments(url);
+            jdbcConnectionString.resolveSegments();
         } catch (AzureUnsupportedDatabaseTypeException e) {
             LOGGER.debug(e.getMessage());
             return null;
         }
+        return jdbcConnectionString;
     }
 
 }
