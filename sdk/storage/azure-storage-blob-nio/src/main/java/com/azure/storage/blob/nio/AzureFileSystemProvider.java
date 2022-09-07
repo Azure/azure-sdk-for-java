@@ -174,7 +174,15 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      */
     private static final class DefaultConfigHolder {
         static final AzureFileSystemConfig DEFAULT_CONFIGURATIONS = readEnvironmentConfiguration();
+        
         static final String DEFAULT_ENDPOINT = readEnvironmentEndpoint();
+
+        /**
+         * NIO contractually expects the caller to explicitly create file systems as needed, instead of automatically
+         * creating them based on URI. This disagrees with how several workflows actually use NIO. This flag allows developers
+         * to opt-in to this non-contractual behavior.
+         */
+        static final boolean AUTO_CREATE_FILE_SYSTEMS = readEnvironmentAutoCreateFileSystems();
     }
 
     /**
@@ -222,13 +230,6 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             StandardOpenOption.TRUNCATE_EXISTING)));
 
     private final ConcurrentMap<String, FileSystem> openFileSystems;
-
-    /**
-     * NIO contractually expects the caller to explicitly create file systems as needed, instead of automatically
-     * creating them based on URI. This disagrees with how several workflows actually use NIO. This flag allows developers
-     * to opt-in to this non-contractual behavior.
-     */
-    static final boolean AUTO_CREATE_FILE_SYSTEMS = readEnvironmentAutoCreateFileSystems();
 
     // Specs require a public zero argument constructor.
     /**
