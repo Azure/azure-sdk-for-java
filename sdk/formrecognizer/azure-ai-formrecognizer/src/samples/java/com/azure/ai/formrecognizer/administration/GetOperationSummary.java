@@ -14,7 +14,7 @@ import com.azure.core.credential.AzureKeyCredential;
  * Sample to get/list all document model operations associated with the Form Recognizer resource.
  * Kinds of operations returned are "documentModelBuild", "documentModelCompose", and "documentModelCopyTo".
  * Note that operation information only persists for 24 hours.
- * If the operation was successful, the document model can be accessed using getModel() or listModels() APIs
+ * If the operation was successful, the document model can be accessed using getDocumentModel() or listDocumentModels() APIs
  */
 public class GetOperationSummary {
 
