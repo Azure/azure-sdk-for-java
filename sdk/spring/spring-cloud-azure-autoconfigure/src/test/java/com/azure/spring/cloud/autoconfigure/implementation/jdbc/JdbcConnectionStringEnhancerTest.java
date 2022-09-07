@@ -60,7 +60,7 @@ class JdbcConnectionStringEnhancerTest {
     }
 
     @ParameterizedTest
-    @EnumSource(value = DatabaseType.class, names = { "MYSQL", "POSTGRESQL" })
+    @EnumSource(DatabaseType.class)
     void enhanceConnectionStringWithoutProperties(DatabaseType databaseType) {
         String connectionString = String.format(PATH_WITHOUT_QUERY_PATTERN, databaseType.getSchema());
 
@@ -77,7 +77,7 @@ class JdbcConnectionStringEnhancerTest {
     }
 
     @ParameterizedTest
-    @EnumSource(value = DatabaseType.class, names = { "MYSQL", "POSTGRESQL" })
+    @EnumSource(DatabaseType.class)
     void enhanceConnectionStringWithProperties(DatabaseType databaseType) {
         String queries = "someProperty=someValue";
         String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(), databaseType.getPathQueryDelimiter(), queries);
@@ -95,7 +95,7 @@ class JdbcConnectionStringEnhancerTest {
     }
 
     @ParameterizedTest
-    @EnumSource(value = DatabaseType.class, names = { "MYSQL", "POSTGRESQL" })
+    @EnumSource(DatabaseType.class)
     void enhancePropertyWithExistingValueShouldThrowException(DatabaseType databaseType) {
         String queries = "applicationName=defaultApp";
         String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(), databaseType.getPathQueryDelimiter(), queries);
@@ -110,7 +110,7 @@ class JdbcConnectionStringEnhancerTest {
     }
 
     @ParameterizedTest
-    @EnumSource(value = DatabaseType.class, names = { "MYSQL", "POSTGRESQL" })
+    @EnumSource(DatabaseType.class)
     void enhancePropertyWithExistingValueShouldBeSilent(DatabaseType databaseType) {
         String queries = "applicationName=defaultApp";
         String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(), databaseType.getPathQueryDelimiter(), queries);
@@ -127,7 +127,7 @@ class JdbcConnectionStringEnhancerTest {
     }
 
     @ParameterizedTest
-    @EnumSource(value = DatabaseType.class, names = { "MYSQL", "POSTGRESQL" })
+    @EnumSource(DatabaseType.class)
     void enhancePropertyWithoutExistingValueShouldSet(DatabaseType databaseType) {
         String queries = "someProperty=someValue";
         String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(), databaseType.getPathQueryDelimiter(), queries);
@@ -144,7 +144,7 @@ class JdbcConnectionStringEnhancerTest {
     }
 
     @ParameterizedTest
-    @EnumSource(value = DatabaseType.class, names = { "MYSQL", "POSTGRESQL" })
+    @EnumSource(DatabaseType.class)
     void enhanceNotExistingAttributePropertyShouldSet(DatabaseType databaseType) {
         String queries = "someProperty=someValue";
         String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(), databaseType.getPathQueryDelimiter(), queries);
@@ -160,7 +160,7 @@ class JdbcConnectionStringEnhancerTest {
     }
 
     @ParameterizedTest
-    @EnumSource(value = DatabaseType.class, names = { "MYSQL", "POSTGRESQL" })
+    @EnumSource(DatabaseType.class)
     void enhanceNotExistingAttributePropertyShouldSetByOrder(DatabaseType databaseType) {
         String queries = "someProperty=someValue";
         String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(), databaseType.getPathQueryDelimiter(), queries);
@@ -178,7 +178,7 @@ class JdbcConnectionStringEnhancerTest {
     }
 
     @ParameterizedTest
-    @EnumSource(value = DatabaseType.class, names = { "MYSQL", "POSTGRESQL" })
+    @EnumSource(DatabaseType.class)
     void enhanceExistingAttributePropertyShouldMerge(DatabaseType databaseType) {
         String queries = "someProperty=someValue" + databaseType.getQueryDelimiter() + "attributeProperty=attr3:val3";
         String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(), databaseType.getPathQueryDelimiter(), queries);
@@ -194,7 +194,7 @@ class JdbcConnectionStringEnhancerTest {
     }
 
     @ParameterizedTest
-    @EnumSource(value = DatabaseType.class, names = { "MYSQL", "POSTGRESQL" })
+    @EnumSource(DatabaseType.class)
     void enhanceExistingAttributePropertySameAttributeDifferentValueShouldNotSet(DatabaseType databaseType) {
         String queries = "someProperty=someValue" + databaseType.getQueryDelimiter() + "attributeProperty=attr3:val3";
         String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(), databaseType.getPathQueryDelimiter(), queries);
@@ -211,7 +211,7 @@ class JdbcConnectionStringEnhancerTest {
     }
 
     @ParameterizedTest
-    @EnumSource(value = DatabaseType.class, names = { "MYSQL", "POSTGRESQL" })
+    @EnumSource(DatabaseType.class)
     void enhanceExistingAttributePropertyEnhancedShouldOrder(DatabaseType databaseType) {
         String queries = "someProperty=someValue" + databaseType.getQueryDelimiter() + "attributeProperty=attr3:val3";
         String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(), databaseType.getPathQueryDelimiter(), queries);

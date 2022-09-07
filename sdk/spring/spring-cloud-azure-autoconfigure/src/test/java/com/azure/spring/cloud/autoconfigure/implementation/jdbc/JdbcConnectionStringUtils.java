@@ -28,6 +28,11 @@ public class JdbcConnectionStringUtils {
             String[] split = property.split("=");
             enhancedProperties.put(split[0], split[1]);
         }
+
+        if (enhancedProperties.isEmpty()) {
+            return baseUrl;
+        }
+
         return baseUrl
             + (hasOriginalProperties ? databaseType.getQueryDelimiter() : databaseType.getPathQueryDelimiter())
             + buildEnhancedPropertiesOrderedString(enhancedProperties, databaseType.getQueryDelimiter());

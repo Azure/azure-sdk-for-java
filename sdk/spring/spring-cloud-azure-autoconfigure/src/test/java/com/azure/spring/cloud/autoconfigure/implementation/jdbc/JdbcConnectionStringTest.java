@@ -18,7 +18,7 @@ class JdbcConnectionStringTest {
     static final String PATH_WITHOUT_QUERY_PATTERN = "%s://host/database";
 
     @ParameterizedTest
-    @EnumSource(value = DatabaseType.class, names = { "MYSQL", "POSTGRESQL" })
+    @EnumSource(DatabaseType.class)
     void testConnectionStringWithNonValueProperties(DatabaseType databaseType) {
         String queries = "enableSwitch1" + databaseType.getQueryDelimiter() + "property1=value1";
         String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(), databaseType.getPathQueryDelimiter(), queries);
@@ -31,7 +31,7 @@ class JdbcConnectionStringTest {
     }
 
     @ParameterizedTest
-    @EnumSource(value = DatabaseType.class, names = { "MYSQL", "POSTGRESQL" })
+    @EnumSource(DatabaseType.class)
     void testConnectionStringWithMultipleProperties(DatabaseType databaseType) {
         String queries = "property1=value1" + databaseType.getQueryDelimiter() + "property2=value2";
         String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(), databaseType.getPathQueryDelimiter(), queries);
@@ -44,7 +44,7 @@ class JdbcConnectionStringTest {
     }
 
     @ParameterizedTest
-    @EnumSource(value = DatabaseType.class, names = { "MYSQL", "POSTGRESQL" })
+    @EnumSource(DatabaseType.class)
     void testConnectionStringWithoutProperties(DatabaseType databaseType) {
         String connectionString = String.format(PATH_WITHOUT_QUERY_PATTERN, databaseType.getSchema());
 
@@ -55,7 +55,7 @@ class JdbcConnectionStringTest {
     }
 
     @ParameterizedTest
-    @EnumSource(value = DatabaseType.class, names = { "MYSQL", "POSTGRESQL" })
+    @EnumSource(DatabaseType.class)
     void testConnectionStringWithInvalidProperties(DatabaseType databaseType) {
         String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(), databaseType.getPathQueryDelimiter(), "=");
 
@@ -64,7 +64,7 @@ class JdbcConnectionStringTest {
     }
 
     @ParameterizedTest
-    @EnumSource(value = DatabaseType.class, names = { "MYSQL", "POSTGRESQL" })
+    @EnumSource(DatabaseType.class)
     void invalidConnectionString(DatabaseType databaseType) {
         String connectionString = String.format(PATH_WITHOUT_QUERY_PATTERN, databaseType.getSchema() + "x");
 
