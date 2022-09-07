@@ -138,7 +138,7 @@ class JdbcConnectionStringEnhancerTest {
         enhancedProperties.put("applicationName", "newApp");
         jdbcConnectionStringEnhancer.enhanceProperties(enhancedProperties);
 
-        Assertions.assertEquals (databaseType, jdbcConnectionStringEnhancer.getDatabaseType());
+        Assertions.assertEquals(databaseType, jdbcConnectionStringEnhancer.getDatabaseType());
         Assertions.assertEquals("newApp", jdbcConnectionStringEnhancer.getEnhancedProperty("applicationName"));
         Assertions.assertEquals(connectionString + databaseType.getQueryDelimiter() + "applicationName=newApp", jdbcConnectionStringEnhancer.getJdbcUrl());
     }

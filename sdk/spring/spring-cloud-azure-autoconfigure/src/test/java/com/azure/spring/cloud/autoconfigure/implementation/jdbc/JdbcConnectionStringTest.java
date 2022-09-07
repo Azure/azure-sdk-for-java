@@ -14,8 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class JdbcConnectionStringTest {
 
-    static String PATH_WITH_QUERY_PATTERN = "%s://host/database%s%s";
-    static String PATH_WITHOUT_QUERY_PATTERN = "%s://host/database";
+    static final String PATH_WITH_QUERY_PATTERN = "%s://host/database%s%s";
+    static final String PATH_WITHOUT_QUERY_PATTERN = "%s://host/database";
 
     @ParameterizedTest
     @EnumSource(value = DatabaseType.class, names = { "MYSQL", "POSTGRESQL" })
