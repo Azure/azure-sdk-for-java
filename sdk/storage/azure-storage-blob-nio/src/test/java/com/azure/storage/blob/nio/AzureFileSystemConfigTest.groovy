@@ -1,16 +1,18 @@
 package com.azure.storage.blob.nio
 
 import com.azure.core.credential.AzureSasCredential
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
+import com.azure.core.http.HttpClient
+import com.azure.core.http.HttpRequest
+import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.utils.TestConfigurationSource
-import com.azure.core.util.Configuration
 import com.azure.core.util.ConfigurationBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RetryPolicyType
 import com.azure.storage.common.test.shared.policy.NoOpHttpPipelinePolicy
+import reactor.core.publisher.Mono
 import spock.lang.Specification
 
 class AzureFileSystemConfigTest extends Specification {
@@ -22,7 +24,12 @@ class AzureFileSystemConfigTest extends Specification {
 
     def accountName = "myaccount"
     def accountKey = Base64.encoder.encodeToString(getBytes(64))
-    def httpClient = new NettyAsyncHttpClientBuilder().build()
+    def httpClient = new HttpClient() {
+        @Override
+        Mono<HttpResponse> send(HttpRequest httpRequest) {
+            return null
+        }
+    }
 
     def "AzureFileSystemConfig from Map"() {
         setup:
@@ -35,7 +42,7 @@ class AzureFileSystemConfigTest extends Specification {
         def retryDelay = 3 as Long
         def maxRetryDelay = 4 as Long
         def secondaryEndpoint = "https://foo-secondary.blob.core.windows.net"
-        def httpClient = getHttpClient()
+        def httpClient = httpClient
         def policies = [NoOpHttpPipelinePolicy.INSTANCE]
         def blockSize = 5 as Long
         def putBlob = 6 as Long
