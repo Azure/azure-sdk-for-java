@@ -30,10 +30,10 @@ public class AddDatePolicy implements HttpPipelinePolicy {
         protected void beforeSendingRequest(HttpPipelineCallContext context) {
             OffsetDateTime now = OffsetDateTime.now();
             try {
-                HttpHeadersHelper.setNoKeyFormatting(context.getHttpRequest().getHeaders(), "date", "Date",
+                HttpHeadersHelper.set_noKeyFormatting(context.getHttpRequest().getHeaders(), "date", "Date",
                     DateTimeRfc1123.toRfc1123String(now));
             } catch (IllegalArgumentException ignored) {
-                HttpHeadersHelper.setNoKeyFormatting(context.getHttpRequest().getHeaders(), "date", "Date",
+                HttpHeadersHelper.set_noKeyFormatting(context.getHttpRequest().getHeaders(), "date", "Date",
                     FORMATTER.format(now));
             }
         }

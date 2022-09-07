@@ -404,7 +404,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                 } else {
                     final String headerValue = serialize(serializer, methodArgument);
                     if (headerValue != null) {
-                        HttpHeadersHelper.setNoKeyFormatting(httpHeaders, headerSubstitution.getLowerCaseHeaderName(),
+                        HttpHeadersHelper.set_noKeyFormatting(httpHeaders, headerSubstitution.getLowerCaseHeaderName(),
                             headerSubstitution.getUrlParameterName(), headerValue);
                     }
                 }
