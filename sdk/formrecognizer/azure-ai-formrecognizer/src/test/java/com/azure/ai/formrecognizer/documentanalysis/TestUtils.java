@@ -130,8 +130,9 @@ public final class TestUtils {
         testRunner.accept(URL_TEST_FILE_FORMAT + fileName);
     }
 
-    static void damagedPdfDataRunner(BiConsumer<InputStream, Integer> testRunner) {
-        testRunner.accept(new ByteArrayInputStream(new byte[] {0x25, 0x50, 0x44, 0x46, 0x55, 0x55, 0x55}), 7);
+    static void damagedPdfDataRunner(BiConsumer<InputStream, Long> testRunner) {
+        testRunner.accept(new ByteArrayInputStream(new byte[] {0x25, 0x50, 0x44, 0x46, 0x55, 0x55, 0x55}),
+            Long.valueOf(7));
     }
 
     static void getDataRunnerHelper(BiConsumer<InputStream, Long> testRunner, String fileName, boolean isPlaybackMode) {

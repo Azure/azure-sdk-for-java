@@ -50,8 +50,8 @@ public class AnalyzeInvoicesAsync {
         PollerFlux<OperationResult, AnalyzeResult> analyzeInvoicePoller;
         try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
             analyzeInvoicePoller =
-                client.beginAnalyzeDocument("prebuilt-invoice", BinaryData.fromStream(targetStream),
-                    invoice.length());
+                client.beginAnalyzeDocument("prebuilt-invoice", BinaryData.fromStream(targetStream)
+                );
         }
 
         Mono<AnalyzeResult> analyzeInvoiceResultMono = analyzeInvoicePoller

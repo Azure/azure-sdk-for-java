@@ -51,8 +51,8 @@ public class AnalyzeReceiptsAsync {
         PollerFlux<OperationResult, AnalyzeResult> analyzeReceiptPoller;
         try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
             analyzeReceiptPoller = client.beginAnalyzeDocument("prebuilt-receipt",
-                BinaryData.fromStream(targetStream),
-                sourceFile.length());
+                BinaryData.fromStream(targetStream)
+            );
         }
 
         Mono<AnalyzeResult> receiptResultsMono = analyzeReceiptPoller

@@ -45,7 +45,7 @@ public class AnalyzeInvoices {
         BinaryData invoiceData = BinaryData.fromFile(filePath);
 
         SyncPoller<OperationResult, AnalyzeResult> analyzeInvoicesPoller =
-            client.beginAnalyzeDocument("prebuilt-invoice", invoiceData, invoice.length());
+            client.beginAnalyzeDocument("prebuilt-invoice", invoiceData);
 
         AnalyzeResult analyzeInvoiceResult = analyzeInvoicesPoller.getFinalResult();
 

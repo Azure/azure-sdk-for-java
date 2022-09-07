@@ -76,7 +76,8 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
                 .getDocumentAnalysisAsyncClient();
         blankPdfDataRunner((data, dataLength) -> {
             SyncPoller<OperationResult, AnalyzeResult> syncPoller =
-                documentAnalysisAsyncClient.beginAnalyzeDocument("prebuilt-receipt", BinaryData.fromStream(data), dataLength)
+                documentAnalysisAsyncClient.beginAnalyzeDocument("prebuilt-receipt",
+                        BinaryData.fromStream(data, dataLength))
                     .getSyncPoller();
             syncPoller.waitForCompletion();
             assertNotNull(syncPoller.getFinalResult());

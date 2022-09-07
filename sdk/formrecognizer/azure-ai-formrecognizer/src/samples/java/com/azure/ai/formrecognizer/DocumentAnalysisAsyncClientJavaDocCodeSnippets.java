@@ -107,18 +107,18 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentAnalysisAsyncClient#beginAnalyzeDocument(String, BinaryData, long)}
+     * Code snippet for {@link DocumentAnalysisAsyncClient#beginAnalyzeDocument(String, BinaryData)}
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginAnalyzeDocument() throws IOException {
-        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-BinaryData-long
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-BinaryData
         File document = new File("{local/file_path/fileName.jpg}");
         String modelId = "{model_id}";
         // Utility method to convert input stream to Binary Data
         BinaryData buffer = BinaryData.fromStream(new ByteArrayInputStream(Files.readAllBytes(document.toPath())));
 
-        documentAnalysisAsyncClient.beginAnalyzeDocument(modelId, buffer, document.length())
+        documentAnalysisAsyncClient.beginAnalyzeDocument(modelId, buffer)
             // if polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(analyzeResult ->
@@ -131,25 +131,25 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
                                 System.out.printf("Field value data content: %s%n", documentField.getContent());
                                 System.out.printf("Confidence score: %.2f%n", documentField.getConfidence());
                             })));
-        // END: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-BinaryData-long
+        // END: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-BinaryData
     }
 
     /**
      * Code snippet for
-     * {@link DocumentAnalysisAsyncClient#beginAnalyzeDocument(String, BinaryData, long, AnalyzeDocumentOptions)}
+     * {@link DocumentAnalysisAsyncClient#beginAnalyzeDocument(String, BinaryData, AnalyzeDocumentOptions)}
      * with options
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginAnalyzeDocumentWithOptions() throws IOException {
-        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-BinaryData-long-Options
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-BinaryData-Options
         File document = new File("{local/file_path/fileName.jpg}");
         String modelId = "{model_id}";
 
         // Utility method to convert input stream to Binary Data
         BinaryData buffer = BinaryData.fromStream(new ByteArrayInputStream(Files.readAllBytes(document.toPath())));
 
-        documentAnalysisAsyncClient.beginAnalyzeDocument(modelId, buffer, document.length(),
+        documentAnalysisAsyncClient.beginAnalyzeDocument(modelId, buffer,
                 new AnalyzeDocumentOptions().setPages(Arrays.asList("1", "3")))
             // if polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
@@ -165,6 +165,6 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
                                 System.out.printf("Confidence score: %.2f%n", documentField.getConfidence());
                             }));
             });
-        // END: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-BinaryData-long-Options
+        // END: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-BinaryData-Options
     }
 }

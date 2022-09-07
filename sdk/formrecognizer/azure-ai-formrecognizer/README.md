@@ -239,7 +239,7 @@ Path filePath = layoutDocument.toPath();
 BinaryData layoutDocumentData = BinaryData.fromFile(filePath);
 
 SyncPoller<OperationResult, AnalyzeResult> analyzeLayoutResultPoller =
-    documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout", layoutDocumentData, layoutDocument.length());
+    documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout", layoutDocumentData);
 
 AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 

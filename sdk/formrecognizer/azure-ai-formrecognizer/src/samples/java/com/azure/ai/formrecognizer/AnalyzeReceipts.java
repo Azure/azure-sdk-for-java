@@ -46,7 +46,7 @@ public class AnalyzeReceipts {
         BinaryData receiptData = BinaryData.fromFile(filePath);
 
         SyncPoller<OperationResult, AnalyzeResult> analyzeReceiptPoller =
-            client.beginAnalyzeDocument("prebuilt-receipt", receiptData, sourceFile.length());
+            client.beginAnalyzeDocument("prebuilt-receipt", receiptData);
 
         AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult();
 

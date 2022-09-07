@@ -43,7 +43,7 @@ public class AnalyzeTaxW2 {
         BinaryData invoiceData = BinaryData.fromFile(filePath);
 
         SyncPoller<OperationResult, AnalyzeResult> analyzeW2Poller =
-            client.beginAnalyzeDocument("prebuilt-tax.us.w2", invoiceData, invoice.length());
+            client.beginAnalyzeDocument("prebuilt-tax.us.w2", invoiceData);
 
         AnalyzeResult analyzeTaxResult = analyzeW2Poller.getFinalResult();
 

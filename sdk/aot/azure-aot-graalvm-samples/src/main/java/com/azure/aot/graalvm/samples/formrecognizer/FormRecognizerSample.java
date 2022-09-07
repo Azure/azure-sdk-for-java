@@ -51,12 +51,11 @@ public class FormRecognizerSample {
         while ((nRead = resourceAsStream.read(data, 0, data.length)) != -1) {
             buffer.write(data, 0, nRead);
         }
-        byte[] fileContent = buffer.toByteArray();
 
         BinaryData targetData = BinaryData.fromStream(resourceAsStream);
 
         SyncPoller<OperationResult, AnalyzeResult> analyzeReceiptPoller =
-                client.beginAnalyzeDocument("prebuilt-receipt", targetData, fileContent.length);
+                client.beginAnalyzeDocument("prebuilt-receipt", targetData);
 
         AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult();
 
@@ -118,21 +117,21 @@ public class FormRecognizerSample {
                                 }
                                 if ("Quantity".equals(key)) {
                                     if (DocumentFieldType.DOUBLE == formField.getType()) {
-                                        Float quantity = formField.getValueAsDouble();
+                                        Double quantity = formField.getValueAsDouble();
                                         System.out.printf("Quantity: %f, confidence: %.2f%n",
                                                 quantity, formField.getConfidence());
                                     }
                                 }
                                 if ("Price".equals(key)) {
                                     if (DocumentFieldType.DOUBLE == formField.getType()) {
-                                        Float price = formField.getValueAsDouble();
+                                        Double price = formField.getValueAsDouble();
                                         System.out.printf("Price: %f, confidence: %.2f%n",
                                                 price, formField.getConfidence());
                                     }
                                 }
                                 if ("TotalPrice".equals(key)) {
                                     if (DocumentFieldType.DOUBLE == formField.getType()) {
-                                        Float totalPrice = formField.getValueAsDouble();
+                                        Double totalPrice = formField.getValueAsDouble();
                                         System.out.printf("Total Price: %f, confidence: %.2f%n",
                                                 totalPrice, formField.getConfidence());
                                     }
