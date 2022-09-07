@@ -123,7 +123,7 @@ public final class DocumentAnalysisAsyncClient {
      *
      * <p><strong>Code sample</strong></p>
      * <p> Analyze a document using the URL of the document with configurable options. </p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocumentFromUrl#string-string-AnalyzeDocumentOptions -->
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocumentFromUrl#string-string-Options -->
      * <pre>
      * String documentUrl = &quot;&#123;document_url&#125;&quot;;
      * &#47;&#47; analyze a receipt using prebuilt model
@@ -147,7 +147,7 @@ public final class DocumentAnalysisAsyncClient {
      *     &#125;&#41;;
      *
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocumentFromUrl#string-string-AnalyzeDocumentOptions -->
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocumentFromUrl#string-string-Options -->
      *
      * @param modelId The unique model ID to be used. Use this to specify the custom model ID or prebuilt model ID.
      * Prebuilt model IDs supported can be found <a href="https://aka.ms/azsdk/formrecognizer/models">here</a>
@@ -277,7 +277,7 @@ public final class DocumentAnalysisAsyncClient {
      *
      * <p><strong>Code sample</strong></p>
      * <p> Analyze a document with configurable options. . </p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-BinaryData-long-AnalyzeDocumentOptions -->
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-BinaryData-long-Options -->
      * <pre>
      * File document = new File&#40;&quot;&#123;local&#47;file_path&#47;fileName.jpg&#125;&quot;&#41;;
      * String modelId = &quot;&#123;model_id&#125;&quot;;
@@ -302,7 +302,7 @@ public final class DocumentAnalysisAsyncClient {
      *                     &#125;&#41;&#41;;
      *     &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-BinaryData-long-AnalyzeDocumentOptions -->
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-BinaryData-long-Options -->
      *
      * @param modelId The unique model ID to be used. Use this to specify the custom model ID or prebuilt model ID.
      * Prebuilt model IDs supported can be found <a href="https://aka.ms/azsdk/formrecognizer/models">here</a>

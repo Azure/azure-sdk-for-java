@@ -81,7 +81,7 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
      * Code snippet for {@link DocumentAnalysisAsyncClient#beginAnalyzeDocumentFromUrl(String, String, AnalyzeDocumentOptions)}
      */
     public void beginAnalyzeDocumentFromUrlWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocumentFromUrl#string-string-AnalyzeDocumentOptions
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocumentFromUrl#string-string-Options
         String documentUrl = "{document_url}";
         // analyze a receipt using prebuilt model
         String modelId = "prebuilt-receipt";
@@ -103,7 +103,7 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
                             }));
             });
 
-        // END: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocumentFromUrl#string-string-AnalyzeDocumentOptions
+        // END: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocumentFromUrl#string-string-Options
     }
 
     /**
@@ -142,7 +142,7 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginAnalyzeDocumentWithOptions() throws IOException {
-        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-BinaryData-long-AnalyzeDocumentOptions
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-BinaryData-long-Options
         File document = new File("{local/file_path/fileName.jpg}");
         String modelId = "{model_id}";
 
@@ -165,6 +165,6 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
                                 System.out.printf("Confidence score: %.2f%n", documentField.getConfidence());
                             }));
             });
-        // END: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-BinaryData-long-AnalyzeDocumentOptions
+        // END: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-BinaryData-long-Options
     }
 }

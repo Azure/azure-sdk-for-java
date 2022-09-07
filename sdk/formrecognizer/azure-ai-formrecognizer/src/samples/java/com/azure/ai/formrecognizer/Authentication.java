@@ -142,14 +142,14 @@ public class Authentication {
                             }
                             if ("Quantity".equals(key)) {
                                 if (DocumentFieldType.DOUBLE == documentField.getType()) {
-                                    Float quantity = documentField.getValueAsDouble();
+                                    Double quantity = documentField.getValueAsDouble();
                                     System.out.printf("Quantity: %f, confidence: %.2f%n",
                                         quantity, documentField.getConfidence());
                                 }
                             }
                             if ("TotalPrice".equals(key)) {
                                 if (DocumentFieldType.DOUBLE == documentField.getType()) {
-                                    Float totalPrice = documentField.getValueAsDouble();
+                                    Double totalPrice = documentField.getValueAsDouble();
                                     System.out.printf("Total Price: %f, confidence: %.2f%n",
                                         totalPrice, documentField.getConfidence());
                                 }

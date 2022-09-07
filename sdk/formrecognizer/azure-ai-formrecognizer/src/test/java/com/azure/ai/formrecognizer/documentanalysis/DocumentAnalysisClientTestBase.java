@@ -827,8 +827,8 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         for (int i = 0; i < itemizedItems.size(); i++) {
             if (itemizedItems.get(i).getContent() != null) {
                 String[] itemizedNames = new String[] {"Surface Pro 6", "Surface Pen"};
-                Float[] itemizedTotalPrices = new Float[] {1998f, 299.97f};
-                Float[] itemizedQuantities = new Float[] {2f, 3f};
+                Double[] itemizedTotalPrices = new Double[] {1998.0, 299.9700012207031};
+                Double[] itemizedQuantities = new Double[] {2.0, 3.0};
 
                 Map<String, DocumentField> actualReceiptItems = itemizedItems.get(i).getValueAsMap();
                 int finalI = i;
@@ -842,7 +842,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
                     }
                     if ("Quantity".equals(key)) {
                         if (DocumentFieldType.DOUBLE == documentField.getType()) {
-                            Float quantity = documentField.getValueAsDouble();
+                            Double quantity = documentField.getValueAsDouble();
                             assertEquals(itemizedQuantities[finalI], quantity);
                         }
                     }
@@ -852,7 +852,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
 
                     if ("TotalPrice".equals(key)) {
                         if (DocumentFieldType.DOUBLE == documentField.getType()) {
-                            Float totalPrice = documentField.getValueAsDouble();
+                            Double totalPrice = documentField.getValueAsDouble();
                             assertEquals(itemizedTotalPrices[finalI], totalPrice);
                         }
                     }

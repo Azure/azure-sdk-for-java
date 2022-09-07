@@ -80,7 +80,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
      * Code snippet for {@link DocumentAnalysisClient#beginAnalyzeDocumentFromUrl(String, String, AnalyzeDocumentOptions, Context)}
      */
     public void beginAnalyzeDocumentFromUrlWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginAnalyzeDocumentFromUrl#string-string-AnalyzeDocumentOptions-Context
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginAnalyzeDocumentFromUrl#string-string-Options-Context
         String analyzeFilePath = "{file_source_url}";
         String modelId = "{model_id}";
 
@@ -94,7 +94,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
                 System.out.printf("Field value data content: %s%n", documentField.getContent());
                 System.out.printf("Confidence score: %.2f%n", documentField.getConfidence());
             }));
-        // END: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginAnalyzeDocumentFromUrl#string-string-AnalyzeDocumentOptions-Context
+        // END: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginAnalyzeDocumentFromUrl#string-string-Options-Context
     }
 
     /**
@@ -129,7 +129,7 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginAnalyzeDocumentWithOptions() throws IOException {
-        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginAnalyzeDocument#string-BinaryData-long-AnalyzeDocumentOptions-Context
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginAnalyzeDocument#string-BinaryData-long-Options-Context
         File document = new File("{local/file_path/fileName.jpg}");
         String modelId = "{custom_trained_model_id}";
         byte[] fileContent = Files.readAllBytes(document.toPath());
@@ -144,6 +144,6 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
                 System.out.printf("Field value data content: %s%n", documentField.getContent());
                 System.out.printf("Confidence score: %.2f%n", documentField.getConfidence());
             }));
-        // END: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginAnalyzeDocument#string-BinaryData-long-AnalyzeDocumentOptions-Context
+        // END: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginAnalyzeDocument#string-BinaryData-long-Options-Context
     }
 }

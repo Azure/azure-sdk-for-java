@@ -186,7 +186,7 @@ public final class DocumentAnalysisClient {
      *
      * <p><strong>Code sample</strong></p>
      * <p> Analyze a document with configurable options. </p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginAnalyzeDocument#string-BinaryData-long-AnalyzeDocumentOptions-Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginAnalyzeDocument#string-BinaryData-long-Options-Context -->
      * <pre>
      * File document = new File&#40;&quot;&#123;local&#47;file_path&#47;fileName.jpg&#125;&quot;&#41;;
      * String modelId = &quot;&#123;custom_trained_model_id&#125;&quot;;
@@ -203,7 +203,7 @@ public final class DocumentAnalysisClient {
      *         System.out.printf&#40;&quot;Confidence score: %.2f%n&quot;, documentField.getConfidence&#40;&#41;&#41;;
      *     &#125;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginAnalyzeDocument#string-BinaryData-long-AnalyzeDocumentOptions-Context -->
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginAnalyzeDocument#string-BinaryData-long-Options-Context -->
      *
      * @param modelId The unique model ID to be used. Use this to specify the custom model ID or prebuilt model ID.
      * Prebuilt model IDs supported can be found <a href="https://aka.ms/azsdk/formrecognizer/models">here</a>

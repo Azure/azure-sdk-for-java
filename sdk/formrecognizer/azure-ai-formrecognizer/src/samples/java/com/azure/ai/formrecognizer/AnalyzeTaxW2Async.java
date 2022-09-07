@@ -152,7 +152,7 @@ public class AnalyzeTaxW2Async {
                 DocumentField socialSecurityTaxField = taxFields.get("SocialSecurityTaxWithheld");
                 if (localTaxInfosField != null) {
                     if (DocumentFieldType.DOUBLE == socialSecurityTaxField.getType()) {
-                        Float socialSecurityTax = socialSecurityTaxField.getValueAsDouble();
+                        Double socialSecurityTax = socialSecurityTaxField.getValueAsDouble();
                         System.out.printf("Social Security Tax withheld: %.2f, confidence: %.2f%n",
                             socialSecurityTax, socialSecurityTaxField.getConfidence());
                     }

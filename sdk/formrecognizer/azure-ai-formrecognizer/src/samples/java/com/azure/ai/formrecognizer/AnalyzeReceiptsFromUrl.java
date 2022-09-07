@@ -92,34 +92,34 @@ public class AnalyzeReceiptsFromUrl {
                     List<DocumentField> receiptItems = receiptItemsField.getValueAsList();
                     receiptItems.stream()
                         .filter(receiptItem -> DocumentFieldType.MAP == receiptItem.getType())
-                        .map(formField -> formField.getValueAsMap())
-                        .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
+                        .map(documentField -> documentField.getValueAsMap())
+                        .forEach(documentFieldMap -> documentFieldMap.forEach((key, documentField) -> {
                             if ("Name".equals(key)) {
-                                if (DocumentFieldType.STRING == formField.getType()) {
-                                    String name = formField.getValueAsString();
+                                if (DocumentFieldType.STRING == documentField.getType()) {
+                                    String name = documentField.getValueAsString();
                                     System.out.printf("Name: %s, confidence: %.2fs%n",
-                                        name, formField.getConfidence());
+                                        name, documentField.getConfidence());
                                 }
                             }
                             if ("Quantity".equals(key)) {
-                                if (DocumentFieldType.DOUBLE == formField.getType()) {
-                                    Float quantity = formField.getValueAsDouble();
+                                if (DocumentFieldType.DOUBLE == documentField.getType()) {
+                                    Double quantity = documentField.getValueAsDouble();
                                     System.out.printf("Quantity: %f, confidence: %.2f%n",
-                                        quantity, formField.getConfidence());
+                                        quantity, documentField.getConfidence());
                                 }
                             }
                             if ("Price".equals(key)) {
-                                if (DocumentFieldType.DOUBLE == formField.getType()) {
-                                    Float price = formField.getValueAsDouble();
+                                if (DocumentFieldType.DOUBLE == documentField.getType()) {
+                                    Double price = documentField.getValueAsDouble();
                                     System.out.printf("Price: %f, confidence: %.2f%n",
-                                        price, formField.getConfidence());
+                                        price, documentField.getConfidence());
                                 }
                             }
                             if ("TotalPrice".equals(key)) {
-                                if (DocumentFieldType.DOUBLE == formField.getType()) {
-                                    Float totalPrice = formField.getValueAsDouble();
+                                if (DocumentFieldType.DOUBLE == documentField.getType()) {
+                                    Double totalPrice = documentField.getValueAsDouble();
                                     System.out.printf("Total Price: %f, confidence: %.2f%n",
-                                        totalPrice, formField.getConfidence());
+                                        totalPrice, documentField.getConfidence());
                                 }
                             }
                         }));

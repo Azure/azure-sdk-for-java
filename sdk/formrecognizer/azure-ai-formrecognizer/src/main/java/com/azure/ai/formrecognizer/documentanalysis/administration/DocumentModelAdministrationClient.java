@@ -36,12 +36,12 @@ import java.util.List;
  * component models, getting operation information and getting resource details.
  *
  * <p><strong>Instantiating a synchronous Document Model Administration Client</strong></p>
- * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.initialization -->
+ * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.initialization -->
  * <pre>
  * DocumentModelAdministrationClient documentModelAdministrationClient =
  *     new DocumentModelAdministrationClientBuilder&#40;&#41;.buildClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.initialization -->
+ * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.initialization -->
  *
  * @see DocumentModelAdministrationClientBuilder
  * @see DocumentModelAdministrationClient
@@ -83,7 +83,7 @@ public final class DocumentModelAdministrationClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.beginBuildDocumentModel#String-DocumentModelBuildMode -->
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentModel#String-BuildMode -->
      * <pre>
      * String blobContainerUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
      * DocumentModelDetails documentModelDetails
@@ -101,7 +101,7 @@ public final class DocumentModelAdministrationClient {
      *     &#125;&#41;;
      * &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.beginBuildDocumentModel#String-DocumentModelBuildMode -->
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentModel#String-BuildMode -->
      *
      * @param blobContainerUrl an Azure Storage blob container's SAS URI. A container URI (without SAS)
      * can be used if the container is public or has a managed identity configured. For more information on
@@ -130,7 +130,7 @@ public final class DocumentModelAdministrationClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.beginBuildDocumentModel#String-DocumentModelBuildMode-String-BuildDocumentModelOptions-Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentModel#String-BuildMode-String-Options-Context -->
      * <pre>
      * String blobContainerUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
      * String modelId = &quot;custom-model-id&quot;;
@@ -161,7 +161,7 @@ public final class DocumentModelAdministrationClient {
      *     &#125;&#41;;
      * &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.beginBuildDocumentModel#String-DocumentModelBuildMode-String-BuildDocumentModelOptions-Context -->
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentModel#String-BuildMode-String-Options-Context -->
      *
      * @param blobContainerUrl an Azure Storage blob container's SAS URI. A container URI (without SAS)
      * can be used if the container is public or has a managed identity configured. For more information on
@@ -191,7 +191,7 @@ public final class DocumentModelAdministrationClient {
      * Get information about the current Form Recognizer resource.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getResourceDetails -->
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.getResourceDetails -->
      * <pre>
      * ResourceDetails resourceDetails = documentModelAdministrationClient.getResourceDetails&#40;&#41;;
      * System.out.printf&#40;&quot;Max number of models that can be build for this account: %d%n&quot;,
@@ -199,7 +199,7 @@ public final class DocumentModelAdministrationClient {
      * System.out.printf&#40;&quot;Current count of built document analysis models: %d%n&quot;,
      *     resourceDetails.getCustomDocumentModelCount&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getResourceDetails -->
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.getResourceDetails -->
      *
      * @return The requested resource information details.
      */
@@ -213,7 +213,7 @@ public final class DocumentModelAdministrationClient {
      * specified {@link Context}.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getResourceDetailsWithResponse#Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.getResourceDetailsWithResponse#Context -->
      * <pre>
      * Response&lt;ResourceDetails&gt; response =
      *     documentModelAdministrationClient.getResourceDetailsWithResponse&#40;Context.NONE&#41;;
@@ -224,7 +224,7 @@ public final class DocumentModelAdministrationClient {
      * System.out.printf&#40;&quot;Current count of built document analysis models: %d%n&quot;,
      *     resourceDetails.getCustomDocumentModelCount&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getResourceDetailsWithResponse#Context -->
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.getResourceDetailsWithResponse#Context -->
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
@@ -239,13 +239,13 @@ public final class DocumentModelAdministrationClient {
      * Deletes the specified custom document analysis model.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.deleteDocumentModel#string -->
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.deleteDocumentModel#string -->
      * <pre>
      * String modelId = &quot;&#123;custom-model-id&#125;&quot;;
      * documentModelAdministrationClient.deleteDocumentModel&#40;modelId&#41;;
      * System.out.printf&#40;&quot;Model ID: %s is deleted.%n&quot;, modelId&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.deleteDocumentModel#string -->
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.deleteDocumentModel#string -->
      *
      * @param modelId The unique model identifier.
      * @throws IllegalArgumentException If {@code modelId} is null or empty.
@@ -259,7 +259,7 @@ public final class DocumentModelAdministrationClient {
      * Deletes the specified custom document analysis model.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.deleteDocumentModelWithResponse#string-Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.deleteDocumentModelWithResponse#string-Context -->
      * <pre>
      * String modelId = &quot;&#123;custom-model-id&#125;&quot;;
      * Response&lt;Void&gt; response
@@ -267,7 +267,7 @@ public final class DocumentModelAdministrationClient {
      * System.out.printf&#40;&quot;Response Status Code: %d.&quot;, response.getStatusCode&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Model ID: %s is deleted.%n&quot;, modelId&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.deleteDocumentModelWithResponse#string-Context -->
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.deleteDocumentModelWithResponse#string-Context -->
      *
      * @param modelId The unique model identifier.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -286,7 +286,7 @@ public final class DocumentModelAdministrationClient {
      * the target parameter into {@link DocumentModelAdministrationClient#beginCopyDocumentModelTo(String, DocumentModelCopyAuthorization)}.
      * </p>
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getCopyAuthorization -->
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.getCopyAuthorization -->
      * <pre>
      * DocumentModelCopyAuthorization documentModelCopyAuthorization
      *     = documentModelAdministrationClient.getCopyAuthorization&#40;&#41;;
@@ -299,7 +299,7 @@ public final class DocumentModelAdministrationClient {
      *     documentModelCopyAuthorization.getTargetResourceRegion&#40;&#41;
      * &#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getCopyAuthorization -->
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.getCopyAuthorization -->
      * @return The {@link DocumentModelCopyAuthorization}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -318,7 +318,7 @@ public final class DocumentModelAdministrationClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getCopyAuthorizationWithResponse#CopyAuthorizationOptions-Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.getCopyAuthorizationWithResponse#Options-Context -->
      * <pre>
      * String modelId = &quot;my-copied-model&quot;;
      * Map&lt;String, String&gt; attrs = new HashMap&lt;String, String&gt;&#40;&#41;;
@@ -344,7 +344,7 @@ public final class DocumentModelAdministrationClient {
      *     documentModelCopyAuthorization.getTargetResourceRegion&#40;&#41;
      * &#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getCopyAuthorizationWithResponse#CopyAuthorizationOptions-Context -->
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.getCopyAuthorizationWithResponse#Options-Context -->
      *
      * @return A {@link Response} containing the {@link DocumentModelCopyAuthorization}
      */
@@ -365,7 +365,7 @@ public final class DocumentModelAdministrationClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.beginComposeDocumentModel#list -->
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginComposeDocumentModel#list -->
      * <pre>
      * String modelId1 = &quot;&#123;custom-model-id_1&#125;&quot;;
      * String modelId2 = &quot;&#123;custom-model-id_2&#125;&quot;;
@@ -384,7 +384,7 @@ public final class DocumentModelAdministrationClient {
      *     &#125;&#41;;
      * &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.beginComposeDocumentModel#list -->
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginComposeDocumentModel#list -->
      *
      * @param componentModelIds The list of models IDs to form the composed model.
      * @return A {@link SyncPoller} that polls the create composed model operation until it has completed, has failed,
@@ -409,7 +409,7 @@ public final class DocumentModelAdministrationClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.beginComposeDocumentModel#list-ComposeDocumentModelOptions-Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginComposeDocumentModel#list-Options-Context -->
      * <pre>
      * String modelId1 = &quot;&#123;custom-model-id_1&#125;&quot;;
      * String modelId2 = &quot;&#123;custom-model-id_2&#125;&quot;;
@@ -439,7 +439,7 @@ public final class DocumentModelAdministrationClient {
      *     &#125;&#41;;
      * &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.beginComposeDocumentModel#list-ComposeDocumentModelOptions-Context -->
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginComposeDocumentModel#list-Options-Context -->
      *
      * @param componentModelIds The list of models IDs to form the composed model.
      * @param composeDocumentModelOptions The configurable {@link ComposeDocumentModelOptions options} to pass when
@@ -471,7 +471,7 @@ public final class DocumentModelAdministrationClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.beginCopyDocumentModelTo#string-copyAuthorization -->
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginCopyDocumentModelTo#string-copyAuthorization -->
      * <pre>
      * String copyModelId = &quot;copy-model&quot;;
      * &#47;&#47; Get authorization to copy the model to target resource
@@ -485,7 +485,7 @@ public final class DocumentModelAdministrationClient {
      *     documentModelDetails.getModelId&#40;&#41;,
      *     documentModelDetails.getCreatedOn&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.beginCopyDocumentModelTo#string-copyAuthorization -->
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginCopyDocumentModelTo#string-copyAuthorization -->
      *
      * @param sourceModelId Model identifier of the source model to copy to target resource.
      * @param target the copy authorization to the target Form Recognizer resource. The copy authorization can be
@@ -512,7 +512,7 @@ public final class DocumentModelAdministrationClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.beginCopyDocumentModelTo#string-copyAuthorization-Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginCopyDocumentModelTo#string-copyAuthorization-Context -->
      * <pre>
      * String copyModelId = &quot;copy-model&quot;;
      * &#47;&#47; Get authorization to copy the model to target resource
@@ -528,7 +528,7 @@ public final class DocumentModelAdministrationClient {
      *     documentModelDetails.getModelId&#40;&#41;,
      *     documentModelDetails.getCreatedOn&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.beginCopyDocumentModelTo#string-copyAuthorization-Context -->
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginCopyDocumentModelTo#string-copyAuthorization-Context -->
      *
      * @param sourceModelId Model identifier of the model to copy to target resource.
      * @param target the copy authorization to the target Form Recognizer resource. The copy authorization can be
@@ -549,7 +549,7 @@ public final class DocumentModelAdministrationClient {
      * List information for each model on the Form Recognizer account that were built successfully.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.listDocumentModels -->
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.listDocumentModels -->
      * <pre>
      * documentModelAdministrationClient.listDocumentModels&#40;&#41;
      *     .forEach&#40;documentModel -&gt;
@@ -559,7 +559,7 @@ public final class DocumentModelAdministrationClient {
      *             documentModel.getCreatedOn&#40;&#41;&#41;
      *     &#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.listDocumentModels -->
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.listDocumentModels -->
      *
      * @return {@link PagedIterable} of {@link DocumentModelSummary} custom form model information.
      */
@@ -573,7 +573,7 @@ public final class DocumentModelAdministrationClient {
      * response and a specified {@link Context}.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.listDocumentModels#Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.listDocumentModels#Context -->
      * <pre>
      * documentModelAdministrationClient.listDocumentModels&#40;Context.NONE&#41;
      *     .forEach&#40;documentModel -&gt;
@@ -583,7 +583,7 @@ public final class DocumentModelAdministrationClient {
      *             documentModel.getCreatedOn&#40;&#41;&#41;
      *     &#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.listDocumentModels#Context -->
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.listDocumentModels#Context -->
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
@@ -598,7 +598,7 @@ public final class DocumentModelAdministrationClient {
      * Get detailed information for a specified model ID.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getDocumentModel#string -->
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.getDocumentModel#string -->
      * <pre>
      * String modelId = &quot;&#123;custom-model-id&#125;&quot;;
      * DocumentModelDetails documentModelDetails = documentModelAdministrationClient.getDocumentModel&#40;modelId&#41;;
@@ -613,7 +613,7 @@ public final class DocumentModelAdministrationClient {
      *     &#125;&#41;;
      * &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getDocumentModel#string -->
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.getDocumentModel#string -->
      *
      * @param modelId The unique model identifier.
      *
@@ -629,7 +629,7 @@ public final class DocumentModelAdministrationClient {
      * Get detailed information for a specified model ID.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getDocumentModelWithResponse#string-Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.getDocumentModelWithResponse#string-Context -->
      * <pre>
      * String modelId = &quot;&#123;custom-model-id&#125;&quot;;
      * Response&lt;DocumentModelDetails&gt; response
@@ -647,7 +647,7 @@ public final class DocumentModelAdministrationClient {
      *     &#125;&#41;;
      * &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getDocumentModelWithResponse#string-Context -->
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.getDocumentModelWithResponse#string-Context -->
      *
      * @param modelId The unique model identifier.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -664,7 +664,7 @@ public final class DocumentModelAdministrationClient {
      * Get detailed operation information for the specified ID with Http response.
      * <p> This operations fails if the operation ID used is past 24 hours.</p>
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getOperation#string -->
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.getOperation#string -->
      * <pre>
      * String operationId = &quot;&#123;operation-id&#125;&quot;;
      * OperationDetails operationDetails
@@ -678,7 +678,7 @@ public final class DocumentModelAdministrationClient {
      *     System.out.printf&#40;&quot;Operation fail error: %s%n&quot;, operationDetails.getError&#40;&#41;.getMessage&#40;&#41;&#41;;
      * &#125;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getOperation#string -->
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.getOperation#string -->
      *
      * @param operationId Unique operation ID.
      *
@@ -695,7 +695,7 @@ public final class DocumentModelAdministrationClient {
      * <p> This operations fails if the operation ID used is past 24 hours.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getOperationWithResponse#string-Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.getOperationWithResponse#string-Context -->
      * <pre>
      * String operationId = &quot;&#123;operation-id&#125;&quot;;
      * Response&lt;OperationDetails&gt; response =
@@ -711,7 +711,7 @@ public final class DocumentModelAdministrationClient {
      *     System.out.printf&#40;&quot;Operation fail error: %s%n&quot;, operationDetails.getError&#40;&#41;.getMessage&#40;&#41;&#41;;
      * &#125;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.getOperationWithResponse#string-Context -->
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.getOperationWithResponse#string-Context -->
      *
      * @param operationId Unique operation ID.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -728,7 +728,7 @@ public final class DocumentModelAdministrationClient {
      * List information for each model operation on the Form Recognizer account in the past 24 hours.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.listOperations -->
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.listOperations -->
      * <pre>
      * PagedIterable&lt;OperationSummary&gt;
      *     modelOperationInfo = documentModelAdministrationClient.listOperations&#40;&#41;;
@@ -742,7 +742,7 @@ public final class DocumentModelAdministrationClient {
      *     System.out.printf&#40;&quot;Operation resource location: %s%n&quot;, modelOperationSummary.getResourceLocation&#40;&#41;&#41;;
      * &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.listOperations -->
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.listOperations -->
      *
      * @return {@link PagedIterable} of {@link OperationSummary} custom form model information.
      */
@@ -756,7 +756,7 @@ public final class DocumentModelAdministrationClient {
      * a specified {@link Context}.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.listOperations#Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.listOperations#Context -->
      * <pre>
      * PagedIterable&lt;OperationSummary&gt;
      *     modelOperationInfo = documentModelAdministrationClient.listOperations&#40;Context.NONE&#41;;
@@ -770,7 +770,7 @@ public final class DocumentModelAdministrationClient {
      *     System.out.printf&#40;&quot;Operation resource location: %s%n&quot;, modelOperationSummary.getResourceLocation&#40;&#41;&#41;;
      * &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient.listOperations#Context -->
+     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.listOperations#Context -->
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
