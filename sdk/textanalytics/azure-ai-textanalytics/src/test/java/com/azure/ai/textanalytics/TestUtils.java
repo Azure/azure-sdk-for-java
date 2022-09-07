@@ -1311,6 +1311,7 @@ final class TestUtils {
     private static boolean shouldServiceVersionBeTested(TextAnalyticsServiceVersion serviceVersion) {
         String serviceVersionFromEnv =
             Configuration.getGlobalConfiguration().get(AZURE_TEXT_ANALYTICS_TEST_SERVICE_VERSIONS);
+
         if (CoreUtils.isNullOrEmpty(serviceVersionFromEnv)) {
             return TextAnalyticsServiceVersion.getLatest().equals(serviceVersion);
         }

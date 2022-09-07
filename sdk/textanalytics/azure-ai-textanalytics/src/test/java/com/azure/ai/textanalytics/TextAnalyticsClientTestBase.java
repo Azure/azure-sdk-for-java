@@ -108,17 +108,17 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static final String INVALID_DOCUMENT_NPE_MESSAGE = "'document' cannot be null.";
     static final String WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE = "The document contains very long words (longer than 64 characters). These words will be truncated and may result in unreliable model predictions.";
     static final String REDACTED = "REDACTED";
-    static final String AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_PROJECT_NAME =
+    static final String CUSTOM_ENTITIES_PROJECT_NAME =
         Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_PROJECT_NAME");
-    static final String AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_DEPLOYMENT_NAME =
+    static final String CUSTOM_ENTITIES_DEPLOYMENT_NAME =
         Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_DEPLOYMENT_NAME");
-    static final String AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_PROJECT_NAME =
+    static final String CUSTOM_SINGLE_CLASSIFICATION_PROJECT_NAME =
         Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_PROJECT_NAME");
-    static final String AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_DEPLOYMENT_NAME =
+    static final String CUSTOM_SINGLE_CLASSIFICATION_DEPLOYMENT_NAME =
         Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_DEPLOYMENT_NAME");
-    static final String AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_PROJECT_NAME =
+    static final String CUSTOM_MULTI_CLASSIFICATION_PROJECT_NAME =
         Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_PROJECT_NAME");
-    static final String AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_DEPLOYMENT_NAME =
+    static final String CUSTOM_MULTI_CLASSIFICATION_DEPLOYMENT_NAME =
         Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_DEPLOYMENT_NAME");
 
     static InterceptorManager interceptorManagerTestBase;
@@ -1236,36 +1236,36 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(CUSTOM_ENTITIES_INPUT,
             new TextAnalyticsActions()
                 .setRecognizeCustomEntitiesActions(
-                    new RecognizeCustomEntitiesAction(AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_PROJECT_NAME,
-                        AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_DEPLOYMENT_NAME)));
+                    new RecognizeCustomEntitiesAction(CUSTOM_ENTITIES_PROJECT_NAME,
+                        CUSTOM_ENTITIES_DEPLOYMENT_NAME)));
     }
 
     void classifyCustomSingleCategoryActionRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner) {
         testRunner.accept(CUSTOM_SINGLE_CLASSIFICATION,
             new TextAnalyticsActions()
                 .setSingleLabelClassifyActions(
-                    new SingleLabelClassifyAction(AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_PROJECT_NAME,
-                        AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_DEPLOYMENT_NAME)));
+                    new SingleLabelClassifyAction(CUSTOM_SINGLE_CLASSIFICATION_PROJECT_NAME,
+                        CUSTOM_SINGLE_CLASSIFICATION_DEPLOYMENT_NAME)));
     }
 
     void classifyCustomMultiCategoryActionRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner) {
         testRunner.accept(CUSTOM_MULTI_CLASSIFICATION,
             new TextAnalyticsActions()
                 .setMultiLabelClassifyActions(
-                    new MultiLabelClassifyAction(AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_PROJECT_NAME,
-                        AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_DEPLOYMENT_NAME)));
+                    new MultiLabelClassifyAction(CUSTOM_MULTI_CLASSIFICATION_PROJECT_NAME,
+                        CUSTOM_MULTI_CLASSIFICATION_DEPLOYMENT_NAME)));
     }
 
     void recognizeCustomEntitiesRunner(BiConsumer<List<String>, List<String>> testRunner) {
         testRunner.accept(CUSTOM_ENTITIES_INPUT,
-            asList(AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_PROJECT_NAME,
-                AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_DEPLOYMENT_NAME));
+            asList(CUSTOM_ENTITIES_PROJECT_NAME,
+                CUSTOM_ENTITIES_DEPLOYMENT_NAME));
     }
 
     void classifyCustomSingleLabelRunner(BiConsumer<List<String>, List<String>> testRunner) {
         testRunner.accept(CUSTOM_SINGLE_CLASSIFICATION,
-            asList(AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_PROJECT_NAME,
-                AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_DEPLOYMENT_NAME));
+            asList(CUSTOM_SINGLE_CLASSIFICATION_PROJECT_NAME,
+                CUSTOM_SINGLE_CLASSIFICATION_DEPLOYMENT_NAME));
     }
 
     void classifyCustomMultiLabelRunner(BiConsumer<List<String>, List<String>> testRunner) {
