@@ -174,7 +174,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      */
     private static final class DefaultConfigHolder {
         static final AzureFileSystemConfig DEFAULT_CONFIGURATIONS = readEnvironmentConfiguration();
-        
+
         static final String DEFAULT_ENDPOINT = readEnvironmentEndpoint();
 
         /**
@@ -304,7 +304,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         String endpoint = extractAccountEndpointOrGetDefault(uri);
         if (this.openFileSystems.containsKey(endpoint)) {
             return this.openFileSystems.get(endpoint);
-        } else if (AUTO_CREATE_FILE_SYSTEMS && DefaultConfigHolder.DEFAULT_CONFIGURATIONS.isSufficient()) {
+        } else if (DefaultConfigHolder.AUTO_CREATE_FILE_SYSTEMS
+            && DefaultConfigHolder.DEFAULT_CONFIGURATIONS.isSufficient()) {
             synchronized (AzureFileSystemProvider.class) {
                 if (!this.openFileSystems.containsKey(endpoint)) {
                     FileSystem newSystem = null;
