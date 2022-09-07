@@ -4,13 +4,16 @@
 package com.azure.core.util.polling;
 
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.Optional;
-import java.util.concurrent.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -32,6 +35,10 @@ class PollingUtil {
         long startTime = System.currentTimeMillis();
         pollingContext.setLatestResponse(pollOperation.apply(pollingContext));
         PollResponse<T> intermediatePollResponse = pollingContext.getLatestResponse();
+        Runnable pollOpRunnable = () -> {
+            PollResponse<T> pollResponse1 = pollOperation.apply(pollingContext);
+            pollingContext.setLatestResponse(pollResponse1);
+        };
         while (!intermediatePollResponse.getStatus().isComplete()) {
             long elapsedTime = System.currentTimeMillis() - startTime;
             if (timeBound ?  elapsedTime >= timeoutInMillis : false) {
@@ -43,10 +50,7 @@ class PollingUtil {
                 return intermediatePollResponse;
             }
             final ScheduledFuture<?> pollOp =
-                scheduler.schedule(() -> {
-                    PollResponse<T> pollResponse1 = pollOperation.apply(pollingContext);
-                    pollingContext.setLatestResponse(pollResponse1);
-                    }, getDelay(intermediatePollResponse, pollInterval).toMillis(), TimeUnit.MILLISECONDS);
+                scheduler.schedule(pollOpRunnable, getDelay(intermediatePollResponse, pollInterval).toMillis(), TimeUnit.MILLISECONDS);
             try {
                 if (timeBound) {
                     pollOp.get(timeoutInMillis - elapsedTime, TimeUnit.MILLISECONDS);

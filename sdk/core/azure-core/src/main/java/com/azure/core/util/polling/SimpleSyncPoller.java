@@ -9,7 +9,6 @@ import com.azure.core.util.polling.implementation.PollContextRequiredException;
 import java.time.Duration;
 import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -122,7 +121,7 @@ final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
             return currentTerminalPollContext.getLatestResponse();
         } else {
             PollingContext<T> context = this.pollingContext.copy();
-            PollResponse<T> pollResponse = PollingUtil.pollingLoop(pollingContext, timeout, statusToWaitFor, pollOperation, pollInterval);;
+            PollResponse<T> pollResponse = PollingUtil.pollingLoop(pollingContext, timeout, statusToWaitFor, pollOperation, pollInterval);
             if (!pollResponse.getStatus().equals(statusToWaitFor)) {
                 throw LOGGER.logExceptionAsError(new NoSuchElementException("Polling completed without"
                     + " receiving the given status '" + statusToWaitFor + "'."));
@@ -154,7 +153,7 @@ final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
                 .apply(currentTerminalPollContext);
         } else {
             PollingContext<T> context = this.pollingContext.copy();
-            PollingUtil.pollingLoop(pollingContext, null, null, pollOperation, pollInterval);;
+            PollingUtil.pollingLoop(pollingContext, null, null, pollOperation, pollInterval);
             this.terminalPollContext = context;
             return getFinalResult();
         }
