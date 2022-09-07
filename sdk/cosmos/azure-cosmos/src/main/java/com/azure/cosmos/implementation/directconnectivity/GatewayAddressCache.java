@@ -63,6 +63,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -99,6 +100,7 @@ public class GatewayAddressCache implements IAddressCache {
     private IOpenConnectionsHandler openConnectionsHandler;
     private final ConnectionPolicy connectionPolicy;
     private final boolean replicaAddressValidationEnabled;
+    private final Set<Uri.HealthStatus> replicaValidationScopes;
 
     public GatewayAddressCache(
         DiagnosticsClientContext clientContext,
@@ -154,6 +156,10 @@ public class GatewayAddressCache implements IAddressCache {
         this.openConnectionsHandler = openConnectionsHandler;
         this.connectionPolicy = connectionPolicy;
         this.replicaAddressValidationEnabled = Configs.isReplicaAddressValidationEnabled();
+        this.replicaValidationScopes = ConcurrentHashMap.newKeySet();
+        if (this.replicaAddressValidationEnabled) {
+            this.replicaValidationScopes.add(Uri.HealthStatus.UnhealthyPending);
+        }
     }
 
     public GatewayAddressCache(
@@ -249,8 +255,7 @@ public class GatewayAddressCache implements IAddressCache {
                             for (Uri failedEndpoints : request.requestContext.getFailedEndpoints()) {
                                 failedEndpoints.setUnhealthy();
                             }
-                            return forceRefreshPartitionAddressesModified
-                                    || Arrays.stream(cachedAddresses).anyMatch(addressInformation -> addressInformation.getPhysicalUri().shouldRefreshHealthStatus());
+                            return forceRefreshPartitionAddressesModified;
                         })
                     .map(Utils.ValueHolder::new);
 
@@ -261,6 +266,20 @@ public class GatewayAddressCache implements IAddressCache {
                             logger.debug("not all replicas available {}", JavaStreamUtils.info(addressesValueHolder.v));
                         }
                         this.suboptimalServerPartitionTimestamps.putIfAbsent(partitionKeyRangeIdentity, Instant.now());
+                    }
+
+                    // Refresh the cache if there was an address has been marked as unhealthy long enough and need to revalidate its status
+                    // If you are curious about why we do not depend on 410 to force refresh the addresses, the reason being:
+                    // When an address is marked as unhealthy, then the address enumerator will move it to the end of the list
+                    // So it could happen that no request will use the unhealthy address for an extended period of time
+                    // So the 410 -> forceRefresh workflow may not happen
+                    if (Arrays
+                            .stream(addressesValueHolder.v)
+                            .anyMatch(addressInformation -> addressInformation.getPhysicalUri().shouldRefreshHealthStatus())) {
+                        logger.info("refresh cache due to address uri in unhealthy status");
+                        this.serverPartitionAddressCache.refresh(
+                                partitionKeyRangeIdentity,
+                                cachedAddresses -> this.getAddressesForRangeId(request, partitionKeyRangeIdentity, true, cachedAddresses));
                     }
 
                     return addressesValueHolder;
@@ -835,12 +854,24 @@ public class GatewayAddressCache implements IAddressCache {
         // By theory, when we reach here, the status of the address should be in one of the three status: Unknown, Connected, UnhealthyPending
         // using open connection to validate addresses in UnhealthyPending status
         // Could extend to also open connection for unknown in the future
-        List<Uri> addressesNeedToValidation =
-                Arrays
-                    .stream(addresses)
-                    .map(address -> address.getPhysicalUri())
-                    .filter(addressUri -> addressUri.getHealthStatus() == Uri.HealthStatus.UnhealthyPending)
-                    .collect(Collectors.toList());
+
+        List<Uri> addressesNeedToValidation = new ArrayList<>();
+        for (AddressInformation address : addresses) {
+            if (this.replicaValidationScopes.contains(address.getPhysicalUri().getHealthStatus())) {
+                switch (address.getPhysicalUri().getHealthStatus()) {
+                    case UnhealthyPending:
+                        // Generally, an unhealthyPending replica has more chances to fail the request compared to unknown replica
+                        // so we want to put it at the head of the validation list
+                        addressesNeedToValidation.add(0, address.getPhysicalUri());
+                        break;
+                    case Unknown:
+                        addressesNeedToValidation.add(address.getPhysicalUri());
+                        break;
+                    default:
+                        throw new IllegalStateException("Validate replica status is not support for status " + address.getPhysicalUri().getHealthStatus());
+                }
+            }
+        }
 
         if (addressesNeedToValidation.size() > 0) {
             this.openConnectionsHandler
@@ -884,6 +915,10 @@ public class GatewayAddressCache implements IAddressCache {
                     "openConnectionsAndInitCaches collection: {}, partitionKeyRangeIdentities: {}",
                     collection.getResourceId(),
                     JavaStreamUtils.toString(partitionKeyRangeIdentities, ","));
+        }
+
+        if (this.replicaAddressValidationEnabled) {
+            this.replicaValidationScopes.add(Uri.HealthStatus.Unknown);
         }
 
         List<Flux<List<Address>>> tasks = new ArrayList<>();

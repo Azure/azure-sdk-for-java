@@ -1,6 +1,6 @@
-# Azure Communication CallingServer Service client library for Java
+# Azure Communication Call Automation Service client library for Java
 
-This package contains a Java SDK for Azure Communication CallingServer Service. Server Test
+This package contains a Java SDK for Azure Communication Call Automation Service.
 
 [Source code][source] | [Package (Maven)][package] | [API reference documentation][api_documentation]
 | [Product documentation][product_docs]
@@ -27,7 +27,7 @@ This package contains a Java SDK for Azure Communication CallingServer Service. 
 [//]: # ({x-version-update-end})
 
 ## Key concepts
-This is the restart of CallingServer Service. It is renamed to Call Automation service and being more intuitive to use.
+This is the restart of Call Automation Service. It is renamed to Call Automation service and being more intuitive to use.
 
 `CallAutomationClient` provides the functionality to make call, answer/reject incoming call and redirect a call.
 
@@ -61,8 +61,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 
 ## Next steps
 
-- [Read more about CallingServer Call Automation in Azure Communication Services][call_automation_apis_overview]
-- [Read more about CallingServer Call Recording in Azure Communication Services][call_recording_overview]
+- [Read more about Call Automation in Azure Communication Services][call_automation_apis_overview]
+- [Read more about Call Recording in Azure Communication Services][call_recording_overview]
 - For a basic guide on how to record and download calls with Event Grid please refer to the [Record and download calls with Event Grid][record_and_download_calls_with_event_grid].
 
 <!-- LINKS -->

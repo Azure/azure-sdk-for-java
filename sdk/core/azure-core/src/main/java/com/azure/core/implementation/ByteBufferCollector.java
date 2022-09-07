@@ -60,7 +60,7 @@ public final class ByteBufferCollector {
      * @throws IllegalStateException If the size of the backing array would be larger than {@link Integer#MAX_VALUE}
      * when the passed buffer is written.
      */
-    public synchronized void write(ByteBuffer byteBuffer) {
+    public void write(ByteBuffer byteBuffer) {
         // Null buffer.
         if (byteBuffer == null) {
             return;
@@ -83,14 +83,22 @@ public final class ByteBufferCollector {
      *
      * @return A copy of the backing array.
      */
-    public synchronized byte[] toByteArray() {
+    public byte[] toByteArray() {
+        if (buffer.length == position) {
+            // Since this is only used internally for collection operations if the buffer size is equal to the position
+            // when requesting the byte array return the byte array without copying. At this point it's known that this
+            // buffer won't be modified any further, if an unexpected write happens later the internal buffer will need
+            // to be resized and copied, leaving the returned buffer unmodified.
+            return buffer;
+        }
+
         return Arrays.copyOf(buffer, position);
     }
 
     /*
      * This method ensures that the backing buffer has sufficient space to write the data from the passed ByteBuffer.
      */
-    private void ensureCapacity(int byteBufferRemaining) throws OutOfMemoryError {
+    private void ensureCapacity(int byteBufferRemaining) {
         int currentCapacity = buffer.length;
         int requiredCapacity = position + byteBufferRemaining;
 

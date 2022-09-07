@@ -1,6 +1,6 @@
 # Release History
 
-## 4.0.0-beta.7 (Unreleased)
+## 4.0.0-beta.7 (2022-09-08)
 This version of the SDK defaults to the latest supported API version, which currently is 2021-09-30-preview.
 
 ### Features Added
@@ -16,12 +16,21 @@ This version of the SDK defaults to the latest supported API version, which curr
   - `ModelOperationSummary` to `OperationSummary` 
   - `ModelOperationKind` to `OperationKind`
   - `ModelOperationStatus` to `OperationStatus` 
+  - `DocumentOperationKind` to `OperationKind`
+  - `BuildModelOptions` to `BuildDocumentModelOptions`
+  - `ComposeModelOptions` to `ComposeDocumentModelOptions`
+  - `DocumentOperationResult` to `OperationResult`
+  - `CopyAuthorization` to `DocumentModelCopyAuthorization`
+  - `LengthUnit` to `DocumentPageLengthUnit`
+  - `SelectionMarkState` to `DocumentSelectionMarkState`
 - Renamed properties `documentModelCount` and `documentModelLimit` to `customDocumentModelCount` 
 and `customDocumentModelLimit` on model `ResourceDetails`.
-
-### Bugs Fixed
-
-### Other Changes
+- Renamed clients methods:
+  - `getModel` to `getDocumentModel`
+  - `listModels` to `listDocumentModels`
+  - `deleteModel` to `deleteDocumentModel`
+  - `beginBuildModel` to `beginBuildDocumentModel`
+  - `beginComposeModel` to `beginComposeDocumentModel`
 
 ## 3.1.14 (2022-08-11)
 
@@ -47,7 +56,7 @@ and `customDocumentModelLimit` on model `ResourceDetails`.
 - Renamed `ModelOperationInfo` model to `ModelOperationSummary`
 - Renamed `getAccountProperties` method to `getResourceDetails`
 - Renamed `AccountProperties` model to `ResourceDetails`
-- Renamed `state` property on model `DocumentSelectionMark` to `selectionMarkState`
+- Renamed `state` property on model `DocumentSelectionMark` to `documentSelectionMarkState`
 - Renamed `getValue*` accessor methods on `DocumentField` to `getValueAs*`
 - Renamed `DocTypeInfo` model to `DocumentTypeDetails`
 - Renamed `docTypes` property on `DocumentModelDetails` model to `documentTypes`

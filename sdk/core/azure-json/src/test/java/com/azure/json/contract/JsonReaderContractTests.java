@@ -3,6 +3,7 @@
 
 package com.azure.json.contract;
 
+import com.azure.json.IOExceptionFunction;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,7 +22,6 @@ import java.util.Base64;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -49,11 +49,12 @@ public abstract class JsonReaderContractTests {
      * @param json The JSON to be read.
      * @return The {@link JsonReader} that a test will use.
      */
-    protected abstract JsonReader getJsonReader(String json);
+    protected abstract JsonReader getJsonReader(String json) throws IOException;
 
     @ParameterizedTest
     @MethodSource("basicOperationsSupplier")
-    public <T> void basicOperations(String json, T expectedValue, Function<JsonReader, T> function) throws IOException {
+    public <T> void basicOperations(String json, T expectedValue,
+        IOExceptionFunction<JsonReader, T> function) throws IOException {
         try (JsonReader reader = getJsonReader(json)) {
             reader.nextToken(); // Initialize the JsonReader for reading.
 
@@ -106,7 +107,8 @@ public abstract class JsonReaderContractTests {
     // Byte arrays can't use Object.equals as they'll be compared by memory location instead of value equality.
     @ParameterizedTest
     @MethodSource("binaryOperationsSupplier")
-    public void binaryOperations(String json, byte[] expectedValue, Function<JsonReader, byte[]> function) throws IOException {
+    public void binaryOperations(String json, byte[] expectedValue,
+        IOExceptionFunction<JsonReader, byte[]> function) throws IOException {
         try (JsonReader reader = getJsonReader(json)) {
             reader.nextToken(); // Initialize the JsonReader for reading.
 
@@ -201,13 +203,13 @@ public abstract class JsonReaderContractTests {
             Object[] jsonArray = new Object[5];
             int jsonArrayIndex = 0;
             while (reader.nextToken() != JsonToken.END_ARRAY) {
-                jsonArray[jsonArrayIndex++] = ContractUtils.readUntypedField(reader);
+                jsonArray[jsonArrayIndex++] = reader.readUntyped();
             }
 
             assertEquals("string", jsonArray[0]);
             assertNull(jsonArray[1]);
             assertEquals(10, jsonArray[2]);
-            assertEquals(10.0F, jsonArray[3]);
+            assertEquals(10.0D, jsonArray[3]);
             assertEquals(true, jsonArray[4]);
         }
     }
@@ -366,14 +368,14 @@ public abstract class JsonReaderContractTests {
                         jsonArray[5] = reader.getString();
                     }
                 } else {
-                    jsonArray[jsonArrayIndex++] = ContractUtils.readUntypedField(reader);
+                    jsonArray[jsonArrayIndex++] = reader.readUntyped();
                 }
             }
 
             assertEquals("string", jsonArray[0]);
             assertNull(jsonArray[1]);
             assertEquals(10, jsonArray[2]);
-            assertEquals(10.0F, jsonArray[3]);
+            assertEquals(10.0D, jsonArray[3]);
             assertEquals(true, jsonArray[4]);
             assertEquals("innerString", jsonArray[5]);
         }
@@ -414,14 +416,14 @@ public abstract class JsonReaderContractTests {
                         }
                     }
                 } else {
-                    jsonArray[jsonArrayIndex++] = ContractUtils.readUntypedField(reader);
+                    jsonArray[jsonArrayIndex++] = reader.readUntyped();
                 }
             }
 
             assertEquals("string", jsonArray[0]);
             assertNull(jsonArray[1]);
             assertEquals(10, jsonArray[2]);
-            assertEquals(10.0F, jsonArray[3]);
+            assertEquals(10.0D, jsonArray[3]);
             assertEquals(true, jsonArray[4]);
             assertEquals("innerString", jsonArray[5]);
         }
@@ -565,7 +567,7 @@ public abstract class JsonReaderContractTests {
 
     @ParameterizedTest
     @MethodSource("bufferObjectSupplier")
-    public void bufferObject(String json, int nextCount) {
+    public void bufferObject(String json, int nextCount) throws IOException {
         JsonReader reader = getJsonReader(json);
 
         for (int i = 0; i < nextCount; i++) {
@@ -587,7 +589,7 @@ public abstract class JsonReaderContractTests {
 
     @ParameterizedTest
     @MethodSource("bufferObjectIllegalStateSupplier")
-    public void bufferObjectIllegalState(String json, int nextCount) {
+    public void bufferObjectIllegalState(String json, int nextCount) throws IOException {
         JsonReader reader = getJsonReader(json);
 
         for (int i = 0; i < nextCount; i++) {
@@ -612,14 +614,15 @@ public abstract class JsonReaderContractTests {
         );
     }
 
-    private static void assertJsonReaderStructInitialization(JsonReader reader, JsonToken expectedInitialToken) {
+    private static void assertJsonReaderStructInitialization(JsonReader reader, JsonToken expectedInitialToken) throws IOException {
         assertNull(reader.currentToken());
         reader.nextToken();
 
         assertEquals(expectedInitialToken, reader.currentToken());
     }
 
-    private static <T> Function<JsonReader, T> createJsonConsumer(Function<JsonReader, T> func) {
+    private static <T> IOExceptionFunction<JsonReader, T> createJsonConsumer(
+        IOExceptionFunction<JsonReader, T> func) {
         return func;
     }
 
@@ -636,13 +639,13 @@ public abstract class JsonReaderContractTests {
         }
 
         @Override
-        public JsonWriter toJson(JsonWriter jsonWriter) {
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
             return jsonWriter.writeStartObject()
                 .writeStringField("test", test)
                 .writeEndObject();
         }
 
-        public static TestData fromJson(JsonReader jsonReader) {
+        public static TestData fromJson(JsonReader jsonReader) throws IOException {
             return jsonReader.readObject(reader -> {
                 TestData result = new TestData();
 

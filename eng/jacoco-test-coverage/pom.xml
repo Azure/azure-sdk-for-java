@@ -73,7 +73,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
-      <version>1.3.0-beta.2</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
+      <version>1.2.1</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -218,7 +218,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-iot-deviceupdate</artifactId>
-      <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-iot-deviceupdate;current} -->
+      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-iot-deviceupdate;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -268,7 +268,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
-      <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
+      <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -278,7 +278,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-search-documents</artifactId>
-      <version>11.5.0-beta.13</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
+      <version>11.6.0-beta.2</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -664,7 +664,7 @@
             <bannedDependencies>
               <includes>
                 <!-- Track 2 library with a non-standard groupId -->
-                <include>com.azure:azure-monitor-opentelemetry-exporter:[1.0.0-beta.6]</include> <!-- {x-include-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
+                <include>com.azure:azure-monitor-opentelemetry-exporter:[1.0.0-beta.7]</include> <!-- {x-include-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
               </includes>
             </bannedDependencies>
           </rules>
