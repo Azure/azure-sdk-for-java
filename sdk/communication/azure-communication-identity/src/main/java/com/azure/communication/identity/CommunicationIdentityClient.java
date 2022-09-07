@@ -112,14 +112,7 @@ public final class CommunicationIdentityClient {
         communicationIdentityCreateRequest.setCreateTokenWithScopes(scopesInput);
 
         if (tokenExpiresAfter != null) {
-            Integer expiresInMinutes;
-            try {
-                expiresInMinutes = Math.toIntExact(tokenExpiresAfter.toMinutes());
-            } catch (ArithmeticException ex) {
-                RuntimeException overflowEx = new RuntimeException(OVERFLOW_MESSAGE, ex);
-                throw logger.logExceptionAsError(overflowEx);
-            }
-
+            int expiresInMinutes = getTokenExpirationInMinutes(tokenExpiresAfter);
             communicationIdentityCreateRequest.setExpiresInMinutes(expiresInMinutes);
         }
 
@@ -160,14 +153,7 @@ public final class CommunicationIdentityClient {
         communicationIdentityCreateRequest.setCreateTokenWithScopes(scopesInput);
 
         if (tokenExpiresAfter != null) {
-            Integer expiresInMinutes;
-            try {
-                expiresInMinutes = Math.toIntExact(tokenExpiresAfter.toMinutes());
-            } catch (ArithmeticException ex) {
-                RuntimeException overflowEx = new RuntimeException(OVERFLOW_MESSAGE, ex);
-                throw logger.logExceptionAsError(overflowEx);
-            }
-
+            int expiresInMinutes = getTokenExpirationInMinutes(tokenExpiresAfter);
             communicationIdentityCreateRequest.setExpiresInMinutes(expiresInMinutes);
         }
 
@@ -273,14 +259,7 @@ public final class CommunicationIdentityClient {
         tokenRequest.setScopes(scopesInput);
 
         if (tokenExpiresAfter != null) {
-            Integer expiresInMinutes;
-            try {
-                expiresInMinutes = Math.toIntExact(tokenExpiresAfter.toMinutes());
-            } catch (ArithmeticException ex) {
-                RuntimeException overflowEx = new RuntimeException(OVERFLOW_MESSAGE, ex);
-                throw logger.logExceptionAsError(overflowEx);
-            }
-
+            int expiresInMinutes = getTokenExpirationInMinutes(tokenExpiresAfter);
             tokenRequest.setExpiresInMinutes(expiresInMinutes);
         }
 
@@ -332,14 +311,7 @@ public final class CommunicationIdentityClient {
         tokenRequest.setScopes(scopesInput);
 
         if (tokenExpiresAfter != null) {
-            Integer expiresInMinutes;
-            try {
-                expiresInMinutes = Math.toIntExact(tokenExpiresAfter.toMinutes());
-            } catch (ArithmeticException ex) {
-                RuntimeException overflowEx = new RuntimeException(OVERFLOW_MESSAGE, ex);
-                throw logger.logExceptionAsError(overflowEx);
-            }
-
+            int expiresInMinutes = getTokenExpirationInMinutes(tokenExpiresAfter);
             tokenRequest.setExpiresInMinutes(expiresInMinutes);
         }
 
@@ -421,4 +393,12 @@ public final class CommunicationIdentityClient {
             new AccessToken(response.getValue().getToken(), response.getValue().getExpiresOn()));
     }
 
+    private int getTokenExpirationInMinutes(Duration tokenExpiresAfter) {
+        try {
+            return Math.toIntExact(tokenExpiresAfter.toMinutes());
+        } catch (ArithmeticException ex) {
+            IllegalArgumentException expiresAfterOverflowEx = new IllegalArgumentException(OVERFLOW_MESSAGE, ex);
+            throw logger.logExceptionAsError(expiresAfterOverflowEx);
+        }
+    }
 }

@@ -129,8 +129,16 @@ public final class CommunicationIdentityAsyncClient {
             CommunicationIdentityCreateRequest communicationIdentityCreateRequest = new CommunicationIdentityCreateRequest();
             communicationIdentityCreateRequest.setCreateTokenWithScopes(scopesInput);
 
+            int expiresInMinutes;
+
             if (tokenExpiresAfter != null) {
-                Integer expiresInMinutes = Math.toIntExact(tokenExpiresAfter.toMinutes());
+                try {
+                    expiresInMinutes = Math.toIntExact(tokenExpiresAfter.toMinutes());
+                }
+                catch (ArithmeticException ex){
+                    IllegalArgumentException expiresAfterOverflowEx = new IllegalArgumentException(OVERFLOW_MESSAGE, ex);
+                    return monoError(logger, expiresAfterOverflowEx);
+                }
                 communicationIdentityCreateRequest.setExpiresInMinutes(expiresInMinutes);
             }
 
@@ -140,12 +148,6 @@ public final class CommunicationIdentityAsyncClient {
                     (CommunicationIdentityAccessTokenResult result) -> {
                         return Mono.just(userWithAccessTokenResultConverter(result));
                     });
-        }
-        catch (ArithmeticException ex)
-        {
-            ArithmeticException overflowEx = new ArithmeticException(OVERFLOW_MESSAGE);
-            overflowEx.initCause(ex);
-            return monoError(logger, overflowEx);
         }
         catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -187,8 +189,16 @@ public final class CommunicationIdentityAsyncClient {
             CommunicationIdentityCreateRequest communicationIdentityCreateRequest = new CommunicationIdentityCreateRequest();
             communicationIdentityCreateRequest.setCreateTokenWithScopes(scopesInput);
 
+            int expiresInMinutes;
+
             if (tokenExpiresAfter != null) {
-                Integer expiresInMinutes = Math.toIntExact(tokenExpiresAfter.toMinutes());
+                try {
+                    expiresInMinutes = Math.toIntExact(tokenExpiresAfter.toMinutes());
+                }
+                catch (ArithmeticException ex){
+                    IllegalArgumentException expiresAfterOverflowEx = new IllegalArgumentException(OVERFLOW_MESSAGE, ex);
+                    return monoError(logger, expiresAfterOverflowEx);
+                }
                 communicationIdentityCreateRequest.setExpiresInMinutes(expiresInMinutes);
             }
 
@@ -199,12 +209,6 @@ public final class CommunicationIdentityAsyncClient {
                         return Mono.just(new SimpleResponse<CommunicationUserIdentifierAndToken>(response,
                             userWithAccessTokenResultConverter(response.getValue())));
                     });
-        }
-        catch (ArithmeticException ex)
-        {
-            ArithmeticException overflowEx = new ArithmeticException(OVERFLOW_MESSAGE);
-            overflowEx.initCause(ex);
-            return monoError(logger, overflowEx);
         }
         catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -319,8 +323,16 @@ public final class CommunicationIdentityAsyncClient {
             CommunicationIdentityAccessTokenRequest tokenRequest = new CommunicationIdentityAccessTokenRequest();
             tokenRequest.setScopes(scopesInput);
 
+            int expiresInMinutes;
+
             if (tokenExpiresAfter != null) {
-                Integer expiresInMinutes = Math.toIntExact(tokenExpiresAfter.toMinutes());
+                try {
+                    expiresInMinutes = Math.toIntExact(tokenExpiresAfter.toMinutes());
+                }
+                catch (ArithmeticException ex){
+                    IllegalArgumentException expiresAfterOverflowEx = new IllegalArgumentException(OVERFLOW_MESSAGE, ex);
+                    return monoError(logger, expiresAfterOverflowEx);
+                }
                 tokenRequest.setExpiresInMinutes(expiresInMinutes);
             }
 
@@ -331,12 +343,6 @@ public final class CommunicationIdentityAsyncClient {
                 .flatMap((CommunicationIdentityAccessToken rawToken) -> {
                     return Mono.just(new AccessToken(rawToken.getToken(), rawToken.getExpiresOn()));
                 });
-        }
-        catch (ArithmeticException ex)
-        {
-            ArithmeticException overflowEx = new ArithmeticException(OVERFLOW_MESSAGE);
-            overflowEx.initCause(ex);
-            return monoError(logger, overflowEx);
         }
         catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -384,8 +390,16 @@ public final class CommunicationIdentityAsyncClient {
             CommunicationIdentityAccessTokenRequest tokenRequest = new CommunicationIdentityAccessTokenRequest();
             tokenRequest.setScopes(scopesInput);
 
+            int expiresInMinutes;
+
             if (tokenExpiresAfter != null) {
-                Integer expiresInMinutes = Math.toIntExact(tokenExpiresAfter.toMinutes());
+                try {
+                    expiresInMinutes = Math.toIntExact(tokenExpiresAfter.toMinutes());
+                }
+                catch (ArithmeticException ex){
+                    IllegalArgumentException expiresAfterOverflowEx = new IllegalArgumentException(OVERFLOW_MESSAGE, ex);
+                    return monoError(logger, expiresAfterOverflowEx);
+                }
                 tokenRequest.setExpiresInMinutes(expiresInMinutes);
             }
 
@@ -397,12 +411,6 @@ public final class CommunicationIdentityAsyncClient {
                     AccessToken token = new AccessToken(response.getValue().getToken(), response.getValue().getExpiresOn());
                     return Mono.just(new SimpleResponse<AccessToken>(response, token));
                 });
-        }
-        catch (ArithmeticException ex)
-        {
-            ArithmeticException overflowEx = new ArithmeticException(OVERFLOW_MESSAGE);
-            overflowEx.initCause(ex);
-            return monoError(logger, overflowEx);
         }
         catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -491,5 +499,4 @@ public final class CommunicationIdentityAsyncClient {
             return monoError(logger, ex);
         }
     }
-
 }

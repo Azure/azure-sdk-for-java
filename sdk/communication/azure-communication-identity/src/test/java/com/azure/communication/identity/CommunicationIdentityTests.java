@@ -173,7 +173,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         // Action & Assert
         try {
             client.createUserAndToken(scopes, tokenExpiresAfter);
-        } catch (RuntimeException exception) {
+        } catch (IllegalArgumentException exception) {
             assertNotNull(exception.getMessage());
             assertTrue(exception.getMessage().equals(OVERFLOW_MESSAGE));
             return;
@@ -191,7 +191,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         // Action & Assert
         try {
             client.createUserAndTokenWithResponse(scopes, tokenExpiresAfter, Context.NONE);
-        } catch (RuntimeException exception) {
+        } catch (IllegalArgumentException exception) {
             assertNotNull(exception.getMessage());
             assertTrue(exception.getMessage().equals(OVERFLOW_MESSAGE));
             return;
@@ -400,7 +400,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         // Action & Assert
         try {
             client.getToken(communicationUser, scopes, tokenExpiresAfter);
-        } catch (RuntimeException exception) {
+        } catch (IllegalArgumentException exception) {
             assertNotNull(exception.getMessage());
             assertTrue(exception.getMessage().equals(OVERFLOW_MESSAGE));
             return;
@@ -419,7 +419,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         // Action & Assert
         try {
             client.getTokenWithResponse(communicationUser, scopes, tokenExpiresAfter, Context.NONE);
-        } catch (RuntimeException exception) {
+        } catch (IllegalArgumentException exception) {
             assertNotNull(exception.getMessage());
             assertTrue(exception.getMessage().equals(OVERFLOW_MESSAGE));
             return;

@@ -178,7 +178,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         Mono<CommunicationUserIdentifierAndToken> createUserAndToken = asyncClient.createUserAndToken(scopes, tokenExpiresAfter);
         StepVerifier.create(createUserAndToken)
             .verifyErrorSatisfies(throwable -> {
-                assertTrue(throwable instanceof ArithmeticException);
+                assertTrue(throwable instanceof IllegalArgumentException);
                 assertNotNull(throwable.getMessage());
                 assertTrue(throwable.getMessage().equals(OVERFLOW_MESSAGE));
             });
@@ -196,7 +196,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         Mono<Response<CommunicationUserIdentifierAndToken>> createUserAndToken = asyncClient.createUserAndTokenWithResponse(scopes, tokenExpiresAfter);
         StepVerifier.create(createUserAndToken)
             .verifyErrorSatisfies(throwable -> {
-                assertTrue(throwable instanceof ArithmeticException);
+                assertTrue(throwable instanceof IllegalArgumentException);
                 assertNotNull(throwable.getMessage());
                 assertTrue(throwable.getMessage().equals(OVERFLOW_MESSAGE));
             });
@@ -478,7 +478,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
                         return asyncClient.getToken(communicationUser, scopes, tokenExpiresAfter);
                     }))
             .verifyErrorSatisfies(throwable -> {
-                assertTrue(throwable instanceof ArithmeticException);
+                assertTrue(throwable instanceof IllegalArgumentException);
                 assertNotNull(throwable.getMessage());
                 assertTrue(throwable.getMessage().equals(OVERFLOW_MESSAGE));
             });
@@ -498,7 +498,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
                         return asyncClient.getTokenWithResponse(communicationUser, scopes, tokenExpiresAfter);
                     }))
             .verifyErrorSatisfies(throwable -> {
-                assertTrue(throwable instanceof ArithmeticException);
+                assertTrue(throwable instanceof IllegalArgumentException);
                 assertNotNull(throwable.getMessage());
                 assertTrue(throwable.getMessage().equals(OVERFLOW_MESSAGE));
             });
