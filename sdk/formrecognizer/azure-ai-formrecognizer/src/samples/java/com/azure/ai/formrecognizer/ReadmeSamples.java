@@ -196,8 +196,8 @@ public class ReadmeSamples {
                                 }
                             }
                             if ("Quantity".equals(key)) {
-                                if (DocumentFieldType.FLOAT == documentField.getType()) {
-                                    Float quantity = documentField.getValueAsFloat();
+                                if (DocumentFieldType.DOUBLE == documentField.getType()) {
+                                    Float quantity = documentField.getValueAsDouble();
                                     System.out.printf("Quantity: %f, confidence: %.2f%n",
                                         quantity, documentField.getConfidence());
                                 }

@@ -124,9 +124,9 @@ public class AnalyzeTaxW2Async {
                     if (DocumentFieldType.LIST == localTaxInfosField.getType()) {
                         Map<String, DocumentField> localTaxInfoDataFields = localTaxInfosField.getValueAsMap();
                         DocumentField localWagesTips = localTaxInfoDataFields.get("LocalWagesTipsEtc");
-                        if (DocumentFieldType.FLOAT == localTaxInfosField.getType()) {
+                        if (DocumentFieldType.DOUBLE == localTaxInfosField.getType()) {
                             System.out.printf("Local Wages Tips Value: %.2f, confidence: %.2f%n",
-                                localWagesTips.getValueAsFloat(), localTaxInfosField.getConfidence());
+                                localWagesTips.getValueAsDouble(), localTaxInfosField.getConfidence());
                         }
                     }
                 }
@@ -151,8 +151,8 @@ public class AnalyzeTaxW2Async {
 
                 DocumentField socialSecurityTaxField = taxFields.get("SocialSecurityTaxWithheld");
                 if (localTaxInfosField != null) {
-                    if (DocumentFieldType.FLOAT == socialSecurityTaxField.getType()) {
-                        Float socialSecurityTax = socialSecurityTaxField.getValueAsFloat();
+                    if (DocumentFieldType.DOUBLE == socialSecurityTaxField.getType()) {
+                        Float socialSecurityTax = socialSecurityTaxField.getValueAsDouble();
                         System.out.printf("Social Security Tax withheld: %.2f, confidence: %.2f%n",
                             socialSecurityTax, socialSecurityTaxField.getConfidence());
                     }

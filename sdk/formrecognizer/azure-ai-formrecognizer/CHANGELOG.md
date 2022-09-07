@@ -33,7 +33,7 @@ and `customDocumentModelLimit` on model `ResourceDetails`.
   - `beginBuildModel` to `beginBuildDocumentModel`
   - `beginComposeModel` to `beginComposeDocumentModel`
 - Renamed property `DocumentFieldType.INTEGER` to `DocumentFieldType.LONG`
-- Renamed method `getValueInteger` to `getValueLong` on `DocumentField` model
+- Renamed method `getValueInteger` to `getValueLong` and `getValueFloat` to `getValueLong` on `DocumentField` model
 - Renamed properties on model `DocumentAnalysisAudience`
 
 ### Other Changes

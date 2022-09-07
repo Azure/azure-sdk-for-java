@@ -109,8 +109,8 @@ public class AnalyzeInvoices {
 
             DocumentField invoiceTotalField = invoiceFields.get("InvoiceTotal");
             if (customerAddressRecipientField != null) {
-                if (DocumentFieldType.FLOAT == invoiceTotalField.getType()) {
-                    Float invoiceTotal = invoiceTotalField.getValueAsFloat();
+                if (DocumentFieldType.DOUBLE == invoiceTotalField.getType()) {
+                    Float invoiceTotal = invoiceTotalField.getValueAsDouble();
                     System.out.printf("Invoice Total: %.2f, confidence: %.2f%n",
                         invoiceTotal, invoiceTotalField.getConfidence());
                 }
@@ -135,22 +135,22 @@ public class AnalyzeInvoices {
                                 }
                             }
                             if ("Quantity".equals(key)) {
-                                if (DocumentFieldType.FLOAT == documentField.getType()) {
-                                    Float quantity = documentField.getValueAsFloat();
+                                if (DocumentFieldType.DOUBLE == documentField.getType()) {
+                                    Float quantity = documentField.getValueAsDouble();
                                     System.out.printf("Quantity: %f, confidence: %.2f%n",
                                         quantity, documentField.getConfidence());
                                 }
                             }
                             if ("UnitPrice".equals(key)) {
-                                if (DocumentFieldType.FLOAT == documentField.getType()) {
-                                    Float unitPrice = documentField.getValueAsFloat();
+                                if (DocumentFieldType.DOUBLE == documentField.getType()) {
+                                    Float unitPrice = documentField.getValueAsDouble();
                                     System.out.printf("Unit Price: %f, confidence: %.2f%n",
                                         unitPrice, documentField.getConfidence());
                                 }
                             }
                             if ("ProductCode".equals(key)) {
-                                if (DocumentFieldType.FLOAT == documentField.getType()) {
-                                    Float productCode = documentField.getValueAsFloat();
+                                if (DocumentFieldType.DOUBLE == documentField.getType()) {
+                                    Float productCode = documentField.getValueAsDouble();
                                     System.out.printf("Product Code: %f, confidence: %.2f%n",
                                         productCode, documentField.getConfidence());
                                 }

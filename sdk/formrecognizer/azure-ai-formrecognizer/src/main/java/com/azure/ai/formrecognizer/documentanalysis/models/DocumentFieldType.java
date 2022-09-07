@@ -24,7 +24,7 @@ public final class DocumentFieldType extends ExpandableStringEnum<DocumentFieldT
     public static final DocumentFieldType PHONE_NUMBER = fromString("phoneNumber");
 
     /** Static value number for DocumentFieldType. */
-    public static final DocumentFieldType FLOAT = fromString("number");
+    public static final DocumentFieldType DOUBLE = fromString("number");
 
     /** Static value integer for DocumentFieldType. */
     public static final DocumentFieldType LONG = fromString("integer");

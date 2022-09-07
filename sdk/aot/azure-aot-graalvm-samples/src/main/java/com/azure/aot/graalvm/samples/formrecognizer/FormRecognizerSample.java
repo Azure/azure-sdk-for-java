@@ -117,22 +117,22 @@ public class FormRecognizerSample {
                                     }
                                 }
                                 if ("Quantity".equals(key)) {
-                                    if (DocumentFieldType.FLOAT == formField.getType()) {
-                                        Float quantity = formField.getValueAsFloat();
+                                    if (DocumentFieldType.DOUBLE == formField.getType()) {
+                                        Float quantity = formField.getValueAsDouble();
                                         System.out.printf("Quantity: %f, confidence: %.2f%n",
                                                 quantity, formField.getConfidence());
                                     }
                                 }
                                 if ("Price".equals(key)) {
-                                    if (DocumentFieldType.FLOAT == formField.getType()) {
-                                        Float price = formField.getValueAsFloat();
+                                    if (DocumentFieldType.DOUBLE == formField.getType()) {
+                                        Float price = formField.getValueAsDouble();
                                         System.out.printf("Price: %f, confidence: %.2f%n",
                                                 price, formField.getConfidence());
                                     }
                                 }
                                 if ("TotalPrice".equals(key)) {
-                                    if (DocumentFieldType.FLOAT == formField.getType()) {
-                                        Float totalPrice = formField.getValueAsFloat();
+                                    if (DocumentFieldType.DOUBLE == formField.getType()) {
+                                        Float totalPrice = formField.getValueAsDouble();
                                         System.out.printf("Total Price: %f, confidence: %.2f%n",
                                                 totalPrice, formField.getConfidence());
                                     }
