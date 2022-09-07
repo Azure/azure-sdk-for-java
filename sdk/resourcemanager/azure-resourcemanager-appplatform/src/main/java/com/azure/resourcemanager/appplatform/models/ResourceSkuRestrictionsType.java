@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ResourceSkuRestrictionsType. */
+/** Gets the type of restrictions. Possible values include: 'Location', 'Zone'. */
 public final class ResourceSkuRestrictionsType extends ExpandableStringEnum<ResourceSkuRestrictionsType> {
     /** Static value Location for ResourceSkuRestrictionsType. */
     public static final ResourceSkuRestrictionsType LOCATION = fromString("Location");

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConfigurationServiceProvisioningState. */
+/** State of the Application Configuration Service. */
 public final class ConfigurationServiceProvisioningState
     extends ExpandableStringEnum<ConfigurationServiceProvisioningState> {
     /** Static value Creating for ConfigurationServiceProvisioningState. */

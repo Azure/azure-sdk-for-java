@@ -23,24 +23,20 @@ public final class MonitoringSettingProperties {
     private Error error;
 
     /*
-     * Indicates whether enable the trace functionality, which will be
-     * deprecated since api version 2020-11-01-preview. Please leverage
-     * appInsightsInstrumentationKey to indicate if monitoringSettings enabled
-     * or not
+     * Indicates whether enable the trace functionality, which will be deprecated since api version 2020-11-01-preview.
+     * Please leverage appInsightsInstrumentationKey to indicate if monitoringSettings enabled or not
      */
     @JsonProperty(value = "traceEnabled")
     private Boolean traceEnabled;
 
     /*
-     * Target application insight instrumentation key, null or whitespace
-     * include empty will disable monitoringSettings
+     * Target application insight instrumentation key, null or whitespace include empty will disable monitoringSettings
      */
     @JsonProperty(value = "appInsightsInstrumentationKey")
     private String appInsightsInstrumentationKey;
 
     /*
-     * Indicates the sampling rate of application insight agent, should be in
-     * range [0.0, 100.0]
+     * Indicates the sampling rate of application insight agent, should be in range [0.0, 100.0]
      */
     @JsonProperty(value = "appInsightsSamplingRate")
     private Double appInsightsSamplingRate;

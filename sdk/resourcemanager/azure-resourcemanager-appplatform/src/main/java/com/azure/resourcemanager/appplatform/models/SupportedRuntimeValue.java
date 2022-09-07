@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SupportedRuntimeValue. */
+/** The raw value which could be passed to deployment CRUD operations. */
 public final class SupportedRuntimeValue extends ExpandableStringEnum<SupportedRuntimeValue> {
     /** Static value Java_8 for SupportedRuntimeValue. */
     public static final SupportedRuntimeValue JAVA_8 = fromString("Java_8");

@@ -23,8 +23,7 @@ public final class MetricDimension {
     private String displayName;
 
     /*
-     * Whether this dimension should be included for the Shoebox export
-     * scenario
+     * Whether this dimension should be included for the Shoebox export scenario
      */
     @JsonProperty(value = "toBeExportedForShoebox")
     private Boolean toBeExportedForShoebox;

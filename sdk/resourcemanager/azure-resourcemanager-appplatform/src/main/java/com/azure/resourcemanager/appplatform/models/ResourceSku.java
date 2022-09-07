@@ -42,8 +42,7 @@ public final class ResourceSku {
     private List<String> locations;
 
     /*
-     * Gets a list of locations and availability zones in those locations where
-     * the SKU is available.
+     * Gets a list of locations and availability zones in those locations where the SKU is available.
      */
     @JsonProperty(value = "locationInfo")
     private List<ResourceSkuLocationInfo> locationInfo;

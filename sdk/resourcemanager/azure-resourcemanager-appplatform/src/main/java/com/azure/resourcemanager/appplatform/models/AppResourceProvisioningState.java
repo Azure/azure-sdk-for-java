@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AppResourceProvisioningState. */
+/** Provisioning state of the App. */
 public final class AppResourceProvisioningState extends ExpandableStringEnum<AppResourceProvisioningState> {
     /** Static value Succeeded for AppResourceProvisioningState. */
     public static final AppResourceProvisioningState SUCCEEDED = fromString("Succeeded");

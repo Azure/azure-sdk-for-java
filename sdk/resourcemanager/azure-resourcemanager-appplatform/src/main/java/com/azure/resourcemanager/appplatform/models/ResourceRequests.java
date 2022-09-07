@@ -11,16 +11,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ResourceRequests {
     /*
-     * Required CPU. 1 core can be represented by 1 or 1000m. This should be
-     * 500m or 1 for Basic tier, and {500m, 1, 2, 3, 4} for Standard tier.
+     * Required CPU. 1 core can be represented by 1 or 1000m. This should be 500m or 1 for Basic tier, and {500m, 1, 2,
+     * 3, 4} for Standard tier.
      */
     @JsonProperty(value = "cpu")
     private String cpu;
 
     /*
-     * Required memory. 1 GB can be represented by 1Gi or 1024Mi. This should
-     * be {512Mi, 1Gi, 2Gi} for Basic tier, and {512Mi, 1Gi, 2Gi, ..., 8Gi} for
-     * Standard tier.
+     * Required memory. 1 GB can be represented by 1Gi or 1024Mi. This should be {512Mi, 1Gi, 2Gi} for Basic tier, and
+     * {512Mi, 1Gi, 2Gi, ..., 8Gi} for Standard tier.
      */
     @JsonProperty(value = "memory")
     private String memory;

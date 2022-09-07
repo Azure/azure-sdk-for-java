@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SupportedRuntimePlatform. */
+/** The platform of this runtime version (possible values: "Java" or ".NET"). */
 public final class SupportedRuntimePlatform extends ExpandableStringEnum<SupportedRuntimePlatform> {
     /** Static value Java for SupportedRuntimePlatform. */
     public static final SupportedRuntimePlatform JAVA = fromString("Java");

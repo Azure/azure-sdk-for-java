@@ -13,9 +13,8 @@ import java.util.Map;
 @Fluent
 public final class DeploymentSettings {
     /*
-     * The requested resource quantity for required CPU and Memory. It is
-     * recommended that using this field to represent the required CPU and
-     * Memory, the old field cpu and memoryInGB will be deprecated later.
+     * The requested resource quantity for required CPU and Memory. It is recommended that using this field to
+     * represent the required CPU and Memory, the old field cpu and memoryInGB will be deprecated later.
      */
     @JsonProperty(value = "resourceRequests")
     private ResourceRequests resourceRequests;
@@ -33,6 +32,48 @@ public final class DeploymentSettings {
     @JsonProperty(value = "addonConfigs")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Map<String, Object>> addonConfigs;
+
+    /*
+     * Periodic probe of App Instance liveness. App Instance will be restarted if the probe fails. More info:
+     * https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+     */
+    @JsonProperty(value = "livenessProbe")
+    private Probe livenessProbe;
+
+    /*
+     * Periodic probe of App Instance service readiness. App Instance will be removed from service endpoints if the
+     * probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+     */
+    @JsonProperty(value = "readinessProbe")
+    private Probe readinessProbe;
+
+    /*
+     * StartupProbe indicates that the App Instance has successfully initialized. If specified, no other probes are
+     * executed until this completes successfully. If this probe fails, the Pod will be restarted, just as if the
+     * livenessProbe failed. This can be used to provide different probe parameters at the beginning of a App
+     * Instance's lifecycle, when it might take a long time to load data or warm a cache, than during steady-state
+     * operation. This cannot be updated. More info:
+     * https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+     */
+    @JsonProperty(value = "startupProbe")
+    private Probe startupProbe;
+
+    /*
+     * Optional duration in seconds the App Instance needs to terminate gracefully. May be decreased in delete request.
+     * Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no
+     * opportunity to shut down). If this value is nil, the default grace period will be used instead. The grace period
+     * is the duration in seconds after the processes running in the App Instance are sent a termination signal and the
+     * time when the processes are forcibly halted with a kill signal. Set this value longer than the expected cleanup
+     * time for your process. Defaults to 90 seconds.
+     */
+    @JsonProperty(value = "terminationGracePeriodSeconds")
+    private Integer terminationGracePeriodSeconds;
+
+    /*
+     * Container liveness and readiness probe settings
+     */
+    @JsonProperty(value = "containerProbeSettings")
+    private ContainerProbeSettings containerProbeSettings;
 
     /**
      * Get the resourceRequests property: The requested resource quantity for required CPU and Memory. It is recommended
@@ -99,6 +140,132 @@ public final class DeploymentSettings {
     }
 
     /**
+     * Get the livenessProbe property: Periodic probe of App Instance liveness. App Instance will be restarted if the
+     * probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.
+     *
+     * @return the livenessProbe value.
+     */
+    public Probe livenessProbe() {
+        return this.livenessProbe;
+    }
+
+    /**
+     * Set the livenessProbe property: Periodic probe of App Instance liveness. App Instance will be restarted if the
+     * probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.
+     *
+     * @param livenessProbe the livenessProbe value to set.
+     * @return the DeploymentSettings object itself.
+     */
+    public DeploymentSettings withLivenessProbe(Probe livenessProbe) {
+        this.livenessProbe = livenessProbe;
+        return this;
+    }
+
+    /**
+     * Get the readinessProbe property: Periodic probe of App Instance service readiness. App Instance will be removed
+     * from service endpoints if the probe fails. More info:
+     * https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.
+     *
+     * @return the readinessProbe value.
+     */
+    public Probe readinessProbe() {
+        return this.readinessProbe;
+    }
+
+    /**
+     * Set the readinessProbe property: Periodic probe of App Instance service readiness. App Instance will be removed
+     * from service endpoints if the probe fails. More info:
+     * https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.
+     *
+     * @param readinessProbe the readinessProbe value to set.
+     * @return the DeploymentSettings object itself.
+     */
+    public DeploymentSettings withReadinessProbe(Probe readinessProbe) {
+        this.readinessProbe = readinessProbe;
+        return this;
+    }
+
+    /**
+     * Get the startupProbe property: StartupProbe indicates that the App Instance has successfully initialized. If
+     * specified, no other probes are executed until this completes successfully. If this probe fails, the Pod will be
+     * restarted, just as if the livenessProbe failed. This can be used to provide different probe parameters at the
+     * beginning of a App Instance's lifecycle, when it might take a long time to load data or warm a cache, than during
+     * steady-state operation. This cannot be updated. More info:
+     * https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.
+     *
+     * @return the startupProbe value.
+     */
+    public Probe startupProbe() {
+        return this.startupProbe;
+    }
+
+    /**
+     * Set the startupProbe property: StartupProbe indicates that the App Instance has successfully initialized. If
+     * specified, no other probes are executed until this completes successfully. If this probe fails, the Pod will be
+     * restarted, just as if the livenessProbe failed. This can be used to provide different probe parameters at the
+     * beginning of a App Instance's lifecycle, when it might take a long time to load data or warm a cache, than during
+     * steady-state operation. This cannot be updated. More info:
+     * https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.
+     *
+     * @param startupProbe the startupProbe value to set.
+     * @return the DeploymentSettings object itself.
+     */
+    public DeploymentSettings withStartupProbe(Probe startupProbe) {
+        this.startupProbe = startupProbe;
+        return this;
+    }
+
+    /**
+     * Get the terminationGracePeriodSeconds property: Optional duration in seconds the App Instance needs to terminate
+     * gracefully. May be decreased in delete request. Value must be non-negative integer. The value zero indicates stop
+     * immediately via the kill signal (no opportunity to shut down). If this value is nil, the default grace period
+     * will be used instead. The grace period is the duration in seconds after the processes running in the App Instance
+     * are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set this
+     * value longer than the expected cleanup time for your process. Defaults to 90 seconds.
+     *
+     * @return the terminationGracePeriodSeconds value.
+     */
+    public Integer terminationGracePeriodSeconds() {
+        return this.terminationGracePeriodSeconds;
+    }
+
+    /**
+     * Set the terminationGracePeriodSeconds property: Optional duration in seconds the App Instance needs to terminate
+     * gracefully. May be decreased in delete request. Value must be non-negative integer. The value zero indicates stop
+     * immediately via the kill signal (no opportunity to shut down). If this value is nil, the default grace period
+     * will be used instead. The grace period is the duration in seconds after the processes running in the App Instance
+     * are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set this
+     * value longer than the expected cleanup time for your process. Defaults to 90 seconds.
+     *
+     * @param terminationGracePeriodSeconds the terminationGracePeriodSeconds value to set.
+     * @return the DeploymentSettings object itself.
+     */
+    public DeploymentSettings withTerminationGracePeriodSeconds(Integer terminationGracePeriodSeconds) {
+        this.terminationGracePeriodSeconds = terminationGracePeriodSeconds;
+        return this;
+    }
+
+    /**
+     * Get the containerProbeSettings property: Container liveness and readiness probe settings.
+     *
+     * @return the containerProbeSettings value.
+     */
+    public ContainerProbeSettings containerProbeSettings() {
+        return this.containerProbeSettings;
+    }
+
+    /**
+     * Set the containerProbeSettings property: Container liveness and readiness probe settings.
+     *
+     * @param containerProbeSettings the containerProbeSettings value to set.
+     * @return the DeploymentSettings object itself.
+     */
+    public DeploymentSettings withContainerProbeSettings(ContainerProbeSettings containerProbeSettings) {
+        this.containerProbeSettings = containerProbeSettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -106,6 +273,18 @@ public final class DeploymentSettings {
     public void validate() {
         if (resourceRequests() != null) {
             resourceRequests().validate();
+        }
+        if (livenessProbe() != null) {
+            livenessProbe().validate();
+        }
+        if (readinessProbe() != null) {
+            readinessProbe().validate();
+        }
+        if (startupProbe() != null) {
+            startupProbe().validate();
+        }
+        if (containerProbeSettings() != null) {
+            containerProbeSettings().validate();
         }
     }
 }

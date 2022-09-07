@@ -44,8 +44,7 @@ public final class BindingResourceProperties {
     private Map<String, Object> bindingParameters;
 
     /*
-     * The generated Spring Boot property file for this binding. The secret
-     * will be deducted.
+     * The generated Spring Boot property file for this binding. The secret will be deducted.
      */
     @JsonProperty(value = "generatedProperties", access = JsonProperty.Access.WRITE_ONLY)
     private String generatedProperties;

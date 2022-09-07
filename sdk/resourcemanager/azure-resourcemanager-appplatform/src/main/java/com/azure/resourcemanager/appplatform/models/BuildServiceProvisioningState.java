@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BuildServiceProvisioningState. */
+/** Provisioning state of the KPack build result. */
 public final class BuildServiceProvisioningState extends ExpandableStringEnum<BuildServiceProvisioningState> {
     /** Static value Creating for BuildServiceProvisioningState. */
     public static final BuildServiceProvisioningState CREATING = fromString("Creating");

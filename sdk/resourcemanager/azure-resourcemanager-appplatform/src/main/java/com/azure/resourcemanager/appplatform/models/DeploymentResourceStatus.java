@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DeploymentResourceStatus. */
+/** Status of the Deployment. */
 public final class DeploymentResourceStatus extends ExpandableStringEnum<DeploymentResourceStatus> {
     /** Static value Stopped for DeploymentResourceStatus. */
     public static final DeploymentResourceStatus STOPPED = fromString("Stopped");

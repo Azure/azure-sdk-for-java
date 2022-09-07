@@ -18,8 +18,7 @@ public final class LoadedCertificate {
     private String resourceId;
 
     /*
-     * Indicate whether the certificate will be loaded into default trust
-     * store, only work for Java runtime.
+     * Indicate whether the certificate will be loaded into default trust store, only work for Java runtime.
      */
     @JsonProperty(value = "loadTrustStore")
     private Boolean loadTrustStore;

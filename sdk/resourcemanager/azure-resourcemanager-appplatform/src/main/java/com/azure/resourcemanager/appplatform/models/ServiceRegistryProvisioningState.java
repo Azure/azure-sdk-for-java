@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ServiceRegistryProvisioningState. */
+/** State of the Service Registry. */
 public final class ServiceRegistryProvisioningState extends ExpandableStringEnum<ServiceRegistryProvisioningState> {
     /** Static value Creating for ServiceRegistryProvisioningState. */
     public static final ServiceRegistryProvisioningState CREATING = fromString("Creating");

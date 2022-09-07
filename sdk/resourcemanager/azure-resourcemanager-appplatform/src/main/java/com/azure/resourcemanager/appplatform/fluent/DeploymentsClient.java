@@ -15,7 +15,9 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appplatform.fluent.models.DeploymentResourceInner;
 import com.azure.resourcemanager.appplatform.fluent.models.LogFileUrlResponseInner;
+import com.azure.resourcemanager.appplatform.fluent.models.RemoteDebuggingInner;
 import com.azure.resourcemanager.appplatform.models.DiagnosticParameters;
+import com.azure.resourcemanager.appplatform.models.RemoteDebuggingPayload;
 import java.nio.ByteBuffer;
 import java.util.List;
 import reactor.core.publisher.Flux;
@@ -1004,6 +1006,388 @@ public interface DeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void restart(String resourceGroupName, String serviceName, String appName, String deploymentName, Context context);
+
+    /**
+     * Enable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param remoteDebuggingPayload Parameters for enable remote debugging.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> enableRemoteDebuggingWithResponseAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        RemoteDebuggingPayload remoteDebuggingPayload);
+
+    /**
+     * Enable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param remoteDebuggingPayload Parameters for enable remote debugging.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of remote debugging config.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<RemoteDebuggingInner>, RemoteDebuggingInner> beginEnableRemoteDebuggingAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        RemoteDebuggingPayload remoteDebuggingPayload);
+
+    /**
+     * Enable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param remoteDebuggingPayload Parameters for enable remote debugging.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of remote debugging config.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<RemoteDebuggingInner>, RemoteDebuggingInner> beginEnableRemoteDebugging(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        RemoteDebuggingPayload remoteDebuggingPayload);
+
+    /**
+     * Enable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param remoteDebuggingPayload Parameters for enable remote debugging.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of remote debugging config.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<RemoteDebuggingInner>, RemoteDebuggingInner> beginEnableRemoteDebugging(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        RemoteDebuggingPayload remoteDebuggingPayload,
+        Context context);
+
+    /**
+     * Enable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param remoteDebuggingPayload Parameters for enable remote debugging.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<RemoteDebuggingInner> enableRemoteDebuggingAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        RemoteDebuggingPayload remoteDebuggingPayload);
+
+    /**
+     * Enable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<RemoteDebuggingInner> enableRemoteDebuggingAsync(
+        String resourceGroupName, String serviceName, String appName, String deploymentName);
+
+    /**
+     * Enable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param remoteDebuggingPayload Parameters for enable remote debugging.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RemoteDebuggingInner enableRemoteDebugging(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        RemoteDebuggingPayload remoteDebuggingPayload);
+
+    /**
+     * Enable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RemoteDebuggingInner enableRemoteDebugging(
+        String resourceGroupName, String serviceName, String appName, String deploymentName);
+
+    /**
+     * Enable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param remoteDebuggingPayload Parameters for enable remote debugging.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RemoteDebuggingInner enableRemoteDebugging(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        RemoteDebuggingPayload remoteDebuggingPayload,
+        Context context);
+
+    /**
+     * Disable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> disableRemoteDebuggingWithResponseAsync(
+        String resourceGroupName, String serviceName, String appName, String deploymentName);
+
+    /**
+     * Disable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of remote debugging config.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<RemoteDebuggingInner>, RemoteDebuggingInner> beginDisableRemoteDebuggingAsync(
+        String resourceGroupName, String serviceName, String appName, String deploymentName);
+
+    /**
+     * Disable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of remote debugging config.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<RemoteDebuggingInner>, RemoteDebuggingInner> beginDisableRemoteDebugging(
+        String resourceGroupName, String serviceName, String appName, String deploymentName);
+
+    /**
+     * Disable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of remote debugging config.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<RemoteDebuggingInner>, RemoteDebuggingInner> beginDisableRemoteDebugging(
+        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context);
+
+    /**
+     * Disable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<RemoteDebuggingInner> disableRemoteDebuggingAsync(
+        String resourceGroupName, String serviceName, String appName, String deploymentName);
+
+    /**
+     * Disable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RemoteDebuggingInner disableRemoteDebugging(
+        String resourceGroupName, String serviceName, String appName, String deploymentName);
+
+    /**
+     * Disable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RemoteDebuggingInner disableRemoteDebugging(
+        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context);
+
+    /**
+     * Get remote debugging config.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<RemoteDebuggingInner>> getRemoteDebuggingConfigWithResponseAsync(
+        String resourceGroupName, String serviceName, String appName, String deploymentName);
+
+    /**
+     * Get remote debugging config.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<RemoteDebuggingInner> getRemoteDebuggingConfigAsync(
+        String resourceGroupName, String serviceName, String appName, String deploymentName);
+
+    /**
+     * Get remote debugging config.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RemoteDebuggingInner getRemoteDebuggingConfig(
+        String resourceGroupName, String serviceName, String appName, String deploymentName);
+
+    /**
+     * Get remote debugging config.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<RemoteDebuggingInner> getRemoteDebuggingConfigWithResponse(
+        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context);
 
     /**
      * Get deployment log file URL.

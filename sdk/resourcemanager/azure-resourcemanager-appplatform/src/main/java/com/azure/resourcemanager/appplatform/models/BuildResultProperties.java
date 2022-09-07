@@ -30,8 +30,7 @@ public final class BuildResultProperties {
     private String buildPodName;
 
     /*
-     * All of the build stage (init-container and container) resources in build
-     * pod.
+     * All of the build stage (init-container and container) resources in build pod.
      */
     @JsonProperty(value = "buildStages", access = JsonProperty.Access.WRITE_ONLY)
     private List<BuildStageProperties> buildStages;

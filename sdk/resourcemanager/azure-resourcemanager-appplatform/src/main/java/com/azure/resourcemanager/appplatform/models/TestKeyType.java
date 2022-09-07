@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TestKeyType. */
+/** Type of the test key. */
 public final class TestKeyType extends ExpandableStringEnum<TestKeyType> {
     /** Static value Primary for TestKeyType. */
     public static final TestKeyType PRIMARY = fromString("Primary");

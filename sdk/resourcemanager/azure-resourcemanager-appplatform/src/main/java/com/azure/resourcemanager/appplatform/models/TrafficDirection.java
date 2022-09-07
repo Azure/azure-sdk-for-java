@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TrafficDirection. */
+/** The direction of required traffic. */
 public final class TrafficDirection extends ExpandableStringEnum<TrafficDirection> {
     /** Static value Inbound for TrafficDirection. */
     public static final TrafficDirection INBOUND = fromString("Inbound");

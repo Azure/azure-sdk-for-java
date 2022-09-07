@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConfigServerState. */
+/** State of the config server. */
 public final class ConfigServerState extends ExpandableStringEnum<ConfigServerState> {
     /** Static value NotAvailable for ConfigServerState. */
     public static final ConfigServerState NOT_AVAILABLE = fromString("NotAvailable");

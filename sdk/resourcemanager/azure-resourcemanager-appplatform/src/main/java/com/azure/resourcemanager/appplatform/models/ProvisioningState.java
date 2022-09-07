@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProvisioningState. */
+/** Provisioning state of the Service. */
 public final class ProvisioningState extends ExpandableStringEnum<ProvisioningState> {
     /** Static value Creating for ProvisioningState. */
     public static final ProvisioningState CREATING = fromString("Creating");

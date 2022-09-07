@@ -32,8 +32,7 @@ public final class OperationDetailInner {
     private OperationDisplay display;
 
     /*
-     * Enum. Indicates the action type. "Internal" refers to actions that are
-     * for internal only APIs.
+     * Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
      */
     @JsonProperty(value = "actionType", access = JsonProperty.Access.WRITE_ONLY)
     private ActionType actionType;

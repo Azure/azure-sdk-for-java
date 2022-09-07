@@ -12,15 +12,13 @@ import java.util.List;
 @Fluent
 public final class NetworkProfile {
     /*
-     * Fully qualified resource Id of the subnet to host Azure Spring Apps
-     * Service Runtime
+     * Fully qualified resource Id of the subnet to host Azure Spring Apps Service Runtime
      */
     @JsonProperty(value = "serviceRuntimeSubnetId")
     private String serviceRuntimeSubnetId;
 
     /*
-     * Fully qualified resource Id of the subnet to host customer apps in Azure
-     * Spring Apps
+     * Fully qualified resource Id of the subnet to host customer apps in Azure Spring Apps
      */
     @JsonProperty(value = "appSubnetId")
     private String appSubnetId;
@@ -32,15 +30,13 @@ public final class NetworkProfile {
     private String serviceCidr;
 
     /*
-     * Name of the resource group containing network resources of Azure Spring
-     * Apps Service Runtime
+     * Name of the resource group containing network resources of Azure Spring Apps Service Runtime
      */
     @JsonProperty(value = "serviceRuntimeNetworkResourceGroup")
     private String serviceRuntimeNetworkResourceGroup;
 
     /*
-     * Name of the resource group containing network resources for customer
-     * apps in Azure Spring Apps
+     * Name of the resource group containing network resources for customer apps in Azure Spring Apps
      */
     @JsonProperty(value = "appNetworkResourceGroup")
     private String appNetworkResourceGroup;
@@ -56,6 +52,18 @@ public final class NetworkProfile {
      */
     @JsonProperty(value = "requiredTraffics", access = JsonProperty.Access.WRITE_ONLY)
     private List<RequiredTraffic> requiredTraffics;
+
+    /*
+     * Ingress configuration payload for Azure Spring Apps resource.
+     */
+    @JsonProperty(value = "ingressConfig")
+    private IngressConfig ingressConfig;
+
+    /*
+     * The egress traffic type of Azure Spring Apps VNet instances.
+     */
+    @JsonProperty(value = "outboundType")
+    private String outboundType;
 
     /**
      * Get the serviceRuntimeSubnetId property: Fully qualified resource Id of the subnet to host Azure Spring Apps
@@ -184,6 +192,46 @@ public final class NetworkProfile {
     }
 
     /**
+     * Get the ingressConfig property: Ingress configuration payload for Azure Spring Apps resource.
+     *
+     * @return the ingressConfig value.
+     */
+    public IngressConfig ingressConfig() {
+        return this.ingressConfig;
+    }
+
+    /**
+     * Set the ingressConfig property: Ingress configuration payload for Azure Spring Apps resource.
+     *
+     * @param ingressConfig the ingressConfig value to set.
+     * @return the NetworkProfile object itself.
+     */
+    public NetworkProfile withIngressConfig(IngressConfig ingressConfig) {
+        this.ingressConfig = ingressConfig;
+        return this;
+    }
+
+    /**
+     * Get the outboundType property: The egress traffic type of Azure Spring Apps VNet instances.
+     *
+     * @return the outboundType value.
+     */
+    public String outboundType() {
+        return this.outboundType;
+    }
+
+    /**
+     * Set the outboundType property: The egress traffic type of Azure Spring Apps VNet instances.
+     *
+     * @param outboundType the outboundType value to set.
+     * @return the NetworkProfile object itself.
+     */
+    public NetworkProfile withOutboundType(String outboundType) {
+        this.outboundType = outboundType;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -194,6 +242,9 @@ public final class NetworkProfile {
         }
         if (requiredTraffics() != null) {
             requiredTraffics().forEach(e -> e.validate());
+        }
+        if (ingressConfig() != null) {
+            ingressConfig().validate();
         }
     }
 }

@@ -15,8 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class BuildResultUserSourceInfo extends UserSourceInfo {
     /*
-     * Resource id of an existing succeeded build result under the same Spring
-     * instance.
+     * Resource id of an existing succeeded build result under the same Spring instance.
      */
     @JsonProperty(value = "buildResultId")
     private String buildResultId;

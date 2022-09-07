@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BindingType. */
+/** Buildpack Binding Type. */
 public final class BindingType extends ExpandableStringEnum<BindingType> {
     /** Static value ApplicationInsights for BindingType. */
     public static final BindingType APPLICATION_INSIGHTS = fromString("ApplicationInsights");

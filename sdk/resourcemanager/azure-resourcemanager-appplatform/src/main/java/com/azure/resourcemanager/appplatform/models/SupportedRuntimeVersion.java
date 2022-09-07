@@ -17,8 +17,7 @@ public final class SupportedRuntimeVersion {
     private SupportedRuntimeValue value;
 
     /*
-     * The platform of this runtime version (possible values: "Java" or
-     * ".NET").
+     * The platform of this runtime version (possible values: "Java" or ".NET").
      */
     @JsonProperty(value = "platform")
     private SupportedRuntimePlatform platform;
