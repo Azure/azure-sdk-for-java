@@ -955,7 +955,7 @@ public final class ServiceBusClientBuilder implements
                         new IllegalArgumentException("Unknown entity type: " + entityType));
             }
 
-            String clientIdentifier;
+            final String clientIdentifier;
             if (clientOptions instanceof AmqpClientOptions) {
                 String clientOptionIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
                 clientIdentifier = CoreUtils.isNullOrEmpty(clientOptionIdentifier) ? UUID.randomUUID().toString() : clientOptionIdentifier;
@@ -1435,7 +1435,7 @@ public final class ServiceBusClientBuilder implements
                 maxAutoLockRenewDuration, enableAutoComplete, null,
                 maxConcurrentSessions);
 
-            String clientIdentifier;
+            final String clientIdentifier;
             if (clientOptions instanceof AmqpClientOptions) {
                 String clientOptionIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
                 clientIdentifier = CoreUtils.isNullOrEmpty(clientOptionIdentifier) ? UUID.randomUUID().toString() : clientOptionIdentifier;
@@ -1512,7 +1512,7 @@ public final class ServiceBusClientBuilder implements
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration, enableAutoComplete, null, maxConcurrentSessions);
 
-            String clientIdentifier;
+            final String clientIdentifier;
             if (clientOptions instanceof AmqpClientOptions) {
                 String clientOptionIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
                 clientIdentifier = CoreUtils.isNullOrEmpty(clientOptionIdentifier) ? UUID.randomUUID().toString() : clientOptionIdentifier;
@@ -1954,7 +1954,7 @@ public final class ServiceBusClientBuilder implements
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration, enableAutoComplete);
 
-            String clientIdentifier;
+            final String clientIdentifier;
             if (clientOptions instanceof AmqpClientOptions) {
                 String clientOptionIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
                 clientIdentifier = CoreUtils.isNullOrEmpty(clientOptionIdentifier) ? UUID.randomUUID().toString() : clientOptionIdentifier;

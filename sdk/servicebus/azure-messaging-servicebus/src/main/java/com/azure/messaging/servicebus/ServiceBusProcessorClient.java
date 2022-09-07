@@ -309,9 +309,9 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      */
     public synchronized String getIdentifier() {
         if (asyncClient.get() == null) {
-            ServiceBusReceiverAsyncClient newReceiverClient = this.receiverBuilder == null
-                ? this.sessionReceiverBuilder.buildAsyncClientForProcessor()
-                : this.receiverBuilder.buildAsyncClient();
+            ServiceBusReceiverAsyncClient newReceiverClient = receiverBuilder == null
+                ? sessionReceiverBuilder.buildAsyncClientForProcessor()
+                : receiverBuilder.buildAsyncClient();
             asyncClient.set(newReceiverClient);
         }
 

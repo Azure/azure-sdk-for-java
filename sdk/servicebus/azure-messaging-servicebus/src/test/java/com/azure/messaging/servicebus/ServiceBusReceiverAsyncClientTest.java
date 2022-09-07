@@ -210,6 +210,16 @@ class ServiceBusReceiverAsyncClientTest {
     }
 
     /**
+     * Verifies that the correct Service Bus properties are set.
+     */
+    @Test
+    void properties() {
+        Assertions.assertEquals(ENTITY_PATH, receiver.getEntityPath());
+        Assertions.assertEquals(NAMESPACE, receiver.getFullyQualifiedNamespace());
+        Assertions.assertEquals(CLIENT_IDENTIFIER, receiver.getIdentifier());
+    }
+
+    /**
      * Verifies that when user calls peek more than one time, It returns different object.
      */
     @SuppressWarnings("unchecked")

@@ -197,6 +197,7 @@ class ServiceBusSenderAsyncClientTest {
     void verifyProperties() {
         Assertions.assertEquals(ENTITY_NAME, sender.getEntityPath());
         Assertions.assertEquals(NAMESPACE, sender.getFullyQualifiedNamespace());
+        Assertions.assertEquals(CLIENT_IDENTIFIER, sender.getIdentifier());
     }
 
     /**

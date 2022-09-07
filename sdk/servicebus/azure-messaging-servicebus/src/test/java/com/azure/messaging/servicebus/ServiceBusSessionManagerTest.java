@@ -175,6 +175,17 @@ class ServiceBusSessionManagerTest {
     }
 
     @Test
+    void properties() {
+        // Arrange
+        ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null, 5);
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+            tracerProvider, messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
+
+        // Act & Assert
+        assertEquals(CLIENT_IDENTIFIER, sessionManager.getIdentifier());
+    }
+
+    @Test
     void receiveNull() {
         // Arrange
         ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null, 5);
