@@ -27,7 +27,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "4904b61e-dc38-4fe1-ab19-f48621dfd28b",
@@ -48,18 +48,18 @@
       "x-ms-ratelimit-remaining-subscription-resource-requests" : "1199",
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20220523T055535Z:bcb80376-897b-485f-a06c-d222cc7f1f0e",
       "Expires" : "-1",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
       "x-ms-request-id" : "bcb80376-897b-485f-a06c-d222cc7f1f0e",
       "Body" : "{\"properties\":{\"provisioningState\":\"Creating\",\"zoneRedundant\":false,\"version\":3,\"serviceId\":\"be2c2e5c7d2b4983ae67bd030865af45\"},\"type\":\"Microsoft.AppPlatform/Spring\",\"sku\":{\"name\":\"E0\",\"tier\":\"Enterprise\"},\"location\":\"eastus\",\"tags\":{},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035\",\"name\":\"springsvc82035\",\"systemData\":{\"createdBy\":\"dbdd69d2-7304-468d-9011-390c26eb054e\",\"createdByType\":\"Application\",\"createdAt\":\"2022-05-23T05:55:31.6710361Z\",\"lastModifiedBy\":\"dbdd69d2-7304-468d-9011-390c26eb054e\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2022-05-23T05:55:31.6710361Z\"}}",
       "x-ms-client-request-id" : "4904b61e-dc38-4fe1-ab19-f48621dfd28b",
       "Content-Type" : "application/json; charset=utf-8",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationResults/d4a0437a-109a-4caf-9f2e-d68a4679adca/Spring/springsvc82035?api-version=2022-04-01",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationResults/d4a0437a-109a-4caf-9f2e-d68a4679adca/Spring/springsvc82035?api-version=2022-09-01-preview",
       "Request-Context" : "appId=cid-v1:797d7e4e-8180-497e-a254-780fbd39ba4d"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "e3777be9-965c-4863-9b71-b6ca5bf5f70d"
@@ -89,7 +89,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "58f656bf-db7d-44ab-ba36-0b5420eeb78a"
@@ -119,7 +119,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "ea0ad516-01f5-4c38-9a5f-c54921d4435a"
@@ -149,7 +149,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "37bc5c10-7e02-4069-8d94-b03acd102c7b"
@@ -179,7 +179,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "bb3cbe81-7bce-4f2d-94f8-2ba09c546852"
@@ -209,7 +209,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "e694cbae-43cd-4624-9058-8a10fa96da2f"
@@ -239,7 +239,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "95323803-98f6-402e-9227-3c928a3adc0c"
@@ -269,7 +269,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "e29356bb-9f05-4c1a-b05b-fc93c0080904"
@@ -299,7 +299,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "ea0ab3b2-92fe-4aac-a9c9-2eaa44d7ce23"
@@ -329,7 +329,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "049666b4-54bf-4e54-8745-59da917e7323"
@@ -359,7 +359,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "a74504a2-d917-4236-86e8-abd03031bb46"
@@ -389,7 +389,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "7a5a7133-2a7a-40d0-8f6a-d790d7b2fe4a"
@@ -419,7 +419,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "df71fa21-ee6b-45cd-98a9-3478998d563a"
@@ -449,7 +449,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "fb6d9d43-33af-4637-b137-c21a3fc54b5f"
@@ -479,7 +479,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "b7ec27ea-2591-4807-87dd-4c08aa98a6e8"
@@ -509,7 +509,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "2065e862-494a-408e-8d4b-495cdea2c4d8"
@@ -539,7 +539,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "e3e7909d-4558-46eb-aa1b-be7ec8be1b86"
@@ -569,7 +569,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "aa19218d-0c61-4c84-8816-4b4a2aa0aa03"
@@ -599,7 +599,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "ec438b90-b3e2-4035-9b07-9be5505c84e4"
@@ -629,7 +629,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "b69a38a1-2294-4606-8fdc-746e021627c7"
@@ -659,7 +659,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "65576041-c988-4fd9-84d1-e428d5df38ad"
@@ -689,7 +689,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "79df7ad4-5bae-4dbb-92b9-8ef653d3845e"
@@ -719,7 +719,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "3640c749-e00e-4c75-8a86-e0a6ecdcef8d"
@@ -749,7 +749,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "58b16fae-8824-4f57-b344-6e0d25db6fa2"
@@ -779,7 +779,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "54c7b549-4984-4c9e-aed9-c3761f49dba9"
@@ -809,7 +809,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "fd909939-b8ef-48aa-92fa-6f8b1b4738b7"
@@ -839,7 +839,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "27b0a1cd-d9de-45b1-94ad-5d2f397eb8cc"
@@ -869,7 +869,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "2e334d82-fc7b-44c8-8401-c3da6b3949b7"
@@ -899,7 +899,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "afa4c3db-8cd1-4bce-b464-c60ed1a08495"
@@ -929,7 +929,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "7700f757-f65b-4709-ab1f-68ab18bc23a1"
@@ -959,7 +959,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "082a5fe0-9fac-4ed7-b9e2-f92a67a7846a"
@@ -989,7 +989,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "30cf91f2-29a1-4eff-b067-f8182f45e31e"
@@ -1019,7 +1019,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "a1f25746-b4a2-4c81-b8e6-69917fe2a032"
@@ -1049,7 +1049,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "5f56cc0d-0e1f-418f-8288-39a1c15f0942"
@@ -1079,7 +1079,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c4d1ee82-78eb-4fe5-85c1-c37b8933444b"
@@ -1109,7 +1109,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "065db5e4-208c-4875-a22d-f8660affc2ad"
@@ -1139,7 +1139,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "09af4eca-f4b9-4da6-b421-d310ff7b0bcb"
@@ -1169,7 +1169,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d0668a53-01bf-4aa7-95fa-434c5b49820a"
@@ -1199,7 +1199,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d8e066fc-e333-480c-8f42-5c1d8bedd009"
@@ -1229,7 +1229,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d324b199-f886-4d10-aaa6-19fc788803bb"
@@ -1259,7 +1259,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "032a967c-3d3c-4c98-beaa-5f7a5814077a"
@@ -1289,7 +1289,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "07bba670-6d1a-451a-ade5-b718a98b7238"
@@ -1319,7 +1319,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "cd41c52d-d46b-4246-9389-6923c6561694"
@@ -1349,7 +1349,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "6aa16290-7aa2-41a9-8cb5-bdab6eb564d2"
@@ -1379,7 +1379,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "afcb7fee-7073-4e2a-ad59-847ddfd39827"
@@ -1409,7 +1409,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "87defdb3-22dc-4b37-bd95-0e0391df33b3"
@@ -1439,7 +1439,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "9d1eae3e-2001-4160-b8e2-25ea06ad8b0d"
@@ -1469,7 +1469,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "5b549185-bb44-4414-8cdd-6793c6d6ee41"
@@ -1499,7 +1499,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "9e11cd05-5b24-478d-8553-9d80f4add122"
@@ -1529,7 +1529,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "0a1df581-83f2-44e6-abef-b88ee99ace4f"
@@ -1559,7 +1559,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "621f4d96-5e02-4cef-9a4c-9ae6a4b6b7a9"
@@ -1589,7 +1589,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "2dc754c5-af88-48c0-a24b-c9eb3975c2c7"
@@ -1619,7 +1619,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c34914c8-6591-49eb-acfb-10b94823a9cb"
@@ -1649,7 +1649,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "6061efc7-14c4-4bef-8253-8e612e0bebba"
@@ -1679,7 +1679,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/d4a0437a-109a-4caf-9f2e-d68a4679adca?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "9859b743-7200-4b01-9260-e187a37991b0"
@@ -1709,7 +1709,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "645fc3f9-03f3-4614-9e77-7f57e038c86e"
@@ -1739,7 +1739,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/buildServices/default/agentPools/default?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/buildServices/default/agentPools/default?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "0d9158d3-c2ef-410d-84ef-a606259d603a",
@@ -1760,18 +1760,18 @@
       "Cache-Control" : "no-cache",
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20220523T060540Z:52e69d2a-df43-4a45-9dcc-a7d14ec01597",
       "Expires" : "-1",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/82b85f64-36bb-4f58-8b62-7fab6c6be25e?api-version=2022-04-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/82b85f64-36bb-4f58-8b62-7fab6c6be25e?api-version=2022-09-01-preview",
       "x-ms-request-id" : "52e69d2a-df43-4a45-9dcc-a7d14ec01597",
       "Body" : "{\"properties\":{\"provisioningState\":\"Updating\",\"poolSize\":{\"name\":\"S1\",\"cpu\":\"2\",\"memory\":\"4Gi\"}},\"type\":\"Microsoft.AppPlatform/Spring/buildServices/agentPools\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/buildServices/default/agentPools/default\",\"name\":\"default\"}",
       "x-ms-client-request-id" : "0d9158d3-c2ef-410d-84ef-a606259d603a",
       "Content-Type" : "application/json; charset=utf-8",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationResults/82b85f64-36bb-4f58-8b62-7fab6c6be25e/Spring/springsvc82035?api-version=2022-04-01",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationResults/82b85f64-36bb-4f58-8b62-7fab6c6be25e/Spring/springsvc82035?api-version=2022-09-01-preview",
       "Request-Context" : "appId=cid-v1:797d7e4e-8180-497e-a254-780fbd39ba4d"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/82b85f64-36bb-4f58-8b62-7fab6c6be25e?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/82b85f64-36bb-4f58-8b62-7fab6c6be25e?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "9e413781-a705-4487-8ce7-37c6f3841725"
@@ -1801,7 +1801,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/buildServices/default/agentPools/default?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/buildServices/default/agentPools/default?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "175c641d-1c78-4312-a6b8-e9deccb48c05"
@@ -1831,7 +1831,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/configurationServices/default?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/configurationServices/default?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "0a05663e-1799-4476-aac7-827c0d2b893c",
@@ -1852,18 +1852,18 @@
       "Cache-Control" : "no-cache",
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20220523T060614Z:91be6708-656a-42b8-bc62-bad701d245b0",
       "Expires" : "-1",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/05dda146-9919-418f-9a43-03887494bc97?api-version=2022-04-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/05dda146-9919-418f-9a43-03887494bc97?api-version=2022-09-01-preview",
       "x-ms-request-id" : "91be6708-656a-42b8-bc62-bad701d245b0",
       "Body" : "{\"properties\":{\"provisioningState\":\"Creating\",\"settings\":{\"gitProperty\":{\"repositories\":[{\"name\":\"default\",\"patterns\":[\"api-gateway\"],\"label\":\"master\",\"uri\":\"https://github.com/XiaofeiCao/spring-petclinic-microservices-config\"}]}},\"resourceRequests\":{\"cpu\":\"500m\",\"memory\":\"1Gi\",\"instanceCount\":2},\"instances\":[]},\"type\":\"Microsoft.AppPlatform/Spring/configurationServices\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/configurationServices/default\",\"name\":\"default\",\"systemData\":{\"createdBy\":\"dbdd69d2-7304-468d-9011-390c26eb054e\",\"createdByType\":\"Application\",\"createdAt\":\"2022-05-23T06:06:12.609711Z\",\"lastModifiedBy\":\"dbdd69d2-7304-468d-9011-390c26eb054e\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2022-05-23T06:06:12.609711Z\"}}",
       "x-ms-client-request-id" : "0a05663e-1799-4476-aac7-827c0d2b893c",
       "Content-Type" : "application/json; charset=utf-8",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationResults/05dda146-9919-418f-9a43-03887494bc97/Spring/springsvc82035?api-version=2022-04-01",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationResults/05dda146-9919-418f-9a43-03887494bc97/Spring/springsvc82035?api-version=2022-09-01-preview",
       "Request-Context" : "appId=cid-v1:797d7e4e-8180-497e-a254-780fbd39ba4d"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/serviceRegistries/default?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/serviceRegistries/default?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "05244302-0e75-4483-bf86-b34323dc1d5a",
@@ -1884,18 +1884,18 @@
       "Cache-Control" : "no-cache",
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20220523T060617Z:a4bbca32-02b0-4d70-b14a-d10e0d2eeb34",
       "Expires" : "-1",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/9a1dc9e3-b81c-432c-8d02-3283cb4ea666?api-version=2022-04-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/9a1dc9e3-b81c-432c-8d02-3283cb4ea666?api-version=2022-09-01-preview",
       "x-ms-request-id" : "a4bbca32-02b0-4d70-b14a-d10e0d2eeb34",
       "Body" : "{\"properties\":{\"provisioningState\":\"Creating\",\"resourceRequests\":{\"cpu\":\"500m\",\"memory\":\"1Gi\",\"instanceCount\":2},\"instances\":[]},\"type\":\"Microsoft.AppPlatform/Spring/serviceRegistries\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/serviceRegistries/default\",\"name\":\"default\",\"systemData\":{\"createdBy\":\"dbdd69d2-7304-468d-9011-390c26eb054e\",\"createdByType\":\"Application\",\"createdAt\":\"2022-05-23T06:06:12.5617056Z\",\"lastModifiedBy\":\"dbdd69d2-7304-468d-9011-390c26eb054e\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2022-05-23T06:06:12.5617056Z\"}}",
       "x-ms-client-request-id" : "05244302-0e75-4483-bf86-b34323dc1d5a",
       "Content-Type" : "application/json; charset=utf-8",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationResults/9a1dc9e3-b81c-432c-8d02-3283cb4ea666/Spring/springsvc82035?api-version=2022-04-01",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationResults/9a1dc9e3-b81c-432c-8d02-3283cb4ea666/Spring/springsvc82035?api-version=2022-09-01-preview",
       "Request-Context" : "appId=cid-v1:797d7e4e-8180-497e-a254-780fbd39ba4d"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/05dda146-9919-418f-9a43-03887494bc97?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/05dda146-9919-418f-9a43-03887494bc97?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "28d5f9b9-a8bc-403f-9999-2db1841c08ea"
@@ -1925,7 +1925,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/9a1dc9e3-b81c-432c-8d02-3283cb4ea666?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/9a1dc9e3-b81c-432c-8d02-3283cb4ea666?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "daa68725-7e6b-4729-a2f1-aa5be6832c7d"
@@ -1955,7 +1955,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/05dda146-9919-418f-9a43-03887494bc97?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/05dda146-9919-418f-9a43-03887494bc97?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "057f2cf3-8868-4338-a21c-83a9c382f46d"
@@ -1985,7 +1985,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/9a1dc9e3-b81c-432c-8d02-3283cb4ea666?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/9a1dc9e3-b81c-432c-8d02-3283cb4ea666?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "9bd6627b-7005-4a98-b24a-ea96d2d739c4"
@@ -2015,7 +2015,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/05dda146-9919-418f-9a43-03887494bc97?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/05dda146-9919-418f-9a43-03887494bc97?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c7ae6d2c-c192-4baa-aa48-67e8634322cc"
@@ -2045,7 +2045,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/9a1dc9e3-b81c-432c-8d02-3283cb4ea666?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/9a1dc9e3-b81c-432c-8d02-3283cb4ea666?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "b04c50d2-d433-4bb4-8007-efc60cbc57e3"
@@ -2075,7 +2075,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/05dda146-9919-418f-9a43-03887494bc97?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/05dda146-9919-418f-9a43-03887494bc97?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "1ede9277-51c1-472a-b309-8e6360a38d57"
@@ -2105,7 +2105,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/configurationServices/default?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/configurationServices/default?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "b3778fba-ffe2-48b2-985c-6f9f77d83fa7"
@@ -2135,7 +2135,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/9a1dc9e3-b81c-432c-8d02-3283cb4ea666?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/9a1dc9e3-b81c-432c-8d02-3283cb4ea666?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "6c535284-4f38-4e46-b277-0db85bf95c4c"
@@ -2165,7 +2165,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/9a1dc9e3-b81c-432c-8d02-3283cb4ea666?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/9a1dc9e3-b81c-432c-8d02-3283cb4ea666?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "76807ef5-467d-457a-b935-bca24a1ea16b"
@@ -2195,7 +2195,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/9a1dc9e3-b81c-432c-8d02-3283cb4ea666?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/9a1dc9e3-b81c-432c-8d02-3283cb4ea666?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "8ae1816b-241c-4599-bfd4-beea26314c8a"
@@ -2225,7 +2225,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/9a1dc9e3-b81c-432c-8d02-3283cb4ea666?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springsvc82035/operationId/9a1dc9e3-b81c-432c-8d02-3283cb4ea666?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "e82b71f4-dd0c-4091-aac0-5178df309e3b"
@@ -2255,7 +2255,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/serviceRegistries/default?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/serviceRegistries/default?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "9a342cb4-9e02-49d4-ad72-0ee67fe11214"
@@ -2285,7 +2285,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/configurationServices?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/configurationServices?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "7b208cfe-6536-4619-bf2d-ddd3df7342dd",
@@ -2316,7 +2316,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/serviceRegistries?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/serviceRegistries?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "50f86dc4-be84-4806-8244-93e1cef530fa",
@@ -2347,7 +2347,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/apps/springapp31795?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/apps/springapp31795?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d5d0de66-4961-484a-b10b-dea4e42ab820",
@@ -2368,18 +2368,18 @@
       "x-ms-ratelimit-remaining-subscription-resource-requests" : "1199",
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20220523T060801Z:a0d205d2-ca9d-465d-93f9-5082ec054acd",
       "Expires" : "-1",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springapp31795/operationId/30ffd0fa-4651-428e-bdbf-7f4e4fe1ca60?api-version=2022-04-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springapp31795/operationId/30ffd0fa-4651-428e-bdbf-7f4e4fe1ca60?api-version=2022-09-01-preview",
       "x-ms-request-id" : "a0d205d2-ca9d-465d-93f9-5082ec054acd",
       "Body" : "{\"properties\":{\"addonConfigs\":{\"applicationConfigurationService\":{},\"serviceRegistry\":{}},\"public\":false,\"provisioningState\":\"Creating\",\"httpsOnly\":false,\"enableEndToEndTLS\":false},\"type\":\"Microsoft.AppPlatform/Spring/apps\",\"identity\":null,\"location\":\"eastus\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/apps/springapp31795\",\"name\":\"springapp31795\",\"systemData\":{\"createdBy\":\"dbdd69d2-7304-468d-9011-390c26eb054e\",\"createdByType\":\"Application\",\"createdAt\":\"2022-05-23T06:07:59.5936591Z\",\"lastModifiedBy\":\"dbdd69d2-7304-468d-9011-390c26eb054e\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2022-05-23T06:07:59.5936591Z\"}}",
       "x-ms-client-request-id" : "d5d0de66-4961-484a-b10b-dea4e42ab820",
       "Content-Type" : "application/json; charset=utf-8",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationResults/30ffd0fa-4651-428e-bdbf-7f4e4fe1ca60/Spring/springapp31795?api-version=2022-04-01",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationResults/30ffd0fa-4651-428e-bdbf-7f4e4fe1ca60/Spring/springapp31795?api-version=2022-09-01-preview",
       "Request-Context" : "appId=cid-v1:797d7e4e-8180-497e-a254-780fbd39ba4d"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springapp31795/operationId/30ffd0fa-4651-428e-bdbf-7f4e4fe1ca60?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springapp31795/operationId/30ffd0fa-4651-428e-bdbf-7f4e4fe1ca60?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "79296522-eef6-4627-ab79-fe7b1a109733"
@@ -2409,7 +2409,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/apps/springapp31795?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/apps/springapp31795?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "7ffb9150-42e0-48c1-a495-5db4ebcc0545"
@@ -2439,7 +2439,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/apps/springapp31795/deployments/default?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/apps/springapp31795/deployments/default?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "1bc05355-b079-4999-b1df-452350ec4f5a",
@@ -2460,18 +2460,18 @@
       "x-ms-ratelimit-remaining-subscription-resource-requests" : "1199",
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20220523T060834Z:c43af7c9-3748-4af4-b2a4-d08711157138",
       "Expires" : "-1",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/default/operationId/b37c8d8f-0994-4c90-a6a6-94640c6c11cc?api-version=2022-04-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/default/operationId/b37c8d8f-0994-4c90-a6a6-94640c6c11cc?api-version=2022-09-01-preview",
       "x-ms-request-id" : "c43af7c9-3748-4af4-b2a4-d08711157138",
       "Body" : "{\"properties\":{\"deploymentSettings\":{\"resourceRequests\":{\"cpu\":\"1\",\"memory\":\"1Gi\"},\"environmentVariables\":null},\"source\":{\"type\":\"BuildResult\",\"buildResultId\":\"<default>\"},\"provisioningState\":\"Creating\",\"status\":\"Running\",\"active\":false,\"instances\":null},\"type\":\"Microsoft.AppPlatform/Spring/apps/deployments\",\"sku\":{\"name\":\"E0\",\"tier\":\"Enterprise\",\"capacity\":1},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/apps/springapp31795/deployments/default\",\"name\":\"default\",\"systemData\":{\"createdBy\":\"dbdd69d2-7304-468d-9011-390c26eb054e\",\"createdByType\":\"Application\",\"createdAt\":\"2022-05-23T06:08:33.2193372Z\",\"lastModifiedBy\":\"dbdd69d2-7304-468d-9011-390c26eb054e\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2022-05-23T06:08:33.2193372Z\"}}",
       "x-ms-client-request-id" : "1bc05355-b079-4999-b1df-452350ec4f5a",
       "Content-Type" : "application/json; charset=utf-8",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationResults/b37c8d8f-0994-4c90-a6a6-94640c6c11cc/Spring/default?api-version=2022-04-01",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationResults/b37c8d8f-0994-4c90-a6a6-94640c6c11cc/Spring/default?api-version=2022-09-01-preview",
       "Request-Context" : "appId=cid-v1:797d7e4e-8180-497e-a254-780fbd39ba4d"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/default/operationId/b37c8d8f-0994-4c90-a6a6-94640c6c11cc?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/default/operationId/b37c8d8f-0994-4c90-a6a6-94640c6c11cc?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d433e072-e2d8-41f7-b369-6d1f9e584531"
@@ -2501,7 +2501,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/apps/springapp31795/deployments/default?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/apps/springapp31795/deployments/default?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c7319dfa-85c7-462a-a3aa-e006501b4812"
@@ -2531,7 +2531,7 @@
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/apps/springapp31795?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/apps/springapp31795?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "f730c6a5-4bc6-43f9-a9f0-912035918e61",
@@ -2552,18 +2552,18 @@
       "x-ms-ratelimit-remaining-subscription-resource-requests" : "1198",
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20220523T060908Z:8d44ab6e-076e-4329-bc15-97a8a57fb181",
       "Expires" : "-1",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springapp31795/operationId/6f6662c9-7ec5-4f7a-b9d8-a4778b0764e7?api-version=2022-04-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springapp31795/operationId/6f6662c9-7ec5-4f7a-b9d8-a4778b0764e7?api-version=2022-09-01-preview",
       "x-ms-request-id" : "8d44ab6e-076e-4329-bc15-97a8a57fb181",
       "Body" : "{\"properties\":{\"addonConfigs\":{\"applicationConfigurationService\":{\"resourceId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/configurationServices/default\"},\"serviceRegistry\":{\"resourceId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/serviceRegistries/default\"}},\"public\":true,\"provisioningState\":\"Updating\",\"fqdn\":\"springsvc82035.azuremicroservices.io\",\"httpsOnly\":true,\"temporaryDisk\":{\"sizeInGB\":5,\"mountPath\":\"/tmp\"},\"persistentDisk\":{\"sizeInGB\":0,\"mountPath\":\"/persistent\"},\"enableEndToEndTLS\":false},\"type\":\"Microsoft.AppPlatform/Spring/apps\",\"identity\":null,\"location\":\"eastus\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/apps/springapp31795\",\"name\":\"springapp31795\",\"systemData\":{\"createdBy\":\"dbdd69d2-7304-468d-9011-390c26eb054e\",\"createdByType\":\"Application\",\"createdAt\":\"2022-05-23T06:07:59.5936591Z\",\"lastModifiedBy\":\"dbdd69d2-7304-468d-9011-390c26eb054e\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2022-05-23T06:09:06.9691325Z\"}}",
       "x-ms-client-request-id" : "f730c6a5-4bc6-43f9-a9f0-912035918e61",
       "Content-Type" : "application/json; charset=utf-8",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationResults/6f6662c9-7ec5-4f7a-b9d8-a4778b0764e7/Spring/springapp31795?api-version=2022-04-01",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationResults/6f6662c9-7ec5-4f7a-b9d8-a4778b0764e7/Spring/springapp31795?api-version=2022-09-01-preview",
       "Request-Context" : "appId=cid-v1:797d7e4e-8180-497e-a254-780fbd39ba4d"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springapp31795/operationId/6f6662c9-7ec5-4f7a-b9d8-a4778b0764e7?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springapp31795/operationId/6f6662c9-7ec5-4f7a-b9d8-a4778b0764e7?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d1ee6e10-be92-41ae-8554-7f2af82b53c7"
@@ -2593,7 +2593,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/apps/springapp31795?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/apps/springapp31795?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "29db93ad-8e0d-4b80-8225-b61f39a27c43"
@@ -2623,7 +2623,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/apps/springapp31795/setActiveDeployments?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/apps/springapp31795/setActiveDeployments?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "cc3fdd8b-81df-48d7-aa0a-066c5f2aa3a4",
@@ -2644,18 +2644,18 @@
       "Cache-Control" : "no-cache",
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20220523T060942Z:a3cc92a1-da40-4194-889f-9a73730187db",
       "Expires" : "-1",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springapp31795/operationId/a20a71c2-1a50-488d-89ab-3044d55f5185?api-version=2022-04-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springapp31795/operationId/a20a71c2-1a50-488d-89ab-3044d55f5185?api-version=2022-09-01-preview",
       "x-ms-request-id" : "a3cc92a1-da40-4194-889f-9a73730187db",
       "Body" : "{\"properties\":{\"addonConfigs\":{\"applicationConfigurationService\":{\"resourceId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/configurationServices/default\"},\"serviceRegistry\":{\"resourceId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/serviceRegistries/default\"}},\"public\":true,\"url\":\"REDACTED\",\"provisioningState\":\"Updating\",\"fqdn\":\"springsvc82035.azuremicroservices.io\",\"httpsOnly\":true,\"temporaryDisk\":{\"sizeInGB\":5,\"mountPath\":\"/tmp\"},\"persistentDisk\":{\"sizeInGB\":0,\"mountPath\":\"/persistent\"},\"enableEndToEndTLS\":false},\"type\":\"Microsoft.AppPlatform/Spring/apps\",\"identity\":null,\"location\":\"eastus\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/apps/springapp31795\",\"name\":\"springapp31795\",\"systemData\":{\"createdBy\":\"dbdd69d2-7304-468d-9011-390c26eb054e\",\"createdByType\":\"Application\",\"createdAt\":\"2022-05-23T06:07:59.5936591Z\",\"lastModifiedBy\":\"dbdd69d2-7304-468d-9011-390c26eb054e\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2022-05-23T06:09:39.9225891Z\"}}",
       "x-ms-client-request-id" : "cc3fdd8b-81df-48d7-aa0a-066c5f2aa3a4",
       "Content-Type" : "application/json; charset=utf-8",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationResults/a20a71c2-1a50-488d-89ab-3044d55f5185/Spring/springapp31795?api-version=2022-04-01",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationResults/a20a71c2-1a50-488d-89ab-3044d55f5185/Spring/springapp31795?api-version=2022-09-01-preview",
       "Request-Context" : "appId=cid-v1:797d7e4e-8180-497e-a254-780fbd39ba4d"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springapp31795/operationId/a20a71c2-1a50-488d-89ab-3044d55f5185?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springapp31795/operationId/a20a71c2-1a50-488d-89ab-3044d55f5185?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "f565fdc7-a005-4821-8e2c-ea55c38fd10a"
@@ -2685,7 +2685,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationResults/a20a71c2-1a50-488d-89ab-3044d55f5185/Spring/springapp31795?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationResults/a20a71c2-1a50-488d-89ab-3044d55f5185/Spring/springapp31795?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "42df6eb2-1218-452c-8fd0-a8d7b0493771"
@@ -2715,7 +2715,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/configurationServices?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/configurationServices?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "0799f5ca-e767-41c6-bca4-a4cfb35f94c2",
@@ -2746,7 +2746,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/serviceRegistries?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/serviceRegistries?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "01631c29-23ed-4919-9cfc-62644fb7d88a",
@@ -2777,7 +2777,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/configurationServices?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/configurationServices?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d1dd9840-e7e1-4a52-9de5-7900dc140135",
@@ -2808,7 +2808,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/apps?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/apps?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "1e4f2861-4232-4032-9335-55c883aaa87f",
@@ -2839,7 +2839,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/configurationServices?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/configurationServices?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "1e760590-5647-4625-ab3b-d466f675b6cb",
@@ -2870,7 +2870,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/configurationServices?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/configurationServices?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "75222a0d-0b93-4a06-8541-13bf6822ce06",
@@ -2901,7 +2901,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/serviceRegistries?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/serviceRegistries?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "295c130a-f8b2-451c-b14f-b56991243c60",
@@ -2932,7 +2932,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/apps?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/apps?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "e9d1fd6b-d7aa-4a08-9b1a-dcf3dc5fc93a",
@@ -2963,7 +2963,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/serviceRegistries?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/serviceRegistries?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "670dd832-2043-4447-bda5-b52c5780b6e7",
@@ -2994,7 +2994,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/serviceRegistries?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/serviceRegistries?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c461fb89-a806-4cd7-9c53-dd5f86ec25bd",
@@ -3025,7 +3025,7 @@
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/apps/springapp31795?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/apps/springapp31795?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "7b4c6f16-9753-4511-8d36-508656616870",
@@ -3046,18 +3046,18 @@
       "x-ms-ratelimit-remaining-subscription-resource-requests" : "1197",
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20220523T061026Z:99bebd4e-7d8f-4e41-9274-e9781bd94d92",
       "Expires" : "-1",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springapp31795/operationId/1b4d1327-2efb-43ba-899f-1f64fa5823e3?api-version=2022-04-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springapp31795/operationId/1b4d1327-2efb-43ba-899f-1f64fa5823e3?api-version=2022-09-01-preview",
       "x-ms-request-id" : "99bebd4e-7d8f-4e41-9274-e9781bd94d92",
       "Body" : "{\"properties\":{\"addonConfigs\":{\"applicationConfigurationService\":{},\"serviceRegistry\":{}},\"public\":false,\"url\":\"REDACTED\",\"provisioningState\":\"Updating\",\"fqdn\":\"springsvc82035.azuremicroservices.io\",\"httpsOnly\":false,\"temporaryDisk\":{\"sizeInGB\":5,\"mountPath\":\"/tmp\"},\"persistentDisk\":{\"sizeInGB\":0,\"mountPath\":\"/persistent\"},\"enableEndToEndTLS\":false},\"type\":\"Microsoft.AppPlatform/Spring/apps\",\"identity\":null,\"location\":\"eastus\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/apps/springapp31795\",\"name\":\"springapp31795\",\"systemData\":{\"createdBy\":\"dbdd69d2-7304-468d-9011-390c26eb054e\",\"createdByType\":\"Application\",\"createdAt\":\"2022-05-23T06:07:59.5936591Z\",\"lastModifiedBy\":\"dbdd69d2-7304-468d-9011-390c26eb054e\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2022-05-23T06:10:25.6727764Z\"}}",
       "x-ms-client-request-id" : "7b4c6f16-9753-4511-8d36-508656616870",
       "Content-Type" : "application/json; charset=utf-8",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationResults/1b4d1327-2efb-43ba-899f-1f64fa5823e3/Spring/springapp31795?api-version=2022-04-01",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationResults/1b4d1327-2efb-43ba-899f-1f64fa5823e3/Spring/springapp31795?api-version=2022-09-01-preview",
       "Request-Context" : "appId=cid-v1:797d7e4e-8180-497e-a254-780fbd39ba4d"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springapp31795/operationId/1b4d1327-2efb-43ba-899f-1f64fa5823e3?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/locations/eastus/operationStatus/springapp31795/operationId/1b4d1327-2efb-43ba-899f-1f64fa5823e3?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "cf74faff-d5f8-459a-b235-ec29491aaee0"
@@ -3087,7 +3087,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/apps/springapp31795?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/apps/springapp31795?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "fd9f5082-8f8f-46d5-b0d5-8b01b9ccc5a0"
@@ -3117,7 +3117,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/configurationServices?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/configurationServices?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "2e764f89-1f20-4ba8-b5b0-7209dc734d0b",
@@ -3148,7 +3148,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/serviceRegistries?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/serviceRegistries?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "2706ad61-1237-4cdc-802f-e327c8f4050b",
@@ -3179,7 +3179,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/configurationServices?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/configurationServices?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "10ed92b5-6523-4f9b-931c-7c102351354d",
@@ -3210,7 +3210,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/apps?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/apps?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "cdfeb0fc-0980-499f-ab17-4b7f9488e37c",
@@ -3241,7 +3241,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/configurationServices?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/configurationServices?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d3b1d49d-bc45-431f-b481-b961bd7e9fb1",
@@ -3272,7 +3272,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/serviceRegistries?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/serviceRegistries?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "927dff7f-4171-4e40-85db-40399d7cf92c",
@@ -3303,7 +3303,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/apps?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/apps?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "ceb7dcd6-3193-49e7-bce6-6dfd8ccb6b5c",
@@ -3334,7 +3334,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/serviceRegistries?api-version=2022-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg792901e7660/providers/Microsoft.AppPlatform/Spring/springsvc82035/serviceRegistries?api-version=2022-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.appplatform/2.15.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "x-ms-client-request-id" : "13706dab-5a10-49d6-addb-85cf89550cee",
