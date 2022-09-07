@@ -54,10 +54,15 @@
 
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>1.32.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-keys</artifactId>
       <version>4.4.6</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
     </dependency>
-
   </dependencies>
 
   <profiles>
