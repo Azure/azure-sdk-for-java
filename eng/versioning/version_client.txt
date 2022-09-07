@@ -380,7 +380,7 @@ com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0-beta.1;1.0.0-beta.2
 
 ## azure-identity dependency versions used in sdk/jdbc
-jdbc_com.azure:azure-identity;1.6.0-beta.1
+jdbc_com.azure:azure-identity;1.6.0-beta.1;1.6.0-beta.1
 
 # Unreleased dependencies: Copy the entry from above, prepend "unreleased_" and remove the current
 # version. Unreleased dependencies are only valid for dependency versions.
