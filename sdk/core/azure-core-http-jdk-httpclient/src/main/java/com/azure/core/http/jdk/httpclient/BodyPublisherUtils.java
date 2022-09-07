@@ -59,10 +59,7 @@ final class BodyPublisherUtils {
                 publisher = fromPublisher(JdkFlowAdapter.publisherToFlowPublisher(request.getBody()));
             }
 
-            final String contentLength = request.getHeaders().getValue("content-length");
-            if (contentLength != null) {
-                publisher = toBodyPublisherWithLength(publisher, contentLength);
-            }
+            publisher = toBodyPublisherWithLength(publisher, request.getHeaders().getValue("content-length"));
         }
 
         return getPublisherWithReporter(publisher, progressReporter);
@@ -75,10 +72,6 @@ final class BodyPublisherUtils {
      * @return the request BodyPublisher
      */
     private static HttpRequest.BodyPublisher toBodyPublisherWithLength(HttpRequest.BodyPublisher publisher, String contentLength) {
-        if (publisher == null) {
-            return noBody();
-        }
-
         if (CoreUtils.isNullOrEmpty(contentLength)) {
             return publisher;
         } else {
