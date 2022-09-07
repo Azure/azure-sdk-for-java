@@ -34,7 +34,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
@@ -118,7 +117,7 @@ public class JdkHttpClientTests {
     }
 
     @Test
-    public void testBufferedResponseSync() throws IOException {
+    public void testBufferedResponseSync() {
         HttpClient client = new JdkAsyncHttpClientBuilder().build();
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, "/long"));
         HttpResponse response = client.sendSync(request, new Context("azure-eagerly-read-response", true));
@@ -262,7 +261,7 @@ public class JdkHttpClientTests {
     }
 
     @Test
-    public void testFileUploadSync() throws IOException, InterruptedException, URISyntaxException {
+    public void testFileUploadSync() throws IOException {
         WireMockServer local = new WireMockServer(WireMockConfiguration.options()
             .dynamicPort()
             .maxRequestJournalEntries(1)

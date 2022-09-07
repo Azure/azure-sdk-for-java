@@ -15,7 +15,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.adapter.JdkFlowAdapter;
-import reactor.core.publisher.Flux;
 
 import java.net.http.HttpRequest;
 import java.nio.ByteBuffer;
@@ -53,40 +52,41 @@ final class BodyPublisherUtils {
             publisher = ofByteArray(bodyContent.toBytes());
         } else if (bodyContent instanceof StringContent || bodyContent instanceof SerializableContent) {
             publisher = ofString(bodyContent.toString());
-        } else if (bodyContent instanceof FileContent || bodyContent instanceof InputStreamContent) {
-            publisher = ofInputStream(bodyContent::toStream);
-            Long contentLength = bodyContent.getLength();
-            if (contentLength != null) {
-                publisher = fromPublisher(publisher, contentLength);
-            }
         } else {
+            if (bodyContent instanceof FileContent || bodyContent instanceof InputStreamContent) {
+                publisher = ofInputStream(bodyContent::toStream);
+            } else {
+                publisher = fromPublisher(JdkFlowAdapter.publisherToFlowPublisher(request.getBody()));
+            }
+
             final String contentLength = request.getHeaders().getValue("content-length");
-            publisher = toBodyPublisher(request.getBody(), contentLength);
+            if (contentLength != null) {
+                publisher = toBodyPublisherWithLength(publisher, contentLength);
+            }
         }
 
         return getPublisherWithReporter(publisher, progressReporter);
     }
 
-
     /**
-     * Create BodyPublisher from the given java.nio.ByteBuffer publisher.
+     * Creates BodyPublisher with content length
      *
-     * @param bbPublisher stream of java.nio.ByteBuffer representing request content
+     * @param publisher BodyPublisher representing request content that's not aware of content length
      * @return the request BodyPublisher
      */
-    private static HttpRequest.BodyPublisher toBodyPublisher(Flux<ByteBuffer> bbPublisher, String contentLength) {
-        if (bbPublisher == null) {
+    private static HttpRequest.BodyPublisher toBodyPublisherWithLength(HttpRequest.BodyPublisher publisher, String contentLength) {
+        if (publisher == null) {
             return noBody();
         }
-        final Flow.Publisher<ByteBuffer> bbFlowPublisher = JdkFlowAdapter.publisherToFlowPublisher(bbPublisher);
+
         if (CoreUtils.isNullOrEmpty(contentLength)) {
-            return fromPublisher(bbFlowPublisher);
+            return publisher;
         } else {
             long contentLengthLong = Long.parseLong(contentLength);
             if (contentLengthLong < 1) {
                 return noBody();
             } else {
-                return fromPublisher(bbFlowPublisher, contentLengthLong);
+                return fromPublisher(publisher, contentLengthLong);
             }
         }
     }
