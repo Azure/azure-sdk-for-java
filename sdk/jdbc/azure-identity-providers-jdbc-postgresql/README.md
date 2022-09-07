@@ -119,9 +119,9 @@ For details on contributing to this repository, see the [contributing guide](htt
 
 <!-- LINKS -->
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
-[azure-identity-providers-jdbc-mysql]: https://github.com/Azure/azure-sdk-for-java/blob/c04bd10d2bc9a49b18c63ec91a1c0e64043f21bf/sdk/jdbc/azure-identity-providers-jdbc-mysql
-[azure-identity-providers-core]: https://github.com/Azure/azure-sdk-for-java/blob/c04bd10d2bc9a49b18c63ec91a1c0e64043f21bf/sdk/jdbc/azure-identity-providers-core
-[source]: https://github.com/Azure/azure-sdk-for-java/blob/c04bd10d2bc9a49b18c63ec91a1c0e64043f21bf/sdk/jdbc/azure-identity-providers-jdbc-postgresql
+[azure-identity-providers-jdbc-mysql]: https://github.com/Azure/azure-sdk-for-java/blob/31c42eac4fa6e8a3bb00c2e01f80e9a8bacd1d78/sdk/jdbc/azure-identity-providers-jdbc-mysql
+[azure-identity-providers-core]: https://github.com/Azure/azure-sdk-for-java/blob/31c42eac4fa6e8a3bb00c2e01f80e9a8bacd1d78/sdk/jdbc/azure-identity-providers-core
+[source]: https://github.com/Azure/azure-sdk-for-java/blob/31c42eac4fa6e8a3bb00c2e01f80e9a8bacd1d78/sdk/jdbc/azure-identity-providers-jdbc-postgresql
 [docs]: https://azure.github.io/azure-sdk-for-java/
 [product_docs]: https://docs.microsoft.com/azure/postgresql/single-server/overview
 [quick_start]: https://aka.ms/passwordless/quickstart/postgresql
