@@ -4,6 +4,8 @@
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
 import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
+import com.azure.spring.cloud.autoconfigure.implementation.jdbc.DatabaseType;
+import com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionStringUtils;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
@@ -78,15 +80,13 @@ class MySqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigura
             .run((context) -> {
                 DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
 
-                String expectedUrl = String.format("%s?%s", connectionString,
-                    buildSortedPropertiesString(
-                        MYSQL_AUTH_PLUGIN_PROPERTY,
-                        AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
-                        MYSQL_DEFAULT_PLUGIN_PROPERTY,
-                        MYSQL_SSL_MODE_PROPERTY,
-                        MYSQL_USE_SSL_PROPERTY,
-                        MYSQL_USER_AGENT
-                    )
+
+                String expectedUrl = JdbcConnectionStringUtils.enhanceJdbcUrl(
+                    DatabaseType.MYSQL,
+                    false,
+                    connectionString,
+                    AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
+                    MYSQL_USER_AGENT
                 );
                 assertEquals(expectedUrl, dataSourceProperties.getUrl());
             });
@@ -105,16 +105,15 @@ class MySqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigura
             .run((context) -> {
                 DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
 
-                String expectedUrl = String.format("%s?%s", connectionString, String.join("&",
-                    buildSortedPropertiesString(
-                        AUTHPROPERTY_CREDENTIAL_BEAN_NAME,
-                        AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
-                        MYSQL_AUTH_PLUGIN_PROPERTY,
-                        MYSQL_DEFAULT_PLUGIN_PROPERTY,
-                        MYSQL_SSL_MODE_PROPERTY,
-                        MYSQL_USE_SSL_PROPERTY,
-                        MYSQL_USER_AGENT
-                )));
+                String expectedUrl = JdbcConnectionStringUtils.enhanceJdbcUrl(
+                    DatabaseType.MYSQL,
+                    false,
+                    connectionString,
+                    AUTHPROPERTY_CREDENTIAL_BEAN_NAME,
+                    AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
+                    MYSQL_USER_AGENT
+                );
+
                 assertEquals(expectedUrl, dataSourceProperties.getUrl());
             });
     }

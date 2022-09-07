@@ -14,8 +14,6 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
-import java.util.Arrays;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -89,11 +87,6 @@ abstract class AbstractAzureJdbcAutoConfigurationTest {
                 DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
                 assertEquals("jdbc:h2:~/test,sa,password", dataSourceProperties.getUrl());
             });
-    }
-
-    protected static String buildSortedPropertiesString(String... properties) {
-        Arrays.sort(properties);
-        return String.join("&", properties);
     }
 
 }
