@@ -8,7 +8,6 @@ import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.Configuration;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableEntity;
@@ -32,7 +31,6 @@ import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.net.URI;
@@ -103,9 +101,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
             .buildAsyncClient();
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> {
-            Response<TableAsyncClient> tableClientResponse = malformedClient.createTableWithResponse(tableName,null).block(TIMEOUT);
-        }, assertionString);
+        assertThrows(IllegalArgumentException.class, () -> malformedClient.createTableWithResponse(tableName, null).block(TIMEOUT), assertionString);
     }
 
 
@@ -122,13 +118,11 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
             .build();
 
         TableServiceAsyncClient malformedClient = getClientBuilder(Configuration.getGlobalConfiguration().get(
-            "TABLES_ENDPOINT","https://tablestests.table.core.windows.com")+"/"+tableName,credential,true)
+            "TABLES_ENDPOINT", "https://tablestests.table.core.windows.com") + "/" + tableName, credential, true)
             .buildAsyncClient();
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, ()-> {
-            Response<Void> voidResponse = malformedClient.deleteTableWithResponse(tableName,null).block(TIMEOUT);
-        }, assertionString);
+        assertThrows(IllegalArgumentException.class, () -> malformedClient.deleteTableWithResponse(tableName, null).block(TIMEOUT), assertionString);
     }
 
     /**

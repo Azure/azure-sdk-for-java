@@ -143,14 +143,12 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
             .build();
 
         TableServiceClient malformedClient = getClientBuilder(Configuration.getGlobalConfiguration().get(
-            "TABLES_ENDPOINT","https://tablestests.table.core.windows.com")+"/"+tableName,credential,true)
+            "TABLES_ENDPOINT", "https://tablestests.table.core.windows.com") + "/" + tableName, credential, true)
             .buildClient();
 
         Duration timeout = Duration.ofSeconds(120);
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> {
-            Response<TableClient> tableClientResponse = malformedClient.createTableWithResponse(tableName,timeout,null);
-        }, assertionString);
+        assertThrows(IllegalArgumentException.class, () -> malformedClient.createTableWithResponse(tableName, timeout, null), assertionString);
     }
 
     @Test
@@ -166,14 +164,12 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
             .build();
 
         TableServiceClient malformedClient = getClientBuilder(Configuration.getGlobalConfiguration().get(
-            "TABLES_ENDPOINT","https://tablestests.table.core.windows.com")+"/"+tableName,credential,true)
+            "TABLES_ENDPOINT", "https://tablestests.table.core.windows.com") + "/" + tableName, credential, true)
             .buildClient();
 
         Duration timeout = Duration.ofSeconds(120);
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, ()-> {
-            Response<Void> voidResponse = malformedClient.deleteTableWithResponse(tableName,timeout,null);
-        }, assertionString);
+        assertThrows(IllegalArgumentException.class, () -> malformedClient.deleteTableWithResponse(tableName, timeout, null), assertionString);
     }
 
     @Test
