@@ -1,15 +1,5 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 1.0.7 (2022-08-10)
 
 ### Other Changes
@@ -18,13 +8,6 @@
 
 - Upgraded `azure-core` from `1.30.0` to version `1.31.0`.
 - Upgraded `azure-core-http-netty` from `1.12.3` to version `1.12.4`.
-
-## 1.1.0-beta.1 (2022-04-08)
-
-### Features Added
-
-- Added interfaces from `com.azure.core.client.traits` to `ContainerRegistryClientBuilder`.
-- Added support for `ContainerRegistryBlobAsyncClient`.
 
 ## 1.0.6 (2022-07-06)
 
@@ -96,6 +79,7 @@
 ### New features
 - Enabled support for the stable `2021-07-01` swagger api-version.
 - Removed `getTeleportEnabled` and `setTeleportEnabled` field from `RepositoryProperties`.
+
 
 ## 1.0.0-beta.4 (2021-08-20)
 ### Breaking Changes
