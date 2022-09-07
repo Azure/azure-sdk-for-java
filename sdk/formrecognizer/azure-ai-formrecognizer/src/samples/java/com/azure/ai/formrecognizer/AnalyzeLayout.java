@@ -6,7 +6,7 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient;
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientBuilder;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentTable;
 import com.azure.ai.formrecognizer.documentanalysis.models.Point;
 import com.azure.core.credential.AzureKeyCredential;
@@ -42,7 +42,7 @@ public class AnalyzeLayout {
         Path filePath = selectionMarkDocument.toPath();
         BinaryData selectionMarkDocumentData = BinaryData.fromFile(filePath);
 
-        SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeLayoutResultPoller =
+        SyncPoller<OperationResult, AnalyzeResult> analyzeLayoutResultPoller =
             client.beginAnalyzeDocument("prebuilt-layout", selectionMarkDocumentData, selectionMarkDocument.length());
 
         AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();

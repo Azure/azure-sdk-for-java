@@ -5,10 +5,10 @@ package com.azure.ai.formrecognizer.documentanalysis.implementation.util;
 
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentLine;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentPage;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentPageLengthUnit;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSelectionMark;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentWord;
-import com.azure.ai.formrecognizer.documentanalysis.models.LengthUnit;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSpan;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentWord;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ public final class DocumentPageHelper {
         void setAngle(DocumentPage documentPage, Float angle);
         void setWidth(DocumentPage documentPage, Float width);
         void setHeight(DocumentPage documentPage, Float height);
-        void setUnit(DocumentPage documentPage, LengthUnit unit);
+        void setUnit(DocumentPage documentPage, DocumentPageLengthUnit unit);
         void setSpans(DocumentPage documentPage, List<DocumentSpan> spans);
         void setWords(DocumentPage documentPage, List<DocumentWord> words);
         void setSelectionMarks(DocumentPage documentPage, List<DocumentSelectionMark> selectionMarks);
@@ -61,7 +61,7 @@ public final class DocumentPageHelper {
         accessor.setHeight(documentPage, height);
     }
 
-    static void setUnit(DocumentPage documentPage, LengthUnit unit) {
+    static void setUnit(DocumentPage documentPage, DocumentPageLengthUnit unit) {
         accessor.setUnit(documentPage, unit);
     }
 

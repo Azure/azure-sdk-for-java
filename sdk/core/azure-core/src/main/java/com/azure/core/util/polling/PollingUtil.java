@@ -21,23 +21,24 @@ class PollingUtil {
     private static final ClientLogger LOGGER = new ClientLogger(PollingUtil.class);
 
 
-    static <T> PollResponse<T> pollingLoop(PollingContext<T> pollingContext, Optional<Duration> timeout,
-                                                  Optional<LongRunningOperationStatus> statusToWaitFor,
+    static <T> PollResponse<T> pollingLoop(PollingContext<T> pollingContext, Duration timeout,
+                                                  LongRunningOperationStatus statusToWaitFor,
                                                   Function<PollingContext<T>, PollResponse<T>> pollOperation,
                                                   Duration pollInterval) {
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        boolean timeBound = timeout.isPresent();
+        boolean timeBound = timeout != null;
+        long timeoutInMillis = timeBound ? timeout.toMillis() : -1;
 
         long startTime = System.currentTimeMillis();
         pollingContext.setLatestResponse(pollOperation.apply(pollingContext));
         PollResponse<T> intermediatePollResponse = pollingContext.getLatestResponse();
         while (!intermediatePollResponse.getStatus().isComplete()) {
             long elapsedTime = System.currentTimeMillis() - startTime;
-            if (timeBound ?  elapsedTime >= timeout.get().toMillis() : false) {
+            if (timeBound ?  elapsedTime >= timeoutInMillis : false) {
                 scheduler.shutdown();
                 return intermediatePollResponse;
             }
-            if (statusToWaitFor.isPresent() && intermediatePollResponse.getStatus().equals(statusToWaitFor.get())) {
+            if (statusToWaitFor != null && intermediatePollResponse.getStatus().equals(statusToWaitFor)) {
                 scheduler.shutdown();
                 return intermediatePollResponse;
             }
@@ -48,12 +49,14 @@ class PollingUtil {
                     }, getDelay(intermediatePollResponse, pollInterval).toMillis(), TimeUnit.MILLISECONDS);
             try {
                 if (timeBound) {
-                    pollOp.get(timeout.get().toMillis() - elapsedTime, TimeUnit.MILLISECONDS);
+                    pollOp.get(timeoutInMillis - elapsedTime, TimeUnit.MILLISECONDS);
                 } else {
                     pollOp.get();
                 }
-            } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
+            } catch (InterruptedException | ExecutionException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            } catch (TimeoutException e) {
+                LOGGER.logThrowableAsError(new RuntimeException(e));
             }
             intermediatePollResponse = pollingContext.getLatestResponse();
         }

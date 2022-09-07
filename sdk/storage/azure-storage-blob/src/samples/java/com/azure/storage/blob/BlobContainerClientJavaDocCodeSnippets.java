@@ -18,7 +18,6 @@ import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
-import com.azure.storage.blob.options.BlobContainerRenameOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
@@ -511,28 +510,28 @@ public class BlobContainerClientJavaDocCodeSnippets {
         // END: com.azure.storage.blob.BlobContainerClient.deleteIfExistsWithResponse#BlobRequestConditions-Duration-Context
     }
 
-    /**
-     * Code snippet for {@link BlobContainerClient#rename(String)}
-     */
-    public void renameContainer() {
-        // BEGIN: com.azure.storage.blob.BlobContainerClient.rename#String
-        BlobContainerClient blobContainerClient = client.rename("newContainerName");
-        // END: com.azure.storage.blob.BlobContainerClient.rename#String
-    }
-
-    /**
-     * Code snippet for {@link BlobContainerClient#renameWithResponse(BlobContainerRenameOptions, Duration, Context)}
-     */
-    public void renameContainerWithResponse() {
-        // BEGIN: com.azure.storage.blob.BlobContainerClient.renameWithResponse#BlobContainerRenameOptions-Duration-Context
-        BlobRequestConditions requestConditions = new BlobRequestConditions().setLeaseId("lease-id");
-        Context context = new Context("Key", "Value");
-
-        BlobContainerClient blobContainerClient = client.renameWithResponse(
-            new BlobContainerRenameOptions("newContainerName")
-                .setRequestConditions(requestConditions),
-            Duration.ofSeconds(1),
-            context).getValue();
-        // END: com.azure.storage.blob.BlobContainerClient.renameWithResponse#BlobContainerRenameOptions-Duration-Context
-    }
+//    /**
+//     * Code snippet for {@link BlobContainerClient#rename(String)}
+//     */
+//    public void renameContainer() {
+//        // BEGIN: com.azure.storage.blob.BlobContainerClient.rename#String
+//        BlobContainerClient blobContainerClient = client.rename("newContainerName");
+//        // END: com.azure.storage.blob.BlobContainerClient.rename#String
+//    }
+//
+//    /**
+//     * Code snippet for {@link BlobContainerClient#renameWithResponse(BlobContainerRenameOptions, Duration, Context)}
+//     */
+//    public void renameContainerWithResponse() {
+//        // BEGIN: com.azure.storage.blob.BlobContainerClient.renameWithResponse#BlobContainerRenameOptions-Duration-Context
+//        BlobRequestConditions requestConditions = new BlobRequestConditions().setLeaseId("lease-id");
+//        Context context = new Context("Key", "Value");
+//
+//        BlobContainerClient blobContainerClient = client.renameWithResponse(
+//            new BlobContainerRenameOptions("newContainerName")
+//                .setRequestConditions(requestConditions),
+//            Duration.ofSeconds(1),
+//            context).getValue();
+//        // END: com.azure.storage.blob.BlobContainerClient.renameWithResponse#BlobContainerRenameOptions-Duration-Context
+//    }
 }

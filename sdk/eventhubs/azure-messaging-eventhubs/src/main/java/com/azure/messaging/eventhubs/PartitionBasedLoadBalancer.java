@@ -317,8 +317,6 @@ final class PartitionBasedLoadBalancer {
             .subscribe(partitionPumpManager::verifyPartitionConnection,
                 ex -> {
                     LOGGER.error("Error renewing partition ownership", ex);
-                    ErrorContext errorContext = new ErrorContext(partitionAgnosticContext, ex);
-                    processError.accept(errorContext);
                     isLoadBalancerRunning.set(false);
                 },
                 () -> isLoadBalancerRunning.set(false));
@@ -471,13 +469,13 @@ final class PartitionBasedLoadBalancer {
                         ownedPartitionCheckpointsTuple.getT2().get(po.getPartitionId())));
             },
                 ex -> {
-                    LOGGER.warning("Error while listing checkpoints", ex);
+                    LOGGER.warning("Error while claiming checkpoints", ex);
                     ErrorContext errorContext = new ErrorContext(partitionAgnosticContext, ex);
                     processError.accept(errorContext);
                     if (loadBalancingStrategy == LoadBalancingStrategy.BALANCED) {
                         isLoadBalancerRunning.set(false);
                     }
-                    throw LOGGER.logExceptionAsError(new IllegalStateException("Error while listing checkpoints", ex));
+                    throw LOGGER.logExceptionAsError(new IllegalStateException("Error while claiming checkpoints", ex));
                 },
                 () -> {
                     if (loadBalancingStrategy == LoadBalancingStrategy.BALANCED) {

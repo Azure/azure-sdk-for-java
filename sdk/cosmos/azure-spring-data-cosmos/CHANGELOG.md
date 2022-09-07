@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixing pagination bug when performing a cross-partition query to fill every page and fix the total page count reporting. - See [PR 30694](https://github.com/Azure/azure-sdk-for-java/pull/30694)
 
 #### Other Changes
 

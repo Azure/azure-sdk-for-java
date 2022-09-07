@@ -3,6 +3,8 @@
 
 package com.azure.json;
 
+import java.io.IOException;
+
 /**
  * Indicates that the implementing class can be serialized to and deserialized from JSON.
  * <p>
@@ -29,8 +31,9 @@ public interface JsonSerializable<T extends JsonSerializable<T>> {
      *
      * @param jsonWriter Where the object's JSON will be written.
      * @return The {@link JsonWriter} where the JSON was written.
+     * @throws IOException If the object fails to be written to the {@code jsonWriter}.
      */
-    JsonWriter toJson(JsonWriter jsonWriter);
+    JsonWriter toJson(JsonWriter jsonWriter) throws IOException;
 
     /**
      * Reads a JSON stream into an object.
@@ -41,8 +44,9 @@ public interface JsonSerializable<T extends JsonSerializable<T>> {
      * @param jsonReader The {@link JsonReader} being read.
      * @param <T> The type of the object.
      * @return The object that the JSON stream represented, may return null.
+     * @throws IOException If an object fails to be read from the {@code jsonReader}.
      */
-    static <T extends JsonSerializable<T>> T fromJson(JsonReader jsonReader) {
+    static <T extends JsonSerializable<T>> T fromJson(JsonReader jsonReader) throws IOException {
         throw new UnsupportedOperationException("Implementation of JsonSerializable must define this factory method.");
     }
 }
