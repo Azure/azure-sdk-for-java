@@ -99,7 +99,8 @@ public class AzureSpringBootVersionVerifier {
         for (String acceptedVersion : acceptedVersions) {
             try {
                 if (this.matchSpringBootVersionFromManifest(acceptedVersion)) {
-                    LOGGER.debug("Current Spring Boot version matching succeeds in Spring Cloud Azure supported versions [{}].", acceptedVersion);
+                    LOGGER.debug("Current Spring Boot version matching succeeds in Spring Cloud Azure supported "
+                        + "versions [{}].", acceptedVersion);
                     return true;
                 }
             } catch (FileNotFoundException e) {
