@@ -411,7 +411,7 @@ public class SimpleSyncPollerTests {
             fetchResultOperation);
 
         RuntimeException exception = assertThrows(RuntimeException.class, poller::getFinalResult);
-        assertEquals(exception.getMessage(), "Polling operation failed!");
+        assertTrue(exception.getMessage().contains("Polling operation failed!"));
     }
 
     @Test

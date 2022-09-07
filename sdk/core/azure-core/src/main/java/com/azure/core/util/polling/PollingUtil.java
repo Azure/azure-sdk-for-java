@@ -10,6 +10,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Optional;
+import java.util.concurrent.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -24,27 +25,40 @@ class PollingUtil {
                                                   Optional<LongRunningOperationStatus> statusToWaitFor,
                                                   Function<PollingContext<T>, PollResponse<T>> pollOperation,
                                                   Duration pollInterval) {
+        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         boolean timeBound = timeout.isPresent();
+
         long startTime = System.currentTimeMillis();
-        PollResponse<T> pollResponse = pollOperation.apply(pollingContext);
-        pollingContext.setLatestResponse(pollResponse);
+        pollingContext.setLatestResponse(pollOperation.apply(pollingContext));
         PollResponse<T> intermediatePollResponse = pollingContext.getLatestResponse();
-        while (!pollResponse.getStatus().isComplete()
-            && (timeBound ? (System.currentTimeMillis() - startTime) < timeout.get().toMillis() : true)) {
-            try {
-                if (statusToWaitFor.isPresent() && pollResponse.getStatus().equals(statusToWaitFor.get())) {
-                    return intermediatePollResponse;
-                }
-                Thread.sleep(getDelay(pollResponse, pollInterval).toMillis());
-                // Document that Poll operation respects timeout, cannot interrupt it from here.
-                pollResponse = pollOperation.apply(pollingContext);
-                pollingContext.setLatestResponse(pollResponse);
-                intermediatePollResponse = pollingContext.getLatestResponse();
-            } catch (InterruptedException ex) {
-                throw LOGGER.logExceptionAsError(Exceptions.propagate(ex));
+        while (!intermediatePollResponse.getStatus().isComplete()) {
+            long elapsedTime = System.currentTimeMillis() - startTime;
+            if (timeBound ?  elapsedTime >= timeout.get().toMillis() : false) {
+                scheduler.shutdown();
+                return intermediatePollResponse;
             }
+            if (statusToWaitFor.isPresent() && intermediatePollResponse.getStatus().equals(statusToWaitFor.get())) {
+                scheduler.shutdown();
+                return intermediatePollResponse;
+            }
+            final ScheduledFuture<?> pollOp =
+                scheduler.schedule(() -> {
+                    PollResponse<T> pollResponse1 = pollOperation.apply(pollingContext);
+                    pollingContext.setLatestResponse(pollResponse1);
+                    }, getDelay(intermediatePollResponse, pollInterval).toMillis(), TimeUnit.MILLISECONDS);
+            try {
+                if (timeBound) {
+                    pollOp.get(timeout.get().toMillis() - elapsedTime, TimeUnit.MILLISECONDS);
+                } else {
+                    pollOp.get();
+                }
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
+            }
+            intermediatePollResponse = pollingContext.getLatestResponse();
         }
 
+        scheduler.shutdown();
         return intermediatePollResponse;
     }
 

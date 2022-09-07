@@ -10,11 +10,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
- * INTERNAL PACKAGE PRIVATE CLASS
- *
- * Default implementation of {@link SyncPoller} that uses blocking reactor call underneath.
- * The DefaultSyncPoller is not thread safe but we make every attempt to be safe in cases
- * it is possible to be so, e.g. by using volatile and copying context.
+ * Default implementation of {@link SyncPoller}.
  *
  * @param <T> The type of poll response value
  * @param <U> The type of the final result of the long running operation
@@ -23,7 +19,7 @@ public final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
     private final SyncPoller<T, U> syncPoller;
 
     /**
-     * Creates SimpleSyncPoller.
+     * Creates DefaultSyncPoller.
      *
      * @param pollInterval the polling interval.
      * @param syncActivationOperation the operation to synchronously activate (start) the long running operation,
@@ -52,7 +48,7 @@ public final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
 
 
     /**
-     * Creates an instance of Default Sync Poller.
+     * Creates an instance of DefaultSyncPoller.
      * @param syncPoller the poller instance to use.
      */
     DefaultSyncPoller(SyncPoller<T, U> syncPoller) {
