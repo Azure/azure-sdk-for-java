@@ -4,6 +4,7 @@
 package com.azure.xml;
 
 import javax.xml.stream.XMLStreamException;
+import java.io.IOException;
 import java.util.function.Function;
 
 /**
@@ -20,6 +21,9 @@ public interface XMLStreamExceptionFunction<T, R> {
      * @param input Input to the function.
      * @return The output of the function.
      * @throws XMLStreamException If an XML stream error occurs during application of the function.
+     * @throws IOException If an I/O error occurs during application of the function, {@link XmlReader} and
+     * {@link XmlWriter} APIs will catch {@link IOException IOExceptions} and wrap them in an
+     * {@link XMLStreamException}.
      */
-    R apply(T input) throws XMLStreamException;
+    R apply(T input) throws XMLStreamException, IOException;
 }
