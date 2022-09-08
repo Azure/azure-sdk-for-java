@@ -252,7 +252,7 @@ public final class UrlBuilder {
         // queryToCopy hasn't been copied yet as no operations on query parameters have been applied since creating
         // this UrlBuilder. Use queryToCopy to create the query string and while doing so copy it into query.
         if (query == null) {
-            query = new LinkedHashMap<>();
+            query = new LinkedHashMap<>(queryToCopy.size());
 
             for (Map.Entry<String, QueryParameter> entry : queryToCopy.entrySet()) {
                 first = writeQueryValues(stringBuilder, entry.getKey(), entry.getValue().getValuesList(), first);

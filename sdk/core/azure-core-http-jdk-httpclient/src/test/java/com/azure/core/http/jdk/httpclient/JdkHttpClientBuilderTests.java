@@ -14,13 +14,6 @@ import com.azure.core.util.ConfigurationSource;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
-import java.util.TreeSet;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledForJreRange;
 import org.junit.jupiter.api.condition.JRE;
@@ -30,6 +23,12 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -47,7 +46,7 @@ import static org.mockito.Mockito.when;
  * Tests {@link JdkAsyncHttpClientBuilder}.
  */
 @DisabledForJreRange(max = JRE.JAVA_11)
-public class JdkAsyncHttpClientBuilderTests {
+public class JdkHttpClientBuilderTests {
     private static final String PROXY_USERNAME = "foo";
     private static final String PROXY_PASSWORD = "bar";
     private static final String PROXY_USER_INFO = PROXY_USERNAME + ":" + PROXY_PASSWORD + "@";
@@ -55,7 +54,7 @@ public class JdkAsyncHttpClientBuilderTests {
     private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
 
     /**
-     * Tests that an {@link JdkAsyncHttpClient} is able to be built from an existing
+     * Tests that an {@link JdkHttpClient} is able to be built from an existing
      * {@link java.net.http.HttpClient.Builder}.
      */
     @Test
@@ -71,7 +70,7 @@ public class JdkAsyncHttpClientBuilderTests {
             }
         });
 
-        final JdkAsyncHttpClient client = (JdkAsyncHttpClient) new JdkAsyncHttpClientBuilder(existingClientBuilder)
+        final JdkHttpClient client = (JdkHttpClient) new JdkAsyncHttpClientBuilder(existingClientBuilder)
             .build();
 
         final String defaultPath = "/default";
@@ -94,7 +93,7 @@ public class JdkAsyncHttpClientBuilderTests {
     }
 
     /**
-     * Tests that instantiating an {@link JdkAsyncHttpClientBuilder} with a {@code null} {@link JdkAsyncHttpClient}
+     * Tests that instantiating an {@link JdkAsyncHttpClientBuilder} with a {@code null} {@link JdkHttpClient}
      * will throw a {@link NullPointerException}.
      */
     @Test

@@ -13,10 +13,10 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.Objects;
 
 /**
  * Default {@link XmlWriter} implementation based on {@link XMLStreamReader}.
@@ -39,49 +39,51 @@ public final class DefaultXmlReader extends XmlReader {
      *
      * @param xml The XML to parse.
      * @return A new {@link XmlReader} instance.
+     * @throws NullPointerException If {@code xml} is null.
+     * @throws XMLStreamException If an {@link XmlReader} cannot be instantiated.
      */
-    public static XmlReader fromBytes(byte[] xml) {
+    public static XmlReader fromBytes(byte[] xml) throws XMLStreamException {
+        Objects.requireNonNull(xml, "'xml' cannot be null.");
         return fromStream(new ByteArrayInputStream(xml));
     }
 
     /**
-     * Creates an {@link XMLStreamReader}-based {@link XmlReader} that parses the passed {@code xml}.
+     * Creates an {@link XmlReader} that parses the passed {@code xml}.
      *
      * @param xml The XML to parse.
      * @return A new {@link XmlReader} instance.
+     * @throws NullPointerException If {@code xml} is null.
+     * @throws XMLStreamException If an {@link XmlReader} cannot be instantiated.
      */
-    public static XmlReader fromString(String xml) {
+    public static XmlReader fromString(String xml) throws XMLStreamException {
+        Objects.requireNonNull(xml, "'xml' cannot be null.");
         return fromReader(new StringReader(xml));
     }
 
     /**
-     * Creates an {@link XMLStreamReader}-based {@link XmlReader} that parses the passed {@code xml}.
+     * Creates an {@link XmlReader} that parses the passed {@code xml}.
      *
      * @param xml The XML to parse.
      * @return A new {@link XmlReader} instance.
-     * @throws RuntimeException If an {@link XmlReader} cannot be instantiated.
+     * @throws NullPointerException If {@code xml} is null.
+     * @throws XMLStreamException If an {@link XmlReader} cannot be instantiated.
      */
-    public static XmlReader fromStream(InputStream xml) {
-        try {
-            return new DefaultXmlReader(XML_INPUT_FACTORY.createXMLStreamReader(xml));
-        } catch (XMLStreamException e) {
-            throw new RuntimeException(e);
-        }
+    public static XmlReader fromStream(InputStream xml) throws XMLStreamException {
+        Objects.requireNonNull(xml, "'xml' cannot be null.");
+        return new DefaultXmlReader(XML_INPUT_FACTORY.createXMLStreamReader(xml));
     }
 
     /**
-     * Creates an {@link XMLStreamReader}-based {@link XmlReader} that parses the passed {@code xml}.
+     * Creates an {@link XmlReader} that parses the passed {@code xml}.
      *
      * @param xml The XML to parse.
      * @return A new {@link XmlReader} instance.
-     * @throws RuntimeException If an {@link XmlReader} cannot be instantiated.
+     * @throws NullPointerException If {@code xml} is null.
+     * @throws XMLStreamException If an {@link XmlReader} cannot be instantiated.
      */
-    public static XmlReader fromReader(Reader xml) {
-        try {
-            return new DefaultXmlReader(XML_INPUT_FACTORY.createXMLStreamReader(xml));
-        } catch (XMLStreamException e) {
-            throw new RuntimeException(e);
-        }
+    public static XmlReader fromReader(Reader xml) throws XMLStreamException {
+        Objects.requireNonNull(xml, "'xml' cannot be null.");
+        return new DefaultXmlReader(XML_INPUT_FACTORY.createXMLStreamReader(xml));
     }
 
     private DefaultXmlReader(XMLStreamReader reader) {
@@ -95,20 +97,16 @@ public final class DefaultXmlReader extends XmlReader {
     }
 
     @Override
-    public XmlToken nextElement() {
-        try {
-            int next = reader.next();
-            while (next != XMLStreamConstants.START_ELEMENT
-                && next != XMLStreamConstants.END_ELEMENT
-                && next != XMLStreamConstants.END_DOCUMENT) {
-                next = reader.next();
-            }
-
-            currentToken = convertEventToToken(next);
-            return currentToken;
-        } catch (XMLStreamException e) {
-            throw new RuntimeException(e);
+    public XmlToken nextElement() throws XMLStreamException {
+        int next = reader.next();
+        while (next != XMLStreamConstants.START_ELEMENT
+            && next != XMLStreamConstants.END_ELEMENT
+            && next != XMLStreamConstants.END_DOCUMENT) {
+            next = reader.next();
         }
+
+        currentToken = convertEventToToken(next);
+        return currentToken;
     }
 
     @Override
@@ -117,74 +115,70 @@ public final class DefaultXmlReader extends XmlReader {
     }
 
     @Override
-    public String getStringElement() {
-        try {
-            // The default getElementText implementation in the JDK uses an internal buffer as the API handles merging
-            // multiple text states, characters, CDATA, space, and entity reference, into a single String. This
-            // generally results in overhead as most cases will only have a single read performed but that read will
-            // be buffered into the buffer and then returned as-is. So instead, a custom implementation will be used
-            // where a small String buffer will be used to contain the intermediate reads and when the terminal state
-            // is reached if only a single read was performed the String can be return, and if the unlikely multiple
-            // read scenario is triggered those Strings can be concatenated.
-            //
-            // This logic continues to work even if the underlying XMLStreamReader implementation, such as the one
-            // used in Jackson XML through Woodstox, handles this already.
+    public String getStringElement() throws XMLStreamException {
+        // The default getElementText implementation in the JDK uses an internal buffer as the API handles merging
+        // multiple text states, characters, CDATA, space, and entity reference, into a single String. This
+        // generally results in overhead as most cases will only have a single read performed but that read will
+        // be buffered into the buffer and then returned as-is. So instead, a custom implementation will be used
+        // where a small String buffer will be used to contain the intermediate reads and when the terminal state
+        // is reached if only a single read was performed the String can be return, and if the unlikely multiple
+        // read scenario is triggered those Strings can be concatenated.
+        //
+        // This logic continues to work even if the underlying XMLStreamReader implementation, such as the one
+        // used in Jackson XML through Woodstox, handles this already.
 
-            int readCount = 0;
-            String firstRead = null;
-            String[] buffer = null;
-            int stringBufferSize = 0;
-            int nextEvent = reader.next();
+        int readCount = 0;
+        String firstRead = null;
+        String[] buffer = null;
+        int stringBufferSize = 0;
+        int nextEvent = reader.next();
 
-            // Continue reading until the next event is the end of the element or an exception state.
-            while (nextEvent != XMLStreamConstants.END_ELEMENT) {
-                if (nextEvent == XMLStreamConstants.CHARACTERS
-                    || nextEvent == XMLStreamConstants.CDATA
-                    || nextEvent == XMLStreamConstants.SPACE
-                    || nextEvent == XMLStreamConstants.ENTITY_REFERENCE) {
-                    readCount++;
-                    if (readCount == 1) {
-                        firstRead = reader.getText();
-                        stringBufferSize = firstRead.length();
-                    } else {
-                        if (readCount == 2) {
-                            buffer = new String[4];
-                            buffer[0] = firstRead;
-                        }
-
-                        if (readCount > buffer.length - 1) {
-                            String[] newBuffer = new String[buffer.length * 2];
-                            System.arraycopy(buffer, 0, newBuffer, 0, buffer.length);
-                            buffer = newBuffer;
-                        }
-
-                        String readText = reader.getText();
-                        buffer[readCount - 1] = readText;
-                        stringBufferSize += readText.length();
+        // Continue reading until the next event is the end of the element or an exception state.
+        while (nextEvent != XMLStreamConstants.END_ELEMENT) {
+            if (nextEvent == XMLStreamConstants.CHARACTERS
+                || nextEvent == XMLStreamConstants.CDATA
+                || nextEvent == XMLStreamConstants.SPACE
+                || nextEvent == XMLStreamConstants.ENTITY_REFERENCE) {
+                readCount++;
+                if (readCount == 1) {
+                    firstRead = reader.getText();
+                    stringBufferSize = firstRead.length();
+                } else {
+                    if (readCount == 2) {
+                        buffer = new String[4];
+                        buffer[0] = firstRead;
                     }
-                } else if (nextEvent != XMLStreamConstants.PROCESSING_INSTRUCTION
-                    && nextEvent != XMLStreamConstants.COMMENT) {
-                    // Processing instructions and comments are ignored but anything else is unexpected.
-                    throw new XMLStreamException("Unexpected event type while reading element value " + nextEvent);
-                }
 
-                nextEvent = reader.next();
+                    if (readCount > buffer.length - 1) {
+                        String[] newBuffer = new String[buffer.length * 2];
+                        System.arraycopy(buffer, 0, newBuffer, 0, buffer.length);
+                        buffer = newBuffer;
+                    }
+
+                    String readText = reader.getText();
+                    buffer[readCount - 1] = readText;
+                    stringBufferSize += readText.length();
+                }
+            } else if (nextEvent != XMLStreamConstants.PROCESSING_INSTRUCTION
+                && nextEvent != XMLStreamConstants.COMMENT) {
+                // Processing instructions and comments are ignored but anything else is unexpected.
+                throw new XMLStreamException("Unexpected event type while reading element value " + nextEvent);
             }
 
-            if (readCount == 0) {
-                return null;
-            } else if (readCount == 1) {
-                return firstRead;
-            } else {
-                StringBuilder finalText = new StringBuilder(stringBufferSize);
-                for (int i = 0; i < readCount; i++) {
-                    finalText.append(buffer[i]);
-                }
+            nextEvent = reader.next();
+        }
 
-                return finalText.toString();
+        if (readCount == 0) {
+            return null;
+        } else if (readCount == 1) {
+            return firstRead;
+        } else {
+            StringBuilder finalText = new StringBuilder(stringBufferSize);
+            for (String str : buffer) {
+                finalText.append(str);
             }
-        } catch (XMLStreamException e) {
-            throw new RuntimeException(e);
+
+            return finalText.toString();
         }
     }
 
@@ -197,12 +191,8 @@ public final class DefaultXmlReader extends XmlReader {
     }
 
     @Override
-    public void close() throws IOException {
-        try {
-            reader.close();
-        } catch (XMLStreamException e) {
-            throw new IOException(e);
-        }
+    public void close() throws XMLStreamException {
+        reader.close();
     }
 
     private static XmlToken convertEventToToken(int event) {
