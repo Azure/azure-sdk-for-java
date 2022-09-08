@@ -23,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CommunicationIdentityTests extends CommunicationIdentityClientTestBase {
     private static final String TEST_SUFFIX = "Sync";
     private CommunicationIdentityClient client;
-    private static final String OVERFLOW_MESSAGE = "The tokenExpiresAfter argument is out of permitted bounds. Please refer to the documentation and set the value accordingly.";
 
     @Test
     public void createIdentityClientUsingConnectionString() {
@@ -175,7 +174,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
             client.createUserAndToken(scopes, tokenExpiresAfter);
         } catch (IllegalArgumentException exception) {
             assertNotNull(exception.getMessage());
-            assertTrue(exception.getMessage().equals(OVERFLOW_MESSAGE));
+            assertTrue(exception.getMessage().equals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE));
             return;
         }
         fail("An exception should have been thrown.");
@@ -193,7 +192,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
             client.createUserAndTokenWithResponse(scopes, tokenExpiresAfter, Context.NONE);
         } catch (IllegalArgumentException exception) {
             assertNotNull(exception.getMessage());
-            assertTrue(exception.getMessage().equals(OVERFLOW_MESSAGE));
+            assertTrue(exception.getMessage().equals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE));
             return;
         }
         fail("An exception should have been thrown.");
@@ -402,7 +401,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
             client.getToken(communicationUser, scopes, tokenExpiresAfter);
         } catch (IllegalArgumentException exception) {
             assertNotNull(exception.getMessage());
-            assertTrue(exception.getMessage().equals(OVERFLOW_MESSAGE));
+            assertTrue(exception.getMessage().equals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE));
             return;
         }
         fail("An exception should have been thrown.");
@@ -421,7 +420,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
             client.getTokenWithResponse(communicationUser, scopes, tokenExpiresAfter, Context.NONE);
         } catch (IllegalArgumentException exception) {
             assertNotNull(exception.getMessage());
-            assertTrue(exception.getMessage().equals(OVERFLOW_MESSAGE));
+            assertTrue(exception.getMessage().equals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE));
             return;
         }
         fail("An exception should have been thrown.");

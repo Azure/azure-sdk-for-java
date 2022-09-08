@@ -26,7 +26,6 @@ import static com.azure.communication.identity.CteTestHelper.skipExchangeAadTeam
 
 public class CommunicationIdentityAsyncTests extends CommunicationIdentityClientTestBase {
     private CommunicationIdentityAsyncClient asyncClient;
-    private static final String OVERFLOW_MESSAGE = "The tokenExpiresAfter argument is out of permitted bounds. Please refer to the documentation and set the value accordingly.";
 
     @Test
     public void createAsyncIdentityClientUsingConnectionString() {
@@ -180,7 +179,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             .verifyErrorSatisfies(throwable -> {
                 assertTrue(throwable instanceof IllegalArgumentException);
                 assertNotNull(throwable.getMessage());
-                assertTrue(throwable.getMessage().equals(OVERFLOW_MESSAGE));
+                assertTrue(throwable.getMessage().equals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE));
             });
     }
 
@@ -198,7 +197,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             .verifyErrorSatisfies(throwable -> {
                 assertTrue(throwable instanceof IllegalArgumentException);
                 assertNotNull(throwable.getMessage());
-                assertTrue(throwable.getMessage().equals(OVERFLOW_MESSAGE));
+                assertTrue(throwable.getMessage().equals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE));
             });
     }
 
@@ -480,7 +479,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             .verifyErrorSatisfies(throwable -> {
                 assertTrue(throwable instanceof IllegalArgumentException);
                 assertNotNull(throwable.getMessage());
-                assertTrue(throwable.getMessage().equals(OVERFLOW_MESSAGE));
+                assertTrue(throwable.getMessage().equals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE));
             });
     }
 
@@ -500,7 +499,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             .verifyErrorSatisfies(throwable -> {
                 assertTrue(throwable instanceof IllegalArgumentException);
                 assertNotNull(throwable.getMessage());
-                assertTrue(throwable.getMessage().equals(OVERFLOW_MESSAGE));
+                assertTrue(throwable.getMessage().equals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE));
             });
     }
 

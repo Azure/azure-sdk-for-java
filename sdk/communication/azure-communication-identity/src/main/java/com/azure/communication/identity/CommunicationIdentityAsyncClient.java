@@ -61,9 +61,9 @@ import static com.azure.core.util.FluxUtil.monoError;
 @ServiceClient(builder = CommunicationIdentityClientBuilder.class, isAsync = true)
 public final class CommunicationIdentityAsyncClient {
 
-    private static final String OVERFLOW_MESSAGE = "The tokenExpiresAfter argument is out of permitted bounds. Please refer to the documentation and set the value accordingly.";
     private final CommunicationIdentitiesImpl client;
     private final ClientLogger logger = new ClientLogger(CommunicationIdentityAsyncClient.class);
+    private final CommunicationIdentityClientUtils utils = new CommunicationIdentityClientUtils();
 
     CommunicationIdentityAsyncClient(CommunicationIdentityClientImpl communicationIdentityServiceClient) {
         client = communicationIdentityServiceClient.getCommunicationIdentities();
@@ -126,21 +126,8 @@ public final class CommunicationIdentityAsyncClient {
             Objects.requireNonNull(scopes);
             final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
 
-            CommunicationIdentityCreateRequest communicationIdentityCreateRequest = new CommunicationIdentityCreateRequest();
-            communicationIdentityCreateRequest.setCreateTokenWithScopes(scopesInput);
-
-            int expiresInMinutes;
-
-            if (tokenExpiresAfter != null) {
-                try {
-                    expiresInMinutes = Math.toIntExact(tokenExpiresAfter.toMinutes());
-                }
-                catch (ArithmeticException ex){
-                    IllegalArgumentException expiresAfterOverflowEx = new IllegalArgumentException(OVERFLOW_MESSAGE, ex);
-                    return monoError(logger, expiresAfterOverflowEx);
-                }
-                communicationIdentityCreateRequest.setExpiresInMinutes(expiresInMinutes);
-            }
+            CommunicationIdentityCreateRequest communicationIdentityCreateRequest =
+                utils.createCommunicationIdentityCreateRequest(scopesInput, tokenExpiresAfter, logger);
 
             return client.createAsync(communicationIdentityCreateRequest)
                 .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
@@ -163,12 +150,7 @@ public final class CommunicationIdentityAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CommunicationUserIdentifierAndToken>
         createUserAndToken(Iterable<CommunicationTokenScope> scopes) {
-        try {
-            Objects.requireNonNull(scopes);
             return createUserAndToken(scopes, null);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
     }
 
     /**
@@ -186,21 +168,8 @@ public final class CommunicationIdentityAsyncClient {
             Objects.requireNonNull(scopes);
             final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
 
-            CommunicationIdentityCreateRequest communicationIdentityCreateRequest = new CommunicationIdentityCreateRequest();
-            communicationIdentityCreateRequest.setCreateTokenWithScopes(scopesInput);
-
-            int expiresInMinutes;
-
-            if (tokenExpiresAfter != null) {
-                try {
-                    expiresInMinutes = Math.toIntExact(tokenExpiresAfter.toMinutes());
-                }
-                catch (ArithmeticException ex){
-                    IllegalArgumentException expiresAfterOverflowEx = new IllegalArgumentException(OVERFLOW_MESSAGE, ex);
-                    return monoError(logger, expiresAfterOverflowEx);
-                }
-                communicationIdentityCreateRequest.setExpiresInMinutes(expiresInMinutes);
-            }
+            CommunicationIdentityCreateRequest communicationIdentityCreateRequest =
+                utils.createCommunicationIdentityCreateRequest(scopesInput, tokenExpiresAfter, logger);
 
             return client.createWithResponseAsync(communicationIdentityCreateRequest)
                 .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
@@ -224,12 +193,7 @@ public final class CommunicationIdentityAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CommunicationUserIdentifierAndToken>>
         createUserAndTokenWithResponse(Iterable<CommunicationTokenScope> scopes) {
-        try {
-            Objects.requireNonNull(scopes);
             return createUserAndTokenWithResponse(scopes, null);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
     }
 
     /**
@@ -320,21 +284,8 @@ public final class CommunicationIdentityAsyncClient {
             Objects.requireNonNull(communicationUser);
             final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
 
-            CommunicationIdentityAccessTokenRequest tokenRequest = new CommunicationIdentityAccessTokenRequest();
-            tokenRequest.setScopes(scopesInput);
-
-            int expiresInMinutes;
-
-            if (tokenExpiresAfter != null) {
-                try {
-                    expiresInMinutes = Math.toIntExact(tokenExpiresAfter.toMinutes());
-                }
-                catch (ArithmeticException ex){
-                    IllegalArgumentException expiresAfterOverflowEx = new IllegalArgumentException(OVERFLOW_MESSAGE, ex);
-                    return monoError(logger, expiresAfterOverflowEx);
-                }
-                tokenRequest.setExpiresInMinutes(expiresInMinutes);
-            }
+            CommunicationIdentityAccessTokenRequest tokenRequest =
+                utils.createCommunicationIdentityAccessTokenRequest(scopesInput, tokenExpiresAfter, logger);
 
             return client.issueAccessTokenAsync(communicationUser.getId(),
                     tokenRequest
@@ -360,13 +311,7 @@ public final class CommunicationIdentityAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessToken> getToken(CommunicationUserIdentifier communicationUser,
         Iterable<CommunicationTokenScope> scopes) {
-        try {
-            Objects.requireNonNull(communicationUser);
-            Objects.requireNonNull(scopes);
             return getToken(communicationUser, scopes, null);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
     }
 
     /**
@@ -387,21 +332,8 @@ public final class CommunicationIdentityAsyncClient {
             Objects.requireNonNull(scopes);
             final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
 
-            CommunicationIdentityAccessTokenRequest tokenRequest = new CommunicationIdentityAccessTokenRequest();
-            tokenRequest.setScopes(scopesInput);
-
-            int expiresInMinutes;
-
-            if (tokenExpiresAfter != null) {
-                try {
-                    expiresInMinutes = Math.toIntExact(tokenExpiresAfter.toMinutes());
-                }
-                catch (ArithmeticException ex){
-                    IllegalArgumentException expiresAfterOverflowEx = new IllegalArgumentException(OVERFLOW_MESSAGE, ex);
-                    return monoError(logger, expiresAfterOverflowEx);
-                }
-                tokenRequest.setExpiresInMinutes(expiresInMinutes);
-            }
+            CommunicationIdentityAccessTokenRequest tokenRequest =
+                utils.createCommunicationIdentityAccessTokenRequest(scopesInput, tokenExpiresAfter, logger);
 
             return client.issueAccessTokenWithResponseAsync(communicationUser.getId(),
                     tokenRequest
@@ -428,13 +360,7 @@ public final class CommunicationIdentityAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessToken>> getTokenWithResponse(CommunicationUserIdentifier communicationUser,
         Iterable<CommunicationTokenScope> scopes) {
-        try {
-            Objects.requireNonNull(communicationUser);
-            Objects.requireNonNull(scopes);
             return getTokenWithResponse(communicationUser, scopes, null);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
     }
 
     /**

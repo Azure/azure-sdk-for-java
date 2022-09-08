@@ -53,9 +53,9 @@ import com.azure.core.util.logging.ClientLogger;
 @ServiceClient(builder = CommunicationIdentityClientBuilder.class, isAsync = false)
 public final class CommunicationIdentityClient {
 
-    private static final String OVERFLOW_MESSAGE = "The tokenExpiresAfter argument is out of permitted bounds. Please refer to the documentation and set the value accordingly.";
     private final CommunicationIdentitiesImpl client;
     private final ClientLogger logger = new ClientLogger(CommunicationIdentityClient.class);
+    private final CommunicationIdentityClientUtils utils = new CommunicationIdentityClientUtils();
 
     CommunicationIdentityClient(CommunicationIdentityClientImpl communicationIdentityClient) {
         client = communicationIdentityClient.getCommunicationIdentities();
@@ -108,13 +108,8 @@ public final class CommunicationIdentityClient {
         Objects.requireNonNull(scopes);
         final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
 
-        CommunicationIdentityCreateRequest communicationIdentityCreateRequest = new CommunicationIdentityCreateRequest();
-        communicationIdentityCreateRequest.setCreateTokenWithScopes(scopesInput);
-
-        if (tokenExpiresAfter != null) {
-            int expiresInMinutes = getTokenExpirationInMinutes(tokenExpiresAfter);
-            communicationIdentityCreateRequest.setExpiresInMinutes(expiresInMinutes);
-        }
+        CommunicationIdentityCreateRequest communicationIdentityCreateRequest =
+            utils.createCommunicationIdentityCreateRequest(scopesInput, tokenExpiresAfter, logger);
 
         CommunicationIdentityAccessTokenResult result = client.create(communicationIdentityCreateRequest);
         return userWithAccessTokenResultConverter(result);
@@ -129,7 +124,6 @@ public final class CommunicationIdentityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunicationUserIdentifierAndToken createUserAndToken(
         Iterable<CommunicationTokenScope> scopes) {
-        Objects.requireNonNull(scopes);
         return createUserAndToken(scopes, null);
     }
 
@@ -149,13 +143,8 @@ public final class CommunicationIdentityClient {
         context = context == null ? Context.NONE : context;
         final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
 
-        CommunicationIdentityCreateRequest communicationIdentityCreateRequest = new CommunicationIdentityCreateRequest();
-        communicationIdentityCreateRequest.setCreateTokenWithScopes(scopesInput);
-
-        if (tokenExpiresAfter != null) {
-            int expiresInMinutes = getTokenExpirationInMinutes(tokenExpiresAfter);
-            communicationIdentityCreateRequest.setExpiresInMinutes(expiresInMinutes);
-        }
+        CommunicationIdentityCreateRequest communicationIdentityCreateRequest =
+            utils.createCommunicationIdentityCreateRequest(scopesInput, tokenExpiresAfter, logger);
 
         Response<CommunicationIdentityAccessTokenResult> response = client.createWithResponseAsync(
             communicationIdentityCreateRequest, context).block();
@@ -178,8 +167,6 @@ public final class CommunicationIdentityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunicationUserIdentifierAndToken> createUserAndTokenWithResponse(
         Iterable<CommunicationTokenScope> scopes, Context context) {
-        Objects.requireNonNull(scopes);
-        context = context == null ? Context.NONE : context;
         return createUserAndTokenWithResponse(scopes, null, context);
     }
 
@@ -255,13 +242,8 @@ public final class CommunicationIdentityClient {
         Objects.requireNonNull(scopes);
         final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
 
-        CommunicationIdentityAccessTokenRequest tokenRequest = new CommunicationIdentityAccessTokenRequest();
-        tokenRequest.setScopes(scopesInput);
-
-        if (tokenExpiresAfter != null) {
-            int expiresInMinutes = getTokenExpirationInMinutes(tokenExpiresAfter);
-            tokenRequest.setExpiresInMinutes(expiresInMinutes);
-        }
+        CommunicationIdentityAccessTokenRequest tokenRequest =
+            utils.createCommunicationIdentityAccessTokenRequest(scopesInput, tokenExpiresAfter, logger);
 
         CommunicationIdentityAccessToken rawToken = client.issueAccessToken(
             communicationUser.getId(),
@@ -280,8 +262,6 @@ public final class CommunicationIdentityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessToken getToken(CommunicationUserIdentifier communicationUser,
         Iterable<CommunicationTokenScope> scopes) {
-        Objects.requireNonNull(communicationUser);
-        Objects.requireNonNull(scopes);
         return getToken(communicationUser, scopes, null);
     }
 
@@ -307,13 +287,8 @@ public final class CommunicationIdentityClient {
         context = context == null ? Context.NONE : context;
         final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
 
-        CommunicationIdentityAccessTokenRequest tokenRequest = new CommunicationIdentityAccessTokenRequest();
-        tokenRequest.setScopes(scopesInput);
-
-        if (tokenExpiresAfter != null) {
-            int expiresInMinutes = getTokenExpirationInMinutes(tokenExpiresAfter);
-            tokenRequest.setExpiresInMinutes(expiresInMinutes);
-        }
+        CommunicationIdentityAccessTokenRequest tokenRequest =
+            utils.createCommunicationIdentityAccessTokenRequest(scopesInput, tokenExpiresAfter, logger);
 
         Response<CommunicationIdentityAccessToken> response = client.issueAccessTokenWithResponseAsync(
                 communicationUser.getId(),
@@ -342,9 +317,6 @@ public final class CommunicationIdentityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessToken> getTokenWithResponse(CommunicationUserIdentifier communicationUser,
         Iterable<CommunicationTokenScope> scopes, Context context) {
-        Objects.requireNonNull(communicationUser);
-        Objects.requireNonNull(scopes);
-        context = context == null ? Context.NONE : context;
         return getTokenWithResponse(communicationUser, scopes, null, context);
     }
 
@@ -391,14 +363,5 @@ public final class CommunicationIdentityClient {
         return new SimpleResponse<AccessToken>(
             response,
             new AccessToken(response.getValue().getToken(), response.getValue().getExpiresOn()));
-    }
-
-    private int getTokenExpirationInMinutes(Duration tokenExpiresAfter) {
-        try {
-            return Math.toIntExact(tokenExpiresAfter.toMinutes());
-        } catch (ArithmeticException ex) {
-            IllegalArgumentException expiresAfterOverflowEx = new IllegalArgumentException(OVERFLOW_MESSAGE, ex);
-            throw logger.logExceptionAsError(expiresAfterOverflowEx);
-        }
     }
 }
