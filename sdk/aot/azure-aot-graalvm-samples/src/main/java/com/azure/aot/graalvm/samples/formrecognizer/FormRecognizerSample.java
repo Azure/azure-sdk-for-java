@@ -14,7 +14,6 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
@@ -44,14 +43,6 @@ public class FormRecognizerSample {
                 .buildClient();
 
         InputStream resourceAsStream = FormRecognizerSample.class.getClassLoader().getResourceAsStream("contoso-allinone.jpg");
-        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-
-        int nRead;
-        byte[] data = new byte[4096];
-        while ((nRead = resourceAsStream.read(data, 0, data.length)) != -1) {
-            buffer.write(data, 0, nRead);
-        }
-
         BinaryData targetData = BinaryData.fromStream(resourceAsStream);
 
         SyncPoller<OperationResult, AnalyzeResult> analyzeReceiptPoller =

@@ -422,7 +422,7 @@ public class Transforms {
                 Double.valueOf(innerDocumentField.getValueNumber().doubleValue()));
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.INTEGER.equals(
             innerDocumentField.getType())) {
-            DocumentFieldHelper.setValue(documentField, Long.valueOf(innerDocumentField.getValueInteger().longValue()));
+            DocumentFieldHelper.setValue(documentField, innerDocumentField.getValueInteger());
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.SELECTION_MARK.equals(
             innerDocumentField.getType())) {
             if (innerDocumentField.getValueSelectionMark() == null) {
