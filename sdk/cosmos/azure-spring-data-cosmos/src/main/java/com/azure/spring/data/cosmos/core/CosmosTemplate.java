@@ -754,91 +754,74 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
          * the offset to the first page so that we can shift the data and skip the number of
          * offset records. Starting with the 2nd page it picks up where the first page left off
          * so we do not need to apply the offset as the continuation token handles the pages.
-         */
-        int feedResponseContentSize = pageable.getPageSize();
-        if (pageable instanceof CosmosPageRequest) {
-            if (((CosmosPageRequest) pageable).getRequestContinuation() == null) {
-                feedResponseContentSize = (int) (feedResponseContentSize
-                    + (feedResponseContentSize * pageable.getPageNumber()) + pageable.getOffset());
-            }
-            feedResponseFlux = container
-                .queryItems(querySpec, cosmosQueryRequestOptions, JsonNode.class)
-                .byPage(((CosmosPageRequest) pageable).getRequestContinuation(), feedResponseContentSize);
-        } else {
-            feedResponseContentSize = feedResponseContentSize + (feedResponseContentSize * pageable.getPageNumber());
-            feedResponseFlux = container
-                .queryItems(querySpec, cosmosQueryRequestOptions, JsonNode.class)
-                .byPage(feedResponseContentSize);
-        }
-
-        final FeedResponse<JsonNode> feedResponse = feedResponseFlux
-            .publishOn(Schedulers.parallel())
-            .doOnNext(propertiesFeedResponse ->
-                CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                    propertiesFeedResponse.getCosmosDiagnostics(), propertiesFeedResponse))
-            .onErrorResume(throwable ->
-                CosmosExceptionUtils.exceptionHandler("Failed to query items", throwable,
-                    this.responseDiagnosticsProcessor))
-            .next()
-            .block();
-
-        assert feedResponse != null;
-        final Iterator<JsonNode> it = feedResponse.getResults().iterator();
-
-        /*
+         *
          * We only use offset on the first page because of the use of continuation tokens.
          * After we apply the offset to the first page, the continuation token will pick
          * up the second and future pages at the correct index.
          */
+        int feedResponseContentSize = pageable.getPageSize();
+        String continuationToken = null;
         int offsetForPageWithoutContToken = 0;
         if (pageable instanceof CosmosPageRequest) {
             if (((CosmosPageRequest) pageable).getRequestContinuation() == null) {
+                feedResponseContentSize = (int) (feedResponseContentSize
+                    + (feedResponseContentSize * pageable.getPageNumber()) + pageable.getOffset());
                 offsetForPageWithoutContToken = (pageable.getPageNumber() * pageable.getPageSize())
                     + (int) pageable.getOffset();
             }
+            continuationToken = ((CosmosPageRequest) pageable).getRequestContinuation();
         } else {
+            feedResponseContentSize = feedResponseContentSize + (feedResponseContentSize * pageable.getPageNumber());
             offsetForPageWithoutContToken = (pageable.getPageNumber() * pageable.getPageSize());
         }
 
         final List<T> result = new ArrayList<>();
-        for (int index = 0; it.hasNext()
-            && index < pageable.getPageSize() + offsetForPageWithoutContToken; index++) {
+        do {
+            feedResponseFlux = container
+                .queryItems(querySpec, cosmosQueryRequestOptions, JsonNode.class)
+                .byPage(continuationToken, feedResponseContentSize);
+            FeedResponse<JsonNode> feedResponse = feedResponseFlux
+                .publishOn(Schedulers.parallel())
+                .doOnNext(propertiesFeedResponse ->
+                    CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
+                        propertiesFeedResponse.getCosmosDiagnostics(), propertiesFeedResponse))
+                .onErrorResume(throwable ->
+                    CosmosExceptionUtils.exceptionHandler("Failed to query items", throwable,
+                        this.responseDiagnosticsProcessor))
+                .next()
+                .block();
+            assert feedResponse != null;
+            Iterator<JsonNode> it = feedResponse.getResults().iterator();
 
-            final JsonNode jsonNode = it.next();
-            if (jsonNode == null) {
-                continue;
+            for (int index = 0; it.hasNext()
+                && index < pageable.getPageSize() + offsetForPageWithoutContToken; index++) {
+
+                final JsonNode jsonNode = it.next();
+                if (jsonNode == null) {
+                    continue;
+                }
+
+                if (index >= offsetForPageWithoutContToken) {
+                    maybeEmitEvent(new AfterLoadEvent<>(jsonNode, returnType, containerName));
+                    final T entity = mappingCosmosConverter.read(returnType, jsonNode);
+                    result.add(entity);
+                }
             }
 
-            if (index >= offsetForPageWithoutContToken) {
-                maybeEmitEvent(new AfterLoadEvent<>(jsonNode, returnType, containerName));
-                final T entity = mappingCosmosConverter.read(returnType, jsonNode);
-                result.add(entity);
+            if (result.size() < pageable.getPageSize()) {
+                feedResponseContentSize = pageable.getPageSize() - result.size();
             }
-        }
-
-        final int contentSize = result.size();
-
-        int pageSize;
-
-        if (contentSize < pageable.getPageSize()
-            && contentSize > 0) {
-            //  If the content size is less than page size,
-            //  this means, cosmosDB is returning less items than page size,
-            //  because of either RU limit, or payload limit
-
-            //  Set the page size to content size.
-            pageSize = contentSize;
-        } else {
-            pageSize = pageable.getPageSize();
-        }
+            continuationToken = feedResponse.getContinuationToken();
+            offsetForPageWithoutContToken = 0;
+        } while (result.size() < pageable.getPageSize() && continuationToken != null);
 
         final CosmosPageRequest pageRequest = CosmosPageRequest.of(pageable.getOffset(),
             pageable.getPageNumber(),
-            pageSize,
-            feedResponse.getContinuationToken(),
+            pageable.getPageSize(),
+            continuationToken,
             sort);
 
-        return new CosmosSliceImpl<>(result, pageRequest, feedResponse.getContinuationToken() != null);
+        return new CosmosSliceImpl<>(result, pageRequest, continuationToken != null);
     }
 
     @Override
@@ -1034,5 +1017,4 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     private boolean canPublishEvent() {
         return this.applicationContext != null;
     }
-
 }
