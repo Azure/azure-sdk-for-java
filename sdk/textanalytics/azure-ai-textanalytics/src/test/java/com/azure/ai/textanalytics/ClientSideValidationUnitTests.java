@@ -112,12 +112,12 @@ public class ClientSideValidationUnitTests {
         // Async
         StepVerifier.create(asyncClientV30.detectLanguageBatch(dummyDocument, null, enableServiceLogsOption))
             .verifyErrorSatisfies(exception -> {
-                assertEquals(IllegalStateException.class, exception.getClass());
+                assertEquals(UnsupportedOperationException.class, exception.getClass());
                 assertEquals(DISABLE_SERVICE_LOGS_ERROR_MESSAGE, exception.getMessage());
             });
 
         // Sync
-        IllegalStateException exception = assertThrows(IllegalStateException.class,
+        UnsupportedOperationException exception = assertThrows(UnsupportedOperationException.class,
             () -> clientV30.detectLanguageBatch(dummyDocument, null, enableServiceLogsOption));
         assertEquals(DISABLE_SERVICE_LOGS_ERROR_MESSAGE, exception.getMessage());
     }
@@ -130,12 +130,12 @@ public class ClientSideValidationUnitTests {
         // Async
         StepVerifier.create(asyncClientV30.recognizeEntitiesBatch(dummyDocument, null, enableServiceLogsOption))
             .verifyErrorSatisfies(exception -> {
-                assertEquals(IllegalStateException.class, exception.getClass());
+                assertEquals(UnsupportedOperationException.class, exception.getClass());
                 assertTrue(DISABLE_SERVICE_LOGS_ERROR_MESSAGE.equals(exception.getMessage()));
             });
 
         // Sync
-        IllegalStateException exception = assertThrows(IllegalStateException.class,
+        UnsupportedOperationException exception = assertThrows(UnsupportedOperationException.class,
             () -> clientV30.recognizeEntitiesBatch(dummyDocument, null, enableServiceLogsOption));
         assertEquals(DISABLE_SERVICE_LOGS_ERROR_MESSAGE, exception.getMessage());
     }
@@ -145,12 +145,12 @@ public class ClientSideValidationUnitTests {
         // Async
         StepVerifier.create(asyncClientV30.recognizePiiEntitiesBatch(dummyDocument, null, null))
             .verifyErrorSatisfies(exception -> {
-                assertEquals(IllegalStateException.class, exception.getClass());
+                assertEquals(UnsupportedOperationException.class, exception.getClass());
                 assertTrue(RECOGNIZE_PII_ENTITIES_ERROR_MESSAGE.equals(exception.getMessage()));
             });
 
         // Sync
-        IllegalStateException exception = assertThrows(IllegalStateException.class,
+        UnsupportedOperationException exception = assertThrows(UnsupportedOperationException.class,
             () -> clientV30.recognizePiiEntitiesBatch(dummyDocument, null, null));
         assertEquals(RECOGNIZE_PII_ENTITIES_ERROR_MESSAGE, exception.getMessage());
     }
@@ -162,12 +162,12 @@ public class ClientSideValidationUnitTests {
         // Async
         StepVerifier.create(asyncClientV30.recognizeLinkedEntitiesBatch(dummyDocument, null, enableServiceLogsOption))
             .verifyErrorSatisfies(exception -> {
-                assertEquals(IllegalStateException.class, exception.getClass());
+                assertEquals(UnsupportedOperationException.class, exception.getClass());
                 assertEquals(DISABLE_SERVICE_LOGS_ERROR_MESSAGE, exception.getMessage());
             });
 
         // Sync
-        IllegalStateException exception = assertThrows(IllegalStateException.class,
+        UnsupportedOperationException exception = assertThrows(UnsupportedOperationException.class,
             () -> clientV30.recognizeLinkedEntitiesBatch(dummyDocument, null, enableServiceLogsOption));
         assertEquals(DISABLE_SERVICE_LOGS_ERROR_MESSAGE, exception.getMessage());
     }
@@ -179,12 +179,12 @@ public class ClientSideValidationUnitTests {
         // Async
         StepVerifier.create(asyncClientV30.extractKeyPhrasesBatch(dummyDocument, null, enableServiceLogsOption))
             .verifyErrorSatisfies(exception -> {
-                assertEquals(IllegalStateException.class, exception.getClass());
+                assertEquals(UnsupportedOperationException.class, exception.getClass());
                 assertEquals(DISABLE_SERVICE_LOGS_ERROR_MESSAGE, exception.getMessage());
             });
 
         // Sync
-        IllegalStateException exception = assertThrows(IllegalStateException.class,
+        UnsupportedOperationException exception = assertThrows(UnsupportedOperationException.class,
             () -> clientV30.extractKeyPhrasesBatch(dummyDocument, null, enableServiceLogsOption));
         assertEquals(DISABLE_SERVICE_LOGS_ERROR_MESSAGE, exception.getMessage());
     }
@@ -196,23 +196,23 @@ public class ClientSideValidationUnitTests {
         // Async
         StepVerifier.create(asyncClientV30.analyzeSentimentBatch(dummyDocument, null, enableServiceLogsOption))
             .verifyErrorSatisfies(exception -> {
-                assertEquals(IllegalStateException.class, exception.getClass());
+                assertEquals(UnsupportedOperationException.class, exception.getClass());
                 assertEquals(DISABLE_SERVICE_LOGS_ERROR_MESSAGE, exception.getMessage());
             });
 
         AnalyzeSentimentOptions includeOpinionMiningOption  = new AnalyzeSentimentOptions().setIncludeOpinionMining(true);
         StepVerifier.create(asyncClientV30.analyzeSentimentBatch(dummyDocument, null, includeOpinionMiningOption))
             .verifyErrorSatisfies(exception -> {
-                assertEquals(IllegalStateException.class, exception.getClass());
+                assertEquals(UnsupportedOperationException.class, exception.getClass());
                 assertEquals(OPINION_MINING_ERROR_MESSAGE, exception.getMessage());
             });
 
         // Sync
-        IllegalStateException exception = assertThrows(IllegalStateException.class,
+        UnsupportedOperationException exception = assertThrows(UnsupportedOperationException.class,
             () -> clientV30.analyzeSentimentBatch(dummyDocument, null, enableServiceLogsOption));
         assertEquals(DISABLE_SERVICE_LOGS_ERROR_MESSAGE, exception.getMessage());
 
-        IllegalStateException includeOpinionMiningException = assertThrows(IllegalStateException.class,
+        UnsupportedOperationException includeOpinionMiningException = assertThrows(UnsupportedOperationException.class,
             () -> clientV30.analyzeSentimentBatch(dummyDocument, null, includeOpinionMiningOption));
         assertEquals(OPINION_MINING_ERROR_MESSAGE, includeOpinionMiningException.getMessage());
     }
@@ -224,7 +224,7 @@ public class ClientSideValidationUnitTests {
         // beginAnalyzeActions is only supported in 3.1 and newer
         StepVerifier.create(asyncClientV30.beginAnalyzeActions(dummyDocument, actions, LANGUAGE_EN, null))
             .verifyErrorSatisfies(exception -> {
-                assertEquals(IllegalStateException.class, exception.getClass());
+                assertEquals(UnsupportedOperationException.class, exception.getClass());
                 assertEquals(ANALYZE_ACTIONS_ERROR_MESSAGE, exception.getMessage());
             });
         // AnalyzeHealthcareEntitiesAction is only supported in 2022-05-01 and newer
@@ -234,7 +234,7 @@ public class ClientSideValidationUnitTests {
         StepVerifier.create(asyncClientV31.beginAnalyzeActions(dummyDocument, healthcareEntitiesActions, LANGUAGE_EN,
                 null))
             .verifyErrorSatisfies(exception -> {
-                assertEquals(IllegalStateException.class, exception.getClass());
+                assertEquals(UnsupportedOperationException.class, exception.getClass());
                 assertEquals(HEALTHCARE_ENTITIES_ACTION_ERROR_MESSAGE, exception.getMessage());
             });
         // RecognizeCustomEntitiesAction is only supported in 2022-05-01 and newer
@@ -244,7 +244,7 @@ public class ClientSideValidationUnitTests {
         StepVerifier.create(asyncClientV31.beginAnalyzeActions(dummyDocument, customEntitiesActions, LANGUAGE_EN,
                 null))
             .verifyErrorSatisfies(exception -> {
-                assertEquals(IllegalStateException.class, exception.getClass());
+                assertEquals(UnsupportedOperationException.class, exception.getClass());
                 assertEquals(CUSTOM_ENTITIES_ACTION_ERROR_MESSAGE, exception.getMessage());
             });
         // SingleLabelClassifyAction is only supported in 2022-05-01 and newer
@@ -254,7 +254,7 @@ public class ClientSideValidationUnitTests {
         StepVerifier.create(asyncClientV31.beginAnalyzeActions(dummyDocument, singleLabelClassifyActions, LANGUAGE_EN,
                 null))
             .verifyErrorSatisfies(exception -> {
-                assertEquals(IllegalStateException.class, exception.getClass());
+                assertEquals(UnsupportedOperationException.class, exception.getClass());
                 assertEquals(SINGLE_LABEL_ACTION_ERROR_MESSAGE, exception.getMessage());
             });
         // MultiLabelClassifyAction is only supported in 2022-05-01 and newer
@@ -264,29 +264,32 @@ public class ClientSideValidationUnitTests {
         StepVerifier.create(asyncClientV31.beginAnalyzeActions(dummyDocument, multiLabelClassifyActions, LANGUAGE_EN,
                 null))
             .verifyErrorSatisfies(exception -> {
-                assertEquals(IllegalStateException.class, exception.getClass());
+                assertEquals(UnsupportedOperationException.class, exception.getClass());
                 assertEquals(MULTI_LABEL_ACTION_ERROR_MESSAGE, exception.getMessage());
             });
 
         // Sync
         // beginAnalyzeActions is only supported in 3.1 and newer
-        IllegalStateException exception = assertThrows(IllegalStateException.class,
+        UnsupportedOperationException exception = assertThrows(UnsupportedOperationException.class,
             () -> clientV30.beginAnalyzeActions(dummyDocument, actions, LANGUAGE_EN, null));
         assertEquals(ANALYZE_ACTIONS_ERROR_MESSAGE, exception.getMessage());
         // AnalyzeHealthcareEntitiesAction is only supported in 2022-05-01 and newer
-        IllegalStateException healthcareEntitiesActionsException = assertThrows(IllegalStateException.class,
+        UnsupportedOperationException healthcareEntitiesActionsException = assertThrows(
+            UnsupportedOperationException.class,
             () -> clientV31.beginAnalyzeActions(dummyDocument, healthcareEntitiesActions, LANGUAGE_EN, null));
         assertEquals(HEALTHCARE_ENTITIES_ACTION_ERROR_MESSAGE, healthcareEntitiesActionsException.getMessage());
         // RecognizeCustomEntitiesAction is only supported in 2022-05-01 and newer
-        IllegalStateException customEntitiesActionsException = assertThrows(IllegalStateException.class,
+        UnsupportedOperationException customEntitiesActionsException = assertThrows(UnsupportedOperationException.class,
             () -> clientV31.beginAnalyzeActions(dummyDocument, customEntitiesActions, LANGUAGE_EN, null));
         assertEquals(CUSTOM_ENTITIES_ACTION_ERROR_MESSAGE, customEntitiesActionsException.getMessage());
         // SingleLabelClassifyAction is only supported in 2022-05-01 and newer
-        IllegalStateException singleLabelClassifyActionsException = assertThrows(IllegalStateException.class,
+        UnsupportedOperationException singleLabelClassifyActionsException = assertThrows(
+            UnsupportedOperationException.class,
             () -> clientV31.beginAnalyzeActions(dummyDocument, singleLabelClassifyActions, LANGUAGE_EN, null));
         assertEquals(SINGLE_LABEL_ACTION_ERROR_MESSAGE, singleLabelClassifyActionsException.getMessage());
         // MultiLabelClassifyAction is only supported in 2022-05-01 and newer
-        IllegalStateException multiLabelClassifyActionsException = assertThrows(IllegalStateException.class,
+        UnsupportedOperationException multiLabelClassifyActionsException = assertThrows(
+            UnsupportedOperationException.class,
             () -> clientV31.beginAnalyzeActions(dummyDocument, multiLabelClassifyActions, LANGUAGE_EN, null));
         assertEquals(MULTI_LABEL_ACTION_ERROR_MESSAGE, multiLabelClassifyActionsException.getMessage());
     }
@@ -296,22 +299,22 @@ public class ClientSideValidationUnitTests {
         // Async
         StepVerifier.create(asyncClientV30.beginAnalyzeHealthcareEntities(dummyDocument, null, null))
             .verifyErrorSatisfies(exception -> {
-                assertEquals(IllegalStateException.class, exception.getClass());
+                assertEquals(UnsupportedOperationException.class, exception.getClass());
                 assertEquals(ANALYZE_HEALTHCARE_ENTITIES_ERROR_MESSAGE, exception.getMessage());
             });
         AnalyzeHealthcareEntitiesOptions displayNameOptions = new AnalyzeHealthcareEntitiesOptions()
             .setDisplayName("operationName");
         StepVerifier.create(asyncClientV31.beginAnalyzeHealthcareEntities(dummyDocument, null, displayNameOptions))
             .verifyErrorSatisfies(exception -> {
-                assertEquals(IllegalStateException.class, exception.getClass());
+                assertEquals(UnsupportedOperationException.class, exception.getClass());
                 assertEquals(HEALTHCARE_ENTITIES_DISPLAY_NAME_ERROR_MESSAGE, exception.getMessage());
             });
 
         // Sync
-        IllegalStateException exception = assertThrows(IllegalStateException.class,
+        UnsupportedOperationException exception = assertThrows(UnsupportedOperationException.class,
             () -> clientV30.beginAnalyzeHealthcareEntities(dummyDocument, null, null));
         assertEquals(ANALYZE_HEALTHCARE_ENTITIES_ERROR_MESSAGE, exception.getMessage());
-        IllegalStateException displayNameException = assertThrows(IllegalStateException.class,
+        UnsupportedOperationException displayNameException = assertThrows(UnsupportedOperationException.class,
             () -> clientV31.beginAnalyzeHealthcareEntities(dummyDocument, null, displayNameOptions));
         assertEquals(HEALTHCARE_ENTITIES_DISPLAY_NAME_ERROR_MESSAGE, displayNameException.getMessage());
     }
@@ -322,21 +325,21 @@ public class ClientSideValidationUnitTests {
         StepVerifier.create(asyncClientV30.beginRecognizeCustomEntities(dummyDocument, PROJECT_NAME, DEPLOYMENT_NAME,
                 null, null))
             .verifyErrorSatisfies(exception -> {
-                assertEquals(IllegalStateException.class, exception.getClass());
+                assertEquals(UnsupportedOperationException.class, exception.getClass());
                 assertEquals(RECOGNIZE_CUSTOM_ENTITIES_ERROR_MESSAGE_30, exception.getMessage());
             });
         StepVerifier.create(asyncClientV31.beginRecognizeCustomEntities(dummyDocument, PROJECT_NAME, DEPLOYMENT_NAME,
                 null, null))
             .verifyErrorSatisfies(exception -> {
-                assertEquals(IllegalStateException.class, exception.getClass());
+                assertEquals(UnsupportedOperationException.class, exception.getClass());
                 assertEquals(RECOGNIZE_CUSTOM_ENTITIES_ERROR_MESSAGE_31, exception.getMessage());
             });
         // Sync
-        IllegalStateException exception30 = assertThrows(IllegalStateException.class,
+        UnsupportedOperationException exception30 = assertThrows(UnsupportedOperationException.class,
             () -> clientV30.beginRecognizeCustomEntities(dummyDocument, PROJECT_NAME, DEPLOYMENT_NAME, null, null));
         assertEquals(RECOGNIZE_CUSTOM_ENTITIES_ERROR_MESSAGE_30, exception30.getMessage());
 
-        IllegalStateException exception31 = assertThrows(IllegalStateException.class,
+        UnsupportedOperationException exception31 = assertThrows(UnsupportedOperationException.class,
             () -> clientV31.beginRecognizeCustomEntities(dummyDocument, PROJECT_NAME, DEPLOYMENT_NAME, null, null));
         assertEquals(RECOGNIZE_CUSTOM_ENTITIES_ERROR_MESSAGE_31, exception31.getMessage());
     }
@@ -347,22 +350,22 @@ public class ClientSideValidationUnitTests {
         StepVerifier.create(asyncClientV30.beginSingleLabelClassify(dummyDocument, PROJECT_NAME, DEPLOYMENT_NAME,
                 null, null))
             .verifyErrorSatisfies(exception -> {
-                assertEquals(IllegalStateException.class, exception.getClass());
+                assertEquals(UnsupportedOperationException.class, exception.getClass());
                 assertEquals(SINGLE_LABEL_CLASSIFY_ERROR_MESSAGE_30, exception.getMessage());
             });
         StepVerifier.create(asyncClientV31.beginSingleLabelClassify(dummyDocument, PROJECT_NAME, DEPLOYMENT_NAME,
                 null, null))
             .verifyErrorSatisfies(exception -> {
-                assertEquals(IllegalStateException.class, exception.getClass());
+                assertEquals(UnsupportedOperationException.class, exception.getClass());
                 assertEquals(SINGLE_LABEL_CLASSIFY_ERROR_MESSAGE_31, exception.getMessage());
             });
 
         // Sync
-        IllegalStateException exception30 = assertThrows(IllegalStateException.class,
+        UnsupportedOperationException exception30 = assertThrows(UnsupportedOperationException.class,
             () -> clientV30.beginSingleLabelClassify(dummyDocument, PROJECT_NAME, DEPLOYMENT_NAME, null, null));
         assertEquals(SINGLE_LABEL_CLASSIFY_ERROR_MESSAGE_30, exception30.getMessage());
 
-        IllegalStateException exception31 = assertThrows(IllegalStateException.class,
+        UnsupportedOperationException exception31 = assertThrows(UnsupportedOperationException.class,
             () -> clientV31.beginSingleLabelClassify(dummyDocument, PROJECT_NAME, DEPLOYMENT_NAME, null, null));
         assertEquals(SINGLE_LABEL_CLASSIFY_ERROR_MESSAGE_31, exception31.getMessage());
     }
@@ -373,22 +376,22 @@ public class ClientSideValidationUnitTests {
         StepVerifier.create(asyncClientV30.beginMultiLabelClassify(dummyDocument, PROJECT_NAME, DEPLOYMENT_NAME,
                 null, null))
             .verifyErrorSatisfies(exception -> {
-                assertEquals(IllegalStateException.class, exception.getClass());
+                assertEquals(UnsupportedOperationException.class, exception.getClass());
                 assertEquals(MULTI_LABEL_CLASSIFY_ERROR_MESSAGE_30, exception.getMessage());
             });
         StepVerifier.create(asyncClientV31.beginMultiLabelClassify(dummyDocument, PROJECT_NAME, DEPLOYMENT_NAME,
                 null, null))
             .verifyErrorSatisfies(exception -> {
-                assertEquals(IllegalStateException.class, exception.getClass());
+                assertEquals(UnsupportedOperationException.class, exception.getClass());
                 assertEquals(MULTI_LABEL_CLASSIFY_ERROR_MESSAGE_31, exception.getMessage());
             });
 
         // Sync
-        IllegalStateException exception30 = assertThrows(IllegalStateException.class,
+        UnsupportedOperationException exception30 = assertThrows(UnsupportedOperationException.class,
             () -> clientV30.beginMultiLabelClassify(dummyDocument, PROJECT_NAME, DEPLOYMENT_NAME, null, null));
         assertEquals(MULTI_LABEL_CLASSIFY_ERROR_MESSAGE_30, exception30.getMessage());
 
-        IllegalStateException exception31 = assertThrows(IllegalStateException.class,
+        UnsupportedOperationException exception31 = assertThrows(UnsupportedOperationException.class,
             () -> clientV31.beginMultiLabelClassify(dummyDocument, PROJECT_NAME,  DEPLOYMENT_NAME, null, null));
         assertEquals(MULTI_LABEL_CLASSIFY_ERROR_MESSAGE_31, exception31.getMessage());
     }
