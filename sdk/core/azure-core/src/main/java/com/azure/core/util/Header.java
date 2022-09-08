@@ -3,8 +3,8 @@
 
 package com.azure.core.util;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
@@ -18,8 +18,11 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 public class Header {
     private final String name;
 
-    // this is the actual internal representation of all values
-    private final List<String> values;
+    // This is the internal representation of a single value.
+    private String value;
+
+    // This is the internal representation of multiple values.
+    private List<String> values;
 
     // but we also cache it to faster serve our public API
     private volatile String cachedStringValue;
@@ -36,8 +39,7 @@ public class Header {
     public Header(String name, String value) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         this.name = name;
-        this.values = new LinkedList<>();
-        this.values.add(value);
+        this.value = value;
     }
 
     /**
@@ -50,8 +52,13 @@ public class Header {
     public Header(String name, String... values) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         this.name = name;
-        this.values = new LinkedList<>();
-        Collections.addAll(this.values, values);
+        int length = values.length;
+        if (length == 1) {
+            this.value = values[0];
+        } else {
+            this.values = new ArrayList<>(Math.max(length + 2, 4));
+            Collections.addAll(this.values, values);
+        }
     }
 
     /**
@@ -64,7 +71,13 @@ public class Header {
     public Header(String name, List<String> values) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         this.name = name;
-        this.values = new LinkedList<>(values);
+        int size = values.size();
+        if (size == 1) {
+            this.value = values.get(0);
+        } else {
+            this.values = new ArrayList<>(Math.max(size + 2, 4));
+            this.values.addAll(values);
+        }
     }
 
     /**
@@ -82,6 +95,10 @@ public class Header {
      * @return the value of this Header
      */
     public String getValue() {
+        if (value != null) {
+            return value;
+        }
+
         checkCachedStringValue();
         return CACHED_STRING_VALUE_UPDATER.get(this);
     }
@@ -92,7 +109,7 @@ public class Header {
      * @return the values of this {@link Header} that are separated by a comma
      */
     public String[] getValues() {
-        return values.toArray(new String[0]);
+        return (value != null) ? new String[] {value} : values.toArray(new String[0]);
     }
 
     /**
@@ -101,7 +118,7 @@ public class Header {
      * @return An unmodifiable list containing all values associated with this header.
      */
     public List<String> getValuesList() {
-        return Collections.unmodifiableList(values);
+        return (value != null) ? Collections.singletonList(value) : Collections.unmodifiableList(values);
     }
 
     /**
@@ -110,6 +127,12 @@ public class Header {
      * @param value the value to add
      */
     public void addValue(String value) {
+        if (values == null) {
+            values = new ArrayList<>(4); // 4 was selected to add a buffer of 2 as seen in the constructor.
+            values.add(this.value);
+            this.value = null;
+        }
+
         this.values.add(value);
         CACHED_STRING_VALUE_UPDATER.set(this, null);
     }
@@ -121,30 +144,15 @@ public class Header {
      */
     @Override
     public String toString() {
+        if (value != null) {
+            return name + ":" + value;
+        }
+
         checkCachedStringValue();
         return name + ":" + CACHED_STRING_VALUE_UPDATER.get(this);
     }
 
     private void checkCachedStringValue() {
-        CACHED_STRING_VALUE_UPDATER.compareAndSet(this, null, getOrConcatenate(values));
-    }
-
-    /*
-     * Optimization over just using String.join.
-     *
-     * In most cases the header will only have a few values which can be combined statically instead of needing have
-     * all the overhead from String.join.
-     *
-     */
-    private static String getOrConcatenate(List<String> values) {
-        int size = values.size();
-        switch (size) {
-            case 0: return "";
-            case 1: return values.get(0);
-            case 2: return values.get(0) + "," + values.get(1);
-            case 3: return values.get(0) + "," + values.get(1) + "," + values.get(2);
-            case 4: return values.get(0) + "," + values.get(1) + "," + values.get(2) + "," + values.get(3);
-            default: return String.join(",", values);
-        }
+        CACHED_STRING_VALUE_UPDATER.compareAndSet(this, null, CoreUtils.stringJoin(",", values));
     }
 }

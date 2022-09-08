@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MetricTriggerType. */
+/** Metric Trigger Evaluation Type. */
 public final class MetricTriggerType extends ExpandableStringEnum<MetricTriggerType> {
     /** Static value Consecutive for MetricTriggerType. */
     public static final MetricTriggerType CONSECUTIVE = fromString("Consecutive");
@@ -27,7 +27,11 @@ public final class MetricTriggerType extends ExpandableStringEnum<MetricTriggerT
         return fromString(name, MetricTriggerType.class);
     }
 
-    /** @return known MetricTriggerType values. */
+    /**
+     * Gets known MetricTriggerType values.
+     *
+     * @return known MetricTriggerType values.
+     */
     public static Collection<MetricTriggerType> values() {
         return values(MetricTriggerType.class);
     }

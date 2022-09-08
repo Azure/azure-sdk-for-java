@@ -3,15 +3,15 @@
 
 package com.azure.ai.formrecognizer.documentanalysis;
 
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AnalyzeDocumentRequest;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AnalyzeResultOperation;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.StringIndexType;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeDocumentOptions;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -61,7 +61,7 @@ public final class DocumentAnalysisAsyncClient {
 
     /**
      * Create a {@link DocumentAnalysisAsyncClient} that sends requests to the Form recognizer service's endpoint. Each
-     * service call goes through the {@link DocumentAnalysisClientBuilder#pipeline(HttpPipeline)} http pipeline}.
+     * service call goes through the {@link DocumentAnalysisClientBuilder#pipeline(HttpPipeline)} http pipeline.
      *
      * @param service The proxy service used to perform REST calls.
      * @param serviceVersion The versions of Azure Form Recognizer service supported by this client library.
@@ -110,7 +110,7 @@ public final class DocumentAnalysisAsyncClient {
      * @throws IllegalArgumentException If {@code documentUrl} or {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentOperationResult, AnalyzeResult>
+    public PollerFlux<OperationResult, AnalyzeResult>
         beginAnalyzeDocumentFromUrl(String modelId, String documentUrl) {
         return beginAnalyzeDocumentFromUrl(modelId, documentUrl, null);
     }
@@ -161,13 +161,13 @@ public final class DocumentAnalysisAsyncClient {
      * @throws IllegalArgumentException If {@code documentUrl} or {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentOperationResult, AnalyzeResult>
+    public PollerFlux<OperationResult, AnalyzeResult>
         beginAnalyzeDocumentFromUrl(String modelId, String documentUrl,
                                    AnalyzeDocumentOptions analyzeDocumentOptions) {
         return beginAnalyzeDocumentFromUrl(documentUrl, modelId, analyzeDocumentOptions, Context.NONE);
     }
 
-    PollerFlux<DocumentOperationResult, AnalyzeResult>
+    PollerFlux<OperationResult, AnalyzeResult>
         beginAnalyzeDocumentFromUrl(String documentUrl, String modelId,
                                    AnalyzeDocumentOptions analyzeDocumentOptions,
                                    Context context) {
@@ -261,7 +261,7 @@ public final class DocumentAnalysisAsyncClient {
      * @throws IllegalArgumentException If {@code document} or {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentOperationResult, AnalyzeResult>
+    public PollerFlux<OperationResult, AnalyzeResult>
         beginAnalyzeDocument(String modelId, BinaryData document, long length) {
         return beginAnalyzeDocument(modelId, document, length, null);
     }
@@ -318,13 +318,13 @@ public final class DocumentAnalysisAsyncClient {
      * @throws IllegalArgumentException If {@code document} or {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentOperationResult, AnalyzeResult>
+    public PollerFlux<OperationResult, AnalyzeResult>
         beginAnalyzeDocument(String modelId, BinaryData document, long length,
                              AnalyzeDocumentOptions analyzeDocumentOptions) {
         return beginAnalyzeDocument(modelId, document, length, analyzeDocumentOptions, Context.NONE);
     }
 
-    PollerFlux<DocumentOperationResult, AnalyzeResult>
+    PollerFlux<OperationResult, AnalyzeResult>
         beginAnalyzeDocument(String modelId, BinaryData document, long length,
                              AnalyzeDocumentOptions analyzeDocumentOptions, Context context) {
         try {
@@ -371,14 +371,14 @@ public final class DocumentAnalysisAsyncClient {
     /*
      * Poller's POLLING operation.
      */
-    private Function<PollingContext<DocumentOperationResult>, Mono<PollResponse<DocumentOperationResult>>>
+    private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
         pollingOperation(
         Function<String, Mono<Response<AnalyzeResultOperation>>> pollingFunction) {
         return pollingContext -> {
             try {
-                final PollResponse<DocumentOperationResult> operationResultPollResponse
+                final PollResponse<OperationResult> operationResultPollResponse
                     = pollingContext.getLatestResponse();
-                final String resultId = operationResultPollResponse.getValue().getResultId();
+                final String resultId = operationResultPollResponse.getValue().getOperationId();
                 return pollingFunction.apply(resultId)
                     .flatMap(modelResponse -> processAnalyzeModelResponse(modelResponse, operationResultPollResponse))
                     .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists);
@@ -391,12 +391,12 @@ public final class DocumentAnalysisAsyncClient {
     /*
      * Poller's FETCHING operation.
      */
-    private Function<PollingContext<DocumentOperationResult>, Mono<Response<AnalyzeResultOperation>>>
+    private Function<PollingContext<OperationResult>, Mono<Response<AnalyzeResultOperation>>>
         fetchingOperation(
         Function<String, Mono<Response<AnalyzeResultOperation>>> fetchingFunction) {
         return pollingContext -> {
             try {
-                final String resultId = pollingContext.getLatestResponse().getValue().getResultId();
+                final String resultId = pollingContext.getLatestResponse().getValue().getOperationId();
                 return fetchingFunction.apply(resultId);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
@@ -404,9 +404,9 @@ public final class DocumentAnalysisAsyncClient {
         };
     }
 
-    private Mono<PollResponse<DocumentOperationResult>> processAnalyzeModelResponse(
+    private Mono<PollResponse<OperationResult>> processAnalyzeModelResponse(
         Response<AnalyzeResultOperation> analyzeResultOperationResponse,
-        PollResponse<DocumentOperationResult> operationResultPollResponse) {
+        PollResponse<OperationResult> operationResultPollResponse) {
         LongRunningOperationStatus status;
         switch (analyzeResultOperationResponse.getValue().getStatus()) {
             case NOT_STARTED:

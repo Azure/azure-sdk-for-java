@@ -8,6 +8,10 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+
+import java.util.Optional;
 
 /**
  * Configure B2C OAUTH2 login properties.
@@ -16,9 +20,11 @@ import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCo
  */
 public class AadB2cOidcLoginConfigurer extends AbstractHttpConfigurer<AadB2cOidcLoginConfigurer, HttpSecurity> {
 
-    private final AadB2cLogoutSuccessHandler handler;
+    private final LogoutSuccessHandler handler;
 
-    private final AadB2cAuthorizationRequestResolver resolver;
+    private final OAuth2AuthorizationRequestResolver resolver;
+
+    private final OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient;
 
     /**
      * Creates a new instance of {@link AadB2cOidcLoginConfigurer}.
@@ -27,8 +33,19 @@ public class AadB2cOidcLoginConfigurer extends AbstractHttpConfigurer<AadB2cOidc
      * @param resolver the AAD B2C authorization request resolver
      */
     public AadB2cOidcLoginConfigurer(AadB2cLogoutSuccessHandler handler, AadB2cAuthorizationRequestResolver resolver) {
+        this(handler, resolver, null);
+    }
+    /**
+     * Creates a new instance of {@link AadB2cOidcLoginConfigurer}.
+     *
+     * @param handler the AAD B2C logout success handler
+     * @param resolver the AAD B2C authorization request resolver
+     * @param accessTokenResponseClient the AAD B2C access token response client
+     */
+    public AadB2cOidcLoginConfigurer(LogoutSuccessHandler handler, OAuth2AuthorizationRequestResolver resolver, OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient) {
         this.handler = handler;
         this.resolver = resolver;
+        this.accessTokenResponseClient = accessTokenResponseClient;
     }
 
     /**
@@ -48,7 +65,7 @@ public class AadB2cOidcLoginConfigurer extends AbstractHttpConfigurer<AadB2cOidc
                     .authorizationRequestResolver(resolver)
                     .and()
                 .tokenEndpoint()
-                    .accessTokenResponseClient(accessTokenResponseClient());
+                    .accessTokenResponseClient(Optional.ofNullable(accessTokenResponseClient).orElseGet(this::accessTokenResponseClient));
         // @formatter:on
     }
 

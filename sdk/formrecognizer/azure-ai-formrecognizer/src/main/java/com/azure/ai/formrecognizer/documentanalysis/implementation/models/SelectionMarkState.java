@@ -8,19 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SelectionMarkState. */
+/** Defines values for DocumentSelectionMarkState. */
 public final class SelectionMarkState extends ExpandableStringEnum<SelectionMarkState> {
-    /** Static value selected for SelectionMarkState. */
+    /** Static value selected for DocumentSelectionMarkState. */
     public static final SelectionMarkState SELECTED = fromString("selected");
 
-    /** Static value unselected for SelectionMarkState. */
+    /** Static value unselected for DocumentSelectionMarkState. */
     public static final SelectionMarkState UNSELECTED = fromString("unselected");
 
     /**
-     * Creates or finds a SelectionMarkState from its string representation.
+     * Creates or finds a DocumentSelectionMarkState from its string representation.
      *
      * @param name a name to look for.
-     * @return the corresponding SelectionMarkState.
+     * @return the corresponding DocumentSelectionMarkState.
      */
     @JsonCreator
     public static SelectionMarkState fromString(String name) {
@@ -28,9 +28,9 @@ public final class SelectionMarkState extends ExpandableStringEnum<SelectionMark
     }
 
     /**
-     * Gets known SelectionMarkState values.
+     * Gets known DocumentSelectionMarkState values.
      *
-     * @return known SelectionMarkState values.
+     * @return known DocumentSelectionMarkState values.
      */
     public static Collection<SelectionMarkState> values() {
         return values(SelectionMarkState.class);

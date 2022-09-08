@@ -1,14 +1,31 @@
 # Release History
 
-## 5.2.0-beta.5 (Unreleased)
+## 5.2.0 (2022-09-08)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- This version of the client library marks a stable release and defaults to the service API version `2022-05-01`.
+- Added overload methods to take only required input parameter for all existing long-running operations:
+  - `beginAnalyzeActions(Iterable<String> documents, TextAnalyticsActions actions)`
+  - `beginAnalyzeHealthcareEntities(Iterable<String> documents)`
+  - `beginMultiLabelClassify(Iterable<String> documents, String projectName, String deploymentName)`
+  - `beginRecognizeCustomEntities(Iterable<String> documents, String projectName, String deploymentName)`
+  - `beginSingleLabelClassify(Iterable<String> documents, String projectName, String deploymentName)`
+- Added `displayName` property which is the name of long-running operation, to the following classes to 
+  set the optional display name:
+    - `AnalyzeHealthcareEntitiesOptions`
+    - `MultiLabelClassifyOptions`
+    - `RecognizeCustomEntitiesOptions`
+    - `SingleLabelClassifyOptions`
+- Added `displayName` property to the following operations to read the optional display name set on options classes above:
+    - `AnalyzeHealthcareEntitiesOperationDetail` from `AnalyzeHealthcareEntitiesOptions`
+    - `ClassifyDocumentOperationDetail` from `MultiLabelClassifyOptions` and `SingleLabelClassifyOptions`
+    - `RecognizeCustomEntitiesOperationDetail` from `RecognizeCustomEntitiesOptions`
 
 ### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.32.0`.
+- Updated `azure-core-http-netty` to `1.12.5`.
 
 ## 5.2.0-beta.4 (2022-08-12)
 ### Features Added

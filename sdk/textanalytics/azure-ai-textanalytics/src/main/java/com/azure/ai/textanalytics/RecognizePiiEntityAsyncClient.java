@@ -24,12 +24,15 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
+import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
+import static com.azure.ai.textanalytics.implementation.Utility.throwIfTargetServiceVersionFound;
 import static com.azure.ai.textanalytics.implementation.Utility.toCategoriesFilter;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsException;
@@ -45,14 +48,19 @@ class RecognizePiiEntityAsyncClient {
     private final TextAnalyticsClientImpl legacyService;
     private final MicrosoftCognitiveLanguageServiceTextAnalysisImpl service;
 
-    RecognizePiiEntityAsyncClient(TextAnalyticsClientImpl legacyService) {
+    private final TextAnalyticsServiceVersion serviceVersion;
+
+    RecognizePiiEntityAsyncClient(TextAnalyticsClientImpl legacyService, TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = legacyService;
         this.service = null;
+        this.serviceVersion = serviceVersion;
     }
 
-    RecognizePiiEntityAsyncClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service) {
+    RecognizePiiEntityAsyncClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
+        TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = null;
         this.service = service;
+        this.serviceVersion = serviceVersion;
     }
 
     /**
@@ -69,6 +77,10 @@ class RecognizePiiEntityAsyncClient {
     Mono<PiiEntityCollection> recognizePiiEntities(String document, String language,
         RecognizePiiEntitiesOptions options) {
         try {
+            throwIfTargetServiceVersionFound(this.serviceVersion,
+                Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+                getUnsupportedServiceApiVersionMessage("recognizePiiEntitiesBatch", serviceVersion,
+                    TextAnalyticsServiceVersion.V3_1));
             Objects.requireNonNull(document, "'document' cannot be null.");
             return recognizePiiEntitiesBatch(
                 Collections.singletonList(new TextDocumentInput("0", document).setLanguage(language)), options)
@@ -102,7 +114,6 @@ class RecognizePiiEntityAsyncClient {
     Mono<Response<RecognizePiiEntitiesResultCollection>> recognizePiiEntitiesBatch(
         Iterable<TextDocumentInput> documents, RecognizePiiEntitiesOptions options) {
         try {
-            inputDocumentsValidation(documents);
             return withContext(context -> getRecognizePiiEntitiesResponse(documents, options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -122,7 +133,6 @@ class RecognizePiiEntityAsyncClient {
     Mono<Response<RecognizePiiEntitiesResultCollection>> recognizePiiEntitiesBatchWithContext(
         Iterable<TextDocumentInput> documents, RecognizePiiEntitiesOptions options, Context context) {
         try {
-            inputDocumentsValidation(documents);
             return getRecognizePiiEntitiesResponse(documents, options, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -139,9 +149,15 @@ class RecognizePiiEntityAsyncClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A mono {@link Response} that contains {@link RecognizePiiEntitiesResultCollection}.
+     *
      */
     private Mono<Response<RecognizePiiEntitiesResultCollection>> getRecognizePiiEntitiesResponse(
         Iterable<TextDocumentInput> documents, RecognizePiiEntitiesOptions options, Context context) {
+        throwIfTargetServiceVersionFound(this.serviceVersion,
+            Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+            getUnsupportedServiceApiVersionMessage("recognizePiiEntitiesBatch", serviceVersion,
+                TextAnalyticsServiceVersion.V3_1));
+        inputDocumentsValidation(documents);
         options = options == null ? new RecognizePiiEntitiesOptions() : options;
         final Context finalContext = getNotNullContext(context)
             .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);

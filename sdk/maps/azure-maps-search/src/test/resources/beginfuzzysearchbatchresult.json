@@ -1,0 +1,2845 @@
+{
+  "batchSummary" : {
+    "successfulRequests" : 3,
+    "totalRequests" : 3
+  },
+  "batchItems" : [ {
+    "statusCode" : 200,
+    "error" : null,
+    "result" : {
+      "summary" : {
+        "query" : "atm",
+        "queryType" : {
+          "name" : "NON_NEAR",
+          "clazz" : "com.azure.maps.search.models.QueryType"
+        },
+        "queryTime" : 3,
+        "numResults" : 5,
+        "top" : null,
+        "skip" : 0,
+        "totalResults" : 165,
+        "fuzzyLevel" : 1,
+        "geoBias" : {
+          "latitude" : 47.639769,
+          "longitude" : -122.128362,
+          "lat" : 47.639769,
+          "lon" : -122.128362
+        }
+      },
+      "results" : [ {
+        "type" : {
+          "name" : "POI",
+          "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+        },
+        "id" : "840539002291324",
+        "score" : 2.5745136738,
+        "distanceInMeters" : 210.04455919882986,
+        "info" : "search:ta:840539002291324-US",
+        "entityType" : null,
+        "pointOfInterest" : {
+          "name" : "First Technology Fcu",
+          "phone" : null,
+          "url" : null,
+          "categorySet" : [ {
+            "id" : 7397
+          } ],
+          "categories" : [ "cash dispenser" ],
+          "classifications" : [ {
+            "code" : "CASH_DISPENSER",
+            "names" : [ {
+              "nameLocale" : "en-US",
+              "name" : "cash dispenser"
+            } ]
+          } ],
+          "brands" : null,
+          "operatingHours" : null
+        },
+        "address" : {
+          "buildingNumber" : null,
+          "street" : null,
+          "crossStreet" : null,
+          "streetNumber" : "16041",
+          "routeNumbers" : null,
+          "streetName" : "Northeast 36th Way",
+          "streetNameAndNumber" : null,
+          "municipality" : "Redmond",
+          "municipalitySubdivision" : null,
+          "countryTertiarySubdivision" : null,
+          "countrySecondarySubdivision" : "King",
+          "countrySubdivision" : "WA",
+          "postalCode" : "98052",
+          "extendedPostalCode" : "98052-6301",
+          "countryCode" : "US",
+          "country" : "United States",
+          "countryCodeISO3" : null,
+          "freeformAddress" : "16041 Northeast 36th Way, Redmond, WA 98052",
+          "countrySubdivisionName" : "Washington",
+          "localName" : "Redmond",
+          "boundingBox" : null
+        },
+        "position" : {
+          "latitude" : 47.63994,
+          "longitude" : -122.12557,
+          "lat" : 47.63994,
+          "lon" : -122.12557
+        },
+        "viewport" : {
+          "topLeft" : {
+            "latitude" : 47.64228,
+            "longitude" : -122.12905,
+            "lat" : 47.64228,
+            "lon" : -122.12905
+          },
+          "bottomRight" : {
+            "latitude" : 47.6376,
+            "longitude" : -122.12209,
+            "lat" : 47.6376,
+            "lon" : -122.12209
+          },
+          "bottomLeft" : {
+            "latitude" : 47.6376,
+            "longitude" : -122.12905,
+            "lat" : 47.6376,
+            "lon" : -122.12905
+          },
+          "southWest" : {
+            "latitude" : 47.6376,
+            "longitude" : -122.12905,
+            "lat" : 47.6376,
+            "lon" : -122.12905
+          },
+          "northEast" : {
+            "latitude" : 47.64228,
+            "longitude" : -122.12209,
+            "lat" : 47.64228,
+            "lon" : -122.12209
+          },
+          "topRight" : {
+            "latitude" : 47.64228,
+            "longitude" : -122.12209,
+            "lat" : 47.64228,
+            "lon" : -122.12209
+          }
+        },
+        "entryPoints" : [ {
+          "type" : {
+            "name" : "main",
+            "clazz" : "com.azure.maps.search.models.EntryPointType"
+          },
+          "position" : {
+            "latitude" : 47.64226,
+            "longitude" : -122.12607,
+            "lat" : 47.64226,
+            "lon" : -122.12607
+          }
+        }, {
+          "type" : {
+            "name" : "main",
+            "clazz" : "com.azure.maps.search.models.EntryPointType"
+          },
+          "position" : {
+            "latitude" : 47.64226,
+            "longitude" : -122.12559,
+            "lat" : 47.64226,
+            "lon" : -122.12559
+          }
+        } ],
+        "addressRanges" : null,
+        "dataSource" : null,
+        "matchType" : null,
+        "detourTime" : null,
+        "boundingBox" : {
+          "topLeft" : {
+            "latitude" : 47.64228,
+            "longitude" : -122.12905,
+            "lat" : 47.64228,
+            "lon" : -122.12905
+          },
+          "bottomRight" : {
+            "latitude" : 47.6376,
+            "longitude" : -122.12209,
+            "lat" : 47.6376,
+            "lon" : -122.12209
+          },
+          "bottomLeft" : {
+            "latitude" : 47.6376,
+            "longitude" : -122.12905,
+            "lat" : 47.6376,
+            "lon" : -122.12905
+          },
+          "southWest" : {
+            "latitude" : 47.6376,
+            "longitude" : -122.12905,
+            "lat" : 47.6376,
+            "lon" : -122.12905
+          },
+          "northEast" : {
+            "latitude" : 47.64228,
+            "longitude" : -122.12209,
+            "lat" : 47.64228,
+            "lon" : -122.12209
+          },
+          "topRight" : {
+            "latitude" : 47.64228,
+            "longitude" : -122.12209,
+            "lat" : 47.64228,
+            "lon" : -122.12209
+          }
+        }
+      }, {
+        "type" : {
+          "name" : "POI",
+          "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+        },
+        "id" : "840539002395115",
+        "score" : 2.5744934082,
+        "distanceInMeters" : 326.29201622354674,
+        "info" : "search:ta:840539002395115-US",
+        "entityType" : null,
+        "pointOfInterest" : {
+          "name" : "First Technology Fcu",
+          "phone" : null,
+          "url" : null,
+          "categorySet" : [ {
+            "id" : 7397
+          } ],
+          "categories" : [ "cash dispenser" ],
+          "classifications" : [ {
+            "code" : "CASH_DISPENSER",
+            "names" : [ {
+              "nameLocale" : "en-US",
+              "name" : "cash dispenser"
+            } ]
+          } ],
+          "brands" : null,
+          "operatingHours" : null
+        },
+        "address" : {
+          "buildingNumber" : null,
+          "street" : null,
+          "crossStreet" : null,
+          "streetNumber" : "16071",
+          "routeNumbers" : null,
+          "streetName" : "Northeast 36th Way",
+          "streetNameAndNumber" : null,
+          "municipality" : "Redmond",
+          "municipalitySubdivision" : null,
+          "countryTertiarySubdivision" : null,
+          "countrySecondarySubdivision" : "King",
+          "countrySubdivision" : "WA",
+          "postalCode" : "98052",
+          "extendedPostalCode" : "98052-6301",
+          "countryCode" : "US",
+          "country" : "United States",
+          "countryCodeISO3" : null,
+          "freeformAddress" : "16071 Northeast 36th Way, Redmond, WA 98052",
+          "countrySubdivisionName" : "Washington",
+          "localName" : "Redmond",
+          "boundingBox" : null
+        },
+        "position" : {
+          "latitude" : 47.64226,
+          "longitude" : -122.12606,
+          "lat" : 47.64226,
+          "lon" : -122.12606
+        },
+        "viewport" : {
+          "topLeft" : {
+            "latitude" : 47.64316,
+            "longitude" : -122.12739,
+            "lat" : 47.64316,
+            "lon" : -122.12739
+          },
+          "bottomRight" : {
+            "latitude" : 47.64136,
+            "longitude" : -122.12473,
+            "lat" : 47.64136,
+            "lon" : -122.12473
+          },
+          "bottomLeft" : {
+            "latitude" : 47.64136,
+            "longitude" : -122.12739,
+            "lat" : 47.64136,
+            "lon" : -122.12739
+          },
+          "southWest" : {
+            "latitude" : 47.64136,
+            "longitude" : -122.12739,
+            "lat" : 47.64136,
+            "lon" : -122.12739
+          },
+          "northEast" : {
+            "latitude" : 47.64316,
+            "longitude" : -122.12473,
+            "lat" : 47.64316,
+            "lon" : -122.12473
+          },
+          "topRight" : {
+            "latitude" : 47.64316,
+            "longitude" : -122.12473,
+            "lat" : 47.64316,
+            "lon" : -122.12473
+          }
+        },
+        "entryPoints" : [ {
+          "type" : {
+            "name" : "main",
+            "clazz" : "com.azure.maps.search.models.EntryPointType"
+          },
+          "position" : {
+            "latitude" : 47.64226,
+            "longitude" : -122.12606,
+            "lat" : 47.64226,
+            "lon" : -122.12606
+          }
+        } ],
+        "addressRanges" : null,
+        "dataSource" : null,
+        "matchType" : null,
+        "detourTime" : null,
+        "boundingBox" : {
+          "topLeft" : {
+            "latitude" : 47.64316,
+            "longitude" : -122.12739,
+            "lat" : 47.64316,
+            "lon" : -122.12739
+          },
+          "bottomRight" : {
+            "latitude" : 47.64136,
+            "longitude" : -122.12473,
+            "lat" : 47.64136,
+            "lon" : -122.12473
+          },
+          "bottomLeft" : {
+            "latitude" : 47.64136,
+            "longitude" : -122.12739,
+            "lat" : 47.64136,
+            "lon" : -122.12739
+          },
+          "southWest" : {
+            "latitude" : 47.64136,
+            "longitude" : -122.12739,
+            "lat" : 47.64136,
+            "lon" : -122.12739
+          },
+          "northEast" : {
+            "latitude" : 47.64316,
+            "longitude" : -122.12473,
+            "lat" : 47.64316,
+            "lon" : -122.12473
+          },
+          "topRight" : {
+            "latitude" : 47.64316,
+            "longitude" : -122.12473,
+            "lat" : 47.64316,
+            "lon" : -122.12473
+          }
+        }
+      }, {
+        "type" : {
+          "name" : "POI",
+          "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+        },
+        "id" : "840539002364676",
+        "score" : 2.5744833946,
+        "distanceInMeters" : 371.0574647901101,
+        "info" : "search:ta:840539002364676-US",
+        "entityType" : null,
+        "pointOfInterest" : {
+          "name" : "First Technology Fcu",
+          "phone" : null,
+          "url" : null,
+          "categorySet" : [ {
+            "id" : 7397
+          } ],
+          "categories" : [ "cash dispenser" ],
+          "classifications" : [ {
+            "code" : "CASH_DISPENSER",
+            "names" : [ {
+              "nameLocale" : "en-US",
+              "name" : "cash dispenser"
+            } ]
+          } ],
+          "brands" : null,
+          "operatingHours" : null
+        },
+        "address" : {
+          "buildingNumber" : null,
+          "street" : null,
+          "crossStreet" : null,
+          "streetNumber" : "16255",
+          "routeNumbers" : null,
+          "streetName" : "Northeast 36th Way",
+          "streetNameAndNumber" : null,
+          "municipality" : "Redmond",
+          "municipalitySubdivision" : null,
+          "countryTertiarySubdivision" : null,
+          "countrySecondarySubdivision" : "King",
+          "countrySubdivision" : "WA",
+          "postalCode" : "98052",
+          "extendedPostalCode" : null,
+          "countryCode" : "US",
+          "country" : "United States",
+          "countryCodeISO3" : null,
+          "freeformAddress" : "16255 Northeast 36th Way, Redmond, WA 98052",
+          "countrySubdivisionName" : "Washington",
+          "localName" : "Redmond",
+          "boundingBox" : null
+        },
+        "position" : {
+          "latitude" : 47.64113,
+          "longitude" : -122.12384,
+          "lat" : 47.64113,
+          "lon" : -122.12384
+        },
+        "viewport" : {
+          "topLeft" : {
+            "latitude" : 47.64237,
+            "longitude" : -122.12568,
+            "lat" : 47.64237,
+            "lon" : -122.12568
+          },
+          "bottomRight" : {
+            "latitude" : 47.63989,
+            "longitude" : -122.122,
+            "lat" : 47.63989,
+            "lon" : -122.122
+          },
+          "bottomLeft" : {
+            "latitude" : 47.63989,
+            "longitude" : -122.12568,
+            "lat" : 47.63989,
+            "lon" : -122.12568
+          },
+          "southWest" : {
+            "latitude" : 47.63989,
+            "longitude" : -122.12568,
+            "lat" : 47.63989,
+            "lon" : -122.12568
+          },
+          "northEast" : {
+            "latitude" : 47.64237,
+            "longitude" : -122.122,
+            "lat" : 47.64237,
+            "lon" : -122.122
+          },
+          "topRight" : {
+            "latitude" : 47.64237,
+            "longitude" : -122.122,
+            "lat" : 47.64237,
+            "lon" : -122.122
+          }
+        },
+        "entryPoints" : [ {
+          "type" : {
+            "name" : "main",
+            "clazz" : "com.azure.maps.search.models.EntryPointType"
+          },
+          "position" : {
+            "latitude" : 47.64228,
+            "longitude" : -122.12454,
+            "lat" : 47.64228,
+            "lon" : -122.12454
+          }
+        } ],
+        "addressRanges" : null,
+        "dataSource" : null,
+        "matchType" : null,
+        "detourTime" : null,
+        "boundingBox" : {
+          "topLeft" : {
+            "latitude" : 47.64237,
+            "longitude" : -122.12568,
+            "lat" : 47.64237,
+            "lon" : -122.12568
+          },
+          "bottomRight" : {
+            "latitude" : 47.63989,
+            "longitude" : -122.122,
+            "lat" : 47.63989,
+            "lon" : -122.122
+          },
+          "bottomLeft" : {
+            "latitude" : 47.63989,
+            "longitude" : -122.12568,
+            "lat" : 47.63989,
+            "lon" : -122.12568
+          },
+          "southWest" : {
+            "latitude" : 47.63989,
+            "longitude" : -122.12568,
+            "lat" : 47.63989,
+            "lon" : -122.12568
+          },
+          "northEast" : {
+            "latitude" : 47.64237,
+            "longitude" : -122.122,
+            "lat" : 47.64237,
+            "lon" : -122.122
+          },
+          "topRight" : {
+            "latitude" : 47.64237,
+            "longitude" : -122.122,
+            "lat" : 47.64237,
+            "lon" : -122.122
+          }
+        }
+      }, {
+        "type" : {
+          "name" : "POI",
+          "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+        },
+        "id" : "840539002407409",
+        "score" : 2.5744771957,
+        "distanceInMeters" : 395.1964721617346,
+        "info" : "search:ta:840539002407409-US",
+        "entityType" : null,
+        "pointOfInterest" : {
+          "name" : "First Technology Fcu",
+          "phone" : null,
+          "url" : null,
+          "categorySet" : [ {
+            "id" : 7397
+          } ],
+          "categories" : [ "cash dispenser" ],
+          "classifications" : [ {
+            "code" : "CASH_DISPENSER",
+            "names" : [ {
+              "nameLocale" : "en-US",
+              "name" : "cash dispenser"
+            } ]
+          } ],
+          "brands" : null,
+          "operatingHours" : null
+        },
+        "address" : {
+          "buildingNumber" : null,
+          "street" : null,
+          "crossStreet" : null,
+          "streetNumber" : "15584",
+          "routeNumbers" : null,
+          "streetName" : "Northeast 31st Street",
+          "streetNameAndNumber" : null,
+          "municipality" : "Redmond",
+          "municipalitySubdivision" : null,
+          "countryTertiarySubdivision" : null,
+          "countrySecondarySubdivision" : "King",
+          "countrySubdivision" : "WA",
+          "postalCode" : "98052",
+          "extendedPostalCode" : null,
+          "countryCode" : "US",
+          "country" : "United States",
+          "countryCodeISO3" : null,
+          "freeformAddress" : "15584 Northeast 31st Street, Redmond, WA 98052",
+          "countrySubdivisionName" : "Washington",
+          "localName" : "Redmond",
+          "boundingBox" : null
+        },
+        "position" : {
+          "latitude" : 47.63814,
+          "longitude" : -122.13305,
+          "lat" : 47.63814,
+          "lon" : -122.13305
+        },
+        "viewport" : {
+          "topLeft" : {
+            "latitude" : 47.63904,
+            "longitude" : -122.13438,
+            "lat" : 47.63904,
+            "lon" : -122.13438
+          },
+          "bottomRight" : {
+            "latitude" : 47.63724,
+            "longitude" : -122.13172,
+            "lat" : 47.63724,
+            "lon" : -122.13172
+          },
+          "bottomLeft" : {
+            "latitude" : 47.63724,
+            "longitude" : -122.13438,
+            "lat" : 47.63724,
+            "lon" : -122.13438
+          },
+          "southWest" : {
+            "latitude" : 47.63724,
+            "longitude" : -122.13438,
+            "lat" : 47.63724,
+            "lon" : -122.13438
+          },
+          "northEast" : {
+            "latitude" : 47.63904,
+            "longitude" : -122.13172,
+            "lat" : 47.63904,
+            "lon" : -122.13172
+          },
+          "topRight" : {
+            "latitude" : 47.63904,
+            "longitude" : -122.13172,
+            "lat" : 47.63904,
+            "lon" : -122.13172
+          }
+        },
+        "entryPoints" : [ {
+          "type" : {
+            "name" : "main",
+            "clazz" : "com.azure.maps.search.models.EntryPointType"
+          },
+          "position" : {
+            "latitude" : 47.63814,
+            "longitude" : -122.13305,
+            "lat" : 47.63814,
+            "lon" : -122.13305
+          }
+        } ],
+        "addressRanges" : null,
+        "dataSource" : null,
+        "matchType" : null,
+        "detourTime" : null,
+        "boundingBox" : {
+          "topLeft" : {
+            "latitude" : 47.63904,
+            "longitude" : -122.13438,
+            "lat" : 47.63904,
+            "lon" : -122.13438
+          },
+          "bottomRight" : {
+            "latitude" : 47.63724,
+            "longitude" : -122.13172,
+            "lat" : 47.63724,
+            "lon" : -122.13172
+          },
+          "bottomLeft" : {
+            "latitude" : 47.63724,
+            "longitude" : -122.13438,
+            "lat" : 47.63724,
+            "lon" : -122.13438
+          },
+          "southWest" : {
+            "latitude" : 47.63724,
+            "longitude" : -122.13438,
+            "lat" : 47.63724,
+            "lon" : -122.13438
+          },
+          "northEast" : {
+            "latitude" : 47.63904,
+            "longitude" : -122.13172,
+            "lat" : 47.63904,
+            "lon" : -122.13172
+          },
+          "topRight" : {
+            "latitude" : 47.63904,
+            "longitude" : -122.13172,
+            "lat" : 47.63904,
+            "lon" : -122.13172
+          }
+        }
+      }, {
+        "type" : {
+          "name" : "POI",
+          "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+        },
+        "id" : "840539002307821",
+        "score" : 2.5744690895,
+        "distanceInMeters" : 426.0704026557673,
+        "info" : "search:ta:840539002307821-US",
+        "entityType" : null,
+        "pointOfInterest" : {
+          "name" : "First Technology Fcu",
+          "phone" : null,
+          "url" : null,
+          "categorySet" : [ {
+            "id" : 7397
+          } ],
+          "categories" : [ "cash dispenser" ],
+          "classifications" : [ {
+            "code" : "CASH_DISPENSER",
+            "names" : [ {
+              "nameLocale" : "en-US",
+              "name" : "cash dispenser"
+            } ]
+          } ],
+          "brands" : null,
+          "operatingHours" : null
+        },
+        "address" : {
+          "buildingNumber" : null,
+          "street" : null,
+          "crossStreet" : null,
+          "streetNumber" : "3089",
+          "routeNumbers" : null,
+          "streetName" : "157th Place Northeast",
+          "streetNameAndNumber" : null,
+          "municipality" : "Redmond",
+          "municipalitySubdivision" : null,
+          "countryTertiarySubdivision" : null,
+          "countrySecondarySubdivision" : "King",
+          "countrySubdivision" : "WA",
+          "postalCode" : "98052",
+          "extendedPostalCode" : "98052-8301",
+          "countryCode" : "US",
+          "country" : "United States",
+          "countryCodeISO3" : null,
+          "freeformAddress" : "3089 157th Place Northeast, Redmond, WA 98052",
+          "countrySubdivisionName" : "Washington",
+          "localName" : "Redmond",
+          "boundingBox" : null
+        },
+        "position" : {
+          "latitude" : 47.63604,
+          "longitude" : -122.12967,
+          "lat" : 47.63604,
+          "lon" : -122.12967
+        },
+        "viewport" : {
+          "topLeft" : {
+            "latitude" : 47.63694,
+            "longitude" : -122.131,
+            "lat" : 47.63694,
+            "lon" : -122.131
+          },
+          "bottomRight" : {
+            "latitude" : 47.63514,
+            "longitude" : -122.12834,
+            "lat" : 47.63514,
+            "lon" : -122.12834
+          },
+          "bottomLeft" : {
+            "latitude" : 47.63514,
+            "longitude" : -122.131,
+            "lat" : 47.63514,
+            "lon" : -122.131
+          },
+          "southWest" : {
+            "latitude" : 47.63514,
+            "longitude" : -122.131,
+            "lat" : 47.63514,
+            "lon" : -122.131
+          },
+          "northEast" : {
+            "latitude" : 47.63694,
+            "longitude" : -122.12834,
+            "lat" : 47.63694,
+            "lon" : -122.12834
+          },
+          "topRight" : {
+            "latitude" : 47.63694,
+            "longitude" : -122.12834,
+            "lat" : 47.63694,
+            "lon" : -122.12834
+          }
+        },
+        "entryPoints" : [ {
+          "type" : {
+            "name" : "main",
+            "clazz" : "com.azure.maps.search.models.EntryPointType"
+          },
+          "position" : {
+            "latitude" : 47.63622,
+            "longitude" : -122.12916,
+            "lat" : 47.63622,
+            "lon" : -122.12916
+          }
+        } ],
+        "addressRanges" : null,
+        "dataSource" : null,
+        "matchType" : null,
+        "detourTime" : null,
+        "boundingBox" : {
+          "topLeft" : {
+            "latitude" : 47.63694,
+            "longitude" : -122.131,
+            "lat" : 47.63694,
+            "lon" : -122.131
+          },
+          "bottomRight" : {
+            "latitude" : 47.63514,
+            "longitude" : -122.12834,
+            "lat" : 47.63514,
+            "lon" : -122.12834
+          },
+          "bottomLeft" : {
+            "latitude" : 47.63514,
+            "longitude" : -122.131,
+            "lat" : 47.63514,
+            "lon" : -122.131
+          },
+          "southWest" : {
+            "latitude" : 47.63514,
+            "longitude" : -122.131,
+            "lat" : 47.63514,
+            "lon" : -122.131
+          },
+          "northEast" : {
+            "latitude" : 47.63694,
+            "longitude" : -122.12834,
+            "lat" : 47.63694,
+            "lon" : -122.12834
+          },
+          "topRight" : {
+            "latitude" : 47.63694,
+            "longitude" : -122.12834,
+            "lat" : 47.63694,
+            "lon" : -122.12834
+          }
+        }
+      } ]
+    }
+  }, {
+    "statusCode" : 200,
+    "error" : null,
+    "result" : {
+      "summary" : {
+        "query" : "statue of liberty",
+        "queryType" : {
+          "name" : "NON_NEAR",
+          "clazz" : "com.azure.maps.search.models.QueryType"
+        },
+        "queryTime" : 58,
+        "numResults" : 2,
+        "top" : null,
+        "skip" : 0,
+        "totalResults" : 45,
+        "fuzzyLevel" : 1,
+        "geoBias" : null
+      },
+      "results" : [ {
+        "type" : {
+          "name" : "POI",
+          "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+        },
+        "id" : "840669000056575",
+        "score" : 6.9424767494,
+        "distanceInMeters" : null,
+        "info" : "search:ta:840669000056575-GU",
+        "entityType" : null,
+        "pointOfInterest" : {
+          "name" : "Statue of Liberty",
+          "phone" : null,
+          "url" : null,
+          "categorySet" : [ {
+            "id" : 7376003
+          } ],
+          "categories" : [ "important tourist attraction", "monument" ],
+          "classifications" : [ {
+            "code" : "IMPORTANT_TOURIST_ATTRACTION",
+            "names" : [ {
+              "nameLocale" : "en-US",
+              "name" : "important tourist attraction"
+            }, {
+              "nameLocale" : "en-US",
+              "name" : "monument"
+            } ]
+          } ],
+          "brands" : null,
+          "operatingHours" : null
+        },
+        "address" : {
+          "buildingNumber" : null,
+          "street" : null,
+          "crossStreet" : null,
+          "streetNumber" : null,
+          "routeNumbers" : null,
+          "streetName" : null,
+          "streetNameAndNumber" : null,
+          "municipality" : "Santa Rita",
+          "municipalitySubdivision" : null,
+          "countryTertiarySubdivision" : null,
+          "countrySecondarySubdivision" : "Guam",
+          "countrySubdivision" : "Guam",
+          "postalCode" : "96915",
+          "extendedPostalCode" : null,
+          "countryCode" : "GU",
+          "country" : "Guam",
+          "countryCodeISO3" : null,
+          "freeformAddress" : "Santa Rita, Guam 96915",
+          "countrySubdivisionName" : null,
+          "localName" : "Santa Rita",
+          "boundingBox" : null
+        },
+        "position" : {
+          "latitude" : 13.48126,
+          "longitude" : 144.75335,
+          "lat" : 13.48126,
+          "lon" : 144.75335
+        },
+        "viewport" : {
+          "topLeft" : {
+            "latitude" : 13.48216,
+            "longitude" : 144.75243,
+            "lat" : 13.48216,
+            "lon" : 144.75243
+          },
+          "bottomRight" : {
+            "latitude" : 13.48036,
+            "longitude" : 144.75427,
+            "lat" : 13.48036,
+            "lon" : 144.75427
+          },
+          "bottomLeft" : {
+            "latitude" : 13.48036,
+            "longitude" : 144.75243,
+            "lat" : 13.48036,
+            "lon" : 144.75243
+          },
+          "southWest" : {
+            "latitude" : 13.48036,
+            "longitude" : 144.75243,
+            "lat" : 13.48036,
+            "lon" : 144.75243
+          },
+          "northEast" : {
+            "latitude" : 13.48216,
+            "longitude" : 144.75427,
+            "lat" : 13.48216,
+            "lon" : 144.75427
+          },
+          "topRight" : {
+            "latitude" : 13.48216,
+            "longitude" : 144.75427,
+            "lat" : 13.48216,
+            "lon" : 144.75427
+          }
+        },
+        "entryPoints" : [ {
+          "type" : {
+            "name" : "main",
+            "clazz" : "com.azure.maps.search.models.EntryPointType"
+          },
+          "position" : {
+            "latitude" : 13.48044,
+            "longitude" : 144.7533,
+            "lat" : 13.48044,
+            "lon" : 144.7533
+          }
+        } ],
+        "addressRanges" : null,
+        "dataSource" : {
+          "geometry" : null
+        },
+        "matchType" : null,
+        "detourTime" : null,
+        "boundingBox" : {
+          "topLeft" : {
+            "latitude" : 13.48216,
+            "longitude" : 144.75243,
+            "lat" : 13.48216,
+            "lon" : 144.75243
+          },
+          "bottomRight" : {
+            "latitude" : 13.48036,
+            "longitude" : 144.75427,
+            "lat" : 13.48036,
+            "lon" : 144.75427
+          },
+          "bottomLeft" : {
+            "latitude" : 13.48036,
+            "longitude" : 144.75243,
+            "lat" : 13.48036,
+            "lon" : 144.75243
+          },
+          "southWest" : {
+            "latitude" : 13.48036,
+            "longitude" : 144.75243,
+            "lat" : 13.48036,
+            "lon" : 144.75243
+          },
+          "northEast" : {
+            "latitude" : 13.48216,
+            "longitude" : 144.75427,
+            "lat" : 13.48216,
+            "lon" : 144.75427
+          },
+          "topRight" : {
+            "latitude" : 13.48216,
+            "longitude" : 144.75427,
+            "lat" : 13.48216,
+            "lon" : 144.75427
+          }
+        }
+      }, {
+        "type" : {
+          "name" : "POI",
+          "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+        },
+        "id" : "840269003389460",
+        "score" : 6.9424767494,
+        "distanceInMeters" : null,
+        "info" : "search:ta:840269003389460-US",
+        "entityType" : null,
+        "pointOfInterest" : {
+          "name" : "Statue Of Liberty",
+          "phone" : null,
+          "url" : null,
+          "categorySet" : [ {
+            "id" : 7376013
+          } ],
+          "categories" : [ "important tourist attraction", "statue" ],
+          "classifications" : [ {
+            "code" : "IMPORTANT_TOURIST_ATTRACTION",
+            "names" : [ {
+              "nameLocale" : "en-US",
+              "name" : "important tourist attraction"
+            }, {
+              "nameLocale" : "en-US",
+              "name" : "statue"
+            } ]
+          } ],
+          "brands" : null,
+          "operatingHours" : null
+        },
+        "address" : {
+          "buildingNumber" : null,
+          "street" : null,
+          "crossStreet" : null,
+          "streetNumber" : null,
+          "routeNumbers" : null,
+          "streetName" : "Main Street",
+          "streetNameAndNumber" : null,
+          "municipality" : "Mackinac Island",
+          "municipalitySubdivision" : null,
+          "countryTertiarySubdivision" : null,
+          "countrySecondarySubdivision" : "Mackinac",
+          "countrySubdivision" : "MI",
+          "postalCode" : "49757",
+          "extendedPostalCode" : null,
+          "countryCode" : "US",
+          "country" : "United States",
+          "countryCodeISO3" : null,
+          "freeformAddress" : "Main Street, Mackinac Island, MI 49757",
+          "countrySubdivisionName" : "Michigan",
+          "localName" : "Mackinac Island",
+          "boundingBox" : null
+        },
+        "position" : {
+          "latitude" : 45.85049,
+          "longitude" : -84.61549,
+          "lat" : 45.85049,
+          "lon" : -84.61549
+        },
+        "viewport" : {
+          "topLeft" : {
+            "latitude" : 45.85139,
+            "longitude" : -84.61678,
+            "lat" : 45.85139,
+            "lon" : -84.61678
+          },
+          "bottomRight" : {
+            "latitude" : 45.84959,
+            "longitude" : -84.6142,
+            "lat" : 45.84959,
+            "lon" : -84.6142
+          },
+          "bottomLeft" : {
+            "latitude" : 45.84959,
+            "longitude" : -84.61678,
+            "lat" : 45.84959,
+            "lon" : -84.61678
+          },
+          "southWest" : {
+            "latitude" : 45.84959,
+            "longitude" : -84.61678,
+            "lat" : 45.84959,
+            "lon" : -84.61678
+          },
+          "northEast" : {
+            "latitude" : 45.85139,
+            "longitude" : -84.6142,
+            "lat" : 45.85139,
+            "lon" : -84.6142
+          },
+          "topRight" : {
+            "latitude" : 45.85139,
+            "longitude" : -84.6142,
+            "lat" : 45.85139,
+            "lon" : -84.6142
+          }
+        },
+        "entryPoints" : [ {
+          "type" : {
+            "name" : "main",
+            "clazz" : "com.azure.maps.search.models.EntryPointType"
+          },
+          "position" : {
+            "latitude" : 45.85058,
+            "longitude" : -84.6155,
+            "lat" : 45.85058,
+            "lon" : -84.6155
+          }
+        } ],
+        "addressRanges" : null,
+        "dataSource" : {
+          "geometry" : null
+        },
+        "matchType" : null,
+        "detourTime" : null,
+        "boundingBox" : {
+          "topLeft" : {
+            "latitude" : 45.85139,
+            "longitude" : -84.61678,
+            "lat" : 45.85139,
+            "lon" : -84.61678
+          },
+          "bottomRight" : {
+            "latitude" : 45.84959,
+            "longitude" : -84.6142,
+            "lat" : 45.84959,
+            "lon" : -84.6142
+          },
+          "bottomLeft" : {
+            "latitude" : 45.84959,
+            "longitude" : -84.61678,
+            "lat" : 45.84959,
+            "lon" : -84.61678
+          },
+          "southWest" : {
+            "latitude" : 45.84959,
+            "longitude" : -84.61678,
+            "lat" : 45.84959,
+            "lon" : -84.61678
+          },
+          "northEast" : {
+            "latitude" : 45.85139,
+            "longitude" : -84.6142,
+            "lat" : 45.85139,
+            "lon" : -84.6142
+          },
+          "topRight" : {
+            "latitude" : 45.85139,
+            "longitude" : -84.6142,
+            "lat" : 45.85139,
+            "lon" : -84.6142
+          }
+        }
+      } ]
+    }
+  }, {
+    "statusCode" : 200,
+    "error" : null,
+    "result" : {
+      "summary" : {
+        "query" : "starbucks",
+        "queryType" : {
+          "name" : "NON_NEAR",
+          "clazz" : "com.azure.maps.search.models.QueryType"
+        },
+        "queryTime" : 7,
+        "numResults" : 10,
+        "top" : null,
+        "skip" : 0,
+        "totalResults" : 15,
+        "fuzzyLevel" : 1,
+        "geoBias" : {
+          "latitude" : 47.639769,
+          "longitude" : -122.128362,
+          "lat" : 47.639769,
+          "lon" : -122.128362
+        }
+      },
+      "results" : [ {
+        "type" : {
+          "name" : "POI",
+          "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+        },
+        "id" : "840539003180785",
+        "score" : 2.4891555309,
+        "distanceInMeters" : 1080.5952285854912,
+        "info" : "search:ta:840539003180785-US",
+        "entityType" : null,
+        "pointOfInterest" : {
+          "name" : "Starbucks",
+          "phone" : null,
+          "url" : "starbucks.com",
+          "categorySet" : [ {
+            "id" : 9376006
+          } ],
+          "categories" : [ "caf�/pub", "coffee shop" ],
+          "classifications" : [ {
+            "code" : "CAFE_PUB",
+            "names" : [ {
+              "nameLocale" : "en-US",
+              "name" : "caf�/pub"
+            }, {
+              "nameLocale" : "en-US",
+              "name" : "coffee shop"
+            } ]
+          } ],
+          "brands" : [ {
+            "name" : "Starbucks"
+          } ],
+          "operatingHours" : null
+        },
+        "address" : {
+          "buildingNumber" : null,
+          "street" : null,
+          "crossStreet" : null,
+          "streetNumber" : null,
+          "routeNumbers" : null,
+          "streetName" : "148th Avenue Northeast",
+          "streetNameAndNumber" : null,
+          "municipality" : "Redmond",
+          "municipalitySubdivision" : null,
+          "countryTertiarySubdivision" : null,
+          "countrySecondarySubdivision" : "King",
+          "countrySubdivision" : "WA",
+          "postalCode" : "98052",
+          "extendedPostalCode" : "98052-5345",
+          "countryCode" : "US",
+          "country" : "United States",
+          "countryCodeISO3" : null,
+          "freeformAddress" : "148th Avenue Northeast, Redmond, WA 98052",
+          "countrySubdivisionName" : "Washington",
+          "localName" : "Redmond",
+          "boundingBox" : null
+        },
+        "position" : {
+          "latitude" : 47.642,
+          "longitude" : -122.1424,
+          "lat" : 47.642,
+          "lon" : -122.1424
+        },
+        "viewport" : {
+          "topLeft" : {
+            "latitude" : 47.6429,
+            "longitude" : -122.14373,
+            "lat" : 47.6429,
+            "lon" : -122.14373
+          },
+          "bottomRight" : {
+            "latitude" : 47.6411,
+            "longitude" : -122.14107,
+            "lat" : 47.6411,
+            "lon" : -122.14107
+          },
+          "bottomLeft" : {
+            "latitude" : 47.6411,
+            "longitude" : -122.14373,
+            "lat" : 47.6411,
+            "lon" : -122.14373
+          },
+          "southWest" : {
+            "latitude" : 47.6411,
+            "longitude" : -122.14373,
+            "lat" : 47.6411,
+            "lon" : -122.14373
+          },
+          "northEast" : {
+            "latitude" : 47.6429,
+            "longitude" : -122.14107,
+            "lat" : 47.6429,
+            "lon" : -122.14107
+          },
+          "topRight" : {
+            "latitude" : 47.6429,
+            "longitude" : -122.14107,
+            "lat" : 47.6429,
+            "lon" : -122.14107
+          }
+        },
+        "entryPoints" : [ {
+          "type" : {
+            "name" : "main",
+            "clazz" : "com.azure.maps.search.models.EntryPointType"
+          },
+          "position" : {
+            "latitude" : 47.64201,
+            "longitude" : -122.14289,
+            "lat" : 47.64201,
+            "lon" : -122.14289
+          }
+        } ],
+        "addressRanges" : null,
+        "dataSource" : {
+          "geometry" : null
+        },
+        "matchType" : null,
+        "detourTime" : null,
+        "boundingBox" : {
+          "topLeft" : {
+            "latitude" : 47.6429,
+            "longitude" : -122.14373,
+            "lat" : 47.6429,
+            "lon" : -122.14373
+          },
+          "bottomRight" : {
+            "latitude" : 47.6411,
+            "longitude" : -122.14107,
+            "lat" : 47.6411,
+            "lon" : -122.14107
+          },
+          "bottomLeft" : {
+            "latitude" : 47.6411,
+            "longitude" : -122.14373,
+            "lat" : 47.6411,
+            "lon" : -122.14373
+          },
+          "southWest" : {
+            "latitude" : 47.6411,
+            "longitude" : -122.14373,
+            "lat" : 47.6411,
+            "lon" : -122.14373
+          },
+          "northEast" : {
+            "latitude" : 47.6429,
+            "longitude" : -122.14107,
+            "lat" : 47.6429,
+            "lon" : -122.14107
+          },
+          "topRight" : {
+            "latitude" : 47.6429,
+            "longitude" : -122.14107,
+            "lat" : 47.6429,
+            "lon" : -122.14107
+          }
+        }
+      }, {
+        "type" : {
+          "name" : "POI",
+          "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+        },
+        "id" : "840531000006554",
+        "score" : 2.489066124,
+        "distanceInMeters" : 1206.1196894989703,
+        "info" : "search:ta:840531000006554-US",
+        "entityType" : null,
+        "pointOfInterest" : {
+          "name" : "Starbucks",
+          "phone" : "+1 425-869-5816",
+          "url" : "https://www.starbucks.com",
+          "categorySet" : [ {
+            "id" : 9376006
+          } ],
+          "categories" : [ "caf�/pub", "coffee shop" ],
+          "classifications" : [ {
+            "code" : "CAFE_PUB",
+            "names" : [ {
+              "nameLocale" : "en-US",
+              "name" : "caf�/pub"
+            }, {
+              "nameLocale" : "en-US",
+              "name" : "coffee shop"
+            } ]
+          } ],
+          "brands" : [ {
+            "name" : "Starbucks"
+          } ],
+          "operatingHours" : null
+        },
+        "address" : {
+          "buildingNumber" : null,
+          "street" : null,
+          "crossStreet" : null,
+          "streetNumber" : "15000",
+          "routeNumbers" : null,
+          "streetName" : "Northeast 24th Street",
+          "streetNameAndNumber" : null,
+          "municipality" : "Redmond",
+          "municipalitySubdivision" : null,
+          "countryTertiarySubdivision" : null,
+          "countrySecondarySubdivision" : "King",
+          "countrySubdivision" : "WA",
+          "postalCode" : "98052",
+          "extendedPostalCode" : "98052-5532",
+          "countryCode" : "US",
+          "country" : "United States",
+          "countryCodeISO3" : null,
+          "freeformAddress" : "15000 Northeast 24th Street, Redmond, WA 98052",
+          "countrySubdivisionName" : "Washington",
+          "localName" : "Redmond",
+          "boundingBox" : null
+        },
+        "position" : {
+          "latitude" : 47.63266,
+          "longitude" : -122.14052,
+          "lat" : 47.63266,
+          "lon" : -122.14052
+        },
+        "viewport" : {
+          "topLeft" : {
+            "latitude" : 47.63376,
+            "longitude" : -122.14215,
+            "lat" : 47.63376,
+            "lon" : -122.14215
+          },
+          "bottomRight" : {
+            "latitude" : 47.63156,
+            "longitude" : -122.13889,
+            "lat" : 47.63156,
+            "lon" : -122.13889
+          },
+          "bottomLeft" : {
+            "latitude" : 47.63156,
+            "longitude" : -122.14215,
+            "lat" : 47.63156,
+            "lon" : -122.14215
+          },
+          "southWest" : {
+            "latitude" : 47.63156,
+            "longitude" : -122.14215,
+            "lat" : 47.63156,
+            "lon" : -122.14215
+          },
+          "northEast" : {
+            "latitude" : 47.63376,
+            "longitude" : -122.13889,
+            "lat" : 47.63376,
+            "lon" : -122.13889
+          },
+          "topRight" : {
+            "latitude" : 47.63376,
+            "longitude" : -122.13889,
+            "lat" : 47.63376,
+            "lon" : -122.13889
+          }
+        },
+        "entryPoints" : [ {
+          "type" : {
+            "name" : "main",
+            "clazz" : "com.azure.maps.search.models.EntryPointType"
+          },
+          "position" : {
+            "latitude" : 47.63156,
+            "longitude" : -122.14048,
+            "lat" : 47.63156,
+            "lon" : -122.14048
+          }
+        }, {
+          "type" : {
+            "name" : "minor",
+            "clazz" : "com.azure.maps.search.models.EntryPointType"
+          },
+          "position" : {
+            "latitude" : 47.63237,
+            "longitude" : -122.14037,
+            "lat" : 47.63237,
+            "lon" : -122.14037
+          }
+        }, {
+          "type" : {
+            "name" : "minor",
+            "clazz" : "com.azure.maps.search.models.EntryPointType"
+          },
+          "position" : {
+            "latitude" : 47.63241,
+            "longitude" : -122.13939,
+            "lat" : 47.63241,
+            "lon" : -122.13939
+          }
+        }, {
+          "type" : {
+            "name" : "minor",
+            "clazz" : "com.azure.maps.search.models.EntryPointType"
+          },
+          "position" : {
+            "latitude" : 47.63156,
+            "longitude" : -122.14058,
+            "lat" : 47.63156,
+            "lon" : -122.14058
+          }
+        } ],
+        "addressRanges" : null,
+        "dataSource" : {
+          "geometry" : null
+        },
+        "matchType" : null,
+        "detourTime" : null,
+        "boundingBox" : {
+          "topLeft" : {
+            "latitude" : 47.63376,
+            "longitude" : -122.14215,
+            "lat" : 47.63376,
+            "lon" : -122.14215
+          },
+          "bottomRight" : {
+            "latitude" : 47.63156,
+            "longitude" : -122.13889,
+            "lat" : 47.63156,
+            "lon" : -122.13889
+          },
+          "bottomLeft" : {
+            "latitude" : 47.63156,
+            "longitude" : -122.14215,
+            "lat" : 47.63156,
+            "lon" : -122.14215
+          },
+          "southWest" : {
+            "latitude" : 47.63156,
+            "longitude" : -122.14215,
+            "lat" : 47.63156,
+            "lon" : -122.14215
+          },
+          "northEast" : {
+            "latitude" : 47.63376,
+            "longitude" : -122.13889,
+            "lat" : 47.63376,
+            "lon" : -122.13889
+          },
+          "topRight" : {
+            "latitude" : 47.63376,
+            "longitude" : -122.13889,
+            "lat" : 47.63376,
+            "lon" : -122.13889
+          }
+        }
+      }, {
+        "type" : {
+          "name" : "POI",
+          "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+        },
+        "id" : "840539001950429",
+        "score" : 2.4882986546,
+        "distanceInMeters" : 1979.2222952267998,
+        "info" : "search:ta:840539001950429-US",
+        "entityType" : null,
+        "pointOfInterest" : {
+          "name" : "Starbucks",
+          "phone" : "+1 425-747-0690",
+          "url" : "https://www.starbucks.com",
+          "categorySet" : [ {
+            "id" : 9376006
+          } ],
+          "categories" : [ "caf�/pub", "coffee shop" ],
+          "classifications" : [ {
+            "code" : "CAFE_PUB",
+            "names" : [ {
+              "nameLocale" : "en-US",
+              "name" : "caf�/pub"
+            }, {
+              "nameLocale" : "en-US",
+              "name" : "coffee shop"
+            } ]
+          } ],
+          "brands" : [ {
+            "name" : "Starbucks"
+          } ],
+          "operatingHours" : null
+        },
+        "address" : {
+          "buildingNumber" : null,
+          "street" : null,
+          "crossStreet" : null,
+          "streetNumber" : "1350",
+          "routeNumbers" : null,
+          "streetName" : "156th Avenue Northeast",
+          "streetNameAndNumber" : null,
+          "municipality" : "Bellevue",
+          "municipalitySubdivision" : "Crossroads",
+          "countryTertiarySubdivision" : null,
+          "countrySecondarySubdivision" : "King",
+          "countrySubdivision" : "WA",
+          "postalCode" : "98007",
+          "extendedPostalCode" : "98007-4412",
+          "countryCode" : "US",
+          "country" : "United States",
+          "countryCodeISO3" : null,
+          "freeformAddress" : "1350 156th Avenue Northeast, Bellevue, WA 98007",
+          "countrySubdivisionName" : "Washington",
+          "localName" : "Bellevue",
+          "boundingBox" : null
+        },
+        "position" : {
+          "latitude" : 47.62212,
+          "longitude" : -122.13179,
+          "lat" : 47.62212,
+          "lon" : -122.13179
+        },
+        "viewport" : {
+          "topLeft" : {
+            "latitude" : 47.62302,
+            "longitude" : -122.13312,
+            "lat" : 47.62302,
+            "lon" : -122.13312
+          },
+          "bottomRight" : {
+            "latitude" : 47.62122,
+            "longitude" : -122.13046,
+            "lat" : 47.62122,
+            "lon" : -122.13046
+          },
+          "bottomLeft" : {
+            "latitude" : 47.62122,
+            "longitude" : -122.13312,
+            "lat" : 47.62122,
+            "lon" : -122.13312
+          },
+          "southWest" : {
+            "latitude" : 47.62122,
+            "longitude" : -122.13312,
+            "lat" : 47.62122,
+            "lon" : -122.13312
+          },
+          "northEast" : {
+            "latitude" : 47.62302,
+            "longitude" : -122.13046,
+            "lat" : 47.62302,
+            "lon" : -122.13046
+          },
+          "topRight" : {
+            "latitude" : 47.62302,
+            "longitude" : -122.13046,
+            "lat" : 47.62302,
+            "lon" : -122.13046
+          }
+        },
+        "entryPoints" : [ {
+          "type" : {
+            "name" : "main",
+            "clazz" : "com.azure.maps.search.models.EntryPointType"
+          },
+          "position" : {
+            "latitude" : 47.62213,
+            "longitude" : -122.13236,
+            "lat" : 47.62213,
+            "lon" : -122.13236
+          }
+        } ],
+        "addressRanges" : null,
+        "dataSource" : {
+          "geometry" : null
+        },
+        "matchType" : null,
+        "detourTime" : null,
+        "boundingBox" : {
+          "topLeft" : {
+            "latitude" : 47.62302,
+            "longitude" : -122.13312,
+            "lat" : 47.62302,
+            "lon" : -122.13312
+          },
+          "bottomRight" : {
+            "latitude" : 47.62122,
+            "longitude" : -122.13046,
+            "lat" : 47.62122,
+            "lon" : -122.13046
+          },
+          "bottomLeft" : {
+            "latitude" : 47.62122,
+            "longitude" : -122.13312,
+            "lat" : 47.62122,
+            "lon" : -122.13312
+          },
+          "southWest" : {
+            "latitude" : 47.62122,
+            "longitude" : -122.13312,
+            "lat" : 47.62122,
+            "lon" : -122.13312
+          },
+          "northEast" : {
+            "latitude" : 47.62302,
+            "longitude" : -122.13046,
+            "lat" : 47.62302,
+            "lon" : -122.13046
+          },
+          "topRight" : {
+            "latitude" : 47.62302,
+            "longitude" : -122.13046,
+            "lat" : 47.62302,
+            "lon" : -122.13046
+          }
+        }
+      }, {
+        "type" : {
+          "name" : "POI",
+          "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+        },
+        "id" : "840539001015090",
+        "score" : 2.4875881672,
+        "distanceInMeters" : 2490.3337046455963,
+        "info" : "search:ta:840539001015090-US",
+        "entityType" : null,
+        "pointOfInterest" : {
+          "name" : "Starbucks",
+          "phone" : "+1 425-455-6500",
+          "url" : "www.starbucks.com/store/15901/",
+          "categorySet" : [ {
+            "id" : 9376006
+          } ],
+          "categories" : [ "caf�/pub", "coffee shop" ],
+          "classifications" : [ {
+            "code" : "CAFE_PUB",
+            "names" : [ {
+              "nameLocale" : "en-US",
+              "name" : "caf�/pub"
+            }, {
+              "nameLocale" : "en-US",
+              "name" : "coffee shop"
+            } ]
+          } ],
+          "brands" : [ {
+            "name" : "Starbucks"
+          } ],
+          "operatingHours" : null
+        },
+        "address" : {
+          "buildingNumber" : null,
+          "street" : null,
+          "crossStreet" : null,
+          "streetNumber" : "1645",
+          "routeNumbers" : null,
+          "streetName" : "140th Avenue Northeast",
+          "streetNameAndNumber" : null,
+          "municipality" : "Bellevue",
+          "municipalitySubdivision" : "Bel Red",
+          "countryTertiarySubdivision" : null,
+          "countrySecondarySubdivision" : "King",
+          "countrySubdivision" : "WA",
+          "postalCode" : "98005",
+          "extendedPostalCode" : null,
+          "countryCode" : "US",
+          "country" : "United States",
+          "countryCodeISO3" : null,
+          "freeformAddress" : "1645 140th Avenue Northeast, Bellevue, WA 98005",
+          "countrySubdivisionName" : "Washington",
+          "localName" : "Bellevue",
+          "boundingBox" : null
+        },
+        "position" : {
+          "latitude" : 47.62626,
+          "longitude" : -122.15487,
+          "lat" : 47.62626,
+          "lon" : -122.15487
+        },
+        "viewport" : {
+          "topLeft" : {
+            "latitude" : 47.62716,
+            "longitude" : -122.1562,
+            "lat" : 47.62716,
+            "lon" : -122.1562
+          },
+          "bottomRight" : {
+            "latitude" : 47.62536,
+            "longitude" : -122.15354,
+            "lat" : 47.62536,
+            "lon" : -122.15354
+          },
+          "bottomLeft" : {
+            "latitude" : 47.62536,
+            "longitude" : -122.1562,
+            "lat" : 47.62536,
+            "lon" : -122.1562
+          },
+          "southWest" : {
+            "latitude" : 47.62536,
+            "longitude" : -122.1562,
+            "lat" : 47.62536,
+            "lon" : -122.1562
+          },
+          "northEast" : {
+            "latitude" : 47.62716,
+            "longitude" : -122.15354,
+            "lat" : 47.62716,
+            "lon" : -122.15354
+          },
+          "topRight" : {
+            "latitude" : 47.62716,
+            "longitude" : -122.15354,
+            "lat" : 47.62716,
+            "lon" : -122.15354
+          }
+        },
+        "entryPoints" : [ {
+          "type" : {
+            "name" : "minor",
+            "clazz" : "com.azure.maps.search.models.EntryPointType"
+          },
+          "position" : {
+            "latitude" : 47.62645,
+            "longitude" : -122.15446,
+            "lat" : 47.62645,
+            "lon" : -122.15446
+          }
+        }, {
+          "type" : {
+            "name" : "main",
+            "clazz" : "com.azure.maps.search.models.EntryPointType"
+          },
+          "position" : {
+            "latitude" : 47.62579,
+            "longitude" : -122.15377,
+            "lat" : 47.62579,
+            "lon" : -122.15377
+          }
+        } ],
+        "addressRanges" : null,
+        "dataSource" : {
+          "geometry" : null
+        },
+        "matchType" : null,
+        "detourTime" : null,
+        "boundingBox" : {
+          "topLeft" : {
+            "latitude" : 47.62716,
+            "longitude" : -122.1562,
+            "lat" : 47.62716,
+            "lon" : -122.1562
+          },
+          "bottomRight" : {
+            "latitude" : 47.62536,
+            "longitude" : -122.15354,
+            "lat" : 47.62536,
+            "lon" : -122.15354
+          },
+          "bottomLeft" : {
+            "latitude" : 47.62536,
+            "longitude" : -122.1562,
+            "lat" : 47.62536,
+            "lon" : -122.1562
+          },
+          "southWest" : {
+            "latitude" : 47.62536,
+            "longitude" : -122.1562,
+            "lat" : 47.62536,
+            "lon" : -122.1562
+          },
+          "northEast" : {
+            "latitude" : 47.62716,
+            "longitude" : -122.15354,
+            "lat" : 47.62716,
+            "lon" : -122.15354
+          },
+          "topRight" : {
+            "latitude" : 47.62716,
+            "longitude" : -122.15354,
+            "lat" : 47.62716,
+            "lon" : -122.15354
+          }
+        }
+      }, {
+        "type" : {
+          "name" : "POI",
+          "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+        },
+        "id" : "840539003165028",
+        "score" : 2.485550642,
+        "distanceInMeters" : 3573.8973937271953,
+        "info" : "search:ta:840539003165028-US",
+        "entityType" : null,
+        "pointOfInterest" : {
+          "name" : "Starbucks",
+          "phone" : "+1 877-421-9062",
+          "url" : "www.starbucks.com/store/1005401/",
+          "categorySet" : [ {
+            "id" : 9376006
+          } ],
+          "categories" : [ "caf�/pub", "coffee shop" ],
+          "classifications" : [ {
+            "code" : "CAFE_PUB",
+            "names" : [ {
+              "nameLocale" : "en-US",
+              "name" : "caf�/pub"
+            }, {
+              "nameLocale" : "en-US",
+              "name" : "coffee shop"
+            } ]
+          } ],
+          "brands" : [ {
+            "name" : "Starbucks"
+          } ],
+          "operatingHours" : null
+        },
+        "address" : {
+          "buildingNumber" : null,
+          "street" : null,
+          "crossStreet" : null,
+          "streetNumber" : "180",
+          "routeNumbers" : null,
+          "streetName" : "148th Avenue Southeast",
+          "streetNameAndNumber" : null,
+          "municipality" : "Bellevue",
+          "municipalitySubdivision" : "Lake Hills",
+          "countryTertiarySubdivision" : null,
+          "countrySecondarySubdivision" : "King",
+          "countrySubdivision" : "WA",
+          "postalCode" : "98007",
+          "extendedPostalCode" : "98007-5174",
+          "countryCode" : "US",
+          "country" : "United States",
+          "countryCodeISO3" : null,
+          "freeformAddress" : "180 148th Avenue Southeast, Bellevue, WA 98007",
+          "countrySubdivisionName" : "Washington",
+          "localName" : "Bellevue",
+          "boundingBox" : null
+        },
+        "position" : {
+          "latitude" : 47.60909,
+          "longitude" : -122.14258,
+          "lat" : 47.60909,
+          "lon" : -122.14258
+        },
+        "viewport" : {
+          "topLeft" : {
+            "latitude" : 47.60999,
+            "longitude" : -122.14391,
+            "lat" : 47.60999,
+            "lon" : -122.14391
+          },
+          "bottomRight" : {
+            "latitude" : 47.60819,
+            "longitude" : -122.14125,
+            "lat" : 47.60819,
+            "lon" : -122.14125
+          },
+          "bottomLeft" : {
+            "latitude" : 47.60819,
+            "longitude" : -122.14391,
+            "lat" : 47.60819,
+            "lon" : -122.14391
+          },
+          "southWest" : {
+            "latitude" : 47.60819,
+            "longitude" : -122.14391,
+            "lat" : 47.60819,
+            "lon" : -122.14391
+          },
+          "northEast" : {
+            "latitude" : 47.60999,
+            "longitude" : -122.14125,
+            "lat" : 47.60999,
+            "lon" : -122.14125
+          },
+          "topRight" : {
+            "latitude" : 47.60999,
+            "longitude" : -122.14125,
+            "lat" : 47.60999,
+            "lon" : -122.14125
+          }
+        },
+        "entryPoints" : [ {
+          "type" : {
+            "name" : "main",
+            "clazz" : "com.azure.maps.search.models.EntryPointType"
+          },
+          "position" : {
+            "latitude" : 47.60909,
+            "longitude" : -122.14286,
+            "lat" : 47.60909,
+            "lon" : -122.14286
+          }
+        } ],
+        "addressRanges" : null,
+        "dataSource" : {
+          "geometry" : null
+        },
+        "matchType" : null,
+        "detourTime" : null,
+        "boundingBox" : {
+          "topLeft" : {
+            "latitude" : 47.60999,
+            "longitude" : -122.14391,
+            "lat" : 47.60999,
+            "lon" : -122.14391
+          },
+          "bottomRight" : {
+            "latitude" : 47.60819,
+            "longitude" : -122.14125,
+            "lat" : 47.60819,
+            "lon" : -122.14125
+          },
+          "bottomLeft" : {
+            "latitude" : 47.60819,
+            "longitude" : -122.14391,
+            "lat" : 47.60819,
+            "lon" : -122.14391
+          },
+          "southWest" : {
+            "latitude" : 47.60819,
+            "longitude" : -122.14391,
+            "lat" : 47.60819,
+            "lon" : -122.14391
+          },
+          "northEast" : {
+            "latitude" : 47.60999,
+            "longitude" : -122.14125,
+            "lat" : 47.60999,
+            "lon" : -122.14125
+          },
+          "topRight" : {
+            "latitude" : 47.60999,
+            "longitude" : -122.14125,
+            "lat" : 47.60999,
+            "lon" : -122.14125
+          }
+        }
+      }, {
+        "type" : {
+          "name" : "POI",
+          "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+        },
+        "id" : "840531000006551",
+        "score" : 2.4854428768,
+        "distanceInMeters" : 3622.441074618729,
+        "info" : "search:ta:840531000006551-US",
+        "entityType" : null,
+        "pointOfInterest" : {
+          "name" : "Starbucks",
+          "phone" : "+1 425-882-2881",
+          "url" : "www.starbucks.com",
+          "categorySet" : [ {
+            "id" : 9376006
+          } ],
+          "categories" : [ "caf�/pub", "coffee shop" ],
+          "classifications" : [ {
+            "code" : "CAFE_PUB",
+            "names" : [ {
+              "nameLocale" : "en-US",
+              "name" : "caf�/pub"
+            }, {
+              "nameLocale" : "en-US",
+              "name" : "coffee shop"
+            } ]
+          } ],
+          "brands" : [ {
+            "name" : "Starbucks"
+          } ],
+          "operatingHours" : null
+        },
+        "address" : {
+          "buildingNumber" : null,
+          "street" : null,
+          "crossStreet" : null,
+          "streetNumber" : "7625",
+          "routeNumbers" : null,
+          "streetName" : "170th Avenue Northeast",
+          "streetNameAndNumber" : null,
+          "municipality" : "Redmond",
+          "municipalitySubdivision" : null,
+          "countryTertiarySubdivision" : null,
+          "countrySecondarySubdivision" : "King",
+          "countrySubdivision" : "WA",
+          "postalCode" : "98052",
+          "extendedPostalCode" : "98052-0910",
+          "countryCode" : "US",
+          "country" : "United States",
+          "countryCodeISO3" : null,
+          "freeformAddress" : "7625 170th Avenue Northeast, Redmond, WA 98052",
+          "countrySubdivisionName" : "Washington",
+          "localName" : "Redmond",
+          "boundingBox" : null
+        },
+        "position" : {
+          "latitude" : 47.67086,
+          "longitude" : -122.11392,
+          "lat" : 47.67086,
+          "lon" : -122.11392
+        },
+        "viewport" : {
+          "topLeft" : {
+            "latitude" : 47.67176,
+            "longitude" : -122.11526,
+            "lat" : 47.67176,
+            "lon" : -122.11526
+          },
+          "bottomRight" : {
+            "latitude" : 47.66996,
+            "longitude" : -122.11258,
+            "lat" : 47.66996,
+            "lon" : -122.11258
+          },
+          "bottomLeft" : {
+            "latitude" : 47.66996,
+            "longitude" : -122.11526,
+            "lat" : 47.66996,
+            "lon" : -122.11526
+          },
+          "southWest" : {
+            "latitude" : 47.66996,
+            "longitude" : -122.11526,
+            "lat" : 47.66996,
+            "lon" : -122.11526
+          },
+          "northEast" : {
+            "latitude" : 47.67176,
+            "longitude" : -122.11258,
+            "lat" : 47.67176,
+            "lon" : -122.11258
+          },
+          "topRight" : {
+            "latitude" : 47.67176,
+            "longitude" : -122.11258,
+            "lat" : 47.67176,
+            "lon" : -122.11258
+          }
+        },
+        "entryPoints" : [ {
+          "type" : {
+            "name" : "minor",
+            "clazz" : "com.azure.maps.search.models.EntryPointType"
+          },
+          "position" : {
+            "latitude" : 47.67069,
+            "longitude" : -122.11403,
+            "lat" : 47.67069,
+            "lon" : -122.11403
+          }
+        }, {
+          "type" : {
+            "name" : "main",
+            "clazz" : "com.azure.maps.search.models.EntryPointType"
+          },
+          "position" : {
+            "latitude" : 47.67074,
+            "longitude" : -122.1135,
+            "lat" : 47.67074,
+            "lon" : -122.1135
+          }
+        } ],
+        "addressRanges" : null,
+        "dataSource" : {
+          "geometry" : null
+        },
+        "matchType" : null,
+        "detourTime" : null,
+        "boundingBox" : {
+          "topLeft" : {
+            "latitude" : 47.67176,
+            "longitude" : -122.11526,
+            "lat" : 47.67176,
+            "lon" : -122.11526
+          },
+          "bottomRight" : {
+            "latitude" : 47.66996,
+            "longitude" : -122.11258,
+            "lat" : 47.66996,
+            "lon" : -122.11258
+          },
+          "bottomLeft" : {
+            "latitude" : 47.66996,
+            "longitude" : -122.11526,
+            "lat" : 47.66996,
+            "lon" : -122.11526
+          },
+          "southWest" : {
+            "latitude" : 47.66996,
+            "longitude" : -122.11526,
+            "lat" : 47.66996,
+            "lon" : -122.11526
+          },
+          "northEast" : {
+            "latitude" : 47.67176,
+            "longitude" : -122.11258,
+            "lat" : 47.67176,
+            "lon" : -122.11258
+          },
+          "topRight" : {
+            "latitude" : 47.67176,
+            "longitude" : -122.11258,
+            "lat" : 47.67176,
+            "lon" : -122.11258
+          }
+        }
+      }, {
+        "type" : {
+          "name" : "POI",
+          "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+        },
+        "id" : "840539000640782",
+        "score" : 2.4849925041,
+        "distanceInMeters" : 3818.293513029088,
+        "info" : "search:ta:840539000640782-US",
+        "entityType" : null,
+        "pointOfInterest" : {
+          "name" : "Starbucks",
+          "phone" : "+1 425-885-3323",
+          "url" : "www.starbucks.com/store/8094/",
+          "categorySet" : [ {
+            "id" : 9376006
+          } ],
+          "categories" : [ "caf�/pub", "coffee shop" ],
+          "classifications" : [ {
+            "code" : "CAFE_PUB",
+            "names" : [ {
+              "nameLocale" : "en-US",
+              "name" : "caf�/pub"
+            }, {
+              "nameLocale" : "en-US",
+              "name" : "coffee shop"
+            } ]
+          } ],
+          "brands" : [ {
+            "name" : "Starbucks"
+          } ],
+          "operatingHours" : null
+        },
+        "address" : {
+          "buildingNumber" : null,
+          "street" : null,
+          "crossStreet" : null,
+          "streetNumber" : "17246",
+          "routeNumbers" : null,
+          "streetName" : "Redmond Way",
+          "streetNameAndNumber" : null,
+          "municipality" : "Redmond",
+          "municipalitySubdivision" : null,
+          "countryTertiarySubdivision" : null,
+          "countrySecondarySubdivision" : "King",
+          "countrySubdivision" : "WA",
+          "postalCode" : "98052",
+          "extendedPostalCode" : "98052-4403",
+          "countryCode" : "US",
+          "country" : "United States",
+          "countryCodeISO3" : null,
+          "freeformAddress" : "17246 Redmond Way, Redmond, WA 98052",
+          "countrySubdivisionName" : "Washington",
+          "localName" : "Redmond",
+          "boundingBox" : null
+        },
+        "position" : {
+          "latitude" : 47.67174,
+          "longitude" : -122.10976,
+          "lat" : 47.67174,
+          "lon" : -122.10976
+        },
+        "viewport" : {
+          "topLeft" : {
+            "latitude" : 47.67293,
+            "longitude" : -122.11153,
+            "lat" : 47.67293,
+            "lon" : -122.11153
+          },
+          "bottomRight" : {
+            "latitude" : 47.67055,
+            "longitude" : -122.10799,
+            "lat" : 47.67055,
+            "lon" : -122.10799
+          },
+          "bottomLeft" : {
+            "latitude" : 47.67055,
+            "longitude" : -122.11153,
+            "lat" : 47.67055,
+            "lon" : -122.11153
+          },
+          "southWest" : {
+            "latitude" : 47.67055,
+            "longitude" : -122.11153,
+            "lat" : 47.67055,
+            "lon" : -122.11153
+          },
+          "northEast" : {
+            "latitude" : 47.67293,
+            "longitude" : -122.10799,
+            "lat" : 47.67293,
+            "lon" : -122.10799
+          },
+          "topRight" : {
+            "latitude" : 47.67293,
+            "longitude" : -122.10799,
+            "lat" : 47.67293,
+            "lon" : -122.10799
+          }
+        },
+        "entryPoints" : [ {
+          "type" : {
+            "name" : "minor",
+            "clazz" : "com.azure.maps.search.models.EntryPointType"
+          },
+          "position" : {
+            "latitude" : 47.67174,
+            "longitude" : -122.11014,
+            "lat" : 47.67174,
+            "lon" : -122.11014
+          }
+        }, {
+          "type" : {
+            "name" : "main",
+            "clazz" : "com.azure.maps.search.models.EntryPointType"
+          },
+          "position" : {
+            "latitude" : 47.6706,
+            "longitude" : -122.11026,
+            "lat" : 47.6706,
+            "lon" : -122.11026
+          }
+        } ],
+        "addressRanges" : null,
+        "dataSource" : {
+          "geometry" : null
+        },
+        "matchType" : null,
+        "detourTime" : null,
+        "boundingBox" : {
+          "topLeft" : {
+            "latitude" : 47.67293,
+            "longitude" : -122.11153,
+            "lat" : 47.67293,
+            "lon" : -122.11153
+          },
+          "bottomRight" : {
+            "latitude" : 47.67055,
+            "longitude" : -122.10799,
+            "lat" : 47.67055,
+            "lon" : -122.10799
+          },
+          "bottomLeft" : {
+            "latitude" : 47.67055,
+            "longitude" : -122.11153,
+            "lat" : 47.67055,
+            "lon" : -122.11153
+          },
+          "southWest" : {
+            "latitude" : 47.67055,
+            "longitude" : -122.11153,
+            "lat" : 47.67055,
+            "lon" : -122.11153
+          },
+          "northEast" : {
+            "latitude" : 47.67293,
+            "longitude" : -122.10799,
+            "lat" : 47.67293,
+            "lon" : -122.10799
+          },
+          "topRight" : {
+            "latitude" : 47.67293,
+            "longitude" : -122.10799,
+            "lat" : 47.67293,
+            "lon" : -122.10799
+          }
+        }
+      }, {
+        "type" : {
+          "name" : "POI",
+          "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+        },
+        "id" : "840531000006553",
+        "score" : 2.4848511219,
+        "distanceInMeters" : 3877.810221985908,
+        "info" : "search:ta:840531000006553-US",
+        "entityType" : null,
+        "pointOfInterest" : {
+          "name" : "Starbucks",
+          "phone" : "+1 425-556-8000",
+          "url" : "starbucks.com/store-locator/store/7265",
+          "categorySet" : [ {
+            "id" : 9376006
+          } ],
+          "categories" : [ "caf�/pub", "coffee shop" ],
+          "classifications" : [ {
+            "code" : "CAFE_PUB",
+            "names" : [ {
+              "nameLocale" : "en-US",
+              "name" : "caf�/pub"
+            }, {
+              "nameLocale" : "en-US",
+              "name" : "coffee shop"
+            } ]
+          } ],
+          "brands" : [ {
+            "name" : "Starbucks"
+          } ],
+          "operatingHours" : null
+        },
+        "address" : {
+          "buildingNumber" : null,
+          "street" : null,
+          "crossStreet" : null,
+          "streetNumber" : "17667",
+          "routeNumbers" : null,
+          "streetName" : "Northeast 76th Street",
+          "streetNameAndNumber" : null,
+          "municipality" : "Redmond",
+          "municipalitySubdivision" : null,
+          "countryTertiarySubdivision" : null,
+          "countrySecondarySubdivision" : "King",
+          "countrySubdivision" : "WA",
+          "postalCode" : "98052",
+          "extendedPostalCode" : "98052-3300",
+          "countryCode" : "US",
+          "country" : "United States",
+          "countryCodeISO3" : null,
+          "freeformAddress" : "17667 Northeast 76th Street, Redmond, WA 98052",
+          "countrySubdivisionName" : "Washington",
+          "localName" : "Redmond",
+          "boundingBox" : null
+        },
+        "position" : {
+          "latitude" : 47.67069,
+          "longitude" : -122.10442,
+          "lat" : 47.67069,
+          "lon" : -122.10442
+        },
+        "viewport" : {
+          "topLeft" : {
+            "latitude" : 47.67358,
+            "longitude" : -122.10871,
+            "lat" : 47.67358,
+            "lon" : -122.10871
+          },
+          "bottomRight" : {
+            "latitude" : 47.6678,
+            "longitude" : -122.10013,
+            "lat" : 47.6678,
+            "lon" : -122.10013
+          },
+          "bottomLeft" : {
+            "latitude" : 47.6678,
+            "longitude" : -122.10871,
+            "lat" : 47.6678,
+            "lon" : -122.10871
+          },
+          "southWest" : {
+            "latitude" : 47.6678,
+            "longitude" : -122.10871,
+            "lat" : 47.6678,
+            "lon" : -122.10871
+          },
+          "northEast" : {
+            "latitude" : 47.67358,
+            "longitude" : -122.10013,
+            "lat" : 47.67358,
+            "lon" : -122.10013
+          },
+          "topRight" : {
+            "latitude" : 47.67358,
+            "longitude" : -122.10013,
+            "lat" : 47.67358,
+            "lon" : -122.10013
+          }
+        },
+        "entryPoints" : [ {
+          "type" : {
+            "name" : "main",
+            "clazz" : "com.azure.maps.search.models.EntryPointType"
+          },
+          "position" : {
+            "latitude" : 47.6717,
+            "longitude" : -122.10354,
+            "lat" : 47.6717,
+            "lon" : -122.10354
+          }
+        }, {
+          "type" : {
+            "name" : "minor",
+            "clazz" : "com.azure.maps.search.models.EntryPointType"
+          },
+          "position" : {
+            "latitude" : 47.67271,
+            "longitude" : -122.10413,
+            "lat" : 47.67271,
+            "lon" : -122.10413
+          }
+        }, {
+          "type" : {
+            "name" : "minor",
+            "clazz" : "com.azure.maps.search.models.EntryPointType"
+          },
+          "position" : {
+            "latitude" : 47.67088,
+            "longitude" : -122.1041,
+            "lat" : 47.67088,
+            "lon" : -122.1041
+          }
+        }, {
+          "type" : {
+            "name" : "main",
+            "clazz" : "com.azure.maps.search.models.EntryPointType"
+          },
+          "position" : {
+            "latitude" : 47.67158,
+            "longitude" : -122.10431,
+            "lat" : 47.67158,
+            "lon" : -122.10431
+          }
+        }, {
+          "type" : {
+            "name" : "minor",
+            "clazz" : "com.azure.maps.search.models.EntryPointType"
+          },
+          "position" : {
+            "latitude" : 47.67351,
+            "longitude" : -122.1035,
+            "lat" : 47.67351,
+            "lon" : -122.1035
+          }
+        }, {
+          "type" : {
+            "name" : "minor",
+            "clazz" : "com.azure.maps.search.models.EntryPointType"
+          },
+          "position" : {
+            "latitude" : 47.6725,
+            "longitude" : -122.10265,
+            "lat" : 47.6725,
+            "lon" : -122.10265
+          }
+        } ],
+        "addressRanges" : null,
+        "dataSource" : {
+          "geometry" : null
+        },
+        "matchType" : null,
+        "detourTime" : null,
+        "boundingBox" : {
+          "topLeft" : {
+            "latitude" : 47.67358,
+            "longitude" : -122.10871,
+            "lat" : 47.67358,
+            "lon" : -122.10871
+          },
+          "bottomRight" : {
+            "latitude" : 47.6678,
+            "longitude" : -122.10013,
+            "lat" : 47.6678,
+            "lon" : -122.10013
+          },
+          "bottomLeft" : {
+            "latitude" : 47.6678,
+            "longitude" : -122.10871,
+            "lat" : 47.6678,
+            "lon" : -122.10871
+          },
+          "southWest" : {
+            "latitude" : 47.6678,
+            "longitude" : -122.10871,
+            "lat" : 47.6678,
+            "lon" : -122.10871
+          },
+          "northEast" : {
+            "latitude" : 47.67358,
+            "longitude" : -122.10013,
+            "lat" : 47.67358,
+            "lon" : -122.10013
+          },
+          "topRight" : {
+            "latitude" : 47.67358,
+            "longitude" : -122.10013,
+            "lat" : 47.67358,
+            "lon" : -122.10013
+          }
+        }
+      }, {
+        "type" : {
+          "name" : "POI",
+          "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+        },
+        "id" : "840531000006669",
+        "score" : 2.4845840931,
+        "distanceInMeters" : 3987.80992387863,
+        "info" : "search:ta:840531000006669-US",
+        "entityType" : null,
+        "pointOfInterest" : {
+          "name" : "Starbucks",
+          "phone" : "+1 425-881-8265",
+          "url" : "www.starbucks.com",
+          "categorySet" : [ {
+            "id" : 9376006
+          } ],
+          "categories" : [ "caf�/pub", "coffee shop" ],
+          "classifications" : [ {
+            "code" : "CAFE_PUB",
+            "names" : [ {
+              "nameLocale" : "en-US",
+              "name" : "caf�/pub"
+            }, {
+              "nameLocale" : "en-US",
+              "name" : "coffee shop"
+            } ]
+          } ],
+          "brands" : [ {
+            "name" : "Starbucks"
+          } ],
+          "operatingHours" : null
+        },
+        "address" : {
+          "buildingNumber" : null,
+          "street" : null,
+          "crossStreet" : null,
+          "streetNumber" : "6617",
+          "routeNumbers" : null,
+          "streetName" : "132nd Avenue Northeast",
+          "streetNameAndNumber" : null,
+          "municipality" : "Kirkland",
+          "municipalitySubdivision" : "Bridle Trails-Kirkland",
+          "countryTertiarySubdivision" : null,
+          "countrySecondarySubdivision" : "King",
+          "countrySubdivision" : "WA",
+          "postalCode" : "98033",
+          "extendedPostalCode" : "98033-8628",
+          "countryCode" : "US",
+          "country" : "United States",
+          "countryCodeISO3" : null,
+          "freeformAddress" : "6617 132nd Avenue Northeast, Kirkland, WA 98033",
+          "countrySubdivisionName" : "Washington",
+          "localName" : "Kirkland",
+          "boundingBox" : null
+        },
+        "position" : {
+          "latitude" : 47.66514,
+          "longitude" : -122.16599,
+          "lat" : 47.66514,
+          "lon" : -122.16599
+        },
+        "viewport" : {
+          "topLeft" : {
+            "latitude" : 47.6665,
+            "longitude" : -122.16801,
+            "lat" : 47.6665,
+            "lon" : -122.16801
+          },
+          "bottomRight" : {
+            "latitude" : 47.66378,
+            "longitude" : -122.16397,
+            "lat" : 47.66378,
+            "lon" : -122.16397
+          },
+          "bottomLeft" : {
+            "latitude" : 47.66378,
+            "longitude" : -122.16801,
+            "lat" : 47.66378,
+            "lon" : -122.16801
+          },
+          "southWest" : {
+            "latitude" : 47.66378,
+            "longitude" : -122.16801,
+            "lat" : 47.66378,
+            "lon" : -122.16801
+          },
+          "northEast" : {
+            "latitude" : 47.6665,
+            "longitude" : -122.16397,
+            "lat" : 47.6665,
+            "lon" : -122.16397
+          },
+          "topRight" : {
+            "latitude" : 47.6665,
+            "longitude" : -122.16397,
+            "lat" : 47.6665,
+            "lon" : -122.16397
+          }
+        },
+        "entryPoints" : [ {
+          "type" : {
+            "name" : "main",
+            "clazz" : "com.azure.maps.search.models.EntryPointType"
+          },
+          "position" : {
+            "latitude" : 47.66553,
+            "longitude" : -122.16405,
+            "lat" : 47.66553,
+            "lon" : -122.16405
+          }
+        }, {
+          "type" : {
+            "name" : "minor",
+            "clazz" : "com.azure.maps.search.models.EntryPointType"
+          },
+          "position" : {
+            "latitude" : 47.666,
+            "longitude" : -122.16669,
+            "lat" : 47.666,
+            "lon" : -122.16669
+          }
+        } ],
+        "addressRanges" : null,
+        "dataSource" : {
+          "geometry" : null
+        },
+        "matchType" : null,
+        "detourTime" : null,
+        "boundingBox" : {
+          "topLeft" : {
+            "latitude" : 47.6665,
+            "longitude" : -122.16801,
+            "lat" : 47.6665,
+            "lon" : -122.16801
+          },
+          "bottomRight" : {
+            "latitude" : 47.66378,
+            "longitude" : -122.16397,
+            "lat" : 47.66378,
+            "lon" : -122.16397
+          },
+          "bottomLeft" : {
+            "latitude" : 47.66378,
+            "longitude" : -122.16801,
+            "lat" : 47.66378,
+            "lon" : -122.16801
+          },
+          "southWest" : {
+            "latitude" : 47.66378,
+            "longitude" : -122.16801,
+            "lat" : 47.66378,
+            "lon" : -122.16801
+          },
+          "northEast" : {
+            "latitude" : 47.6665,
+            "longitude" : -122.16397,
+            "lat" : 47.6665,
+            "lon" : -122.16397
+          },
+          "topRight" : {
+            "latitude" : 47.6665,
+            "longitude" : -122.16397,
+            "lat" : 47.6665,
+            "lon" : -122.16397
+          }
+        }
+      }, {
+        "type" : {
+          "name" : "POI",
+          "clazz" : "com.azure.maps.search.models.SearchAddressResultType"
+        },
+        "id" : "840531000006548",
+        "score" : 2.4845292568,
+        "distanceInMeters" : 4009.922205147074,
+        "info" : "search:ta:840531000006548-US",
+        "entityType" : null,
+        "pointOfInterest" : {
+          "name" : "Starbucks",
+          "phone" : "+1 425-885-9590",
+          "url" : "www.starbucks.com/store/7821/",
+          "categorySet" : [ {
+            "id" : 9376006
+          } ],
+          "categories" : [ "caf�/pub", "coffee shop" ],
+          "classifications" : [ {
+            "code" : "CAFE_PUB",
+            "names" : [ {
+              "nameLocale" : "en-US",
+              "name" : "caf�/pub"
+            }, {
+              "nameLocale" : "en-US",
+              "name" : "coffee shop"
+            } ]
+          } ],
+          "brands" : [ {
+            "name" : "Starbucks"
+          } ],
+          "operatingHours" : null
+        },
+        "address" : {
+          "buildingNumber" : null,
+          "street" : null,
+          "crossStreet" : null,
+          "streetNumber" : "15738",
+          "routeNumbers" : null,
+          "streetName" : "Redmond Way",
+          "streetNameAndNumber" : null,
+          "municipality" : "Redmond",
+          "municipalitySubdivision" : null,
+          "countryTertiarySubdivision" : null,
+          "countrySecondarySubdivision" : "King",
+          "countrySubdivision" : "WA",
+          "postalCode" : "98052",
+          "extendedPostalCode" : "98052-3830",
+          "countryCode" : "US",
+          "country" : "United States",
+          "countryCodeISO3" : null,
+          "freeformAddress" : "15738 Redmond Way, Redmond, WA 98052",
+          "countrySubdivisionName" : "Washington",
+          "localName" : "Redmond",
+          "boundingBox" : null
+        },
+        "position" : {
+          "latitude" : 47.67583,
+          "longitude" : -122.12877,
+          "lat" : 47.67583,
+          "lon" : -122.12877
+        },
+        "viewport" : {
+          "topLeft" : {
+            "latitude" : 47.6771,
+            "longitude" : -122.13066,
+            "lat" : 47.6771,
+            "lon" : -122.13066
+          },
+          "bottomRight" : {
+            "latitude" : 47.67456,
+            "longitude" : -122.12688,
+            "lat" : 47.67456,
+            "lon" : -122.12688
+          },
+          "bottomLeft" : {
+            "latitude" : 47.67456,
+            "longitude" : -122.13066,
+            "lat" : 47.67456,
+            "lon" : -122.13066
+          },
+          "southWest" : {
+            "latitude" : 47.67456,
+            "longitude" : -122.13066,
+            "lat" : 47.67456,
+            "lon" : -122.13066
+          },
+          "northEast" : {
+            "latitude" : 47.6771,
+            "longitude" : -122.12688,
+            "lat" : 47.6771,
+            "lon" : -122.12688
+          },
+          "topRight" : {
+            "latitude" : 47.6771,
+            "longitude" : -122.12688,
+            "lat" : 47.6771,
+            "lon" : -122.12688
+          }
+        },
+        "entryPoints" : [ {
+          "type" : {
+            "name" : "minor",
+            "clazz" : "com.azure.maps.search.models.EntryPointType"
+          },
+          "position" : {
+            "latitude" : 47.67668,
+            "longitude" : -122.12829,
+            "lat" : 47.67668,
+            "lon" : -122.12829
+          }
+        }, {
+          "type" : {
+            "name" : "main",
+            "clazz" : "com.azure.maps.search.models.EntryPointType"
+          },
+          "position" : {
+            "latitude" : 47.67456,
+            "longitude" : -122.12887,
+            "lat" : 47.67456,
+            "lon" : -122.12887
+          }
+        } ],
+        "addressRanges" : null,
+        "dataSource" : {
+          "geometry" : null
+        },
+        "matchType" : null,
+        "detourTime" : null,
+        "boundingBox" : {
+          "topLeft" : {
+            "latitude" : 47.6771,
+            "longitude" : -122.13066,
+            "lat" : 47.6771,
+            "lon" : -122.13066
+          },
+          "bottomRight" : {
+            "latitude" : 47.67456,
+            "longitude" : -122.12688,
+            "lat" : 47.67456,
+            "lon" : -122.12688
+          },
+          "bottomLeft" : {
+            "latitude" : 47.67456,
+            "longitude" : -122.13066,
+            "lat" : 47.67456,
+            "lon" : -122.13066
+          },
+          "southWest" : {
+            "latitude" : 47.67456,
+            "longitude" : -122.13066,
+            "lat" : 47.67456,
+            "lon" : -122.13066
+          },
+          "northEast" : {
+            "latitude" : 47.6771,
+            "longitude" : -122.12688,
+            "lat" : 47.6771,
+            "lon" : -122.12688
+          },
+          "topRight" : {
+            "latitude" : 47.6771,
+            "longitude" : -122.12688,
+            "lat" : 47.6771,
+            "lon" : -122.12688
+          }
+        }
+      } ]
+    }
+  } ],
+  "batchId" : "27be3bfb-213e-4042-9b1b-89ebfb5a132b"
+}

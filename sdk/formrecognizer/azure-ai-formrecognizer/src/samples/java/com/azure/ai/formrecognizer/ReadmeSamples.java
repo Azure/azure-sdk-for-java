@@ -11,13 +11,13 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModel
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildModelOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelSummary;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentField;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentTable;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -94,7 +94,7 @@ public class ReadmeSamples {
         Path filePath = layoutDocument.toPath();
         BinaryData layoutDocumentData = BinaryData.fromFile(filePath);
 
-        SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeLayoutResultPoller =
+        SyncPoller<OperationResult, AnalyzeResult> analyzeLayoutResultPoller =
             documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout", layoutDocumentData, layoutDocument.length());
 
         AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
@@ -143,7 +143,7 @@ public class ReadmeSamples {
         String receiptUrl = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer"
             + "/azure-ai-formrecognizer/src/samples/resources/sample-documents/receipts/contoso-allinone.jpg";
 
-        SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeReceiptPoller =
+        SyncPoller<OperationResult, AnalyzeResult> analyzeReceiptPoller =
             documentAnalysisClient.beginAnalyzeDocumentFromUrl("prebuilt-receipt", receiptUrl);
 
         AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult();
@@ -215,14 +215,14 @@ public class ReadmeSamples {
     public void buildModel() {
         // BEGIN: readme-sample-buildModel
         // Build custom document analysis model
-        String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
+        String blobContainerUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
         String prefix = "{blob_name_prefix}}";
-        SyncPoller<DocumentOperationResult, DocumentModelDetails> buildOperationPoller =
-            documentModelAdminClient.beginBuildModel(trainingFilesUrl,
+        SyncPoller<OperationResult, DocumentModelDetails> buildOperationPoller =
+            documentModelAdminClient.beginBuildDocumentModel(blobContainerUrl,
                 DocumentModelBuildMode.TEMPLATE,
                 prefix,
-                new BuildModelOptions().setModelId("my-build-model").setDescription("model desc"),
+                new BuildDocumentModelOptions().setModelId("my-build-model").setDescription("model desc"),
                 Context.NONE);
 
         DocumentModelDetails documentModelDetails = buildOperationPoller.getFinalResult();
@@ -249,7 +249,7 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-analyzeCustomDocument
         String documentUrl = "{document-url}";
         String modelId = "{custom-built-model-ID}";
-        SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeDocumentPoller =
+        SyncPoller<OperationResult, AnalyzeResult> analyzeDocumentPoller =
             documentAnalysisClient.beginAnalyzeDocumentFromUrl(modelId, documentUrl);
 
         AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
@@ -310,7 +310,7 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-analyzePrebuiltDocument
         String documentUrl = "{document-url}";
         String modelId = "prebuilt-document";
-        SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeDocumentPoller =
+        SyncPoller<OperationResult, AnalyzeResult> analyzeDocumentPoller =
             documentAnalysisClient.beginAnalyzeDocumentFromUrl(modelId, documentUrl);
 
         AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
@@ -377,17 +377,17 @@ public class ReadmeSamples {
         // First, we see how many models we have, and what our limit is
         ResourceDetails resourceDetails = documentModelAdminClient.getResourceDetails();
         System.out.printf("The resource has %s models, and we can have at most %s models",
-            resourceDetails.getDocumentModelCount(), resourceDetails.getDocumentModelLimit());
+            resourceDetails.getCustomDocumentModelCount(), resourceDetails.getCustomDocumentModelLimit());
 
         // Next, we get a paged list of all of our models
-        PagedIterable<DocumentModelSummary> customDocumentModels = documentModelAdminClient.listModels();
+        PagedIterable<DocumentModelSummary> customDocumentModels = documentModelAdminClient.listDocumentModels();
         System.out.println("We have following models in the account:");
         customDocumentModels.forEach(documentModelSummary -> {
             System.out.printf("Model ID: %s%n", documentModelSummary.getModelId());
             modelId.set(documentModelSummary.getModelId());
 
             // get custom document analysis model info
-            DocumentModelDetails documentModel = documentModelAdminClient.getModel(documentModelSummary.getModelId());
+            DocumentModelDetails documentModel = documentModelAdminClient.getDocumentModel(documentModelSummary.getModelId());
             System.out.printf("Model ID: %s%n", documentModel.getModelId());
             System.out.printf("Model Description: %s%n", documentModel.getDescription());
             System.out.printf("Model created on: %s%n", documentModel.getCreatedOn());
@@ -401,7 +401,7 @@ public class ReadmeSamples {
         });
 
         // Delete Model
-        documentModelAdminClient.deleteModel(modelId.get());
+        documentModelAdminClient.deleteDocumentModel(modelId.get());
         // END: readme-sample-manageModels
     }
 

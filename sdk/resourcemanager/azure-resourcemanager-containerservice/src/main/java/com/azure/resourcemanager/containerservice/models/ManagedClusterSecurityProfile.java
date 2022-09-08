@@ -17,8 +17,7 @@ public final class ManagedClusterSecurityProfile {
     private ManagedClusterSecurityProfileDefender defender;
 
     /*
-     * Azure Key Vault [key management
-     * service](https://kubernetes.io/docs/tasks/administer-cluster/kms-provider/)
+     * Azure Key Vault [key management service](https://kubernetes.io/docs/tasks/administer-cluster/kms-provider/)
      * settings for the security profile.
      */
     @JsonProperty(value = "azureKeyVaultKms")

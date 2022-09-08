@@ -6,14 +6,17 @@ package com.azure.ai.formrecognizer.documentanalysis.administration;
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient;
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion;
 import com.azure.ai.formrecognizer.documentanalysis.TestUtils;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildModelOptions;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeModelOptions;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorization;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeDocumentModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorizationOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildOperationDetails;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelComposeOperationDetails;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelCopyAuthorization;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelCopyToOperationDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
@@ -57,7 +60,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
 
     private DocumentModelAdministrationAsyncClient getDocumentModelAdminAsyncClient(HttpClient httpClient,
                                                                                     DocumentAnalysisServiceVersion serviceVersion) {
-        return getDocumentModelAdminClientBuilder(httpClient, serviceVersion, true).buildAsyncClient();
+        return getDocumentModelAdminClientBuilder(httpClient, serviceVersion, false).buildAsyncClient();
     }
 
     /**
@@ -71,7 +74,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             getDocumentModelAdminAsyncClient(httpClient, serviceVersion)
                 .getDocumentAnalysisAsyncClient();
         blankPdfDataRunner((data, dataLength) -> {
-            SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller =
+            SyncPoller<OperationResult, AnalyzeResult> syncPoller =
                 documentAnalysisAsyncClient.beginAnalyzeDocument("prebuilt-receipt", BinaryData.fromStream(data), dataLength)
                     .getSyncPoller();
             syncPoller.waitForCompletion();
@@ -111,17 +114,17 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
 
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
-            SyncPoller<DocumentOperationResult, DocumentModelDetails> syncPoller1 =
-                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null, null)
+            SyncPoller<OperationResult, DocumentModelDetails> syncPoller1 =
+                client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null, null)
                     .setPollInterval(durationTestMode).getSyncPoller();
             syncPoller1.waitForCompletion();
             DocumentModelDetails createdModel = syncPoller1.getFinalResult();
 
-            StepVerifier.create(client.deleteModelWithResponse(createdModel.getModelId()))
+            StepVerifier.create(client.deleteDocumentModelWithResponse(createdModel.getModelId()))
                 .assertNext(response -> assertEquals(response.getStatusCode(), HttpResponseStatus.NO_CONTENT.code()))
                 .verifyComplete();
 
-            StepVerifier.create(client.getModelWithResponse(createdModel.getModelId()))
+            StepVerifier.create(client.getDocumentModelWithResponse(createdModel.getModelId()))
                 .verifyErrorSatisfies(throwable -> {
                     assertEquals(HttpResponseException.class, throwable.getClass());
                     final ResponseError responseError = (ResponseError) ((HttpResponseException) throwable).getValue();
@@ -142,7 +145,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             .assertNext(response -> validateCopyAuthorizationResult(response.getValue()))
             .verifyComplete();
 
-        StepVerifier.create(client.deleteModel(modelId)).verifyComplete();
+        StepVerifier.create(client.deleteDocumentModel(modelId)).verifyComplete();
     }
 
     /**
@@ -154,24 +157,24 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
 
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
-            SyncPoller<DocumentOperationResult, DocumentModelDetails> syncPoller1 =
-                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null,
-                        new BuildModelOptions().setModelId("async_component_model_1"))
+            SyncPoller<OperationResult, DocumentModelDetails> syncPoller1 =
+                client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null,
+                        new BuildDocumentModelOptions().setModelId("async_component_model_1"))
                     .setPollInterval(durationTestMode).getSyncPoller();
             syncPoller1.waitForCompletion();
             DocumentModelDetails createdModel1 = syncPoller1.getFinalResult();
 
-            SyncPoller<DocumentOperationResult, DocumentModelDetails> syncPoller2 =
-                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null,
-                        new BuildModelOptions().setModelId("async_component_model_2"))
+            SyncPoller<OperationResult, DocumentModelDetails> syncPoller2 =
+                client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null,
+                        new BuildDocumentModelOptions().setModelId("async_component_model_2"))
                     .setPollInterval(durationTestMode).getSyncPoller();
             syncPoller2.waitForCompletion();
             DocumentModelDetails createdModel2 = syncPoller2.getFinalResult();
 
             final List<String> modelIdList = Arrays.asList(createdModel1.getModelId(), createdModel2.getModelId());
 
-            DocumentModelDetails composedModel = client.beginComposeModel(modelIdList,
-                    new ComposeModelOptions().setDescription(TestUtils.EXPECTED_DESC))
+            DocumentModelDetails composedModel = client.beginComposeDocumentModel(modelIdList,
+                    new ComposeDocumentModelOptions().setDescription(TestUtils.EXPECTED_DESC))
                 .setPollInterval(durationTestMode)
                 .getSyncPoller().getFinalResult();
 
@@ -187,9 +190,9 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             });
             validateDocumentModelData(composedModel);
 
-            client.deleteModel(createdModel1.getModelId()).block();
-            client.deleteModel(createdModel2.getModelId()).block();
-            client.deleteModel(composedModel.getModelId()).block();
+            client.deleteDocumentModel(createdModel1.getModelId()).block();
+            client.deleteDocumentModel(createdModel2.getModelId()).block();
+            client.deleteDocumentModel(composedModel.getModelId()).block();
         });
     }
 
@@ -202,14 +205,14 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
 
         buildModelRunner((trainingFilesUrl) -> {
-            SyncPoller<DocumentOperationResult, DocumentModelDetails> syncPoller1 =
-                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null, null)
+            SyncPoller<OperationResult, DocumentModelDetails> syncPoller1 =
+                client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null, null)
                     .setPollInterval(durationTestMode).getSyncPoller();
             syncPoller1.waitForCompletion();
             DocumentModelDetails createdModel1 = syncPoller1.getFinalResult();
 
-            SyncPoller<DocumentOperationResult, DocumentModelDetails> syncPoller2 =
-                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null, null)
+            SyncPoller<OperationResult, DocumentModelDetails> syncPoller2 =
+                client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null, null)
                     .setPollInterval(durationTestMode).getSyncPoller();
             syncPoller2.waitForCompletion();
             DocumentModelDetails createdModel2 = syncPoller2.getFinalResult();
@@ -217,8 +220,8 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             final List<String> modelIdList = Arrays.asList(createdModel1.getModelId(), createdModel2.getModelId());
             String composedModelId = "test-composed-model";
 
-            DocumentModelDetails composedModel = client.beginComposeModel(modelIdList,
-                    new ComposeModelOptions()
+            DocumentModelDetails composedModel = client.beginComposeDocumentModel(modelIdList,
+                    new ComposeDocumentModelOptions()
                         .setModelId(composedModelId)
                         .setDescription(TestUtils.EXPECTED_DESC)
                         .setTags(TestUtils.EXPECTED_MODEL_TAGS))
@@ -231,9 +234,9 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             Assertions.assertEquals(TestUtils.EXPECTED_MODEL_TAGS, composedModel.getTags());
             Assertions.assertEquals(composedModelId, composedModel.getModelId());
 
-            client.deleteModel(createdModel1.getModelId()).block();
-            client.deleteModel(createdModel2.getModelId()).block();
-            client.deleteModel(composedModel.getModelId()).block();
+            client.deleteDocumentModel(createdModel1.getModelId()).block();
+            client.deleteDocumentModel(createdModel2.getModelId()).block();
+            client.deleteDocumentModel(composedModel.getModelId()).block();
         });
     }
 
@@ -245,14 +248,14 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
     public void beginBuildModel(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
-            SyncPoller<DocumentOperationResult, DocumentModelDetails> syncPoller1 =
-                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null, null)
+            SyncPoller<OperationResult, DocumentModelDetails> syncPoller1 =
+                client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null, null)
                     .setPollInterval(durationTestMode).getSyncPoller();
             syncPoller1.waitForCompletion();
             DocumentModelDetails createdModel1 = syncPoller1.getFinalResult();
 
             validateDocumentModelData(createdModel1);
-            client.deleteModel(createdModel1.getModelId()).block();
+            client.deleteDocumentModel(createdModel1.getModelId()).block();
         });
     }
 
@@ -268,7 +271,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             if (!AzureAuthorityHosts.AZURE_GOVERNMENT.equals(TestUtils.getAuthority(client.getEndpoint()))) {
                 HttpResponseException httpResponseException
                     = Assertions.assertThrows(HttpResponseException.class, () ->
-                    client.beginBuildModel(errorTrainingFilesUrl, DocumentModelBuildMode.TEMPLATE)
+                    client.beginBuildDocumentModel(errorTrainingFilesUrl, DocumentModelBuildMode.TEMPLATE)
                         .setPollInterval(durationTestMode)
                         .getSyncPoller()
                         .getFinalResult());
@@ -278,7 +281,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             } else {
                 HttpResponseException httpResponseException
                     = Assertions.assertThrows(HttpResponseException.class, () ->
-                    client.beginBuildModel(errorTrainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null, null)
+                    client.beginBuildDocumentModel(errorTrainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null, null)
                         .setPollInterval(durationTestMode)
                         .getSyncPoller()
                         .getFinalResult());
@@ -300,9 +303,9 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
         String modelId = "test-model";
 
         buildModelRunner((trainingFilesUrl) -> {
-            SyncPoller<DocumentOperationResult, DocumentModelDetails> syncPoller1 =
-                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null,
-                        new BuildModelOptions()
+            SyncPoller<OperationResult, DocumentModelDetails> syncPoller1 =
+                client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null,
+                        new BuildDocumentModelOptions()
                             .setModelId(modelId)
                             .setDescription(TestUtils.EXPECTED_DESC)
                             .setTags(TestUtils.EXPECTED_MODEL_TAGS))
@@ -316,7 +319,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             Assertions.assertEquals(TestUtils.EXPECTED_MODEL_TAGS, createdModel.getTags());
             Assertions.assertEquals(modelId, createdModel.getModelId());
 
-            client.deleteModel(createdModel.getModelId()).block();
+            client.deleteDocumentModel(createdModel.getModelId()).block();
         });
     }
 
@@ -329,7 +332,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
 
         buildModelRunner((trainingFilesUrl) -> {
-            StepVerifier.create(client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, "invalidPrefix",
+            StepVerifier.create(client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, "invalidPrefix",
                         null)
                     .setPollInterval(durationTestMode))
                 .verifyErrorSatisfies(throwable -> {
@@ -348,26 +351,26 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
     public void beginCopy(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
-            SyncPoller<DocumentOperationResult, DocumentModelDetails> syncPoller1 =
-                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null, null)
+            SyncPoller<OperationResult, DocumentModelDetails> syncPoller1 =
+                client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null, null)
                     .setPollInterval(durationTestMode).getSyncPoller();
             syncPoller1.waitForCompletion();
             DocumentModelDetails actualModel = syncPoller1.getFinalResult();
 
-            Mono<CopyAuthorization> targetMono = client.getCopyAuthorization();
-            CopyAuthorization target = targetMono.block();
+            Mono<DocumentModelCopyAuthorization> targetMono = client.getCopyAuthorization();
+            DocumentModelCopyAuthorization target = targetMono.block();
             if (actualModel == null) {
                 fail();
                 return;
             }
 
-            PollerFlux<DocumentOperationResult, DocumentModelDetails> copyPoller =
-                client.beginCopyModelTo(actualModel.getModelId(), target).setPollInterval(durationTestMode);
+            PollerFlux<OperationResult, DocumentModelDetails> copyPoller =
+                client.beginCopyDocumentModelTo(actualModel.getModelId(), target).setPollInterval(durationTestMode);
             DocumentModelDetails copiedModel = copyPoller.getSyncPoller().getFinalResult();
             Assertions.assertEquals(target.getTargetModelId(), copiedModel.getModelId());
 
-            client.deleteModel(actualModel.getModelId()).block();
-            client.deleteModel(copiedModel.getModelId()).block();
+            client.deleteDocumentModel(actualModel.getModelId()).block();
+            client.deleteDocumentModel(copiedModel.getModelId()).block();
         });
     }
 
@@ -381,26 +384,26 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
         String modelId = "my-copied-model-id";
 
         buildModelRunner((trainingFilesUrl) -> {
-            SyncPoller<DocumentOperationResult, DocumentModelDetails> syncPoller1 =
-                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null, null)
+            SyncPoller<OperationResult, DocumentModelDetails> syncPoller1 =
+                client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null, null)
                     .setPollInterval(durationTestMode).getSyncPoller();
             syncPoller1.waitForCompletion();
             DocumentModelDetails actualModel = syncPoller1.getFinalResult();
 
-            Mono<Response<CopyAuthorization>> targetMono = client.getCopyAuthorizationWithResponse(
+            Mono<Response<DocumentModelCopyAuthorization>> targetMono = client.getCopyAuthorizationWithResponse(
                 new CopyAuthorizationOptions()
                     .setModelId(modelId)
                     .setDescription(TestUtils.EXPECTED_DESC)
                     .setTags(TestUtils.EXPECTED_MODEL_TAGS));
 
-            CopyAuthorization target = targetMono.block().getValue();
+            DocumentModelCopyAuthorization target = targetMono.block().getValue();
             if (actualModel == null) {
                 fail();
                 return;
             }
 
-            PollerFlux<DocumentOperationResult, DocumentModelDetails> copyPoller =
-                client.beginCopyModelTo(actualModel.getModelId(), target)
+            PollerFlux<OperationResult, DocumentModelDetails> copyPoller =
+                client.beginCopyDocumentModelTo(actualModel.getModelId(), target)
                     .setPollInterval(durationTestMode);
 
             DocumentModelDetails copiedModel = copyPoller.getSyncPoller().getFinalResult();
@@ -410,8 +413,8 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             Assertions.assertEquals(TestUtils.EXPECTED_MODEL_TAGS, copiedModel.getTags());
             Assertions.assertEquals(modelId, target.getTargetModelId());
 
-            client.deleteModel(actualModel.getModelId()).block();
-            client.deleteModel(copiedModel.getModelId()).block();
+            client.deleteDocumentModel(actualModel.getModelId()).block();
+            client.deleteDocumentModel(copiedModel.getModelId()).block();
         });
     }
 
@@ -422,7 +425,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void listModels(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.listModels().byPage().take(4))
+        StepVerifier.create(client.listDocumentModels().byPage().take(4))
             .thenConsumeWhile(documentModelInfoPagedResponse -> {
                 documentModelInfoPagedResponse.getValue()
                     .forEach(documentModelInfo -> {
@@ -440,7 +443,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void getModelNullModelId(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.getModel(null)).verifyError();
+        StepVerifier.create(client.getDocumentModel(null)).verifyError();
     }
 
     /**
@@ -451,13 +454,13 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
     public void getModelWithResponse(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
-            SyncPoller<DocumentOperationResult, DocumentModelDetails> syncPoller1 =
-                client.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null, null)
+            SyncPoller<OperationResult, DocumentModelDetails> syncPoller1 =
+                client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, null, null)
                     .setPollInterval(durationTestMode).getSyncPoller();
             syncPoller1.waitForCompletion();
             DocumentModelDetails createdModel = syncPoller1.getFinalResult();
 
-            StepVerifier.create(client.getModelWithResponse(createdModel.getModelId()))
+            StepVerifier.create(client.getDocumentModelWithResponse(createdModel.getModelId()))
                 .assertNext(documentModelResponse -> {
                     assertEquals(documentModelResponse.getStatusCode(), HttpResponseStatus.OK.code());
                     validateDocumentModelData(documentModelResponse.getValue());
@@ -474,7 +477,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
 
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
         List<String> operationIdList = new ArrayList<>();
-        StepVerifier.create(client.listOperations().byPage().take(10))
+        StepVerifier.create(client.listOperations().byPage().take(4))
             .thenConsumeWhile(modelOperationInfoPagedResponse ->          {
                 modelOperationInfoPagedResponse.getValue().forEach(modelOperationInfo -> {
                     operationIdList.add(modelOperationInfo.getOperationId());
@@ -491,9 +494,16 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
 
         if (!CoreUtils.isNullOrEmpty(operationIdList)) {
             operationIdList.forEach(operationId -> StepVerifier.create(client.getOperation(operationId))
-                .assertNext(modelOperationDetails -> {
-                    assertNotNull(modelOperationDetails.getOperationId());
-                    assertNotNull(modelOperationDetails.getCreatedOn());
+                .assertNext(operationDetails -> {
+                    assertNotNull(operationDetails.getOperationId());
+                    assertNotNull(operationDetails.getCreatedOn());
+                    if (operationDetails instanceof DocumentModelBuildOperationDetails) {
+                        assertNotNull(((DocumentModelBuildOperationDetails) operationDetails).getResult());
+                    } else if (operationDetails instanceof DocumentModelComposeOperationDetails) {
+                        assertNotNull(((DocumentModelComposeOperationDetails) operationDetails).getResult());
+                    } else if (operationDetails instanceof DocumentModelCopyToOperationDetails) {
+                        assertNotNull(((DocumentModelCopyToOperationDetails) operationDetails).getResult());
+                    }
                 })
                 .verifyComplete());
         }
