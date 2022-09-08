@@ -2516,7 +2516,10 @@
 
   <Match>
     <Bug pattern="EI_EXPOSE_REP"/>
-    <Class name="com.azure.core.implementation.AccessibleByteArrayOutputStream"/>
+    <Or>
+      <Class name="com.azure.core.implementation.AccessibleByteArrayOutputStream"/>
+      <Class name="com.azure.core.implementation.ByteBufferCollector"/>
+    </Or>
   </Match>
 
   <!-- EventGrid swagger naming -->

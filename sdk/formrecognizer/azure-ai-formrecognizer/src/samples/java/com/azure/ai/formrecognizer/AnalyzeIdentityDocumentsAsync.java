@@ -48,8 +48,8 @@ public class AnalyzeIdentityDocumentsAsync {
 
         PollerFlux<OperationResult, AnalyzeResult> analyzeIdentityDocumentPoller
             = client.beginAnalyzeDocument("prebuilt-idDocument",
-            BinaryData.fromStream(new ByteArrayInputStream(fileContent)),
-            fileContent.length);
+            BinaryData.fromStream(new ByteArrayInputStream(fileContent))
+        );
 
         Mono<AnalyzeResult> identityDocumentPollerResult = analyzeIdentityDocumentPoller
             .last()

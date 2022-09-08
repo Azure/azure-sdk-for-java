@@ -46,7 +46,7 @@ public class AnalyzeIdentityDocuments {
         BinaryData fileData = BinaryData.fromFile(filePath);
 
         SyncPoller<OperationResult, AnalyzeResult> analyzeIdentityDocumentPoller =
-            client.beginAnalyzeDocument("prebuilt-idDocument", fileData, licenseDocumentFile.length());
+            client.beginAnalyzeDocument("prebuilt-idDocument", fileData);
 
         AnalyzeResult identityDocumentResults = analyzeIdentityDocumentPoller.getFinalResult();
 
