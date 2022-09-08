@@ -17,6 +17,11 @@ class RetryUtils {
         return backoffRetry(404, "Request_ResourceNotFound");
     }
 
+    // for MSGraph API, when appId of the service principal does not reference a valid application object
+    static RetryBackoffSpec backoffRetryFor400BadRequest() {
+        return backoffRetry(400, "Request_BadRequest");
+    }
+
     // for Microsoft.Authorization API
     static RetryBackoffSpec backoffRetryFor400PrincipalNotFound() {
         return backoffRetry(400, "PrincipalNotFound");

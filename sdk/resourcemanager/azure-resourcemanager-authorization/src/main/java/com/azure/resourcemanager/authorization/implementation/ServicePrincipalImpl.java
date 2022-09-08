@@ -106,6 +106,11 @@ class ServicePrincipalImpl
             }
             sp = manager.serviceClient().getServicePrincipalsServicePrincipals()
                 .createServicePrincipalAsync(innerModel()).map(innerToFluentMap(this));
+
+            if (applicationCreatable != null) {
+                // retry on 400, if app is created with "withNewApplication"
+                sp = sp.retryWhen(RetryUtils.backoffRetryFor400BadRequest());
+            }
         } else {
             sp = manager().serviceClient().getServicePrincipalsServicePrincipals()
                 .updateServicePrincipalAsync(id(), new MicrosoftGraphServicePrincipalInner()
