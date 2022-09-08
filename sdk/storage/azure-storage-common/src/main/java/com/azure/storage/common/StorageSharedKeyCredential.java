@@ -10,17 +10,15 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-
 import com.azure.core.util.Header;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
+
 import java.net.URL;
 import java.text.Collator;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -262,18 +260,16 @@ public final class StorageSharedKeyCredential {
         }
 
         // The URL object's query field doesn't include the '?'. The QueryStringDecoder expects it.
+        // The Map returned is already sorted with all keys lower cased.
         Map<String, String[]> queryParams = StorageImplUtils.parseQueryStringSplitValues(requestURL.getQuery());
 
-        ArrayList<String> queryParamNames = new ArrayList<>(queryParams.keySet());
-        Collections.sort(queryParamNames);
-
-        for (String queryParamName : queryParamNames) {
-            String[] queryParamValues = queryParams.get(queryParamName);
+        for (Map.Entry<String, String[]> queryParam : queryParams.entrySet()) {
+            String[] queryParamValues = queryParam.getValue();
             Arrays.sort(queryParamValues);
             String queryParamValuesStr = String.join(",", queryParamValues);
-            canonicalizedResource.append("\n")
-                .append(queryParamName.toLowerCase(Locale.ROOT))
-                .append(":")
+            canonicalizedResource.append('\n')
+                .append(queryParam.getKey())
+                .append(':')
                 .append(queryParamValuesStr);
         }
 

@@ -50,7 +50,6 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 /**
  * This class provides helper methods for common model patterns.
@@ -61,9 +60,6 @@ public final class ModelHelper {
 
     private static final SerializerAdapter SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
     private static final ClientLogger LOGGER = new ClientLogger(ModelHelper.class);
-    private static final Pattern UNDERSCORE = Pattern.compile("_");
-
-    public static final Pattern FORWARD_SLASH = Pattern.compile("/");
 
     /**
      * Indicates the default size above which the upload will be broken into blocks and parallelized.
@@ -222,7 +218,7 @@ public final class ModelHelper {
         if (blobTags == null || CoreUtils.isNullOrEmpty(blobTags.getBlobTagSet())) {
             return Collections.emptyMap();
         } else {
-            Map<String, String> tags = new HashMap<>();
+            Map<String, String> tags = new HashMap<>(blobTags.getBlobTagSet().size());
             for (BlobTag tag : blobTags.getBlobTagSet()) {
                 tags.put(tag.getKey(), tag.getValue());
             }
@@ -285,15 +281,17 @@ public final class ModelHelper {
 
     private static List<ObjectReplicationPolicy> transformObjectReplicationMetadata(
         Map<String, String> objectReplicationMetadata) {
+        if (CoreUtils.isNullOrEmpty(objectReplicationMetadata)) {
+            return null;
+        }
 
         Map<String, List<ObjectReplicationRule>> internalSourcePolicies = new HashMap<>();
-        objectReplicationMetadata = objectReplicationMetadata == null ? new HashMap<>() : objectReplicationMetadata;
         for (Map.Entry<String, String> entry : objectReplicationMetadata.entrySet()) {
             String orString = entry.getKey();
             String str = orString.startsWith("or-") ? orString.substring(3) : orString;
-            String[] split = UNDERSCORE.split(str, 2);
-            String policyId = split[0];
-            String ruleId = split[1];
+            int index = str.indexOf('_');
+            String policyId = str.substring(0, index);
+            String ruleId = str.substring(index + 1);
             ObjectReplicationRule rule = new ObjectReplicationRule(ruleId,
                 ObjectReplicationStatus.fromString(entry.getValue()));
             if (!internalSourcePolicies.containsKey(policyId)) {
@@ -302,10 +300,7 @@ public final class ModelHelper {
             internalSourcePolicies.get(policyId).add(rule);
         }
 
-        if (internalSourcePolicies.isEmpty()) {
-            return null;
-        }
-        List<ObjectReplicationPolicy> objectReplicationSourcePolicies = new ArrayList<>();
+        List<ObjectReplicationPolicy> objectReplicationSourcePolicies = new ArrayList<>(internalSourcePolicies.size());
         for (Map.Entry<String, List<ObjectReplicationRule>> entry : internalSourcePolicies.entrySet()) {
             objectReplicationSourcePolicies.add(new ObjectReplicationPolicy(entry.getKey(), entry.getValue()));
         }
@@ -371,19 +366,26 @@ public final class ModelHelper {
     }
 
     public static String getObjectReplicationDestinationPolicyId(Map<String, String> objectReplicationStatus) {
-        objectReplicationStatus = objectReplicationStatus == null ? new HashMap<>() : objectReplicationStatus;
-        return objectReplicationStatus.getOrDefault("policy-id", null);
+        if (CoreUtils.isNullOrEmpty(objectReplicationStatus)) {
+            return null;
+        }
+
+        return objectReplicationStatus.get("policy-id");
     }
 
     public static List<ObjectReplicationPolicy> getObjectReplicationSourcePolicies(
         Map<String, String> objectReplicationStatus) {
+        if (CoreUtils.isNullOrEmpty(objectReplicationStatus)) {
+            return new ArrayList<>();
+        }
+
         Map<String, List<ObjectReplicationRule>> internalSourcePolicies = new HashMap<>();
-        objectReplicationStatus = objectReplicationStatus == null ? new HashMap<>() : objectReplicationStatus;
         if (getObjectReplicationDestinationPolicyId(objectReplicationStatus) == null) {
             for (Map.Entry<String, String> entry : objectReplicationStatus.entrySet()) {
-                String[] split = UNDERSCORE.split(entry.getKey(), 2);
-                String policyId = split[0];
-                String ruleId = split[1];
+                String key = entry.getKey();
+                int index = key.indexOf('_');
+                String policyId = key.substring(0, index);
+                String ruleId = key.substring(index + 1);
                 ObjectReplicationRule rule = new ObjectReplicationRule(ruleId,
                     ObjectReplicationStatus.fromString(entry.getValue()));
                 if (!internalSourcePolicies.containsKey(policyId)) {
@@ -392,7 +394,7 @@ public final class ModelHelper {
                 internalSourcePolicies.get(policyId).add(rule);
             }
         }
-        List<ObjectReplicationPolicy> objectReplicationSourcePolicies = new ArrayList<>();
+        List<ObjectReplicationPolicy> objectReplicationSourcePolicies = new ArrayList<>(internalSourcePolicies.size());
         for (Map.Entry<String, List<ObjectReplicationRule>> entry : internalSourcePolicies.entrySet()) {
             objectReplicationSourcePolicies.add(new ObjectReplicationPolicy(entry.getKey(), entry.getValue()));
         }
@@ -415,19 +417,19 @@ public final class ModelHelper {
     }
 
     public static BlobsDownloadHeaders transformBlobDownloadHeaders(HttpHeaders headers) {
-        return transformHeadersToClass(headers, BlobsDownloadHeaders.class);
+        return new BlobsDownloadHeaders(headers);
     }
 
     public static BlobQueryHeaders transformQueryHeaders(HttpHeaders headers) {
-        return transformHeadersToClass(headers, BlobQueryHeaders.class);
+        return transformHeadersToClass(headers);
     }
 
-    private static <T> T transformHeadersToClass(HttpHeaders headers, Class<T> clazz) {
+    private static <T> T transformHeadersToClass(HttpHeaders headers) {
         if (headers == null) {
             return null;
         }
         try {
-            return SERIALIZER.deserialize(headers, clazz);
+            return SERIALIZER.deserialize(headers, BlobQueryHeaders.class);
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }

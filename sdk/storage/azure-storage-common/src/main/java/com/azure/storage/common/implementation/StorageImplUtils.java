@@ -6,11 +6,14 @@ package com.azure.storage.common.implementation;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.Utility;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -24,14 +27,7 @@ import java.util.Base64;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.function.Function;
 import java.util.regex.Pattern;
-
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 
 import static com.azure.storage.common.Utility.urlDecode;
 import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE;
@@ -123,19 +119,6 @@ public class StorageImplUtils {
         .ofPattern(ISO8601_PATTERN_NO_SECONDS)
         .withLocale(Locale.ROOT);
 
-    private static final Pattern EMPTY_BODY_ERROR_PATTERN = Pattern.compile("\\(empty body\\)");
-
-    /**
-     * Parses the query string into a key-value pair map that maintains key, query parameter key, order. The value is
-     * stored as a string (ex. key=val1,val2,val3 instead of key=[val1, val2, val3]).
-     *
-     * @param queryString Query string to parse
-     * @return a mapping of query string pieces as key-value pairs.
-     */
-    public static Map<String, String> parseQueryString(final String queryString) {
-        return parseQueryStringHelper(queryString, Utility::urlDecode);
-    }
-
     /**
      * Parses the query string into a key-value pair map that maintains key, query parameter key, order. The value is
      * stored as a parsed array (ex. key=[val1, val2, val3] instead of key=val1,val2,val3).
@@ -148,28 +131,20 @@ public class StorageImplUtils {
         // query values from query values that container a comma.
         // Example 1: prefix=a%2cb => prefix={decode(a%2cb)} => prefix={"a,b"}
         // Example 2: prefix=a,b => prefix={decode(a),decode(b)} => prefix={"a", "b"}
-        return parseQueryStringHelper(queryString, value -> {
-            String[] v = value.split(",");
-            String[] ret = new String[v.length];
-            for (int i = 0; i < v.length; i++) {
-                ret[i] = urlDecode(v[i]);
-            }
-            return ret;
-        });
-    }
-
-    private static <T> Map<String, T> parseQueryStringHelper(final String queryString,
-                                                             Function<String, T> valueParser) {
-        TreeMap<String, T> pieces = new TreeMap<>();
+        TreeMap<String, String[]> pieces = new TreeMap<>();
 
         if (CoreUtils.isNullOrEmpty(queryString)) {
             return pieces;
         }
 
         for (String kvp : queryString.split("&")) {
-            int equalIndex = kvp.indexOf("=");
+            int equalIndex = kvp.indexOf('=');
             String key = urlDecode(kvp.substring(0, equalIndex).toLowerCase(Locale.ROOT));
-            T value = valueParser.apply(kvp.substring(equalIndex + 1));
+
+            String[] value = kvp.substring(equalIndex + 1).split(",");
+            for (int i = 0; i < value.length; i++) {
+                value[i] = urlDecode(value[i]);
+            }
 
             pieces.putIfAbsent(key, value);
         }
@@ -387,8 +362,12 @@ public class StorageImplUtils {
                 && response.getHeaders().getValue(ERROR_CODE) != null) {
                 // Use a constant compiled Pattern as the match pattern is always the same and String.replaceFirst
                 // will compile the match String into a Pattern internally on each call.
-                return EMPTY_BODY_ERROR_PATTERN.matcher(message)
-                    .replaceFirst(response.getHeaders().getValue(ERROR_CODE));
+                int indexOfEmptyBody = message.indexOf("(empty body)");
+                if (indexOfEmptyBody >= 0) {
+                    return message.substring(0, indexOfEmptyBody)
+                        + response.getHeaders().getValue(ERROR_CODE)
+                        + message.substring(indexOfEmptyBody + 12);
+                }
             }
         }
         return message;
