@@ -79,7 +79,7 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
      * with options
      */
     public void beginTrainingWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.v3.training.FormTrainingAsyncClient.beginTraining#string-boolean-TrainingOptions
+        // BEGIN: com.azure.ai.formrecognizer.v3.training.FormTrainingAsyncClient.beginTraining#string-boolean-Options
         String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         TrainingFileFilter trainingFileFilter = new TrainingFileFilter().setSubfoldersIncluded(true).setPrefix("Invoice");
 
@@ -97,7 +97,7 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
                         System.out.printf("Form Type: %s Field Text: %s Field Accuracy: %f%n",
                             key, customFormModelField.getName(), customFormModelField.getAccuracy())));
             });
-        // END: com.azure.ai.formrecognizer.v3.training.FormTrainingAsyncClient.beginTraining#string-boolean-TrainingOptions
+        // END: com.azure.ai.formrecognizer.v3.training.FormTrainingAsyncClient.beginTraining#string-boolean-Options
     }
 
     /**
@@ -324,7 +324,7 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
      * with options
      */
     public void beginCreateComposedModelWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.v3.training.FormTrainingAsyncClient.beginCreateComposedModel#list-createComposedModelOptions
+        // BEGIN: com.azure.ai.formrecognizer.v3.training.FormTrainingAsyncClient.beginCreateComposedModel#list-Options
         String labeledModelId1 = "5f21ab8d-71a6-42d8-9856-ef5985c486a8";
         String labeledModelId2 = "d7b0904c-841f-46f9-a9f4-3f2273eef7c9";
         formTrainingAsyncClient.beginCreateComposedModel(Arrays.asList(labeledModelId1, labeledModelId2),
@@ -346,6 +346,6 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
                             System.out.printf("Form type: %s Field Text: %s Field Accuracy: %f%n",
                                 key, customFormModelField.getName(), customFormModelField.getAccuracy())));
             });
-        // END: com.azure.ai.formrecognizer.v3.training.FormTrainingAsyncClient.beginCreateComposedModel#list-createComposedModelOptions
+        // END: com.azure.ai.formrecognizer.v3.training.FormTrainingAsyncClient.beginCreateComposedModel#list-Options
     }
 }

@@ -24,10 +24,10 @@ public final class DocumentFieldType extends ExpandableStringEnum<DocumentFieldT
     public static final DocumentFieldType PHONE_NUMBER = fromString("phoneNumber");
 
     /** Static value number for DocumentFieldType. */
-    public static final DocumentFieldType FLOAT = fromString("number");
+    public static final DocumentFieldType DOUBLE = fromString("number");
 
     /** Static value integer for DocumentFieldType. */
-    public static final DocumentFieldType INTEGER = fromString("integer");
+    public static final DocumentFieldType LONG = fromString("integer");
 
     /** Static value selectionMark for DocumentFieldType. */
     public static final DocumentFieldType SELECTION_MARK = fromString("selectionMark");
@@ -46,6 +46,9 @@ public final class DocumentFieldType extends ExpandableStringEnum<DocumentFieldT
 
     /** Static value currency for DocumentFieldType. */
     public static final DocumentFieldType CURRENCY = fromString("currency");
+
+    /** Static value address for DocumentFieldType. */
+    public static final DocumentFieldType ADDRESS = fromString("address");
 
     /**
      * Creates or finds a DocumentFieldType from its string representation.

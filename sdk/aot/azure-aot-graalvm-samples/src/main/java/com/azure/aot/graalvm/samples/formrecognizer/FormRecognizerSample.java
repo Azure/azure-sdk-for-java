@@ -14,7 +14,6 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
@@ -44,19 +43,10 @@ public class FormRecognizerSample {
                 .buildClient();
 
         InputStream resourceAsStream = FormRecognizerSample.class.getClassLoader().getResourceAsStream("contoso-allinone.jpg");
-        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-
-        int nRead;
-        byte[] data = new byte[4096];
-        while ((nRead = resourceAsStream.read(data, 0, data.length)) != -1) {
-            buffer.write(data, 0, nRead);
-        }
-        byte[] fileContent = buffer.toByteArray();
-
         BinaryData targetData = BinaryData.fromStream(resourceAsStream);
 
         SyncPoller<OperationResult, AnalyzeResult> analyzeReceiptPoller =
-                client.beginAnalyzeDocument("prebuilt-receipt", targetData, fileContent.length);
+                client.beginAnalyzeDocument("prebuilt-receipt", targetData);
 
         AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult();
 
@@ -117,22 +107,22 @@ public class FormRecognizerSample {
                                     }
                                 }
                                 if ("Quantity".equals(key)) {
-                                    if (DocumentFieldType.FLOAT == formField.getType()) {
-                                        Float quantity = formField.getValueAsFloat();
+                                    if (DocumentFieldType.DOUBLE == formField.getType()) {
+                                        Double quantity = formField.getValueAsDouble();
                                         System.out.printf("Quantity: %f, confidence: %.2f%n",
                                                 quantity, formField.getConfidence());
                                     }
                                 }
                                 if ("Price".equals(key)) {
-                                    if (DocumentFieldType.FLOAT == formField.getType()) {
-                                        Float price = formField.getValueAsFloat();
+                                    if (DocumentFieldType.DOUBLE == formField.getType()) {
+                                        Double price = formField.getValueAsDouble();
                                         System.out.printf("Price: %f, confidence: %.2f%n",
                                                 price, formField.getConfidence());
                                     }
                                 }
                                 if ("TotalPrice".equals(key)) {
-                                    if (DocumentFieldType.FLOAT == formField.getType()) {
-                                        Float totalPrice = formField.getValueAsFloat();
+                                    if (DocumentFieldType.DOUBLE == formField.getType()) {
+                                        Double totalPrice = formField.getValueAsDouble();
                                         System.out.printf("Total Price: %f, confidence: %.2f%n",
                                                 totalPrice, formField.getConfidence());
                                     }

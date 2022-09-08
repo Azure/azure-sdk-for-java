@@ -51,8 +51,8 @@ public class AnalyzeReceiptsAsync {
         PollerFlux<OperationResult, AnalyzeResult> analyzeReceiptPoller;
         try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
             analyzeReceiptPoller = client.beginAnalyzeDocument("prebuilt-receipt",
-                BinaryData.fromStream(targetStream),
-                sourceFile.length());
+                BinaryData.fromStream(targetStream)
+            );
         }
 
         Mono<AnalyzeResult> receiptResultsMono = analyzeReceiptPoller
@@ -125,22 +125,22 @@ public class AnalyzeReceiptsAsync {
                                     }
                                 }
                                 if ("Quantity".equals(key)) {
-                                    if (DocumentFieldType.FLOAT == documentField.getType()) {
-                                        Float quantity = documentField.getValueAsFloat();
+                                    if (DocumentFieldType.DOUBLE == documentField.getType()) {
+                                        Double quantity = documentField.getValueAsDouble();
                                         System.out.printf("Quantity: %f, confidence: %.2f%n",
                                             quantity, documentField.getConfidence());
                                     }
                                 }
                                 if ("Price".equals(key)) {
-                                    if (DocumentFieldType.FLOAT == documentField.getType()) {
-                                        Float price = documentField.getValueAsFloat();
+                                    if (DocumentFieldType.DOUBLE == documentField.getType()) {
+                                        Double price = documentField.getValueAsDouble();
                                         System.out.printf("Price: %f, confidence: %.2f%n",
                                             price, documentField.getConfidence());
                                     }
                                 }
                                 if ("TotalPrice".equals(key)) {
-                                    if (DocumentFieldType.FLOAT == documentField.getType()) {
-                                        Float totalPrice = documentField.getValueAsFloat();
+                                    if (DocumentFieldType.DOUBLE == documentField.getType()) {
+                                        Double totalPrice = documentField.getValueAsDouble();
                                         System.out.printf("Total Price: %f, confidence: %.2f%n",
                                             totalPrice, documentField.getConfidence());
                                     }
