@@ -12,6 +12,12 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
+/**
+ * A {@link JdbcConnectionStringEnhancer} will enhance a {@link JdbcConnectionString}
+ * instance. It can add more properties to the JDBC connection string instance, or
+ * append more attributes value to an existing property. An enhanced JDBC URL can be
+ * built from this enhancer.
+ */
 public final class JdbcConnectionStringEnhancer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcConnectionStringEnhancer.class);

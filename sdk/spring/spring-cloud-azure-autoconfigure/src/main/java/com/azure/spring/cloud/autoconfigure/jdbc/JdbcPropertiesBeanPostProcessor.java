@@ -86,7 +86,6 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
                 return bean;
             }
 
-
             try {
                 JdbcConnectionStringEnhancer enhancer = new JdbcConnectionStringEnhancer(connectionString);
                 enhancer.enhanceProperties(buildEnhancedProperties(databaseType, properties));

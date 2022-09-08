@@ -15,6 +15,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * A connection string to describe the JDBC connection URL. The JDBC connection
+ * string consists of the database type of this JDBC URL, the connection properties
+ * such as credential properties, authentication plugins, or connection attributes.
+ */
 public final class JdbcConnectionString {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcConnectionString.class);
@@ -34,6 +39,13 @@ public final class JdbcConnectionString {
         this.jdbcUrl = jdbcUrl;
     }
 
+    /**
+     * Resolve the database type, connection properties from the JDBC URL.
+     * The supported database types are those in {@link DatabaseType}, if a URL of
+     * any other database types is provided, an {@link AzureUnsupportedDatabaseTypeException}
+     * will be thrown. If any illegal properties are detected, an {@link IllegalArgumentException}
+     * will be thrown.
+     */
     private void resolveSegments() {
         if (!StringUtils.hasText(this.jdbcUrl)) {
             LOGGER.warn("'connectionString' doesn't have text.");
