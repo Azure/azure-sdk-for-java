@@ -20,7 +20,7 @@ import org.springframework.util.StringUtils;
  * Secondary Database Account
  */
 @Configuration
-@PropertySource(value = {"classpath:application.properties"})
+@PropertySource(value = { "classpath:application.properties" })
 public class SecondaryTestRepositoryConfig {
     @Value("${cosmos.secondary.uri:}")
     private String cosmosDbUri;
