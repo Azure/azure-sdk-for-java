@@ -4,7 +4,7 @@ package com.azure.spring.cloud.autoconfigure.aad.configuration;
 
 
 import com.azure.spring.cloud.autoconfigure.aad.AadResourceServerWebSecurityConfigurerAdapter;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestOperationConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ResourceServerRestOperationConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.ResourceServerCondition;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadJwtClaimNames;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.validator.AadJwtIssuerValidator;
@@ -35,7 +35,7 @@ import org.springframework.web.client.RestOperations;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestOperationConfiguration.AZURE_AD_ACCESS_TOKEN_VALIDATOR_REST_OPERATIONS_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ResourceServerRestOperationConfiguration.AAD_OAUTH_2_RESOURCE_SERVER_REST_OPERATION_BEAN_NAME;
 
 /**
  * <p>
@@ -45,20 +45,30 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestOpe
  */
 @Configuration(proxyBeanMethods = false)
 @Conditional(ResourceServerCondition.class)
-@Import(AadRestOperationConfiguration.class)
+@Import(AadOauth2ResourceServerRestOperationConfiguration.class)
 public class AadResourceServerConfiguration {
+
+    private final RestOperations restOperations;
+
+    /**
+     * Creates a new instance of {@link AadResourceServerConfiguration}.
+     *
+     * @param restOperations the restOperations
+     */
+    public AadResourceServerConfiguration(
+            @Qualifier(AAD_OAUTH_2_RESOURCE_SERVER_REST_OPERATION_BEAN_NAME) RestOperations restOperations) {
+        this.restOperations = restOperations;
+    }
 
     /**
      * Use JwkKeySetUri to create JwtDecoder
      *
      * @param aadAuthenticationProperties the AAD properties
-     * @param restOperations the restOperations used to get key to validate access token
      * @return Get the jwtDecoder instance
      */
     @Bean
     @ConditionalOnMissingBean(JwtDecoder.class)
-    public JwtDecoder jwtDecoder(AadAuthenticationProperties aadAuthenticationProperties,
-                                 @Qualifier(AZURE_AD_ACCESS_TOKEN_VALIDATOR_REST_OPERATIONS_BEAN_NAME) RestOperations restOperations) {
+    public JwtDecoder jwtDecoder(AadAuthenticationProperties aadAuthenticationProperties) {
         AadAuthorizationServerEndpoints identityEndpoints = new AadAuthorizationServerEndpoints(
             aadAuthenticationProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint(), aadAuthenticationProperties.getProfile().getTenantId());
         NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder

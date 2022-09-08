@@ -3,7 +3,7 @@
 package com.azure.spring.cloud.autoconfigure.aadb2c;
 
 import com.azure.spring.cloud.autoconfigure.aad.AadTrustedIssuerRepository;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestOperationConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ResourceServerRestOperationConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadJwtClaimNames;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.AadIssuerJwsKeySelector;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.RestOperationsResourceRetriever;
@@ -39,7 +39,7 @@ import org.springframework.web.client.RestOperations;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestOperationConfiguration.AZURE_AD_ACCESS_TOKEN_VALIDATOR_REST_OPERATIONS_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ResourceServerRestOperationConfiguration.AAD_OAUTH_2_RESOURCE_SERVER_REST_OPERATION_BEAN_NAME;
 
 /**
  * Configure necessary beans for Azure AD B2C resource server beans, and import {@link AadB2cOAuth2ClientConfiguration} class for Azure AD
@@ -49,18 +49,23 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestOpe
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnProperty(value = "spring.cloud.azure.active-directory.b2c.enabled", havingValue = "true")
 @ConditionalOnClass(BearerTokenAuthenticationToken.class)
-@Import({ AadB2cPropertiesConfiguration.class, AadB2cOAuth2ClientConfiguration.class, AadRestOperationConfiguration.class})
+@Import({ AadB2cPropertiesConfiguration.class, AadB2cOAuth2ClientConfiguration.class, AadOauth2ResourceServerRestOperationConfiguration.class})
 public class AadB2cResourceServerAutoConfiguration {
 
     private final AadB2cProperties properties;
+    private final RestOperations restOperations;
 
     /**
      * Creates a new instance of {@link AadB2cResourceServerAutoConfiguration}.
      *
      * @param properties the Azure AD B2C properties
+     * @param restOperations the restOperations
      */
-    public AadB2cResourceServerAutoConfiguration(AadB2cProperties properties) {
+    public AadB2cResourceServerAutoConfiguration(
+            AadB2cProperties properties,
+            @Qualifier(AAD_OAUTH_2_RESOURCE_SERVER_REST_OPERATION_BEAN_NAME) RestOperations restOperations) {
         this.properties = properties;
+        this.restOperations = restOperations;
     }
 
     /**
@@ -77,20 +82,17 @@ public class AadB2cResourceServerAutoConfiguration {
     /**
      * Declare JWT ResourceRetriever bean.
      *
-     * @param restOperations the restOperations used to get key to validate access token
      * @return JWT ResourceRetriever bean
      */
     @Bean
     @ConditionalOnMissingBean(ResourceRetriever.class)
-    public ResourceRetriever jwtResourceRetriever(
-            @Qualifier(AZURE_AD_ACCESS_TOKEN_VALIDATOR_REST_OPERATIONS_BEAN_NAME) RestOperations restOperations) {
+    public ResourceRetriever jwtResourceRetriever() {
         return new RestOperationsResourceRetriever(restOperations);
     }
 
     /**
      * Declare JWTClaimsSetAwareJWSKeySelector bean.
      *
-     * @param restOperations the rest operations used to get key to validate access token
      * @param aadTrustedIssuerRepository the AAD trusted issuer repository
      * @param resourceRetriever the resource retriever
      * @return JWTClaimsSetAwareJWSKeySelector bean
@@ -98,7 +100,6 @@ public class AadB2cResourceServerAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public JWTClaimsSetAwareJWSKeySelector<SecurityContext> aadIssuerJwsKeySelector(
-            @Qualifier(AZURE_AD_ACCESS_TOKEN_VALIDATOR_REST_OPERATIONS_BEAN_NAME) RestOperations restOperations,
         AadTrustedIssuerRepository aadTrustedIssuerRepository,
         ResourceRetriever resourceRetriever) {
         return new AadIssuerJwsKeySelector(

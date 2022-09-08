@@ -3,12 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.implementation;
 
-import com.azure.spring.cloud.autoconfigure.aad.AadAuthenticationFilterAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration;
-import com.azure.spring.cloud.autoconfigure.aad.configuration.AadResourceServerConfiguration;
-import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cOAuth2ClientConfiguration;
-import com.nimbusds.jose.util.ResourceRetriever;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -20,7 +16,6 @@ import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationC
 import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
 import org.springframework.security.oauth2.client.http.OAuth2ErrorResponseErrorHandler;
 import org.springframework.security.oauth2.core.http.converter.OAuth2AccessTokenResponseHttpMessageConverter;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
 
@@ -30,24 +25,14 @@ import java.util.List;
  * Configure RestOperation bean used for accessing Azure AD and Azure AD B2C
  */
 @Configuration(proxyBeanMethods = false)
-public class AadRestOperationConfiguration {
+public class AadOauth2ClientRestOperationConfiguration {
 
     /**
      * Bean name of RestOperation bean. The bean is used to retrieve access token.
      *
-     * @see AadRestOperationConfiguration#azureAdAccessTokenRetrieverRestOperations(RestTemplateBuilder)
+     * @see AadOauth2ClientRestOperationConfiguration#aadOAuth2ClientRestOperation(RestTemplateBuilder)
      */
-    public static final String AZURE_AD_ACCESS_TOKEN_RETRIEVER_REST_OPERATIONS_BEAN_NAME =
-            "azureAdAccessTokenRetrieverRestOperations";
-
-    /**
-     * Bean name of RestOperation bean. The bean is used to get key to validate access token.
-     *
-     * @see AadRestOperationConfiguration#azureAdAccessTokenValidatorRestOperations(RestTemplateBuilder)
-     */
-    public static final String AZURE_AD_ACCESS_TOKEN_VALIDATOR_REST_OPERATIONS_BEAN_NAME =
-            "azureAdAccessTokenValidatorRestOperations";
-
+    public static final String AAD_OAUTH_2_CLIENT_REST_OPERATION_BEAN_NAME = "aadOAuth2ClientRestOperation";
 
     /**
      * Declare {@link RestOperations} bean used to retrieve access token from Azure AD(or Azure AD B2C) endpoints like:
@@ -69,41 +54,15 @@ public class AadRestOperationConfiguration {
      * @see AadOAuth2ClientConfiguration
      * @see AadB2cOAuth2ClientConfiguration
      */
-    @Bean(AZURE_AD_ACCESS_TOKEN_RETRIEVER_REST_OPERATIONS_BEAN_NAME)
-    @ConditionalOnMissingBean(name = AZURE_AD_ACCESS_TOKEN_RETRIEVER_REST_OPERATIONS_BEAN_NAME)
-    public RestOperations azureAdAccessTokenRetrieverRestOperations(RestTemplateBuilder builder) {
+    @Bean(AAD_OAUTH_2_CLIENT_REST_OPERATION_BEAN_NAME)
+    @ConditionalOnMissingBean(name = AAD_OAUTH_2_CLIENT_REST_OPERATION_BEAN_NAME)
+    public RestOperations aadOAuth2ClientRestOperation(RestTemplateBuilder builder) {
         RestTemplate restTemplate = builder.build();
         restTemplate.setErrorHandler(new OAuth2ErrorResponseErrorHandler());
         List<HttpMessageConverter<?>> converters = restTemplate.getMessageConverters();
         converters.add(new FormHttpMessageConverter());
         converters.add(new OAuth2AccessTokenResponseHttpMessageConverter());
         return restTemplate;
-    }
-
-    /**
-     * Declare {@link RestOperations} bean used to get key to validate Azure AD(or Azure AD B2C) access token. It is
-     * used to access endpoints like:
-     * <ul>
-     *     <li> <a href="https://login.microsoftonline.com/common/.well-known/openid-configuration">
-     *         https://login.microsoftonline.com/common/.well-known/openid-configuration</a>
-     *     <li> <a href="https://login.microsoftonline.com/common/discovery/v2.0/keys">
-     *         https://login.microsoftonline.com/common/discovery/v2.0/keys</a>
-     * </ul>
-     * It's used in these places:
-     * <ul>
-     *     <li> In {@link ResourceRetriever} declared in {@link AadAuthenticationFilterAutoConfiguration}.
-     *     <li> In {@link JwtDecoder} declared in {@link AadResourceServerConfiguration} and
-     *     {@link AadB2cResourceServerAutoConfiguration}
-     * </ul>
-     *
-     * @param builder The RestTemplateBuilder bean, which can be provided in {@link RestTemplateAutoConfiguration}
-     *                if customer not provide this bean.
-     * @return RestOperations bean
-     */
-    @Bean(AZURE_AD_ACCESS_TOKEN_VALIDATOR_REST_OPERATIONS_BEAN_NAME)
-    @ConditionalOnMissingBean(name = AZURE_AD_ACCESS_TOKEN_VALIDATOR_REST_OPERATIONS_BEAN_NAME)
-    public RestOperations azureAdAccessTokenValidatorRestOperations(RestTemplateBuilder builder) {
-        return builder.build();
     }
 
 }
