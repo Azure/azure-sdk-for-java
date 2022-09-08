@@ -44,7 +44,7 @@ public class AnalyzeBusinessCard {
         BinaryData businessCardData = BinaryData.fromFile(filePath);
 
         SyncPoller<OperationResult, AnalyzeResult> analyzeBusinessCardPoller =
-            client.beginAnalyzeDocument("prebuilt-businessCard", businessCardData, sourceFile.length());
+            client.beginAnalyzeDocument("prebuilt-businessCard", businessCardData);
 
         AnalyzeResult businessCardPageResults = analyzeBusinessCardPoller.getFinalResult();
 

@@ -6,6 +6,7 @@ package com.azure.xml;
 import com.azure.xml.implementation.DefaultXmlReader;
 import com.azure.xml.implementation.DefaultXmlWriter;
 
+import javax.xml.stream.XMLStreamException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
@@ -57,8 +58,9 @@ public final class XmlProviders {
      * @param xml The XML represented as a {@code byte[]}.
      * @return A new instance of {@link XmlReader}.
      * @throws NullPointerException If {@code xml} is null.
+     * @throws XMLStreamException If an {@link XmlReader} cannot be instantiated.
      */
-    public static XmlReader createReader(byte[] xml) {
+    public static XmlReader createReader(byte[] xml) throws XMLStreamException {
         return createReader(xml, true);
     }
 
@@ -70,8 +72,9 @@ public final class XmlProviders {
      * @return A new instance of {@link XmlReader}.
      * @throws NullPointerException If {@code xml} is null.
      * @throws IllegalStateException If a provider could not be found on the classpath and {@code useDefault} is false.
+     * @throws XMLStreamException If an {@link XmlReader} cannot be instantiated.
      */
-    public static XmlReader createReader(byte[] xml, boolean useDefault) {
+    public static XmlReader createReader(byte[] xml, boolean useDefault) throws XMLStreamException {
         if (defaultProvider == null) {
             if (useDefault) {
                 return DefaultXmlReader.fromBytes(xml);
@@ -92,8 +95,9 @@ public final class XmlProviders {
      * @param xml The XML represented as a {@link String}.
      * @return A new instance of {@link XmlReader}.
      * @throws NullPointerException If {@code xml} is null.
+     * @throws XMLStreamException If an {@link XmlReader} cannot be instantiated.
      */
-    public static XmlReader createReader(String xml) {
+    public static XmlReader createReader(String xml) throws XMLStreamException {
         return createReader(xml, true);
     }
 
@@ -105,8 +109,9 @@ public final class XmlProviders {
      * @return A new instance of {@link XmlReader}.
      * @throws NullPointerException If {@code xml} is null.
      * @throws IllegalStateException If a provider could not be found on the classpath and {@code useDefault} is false.
+     * @throws XMLStreamException If an {@link XmlReader} cannot be instantiated.
      */
-    public static XmlReader createReader(String xml, boolean useDefault) {
+    public static XmlReader createReader(String xml, boolean useDefault) throws XMLStreamException {
         if (defaultProvider == null) {
             if (useDefault) {
                 return DefaultXmlReader.fromString(xml);
@@ -127,8 +132,9 @@ public final class XmlProviders {
      * @param xml The XML represented as a {@link InputStream}.
      * @return A new instance of {@link XmlReader}.
      * @throws NullPointerException If {@code xml} is null.
+     * @throws XMLStreamException If an {@link XmlReader} cannot be instantiated.
      */
-    public static XmlReader createReader(InputStream xml) {
+    public static XmlReader createReader(InputStream xml) throws XMLStreamException {
         return createReader(xml, true);
     }
 
@@ -140,8 +146,9 @@ public final class XmlProviders {
      * @return A new instance of {@link XmlReader}.
      * @throws NullPointerException If {@code xml} is null.
      * @throws IllegalStateException If a provider could not be found on the classpath and {@code useDefault} is false.
+     * @throws XMLStreamException If an {@link XmlReader} cannot be instantiated.
      */
-    public static XmlReader createReader(InputStream xml, boolean useDefault) {
+    public static XmlReader createReader(InputStream xml, boolean useDefault) throws XMLStreamException {
         if (defaultProvider == null) {
             if (useDefault) {
                 return DefaultXmlReader.fromStream(xml);
@@ -162,8 +169,9 @@ public final class XmlProviders {
      * @param xml The XML represented as a {@link Reader}.
      * @return A new instance of {@link XmlReader}.
      * @throws NullPointerException If {@code xml} is null.
+     * @throws XMLStreamException If an {@link XmlReader} cannot be instantiated.
      */
-    public static XmlReader createReader(Reader xml) {
+    public static XmlReader createReader(Reader xml) throws XMLStreamException {
         return createReader(xml, true);
     }
 
@@ -175,8 +183,9 @@ public final class XmlProviders {
      * @return A new instance of {@link XmlReader}.
      * @throws NullPointerException If {@code xml} is null.
      * @throws IllegalStateException If a provider could not be found on the classpath and {@code useDefault} is false.
+     * @throws XMLStreamException If an {@link XmlReader} cannot be instantiated.
      */
-    public static XmlReader createReader(Reader xml, boolean useDefault) {
+    public static XmlReader createReader(Reader xml, boolean useDefault) throws XMLStreamException {
         if (defaultProvider == null) {
             if (useDefault) {
                 return DefaultXmlReader.fromReader(xml);
@@ -197,8 +206,9 @@ public final class XmlProviders {
      * @param xml The XML represented as an {@link OutputStream}.
      * @return A new instance of {@link XmlWriter}.
      * @throws NullPointerException If {@code xml} is null.
+     * @throws XMLStreamException If an {@link XmlWriter} cannot be instantiated.
      */
-    public static XmlWriter createWriter(OutputStream xml) {
+    public static XmlWriter createWriter(OutputStream xml) throws XMLStreamException {
         return createWriter(xml, true);
     }
 
@@ -210,8 +220,9 @@ public final class XmlProviders {
      * @return A new instance of {@link XmlWriter}.
      * @throws NullPointerException If {@code xml} is null.
      * @throws IllegalStateException If a provider could not be found on the classpath and {@code useDefault} is false.
+     * @throws XMLStreamException If an {@link XmlWriter} cannot be instantiated.
      */
-    public static XmlWriter createWriter(OutputStream xml, boolean useDefault) {
+    public static XmlWriter createWriter(OutputStream xml, boolean useDefault) throws XMLStreamException {
         if (defaultProvider == null) {
             if (useDefault) {
                 return DefaultXmlWriter.toStream(xml);
@@ -232,8 +243,9 @@ public final class XmlProviders {
      * @param xml The XML represented as an {@link Writer}.
      * @return A new instance of {@link XmlWriter}.
      * @throws NullPointerException If {@code xml} is null.
+     * @throws XMLStreamException If an {@link XmlWriter} cannot be instantiated.
      */
-    public static XmlWriter createWriter(Writer xml) {
+    public static XmlWriter createWriter(Writer xml) throws XMLStreamException {
         return createWriter(xml, true);
     }
 
@@ -245,8 +257,9 @@ public final class XmlProviders {
      * @return A new instance of {@link XmlWriter}.
      * @throws NullPointerException If {@code xml} is null.
      * @throws IllegalStateException If a provider could not be found on the classpath and {@code useDefault} is false.
+     * @throws XMLStreamException If an {@link XmlWriter} cannot be instantiated.
      */
-    public static XmlWriter createWriter(Writer xml, boolean useDefault) {
+    public static XmlWriter createWriter(Writer xml, boolean useDefault) throws XMLStreamException {
         if (defaultProvider == null) {
             if (useDefault) {
                 return DefaultXmlWriter.toWriter(xml);

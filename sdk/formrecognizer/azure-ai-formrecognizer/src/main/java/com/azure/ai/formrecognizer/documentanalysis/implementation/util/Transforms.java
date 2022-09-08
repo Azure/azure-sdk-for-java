@@ -418,7 +418,8 @@ public class Transforms {
             DocumentFieldHelper.setValue(documentField, innerDocumentField.getValuePhoneNumber());
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.NUMBER.equals(
             innerDocumentField.getType())) {
-            DocumentFieldHelper.setValue(documentField, innerDocumentField.getValueNumber());
+            DocumentFieldHelper.setValue(documentField,
+                Double.valueOf(innerDocumentField.getValueNumber().doubleValue()));
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.INTEGER.equals(
             innerDocumentField.getType())) {
             DocumentFieldHelper.setValue(documentField, innerDocumentField.getValueInteger());
