@@ -9,6 +9,7 @@ import com.azure.communication.callautomation.implementation.converters.Communic
 import com.azure.communication.callautomation.implementation.models.CallConnectionPropertiesInternal;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -27,6 +28,7 @@ public final class CallConnectionProperties {
     private final CallConnectionState callConnectionState;
     private final String subject;
     private final URI callbackUri;
+    private String mediaSubscriptionId;
 
     static {
         CallConnectionPropertiesConstructorProxy.setAccessor(
@@ -50,6 +52,7 @@ public final class CallConnectionProperties {
         this.callConnectionState = null;
         this.subject = null;
         this.callbackUri = null;
+        this.mediaSubscriptionId = null;
     }
 
     /**
@@ -66,6 +69,7 @@ public final class CallConnectionProperties {
         this.callConnectionState = CallConnectionState.fromString(callConnectionPropertiesInternal.getCallConnectionState().toString());
         this.subject = callConnectionPropertiesInternal.getSubject();
         this.callbackUri = new URI(callConnectionPropertiesInternal.getCallbackUri());
+        this.mediaSubscriptionId = callConnectionPropertiesInternal.getMediaSubscriptionId();
     }
 
     /**
@@ -130,5 +134,12 @@ public final class CallConnectionProperties {
     public String getCallConnectionId() {
         return callConnectionId;
     }
+
+    /**
+     * Get the mediaSubscriptionId property: SubscriptionId for media streaming.
+     *
+     * @return the mediaSubscriptionId value.
+     */
+    public String getMediaSubscriptionId() { return mediaSubscriptionId; }
 
 }
