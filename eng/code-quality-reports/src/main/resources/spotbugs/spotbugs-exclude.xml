@@ -2755,7 +2755,6 @@ S
   <!-- Exceptions need to be caught to keep polling. -->
   <Match>
     <Class name="com.azure.security.keyvault.secrets.implementation.SecretClientImpl"/>
-    <Method name="createPollOperation"/>
     <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
 </FindBugsFilter>
