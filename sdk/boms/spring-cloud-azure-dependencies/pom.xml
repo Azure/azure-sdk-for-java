@@ -113,6 +113,11 @@
 
       <!-- Spring Cloud Azure -->
       <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-spring-data-cosmos</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-actuator</artifactId>
         <version>${project.version}</version>
@@ -170,6 +175,11 @@
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-cosmos</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>spring-cloud-azure-starter-data-cosmos</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

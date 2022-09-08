@@ -6,10 +6,11 @@ import com.azure.spring.data.cosmos.domain.Importance;
 import com.azure.spring.data.cosmos.domain.PageableMemo;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PageableMemoRepository extends PagingAndSortingRepository<PageableMemo, String> {
+public interface PageableMemoRepository extends CrudRepository<PageableMemo, String>, PagingAndSortingRepository<PageableMemo, String> {
     Slice<PageableMemo> findByImportance(Importance importance, Pageable pageable);
 }

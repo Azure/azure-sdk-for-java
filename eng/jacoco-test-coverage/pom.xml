@@ -554,6 +554,11 @@
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
+      <artifactId>spring-cloud-azure-starter-data-cosmos</artifactId>
+      <version>6.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-data-cosmos;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-storage</artifactId>
       <version>6.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-storage;current} -->
     </dependency>
@@ -626,6 +631,11 @@
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-stream-binder-eventhubs-core</artifactId>
       <version>6.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-eventhubs-core;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-spring-data-cosmos</artifactId>
+      <version>6.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
     </dependency>
 	  <dependency>
       <groupId>com.azure</groupId>

@@ -11,10 +11,14 @@ stages:
         - spring/spring-cloud-azure-integration-tests/test-resources/keyvault
         - spring/spring-cloud-azure-integration-tests/test-resources/servicebus
         - spring/spring-cloud-azure-integration-tests/test-resources/storage
+        - spring/azure-spring-data-cosmos-test
       Artifacts:
         - name: spring-cloud-azure-integration-tests
           groupId: com.azure.spring
           safeName: springcloudazureintegrationtests
+        - name: azure-spring-data-cosmos-test
+          groupId: com.azure
+          safeName: azurespringdatacosmostest
       TimeoutInMinutes: 240
       ServiceDirectory: spring
       TestName: IntegrationTestInAzureGlobal

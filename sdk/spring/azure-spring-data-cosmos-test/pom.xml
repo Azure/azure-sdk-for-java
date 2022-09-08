@@ -12,20 +12,20 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-spring-data-cosmos-test</artifactId>
-  <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos-test;current} -->
+  <version>6.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos-test;current} -->
   <packaging>jar</packaging>
   <name>Spring Data Test for Azure Cosmos DB SQL API</name>
   <description>Spring Data Test for Azure Cosmos DB SQL API</description>
   <url>https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-spring-data-cosmos-test</url>
 
   <properties>
+    <java.version>17</java.version>
+    <skipSpringITs>true</skipSpringITs>
     <azure.test.resourcegroup>azure-spring-data-cosmos-test</azure.test.resourcegroup>
     <azure.test.dbname>testdb-${maven.build.timestamp}</azure.test.dbname>
-    <skip.integration.tests>true</skip.integration.tests>
     <test.on.azure>false</test.on.azure>
     <test.on.emualator>false</test.on.emualator>
   </properties>
-
 
   <!-- Repositories definitions -->
   <repositories>
@@ -54,7 +54,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-spring-data-cosmos</artifactId>
-      <version>3.27.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
+      <version>6.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
     </dependency>
     <!-- Test -->
     <dependency>
@@ -118,7 +118,6 @@
       <id>integration-test-azure</id>
       <properties>
         <build.profile.id>integration-test-azure</build.profile.id>
-        <skip.integration.tests>false</skip.integration.tests>
         <test.on.azure>true</test.on.azure>
         <test.on.emulator>false</test.on.emulator>
       </properties>
@@ -127,7 +126,6 @@
       <id>integration-test-emulator</id>
       <properties>
         <build.profile.id>integration-test-emulator</build.profile.id>
-        <skip.integration.tests>false</skip.integration.tests>
         <test.on.azure>false</test.on.azure>
         <test.on.emulator>true</test.on.emulator>
       </properties>
@@ -143,6 +141,17 @@
                 <exclude>**/PageablePersonRepositoryIT.java</exclude>
               </excludes>
             </configuration>
+            <executions>
+              <execution>
+                <id>default</id>
+                <goals>
+                  <goal>integration-test</goal>
+                </goals>
+                <configuration>
+                  <skipITs>${skipSpringITs}</skipITs>
+                </configuration>
+              </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>

@@ -4,6 +4,7 @@
 package com.azure.spring.data.cosmos.repository;
 
 import com.azure.cosmos.models.PartitionKey;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
@@ -15,7 +16,7 @@ import java.util.Optional;
  * pagination and sorting abstraction.
  */
 @NoRepositoryBean
-public interface CosmosRepository<T, ID extends Serializable> extends PagingAndSortingRepository<T, ID> {
+public interface CosmosRepository<T, ID extends Serializable> extends CrudRepository<T, ID>, PagingAndSortingRepository<T, ID> {
 
     /**
      * Retrieves an entity by its id.
