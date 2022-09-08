@@ -7,6 +7,7 @@ import com.azure.xml.implementation.DefaultXmlReader;
 import com.azure.xml.implementation.DefaultXmlWriter;
 import org.junit.jupiter.api.Test;
 
+import javax.xml.stream.XMLStreamException;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -52,7 +53,7 @@ public class PlaygroundTests {
         + "</entry>";
 
     @Test
-    public void toXmlSimple() throws IOException {
+    public void toXmlSimple() throws IOException, XMLStreamException {
         AccessPolicy accessPolicy = new AccessPolicy()
             .setStartsOn(OffsetDateTime.parse("2009-09-28T08:49:37Z"))
             .setExpiresOn(OffsetDateTime.parse("2009-09-29T08:49:37Z"))
@@ -75,7 +76,7 @@ public class PlaygroundTests {
     }
 
     @Test
-    public void fromXmlSimple() throws IOException {
+    public void fromXmlSimple() throws IOException, XMLStreamException {
         AccessPolicy accessPolicy = new AccessPolicy()
             .setStartsOn(OffsetDateTime.parse("2009-09-28T08:49:37Z"))
             .setExpiresOn(OffsetDateTime.parse("2009-09-29T08:49:37Z"))
@@ -110,7 +111,7 @@ public class PlaygroundTests {
     }
 
     @Test
-    public void toXmlComplex() throws IOException {
+    public void toXmlComplex() throws IOException, XMLStreamException {
         ResponseAuthor responseAuthor = new ResponseAuthor().setName("ShivangiServiceBus");
 
         ResponseLink responseLink = new ResponseLink()
@@ -149,7 +150,7 @@ public class PlaygroundTests {
     }
 
     @Test
-    public void fromXmlComplex() throws IOException {
+    public void fromXmlComplex() throws IOException, XMLStreamException {
         ResponseAuthor responseAuthor = new ResponseAuthor().setName("ShivangiServiceBus");
 
         ResponseLink responseLink = new ResponseLink()

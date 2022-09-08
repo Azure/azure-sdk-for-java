@@ -7,6 +7,7 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AsyncCacheNonBlockingTest {
-    private static final int TIMEOUT = 2000;
+    private static final int TIMEOUT = 20000;
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void getAsync() {
@@ -80,6 +81,40 @@ public class AsyncCacheNonBlockingTest {
         assertThat(numberOfCacheRefreshes.get()).isEqualTo(20);
         // verify that we still have the old value in the cache
         assertThat(cache.getAsync(2, value -> refreshFunc2.apply(2), forceRefresh -> false).block()).isEqualTo(5);
+    }
 
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void refreshAsync() throws InterruptedException {
+        AtomicInteger numberOfCacheRefreshes = new AtomicInteger(0);
+        final Function<Integer, Mono<Integer>> refreshFunc = key -> {
+            return Mono.just(key * 2)
+                    .doOnNext(t -> {
+                        numberOfCacheRefreshes.incrementAndGet();
+                    });
+        };
+
+        AsyncCacheNonBlocking<Integer, Integer> cache = new AsyncCacheNonBlocking<>();
+        // populate the cache
+        int cacheKey = 1;
+        cache.getAsync(cacheKey, value -> refreshFunc.apply(cacheKey), forceRefresh -> false).block();
+        assertThat(numberOfCacheRefreshes.get()).isEqualTo(1);
+
+        // refresh the cache, since there is no refresh in progress, it will start a new one
+        Function<Integer, Mono<Integer>> refreshFuncWithDelay = key -> {
+            return Mono.just(key * 2)
+                    .doOnNext(t -> numberOfCacheRefreshes.incrementAndGet())
+                    .delayElement(Duration.ofMinutes(5));
+        };
+
+        cache.refresh(cacheKey, refreshFuncWithDelay);
+        //since the refresh happens asynchronously, so wait for sometime
+        Thread.sleep(100);
+        assertThat(numberOfCacheRefreshes.get()).isEqualTo(2);
+
+        // start another refresh, since there is a refresh in progress, so it will not start a new one
+        cache.refresh(cacheKey, refreshFunc);
+        //since the refresh happens asynchronously, so wait for sometime
+        Thread.sleep(100);
+        assertThat(numberOfCacheRefreshes.get()).isEqualTo(2);
     }
 }

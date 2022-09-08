@@ -4,6 +4,7 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesAction;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.MultiLabelClassifyAction;
 import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesAction;
@@ -21,7 +22,6 @@ import java.util.List;
 
 import static com.azure.ai.textanalytics.TestUtils.VALID_HTTPS_LOCALHOST;
 import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
-import static com.azure.ai.textanalytics.implementation.Utility.throwIfTargetServiceVersionFound;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -62,6 +62,9 @@ public class ClientSideValidationUnitTests {
     static final String ANALYZE_HEALTHCARE_ENTITIES_ERROR_MESSAGE =
         getUnsupportedServiceApiVersionMessage("beginAnalyzeHealthcareEntities",
             TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1);
+    static final String HEALTHCARE_ENTITIES_DISPLAY_NAME_ERROR_MESSAGE =
+        getUnsupportedServiceApiVersionMessage("AnalyzeHealthcareEntitiesOptions.displayName",
+            TextAnalyticsServiceVersion.V3_1, TextAnalyticsServiceVersion.V2022_05_01);
     static final String RECOGNIZE_CUSTOM_ENTITIES_ERROR_MESSAGE_30 =
         getUnsupportedServiceApiVersionMessage("beginRecognizeCustomEntities",
             TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V2022_05_01);
@@ -296,10 +299,21 @@ public class ClientSideValidationUnitTests {
                 assertEquals(IllegalStateException.class, exception.getClass());
                 assertEquals(ANALYZE_HEALTHCARE_ENTITIES_ERROR_MESSAGE, exception.getMessage());
             });
+        AnalyzeHealthcareEntitiesOptions displayNameOptions = new AnalyzeHealthcareEntitiesOptions()
+            .setDisplayName("operationName");
+        StepVerifier.create(asyncClientV31.beginAnalyzeHealthcareEntities(dummyDocument, null, displayNameOptions))
+            .verifyErrorSatisfies(exception -> {
+                assertEquals(IllegalStateException.class, exception.getClass());
+                assertEquals(HEALTHCARE_ENTITIES_DISPLAY_NAME_ERROR_MESSAGE, exception.getMessage());
+            });
+
         // Sync
         IllegalStateException exception = assertThrows(IllegalStateException.class,
             () -> clientV30.beginAnalyzeHealthcareEntities(dummyDocument, null, null));
         assertEquals(ANALYZE_HEALTHCARE_ENTITIES_ERROR_MESSAGE, exception.getMessage());
+        IllegalStateException displayNameException = assertThrows(IllegalStateException.class,
+            () -> clientV31.beginAnalyzeHealthcareEntities(dummyDocument, null, displayNameOptions));
+        assertEquals(HEALTHCARE_ENTITIES_DISPLAY_NAME_ERROR_MESSAGE, displayNameException.getMessage());
     }
 
     @Test
@@ -377,19 +391,5 @@ public class ClientSideValidationUnitTests {
         IllegalStateException exception31 = assertThrows(IllegalStateException.class,
             () -> clientV31.beginMultiLabelClassify(dummyDocument, PROJECT_NAME,  DEPLOYMENT_NAME, null, null));
         assertEquals(MULTI_LABEL_CLASSIFY_ERROR_MESSAGE_31, exception31.getMessage());
-    }
-
-
-    @Test
-    public void test() {
-        for (int i = 0; i < 5; i++) {
-            try {
-                throwIfTargetServiceVersionFound(TextAnalyticsServiceVersion.V3_0,
-                    Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_0),
-                    "a message");
-            } catch (IllegalStateException ex) {
-                System.out.println("i = " + i);
-            }
-        }
     }
 }
