@@ -18,7 +18,7 @@ public final class DtmfConfigurationsInternal {
     private Integer interToneTimeoutInSeconds;
 
     /*
-     * Maximum number of DTMFs to be collected.
+     * Maximum number of DTMF tones to be collected.
      */
     @JsonProperty(value = "maxTonesToCollect")
     private Integer maxTonesToCollect;
@@ -50,7 +50,7 @@ public final class DtmfConfigurationsInternal {
     }
 
     /**
-     * Get the maxTonesToCollect property: Maximum number of DTMFs to be collected.
+     * Get the maxTonesToCollect property: Maximum number of DTMF tones to be collected.
      *
      * @return the maxTonesToCollect value.
      */
@@ -59,7 +59,7 @@ public final class DtmfConfigurationsInternal {
     }
 
     /**
-     * Set the maxTonesToCollect property: Maximum number of DTMFs to be collected.
+     * Set the maxTonesToCollect property: Maximum number of DTMF tones to be collected.
      *
      * @param maxTonesToCollect the maxTonesToCollect value to set.
      * @return the DtmfConfigurationsInternal object itself.

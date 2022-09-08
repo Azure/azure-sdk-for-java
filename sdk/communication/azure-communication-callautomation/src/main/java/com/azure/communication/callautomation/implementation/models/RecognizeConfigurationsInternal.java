@@ -23,7 +23,7 @@ public final class RecognizeConfigurationsInternal {
     private Integer initialSilenceTimeoutInSeconds;
 
     /*
-     * Target participant of DTFM tone recognition.
+     * Target participant of DTMF tone recognition.
      */
     @JsonProperty(value = "targetParticipant")
     private CommunicationIdentifierModel targetParticipant;
@@ -76,7 +76,7 @@ public final class RecognizeConfigurationsInternal {
     }
 
     /**
-     * Get the targetParticipant property: Target participant of DTFM tone recognition.
+     * Get the targetParticipant property: Target participant of DTMF tone recognition.
      *
      * @return the targetParticipant value.
      */
@@ -85,7 +85,7 @@ public final class RecognizeConfigurationsInternal {
     }
 
     /**
-     * Set the targetParticipant property: Target participant of DTFM tone recognition.
+     * Set the targetParticipant property: Target participant of DTMF tone recognition.
      *
      * @param targetParticipant the targetParticipant value to set.
      * @return the RecognizeConfigurationsInternal object itself.

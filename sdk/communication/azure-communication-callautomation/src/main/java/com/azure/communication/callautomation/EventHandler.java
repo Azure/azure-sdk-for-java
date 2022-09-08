@@ -13,6 +13,8 @@ import com.azure.communication.callautomation.models.events.CallTransferFailedEv
 import com.azure.communication.callautomation.models.events.ParticipantsUpdatedEvent;
 import com.azure.communication.callautomation.models.events.PlayCompleted;
 import com.azure.communication.callautomation.models.events.PlayFailed;
+import com.azure.communication.callautomation.models.events.RecognizeCompleted;
+import com.azure.communication.callautomation.models.events.RecognizeFailed;
 import com.azure.communication.callautomation.models.events.RecordingStateChangedEvent;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.util.logging.ClientLogger;
@@ -109,6 +111,10 @@ public final class EventHandler {
                 ret = mapper.convertValue(eventData, PlayCompleted.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.PlayFailed")) {
                 ret = mapper.convertValue(eventData, PlayFailed.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.RecognizeCompleted")) {
+                ret = mapper.convertValue(eventData, RecognizeCompleted.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.RecognizeFailed")) {
+                ret = mapper.convertValue(eventData, RecognizeFailed.class);
             }
 
             return ret;

@@ -3,12 +3,14 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.callautomation.models.events.RecognizeCompleted;
 import com.azure.communication.callautomation.models.RecordingState;
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
 import com.azure.communication.callautomation.models.events.CallConnectedEvent;
 import com.azure.communication.callautomation.models.events.ParticipantsUpdatedEvent;
 import com.azure.communication.callautomation.models.events.PlayCompleted;
 import com.azure.communication.callautomation.models.events.PlayFailed;
+import com.azure.communication.callautomation.models.events.RecognizeFailed;
 import com.azure.communication.callautomation.models.events.RecordingStateChangedEvent;
 import org.junit.jupiter.api.Test;
 
@@ -130,5 +132,65 @@ public class EventHandlerUnitTests {
         assertNotNull(playFailed);
         assertEquals("serverCallId", playFailed.getServerCallId());
         assertEquals(404, playFailed.getResultInfo().getCode());
+    }
+
+    @Test
+    public void parseRecognizeCompletedEvent() {
+        String receivedEvent = "[{\n"
+            + "\"id\": \"704a7a96-4d74-4ebe-9cd0-b7cc39c3d7b1\",\n"
+            + "\"source\": \"calling/callConnections/callConnectionId/RecognizeCompleted\",\n"
+            + "\"type\": \"Microsoft.Communication.RecognizeCompleted\",\n"
+            + "\"data\": {\n"
+            + "\"resultInfo\": {\n"
+            + "\"code\": 200,\n"
+            + "\"subCode\": 0,\n"
+            + "\"message\": \"Action completed successfully.\"\n"
+            + "},\n"
+            + "\"type\": \"recognizeCompleted\",\n"
+            + "\"callConnectionId\": \"callConnectionId\",\n"
+            + "\"serverCallId\": \"serverCallId\",\n"
+            + "\"correlationId\": \"correlationId\"\n"
+            + "},\n"
+            + "\"time\": \"2022-08-12T03:13:25.0252763+00:00\",\n"
+            + "\"specversion\": \"1.0\",\n"
+            + "\"datacontenttype\": \"application/json\",\n"
+            + "\"subject\": \"calling/callConnections/callConnectionId/RecognizeCompleted\"\n"
+            + "}]";
+        CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
+        assertNotNull(event);
+        RecognizeCompleted recognizeCompleted = (RecognizeCompleted) event;
+        assertNotNull(recognizeCompleted);
+        assertEquals("serverCallId", recognizeCompleted.getServerCallId());
+        assertEquals(200, recognizeCompleted.getResultInfo().getCode());
+    }
+
+    @Test
+    public void parseRecognizeFailedEvent() {
+        String receivedEvent = "[{\n"
+            + "\"id\": \"704a7a96-4d74-4ebe-9cd0-b7cc39c3d7b1\",\n"
+            + "\"source\": \"calling/callConnections/callConnectionId/RecognizeCompleted\",\n"
+            + "\"type\": \"Microsoft.Communication.RecognizeFailed\",\n"
+            + "\"data\": {\n"
+            + "\"resultInfo\": {\n"
+            + "\"code\": 404,\n"
+            + "\"subCode\": 0,\n"
+            + "\"message\": \"Action failed.\"\n"
+            + "},\n"
+            + "\"type\": \"recognizeFailed\",\n"
+            + "\"callConnectionId\": \"callConnectionId\",\n"
+            + "\"serverCallId\": \"serverCallId\",\n"
+            + "\"correlationId\": \"correlationId\"\n"
+            + "},\n"
+            + "\"time\": \"2022-08-12T03:13:25.0252763+00:00\",\n"
+            + "\"specversion\": \"1.0\",\n"
+            + "\"datacontenttype\": \"application/json\",\n"
+            + "\"subject\": \"calling/callConnections/callConnectionId/RecognizeCompleted\"\n"
+            + "}]";
+        CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
+        assertNotNull(event);
+        RecognizeFailed recognizeFailed = (RecognizeFailed) event;
+        assertNotNull(recognizeFailed);
+        assertEquals("serverCallId", recognizeFailed.getServerCallId());
+        assertEquals(404, recognizeFailed.getResultInfo().getCode());
     }
 }

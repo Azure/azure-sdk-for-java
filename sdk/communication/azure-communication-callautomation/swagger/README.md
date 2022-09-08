@@ -148,6 +148,8 @@ directive:
 - remove-model: PlayCompleted
 - remove-model: PlayFailed
 - remove-model: ResultInfo
+- remove-model: RecognizeCompleted
+- remove-model: RecognizeFailed
 ```
 
 ### Rename RecordingChannelType to RecordingChannelInternal
@@ -275,4 +277,13 @@ directive:
   where: $.definitions.MediaStreamingTransportType["x-ms-enum"]
   transform: >
     $.name = "MediaStreamingTransportTypeInternal";
+```
+
+### Rename RecognitionType to RecognitionTypeInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.RecognitionType["x-ms-enum"]
+  transform: >
+    $.name = "RecognitionTypeInternal";
 ```
