@@ -1,12 +1,13 @@
 # Azure identity JDBC PostgreSQL plugin library for Java
 
 This package contains the jdbc authentication plugin to authenticate with Azure AD for Azure hosted PostgreSQL services.
+[Source code][source] | [API reference documentation][docs] | [Product documentation][product_docs] | [Quick_start][quick_start_postgresql]
 
 ## Getting started
 
 ### Prerequisites
 
-- An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?WT.mc_id=A261C142F).
+- An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/).
 - [Java Development Kit (JDK)][jdk] with version 8 or above.
 - [Apache Maven](https://maven.apache.org/download.cgi).
 
@@ -96,7 +97,7 @@ This picture shows how the jdbc authentication plugin for PostgreSQl authenticat
 ![postgresql_design.png](img/postgresql_design.png)
 
 ## Examples
-For documentation on how to use this package, please refer to [Quickstart:Use Java and JDBC with Azure Database for PostgreSQL][quick_start]
+For documentation on how to use this package, please refer to [Quickstart:Use Java and JDBC with Azure Database for PostgreSQL][quick_start_postgresql]
 
 ## Troubleshooting
 If you encounter any bugs, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java/issues).
@@ -124,6 +125,6 @@ For details on contributing to this repository, see the [contributing guide](htt
 [source]: https://github.com/Azure/azure-sdk-for-java/blob/31c42eac4fa6e8a3bb00c2e01f80e9a8bacd1d78/sdk/jdbc/azure-identity-providers-jdbc-postgresql
 [docs]: https://azure.github.io/azure-sdk-for-java/
 [product_docs]: https://docs.microsoft.com/azure/postgresql/single-server/overview
-[quick_start]: https://aka.ms/passwordless/quickstart/postgresql
+[quick_start_postgresql]: https://aka.ms/passwordless/quickstart/postgresql
 [Use Azure Active Directory for authenticating with PostgreSQL]:https://docs.microsoft.com/azure/postgresql/single-server/concepts-azure-ad-authentication
-[whatismyip.akamai.com]: http://whatismyip.akamai.com/
+[whatismyip.akamai.com]: https://whatismyip.akamai.com/

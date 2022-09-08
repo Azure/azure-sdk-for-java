@@ -3,13 +3,13 @@
 This package contains the jdbc authentication plugin to authenticate with Azure AD for Azure hosted MySQL services.
 
 
-[Source code][source] | [API reference documentation][docs] | [Product documentation][product_docs] | [Quick_start][quick_start]
+[Source code][source] | [API reference documentation][docs] | [Product documentation][product_docs] | [Quick_start][quick_start_mysql]
 
 ## Getting started
 
 ### Prerequisites
 
-- An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?WT.mc_id=A261C142F).
+- An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/).
 - [Java Development Kit (JDK)][jdk] with version 8 or above.
 - [Apache Maven](https://maven.apache.org/download.cgi).
 
@@ -128,6 +128,6 @@ For details on contributing to this repository, see the [contributing guide](htt
 [source]: https://github.com/Azure/azure-sdk-for-java/blob/31c42eac4fa6e8a3bb00c2e01f80e9a8bacd1d78/sdk/jdbc/azure-identity-providers-jdbc-mysql
 [docs]: https://azure.github.io/azure-sdk-for-java/
 [product_docs]: https://docs.microsoft.com/azure/mysql/single-server/overview
-[quick_start]: https://aka.ms/passwordless/quickstart-mysql
+[quick_start_mysql]: https://aka.ms/passwordless/quickstart-mysql
 [Azure Active Directory for authenticating with MySQL]:https://docs.microsoft.com/azure/mysql/single-server/concepts-azure-ad-authentication
-[whatismyip.akamai.com]: http://whatismyip.akamai.com/
+[whatismyip.akamai.com]: https://whatismyip.akamai.com/
