@@ -135,7 +135,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         FormRecognizerAudience audience = getAudience(endpoint);
 
         FormRecognizerClientBuilder builder = new FormRecognizerClientBuilder()
-            .endpoint(getEndpoint())
+            .endpoint(endpoint)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)

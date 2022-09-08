@@ -129,13 +129,13 @@ public final class FormRecognizerClientBuilder implements
      * settings are ignored.
      * </p>
      *
-     * @return A FormRecognizerClient with the options set from the builder.
      * @throws NullPointerException if {@link #endpoint(String) endpoint} or {@link #credential(AzureKeyCredential)}
      * has not been set or If {@code audience} has not been set.
      * You can set it by calling {@link #audience(FormRecognizerAudience)}.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
      * and {@link #retryPolicy(RetryPolicy)} have been set.
+     * @return A FormRecognizerClient with the options set from the builder.
      */
     public FormRecognizerClient buildClient() {
         return new FormRecognizerClient(buildAsyncClient());
@@ -151,7 +151,6 @@ public final class FormRecognizerClientBuilder implements
      * settings are ignored.
      * </p>
      *
-     * @return A FormRecognizerAsyncClient with the options set from the builder.
      * @throws NullPointerException if {@link #endpoint(String) endpoint} or {@link #credential(AzureKeyCredential)}
      * has not been set or {@code audience} is null when using {@link #credential(TokenCredential)}.
      * You can set the values by calling {@link #endpoint(String)} and {@link #audience(FormRecognizerAudience)}
@@ -159,6 +158,7 @@ public final class FormRecognizerClientBuilder implements
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
      * and {@link #retryPolicy(RetryPolicy)} have been set.
+     * @return A FormRecognizerAsyncClient with the options set from the builder.
      */
     public FormRecognizerAsyncClient buildAsyncClient() {
         // Endpoint cannot be null, which is required in request authentication
@@ -205,9 +205,9 @@ public final class FormRecognizerClientBuilder implements
      *
      * @param endpoint The URL of the Azure Form Recognizer instance service requests to and receive responses from.
      *
-     * @return The updated FormRecognizerClientBuilder object.
      * @throws NullPointerException if {@code endpoint} is null
      * @throws IllegalArgumentException if {@code endpoint} cannot be parsed into a valid URL.
+     * @return The updated FormRecognizerClientBuilder object.
      */
     @Override
     public FormRecognizerClientBuilder endpoint(String endpoint) {
@@ -234,8 +234,8 @@ public final class FormRecognizerClientBuilder implements
      *
      * @param azureKeyCredential {@link AzureKeyCredential} API key credential
      *
-     * @return The updated FormRecognizerClientBuilder object.
      * @throws NullPointerException If {@code azureKeyCredential} is null.
+     * @return The updated FormRecognizerClientBuilder object.
      */
     @Override
     public FormRecognizerClientBuilder credential(AzureKeyCredential azureKeyCredential) {
