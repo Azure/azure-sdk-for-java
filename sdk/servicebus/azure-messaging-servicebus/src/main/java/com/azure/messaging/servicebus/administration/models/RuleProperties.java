@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
  */
 @Fluent
 public class RuleProperties {
-    private String name;
+    private final String name;
     private RuleFilter filter;
     private RuleAction action;
 
@@ -209,12 +209,6 @@ public class RuleProperties {
     }
 
     /**
-     * Initializes a new instance
-     */
-    public RuleProperties() {
-    }
-
-    /**
      * Initializes a new instance with the given rule {@code name}, {@code filter}, and {@code action}.
      *
      * @param name Name of the rule.
@@ -256,18 +250,6 @@ public class RuleProperties {
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * Sets the name of the rule.
-     *
-     * @param name The name of the rule.
-     *
-     * @return The updated {@link RuleProperties} object itself.
-     */
-    public RuleProperties setName(String name) {
-        this.name = Objects.requireNonNull(name, "'name' cannot be null.");
-        return this;
     }
 
     /**

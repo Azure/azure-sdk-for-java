@@ -45,11 +45,6 @@ public class ManagementConstants {
     public static final String LEGACY_STATUS_CODE = "status-code";
     public static final String RULES = "rules";
 
-    // Management status code.
-    public static final int OK_STATUS_CODE = 200;
-    public static final int NO_CONTENT_STATUS_CODE = 0xcc;
-    public static final int UNDEFINED_STATUS_CODE = -1;
-
     // Operation name key.
     static final String MANAGEMENT_OPERATION_KEY = "operation";
 

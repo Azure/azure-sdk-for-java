@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.util.IterableStream;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
 import com.azure.messaging.servicebus.administration.models.CorrelationRuleFilter;
 import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
@@ -13,7 +14,6 @@ import com.azure.messaging.servicebus.administration.models.SqlRuleAction;
 import com.azure.messaging.servicebus.administration.models.SqlRuleFilter;
 
 import java.time.Duration;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -105,9 +105,10 @@ public class ServiceBusRuleManagerClient implements AutoCloseable {
      * @return A list of rules associated with the topic and subscription.
      *
      * @throws IllegalStateException if client is disposed.
+     * @throws UnsupportedOperationException if client cannot support filter with descriptor in message body.
      */
-    public List<RuleProperties> getRules() {
-        return asyncClient.getRules().block(operationTimeout);
+    public Iterable<RuleProperties> getRules() {
+        return new IterableStream<>(asyncClient.getRules());
     }
 
     /**

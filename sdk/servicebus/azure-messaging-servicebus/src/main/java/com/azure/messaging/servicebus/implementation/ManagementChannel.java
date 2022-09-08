@@ -475,7 +475,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
         return isAuthorized(OPERATION_ADD_RULE).then(createChannel.flatMap(channel -> {
             final Message message = createManagementMessage(OPERATION_ADD_RULE, null);
 
-            final Map<String, Object> body = new HashMap<>();
+            final Map<String, Object> body = new HashMap<>(2);
             body.put(ManagementConstants.RULE_NAME, ruleName);
             body.put(ManagementConstants.RULE_DESCRIPTION, MessageUtils.encodeRuleOptionToMap(ruleName, ruleOptions));
 
@@ -493,7 +493,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
         return isAuthorized(OPERATION_REMOVE_RULE).then(createChannel.flatMap(channel -> {
             final Message message = createManagementMessage(OPERATION_REMOVE_RULE, null);
 
-            final Map<String, Object> body = new HashMap<>();
+            final Map<String, Object> body = new HashMap<>(1);
             body.put(ManagementConstants.RULE_NAME, ruleName);
 
             message.setBody(new AmqpValue(body));
@@ -506,24 +506,24 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
-    public Mono<List<RuleProperties>> getRules() {
+    public Flux<RuleProperties> getRules() {
         return isAuthorized(OPERATION_GET_RULES).then(createChannel.flatMap(channel -> {
             final Message message = createManagementMessage(OPERATION_GET_RULES, null);
 
-            final Map<String, Object> body = new HashMap<>();
+            final Map<String, Object> body = new HashMap<>(2);
             body.put(ManagementConstants.SKIP, 0);
             body.put(ManagementConstants.TOP, Integer.MAX_VALUE);
 
             message.setBody(new AmqpValue(body));
 
             return sendWithVerify(channel, message, null);
-        })).map(response -> {
-            int statusCode = MessageUtils.getMessageStatus(response.getApplicationProperties());
+        })).flatMapMany(response -> {
+            AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(response);
 
             List<RuleProperties> list;
-            if (statusCode == ManagementConstants.OK_STATUS_CODE) {
+            if (statusCode == AmqpResponseCode.OK) {
                 list = getRuleProperties((AmqpValue) response.getBody());
-            } else if (statusCode == ManagementConstants.NO_CONTENT_STATUS_CODE) {
+            } else if (statusCode == AmqpResponseCode.NO_CONTENT) {
                 list = Collections.emptyList();
             } else {
                 throw logger.logExceptionAsError(Exceptions.propagate(new AmqpException(true,
@@ -531,7 +531,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
                     getErrorContext())));
             }
 
-            return list;
+            return Flux.fromIterable(list);
         });
     }
 
@@ -647,31 +647,25 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * @param messageBody A message body which is {@link AmqpValue} type.
      * @return A collection of {@link RuleProperties}.
      *
-     * @throws AmqpException Get @{@link RuleProperties} from message body failed.
+     * @throws UnsupportedOperationException if client cannot support filter with descriptor in message body.
      */
     private List<RuleProperties> getRuleProperties(AmqpValue messageBody) {
-        try {
-            if (messageBody == null) {
-                return Collections.emptyList();
-            }
-
-            @SuppressWarnings("unchecked") List<Map<String, DescribedType>> rules = ((Map<String, List<Map<String, DescribedType>>>) messageBody.getValue())
-                .get(ManagementConstants.RULES);
-            if (rules == null) {
-                return Collections.emptyList();
-            }
-
-            List<RuleProperties> ruleProperties = new ArrayList<>();
-            for (Map<String, DescribedType> rule : rules) {
-                DescribedType ruleDescription = rule.get(ManagementConstants.RULE_DESCRIPTION);
-                ruleProperties.add(MessageUtils.decodeRuleDescribedType(ruleDescription));
-            }
-
-            return ruleProperties;
-        } catch (RuntimeException ex) {
-            throw logger.logExceptionAsError(Exceptions.propagate(new AmqpException(true,
-                String.format("Get rules failed. %s", ex.getMessage()),
-                getErrorContext())));
+        if (messageBody == null) {
+            return Collections.emptyList();
         }
+
+        @SuppressWarnings("unchecked") List<Map<String, DescribedType>> rules = ((Map<String, List<Map<String, DescribedType>>>) messageBody.getValue())
+            .get(ManagementConstants.RULES);
+        if (rules == null) {
+            return Collections.emptyList();
+        }
+
+        List<RuleProperties> ruleProperties = new ArrayList<>();
+        for (Map<String, DescribedType> rule : rules) {
+            DescribedType ruleDescription = rule.get(ManagementConstants.RULE_DESCRIPTION);
+            ruleProperties.add(MessageUtils.decodeRuleDescribedType(ruleDescription));
+        }
+
+        return ruleProperties;
     }
 }

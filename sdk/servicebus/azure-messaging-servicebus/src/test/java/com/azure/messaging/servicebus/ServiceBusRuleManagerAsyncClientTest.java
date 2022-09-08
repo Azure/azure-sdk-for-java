@@ -36,7 +36,6 @@ import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
-import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -73,7 +72,10 @@ public class ServiceBusRuleManagerAsyncClientTest {
     private Runnable onClientClose;
 
     @Mock
-    private List<RuleProperties> rules;
+    private RuleProperties ruleProperties1;
+
+    @Mock
+    private RuleProperties ruleProperties2;
 
     @BeforeAll
     static void beforeAll() {
@@ -148,10 +150,10 @@ public class ServiceBusRuleManagerAsyncClientTest {
     @Test
     void getRules() {
         // Arrange
-        when(managementNode.getRules()).thenReturn(Mono.just(rules));
+        when(managementNode.getRules()).thenReturn(Flux.fromArray(new RuleProperties[]{ruleProperties1, ruleProperties2}));
 
         // Act & Assert
-        StepVerifier.create(ruleManager.getRules()).expectNext(rules).verifyComplete();
+        StepVerifier.create(ruleManager.getRules()).expectNext(ruleProperties1, ruleProperties2).verifyComplete();
     }
 
     @Test

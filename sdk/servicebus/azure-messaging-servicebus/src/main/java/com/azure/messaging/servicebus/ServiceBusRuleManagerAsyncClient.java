@@ -15,12 +15,13 @@ import com.azure.messaging.servicebus.administration.models.SqlRuleFilter;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPERATION_DISPOSED_RULE_MANAGER;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -60,11 +61,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * <p><strong>Fetch all rules.</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebusrulemanagerasyncclient.getRules -->
  * <pre>
- * ruleManager.getRules&#40;&#41;.subscribe&#40;
- *     ruleProperties -&gt; ruleProperties.forEach&#40;rule -&gt; System.out.println&#40;rule.getName&#40;&#41;&#41;&#41;,
- *     err -&gt; System.err.println&#40;&quot;Error occurred when get rules, err: &quot; + err&#41;,
- *     &#40;&#41; -&gt; System.out.println&#40;&quot;Get complete.&quot;&#41;
- * &#41;;
+ * ruleManager.getRules&#40;&#41;.subscribe&#40;ruleProperties -&gt; System.out.println&#40;ruleProperties.getName&#40;&#41;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusrulemanagerasyncclient.getRules -->
  *
@@ -101,7 +98,7 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
     ServiceBusRuleManagerAsyncClient(String entityPath, MessagingEntityType entityType,
         ServiceBusConnectionProcessor connectionProcessor, Runnable onClientClose) {
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
-        this.entityType = entityType;
+        this.entityType = Objects.requireNonNull(entityType, "'entityType' cannot be null.");
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
             "'connectionProcessor' cannot be null.");
         this.onClientClose = onClientClose;
@@ -170,17 +167,18 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
      * @return A list of rules associated with the topic and subscription.
      *
      * @throws IllegalStateException if client is disposed.
+     * @throws UnsupportedOperationException if client cannot support filter with descriptor in message body.
      */
-    public Mono<List<RuleProperties>> getRules() {
+    public Flux<RuleProperties> getRules() {
         if (isDisposed.get()) {
-            return monoError(LOGGER, new IllegalStateException(
+            return fluxError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RULE_MANAGER, "getRules")
             ));
         }
 
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(ServiceBusManagementNode::getRules);
+            .flatMapMany(ServiceBusManagementNode::getRules);
     }
 
     /**
@@ -197,7 +195,7 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
     public Mono<Void> deleteRule(String ruleName) {
         if (isDisposed.get()) {
             return monoError(LOGGER, new IllegalStateException(
-                String.format(INVALID_OPERATION_DISPOSED_RULE_MANAGER, "getRules")
+                String.format(INVALID_OPERATION_DISPOSED_RULE_MANAGER, "deleteRule")
             ));
         }
 
@@ -228,7 +226,7 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
     private Mono<Void> createRuleInternal(String ruleName, CreateRuleOptions options) {
         if (isDisposed.get()) {
             return monoError(LOGGER, new IllegalStateException(
-                String.format(INVALID_OPERATION_DISPOSED_RULE_MANAGER, "addRule")
+                String.format(INVALID_OPERATION_DISPOSED_RULE_MANAGER, "createRule")
             ));
         }
 

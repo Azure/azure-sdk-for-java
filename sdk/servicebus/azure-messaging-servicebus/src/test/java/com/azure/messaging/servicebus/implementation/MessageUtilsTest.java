@@ -127,17 +127,6 @@ class MessageUtilsTest {
     }
 
     @ParameterizedTest
-    @MethodSource("checkMessageStatus")
-    void verifyMessageStatus(byte[] messageByte, long expectedStatus) {
-        // Arrange
-        final Message message = Proton.message();
-        message.decode(messageByte, 0, messageByte.length);
-
-        // Act & Assert
-        assertEquals(MessageUtils.getMessageStatus(message.getApplicationProperties()), expectedStatus);
-    }
-
-    @ParameterizedTest
     @MethodSource("checkMessageRules")
     @SuppressWarnings("unchecked")
     void verifyMessageCount(byte[] messageByte, long messageCount) {
@@ -219,15 +208,6 @@ class MessageUtilsTest {
         Arguments zeroRetry = Arguments.of(new AmqpRetryOptions().setMaxRetries(0),
             60 * 1000);
         return Stream.of(defaultValue, reachMaxDelay, fixedDelay, zeroRetry);
-    }
-
-
-    static Stream<Arguments> checkMessageStatus() {
-        return Stream.of(
-            Arguments.of(DEFAULT_RULE_MESSAGE, ManagementConstants.OK_STATUS_CODE),
-            Arguments.of(NO_RULE_MESSAGE, ManagementConstants.NO_CONTENT_STATUS_CODE),
-            Arguments.of(THREE_RULE_MESSAGE, ManagementConstants.OK_STATUS_CODE)
-        );
     }
 
     static Stream<Arguments> checkMessageRules() {
