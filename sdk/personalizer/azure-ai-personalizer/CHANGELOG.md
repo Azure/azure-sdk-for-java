@@ -1,4 +1,7 @@
-## 1.0.0-beta.1 (2022-09-07)
+## 1.0.0-beta.1 (2022-09-08)
+
+- Initial beta release for Personalizer client library.
+
 Version 1.0.0-beta.1 is a preview of our efforts in creating a client library for Azure Personalizer service that is developer-friendly
 and idiomatic to the Java ecosystem. The principles that guide
 our efforts can be found in the [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java_introduction.html).
