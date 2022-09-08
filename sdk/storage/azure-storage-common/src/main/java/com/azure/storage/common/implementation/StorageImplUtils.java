@@ -9,7 +9,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.Mac;
@@ -178,20 +177,6 @@ public class StorageImplUtils {
      * @return Mono with an applied timeout, if any.
      */
     public static <T> Mono<T> applyOptionalTimeout(Mono<T> publisher, Duration timeout) {
-        return timeout == null
-            ? publisher
-            : publisher.timeout(timeout);
-    }
-
-    /**
-     * Applies a timeout to a publisher if the given timeout is not null.
-     *
-     * @param publisher Flux to apply optional timeout to.
-     * @param timeout Optional timeout.
-     * @param <T> Return type of the Flux.
-     * @return Flux with an applied timeout, if any.
-     */
-    public static <T> Flux<T> applyOptionalTimeout(Flux<T> publisher, Duration timeout) {
         return timeout == null
             ? publisher
             : publisher.timeout(timeout);
