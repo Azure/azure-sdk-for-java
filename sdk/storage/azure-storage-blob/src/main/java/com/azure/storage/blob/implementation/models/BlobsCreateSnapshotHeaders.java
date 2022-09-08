@@ -79,17 +79,20 @@ public final class BlobsCreateSnapshotHeaders {
         this.xMsSnapshot = rawHeaders.getValue("x-ms-snapshot");
         this.xMsVersion = rawHeaders.getValue("x-ms-version");
         this.eTag = rawHeaders.getValue("ETag");
-        if (rawHeaders.getValue("Last-Modified") != null) {
-            this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+        String lastModified = rawHeaders.getValue("Last-Modified");
+        if (lastModified != null) {
+            this.lastModified = new DateTimeRfc1123(lastModified);
         }
         this.xMsVersionId = rawHeaders.getValue("x-ms-version-id");
         this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
-        if (rawHeaders.getValue("x-ms-request-server-encrypted") != null) {
-            this.xMsRequestServerEncrypted = Boolean.parseBoolean(rawHeaders.getValue("x-ms-request-server-encrypted"));
+        String xMsRequestServerEncrypted = rawHeaders.getValue("x-ms-request-server-encrypted");
+        if (xMsRequestServerEncrypted != null) {
+            this.xMsRequestServerEncrypted = Boolean.parseBoolean(xMsRequestServerEncrypted);
         }
         this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
-        if (rawHeaders.getValue("Date") != null) {
-            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+        String dateProperty = rawHeaders.getValue("Date");
+        if (dateProperty != null) {
+            this.dateProperty = new DateTimeRfc1123(dateProperty);
         }
     }
 

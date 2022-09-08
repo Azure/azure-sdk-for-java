@@ -54,12 +54,14 @@ public final class BlobsSetLegalHoldHeaders {
     public BlobsSetLegalHoldHeaders(HttpHeaders rawHeaders) {
         this.xMsVersion = rawHeaders.getValue("x-ms-version");
         this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
-        if (rawHeaders.getValue("x-ms-legal-hold") != null) {
-            this.xMsLegalHold = Boolean.parseBoolean(rawHeaders.getValue("x-ms-legal-hold"));
+        String xMsLegalHold = rawHeaders.getValue("x-ms-legal-hold");
+        if (xMsLegalHold != null) {
+            this.xMsLegalHold = Boolean.parseBoolean(xMsLegalHold);
         }
         this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
-        if (rawHeaders.getValue("Date") != null) {
-            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+        String dateProperty = rawHeaders.getValue("Date");
+        if (dateProperty != null) {
+            this.dateProperty = new DateTimeRfc1123(dateProperty);
         }
     }
 

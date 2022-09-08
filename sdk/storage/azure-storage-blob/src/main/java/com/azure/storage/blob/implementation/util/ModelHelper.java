@@ -415,7 +415,7 @@ public final class ModelHelper {
     }
 
     public static BlobsDownloadHeaders transformBlobDownloadHeaders(HttpHeaders headers) {
-        return transformHeadersToClass(headers, BlobsDownloadHeaders.class);
+        return new BlobsDownloadHeaders(headers);
     }
 
     public static BlobQueryHeaders transformQueryHeaders(HttpHeaders headers) {

@@ -95,8 +95,7 @@ public final class AzureBlobStorageImplBuilder
     }
 
     /*
-     * The client options such as application ID and custom headers to set on a
-     * request.
+     * The client options such as application ID and custom headers to set on a request.
      */
     @Generated private ClientOptions clientOptions;
 
@@ -130,8 +129,7 @@ public final class AzureBlobStorageImplBuilder
     }
 
     /*
-     * The configuration store that is used during construction of the service
-     * client.
+     * The configuration store that is used during construction of the service client.
      */
     @Generated private Configuration configuration;
 
@@ -144,8 +142,7 @@ public final class AzureBlobStorageImplBuilder
     }
 
     /*
-     * The URL of the service account, container, or blob that is the target of
-     * the desired operation.
+     * The URL of the service account, container, or blob that is the target of the desired operation.
      */
     @Generated private String url;
 
@@ -196,8 +193,7 @@ public final class AzureBlobStorageImplBuilder
     }
 
     /*
-     * The retry policy that will attempt to retry failed requests, if
-     * applicable.
+     * The retry policy that will attempt to retry failed requests, if applicable.
      */
     @Generated private RetryPolicy retryPolicy;
 
@@ -220,16 +216,12 @@ public final class AzureBlobStorageImplBuilder
      */
     @Generated
     public AzureBlobStorageImpl buildClient() {
-        if (pipeline == null) {
-            this.pipeline = createHttpPipeline();
-        }
-        if (version == null) {
-            this.version = "2021-04-10";
-        }
-        if (serializerAdapter == null) {
-            this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        }
-        AzureBlobStorageImpl client = new AzureBlobStorageImpl(pipeline, serializerAdapter, url, version);
+        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
+        String localVersion = (version != null) ? version : "2021-04-10";
+        SerializerAdapter localSerializerAdapter =
+                (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
+        AzureBlobStorageImpl client =
+                new AzureBlobStorageImpl(localPipeline, localSerializerAdapter, url, localVersion);
         return client;
     }
 

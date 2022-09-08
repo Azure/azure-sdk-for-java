@@ -19,8 +19,7 @@ public final class QueryRequest {
     private String queryType;
 
     /*
-     * The query expression in SQL. The maximum size of the query expression is
-     * 256KiB.
+     * The query expression in SQL. The maximum size of the query expression is 256KiB.
      */
     @JsonProperty(value = "Expression", required = true)
     private String expression;

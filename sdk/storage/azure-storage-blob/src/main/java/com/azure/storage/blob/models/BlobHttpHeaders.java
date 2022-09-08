@@ -14,37 +14,36 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 public final class BlobHttpHeaders {
 
     /*
-     * Optional. Sets the blob's cache control. If specified, this property is
-     * stored with the blob and returned with a read request.
+     * Optional. Sets the blob's cache control. If specified, this property is stored with the blob and returned with a
+     * read request.
      */
     @JsonProperty(value = "cacheControl")
     private String cacheControl;
 
     /*
-     * Optional. Sets the blob's content type. If specified, this property is
-     * stored with the blob and returned with a read request.
+     * Optional. Sets the blob's content type. If specified, this property is stored with the blob and returned with a
+     * read request.
      */
     @JsonProperty(value = "contentType")
     private String contentType;
 
     /*
-     * Optional. An MD5 hash of the blob content. Note that this hash is not
-     * validated, as the hashes for the individual blocks were validated when
-     * each was uploaded.
+     * Optional. An MD5 hash of the blob content. Note that this hash is not validated, as the hashes for the
+     * individual blocks were validated when each was uploaded.
      */
     @JsonProperty(value = "contentMd5")
     private byte[] contentMd5;
 
     /*
-     * Optional. Sets the blob's content encoding. If specified, this property
-     * is stored with the blob and returned with a read request.
+     * Optional. Sets the blob's content encoding. If specified, this property is stored with the blob and returned
+     * with a read request.
      */
     @JsonProperty(value = "contentEncoding")
     private String contentEncoding;
 
     /*
-     * Optional. Set the blob's content language. If specified, this property
-     * is stored with the blob and returned with a read request.
+     * Optional. Set the blob's content language. If specified, this property is stored with the blob and returned with
+     * a read request.
      */
     @JsonProperty(value = "contentLanguage")
     private String contentLanguage;

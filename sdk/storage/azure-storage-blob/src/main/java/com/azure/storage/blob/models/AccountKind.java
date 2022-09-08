@@ -39,6 +39,9 @@ public enum AccountKind {
      */
     @JsonCreator
     public static AccountKind fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AccountKind[] items = AccountKind.values();
         for (AccountKind item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -48,6 +51,7 @@ public enum AccountKind {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

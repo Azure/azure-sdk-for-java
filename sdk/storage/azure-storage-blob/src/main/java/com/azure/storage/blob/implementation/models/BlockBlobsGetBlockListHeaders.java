@@ -71,17 +71,20 @@ public final class BlockBlobsGetBlockListHeaders {
      */
     public BlockBlobsGetBlockListHeaders(HttpHeaders rawHeaders) {
         this.xMsVersion = rawHeaders.getValue("x-ms-version");
-        if (rawHeaders.getValue("x-ms-blob-content-length") != null) {
-            this.xMsBlobContentLength = Long.parseLong(rawHeaders.getValue("x-ms-blob-content-length"));
+        String xMsBlobContentLength = rawHeaders.getValue("x-ms-blob-content-length");
+        if (xMsBlobContentLength != null) {
+            this.xMsBlobContentLength = Long.parseLong(xMsBlobContentLength);
         }
         this.eTag = rawHeaders.getValue("ETag");
-        if (rawHeaders.getValue("Last-Modified") != null) {
-            this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+        String lastModified = rawHeaders.getValue("Last-Modified");
+        if (lastModified != null) {
+            this.lastModified = new DateTimeRfc1123(lastModified);
         }
         this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
         this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
-        if (rawHeaders.getValue("Date") != null) {
-            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+        String dateProperty = rawHeaders.getValue("Date");
+        if (dateProperty != null) {
+            this.dateProperty = new DateTimeRfc1123(dateProperty);
         }
         this.contentType = rawHeaders.getValue("Content-Type");
     }

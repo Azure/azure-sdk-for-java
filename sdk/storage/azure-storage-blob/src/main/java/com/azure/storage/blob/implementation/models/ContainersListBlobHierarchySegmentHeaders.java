@@ -55,8 +55,9 @@ public final class ContainersListBlobHierarchySegmentHeaders {
         this.xMsVersion = rawHeaders.getValue("x-ms-version");
         this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
         this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
-        if (rawHeaders.getValue("Date") != null) {
-            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+        String dateProperty = rawHeaders.getValue("Date");
+        if (dateProperty != null) {
+            this.dateProperty = new DateTimeRfc1123(dateProperty);
         }
         this.contentType = rawHeaders.getValue("Content-Type");
     }

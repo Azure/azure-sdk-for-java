@@ -61,16 +61,19 @@ public final class BlobsGetAccountInfoHeaders {
      */
     public BlobsGetAccountInfoHeaders(HttpHeaders rawHeaders) {
         this.xMsVersion = rawHeaders.getValue("x-ms-version");
-        if (rawHeaders.getValue("x-ms-account-kind") != null) {
-            this.xMsAccountKind = AccountKind.fromString(rawHeaders.getValue("x-ms-account-kind"));
+        String xMsAccountKind = rawHeaders.getValue("x-ms-account-kind");
+        if (xMsAccountKind != null) {
+            this.xMsAccountKind = AccountKind.fromString(xMsAccountKind);
         }
-        if (rawHeaders.getValue("x-ms-sku-name") != null) {
-            this.xMsSkuName = SkuName.fromString(rawHeaders.getValue("x-ms-sku-name"));
+        String xMsSkuName = rawHeaders.getValue("x-ms-sku-name");
+        if (xMsSkuName != null) {
+            this.xMsSkuName = SkuName.fromString(xMsSkuName);
         }
         this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
         this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
-        if (rawHeaders.getValue("Date") != null) {
-            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+        String dateProperty = rawHeaders.getValue("Date");
+        if (dateProperty != null) {
+            this.dateProperty = new DateTimeRfc1123(dateProperty);
         }
     }
 

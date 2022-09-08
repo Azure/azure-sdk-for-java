@@ -126,52 +126,63 @@ public final class ContainersGetPropertiesHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ContainersGetPropertiesHeaders(HttpHeaders rawHeaders) {
-        if (rawHeaders.getValue("x-ms-lease-status") != null) {
-            this.xMsLeaseStatus = LeaseStatusType.fromString(rawHeaders.getValue("x-ms-lease-status"));
+        String xMsLeaseStatus = rawHeaders.getValue("x-ms-lease-status");
+        if (xMsLeaseStatus != null) {
+            this.xMsLeaseStatus = LeaseStatusType.fromString(xMsLeaseStatus);
         }
         this.xMsVersion = rawHeaders.getValue("x-ms-version");
-        if (rawHeaders.getValue("x-ms-immutable-storage-with-versioning-enabled") != null) {
+        String xMsImmutableStorageWithVersioningEnabled =
+                rawHeaders.getValue("x-ms-immutable-storage-with-versioning-enabled");
+        if (xMsImmutableStorageWithVersioningEnabled != null) {
             this.xMsImmutableStorageWithVersioningEnabled =
-                    Boolean.parseBoolean(rawHeaders.getValue("x-ms-immutable-storage-with-versioning-enabled"));
+                    Boolean.parseBoolean(xMsImmutableStorageWithVersioningEnabled);
         }
-        if (rawHeaders.getValue("x-ms-lease-state") != null) {
-            this.xMsLeaseState = LeaseStateType.fromString(rawHeaders.getValue("x-ms-lease-state"));
+        String xMsLeaseState = rawHeaders.getValue("x-ms-lease-state");
+        if (xMsLeaseState != null) {
+            this.xMsLeaseState = LeaseStateType.fromString(xMsLeaseState);
         }
-        if (rawHeaders.getValue("x-ms-deny-encryption-scope-override") != null) {
-            this.xMsDenyEncryptionScopeOverride =
-                    Boolean.parseBoolean(rawHeaders.getValue("x-ms-deny-encryption-scope-override"));
+        String xMsDenyEncryptionScopeOverride = rawHeaders.getValue("x-ms-deny-encryption-scope-override");
+        if (xMsDenyEncryptionScopeOverride != null) {
+            this.xMsDenyEncryptionScopeOverride = Boolean.parseBoolean(xMsDenyEncryptionScopeOverride);
         }
-        if (rawHeaders.getValue("Last-Modified") != null) {
-            this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+        String lastModified = rawHeaders.getValue("Last-Modified");
+        if (lastModified != null) {
+            this.lastModified = new DateTimeRfc1123(lastModified);
         }
-        Map<String, String> xMsMetaHeaderCollection = new HashMap<>();
-
-        for (HttpHeader header : rawHeaders) {
-            if (!header.getName().startsWith("x-ms-meta-")) {
-                continue;
-            }
-            xMsMetaHeaderCollection.put(header.getName().substring(10), header.getValue());
+        String dateProperty = rawHeaders.getValue("Date");
+        if (dateProperty != null) {
+            this.dateProperty = new DateTimeRfc1123(dateProperty);
         }
-        this.xMsMeta = xMsMetaHeaderCollection;
-        if (rawHeaders.getValue("Date") != null) {
-            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
-        }
-        if (rawHeaders.getValue("x-ms-has-legal-hold") != null) {
-            this.xMsHasLegalHold = Boolean.parseBoolean(rawHeaders.getValue("x-ms-has-legal-hold"));
+        String xMsHasLegalHold = rawHeaders.getValue("x-ms-has-legal-hold");
+        if (xMsHasLegalHold != null) {
+            this.xMsHasLegalHold = Boolean.parseBoolean(xMsHasLegalHold);
         }
         this.xMsDefaultEncryptionScope = rawHeaders.getValue("x-ms-default-encryption-scope");
         this.eTag = rawHeaders.getValue("ETag");
-        if (rawHeaders.getValue("x-ms-has-immutability-policy") != null) {
-            this.xMsHasImmutabilityPolicy = Boolean.parseBoolean(rawHeaders.getValue("x-ms-has-immutability-policy"));
+        String xMsHasImmutabilityPolicy = rawHeaders.getValue("x-ms-has-immutability-policy");
+        if (xMsHasImmutabilityPolicy != null) {
+            this.xMsHasImmutabilityPolicy = Boolean.parseBoolean(xMsHasImmutabilityPolicy);
         }
-        if (rawHeaders.getValue("x-ms-lease-duration") != null) {
-            this.xMsLeaseDuration = LeaseDurationType.fromString(rawHeaders.getValue("x-ms-lease-duration"));
+        String xMsLeaseDuration = rawHeaders.getValue("x-ms-lease-duration");
+        if (xMsLeaseDuration != null) {
+            this.xMsLeaseDuration = LeaseDurationType.fromString(xMsLeaseDuration);
         }
-        if (rawHeaders.getValue("x-ms-blob-public-access") != null) {
-            this.xMsBlobPublicAccess = PublicAccessType.fromString(rawHeaders.getValue("x-ms-blob-public-access"));
+        String xMsBlobPublicAccess = rawHeaders.getValue("x-ms-blob-public-access");
+        if (xMsBlobPublicAccess != null) {
+            this.xMsBlobPublicAccess = PublicAccessType.fromString(xMsBlobPublicAccess);
         }
         this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
         this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
+        Map<String, String> xMsMetaHeaderCollection = new HashMap<>();
+
+        for (HttpHeader header : rawHeaders) {
+            String headerName = header.getName();
+            if (headerName.startsWith("x-ms-meta-")) {
+                xMsMetaHeaderCollection.put(headerName.substring(10), header.getValue());
+            }
+        }
+
+        this.xMsMeta = xMsMetaHeaderCollection;
     }
 
     /**

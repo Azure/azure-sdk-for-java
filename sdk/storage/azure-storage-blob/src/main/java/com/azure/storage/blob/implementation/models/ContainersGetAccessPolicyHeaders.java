@@ -67,16 +67,19 @@ public final class ContainersGetAccessPolicyHeaders {
     public ContainersGetAccessPolicyHeaders(HttpHeaders rawHeaders) {
         this.xMsVersion = rawHeaders.getValue("x-ms-version");
         this.eTag = rawHeaders.getValue("ETag");
-        if (rawHeaders.getValue("Last-Modified") != null) {
-            this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+        String lastModified = rawHeaders.getValue("Last-Modified");
+        if (lastModified != null) {
+            this.lastModified = new DateTimeRfc1123(lastModified);
         }
-        if (rawHeaders.getValue("x-ms-blob-public-access") != null) {
-            this.xMsBlobPublicAccess = PublicAccessType.fromString(rawHeaders.getValue("x-ms-blob-public-access"));
+        String xMsBlobPublicAccess = rawHeaders.getValue("x-ms-blob-public-access");
+        if (xMsBlobPublicAccess != null) {
+            this.xMsBlobPublicAccess = PublicAccessType.fromString(xMsBlobPublicAccess);
         }
         this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
         this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
-        if (rawHeaders.getValue("Date") != null) {
-            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+        String dateProperty = rawHeaders.getValue("Date");
+        if (dateProperty != null) {
+            this.dateProperty = new DateTimeRfc1123(dateProperty);
         }
     }
 

@@ -33,6 +33,9 @@ public enum ListBlobContainersIncludeType {
      */
     @JsonCreator
     public static ListBlobContainersIncludeType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ListBlobContainersIncludeType[] items = ListBlobContainersIncludeType.values();
         for (ListBlobContainersIncludeType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum ListBlobContainersIncludeType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

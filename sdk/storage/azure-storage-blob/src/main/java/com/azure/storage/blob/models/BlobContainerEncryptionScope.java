@@ -13,16 +13,15 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 public final class BlobContainerEncryptionScope {
 
     /*
-     * Optional.  Version 2019-07-07 and later.  Specifies the default
-     * encryption scope to set on the container and use for all future writes.
+     * Optional.  Version 2019-07-07 and later.  Specifies the default encryption scope to set on the container and use
+     * for all future writes.
      */
     @JsonProperty(value = "DefaultEncryptionScope")
     private String defaultEncryptionScope;
 
     /*
-     * Optional.  Version 2019-07-07 and newer.  If true, prevents any request
-     * from specifying a different encryption scope than the scope set on the
-     * container.
+     * Optional.  Version 2019-07-07 and newer.  If true, prevents any request from specifying a different encryption
+     * scope than the scope set on the container.
      */
     @JsonProperty(value = "EncryptionScopeOverridePrevented")
     private Boolean encryptionScopeOverridePrevented;

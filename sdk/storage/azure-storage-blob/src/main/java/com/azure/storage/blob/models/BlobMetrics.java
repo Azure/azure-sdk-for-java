@@ -25,15 +25,13 @@ public final class BlobMetrics {
     private boolean enabled;
 
     /*
-     * Indicates whether metrics should generate summary statistics for called
-     * API operations.
+     * Indicates whether metrics should generate summary statistics for called API operations.
      */
     @JsonProperty(value = "IncludeAPIs")
     private Boolean includeApis;
 
     /*
-     * the retention policy which determines how long the associated data
-     * should persist
+     * the retention policy which determines how long the associated data should persist
      */
     @JsonProperty(value = "RetentionPolicy")
     private BlobRetentionPolicy retentionPolicy;

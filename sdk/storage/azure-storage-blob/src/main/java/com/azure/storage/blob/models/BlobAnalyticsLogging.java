@@ -37,8 +37,7 @@ public final class BlobAnalyticsLogging {
     private boolean write;
 
     /*
-     * the retention policy which determines how long the associated data
-     * should persist
+     * the retention policy which determines how long the associated data should persist
      */
     @JsonProperty(value = "RetentionPolicy", required = true)
     private BlobRetentionPolicy retentionPolicy;

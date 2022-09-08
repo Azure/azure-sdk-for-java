@@ -235,8 +235,8 @@ public final class BlobItemPropertiesInternal {
     private Boolean isSealed;
 
     /*
-     * If an object is in rehydrate pending state then this header is returned
-     * with priority of rehydrate. Valid values are High and Standard.
+     * If an object is in rehydrate pending state then this header is returned with priority of rehydrate. Valid values
+     * are High and Standard.
      */
     @JsonProperty(value = "RehydratePriority")
     private RehydratePriority rehydratePriority;
