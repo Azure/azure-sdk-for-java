@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Deployments Delete. */
 public final class DeploymentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Deployments_Delete.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-09-01-preview/examples/Deployments_Delete.json
      */
     /**
      * Sample code: Deployments_Delete.

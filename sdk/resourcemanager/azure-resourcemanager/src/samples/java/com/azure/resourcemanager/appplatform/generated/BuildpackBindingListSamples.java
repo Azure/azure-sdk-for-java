@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BuildpackBinding List. */
 public final class BuildpackBindingListSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/BuildpackBinding_List.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-09-01-preview/examples/BuildpackBinding_List.json
      */
     /**
      * Sample code: BuildpackBinding_Get.

@@ -15,7 +15,7 @@ import java.util.Map;
 /** Samples for BuildpackBinding CreateOrUpdate. */
 public final class BuildpackBindingCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/BuildpackBinding_CreateOrUpdate.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-09-01-preview/examples/BuildpackBinding_CreateOrUpdate.json
      */
     /**
      * Sample code: BuildpackBinding_CreateOrUpdate.

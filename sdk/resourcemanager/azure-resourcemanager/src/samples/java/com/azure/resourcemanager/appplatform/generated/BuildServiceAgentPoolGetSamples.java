@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BuildServiceAgentPool Get. */
 public final class BuildServiceAgentPoolGetSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/BuildServiceAgentPool_Get.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-09-01-preview/examples/BuildServiceAgentPool_Get.json
      */
     /**
      * Sample code: BuildServiceAgentPool_Get.

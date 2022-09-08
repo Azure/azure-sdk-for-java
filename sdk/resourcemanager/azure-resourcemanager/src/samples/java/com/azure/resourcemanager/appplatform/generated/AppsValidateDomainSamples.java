@@ -10,7 +10,7 @@ import com.azure.resourcemanager.appplatform.models.CustomDomainValidatePayload;
 /** Samples for Apps ValidateDomain. */
 public final class AppsValidateDomainSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Apps_ValidateDomain.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-09-01-preview/examples/Apps_ValidateDomain.json
      */
     /**
      * Sample code: Apps_ValidateDomain.

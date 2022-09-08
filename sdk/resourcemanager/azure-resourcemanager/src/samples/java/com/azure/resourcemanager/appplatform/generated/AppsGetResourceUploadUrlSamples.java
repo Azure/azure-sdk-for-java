@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Apps GetResourceUploadUrl. */
 public final class AppsGetResourceUploadUrlSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Apps_GetResourceUploadUrl.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-09-01-preview/examples/Apps_GetResourceUploadUrl.json
      */
     /**
      * Sample code: Apps_GetResourceUploadUrl.

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ServiceRegistries CreateOrUpdate. */
 public final class ServiceRegistriesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/ServiceRegistries_CreateOrUpdate.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-09-01-preview/examples/ServiceRegistries_CreateOrUpdate.json
      */
     /**
      * Sample code: ServiceRegistries_CreateOrUpdate.

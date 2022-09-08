@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for RuntimeVersions ListRuntimeVersions. */
 public final class RuntimeVersionsListRuntimeVersionsSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/RuntimeVersions_ListRuntimeVersions.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-09-01-preview/examples/RuntimeVersions_ListRuntimeVersions.json
      */
     /**
      * Sample code: RuntimeVersions_ListRuntimeVersions.

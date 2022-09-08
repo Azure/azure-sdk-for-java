@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Deployments Restart. */
 public final class DeploymentsRestartSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Deployments_Restart.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-09-01-preview/examples/Deployments_Restart.json
      */
     /**
      * Sample code: Deployments_Restart.

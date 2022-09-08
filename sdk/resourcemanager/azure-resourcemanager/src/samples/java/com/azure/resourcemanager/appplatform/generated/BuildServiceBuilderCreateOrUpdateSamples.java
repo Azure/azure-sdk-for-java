@@ -15,7 +15,7 @@ import java.util.Arrays;
 /** Samples for BuildServiceBuilder CreateOrUpdate. */
 public final class BuildServiceBuilderCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/BuildServiceBuilder_CreateOrUpdate.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-09-01-preview/examples/BuildServiceBuilder_CreateOrUpdate.json
      */
     /**
      * Sample code: BuildServiceBuilder_CreateOrUpdate.

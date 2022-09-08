@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appplatform.models.BuildServiceAgentPoolSizePro
 /** Samples for BuildServiceAgentPool UpdatePut. */
 public final class BuildServiceAgentPoolUpdatePutSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/BuildServiceAgentPool_UpdatePut.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-09-01-preview/examples/BuildServiceAgentPool_UpdatePut.json
      */
     /**
      * Sample code: BuildServiceAgentPool_UpdatePut.

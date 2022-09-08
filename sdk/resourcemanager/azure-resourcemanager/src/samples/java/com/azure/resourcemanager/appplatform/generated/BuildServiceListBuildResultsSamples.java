@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BuildService ListBuildResults. */
 public final class BuildServiceListBuildResultsSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/BuildService_ListBuildResults.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-09-01-preview/examples/BuildService_ListBuildResults.json
      */
     /**
      * Sample code: BuildService_ListBuildResults.

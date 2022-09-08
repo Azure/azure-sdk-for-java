@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Services EnableTestEndpoint. */
 public final class ServicesEnableTestEndpointSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Services_EnableTestEndpoint.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-09-01-preview/examples/Services_EnableTestEndpoint.json
      */
     /**
      * Sample code: Services_EnableTestEndpoint.

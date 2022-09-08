@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CustomDomains List. */
 public final class CustomDomainsListSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/CustomDomains_List.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-09-01-preview/examples/CustomDomains_List.json
      */
     /**
      * Sample code: CustomDomains_List.

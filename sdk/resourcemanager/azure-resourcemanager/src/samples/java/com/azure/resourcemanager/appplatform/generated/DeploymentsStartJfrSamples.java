@@ -10,7 +10,7 @@ import com.azure.resourcemanager.appplatform.models.DiagnosticParameters;
 /** Samples for Deployments StartJfr. */
 public final class DeploymentsStartJfrSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Deployments_StartJFR.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-09-01-preview/examples/Deployments_StartJFR.json
      */
     /**
      * Sample code: Deployments_StartJFR.

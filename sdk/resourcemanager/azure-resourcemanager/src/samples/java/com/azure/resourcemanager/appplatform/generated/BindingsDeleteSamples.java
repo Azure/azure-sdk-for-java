@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Bindings Delete. */
 public final class BindingsDeleteSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Bindings_Delete.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-09-01-preview/examples/Bindings_Delete.json
      */
     /**
      * Sample code: Bindings_Delete.

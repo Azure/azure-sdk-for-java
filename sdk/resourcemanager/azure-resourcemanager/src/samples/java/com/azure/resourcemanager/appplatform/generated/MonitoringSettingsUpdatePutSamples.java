@@ -11,7 +11,7 @@ import com.azure.resourcemanager.appplatform.models.MonitoringSettingProperties;
 /** Samples for MonitoringSettings UpdatePut. */
 public final class MonitoringSettingsUpdatePutSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/MonitoringSettings_UpdatePut.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-09-01-preview/examples/MonitoringSettings_UpdatePut.json
      */
     /**
      * Sample code: MonitoringSettings_UpdatePut.
@@ -32,7 +32,7 @@ public final class MonitoringSettingsUpdatePutSamples {
                         new MonitoringSettingProperties()
                             .withTraceEnabled(true)
                             .withAppInsightsInstrumentationKey("00000000-0000-0000-0000-000000000000")
-                            .withAppInsightsSamplingRate(10.0)),
+                            .withAppInsightsSamplingRate(10.0D)),
                 Context.NONE);
     }
 }

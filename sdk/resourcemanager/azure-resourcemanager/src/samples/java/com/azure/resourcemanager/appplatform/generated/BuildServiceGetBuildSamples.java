@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BuildService GetBuild. */
 public final class BuildServiceGetBuildSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/BuildService_GetBuild.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-09-01-preview/examples/BuildService_GetBuild.json
      */
     /**
      * Sample code: BuildService_GetBuild.
