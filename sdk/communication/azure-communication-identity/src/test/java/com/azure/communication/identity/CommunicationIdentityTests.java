@@ -6,13 +6,18 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
 import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
+import com.azure.communication.identity.util.CommunicationIdentityClientUtils;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.time.Clock;
+import java.time.OffsetDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 import java.time.Duration;
@@ -103,9 +108,15 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
         // Action & Assert
         CommunicationUserIdentifierAndToken result = client.createUserAndToken(scopes, tokenExpiresAfter);
+
         assertNotNull(result.getUser().getId());
         assertNotNull(result.getUserToken());
         assertFalse(result.getUser().getId().isEmpty());
+
+        if (getTestMode() == TestMode.LIVE) {
+            var tokenExpirationValid = CommunicationIdentityClientUtils.IsTokenExpirationValid(tokenExpiresAfter, result.getUserToken().getExpiresAt());
+            assertTrue(tokenExpirationValid);
+        }
     }
 
     @ParameterizedTest(name = "{0}")
@@ -124,6 +135,11 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         assertNotNull(result.getUser().getId());
         assertNotNull(result.getUserToken());
         assertFalse(result.getUser().getId().isEmpty());
+
+        if (getTestMode() == TestMode.LIVE) {
+            var tokenExpirationValid = CommunicationIdentityClientUtils.IsTokenExpirationValid(tokenExpiresAfter, result.getUserToken().getExpiresAt());
+            assertTrue(tokenExpirationValid);
+        }
     }
 
     @ParameterizedTest(name = "{0}")
@@ -331,6 +347,11 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         // Action & Assert
         AccessToken issuedToken = client.getToken(communicationUser, scopes, tokenExpiresAfter);
         verifyTokenNotEmpty(issuedToken);
+
+        if (getTestMode() == TestMode.LIVE) {
+            var tokenExpirationValid = CommunicationIdentityClientUtils.IsTokenExpirationValid(tokenExpiresAfter, issuedToken.getExpiresAt());
+            assertTrue(tokenExpirationValid);
+        }
     }
 
     @ParameterizedTest(name = "{0}")
@@ -366,6 +387,11 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         Response<AccessToken> issuedTokenResponse = client.getTokenWithResponse(communicationUser, scopes, tokenExpiresAfter, Context.NONE);
         assertEquals(200, issuedTokenResponse.getStatusCode(), "Expect status code to be 200");
         verifyTokenNotEmpty(issuedTokenResponse.getValue());
+
+        if (getTestMode() == TestMode.LIVE) {
+            var tokenExpirationValid = CommunicationIdentityClientUtils.IsTokenExpirationValid(tokenExpiresAfter, issuedTokenResponse.getValue().getExpiresAt());
+            assertTrue(tokenExpirationValid);
+        }
     }
 
     @ParameterizedTest(name = "{0}")

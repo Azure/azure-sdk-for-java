@@ -10,9 +10,11 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
 import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
+import com.azure.communication.identity.util.CommunicationIdentityClientUtils;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.rest.Response;
 
+import com.azure.core.test.TestMode;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -107,6 +109,11 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             .assertNext(result -> {
                 assertNotNull(result.getUserToken());
                 assertNotNull(result.getUser());
+
+                if (getTestMode() == TestMode.LIVE) {
+                    var tokenExpirationValid = CommunicationIdentityClientUtils.IsTokenExpirationValid(tokenExpiresAfter, result.getUserToken().getExpiresAt());
+                    assertTrue(tokenExpirationValid);
+                }
             })
             .verifyComplete();
     }
@@ -116,7 +123,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     public void createUserAndTokenWithInvalidCustomExpiration(String testName, Duration tokenExpiresAfter) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        asyncClient = setupAsyncClient(builder, "createUserAndTokenWithValidCustomExpiration" + testName);
+        asyncClient = setupAsyncClient(builder, "createUserAndTokenWithInvalidCustomExpiration" + testName);
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
         // Action & Assert
@@ -144,6 +151,11 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
                 assertEquals(201, result.getStatusCode());
                 assertNotNull(result.getValue().getUserToken());
                 assertNotNull(result.getValue().getUser());
+
+                if (getTestMode() == TestMode.LIVE) {
+                    var tokenExpirationValid = CommunicationIdentityClientUtils.IsTokenExpirationValid(tokenExpiresAfter, result.getValue().getUserToken().getExpiresAt());
+                    assertTrue(tokenExpirationValid);
+                }
             })
             .verifyComplete();
     }
@@ -398,7 +410,14 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
                         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
                         return asyncClient.getToken(communicationUser, scopes, tokenExpiresAfter);
                     }))
-            .assertNext(issuedToken -> verifyTokenNotEmpty(issuedToken))
+            .assertNext(issuedToken -> {
+                verifyTokenNotEmpty(issuedToken);
+
+                if (getTestMode() == TestMode.LIVE) {
+                    var tokenExpirationValid = CommunicationIdentityClientUtils.IsTokenExpirationValid(tokenExpiresAfter, issuedToken.getExpiresAt());
+                    assertTrue(tokenExpirationValid);
+                }
+            })
             .verifyComplete();
     }
 
@@ -439,6 +458,11 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             .assertNext(issuedToken -> {
                 verifyTokenNotEmpty(issuedToken.getValue());
                 assertEquals(issuedToken.getStatusCode(), 200);
+
+                if (getTestMode() == TestMode.LIVE) {
+                    var tokenExpirationValid = CommunicationIdentityClientUtils.IsTokenExpirationValid(tokenExpiresAfter, issuedToken.getValue().getExpiresAt());
+                    assertTrue(tokenExpirationValid);
+                }
             })
             .verifyComplete();
     }

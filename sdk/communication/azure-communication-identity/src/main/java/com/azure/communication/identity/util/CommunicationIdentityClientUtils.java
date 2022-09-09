@@ -1,24 +1,31 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.identity;
+package com.azure.communication.identity.util;
 
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenRequest;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityCreateRequest;
 import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.time.Clock;
 import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
-final class CommunicationIdentityClientUtils {
+public final class CommunicationIdentityClientUtils {
 
-    static final String TOKEN_EXPIRATION_OVERFLOW_MESSAGE = "The tokenExpiresAfter argument is out of permitted bounds. Please refer to the documentation and set the value accordingly.";
+    public static final String TOKEN_EXPIRATION_OVERFLOW_MESSAGE = "The tokenExpiresAfter argument is out of permitted bounds. Please refer to the documentation and set the value accordingly.";
 
-    CommunicationIdentityCreateRequest createCommunicationIdentityCreateRequest(
-        List<CommunicationTokenScope> scopesInput,
+    public static CommunicationIdentityCreateRequest createCommunicationIdentityCreateRequest(
+        Iterable<CommunicationTokenScope> scopes,
         Duration tokenExpiresAfter,
         ClientLogger logger) {
+
+        final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
 
         CommunicationIdentityCreateRequest createRequest = new CommunicationIdentityCreateRequest();
         createRequest.setCreateTokenWithScopes(scopesInput);
@@ -31,10 +38,12 @@ final class CommunicationIdentityClientUtils {
         return createRequest;
     }
 
-    CommunicationIdentityAccessTokenRequest createCommunicationIdentityAccessTokenRequest(
-        List<CommunicationTokenScope> scopesInput,
+    public static CommunicationIdentityAccessTokenRequest createCommunicationIdentityAccessTokenRequest(
+        Iterable<CommunicationTokenScope> scopes,
         Duration tokenExpiresAfter,
         ClientLogger logger) {
+
+        final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
 
         CommunicationIdentityAccessTokenRequest tokenRequest = new CommunicationIdentityAccessTokenRequest();
         tokenRequest.setScopes(scopesInput);
@@ -47,7 +56,19 @@ final class CommunicationIdentityClientUtils {
         return tokenRequest;
     }
 
-    private int getTokenExpirationInMinutes(Duration tokenExpiresAfter, ClientLogger logger) {
+    public static boolean IsTokenExpirationValid(Duration expectedTokenExpiration, OffsetDateTime tokenExpiresAfter) {
+
+        var expectedExpiration = expectedTokenExpiration == null ? Duration.ofDays(1) : expectedTokenExpiration;
+
+        var utcDateTimeNow = OffsetDateTime.now(Clock.systemUTC());
+        var tokenSeconds = ChronoUnit.SECONDS.between(utcDateTimeNow, tokenExpiresAfter);
+        var expectedTime = expectedExpiration.toSeconds();
+        var timeDiff = Math.abs(expectedTime - tokenSeconds);
+        var allowedTimeDiff = expectedTime * 0.05;
+        return timeDiff < allowedTimeDiff;
+    }
+
+    private static int getTokenExpirationInMinutes(Duration tokenExpiresAfter, ClientLogger logger) {
         try {
             return Math.toIntExact(tokenExpiresAfter.toMinutes());
         } catch (ArithmeticException ex) {

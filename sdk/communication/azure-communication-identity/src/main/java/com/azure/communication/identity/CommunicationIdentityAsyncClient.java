@@ -17,6 +17,7 @@ import com.azure.communication.identity.models.IdentityError;
 import com.azure.communication.identity.models.IdentityErrorResponseException;
 import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
 import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.identity.util.CommunicationIdentityClientUtils;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -26,10 +27,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import reactor.core.publisher.Mono;
 
@@ -63,7 +61,6 @@ public final class CommunicationIdentityAsyncClient {
 
     private final CommunicationIdentitiesImpl client;
     private final ClientLogger logger = new ClientLogger(CommunicationIdentityAsyncClient.class);
-    private final CommunicationIdentityClientUtils utils = new CommunicationIdentityClientUtils();
 
     CommunicationIdentityAsyncClient(CommunicationIdentityClientImpl communicationIdentityServiceClient) {
         client = communicationIdentityServiceClient.getCommunicationIdentities();
@@ -124,10 +121,9 @@ public final class CommunicationIdentityAsyncClient {
         createUserAndToken(Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresAfter) {
         try {
             Objects.requireNonNull(scopes);
-            final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
 
             CommunicationIdentityCreateRequest communicationIdentityCreateRequest =
-                utils.createCommunicationIdentityCreateRequest(scopesInput, tokenExpiresAfter, logger);
+                CommunicationIdentityClientUtils.createCommunicationIdentityCreateRequest(scopes, tokenExpiresAfter, logger);
 
             return client.createAsync(communicationIdentityCreateRequest)
                 .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
@@ -166,10 +162,9 @@ public final class CommunicationIdentityAsyncClient {
         createUserAndTokenWithResponse(Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresAfter) {
         try {
             Objects.requireNonNull(scopes);
-            final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
 
             CommunicationIdentityCreateRequest communicationIdentityCreateRequest =
-                utils.createCommunicationIdentityCreateRequest(scopesInput, tokenExpiresAfter, logger);
+                CommunicationIdentityClientUtils.createCommunicationIdentityCreateRequest(scopes, tokenExpiresAfter, logger);
 
             return client.createWithResponseAsync(communicationIdentityCreateRequest)
                 .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
@@ -280,12 +275,11 @@ public final class CommunicationIdentityAsyncClient {
     public Mono<AccessToken> getToken(CommunicationUserIdentifier communicationUser,
         Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresAfter) {
         try {
-            Objects.requireNonNull(scopes);
             Objects.requireNonNull(communicationUser);
-            final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
+            Objects.requireNonNull(scopes);
 
             CommunicationIdentityAccessTokenRequest tokenRequest =
-                utils.createCommunicationIdentityAccessTokenRequest(scopesInput, tokenExpiresAfter, logger);
+                CommunicationIdentityClientUtils.createCommunicationIdentityAccessTokenRequest(scopes, tokenExpiresAfter, logger);
 
             return client.issueAccessTokenAsync(communicationUser.getId(),
                     tokenRequest
@@ -330,10 +324,9 @@ public final class CommunicationIdentityAsyncClient {
         try {
             Objects.requireNonNull(communicationUser);
             Objects.requireNonNull(scopes);
-            final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
 
             CommunicationIdentityAccessTokenRequest tokenRequest =
-                utils.createCommunicationIdentityAccessTokenRequest(scopesInput, tokenExpiresAfter, logger);
+                CommunicationIdentityClientUtils.createCommunicationIdentityAccessTokenRequest(scopes, tokenExpiresAfter, logger);
 
             return client.issueAccessTokenWithResponseAsync(communicationUser.getId(),
                     tokenRequest
