@@ -54,6 +54,11 @@ public class AppConfigurationConstants {
     public static final String KEY_VAULT_CONFIGURED_TRACING = "UsesKeyVault";
     
     /**
+     * Constant for tracing for Replica Count
+     */
+    public static final String REPLICA_COUNT = "ReplicaCount";
+    
+    /**
      * Http Header User Agent
      */
     public static final String USER_AGENT_TYPE = "User-Agent";
