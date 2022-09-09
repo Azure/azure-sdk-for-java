@@ -1,0 +1,28 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/personalizer/v1.1-preview.3/logs/properties",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-personalizer/1.0.0-beta.1 (18.0.1.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "76046cf7-08a4-4b14-85b3-58d657b7678c"
+    },
+    "Response" : {
+      "content-length" : "2",
+      "x-envoy-upstream-service-time" : "18",
+      "apim-request-id" : "baf85ec7-91b8-4301-9981-6a8d27b548b2",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "Date" : "Thu, 25 Aug 2022 23:32:36 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Cache-Control" : "no-cache, no-store, must-revalidate",
+      "x-content-type-options" : "nosniff",
+      "Expires" : "0",
+      "timing-allow-origin" : "*",
+      "Body" : "{}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

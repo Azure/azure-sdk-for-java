@@ -15,7 +15,7 @@ public final class GetOperationsResponse {
      * List of operations.
      */
     @JsonProperty(value = "value", required = true)
-    private List<OperationInfo> value;
+    private List<OperationSummary> value;
 
     /*
      * Link to the next page of operations.
@@ -28,7 +28,7 @@ public final class GetOperationsResponse {
      *
      * @return the value value.
      */
-    public List<OperationInfo> getValue() {
+    public List<OperationSummary> getValue() {
         return this.value;
     }
 
@@ -38,7 +38,7 @@ public final class GetOperationsResponse {
      * @param value the value value to set.
      * @return the GetOperationsResponse object itself.
      */
-    public GetOperationsResponse setValue(List<OperationInfo> value) {
+    public GetOperationsResponse setValue(List<OperationSummary> value) {
         this.value = value;
         return this;
     }

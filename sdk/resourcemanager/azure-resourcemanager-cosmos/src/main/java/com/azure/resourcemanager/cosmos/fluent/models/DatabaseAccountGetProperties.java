@@ -14,6 +14,7 @@ import com.azure.resourcemanager.cosmos.models.ConnectorOffer;
 import com.azure.resourcemanager.cosmos.models.ConsistencyPolicy;
 import com.azure.resourcemanager.cosmos.models.CorsPolicy;
 import com.azure.resourcemanager.cosmos.models.CreateMode;
+import com.azure.resourcemanager.cosmos.models.DatabaseAccountKeysMetadata;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountOfferType;
 import com.azure.resourcemanager.cosmos.models.FailoverPolicy;
 import com.azure.resourcemanager.cosmos.models.IpAddressOrRange;
@@ -239,6 +240,18 @@ public final class DatabaseAccountGetProperties {
      */
     @JsonProperty(value = "capacity")
     private Capacity capacity;
+
+    /*
+     * The object that represents the metadata for the Account Keys of the Cosmos DB account.
+     */
+    @JsonProperty(value = "keysMetadata", access = JsonProperty.Access.WRITE_ONLY)
+    private DatabaseAccountKeysMetadata keysMetadata;
+
+    /*
+     * Flag to indicate enabling/disabling of Partition Merge feature on the account
+     */
+    @JsonProperty(value = "enablePartitionMerge")
+    private Boolean enablePartitionMerge;
 
     /**
      * Get the provisioningState property: The status of the Cosmos DB account at the time the operation was called. The
@@ -849,6 +862,38 @@ public final class DatabaseAccountGetProperties {
     }
 
     /**
+     * Get the keysMetadata property: The object that represents the metadata for the Account Keys of the Cosmos DB
+     * account.
+     *
+     * @return the keysMetadata value.
+     */
+    public DatabaseAccountKeysMetadata keysMetadata() {
+        return this.keysMetadata;
+    }
+
+    /**
+     * Get the enablePartitionMerge property: Flag to indicate enabling/disabling of Partition Merge feature on the
+     * account.
+     *
+     * @return the enablePartitionMerge value.
+     */
+    public Boolean enablePartitionMerge() {
+        return this.enablePartitionMerge;
+    }
+
+    /**
+     * Set the enablePartitionMerge property: Flag to indicate enabling/disabling of Partition Merge feature on the
+     * account.
+     *
+     * @param enablePartitionMerge the enablePartitionMerge value to set.
+     * @return the DatabaseAccountGetProperties object itself.
+     */
+    public DatabaseAccountGetProperties withEnablePartitionMerge(Boolean enablePartitionMerge) {
+        this.enablePartitionMerge = enablePartitionMerge;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -898,6 +943,9 @@ public final class DatabaseAccountGetProperties {
         }
         if (capacity() != null) {
             capacity().validate();
+        }
+        if (keysMetadata() != null) {
+            keysMetadata().validate();
         }
     }
 }

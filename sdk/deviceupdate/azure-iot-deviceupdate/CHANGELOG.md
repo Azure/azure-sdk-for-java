@@ -1,14 +1,23 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0 (2022-09-09)
+This is the first stable release for the Device Update for IoT Hub client library.
 
-### Features Added
+### Changes since 1.0.0-beta.3
 
-### Breaking Changes
+#### Features Added
+- Added filter to `listDeviceClasses` device management method.
+- Updated description for some methods to be more descriptive and less ambiguous.
 
-### Bugs Fixed
+#### Breaking Changes
+- Removed filter from `listBestUpdatesForGroup` device management method.
 
-### Other Changes
+#### Other Changes
+
+##### Dependency Updates
+
+- Upgraded `azure-core` from `1.30.0` to version `1.32.0`.
+- Upgraded `azure-core-http-netty` from `1.12.3` to version `1.12.5`.
 
 ## 1.0.0-beta.3 (2022-07-12)
 

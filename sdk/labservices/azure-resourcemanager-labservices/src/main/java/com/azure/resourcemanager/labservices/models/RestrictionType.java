@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RestrictionType. */
+/** The type of restriction. */
 public final class RestrictionType extends ExpandableStringEnum<RestrictionType> {
     /** Static value Location for RestrictionType. */
     public static final RestrictionType LOCATION = fromString("Location");
@@ -24,7 +24,11 @@ public final class RestrictionType extends ExpandableStringEnum<RestrictionType>
         return fromString(name, RestrictionType.class);
     }
 
-    /** @return known RestrictionType values. */
+    /**
+     * Gets known RestrictionType values.
+     *
+     * @return known RestrictionType values.
+     */
     public static Collection<RestrictionType> values() {
         return values(RestrictionType.class);
     }

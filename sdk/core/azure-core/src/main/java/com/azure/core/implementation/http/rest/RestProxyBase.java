@@ -27,6 +27,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.implementation.TypeUtil;
+import com.azure.core.implementation.http.HttpHeadersHelper;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.util.BinaryData;
@@ -283,7 +284,7 @@ public abstract class RestProxyBase {
                                       SerializerAdapter serializerAdapter, boolean isAsync, final Object[] args) throws IOException {
         final Object bodyContentObject = methodParser.setBody(args, serializer);
         if (bodyContentObject == null) {
-            request.getHeaders().set("Content-Length", "0");
+            HttpHeadersHelper.setNoKeyFormatting(request.getHeaders(), "content-length", "Content-Length", "0");
         } else {
             // We read the content type from the @BodyParam annotation
             String contentType = methodParser.getBodyContentType();
@@ -298,11 +299,12 @@ public abstract class RestProxyBase {
                 }
             }
 
-            request.getHeaders().set("Content-Type", contentType);
+            HttpHeadersHelper.setNoKeyFormatting(request.getHeaders(), "content-type", "Content-Type", contentType);
             if (bodyContentObject instanceof BinaryData) {
                 BinaryData binaryData = (BinaryData) bodyContentObject;
                 if (binaryData.getLength() != null) {
-                    request.setHeader("Content-Length", binaryData.getLength().toString());
+                    HttpHeadersHelper.setNoKeyFormatting(request.getHeaders(), "content-length", "Content-Length",
+                        binaryData.getLength().toString());
                 }
                 // The request body is not read here. The call to `toFluxByteBuffer()` lazily converts the underlying
                 // content of BinaryData to a Flux<ByteBuffer> which is then read by HttpClient implementations when
@@ -345,7 +347,8 @@ public abstract class RestProxyBase {
 
         final String contentType = httpResponse.getHeaderValue("Content-Type");
         if ("application/octet-stream".equalsIgnoreCase(contentType)) {
-            exceptionMessage.append("(").append(httpResponse.getHeaderValue("Content-Length")).append("-byte body)");
+            String contentLength = HttpHeadersHelper.getValueNoKeyFormatting(httpResponse.getHeaders(), "content-length");
+            exceptionMessage.append("(").append(contentLength).append("-byte body)");
         } else if (responseContent == null || responseContent.length == 0) {
             exceptionMessage.append("(empty body)");
         } else {
