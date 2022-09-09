@@ -53,7 +53,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-ai-personalizer</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-personalizer;current} -->
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-ai-personalizer;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
