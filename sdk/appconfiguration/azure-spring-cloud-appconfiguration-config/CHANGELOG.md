@@ -4,7 +4,7 @@
 
 ### Features Added
 
-* Added Geo-Replication support, only supported using endpoints.
+- Added Geo-Replication support, only supported using endpoints.
 
 Added `spring.cloud.azure.appconfiguration.stores[0].endpoints` which enables listing of multiple endpoints. See MSDocs or README for more details.
 
@@ -37,8 +37,8 @@ Added `spring.cloud.azure.appconfiguration.stores[0].endpoints` which enables li
 This release is compatible with Spring Boot 2.5.0-2.5.11, 2.6.0-2.6.5.
 
 ### Features Added
-* Added refresh interval parameter to `spring.cloud.azure.appconfiguraiton` to force refreshes on a given interval. Can be used to make sure secrets are kept up to date.
-* Added BackoffTimeCalculator, which sets the next refresh period to sooner if a refresh fails.
+- Added refresh interval parameter to `spring.cloud.azure.appconfiguraiton` to force refreshes on a given interval. Can be used to make sure secrets are kept up to date.
+- Added BackoffTimeCalculator, which sets the next refresh period to sooner if a refresh fails.
 
 ### Dependency Upgrades
 - Regular updates for Azure SDK dependency versions.
@@ -57,32 +57,32 @@ This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.1.
 
 ### Bugs Fixed
 
-* Fixed a bug where `spring.cloud.application` was still used in some locations. This caused a refresh bug where a `null` value was used on refresh. `spring.cloud.application` is replaced by `key-filter`.
+- Fixed a bug where `spring.cloud.application` was still used in some locations. This caused a refresh bug where a `null` value was used on refresh. `spring.cloud.application` is replaced by `key-filter`.
 
 ## 2.2.0 (2021-11-25)
 
-* Fixed a bug where JsonNode type was passed to Spring instead of a String, when the JsonNode was a number Spring had issues resolving the value.
+- Fixed a bug where JsonNode type was passed to Spring instead of a String, when the JsonNode was a number Spring had issues resolving the value.
 
 ## 2.1.1 (2021-09-28)
 
 ### Bugs Fixed
 
-* Fixed usage of `null` for watch keys. Updates returned `null` labels automatically to `\0`.
-* Reworked Feature Flag watching to make sure all changes are detected. Such as new or deleted feature flags.
+- Fixed usage of `null` for watch keys. Updates returned `null` labels automatically to `\0`.
+- Reworked Feature Flag watching to make sure all changes are detected. Such as new or deleted feature flags.
 
 ### Other Changes
 
-* Updated Tracing to check for Key Vault and Dev usage.
+- Updated Tracing to check for Key Vault and Dev usage.
 
 ## 2.1.0 (2021-09-05)
 
-* Add Health Indicator with the property `management.endpoint.health.azure-app-configuration.enabled` to enable the endpoint.
-* Added Secret Resolver with use of `KeyVaultSecretProvider` which enables overriding connecting to Key Vault with client provided values.
-* Update to JUnit 5 from JUnit 4
+- Add Health Indicator with the property `management.endpoint.health.azure-app-configuration.enabled` to enable the endpoint.
+- Added Secret Resolver with use of `KeyVaultSecretProvider` which enables overriding connecting to Key Vault with client provided values.
+- Update to JUnit 5 from JUnit 4
 
 ## 2.0.0 (2021-07-20)
 
-* GA of 2.0.0 version, no changes from 2.0.0-beta.2 version.
+- GA of 2.0.0 version, no changes from 2.0.0-beta.2 version.
 
 ## 2.0.0-beta.2 (2021-06-21)
 ### Breaking Changes
