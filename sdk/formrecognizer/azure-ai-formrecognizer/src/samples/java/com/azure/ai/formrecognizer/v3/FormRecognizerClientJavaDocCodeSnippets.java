@@ -96,7 +96,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
      * Code snippet for {@link FormRecognizerClient#beginRecognizeCustomFormsFromUrl(String, String, RecognizeCustomFormsOptions, Context)}
      */
     public void beginRecognizeCustomFormsFromUrlWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string-RecognizeCustomFormsOptions-Context
+        // BEGIN: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string-Options-Context
         String analyzeFilePath = "{file_source_url}";
         String modelId = "{model_id}";
         boolean includeFieldElements = true;
@@ -113,7 +113,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                 System.out.printf("Field value data text: %s%n", formField.getValueData().getText());
                 System.out.printf("Confidence score: %.2f%n", formField.getConfidence());
             }));
-        // END: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string-RecognizeCustomFormsOptions-Context
+        // END: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string-Options-Context
     }
 
     /**
@@ -149,7 +149,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeCustomFormsWithOptions() throws IOException {
-        // BEGIN: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeCustomForms#string-InputStream-long-RecognizeCustomFormsOptions-Context
+        // BEGIN: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeCustomForms#string-InputStream-long-Options-Context
         File form = new File("{local/file_path/fileName.jpg}");
         String modelId = "{custom_trained_model_id}";
         boolean includeFieldElements = true;
@@ -170,7 +170,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                     System.out.printf("Confidence score: %.2f%n", formField.getConfidence());
                 }));
         }
-        // END: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeCustomForms#string-InputStream-long-RecognizeCustomFormsOptions-Context
+        // END: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeCustomForms#string-InputStream-long-Options-Context
     }
 
     // Recognize Content
@@ -201,7 +201,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
      * options.
      */
     public void beginRecognizeContentFromUrlWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeContentFromUrl#string-RecognizeContentOptions-Context
+        // BEGIN: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeContentFromUrl#string-Options-Context
         String formPath = "{file_source_url}";
         formRecognizerClient.beginRecognizeContentFromUrl(formPath,
             new RecognizeContentOptions()
@@ -217,7 +217,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                     .flatMap(formTable -> formTable.getCells().stream())
                     .forEach(recognizedTableCell -> System.out.printf("%s ", recognizedTableCell.getText()));
             });
-        // END: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeContentFromUrl#string-RecognizeContentOptions-Context
+        // END: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeContentFromUrl#string-Options-Context
     }
 
     /**
@@ -253,7 +253,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeContentWithOptions() throws IOException {
-        // BEGIN: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeContent#InputStream-long-RecognizeContentOptions-Context
+        // BEGIN: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeContent#InputStream-long-Options-Context
         File form = new File("{file_source_url}");
         byte[] fileContent = Files.readAllBytes(form.toPath());
         try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
@@ -272,7 +272,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                     .forEach(recognizedTableCell -> System.out.printf("%s ", recognizedTableCell.getText()));
             }
         }
-        // END: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeContent#InputStream-long-RecognizeContentOptions-Context
+        // END: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeContent#InputStream-long-Options-Context
     }
 
     // Recognize Receipts
@@ -341,7 +341,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
      * Code snippet for {@link FormRecognizerClient#beginRecognizeReceiptsFromUrl(String, RecognizeReceiptsOptions, Context)}
      */
     public void beginRecognizeReceiptsFromUrlWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string-RecognizeReceiptsOptions-Context
+        // BEGIN: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string-Options-Context
         String receiptUrl = "{receipt_url}";
         formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptUrl,
             new RecognizeReceiptsOptions()
@@ -398,7 +398,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                     }
                 }
             });
-        // END: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string-RecognizeReceiptsOptions-Context
+        // END: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string-Options-Context
     }
 
     /**
@@ -474,7 +474,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
      */
     public void beginRecognizeReceiptsWithOptions() throws IOException {
 
-        // BEGIN: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeReceipts#InputStream-long-RecognizeReceiptsOptions-Context
+        // BEGIN: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeReceipts#InputStream-long-Options-Context
         File receipt = new File("{local/file_path/fileName.jpg}");
         boolean includeFieldElements = true;
         byte[] fileContent = Files.readAllBytes(receipt.toPath());
@@ -533,7 +533,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                 }
             }
         }
-        // END: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeReceipts#InputStream-long-RecognizeReceiptsOptions-Context
+        // END: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeReceipts#InputStream-long-Options-Context
     }
 
     /**
@@ -596,7 +596,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
      * {@link FormRecognizerClient#beginRecognizeBusinessCardsFromUrl(String, RecognizeBusinessCardsOptions, Context)}
      */
     public void beginRecognizeBusinessCardsFromUrlWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeBusinessCardsFromUrl#string-RecognizeBusinessCardsOptions-Context
+        // BEGIN: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeBusinessCardsFromUrl#string-Options-Context
         String businessCardUrl = "{business_card_url}";
         formRecognizerClient.beginRecognizeBusinessCardsFromUrl(businessCardUrl,
             new RecognizeBusinessCardsOptions()
@@ -646,7 +646,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                     }
                 }
             });
-        // END: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeBusinessCardsFromUrl#string-RecognizeBusinessCardsOptions-Context
+        // END: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeBusinessCardsFromUrl#string-Options-Context
     }
 
     /**
@@ -717,7 +717,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
      */
     public void beginRecognizeBusinessCardsWithOptions() throws IOException {
 
-        // BEGIN: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeBusinessCards#InputStream-long-RecognizeBusinessCardsOptions-Context
+        // BEGIN: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeBusinessCards#InputStream-long-Options-Context
         File businessCard = new File("{local/file_path/fileName.jpg}");
         boolean includeFieldElements = true;
         byte[] fileContent = Files.readAllBytes(businessCard.toPath());
@@ -773,7 +773,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                 }
             }
         }
-        // END: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeBusinessCards#InputStream-long-RecognizeBusinessCardsOptions-Context
+        // END: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeBusinessCards#InputStream-long-Options-Context
     }
 
     /**
@@ -811,7 +811,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
      * {@link FormRecognizerAsyncClient#beginRecognizeInvoicesFromUrl(String, RecognizeInvoicesOptions)}
      */
     public void beginRecognizeInvoicesFromUrlWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeInvoicesFromUrl#string-RecognizeInvoicesOptions-Context
+        // BEGIN: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeInvoicesFromUrl#string-Options-Context
         String invoiceUrl = "invoice_url";
         boolean includeFieldElements = true;
         // if training polling operation completed, retrieve the final result.
@@ -838,7 +838,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                     }
                 }
             });
-        // END: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeInvoicesFromUrl#string-RecognizeInvoicesOptions-Context
+        // END: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeInvoicesFromUrl#string-Options-Context
     }
 
     /**
@@ -882,7 +882,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeInvoicesWithOptions() throws IOException {
-        // BEGIN: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeInvoices#InputStream-long-RecognizeInvoicesOptions-Context
+        // BEGIN: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeInvoices#InputStream-long-Options-Context
         File invoice = new File("local/file_path/invoice.jpg");
         boolean includeFieldElements = true;
         // Utility method to convert input stream to Byte buffer
@@ -914,7 +914,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                     }
                 }
             });
-        // END: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeInvoices#InputStream-long-RecognizeInvoicesOptions-Context
+        // END: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeInvoices#InputStream-long-Options-Context
     }
 
     /**
@@ -991,7 +991,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
      * {@link FormRecognizerAsyncClient#beginRecognizeIdentityDocumentsFromUrl(String, RecognizeIdentityDocumentOptions, Context)}
      */
     public void beginRecognizeIdentityDocumentsFromUrlWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeIdentityDocumentsFromUrl#string-RecognizeIdentityDocumentOptions-Context
+        // BEGIN: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeIdentityDocumentsFromUrl#string-Options-Context
         String licenseDocumentUrl = "licenseDocumentUrl";
         boolean includeFieldElements = true;
         // if training polling operation completed, retrieve the final result.
@@ -1048,7 +1048,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                     }
                 }
             });
-        // END: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeIdentityDocumentsFromUrl#string-RecognizeIdentityDocumentOptions-Context
+        // END: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeIdentityDocumentsFromUrl#string-Options-Context
     }
 
     /**
@@ -1122,7 +1122,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeIdentityDocumentsWithOptions() throws IOException {
-        // BEGIN: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeIdentityDocuments#InputStream-long-RecognizeIdentityDocumentOptions-Context
+        // BEGIN: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeIdentityDocuments#InputStream-long-Options-Context
         File licenseDocument = new File("local/file_path/license.jpg");
         boolean includeFieldElements = true;
         // Utility method to convert input stream to Byte buffer
@@ -1193,6 +1193,6 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                     }
                 }
             });
-        // END: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeIdentityDocuments#InputStream-long-RecognizeIdentityDocumentOptions-Context
+        // END: com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeIdentityDocuments#InputStream-long-Options-Context
     }
 }

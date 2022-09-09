@@ -239,7 +239,7 @@ public final class FormRecognizerClientImplBuilder
             this.pipeline = createHttpPipeline();
         }
         if (apiVersion == null) {
-            this.apiVersion = "2022-06-30-preview";
+            this.apiVersion = "2022-08-31";
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();

@@ -30,7 +30,18 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-ai-formrecognizer</artifactId>
-      <version>4.0.0-beta.7</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
+      <version>4.0.0</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
+    </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>1.32.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.12.5</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
   </dependencies>
 
@@ -94,7 +105,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-identity</artifactId>
-          <version>1.5.4</version>  <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+          <version>1.5.5</version>  <!-- {x-version-update;com.azure:azure-identity;dependency} -->
         </dependency>
       </dependencies>
     </profile>

@@ -567,7 +567,13 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     // Healthcare LRO
     @Test
-    abstract void healthcareLroWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void healthcareStringInputWithoutOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void healthcareStringInputWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void healthcareMaxOverload(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void healthcareLroPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
@@ -622,6 +628,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     // Analyze multiple actions
     @Test
+    abstract void analyzeActionsStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
     abstract void analyzeActionsWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
@@ -668,10 +677,21 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void multiCategoryClassifyAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
+    abstract void recognizeCustomEntitiesStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
     abstract void recognizeCustomEntities(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
+    abstract void singleLabelClassificationStringInput(HttpClient httpClient,
+                                                       TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
     abstract void singleLabelClassification(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void multiLabelClassificationStringInput(HttpClient httpClient,
+                                                      TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void multiLabelClassification(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
@@ -996,6 +1016,11 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     // Healthcare LRO runner
+    void healthcareStringInputRunner(BiConsumer<List<String>, AnalyzeHealthcareEntitiesOptions> testRunner) {
+        testRunner.accept(HEALTHCARE_INPUTS,
+            new AnalyzeHealthcareEntitiesOptions().setIncludeStatistics(true));
+    }
+
     void healthcareLroRunner(BiConsumer<List<TextDocumentInput>, AnalyzeHealthcareEntitiesOptions> testRunner) {
         testRunner.accept(
             asList(
@@ -1032,6 +1057,21 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     // Analyze batch actions
+    void analyzeActionsStringInputRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner) {
+        testRunner.accept(
+            asList(
+                CATEGORIZED_ENTITY_INPUTS.get(0),
+                PII_ENTITY_INPUTS.get(0)),
+            new TextAnalyticsActions()
+                .setDisplayName("Test1")
+                .setRecognizeEntitiesActions(new RecognizeEntitiesAction())
+                .setRecognizePiiEntitiesActions(new RecognizePiiEntitiesAction())
+                .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction())
+                .setRecognizeLinkedEntitiesActions(new RecognizeLinkedEntitiesAction())
+                .setAnalyzeSentimentActions(new AnalyzeSentimentAction())
+        );
+    }
+
     void analyzeBatchActionsRunner(BiConsumer<List<TextDocumentInput>, TextAnalyticsActions> testRunner) {
         testRunner.accept(
             asList(

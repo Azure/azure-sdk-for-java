@@ -33,12 +33,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.31.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.32.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.12.4</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.12.5</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
@@ -64,14 +64,14 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.21</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.22</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- for file lock tests, ideally should be removed in the future -->
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
-      <version>2.9.0</version> <!-- {x-version-update;com.google.code.gson:gson;external_dependency} -->
+      <version>2.9.1</version> <!-- {x-version-update;com.google.code.gson:gson;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -95,7 +95,7 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.12.9</version> <!-- {x-version-update;net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.12.13</version> <!-- {x-version-update;net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

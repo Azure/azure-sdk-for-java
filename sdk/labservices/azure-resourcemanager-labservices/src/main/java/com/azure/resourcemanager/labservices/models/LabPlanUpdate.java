@@ -5,22 +5,24 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.labservices.fluent.models.LabPlanUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Contains lab configuration and default settings. This variant is used for PATCH. */
 @Fluent
 public final class LabPlanUpdate extends TrackedResourceUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LabPlanUpdate.class);
-
     /*
      * Lab plan resource update properties
      */
     @JsonProperty(value = "properties")
     private LabPlanUpdateProperties innerProperties;
+
+    /*
+     * Managed Identity Information
+     */
+    @JsonProperty(value = "identity")
+    private Identity identity;
 
     /**
      * Get the innerProperties property: Lab plan resource update properties.
@@ -29,6 +31,26 @@ public final class LabPlanUpdate extends TrackedResourceUpdate {
      */
     private LabPlanUpdateProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the identity property: Managed Identity Information.
+     *
+     * @return the identity value.
+     */
+    public Identity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed Identity Information.
+     *
+     * @param identity the identity value to set.
+     * @return the LabPlanUpdate object itself.
+     */
+    public LabPlanUpdate withIdentity(Identity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -223,6 +245,9 @@ public final class LabPlanUpdate extends TrackedResourceUpdate {
         super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 }

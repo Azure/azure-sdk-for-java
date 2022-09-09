@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.iothub.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Identity registry statistics. */
 @Immutable
 public final class RegistryStatisticsInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistryStatisticsInner.class);
-
     /*
      * The total count of devices in the identity registry.
      */

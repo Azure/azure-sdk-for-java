@@ -3,11 +3,13 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Collection;
 
 /** Defines values for DocumentSignatureType. */
+@Immutable
 public final class DocumentSignatureType extends ExpandableStringEnum<DocumentSignatureType> {
     /** Static value signed for DocumentSignatureType. */
     public static final DocumentSignatureType SIGNED = fromString("signed");

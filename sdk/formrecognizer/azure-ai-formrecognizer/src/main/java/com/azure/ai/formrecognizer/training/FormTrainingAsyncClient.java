@@ -181,7 +181,7 @@ public final class FormTrainingAsyncClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.v3.training.FormTrainingAsyncClient.beginTraining#string-boolean-TrainingOptions -->
+     * <!-- src_embed com.azure.ai.formrecognizer.v3.training.FormTrainingAsyncClient.beginTraining#string-boolean-Options -->
      * <pre>
      * String trainingFilesUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
      * TrainingFileFilter trainingFileFilter = new TrainingFileFilter&#40;&#41;.setSubfoldersIncluded&#40;true&#41;.setPrefix&#40;&quot;Invoice&quot;&#41;;
@@ -201,7 +201,7 @@ public final class FormTrainingAsyncClient {
      *                     key, customFormModelField.getName&#40;&#41;, customFormModelField.getAccuracy&#40;&#41;&#41;&#41;&#41;;
      *     &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.v3.training.FormTrainingAsyncClient.beginTraining#string-boolean-TrainingOptions -->
+     * <!-- end com.azure.ai.formrecognizer.v3.training.FormTrainingAsyncClient.beginTraining#string-boolean-Options -->
      *
      * @param trainingFilesUrl an externally accessible Azure storage blob container Uri (preferably a
      * Shared Access Signature Uri).
@@ -713,7 +713,7 @@ public final class FormTrainingAsyncClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.v3.training.FormTrainingAsyncClient.beginCreateComposedModel#list-createComposedModelOptions -->
+     * <!-- src_embed com.azure.ai.formrecognizer.v3.training.FormTrainingAsyncClient.beginCreateComposedModel#list-Options -->
      * <pre>
      * String labeledModelId1 = &quot;5f21ab8d-71a6-42d8-9856-ef5985c486a8&quot;;
      * String labeledModelId2 = &quot;d7b0904c-841f-46f9-a9f4-3f2273eef7c9&quot;;
@@ -737,7 +737,7 @@ public final class FormTrainingAsyncClient {
      *                         key, customFormModelField.getName&#40;&#41;, customFormModelField.getAccuracy&#40;&#41;&#41;&#41;&#41;;
      *     &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.v3.training.FormTrainingAsyncClient.beginCreateComposedModel#list-createComposedModelOptions -->
+     * <!-- end com.azure.ai.formrecognizer.v3.training.FormTrainingAsyncClient.beginCreateComposedModel#list-Options -->
      *
      * @param modelIds The list of models Ids to form the composed model.
      * @param createComposedModelOptions The configurable {@link CreateComposedModelOptions options} to pass when

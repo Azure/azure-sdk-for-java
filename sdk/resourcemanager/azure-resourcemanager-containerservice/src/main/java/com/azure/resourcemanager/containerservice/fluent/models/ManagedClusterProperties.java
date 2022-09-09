@@ -51,18 +51,13 @@ public final class ManagedClusterProperties {
     /*
      * The version of Kubernetes specified by the user.
      *
-     * Both patch version <major.minor.patch> (e.g. 1.20.13) and <major.minor>
-     * (e.g. 1.20) are supported. When <major.minor> is specified, the latest
-     * supported GA patch version is chosen automatically. Updating the cluster
-     * with the same <major.minor> once it has been created (e.g. 1.14.x ->
-     * 1.14) will not trigger an upgrade, even if a newer patch version is
-     * available. When you upgrade a supported AKS cluster, Kubernetes minor
-     * versions cannot be skipped. All upgrades must be performed sequentially
-     * by major version number. For example, upgrades between 1.14.x -> 1.15.x
-     * or 1.15.x -> 1.16.x are allowed, however 1.14.x -> 1.16.x is not
-     * allowed. See [upgrading an AKS
-     * cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster) for more
-     * details.
+     * Both patch version <major.minor.patch> (e.g. 1.20.13) and <major.minor> (e.g. 1.20) are supported. When
+     * <major.minor> is specified, the latest supported GA patch version is chosen automatically. Updating the cluster
+     * with the same <major.minor> once it has been created (e.g. 1.14.x -> 1.14) will not trigger an upgrade, even if
+     * a newer patch version is available. When you upgrade a supported AKS cluster, Kubernetes minor versions cannot
+     * be skipped. All upgrades must be performed sequentially by major version number. For example, upgrades between
+     * 1.14.x -> 1.15.x or 1.15.x -> 1.16.x are allowed, however 1.14.x -> 1.16.x is not allowed. See [upgrading an AKS
+     * cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster) for more details.
      */
     @JsonProperty(value = "kubernetesVersion")
     private String kubernetesVersion;
@@ -70,10 +65,8 @@ public final class ManagedClusterProperties {
     /*
      * The version of Kubernetes the Managed Cluster is running.
      *
-     * If kubernetesVersion was a fully specified version <major.minor.patch>,
-     * this field will be exactly equal to it. If kubernetesVersion was
-     * <major.minor>, this field will contain the full <major.minor.patch>
-     * version being used.
+     * If kubernetesVersion was a fully specified version <major.minor.patch>, this field will be exactly equal to it.
+     * If kubernetesVersion was <major.minor>, this field will contain the full <major.minor.patch> version being used.
      */
     @JsonProperty(value = "currentKubernetesVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String currentKubernetesVersion;
@@ -107,14 +100,12 @@ public final class ManagedClusterProperties {
     private String privateFqdn;
 
     /*
-     * The special FQDN used by the Azure Portal to access the Managed Cluster.
-     * This FQDN is for use only by the Azure Portal and should not be used by
-     * other clients.
+     * The special FQDN used by the Azure Portal to access the Managed Cluster. This FQDN is for use only by the Azure
+     * Portal and should not be used by other clients.
      *
-     * The Azure Portal requires certain Cross-Origin Resource Sharing (CORS)
-     * headers to be sent in some responses, which Kubernetes APIServer doesn't
-     * handle by default. This special FQDN supports CORS, allowing the Azure
-     * Portal to function properly.
+     * The Azure Portal requires certain Cross-Origin Resource Sharing (CORS) headers to be sent in some responses,
+     * which Kubernetes APIServer doesn't handle by default. This special FQDN supports CORS, allowing the Azure Portal
+     * to function properly.
      */
     @JsonProperty(value = "azurePortalFQDN", access = JsonProperty.Access.WRITE_ONLY)
     private String azurePortalFqdn;
@@ -138,8 +129,7 @@ public final class ManagedClusterProperties {
     private ManagedClusterWindowsProfile windowsProfile;
 
     /*
-     * Information about a service principal identity for the cluster to use
-     * for manipulating Azure APIs.
+     * Information about a service principal identity for the cluster to use for manipulating Azure APIs.
      */
     @JsonProperty(value = "servicePrincipalProfile")
     private ManagedClusterServicePrincipalProfile servicePrincipalProfile;
@@ -154,9 +144,8 @@ public final class ManagedClusterProperties {
     /*
      * The pod identity profile of the Managed Cluster.
      *
-     * See [use AAD pod
-     * identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity)
-     * for more details on AAD pod identity integration.
+     * See [use AAD pod identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity) for more details on
+     * AAD pod identity integration.
      */
     @JsonProperty(value = "podIdentityProfile")
     private ManagedClusterPodIdentityProfile podIdentityProfile;
@@ -174,9 +163,8 @@ public final class ManagedClusterProperties {
     private Boolean enableRbac;
 
     /*
-     * (DEPRECATING) Whether to enable Kubernetes pod security policy
-     * (preview). This feature is set for removal on October 15th, 2020. Learn
-     * more at aka.ms/aks/azpodpolicy.
+     * (DEPRECATING) Whether to enable Kubernetes pod security policy (preview). This feature is set for removal on
+     * October 15th, 2020. Learn more at aka.ms/aks/azpodpolicy.
      */
     @JsonProperty(value = "enablePodSecurityPolicy")
     private Boolean enablePodSecurityPolicy;
@@ -214,8 +202,7 @@ public final class ManagedClusterProperties {
     private ManagedClusterApiServerAccessProfile apiServerAccessProfile;
 
     /*
-     * The Resource ID of the disk encryption set to use for enabling
-     * encryption at rest.
+     * The Resource ID of the disk encryption set to use for enabling encryption at rest.
      *
      * This is of the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{encryptionSetName}'
@@ -239,9 +226,8 @@ public final class ManagedClusterProperties {
     /*
      * If local accounts should be disabled on the Managed Cluster.
      *
-     * If set to true, getting static credentials will be disabled for this
-     * cluster. This must only be used on Managed Clusters that are AAD
-     * enabled. For more details see [disable local
+     * If set to true, getting static credentials will be disabled for this cluster. This must only be used on Managed
+     * Clusters that are AAD enabled. For more details see [disable local
      * accounts](https://docs.microsoft.com/azure/aks/managed-aad#disable-local-accounts-preview).
      */
     @JsonProperty(value = "disableLocalAccounts")

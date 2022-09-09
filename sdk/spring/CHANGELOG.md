@@ -1,6 +1,7 @@
 # Release History
 
 ## 4.4.0-beta.1 (Unreleased)
+Upgrade Spring Boot dependencies version to 2.7.3 and Spring Cloud dependencies version to 2021.0.3
 Upgrade Spring Boot dependencies version to 2.7.2 and Spring Cloud dependencies version to 2021.0.3.
 
 ### Spring Cloud Azure Autoconfigure
@@ -9,6 +10,17 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 #### Bugs Fixed
 - Fix bug: Cannot configure "azure" authorization client. [#30354](https://github.com/Azure/azure-sdk-for-java/issues/30354).
 - Fix parameter `requested_token_use` missing when using On behalf of process [#30359](https://github.com/Azure/azure-sdk-for-java/issues/30359).
+- Support connecting to Azure-AD via proxy. To achieve this, customer need provide a custom `RestOperation` bean. [#26493](https://github.com/Azure/azure-sdk-for-java/issues/26493).
+
+#### Features Added
+- Support auto start-up for the auto-configured Service Bus Processor Client by enabling a new property of `spring.cloud.azure.servicebus.processor.auto-startup`. [#29997](https://github.com/Azure/azure-sdk-for-java/issues/29997)
+- Configure the `spring.main.sources` with `AzureKafkaSpringCloudStreamConfiguration` class for Spring Cloud Stream Kafka Binder context, which helps developers omit customizing the property manually when leveraging Azure Identity with Kafka [#29976](https://github.com/Azure/azure-sdk-for-java/issues/29976).
+- Provide the property of `spring.cloud.azure.eventhubs.kafka.enabled` to turn of/off the OAuth2 support of Spring Cloud Azure for Event Hubs for Kafka [#30574](https://github.com/Azure/azure-sdk-for-java/issues/30574).
+
+### Spring Cloud Azure Resource Manager
+
+#### Bugs Fixed
+- Fix the Service Bus stream binder cannot automatically create Topic/Subscriptions from consumer. [#30722](https://github.com/Azure/azure-sdk-for-java/pull/30722).
 
 ## 4.3.0 (2022-06-29)
 - This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.9, 2.7.0-2.7.1. (Note: 2.5.x (x>14), 2.6.y (y>9) and 2.7.z (z>1) should be supported, but they aren't tested with this release.)
