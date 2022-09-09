@@ -12,13 +12,13 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.ManagedIdentityCredential;
-import com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreeProperties;
+import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import org.springframework.test.util.ReflectionTestUtils;
 
-import static com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreePropertiesUtils.Mapping.managedIdentityEnabled;
+import static com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessPropertiesUtils.Mapping.managedIdentityEnabled;
 import static com.azure.spring.cloud.service.implementation.kafka.KafkaOAuth2AuthenticateCallbackHandler.AZURE_TOKEN_CREDENTIAL;
 import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -93,7 +93,7 @@ class KafkaOAuth2AuthenticateCallbackHandlerTest {
         KafkaOAuth2AuthenticateCallbackHandler handler = new KafkaOAuth2AuthenticateCallbackHandler();
         handler.configure(configs, null, null);
 
-        AzureCredentialFreeProperties properties = (AzureCredentialFreeProperties) ReflectionTestUtils
+        AzurePasswordlessProperties properties = (AzurePasswordlessProperties) ReflectionTestUtils
             .getField(handler, AZURE_THIRD_PARTY_SERVICE_PROPERTIES_FIELD_NAME);
         assertTrue(properties.getCredential().isManagedIdentityEnabled());
         TokenCredential tokenCredential = (TokenCredential) ReflectionTestUtils.getField(handler, TOKEN_CREDENTIAL_FIELD_NAME);

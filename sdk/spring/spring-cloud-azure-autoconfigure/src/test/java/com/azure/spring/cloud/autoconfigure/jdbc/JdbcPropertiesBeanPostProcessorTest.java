@@ -78,7 +78,7 @@ class JdbcPropertiesBeanPostProcessorTest {
         DataSourceProperties dataSourceProperties = new DataSourceProperties();
         dataSourceProperties.setUrl(MYSQL_CONNECTION_STRING);
 
-        this.mockEnvironment.setProperty("spring.datasource.azure.credential-free-enabled", "true");
+        this.mockEnvironment.setProperty("spring.datasource.azure.passwordless-enabled", "true");
         this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties, "dataSourceProperties");
 
         String expectedJdbcUrl = enhanceJdbcUrl(
@@ -96,7 +96,7 @@ class JdbcPropertiesBeanPostProcessorTest {
         DataSourceProperties dataSourceProperties = new DataSourceProperties();
         dataSourceProperties.setUrl(MYSQL_CONNECTION_STRING);
 
-        this.mockEnvironment.setProperty("spring.datasource.azure.credential-free-enabled", "true");
+        this.mockEnvironment.setProperty("spring.datasource.azure.passwordless-enabled", "true");
         this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties, "dataSourceProperties");
 
         String expectedJdbcUrl = enhanceJdbcUrl(
@@ -117,7 +117,7 @@ class JdbcPropertiesBeanPostProcessorTest {
             + "connectionAttributes=attr1:val1";
         dataSourceProperties.setUrl(baseUrl);
 
-        this.mockEnvironment.setProperty("spring.datasource.azure.credential-free-enabled", "true");
+        this.mockEnvironment.setProperty("spring.datasource.azure.passwordless-enabled", "true");
         this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties, "dataSourceProperties");
 
         String expectedJdbcUrl = enhanceJdbcUrl(
@@ -137,7 +137,7 @@ class JdbcPropertiesBeanPostProcessorTest {
             + "connectionAttributes=attr1:val1";
         dataSourceProperties.setUrl(baseUrl);
 
-        this.mockEnvironment.setProperty("spring.datasource.azure.credential-free-enabled", "true");
+        this.mockEnvironment.setProperty("spring.datasource.azure.passwordless-enabled", "true");
         this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties, "dataSourceProperties");
 
         String expectedJdbcUrl = enhanceJdbcUrl(
@@ -154,7 +154,7 @@ class JdbcPropertiesBeanPostProcessorTest {
         String baseUrl = POSTGRESQL_CONNECTION_STRING;
         dataSourceProperties.setUrl(baseUrl);
 
-        this.mockEnvironment.setProperty("spring.datasource.azure.credential-free-enabled", "true");
+        this.mockEnvironment.setProperty("spring.datasource.azure.passwordless-enabled", "true");
         this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties, "dataSourceProperties");
 
         String expectedJdbcUrl = enhanceJdbcUrl(
@@ -175,7 +175,7 @@ class JdbcPropertiesBeanPostProcessorTest {
             + APPLICATION_NAME.getName() + "=" + APPLICATION_NAME.getDefaultValue();
         dataSourceProperties.setUrl(baseUrl);
 
-        this.mockEnvironment.setProperty("spring.datasource.azure.credential-free-enabled", "true");
+        this.mockEnvironment.setProperty("spring.datasource.azure.passwordless-enabled", "true");
         this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties, "dataSourceProperties");
 
         String expectedJdbcUrl = enhanceJdbcUrl(

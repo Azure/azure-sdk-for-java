@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.service.implementation.credentialfree;
+package com.azure.spring.cloud.service.implementation.passwordless;
 
 import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
 import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
@@ -13,21 +13,21 @@ import java.util.function.Function;
 /**
  * Store the constants for customized Azure properties with Kafka.
  */
-public final class AzureCredentialFreePropertiesUtils {
-    private AzureCredentialFreePropertiesUtils() {
+public final class AzurePasswordlessPropertiesUtils {
+    private AzurePasswordlessPropertiesUtils() {
     }
 
     private static final PropertyMapper PROPERTY_MAPPER = new PropertyMapper();
 
     public static void convertConfigMapToAzureProperties(Map<String, ?> source,
-                                                         AzureCredentialFreeProperties target) {
+                                                         AzurePasswordlessProperties target) {
         for (Mapping m : Mapping.values()) {
             PROPERTY_MAPPER.from(source.get(m.authProperty.getPropertyKey()))
                 .to(p -> m.setter.accept(target, (String) p));
         }
     }
 
-    public static void convertAzurePropertiesToConfigMap(AzureCredentialFreeProperties source,
+    public static void convertAzurePropertiesToConfigMap(AzurePasswordlessProperties source,
                                                          Map<String, String> target) {
         for (Mapping m : Mapping.values()) {
             PROPERTY_MAPPER.from(m.getter.apply(source))
@@ -75,9 +75,9 @@ public final class AzureCredentialFreePropertiesUtils {
 
         private final AuthProperty authProperty;
         private final Function<AzureProperties, String> getter;
-        private final BiConsumer<AzureCredentialFreeProperties, String> setter;
+        private final BiConsumer<AzurePasswordlessProperties, String> setter;
 
-        Mapping(AuthProperty authProperty, Function<AzureProperties, String> getter, BiConsumer<AzureCredentialFreeProperties,
+        Mapping(AuthProperty authProperty, Function<AzureProperties, String> getter, BiConsumer<AzurePasswordlessProperties,
             String> setter) {
             this.authProperty = authProperty;
             this.getter = getter;
@@ -92,7 +92,7 @@ public final class AzureCredentialFreePropertiesUtils {
             return getter;
         }
 
-        public BiConsumer<AzureCredentialFreeProperties, String> getSetter() {
+        public BiConsumer<AzurePasswordlessProperties, String> getSetter() {
             return setter;
         }
     }

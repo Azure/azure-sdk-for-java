@@ -55,6 +55,12 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <!-- TODO (zhihaoguo): Pin the version of azure-identity to 1.6.0-beta.1 for we want to use the caching ability for MI. -->
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-identity</artifactId>
+        <version>1.6.0-beta.1</version> <!-- {x-version-update;jdbc_com.azure:azure-identity;external_dependency} -->
+      </dependency>
       <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-spring-data-cosmos</artifactId>

@@ -11,8 +11,8 @@ import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConf
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.DatabaseType;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.SpringTokenCredentialProviderContextProvider;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
-import com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreeProperties;
 import com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider;
+import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
 import com.mysql.cj.conf.PropertyKey;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -35,7 +35,7 @@ class JdbcPropertiesBeanPostProcessorWithApplicationContextRunnerTest {
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureJdbcAutoConfiguration.class,
             DataSourceProperties.class,
-            AzureCredentialFreeProperties.class,
+            AzurePasswordlessProperties.class,
             AzureGlobalPropertiesAutoConfiguration.class,
             AzureTokenCredentialAutoConfiguration.class));
 
@@ -44,7 +44,7 @@ class JdbcPropertiesBeanPostProcessorWithApplicationContextRunnerTest {
         contextRunner
             .withClassLoader(new FilteredClassLoader(AzureIdentityMysqlAuthenticationPlugin.class))
             .withPropertyValues(
-                "spring.datasource.azure.credential-free-enabled=true",
+                "spring.datasource.azure.passwordless-enabled=true",
                 "spring.datasource.url=" + MYSQL_CONNECTION_STRING
             )
             .run(
@@ -62,7 +62,7 @@ class JdbcPropertiesBeanPostProcessorWithApplicationContextRunnerTest {
     void mySqlAuthPluginOnClassPath() {
         contextRunner
             .withPropertyValues(
-                "spring.datasource.azure.credential-free-enabled=true",
+                "spring.datasource.azure.passwordless-enabled=true",
                 "spring.datasource.url=" + MYSQL_CONNECTION_STRING
             )
             .run(
@@ -113,7 +113,7 @@ class JdbcPropertiesBeanPostProcessorWithApplicationContextRunnerTest {
                 assertThat(context).hasSingleBean(SpringTokenCredentialProviderContextProvider.class);
 
                 ConfigurableEnvironment environment = context.getEnvironment();
-                AzureCredentialFreeProperties properties = Binder.get(environment).bindOrCreate("spring.datasource.azure", AzureCredentialFreeProperties.class);
+                AzurePasswordlessProperties properties = Binder.get(environment).bindOrCreate("spring.datasource.azure", AzurePasswordlessProperties.class);
 
                 assertNotEquals("azure-client-id", properties.getCredential().getClientId());
                 assertEquals("fake-jdbc-client-id", properties.getCredential().getClientId());
