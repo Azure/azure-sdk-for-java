@@ -121,7 +121,6 @@ class UrlTokenizer {
                     c = currentCharacter();
                     if (c == ':') {
                         nextCharacter();
-                        c = currentCharacter();
                     }
 
                     final String port = readUntil(false);
@@ -129,7 +128,10 @@ class UrlTokenizer {
 
                     if (!hasCurrentCharacter()) {
                         state = UrlTokenizerState.DONE;
-                    } else if (c == '/') {
+                        break;
+                    }
+
+                    if (currentCharacter() == '/') {
                         state = UrlTokenizerState.PATH;
                     } else {
                         state = UrlTokenizerState.QUERY;
