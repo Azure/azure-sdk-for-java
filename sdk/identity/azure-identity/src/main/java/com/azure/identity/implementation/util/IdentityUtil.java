@@ -10,7 +10,10 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClientOptions;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 
 public final class IdentityUtil {
     private static final ClientLogger LOGGER = new ClientLogger(IdentityUtil.class);
