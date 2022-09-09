@@ -248,7 +248,8 @@ public final class CertificateClientBuilder implements
     }
 
     /**
-     * Sets the vault endpoint URL to send HTTP requests to.
+     * Sets the vault endpoint URL to send HTTP requests to. You should validate that this URL references a valid Key
+     * Vault resource. Refer to the following <a href=https://aka.ms/azsdk/blog/vault-uri>documentation</a> for details.
      *
      * @param vaultUrl The vault endpoint url is used as destination on Azure to send requests to. If you have a
      * certificate identifier, create a new {@link KeyVaultCertificateIdentifier} to parse it and obtain the

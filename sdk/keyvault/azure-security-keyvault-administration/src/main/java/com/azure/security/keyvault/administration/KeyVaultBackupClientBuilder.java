@@ -200,7 +200,9 @@ public final class KeyVaultBackupClientBuilder implements
     }
 
     /**
-     * Sets the URL to the Key Vault on which the client operates. Appears as "DNS Name" in the Azure portal.
+     * Sets the URL to the Key Vault on which the client operates. Appears as "DNS Name" in the Azure portal. You should
+     * validate that this URL references a valid Key Vault or Managed HSM resource.
+     * Refer to the following  <a href=https://aka.ms/azsdk/blog/vault-uri>documentation</a> for details.
      *
      * @param vaultUrl The vault URL is used as destination on Azure to send requests to.
      *

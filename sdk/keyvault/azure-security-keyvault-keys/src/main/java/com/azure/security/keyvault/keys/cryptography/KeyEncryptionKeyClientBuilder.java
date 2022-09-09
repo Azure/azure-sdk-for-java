@@ -118,6 +118,10 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      * {@link KeyEncryptionKeyClientBuilder#credential(TokenCredential) Azure Key Vault credentials} and
      * {@code keyId} are required to build the {@link KeyEncryptionKeyAsyncClient async client}.</p>
      *
+     * @param keyId The Azure Key Vault key identifier of the JSON Web Key stored in the key vault. You should validate
+     * that this URL references a valid Key Vault or Managed HSM resource. Refer to the following
+     * <a href=https://aka.ms/azsdk/blog/vault-uri>documentation</a> for details.
+     *
      * @return A {@link KeyEncryptionKeyAsyncClient} with the options set from the builder.
      *
      * @throws IllegalStateException If {@link KeyEncryptionKeyClientBuilder#credential(TokenCredential)} is

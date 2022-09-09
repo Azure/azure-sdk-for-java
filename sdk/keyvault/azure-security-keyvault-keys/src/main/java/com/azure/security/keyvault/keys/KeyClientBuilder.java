@@ -246,7 +246,9 @@ public final class KeyClientBuilder implements
     }
 
     /**
-     * Sets the vault endpoint URL to send HTTP requests to.
+     * Sets the vault endpoint URL to send HTTP requests to. You should validate that this URL references a valid Key
+     * Vault or Managed HSM resource. Refer to the following
+     * <a href=https://aka.ms/azsdk/blog/vault-uri>documentation</a> for details.
      *
      * @param vaultUrl The vault url is used as destination on Azure to send requests to. If you have a key identifier,
      * create a new {@link KeyVaultKeyIdentifier} to parse it and obtain the {@code vaultUrl} and other

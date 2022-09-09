@@ -291,7 +291,9 @@ public final class CryptographyClientBuilder implements
     }
 
     /**
-     * Sets the Azure Key Vault key identifier of the JSON Web Key to be used for cryptography operations.
+     * Sets the Azure Key Vault key identifier of the JSON Web Key to be used for cryptography operations. You should
+     * validate that this URL references a valid Key Vault or Managed HSM resource. Refer to the following
+     * <a href=https://aka.ms/azsdk/blog/vault-uri>documentation</a> for details.
      *
      * <p>To ensure correct behavior when performing operations such as {@code Decrypt}, {@code Unwrap} and
      * {@code Verify}, it is recommended to use a {@link CryptographyAsyncClient} or {@link CryptographyClient} created
