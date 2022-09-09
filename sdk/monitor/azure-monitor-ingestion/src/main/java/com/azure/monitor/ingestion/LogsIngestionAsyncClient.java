@@ -52,6 +52,12 @@ import static com.azure.core.util.FluxUtil.withContext;
  *
  * <p><strong>Instantiating an asynchronous Logs ingestion client</strong></p>
  * <!-- src_embed com.azure.monitor.ingestion.LogsIngestionAsyncClient.instantiation -->
+ * <pre>
+ * LogsIngestionAsyncClient logsIngestionAsyncClient = new LogsIngestionClientBuilder&#40;&#41;
+ *         .credential&#40;tokenCredential&#41;
+ *         .endpoint&#40;&quot;&lt;data-collection-endpoint&gt;&quot;&#41;
+ *         .buildAsyncClient&#40;&#41;;
+ * </pre>
  * <!-- end com.azure.monitor.ingestion.LogsIngestionAsyncClient.instantiation -->
  */
 @ServiceClient(isAsync = true, builder = LogsIngestionClientBuilder.class)
@@ -75,6 +81,11 @@ public final class LogsIngestionAsyncClient {
      *
      * <p><strong>Upload logs to Azure Monitor</strong></p>
      * <!-- src_embed com.azure.monitor.ingestion.LogsIngestionAsyncClient.upload -->
+     * <pre>
+     * List&lt;Object&gt; logs = getLogs&#40;&#41;;
+     * logsIngestionAsyncClient.upload&#40;&quot;&lt;data-collection-rule-id&gt;&quot;, &quot;&lt;stream-name&gt;&quot;, logs&#41;
+     *         .subscribe&#40;result -&gt; System.out.println&#40;&quot;Logs upload result status &quot; + result.getStatus&#40;&#41;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.monitor.ingestion.LogsIngestionAsyncClient.upload -->
      *
      * @param dataCollectionRuleId the data collection rule id that is configured to collect and transform the logs.
@@ -97,6 +108,12 @@ public final class LogsIngestionAsyncClient {
      *
      * <p><strong>Upload logs to Azure Monitor</strong></p>
      * <!-- src_embed com.azure.monitor.ingestion.LogsIngestionAsyncClient.uploadWithConcurrency -->
+     * <pre>
+     * List&lt;Object&gt; logs = getLogs&#40;&#41;;
+     * UploadLogsOptions uploadLogsOptions = new UploadLogsOptions&#40;&#41;.setMaxConcurrency&#40;4&#41;;
+     * logsIngestionAsyncClient.upload&#40;&quot;&lt;data-collection-rule-id&gt;&quot;, &quot;&lt;stream-name&gt;&quot;, logs, uploadLogsOptions&#41;
+     *         .subscribe&#40;result -&gt; System.out.println&#40;&quot;Logs upload result status &quot; + result.getStatus&#40;&#41;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.monitor.ingestion.LogsIngestionAsyncClient.uploadWithConcurrency -->
      *
      * @param dataCollectionRuleId the data collection rule id that is configured to collect and transform the logs.

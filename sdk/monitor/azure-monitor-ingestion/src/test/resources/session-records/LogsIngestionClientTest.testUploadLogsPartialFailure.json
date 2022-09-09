@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-a64851bc17714f0483d1e96b5d84953b/streams/Custom-MyTableRawData?api-version=2021-11-01-preview",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-adec84661d05465f8532f32a04af6f98/streams/Custom-MyTableRawData?api-version=2021-11-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.3 (17.0.2; Windows 10; 10.0)",
       "x-ms-client-request-id" : "f69de8fd-c4a4-469c-9331-fe21ab5f0d03",
@@ -39,7 +39,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-a64851bc17714f0483d1e96b5d84953b/streams/Custom-MyTableRawData?api-version=2021-11-01-preview",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-adec84661d05465f8532f32a04af6f98/streams/Custom-MyTableRawData?api-version=2021-11-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.3 (17.0.2; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c25a75de-3a4b-4a46-acd5-89e5cc04680d",
@@ -77,7 +77,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-a64851bc17714f0483d1e96b5d84953b/streams/Custom-MyTableRawData?api-version=2021-11-01-preview",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-adec84661d05465f8532f32a04af6f98/streams/Custom-MyTableRawData?api-version=2021-11-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.3 (17.0.2; Windows 10; 10.0)",
       "x-ms-client-request-id" : "e95e06c5-428a-40fa-b08e-325b86b91292",
@@ -115,7 +115,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-a64851bc17714f0483d1e96b5d84953b/streams/Custom-MyTableRawData?api-version=2021-11-01-preview",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-adec84661d05465f8532f32a04af6f98/streams/Custom-MyTableRawData?api-version=2021-11-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.3 (17.0.2; Windows 10; 10.0)",
       "x-ms-client-request-id" : "ddfaad19-14d4-4d6a-b0d4-5041b9a58d43",
@@ -153,7 +153,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-a64851bc17714f0483d1e96b5d84953b/streams/Custom-MyTableRawData?api-version=2021-11-01-preview",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-adec84661d05465f8532f32a04af6f98/streams/Custom-MyTableRawData?api-version=2021-11-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.3 (17.0.2; Windows 10; 10.0)",
       "x-ms-client-request-id" : "a133857d-0c98-4e82-9945-ecf100c699c6",
@@ -191,7 +191,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-a64851bc17714f0483d1e96b5d84953b/streams/Custom-MyTableRawData?api-version=2021-11-01-preview",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-adec84661d05465f8532f32a04af6f98/streams/Custom-MyTableRawData?api-version=2021-11-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.3 (17.0.2; Windows 10; 10.0)",
       "x-ms-client-request-id" : "a2c9aeac-48bb-41d1-bff0-df5a2eee5a3e",

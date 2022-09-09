@@ -31,10 +31,22 @@ import java.net.URL;
  *
  * <p><strong>Instantiating an asynchronous Logs ingestion client</strong></p>
  * <!-- src_embed com.azure.monitor.ingestion.LogsIngestionAsyncClient.instantiation -->
+ * <pre>
+ * LogsIngestionAsyncClient logsIngestionAsyncClient = new LogsIngestionClientBuilder&#40;&#41;
+ *         .credential&#40;tokenCredential&#41;
+ *         .endpoint&#40;&quot;&lt;data-collection-endpoint&gt;&quot;&#41;
+ *         .buildAsyncClient&#40;&#41;;
+ * </pre>
  * <!-- end com.azure.monitor.ingestion.LogsIngestionAsyncClient.instantiation -->
  *
  * <p><strong>Instantiating a synchronous Logs ingestion client</strong></p>
  * <!-- src_embed com.azure.monitor.ingestion.LogsIngestionClient.instantiation -->
+ * <pre>
+ * LogsIngestionClient logsIngestionClient = new LogsIngestionClientBuilder&#40;&#41;
+ *         .credential&#40;tokenCredential&#41;
+ *         .endpoint&#40;&quot;&lt;data-collection-endpoint&gt;&quot;&#41;
+ *         .buildClient&#40;&#41;;
+ * </pre>
  * <!-- end com.azure.monitor.ingestion.LogsIngestionClient.instantiation -->
  */
 @ServiceClientBuilder(serviceClients = {LogsIngestionClient.class, LogsIngestionAsyncClient.class})
