@@ -135,7 +135,7 @@ public final class SipRoutingAdminClientImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "SipRoutingAdminClien")
-    private interface SipRoutingAdminClientService {
+    public interface SipRoutingAdminClientService {
         @Get("/sip")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)

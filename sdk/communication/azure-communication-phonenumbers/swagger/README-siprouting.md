@@ -43,6 +43,7 @@ generate-client-as-impl: true
 sync-methods: all
 context-client-method-parameter: true
 add-context-parameter: true
+service-interface-as-public: true
 customization-class: src/main/java/SipRoutingCustomizations.java
 ```
 
