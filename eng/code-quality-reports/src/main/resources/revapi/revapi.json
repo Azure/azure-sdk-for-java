@@ -394,12 +394,14 @@
           "code": "java.class.removed",
           "old": "class com\\.azure\\.spring\\.cloud\\.config\\.stores\\.ClientStore",
           "justification": "Not a public api"
-        },{
+        },
+        {
           "ignore": true,
           "code": "java.class.externalClassExposedInAPI",
           "new": "interface com.azure.spring.cloud.config.AppConfigurationRefresh",
           "justification": "Thi isn't an external class"
-        },{
+        },
+        {
           "code": "java.method.parameterTypeParameterChanged",
           "old": "parameter <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::insert(java.lang.String, ===java.lang.Object===, com.azure.cosmos.models.PartitionKey)",
           "new": "parameter <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::insert(java.lang.String, ===T===, com.azure.cosmos.models.PartitionKey)",
@@ -424,6 +426,19 @@
           "code": "java.class.externalClassExposedInAPI",
           "new": "class org\\.json\\.JSON(Array|Exception|Object|Pointer|PointerException|Tokener)",
           "justification": "To support the EventHubs JedisRedisCheckpointStore constructor"
+        },
+        {
+          "regex": true,
+          "code": "java.method.numberOfParametersChanged",
+          "old": "method void com.azure.spring.cloud.config.pipline.policies.BaseAppConfigurationPolicy::<init>(java.lang.Boolean, java.lang.Boolean)",
+          "new": "method void com.azure.spring.cloud.config.pipline.policies.BaseAppConfigurationPolicy::<init>(java.lang.Boolean, java.lang.Boolean, java.lang.Integer)",
+          "justification": "Not a public api"
+        },
+        {
+          "regex": true,
+          "code": "java.field.removedWithConstant",
+          "old": "field com.azure.spring.cloud.config.properties.AppConfigurationStoreSelects.LABEL_SEPARATOR",
+          "justification": "Not a public api"
         }
       ]
     }
