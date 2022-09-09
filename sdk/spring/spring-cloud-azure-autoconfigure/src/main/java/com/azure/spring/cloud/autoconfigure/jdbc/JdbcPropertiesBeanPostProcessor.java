@@ -6,7 +6,9 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.DatabaseType;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionString;
+import com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionStringEnhancer;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
+import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreeProperties;
 import com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider;
 import org.slf4j.Logger;
@@ -21,9 +23,15 @@ import org.springframework.context.EnvironmentAware;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.util.StringUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_ATTRIBUTE_EXTENSION_VERSION;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_DELIMITER;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_KV_DELIMITER;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_NAME_CONNECTION_ATTRIBUTES;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_NAME_APPLICATION_NAME;
 import static com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider.CREDENTIAL_FREE_TOKEN_BEAN_NAME;
 
 
@@ -79,14 +87,34 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
             }
 
             try {
-                Map<String, String> enhancedProperties = buildEnhancedProperties(databaseType, properties);
-                String enhancedUrl = connectionString.enhanceConnectionString(enhancedProperties);
-                ((DataSourceProperties) bean).setUrl(enhancedUrl);
+                JdbcConnectionStringEnhancer enhancer = new JdbcConnectionStringEnhancer(connectionString);
+                enhancer.enhanceProperties(buildEnhancedProperties(databaseType, properties));
+                enhanceUserAgent(databaseType, enhancer);
+                ((DataSourceProperties) bean).setUrl(enhancer.getJdbcUrl());
             } catch (IllegalArgumentException e) {
                 LOGGER.debug("Inconsistent properties detected, skip enhancing jdbc url.");
             }
         }
         return bean;
+    }
+
+    private void enhanceUserAgent(DatabaseType databaseType, JdbcConnectionStringEnhancer enhancer) {
+        if (DatabaseType.MYSQL == databaseType) {
+            Map<String, String> enhancedAttributes = new HashMap<>();
+            enhancedAttributes.put(MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_ATTRIBUTE_EXTENSION_VERSION,
+                AzureSpringIdentifier.AZURE_SPRING_MYSQL_OAUTH);
+            enhancer.enhancePropertyAttributes(
+                MYSQL_PROPERTY_NAME_CONNECTION_ATTRIBUTES,
+                enhancedAttributes,
+                MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_DELIMITER,
+                MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_KV_DELIMITER
+            );
+        } else if (DatabaseType.POSTGRESQL == databaseType) {
+            Map<String, String> enhancedProperties = new HashMap<>();
+            enhancedProperties.put(POSTGRESQL_PROPERTY_NAME_APPLICATION_NAME,
+                AzureSpringIdentifier.AZURE_SPRING_POSTGRESQL_OAUTH);
+            enhancer.enhanceProperties(enhancedProperties, true);
+        }
     }
 
     private Map<String, String> buildEnhancedProperties(DatabaseType databaseType, AzureCredentialFreeProperties properties) {

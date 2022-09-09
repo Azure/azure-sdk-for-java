@@ -4,12 +4,18 @@
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
 import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
+import com.azure.spring.cloud.autoconfigure.implementation.jdbc.DatabaseType;
+import com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionStringUtils;
+import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_AUTH_PLUGIN_CLASS_NAME;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_ATTRIBUTE_EXTENSION_VERSION;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_KV_DELIMITER;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_NAME_AUTHENTICATION_PLUGINS;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_NAME_CONNECTION_ATTRIBUTES;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_NAME_DEFAULT_AUTHENTICATION_PLUGIN;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_NAME_SSL_MODE;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_NAME_USE_SSL;
@@ -36,7 +42,11 @@ class MySqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigura
     private static final String AUTHPROPERTY_CREDENTIAL_BEAN_NAME
         = AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.getPropertyKey() + "=" + "credentialFreeTokenCredential";
 
-    @Override
+    private static final String MYSQL_USER_AGENT = MYSQL_PROPERTY_NAME_CONNECTION_ATTRIBUTES + "="
+        + MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_ATTRIBUTE_EXTENSION_VERSION
+        + MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_KV_DELIMITER
+        + AzureSpringIdentifier.AZURE_SPRING_MYSQL_OAUTH;
+
     void pluginNotOnClassPath() {
         String connectionString = "jdbc:mysql://mysql:1234/test";
 
@@ -70,12 +80,12 @@ class MySqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigura
             .run((context) -> {
                 DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
 
-                String expectedUrl = String.format("%s?%s&%s&%s&%s&%s", connectionString,
-                    MYSQL_AUTH_PLUGIN_PROPERTY,
+                String expectedUrl = JdbcConnectionStringUtils.enhanceJdbcUrl(
+                    DatabaseType.MYSQL,
+                    false,
+                    connectionString,
                     AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
-                    MYSQL_DEFAULT_PLUGIN_PROPERTY,
-                    MYSQL_SSL_MODE_PROPERTY,
-                    MYSQL_USE_SSL_PROPERTY
+                    MYSQL_USER_AGENT
                 );
                 assertEquals(expectedUrl, dataSourceProperties.getUrl());
             });
@@ -94,15 +104,17 @@ class MySqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigura
             .run((context) -> {
                 DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
 
-                String expectedUrl = String.format("%s?%s&%s&%s&%s&%s&%s", connectionString,
+                String expectedUrl = JdbcConnectionStringUtils.enhanceJdbcUrl(
+                    DatabaseType.MYSQL,
+                    false,
+                    connectionString,
                     AUTHPROPERTY_CREDENTIAL_BEAN_NAME,
-                    MYSQL_AUTH_PLUGIN_PROPERTY,
                     AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
-                    MYSQL_DEFAULT_PLUGIN_PROPERTY,
-                    MYSQL_SSL_MODE_PROPERTY,
-                    MYSQL_USE_SSL_PROPERTY
+                    MYSQL_USER_AGENT
                 );
+
                 assertEquals(expectedUrl, dataSourceProperties.getUrl());
             });
     }
+
 }
