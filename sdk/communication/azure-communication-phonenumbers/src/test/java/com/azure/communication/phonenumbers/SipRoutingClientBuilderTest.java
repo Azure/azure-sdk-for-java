@@ -284,7 +284,7 @@ public class SipRoutingClientBuilderTest {
 
     @Test
     public void setEndpointNullThrows() {
-        assertThrows(NullPointerException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             this.clientBuilder.endpoint(null);
         });
     }

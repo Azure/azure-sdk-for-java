@@ -36,6 +36,8 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -95,11 +97,16 @@ public final class SipRoutingClientBuilder implements
      *
      * @param endpoint url of the service
      * @return The updated {@link SipRoutingClientBuilder} object.
-     * @throws NullPointerException If {@code endpoint} is {@code null}.
+     * @throws IllegalArgumentException If {@code endpoint} is {@code null} or it cannot be parsed into a valid URL.
      */
     @Override
     public SipRoutingClientBuilder endpoint(String endpoint) {
-        this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+        try {
+            new URL(endpoint);
+        } catch (MalformedURLException ex) {
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
+        }
+        this.endpoint = endpoint;
         return this;
     }
 
