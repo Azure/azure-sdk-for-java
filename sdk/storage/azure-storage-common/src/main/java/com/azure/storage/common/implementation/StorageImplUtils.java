@@ -345,6 +345,7 @@ public class StorageImplUtils {
             if (response.getRequest() != null && response.getRequest().getHttpMethod() != null
                 && response.getRequest().getHttpMethod().equals(HttpMethod.HEAD)
                 && response.getHeaders().getValue(ERROR_CODE) != null) {
+<<<<<<< Updated upstream
                 // Use a constant compiled Pattern as the match pattern is always the same and String.replaceFirst
                 // will compile the match String into a Pattern internally on each call.
                 int indexOfEmptyBody = message.indexOf("(empty body)");
@@ -353,6 +354,10 @@ public class StorageImplUtils {
                         + response.getHeaders().getValue(ERROR_CODE)
                         + message.substring(indexOfEmptyBody + 12);
                 }
+=======
+                return EMPTY_BODY_ERROR_PATTERN.matcher(message)
+                    .replaceFirst(response.getHeaders().getValue(ERROR_CODE));
+>>>>>>> Stashed changes
             }
         }
         return message;
