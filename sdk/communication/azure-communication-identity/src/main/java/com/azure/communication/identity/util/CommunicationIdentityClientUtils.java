@@ -58,13 +58,13 @@ public final class CommunicationIdentityClientUtils {
 
     public static boolean IsTokenExpirationValid(Duration expectedTokenExpiration, OffsetDateTime tokenExpiresAfter) {
 
-        var expectedExpiration = expectedTokenExpiration == null ? Duration.ofDays(1) : expectedTokenExpiration;
+        Duration expectedExpiration = expectedTokenExpiration == null ? Duration.ofDays(1) : expectedTokenExpiration;
 
-        var utcDateTimeNow = OffsetDateTime.now(Clock.systemUTC());
-        var tokenSeconds = ChronoUnit.SECONDS.between(utcDateTimeNow, tokenExpiresAfter);
-        var expectedTime = expectedExpiration.toSeconds();
-        var timeDiff = Math.abs(expectedTime - tokenSeconds);
-        var allowedTimeDiff = expectedTime * 0.05;
+        OffsetDateTime utcDateTimeNow = OffsetDateTime.now(Clock.systemUTC());
+        long tokenSeconds = ChronoUnit.SECONDS.between(utcDateTimeNow, tokenExpiresAfter);
+        long expectedTime = expectedExpiration.toSeconds();
+        long timeDiff = Math.abs(expectedTime - tokenSeconds);
+        double allowedTimeDiff = expectedTime * 0.05;
         return timeDiff < allowedTimeDiff;
     }
 
