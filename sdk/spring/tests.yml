@@ -4,6 +4,11 @@ stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       SupportedClouds: 'Public,UsGov,China'
+      MatrixConfigs:
+        - Name: Cosmos_live_test
+          Path: sdk/spring/platform-matrix.json
+          Selection: all
+          GenerateVMJobs: true
       TestResourceDirectories:
         - spring/spring-cloud-azure-integration-tests/test-resources/appconfiguration
         - spring/spring-cloud-azure-integration-tests/test-resources/cosmos
@@ -21,6 +26,8 @@ stages:
           safeName: azurespringdatacosmostest
       TimeoutInMinutes: 240
       ServiceDirectory: spring
+      PreSteps:
+        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
       TestName: IntegrationTestInAzureGlobal
       TestGoals: 'verify'
       TestOptions: '-DskipSpringITs=false'
