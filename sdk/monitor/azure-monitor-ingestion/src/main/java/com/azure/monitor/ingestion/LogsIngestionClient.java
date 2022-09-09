@@ -151,7 +151,7 @@ public final class LogsIngestionClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> uploadWithResponse(
+    public Response<Void> uploadWithResponse(
             String dataCollectionRuleId, String streamName, BinaryData logs, RequestOptions requestOptions) {
         return asyncClient.uploadWithResponse(dataCollectionRuleId, streamName, logs, requestOptions).block();
     }

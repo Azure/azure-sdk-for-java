@@ -162,7 +162,7 @@ public final class LogsIngestionAsyncClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> uploadWithResponse(
+    public Mono<Response<Void>> uploadWithResponse(
             String dataCollectionRuleId, String streamName, BinaryData logs, RequestOptions requestOptions) {
         Objects.requireNonNull(dataCollectionRuleId, "'dataCollectionRuleId' cannot be null.");
         Objects.requireNonNull(dataCollectionRuleId, "'streamName' cannot be null.");
