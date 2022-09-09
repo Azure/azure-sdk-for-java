@@ -4,11 +4,20 @@
 
 ### Features Added
 
+* Added Geo-Replication support, only supported using endpoints.
+
+Added `spring.cloud.azure.appconfiguration.stores[0].endpoints` which enables listing of multiple endpoints. See MSDocs or README for more details.
+
 ### Breaking Changes
+
+N/A
 
 ### Bugs Fixed
 
+N/A
+
 ### Other Changes
+
 
 ## 2.8.0 (2022-06-29)
 - This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.9, 2.7.0-2.7.1. (Note: 2.5.x (x>14), 2.6.y (y>9) and 2.7.z (z>1) should be supported, but they aren't tested with this release.)
