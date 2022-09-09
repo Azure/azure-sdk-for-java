@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for RestorableMongodbResources List. */
 public final class RestorableMongodbResourcesListSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBRestorableMongodbResourceList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBRestorableMongodbResourceList.json
      */
     /**
      * Sample code: CosmosDBRestorableMongodbResourceList.

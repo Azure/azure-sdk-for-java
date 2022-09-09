@@ -120,6 +120,36 @@
       "ignore": true,
       "differences": [
         {
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method void com.azure.spring.cloud.autoconfigure.aad.AadAuthenticationFilterAutoConfiguration::<init>(com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties, org.springframework.web.client.RestOperations)",
+          "justification": "The change is expected. This will not be used by customer's java code directly."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method void com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration::<init>(org.springframework.web.client.RestOperations)",
+          "justification": "The change is expected. This will not be used by customer's java code directly."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method void com.azure.spring.cloud.autoconfigure.aad.configuration.AadResourceServerConfiguration::<init>(org.springframework.web.client.RestOperations)",
+          "justification": "The change is expected. This will not be used by customer's java code directly."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method void com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfiguration::<init>(com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties, org.springframework.web.client.RestOperations)",
+          "justification": "The change is expected. This will not be used by customer's java code directly."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector<com.nimbusds.jose.proc.SecurityContext> com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfiguration::aadIssuerJwsKeySelector(com.azure.spring.cloud.autoconfigure.aad.AadTrustedIssuerRepository, com.nimbusds.jose.util.ResourceRetriever)",
+          "justification": "The change is expected. This will not be used by customer's java code directly."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method void com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cOAuth2ClientConfiguration::<init>(com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties, org.springframework.web.client.RestOperations)",
+          "justification": "The change is expected. This will not be used by customer's java code directly."
+        },
+        {
           "code": "java.annotation.attributeValueChanged",
           "new": "class com.azure.spring.cloud.autoconfigure.aad.AadAuthenticationFilterAutoConfiguration",
           "justification": "The change is expected. This is bean definition class, will not be used by customer's java code directly."
