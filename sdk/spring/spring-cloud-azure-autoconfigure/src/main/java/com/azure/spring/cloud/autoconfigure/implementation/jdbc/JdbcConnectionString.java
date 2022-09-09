@@ -7,13 +7,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.NONE_VALUE;
-
+/**
+ * A connection string to describe the JDBC connection URL. The JDBC connection
+ * string consists of the database type of this JDBC URL, the connection properties
+ * such as credential properties, authentication plugins, or connection attributes.
+ */
 public final class JdbcConnectionString {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcConnectionString.class);
@@ -23,41 +29,43 @@ public final class JdbcConnectionString {
         + "supported to enhance authentication with Azure AD by Spring Cloud Azure.";
     public static final String INVALID_PROPERTY_PAIR_FORMAT = "Connection string has invalid key value pair: %s";
     private static final String TOKEN_VALUE_SEPARATOR = "=";
-    private final String jdbcURL;
+    private final String jdbcUrl;
     private final Map<String, String> properties = new HashMap<>();
     private DatabaseType databaseType = null;
+    private String baseUrl = null;
+    private final List<String> orderedPropertyKeys = new ArrayList<>();
 
-    private JdbcConnectionString(String jdbcURL) {
-        this.jdbcURL = jdbcURL;
+    private JdbcConnectionString(String jdbcUrl) {
+        this.jdbcUrl = jdbcUrl;
     }
 
+    /**
+     * Resolve the database type, connection properties from the JDBC URL.
+     * The supported database types are those in {@link DatabaseType}, if a URL of
+     * any other database types is provided, an {@link AzureUnsupportedDatabaseTypeException}
+     * will be thrown. If any illegal properties are detected, an {@link IllegalArgumentException}
+     * will be thrown.
+     */
     private void resolveSegments() {
-        if (!StringUtils.hasText(this.jdbcURL)) {
+        if (!StringUtils.hasText(this.jdbcUrl)) {
             LOGGER.warn("'connectionString' doesn't have text.");
-            throw new IllegalArgumentException(String.format(INVALID_CONNECTION_STRING_FORMAT, this.jdbcURL));
+            throw new IllegalArgumentException(String.format(INVALID_CONNECTION_STRING_FORMAT, this.jdbcUrl));
         }
 
         Optional<DatabaseType> optionalDatabaseType = Arrays.stream(DatabaseType.values())
-                                                            .filter(databaseType -> this.jdbcURL.startsWith(databaseType.getSchema()))
+                                                            .filter(databaseType -> this.jdbcUrl.startsWith(databaseType.getSchema() + ":"))
                                                             .findAny();
-        this.databaseType = optionalDatabaseType.orElseThrow(() -> new AzureUnsupportedDatabaseTypeException(String.format(UNSUPPORTED_DATABASE_TYPE_STRING_FORMAT, this.jdbcURL)));
+        this.databaseType = optionalDatabaseType.orElseThrow(() -> new AzureUnsupportedDatabaseTypeException(String.format(UNSUPPORTED_DATABASE_TYPE_STRING_FORMAT, this.jdbcUrl)));
 
-        int pathQueryDelimiterIndex = this.jdbcURL.indexOf(this.databaseType.getPathQueryDelimiter());
+        int pathQueryDelimiterIndex = this.jdbcUrl.indexOf(this.databaseType.getPathQueryDelimiter());
 
         if (pathQueryDelimiterIndex < 0) {
+            this.baseUrl = jdbcUrl;
             return;
         }
 
-        String hostInfo = this.jdbcURL.substring(databaseType.getSchema().length() + 3, pathQueryDelimiterIndex);
-        String[] hostInfoArray = hostInfo.split(":");
-        if (hostInfoArray.length == 2) {
-            this.properties.put("servername", hostInfoArray[0]);
-            this.properties.put("port", hostInfoArray[1]);
-        } else {
-            this.properties.put("servername", hostInfo);
-        }
-
-        String properties = this.jdbcURL.substring(pathQueryDelimiterIndex + 1);
+        this.baseUrl = this.jdbcUrl.substring(0, pathQueryDelimiterIndex);
+        String properties = this.jdbcUrl.substring(pathQueryDelimiterIndex + 1);
 
         final String[] tokenValuePairs = properties.split(this.databaseType.getQueryDelimiter());
 
@@ -68,58 +76,36 @@ public final class JdbcConnectionString {
                 throw new IllegalArgumentException(String.format(INVALID_PROPERTY_PAIR_FORMAT, tokenValuePair));
             }
             if (pair.length < 2) {
-                this.properties.put(key, NONE_VALUE);
+                this.properties.put(key, null);
             } else {
                 this.properties.put(key, pair[1]);
             }
+            this.orderedPropertyKeys.add(key);
         }
     }
 
-    public String enhanceConnectionString(Map<String, String> enhancedProperties) {
-        if (enhancedProperties == null || enhancedProperties.isEmpty()) {
-            return this.jdbcURL;
-        }
-        LOGGER.debug("Trying to enhance jdbc url for {}", databaseType);
-
-        StringBuilder builder = new StringBuilder(this.jdbcURL);
-
-        if (!this.hasProperties()) {
-            builder.append(databaseType.getPathQueryDelimiter());
-        } else {
-            builder.append(databaseType.getQueryDelimiter());
-        }
-
-        for (Map.Entry<String, String> entry : enhancedProperties.entrySet()) {
-            String key = entry.getKey(), value = entry.getValue();
-            String valueProvidedInConnectionString = this.getProperty(key);
-
-            if (valueProvidedInConnectionString == null) {
-                builder.append(key)
-                    .append("=")
-                    .append(value)
-                    .append(databaseType.getQueryDelimiter());
-            } else if (!value.equals(valueProvidedInConnectionString)) {
-                LOGGER.debug("The property {} is set to another value than default {}", key, value);
-                throw new IllegalArgumentException("Inconsistent property detected");
-            } else {
-                LOGGER.debug("The property {} is already set", key);
-            }
-        }
-
-        String enhancedUrl = builder.toString();
-        return enhancedUrl.substring(0, enhancedUrl.length() - 1);
-    }
-
-    public String getProperty(String key) {
-        return this.properties.get(key);
+    public String getJdbcUrl() {
+        return jdbcUrl;
     }
 
     public DatabaseType getDatabaseType() {
         return databaseType;
     }
 
-    public boolean hasProperties() {
-        return !this.properties.isEmpty();
+    String getBaseUrl() {
+        return baseUrl;
+    }
+
+    String getProperty(String key) {
+        return properties.get(key);
+    }
+
+    Map<String, String> getProperties() {
+        return Collections.unmodifiableMap(this.properties);
+    }
+
+    List<String> getOrderedPropertyKeys() {
+        return Collections.unmodifiableList(this.orderedPropertyKeys);
     }
 
     public static JdbcConnectionString resolve(String url) {
