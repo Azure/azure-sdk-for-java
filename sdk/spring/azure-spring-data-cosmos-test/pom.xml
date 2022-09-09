@@ -21,10 +21,6 @@
   <properties>
     <java.version>17</java.version>
     <skipSpringITs>true</skipSpringITs>
-    <azure.test.resourcegroup>azure-spring-data-cosmos-test</azure.test.resourcegroup>
-    <azure.test.dbname>testdb-${maven.build.timestamp}</azure.test.dbname>
-    <test.on.azure>false</test.on.azure>
-    <test.on.emualator>false</test.on.emualator>
   </properties>
 
   <!-- Repositories definitions -->
@@ -97,64 +93,23 @@
         <artifactId>maven-failsafe-plugin</artifactId>
         <version>3.0.0-M7</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
         <configuration>
-          <systemPropertiesFile>src/test/resources/application.properties</systemPropertiesFile>
-          <skipITs>${skip.integration.tests}</skipITs>
+          <excludes>
+            <!--Excluding PageablePersonRepositoryIT test class, as it creates large documents which are not suitable for emulator-->
+            <exclude>**/PageablePersonRepositoryIT.java</exclude>
+          </excludes>
         </configuration>
         <executions>
           <execution>
-            <id>integration-test</id>
+            <id>default</id>
             <goals>
               <goal>integration-test</goal>
-              <goal>verify</goal>
             </goals>
+            <configuration>
+              <skipITs>${skipSpringITs}</skipITs>
+            </configuration>
           </execution>
         </executions>
       </plugin>
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>integration-test-azure</id>
-      <properties>
-        <build.profile.id>integration-test-azure</build.profile.id>
-        <test.on.azure>true</test.on.azure>
-        <test.on.emulator>false</test.on.emulator>
-      </properties>
-    </profile>
-    <profile>
-      <id>integration-test-emulator</id>
-      <properties>
-        <build.profile.id>integration-test-emulator</build.profile.id>
-        <test.on.azure>false</test.on.azure>
-        <test.on.emulator>true</test.on.emulator>
-      </properties>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.0.0-M7</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
-            <configuration>
-              <excludes>
-                <!--Excluding PageablePersonRepositoryIT test class, as it creates large documents which are not suitable for emulator-->
-                <exclude>**/PageablePersonRepositoryIT.java</exclude>
-              </excludes>
-            </configuration>
-            <executions>
-              <execution>
-                <id>default</id>
-                <goals>
-                  <goal>integration-test</goal>
-                </goals>
-                <configuration>
-                  <skipITs>${skipSpringITs}</skipITs>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 </project>
