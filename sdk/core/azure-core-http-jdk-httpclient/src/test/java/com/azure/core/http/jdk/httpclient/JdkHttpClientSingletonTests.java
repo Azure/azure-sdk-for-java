@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 @DisabledForJreRange(max = JRE.JAVA_11)
 @Execution(ExecutionMode.SAME_THREAD) // because singleton http client, it can avoid race condition.
-public class JdkAsyncHttpClientSingletonTests {
+public class JdkHttpClientSingletonTests {
     private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
 
     @Test

@@ -5,6 +5,7 @@ package com.azure.xml;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
+import java.io.IOException;
 import java.util.Base64;
 import java.util.Objects;
 import java.util.function.Function;
@@ -234,7 +235,15 @@ public abstract class XmlReader implements AutoCloseable {
     public final <T> T getNullableElement(XMLStreamExceptionFunction<String, T> converter) throws XMLStreamException {
         String textValue = getStringElement();
 
-        return textValue == null ? null : converter.apply(textValue);
+        if (textValue == null) {
+            return null;
+        }
+
+        try {
+            return converter.apply(textValue);
+        } catch (IOException ex) {
+            throw new XMLStreamException(ex);
+        }
     }
 
     /**
@@ -293,7 +302,11 @@ public abstract class XmlReader implements AutoCloseable {
                 + tagName + "'.");
         }
 
-        return converter.apply(this);
+        try {
+            return converter.apply(this);
+        } catch (IOException ex) {
+            throw new XMLStreamException(ex);
+        }
     }
 
     /**

@@ -148,8 +148,6 @@ public class ShareFileAsyncClient {
     private static final ClientLogger LOGGER = new ClientLogger(ShareFileAsyncClient.class);
     static final long FILE_DEFAULT_BLOCK_SIZE = 4 * 1024 * 1024L;
     static final long FILE_MAX_PUT_RANGE_SIZE = 4 * Constants.MB;
-    private static final long DOWNLOAD_UPLOAD_CHUNK_TIMEOUT = 300;
-    private static final Duration TIMEOUT_VALUE = Duration.ofSeconds(60);
 
     private final AzureFileStorageImpl azureFileStorageClient;
     private final String shareName;
@@ -993,7 +991,6 @@ public class ShareFileAsyncClient {
                 .flatMap(fbb -> FluxUtil
                     .writeFile(fbb, channel, chunk.getStart() - (range == null ? 0 : range.getStart()))
                     .subscribeOn(Schedulers.boundedElastic())
-                    .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
                     .retryWhen(Retry.max(3).filter(throwable -> throwable instanceof IOException
                         || throwable instanceof TimeoutException))))
             .then(Mono.just(response));
@@ -1165,7 +1162,7 @@ public class ShareFileAsyncClient {
                 }
 
                 Flux<ByteBuffer> bufferFlux  = FluxUtil.createRetriableDownloadFlux(
-                    () -> response.getValue().timeout(TIMEOUT_VALUE),
+                    () -> response.getValue(),
                     (throwable, offset) -> {
                         if (!(throwable instanceof IOException || throwable instanceof TimeoutException)) {
                             return Flux.error(throwable);
@@ -1192,7 +1189,7 @@ public class ShareFileAsyncClient {
                                 requestConditions, context).flatMapMany(r -> {
                                     String receivedETag = ModelHelper.getETag(r.getHeaders());
                                     if (eTag != null && eTag.equals(receivedETag)) {
-                                        return r.getValue().timeout(TIMEOUT_VALUE);
+                                        return r.getValue();
                                     } else {
                                         return Flux.<ByteBuffer>error(
                                             new ConcurrentModificationException(String.format("File has been modified "
@@ -2579,7 +2576,6 @@ public class ShareFileAsyncClient {
                     .flatMap(chunk -> uploadWithResponse(FluxUtil.readFile(channel, chunk.getStart(),
                         chunk.getEnd() - chunk.getStart() + 1), chunk.getEnd() - chunk.getStart() + 1,
                         chunk.getStart(), requestConditions)
-                        .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
                         .retryWhen(Retry.max(3).filter(throwable -> throwable instanceof IOException
                             || throwable instanceof TimeoutException)))
                     .then(), this::channelCleanUp);

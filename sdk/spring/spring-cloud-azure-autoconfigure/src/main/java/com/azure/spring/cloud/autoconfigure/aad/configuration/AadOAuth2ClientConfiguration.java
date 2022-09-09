@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.aad.configuration;
 
 import com.azure.spring.cloud.autoconfigure.aad.AadClientRegistrationRepository;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestOperationConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ClientRestOperationConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.ClientCertificatePropertiesCondition;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.ClientRegistrationCondition;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.AadJwtClientAuthenticationParametersConverter;
@@ -16,6 +16,7 @@ import com.azure.spring.cloud.autoconfigure.aad.implementation.webapp.AadAzureDe
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import com.nimbusds.jose.jwk.JWK;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
@@ -39,6 +40,8 @@ import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedCli
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.web.client.RestOperations;
 
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ClientRestOperationConfiguration.AAD_OAUTH_2_CLIENT_REST_OPERATION_BEAN_NAME;
+
 /**
  * <p>
  * The configuration will not be activated if no {@link ClientRegistration} classes provided.
@@ -46,8 +49,20 @@ import org.springframework.web.client.RestOperations;
  */
 @Configuration(proxyBeanMethods = false)
 @Conditional(ClientRegistrationCondition.class)
-@Import(AadRestOperationConfiguration.class)
+@Import(AadOauth2ClientRestOperationConfiguration.class)
 public class AadOAuth2ClientConfiguration {
+
+    private final RestOperations restOperations;
+
+    /**
+     * Creates a new instance of {@link AadOAuth2ClientConfiguration}.
+     *
+     * @param restOperations the restOperations
+     */
+    public AadOAuth2ClientConfiguration(
+            @Qualifier(AAD_OAUTH_2_CLIENT_REST_OPERATION_BEAN_NAME) RestOperations restOperations) {
+        this.restOperations = restOperations;
+    }
 
     /**
      * Declare ClientRegistrationRepository bean.
@@ -90,7 +105,6 @@ public class AadOAuth2ClientConfiguration {
     /**
      * Declare OAuth2AuthorizedClientManager bean.
      *
-     * @param aadAuthRestOperations the RestOperation used to connect Azure AD
      * @param clientRegistrations the client registration repository
      * @param authorizedClients the OAuth2 authorized client repository
      * @param refreshTokenProvider the refresh token grant type provider
@@ -101,7 +115,6 @@ public class AadOAuth2ClientConfiguration {
     @Bean
     @ConditionalOnMissingBean
     OAuth2AuthorizedClientManager authorizedClientManager(
-            RestOperations aadAuthRestOperations,
             ClientRegistrationRepository clientRegistrations,
             OAuth2AuthorizedClientRepository authorizedClients,
             RefreshTokenOAuth2AuthorizedClientProvider refreshTokenProvider,
@@ -117,10 +130,8 @@ public class AadOAuth2ClientConfiguration {
                 .builder()
                 .authorizationCode()
                 .clientCredentials(builder ->
-                    clientCredentialsGrantBuilderAccessTokenResponseClientCustomizer(
-                            aadAuthRestOperations, builder, jwkResolver))
-                .password(builder -> passwordGrantBuilderAccessTokenResponseClientCustomizer(
-                        aadAuthRestOperations, builder, jwkResolver))
+                    clientCredentialsGrantBuilderAccessTokenResponseClientCustomizer(builder, jwkResolver))
+                .password(builder -> passwordGrantBuilderAccessTokenResponseClientCustomizer(builder, jwkResolver))
                 .provider(refreshTokenProvider)
                 .provider(jwtBearerProvider)
                 .provider(azureDelegatedOAuth2AuthorizedClientProvider(refreshTokenProvider, authorizedClients))
@@ -133,7 +144,6 @@ public class AadOAuth2ClientConfiguration {
     @Bean
     @ConditionalOnMissingBean
     JwtBearerOAuth2AuthorizedClientProvider azureAdJwtBearerProvider(
-            RestOperations aadAuthRestOperations,
             ObjectProvider<OAuth2ClientAuthenticationJwkResolver> resolvers) {
         JwtBearerOAuth2AuthorizedClientProvider provider = new JwtBearerOAuth2AuthorizedClientProvider();
         OAuth2ClientAuthenticationJwkResolver resolver = resolvers.getIfUnique();
@@ -142,7 +152,7 @@ public class AadOAuth2ClientConfiguration {
             jwtBearerConverter.addParametersConverter(new AadJwtClientAuthenticationParametersConverter<>(resolver::resolve));
         }
         DefaultJwtBearerTokenResponseClient responseClient = new DefaultJwtBearerTokenResponseClient();
-        responseClient.setRestOperations(aadAuthRestOperations);
+        responseClient.setRestOperations(restOperations);
         responseClient.setRequestEntityConverter(jwtBearerConverter);
         provider.setAccessTokenResponseClient(responseClient);
         return provider;
@@ -151,7 +161,6 @@ public class AadOAuth2ClientConfiguration {
     @Bean
     @ConditionalOnMissingBean
     RefreshTokenOAuth2AuthorizedClientProvider azureRefreshTokenProvider(
-            RestOperations aadAuthRestOperations,
             ObjectProvider<OAuth2ClientAuthenticationJwkResolver> resolvers) {
         RefreshTokenOAuth2AuthorizedClientProvider provider = new RefreshTokenOAuth2AuthorizedClientProvider();
         OAuth2ClientAuthenticationJwkResolver resolver = resolvers.getIfUnique();
@@ -160,7 +169,7 @@ public class AadOAuth2ClientConfiguration {
             converter.addParametersConverter(new AadJwtClientAuthenticationParametersConverter<>(resolver::resolve));
 
             DefaultRefreshTokenTokenResponseClient responseClient = new DefaultRefreshTokenTokenResponseClient();
-            responseClient.setRestOperations(aadAuthRestOperations);
+            responseClient.setRestOperations(restOperations);
             responseClient.setRequestEntityConverter(converter);
             provider.setAccessTokenResponseClient(responseClient);
         }
@@ -168,7 +177,6 @@ public class AadOAuth2ClientConfiguration {
     }
 
     private void passwordGrantBuilderAccessTokenResponseClientCustomizer(
-            RestOperations aadAuthRestOperations,
             OAuth2AuthorizedClientProviderBuilder.PasswordGrantBuilder builder,
             OAuth2ClientAuthenticationJwkResolver resolver) {
         if (resolver != null) {
@@ -176,7 +184,7 @@ public class AadOAuth2ClientConfiguration {
             converter.addParametersConverter(new AadJwtClientAuthenticationParametersConverter<>(resolver::resolve));
 
             DefaultPasswordTokenResponseClient client = new DefaultPasswordTokenResponseClient();
-            client.setRestOperations(aadAuthRestOperations);
+            client.setRestOperations(restOperations);
             client.setRequestEntityConverter(converter);
 
             builder.accessTokenResponseClient(client);
@@ -184,7 +192,6 @@ public class AadOAuth2ClientConfiguration {
     }
 
     private void clientCredentialsGrantBuilderAccessTokenResponseClientCustomizer(
-            RestOperations aadAuthRestOperations,
             OAuth2AuthorizedClientProviderBuilder.ClientCredentialsGrantBuilder builder,
             OAuth2ClientAuthenticationJwkResolver resolver) {
         if (resolver != null) {
@@ -193,7 +200,7 @@ public class AadOAuth2ClientConfiguration {
             converter.addParametersConverter(new AadJwtClientAuthenticationParametersConverter<>(resolver::resolve));
 
             DefaultClientCredentialsTokenResponseClient client = new DefaultClientCredentialsTokenResponseClient();
-            client.setRestOperations(aadAuthRestOperations);
+            client.setRestOperations(restOperations);
             client.setRequestEntityConverter(converter);
 
             builder.accessTokenResponseClient(client);

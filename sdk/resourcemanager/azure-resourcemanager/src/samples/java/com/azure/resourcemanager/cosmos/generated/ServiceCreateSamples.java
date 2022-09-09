@@ -12,7 +12,7 @@ import com.azure.resourcemanager.cosmos.models.ServiceType;
 /** Samples for Service Create. */
 public final class ServiceCreateSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBSqlDedicatedGatewayServiceCreate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBSqlDedicatedGatewayServiceCreate.json
      */
     /**
      * Sample code: SqlDedicatedGatewayServiceCreate.
@@ -37,7 +37,7 @@ public final class ServiceCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBDataTransferServiceCreate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDataTransferServiceCreate.json
      */
     /**
      * Sample code: DataTransferServiceCreate.
@@ -62,7 +62,7 @@ public final class ServiceCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBMaterializedViewsBuilderServiceCreate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBMaterializedViewsBuilderServiceCreate.json
      */
     /**
      * Sample code: MaterializedViewsBuilderServiceCreate.
@@ -87,7 +87,7 @@ public final class ServiceCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBGraphAPIComputeServiceCreate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBGraphAPIComputeServiceCreate.json
      */
     /**
      * Sample code: GraphAPIComputeServiceCreate.
