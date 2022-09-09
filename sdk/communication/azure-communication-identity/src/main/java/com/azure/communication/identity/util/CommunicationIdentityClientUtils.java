@@ -62,7 +62,7 @@ public final class CommunicationIdentityClientUtils {
 
         OffsetDateTime utcDateTimeNow = OffsetDateTime.now(Clock.systemUTC());
         long tokenSeconds = ChronoUnit.SECONDS.between(utcDateTimeNow, tokenExpiresAfter);
-        long expectedTime = expectedExpiration.toSeconds();
+        long expectedTime = expectedExpiration.getSeconds();
         long timeDiff = Math.abs(expectedTime - tokenSeconds);
         double allowedTimeDiff = expectedTime * 0.05;
         return timeDiff < allowedTimeDiff;
