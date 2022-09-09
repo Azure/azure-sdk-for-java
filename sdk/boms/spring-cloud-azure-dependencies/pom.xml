@@ -55,6 +55,7 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <!-- TODO (zhihaoguo): specify the version of azure-identity, we need to remove this before merging into main -->
       <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-identity</artifactId>

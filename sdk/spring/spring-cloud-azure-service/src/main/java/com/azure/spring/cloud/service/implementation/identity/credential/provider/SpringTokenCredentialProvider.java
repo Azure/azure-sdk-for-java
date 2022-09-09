@@ -18,7 +18,7 @@ import java.util.Objects;
 public class SpringTokenCredentialProvider implements TokenCredentialProvider, ApplicationContextAware {
 
     public static final String DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME = "springCloudAzureDefaultCredential";
-    public static final String PASSWORDLESS_TOKEN_BEAN_NAME = "passwordlessTokenCredential";
+    public static final String PASSWORDLESS_TOKEN_CREDENTIAL_BEAN_NAME = "passwordlessTokenCredential";
     private static ApplicationContext globalApplicationContext;
     private ApplicationContext applicationContext;
     private String tokenCredentialBeanName = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;

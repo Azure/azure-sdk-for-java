@@ -24,7 +24,7 @@ import org.springframework.util.StringUtils;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider.PASSWORDLESS_TOKEN_BEAN_NAME;
+import static com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider.PASSWORDLESS_TOKEN_CREDENTIAL_BEAN_NAME;
 
 
 /**
@@ -96,8 +96,8 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
 
         if (tokenCredential != null) {
             LOGGER.debug("Add SpringTokenCredentialProvider as the default token credential provider.");
-            AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.setProperty(result, PASSWORDLESS_TOKEN_BEAN_NAME);
-            applicationContext.registerBean(PASSWORDLESS_TOKEN_BEAN_NAME, TokenCredential.class, () -> tokenCredential);
+            AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.setProperty(result, PASSWORDLESS_TOKEN_CREDENTIAL_BEAN_NAME);
+            applicationContext.registerBean(PASSWORDLESS_TOKEN_CREDENTIAL_BEAN_NAME, TokenCredential.class, () -> tokenCredential);
         }
 
         AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.setProperty(result, SPRING_TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME);
