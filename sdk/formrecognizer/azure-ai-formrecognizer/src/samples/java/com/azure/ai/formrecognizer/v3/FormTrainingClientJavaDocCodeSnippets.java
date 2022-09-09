@@ -58,7 +58,7 @@ public class FormTrainingClientJavaDocCodeSnippets {
      * with options
      */
     public void beginTrainingWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.v3.training.FormTrainingClient.beginTraining#string-boolean-TrainingOptions-Context
+        // BEGIN: com.azure.ai.formrecognizer.v3.training.FormTrainingClient.beginTraining#string-boolean-Options-Context
         String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         TrainingFileFilter trainingFileFilter = new TrainingFileFilter().setSubfoldersIncluded(false).setPrefix("Invoice");
         boolean useTrainingLabels = true;
@@ -76,7 +76,7 @@ public class FormTrainingClientJavaDocCodeSnippets {
                 .forEach((key, customFormModelField) ->
                     System.out.printf("Form Type: %s Field Text: %s Field Accuracy: %f%n",
                         key, customFormModelField.getName(), customFormModelField.getAccuracy())));
-        // END: com.azure.ai.formrecognizer.v3.training.FormTrainingClient.beginTraining#string-boolean-TrainingOptions-Context
+        // END: com.azure.ai.formrecognizer.v3.training.FormTrainingClient.beginTraining#string-boolean-Options-Context
     }
 
     /**
@@ -314,7 +314,7 @@ public class FormTrainingClientJavaDocCodeSnippets {
      * with options
      */
     public void beginCreateComposedModelWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.v3.training.FormTrainingClient.beginCreateComposedModel#list-CreateComposedModelOptions-Context
+        // BEGIN: com.azure.ai.formrecognizer.v3.training.FormTrainingClient.beginCreateComposedModel#list-Options-Context
         String labeledModelId1 = "5f21ab8d-71a6-42d8-9856-ef5985c486a8";
         String labeledModelId2 = "d7b0904c-841f-46f9-a9f4-3f2273eef7c9";
         final CustomFormModel customFormModel =
@@ -334,6 +334,6 @@ public class FormTrainingClientJavaDocCodeSnippets {
                 .forEach((key, customFormModelField) ->
                     System.out.printf("Form type: %s Field Text: %s Field Accuracy: %f%n",
                         key, customFormModelField.getName(), customFormModelField.getAccuracy())));
-        // END: com.azure.ai.formrecognizer.v3.training.FormTrainingClient.beginCreateComposedModel#list-CreateComposedModelOptions-Context
+        // END: com.azure.ai.formrecognizer.v3.training.FormTrainingClient.beginCreateComposedModel#list-Options-Context
     }
 }
