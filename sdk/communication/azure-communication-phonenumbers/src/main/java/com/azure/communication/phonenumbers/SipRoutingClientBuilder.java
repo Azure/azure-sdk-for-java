@@ -273,12 +273,11 @@ public final class SipRoutingClientBuilder implements
      *
      * @param clientOptions A configured instance of {@link HttpClientOptions}.
      * @return The updated {@link SipRoutingClientBuilder} object.
-     * @throws NullPointerException If {@code clientOptions} is {@code null}.
      * @see HttpClientOptions
      */
     @Override
     public SipRoutingClientBuilder clientOptions(ClientOptions clientOptions) {
-        this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
+        this.clientOptions = clientOptions;
         return this;
     }
 
