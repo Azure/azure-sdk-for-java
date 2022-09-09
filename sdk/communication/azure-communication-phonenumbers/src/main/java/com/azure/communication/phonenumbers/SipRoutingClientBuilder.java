@@ -19,12 +19,14 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
@@ -90,7 +92,8 @@ public final class SipRoutingClientBuilder implements
     private ClientOptions clientOptions;
     private RetryPolicy retryPolicy;
     private RetryOptions retryOptions;
-    private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
+    private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
+    private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
 
     /**
      * Sets endpoint of the service
@@ -253,7 +256,14 @@ public final class SipRoutingClientBuilder implements
      */
     @Override
     public SipRoutingClientBuilder addPolicy(HttpPipelinePolicy policy) {
-        this.additionalPolicies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
+        Objects.requireNonNull(policy, "'policy' cannot be null.");
+
+        if (policy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
+            perCallPolicies.add(policy);
+        } else {
+            perRetryPolicies.add(policy);
+        }
+
         return this;
     }
 
@@ -431,41 +441,35 @@ public final class SipRoutingClientBuilder implements
             return this.httpPipeline;
         }
 
-        List<HttpPipelinePolicy> policyList = new ArrayList<>();
-
         ClientOptions buildClientOptions = (clientOptions == null) ? new ClientOptions() : clientOptions;
         HttpLogOptions buildLogOptions = (httpLogOptions == null) ? new HttpLogOptions() : httpLogOptions;
 
-        String applicationId = null;
-        if (!CoreUtils.isNullOrEmpty(buildClientOptions.getApplicationId())) {
-            applicationId = buildClientOptions.getApplicationId();
-        } else if (!CoreUtils.isNullOrEmpty(buildLogOptions.getApplicationId())) {
-            applicationId = buildLogOptions.getApplicationId();
-        }
+        String applicationId = CoreUtils.getApplicationId(buildClientOptions, buildLogOptions);
 
-        // Add required policies
-        policyList.add(this.createUserAgentPolicy(
+        // Closest to API goes first, closest to wire goes last.
+        final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        policies.add(this.createUserAgentPolicy(
             applicationId,
             PROPERTIES.get(SDK_NAME),
             PROPERTIES.get(SDK_VERSION),
             this.configuration
         ));
-        policyList.add(this.createRequestIdPolicy());
-        policyList.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
-        // auth policy is per request, should be after retry
-        policyList.add(this.createAuthenticationPolicy());
-        policyList.add(this.createCookiePolicy());
+        policies.add(this.createRequestIdPolicy());
 
-        // Add additional policies
-        if (this.additionalPolicies.size() > 0) {
-            policyList.addAll(this.additionalPolicies);
-        }
+        policies.addAll(perCallPolicies);
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
 
-        // Add logging policy
-        policyList.add(this.createHttpLoggingPolicy(this.getHttpLogOptions()));
+        policies.add(this.createAuthenticationPolicy());
+        policies.add(this.createCookiePolicy());
+
+        policies.addAll(perRetryPolicies);
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+
+        policies.add(this.createHttpLoggingPolicy(this.getHttpLogOptions()));
 
         return new HttpPipelineBuilder()
-            .policies(policyList.toArray(new HttpPipelinePolicy[0]))
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(this.httpClient)
             .clientOptions(clientOptions)
             .build();
