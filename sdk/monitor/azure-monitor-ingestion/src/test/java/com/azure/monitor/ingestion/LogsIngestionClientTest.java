@@ -5,6 +5,7 @@ package com.azure.monitor.ingestion;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelinePosition;
@@ -12,8 +13,11 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.monitor.ingestion.models.UploadLogsResult;
@@ -30,6 +34,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Test cases for {@link LogsIngestionClient}.
@@ -147,6 +152,26 @@ public class LogsIngestionClientTest extends TestBase {
         assertEquals(11, count.get());
         assertEquals(5, result.getErrors().size());
         result.getErrors().stream().forEach(error -> assertEquals("NotFound", error.getResponseError().getCode()));
+    }
+
+    @Test
+    public void testUploadLogsProtocolMethod() {
+        List<Object> logs = getObjects(10);
+        LogsIngestionClient client = clientBuilder.buildClient();
+        Response<Void> response = client.uploadWithResponse(dataCollectionRuleId, streamName,
+                BinaryData.fromObject(logs), new RequestOptions());
+        assertEquals(204, response.getStatusCode());
+    }
+
+    @Test
+    public void testUploadLargeLogsProtocolMethod() {
+        List<Object> logs = getObjects(1000000);
+        LogsIngestionClient client = clientBuilder.buildClient();
+
+        HttpResponseException responseException = assertThrows(HttpResponseException.class,
+                () -> client.uploadWithResponse(dataCollectionRuleId, streamName, BinaryData.fromObject(logs),
+                        new RequestOptions()));
+        assertEquals(413, responseException.getResponse().getStatusCode());
     }
 
     private List<Object> getObjects(int logsCount) {
