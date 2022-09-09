@@ -46,6 +46,7 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
      * App Configuration Http Pipeline Policy
      * @param isDev is using dev profile
      * @param isKeyVaultConfigured is key vault configured
+     * @param replicaCount number of replicas being used. Should equal the number of endpoints minus one.
      */
     public BaseAppConfigurationPolicy(Boolean isDev, Boolean isKeyVaultConfigured, Integer replicaCount) {
         this.isDev = isDev;
