@@ -38,8 +38,8 @@ import static org.mockito.Mockito.when;
 public class KeyVaultCredentialPolicyTest {
     private static final String WWW_AUTHENTICATE = "WWW-Authenticate";
     private static final String AUTHENTICATE_HEADER =
-        "Bearer authorization=\"https://login.windows.net/72f988bf-86f1-41af-91ab-2d7cd022db57\", " +
-            "resource=\"https://vault.azure.net\"";
+        "Bearer authorization=\"https://login.windows.net/72f988bf-86f1-41af-91ab-2d7cd022db57\", "
+            + "resource=\"https://vault.azure.net\"";
     private static final String AUTHORIZATION = "Authorization";
     private static final String BEARER = "Bearer";
     private static final String BODY = "this is a sample body";
