@@ -18,6 +18,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.concurrent.TimeoutException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -37,6 +38,7 @@ import java.util.function.Supplier;
 final class ReliableDownload {
     private static final ClientLogger LOGGER = new ClientLogger(ReliableDownload.class);
 
+    private static final Duration TIMEOUT_VALUE = Duration.ofSeconds(60);
     private final StreamResponse rawResponse;
     private final BlobsDownloadHeaders deserializedHeaders;
     private final DownloadRetryOptions options;
@@ -89,7 +91,7 @@ final class ReliableDownload {
         add 1 before calling into tryContinueFlux, we set the initial value to -1.
          */
         Flux<ByteBuffer> value = (options.getMaxRetryRequests() == 0)
-            ? rawResponse.getValue()
+            ? rawResponse.getValue().timeout(TIMEOUT_VALUE)
             : applyReliableDownload(rawResponse.getValue(), -1, options);
 
         return value.switchIfEmpty(Flux.defer(() -> Flux.just(ByteBuffer.wrap(new byte[0]))));
@@ -125,6 +127,7 @@ final class ReliableDownload {
     private Flux<ByteBuffer> applyReliableDownload(Flux<ByteBuffer> data, int currentRetryCount,
         DownloadRetryOptions options) {
         return data
+            .timeout(TIMEOUT_VALUE)
             .doOnNext(buffer -> {
                 /*
                 Update how much data we have received in case we need to retry and propagate to the user the data we

@@ -297,7 +297,7 @@ public final class BlobItem {
      * @return the BlobItem object itself.
      */
     public BlobItem setIsPrefix(Boolean isPrefix) {
-        this.isPrefix = isPrefix != null && isPrefix;
+        this.isPrefix = isPrefix;
         return this;
     }
 }

@@ -19,7 +19,6 @@ import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import spock.lang.Unroll
 
-import java.time.Duration
 import java.util.concurrent.TimeoutException
 
 class DownloadResponseTest extends APISpec {
@@ -144,7 +143,7 @@ class DownloadResponseTest extends APISpec {
             .flatMapMany({ it.getValue() })
 
         then:
-        StepVerifier.create(bufferMono.timeout(Duration.ofSeconds(50)))
+        StepVerifier.create(bufferMono)
             .expectSubscription()
             .verifyErrorMatches({ Exceptions.unwrap(it) instanceof TimeoutException })
 
