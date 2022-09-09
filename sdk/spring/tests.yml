@@ -5,8 +5,8 @@ stages:
     parameters:
       SupportedClouds: 'Public,UsGov,China'
       MatrixConfigs:
-        - Name: Cosmos_live_test
-          Path: sdk/spring/platform-matrix.json
+        - Name: Cosmos_live_test_integration
+          Path: sdk/cosmos/integration-matrix.json
           Selection: all
           GenerateVMJobs: true
       TestResourceDirectories:
