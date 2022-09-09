@@ -21,7 +21,7 @@ import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPrope
 /**
  * The type of database URL.
  * <p>
- * A connection string could be follow
+ * A connection string could be following
  * <p>
  * <i>scheme://authority/path?query#fragment</i>
  * <p>
