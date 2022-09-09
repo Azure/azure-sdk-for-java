@@ -25,7 +25,7 @@ config = {
         }
     },
     'cosmos': {
-        'sdk/cosmos/azure-spring-data-cosmos-test/pom.xml': {
+        'sdk/spring/azure-spring-data-cosmos-test/pom.xml': {
             VERSION_UPDATE_ITEMS: (
                 VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.5.0'),
             )

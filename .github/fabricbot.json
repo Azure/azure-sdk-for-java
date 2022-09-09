@@ -895,7 +895,7 @@
           {
             "label": "azure-spring",
             "pathFilter": [
-              "sdk/cosmos/azure-spring-data-cosmos/"
+              "sdk/spring/azure-spring-data-cosmos/"
             ],
             "exclude": [
               ""
@@ -904,7 +904,7 @@
           {
             "label": "azure-spring",
             "pathFilter": [
-              "sdk/cosmos/azure-spring-data-cosmos-test/"
+              "sdk/spring/azure-spring-data-cosmos-test/"
             ],
             "exclude": [
               ""
