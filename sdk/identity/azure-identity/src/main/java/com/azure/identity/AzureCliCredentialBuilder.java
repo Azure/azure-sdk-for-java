@@ -3,8 +3,13 @@
 
 package com.azure.identity;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.ValidationUtil;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Fluent credential builder for instantiating a {@link AzureCliCredential}.
@@ -35,5 +40,32 @@ public class AzureCliCredentialBuilder extends CredentialBuilderBase<AzureCliCre
      */
     public AzureCliCredential build() {
         return new AzureCliCredential(tenantId, identityClientOptions);
+    }
+
+    /**
+     * For multi-tenant applications, specifies additional tenants for which the credential may acquire tokens.
+     * Add the wildcard value "*" to allow the credential to acquire tokens for any tenant the application is installed.
+     *
+     * @param additionallyAllowedTenants the additionally allowed Tenants.
+     * @return An updated instance of this builder with the tenant id set as specified.
+     */
+    @SuppressWarnings("unchecked")
+    public AzureCliCredentialBuilder additionallyAllowedTenants(String... additionallyAllowedTenants) {
+        identityClientOptions
+            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
+        return this;
+    }
+
+    /**
+     * For multi-tenant applications, specifies additional tenants for which the credential may acquire tokens.
+     * Add the wildcard value "*" to allow the credential to acquire tokens for any tenant the application is installed.
+     *
+     * @param additionallyAllowedTenants the additionally allowed Tenants.
+     * @return An updated instance of this builder with the tenant id set as specified.
+     */
+    @SuppressWarnings("unchecked")
+    public AzureCliCredentialBuilder additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
+        identityClientOptions.setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
+        return this;
     }
 }

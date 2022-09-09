@@ -5,12 +5,19 @@ package com.azure.identity.implementation.util;
 
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClientOptions;
 
+import java.util.*;
+
 public final class IdentityUtil {
     private static final ClientLogger LOGGER = new ClientLogger(IdentityUtil.class);
+    private static final String AZURE_ADDITIONALLY_ALLOWED_TENANTS = "AZURE_ADDITIONALLY_ALLOWED_TENANTS";
+    public static final String ALL_TENANTS = "*";
+    public static final String DEFAULT_TENANT = "organizations";
+
 
     private IdentityUtil() { }
     /**
@@ -37,11 +44,35 @@ public final class IdentityUtil {
                     + "`adfs` tenant id and it cannot be replaced with a tenant id challenge provided via "
                     + "TokenRequestContext class. ", null));
             }
-            return CoreUtils.isNullOrEmpty(contextTenantId) ? currentTenantId
+            String resolvedTenantId =  CoreUtils.isNullOrEmpty(contextTenantId) ? currentTenantId
                 : contextTenantId;
+
+            if (currentTenantId != null && !currentTenantId.equals(DEFAULT_TENANT) && resolvedTenantId != currentTenantId
+                && !options.getAdditionallyAllowedTenants().contains(ALL_TENANTS)
+                && !options.getAdditionallyAllowedTenants().contains(resolvedTenantId)) {
+                throw LOGGER.logExceptionAsError(new ClientAuthenticationException("The current credential is not configured to acquire tokens for tenant "
+                    +  resolvedTenantId + ". To enable acquiring tokens for this tenant add it to the AdditionallyAllowedTenants on the credential options, "
+                    + "or add \"*\" to AdditionallyAllowedTenants to allow acquiring tokens for any tenant.", null));
+            }
+            return resolvedTenantId;
         }
 
         return currentTenantId;
 
+    }
+
+    public static List<String> resolveAdditionalTenants(List<String> additionallyAllowedTenants) {
+        if (additionallyAllowedTenants == null) {
+            return Collections.emptyList();
+        }
+
+        if (additionallyAllowedTenants.contains(ALL_TENANTS)) {
+            return Arrays.asList(ALL_TENANTS);
+        }
+        return additionallyAllowedTenants;
+    }
+
+    public static List<String> getAdditionalTenantsFromEnvironment(Configuration configuration) {
+        return resolveAdditionalTenants(Arrays.asList(configuration.get(AZURE_ADDITIONALLY_ALLOWED_TENANTS).split(";")));
     }
 }

@@ -82,15 +82,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -162,7 +154,8 @@ public class IdentityClient {
         InputStream certificate, String certificatePassword, boolean isSharedTokenCacheCredential,
         Duration clientAssertionTimeout, IdentityClientOptions options) {
         if (tenantId == null) {
-            tenantId = "organizations";
+            tenantId = IdentityUtil.DEFAULT_TENANT;
+            options.setAdditionallyAllowedTenants(Arrays.asList(IdentityUtil.ALL_TENANTS));
         }
         if (options == null) {
             options = new IdentityClientOptions();
