@@ -111,7 +111,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
                 assertNotNull(result.getUser());
 
                 if (getTestMode() == TestMode.LIVE) {
-                    var tokenExpirationValid = CommunicationIdentityClientUtils.IsTokenExpirationValid(tokenExpiresAfter, result.getUserToken().getExpiresAt());
+                    boolean tokenExpirationValid = CommunicationIdentityClientUtils.IsTokenExpirationValid(tokenExpiresAfter, result.getUserToken().getExpiresAt());
                     assertTrue(tokenExpirationValid);
                 }
             })
@@ -153,7 +153,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
                 assertNotNull(result.getValue().getUser());
 
                 if (getTestMode() == TestMode.LIVE) {
-                    var tokenExpirationValid = CommunicationIdentityClientUtils.IsTokenExpirationValid(tokenExpiresAfter, result.getValue().getUserToken().getExpiresAt());
+                    boolean tokenExpirationValid = CommunicationIdentityClientUtils.IsTokenExpirationValid(tokenExpiresAfter, result.getValue().getUserToken().getExpiresAt());
                     assertTrue(tokenExpirationValid);
                 }
             })
@@ -414,7 +414,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
                 verifyTokenNotEmpty(issuedToken);
 
                 if (getTestMode() == TestMode.LIVE) {
-                    var tokenExpirationValid = CommunicationIdentityClientUtils.IsTokenExpirationValid(tokenExpiresAfter, issuedToken.getExpiresAt());
+                    boolean tokenExpirationValid = CommunicationIdentityClientUtils.IsTokenExpirationValid(tokenExpiresAfter, issuedToken.getExpiresAt());
                     assertTrue(tokenExpirationValid);
                 }
             })
@@ -460,7 +460,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
                 assertEquals(issuedToken.getStatusCode(), 200);
 
                 if (getTestMode() == TestMode.LIVE) {
-                    var tokenExpirationValid = CommunicationIdentityClientUtils.IsTokenExpirationValid(tokenExpiresAfter, issuedToken.getValue().getExpiresAt());
+                    boolean tokenExpirationValid = CommunicationIdentityClientUtils.IsTokenExpirationValid(tokenExpiresAfter, issuedToken.getValue().getExpiresAt());
                     assertTrue(tokenExpirationValid);
                 }
             })
