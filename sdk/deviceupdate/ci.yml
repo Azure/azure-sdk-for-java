@@ -12,6 +12,7 @@ trigger:
     exclude:
       - sdk/deviceupdate/pom.xml
       - sdk/deviceupdate/azure-iot-deviceupdate/pom.xml
+      - sdk/deviceupdate/azure-resourcemanager-deviceupdate/pom.xml
 
 pr:
   branches:
@@ -26,15 +27,29 @@ pr:
     exclude:
       - sdk/deviceupdate/pom.xml
       - sdk/deviceupdate/azure-iot-deviceupdate/pom.xml
+      - sdk/deviceupdate/azure-resourcemanager-deviceupdate/pom.xml
+
+parameters:
+- name: release_azureiotdeviceupdate
+  displayName: 'azure-iot-deviceupdate'
+  type: boolean
+  default: true
+- name: release_azureresourcemanagerdeviceupdate
+  displayName: 'azure-resourcemanager-deviceupdate'
+  type: boolean
+  default: false
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: deviceupdate
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-iot-deviceupdate
         groupId: com.azure
         safeName: azureiotdeviceupdate
+        releaseInBatch: ${{ parameters.release_azureiotdeviceupdate }}
       - name: azure-resourcemanager-deviceupdate
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerdeviceupdate
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerdeviceupdate }}

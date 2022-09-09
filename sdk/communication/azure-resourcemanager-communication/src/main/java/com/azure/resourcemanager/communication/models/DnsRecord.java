@@ -29,8 +29,8 @@ public final class DnsRecord {
     private String value;
 
     /*
-     * Represents an expiry time in seconds to represent how long this entry
-     * can be cached by the resolver, default = 3600sec.
+     * Represents an expiry time in seconds to represent how long this entry can be cached by the resolver, default =
+     * 3600sec.
      */
     @JsonProperty(value = "ttl", access = JsonProperty.Access.WRITE_ONLY)
     private Integer ttl;

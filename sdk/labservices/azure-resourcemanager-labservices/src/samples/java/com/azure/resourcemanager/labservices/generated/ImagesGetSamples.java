@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Images Get. */
 public final class ImagesGetSamples {
     /*
-     * x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Images/getImage.json
+     * x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/Images/getImage.json
      */
     /**
      * Sample code: getImage.

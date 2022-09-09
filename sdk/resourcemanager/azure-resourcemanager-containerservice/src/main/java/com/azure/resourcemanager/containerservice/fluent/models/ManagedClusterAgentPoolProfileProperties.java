@@ -30,9 +30,8 @@ import java.util.Map;
 @Fluent
 public class ManagedClusterAgentPoolProfileProperties {
     /*
-     * Number of agents (VMs) to host docker containers. Allowed values must be
-     * in the range of 0 to 1000 (inclusive) for user pools and in the range of
-     * 1 to 1000 (inclusive) for system pools. The default value is 1.
+     * Number of agents (VMs) to host docker containers. Allowed values must be in the range of 0 to 1000 (inclusive)
+     * for user pools and in the range of 1 to 1000 (inclusive) for system pools. The default value is 1.
      */
     @JsonProperty(value = "count")
     private Integer count;
@@ -40,18 +39,16 @@ public class ManagedClusterAgentPoolProfileProperties {
     /*
      * The size of the agent pool VMs.
      *
-     * VM size availability varies by region. If a node contains insufficient
-     * compute resources (memory, cpu, etc) pods might fail to run correctly.
-     * For more details on restricted VM sizes, see:
+     * VM size availability varies by region. If a node contains insufficient compute resources (memory, cpu, etc) pods
+     * might fail to run correctly. For more details on restricted VM sizes, see:
      * https://docs.microsoft.com/azure/aks/quotas-skus-regions
      */
     @JsonProperty(value = "vmSize")
     private String vmSize;
 
     /*
-     * OS Disk Size in GB to be used to specify the disk size for every machine
-     * in the master/agent pool. If you specify 0, it will apply the default
-     * osDisk size according to the vmSize specified.
+     * OS Disk Size in GB to be used to specify the disk size for every machine in the master/agent pool. If you
+     * specify 0, it will apply the default osDisk size according to the vmSize specified.
      */
     @JsonProperty(value = "osDiskSizeGB")
     private Integer osDiskSizeGB;
@@ -59,18 +56,15 @@ public class ManagedClusterAgentPoolProfileProperties {
     /*
      * The OS disk type to be used for machines in the agent pool.
      *
-     * The default is 'Ephemeral' if the VM supports it and has a cache disk
-     * larger than the requested OSDiskSizeGB. Otherwise, defaults to
-     * 'Managed'. May not be changed after creation. For more information see
-     * [Ephemeral
+     * The default is 'Ephemeral' if the VM supports it and has a cache disk larger than the requested OSDiskSizeGB.
+     * Otherwise, defaults to 'Managed'. May not be changed after creation. For more information see [Ephemeral
      * OS](https://docs.microsoft.com/azure/aks/cluster-configuration#ephemeral-os).
      */
     @JsonProperty(value = "osDiskType")
     private OSDiskType osDiskType;
 
     /*
-     * Determines the placement of emptyDir volumes, container runtime data
-     * root, and Kubelet ephemeral storage.
+     * Determines the placement of emptyDir volumes, container runtime data root, and Kubelet ephemeral storage.
      */
     @JsonProperty(value = "kubeletDiskType")
     private KubeletDiskType kubeletDiskType;
@@ -82,12 +76,10 @@ public class ManagedClusterAgentPoolProfileProperties {
     private WorkloadRuntime workloadRuntime;
 
     /*
-     * The ID of the subnet which agent pool nodes and optionally pods will
-     * join on startup.
+     * The ID of the subnet which agent pool nodes and optionally pods will join on startup.
      *
-     * If this is not specified, a VNET and subnet will be generated and used.
-     * If no podSubnetID is specified, this applies to nodes and pods,
-     * otherwise it applies to just nodes. This is of the form:
+     * If this is not specified, a VNET and subnet will be generated and used. If no podSubnetID is specified, this
+     * applies to nodes and pods, otherwise it applies to just nodes. This is of the form:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}
      */
     @JsonProperty(value = "vnetSubnetID")
@@ -96,8 +88,8 @@ public class ManagedClusterAgentPoolProfileProperties {
     /*
      * The ID of the subnet which pods will join when launched.
      *
-     * If omitted, pod IPs are statically assigned on the node subnet (see
-     * vnetSubnetID for more details). This is of the form:
+     * If omitted, pod IPs are statically assigned on the node subnet (see vnetSubnetID for more details). This is of
+     * the form:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}
      */
     @JsonProperty(value = "podSubnetID")
@@ -110,15 +102,14 @@ public class ManagedClusterAgentPoolProfileProperties {
     private Integer maxPods;
 
     /*
-     * OsType to be used to specify os type. Choose from Linux and Windows.
-     * Default to Linux.
+     * OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
      */
     @JsonProperty(value = "osType")
     private OSType osType;
 
     /*
-     * Specifies an OS SKU. This value must not be specified if OSType is
-     * Windows.
+     * Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux. The default is
+     * Windows2019 when Kubernetes <= 1.24 or Windows2022 when Kubernetes >= 1.25 if OSType is Windows.
      */
     @JsonProperty(value = "osSKU")
     private OSSku osSku;
@@ -142,8 +133,7 @@ public class ManagedClusterAgentPoolProfileProperties {
     private Boolean enableAutoScaling;
 
     /*
-     * This also effects the cluster autoscaler behavior. If not specified, it
-     * defaults to Delete.
+     * This also effects the cluster autoscaler behavior. If not specified, it defaults to Delete.
      */
     @JsonProperty(value = "scaleDownMode")
     private ScaleDownMode scaleDownMode;
@@ -157,9 +147,8 @@ public class ManagedClusterAgentPoolProfileProperties {
     /*
      * The mode of an agent pool.
      *
-     * A cluster must have at least one 'System' Agent Pool at all times. For
-     * additional information on agent pool restrictions and best practices,
-     * see: https://docs.microsoft.com/azure/aks/use-system-pools
+     * A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent pool
+     * restrictions and best practices, see: https://docs.microsoft.com/azure/aks/use-system-pools
      */
     @JsonProperty(value = "mode")
     private AgentPoolMode mode;
@@ -167,17 +156,13 @@ public class ManagedClusterAgentPoolProfileProperties {
     /*
      * The version of Kubernetes specified by the user.
      *
-     * Both patch version <major.minor.patch> (e.g. 1.20.13) and <major.minor>
-     * (e.g. 1.20) are supported. When <major.minor> is specified, the latest
-     * supported GA patch version is chosen automatically. Updating the cluster
-     * with the same <major.minor> once it has been created (e.g. 1.14.x ->
-     * 1.14) will not trigger an upgrade, even if a newer patch version is
-     * available. As a best practice, you should upgrade all node pools in an
-     * AKS cluster to the same Kubernetes version. The node pool version must
-     * have the same major version as the control plane. The node pool minor
-     * version must be within two minor versions of the control plane version.
-     * The node pool version cannot be greater than the control plane version.
-     * For more information see [upgrading a node
+     * Both patch version <major.minor.patch> (e.g. 1.20.13) and <major.minor> (e.g. 1.20) are supported. When
+     * <major.minor> is specified, the latest supported GA patch version is chosen automatically. Updating the cluster
+     * with the same <major.minor> once it has been created (e.g. 1.14.x -> 1.14) will not trigger an upgrade, even if
+     * a newer patch version is available. As a best practice, you should upgrade all node pools in an AKS cluster to
+     * the same Kubernetes version. The node pool version must have the same major version as the control plane. The
+     * node pool minor version must be within two minor versions of the control plane version. The node pool version
+     * cannot be greater than the control plane version. For more information see [upgrading a node
      * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool).
      */
     @JsonProperty(value = "orchestratorVersion")
@@ -186,10 +171,9 @@ public class ManagedClusterAgentPoolProfileProperties {
     /*
      * The version of Kubernetes the Agent Pool is running.
      *
-     * If orchestratorVersion is a fully specified version <major.minor.patch>,
-     * this field will be exactly equal to it. If orchestratorVersion is
-     * <major.minor>, this field will contain the full <major.minor.patch>
-     * version being used.
+     * If orchestratorVersion is a fully specified version <major.minor.patch>, this field will be exactly equal to it.
+     * If orchestratorVersion is <major.minor>, this field will contain the full <major.minor.patch> version being
+     * used.
      */
     @JsonProperty(value = "currentOrchestratorVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String currentOrchestratorVersion;
@@ -213,18 +197,16 @@ public class ManagedClusterAgentPoolProfileProperties {
     private String provisioningState;
 
     /*
-     * When an Agent Pool is first created it is initially Running. The Agent
-     * Pool can be stopped by setting this field to Stopped. A stopped Agent
-     * Pool stops all of its VMs and does not accrue billing charges. An Agent
-     * Pool can only be stopped if it is Running and provisioning state is
-     * Succeeded
+     * When an Agent Pool is first created it is initially Running. The Agent Pool can be stopped by setting this field
+     * to Stopped. A stopped Agent Pool stops all of its VMs and does not accrue billing charges. An Agent Pool can
+     * only be stopped if it is Running and provisioning state is Succeeded
      */
     @JsonProperty(value = "powerState")
     private PowerState powerState;
 
     /*
-     * The list of Availability zones to use for nodes. This can only be
-     * specified if the AgentPoolType property is 'VirtualMachineScaleSets'.
+     * The list of Availability zones to use for nodes. This can only be specified if the AgentPoolType property is
+     * 'VirtualMachineScaleSets'.
      */
     @JsonProperty(value = "availabilityZones")
     private List<String> availabilityZones;
@@ -232,11 +214,9 @@ public class ManagedClusterAgentPoolProfileProperties {
     /*
      * Whether each node is allocated its own public IP.
      *
-     * Some scenarios may require nodes in a node pool to receive their own
-     * dedicated public IP addresses. A common scenario is for gaming
-     * workloads, where a console needs to make a direct connection to a cloud
-     * virtual machine to minimize hops. For more information see [assigning a
-     * public IP per
+     * Some scenarios may require nodes in a node pool to receive their own dedicated public IP addresses. A common
+     * scenario is for gaming workloads, where a console needs to make a direct connection to a cloud virtual machine
+     * to minimize hops. For more information see [assigning a public IP per
      * node](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#assign-a-public-ip-per-node-for-your-node-pools).
      * The default is false.
      */
@@ -253,8 +233,7 @@ public class ManagedClusterAgentPoolProfileProperties {
     private String nodePublicIpPrefixId;
 
     /*
-     * The Virtual Machine Scale Set priority. If not specified, the default is
-     * 'Regular'.
+     * The Virtual Machine Scale Set priority. If not specified, the default is 'Regular'.
      */
     @JsonProperty(value = "scaleSetPriority")
     private ScaleSetPriority scaleSetPriority;
@@ -262,20 +241,17 @@ public class ManagedClusterAgentPoolProfileProperties {
     /*
      * The Virtual Machine Scale Set eviction policy.
      *
-     * This cannot be specified unless the scaleSetPriority is 'Spot'. If not
-     * specified, the default is 'Delete'.
+     * This cannot be specified unless the scaleSetPriority is 'Spot'. If not specified, the default is 'Delete'.
      */
     @JsonProperty(value = "scaleSetEvictionPolicy")
     private ScaleSetEvictionPolicy scaleSetEvictionPolicy;
 
     /*
-     * The max price (in US Dollars) you are willing to pay for spot instances.
-     * Possible values are any decimal value greater than zero or -1 which
-     * indicates default price to be up-to on-demand.
+     * The max price (in US Dollars) you are willing to pay for spot instances. Possible values are any decimal value
+     * greater than zero or -1 which indicates default price to be up-to on-demand.
      *
-     * Possible values are any decimal value greater than zero or -1 which
-     * indicates the willingness to pay any on-demand price. For more details
-     * on spot pricing, see [spot VMs
+     * Possible values are any decimal value greater than zero or -1 which indicates the willingness to pay any
+     * on-demand price. For more details on spot pricing, see [spot VMs
      * pricing](https://docs.microsoft.com/azure/virtual-machines/spot-vms#pricing)
      */
     @JsonProperty(value = "spotMaxPrice")
@@ -296,8 +272,7 @@ public class ManagedClusterAgentPoolProfileProperties {
     private Map<String, String> nodeLabels;
 
     /*
-     * The taints added to new nodes during node pool create and scale. For
-     * example, key=value:NoSchedule.
+     * The taints added to new nodes during node pool create and scale. For example, key=value:NoSchedule.
      */
     @JsonProperty(value = "nodeTaints")
     private List<String> nodeTaints;
@@ -327,8 +302,7 @@ public class ManagedClusterAgentPoolProfileProperties {
     /*
      * Whether to enable host based OS and data drive encryption.
      *
-     * This is only supported on certain VM sizes and in certain Azure regions.
-     * For more information, see:
+     * This is only supported on certain VM sizes and in certain Azure regions. For more information, see:
      * https://docs.microsoft.com/azure/aks/enable-host-encryption
      */
     @JsonProperty(value = "enableEncryptionAtHost")
@@ -344,30 +318,28 @@ public class ManagedClusterAgentPoolProfileProperties {
      * Whether to use a FIPS-enabled OS.
      *
      * See [Add a FIPS-enabled node
-     * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview)
-     * for more details.
+     * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview) for
+     * more details.
      */
     @JsonProperty(value = "enableFIPS")
     private Boolean enableFips;
 
     /*
-     * GPUInstanceProfile to be used to specify GPU MIG instance profile for
-     * supported GPU VM SKU.
+     * GPUInstanceProfile to be used to specify GPU MIG instance profile for supported GPU VM SKU.
      */
     @JsonProperty(value = "gpuInstanceProfile")
     private GpuInstanceProfile gpuInstanceProfile;
 
     /*
-     * CreationData to be used to specify the source Snapshot ID if the node
-     * pool will be created/upgraded using a snapshot.
+     * CreationData to be used to specify the source Snapshot ID if the node pool will be created/upgraded using a
+     * snapshot.
      */
     @JsonProperty(value = "creationData")
     private CreationData creationData;
 
     /*
-     * The fully qualified resource ID of the Dedicated Host Group to provision
-     * virtual machines from, used only in creation scenario and not allowed to
-     * changed once set.
+     * The fully qualified resource ID of the Dedicated Host Group to provision virtual machines from, used only in
+     * creation scenario and not allowed to changed once set.
      *
      * This is of the form:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}.
@@ -620,7 +592,9 @@ public class ManagedClusterAgentPoolProfileProperties {
     }
 
     /**
-     * Get the osSku property: Specifies an OS SKU. This value must not be specified if OSType is Windows.
+     * Get the osSku property: Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux.
+     * The default is Windows2019 when Kubernetes &lt;= 1.24 or Windows2022 when Kubernetes &gt;= 1.25 if OSType is
+     * Windows.
      *
      * @return the osSku value.
      */
@@ -629,7 +603,9 @@ public class ManagedClusterAgentPoolProfileProperties {
     }
 
     /**
-     * Set the osSku property: Specifies an OS SKU. This value must not be specified if OSType is Windows.
+     * Set the osSku property: Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux.
+     * The default is Windows2019 when Kubernetes &lt;= 1.24 or Windows2022 when Kubernetes &gt;= 1.25 if OSType is
+     * Windows.
      *
      * @param osSku the osSku value to set.
      * @return the ManagedClusterAgentPoolProfileProperties object itself.

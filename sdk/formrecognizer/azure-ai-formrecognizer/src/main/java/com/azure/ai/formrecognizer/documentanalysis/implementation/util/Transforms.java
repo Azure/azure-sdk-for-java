@@ -3,24 +3,21 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.util;
 
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorization;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentTypeDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentFieldSchema;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildOperationDetails;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelComposeOperationDetails;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelCopyAuthorization;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelCopyToOperationDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelSummary;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.ModelOperationDetails;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.ModelOperationKind;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.ModelOperationStatus;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.ModelOperationSummary;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentTypeDetails;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationDetails;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationKind;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationSummary;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.models.Error;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ErrorResponseException;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.models.GetInfoResponse;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.models.GetOperationResponse;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ModelInfo;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ModelSummary;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationInfo;
 import com.azure.ai.formrecognizer.documentanalysis.models.AddressValue;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
@@ -32,11 +29,11 @@ import com.azure.ai.formrecognizer.documentanalysis.models.DocumentKeyValueEleme
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentKeyValuePair;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentLanguage;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentLine;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentPage;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentPageKind;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentPageLengthUnit;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentParagraph;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSelectionMark;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSelectionMarkState;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSignatureType;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSpan;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentStyle;
@@ -44,10 +41,9 @@ import com.azure.ai.formrecognizer.documentanalysis.models.DocumentTable;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentTableCell;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentTableCellKind;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentWord;
-import com.azure.ai.formrecognizer.documentanalysis.models.LengthUnit;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.ParagraphRole;
 import com.azure.ai.formrecognizer.documentanalysis.models.Point;
-import com.azure.ai.formrecognizer.documentanalysis.models.SelectionMarkState;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.models.ResponseError;
 import com.azure.core.util.CoreUtils;
@@ -108,10 +104,9 @@ public class Transforms {
                 DocumentPageHelper.setWidth(documentPage, innerDocumentPage.getWidth());
                 DocumentPageHelper.setPageNumber(documentPage, innerDocumentPage.getPageNumber());
                 DocumentPageHelper.setUnit(documentPage, innerDocumentPage.getUnit() == null
-                    ? null : LengthUnit.fromString(innerDocumentPage.getUnit().toString()));
+                    ? null : DocumentPageLengthUnit.fromString(innerDocumentPage.getUnit().toString()));
                 DocumentPageHelper.setSpans(documentPage, toDocumentSpans(innerDocumentPage.getSpans()));
-                DocumentPageHelper.setKind(documentPage, innerDocumentPage.getKind() != null
-                    ? DocumentPageKind.fromString(innerDocumentPage.getKind().toString()) : null);
+
                 DocumentPageHelper.setSelectionMarks(documentPage, innerDocumentPage.getSelectionMarks() == null
                     ? null
                     : innerDocumentPage.getSelectionMarks()
@@ -125,7 +120,7 @@ public class Transforms {
                         DocumentSelectionMarkHelper.setSpan(documentSelectionMark,
                             getDocumentSpan(innerSelectionMark.getSpan()));
                         DocumentSelectionMarkHelper.setState(documentSelectionMark,
-                            SelectionMarkState.fromString(innerSelectionMark.getState().toString()));
+                            DocumentSelectionMarkState.fromString(innerSelectionMark.getState().toString()));
                         return documentSelectionMark;
                     })
                     .collect(Collectors.toList()));
@@ -138,22 +133,11 @@ public class Transforms {
                                 toPolygonPoints(innerDocumentLine.getPolygon()));
                             DocumentLineHelper.setContent(documentLine, innerDocumentLine.getContent());
                             DocumentLineHelper.setSpans(documentLine, toDocumentSpans(innerDocumentLine.getSpans()));
+                            DocumentLineHelper.setPageWords(documentLine, toDocumentWords(innerDocumentPage));
                             return documentLine;
                         })
                         .collect(Collectors.toList()));
-                DocumentPageHelper.setWords(documentPage,
-                    innerDocumentPage.getWords() == null ? null : innerDocumentPage.getWords()
-                        .stream()
-                        .map(innerDocumentWord -> {
-                            DocumentWord documentWord = new DocumentWord();
-                            DocumentWordHelper.setBoundingPolygon(documentWord,
-                                toPolygonPoints(innerDocumentWord.getPolygon()));
-                            DocumentWordHelper.setConfidence(documentWord, innerDocumentWord.getConfidence());
-                            DocumentWordHelper.setSpan(documentWord, getDocumentSpan(innerDocumentWord.getSpan()));
-                            DocumentWordHelper.setContent(documentWord, innerDocumentWord.getContent());
-                            return documentWord;
-                        })
-                        .collect(Collectors.toList()));
+                DocumentPageHelper.setWords(documentPage, toDocumentWords(innerDocumentPage));
                 return documentPage;
             })
             .collect(Collectors.toList()));
@@ -267,7 +251,7 @@ public class Transforms {
         return throwable;
     }
 
-    public static HttpResponseException mapResponseErrorToHttpResponseException(Error error) {
+    public static HttpResponseException mapResponseErrorToHttpResponseException(com.azure.ai.formrecognizer.documentanalysis.implementation.models.Error error) {
         return new HttpResponseException(
             error.getMessage(),
             null,
@@ -275,9 +259,9 @@ public class Transforms {
         );
     }
 
-    public static CopyAuthorization toCopyAuthorization(
+    public static DocumentModelCopyAuthorization toCopyAuthorization(
         com.azure.ai.formrecognizer.documentanalysis.implementation.models.CopyAuthorization innerCopyAuthorization) {
-        return new CopyAuthorization(innerCopyAuthorization.getTargetResourceId(),
+        return new DocumentModelCopyAuthorization(innerCopyAuthorization.getTargetResourceId(),
             innerCopyAuthorization.getTargetResourceRegion(),
             innerCopyAuthorization.getTargetModelId(),
             innerCopyAuthorization.getTargetModelLocation(),
@@ -285,7 +269,8 @@ public class Transforms {
             innerCopyAuthorization.getExpirationDateTime());
     }
 
-    public static ResourceDetails toAccountProperties(GetInfoResponse getInfoResponse) {
+    public static ResourceDetails toAccountProperties(
+        com.azure.ai.formrecognizer.documentanalysis.implementation.models.ResourceDetails getInfoResponse) {
         ResourceDetails resourceDetails = new ResourceDetails();
         ResourceDetailsHelper.setDocumentModelCount(resourceDetails,
             getInfoResponse.getCustomDocumentModels().getCount());
@@ -294,18 +279,39 @@ public class Transforms {
         return resourceDetails;
     }
 
-    public static DocumentModelDetails toDocumentModel(ModelInfo modelInfo) {
+    public static DocumentModelDetails toDocumentModelFromOperationId(com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationDetails operationDetails) {
+        if (operationDetails instanceof com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelBuildOperationDetails) {
+            com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelDetails
+                buildOperationModelResult = ((com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelBuildOperationDetails) operationDetails).getResult();
+            return toDocumentModelDetails(buildOperationModelResult);
+        } else if (operationDetails instanceof com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelCopyToOperationDetails) {
+            com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelDetails
+                copyOperationModelResult = ((com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelCopyToOperationDetails) operationDetails).getResult();
+            return toDocumentModelDetails(copyOperationModelResult);
+
+        } else if (operationDetails instanceof com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelComposeOperationDetails) {
+            com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelDetails
+                composeOperationModelResult = ((com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelComposeOperationDetails) operationDetails).getResult();
+            return toDocumentModelDetails(composeOperationModelResult);
+        }
+        return new DocumentModelDetails();
+    }
+
+    public static DocumentModelDetails toDocumentModelDetails(com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelDetails modelDetails) {
         DocumentModelDetails documentModelDetails = new DocumentModelDetails();
-        DocumentModelDetailsHelper.setModelId(documentModelDetails, modelInfo.getModelId());
-        DocumentModelDetailsHelper.setDescription(documentModelDetails, modelInfo.getDescription());
-        Map<String, DocumentTypeDetails> docTypeMap = getStringDocTypeInfoMap(modelInfo);
-        DocumentModelDetailsHelper.setDocTypes(documentModelDetails, docTypeMap);
-        DocumentModelDetailsHelper.setCreatedOn(documentModelDetails, modelInfo.getCreatedDateTime());
-        DocumentModelDetailsHelper.setTags(documentModelDetails, modelInfo.getTags());
+        if (modelDetails != null) {
+            DocumentModelDetailsHelper.setModelId(documentModelDetails, modelDetails.getModelId());
+            DocumentModelDetailsHelper.setDescription(documentModelDetails, modelDetails.getDescription());
+            Map<String, DocumentTypeDetails> docTypeMap = getStringDocTypeInfoMap(modelDetails);
+            DocumentModelDetailsHelper.setDocTypes(documentModelDetails, docTypeMap);
+            DocumentModelDetailsHelper.setCreatedOn(documentModelDetails, modelDetails.getCreatedDateTime());
+            DocumentModelDetailsHelper.setTags(documentModelDetails, modelDetails.getTags());
+        }
         return documentModelDetails;
     }
 
-    private static Map<String, DocumentTypeDetails> getStringDocTypeInfoMap(ModelInfo modelInfo) {
+    private static Map<String, DocumentTypeDetails> getStringDocTypeInfoMap(
+        com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelDetails modelInfo) {
         if (!CoreUtils.isNullOrEmpty(modelInfo.getDocTypes())) {
             Map<String, DocumentTypeDetails> docTypeMap = new HashMap<>();
             modelInfo.getDocTypes().forEach((key, innerDocTypeInfo) -> {
@@ -398,77 +404,78 @@ public class Transforms {
 
         if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.STRING.equals(
             innerDocumentField.getType())) {
-            DocumentFieldHelper.setValueString(documentField, innerDocumentField.getValueString());
+            DocumentFieldHelper.setValue(documentField, innerDocumentField.getValueString());
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.DATE.equals(
             innerDocumentField.getType())) {
-            DocumentFieldHelper.setValueDate(documentField, innerDocumentField.getValueDate());
+            DocumentFieldHelper.setValue(documentField, innerDocumentField.getValueDate());
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.TIME.equals(
             innerDocumentField.getType())) {
-            DocumentFieldHelper.setValueTime(documentField, innerDocumentField.getValueTime() == null
+            DocumentFieldHelper.setValue(documentField, innerDocumentField.getValueTime() == null
                 ? null : LocalTime.parse(innerDocumentField.getValueTime(),
                 DateTimeFormatter.ofPattern("HH:mm:ss")));
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.PHONE_NUMBER.equals(
             innerDocumentField.getType())) {
-            DocumentFieldHelper.setValuePhoneNumber(documentField, innerDocumentField.getValuePhoneNumber());
+            DocumentFieldHelper.setValue(documentField, innerDocumentField.getValuePhoneNumber());
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.NUMBER.equals(
             innerDocumentField.getType())) {
-            DocumentFieldHelper.setValueNumber(documentField, innerDocumentField.getValueNumber());
+            DocumentFieldHelper.setValue(documentField,
+                Double.valueOf(innerDocumentField.getValueNumber().doubleValue()));
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.INTEGER.equals(
             innerDocumentField.getType())) {
-            DocumentFieldHelper.setValueInteger(documentField, innerDocumentField.getValueInteger());
+            DocumentFieldHelper.setValue(documentField, innerDocumentField.getValueInteger());
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.SELECTION_MARK.equals(
             innerDocumentField.getType())) {
             if (innerDocumentField.getValueSelectionMark() == null) {
-                DocumentFieldHelper.setValueSelectionMark(documentField, null);
+                DocumentFieldHelper.setValue(documentField, null);
             } else {
-                DocumentFieldHelper.setValueSelectionMark(documentField,
-                    SelectionMarkState.fromString(innerDocumentField.getValueSelectionMark().toString()));
+                DocumentFieldHelper.setValue(documentField,
+                    DocumentSelectionMarkState.fromString(innerDocumentField.getValueSelectionMark().toString()));
             }
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.COUNTRY_REGION.equals(
             innerDocumentField.getType())) {
-            DocumentFieldHelper.setValueCountryRegion(documentField, innerDocumentField.getValueCountryRegion());
+            DocumentFieldHelper.setValue(documentField, innerDocumentField.getValueCountryRegion());
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.SIGNATURE.equals(
             innerDocumentField.getType())) {
             if (innerDocumentField.getValueSignature() != null) {
-                DocumentFieldHelper.setValueSignature(documentField,
+                DocumentFieldHelper.setValue(documentField,
                     DocumentSignatureType.fromString(innerDocumentField.getValueSignature().toString()));
             }
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.ARRAY.equals(
             innerDocumentField.getType())) {
             if (CoreUtils.isNullOrEmpty(innerDocumentField.getValueArray())) {
-                DocumentFieldHelper.setValueArray(documentField, null);
+                DocumentFieldHelper.setValue(documentField, null);
             } else {
-                DocumentFieldHelper.setValueArray(documentField, innerDocumentField.getValueArray()
+                DocumentFieldHelper.setValue(documentField, innerDocumentField.getValueArray()
                     .stream()
-                    .map(innerArrayDocumentField -> toDocumentField(innerArrayDocumentField))
+                    .map(Transforms::toDocumentField)
                     .collect(Collectors.toList()));
             }
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.OBJECT.equals(
             innerDocumentField.getType())) {
             if (CoreUtils.isNullOrEmpty(innerDocumentField.getValueObject())) {
-                DocumentFieldHelper.setValueObject(documentField, null);
+                DocumentFieldHelper.setValue(documentField, null);
             } else {
                 HashMap<String, DocumentField> documentFieldMap = new HashMap<>();
                 innerDocumentField.getValueObject()
                     .forEach((key, innerMapDocumentField)
                         -> documentFieldMap.put(key, toDocumentField(innerMapDocumentField)));
-                DocumentFieldHelper.setValueObject(documentField, documentFieldMap);
+                DocumentFieldHelper.setValue(documentField, documentFieldMap);
             }
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.CURRENCY.equals(
             innerDocumentField.getType())) {
             if (innerDocumentField.getValueCurrency() == null) {
-                DocumentFieldHelper.setValueCurrency(documentField, null);
+                DocumentFieldHelper.setValue(documentField, null);
             } else {
                 CurrencyValue currencyValue = new CurrencyValue();
                 CurrencyValueHelper.setAmount(currencyValue, innerDocumentField.getValueCurrency().getAmount());
                 CurrencyValueHelper.setCurrencySymbol(currencyValue,
                     innerDocumentField.getValueCurrency().getCurrencySymbol());
-                DocumentFieldHelper.setValueCurrency(documentField, currencyValue);
+                DocumentFieldHelper.setValue(documentField, currencyValue);
             }
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.ADDRESS.equals(
             innerDocumentField.getType())) {
             if (innerDocumentField.getValueAddress() == null) {
-                DocumentFieldHelper.setValueAddress(documentField, null);
+                DocumentFieldHelper.setValue(documentField, null);
             } else {
                 AddressValue addressValue = new AddressValue();
                 AddressValueHelper.setCity(addressValue, innerDocumentField.getValueAddress().getCity());
@@ -481,7 +488,7 @@ public class Transforms {
                 AddressValueHelper.setPoBox(addressValue, innerDocumentField.getValueAddress().getPoBox());
                 AddressValueHelper.setPostalCode(addressValue, innerDocumentField.getValueAddress().getPostalCode());
                 AddressValueHelper.setState(addressValue, innerDocumentField.getValueAddress().getState());
-                DocumentFieldHelper.setValueAddress(documentField, addressValue);
+                DocumentFieldHelper.setValue(documentField, addressValue);
             }
         }
     }
@@ -491,7 +498,7 @@ public class Transforms {
         if (!CoreUtils.isNullOrEmpty(innerDocumentSpans)) {
             return innerDocumentSpans
                 .stream()
-                .map(innerDocumentSpan -> getDocumentSpan(innerDocumentSpan))
+                .map(Transforms::getDocumentSpan)
             .collect(Collectors.toList());
         } else {
             return null;
@@ -537,7 +544,8 @@ public class Transforms {
         return pointList;
     }
 
-    public static List<DocumentModelSummary> toDocumentModelInfo(List<ModelSummary> modelSummaryList) {
+    public static List<DocumentModelSummary> toDocumentModelInfo(
+        List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelSummary> modelSummaryList) {
         return modelSummaryList
             .stream()
             .map(modelSummary -> {
@@ -550,59 +558,69 @@ public class Transforms {
             }).collect(Collectors.toList());
     }
 
-    public static ModelOperationDetails toModelOperation(GetOperationResponse getOperationResponse) {
-        ModelOperationDetails modelOperationDetails = new ModelOperationDetails();
-        ModelInfo modelInfo = getOperationResponse.getResult();
-        if (modelInfo != null) {
-            ModelOperationDetailsHelper.setModelId(modelOperationDetails, modelInfo.getModelId());
-            ModelOperationDetailsHelper.setDescription(modelOperationDetails, modelInfo.getDescription());
-            ModelOperationDetailsHelper.setCreatedOn(modelOperationDetails, modelInfo.getCreatedDateTime());
-            Map<String, DocumentTypeDetails> docTypeMap = getStringDocTypeInfoMap(modelInfo);
-            ModelOperationDetailsHelper.setDocTypes(modelOperationDetails, docTypeMap);
+    public static OperationDetails toOperationDetails(com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationDetails innerOperationDetails) {
+        OperationDetails operationDetails = null;
+        if (innerOperationDetails != null) {
+            if (innerOperationDetails instanceof com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelBuildOperationDetails) {
+                DocumentModelBuildOperationDetails buildOperationDetails = new DocumentModelBuildOperationDetails();
+                DocumentModelBuildOperationDetailsHelper.setResult(buildOperationDetails,
+                    toDocumentModelDetails(((com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelBuildOperationDetails) innerOperationDetails).getResult()));
+                operationDetails = buildOperationDetails;
+            } else if (innerOperationDetails instanceof com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelComposeOperationDetails) {
+                DocumentModelComposeOperationDetails composeOperationDetails = new DocumentModelComposeOperationDetails();
+                DocumentModelComposeOperationDetailsHelper.setResult(composeOperationDetails,
+                    toDocumentModelDetails(((com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelComposeOperationDetails) innerOperationDetails).getResult()));
+                operationDetails = composeOperationDetails;
+            } else if (innerOperationDetails instanceof com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelCopyToOperationDetails) {
+                DocumentModelCopyToOperationDetails copyToOperationDetails = new DocumentModelCopyToOperationDetails();
+                DocumentModelCopyToOperationDetailsHelper.setResult(copyToOperationDetails,
+                    toDocumentModelDetails(((com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelCopyToOperationDetails) innerOperationDetails).getResult()));
+                operationDetails = copyToOperationDetails;
+            }
+            OperationDetailsHelper.setOperationId(operationDetails, innerOperationDetails.getOperationId());
+            OperationDetailsHelper.setCreatedOn(operationDetails, innerOperationDetails.getCreatedDateTime());
+            OperationDetailsHelper.setLastUpdatedOn(operationDetails, innerOperationDetails.getLastUpdatedDateTime());
+            OperationDetailsHelper.setPercentCompleted(operationDetails,
+                innerOperationDetails.getPercentCompleted() == null ? Integer.valueOf(0)
+                    : innerOperationDetails.getPercentCompleted());
+            OperationDetailsHelper.setStatus(operationDetails,
+                OperationStatus.fromString(innerOperationDetails.getStatus().toString()));
+            OperationDetailsHelper.setResourceLocation(operationDetails, innerOperationDetails.getResourceLocation());
+            OperationDetailsHelper.setError(operationDetails, toResponseError(innerOperationDetails.getError()));
+            OperationDetailsHelper.setTags(operationDetails, innerOperationDetails.getTags());
         }
-        ModelOperationDetailsHelper.setOperationId(modelOperationDetails, getOperationResponse.getOperationId());
-        ModelOperationDetailsHelper.setCreatedOn(modelOperationDetails, getOperationResponse.getCreatedDateTime());
-        ModelOperationDetailsHelper.setKind(modelOperationDetails,
-            ModelOperationKind.fromString(getOperationResponse.getKind().toString()));
-        ModelOperationDetailsHelper.setLastUpdatedOn(modelOperationDetails, getOperationResponse.getLastUpdatedDateTime());
-        ModelOperationDetailsHelper.setPercentCompleted(modelOperationDetails,
-            getOperationResponse.getPercentCompleted() == null ? Integer.valueOf(0)
-                : getOperationResponse.getPercentCompleted());
-        ModelOperationDetailsHelper.setStatus(modelOperationDetails,
-            ModelOperationStatus.fromString(getOperationResponse.getStatus().toString()));
-        ModelOperationDetailsHelper.setResourceLocation(modelOperationDetails, getOperationResponse.getResourceLocation());
-        ModelOperationDetailsHelper.setError(modelOperationDetails, toResponseError(getOperationResponse.getError()));
-        return modelOperationDetails;
+        return operationDetails;
     }
 
-    public static List<ModelOperationSummary> toModelOperationInfo(List<OperationInfo> operationInfoList) {
-        return operationInfoList
+    public static List<OperationSummary> toOperationSummary(List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationSummary> operationSummary) {
+        return operationSummary
             .stream()
-            .map(operationInfo -> {
-                ModelOperationSummary modelOperationSummary = new ModelOperationSummary();
-                ModelOperationSummaryHelper.setOperationId(modelOperationSummary, operationInfo.getOperationId());
-                ModelOperationSummaryHelper.setCreatedOn(modelOperationSummary, operationInfo.getCreatedDateTime());
-                ModelOperationSummaryHelper.setKind(modelOperationSummary, operationInfo.getKind() == null
-                    ? null : ModelOperationKind.fromString(operationInfo.getKind().toString()));
-                ModelOperationSummaryHelper.setLastUpdatedOn(modelOperationSummary, operationInfo.getLastUpdatedDateTime());
-                ModelOperationSummaryHelper.setPercentCompleted(modelOperationSummary,
-                    operationInfo.getPercentCompleted() == null ? Integer.valueOf(0)
-                        : operationInfo.getPercentCompleted());
-                ModelOperationSummaryHelper.setStatus(modelOperationSummary,
-                    ModelOperationStatus.fromString(operationInfo.getStatus().toString()));
-                ModelOperationSummaryHelper.setResourceLocation(modelOperationSummary, operationInfo.getResourceLocation());
-                return modelOperationSummary;
+            .map(operationSummaryItem -> {
+                OperationSummary documentModelOperationSummary = new OperationSummary();
+                OperationSummaryHelper.setOperationId(documentModelOperationSummary, operationSummaryItem.getOperationId());
+                OperationSummaryHelper.setCreatedOn(documentModelOperationSummary, operationSummaryItem.getCreatedDateTime());
+                OperationSummaryHelper.setKind(documentModelOperationSummary, operationSummaryItem.getKind() == null
+                    ? null : OperationKind.fromString(operationSummaryItem.getKind().toString()));
+                OperationSummaryHelper.setLastUpdatedOn(documentModelOperationSummary, operationSummaryItem.getLastUpdatedDateTime());
+                OperationSummaryHelper.setPercentCompleted(documentModelOperationSummary,
+                    operationSummaryItem.getPercentCompleted() == null ? Integer.valueOf(0)
+                        : operationSummaryItem.getPercentCompleted());
+                OperationSummaryHelper.setStatus(documentModelOperationSummary, operationSummaryItem.getStatus() == null
+                    ? null : OperationStatus.fromString(operationSummaryItem.getStatus().toString()));
+                OperationSummaryHelper.setResourceLocation(documentModelOperationSummary, operationSummaryItem.getResourceLocation());
+                OperationSummaryHelper.setTags(documentModelOperationSummary, operationSummaryItem.getTags());
+                return documentModelOperationSummary;
             }).collect(Collectors.toList());
     }
 
-    public static DocumentOperationResult toDocumentOperationResult(
+    public static OperationResult toDocumentOperationResult(
         String operationLocation) {
-        DocumentOperationResult documentOperationResult = new DocumentOperationResult();
-        DocumentOperationResultHelper.setResultId(
-            documentOperationResult,
+        OperationResult operationResult = new OperationResult();
+        OperationResultHelper.setResultId(
+            operationResult,
             Utility.parseResultId(operationLocation));
 
-        return documentOperationResult;
+        return operationResult;
     }
 
     private static ResponseError toResponseError(com.azure.ai.formrecognizer.documentanalysis.implementation.models.Error error) {
@@ -619,5 +637,21 @@ public class Transforms {
                 .append(": ").append(innerError.getMessage());
         }
         return new ResponseError(error.getCode(), errorInformationStringBuilder.toString());
+    }
+
+    private static List<DocumentWord> toDocumentWords(
+        com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentPage innerDocumentPage) {
+        return innerDocumentPage.getWords() == null ? null : innerDocumentPage.getWords()
+            .stream()
+            .map(innerDocumentWord -> {
+                DocumentWord documentWord = new DocumentWord();
+                DocumentWordHelper.setBoundingPolygon(documentWord,
+                    toPolygonPoints(innerDocumentWord.getPolygon()));
+                DocumentWordHelper.setConfidence(documentWord, innerDocumentWord.getConfidence());
+                DocumentWordHelper.setSpan(documentWord, getDocumentSpan(innerDocumentWord.getSpan()));
+                DocumentWordHelper.setContent(documentWord, innerDocumentWord.getContent());
+                return documentWord;
+            })
+            .collect(Collectors.toList());
     }
 }

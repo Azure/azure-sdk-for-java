@@ -29,6 +29,7 @@ import com.azure.core.util.serializer.TypeReference;
 import com.azure.search.documents.implementation.util.Constants;
 import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.models.IndexAction;
+import com.azure.search.documents.models.SearchAudience;
 import com.azure.search.documents.options.OnActionAddedOptions;
 import com.azure.search.documents.options.OnActionErrorOptions;
 import com.azure.search.documents.options.OnActionSentOptions;

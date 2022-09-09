@@ -20,6 +20,7 @@ public final class RecognizeCustomEntitiesOperationDetailPropertiesHelper {
      */
     public interface RecognizeCustomEntitiesOperationDetailAccessor {
         void setOperationId(RecognizeCustomEntitiesOperationDetail operationDetail, String operationId);
+        void setDisplayName(RecognizeCustomEntitiesOperationDetail operationDetail, String name);
         void setCreatedAt(RecognizeCustomEntitiesOperationDetail operationDetail, OffsetDateTime createdAt);
         void setExpiresAt(RecognizeCustomEntitiesOperationDetail operationDetail, OffsetDateTime expiresAt);
         void setLastModifiedAt(RecognizeCustomEntitiesOperationDetail operationDetail,
@@ -38,6 +39,10 @@ public final class RecognizeCustomEntitiesOperationDetailPropertiesHelper {
 
     public static void setOperationId(RecognizeCustomEntitiesOperationDetail operationDetail, String operationId) {
         accessor.setOperationId(operationDetail, operationId);
+    }
+
+    public static void setDisplayName(RecognizeCustomEntitiesOperationDetail operationDetail, String name) {
+        accessor.setDisplayName(operationDetail, name);
     }
 
     public static void setCreatedAt(RecognizeCustomEntitiesOperationDetail operationDetail,
