@@ -73,6 +73,11 @@ public final class IdentityUtil {
     }
 
     public static List<String> getAdditionalTenantsFromEnvironment(Configuration configuration) {
-        return resolveAdditionalTenants(Arrays.asList(configuration.get(AZURE_ADDITIONALLY_ALLOWED_TENANTS).split(";")));
+        String additionalTenantsFromEnv = configuration.get(AZURE_ADDITIONALLY_ALLOWED_TENANTS);
+        if (!CoreUtils.isNullOrEmpty(additionalTenantsFromEnv)) {
+            return resolveAdditionalTenants(Arrays.asList(configuration.get(AZURE_ADDITIONALLY_ALLOWED_TENANTS).split(";")));
+        } else {
+            return Collections.emptyList();
+        }
     }
 }
