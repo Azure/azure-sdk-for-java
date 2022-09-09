@@ -6,14 +6,11 @@ package com.azure.storage.common.implementation;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.Utility;
-import reactor.core.publisher.Mono;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -29,6 +26,12 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.regex.Pattern;
+
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 
 import static com.azure.storage.common.Utility.urlDecode;
 import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE;
@@ -200,6 +203,20 @@ public class StorageImplUtils {
      * @return Mono with an applied timeout, if any.
      */
     public static <T> Mono<T> applyOptionalTimeout(Mono<T> publisher, Duration timeout) {
+        return timeout == null
+            ? publisher
+            : publisher.timeout(timeout);
+    }
+
+    /**
+     * Applies a timeout to a publisher if the given timeout is not null.
+     *
+     * @param publisher Flux to apply optional timeout to.
+     * @param timeout Optional timeout.
+     * @param <T> Return type of the Flux.
+     * @return Flux with an applied timeout, if any.
+     */
+    public static <T> Flux<T> applyOptionalTimeout(Flux<T> publisher, Duration timeout) {
         return timeout == null
             ? publisher
             : publisher.timeout(timeout);
