@@ -6,7 +6,6 @@ package com.azure.storage.file.share;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
@@ -96,7 +95,6 @@ public class ShareAsyncClient {
     private final String snapshot;
     private final String accountName;
     private final ShareServiceVersion serviceVersion;
-    private final AzureSasCredential sasToken;
 
     /**
      * Creates a ShareAsyncClient that sends requests to the storage share at {@link AzureFileStorageImpl#getUrl()
@@ -105,17 +103,15 @@ public class ShareAsyncClient {
      *
      * @param client Client that interacts with the service interfaces
      * @param shareName Name of the share
-     * @param sasToken The SAS token to use for authenticating requests.
      */
     ShareAsyncClient(AzureFileStorageImpl client, String shareName, String snapshot, String accountName,
-        ShareServiceVersion serviceVersion, AzureSasCredential sasToken) {
+        ShareServiceVersion serviceVersion) {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         this.shareName = shareName;
         this.snapshot = snapshot;
         this.accountName = accountName;
         this.azureFileStorageClient = client;
         this.serviceVersion = serviceVersion;
-        this.sasToken = sasToken;
     }
 
     /**
@@ -149,10 +145,6 @@ public class ShareAsyncClient {
         return serviceVersion;
     }
 
-    AzureSasCredential getSasToken() {
-        return sasToken;
-    }
-
     /**
      * Constructs a {@link ShareDirectoryAsyncClient} that interacts with the root directory in the share.
      *
@@ -179,7 +171,7 @@ public class ShareAsyncClient {
             ? ""
             : directoryName;
         return new ShareDirectoryAsyncClient(azureFileStorageClient, shareName, directoryName, snapshot, accountName,
-            serviceVersion, sasToken);
+            serviceVersion);
     }
 
     /**
@@ -193,7 +185,7 @@ public class ShareAsyncClient {
      */
     public ShareFileAsyncClient getFileClient(String filePath) {
         return new ShareFileAsyncClient(azureFileStorageClient, shareName, filePath, snapshot, accountName,
-            serviceVersion, sasToken);
+            serviceVersion);
     }
 
     /**
@@ -204,7 +196,7 @@ public class ShareAsyncClient {
      */
     public ShareAsyncClient getSnapshotClient(String snapshot) {
         return new ShareAsyncClient(azureFileStorageClient, getShareName(), snapshot, getAccountName(),
-            getServiceVersion(), getSasToken());
+            getServiceVersion());
     }
 
     /**

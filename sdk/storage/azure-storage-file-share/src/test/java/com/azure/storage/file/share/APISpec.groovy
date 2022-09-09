@@ -168,15 +168,18 @@ class APISpec extends StorageSpec {
     }
 
     ShareDirectoryClient getDirectoryClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
-        ShareFileClientBuilder builder = getFileClientBuilder(endpoint, policies)
-            .credential(credential)
+        ShareFileClientBuilder builder = new ShareFileClientBuilder()
+            .endpoint(endpoint)
 
-        return builder.buildDirectoryClient()
-    }
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy)
+        }
 
-    ShareDirectoryClient getDirectoryClient(String sasToken, String endpoint, HttpPipelinePolicy... policies) {
-        ShareFileClientBuilder builder = getFileClientBuilder(endpoint, policies)
-            .sasToken(sasToken)
+        instrument(builder)
+
+        if (credential != null) {
+            builder.credential(credential)
+        }
 
         return builder.buildDirectoryClient()
     }
@@ -190,26 +193,6 @@ class APISpec extends StorageSpec {
     }
 
     ShareFileClient getFileClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
-        def builder = getFileClientBuilder(endpoint, policies)
-
-        if (credential != null) {
-            builder.credential(credential)
-        }
-
-        return builder.buildFileClient()
-    }
-
-    ShareFileClient getFileClient(String sasToken, String endpoint, HttpPipelinePolicy... policies) {
-        def builder = getFileClientBuilder( endpoint, policies)
-
-        if (sasToken != null) {
-            builder.sasToken(sasToken)
-        }
-
-        return builder.buildFileClient()
-    }
-
-    ShareFileClientBuilder getFileClientBuilder(String endpoint, HttpPipelinePolicy... policies) {
         ShareFileClientBuilder builder = new ShareFileClientBuilder()
             .endpoint(endpoint)
 
@@ -219,7 +202,11 @@ class APISpec extends StorageSpec {
 
         instrument(builder)
 
-        return builder
+        if (credential != null) {
+            builder.credential(credential)
+        }
+
+        return builder.buildFileClient()
     }
 
     InputStream getInputStream(byte[] data) {

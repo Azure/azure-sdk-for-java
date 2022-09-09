@@ -6,7 +6,6 @@ package com.azure.storage.file.share;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -148,6 +147,8 @@ public class ShareFileAsyncClient {
     private static final ClientLogger LOGGER = new ClientLogger(ShareFileAsyncClient.class);
     static final long FILE_DEFAULT_BLOCK_SIZE = 4 * 1024 * 1024L;
     static final long FILE_MAX_PUT_RANGE_SIZE = 4 * Constants.MB;
+    private static final long DOWNLOAD_UPLOAD_CHUNK_TIMEOUT = 300;
+    private static final Duration TIMEOUT_VALUE = Duration.ofSeconds(60);
 
     private final AzureFileStorageImpl azureFileStorageClient;
     private final String shareName;
@@ -155,7 +156,6 @@ public class ShareFileAsyncClient {
     private final String snapshot;
     private final String accountName;
     private final ShareServiceVersion serviceVersion;
-    private final AzureSasCredential sasToken;
 
     /**
      * Creates a ShareFileAsyncClient that sends requests to the storage file at {@link AzureFileStorageImpl#getUrl()
@@ -167,7 +167,7 @@ public class ShareFileAsyncClient {
      * @param snapshot The snapshot of the share
      */
     ShareFileAsyncClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String filePath,
-        String snapshot, String accountName, ShareServiceVersion serviceVersion, AzureSasCredential sasToken) {
+                         String snapshot, String accountName, ShareServiceVersion serviceVersion) {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         Objects.requireNonNull(filePath, "'filePath' cannot be null.");
         this.shareName = shareName;
@@ -176,13 +176,12 @@ public class ShareFileAsyncClient {
         this.azureFileStorageClient = azureFileStorageClient;
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
-        this.sasToken = sasToken;
     }
 
     ShareFileAsyncClient(ShareFileAsyncClient fileAsyncClient) {
         this(fileAsyncClient.azureFileStorageClient, fileAsyncClient.shareName,
             Utility.urlEncode(fileAsyncClient.filePath), fileAsyncClient.snapshot, fileAsyncClient.accountName,
-            fileAsyncClient.serviceVersion, fileAsyncClient.sasToken);
+            fileAsyncClient.serviceVersion);
     }
 
     /**
@@ -215,10 +214,6 @@ public class ShareFileAsyncClient {
      */
     public ShareServiceVersion getServiceVersion() {
         return serviceVersion;
-    }
-
-    AzureSasCredential getSasToken() {
-        return sasToken;
     }
 
     /**
@@ -991,6 +986,7 @@ public class ShareFileAsyncClient {
                 .flatMap(fbb -> FluxUtil
                     .writeFile(fbb, channel, chunk.getStart() - (range == null ? 0 : range.getStart()))
                     .subscribeOn(Schedulers.boundedElastic())
+                    .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
                     .retryWhen(Retry.max(3).filter(throwable -> throwable instanceof IOException
                         || throwable instanceof TimeoutException))))
             .then(Mono.just(response));
@@ -1162,7 +1158,7 @@ public class ShareFileAsyncClient {
                 }
 
                 Flux<ByteBuffer> bufferFlux  = FluxUtil.createRetriableDownloadFlux(
-                    () -> response.getValue(),
+                    () -> response.getValue().timeout(TIMEOUT_VALUE),
                     (throwable, offset) -> {
                         if (!(throwable instanceof IOException || throwable instanceof TimeoutException)) {
                             return Flux.error(throwable);
@@ -1189,7 +1185,7 @@ public class ShareFileAsyncClient {
                                 requestConditions, context).flatMapMany(r -> {
                                     String receivedETag = ModelHelper.getETag(r.getHeaders());
                                     if (eTag != null && eTag.equals(receivedETag)) {
-                                        return r.getValue();
+                                        return r.getValue().timeout(TIMEOUT_VALUE);
                                     } else {
                                         return Flux.<ByteBuffer>error(
                                             new ConcurrentModificationException(String.format("File has been modified "
@@ -2576,6 +2572,7 @@ public class ShareFileAsyncClient {
                     .flatMap(chunk -> uploadWithResponse(FluxUtil.readFile(channel, chunk.getStart(),
                         chunk.getEnd() - chunk.getStart() + 1), chunk.getEnd() - chunk.getStart() + 1,
                         chunk.getStart(), requestConditions)
+                        .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
                         .retryWhen(Retry.max(3).filter(throwable -> throwable instanceof IOException
                             || throwable instanceof TimeoutException)))
                     .then(), this::channelCleanUp);
@@ -3078,8 +3075,9 @@ public class ShareFileAsyncClient {
             : new ShareFileHttpHeaders().setContentType(options.getContentType());
 
         String renameSource = this.getFileUrl();
-
-        renameSource = this.sasToken != null ? renameSource + "?" + this.sasToken.getSignature() : renameSource;
+        // TODO (rickle-msft): when support added to core
+//        String sasToken = this.extractSasToken();
+//        renameSource = sasToken == null ? renameSource : renameSource + sasToken;
 
         return destinationFileClient.azureFileStorageClient.getFiles().renameWithResponseAsync(
             destinationFileClient.getShareName(), destinationFileClient.getFilePath(), renameSource,
@@ -3101,8 +3099,18 @@ public class ShareFileAsyncClient {
         }
 
         return new ShareFileAsyncClient(this.azureFileStorageClient, getShareName(), destinationPath, null,
-            this.getAccountName(), this.getServiceVersion(), this.getSasToken());
+            this.getAccountName(), this.getServiceVersion());
     }
+
+//    private String extractSasToken() {
+//        for (int i = 0; i < this.getHttpPipeline().getPolicyCount(); i++) {
+//            if (this.getHttpPipeline().getPolicy(i) instanceof AzureSasCredentialPolicy) {
+//                AzureSasCredentialPolicy policy = (AzureSasCredentialPolicy) this.getHttpPipeline().getPolicy(i);
+//                return policy.getCredential().getSignature();
+//            }
+//        }
+//        return null;
+//    }
 
     /**
      * Get snapshot id which attached to {@link ShareFileAsyncClient}. Return {@code null} if no snapshot id attached.
