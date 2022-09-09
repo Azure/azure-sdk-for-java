@@ -149,7 +149,7 @@ public final class SipRoutingAdminClientImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = CommunicationErrorResponseException.class,
-                code = {415, 422, 500})
+                code = {500, 422, 415})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<SipConfiguration>> patchSipConfiguration(
                 @HostParam("endpoint") String endpoint,
@@ -164,7 +164,7 @@ public final class SipRoutingAdminClientImpl {
      *
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sIP configuration for resource.
+     * @return sIP configuration for resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SipConfiguration>> getSipConfigurationWithResponseAsync() {
@@ -180,7 +180,7 @@ public final class SipRoutingAdminClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sIP configuration for resource.
+     * @return sIP configuration for resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SipConfiguration>> getSipConfigurationWithResponseAsync(Context context) {
@@ -193,19 +193,11 @@ public final class SipRoutingAdminClientImpl {
      *
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sIP configuration for resource.
+     * @return sIP configuration for resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SipConfiguration> getSipConfigurationAsync() {
-        return getSipConfigurationWithResponseAsync()
-                .flatMap(
-                        (Response<SipConfiguration> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getSipConfigurationWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -215,19 +207,11 @@ public final class SipRoutingAdminClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sIP configuration for resource.
+     * @return sIP configuration for resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SipConfiguration> getSipConfigurationAsync(Context context) {
-        return getSipConfigurationWithResponseAsync(context)
-                .flatMap(
-                        (Response<SipConfiguration> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getSipConfigurationWithResponseAsync(context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -249,7 +233,7 @@ public final class SipRoutingAdminClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sIP configuration for resource.
+     * @return sIP configuration for resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SipConfiguration> getSipConfigurationWithResponse(Context context) {
@@ -262,12 +246,13 @@ public final class SipRoutingAdminClientImpl {
      * @param body Configuration patch.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 415, 422,
-     *     500.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 500, 422,
+     *     415.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a SIP configuration. When a call is being routed the routes are applied in the same order as
      *     in the routes list. A route is matched by its number pattern. Call is then directed into route's first
-     *     available trunk, based on the order in the route's trunks list.
+     *     available trunk, based on the order in the route's trunks list along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SipConfiguration>> patchSipConfigurationWithResponseAsync(SipConfiguration body) {
@@ -284,12 +269,13 @@ public final class SipRoutingAdminClientImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 415, 422,
-     *     500.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 500, 422,
+     *     415.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a SIP configuration. When a call is being routed the routes are applied in the same order as
      *     in the routes list. A route is matched by its number pattern. Call is then directed into route's first
-     *     available trunk, based on the order in the route's trunks list.
+     *     available trunk, based on the order in the route's trunks list along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SipConfiguration>> patchSipConfigurationWithResponseAsync(
@@ -304,24 +290,16 @@ public final class SipRoutingAdminClientImpl {
      * @param body Configuration patch.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 415, 422,
-     *     500.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 500, 422,
+     *     415.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a SIP configuration. When a call is being routed the routes are applied in the same order as
      *     in the routes list. A route is matched by its number pattern. Call is then directed into route's first
-     *     available trunk, based on the order in the route's trunks list.
+     *     available trunk, based on the order in the route's trunks list on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SipConfiguration> patchSipConfigurationAsync(SipConfiguration body) {
-        return patchSipConfigurationWithResponseAsync(body)
-                .flatMap(
-                        (Response<SipConfiguration> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return patchSipConfigurationWithResponseAsync(body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -331,24 +309,16 @@ public final class SipRoutingAdminClientImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 415, 422,
-     *     500.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 500, 422,
+     *     415.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a SIP configuration. When a call is being routed the routes are applied in the same order as
      *     in the routes list. A route is matched by its number pattern. Call is then directed into route's first
-     *     available trunk, based on the order in the route's trunks list.
+     *     available trunk, based on the order in the route's trunks list on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SipConfiguration> patchSipConfigurationAsync(SipConfiguration body, Context context) {
-        return patchSipConfigurationWithResponseAsync(body, context)
-                .flatMap(
-                        (Response<SipConfiguration> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return patchSipConfigurationWithResponseAsync(body, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -357,8 +327,8 @@ public final class SipRoutingAdminClientImpl {
      * @param body Configuration patch.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 415, 422,
-     *     500.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 500, 422,
+     *     415.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a SIP configuration. When a call is being routed the routes are applied in the same order as
      *     in the routes list. A route is matched by its number pattern. Call is then directed into route's first
@@ -376,12 +346,12 @@ public final class SipRoutingAdminClientImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 415, 422,
-     *     500.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 500, 422,
+     *     415.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a SIP configuration. When a call is being routed the routes are applied in the same order as
      *     in the routes list. A route is matched by its number pattern. Call is then directed into route's first
-     *     available trunk, based on the order in the route's trunks list.
+     *     available trunk, based on the order in the route's trunks list along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SipConfiguration> patchSipConfigurationWithResponse(SipConfiguration body, Context context) {

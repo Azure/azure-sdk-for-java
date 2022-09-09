@@ -19,7 +19,7 @@ npm install -g autorest
 ```ps
 cd <swagger-folder>
 mvn install
-autorest README-siprouting.md --java --v4 --use=@autorest/java@4.0.40
+autorest README-siprouting.md --java --v4 --use=@autorest/java@4.1.3
 ```
 
 ## Update generated files for Sip Routing service
