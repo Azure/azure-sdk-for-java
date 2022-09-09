@@ -67,8 +67,8 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
             if (isPasswordProvided) {
                 LOGGER.debug(
                     "If you are using Azure hosted services,"
-                    + "it is encouraged to use the credential-free feature. "
-                    + "Please refer to https://aka.ms/credentail-free.");
+                    + "it is encouraged to use the passwordless feature. "
+                    + "Please refer to https://aka.ms/passwordless-connections.");
                 return bean;
             }
 

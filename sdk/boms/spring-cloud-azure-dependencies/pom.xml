@@ -55,7 +55,7 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
-      <!-- TODO (zhihaoguo): specify the version of azure-identity, we need to remove this before merging into main -->
+      <!-- TODO (zhihaoguo): Pin the version of azure-identity to 1.6.0-beta.1 for we want to use the caching ability for MI. -->
       <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-identity</artifactId>
