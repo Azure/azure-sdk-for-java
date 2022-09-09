@@ -66,8 +66,6 @@ class APISpec extends StorageSpec {
 
     static final String garbageLeaseID = UUID.randomUUID().toString()
 
-    static final String encryptionScopeString = "testscope1"
-
     DataLakeServiceClient primaryDataLakeServiceClient
     DataLakeServiceAsyncClient primaryDataLakeServiceAsyncClient
 

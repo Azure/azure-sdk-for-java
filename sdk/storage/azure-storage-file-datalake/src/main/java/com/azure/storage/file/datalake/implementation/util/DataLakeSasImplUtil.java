@@ -89,8 +89,6 @@ public class DataLakeSasImplUtil {
 
     private String correlationId;
 
-    private String encryptionScope;
-
     /**
      * Creates a new {@link DataLakeSasImplUtil} with the specified parameters
      *
@@ -129,7 +127,6 @@ public class DataLakeSasImplUtil {
         this.unauthorizedAadObjectId = sasValues.getAgentObjectId();
         this.correlationId = sasValues.getCorrelationId();
         this.isDirectory = isDirectory;
-        this.encryptionScope = sasValues.getEncryptionScope();
     }
 
     /**
@@ -231,7 +228,6 @@ public class DataLakeSasImplUtil {
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_ENCODING, this.contentEncoding);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_LANGUAGE, this.contentLanguage);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_TYPE, this.contentType);
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_ENCRYPTION_SCOPE, this.encryptionScope);
 
         return sb.toString();
 
@@ -336,7 +332,7 @@ public class DataLakeSasImplUtil {
                 VERSION,
                 resource,
                 "", /* Version segment. */
-                this.encryptionScope == null ? "" : this.encryptionScope,
+                "", // encryptionScope
                 this.cacheControl == null ? "" : this.cacheControl,
                 this.contentDisposition == null ? "" : this.contentDisposition,
                 this.contentEncoding == null ? "" : this.contentEncoding,
@@ -417,7 +413,7 @@ public class DataLakeSasImplUtil {
                 VERSION,
                 resource,
                 "", /* Version segment. */
-                this.encryptionScope == null ? "" : this.encryptionScope,
+                "", /* Encryption scope. */
                 this.cacheControl == null ? "" : this.cacheControl,
                 this.contentDisposition == null ? "" : this.contentDisposition,
                 this.contentEncoding == null ? "" : this.contentEncoding,

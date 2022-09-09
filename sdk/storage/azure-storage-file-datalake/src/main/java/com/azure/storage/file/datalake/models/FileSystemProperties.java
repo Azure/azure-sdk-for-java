@@ -3,8 +3,6 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.azure.storage.file.datalake.implementation.util.AccessorUtility;
-
 import java.time.OffsetDateTime;
 import java.util.Map;
 
@@ -21,17 +19,6 @@ public final class FileSystemProperties {
     private final PublicAccessType dataLakePublicAccess;
     private final boolean hasImmutabilityPolicy;
     private final boolean hasLegalHold;
-    private String encryptionScope;
-    private Boolean encryptionScopeOverridePrevented;
-
-
-    static {
-        AccessorUtility.setFileSystemPropertiesAccessor((properties, encryptionScope, encryptionScopeOverridePrevented) -> {
-            properties.encryptionScope = encryptionScope;
-            properties.encryptionScopeOverridePrevented = encryptionScopeOverridePrevented;
-            return properties;
-        });
-    }
 
     /**
      * Constructs a {@link FileSystemProperties}.
@@ -122,19 +109,5 @@ public final class FileSystemProperties {
      */
     public boolean hasLegalHold() {
         return hasLegalHold;
-    }
-
-    /**
-     * @return the file system's encryption scope
-     */
-    public String getEncryptionScope() {
-        return encryptionScope;
-    }
-
-    /**
-     * @return the file system's deny encryption scope override property.
-     */
-    public Boolean isEncryptionScopeOverridePrevented() {
-        return encryptionScopeOverridePrevented;
     }
 }

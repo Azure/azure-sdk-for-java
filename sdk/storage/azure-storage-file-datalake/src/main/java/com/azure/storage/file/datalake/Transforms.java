@@ -6,7 +6,6 @@ package com.azure.storage.file.datalake;
 import com.azure.storage.blob.models.BlobAccessPolicy;
 import com.azure.storage.blob.models.BlobAnalyticsLogging;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
-import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobContainerItemProperties;
 import com.azure.storage.blob.models.BlobContainerListDetails;
@@ -45,7 +44,6 @@ import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
 import com.azure.storage.file.datalake.implementation.models.BlobItemInternal;
 import com.azure.storage.file.datalake.implementation.models.BlobPrefix;
 import com.azure.storage.file.datalake.implementation.models.Path;
-import com.azure.storage.file.datalake.implementation.util.AccessorUtility;
 import com.azure.storage.file.datalake.models.AccessTier;
 import com.azure.storage.file.datalake.models.ArchiveStatus;
 import com.azure.storage.file.datalake.models.CopyStatusType;
@@ -91,7 +89,6 @@ import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
-import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions;
 
@@ -196,16 +193,13 @@ class Transforms {
         if (blobContainerProperties == null) {
             return null;
         }
-        FileSystemProperties fileSystemProperties = new FileSystemProperties(blobContainerProperties.getMetadata(), blobContainerProperties.getETag(),
+        return new FileSystemProperties(blobContainerProperties.getMetadata(), blobContainerProperties.getETag(),
             blobContainerProperties.getLastModified(),
             Transforms.toDataLakeLeaseDurationType(blobContainerProperties.getLeaseDuration()),
             Transforms.toDataLakeLeaseStateType(blobContainerProperties.getLeaseState()),
             Transforms.toDataLakeLeaseStatusType(blobContainerProperties.getLeaseStatus()),
             Transforms.toDataLakePublicAccessType(blobContainerProperties.getBlobPublicAccess()),
             blobContainerProperties.hasImmutabilityPolicy(), blobContainerProperties.hasLegalHold());
-        return AccessorUtility.getFileSystemPropertiesAccessor()
-            .setFileSystemProperties(fileSystemProperties, blobContainerProperties.getDefaultEncryptionScope(),
-                blobContainerProperties.isEncryptionScopeOverridePrevented());
     }
 
     private static BlobContainerListDetails toBlobContainerListDetails(FileSystemListDetails fileSystemListDetails) {
@@ -302,7 +296,7 @@ class Transforms {
         if (properties == null) {
             return null;
         } else {
-            PathProperties pathProperties = new PathProperties(properties.getCreationTime(), properties.getLastModified(), properties.getETag(),
+            return new PathProperties(properties.getCreationTime(), properties.getLastModified(), properties.getETag(),
                 properties.getBlobSize(), properties.getContentType(), properties.getContentMd5(),
                 properties.getContentEncoding(), properties.getContentDisposition(), properties.getContentLanguage(),
                 properties.getCacheControl(), Transforms.toDataLakeLeaseStatusType(properties.getLeaseStatus()),
@@ -314,8 +308,6 @@ class Transforms {
                 Transforms.toDataLakeAccessTier(properties.getAccessTier()),
                 Transforms.toDataLakeArchiveStatus(properties.getArchiveStatus()), properties.getEncryptionKeySha256(),
                 properties.getAccessTierChangeTime(), properties.getMetadata(), properties.getExpiresOn());
-
-            return AccessorUtility.getPathPropertiesAccessor().setPathProperties(pathProperties, properties.getEncryptionScope());
         }
     }
 
@@ -345,23 +337,19 @@ class Transforms {
             .setLeaseDuration(toDataLakeLeaseDurationType(blobContainerItemProperties.getLeaseDuration()))
             .setPublicAccess(toDataLakePublicAccessType(blobContainerItemProperties.getPublicAccess()))
             .setHasLegalHold(blobContainerItemProperties.isHasLegalHold())
-            .setHasImmutabilityPolicy(blobContainerItemProperties.isHasImmutabilityPolicy())
-            .setEncryptionScope(blobContainerItemProperties.getDefaultEncryptionScope())
-            .setEncryptionScopeOverridePrevented(blobContainerItemProperties.isEncryptionScopeOverridePrevented());
+            .setHasImmutabilityPolicy(blobContainerItemProperties.isHasImmutabilityPolicy());
     }
 
     static PathItem toPathItem(Path path) {
         if (path == null) {
             return null;
         }
-        PathItem pathItem = new PathItem(path.getETag(),
+        return new PathItem(path.getETag(),
             parseDateOrNull(path.getLastModified()), path.getContentLength() == null ? 0 : path.getContentLength(),
-            path.getGroup(), path.isDirectory() != null && path.isDirectory(), path.getName(), path.getOwner(),
+            path.getGroup(), path.isDirectory() == null ? false : path.isDirectory(), path.getName(), path.getOwner(),
             path.getPermissions(),
             path.getCreationTime() == null ? null : fromWindowsFileTimeOrNull(Long.parseLong(path.getCreationTime())),
             path.getExpiryTime() == null ? null : fromWindowsFileTimeOrNull(Long.parseLong(path.getExpiryTime())));
-
-        return AccessorUtility.getPathItemAccessor().setPathItemProperties(pathItem, path.getEncryptionScope());
     }
 
     private static OffsetDateTime parseDateOrNull(String date) {
@@ -857,14 +845,5 @@ class Transforms {
             .setEncryptionAlgorithm(com.azure.storage.file.datalake.models.EncryptionAlgorithmType.fromString(
                 info.getEncryptionAlgorithm().toString()))
             .setEncryptionKeySha256(info.getEncryptionKeySha256());
-    }
-
-    static BlobContainerEncryptionScope toBlobContainerEncryptionScope(FileSystemEncryptionScopeOptions fileSystemEncryptionScope) {
-        if (fileSystemEncryptionScope == null) {
-            return null;
-        }
-        return new BlobContainerEncryptionScope()
-            .setDefaultEncryptionScope(fileSystemEncryptionScope.getDefaultEncryptionScope())
-            .setEncryptionScopeOverridePrevented(fileSystemEncryptionScope.isEncryptionScopeOverridePrevented());
     }
 }
