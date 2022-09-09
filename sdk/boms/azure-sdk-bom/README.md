@@ -29,7 +29,7 @@ result in all dependencies being included in your project.
 </dependencyManagement>
 ```
 
-**NOTE**: In **Spring Boot** application, you can choose **azure-sdk-bom**'s version according to [Spring-Versions-Mapping](https://github.com/Azure/azure-sdk-for-java/wiki/Spring-Versions-Mapping).
+**NOTE**: In **Spring Boot** application, you can choose **azure-sdk-bom**'s version according to [Spring-Versions-Mapping](https://aka.ms/spring/versions).
 
 ### Adding libraries to your project
 
