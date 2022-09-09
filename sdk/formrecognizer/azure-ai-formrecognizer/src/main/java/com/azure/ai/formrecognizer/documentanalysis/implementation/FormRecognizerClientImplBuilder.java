@@ -102,8 +102,7 @@ public final class FormRecognizerClientImplBuilder
     }
 
     /*
-     * The client options such as application ID and custom headers to set on a
-     * request.
+     * The client options such as application ID and custom headers to set on a request.
      */
     @Generated private ClientOptions clientOptions;
 
@@ -137,8 +136,7 @@ public final class FormRecognizerClientImplBuilder
     }
 
     /*
-     * The configuration store that is used during construction of the service
-     * client.
+     * The configuration store that is used during construction of the service client.
      */
     @Generated private Configuration configuration;
 
@@ -211,8 +209,7 @@ public final class FormRecognizerClientImplBuilder
     }
 
     /*
-     * The retry policy that will attempt to retry failed requests, if
-     * applicable.
+     * The retry policy that will attempt to retry failed requests, if applicable.
      */
     @Generated private RetryPolicy retryPolicy;
 
@@ -235,17 +232,12 @@ public final class FormRecognizerClientImplBuilder
      */
     @Generated
     public FormRecognizerClientImpl buildClient() {
-        if (pipeline == null) {
-            this.pipeline = createHttpPipeline();
-        }
-        if (apiVersion == null) {
-            this.apiVersion = "2022-08-31";
-        }
-        if (serializerAdapter == null) {
-            this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        }
+        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
+        String localApiVersion = (apiVersion != null) ? apiVersion : "2022-08-31";
+        SerializerAdapter localSerializerAdapter =
+                (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
         FormRecognizerClientImpl client =
-                new FormRecognizerClientImpl(pipeline, serializerAdapter, endpoint, apiVersion);
+                new FormRecognizerClientImpl(localPipeline, localSerializerAdapter, endpoint, localApiVersion);
         return client;
     }
 

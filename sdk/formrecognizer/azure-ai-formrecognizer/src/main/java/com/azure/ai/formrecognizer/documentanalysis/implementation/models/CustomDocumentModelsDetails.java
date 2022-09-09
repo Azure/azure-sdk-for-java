@@ -17,8 +17,7 @@ public final class CustomDocumentModelsDetails {
     private int count;
 
     /*
-     * Maximum number of custom document models supported in the current
-     * resource.
+     * Maximum number of custom document models supported in the current resource.
      */
     @JsonProperty(value = "limit", required = true)
     private int limit;

@@ -18,8 +18,7 @@ public final class DocumentStyle {
     private Boolean isHandwritten;
 
     /*
-     * Location of the text elements in the concatenated content the style
-     * applies to.
+     * Location of the text elements in the concatenated content the style applies to.
      */
     @JsonProperty(value = "spans", required = true)
     private List<DocumentSpan> spans;

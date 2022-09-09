@@ -7,7 +7,7 @@ package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for AnalyzeResultOperationStatus. */
+/** Operation status. */
 public enum AnalyzeResultOperationStatus {
     /** Enum value notStarted. */
     NOT_STARTED("notStarted"),
@@ -36,6 +36,9 @@ public enum AnalyzeResultOperationStatus {
      */
     @JsonCreator
     public static AnalyzeResultOperationStatus fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AnalyzeResultOperationStatus[] items = AnalyzeResultOperationStatus.values();
         for (AnalyzeResultOperationStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,6 +48,7 @@ public enum AnalyzeResultOperationStatus {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

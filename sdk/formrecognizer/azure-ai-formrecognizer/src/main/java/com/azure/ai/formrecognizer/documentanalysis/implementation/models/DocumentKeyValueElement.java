@@ -24,8 +24,7 @@ public final class DocumentKeyValueElement {
     private List<BoundingRegion> boundingRegions;
 
     /*
-     * Location of the key-value element in the reading order concatenated
-     * content.
+     * Location of the key-value element in the reading order concatenated content.
      */
     @JsonProperty(value = "spans", required = true)
     private List<DocumentSpan> spans;

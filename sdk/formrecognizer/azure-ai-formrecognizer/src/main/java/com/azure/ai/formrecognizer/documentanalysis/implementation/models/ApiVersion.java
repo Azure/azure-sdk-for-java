@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ApiVersion. */
+/** API version. */
 public final class ApiVersion extends ExpandableStringEnum<ApiVersion> {
     /** Static value 2022-08-31 for ApiVersion. */
     public static final ApiVersion TWO_THOUSAND_TWENTY_TWO0831 = fromString("2022-08-31");

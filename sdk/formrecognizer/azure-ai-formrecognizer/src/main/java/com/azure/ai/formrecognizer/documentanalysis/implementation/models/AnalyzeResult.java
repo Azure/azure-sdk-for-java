@@ -30,8 +30,7 @@ public final class AnalyzeResult {
     private StringIndexType stringIndexType;
 
     /*
-     * Concatenate string representation of all textual and visual elements in
-     * reading order.
+     * Concatenate string representation of all textual and visual elements in reading order.
      */
     @JsonProperty(value = "content", required = true)
     private String content;

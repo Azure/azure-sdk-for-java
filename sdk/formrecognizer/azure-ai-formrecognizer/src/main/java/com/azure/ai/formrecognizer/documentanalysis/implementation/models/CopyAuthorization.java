@@ -12,15 +12,13 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class CopyAuthorization {
     /*
-     * ID of the target Azure resource where the document model should be
-     * copied to.
+     * ID of the target Azure resource where the document model should be copied to.
      */
     @JsonProperty(value = "targetResourceId", required = true)
     private String targetResourceId;
 
     /*
-     * Location of the target Azure resource where the document model should be
-     * copied to.
+     * Location of the target Azure resource where the document model should be copied to.
      */
     @JsonProperty(value = "targetResourceRegion", required = true)
     private String targetResourceRegion;

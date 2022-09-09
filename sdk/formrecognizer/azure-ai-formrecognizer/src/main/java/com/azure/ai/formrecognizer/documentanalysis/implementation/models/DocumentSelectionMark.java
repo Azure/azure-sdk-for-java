@@ -24,8 +24,7 @@ public final class DocumentSelectionMark {
     private List<Float> polygon;
 
     /*
-     * Location of the selection mark in the reading order concatenated
-     * content.
+     * Location of the selection mark in the reading order concatenated content.
      */
     @JsonProperty(value = "span", required = true)
     private DocumentSpan span;
