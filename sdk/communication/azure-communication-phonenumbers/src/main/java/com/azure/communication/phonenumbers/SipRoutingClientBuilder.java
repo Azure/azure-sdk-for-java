@@ -81,7 +81,7 @@ public final class SipRoutingClientBuilder implements
 
     private SipRoutingServiceVersion version = SipRoutingServiceVersion.getLatest();
     private String endpoint;
-    private HttpPipeline pipeline;
+    private HttpPipeline httpPipeline;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
     private AzureKeyCredential azureKeyCredential;
@@ -123,12 +123,15 @@ public final class SipRoutingClientBuilder implements
      * If {@code pipeline} is set, all other settings aside from
      * {@link SipRoutingClientBuilder#endpoint(String) endpoint} are ignored.
      *
-     * @param pipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
+     * @param httpPipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
      * @return The updated {@link SipRoutingClientBuilder} object.
      */
     @Override
-    public SipRoutingClientBuilder pipeline(HttpPipeline pipeline) {
-        this.pipeline = pipeline;
+    public SipRoutingClientBuilder pipeline(HttpPipeline httpPipeline) {
+        if (this.httpPipeline != null && httpPipeline == null) {
+            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
+        }
+        this.httpPipeline = httpPipeline;
         return this;
     }
 
@@ -147,6 +150,9 @@ public final class SipRoutingClientBuilder implements
      */
     @Override
     public SipRoutingClientBuilder httpClient(HttpClient httpClient) {
+        if (this.httpClient != null && httpClient == null) {
+            logger.info("HttpClient is being set to 'null' when it was previously configured.");
+        }
         this.httpClient = httpClient;
         return this;
     }
@@ -422,8 +428,8 @@ public final class SipRoutingClientBuilder implements
     }
 
     private HttpPipeline createHttpPipeline() {
-        if (this.pipeline != null) {
-            return this.pipeline;
+        if (this.httpPipeline != null) {
+            return this.httpPipeline;
         }
 
         List<HttpPipelinePolicy> policyList = new ArrayList<>();
