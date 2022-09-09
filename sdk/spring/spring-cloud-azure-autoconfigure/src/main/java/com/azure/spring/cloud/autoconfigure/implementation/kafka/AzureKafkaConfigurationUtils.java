@@ -3,8 +3,8 @@
 package com.azure.spring.cloud.autoconfigure.implementation.kafka;
 
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
-import com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreeProperties;
 import com.azure.spring.cloud.service.implementation.kafka.KafkaOAuth2AuthenticateCallbackHandler;
+import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
 import org.apache.kafka.common.message.ApiVersionsRequestData;
 import org.apache.kafka.common.requests.ApiVersionsRequest;
 import org.slf4j.Logger;
@@ -150,18 +150,18 @@ public final class AzureKafkaConfigurationUtils {
     }
 
     /**
-     * Build {@link AzureCredentialFreeProperties} from Kafka custom properties and {@link AzureGlobalProperties}.
+     * Build {@link AzurePasswordlessProperties} from Kafka custom properties and {@link AzureGlobalProperties}.
      *
      * @param kafkaProperties the kafka custom property map
      * @param azureGlobalProperties Azure global properties
-     * @return a {@link AzureCredentialFreeProperties}
+     * @return a {@link AzurePasswordlessProperties}
      */
-    public static AzureCredentialFreeProperties buildAzureProperties(Map<String, Object> kafkaProperties,
-                                                                     AzureGlobalProperties azureGlobalProperties) {
-        AzureCredentialFreeProperties azureCredentialFreeProperties = new AzureCredentialFreeProperties();
-        copyPropertiesIgnoreNull(azureGlobalProperties.getProfile(), azureCredentialFreeProperties.getProfile());
-        copyPropertiesIgnoreNull(azureGlobalProperties.getCredential(), azureCredentialFreeProperties.getCredential());
-        convertConfigMapToAzureProperties(kafkaProperties, azureCredentialFreeProperties);
-        return azureCredentialFreeProperties;
+    public static AzurePasswordlessProperties buildAzureProperties(Map<String, Object> kafkaProperties,
+                                                                   AzureGlobalProperties azureGlobalProperties) {
+        AzurePasswordlessProperties azurePasswordlessProperties = new AzurePasswordlessProperties();
+        copyPropertiesIgnoreNull(azureGlobalProperties.getProfile(), azurePasswordlessProperties.getProfile());
+        copyPropertiesIgnoreNull(azureGlobalProperties.getCredential(), azurePasswordlessProperties.getCredential());
+        convertConfigMapToAzureProperties(kafkaProperties, azurePasswordlessProperties);
+        return azurePasswordlessProperties;
     }
 }

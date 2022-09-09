@@ -3,7 +3,7 @@
 package com.azure.spring.cloud.service.implementation.kafka;
 
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
-import com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreeProperties;
+import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -30,7 +30,7 @@ class AzureKafkaPropertiesUtilsTest {
     }
     @Test
     void testConvertConfigMapToAzureProperties() {
-        AzureCredentialFreeProperties properties = new AzureCredentialFreeProperties();
+        AzurePasswordlessProperties properties = new AzurePasswordlessProperties();
         convertConfigMapToAzureProperties(buildKafkaSourceConfigsFromAzureProperties(), properties);
 
         Arrays.stream(AzureKafkaPropertiesUtils.Mapping.values()).forEach(mapping -> {
@@ -47,7 +47,7 @@ class AzureKafkaPropertiesUtilsTest {
 
     @Test
     void testConvertAzurePropertiesToConfigMapWithCustomValues() {
-        AzureCredentialFreeProperties properties = new AzureCredentialFreeProperties();
+        AzurePasswordlessProperties properties = new AzurePasswordlessProperties();
         Map<String, String> sourceConfigs = buildKafkaSourceConfigsFromAzureProperties();
         Map<String, String> customKafkaConfigs = new HashMap<>();
         Arrays.stream(AzureKafkaPropertiesUtils.Mapping.values()).forEach(mapping ->
@@ -71,7 +71,7 @@ class AzureKafkaPropertiesUtilsTest {
 
     @Test
     void testConvertAzurePropertiesToConfigMapWithoutCustomValues() {
-        AzureCredentialFreeProperties properties = new AzureCredentialFreeProperties();
+        AzurePasswordlessProperties properties = new AzurePasswordlessProperties();
         Map<String, String> sourceConfigs = buildKafkaSourceConfigsFromAzureProperties();
         Map<String, String> customKafkaConfigs = new HashMap<>();
         convertConfigMapToAzureProperties(sourceConfigs, properties);

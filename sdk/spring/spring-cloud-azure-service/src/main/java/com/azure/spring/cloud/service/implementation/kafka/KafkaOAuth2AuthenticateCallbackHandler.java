@@ -8,7 +8,7 @@ import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.cloud.core.implementation.factory.credential.DefaultAzureCredentialBuilderFactory;
 import com.azure.spring.cloud.core.properties.AzureProperties;
-import com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreeProperties;
+import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
 import org.apache.kafka.common.security.auth.AuthenticateCallbackHandler;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerTokenCallback;
 import reactor.core.publisher.Mono;
@@ -33,7 +33,7 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
     private static final Duration ACCESS_TOKEN_REQUEST_BLOCK_TIME = Duration.ofSeconds(30);
     private static final String TOKEN_AUDIENCE_FORMAT = "%s://%s/.default";
 
-    private final AzureCredentialFreeProperties properties;
+    private final AzurePasswordlessProperties properties;
     private final AzureCredentialResolver<TokenCredential> externalTokenCredentialResolver;
 
     private AzureCredentialResolver<TokenCredential> tokenCredentialResolver;
@@ -43,8 +43,8 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
         this(null, null);
     }
 
-    public KafkaOAuth2AuthenticateCallbackHandler(AzureCredentialFreeProperties properties, AzureCredentialResolver<TokenCredential> externalTokenCredentialResolver) {
-        this.properties = properties == null ? new AzureCredentialFreeProperties() : properties;
+    public KafkaOAuth2AuthenticateCallbackHandler(AzurePasswordlessProperties properties, AzureCredentialResolver<TokenCredential> externalTokenCredentialResolver) {
+        this.properties = properties == null ? new AzurePasswordlessProperties() : properties;
         this.externalTokenCredentialResolver = externalTokenCredentialResolver == null ? new AzureTokenCredentialResolver() : externalTokenCredentialResolver;
     }
 

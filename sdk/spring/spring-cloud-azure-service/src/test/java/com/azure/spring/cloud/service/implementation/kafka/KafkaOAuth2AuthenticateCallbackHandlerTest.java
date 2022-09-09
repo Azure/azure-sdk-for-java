@@ -2,28 +2,26 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.service.implementation.kafka;
 
-import java.time.OffsetDateTime;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.security.auth.callback.Callback;
-import javax.security.auth.callback.UnsupportedCallbackException;
-
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.ManagedIdentityCredential;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
-import com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreeProperties;
+import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerTokenCallback;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.test.util.ReflectionTestUtils;
 import reactor.core.publisher.Mono;
 
-import org.springframework.test.util.ReflectionTestUtils;
+import javax.security.auth.callback.Callback;
+import javax.security.auth.callback.UnsupportedCallbackException;
+import java.time.OffsetDateTime;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.AZURE_TOKEN_CREDENTIAL;
 import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.Mapping.managedIdentityEnabled;
@@ -58,7 +56,7 @@ class KafkaOAuth2AuthenticateCallbackHandlerTest {
         KafkaOAuth2AuthenticateCallbackHandler handler = new KafkaOAuth2AuthenticateCallbackHandler();
         handler.configure(configs, null, null);
 
-        AzureCredentialFreeProperties properties = (AzureCredentialFreeProperties) ReflectionTestUtils
+        AzurePasswordlessProperties properties = (AzurePasswordlessProperties) ReflectionTestUtils
                 .getField(handler, AZURE_THIRD_PARTY_SERVICE_PROPERTIES_FIELD_NAME);
         @SuppressWarnings("unchecked") AzureCredentialResolver<TokenCredential> azureTokenCredentialResolver =
             (AzureCredentialResolver<TokenCredential>) ReflectionTestUtils.getField(handler, TOKEN_CREDENTIAL_RESOLVER_FIELD_NAME);
@@ -73,7 +71,7 @@ class KafkaOAuth2AuthenticateCallbackHandlerTest {
         KafkaOAuth2AuthenticateCallbackHandler handler = new KafkaOAuth2AuthenticateCallbackHandler();
         handler.configure(configs, null, null);
 
-        AzureCredentialFreeProperties properties = (AzureCredentialFreeProperties) ReflectionTestUtils
+        AzurePasswordlessProperties properties = (AzurePasswordlessProperties) ReflectionTestUtils
                 .getField(handler, AZURE_THIRD_PARTY_SERVICE_PROPERTIES_FIELD_NAME);
         @SuppressWarnings("unchecked") AzureCredentialResolver<TokenCredential> azureTokenCredentialResolver =
             (AzureCredentialResolver<TokenCredential>) ReflectionTestUtils.getField(handler, TOKEN_CREDENTIAL_RESOLVER_FIELD_NAME);
@@ -90,7 +88,7 @@ class KafkaOAuth2AuthenticateCallbackHandlerTest {
         KafkaOAuth2AuthenticateCallbackHandler handler = new KafkaOAuth2AuthenticateCallbackHandler();
         handler.configure(configs, null, null);
 
-        AzureCredentialFreeProperties properties = (AzureCredentialFreeProperties) ReflectionTestUtils
+        AzurePasswordlessProperties properties = (AzurePasswordlessProperties) ReflectionTestUtils
             .getField(handler, AZURE_THIRD_PARTY_SERVICE_PROPERTIES_FIELD_NAME);
         assertTrue(properties.getCredential().isManagedIdentityEnabled());
         @SuppressWarnings("unchecked") AzureCredentialResolver<TokenCredential> azureTokenCredentialResolver =

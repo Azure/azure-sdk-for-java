@@ -3,7 +3,7 @@
 package com.azure.spring.cloud.autoconfigure.kafka;
 
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
-import com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreeProperties;
+import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.ApplicationContext;
@@ -44,10 +44,10 @@ abstract class AbstractAzureKafkaOAuth2AutoConfigurationTests {
 
                     AzureGlobalProperties azureGlobalProperties = context.getBean(AzureGlobalProperties.class);
                     assertEquals("azure-client-id", azureGlobalProperties.getCredential().getClientId());
-                    AzureCredentialFreeProperties azureBuiltKafkaProducerProp = buildAzureProperties(
+                    AzurePasswordlessProperties azureBuiltKafkaProducerProp = buildAzureProperties(
                             getProducerProperties(context), azureGlobalProperties);
                     assertEquals("kafka-producer-client-id", azureBuiltKafkaProducerProp.getCredential().getClientId());
-                    AzureCredentialFreeProperties azureBuiltKafkaConsumerProp = buildAzureProperties(
+                    AzurePasswordlessProperties azureBuiltKafkaConsumerProp = buildAzureProperties(
                             getConsumerProperties(context), azureGlobalProperties);
                     assertEquals("kafka-client-id", azureBuiltKafkaConsumerProp.getCredential().getClientId());
                 });
@@ -64,11 +64,11 @@ abstract class AbstractAzureKafkaOAuth2AutoConfigurationTests {
                     AzureGlobalProperties azureGlobalProperties = context.getBean(AzureGlobalProperties.class);
                     assertEquals("azure-client-id", azureGlobalProperties.getCredential().getClientId());
                     Map<String, Object> producerProperties = getProducerProperties(context);
-                    AzureCredentialFreeProperties azureBuiltKafkaProducerProp = buildAzureProperties(
+                    AzurePasswordlessProperties azureBuiltKafkaProducerProp = buildAzureProperties(
                             producerProperties, azureGlobalProperties);
                     assertEquals("azure-client-id", azureBuiltKafkaProducerProp.getCredential().getClientId());
                     Map<String, Object> consumerProperties = getConsumerProperties(context);
-                    AzureCredentialFreeProperties azureBuiltKafkaConsumerProp = buildAzureProperties(
+                    AzurePasswordlessProperties azureBuiltKafkaConsumerProp = buildAzureProperties(
                             consumerProperties, azureGlobalProperties);
                     assertEquals("azure-client-id", azureBuiltKafkaConsumerProp.getCredential().getClientId());
                 });

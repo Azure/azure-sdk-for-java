@@ -9,8 +9,8 @@ import com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionSt
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionStringEnhancer;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
-import com.azure.spring.cloud.service.implementation.credentialfree.AzureCredentialFreeProperties;
 import com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider;
+import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -32,7 +32,7 @@ import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPrope
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_KV_DELIMITER;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_NAME_CONNECTION_ATTRIBUTES;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_NAME_APPLICATION_NAME;
-import static com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider.CREDENTIAL_FREE_TOKEN_BEAN_NAME;
+import static com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider.PASSWORDLESS_TOKEN_CREDENTIAL_BEAN_NAME;
 
 
 /**
@@ -52,10 +52,10 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
         if (bean instanceof DataSourceProperties) {
             DataSourceProperties dataSourceProperties = (DataSourceProperties) bean;
 
-            AzureCredentialFreeProperties properties = Binder.get(environment)
-                .bindOrCreate(SPRING_CLOUD_AZURE_DATASOURCE_PREFIX, AzureCredentialFreeProperties.class);
-            if (!properties.isCredentialFreeEnabled()) {
-                LOGGER.debug("Feature credential free is not enabled, skip enhancing jdbc url.");
+            AzurePasswordlessProperties properties = Binder.get(environment)
+                .bindOrCreate(SPRING_CLOUD_AZURE_DATASOURCE_PREFIX, AzurePasswordlessProperties.class);
+            if (!properties.isPasswordlessEnabled()) {
+                LOGGER.debug("Feature passwordless authentication is not enabled, skip enhancing jdbc url.");
                 return bean;
             }
 
@@ -75,8 +75,8 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
             if (isPasswordProvided) {
                 LOGGER.debug(
                     "If you are using Azure hosted services,"
-                    + "it is encouraged to use the credential-free feature. "
-                    + "Please refer to https://aka.ms/credentail-free.");
+                    + "it is encouraged to use the passwordless feature. "
+                    + "Please refer to https://aka.ms/passwordless-connections.");
                 return bean;
             }
 
@@ -117,15 +117,15 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
         }
     }
 
-    private Map<String, String> buildEnhancedProperties(DatabaseType databaseType, AzureCredentialFreeProperties properties) {
+    private Map<String, String> buildEnhancedProperties(DatabaseType databaseType, AzurePasswordlessProperties properties) {
         Map<String, String> result = new HashMap<>();
         AzureTokenCredentialResolver resolver = applicationContext.getBean(AzureTokenCredentialResolver.class);
         TokenCredential tokenCredential = resolver.resolve(properties);
 
         if (tokenCredential != null) {
             LOGGER.debug("Add SpringTokenCredentialProvider as the default token credential provider.");
-            AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.setProperty(result, CREDENTIAL_FREE_TOKEN_BEAN_NAME);
-            applicationContext.registerBean(CREDENTIAL_FREE_TOKEN_BEAN_NAME, TokenCredential.class, () -> tokenCredential);
+            AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.setProperty(result, PASSWORDLESS_TOKEN_CREDENTIAL_BEAN_NAME);
+            applicationContext.registerBean(PASSWORDLESS_TOKEN_CREDENTIAL_BEAN_NAME, TokenCredential.class, () -> tokenCredential);
         }
 
         AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.setProperty(result, SPRING_TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME);
