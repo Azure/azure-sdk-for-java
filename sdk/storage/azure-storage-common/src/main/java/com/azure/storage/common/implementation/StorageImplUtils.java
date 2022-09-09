@@ -26,7 +26,6 @@ import java.util.Base64;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.regex.Pattern;
 
 import static com.azure.storage.common.Utility.urlDecode;
 import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE;
@@ -97,14 +96,6 @@ public class StorageImplUtils {
      */
     @Deprecated
     public static final String ISO8601_PATTERN_NO_SECONDS = "yyyy-MM-dd'T'HH:mm'Z'";
-
-    /**
-     * A compiled Pattern that finds 'Z'. This is used as Java 8's String.replace method uses Pattern.compile
-     * internally without simple case opt-outs.
-     * @deprecated See value in {@link StorageImplUtils}
-     */
-    @Deprecated
-    public static final Pattern Z_PATTERN = Pattern.compile("Z");
 
     // Use constant DateTimeFormatters as 'ofPattern' requires the passed pattern to be parsed each time, significantly
     // increasing the overhead of using DateTimeFormatter.
@@ -345,19 +336,12 @@ public class StorageImplUtils {
             if (response.getRequest() != null && response.getRequest().getHttpMethod() != null
                 && response.getRequest().getHttpMethod().equals(HttpMethod.HEAD)
                 && response.getHeaders().getValue(ERROR_CODE) != null) {
-<<<<<<< Updated upstream
-                // Use a constant compiled Pattern as the match pattern is always the same and String.replaceFirst
-                // will compile the match String into a Pattern internally on each call.
                 int indexOfEmptyBody = message.indexOf("(empty body)");
                 if (indexOfEmptyBody >= 0) {
                     return message.substring(0, indexOfEmptyBody)
                         + response.getHeaders().getValue(ERROR_CODE)
                         + message.substring(indexOfEmptyBody + 12);
                 }
-=======
-                return EMPTY_BODY_ERROR_PATTERN.matcher(message)
-                    .replaceFirst(response.getHeaders().getValue(ERROR_CODE));
->>>>>>> Stashed changes
             }
         }
         return message;
@@ -383,11 +367,15 @@ public class StorageImplUtils {
                 break;
             case 23: // "yyyy-MM-dd'T'HH:mm:ss.SS'Z'"-> [2012-01-04T23:21:59.12Z] length = 23
                 // SS is assumed to be milliseconds, so a trailing 0 is necessary
-                dateString = Z_PATTERN.matcher(dateString).replaceAll("0");
+                if (dateString.endsWith("Z")) {
+                    dateString = dateString.substring(0, 22) + "0";
+                }
                 break;
             case 22: // "yyyy-MM-dd'T'HH:mm:ss.S'Z'"-> [2012-01-04T23:21:59.1Z] length = 22
                 // S is assumed to be milliseconds, so trailing 0's are necessary
-                dateString = Z_PATTERN.matcher(dateString).replaceAll("00");
+                if (dateString.endsWith("Z")) {
+                    dateString = dateString.substring(0, 21) + "00";
+                }
                 break;
             case 20: // "yyyy-MM-dd'T'HH:mm:ss'Z'"-> [2012-01-04T23:21:59Z] length = 20
                 formatter = ISO8601_FORMATTER;
