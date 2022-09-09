@@ -8,14 +8,6 @@
 
 Added `spring.cloud.azure.appconfiguration.stores[0].endpoints` which enables listing of multiple endpoints. See MSDocs or README for more details.
 
-### Breaking Changes
-
-N/A
-
-### Bugs Fixed
-
-N/A
-
 ### Other Changes
 
 ## 2.8.0 (2022-06-29)
