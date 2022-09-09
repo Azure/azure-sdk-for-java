@@ -1,17 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.config;
-
-import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.util.StringUtils;
+package com.azure.spring.cloud.config.implementation;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
+import org.springframework.util.StringUtils;
+
+import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 final class JsonConfigurationParser {
     private static final ObjectMapper MAPPER = new ObjectMapper();
@@ -41,7 +43,7 @@ final class JsonConfigurationParser {
         return false;
     }
 
-    static HashMap<String, Object> parseJsonSetting(ConfigurationSetting setting)
+    static Map<String, Object> parseJsonSetting(ConfigurationSetting setting)
         throws JsonProcessingException {
         HashMap<String, Object> settings = new HashMap<>();
         JsonNode json = MAPPER.readTree(setting.getValue());

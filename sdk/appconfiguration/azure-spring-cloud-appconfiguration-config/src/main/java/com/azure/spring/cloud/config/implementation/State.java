@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.config;
+package com.azure.spring.cloud.config.implementation;
 
 import java.time.Instant;
 import java.util.List;
@@ -13,25 +13,25 @@ class State {
 
     private final Instant nextRefreshCheck;
 
-    private final String key;
+    private final String originEndpoint;
 
     private Integer refreshAttempt;
 
     private final int refreshInterval;
 
-    State(List<ConfigurationSetting> watchKeys, int refreshInterval, String key) {
+    State(List<ConfigurationSetting> watchKeys, int refreshInterval, String originEndpoint) {
         this.watchKeys = watchKeys;
         this.refreshInterval = refreshInterval;
         nextRefreshCheck = Instant.now().plusSeconds(refreshInterval);
-        this.key = key;
+        this.originEndpoint = originEndpoint;
         this.refreshAttempt = 1;
     }
 
-    State(State oldState, Instant newRefresh, String key) {
+    State(State oldState, Instant newRefresh) {
         this.watchKeys = oldState.getWatchKeys();
         this.refreshInterval = oldState.getRefreshInterval();
         this.nextRefreshCheck = newRefresh;
-        this.key = key;
+        this.originEndpoint = oldState.getOriginEndpoint();
         this.refreshAttempt = oldState.getRefreshAttempt();
     }
 
@@ -50,10 +50,10 @@ class State {
     }
 
     /**
-     * @return the key
+     * @return the originEndpoint
      */
-    public String getKey() {
-        return key;
+    public String getOriginEndpoint() {
+        return originEndpoint;
     }
 
     /**
@@ -64,7 +64,7 @@ class State {
     }
 
     /**
-     * @param refreshAttempt the refreshAttempt to set
+     * Adds 1 to the number of refresh attempts
      */
     public void incrementRefreshAttempt() {
         this.refreshAttempt += 1;

@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.config;
+package com.azure.spring.cloud.config.implementation;
 
 import static com.azure.spring.cloud.config.AppConfigurationConstants.KEY_VAULT_CONTENT_TYPE;
 import static com.azure.spring.cloud.config.TestConstants.TEST_CONN_STRING;
@@ -17,15 +17,14 @@ import static com.azure.spring.cloud.config.TestConstants.TEST_URI_VAULT_1;
 import static com.azure.spring.cloud.config.TestConstants.TEST_VALUE_1;
 import static com.azure.spring.cloud.config.TestConstants.TEST_VALUE_2;
 import static com.azure.spring.cloud.config.TestConstants.TEST_VALUE_3;
-import static com.azure.spring.cloud.config.TestUtils.createItem;
-import static com.azure.spring.cloud.config.TestUtils.createSecretReference;
+import static com.azure.spring.cloud.config.implementation.TestUtils.createItem;
+import static com.azure.spring.cloud.config.implementation.TestUtils.createSecretReference;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
@@ -35,34 +34,29 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
+import com.azure.spring.cloud.config.KeyVaultCredentialProvider;
+import com.azure.spring.cloud.config.KeyVaultSecretProvider;
 import com.azure.spring.cloud.config.feature.management.entity.FeatureSet;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreSelects;
 import com.azure.spring.cloud.config.properties.ConfigStore;
-import com.azure.spring.cloud.config.stores.ClientStore;
 
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public class AppConfigurationPropertySourceKeyVaultTest {
 
     public static final List<ConfigurationSetting> TEST_ITEMS = new ArrayList<>();
 
-    public static final List<ConfigurationSetting> FEATURE_ITEMS = new ArrayList<>();
-
     private static final String EMPTY_CONTENT_TYPE = "";
 
     private static final AppConfigurationProperties TEST_PROPS = new AppConfigurationProperties();
-    
+
     private static final String KEY_FILTER = "/foo/";
 
     private static final ConfigurationSetting ITEM_1 = createItem(KEY_FILTER, TEST_KEY_1, TEST_VALUE_1, TEST_LABEL_1,
@@ -85,34 +79,16 @@ public class AppConfigurationPropertySourceKeyVaultTest {
     private AppConfigurationProviderProperties appProperties;
 
     @Mock
-    private ClientStore clientStoreMock;
+    private SecretClientBuilder builderMock;
 
     @Mock
-    private SecretClientBuilder builderMock;
+    private AppConfigurationReplicaClient replicaClientMock;
 
     @Mock
     private SecretAsyncClient clientMock;
 
     @Mock
-    private PagedFlux<ConfigurationSetting> settingsMock;
-
-    @Mock
-    private Flux<PagedResponse<ConfigurationSetting>> pageMock;
-
-    @Mock
-    private Mono<List<PagedResponse<ConfigurationSetting>>> collectionMock;
-
-    @Mock
-    private List<PagedResponse<ConfigurationSetting>> itemsMock;
-
-    @Mock
-    private Iterator<PagedResponse<ConfigurationSetting>> itemsIteratorMock;
-
-    @Mock
-    private PagedResponse<ConfigurationSetting> pagedResponseMock;
-
-    @Mock
-    private PagedIterable<ConfigurationSetting> pagedFluxMock;
+    private List<ConfigurationSetting> configurationListMock;
 
     private KeyVaultCredentialProvider tokenCredentialProvider = null;
 
@@ -128,12 +104,10 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         appProperties.setMaxRetryTime(0);
         ConfigStore testStore = new ConfigStore();
         testStore.setEndpoint(TEST_STORE_NAME);
-        ArrayList<String> contexts = new ArrayList<String>();
-        contexts.add("/application/*");
         AppConfigurationStoreSelects selects = new AppConfigurationStoreSelects().setKeyFilter(KEY_FILTER)
             .setLabelFilter("\0");
         propertySource = new AppConfigurationPropertySource(testStore, selects, new ArrayList<>(),
-            appConfigurationProperties, clientStoreMock, appProperties, tokenCredentialProvider, null,
+            appConfigurationProperties, replicaClientMock, appProperties, tokenCredentialProvider, null,
             new TestClient());
 
         TEST_ITEMS.add(ITEM_1);
@@ -147,12 +121,11 @@ public class AppConfigurationPropertySourceKeyVaultTest {
     }
 
     @Test
-    public void testKeyVaultTest() throws Exception {
+    public void testKeyVaultTest() throws AppConfigurationStatusException, IOException {
         TEST_ITEMS.add(KEY_VAULT_ITEM);
-        when(pagedFluxMock.iterator()).thenReturn(TEST_ITEMS.iterator())
-            .thenReturn(new ArrayList<ConfigurationSetting>().iterator());
-        when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenReturn(pagedFluxMock)
-            .thenReturn(pagedFluxMock);
+        when(configurationListMock.iterator()).thenReturn(TEST_ITEMS.iterator())
+            .thenReturn(Collections.emptyIterator());
+        when(replicaClientMock.listConfigurationSettings(Mockito.any())).thenReturn(configurationListMock).thenReturn(configurationListMock);
 
         Mockito.when(builderMock.buildAsyncClient()).thenReturn(clientMock);
 
@@ -161,11 +134,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
 
         FeatureSet featureSet = new FeatureSet();
 
-        try {
-            propertySource.initProperties(featureSet);
-        } catch (IOException e) {
-            fail("Failed Reading in Feature Flags");
-        }
+        propertySource.initProperties(featureSet);
 
         String[] keyNames = propertySource.getPropertyNames();
         String[] expectedKeyNames = TEST_ITEMS.stream()

@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.config;
+package com.azure.spring.cloud.config.implementation;
 
 import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
 import static com.azure.spring.cloud.config.TestConstants.FEATURE_BOOLEAN_VALUE;
@@ -21,8 +21,8 @@ import static com.azure.spring.cloud.config.TestConstants.TEST_STORE_NAME;
 import static com.azure.spring.cloud.config.TestConstants.TEST_VALUE_1;
 import static com.azure.spring.cloud.config.TestConstants.TEST_VALUE_2;
 import static com.azure.spring.cloud.config.TestConstants.TEST_VALUE_3;
-import static com.azure.spring.cloud.config.TestUtils.createItem;
-import static com.azure.spring.cloud.config.TestUtils.createItemFeatureFlag;
+import static com.azure.spring.cloud.config.implementation.TestUtils.createItem;
+import static com.azure.spring.cloud.config.implementation.TestUtils.createItemFeatureFlag;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -31,6 +31,7 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -45,12 +46,12 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
+import com.azure.spring.cloud.config.KeyVaultCredentialProvider;
 import com.azure.spring.cloud.config.feature.management.entity.Feature;
 import com.azure.spring.cloud.config.feature.management.entity.FeatureSet;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
@@ -58,7 +59,6 @@ import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperti
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreSelects;
 import com.azure.spring.cloud.config.properties.ConfigStore;
 import com.azure.spring.cloud.config.properties.FeatureFlagStore;
-import com.azure.spring.cloud.config.stores.ClientStore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 
@@ -80,7 +80,7 @@ public class AppConfigurationPropertySourceTest {
     private static final String DEFAULT_ROLLOUT_PERCENTAGE = "defaultRolloutPercentage";
 
     private static final AppConfigurationProperties TEST_PROPS = new AppConfigurationProperties();
-    
+
     private static final String KEY_FILTER = "/foo/";
 
     private static final ConfigurationSetting ITEM_1 = createItem(KEY_FILTER, TEST_KEY_1, TEST_VALUE_1, TEST_LABEL_1,
@@ -92,7 +92,8 @@ public class AppConfigurationPropertySourceTest {
     private static final ConfigurationSetting ITEM_3 = createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3,
         EMPTY_CONTENT_TYPE);
 
-    private static final ConfigurationSetting ITEM_NULL = createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3, null);
+    private static final ConfigurationSetting ITEM_NULL = createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3,
+        null);
 
     private static final FeatureFlagConfigurationSetting FEATURE_ITEM = createItemFeatureFlag(".appconfig.featureflag/",
         "Alpha",
@@ -126,7 +127,7 @@ public class AppConfigurationPropertySourceTest {
     private AppConfigurationProperties appConfigurationProperties;
 
     @Mock
-    private ClientStore clientStoreMock;
+    private AppConfigurationReplicaClient clientMock;
 
     @Mock
     private ConfigurationAsyncClient configClientMock;
@@ -159,7 +160,7 @@ public class AppConfigurationPropertySourceTest {
     private KeyVaultCredentialProvider tokenCredentialProvider = null;
 
     @Mock
-    private PagedIterable<ConfigurationSetting> pagedFluxMock;
+    private List<ConfigurationSetting> configurationListMock;
 
     @BeforeAll
     public static void setup() {
@@ -180,14 +181,11 @@ public class AppConfigurationPropertySourceTest {
         MockitoAnnotations.openMocks(this);
         appConfigurationProperties = new AppConfigurationProperties();
         appProperties = new AppConfigurationProviderProperties();
-        ArrayList<String> contexts = new ArrayList<String>();
-        contexts.add("/application/*");
+
         AppConfigurationStoreSelects selectedKeys = new AppConfigurationStoreSelects().setKeyFilter(KEY_FILTER)
             .setLabelFilter("\0");
-        propertySource = new AppConfigurationPropertySource(configStoreMock, selectedKeys, new ArrayList<>(),
-            appConfigurationProperties, clientStoreMock, appProperties, tokenCredentialProvider, null, null);
 
-        testItems = new ArrayList<ConfigurationSetting>();
+        testItems = new ArrayList<>();
         testItems.add(ITEM_1);
         testItems.add(ITEM_2);
         testItems.add(ITEM_3);
@@ -201,6 +199,9 @@ public class AppConfigurationPropertySourceTest {
         when(collectionMock.block()).thenReturn(itemsMock);
         when(itemsMock.iterator()).thenReturn(itemsIteratorMock);
         when(itemsIteratorMock.next()).thenReturn(pagedResponseMock);
+
+        propertySource = new AppConfigurationPropertySource(configStoreMock, selectedKeys, new ArrayList<>(),
+            appConfigurationProperties, clientMock, appProperties, tokenCredentialProvider, null, null);
     }
 
     @AfterEach
@@ -209,17 +210,13 @@ public class AppConfigurationPropertySourceTest {
     }
 
     @Test
-    public void testPropCanBeInitAndQueried() throws IOException {
-        when(pagedFluxMock.iterator()).thenReturn(testItems.iterator()).thenReturn(FEATURE_ITEMS.iterator());
-        when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenReturn(pagedFluxMock)
-            .thenReturn(pagedFluxMock);
+    public void testPropCanBeInitAndQueried() throws AppConfigurationStatusException, IOException {
+        when(configurationListMock.iterator()).thenReturn(testItems.iterator()).thenReturn(FEATURE_ITEMS.iterator());
+        when(clientMock.listConfigurationSettings(Mockito.any())).thenReturn(configurationListMock)
+            .thenReturn(configurationListMock);
 
         FeatureSet featureSet = new FeatureSet();
-        try {
-            propertySource.initProperties(featureSet);
-        } catch (IOException e) {
-            fail("Failed Reading in Feature Flags");
-        }
+        propertySource.initProperties(featureSet);
         propertySource.initFeatures(featureSet);
 
         String[] keyNames = propertySource.getPropertyNames();
@@ -240,21 +237,17 @@ public class AppConfigurationPropertySourceTest {
     }
 
     @Test
-    public void testPropertyNameSlashConvertedToDots() throws IOException {
+    public void testPropertyNameSlashConvertedToDots() throws AppConfigurationStatusException, IOException {
         ConfigurationSetting slashedProp = createItem(KEY_FILTER, TEST_SLASH_KEY, TEST_SLASH_VALUE, null,
             EMPTY_CONTENT_TYPE);
-        List<ConfigurationSetting> settings = new ArrayList<ConfigurationSetting>();
+        List<ConfigurationSetting> settings = new ArrayList<>();
         settings.add(slashedProp);
-        when(pagedFluxMock.iterator()).thenReturn(settings.iterator())
-            .thenReturn(new ArrayList<ConfigurationSetting>().iterator());
-        when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenReturn(pagedFluxMock)
-            .thenReturn(pagedFluxMock);
+        when(configurationListMock.iterator()).thenReturn(settings.iterator())
+            .thenReturn(Collections.<ConfigurationSetting>emptyIterator());
+        when(clientMock.listConfigurationSettings(Mockito.any())).thenReturn(configurationListMock)
+            .thenReturn(configurationListMock);
         FeatureSet featureSet = new FeatureSet();
-        try {
-            propertySource.initProperties(featureSet);
-        } catch (IOException e) {
-            fail("Failed Reading in Feature Flags");
-        }
+        propertySource.initProperties(featureSet);
 
         String expectedKeyName = TEST_SLASH_KEY.replace('/', '.');
         String[] actualKeyNames = propertySource.getPropertyNames();
@@ -266,11 +259,11 @@ public class AppConfigurationPropertySourceTest {
     }
 
     @Test
-    public void testFeatureFlagCanBeInitedAndQueried() throws IOException {
-        when(pagedFluxMock.iterator()).thenReturn(new ArrayList<ConfigurationSetting>().iterator())
+    public void testFeatureFlagCanBeInitedAndQueried() {
+        when(configurationListMock.iterator()).thenReturn(Collections.emptyIterator())
             .thenReturn(FEATURE_ITEMS.iterator());
-        when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString()))
-            .thenReturn(pagedFluxMock).thenReturn(pagedFluxMock);
+        when(clientMock.listConfigurationSettings(Mockito.any()))
+            .thenReturn(configurationListMock).thenReturn(configurationListMock);
         featureFlagStore.setEnabled(true);
 
         FeatureSet featureSet = new FeatureSet();
@@ -284,18 +277,18 @@ public class AppConfigurationPropertySourceTest {
         FeatureSet featureSetExpected = new FeatureSet();
         Feature feature = new Feature();
         feature.setKey("Alpha");
-        HashMap<Integer, FeatureFlagFilter> filters = new HashMap<Integer, FeatureFlagFilter>();
-        FeatureFlagFilter ffec = new FeatureFlagFilter("TestFilter");
-        filters.put(0, ffec);
+        HashMap<Integer, FeatureFlagFilter> filters = new HashMap<>();
+        FeatureFlagFilter featureFlagFilter = new FeatureFlagFilter("TestFilter");
+        filters.put(0, featureFlagFilter);
         feature.setEnabledFor(filters);
         Feature gamma = new Feature();
         gamma.setKey("Gamma");
-        filters = new HashMap<Integer, FeatureFlagFilter>();
-        ffec = new FeatureFlagFilter("TestFilter");
-        LinkedHashMap<String, Object> parameters = new LinkedHashMap<String, Object>();
+        filters = new HashMap<>();
+        featureFlagFilter = new FeatureFlagFilter("TestFilter");
+        LinkedHashMap<String, Object> parameters = new LinkedHashMap<>();
         parameters.put("key", "value");
-        ffec.setParameters(parameters);
-        filters.put(0, ffec);
+        featureFlagFilter.setParameters(parameters);
+        filters.put(0, featureFlagFilter);
         gamma.setEnabledFor(filters);
         featureSetExpected.addFeature("Alpha", feature);
         featureSetExpected.addFeature("Beta", true);
@@ -307,29 +300,25 @@ public class AppConfigurationPropertySourceTest {
     }
 
     @Test
-    public void testFeatureFlagDisabled() throws IOException {
-        when(pagedFluxMock.iterator()).thenReturn(new ArrayList<ConfigurationSetting>().iterator())
+    public void testFeatureFlagDisabled() throws AppConfigurationStatusException, IOException {
+        when(configurationListMock.iterator()).thenReturn(Collections.emptyIterator())
             .thenReturn(FEATURE_ITEMS.iterator());
-        when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString()))
-            .thenReturn(pagedFluxMock).thenReturn(pagedFluxMock);
+        when(clientMock.listConfigurationSettings(Mockito.any()))
+            .thenReturn(configurationListMock).thenReturn(configurationListMock);
         featureFlagStore.setEnabled(false);
 
         FeatureSet featureSet = new FeatureSet();
-        try {
-            propertySource.initProperties(featureSet);
-        } catch (IOException e) {
-            fail("Failed Reading in Feature Flags");
-        }
+        propertySource.initProperties(featureSet);
         propertySource.initFeatures(featureSet);
 
         assertNull(propertySource.getProperty(FEATURE_MANAGEMENT_KEY));
     }
 
     @Test
-    public void testFeatureFlagThrowError() throws IOException {
+    public void testFeatureFlagThrowError() {
         FeatureSet featureSet = new FeatureSet();
-        when(pagedFluxMock.iterator()).thenReturn(new ArrayList<ConfigurationSetting>().iterator());
-        when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenReturn(pagedFluxMock);
+        when(configurationListMock.iterator()).thenReturn(Collections.emptyIterator());
+        when(clientMock.listConfigurationSettings(Mockito.any())).thenReturn(configurationListMock);
         try {
             propertySource.initProperties(featureSet);
         } catch (IOException e) {
@@ -338,11 +327,11 @@ public class AppConfigurationPropertySourceTest {
     }
 
     @Test
-    public void testFeatureFlagBuildError() throws IOException {
+    public void testFeatureFlagBuildError() {
         featureFlagStore.setEnabled(true);
-        when(pagedFluxMock.iterator()).thenReturn(new ArrayList<ConfigurationSetting>().iterator())
+        when(configurationListMock.iterator()).thenReturn(Collections.emptyIterator())
             .thenReturn(FEATURE_ITEMS.iterator());
-        when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenReturn(pagedFluxMock);
+        when(clientMock.listConfigurationSettings(Mockito.any())).thenReturn(configurationListMock);
 
         FeatureSet featureSet = new FeatureSet();
         try {
@@ -354,28 +343,28 @@ public class AppConfigurationPropertySourceTest {
 
         FeatureSet featureSetExpected = new FeatureSet();
 
-        HashMap<Integer, FeatureFlagFilter> filters = new HashMap<Integer, FeatureFlagFilter>();
-        FeatureFlagFilter ffec = new FeatureFlagFilter("TestFilter");
+        HashMap<Integer, FeatureFlagFilter> filters = new HashMap<>();
+        FeatureFlagFilter featureFlagFilter = new FeatureFlagFilter("TestFilter");
 
-        filters.put(0, ffec);
+        filters.put(0, featureFlagFilter);
 
         Feature alpha = new Feature();
         alpha.setKey("Alpha");
         alpha.setEnabledFor(filters);
 
-        HashMap<Integer, FeatureFlagFilter> filters2 = new HashMap<Integer, FeatureFlagFilter>();
-        FeatureFlagFilter ffec2 = new FeatureFlagFilter("TestFilter");
+        HashMap<Integer, FeatureFlagFilter> filters2 = new HashMap<>();
+        FeatureFlagFilter featureFlagFilter2 = new FeatureFlagFilter("TestFilter");
 
-        filters2.put(0, ffec2);
+        filters2.put(0, featureFlagFilter2);
 
-        LinkedHashMap<String, Object> parameters = new LinkedHashMap<String, Object>();
+        LinkedHashMap<String, Object> parameters = new LinkedHashMap<>();
         parameters.put("key", "value");
-        ffec2.setParameters(parameters);
+        featureFlagFilter2.setParameters(parameters);
 
         Feature gamma = new Feature();
         gamma.setKey("Gamma");
         gamma.setEnabledFor(filters2);
-        filters2.put(0, ffec2);
+        filters2.put(0, featureFlagFilter2);
 
         featureSetExpected.addFeature("Alpha", alpha);
         featureSetExpected.addFeature("Beta", true);
@@ -387,19 +376,15 @@ public class AppConfigurationPropertySourceTest {
     }
 
     @Test
-    public void initNullValidContentTypeTest() throws IOException {
-        ArrayList<ConfigurationSetting> items = new ArrayList<ConfigurationSetting>();
+    public void initNullValidContentTypeTest() throws AppConfigurationStatusException, IOException {
+        ArrayList<ConfigurationSetting> items = new ArrayList<>();
         items.add(ITEM_NULL);
-        when(pagedFluxMock.iterator()).thenReturn(items.iterator())
-            .thenReturn(new ArrayList<ConfigurationSetting>().iterator());
-        when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenReturn(pagedFluxMock);
+        when(configurationListMock.iterator()).thenReturn(items.iterator())
+            .thenReturn(Collections.emptyIterator());
+        when(clientMock.listConfigurationSettings(Mockito.any())).thenReturn(configurationListMock);
 
         FeatureSet featureSet = new FeatureSet();
-        try {
-            propertySource.initProperties(featureSet);
-        } catch (IOException e) {
-            fail("Failed Reading in Feature Flags");
-        }
+        propertySource.initProperties(featureSet);
 
         String[] keyNames = propertySource.getPropertyNames();
         String[] expectedKeyNames = items.stream()
@@ -409,20 +394,16 @@ public class AppConfigurationPropertySourceTest {
     }
 
     @Test
-    public void initNullInvalidContentTypeFeatureFlagTest() throws IOException {
-        ArrayList<ConfigurationSetting> items = new ArrayList<ConfigurationSetting>();
+    public void initNullInvalidContentTypeFeatureFlagTest() throws AppConfigurationStatusException, IOException {
+        ArrayList<ConfigurationSetting> items = new ArrayList<>();
         items.add(FEATURE_ITEM_NULL);
-        when(pagedFluxMock.iterator()).thenReturn(new ArrayList<ConfigurationSetting>().iterator())
+        when(configurationListMock.iterator()).thenReturn(Collections.emptyIterator())
             .thenReturn(items.iterator());
-        when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString()))
-            .thenReturn(pagedFluxMock).thenReturn(pagedFluxMock);
+        when(clientMock.listConfigurationSettings(Mockito.any()))
+            .thenReturn(configurationListMock).thenReturn(configurationListMock);
 
         FeatureSet featureSet = new FeatureSet();
-        try {
-            propertySource.initProperties(featureSet);
-        } catch (IOException e) {
-
-        }
+        propertySource.initProperties(featureSet);
 
         String[] keyNames = propertySource.getPropertyNames();
         String[] expectedKeyNames = {};
@@ -431,28 +412,24 @@ public class AppConfigurationPropertySourceTest {
     }
 
     @Test
-    public void testFeatureFlagTargeting() throws IOException {
-        when(pagedFluxMock.iterator()).thenReturn(new ArrayList<ConfigurationSetting>().iterator())
+    public void testFeatureFlagTargeting() throws AppConfigurationStatusException, IOException {
+        when(configurationListMock.iterator()).thenReturn(Collections.emptyIterator())
             .thenReturn(FEATURE_ITEMS_TARGETING.iterator());
-        when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString()))
-            .thenReturn(pagedFluxMock).thenReturn(pagedFluxMock);
+        when(clientMock.listConfigurationSettings(Mockito.any()))
+            .thenReturn(configurationListMock).thenReturn(configurationListMock);
         featureFlagStore.setEnabled(true);
 
         FeatureSet featureSet = new FeatureSet();
-        try {
-            propertySource.initProperties(featureSet);
-        } catch (IOException e) {
-            fail("Failed Reading in Feature Flags");
-        }
+        propertySource.initProperties(featureSet);
         propertySource.initFeatures(featureSet);
 
         FeatureSet featureSetExpected = new FeatureSet();
         Feature feature = new Feature();
         feature.setKey("target");
-        HashMap<Integer, FeatureFlagFilter> filters = new HashMap<Integer, FeatureFlagFilter>();
-        FeatureFlagFilter ffec = new FeatureFlagFilter("targetingFilter");
+        HashMap<Integer, FeatureFlagFilter> filters = new HashMap<>();
+        FeatureFlagFilter featureFlagFilter = new FeatureFlagFilter("targetingFilter");
 
-        LinkedHashMap<String, Object> parameters = new LinkedHashMap<String, Object>();
+        LinkedHashMap<String, Object> parameters = new LinkedHashMap<>();
 
         LinkedHashMap<String, String> users = new LinkedHashMap<>();
         users.put("0", "Jeff");
@@ -475,15 +452,14 @@ public class AppConfigurationPropertySourceTest {
         parameters.put(GROUPS, groups);
         parameters.put(DEFAULT_ROLLOUT_PERCENTAGE, 50);
 
-        ffec.setParameters(parameters);
-        filters.put(0, ffec);
+        featureFlagFilter.setParameters(parameters);
+        filters.put(0, featureFlagFilter);
         feature.setEnabledFor(filters);
 
         featureSetExpected.addFeature("target", feature);
         LinkedHashMap<?, ?> convertedValue = mapper.convertValue(featureSetExpected.getFeatureManagement(),
             LinkedHashMap.class);
-        System.out.println(convertedValue.toString());
-        System.out.println(propertySource.getProperty(FEATURE_MANAGEMENT_KEY).toString());
+
         assertEquals(convertedValue.toString().length(),
             propertySource.getProperty(FEATURE_MANAGEMENT_KEY).toString().length());
     }
