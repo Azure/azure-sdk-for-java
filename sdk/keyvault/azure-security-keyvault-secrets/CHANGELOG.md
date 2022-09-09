@@ -1,6 +1,9 @@
 # Release History
 
-## 4.4.7 (2022-09-08)
+## 4.5.0 (2022-09-09)
+
+### Breaking Changes
+- Made it so that we verify the challenge resource matches the vault domain by default. This should affect few customers who can set pass `false` to the `verifyChallengeResource()` method in client builders to disable this functionality.
 
 ### Other Changes
 
