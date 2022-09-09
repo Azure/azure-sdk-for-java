@@ -26,7 +26,7 @@ public final class ConfigStore {
 
     private String connectionString;
 
-    private List<String> connectionStrings = new ArrayList<>();
+    private final List<String> connectionStrings = new ArrayList<>();
 
     // Label values separated by comma in the Azure Config Service, can be empty
     private List<AppConfigurationStoreSelects> selects = new ArrayList<>();
