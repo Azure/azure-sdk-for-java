@@ -5,6 +5,7 @@ package com.azure.identity.util;
 
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.util.IdentityUtil;
 import org.junit.Assert;
@@ -55,7 +56,7 @@ public class IdentityUtilTests {
     }
 
     @Test(expected = ClientAuthenticationException.class)
-    public void testAlienTenantWithAdditionallyAllowedTenants() throws Exception{
+    public void testAlienTenantWithAdditionallyAllowedTenants() throws Exception {
         String currentTenant = "tenant";
         String newTenant = "newTenant";
         TokenRequestContext trc = new TokenRequestContext()
@@ -68,7 +69,7 @@ public class IdentityUtilTests {
     }
 
     @Test(expected = ClientAuthenticationException.class)
-    public void testAlienTenantWithAdditionallyAllowedNotConfigured() throws Exception{
+    public void testAlienTenantWithAdditionallyAllowedNotConfigured() throws Exception {
         String currentTenant = "tenant";
         String newTenant = "newTenant";
         TokenRequestContext trc = new TokenRequestContext()
@@ -76,6 +77,60 @@ public class IdentityUtilTests {
             .setTenantId(newTenant);
         IdentityClientOptions options = new IdentityClientOptions();
 
+        IdentityUtil.resolveTenantId(currentTenant, trc, options);
+    }
+
+    @Test
+    public void testTenantWithAdditionalTenantsFromEnv() throws Exception {
+        String currentTenant = "tenant";
+        String newTenant = "newTenant";
+        String allowedTenants = "newTenant;oldTenant";
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+        configuration.put(IdentityUtil.AZURE_ADDITIONALLY_ALLOWED_TENANTS, allowedTenants);
+        TokenRequestContext trc = new TokenRequestContext()
+            .setScopes(Arrays.asList("http://vault.azure.net/.default"))
+            .setTenantId(newTenant);
+
+        IdentityClientOptions options = new IdentityClientOptions()
+            .setAdditionallyAllowedTenants(IdentityUtil.getAdditionalTenantsFromEnvironment(configuration));
+
+        String resolvedTenant = IdentityUtil.resolveTenantId(currentTenant, trc, options);
+        Assert.assertEquals(newTenant, resolvedTenant);
+
+    }
+
+    @Test
+    public void testTenantWithWildCardAdditionalTenantsFromEnv() throws Exception {
+        String currentTenant = "tenant";
+        String newTenant = "newTenant";
+        String allowedTenants = "*;randomTenant";
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+        configuration.put(IdentityUtil.AZURE_ADDITIONALLY_ALLOWED_TENANTS, allowedTenants);
+        TokenRequestContext trc = new TokenRequestContext()
+            .setScopes(Arrays.asList("http://vault.azure.net/.default"))
+            .setTenantId(newTenant);
+
+        IdentityClientOptions options = new IdentityClientOptions()
+            .setAdditionallyAllowedTenants(IdentityUtil.getAdditionalTenantsFromEnvironment(configuration));
+
+        String resolvedTenant = IdentityUtil.resolveTenantId(currentTenant, trc, options);
+        Assert.assertEquals(newTenant, resolvedTenant);
+
+    }
+
+    @Test(expected = ClientAuthenticationException.class)
+    public void testAlienTenantWithAdditionalTenantsFromEnv() throws Exception {
+        String currentTenant = "tenant";
+        String newTenant = "newTenant";
+        String allowedTenants = "randomTenant";
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+        configuration.put(IdentityUtil.AZURE_ADDITIONALLY_ALLOWED_TENANTS, allowedTenants);
+        TokenRequestContext trc = new TokenRequestContext()
+            .setScopes(Arrays.asList("http://vault.azure.net/.default"))
+            .setTenantId(newTenant);
+
+        IdentityClientOptions options = new IdentityClientOptions()
+            .setAdditionallyAllowedTenants(IdentityUtil.getAdditionalTenantsFromEnvironment(configuration));
         IdentityUtil.resolveTenantId(currentTenant, trc, options);
     }
 

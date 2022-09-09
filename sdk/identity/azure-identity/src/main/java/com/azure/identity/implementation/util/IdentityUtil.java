@@ -14,7 +14,7 @@ import java.util.*;
 
 public final class IdentityUtil {
     private static final ClientLogger LOGGER = new ClientLogger(IdentityUtil.class);
-    private static final String AZURE_ADDITIONALLY_ALLOWED_TENANTS = "AZURE_ADDITIONALLY_ALLOWED_TENANTS";
+    public static final String AZURE_ADDITIONALLY_ALLOWED_TENANTS = "AZURE_ADDITIONALLY_ALLOWED_TENANTS";
     public static final String ALL_TENANTS = "*";
     public static final String DEFAULT_TENANT = "organizations";
 
