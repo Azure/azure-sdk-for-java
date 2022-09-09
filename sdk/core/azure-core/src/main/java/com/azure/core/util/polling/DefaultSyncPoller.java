@@ -67,7 +67,7 @@ public final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
 
     @Override
     public PollResponse<T> waitForCompletion(Duration timeout) {
-        return syncPoller.waitForCompletion();
+        return syncPoller.waitForCompletion(timeout);
     }
 
     @Override

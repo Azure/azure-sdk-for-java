@@ -650,7 +650,7 @@ public class SecretClientImpl {
 
                 return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                     deletedSecretResponse.getValue());
-            } catch (Exception e) {
+            } catch (HttpResponseException e) {
                 // This means either vault has soft-delete disabled or permission is not granted for the get deleted key
                 // operation. In both cases deletion operation was successful when activation operation succeeded before
                 // reaching here.

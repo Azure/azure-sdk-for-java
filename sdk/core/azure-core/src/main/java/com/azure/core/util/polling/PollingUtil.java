@@ -58,6 +58,7 @@ class PollingUtil {
                     pollOp.get();
                 }
             } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                scheduler.shutdown();
                 throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }
             intermediatePollResponse = pollingContext.getLatestResponse();

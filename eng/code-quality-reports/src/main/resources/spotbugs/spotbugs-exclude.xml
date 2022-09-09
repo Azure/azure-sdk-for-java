@@ -65,7 +65,7 @@
     <Class name="~com\.azure\.identity\.implementation\.intellij\.IntelliJKdbxDatabase"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH"/>
   </Match>
-S
+
   <!-- Third party source code files, kept as it is.-->
   <Match>
     <Class name="~com\.azure\.identity\.implementation\.intellij\.LittleEndianDataInputStream"/>
@@ -2752,9 +2752,4 @@ S
                   DM_STRING_TOSTRING"/>
   </Match>
 
-  <!-- Exceptions need to be caught to keep polling. -->
-  <Match>
-    <Class name="com.azure.security.keyvault.secrets.implementation.SecretClientImpl"/>
-    <Bug pattern="REC_CATCH_EXCEPTION"/>
-  </Match>
 </FindBugsFilter>
