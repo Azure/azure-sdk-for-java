@@ -35,16 +35,15 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
     private final AzureTokenCredentialResolver tokenCredentialResolver;
 
     private TokenCredential credential;
-    private AzureOAuthBearerToken accessToken;
     private String tokenAudience;
 
     public KafkaOAuth2AuthenticateCallbackHandler() {
-        this(new AzureKafkaProperties(), new AzureTokenCredentialResolver());
+        this(null, null);
     }
 
     public KafkaOAuth2AuthenticateCallbackHandler(AzureKafkaProperties properties, AzureTokenCredentialResolver tokenCredentialResolver) {
-        this.properties = properties;
-        this.tokenCredentialResolver = tokenCredentialResolver;
+        this.properties = properties == null ? new AzureKafkaProperties() : properties;
+        this.tokenCredentialResolver = tokenCredentialResolver == null ? new AzureTokenCredentialResolver() : tokenCredentialResolver;
     }
 
     @SuppressWarnings("unchecked")
@@ -70,8 +69,7 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
         for (Callback callback : callbacks) {
             if (callback instanceof OAuthBearerTokenCallback) {
                 OAuthBearerTokenCallback oauthCallback = (OAuthBearerTokenCallback) callback;
-                credential = getTokenCredential();
-                OAuthBearerToken token = getOAuthBearerToken();
+                OAuthBearerToken token = getOAuthBearerToken(getTokenCredential());
                 oauthCallback.token(token);
             } else {
                 throw new UnsupportedCallbackException(callback);
@@ -91,17 +89,12 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
         return credential;
     }
 
-    private OAuthBearerToken getOAuthBearerToken() {
-        if (accessToken == null || accessToken.isExpired()) {
-            TokenRequestContext request = new TokenRequestContext();
-            request.addScopes(tokenAudience);
-            request.setTenantId(properties.getProfile().getTenantId());
-            AccessToken accessToken = credential.getToken(request).block(ACCESS_TOKEN_REQUEST_BLOCK_TIME);
-            if (accessToken != null) {
-                this.accessToken = new AzureOAuthBearerToken(accessToken);
-            }
-        }
-        return accessToken;
+    private OAuthBearerToken getOAuthBearerToken(TokenCredential credential) {
+        TokenRequestContext request = new TokenRequestContext();
+        request.addScopes(tokenAudience);
+        request.setTenantId(properties.getProfile().getTenantId());
+        AccessToken token = credential.getToken(request).block(ACCESS_TOKEN_REQUEST_BLOCK_TIME);
+        return token != null ? new AzureOAuthBearerToken(token) : null;
     }
 
     @Override
