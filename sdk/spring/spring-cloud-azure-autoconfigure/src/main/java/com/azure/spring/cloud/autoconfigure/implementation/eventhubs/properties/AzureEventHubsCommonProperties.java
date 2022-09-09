@@ -9,7 +9,7 @@ import com.azure.spring.cloud.core.implementation.connectionstring.EventHubsConn
 /**
  * Azure Event Hubs related properties.
  */
-abstract class AzureEventHubsCommonProperties extends AbstractAzureAmqpConfigurationProperties {
+public abstract class AzureEventHubsCommonProperties extends AbstractAzureAmqpConfigurationProperties {
 
     /**
      * The domain name of an Event Hub namespace.
