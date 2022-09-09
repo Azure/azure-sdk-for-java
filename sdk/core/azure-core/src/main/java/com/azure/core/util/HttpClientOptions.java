@@ -5,11 +5,13 @@ package com.azure.core.util;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpClientProvider;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
 
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_HTTP_CLIENT_IMPLEMENTATION;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT;
@@ -30,6 +32,7 @@ public final class HttpClientOptions extends ClientOptions {
     private static final Duration DEFAULT_READ_TIMEOUT;
     private static final Duration DEFAULT_CONNECTION_IDLE_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration NO_TIMEOUT = Duration.ZERO;
+    private static final String DEFAULT_HTTP_CLIENT_IMPLEMENTATION;
 
     private static final ClientLogger LOGGER = new ClientLogger(HttpClientOptions.class);
 
@@ -44,6 +47,7 @@ public final class HttpClientOptions extends ClientOptions {
             PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, Duration.ofSeconds(60), LOGGER);
         DEFAULT_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT,
             Duration.ofSeconds(60), LOGGER);
+        DEFAULT_HTTP_CLIENT_IMPLEMENTATION = configuration.get(PROPERTY_AZURE_HTTP_CLIENT_IMPLEMENTATION);
     }
 
     private ProxyOptions proxyOptions;
@@ -54,6 +58,7 @@ public final class HttpClientOptions extends ClientOptions {
     private Duration readTimeout;
     private Integer maximumConnectionPoolSize;
     private Duration connectionIdleTimeout;
+    private String httpClientImplementation = DEFAULT_HTTP_CLIENT_IMPLEMENTATION;
 
     @Override
     public HttpClientOptions setApplicationId(String applicationId) {
@@ -182,8 +187,8 @@ public final class HttpClientOptions extends ClientOptions {
      * <p>
      * If {@code responseTimeout} is null either {@link Configuration#PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT} or a
      * 60-second timeout will be used, if it is a {@link Duration} less than or equal to zero then no timeout will be
-     * applied to the response. When applying the timeout the greatest of one millisecond and the value of {@code
-     * responseTimeout} will be used.
+     * applied to the response. When applying the timeout the greatest of one millisecond and the value of
+     * {@code responseTimeout} will be used.
      * <p>
      * By default the response timeout is 60 seconds.
      *
@@ -203,8 +208,8 @@ public final class HttpClientOptions extends ClientOptions {
      * <p>
      * If {@code responseTimeout} is null either {@link Configuration#PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT} or a
      * 60-second timeout will be used, if it is a {@link Duration} less than or equal to zero then no timeout will be
-     * applied to the response. When applying the timeout the greatest of one millisecond and the value of {@code
-     * responseTimeout} will be used.
+     * applied to the response. When applying the timeout the greatest of one millisecond and the value of
+     * {@code responseTimeout} will be used.
      * <p>
      * By default the response timeout is 60 seconds.
      *
@@ -236,8 +241,8 @@ public final class HttpClientOptions extends ClientOptions {
      * <p>
      * If {@code readTimeout} is null either {@link Configuration#PROPERTY_AZURE_REQUEST_READ_TIMEOUT} or a 60-second
      * timeout will be used, if it is a {@link Duration} less than or equal to zero then no timeout period will be
-     * applied to response read. When applying the timeout the greatest of one millisecond and the value of {@code
-     * readTimeout} will be used.
+     * applied to response read. When applying the timeout the greatest of one millisecond and the value of
+     * {@code readTimeout} will be used.
      * <p>
      * By default the read timeout is 60 seconds.
      *
@@ -258,8 +263,8 @@ public final class HttpClientOptions extends ClientOptions {
      * <p>
      * If {@code readTimeout} is null either {@link Configuration#PROPERTY_AZURE_REQUEST_READ_TIMEOUT} or a 60-second
      * timeout will be used, if it is a {@link Duration} less than or equal to zero then no timeout period will be
-     * applied to response read. When applying the timeout the greatest of one millisecond and the value of {@code
-     * readTimeout} will be used.
+     * applied to response read. When applying the timeout the greatest of one millisecond and the value of
+     * {@code readTimeout} will be used.
      * <p>
      * By default the read timeout is 60 seconds.
      *
@@ -361,6 +366,40 @@ public final class HttpClientOptions extends ClientOptions {
      */
     public Duration getConnectionIdleTimeout() {
         return getTimeout(connectionIdleTimeout, DEFAULT_CONNECTION_IDLE_TIMEOUT);
+    }
+
+    /**
+     * Sets the name of the {@link HttpClientProvider} implementation that should be used to construct an instance of
+     * {@link HttpClient}.
+     * <p>
+     * The name must be the full class name, ex {@code java.lang.String} and not {@code String}, to disambiguate
+     * multiple providers with the same name but from different packages.
+     * <p>
+     * If a value isn't set or doesn't match an {@link HttpClientProvider} found on the class path the first found
+     * implementation will be used.
+     *
+     * @param httpClientImplementation The name of an {@link HttpClientProvider} implementation.
+     * @return The updated HttpClientOptions object.
+     */
+    public HttpClientOptions setHttpClientImplementation(String httpClientImplementation) {
+        this.httpClientImplementation = httpClientImplementation;
+        return this;
+    }
+
+    /**
+     * Sets name of the {@link HttpClientProvider} implementation that should be used to construct an instance of
+     * {@link HttpClient}.
+     * <p>
+     * The name must be the full class name, ex {@code java.lang.String} and not {@code String}, to disambiguate
+     * multiple providers with the same name but from different packages.
+     * <p>
+     * If a value isn't set or doesn't match an {@link HttpClientProvider} found on the class path the first found
+     * implementation will be used.
+     *
+     * @return The name of an {@link HttpClientProvider} implementation.
+     */
+    public String getHttpClientImplementation() {
+        return httpClientImplementation;
     }
 
     private static Duration getTimeout(Duration configuredTimeout, Duration defaultTimeout) {

@@ -3,6 +3,8 @@
 
 package com.azure.core.util;
 
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpClientProvider;
 import com.azure.core.implementation.util.EnvironmentConfiguration;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -195,6 +197,18 @@ public class Configuration implements Cloneable {
      * If the configured value is equal to or less than 0 no timeout will be applied.
      */
     public static final String PROPERTY_AZURE_REQUEST_READ_TIMEOUT = "AZURE_REQUEST_READ_TIMEOUT";
+
+    /**
+     * Sets the name of the {@link HttpClientProvider} implementation that should be used to construct instances of
+     * {@link HttpClient}.
+     * <p>
+     * The name must be the full class name, ex {@code java.lang.String} and not {@code String}, to disambiguate
+     * multiple providers with the same name but from different packages.
+     * <p>
+     * If a value isn't set or doesn't match an {@link HttpClientProvider} found on the class path the first found
+     * implementation will be used.
+     */
+    public static final String PROPERTY_AZURE_HTTP_CLIENT_IMPLEMENTATION = "AZURE_HTTP_CLIENT_IMPLEMENTATION";
 
     /*
      * Gets the global configuration shared by all client libraries.

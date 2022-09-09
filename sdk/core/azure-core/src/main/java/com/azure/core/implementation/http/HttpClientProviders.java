@@ -5,10 +5,13 @@ package com.azure.core.implementation.http;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.ServiceLoader;
 
 /**
@@ -23,7 +26,8 @@ public final class HttpClientProviders {
 
     private static final ClientLogger LOGGER = new ClientLogger(HttpClientProviders.class);
 
-    private static HttpClientProvider defaultProvider;
+    private static final HttpClientProvider DEFAULT_PROVIDER;
+    private static final Map<String, HttpClientProvider> AVAILABLE_PROVIDERS;
 
     static {
         // Use as classloader to load provider-configuration files and provider classes the classloader
@@ -33,17 +37,24 @@ public final class HttpClientProviders {
         // System classloader to load HttpClientProvider classes.
         ServiceLoader<HttpClientProvider> serviceLoader = ServiceLoader.load(HttpClientProvider.class,
             HttpClientProviders.class.getClassLoader());
+
+        AVAILABLE_PROVIDERS = new HashMap<>();
         // Use the first provider found in the service loader iterator.
         Iterator<HttpClientProvider> it = serviceLoader.iterator();
         if (it.hasNext()) {
-            defaultProvider = it.next();
-            LOGGER.verbose("Using {} as the default HttpClientProvider.", defaultProvider.getClass().getName());
+            DEFAULT_PROVIDER = it.next();
+            String defaultProviderName = DEFAULT_PROVIDER.getClass().getName();
+            AVAILABLE_PROVIDERS.put(defaultProviderName, DEFAULT_PROVIDER);
+            LOGGER.verbose("Using {} as the default HttpClientProvider.", defaultProviderName);
+        } else {
+            DEFAULT_PROVIDER = null;
         }
 
         while (it.hasNext()) {
-            HttpClientProvider ignoredProvider = it.next();
-            LOGGER.warning("Multiple HttpClientProviders were found on the classpath, ignoring {}.",
-                ignoredProvider.getClass().getName());
+            HttpClientProvider additionalProvider = it.next();
+            String additionalProviderName = additionalProvider.getClass().getName();
+            AVAILABLE_PROVIDERS.put(additionalProviderName, additionalProvider);
+            LOGGER.verbose("Additional provider found on the classpath: {}", additionalProviderName);
         }
     }
 
@@ -56,14 +67,21 @@ public final class HttpClientProviders {
     }
 
     public static HttpClient createInstance(ClientOptions clientOptions) {
-        if (defaultProvider == null) {
+        if (DEFAULT_PROVIDER == null) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(CANNOT_FIND_HTTP_CLIENT));
         }
 
         if (clientOptions instanceof HttpClientOptions) {
-            return defaultProvider.createInstance((HttpClientOptions) clientOptions);
+            HttpClientOptions httpClientOptions = (HttpClientOptions) clientOptions;
+            String selectedImplementation = httpClientOptions.getHttpClientImplementation();
+            if (CoreUtils.isNullOrEmpty(selectedImplementation)) {
+                return DEFAULT_PROVIDER.createInstance(httpClientOptions);
+            } else {
+                AVAILABLE_PROVIDERS.getOrDefault(selectedImplementation, DEFAULT_PROVIDER)
+                    .createInstance(httpClientOptions);
+            }
         }
 
-        return defaultProvider.createInstance();
+        return DEFAULT_PROVIDER.createInstance();
     }
 }
