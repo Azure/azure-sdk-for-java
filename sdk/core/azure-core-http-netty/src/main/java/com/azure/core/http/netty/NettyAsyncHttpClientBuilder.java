@@ -146,7 +146,8 @@ public class NettyAsyncHttpClientBuilder {
             .port(port)
             .wiretap(enableWiretap)
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) getTimeoutMillis(connectTimeout,
-                DEFAULT_CONNECT_TIMEOUT));
+                DEFAULT_CONNECT_TIMEOUT))
+            .httpResponseDecoder(httpResponseDecoderSpec -> httpResponseDecoderSpec.validateHeaders(false));
 
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()
