@@ -553,9 +553,14 @@ public class IdentityClient {
 
         azCommand.append(scopes);
 
-        String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
-        if (!CoreUtils.isNullOrEmpty(tenant)) {
-            azCommand.append(" --tenant ").append(tenant);
+        try {
+            String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
+
+            if (!CoreUtils.isNullOrEmpty(tenant)) {
+                azCommand.append(" --tenant ").append(tenant);
+            }
+        } catch (ClientAuthenticationException e) {
+            return Mono.error(e);
         }
 
         AccessToken token;
@@ -947,7 +952,7 @@ public class IdentityClient {
                     parametersBuilder.claims(customClaimRequest);
                 }
                 return pc.acquireToken(parametersBuilder.build());
-            }).onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with device code", null, t))
+            }).onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with device code.", null, t))
                 .map(MsalToken::new));
     }
 

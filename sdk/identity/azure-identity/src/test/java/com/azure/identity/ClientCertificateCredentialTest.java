@@ -4,6 +4,7 @@
 package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.util.TestUtils;
@@ -258,5 +259,60 @@ public class ClientCertificateCredentialTest {
             }
             Assert.assertNotNull(identityClientMock);
         }
+    }
+
+    @Test
+    public void testInvalidAdditionalTenant() throws Exception {
+        // setup
+        String pemPath = getPath("test.pem");
+
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
+            .setTenantId("newTenant");
+
+        ClientCertificateCredential credential =
+            new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pemCertificate(pemPath)
+                .additionallyAllowedTenants("RANDOM").build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e instanceof ClientAuthenticationException && (e.getMessage().startsWith("The current credential is not configured to")))
+            .verify();
+    }
+
+    @Test
+    public void testInvalidMultiTenantAuth() throws Exception {
+        // setup
+        String pemPath = getPath("test.pem");
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
+            .setTenantId("newTenant");
+
+        ClientCertificateCredential credential =
+            new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pemCertificate(pemPath).build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e instanceof ClientAuthenticationException && (e.getMessage().startsWith("The current credential is not configured to")))
+            .verify();
+    }
+
+    @Test
+    public void testValidMultiTenantAuth() throws Exception {
+        // setup
+        String pemPath = getPath("test.pem");
+
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
+            .setTenantId("newTenant");
+
+        ClientCertificateCredential credential =
+            new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pemCertificate(pemPath)
+                .additionallyAllowedTenants("*").build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e instanceof MsalServiceException)
+            .verify();
+    }
+
+    private String getPath(String filename) {
+
+        String path =  getClass().getClassLoader().getResource(filename).getPath();
+        if (path.contains(":")) {
+            path = path.substring(1);
+        }
+        return path;
     }
 }

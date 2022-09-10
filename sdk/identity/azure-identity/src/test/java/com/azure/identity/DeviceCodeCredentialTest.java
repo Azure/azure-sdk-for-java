@@ -4,8 +4,10 @@
 package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.TestUtils;
+import com.microsoft.aad.msal4j.MsalServiceException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.MockedConstruction;
@@ -121,5 +123,45 @@ public class DeviceCodeCredentialTest {
                 .verifyComplete();
             Assert.assertNotNull(identityClientMock);
         }
+    }
+
+    @Test
+    public void testAdditionalTenantNoImpact() throws Exception {
+        // setup
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
+            .setTenantId("newTenant");
+
+        DeviceCodeCredential credential =
+            new DeviceCodeCredentialBuilder().additionallyAllowedTenants("RANDOM").build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e.getCause() instanceof MsalServiceException)
+            .verify();
+    }
+
+    @Test
+    public void testInvalidMultiTenantAuth() throws Exception {
+        // setup
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
+            .setTenantId("newTenant");
+
+        DeviceCodeCredential credential =
+            new DeviceCodeCredentialBuilder().tenantId("tenant").build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e instanceof ClientAuthenticationException && (e.getCause().getMessage().startsWith("The current credential is not configured to")))
+            .verify();
+    }
+
+    @Test
+    public void testValidMultiTenantAuth() throws Exception {
+        // setup
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
+            .setTenantId("newTenant");
+
+        DeviceCodeCredential credential =
+            new DeviceCodeCredentialBuilder().tenantId("tenant")
+                .additionallyAllowedTenants("*").build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e.getCause() instanceof MsalServiceException)
+            .verify();
     }
 }
