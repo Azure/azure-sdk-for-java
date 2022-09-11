@@ -50,7 +50,7 @@ public final class IdentityUtil {
             String resolvedTenantId =  CoreUtils.isNullOrEmpty(contextTenantId) ? currentTenantId
                 : contextTenantId;
 
-            if (currentTenantId != null && !currentTenantId.equals(DEFAULT_TENANT) && resolvedTenantId != currentTenantId
+            if (currentTenantId != null && resolvedTenantId != currentTenantId
                 && !options.getAdditionallyAllowedTenants().contains(ALL_TENANTS)
                 && !options.getAdditionallyAllowedTenants().contains(resolvedTenantId)) {
                 throw LOGGER.logExceptionAsError(new ClientAuthenticationException("The current credential is not configured to acquire tokens for tenant "
