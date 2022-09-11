@@ -15,9 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.time.Clock;
-import java.time.OffsetDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 import java.time.Duration;
@@ -80,6 +77,21 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         assertNotNull(result.getUser().getId());
         assertNotNull(result.getUserToken());
         assertFalse(result.getUser().getId().isEmpty());
+    }
+
+    @Test
+    public void createUserAndTokenWithoutScopes() {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        client = setupClient(builder, "createUserAndTokenSync");
+
+        // Action & Assert
+        try {
+            client.createUserAndToken(null);
+        } catch (NullPointerException ex) {
+            return;
+        }
+        fail("An exception should have been thrown.");
     }
 
     @Test
@@ -319,6 +331,38 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         // Action & Assert
         AccessToken issuedToken = client.getToken(communicationUser, scopes);
         verifyTokenNotEmpty(issuedToken);
+    }
+
+    @Test
+    public void getTokenWithoutUser() {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        client = setupClient(builder, "getTokenSync");
+        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+
+        // Action & Assert
+        try {
+            client.getToken(null, scopes);
+        } catch (NullPointerException ex) {
+            return;
+        }
+        fail("An exception should have been thrown.");
+    }
+
+    @Test
+    public void getTokenWithoutScopes() {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        client = setupClient(builder, "getTokenSync");
+        CommunicationUserIdentifier communicationUser = client.createUser();
+
+        // Action & Assert
+        try {
+            client.getToken(communicationUser, null);
+        } catch (NullPointerException ex) {
+            return;
+        }
+        fail("An exception should have been thrown.");
     }
 
     @Test
