@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.config;
+package com.azure.spring.cloud.config.implementation;
 
 import java.util.Random;
 
@@ -15,16 +15,28 @@ final class BackoffTimeCalculator {
 
     private static final Random RANDOM = new Random();
 
+    private static Long maxBackoff = (long) 600;
+
+    private static Long minBackoff = (long) 30;
+
+    /**
+     * 
+     * @param maxBackoff maximum amount of time between requests
+     * @param minBackoff minimum amount of time between requests
+     */
+    static void setDefaults(Long maxBackoffValue, Long minBackoffValue) {
+        maxBackoff = maxBackoffValue;
+        minBackoff = minBackoffValue;
+    }
+
     /**
      * Calculates the new Backoff time for requests.
      * 
-     * @param attempt Number of attempts so far
-     * @param interval Base Interval of requests
-     * @param maxBackoff maximum amount of time between requests
-     * @param minBackoff minimum amount of time between requests
+     * @param attempts Number of attempts so far
      * @return Nano Seconds to the next request
+     * @throws IllegalArgumentException when backofftime or attempt number is invalid
      */
-    static Long calculateBackoff(Integer attempts, Long interval, Long maxBackoff, Long minBackoff) {
+    static Long calculateBackoff(Integer attempts) {
 
         if (minBackoff < 0) {
             throw new IllegalArgumentException("Minimum Backoff time needs to be greater than or equal to 0.");

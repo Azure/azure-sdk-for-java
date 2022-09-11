@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.config;
+package com.azure.spring.cloud.config.implementation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ public final class TestUtils {
     private TestUtils() {
     }
 
-    static String propPair(String propName, String propValue) {
+    public static String propPair(String propName, String propValue) {
         return String.format("%s=%s", propName, propValue);
     }
 
@@ -46,7 +46,7 @@ public final class TestUtils {
     static FeatureFlagConfigurationSetting createItemFeatureFlag(String prefix, String key, String value, String label,
         String contentType) {
         FeatureFlagConfigurationSetting item = new FeatureFlagConfigurationSetting(key, true);
-        item.setClientFilters(new ArrayList<FeatureFlagFilter>());
+        item.setClientFilters(new ArrayList<>());
         item.setKey(prefix + key);
         item.setLabel(label);
         item.setContentType(contentType);
@@ -65,8 +65,8 @@ public final class TestUtils {
                         Map<String, Object> result = MAPPER.convertValue(nodeParams,
                             new TypeReference<Map<String, Object>>() {
                             });
-                        Set<String> asdf = result.keySet();
-                        for (String paramKey : asdf) {
+                        Set<String> parameterKeys = result.keySet();
+                        for (String paramKey : parameterKeys) {
                             filter.addParameter(paramKey, result.get(paramKey));
                         }
                     }
@@ -78,7 +78,7 @@ public final class TestUtils {
         }
         return item;
     }
-    
+
     static SecretReferenceConfigurationSetting createSecretReference(String keyFilter, String key, String value, String label, String contentType) {
         SecretReferenceConfigurationSetting item = new SecretReferenceConfigurationSetting(key, value);
         item.setKey(keyFilter + key);

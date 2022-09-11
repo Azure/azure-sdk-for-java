@@ -22,14 +22,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Immutable
 final class BlobBatchOperationInfo {
     private static final String X_MS_VERSION = "x-ms-version";
-    private static final String BATCH_BOUNDARY_TEMPLATE = "batch_%s";
-    private static final String REQUEST_CONTENT_TYPE_TEMPLATE = "multipart/mixed; boundary=%s";
     private static final String BATCH_OPERATION_CONTENT_TYPE = "Content-Type: application/http";
     private static final String BATCH_OPERATION_CONTENT_TRANSFER_ENCODING = "Content-Transfer-Encoding: binary";
-    private static final String BATCH_OPERATION_CONTENT_ID_TEMPLATE = "Content-ID: %d";
     private static final String HTTP_VERSION = "HTTP/1.1";
-    private static final String OPERATION_TEMPLATE = "%s %s %s";
-    private static final String HEADER_TEMPLATE = "%s: %s";
 
     private final AtomicInteger contentId;
     private final String batchBoundary;
@@ -43,8 +38,8 @@ final class BlobBatchOperationInfo {
      */
     BlobBatchOperationInfo() {
         this.contentId = new AtomicInteger();
-        this.batchBoundary = String.format(BATCH_BOUNDARY_TEMPLATE, UUID.randomUUID());
-        this.contentType = String.format(REQUEST_CONTENT_TYPE_TEMPLATE, batchBoundary);
+        this.batchBoundary = "batch_" + UUID.randomUUID();
+        this.contentType = "multipart/mixed; boundary=" + batchBoundary;
         this.batchOperations = new ConcurrentLinkedQueue<>();
         this.batchOperationResponseMap = new ConcurrentHashMap<>();
     }
@@ -89,7 +84,7 @@ final class BlobBatchOperationInfo {
         appendWithNewline(batchRequestBuilder, "--" + batchBoundary);
         appendWithNewline(batchRequestBuilder, BATCH_OPERATION_CONTENT_TYPE);
         appendWithNewline(batchRequestBuilder, BATCH_OPERATION_CONTENT_TRANSFER_ENCODING);
-        appendWithNewline(batchRequestBuilder, String.format(BATCH_OPERATION_CONTENT_ID_TEMPLATE, contentId));
+        appendWithNewline(batchRequestBuilder, "Content-ID: " + contentId);
         batchRequestBuilder.append(BlobBatchHelper.HTTP_NEWLINE);
 
         String method = request.getHttpMethod().toString();
@@ -98,7 +93,7 @@ final class BlobBatchOperationInfo {
         if (!CoreUtils.isNullOrEmpty(urlQuery)) {
             urlPath = urlPath + "?" + urlQuery;
         }
-        appendWithNewline(batchRequestBuilder, String.format(OPERATION_TEMPLATE, method, urlPath, HTTP_VERSION));
+        appendWithNewline(batchRequestBuilder, method + " " + urlPath + " " + HTTP_VERSION);
 
         /*
          * The 'x-ms-version' header is removed from batch operations as all batch operations will use the
@@ -107,8 +102,7 @@ final class BlobBatchOperationInfo {
          */
         request.getHeaders().stream()
             .filter(header -> !X_MS_VERSION.equalsIgnoreCase(header.getName()))
-            .forEach(header -> appendWithNewline(batchRequestBuilder,
-                String.format(HEADER_TEMPLATE, header.getName(), header.getValue())));
+            .forEach(header -> appendWithNewline(batchRequestBuilder, header.getName() + ": " + header.getValue()));
 
         batchRequestBuilder.append(BlobBatchHelper.HTTP_NEWLINE);
 
@@ -120,8 +114,8 @@ final class BlobBatchOperationInfo {
      * Completes the batch by adding the final boundary identifier to the request body.
      */
     void finalizeBatchOperations() {
-        batchOperations.add(ByteBuffer.wrap(String.format("--%s--%s", batchBoundary, BlobBatchHelper.HTTP_NEWLINE)
-            .getBytes(StandardCharsets.UTF_8)));
+        batchOperations.add(ByteBuffer.wrap(
+            ("--" + batchBoundary + "--" + BlobBatchHelper.HTTP_NEWLINE).getBytes(StandardCharsets.UTF_8)));
     }
 
     /*

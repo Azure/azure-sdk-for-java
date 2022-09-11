@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.config;
-
+package com.azure.spring.cloud.config.implementation;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -10,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
@@ -47,7 +47,7 @@ public class JsonConfigurationParserTest {
 
         ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue(jsonText);
 
-        HashMap<String, Object> settings = JsonConfigurationParser.parseJsonSetting(setting);
+        Map<String, Object> settings = JsonConfigurationParser.parseJsonSetting(setting);
         assertEquals(13, settings.size());
     }
 
@@ -55,7 +55,7 @@ public class JsonConfigurationParserTest {
     public void parseSettingTest() throws IOException {
         String currentKey = "config.object";
         JsonNode json = jsonMapper.readValue(new File(JSON_CONTENT_TYPE_DATA), JsonNode.class);
-        HashMap<String, Object> settings = new HashMap<String, Object>();
+        HashMap<String, Object> settings = new HashMap<>();
 
         JsonConfigurationParser.parseSetting(currentKey, json, settings);
 
