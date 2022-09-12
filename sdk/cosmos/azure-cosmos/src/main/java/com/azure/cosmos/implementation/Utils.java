@@ -67,7 +67,12 @@ public class Utils {
     public static final Base64.Encoder Base64UrlEncoder = Base64.getUrlEncoder();
     public static final Base64.Decoder Base64UrlDecoder = Base64.getUrlDecoder();
 
-    private static ObjectMapper simpleObjectMapper = createAndInitializeObjectMapper(false);
+    private static final ObjectMapper simpleObjectMapperAllowingDuplicatedProperties =
+        createAndInitializeObjectMapper(true);
+    private static final ObjectMapper simpleObjectMapperDisallowingDuplicatedProperties =
+        createAndInitializeObjectMapper(false);
+
+    private static ObjectMapper simpleObjectMapper = simpleObjectMapperDisallowingDuplicatedProperties;
     private static final TimeBasedGenerator TIME_BASED_GENERATOR =
             Generators.timeBasedGenerator(EthernetAddress.constructMulticastAddress());
     private static final Pattern SPACE_PATTERN = Pattern.compile("\\s");
@@ -174,7 +179,11 @@ public class Utils {
     }
 
     public static void configureSimpleObjectMapper(Boolean allowDuplicateProperties) {
-        Utils.simpleObjectMapper = createAndInitializeObjectMapper(allowDuplicateProperties);
+        if (allowDuplicateProperties) {
+            Utils.simpleObjectMapper = Utils.simpleObjectMapperAllowingDuplicatedProperties;
+        } else {
+            Utils.simpleObjectMapper = Utils.simpleObjectMapperDisallowingDuplicatedProperties;
+        }
     }
 
     /**
