@@ -63,6 +63,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     private final ResponseDiagnosticsProcessor responseDiagnosticsProcessor;
     private final boolean queryMetricsEnabled;
     private final int maxDegreeOfParallelism;
+    private final int maxBufferedItemCount;
     private final CosmosAsyncClient cosmosAsyncClient;
     private final IsNewAwareAuditingHandler cosmosAuditingHandler;
     private final DatabaseThroughputConfig databaseThroughputConfig;
@@ -119,6 +120,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         this.responseDiagnosticsProcessor = cosmosConfig.getResponseDiagnosticsProcessor();
         this.queryMetricsEnabled = cosmosConfig.isQueryMetricsEnabled();
         this.maxDegreeOfParallelism = cosmosConfig.getMaxDegreeOfParallelism();
+        this.maxBufferedItemCount = cosmosConfig.getMaxBufferedItemCount();
         this.cosmosAuditingHandler = cosmosAuditingHandler;
         this.databaseThroughputConfig = cosmosConfig.getDatabaseThroughputConfig();
     }
@@ -266,6 +268,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         cosmosQueryRequestOptions.setPartitionKey(partitionKey);
         cosmosQueryRequestOptions.setQueryMetricsEnabled(this.queryMetricsEnabled);
         cosmosQueryRequestOptions.setMaxDegreeOfParallelism(this.maxDegreeOfParallelism);
+        cosmosQueryRequestOptions.setMaxBufferedItemCount(this.maxBufferedItemCount);
 
         return cosmosAsyncClient
             .getDatabase(this.databaseName)
@@ -316,6 +319,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         final CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setQueryMetricsEnabled(this.queryMetricsEnabled);
         options.setMaxDegreeOfParallelism(this.maxDegreeOfParallelism);
+        options.setMaxBufferedItemCount(this.maxBufferedItemCount);
 
         return cosmosAsyncClient.getDatabase(this.databaseName)
                                 .getContainer(containerName)
@@ -673,6 +677,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         String containerName = getContainerName(domainType);
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setMaxDegreeOfParallelism(this.maxDegreeOfParallelism);
+        options.setMaxBufferedItemCount(this.maxBufferedItemCount);
         return cosmosAsyncClient.getDatabase(this.databaseName)
                    .getContainer(containerName)
                    .queryItems(querySpec, options, JsonNode.class)
@@ -695,6 +700,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
 
         options.setQueryMetricsEnabled(this.queryMetricsEnabled);
         options.setMaxDegreeOfParallelism(this.maxDegreeOfParallelism);
+        options.setMaxBufferedItemCount(this.maxBufferedItemCount);
 
         return executeQuery(querySpec, containerName, options)
             .doOnNext(feedResponse -> CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
@@ -763,6 +769,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         final CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
         cosmosQueryRequestOptions.setQueryMetricsEnabled(this.queryMetricsEnabled);
         cosmosQueryRequestOptions.setMaxDegreeOfParallelism(this.maxDegreeOfParallelism);
+        cosmosQueryRequestOptions.setMaxBufferedItemCount(this.maxBufferedItemCount);
         Optional<Object> partitionKeyValue = query.getPartitionKeyValue(domainType);
         partitionKeyValue.ifPresent(o -> {
             LOGGER.debug("Setting partition key {}", o);
