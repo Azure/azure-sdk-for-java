@@ -14,6 +14,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
+import static com.azure.core.http.netty.implementation.Utility.convertHeaderNameToAsciiString;
+
 /**
  * This class represents an immutable map used by {@link NettyToAzureCoreHttpHeadersWrapper} which has an internal
  * deferred cache.
@@ -46,7 +48,7 @@ final class DeferredCacheImmutableMap<V> extends AbstractMap<String, V> {
 
     @Override
     public boolean containsKey(Object key) {
-        return nettyHeaders.contains((String) key);
+        return nettyHeaders.contains(convertHeaderNameToAsciiString((String) key));
     }
 
     @Override
@@ -62,7 +64,8 @@ final class DeferredCacheImmutableMap<V> extends AbstractMap<String, V> {
         // performance implication, and therefore it is recommended that users steer away from calling
         // httpHeaders.toMap().get(key), and instead be directed towards httpHeaders.get(key), as this
         // avoids the need for unnecessary string.join operations.
-        return internalCache.computeIfAbsent((String) key, k -> getter.apply(nettyHeaders.getAll(k)));
+        return internalCache.computeIfAbsent((String) key,
+            k -> getter.apply(nettyHeaders.getAll(convertHeaderNameToAsciiString(k))));
     }
 
     @Override
