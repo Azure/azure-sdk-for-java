@@ -3,12 +3,13 @@
 
 package com.azure.communication.callautomation.models.events;
 
+import com.azure.communication.callautomation.implementation.models.ResultInformation;
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The CallDisconnectedEvent model. */
 @Immutable
 public final class CallDisconnectedEvent extends CallAutomationEventBase {
     private CallDisconnectedEvent() {
-        super();
     }
 }

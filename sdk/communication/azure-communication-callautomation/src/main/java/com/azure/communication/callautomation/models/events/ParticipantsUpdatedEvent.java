@@ -5,6 +5,7 @@ package com.azure.communication.callautomation.models.events;
 
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
+import com.azure.communication.callautomation.implementation.models.ResultInformation;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -28,7 +29,6 @@ public final class ParticipantsUpdatedEvent extends CallAutomationEventBase {
 
     @JsonCreator
     private ParticipantsUpdatedEvent(@JsonProperty("participants") List<Map<String, Object>> participants) {
-
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         this.participants = participants

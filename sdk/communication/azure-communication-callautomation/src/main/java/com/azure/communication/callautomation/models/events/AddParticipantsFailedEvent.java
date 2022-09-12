@@ -22,18 +22,6 @@ import java.util.stream.Collectors;
 @Immutable
 public final class AddParticipantsFailedEvent extends CallAutomationEventBase {
     /*
-     * Operation context
-     */
-    @JsonProperty(value = "operationContext")
-    private final String operationContext;
-
-    /*
-     * The resultInfo property.
-     */
-    @JsonProperty(value = "resultInfo")
-    private final ResultInfo resultInfo;
-
-    /*
      * Participants failed to be added
      */
     @JsonIgnore
@@ -41,9 +29,6 @@ public final class AddParticipantsFailedEvent extends CallAutomationEventBase {
 
     @JsonCreator
     private AddParticipantsFailedEvent(@JsonProperty("participants") List<Map<String, Object>> participants) {
-        this.operationContext = null;
-        this.resultInfo = null;
-
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         this.participants = participants
@@ -53,24 +38,6 @@ public final class AddParticipantsFailedEvent extends CallAutomationEventBase {
             .stream()
             .map(CommunicationIdentifierConverter::convert)
             .collect(Collectors.toList());
-    }
-
-    /**
-     * Get the operationContext property: Operation context.
-     *
-     * @return the operationContext value.
-     */
-    public String getOperationContext() {
-        return this.operationContext;
-    }
-
-    /**
-     * Get the resultInfo property: The resultInfo property.
-     *
-     * @return the resultInfo value.
-     */
-    public ResultInfo getResultInfo() {
-        return this.resultInfo;
     }
 
     /**

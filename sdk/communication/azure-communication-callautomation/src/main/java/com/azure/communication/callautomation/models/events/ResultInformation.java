@@ -6,9 +6,9 @@ package com.azure.communication.callautomation.models.events;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ResultInfo model. */
+/** The ResultInformation model. */
 @Immutable
-public final class ResultInfo {
+public final class ResultInformation {
     /*
      * The code property.
      */
@@ -27,7 +27,7 @@ public final class ResultInfo {
     @JsonProperty(value = "message")
     private final String message;
 
-    private ResultInfo() {
+    private ResultInformation() {
         code = null;
         subCode = null;
         message = null;

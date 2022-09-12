@@ -11,8 +11,8 @@ import com.azure.communication.callautomation.models.events.CallDisconnectedEven
 import com.azure.communication.callautomation.models.events.CallTransferAcceptedEvent;
 import com.azure.communication.callautomation.models.events.CallTransferFailedEvent;
 import com.azure.communication.callautomation.models.events.ParticipantsUpdatedEvent;
-import com.azure.communication.callautomation.models.events.PlayCompleted;
-import com.azure.communication.callautomation.models.events.PlayFailed;
+import com.azure.communication.callautomation.models.events.PlayCompletedEvent;
+import com.azure.communication.callautomation.models.events.PlayFailedEvent;
 import com.azure.communication.callautomation.models.events.RecordingStateChangedEvent;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.util.logging.ClientLogger;
@@ -106,9 +106,9 @@ public final class EventHandler {
             } else if (Objects.equals(eventType, "Microsoft.Communication.CallRecordingStateChanged")) {
                 ret = mapper.convertValue(eventData, RecordingStateChangedEvent.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.PlayCompleted")) {
-                ret = mapper.convertValue(eventData, PlayCompleted.class);
+                ret = mapper.convertValue(eventData, PlayCompletedEvent.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.PlayFailed")) {
-                ret = mapper.convertValue(eventData, PlayFailed.class);
+                ret = mapper.convertValue(eventData, PlayFailedEvent.class);
             }
 
             return ret;

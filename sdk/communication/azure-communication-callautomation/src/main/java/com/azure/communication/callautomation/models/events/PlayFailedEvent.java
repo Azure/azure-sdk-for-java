@@ -4,11 +4,10 @@
 package com.azure.communication.callautomation.models.events;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CallTransferAcceptedEvent model. */
+/** The PlayFailedEvent model. */
 @Immutable
-public final class CallTransferAcceptedEvent extends CallAutomationEventBase {
-    private CallTransferAcceptedEvent() {
+public final class PlayFailedEvent extends CallAutomationEventBase {
+    private PlayFailedEvent() {
     }
 }
