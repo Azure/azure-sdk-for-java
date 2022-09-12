@@ -3,7 +3,7 @@
 ## 4.2.0 (2022-09-09)
 
 ### Breaking Changes
-- Made it so that we verify that the challenge resource matches the vault domain by default. This should affect few customers who can set pass `false` to the `verifyChallengeResource()` method in client builders to disable this functionality.
+- Made it so that we verify that the challenge resource matches the vault domain by default. This should affect few customers who can pass `false` to the `verifyChallengeResource()` method in client builders to disable this functionality.
 
 ### Other Changes
 
