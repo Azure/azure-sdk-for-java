@@ -65,6 +65,19 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     }
 
     @Test
+    public void createUserWithResponseNullContext() {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        client = setupClient(builder, "createUserWithResponseSync");
+
+        // Action & Assert
+        Response<CommunicationUserIdentifier> response = client.createUserWithResponse(null);
+        assertNotNull(response.getValue().getId());
+        assertFalse(response.getValue().getId().isEmpty());
+        assertEquals(201, response.getStatusCode(), "Expect status code to be 201");
+    }
+
+    @Test
     public void createUserAndToken() {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
@@ -534,6 +547,21 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, "getTokenForTeamsUserWithValidParamsWithResponseSync");
         // Action & Assert
         Response<AccessToken> response = client.getTokenForTeamsUserWithResponse(options, Context.NONE);
+        assertEquals(200, response.getStatusCode(), "Expect status code to be 200");
+        verifyTokenNotEmpty(response.getValue());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.communication.identity.CteTestHelper#getValidParams")
+    public void getTokenForTeamsUserWithValidParamsWithResponseNullContext(GetTokenForTeamsUserOptions options) {
+        if (skipExchangeAadTeamsTokenTest()) {
+            return;
+        }
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        client = setupClient(builder, "getTokenForTeamsUserWithValidParamsWithResponseSync");
+        // Action & Assert
+        Response<AccessToken> response = client.getTokenForTeamsUserWithResponse(options, null);
         assertEquals(200, response.getStatusCode(), "Expect status code to be 200");
         verifyTokenNotEmpty(response.getValue());
     }
