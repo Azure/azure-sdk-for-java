@@ -228,7 +228,9 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
         @Override
         public NettyHttpHeader next() {
             String headerName = headerNames.next();
-            return new NettyHttpHeader(allHeaders, headerName, allHeaders.nettyHeaders.getAll(headerName));
+            HttpHeaderName httpHeaderName = HttpHeaderName.fromString(headerName);
+            return new NettyHttpHeader(allHeaders, httpHeaderName,
+                allHeaders.nettyHeaders.getAll(convertHeaderNameToAsciiString(httpHeaderName)));
         }
     }
 }
