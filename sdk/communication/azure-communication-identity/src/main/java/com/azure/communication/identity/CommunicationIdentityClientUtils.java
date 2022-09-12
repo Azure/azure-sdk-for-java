@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.identity.util;
+package com.azure.communication.identity.implementation;
 
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
 import com.azure.communication.identity.CommunicationIdentityClient;
@@ -22,7 +22,7 @@ import java.util.stream.StreamSupport;
  * Utility class with shared functionality for {@link CommunicationIdentityClient}, {@link CommunicationIdentityAsyncClient}
  * and their test classes.
  */
-public final class CommunicationIdentityClientUtils {
+final class CommunicationIdentityClientUtils {
 
     /**
      * Error message for the case when expiresAfter argument overflows its allowed value.
