@@ -14,6 +14,7 @@ import java.util.List;
  * values will be appended to the end of the same Header with commas separating them.
  */
 public class HttpHeader extends Header {
+    private final HttpHeaderName name;
 
     /**
      * Create an HttpHeader instance using the provided name and value.
@@ -23,6 +24,7 @@ public class HttpHeader extends Header {
      */
     public HttpHeader(String name, String value) {
         super(name, value);
+        this.name =
     }
 
     /**
@@ -34,5 +36,14 @@ public class HttpHeader extends Header {
      */
     public HttpHeader(String name, List<String> values) {
         super(name, values);
+    }
+
+    /**
+     * Gets the HTTP header name.
+     *
+     * @return The HTTP name of this {@link HttpHeader}.
+     */
+    public HttpHeaderName getHttpHeaderName() {
+        return name;
     }
 }

@@ -122,6 +122,27 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     }
 
     /**
+     * Adds a {@link HttpHeader header} with the given name and value if a header with that name doesn't already exist,
+     * otherwise adds the {@code value} to the existing header.
+     *
+     * @param name The name of the header.
+     * @param value The value of the header.
+     * @return The updated HttpHeaders object.
+     */
+    public HttpHeaders add(HttpHeaderName name, String value) {
+        headers.compute(name.getHttp2Name(), (key, header) -> {
+            if (header == null) {
+                return new HttpHeader(name.getHttp1Name(), value);
+            } else  {
+                header.addValue(value);
+                return header;
+            }
+        });
+
+        return this;
+    }
+
+    /**
      * Sets a {@link HttpHeader header} with the given name and value.
      *
      * <p>If header with same name already exists then the value will be overwritten.</p>
