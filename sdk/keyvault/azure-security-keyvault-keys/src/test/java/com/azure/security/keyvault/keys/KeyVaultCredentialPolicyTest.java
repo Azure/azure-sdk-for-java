@@ -201,6 +201,18 @@ public class KeyVaultCredentialPolicyTest {
         assertFalse(onChallenge);
     }
 
+    @SyncAsyncTest
+    public void onAuthorizeRequestDifferentScopeVerifyFalse() {
+        KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential, false);
+
+        boolean onChallenge = SyncAsyncExtension.execute(
+            () -> onChallengeSync(policy, this.differentScopeContext, this.unauthorizedHttpResponseWithHeader),
+            () -> onChallenge(policy, this.differentScopeContext, this.unauthorizedHttpResponseWithHeader)
+        );
+
+        assertTrue(onChallenge);
+    }
+
     @Test
     public void onAuthorizeRequestChallengeCachePresentSync() {
         KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential, true);
