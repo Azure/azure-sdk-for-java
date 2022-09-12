@@ -82,7 +82,7 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
      * If no value is specified for TenantId this option will have no effect, and the credential will
      * acquire tokens for any requested tenant.
      *
-     * @param additionallyAllowedTenants the additionally allowed Tenants.
+     * @param additionallyAllowedTenants the additionally allowed tenants.
      * @return An updated instance of this builder with the additional tenants configured.
      */
     @Override
@@ -98,7 +98,7 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
      * If no value is specified for TenantId this option will have no effect, and the credential will
      * acquire tokens for any requested tenant.
      *
-     * @param additionallyAllowedTenants the additionally allowed Tenants.
+     * @param additionallyAllowedTenants the additionally allowed tenants.
      * @return An updated instance of this builder with the additional tenants configured.
      */
     @Override

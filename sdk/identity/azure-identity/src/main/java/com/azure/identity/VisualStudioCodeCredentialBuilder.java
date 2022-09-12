@@ -39,7 +39,7 @@ public class VisualStudioCodeCredentialBuilder extends CredentialBuilderBase<Vis
      * If no value is specified for TenantId this option will have no effect, and the credential will
      * acquire tokens for any requested tenant.
      *
-     * @param additionallyAllowedTenants the additionally allowed Tenants.
+     * @param additionallyAllowedTenants the additionally allowed tenants.
      * @return An updated instance of this builder with the additional tenants configured.
      */
     public VisualStudioCodeCredentialBuilder additionallyAllowedTenants(String... additionallyAllowedTenants) {
@@ -54,7 +54,7 @@ public class VisualStudioCodeCredentialBuilder extends CredentialBuilderBase<Vis
      * If no value is specified for TenantId this option will have no effect, and the credential will
      * acquire tokens for any requested tenant.
      *
-     * @param additionallyAllowedTenants the additionally allowed Tenants.
+     * @param additionallyAllowedTenants the additionally allowed tenants.
      * @return An updated instance of this builder with the additional tenants configured.
      */
     public VisualStudioCodeCredentialBuilder additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
