@@ -25,6 +25,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Contents. */
@@ -87,6 +88,8 @@ public final class ContentsImpl {
         Mono<Response<RecordingStateResponseInternal>> recording(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Repeatability-Request-ID") UUID repeatabilityRequestID,
+                @HeaderParam("Repeatability-First-Sent") String repeatabilityFirstSent,
                 @BodyParam("application/json") StartCallRecordingRequestInternal startCallRecording,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -394,6 +397,14 @@ public final class ContentsImpl {
      * Start recording the call.
      *
      * @param startCallRecording The request body of start call recording request.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -401,13 +412,17 @@ public final class ContentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecordingStateResponseInternal>> recordingWithResponseAsync(
-            StartCallRecordingRequestInternal startCallRecording) {
+            StartCallRecordingRequestInternal startCallRecording,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.recording(
                                 this.client.getEndpoint(),
                                 this.client.getApiVersion(),
+                                repeatabilityRequestID,
+                                repeatabilityFirstSent,
                                 startCallRecording,
                                 accept,
                                 context));
@@ -417,6 +432,14 @@ public final class ContentsImpl {
      * Start recording the call.
      *
      * @param startCallRecording The request body of start call recording request.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -425,24 +448,44 @@ public final class ContentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecordingStateResponseInternal>> recordingWithResponseAsync(
-            StartCallRecordingRequestInternal startCallRecording, Context context) {
+            StartCallRecordingRequestInternal startCallRecording,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent,
+            Context context) {
         final String accept = "application/json";
         return service.recording(
-                this.client.getEndpoint(), this.client.getApiVersion(), startCallRecording, accept, context);
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                repeatabilityRequestID,
+                repeatabilityFirstSent,
+                startCallRecording,
+                accept,
+                context);
     }
 
     /**
      * Start recording the call.
      *
      * @param startCallRecording The request body of start call recording request.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecordingStateResponseInternal> recordingAsync(StartCallRecordingRequestInternal startCallRecording) {
-        return recordingWithResponseAsync(startCallRecording)
+    public Mono<RecordingStateResponseInternal> recordingAsync(
+            StartCallRecordingRequestInternal startCallRecording,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent) {
+        return recordingWithResponseAsync(startCallRecording, repeatabilityRequestID, repeatabilityFirstSent)
                 .flatMap(
                         (Response<RecordingStateResponseInternal> res) -> {
                             if (res.getValue() != null) {
@@ -457,6 +500,14 @@ public final class ContentsImpl {
      * Start recording the call.
      *
      * @param startCallRecording The request body of start call recording request.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -465,8 +516,11 @@ public final class ContentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecordingStateResponseInternal> recordingAsync(
-            StartCallRecordingRequestInternal startCallRecording, Context context) {
-        return recordingWithResponseAsync(startCallRecording, context)
+            StartCallRecordingRequestInternal startCallRecording,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent,
+            Context context) {
+        return recordingWithResponseAsync(startCallRecording, repeatabilityRequestID, repeatabilityFirstSent, context)
                 .flatMap(
                         (Response<RecordingStateResponseInternal> res) -> {
                             if (res.getValue() != null) {
@@ -481,20 +535,39 @@ public final class ContentsImpl {
      * Start recording the call.
      *
      * @param startCallRecording The request body of start call recording request.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecordingStateResponseInternal recording(StartCallRecordingRequestInternal startCallRecording) {
-        return recordingAsync(startCallRecording).block();
+    public RecordingStateResponseInternal recording(
+            StartCallRecordingRequestInternal startCallRecording,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent) {
+        return recordingAsync(startCallRecording, repeatabilityRequestID, repeatabilityFirstSent).block();
     }
 
     /**
      * Start recording the call.
      *
      * @param startCallRecording The request body of start call recording request.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -503,7 +576,11 @@ public final class ContentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecordingStateResponseInternal> recordingWithResponse(
-            StartCallRecordingRequestInternal startCallRecording, Context context) {
-        return recordingWithResponseAsync(startCallRecording, context).block();
+            StartCallRecordingRequestInternal startCallRecording,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent,
+            Context context) {
+        return recordingWithResponseAsync(startCallRecording, repeatabilityRequestID, repeatabilityFirstSent, context)
+                .block();
     }
 }
