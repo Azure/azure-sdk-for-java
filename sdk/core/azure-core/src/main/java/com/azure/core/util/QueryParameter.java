@@ -148,13 +148,13 @@ class QueryParameter {
     @Override
     public String toString() {
         if (value != null) {
-            return name + ":" + value;
+            return name + "=" + value;
         } else if (CoreUtils.isNullOrEmpty(values)) {
             return "";
         }
 
         checkCachedStringValue();
-        return name + ":" + CACHED_STRING_VALUE_UPDATER.get(this);
+        return name + "=" + CACHED_STRING_VALUE_UPDATER.get(this);
     }
 
     private void checkCachedStringValue() {
