@@ -2,9 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.query;
 
-import com.azure.spring.data.cosmos.core.ReactiveCosmosOperations;
-import com.azure.spring.data.cosmos.core.query.CosmosQuery;
+import com.azure.spring.data.cosmos.core.*;
+import com.azure.spring.data.cosmos.core.query.*;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
+import org.springframework.data.domain.*;
 import org.springframework.data.repository.query.ReturnedType;
 
 /**
@@ -141,6 +142,38 @@ public interface ReactiveCosmosQueryExecution {
         @Override
         public Object execute(CosmosQuery query, Class<?> type, String container) {
             return operations.delete(query, type, container);
+        }
+    }
+
+    /**
+     * paginationQuery operation implementation to execute a paginationQuery query
+     */
+    final class PagedExecution implements ReactiveCosmosQueryExecution {
+        private final ReactiveCosmosOperations operations;
+        private final Pageable pageable;
+
+        /**
+         * Creates a new instance of paged execution.
+         *
+         * @param operations the Cosmos operations
+         * @param pageable the pageable
+         */
+        public PagedExecution(ReactiveCosmosOperations operations, Pageable pageable) {
+            this.operations = operations;
+            this.pageable = pageable;
+        }
+
+        @Override
+        public Object execute(CosmosQuery query, Class<?> type, String container) {
+            if (pageable.getPageNumber() != 0
+                && !(pageable instanceof CosmosPageRequest)) {
+                throw new IllegalStateException("Not the first page but Pageable is not a valid "
+                    + "CosmosPageRequest, requestContinuation is required for non first page request");
+            }
+
+            query.with(pageable);
+
+            return operations.paginationQuery(query, type, container);
         }
     }
 

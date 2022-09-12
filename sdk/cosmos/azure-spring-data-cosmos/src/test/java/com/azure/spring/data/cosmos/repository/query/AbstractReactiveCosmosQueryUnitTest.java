@@ -23,7 +23,7 @@ public class AbstractReactiveCosmosQueryUnitTest {
     public void testShouldUseMultiEntityExecutionIfMethodHasFluxReactiveWrapper() {
         Mockito.<Class<?>>when(method.getReactiveWrapper()).thenReturn(Flux.class);
         TestReactiveCosmosQuery cosmosQuery = new TestReactiveCosmosQuery(method, null);
-        ReactiveCosmosQueryExecution execution = cosmosQuery.getExecution(null);
+        ReactiveCosmosQueryExecution execution = cosmosQuery.getExecution(null, null);
         Assert.isInstanceOf(ReactiveCosmosQueryExecution.MultiEntityExecution.class, execution);
     }
 
@@ -31,7 +31,7 @@ public class AbstractReactiveCosmosQueryUnitTest {
     public void testShouldUseSingleExecutionIfMethodHasMonoReactiveWrapper() {
         Mockito.<Class<?>>when(method.getReactiveWrapper()).thenReturn(Mono.class);
         TestReactiveCosmosQuery cosmosQuery = new TestReactiveCosmosQuery(method, null);
-        ReactiveCosmosQueryExecution execution = cosmosQuery.getExecution(null);
+        ReactiveCosmosQueryExecution execution = cosmosQuery.getExecution(null, null);
         Assert.isInstanceOf(ReactiveCosmosQueryExecution.SingleEntityExecution.class, execution);
     }
 

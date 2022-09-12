@@ -3,8 +3,8 @@
 
 package com.azure.spring.data.cosmos.core;
 
-import com.azure.cosmos.CosmosAsyncClient;
-import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.core.http.rest.*;
+import com.azure.cosmos.*;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
@@ -27,6 +27,8 @@ import com.azure.spring.data.cosmos.core.generator.FindQuerySpecGenerator;
 import com.azure.spring.data.cosmos.core.generator.NativeQueryGenerator;
 import com.azure.spring.data.cosmos.core.mapping.event.AfterLoadEvent;
 import com.azure.spring.data.cosmos.core.mapping.event.CosmosMappingEvent;
+import com.azure.spring.data.cosmos.core.query.CosmosPageImpl;
+import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
@@ -39,6 +41,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.data.auditing.IsNewAwareAuditingHandler;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
@@ -47,8 +50,12 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.*;
 
 /**
  * Template class of reactive cosmos
@@ -282,6 +289,82 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
             .onErrorResume(throwable ->
                 CosmosExceptionUtils.exceptionHandler("Failed to find items", throwable,
                     this.responseDiagnosticsProcessor));
+    }
+
+    @Override
+    public <T> PagedFlux<T> findAll(Pageable pageable, Class<T> domainType, String containerName) {
+        final CosmosQuery query =
+            new CosmosQuery(Criteria.getInstance(CriteriaType.ALL)).with(pageable);
+        if (pageable.getSort().isSorted()) {
+            query.with(pageable.getSort());
+        }
+
+        return paginationQuery(query, domainType, containerName);
+    }
+
+    @Override
+    public <T> PagedFlux<T> paginationQuery(CosmosQuery query, Class<T> domainType, String containerName) {
+        final SqlQuerySpec querySpec = new FindQuerySpecGenerator().generateCosmos(query);
+        final SqlQuerySpec countQuerySpec = new CountQueryGenerator().generateCosmos(query);
+        Optional<Object> partitionKeyValue = query.getPartitionKeyValue(domainType);
+        return paginationQuery(querySpec, countQuerySpec, query.getPageable(),
+            query.getSort(), domainType, containerName, partitionKeyValue);
+    }
+
+    private <T> PagedFlux<T> paginationQuery(SqlQuerySpec querySpec, SqlQuerySpec countQuerySpec,
+                                        Pageable pageable, Sort sort,
+                                        Class<T> returnType, String containerName,
+                                        Optional<Object> partitionKeyValue) {
+        final long total = getCountValue(countQuerySpec, containerName).block();
+
+        Assert.isTrue(pageable.getPageSize() > 0,
+            "pageable should have page size larger than 0");
+        Assert.hasText(containerName, "container should not be null, empty or only whitespaces");
+
+        final CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
+        cosmosQueryRequestOptions.setQueryMetricsEnabled(this.queryMetricsEnabled);
+        cosmosQueryRequestOptions.setMaxDegreeOfParallelism(this.maxDegreeOfParallelism);
+        partitionKeyValue.ifPresent(o -> {
+            LOGGER.debug("Setting partition key {}", o);
+            cosmosQueryRequestOptions.setPartitionKey(new PartitionKey(o));
+        });
+
+        CosmosAsyncContainer container =
+            cosmosAsyncClient.getDatabase(this.databaseName).getContainer(containerName);
+
+        Flux<T> feedResponse = container
+            .queryItems(querySpec, cosmosQueryRequestOptions, JsonNode.class)
+            .byPage(((CosmosPageRequest) pageable).getRequestContinuation(), pageable.getPageSize())
+            .publishOn(Schedulers.parallel())
+            .flatMap(cosmosItemFeedResponse -> {
+                CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
+                    cosmosItemFeedResponse.getCosmosDiagnostics(), cosmosItemFeedResponse);
+                return Flux.fromIterable(cosmosItemFeedResponse.getResults());
+            })
+            .map(cosmosItemProperties -> emitOnLoadEventAndConvertToDomainObject(returnType, cosmosItemProperties))
+            .onErrorResume(throwable ->
+                CosmosExceptionUtils.exceptionHandler("Failed to find items", throwable,
+                    this.responseDiagnosticsProcessor));
+
+        // A supplier that fetches the first page of data from source/service
+        Supplier<Mono<PagedResponse<T>>> firstPageRetriever = getFirstPage(pageable.getPageSize());
+
+        // A function that fetches subsequent pages of data from source/service given a continuation token
+        Function<String, Mono<PagedResponse<T>>> nextPageRetriever =
+            getNextPage(((CosmosPageRequest) pageable).getRequestContinuation(), pageable.getPageSize());
+
+        PagedFlux<T> pagedFlux = new PagedFlux<>(firstPageRetriever, nextPageRetriever);
+        return pagedFlux;
+    }
+
+    public <T> Supplier<Mono<PagedResponse<T>>> getFirstPage(int pageSize) {
+
+        return null;
+    }
+
+    public <T> Function<String, Mono<PagedResponse<T>>> getNextPage(String continuationToken, int pageSize) {
+
+        return null;
     }
 
     /**

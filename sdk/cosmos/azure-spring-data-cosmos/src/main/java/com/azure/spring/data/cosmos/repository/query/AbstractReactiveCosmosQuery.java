@@ -50,7 +50,7 @@ public abstract class AbstractReactiveCosmosQuery implements RepositoryQuery {
         final String containerName =
             ((ReactiveCosmosEntityMetadata) method.getEntityInformation()).getContainerName();
 
-        final ReactiveCosmosQueryExecution execution = getExecution(processor.getReturnedType());
+        final ReactiveCosmosQueryExecution execution = getExecution(accessor, processor.getReturnedType());
         return execution.execute(query, processor.getReturnedType().getDomainType(), containerName);
     }
 
@@ -61,12 +61,11 @@ public abstract class AbstractReactiveCosmosQuery implements RepositoryQuery {
      * @param returnedType The return type of the method
      * @return the execution type needed to handle the query
      */
-    protected ReactiveCosmosQueryExecution getExecution(ReturnedType returnedType) {
+    protected ReactiveCosmosQueryExecution getExecution(ReactiveCosmosParameterAccessor accessor, ReturnedType returnedType) {
         if (isDeleteQuery()) {
             return new ReactiveCosmosQueryExecution.DeleteExecution(operations);
         } else if (isPageQuery()) {
-            throw new IllegalArgumentException("Paged Query is not supported by reactive cosmos "
-                + "db");
+            return new ReactiveCosmosQueryExecution.PagedExecution(operations, accessor.getPageable());
         } else if (isExistsQuery()) {
             return new ReactiveCosmosQueryExecution.ExistsExecution(operations);
         } else if (isCountQuery()) {
