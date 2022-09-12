@@ -394,13 +394,4 @@ public class ClientCertificateCredentialTest {
         }
 
     }
-
-    private String getPath(String filename) {
-
-        String path =  getClass().getClassLoader().getResource(filename).getPath();
-        if (path.contains(":")) {
-            path = path.substring(1);
-        }
-        return path;
-    }
 }
