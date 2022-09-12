@@ -10,7 +10,6 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
 import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
-import com.azure.communication.identity.util.CommunicationIdentityClientUtils;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.rest.Response;
 

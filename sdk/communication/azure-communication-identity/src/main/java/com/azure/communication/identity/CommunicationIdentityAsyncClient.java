@@ -17,7 +17,6 @@ import com.azure.communication.identity.models.IdentityError;
 import com.azure.communication.identity.models.IdentityErrorResponseException;
 import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
 import com.azure.communication.common.CommunicationUserIdentifier;
-import com.azure.communication.identity.util.CommunicationIdentityClientUtils;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
