@@ -177,7 +177,7 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
 
     @Override
     public Iterator<HttpHeader> iterator() {
-        return stream().iterator();
+        return new NettyHeadersIterator(this);
     }
 
     @Override
@@ -207,6 +207,28 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
         public void addValue(String value) {
             super.addValue(value);
             allHeaders.add(getHeaderName(), value);
+        }
+    }
+
+    static final class NettyHeadersIterator implements Iterator<HttpHeader> {
+        private final NettyToAzureCoreHttpHeadersWrapper allHeaders;
+        private final Iterator<String> headerNames;
+
+        NettyHeadersIterator(NettyToAzureCoreHttpHeadersWrapper allHeaders) {
+            this.allHeaders = allHeaders;
+            this.headerNames = allHeaders.nettyHeaders.names().iterator();
+        }
+
+
+        @Override
+        public boolean hasNext() {
+            return headerNames.hasNext();
+        }
+
+        @Override
+        public NettyHttpHeader next() {
+            String headerName = headerNames.next();
+            return new NettyHttpHeader(allHeaders, headerName, allHeaders.nettyHeaders.getAll(headerName));
         }
     }
 }
