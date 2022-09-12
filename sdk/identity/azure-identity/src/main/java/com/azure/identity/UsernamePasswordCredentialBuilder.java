@@ -81,12 +81,12 @@ public class UsernamePasswordCredentialBuilder extends AadCredentialBuilderBase<
 
     /**
      * For multi-tenant applications, specifies additional tenants for which the credential may acquire tokens.
-     * Add the wildcard value "*" to allow the credential to acquire tokens for any tenant the application is installed.
+     * Add the wildcard value "*" to allow the credential to acquire tokens for any tenant on which the application is installed.
      * If no value is specified for TenantId this option will have no effect, and the credential will
      * acquire tokens for any requested tenant.
      *
      * @param additionallyAllowedTenants the additionally allowed Tenants.
-     * @return An updated instance of this builder with the tenant id set as specified.
+     * @return An updated instance of this builder with the additional tenants configured.
      */
     @Override
     public UsernamePasswordCredentialBuilder additionallyAllowedTenants(String... additionallyAllowedTenants) {
@@ -97,12 +97,12 @@ public class UsernamePasswordCredentialBuilder extends AadCredentialBuilderBase<
 
     /**
      * For multi-tenant applications, specifies additional tenants for which the credential may acquire tokens.
-     * Add the wildcard value "*" to allow the credential to acquire tokens for any tenant the application is installed.
+     * Add the wildcard value "*" to allow the credential to acquire tokens for any tenant on which the application is installed.
      * If no value is specified for TenantId this option will have no effect, and the credential will
      * acquire tokens for any requested tenant.
      *
      * @param additionallyAllowedTenants the additionally allowed Tenants.
-     * @return An updated instance of this builder with the tenant id set as specified.
+     * @return An updated instance of this builder with the additional tenants configured.
      */
     @Override
     public UsernamePasswordCredentialBuilder additionallyAllowedTenants(List<String> additionallyAllowedTenants) {

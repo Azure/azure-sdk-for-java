@@ -350,7 +350,7 @@ public class ClientCertificateCredentialTest {
         TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
             .setTenantId("newTenant");
 
-        try(ByteArrayInputStream inputStream = new ByteArrayInputStream(TEST_PEM_CERT.getBytes(StandardCharsets.UTF_8))) {
+        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(TEST_PEM_CERT.getBytes(StandardCharsets.UTF_8))) {
             ClientCertificateCredential credential =
                 new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pemCertificate(inputStream)
                     .additionallyAllowedTenants("RANDOM").build();
@@ -366,7 +366,7 @@ public class ClientCertificateCredentialTest {
         TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
             .setTenantId("newTenant");
 
-        try(ByteArrayInputStream inputStream = new ByteArrayInputStream(TEST_PEM_CERT.getBytes(StandardCharsets.UTF_8))) {
+        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(TEST_PEM_CERT.getBytes(StandardCharsets.UTF_8))) {
             ClientCertificateCredential credential =
                 new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pemCertificate(inputStream).build();
             StepVerifier.create(credential.getToken(request))
@@ -381,7 +381,7 @@ public class ClientCertificateCredentialTest {
         TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
             .setTenantId("newTenant");
 
-        try(ByteArrayInputStream inputStream = new ByteArrayInputStream(TEST_PEM_CERT.getBytes(StandardCharsets.UTF_8))) {
+        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(TEST_PEM_CERT.getBytes(StandardCharsets.UTF_8))) {
             ClientCertificateCredential credential =
                 new ClientCertificateCredentialBuilder()
                     .tenantId(TENANT_ID)
