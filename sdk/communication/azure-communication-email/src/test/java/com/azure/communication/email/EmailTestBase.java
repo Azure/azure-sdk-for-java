@@ -13,7 +13,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Stream;
@@ -23,7 +22,7 @@ public class EmailTestBase extends TestBase {
     protected static final TestMode TEST_MODE = initializeTestMode();
 
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
+        .get("COMMUNICATION_CONNECTION_STRING_EMAIL", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
 
     protected static final String RECIPIENT_ADDRESS = Configuration.getGlobalConfiguration()
         .get("RECIPIENT_ADDRESS", "customer@contoso.com");
