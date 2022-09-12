@@ -99,7 +99,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      * For multi-tenant applications, specifies additional tenants for which the credential may acquire tokens.
      * Add the wildcard value "*" to allow the credential to acquire tokens for any tenant on which the application is installed.
      *
-     * @param additionallyAllowedTenants the additionally allowed Tenants.
+     * @param additionallyAllowedTenants the additionally allowed tenants.
      * @return An updated instance of this builder with the additional tenants configured.
      */
     @SuppressWarnings("unchecked")

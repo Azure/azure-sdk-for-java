@@ -151,7 +151,8 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      */
     @SuppressWarnings("unchecked")
     public DefaultAzureCredentialBuilder additionallyAllowedTenants(String... additionallyAllowedTenants) {
-        this.additionallyAllowedTenants = Arrays.asList(additionallyAllowedTenants);
+        identityClientOptions.setAdditionallyAllowedTenants(IdentityUtil
+            .resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
         return this;
     }
 
@@ -164,7 +165,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      */
     @SuppressWarnings("unchecked")
     public DefaultAzureCredentialBuilder additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
-        this.additionallyAllowedTenants = additionallyAllowedTenants;
+        identityClientOptions.setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
         return this;
     }
 
