@@ -3,8 +3,6 @@
 
 package com.azure.communication.identity;
 
-import com.azure.communication.identity.CommunicationIdentityAsyncClient;
-import com.azure.communication.identity.CommunicationIdentityClient;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenRequest;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityCreateRequest;
 import com.azure.communication.identity.models.CommunicationTokenScope;
@@ -58,7 +56,7 @@ final class CommunicationIdentityClientUtils {
         return tokenRequest;
     }
 
-    static boolean IsTokenExpirationValid(Duration expectedTokenExpiration, OffsetDateTime tokenExpiresAfter) {
+    static boolean isTokenExpirationValid(Duration expectedTokenExpiration, OffsetDateTime tokenExpiresAfter) {
 
         Duration expectedExpiration = expectedTokenExpiration == null ? Duration.ofDays(1) : expectedTokenExpiration;
 

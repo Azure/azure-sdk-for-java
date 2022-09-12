@@ -130,8 +130,7 @@ public final class CommunicationIdentityAsyncClient {
                     (CommunicationIdentityAccessTokenResult result) -> {
                         return Mono.just(userWithAccessTokenResultConverter(result));
                     });
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -144,8 +143,8 @@ public final class CommunicationIdentityAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CommunicationUserIdentifierAndToken>
-        createUserAndToken(Iterable<CommunicationTokenScope> scopes) {
-            return createUserAndToken(scopes, null);
+    createUserAndToken(Iterable<CommunicationTokenScope> scopes) {
+        return createUserAndToken(scopes, null);
     }
 
     /**
@@ -172,8 +171,7 @@ public final class CommunicationIdentityAsyncClient {
                         return Mono.just(new SimpleResponse<CommunicationUserIdentifierAndToken>(response,
                             userWithAccessTokenResultConverter(response.getValue())));
                     });
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -186,8 +184,8 @@ public final class CommunicationIdentityAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CommunicationUserIdentifierAndToken>>
-        createUserAndTokenWithResponse(Iterable<CommunicationTokenScope> scopes) {
-            return createUserAndTokenWithResponse(scopes, null);
+    createUserAndTokenWithResponse(Iterable<CommunicationTokenScope> scopes) {
+        return createUserAndTokenWithResponse(scopes, null);
     }
 
     /**
@@ -287,8 +285,7 @@ public final class CommunicationIdentityAsyncClient {
                 .flatMap((CommunicationIdentityAccessToken rawToken) -> {
                     return Mono.just(new AccessToken(rawToken.getToken(), rawToken.getExpiresOn()));
                 });
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -304,7 +301,7 @@ public final class CommunicationIdentityAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessToken> getToken(CommunicationUserIdentifier communicationUser,
         Iterable<CommunicationTokenScope> scopes) {
-            return getToken(communicationUser, scopes, null);
+        return getToken(communicationUser, scopes, null);
     }
 
     /**
@@ -335,8 +332,7 @@ public final class CommunicationIdentityAsyncClient {
                     AccessToken token = new AccessToken(response.getValue().getToken(), response.getValue().getExpiresOn());
                     return Mono.just(new SimpleResponse<AccessToken>(response, token));
                 });
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -352,7 +348,7 @@ public final class CommunicationIdentityAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessToken>> getTokenWithResponse(CommunicationUserIdentifier communicationUser,
         Iterable<CommunicationTokenScope> scopes) {
-            return getTokenWithResponse(communicationUser, scopes, null);
+        return getTokenWithResponse(communicationUser, scopes, null);
     }
 
     /**
