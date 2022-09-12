@@ -5,7 +5,6 @@ package com.azure.communication.callautomation.models.events;
 
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
-import com.azure.communication.callautomation.implementation.models.ResultInformation;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;

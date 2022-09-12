@@ -3,7 +3,6 @@
 
 package com.azure.communication.callautomation.models.events;
 
-import com.azure.communication.callautomation.implementation.models.ResultInformation;
 import com.azure.communication.callautomation.models.RecordingState;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
