@@ -143,7 +143,7 @@ public final class CommunicationIdentityAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CommunicationUserIdentifierAndToken>
-    createUserAndToken(Iterable<CommunicationTokenScope> scopes) {
+        createUserAndToken(Iterable<CommunicationTokenScope> scopes) {
         return createUserAndToken(scopes, null);
     }
 
@@ -184,7 +184,7 @@ public final class CommunicationIdentityAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CommunicationUserIdentifierAndToken>>
-    createUserAndTokenWithResponse(Iterable<CommunicationTokenScope> scopes) {
+        createUserAndTokenWithResponse(Iterable<CommunicationTokenScope> scopes) {
         return createUserAndTokenWithResponse(scopes, null);
     }
 
