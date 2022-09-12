@@ -80,6 +80,21 @@ public final class HttpHeaderName {
         return knownHeader;
     }
 
+    @Override
+    public int hashCode() {
+        return http2Name.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof HttpHeaderName)) {
+            return false;
+        }
+
+        HttpHeaderName other = (HttpHeaderName) obj;
+        return http2Name.equals(other.http2Name);
+    }
+
     /**
      * {@code Accept}/{@code accept}
      */
