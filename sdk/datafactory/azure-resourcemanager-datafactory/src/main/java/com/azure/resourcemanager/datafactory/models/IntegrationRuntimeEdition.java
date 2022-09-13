@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IntegrationRuntimeEdition. */
+/** The edition for the SSIS Integration Runtime. */
 public final class IntegrationRuntimeEdition extends ExpandableStringEnum<IntegrationRuntimeEdition> {
     /** Static value Standard for IntegrationRuntimeEdition. */
     public static final IntegrationRuntimeEdition STANDARD = fromString("Standard");

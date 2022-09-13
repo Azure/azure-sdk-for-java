@@ -12,33 +12,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class GoogleCloudStorageLinkedServiceTypeProperties {
     /*
-     * The access key identifier of the Google Cloud Storage Identity and
-     * Access Management (IAM) user. Type: string (or Expression with
-     * resultType string).
+     * The access key identifier of the Google Cloud Storage Identity and Access Management (IAM) user. Type: string
+     * (or Expression with resultType string).
      */
     @JsonProperty(value = "accessKeyId")
     private Object accessKeyId;
 
     /*
-     * The secret access key of the Google Cloud Storage Identity and Access
-     * Management (IAM) user.
+     * The secret access key of the Google Cloud Storage Identity and Access Management (IAM) user.
      */
     @JsonProperty(value = "secretAccessKey")
     private SecretBase secretAccessKey;
 
     /*
-     * This value specifies the endpoint to access with the Google Cloud
-     * Storage Connector. This is an optional property; change it only if you
-     * want to try a different service endpoint or want to switch between https
-     * and http. Type: string (or Expression with resultType string).
+     * This value specifies the endpoint to access with the Google Cloud Storage Connector. This is an optional
+     * property; change it only if you want to try a different service endpoint or want to switch between https and
+     * http. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "serviceUrl")
     private Object serviceUrl;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;

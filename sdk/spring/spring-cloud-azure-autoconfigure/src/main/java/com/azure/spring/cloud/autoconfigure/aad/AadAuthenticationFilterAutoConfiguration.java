@@ -4,10 +4,10 @@
 package com.azure.spring.cloud.autoconfigure.aad;
 
 import com.azure.spring.cloud.autoconfigure.aad.configuration.AadPropertiesConfiguration;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestOperationConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.filter.AadAppRoleStatelessAuthenticationFilter;
 import com.azure.spring.cloud.autoconfigure.aad.filter.AadAuthenticationFilter;
 import com.azure.spring.cloud.autoconfigure.aad.filter.UserPrincipalManager;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ResourceServerRestOperationConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.RestOperationsResourceRetriever;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
@@ -16,6 +16,7 @@ import com.nimbusds.jose.jwk.source.JWKSetCache;
 import com.nimbusds.jose.util.ResourceRetriever;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -27,6 +28,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.web.client.RestOperations;
 
 import java.util.concurrent.TimeUnit;
+
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ResourceServerRestOperationConfiguration.AAD_OAUTH_2_RESOURCE_SERVER_REST_OPERATION_BEAN_NAME;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Azure Active Authentication filters.
@@ -40,21 +43,26 @@ import java.util.concurrent.TimeUnit;
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnExpression("${spring.cloud.azure.active-directory.enabled:false}")
 @ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken" })
-@Import({AadPropertiesConfiguration.class, AadRestOperationConfiguration.class})
+@Import({AadPropertiesConfiguration.class, AadOauth2ResourceServerRestOperationConfiguration.class})
 public class AadAuthenticationFilterAutoConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AadAuthenticationProperties.class);
 
     private final AadAuthenticationProperties properties;
     private final AadAuthorizationServerEndpoints endpoints;
+    private final RestOperations restOperations;
 
     /**
      * Creates a new instance of {@link AadAuthenticationFilterAutoConfiguration}.
      *
      * @param properties the AAD authentication properties
+     * @param restOperations the restOperations
      */
-    public AadAuthenticationFilterAutoConfiguration(AadAuthenticationProperties properties) {
+    public AadAuthenticationFilterAutoConfiguration(
+            AadAuthenticationProperties properties,
+            @Qualifier(AAD_OAUTH_2_RESOURCE_SERVER_REST_OPERATION_BEAN_NAME) RestOperations restOperations) {
         this.properties = properties;
+        this.restOperations = restOperations;
         this.endpoints = new AadAuthorizationServerEndpoints(properties.getProfile().getEnvironment().getActiveDirectoryEndpoint(),
             properties.getProfile().getTenantId());
     }
@@ -103,12 +111,11 @@ public class AadAuthenticationFilterAutoConfiguration {
     /**
      * Declare JWT ResourceRetriever bean.
      *
-     * @param restOperations the rest operations used by the resource retriever.
      * @return JWT ResourceRetriever bean
      */
     @Bean
     @ConditionalOnMissingBean(ResourceRetriever.class)
-    public ResourceRetriever jwtResourceRetriever(RestOperations restOperations) {
+    public ResourceRetriever jwtResourceRetriever() {
         return new RestOperationsResourceRetriever(restOperations);
     }
 

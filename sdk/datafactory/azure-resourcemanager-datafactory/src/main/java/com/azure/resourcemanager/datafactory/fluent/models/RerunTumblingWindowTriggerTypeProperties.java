@@ -19,22 +19,19 @@ public final class RerunTumblingWindowTriggerTypeProperties {
     private Object parentTrigger;
 
     /*
-     * The start time for the time period for which restatement is initiated.
-     * Only UTC time is currently supported.
+     * The start time for the time period for which restatement is initiated. Only UTC time is currently supported.
      */
     @JsonProperty(value = "requestedStartTime", required = true)
     private OffsetDateTime requestedStartTime;
 
     /*
-     * The end time for the time period for which restatement is initiated.
-     * Only UTC time is currently supported.
+     * The end time for the time period for which restatement is initiated. Only UTC time is currently supported.
      */
     @JsonProperty(value = "requestedEndTime", required = true)
     private OffsetDateTime requestedEndTime;
 
     /*
-     * The max number of parallel time windows (ready for execution) for which
-     * a rerun is triggered.
+     * The max number of parallel time windows (ready for execution) for which a rerun is triggered.
      */
     @JsonProperty(value = "rerunConcurrency", required = true)
     private int rerunConcurrency;
