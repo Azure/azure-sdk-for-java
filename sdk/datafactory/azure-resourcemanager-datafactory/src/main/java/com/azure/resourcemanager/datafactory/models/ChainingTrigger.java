@@ -23,8 +23,7 @@ import java.util.List;
 @Fluent
 public final class ChainingTrigger extends Trigger {
     /*
-     * Pipeline for which runs are created when all upstream pipelines complete
-     * successfully.
+     * Pipeline for which runs are created when all upstream pipelines complete successfully.
      */
     @JsonProperty(value = "pipeline", required = true)
     private TriggerPipelineReference pipeline;

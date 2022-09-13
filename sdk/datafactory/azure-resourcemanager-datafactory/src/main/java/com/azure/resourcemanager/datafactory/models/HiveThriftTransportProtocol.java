@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HiveThriftTransportProtocol. */
+/** The transport protocol to use in the Thrift layer. */
 public final class HiveThriftTransportProtocol extends ExpandableStringEnum<HiveThriftTransportProtocol> {
     /** Static value Binary for HiveThriftTransportProtocol. */
     public static final HiveThriftTransportProtocol BINARY = fromString("Binary");

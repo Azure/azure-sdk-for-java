@@ -5,6 +5,9 @@ package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.models.FileSource;
 import com.azure.communication.callingserver.models.PlayOptions;
+import com.azure.communication.callingserver.models.RecognizeConfigurations;
+import com.azure.communication.callingserver.models.RecognizeInputType;
+import com.azure.communication.callingserver.models.RecognizeOptions;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -61,6 +64,15 @@ public class CallMediaAsyncUnitTests {
     public void cancelAllOperationsWithResponse() {
         StepVerifier.create(
                 callMedia.cancelAllMediaOperationsWithResponse())
+            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void recognizeWithResponse() {
+        RecognizeOptions recognizeOptions = new RecognizeOptions(RecognizeInputType.DTMF, new RecognizeConfigurations());
+        StepVerifier.create(
+                callMedia.recognizeWithResponse(recognizeOptions))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }

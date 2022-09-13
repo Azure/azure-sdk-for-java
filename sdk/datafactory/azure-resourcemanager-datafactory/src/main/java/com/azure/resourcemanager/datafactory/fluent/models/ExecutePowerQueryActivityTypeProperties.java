@@ -20,8 +20,7 @@ import java.util.Map;
 @Fluent
 public final class ExecutePowerQueryActivityTypeProperties extends ExecuteDataFlowActivityTypeProperties {
     /*
-     * (Deprecated. Please use Queries). List of Power Query activity sinks
-     * mapped to a queryName.
+     * (Deprecated. Please use Queries). List of Power Query activity sinks mapped to a queryName.
      */
     @JsonProperty(value = "sinks")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)

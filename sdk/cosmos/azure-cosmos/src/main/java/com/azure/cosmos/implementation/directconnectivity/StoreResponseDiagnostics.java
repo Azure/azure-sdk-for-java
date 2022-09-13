@@ -6,11 +6,14 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * This represents diagnostics from store response OR from cosmos exception
@@ -35,6 +38,7 @@ public class StoreResponseDiagnostics {
     private final int rntbdResponseLength;
     private final String exceptionMessage;
     private final String exceptionResponseHeaders;
+    private final List<String> replicaStatusList;
 
     public static StoreResponseDiagnostics createStoreResponseDiagnostics(StoreResponse storeResponse) {
         return new StoreResponseDiagnostics(storeResponse);
@@ -63,6 +67,7 @@ public class StoreResponseDiagnostics {
         this.rntbdResponseLength = storeResponse.getRntbdResponseLength();
         this.exceptionMessage = null;
         this.exceptionResponseHeaders = null;
+        this.replicaStatusList = storeResponse.getReplicaStatusList();
     }
 
     private StoreResponseDiagnostics(CosmosException e) {
@@ -84,6 +89,7 @@ public class StoreResponseDiagnostics {
         this.rntbdResponseLength = BridgeInternal.getRntbdResponseLength(e);
         this.exceptionMessage = BridgeInternal.getInnerErrorMessage(e);
         this.exceptionResponseHeaders = e.getResponseHeaders() != null ? e.getResponseHeaders().toString() : null;
+        this.replicaStatusList = ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor().getReplicaStatusList(e);
     }
 
     public int getStatusCode() {
@@ -157,4 +163,6 @@ public class StoreResponseDiagnostics {
     public String getExceptionResponseHeaders() {
         return exceptionResponseHeaders;
     }
+
+    public List<String> getReplicaStatusList() { return this.replicaStatusList; }
 }

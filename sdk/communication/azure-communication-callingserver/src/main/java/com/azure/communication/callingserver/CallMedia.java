@@ -6,6 +6,7 @@ package com.azure.communication.callingserver;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.PlayOptions;
 import com.azure.communication.callingserver.models.PlaySource;
+import com.azure.communication.callingserver.models.RecognizeOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -81,6 +82,28 @@ public class CallMedia {
     public Response<Void> playToAllWithResponse(PlaySource playSource, PlayOptions options, Context context) {
         return callMediaAsync
             .playWithResponseInternal(playSource, Collections.emptyList(), options, context)
+            .block();
+    }
+
+    /**
+     * Recognize tones.
+     * @param recognizeOptions Optional elements for recognize.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void recognize(RecognizeOptions recognizeOptions) {
+        callMediaAsync.recognize(recognizeOptions).block();
+    }
+
+    /**
+     * Recognize tones.
+     * @param recognizeOptions Optional elements for recognize.
+     * @param context A {@link Context} representing the request context.
+     * @return Response for a successful recognize request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> recognizeWithResponse(RecognizeOptions recognizeOptions, Context context) {
+        return callMediaAsync
+            .recognizeWithResponseInternal(recognizeOptions, context)
             .block();
     }
 

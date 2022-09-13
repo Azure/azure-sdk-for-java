@@ -7,7 +7,6 @@ package com.azure.resourcemanager.monitor.implementation;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.monitor.fluent.ActionGroupsClient;
 import com.azure.resourcemanager.monitor.fluent.ActivityLogAlertsClient;
@@ -20,7 +19,7 @@ import com.azure.resourcemanager.monitor.fluent.DataCollectionEndpointsClient;
 import com.azure.resourcemanager.monitor.fluent.DataCollectionRuleAssociationsClient;
 import com.azure.resourcemanager.monitor.fluent.DataCollectionRulesClient;
 import com.azure.resourcemanager.monitor.fluent.DiagnosticSettingsCategoriesClient;
-import com.azure.resourcemanager.monitor.fluent.DiagnosticSettingsClient;
+import com.azure.resourcemanager.monitor.fluent.DiagnosticSettingsOperationsClient;
 import com.azure.resourcemanager.monitor.fluent.EventCategoriesClient;
 import com.azure.resourcemanager.monitor.fluent.LogProfilesClient;
 import com.azure.resourcemanager.monitor.fluent.MetricAlertsClient;
@@ -30,6 +29,7 @@ import com.azure.resourcemanager.monitor.fluent.MetricNamespacesClient;
 import com.azure.resourcemanager.monitor.fluent.MetricsClient;
 import com.azure.resourcemanager.monitor.fluent.MonitorClient;
 import com.azure.resourcemanager.monitor.fluent.OperationsClient;
+import com.azure.resourcemanager.monitor.fluent.PredictiveMetricsClient;
 import com.azure.resourcemanager.monitor.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.monitor.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.monitor.fluent.PrivateLinkScopeOperationStatusClient;
@@ -44,8 +44,6 @@ import java.time.Duration;
 /** Initializes a new instance of the MonitorClientImpl type. */
 @ServiceClient(builder = MonitorClientBuilder.class)
 public final class MonitorClientImpl extends AzureServiceClient implements MonitorClient {
-    private final ClientLogger logger = new ClientLogger(MonitorClientImpl.class);
-
     /** The ID of the target subscription. */
     private final String subscriptionId;
 
@@ -118,6 +116,18 @@ public final class MonitorClientImpl extends AzureServiceClient implements Monit
         return this.autoscaleSettings;
     }
 
+    /** The PredictiveMetricsClient object to access its operations. */
+    private final PredictiveMetricsClient predictiveMetrics;
+
+    /**
+     * Gets the PredictiveMetricsClient object to access its operations.
+     *
+     * @return the PredictiveMetricsClient object.
+     */
+    public PredictiveMetricsClient getPredictiveMetrics() {
+        return this.predictiveMetrics;
+    }
+
     /** The OperationsClient object to access its operations. */
     private final OperationsClient operations;
 
@@ -166,16 +176,16 @@ public final class MonitorClientImpl extends AzureServiceClient implements Monit
         return this.logProfiles;
     }
 
-    /** The DiagnosticSettingsClient object to access its operations. */
-    private final DiagnosticSettingsClient diagnosticSettings;
+    /** The DiagnosticSettingsOperationsClient object to access its operations. */
+    private final DiagnosticSettingsOperationsClient diagnosticSettingsOperations;
 
     /**
-     * Gets the DiagnosticSettingsClient object to access its operations.
+     * Gets the DiagnosticSettingsOperationsClient object to access its operations.
      *
-     * @return the DiagnosticSettingsClient object.
+     * @return the DiagnosticSettingsOperationsClient object.
      */
-    public DiagnosticSettingsClient getDiagnosticSettings() {
-        return this.diagnosticSettings;
+    public DiagnosticSettingsOperationsClient getDiagnosticSettingsOperations() {
+        return this.diagnosticSettingsOperations;
     }
 
     /** The DiagnosticSettingsCategoriesClient object to access its operations. */
@@ -466,11 +476,12 @@ public final class MonitorClientImpl extends AzureServiceClient implements Monit
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
         this.autoscaleSettings = new AutoscaleSettingsClientImpl(this);
+        this.predictiveMetrics = new PredictiveMetricsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.alertRuleIncidents = new AlertRuleIncidentsClientImpl(this);
         this.alertRules = new AlertRulesClientImpl(this);
         this.logProfiles = new LogProfilesClientImpl(this);
-        this.diagnosticSettings = new DiagnosticSettingsClientImpl(this);
+        this.diagnosticSettingsOperations = new DiagnosticSettingsOperationsClientImpl(this);
         this.diagnosticSettingsCategories = new DiagnosticSettingsCategoriesClientImpl(this);
         this.actionGroups = new ActionGroupsClientImpl(this);
         this.activityLogs = new ActivityLogsClientImpl(this);

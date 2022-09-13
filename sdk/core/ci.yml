@@ -60,6 +60,10 @@ parameters:
   displayName: 'azure-core-http-okhttp'
   type: boolean
   default: true
+- name: release_azurecorehttpvertx
+  displayName: 'azure-core-http-vertx'
+  type: boolean
+  default: false
 - name: release_azurecoremanagement
   displayName: 'azure-core-management'
   type: boolean
@@ -67,7 +71,7 @@ parameters:
 - name: release_azurecoremetricsopentelemetry
   displayName: 'azure-core-metrics-opentelemetry'
   type: boolean
-  default: false
+  default: true
 - name: release_azurecoreserializeravroapache
   displayName: 'azure-core-serializer-avro-apache'
   type: boolean
@@ -96,7 +100,10 @@ parameters:
   displayName: 'azure-json-gson'
   type: boolean
   default: false
-
+- name: release_azurexml
+  displayName: 'azure-xml'
+  type: boolean
+  default: false
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -133,6 +140,10 @@ extends:
         groupId: com.azure
         safeName: azurecorehttpokhttp
         releaseInBatch: ${{ parameters.release_azurecorehttpokhttp }}
+      - name: azure-core-http-vertx
+        groupId: com.azure
+        safeName: azurecorehttpvertx
+        releaseInBatch: ${{ parameters.release_azurecorehttpvertx }}
       - name: azure-core-management
         groupId: com.azure
         safeName: azurecoremanagement
@@ -169,6 +180,10 @@ extends:
         groupId: com.azure
         safeName: azurejsongson
         releaseInBatch: ${{ parameters.release_azurejsongson }}
+      - name: azure-xml
+        groupId: com.azure
+        safeName: azurexml
+        releaseInBatch: ${{ parameters.release_azurexml }}
     MatrixReplace:
       - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
     AdditionalStagesAfterBuild:

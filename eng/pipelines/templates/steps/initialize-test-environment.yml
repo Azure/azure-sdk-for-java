@@ -15,13 +15,16 @@ parameters:
     default: client
 
 steps:
-  - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-    parameters:
-      Paths:
-        - '**/*.xml'
-        - ${{ if not(parameters.CheckoutRecordings) }}:
-          - '!sdk/**/test-recordings'
-          - '!sdk/**/session-records'
+  # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
+  # as we require the github service connection to be loaded.
+  - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
+    - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+      parameters:
+        Paths:
+          - '**/*.xml'
+          - ${{ if not(parameters.CheckoutRecordings) }}:
+            - '!sdk/**/test-recordings'
+            - '!sdk/**/session-records'
 
   - task: UsePythonVersion@0
     displayName: 'Use Python 3.6'
@@ -82,7 +85,10 @@ steps:
       workingDirectory: '$(System.DefaultWorkingDirectory)'
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
-  - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-    parameters:
-      SkipDefaultCheckout: true
-      Paths: $(SparseCheckoutDirectories)
+  # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
+  # as we require the github service connection to be loaded.
+  - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
+    - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+      parameters:
+        SkipCheckoutNone: true
+        Paths: $(SparseCheckoutDirectories)

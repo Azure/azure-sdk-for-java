@@ -22,8 +22,7 @@ public final class PrivateEndpointConnectionProxyListResult {
     private List<PrivateEndpointConnectionProxyInner> value;
 
     /*
-     * The URI that can be used to request the next list of private endpoint
-     * connection proxies.
+     * The URI that can be used to request the next list of private endpoint connection proxies.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;

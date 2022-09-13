@@ -14,10 +14,10 @@ public interface Operations {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by Microsoft.Dashboard provider as paginated response with {@link
+     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<OperationResult> list();
+    PagedIterable<Operation> list();
 
     /**
      * List all available API operations provided by Microsoft.Dashboard.
@@ -26,8 +26,8 @@ public interface Operations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by Microsoft.Dashboard provider as paginated response with {@link
+     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<OperationResult> list(Context context);
+    PagedIterable<Operation> list(Context context);
 }

@@ -4,10 +4,12 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentSpanHelper;
+import com.azure.core.annotation.Immutable;
 
 /**
  * Contiguous region of the concatenated content property, specified as an offset and length.
  */
+@Immutable
 public final class DocumentSpan {
     /*
      * Zero-based index of the content represented by the span.
@@ -34,7 +36,7 @@ public final class DocumentSpan {
      * @param offset the offset value to set.
      * @return the DocumentSpan object itself.
      */
-    void setOffset(int offset) {
+    private void setOffset(int offset) {
         this.offset = offset;
     }
 
@@ -53,7 +55,7 @@ public final class DocumentSpan {
      * @param length the length value to set.
      * @return the DocumentSpan object itself.
      */
-    void setLength(int length) {
+    private void setLength(int length) {
         this.length = length;
     }
 
