@@ -294,8 +294,9 @@ public class InterceptorManager implements AutoCloseable {
     /*
      * Creates a File which is the session-records folder.
      */
-    private File getRecordFolder() {
+    public static File getRecordFolder() {
         URL folderUrl = InterceptorManager.class.getClassLoader().getResource(RECORD_FOLDER);
+
         if (folderUrl != null) {
             // Use toURI as getResource will return a URL encoded file path that can only be cleaned up using the
             // URI-based constructor of File.
