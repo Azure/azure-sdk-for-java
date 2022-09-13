@@ -37,7 +37,7 @@ com.azure:azure-sdk-all;1.0.0;1.0.0
 com.azure:azure-sdk-parent;1.6.0;1.6.0
 com.azure:azure-client-sdk-parent;1.7.0;1.7.0
 com.azure:azure-ai-anomalydetector;3.0.0-beta.4;3.0.0-beta.5
-com.azure:azure-ai-formrecognizer;4.0.0-beta.6;4.0.0
+com.azure:azure-ai-formrecognizer;4.0.0;4.1.0-beta.1
 com.azure:azure-ai-formrecognizer-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-personalizer;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-ai-documenttranslator;1.0.0-beta.1;1.0.0-beta.2
@@ -57,12 +57,12 @@ com.azure:azure-aot-graalvm-support;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-aot-graalvm-support-netty;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-aot-graalvm-samples;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-aot-graalvm-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-communication-chat;1.3.0;1.4.0-beta.1
+com.azure:azure-communication-chat;1.3.0;1.3.1
 com.azure:azure-communication-callingserver;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-communication-callautomation;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-communication-common;1.2.1;1.3.0-beta.1
 com.azure:azure-communication-common-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-communication-sms;1.1.5;1.2.0-beta.1
+com.azure:azure-communication-sms;1.1.5;1.1.6
 com.azure:azure-communication-identity;1.3.1;1.4.0-beta.1
 com.azure:azure-communication-phonenumbers;1.0.13;1.1.0-beta.10
 com.azure:azure-communication-networktraversal;1.1.0-beta.2;1.1.0-beta.3
@@ -98,13 +98,13 @@ com.azure:azure-data-appconfiguration;1.3.7;1.4.0-beta.1
 com.azure:azure-data-appconfiguration-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-data-schemaregistry;1.2.3;1.3.0-beta.1
 com.azure:azure-data-schemaregistry-apacheavro;1.0.3;1.1.0-beta.1
-com.azure:azure-data-tables;12.3.3;12.4.0-beta.1
+com.azure:azure-data-tables;12.3.3;12.3.4
 com.azure:azure-data-tables-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-digitaltwins-core;1.3.2;1.4.0-beta.1
 com.azure:azure-e2e;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-identity;1.5.5;1.6.0-beta.2
 com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-iot-deviceupdate;1.0.0-beta.3;1.0.0
+com.azure:azure-iot-deviceupdate;1.0.0;1.1.0-beta.1
 com.azure:azure-iot-modelsrepository;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-maps-render;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-maps-route;1.0.0-beta.1;1.0.0-beta.2
@@ -121,8 +121,8 @@ com.azure:azure-messaging-eventhubs-track2-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-servicebus;7.10.1;7.11.0-beta.1
 com.azure:azure-messaging-servicebus-track1-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-servicebus-track2-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-messaging-webpubsub;1.1.5;1.2.0-beta.1
-com.azure:azure-mixedreality-authentication;1.2.5;1.2.6
+com.azure:azure-messaging-webpubsub;1.1.6;1.2.0-beta.1
+com.azure:azure-mixedreality-authentication;1.2.6;1.3.0-beta.1
 com.azure:azure-mixedreality-remoterendering;1.1.10;1.2.0-beta.1
 com.azure:azure-monitor-opentelemetry-exporter;1.0.0-beta.6;1.0.0-beta.7
 com.azure:azure-monitor-ingestion;1.0.0-beta.2;1.0.0-beta.3
@@ -384,6 +384,7 @@ com.azure.tools:azure-sdk-build-tool;1.0.0-beta.1;1.0.0-beta.2
 # note: The unreleased dependencies will not be manipulated with the automatic PR creation code.
 # In the pom, the version update tag after the version should name the unreleased package and the dependency version:
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
+unreleased_com.azure:azure-core;1.33.0-beta.1
 unreleased_com.azure:azure-ai-formrecognizer;4.0.0
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current

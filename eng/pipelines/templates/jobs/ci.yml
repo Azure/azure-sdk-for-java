@@ -104,7 +104,7 @@ jobs:
         - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
           parameters:
             Paths: $(SparseCheckoutDirectories)
-            SkipDefaultCheckout: true
+            SkipCheckoutNone: true
 
       - ${{ parameters.PreBuildSteps }}
 
@@ -275,7 +275,7 @@ jobs:
         - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
           parameters:
             Paths: $(SparseCheckoutDirectories)
-            SkipDefaultCheckout: true
+            SkipCheckoutNone: true
 
       - template: /eng/common/pipelines/templates/steps/check-spelling.yml
         parameters:

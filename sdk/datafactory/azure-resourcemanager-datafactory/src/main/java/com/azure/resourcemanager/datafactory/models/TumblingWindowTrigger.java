@@ -22,8 +22,7 @@ import java.util.List;
 @Fluent
 public final class TumblingWindowTrigger extends Trigger {
     /*
-     * Pipeline for which runs are created when an event is fired for trigger
-     * window that is ready.
+     * Pipeline for which runs are created when an event is fired for trigger window that is ready.
      */
     @JsonProperty(value = "pipeline", required = true)
     private TriggerPipelineReference pipeline;

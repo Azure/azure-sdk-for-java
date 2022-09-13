@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureDataExplorerDatasetTypeProperties {
     /*
-     * The table name of the Azure Data Explorer database. Type: string (or
-     * Expression with resultType string).
+     * The table name of the Azure Data Explorer database. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "table")
     private Object table;
