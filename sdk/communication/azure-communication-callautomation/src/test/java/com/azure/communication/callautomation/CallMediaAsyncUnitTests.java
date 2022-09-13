@@ -6,11 +6,9 @@ package com.azure.communication.callautomation;
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
 import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.PlayOptions;
-import com.azure.communication.callautomation.models.PlaySource;
 import com.azure.communication.callautomation.models.RecognizeInputType;
 import com.azure.communication.callautomation.models.Tone;
 import com.azure.communication.common.CommunicationUserIdentifier;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
@@ -18,11 +16,8 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
