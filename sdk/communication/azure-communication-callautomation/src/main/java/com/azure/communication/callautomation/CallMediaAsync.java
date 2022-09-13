@@ -170,7 +170,7 @@ public class CallMediaAsync {
                 return contentsInternal.recognizeWithResponseAsync(callConnectionId, recognizeRequest, context);
 
             } else {
-                throw new UnsupportedOperationException(recognizeOptions.getClass().getName());
+                return monoError(logger, new UnsupportedOperationException(recognizeOptions.getClass().getName()));
             }
 
         } catch (RuntimeException e) {
