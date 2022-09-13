@@ -280,6 +280,7 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/check-spelling.yml
         parameters:
           CspellConfigPath: .vscode/cspell.json
+          ContinueOnError: false
 
       - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
         parameters:
