@@ -53,7 +53,6 @@ public class AnalyzeBusinessCardAsync {
         PollerFlux<OperationResult, AnalyzeResult> analyzeBusinessCardPoller =
             client.beginAnalyzeDocument("prebuilt-businessCard",
                 BinaryData.fromStream(targetStream),
-                businessCard.length(),
                 new AnalyzeDocumentOptions().setPages(Arrays.asList("1")).setLocale("en-US"));
 
         Mono<AnalyzeResult> businessCardPageResultsMono

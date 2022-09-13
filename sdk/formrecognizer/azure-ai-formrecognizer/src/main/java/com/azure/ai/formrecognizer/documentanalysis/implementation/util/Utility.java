@@ -90,7 +90,7 @@ public final class Utility {
         // Authentications
         if (tokenCredential != null) {
             if (audience == null) {
-                audience = DocumentAnalysisAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
+                audience = DocumentAnalysisAudience.AZURE_PUBLIC_CLOUD;
             }
             httpPipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential,
                 audience + DEFAULT_SCOPE));

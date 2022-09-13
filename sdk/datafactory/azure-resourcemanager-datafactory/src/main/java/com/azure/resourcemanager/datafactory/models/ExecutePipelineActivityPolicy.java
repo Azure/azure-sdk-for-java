@@ -16,8 +16,7 @@ import java.util.Map;
 @Fluent
 public final class ExecutePipelineActivityPolicy {
     /*
-     * When set to true, Input from activity is considered as secure and will
-     * not be logged to monitoring.
+     * When set to true, Input from activity is considered as secure and will not be logged to monitoring.
      */
     @JsonProperty(value = "secureInput")
     private Boolean secureInput;

@@ -12,15 +12,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureDataExplorerCommandActivityTypeProperties {
     /*
-     * A control command, according to the Azure Data Explorer command syntax.
-     * Type: string (or Expression with resultType string).
+     * A control command, according to the Azure Data Explorer command syntax. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "command", required = true)
     private Object command;
 
     /*
-     * Control command timeout. Type: string (or Expression with resultType
-     * string), pattern:
+     * Control command timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9]))..)
      */
     @JsonProperty(value = "commandTimeout")

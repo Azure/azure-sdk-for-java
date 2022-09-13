@@ -56,8 +56,9 @@ public class DocumentModelAdminClientTest extends DocumentModelAdministrationCli
             .getDocumentAnalysisClient();
         blankPdfDataRunner((data, dataLength) -> {
             SyncPoller<OperationResult, AnalyzeResult> syncPoller =
-                documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout", BinaryData.fromStream(data), dataLength)
-                    .setPollInterval(durationTestMode);
+                documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout",
+                    BinaryData.fromStream(data, dataLength))
+                        .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             assertNotNull(syncPoller.getFinalResult());
         });

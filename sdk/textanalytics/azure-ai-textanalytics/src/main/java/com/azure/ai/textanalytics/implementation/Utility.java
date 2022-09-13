@@ -1364,7 +1364,7 @@ public final class Utility {
         for (TextAnalyticsServiceVersion targetVersion : targetVersions) {
             if (targetVersion != null && sourceVersion != null
                 && targetVersion.getVersion().equals(sourceVersion.getVersion())) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException(errorMessage));
+                throw LOGGER.logExceptionAsError(new UnsupportedOperationException(errorMessage));
             }
         }
     }

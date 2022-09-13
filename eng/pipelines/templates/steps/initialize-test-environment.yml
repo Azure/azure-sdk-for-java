@@ -90,5 +90,5 @@ steps:
   - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
     - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
       parameters:
-        SkipDefaultCheckout: true
+        SkipCheckoutNone: true
         Paths: $(SparseCheckoutDirectories)

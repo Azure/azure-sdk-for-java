@@ -11,7 +11,7 @@ import java.util.Map;
 
 /** OperationSummary. */
 @Immutable
-public class OperationSummary {
+public final class OperationSummary {
     /*
      * Operation ID
      */

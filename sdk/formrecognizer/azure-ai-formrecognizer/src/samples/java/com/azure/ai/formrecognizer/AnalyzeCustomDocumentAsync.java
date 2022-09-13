@@ -51,8 +51,8 @@ public class AnalyzeCustomDocumentAsync {
         PollerFlux<OperationResult, AnalyzeResult> analyzeDocumentPoller;
         try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
             analyzeDocumentPoller = client.beginAnalyzeDocument(modelId,
-                BinaryData.fromStream(targetStream),
-                sourceFile.length());
+                BinaryData.fromStream(targetStream)
+            );
         }
 
         Mono<AnalyzeResult> analyzeDocumentResult = analyzeDocumentPoller

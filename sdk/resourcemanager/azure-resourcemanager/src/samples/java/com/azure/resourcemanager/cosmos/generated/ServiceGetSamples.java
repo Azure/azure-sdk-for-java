@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Service Get. */
 public final class ServiceGetSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBDataTransferServiceGet.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDataTransferServiceGet.json
      */
     /**
      * Sample code: DataTransferServiceGet.
@@ -26,7 +26,7 @@ public final class ServiceGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBGraphAPIComputeServiceGet.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBGraphAPIComputeServiceGet.json
      */
     /**
      * Sample code: GraphAPIComputeServiceGet.
@@ -43,7 +43,7 @@ public final class ServiceGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBSqlDedicatedGatewayServiceGet.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBSqlDedicatedGatewayServiceGet.json
      */
     /**
      * Sample code: SqlDedicatedGatewayServiceGet.
@@ -60,7 +60,7 @@ public final class ServiceGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBMaterializedViewsBuilderServiceGet.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBMaterializedViewsBuilderServiceGet.json
      */
     /**
      * Sample code: MaterializedViewsBuilderServiceGet.

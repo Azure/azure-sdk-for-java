@@ -235,8 +235,8 @@ for (int i = 0; i < receiptResults.getDocuments().size(); i++) {
                         }
                     }
                     if ("Quantity".equals(key)) {
-                        if (DocumentFieldType.FLOAT == documentField.getType()) {
-                            Float quantity = documentField.getValueAsFloat();
+                        if (DocumentFieldType.DOUBLE == documentField.getType()) {
+                            Double quantity = documentField.getValueAsDouble();
                             System.out.printf("Quantity: %f, confidence: %.2f%n",
                                 quantity, documentField.getConfidence());
                         }
@@ -288,7 +288,7 @@ Path filePath = layoutDocument.toPath();
 BinaryData layoutDocumentData = BinaryData.fromFile(filePath);
 
 SyncPoller<OperationResult, AnalyzeResult> analyzeLayoutResultPoller =
-    documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout", layoutDocumentData, layoutDocument.length());
+    documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout", layoutDocumentData);
 
 AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 

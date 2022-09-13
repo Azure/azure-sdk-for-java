@@ -1,0 +1,21 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-adec84661d05465f8532f32a04af6f98/streams/Custom-MyTableRawData?api-version=2021-11-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.3 (17.0.2; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "96d97efb-cb51-42ac-a923-56d396e92af0",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "ae8c0dcd-3665-42dd-ba09-93377bc2d1f3",
+      "x-ms-client-request-id" : "96d97efb-cb51-42ac-a923-56d396e92af0",
+      "Date" : "Fri, 09 Sep 2022 21:14:56 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

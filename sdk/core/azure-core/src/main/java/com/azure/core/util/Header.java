@@ -16,6 +16,8 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  * appended at the end of the same {@link Header} with commas separating them.
  */
 public class Header {
+    private static final String[] EMPTY_HEADER_ARRAY = new String[0];
+
     private final String name;
 
     // This is the internal representation of a single value.
@@ -55,7 +57,7 @@ public class Header {
         int length = values.length;
         if (length == 1) {
             this.value = values[0];
-        } else {
+        } else if (length != 0) {
             this.values = new ArrayList<>(Math.max(length + 2, 4));
             Collections.addAll(this.values, values);
         }
@@ -74,7 +76,7 @@ public class Header {
         int size = values.size();
         if (size == 1) {
             this.value = values.get(0);
-        } else {
+        } else if (size != 0) {
             this.values = new ArrayList<>(Math.max(size + 2, 4));
             this.values.addAll(values);
         }
@@ -97,6 +99,8 @@ public class Header {
     public String getValue() {
         if (value != null) {
             return value;
+        } else if (CoreUtils.isNullOrEmpty(values)) {
+            return "";
         }
 
         checkCachedStringValue();
@@ -109,7 +113,13 @@ public class Header {
      * @return the values of this {@link Header} that are separated by a comma
      */
     public String[] getValues() {
-        return (value != null) ? new String[] {value} : values.toArray(new String[0]);
+        if (value != null) {
+            return new String[] {value};
+        } else if (!CoreUtils.isNullOrEmpty(values)) {
+            return values.toArray(new String[0]);
+        } else {
+            return EMPTY_HEADER_ARRAY;
+        }
     }
 
     /**
@@ -118,7 +128,13 @@ public class Header {
      * @return An unmodifiable list containing all values associated with this header.
      */
     public List<String> getValuesList() {
-        return (value != null) ? Collections.singletonList(value) : Collections.unmodifiableList(values);
+        if (value != null) {
+            return Collections.singletonList(value);
+        } else if (!CoreUtils.isNullOrEmpty(values)) {
+            return Collections.unmodifiableList(values);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     /**
@@ -127,7 +143,10 @@ public class Header {
      * @param value the value to add
      */
     public void addValue(String value) {
-        if (values == null) {
+        if (this.value == null && values == null) {
+            this.value = value;
+            return;
+        } else if (values == null) {
             values = new ArrayList<>(4); // 4 was selected to add a buffer of 2 as seen in the constructor.
             values.add(this.value);
             this.value = null;
@@ -146,6 +165,8 @@ public class Header {
     public String toString() {
         if (value != null) {
             return name + ":" + value;
+        } else if (CoreUtils.isNullOrEmpty(values)) {
+            return "";
         }
 
         checkCachedStringValue();

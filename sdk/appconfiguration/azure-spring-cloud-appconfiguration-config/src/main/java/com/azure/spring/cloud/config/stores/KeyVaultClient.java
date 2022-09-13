@@ -65,7 +65,7 @@ public final class KeyVaultClient {
         String fullUri = "https://" + uri.getHost();
 
         if (tokenCredential != null && msiProps != null) {
-            throw new IllegalArgumentException("More than 1 Conncetion method was set for connecting to Key Vault.");
+            throw new IllegalArgumentException("More than 1 Connection method was set for connecting to Key Vault.");
         }
 
         if (tokenCredential != null) {
