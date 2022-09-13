@@ -17,17 +17,15 @@ import java.util.Map;
 @Fluent
 public final class RedirectIncompatibleRowSettings {
     /*
-     * Name of the Azure Storage, Storage SAS, or Azure Data Lake Store linked
-     * service used for redirecting incompatible row. Must be specified if
-     * redirectIncompatibleRowSettings is specified. Type: string (or
-     * Expression with resultType string).
+     * Name of the Azure Storage, Storage SAS, or Azure Data Lake Store linked service used for redirecting
+     * incompatible row. Must be specified if redirectIncompatibleRowSettings is specified. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "linkedServiceName", required = true)
     private Object linkedServiceName;
 
     /*
-     * The path for storing the redirect incompatible row data. Type: string
-     * (or Expression with resultType string).
+     * The path for storing the redirect incompatible row data. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "path")
     private Object path;

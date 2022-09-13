@@ -38,8 +38,7 @@ public class Trigger {
     private String description;
 
     /*
-     * Indicates if trigger is running or not. Updated when Start/Stop APIs are
-     * called on the Trigger.
+     * Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger.
      */
     @JsonProperty(value = "runtimeState", access = JsonProperty.Access.WRITE_ONLY)
     private TriggerRuntimeState runtimeState;
@@ -51,8 +50,7 @@ public class Trigger {
     private List<Object> annotations;
 
     /*
-     * Azure data factory nested object which contains information about
-     * creating pipeline run
+     * Azure data factory nested object which contains information about creating pipeline run
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 

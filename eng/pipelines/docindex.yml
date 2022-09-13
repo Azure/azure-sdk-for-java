@@ -17,7 +17,7 @@ jobs:
       # Sync docs repo onboarding files/folders
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
-          SkipDefaultCheckout: true
+          SkipCheckoutNone: true
           Paths:
             - package.json
             - metadata/
@@ -47,8 +47,8 @@ jobs:
           filePath: eng/common/scripts/Service-Level-Readme-Automation.ps1
           arguments: >-
             -DocRepoLocation $(DocRepoLocation)
-            -TenantId '$(opensource-aad-tenant-id)' 
-            -ClientId '$(opensource-aad-app-id)' 
+            -TenantId '$(opensource-aad-tenant-id)'
+            -ClientId '$(opensource-aad-app-id)'
             -ClientSecret '$(opensource-aad-secret)'
         displayName: Generate Service Level Readme
 
@@ -81,7 +81,7 @@ jobs:
           DailyBranchVariableName: DailyDocsBranchName
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
-          SkipDefaultCheckout: true
+          SkipCheckoutNone: true
           Paths:
             - package.json
             - metadata/
@@ -90,7 +90,7 @@ jobs:
           Repositories:
             - Name: azure-sdk/$(DocRepoName)
               WorkingDirectory: $(DailyDocRepoLocation)
-        
+
       # Docs daily updates is supposed to download packages from public feed repository, so we have to specify additional repositories in a POM or the profile.
       # Here is maven documentation: https://maven.apache.org/guides/mini/guide-multiple-repositories.html
       - powershell: |
@@ -117,8 +117,8 @@ jobs:
           filePath: eng/common/scripts/Service-Level-Readme-Automation.ps1
           arguments: >-
             -DocRepoLocation $(DailyDocRepoLocation)
-            -TenantId '$(opensource-aad-tenant-id)' 
-            -ClientId '$(opensource-aad-app-id)' 
+            -TenantId '$(opensource-aad-tenant-id)'
+            -ClientId '$(opensource-aad-app-id)'
             -ClientSecret '$(opensource-aad-secret)'
         displayName: Generate Service Level Readme
       - task: Powershell@2

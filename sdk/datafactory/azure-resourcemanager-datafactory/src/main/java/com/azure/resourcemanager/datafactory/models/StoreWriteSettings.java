@@ -33,15 +33,15 @@ import java.util.Map;
 @Fluent
 public class StoreWriteSettings {
     /*
-     * The maximum concurrent connection count for the source data store. Type:
-     * integer (or Expression with resultType integer).
+     * The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType
+     * integer).
      */
     @JsonProperty(value = "maxConcurrentConnections")
     private Object maxConcurrentConnections;
 
     /*
-     * If true, disable data store metrics collection. Default is false. Type:
-     * boolean (or Expression with resultType boolean).
+     * If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType
+     * boolean).
      */
     @JsonProperty(value = "disableMetricsCollection")
     private Object disableMetricsCollection;
