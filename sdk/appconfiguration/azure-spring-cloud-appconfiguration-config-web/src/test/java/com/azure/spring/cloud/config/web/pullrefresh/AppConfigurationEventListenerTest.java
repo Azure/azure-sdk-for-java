@@ -29,7 +29,7 @@ public class AppConfigurationEventListenerTest {
     }
 
     @Test
-    public void throwException() {
+    public void throwException() throws Exception {
         AppConfigurationEventListener listener = new AppConfigurationEventListener(appConfigurationRefresh);
         doThrow(new RuntimeException("The listener should swallow all exceptions.")).when(appConfigurationRefresh)
             .refreshConfigurations();
@@ -37,7 +37,7 @@ public class AppConfigurationEventListenerTest {
     }
 
     @Test
-    public void watchEnabledNotConfiguredShouldNotCreateWatch() {
+    public void watchEnabledNotConfiguredShouldNotCreateWatch() throws Exception {
         AppConfigurationEventListener listener = new AppConfigurationEventListener(appConfigurationRefresh);
         when(appConfigurationRefresh.refreshConfigurations()).thenReturn(null);
         listener.onApplicationEvent(null);

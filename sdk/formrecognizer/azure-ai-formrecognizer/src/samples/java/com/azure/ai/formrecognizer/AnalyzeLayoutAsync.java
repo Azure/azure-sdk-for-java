@@ -48,8 +48,8 @@ public class AnalyzeLayoutAsync {
 
         PollerFlux<OperationResult, AnalyzeResult> analyzeLayoutPoller =
             client.beginAnalyzeDocument("prebuilt-layout",
-                BinaryData.fromStream(targetStream),
-                sourceFile.length());
+                BinaryData.fromStream(targetStream)
+            );
 
         Mono<AnalyzeResult> analyzeLayoutResultMono =
             analyzeLayoutPoller

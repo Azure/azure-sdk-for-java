@@ -135,7 +135,8 @@ public class ChunkedDownloadUtils {
     }
 
     public static long extractTotalBlobLength(String contentRange) {
-        return Long.parseLong(ModelHelper.FORWARD_SLASH.split(contentRange)[1]);
+        int index = contentRange.indexOf('/');
+        return Long.parseLong(contentRange.substring(index + 1));
     }
 
     public static int calculateNumBlocks(long dataSize, long blockLength) {

@@ -16,15 +16,13 @@ import java.util.Map;
 @Fluent
 public final class IntegrationRuntimeConnectionInfoInner {
     /*
-     * The token generated in service. Callers use this token to authenticate
-     * to integration runtime.
+     * The token generated in service. Callers use this token to authenticate to integration runtime.
      */
     @JsonProperty(value = "serviceToken", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceToken;
 
     /*
-     * The integration runtime SSL certificate thumbprint. Click-Once
-     * application uses it to do server validation.
+     * The integration runtime SSL certificate thumbprint. Click-Once application uses it to do server validation.
      */
     @JsonProperty(value = "identityCertThumbprint", access = JsonProperty.Access.WRITE_ONLY)
     private String identityCertThumbprint;
@@ -42,8 +40,7 @@ public final class IntegrationRuntimeConnectionInfoInner {
     private String version;
 
     /*
-     * The public key for encrypting a credential when transferring the
-     * credential to the integration runtime.
+     * The public key for encrypting a credential when transferring the credential to the integration runtime.
      */
     @JsonProperty(value = "publicKey", access = JsonProperty.Access.WRITE_ONLY)
     private String publicKey;
@@ -55,8 +52,7 @@ public final class IntegrationRuntimeConnectionInfoInner {
     private Boolean isIdentityCertExprired;
 
     /*
-     * Connection information for encrypting the on-premises data source
-     * credentials.
+     * Connection information for encrypting the on-premises data source credentials.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
