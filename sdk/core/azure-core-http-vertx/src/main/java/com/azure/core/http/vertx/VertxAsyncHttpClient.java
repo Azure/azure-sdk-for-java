@@ -63,32 +63,21 @@ class VertxAsyncHttpClient implements HttpClient {
                 HttpHeaders requestHeaders = request.getHeaders();
 
                 if (requestHeaders != null) {
-                    System.out.println("-================ request headers is NOT null=================");
-                    requestHeaders.stream().forEach(header -> {
-                        String headerName = header.getName();
-                        List<String> valuesList = header.getValuesList();
-                        for (String val : valuesList) {
-                            System.out.println("header name =" + headerName + ", val = " + val);
-                        }
-                        vertxHttpRequest.putHeader(header.getName(), valuesList);
-                    });
+                    requestHeaders.stream().forEach(header ->
+                        vertxHttpRequest.putHeader(header.getName(), header.getValuesList()));
                     if (request.getHeaders().get("Content-Length") == null) {
                         vertxHttpRequest.setChunked(true);
                     }
                 } else {
-                    System.out.println("-================ request headers is null=================");
-
                     vertxHttpRequest.setChunked(true);
                 }
 
                 vertxHttpRequest.response(event -> {
                     if (event.succeeded()) {
-                        System.out.println("Event --- Succeeded -----------");
                         HttpClientResponse vertxHttpResponse = event.result();
                         vertxHttpResponse.exceptionHandler(sink::error);
 
                         if (eagerlyReadResponse) {
-                            System.out.println("--------------Eagerly read response --------------------");
                             vertxHttpResponse.body(bodyEvent -> {
                                 if (bodyEvent.succeeded()) {
                                     System.out.println("------------- Body event succeeded --------------------");
@@ -113,18 +102,11 @@ class VertxAsyncHttpClient implements HttpClient {
 
                 getRequestBody(request, progressReporter)
                     .subscribeOn(scheduler)
-                    .map(buffer -> {
-                        System.out.println("------------ByteBuffer to ByteBuf --------");
-                        return Unpooled.wrappedBuffer(buffer);
-                    })
-                    .map(byteBuf -> {
-                        System.out.println("------------Byte Buf --------");
-
-                        return Buffer.buffer(byteBuf);
-                    })
+                    .map(Unpooled::wrappedBuffer)
+                    .map(Buffer::buffer)
                     .subscribe(
                         t -> {
-                            System.out.println("------------tttttttt--------");
+                            System.out.println("------------tttttttt--------" + t);
                             vertxHttpRequest.write(t);
                         },
                         throwable -> {
@@ -132,7 +114,6 @@ class VertxAsyncHttpClient implements HttpClient {
                             sink.error(throwable);
                         },
                         () -> {
-                            System.out.println("------------ end --------");
                             vertxHttpRequest.end();
                         });
             }, sink::error);
@@ -157,15 +138,12 @@ class VertxAsyncHttpClient implements HttpClient {
         }
 
         if (progressReporter != null) {
-            System.out.println("getRequestBody: progressReporter is NOT null ------------");
-
             body = body.map(buffer -> {
                 int remaining = buffer.remaining();
                 System.out.println("remaining ==== " + remaining);
                 progressReporter.reportProgress(remaining);
                 return buffer;
             });
-
         }
 
         return body;
