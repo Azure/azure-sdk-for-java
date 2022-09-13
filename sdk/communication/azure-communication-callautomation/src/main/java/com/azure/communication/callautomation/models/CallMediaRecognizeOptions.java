@@ -68,6 +68,7 @@ public abstract class CallMediaRecognizeOptions {
      */
     public CallMediaRecognizeOptions(RecognizeInputType recognizeInputType, CommunicationIdentifier targetParticipant) {
         this.recognizeInputType = recognizeInputType;
+        this.targetParticipant = targetParticipant;
     }
 
     /**

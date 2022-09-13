@@ -69,7 +69,7 @@ public class CallMediaAsyncUnitTests {
 
     @Test
     public void recognizeWithResponse() {
-        CallMediaRecognizeDtmfOptions recognizeOptions = new CallMediaRecognizeDtmfOptions(RecognizeInputType.DTMF);
+        CallMediaRecognizeDtmfOptions recognizeOptions = new CallMediaRecognizeDtmfOptions(new CommunicationUserIdentifier("id"));
         StepVerifier.create(
                 callMedia.recognizeWithResponse(recognizeOptions))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
