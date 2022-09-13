@@ -13,14 +13,14 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.testcontainers.containers.FixedHostPortGenericContainer;
+import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.images.ImagePullPolicy;
+import org.testcontainers.images.PullPolicy;
 
 import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
@@ -99,13 +99,25 @@ public abstract class TestBase implements BeforeEachCallback {
     @RegisterExtension
     final TestIterationContext testIterationContext = new TestIterationContext();
 
+    private static FixedHostPortGenericContainer<?> testContainer;
+
     /**
      * Before tests are executed, determines the test mode by reading the {@code AZURE_TEST_MODE} environment variable.
      * If it is not set, {@link TestMode#PLAYBACK}
      */
+    @SuppressWarnings({"deprecation", "resource"})
     @BeforeAll
     public static void setupClass() {
         testMode = initializeTestMode();
+        // todo: remove false &&
+        if (false && useTestProxy() && (testMode == TestMode.PLAYBACK || testMode == TestMode.RECORD)) {
+            testContainer = new FixedHostPortGenericContainer<>("azsdkengsys.azurecr.io/engsys/testproxy-lin:latest")
+                .withImagePullPolicy(PullPolicy.alwaysPull())
+                .withFixedExposedPort(8080, 8080)
+                .withFixedExposedPort(8081, 8081)
+                .withFileSystemBind(InterceptorManager.getRecordFolder().getPath(), "/srv/testproxy");
+            testContainer.start();
+        }
     }
 
     @Override
@@ -146,6 +158,13 @@ public abstract class TestBase implements BeforeEachCallback {
         if (testContextManager != null && testContextManager.didTestRun()) {
             afterTest();
             interceptorManager.close();
+        }
+    }
+
+    @AfterAll
+    public static void teardownClass() {
+        if (testContainer != null && testContainer.isRunning()) {
+            testContainer.stop();
         }
     }
 
@@ -252,6 +271,17 @@ public abstract class TestBase implements BeforeEachCallback {
      */
     static TestMode initializeTestMode() {
         return TestingHelpers.getTestMode();
+    }
+
+    static boolean useTestProxy() {
+        return TestingHelpers.useTestProxy();
+    }
+
+    public static boolean isTestContainerRunning() {
+        if(testContainer != null) {
+            return testContainer.isRunning();
+        }
+        return false;
     }
 
     /**
