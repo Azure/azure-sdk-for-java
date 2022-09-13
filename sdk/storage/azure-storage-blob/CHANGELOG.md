@@ -1,9 +1,17 @@
 # Release History
 
-## 12.19.1 (2022-09-12)
+## 12.20.0-beta.2 (Unreleased)
 
 ### Features Added
 - Added ability to rename existing containers with `BlobContainerClient.rename()`.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 12.19.1 (2022-09-12)
 
 ### Other Changes
 
