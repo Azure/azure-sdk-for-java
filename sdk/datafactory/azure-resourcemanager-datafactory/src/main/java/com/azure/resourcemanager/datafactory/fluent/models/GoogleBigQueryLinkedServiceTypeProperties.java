@@ -26,75 +26,69 @@ public final class GoogleBigQueryLinkedServiceTypeProperties {
     private Object additionalProjects;
 
     /*
-     * Whether to request access to Google Drive. Allowing Google Drive access
-     * enables support for federated tables that combine BigQuery data with
-     * data from Google Drive. The default value is false.
+     * Whether to request access to Google Drive. Allowing Google Drive access enables support for federated tables
+     * that combine BigQuery data with data from Google Drive. The default value is false.
      */
     @JsonProperty(value = "requestGoogleDriveScope")
     private Object requestGoogleDriveScope;
 
     /*
-     * The OAuth 2.0 authentication mechanism used for authentication.
-     * ServiceAuthentication can only be used on self-hosted IR.
+     * The OAuth 2.0 authentication mechanism used for authentication. ServiceAuthentication can only be used on
+     * self-hosted IR.
      */
     @JsonProperty(value = "authenticationType", required = true)
     private GoogleBigQueryAuthenticationType authenticationType;
 
     /*
-     * The refresh token obtained from Google for authorizing access to
-     * BigQuery for UserAuthentication.
+     * The refresh token obtained from Google for authorizing access to BigQuery for UserAuthentication.
      */
     @JsonProperty(value = "refreshToken")
     private SecretBase refreshToken;
 
     /*
-     * The client id of the google application used to acquire the refresh
-     * token. Type: string (or Expression with resultType string).
+     * The client id of the google application used to acquire the refresh token. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "clientId")
     private Object clientId;
 
     /*
-     * The client secret of the google application used to acquire the refresh
-     * token.
+     * The client secret of the google application used to acquire the refresh token.
      */
     @JsonProperty(value = "clientSecret")
     private SecretBase clientSecret;
 
     /*
-     * The service account email ID that is used for ServiceAuthentication and
-     * can only be used on self-hosted IR.
+     * The service account email ID that is used for ServiceAuthentication and can only be used on self-hosted IR.
      */
     @JsonProperty(value = "email")
     private Object email;
 
     /*
-     * The full path to the .p12 key file that is used to authenticate the
-     * service account email address and can only be used on self-hosted IR.
+     * The full path to the .p12 key file that is used to authenticate the service account email address and can only
+     * be used on self-hosted IR.
      */
     @JsonProperty(value = "keyFilePath")
     private Object keyFilePath;
 
     /*
-     * The full path of the .pem file containing trusted CA certificates for
-     * verifying the server when connecting over SSL. This property can only be
-     * set when using SSL on self-hosted IR. The default value is the
-     * cacerts.pem file installed with the IR.
+     * The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over
+     * SSL. This property can only be set when using SSL on self-hosted IR. The default value is the cacerts.pem file
+     * installed with the IR.
      */
     @JsonProperty(value = "trustedCertPath")
     private Object trustedCertPath;
 
     /*
-     * Specifies whether to use a CA certificate from the system trust store or
-     * from a specified PEM file. The default value is false.
+     * Specifies whether to use a CA certificate from the system trust store or from a specified PEM file. The default
+     * value is false.
      */
     @JsonProperty(value = "useSystemTrustStore")
     private Object useSystemTrustStore;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
