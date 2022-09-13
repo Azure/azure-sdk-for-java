@@ -259,7 +259,7 @@ public class CallConnectionAsync {
                 .setUserToUserInformation(transferToParticipantCallOptions.getUserToUserInformation())
                 .setOperationContext(transferToParticipantCallOptions.getOperationContext());
 
-            return callConnectionInternal.transferToParticipantWithResponseAsync(callConnectionId, request,null, null, context)
+            return callConnectionInternal.transferToParticipantWithResponseAsync(callConnectionId, request, null, null, context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response ->
                     new SimpleResponse<>(response, TransferCallResponseConstructorProxy.create(response.getValue())));

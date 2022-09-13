@@ -5,39 +5,72 @@ package com.azure.communication.callautomation.models.events;
 
 import com.azure.communication.callautomation.models.RecognitionType;
 import com.azure.communication.callautomation.models.CollectTonesResult;
-import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Immutable;
 
 /** The RecognizeCompleted model. */
-@Fluent
+@Immutable
 public final class RecognizeCompleted extends CallAutomationEventBase {
     /*
-     * Operation context
+     * The operationContext property.
      */
-    @JsonProperty(value = "operationContext")
+    @JsonProperty(value = "operationContext", access = JsonProperty.Access.WRITE_ONLY)
     private String operationContext;
 
     /*
-     * Determines the sub-type pf the recognize operation
+     * Result information defines the code, subcode and message
      */
-    @JsonProperty(value = "recognitionType")
+    @JsonProperty(value = "resultInformation", access = JsonProperty.Access.WRITE_ONLY)
+    private ResultInformation resultInformation;
+
+    /*
+     * Determines the sub-type of the recognize operation.
+     * In case of cancel operation the this field is not set and is returned
+     * empty
+     */
+    @JsonProperty(value = "recognitionType", access = JsonProperty.Access.WRITE_ONLY)
     private RecognitionType recognitionType;
 
     /*
      * Defines the result for RecognitionType = Dtmf
      */
-    @JsonProperty(value = "collectTonesResult")
+    @JsonProperty(value = "collectTonesResult", access = JsonProperty.Access.WRITE_ONLY)
     private CollectTonesResult collectTonesResult;
 
     /*
-     * Defines the code, sub-code and message for the operation
+     * Used to determine the version of the event.
      */
-    @JsonProperty(value = "resultInfo")
-    private ResultInfo resultInfo;
+    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
+    private String version;
 
+    /*
+     * Call connection ID.
+     */
+    @JsonProperty(value = "callConnectionId", access = JsonProperty.Access.WRITE_ONLY)
+    private String callConnectionId;
+
+    /*
+     * Server call ID.
+     */
+    @JsonProperty(value = "serverCallId", access = JsonProperty.Access.WRITE_ONLY)
+    private String serverCallId;
+
+    /*
+     * Correlation ID for event to call correlation. Also called ChainId for
+     * skype chain ID.
+     */
+    @JsonProperty(value = "correlationId", access = JsonProperty.Access.WRITE_ONLY)
+    private String correlationId;
+
+    /*
+     * The public event namespace used as the "type" property in the
+     * CloudEvent.
+     */
+    @JsonProperty(value = "publicEventType", access = JsonProperty.Access.WRITE_ONLY)
+    private String publicEventType;
 
     /**
-     * Get the operationContext property: Operation context.
+     * Get the operationContext property: The operationContext property.
      *
      * @return the operationContext value.
      */
@@ -46,34 +79,22 @@ public final class RecognizeCompleted extends CallAutomationEventBase {
     }
 
     /**
-     * Set the operationContext property: Operation context.
+     * Get the resultInformation property: Result information defines the code, subcode and message.
      *
-     * @param operationContext the operationContext value to set.
-     * @return the RecognizeCompleted object itself.
+     * @return the resultInformation value.
      */
-    public RecognizeCompleted setOperationContext(String operationContext) {
-        this.operationContext = operationContext;
-        return this;
+    public ResultInformation getResultInformation() {
+        return this.resultInformation;
     }
 
     /**
-     * Get the recognitionType property: Determines the sub-type pf the recognize operation.
+     * Get the recognitionType property: Determines the sub-type of the recognize operation. In case of cancel operation
+     * the this field is not set and is returned empty.
      *
      * @return the recognitionType value.
      */
     public RecognitionType getRecognitionType() {
         return this.recognitionType;
-    }
-
-    /**
-     * Set the recognitionType property: Determines the sub-type pf the recognize operation.
-     *
-     * @param recognitionType the recognitionType value to set.
-     * @return the RecognizeCompleted object itself.
-     */
-    public RecognizeCompleted setRecognitionType(RecognitionType recognitionType) {
-        this.recognitionType = recognitionType;
-        return this;
     }
 
     /**
@@ -86,33 +107,48 @@ public final class RecognizeCompleted extends CallAutomationEventBase {
     }
 
     /**
-     * Set the collectTonesResult property: Defines the result for RecognitionType = Dtmf.
+     * Get the version property: Used to determine the version of the event.
      *
-     * @param collectTonesResult the collectTonesResult value to set.
-     * @return the RecognizeCompleted object itself.
+     * @return the version value.
      */
-    public RecognizeCompleted setCollectTonesResult(CollectTonesResult collectTonesResult) {
-        this.collectTonesResult = collectTonesResult;
-        return this;
+    public String getVersion() {
+        return this.version;
     }
 
     /**
-     * Get the resultInfo property: Defines the code, sub-code and message for the operation.
+     * Get the callConnectionId property: Call connection ID.
      *
-     * @return the resultInfo value.
+     * @return the callConnectionId value.
      */
-    public ResultInfo getResultInfo() {
-        return this.resultInfo;
+    public String getCallConnectionId() {
+        return this.callConnectionId;
     }
 
     /**
-     * Set the resultInfo property: Defines the code, sub-code and message for the operation.
+     * Get the serverCallId property: Server call ID.
      *
-     * @param resultInfo the resultInfo value to set.
-     * @return the RecognizeCompleted object itself.
+     * @return the serverCallId value.
      */
-    public RecognizeCompleted setResultInfo(ResultInfo resultInfo) {
-        this.resultInfo = resultInfo;
-        return this;
+    public String getServerCallId() {
+        return this.serverCallId;
+    }
+
+    /**
+     * Get the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
+     * ID.
+     *
+     * @return the correlationId value.
+     */
+    public String getCorrelationId() {
+        return this.correlationId;
+    }
+
+    /**
+     * Get the publicEventType property: The public event namespace used as the "type" property in the CloudEvent.
+     *
+     * @return the publicEventType value.
+     */
+    public String getPublicEventType() {
+        return this.publicEventType;
     }
 }
