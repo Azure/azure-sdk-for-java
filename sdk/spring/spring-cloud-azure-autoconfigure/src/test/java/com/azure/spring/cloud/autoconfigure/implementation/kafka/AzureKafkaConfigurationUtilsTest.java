@@ -2,17 +2,23 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.implementation.kafka;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.kafka.common.requests.ApiVersionsRequest;
 import org.junit.jupiter.api.Test;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.SASL_JAAS_CONFIG_OAUTH;
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH;
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.SASL_MECHANISM_OAUTH;
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.SECURITY_PROTOCOL_CONFIG_SASL;
+import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.configureKafkaUserAgent;
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.configureOAuthProperties;
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.needConfigureSaslOAuth;
+import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier.AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH;
+import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier.VERSION;
+import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG;
 import static org.apache.kafka.clients.CommonClientConfigs.DEFAULT_SECURITY_PROTOCOL;
 import static org.apache.kafka.clients.CommonClientConfigs.SECURITY_PROTOCOL_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.DEFAULT_SASL_MECHANISM;
@@ -25,10 +31,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AzureKafkaConfigurationUtilsTest {
 
+    private final String eventHubsBootStrapServer = "mynamespace.servicebus.windows.net:9093";
+    private final String kafkaBootStrapServer = "localhost:9092";
+    private final String kafkaOauth2UserAgent = "." + AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH;
     @Test
     void testWhenSecurityProtocolNotConfigured() {
         Map<String, Object> sourceConfigs = new HashMap<>();
         Map<String, String> targetConfigs = new HashMap<>();
+        sourceConfigs.put(BOOTSTRAP_SERVERS_CONFIG, eventHubsBootStrapServer);
         assertTrue(needConfigureSaslOAuth(sourceConfigs));
         configureOAuthProperties(targetConfigs);
         shouldConfigureOAuthTargetProperties(targetConfigs);
@@ -37,6 +47,7 @@ class AzureKafkaConfigurationUtilsTest {
     @Test
     void testWhenSecurityProtocolConfiguredOthers() {
         Map<String, Object> sourceConfigs = new HashMap<>();
+        sourceConfigs.put(BOOTSTRAP_SERVERS_CONFIG, eventHubsBootStrapServer);
         sourceConfigs.put(SECURITY_PROTOCOL_CONFIG, DEFAULT_SECURITY_PROTOCOL);
         assertFalse(needConfigureSaslOAuth(sourceConfigs));
     }
@@ -45,6 +56,7 @@ class AzureKafkaConfigurationUtilsTest {
     void testWhenSaslMechanismNotConfigured() {
         Map<String, Object> sourceConfigs = new HashMap<>();
         Map<String, String> targetConfigs = new HashMap<>();
+        sourceConfigs.put(BOOTSTRAP_SERVERS_CONFIG, eventHubsBootStrapServer);
         sourceConfigs.put(SECURITY_PROTOCOL_CONFIG, SECURITY_PROTOCOL_CONFIG_SASL);
         targetConfigs.put(SECURITY_PROTOCOL_CONFIG, SECURITY_PROTOCOL_CONFIG_SASL);
         assertTrue(needConfigureSaslOAuth(sourceConfigs));
@@ -55,6 +67,7 @@ class AzureKafkaConfigurationUtilsTest {
     @Test
     void testWhenSaslMechanismConfiguredOthers() {
         Map<String, Object> sourceConfigs = new HashMap<>();
+        sourceConfigs.put(BOOTSTRAP_SERVERS_CONFIG, eventHubsBootStrapServer);
         sourceConfigs.put(SECURITY_PROTOCOL_CONFIG, SECURITY_PROTOCOL_CONFIG_SASL);
         sourceConfigs.put(SASL_MECHANISM, DEFAULT_SASL_MECHANISM);
         assertFalse(needConfigureSaslOAuth(sourceConfigs));
@@ -64,6 +77,7 @@ class AzureKafkaConfigurationUtilsTest {
     void testWhenSaslMechanismConfiguredOAUTH() {
         Map<String, Object> sourceConfigs = new HashMap<>();
         Map<String, String> targetConfigs = new HashMap<>();
+        sourceConfigs.put(BOOTSTRAP_SERVERS_CONFIG, eventHubsBootStrapServer);
         sourceConfigs.put(SECURITY_PROTOCOL_CONFIG, SECURITY_PROTOCOL_CONFIG_SASL);
         sourceConfigs.put(SASL_MECHANISM, SASL_MECHANISM_OAUTH);
         targetConfigs.put(SECURITY_PROTOCOL_CONFIG, SECURITY_PROTOCOL_CONFIG_SASL);
@@ -73,6 +87,49 @@ class AzureKafkaConfigurationUtilsTest {
         assertTrue(needConfigureSaslOAuth(sourceConfigs));
         configureOAuthProperties(targetConfigs);
         shouldConfigureOAuthTargetProperties(targetConfigs);
+    }
+
+    @Test
+    void testWhenBootstrapServersNotConfigured() {
+        Map<String, Object> sourceConfigs = new HashMap<>();
+        assertFalse(needConfigureSaslOAuth(sourceConfigs));
+    }
+
+    @Test
+    void testWhenKafkaBootstrapServersConfigured() {
+        Map<String, Object> sourceConfigs = new HashMap<>();
+        sourceConfigs.put(BOOTSTRAP_SERVERS_CONFIG, kafkaBootStrapServer);
+        assertFalse(needConfigureSaslOAuth(sourceConfigs));
+    }
+
+    @Test
+    void testWhenMultipleBootstrapServersStringConfigured() {
+        Map<String, Object> sourceConfigs = new HashMap<>();
+        sourceConfigs.put(BOOTSTRAP_SERVERS_CONFIG, kafkaBootStrapServer + "," + eventHubsBootStrapServer);
+        assertFalse(needConfigureSaslOAuth(sourceConfigs));
+
+        sourceConfigs.put(BOOTSTRAP_SERVERS_CONFIG, Arrays.asList(kafkaBootStrapServer, eventHubsBootStrapServer));
+        assertFalse(needConfigureSaslOAuth(sourceConfigs));
+    }
+
+    @Test
+    void testConfigureKafkaUserAgent() {
+        configureKafkaUserAgent();
+        ApiVersionsRequest apiVersionsRequest = new ApiVersionsRequest.Builder().build();
+        assertTrue(apiVersionsRequest.data().clientSoftwareName().contains(kafkaOauth2UserAgent));
+        assertEquals(VERSION, apiVersionsRequest.data().clientSoftwareVersion());
+        assertTrue(apiVersionsRequest.isValid());
+    }
+
+    @Test
+    void testConfigureKafkaUserAgentMultipleTimes() {
+        configureKafkaUserAgent();
+        configureKafkaUserAgent();
+        ApiVersionsRequest apiVersionsRequest = new ApiVersionsRequest.Builder().build();
+        assertTrue(apiVersionsRequest.data().clientSoftwareName().contains(kafkaOauth2UserAgent));
+        assertEquals(1, apiVersionsRequest.data().clientSoftwareName().split(kafkaOauth2UserAgent, -1).length - 1);
+        assertEquals(VERSION, apiVersionsRequest.data().clientSoftwareVersion());
+        assertTrue(apiVersionsRequest.isValid());
     }
 
     private void shouldConfigureOAuthTargetProperties(Map<String, String> targetConfigs) {

@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -106,14 +107,22 @@ public final class AzureKafkaConfigurationUtils {
         List<String> serverList;
         if (bootstrapServers instanceof String) {
             serverList = Arrays.asList(delimitedListToStringArray((String) bootstrapServers, ","));
-        } else if (bootstrapServers instanceof List) {
-            serverList = (List<String>) bootstrapServers;
+        } else if (bootstrapServers instanceof Iterable<?>) {
+            serverList = new ArrayList<>();
+            for (Object obj : (Iterable) bootstrapServers) {
+                if (obj instanceof String) {
+                    serverList.add((String) obj);
+                } else {
+                    LOGGER.debug("Kafka bootstrap server configuration doesn't meet passwordless requirements.");
+                    return false;
+                }
+            }
         } else {
-            LOGGER.debug("Kafka bootstrap server configuration doesn't meet the credential-free requirements.");
+            LOGGER.debug("Kafka bootstrap server configuration doesn't meet passwordless requirements.");
             return false;
         }
 
-        return serverList != null && serverList.size() == 1 && serverList.get(0).endsWith(":9093");
+        return serverList.size() == 1 && serverList.get(0).endsWith(":9093");
     }
 
     /**
@@ -129,11 +138,11 @@ public final class AzureKafkaConfigurationUtils {
      * Configure necessary OAuth properties for kafka properties and log for the changes.
      */
     public static void logConfigureOAuthProperties() {
-        LOGGER.warn(LOG_OAUTH_AUTOCONFIGURATION_CONFIGURE);
-        LOGGER.warn(LOG_OAUTH_DETAILED_PROPERTY_CONFIGURE, SECURITY_PROTOCOL_CONFIG, SECURITY_PROTOCOL_CONFIG_SASL);
-        LOGGER.warn(LOG_OAUTH_DETAILED_PROPERTY_CONFIGURE, SASL_MECHANISM, SASL_MECHANISM_OAUTH);
-        LOGGER.warn(LOG_OAUTH_DETAILED_PROPERTY_CONFIGURE, SASL_JAAS_CONFIG, SASL_JAAS_CONFIG_OAUTH);
-        LOGGER.warn(LOG_OAUTH_DETAILED_PROPERTY_CONFIGURE, SASL_LOGIN_CALLBACK_HANDLER_CLASS,
+        LOGGER.info(LOG_OAUTH_AUTOCONFIGURATION_CONFIGURE);
+        LOGGER.debug(LOG_OAUTH_DETAILED_PROPERTY_CONFIGURE, SECURITY_PROTOCOL_CONFIG, SECURITY_PROTOCOL_CONFIG_SASL);
+        LOGGER.debug(LOG_OAUTH_DETAILED_PROPERTY_CONFIGURE, SASL_MECHANISM, SASL_MECHANISM_OAUTH);
+        LOGGER.debug(LOG_OAUTH_DETAILED_PROPERTY_CONFIGURE, SASL_JAAS_CONFIG, SASL_JAAS_CONFIG_OAUTH);
+        LOGGER.debug(LOG_OAUTH_DETAILED_PROPERTY_CONFIGURE, SASL_LOGIN_CALLBACK_HANDLER_CLASS,
             SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH);
     }
 
