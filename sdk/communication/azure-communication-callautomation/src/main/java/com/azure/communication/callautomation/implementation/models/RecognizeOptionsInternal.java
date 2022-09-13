@@ -56,7 +56,7 @@ public final class RecognizeOptionsInternal {
 
     /**
      * Get the initialSilenceTimeoutInSeconds property: Time to wait for first input after prompt (if any).
-     * If left unspecified, the default value is set to 5.
+     * If left unspecified, the default value is set to 5 seconds.
      *
      * @return the initialSilenceTimeoutInSeconds value.
      */

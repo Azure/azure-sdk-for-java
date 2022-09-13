@@ -32,7 +32,7 @@ public class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptions {
 
     /**
      * Get the interToneTimeout property: Time to wait between DTMF inputs to stop recognizing.
-     * If left unspecified, the default value is set to 2.
+     * If left unspecified, the default value is set to 2 seconds.
      *
      * @return the interToneTimeout value.
      */
