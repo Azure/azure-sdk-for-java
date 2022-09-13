@@ -107,9 +107,9 @@ public final class EventHandler {
                 ret = mapper.convertValue(eventData, ParticipantsUpdatedEvent.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CallRecordingStateChanged")) {
                 ret = mapper.convertValue(eventData, RecordingStateChangedEvent.class);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.PlayCompleted")) {
+            } else if (Objects.equals(eventType, "Microsoft.Communication.PlayCompletedEvent")) {
                 ret = mapper.convertValue(eventData, PlayCompletedEvent.class);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.PlayFailed")) {
+            } else if (Objects.equals(eventType, "Microsoft.Communication.PlayFailedEvent")) {
                 ret = mapper.convertValue(eventData, PlayFailedEvent.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.RecognizeCompleted")) {
                 ret = mapper.convertValue(eventData, RecognizeCompleted.class);
