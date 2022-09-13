@@ -84,7 +84,7 @@ public class Utils {
     // Therefore, we need a custom date time formatter.
     private static final DateTimeFormatter RFC_1123_DATE_TIME = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
 
-    private static ObjectMapper createAndInitializeObjectMapper(Boolean allowDuplicateProperties) {
+    private static ObjectMapper createAndInitializeObjectMapper(boolean allowDuplicateProperties) {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         objectMapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
@@ -178,7 +178,7 @@ public class Utils {
         return encodedString;
     }
 
-    public static void configureSimpleObjectMapper(Boolean allowDuplicateProperties) {
+    public static void configureSimpleObjectMapper(boolean allowDuplicateProperties) {
         if (allowDuplicateProperties) {
             Utils.simpleObjectMapper = Utils.simpleObjectMapperAllowingDuplicatedProperties;
         } else {
