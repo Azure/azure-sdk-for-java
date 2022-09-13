@@ -1247,7 +1247,11 @@ class SparkE2EQueryITest
       item.getAs[String]("id") shouldEqual id
       item.getAs[Int]("prop1") shouldEqual 7
     } finally {
-      SparkBridgeImplementationInternal.configureSimpleObjectMapper(false)
+      try {
+        container.deleteItem(id, new PartitionKey(id)).block()
+      } finally {
+        SparkBridgeImplementationInternal.configureSimpleObjectMapper(false)
+      }
     }
   }
 
