@@ -87,6 +87,10 @@ public final class HttpHeaderName {
 
     @Override
     public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
         if (!(obj instanceof HttpHeaderName)) {
             return false;
         }
