@@ -12,11 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class RunQueryOrderBy {
     /*
-     * Parameter name to be used for order by. The allowed parameters to order
-     * by for pipeline runs are PipelineName, RunStart, RunEnd and Status; for
-     * activity runs are ActivityName, ActivityRunStart, ActivityRunEnd and
-     * Status; for trigger runs are TriggerName, TriggerRunTimestamp and
-     * Status.
+     * Parameter name to be used for order by. The allowed parameters to order by for pipeline runs are PipelineName,
+     * RunStart, RunEnd and Status; for activity runs are ActivityName, ActivityRunStart, ActivityRunEnd and Status;
+     * for trigger runs are TriggerName, TriggerRunTimestamp and Status.
      */
     @JsonProperty(value = "orderBy", required = true)
     private RunQueryOrderByField orderBy;
