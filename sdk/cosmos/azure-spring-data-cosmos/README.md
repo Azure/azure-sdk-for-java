@@ -691,7 +691,7 @@ public class SecondaryDatasourceConfiguration {
         return CosmosConfig.builder()
             .enableQueryMetrics(true)
             .maxDegreeOfParallelism(0)
-            .maxBufferedItemCount(-1)
+            .maxBufferedItemCount(0)
             .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
             .build();
     }
@@ -728,7 +728,7 @@ public CosmosConfig getCosmosConfig() {
     return CosmosConfig.builder()
         .enableQueryMetrics(true)
         .maxDegreeOfParallelism(0)
-        .maxBufferedItemCount(-1)
+        .maxBufferedItemCount(0)
         .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
         .build();
 }
@@ -742,7 +742,7 @@ public CosmosConfig getCosmosConfig() {
     return CosmosConfig.builder()
         .enableQueryMetrics(true)
         .maxDegreeOfParallelism(0)
-        .maxBufferedItemCount(-1)
+        .maxBufferedItemCount(0)
         .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
         .build();
 }
