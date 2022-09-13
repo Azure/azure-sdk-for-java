@@ -96,5 +96,6 @@ public class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptions {
      */
     public CallMediaRecognizeDtmfOptions(CommunicationIdentifier targetParticipant) {
         super(RecognizeInputType.DTMF, targetParticipant);
+        this.interToneTimeout = Duration.ofSeconds(2);
     }
 }

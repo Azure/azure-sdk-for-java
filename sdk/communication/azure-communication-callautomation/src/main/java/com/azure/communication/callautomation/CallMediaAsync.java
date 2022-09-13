@@ -136,9 +136,9 @@ public class CallMediaAsync {
                 CallMediaRecognizeDtmfOptions dtmfRecognizeOptions = (CallMediaRecognizeDtmfOptions) recognizeOptions;
                 DtmfOptionsInternal dtmfOptionsInternal = new DtmfOptionsInternal();
 
-                if (dtmfRecognizeOptions.getInterToneTimeout() != null) {
-                    dtmfOptionsInternal.setInterToneTimeoutInSeconds((int) dtmfRecognizeOptions.getInterToneTimeout().getSeconds());
-                }
+
+                dtmfOptionsInternal.setInterToneTimeoutInSeconds((int) dtmfRecognizeOptions.getInterToneTimeout().getSeconds());
+
 
                 if (dtmfRecognizeOptions.getMaxTonesToCollect() != null) {
                     dtmfOptionsInternal.setMaxTonesToCollect(dtmfRecognizeOptions.getMaxTonesToCollect());
@@ -149,9 +149,7 @@ public class CallMediaAsync {
                     .setInterruptPrompt(recognizeOptions.isInterruptPrompt())
                     .setTargetParticipant(CommunicationIdentifierConverter.convert(recognizeOptions.getTargetParticipant()));
 
-                if (recognizeOptions.getInitialSilenceTimeout() != null) {
-                    recognizeOptionsInternal.setInitialSilenceTimeoutInSeconds((int) recognizeOptions.getInitialSilenceTimeout().getSeconds());
-                }
+                recognizeOptionsInternal.setInitialSilenceTimeoutInSeconds((int) recognizeOptions.getInitialSilenceTimeout().getSeconds());
 
                 PlaySourceInternal playSourceInternal = null;
                 if (recognizeOptions.getPlayPrompt() != null) {
