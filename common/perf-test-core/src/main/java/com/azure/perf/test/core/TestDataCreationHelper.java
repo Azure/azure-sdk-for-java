@@ -4,13 +4,14 @@
 package com.azure.perf.test.core;
 
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -39,8 +40,16 @@ public class TestDataCreationHelper {
         int remainder = (int) (size % array.length);
 
         if (quotient == 0) {
-            // Must allocate buffer each time it's consumed otherwise buffers get empty on 2+ consumption.
-            return Mono.fromSupplier(() -> allocateByteBuffer(array, remainder)).flux();
+            return Flux.just(ByteBuffer.wrap(array, 0, remainder)).map(ByteBuffer::duplicate);
+        } else if (Math.toIntExact(quotient + 1) == quotient + 1) {
+            List<ByteBuffer> buffers = new ArrayList<>((int) quotient + 1);
+            for (int i = 0; i < quotient; i++) {
+                buffers.add(ByteBuffer.wrap(array));
+            }
+
+            buffers.add(ByteBuffer.wrap(array, 0, remainder));
+
+            return Flux.fromIterable(buffers).map(ByteBuffer::duplicate);
         } else {
             return Flux.just(Boolean.TRUE).repeat(quotient - 1)
                 .map(i -> allocateByteBuffer(array, array.length))
