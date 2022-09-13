@@ -13,47 +13,41 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class DynamicsAXLinkedServiceTypeProperties {
     /*
-     * The Dynamics AX (or Dynamics 365 Finance and Operations) instance OData
-     * endpoint.
+     * The Dynamics AX (or Dynamics 365 Finance and Operations) instance OData endpoint.
      */
     @JsonProperty(value = "url", required = true)
     private Object url;
 
     /*
-     * Specify the application's client ID. Type: string (or Expression with
-     * resultType string).
+     * Specify the application's client ID. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "servicePrincipalId", required = true)
     private Object servicePrincipalId;
 
     /*
-     * Specify the application's key. Mark this field as a SecureString to
-     * store it securely in Data Factory, or reference a secret stored in Azure
-     * Key Vault. Type: string (or Expression with resultType string).
+     * Specify the application's key. Mark this field as a SecureString to store it securely in Data Factory, or
+     * reference a secret stored in Azure Key Vault. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "servicePrincipalKey", required = true)
     private SecretBase servicePrincipalKey;
 
     /*
-     * Specify the tenant information (domain name or tenant ID) under which
-     * your application resides. Retrieve it by hovering the mouse in the
-     * top-right corner of the Azure portal. Type: string (or Expression with
-     * resultType string).
+     * Specify the tenant information (domain name or tenant ID) under which your application resides. Retrieve it by
+     * hovering the mouse in the top-right corner of the Azure portal. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "tenant", required = true)
     private Object tenant;
 
     /*
-     * Specify the resource you are requesting authorization. Type: string (or
-     * Expression with resultType string).
+     * Specify the resource you are requesting authorization. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "aadResourceId", required = true)
     private Object aadResourceId;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
