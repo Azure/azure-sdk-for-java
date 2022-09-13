@@ -48,7 +48,7 @@ public class CosmosConfig {
         this.databaseThroughputConfig = databaseThroughputConfig;
         this.queryMetricsEnabled = queryMetricsEnabled;
         this.maxDegreeOfParallelism = 0;
-        this.maxBufferedItemCount = -1;
+        this.maxBufferedItemCount = 0;
     }
 
     /**
@@ -68,7 +68,7 @@ public class CosmosConfig {
         this.databaseThroughputConfig = databaseThroughputConfig;
         this.queryMetricsEnabled = queryMetricsEnabled;
         this.maxDegreeOfParallelism = maxDegreeOfParallelism;
-        this.maxBufferedItemCount = -1;
+        this.maxBufferedItemCount = 0;
     }
 
     /**
