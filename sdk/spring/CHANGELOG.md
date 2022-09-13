@@ -11,6 +11,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 - Fix bug: Cannot configure "azure" authorization client. [#30354](https://github.com/Azure/azure-sdk-for-java/issues/30354).
 - Fix parameter `requested_token_use` missing when using On behalf of process [#30359](https://github.com/Azure/azure-sdk-for-java/issues/30359).
 - Support connecting to Azure-AD via proxy. To achieve this, customer need provide a custom `RestOperation` bean. [#26493](https://github.com/Azure/azure-sdk-for-java/issues/26493).
+- Fix the invalid user agent for Apache Kafka [#30574](https://github.com/Azure/azure-sdk-for-java/pull/30933).
 
 #### Features Added
 - Support auto start-up for the auto-configured Service Bus Processor Client by enabling a new property of `spring.cloud.azure.servicebus.processor.auto-startup`. [#29997](https://github.com/Azure/azure-sdk-for-java/issues/29997)
