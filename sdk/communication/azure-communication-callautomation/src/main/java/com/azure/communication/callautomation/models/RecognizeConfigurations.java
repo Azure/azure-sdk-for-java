@@ -21,8 +21,8 @@ public final class RecognizeConfigurations {
     /*
      * Time to wait for first input after prompt (if any).
      */
-    @JsonProperty(value = "initialSilenceTimeoutInSeconds")
-    private Duration initialSilenceTimeoutInSeconds;
+    @JsonProperty(value = "initialSilenceTimeout")
+    private Duration initialSilenceTimeout;
 
     /*
      * Target participant of DTFM tone recognition.
@@ -58,22 +58,22 @@ public final class RecognizeConfigurations {
     }
 
     /**
-     * Get the initialSilenceTimeoutInSeconds property: Time to wait for first input after prompt (if any).
+     * Get the initialSilenceTimeout property: Time to wait for first input after prompt (if any).
      *
-     * @return the initialSilenceTimeoutInSeconds value.
+     * @return the initialSilenceTimeout value.
      */
-    public Duration getInitialSilenceTimeoutInSeconds() {
-        return this.initialSilenceTimeoutInSeconds;
+    public Duration getInitialSilenceTimeout() {
+        return this.initialSilenceTimeout;
     }
 
     /**
-     * Set the initialSilenceTimeoutInSeconds property: Time to wait for first input after prompt (if any).
+     * Set the initialSilenceTimeout property: Time to wait for first input after prompt (if any).
      *
-     * @param initialSilenceTimeoutInSeconds the initialSilenceTimeoutInSeconds value to set.
+     * @param initialSilenceTimeout the initialSilenceTimeout value to set.
      * @return the RecognizeConfigurations object itself.
      */
-    public RecognizeConfigurations setInitialSilenceTimeoutInSeconds(Duration initialSilenceTimeoutInSeconds) {
-        this.initialSilenceTimeoutInSeconds = initialSilenceTimeoutInSeconds;
+    public RecognizeConfigurations setInitialSilenceTimeout(Duration initialSilenceTimeout) {
+        this.initialSilenceTimeout = initialSilenceTimeout;
         return this;
     }
 

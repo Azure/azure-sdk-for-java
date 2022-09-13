@@ -10,7 +10,7 @@ import java.util.List;
 
 /** Options for DTMF recognition. */
 @Fluent
-public final class DtmfConfigurationsInternal {
+public final class DtmfOptionsInternal {
     /*
      * Time to wait between DTMF inputs to stop recognizing.
      */
@@ -27,7 +27,7 @@ public final class DtmfConfigurationsInternal {
      * List of tones that will stop recognizing.
      */
     @JsonProperty(value = "stopTones")
-    private List<StopTonesInternal> stopTones;
+    private List<Tone> stopTones;
 
     /**
      * Get the interToneTimeoutInSeconds property: Time to wait between DTMF inputs to stop recognizing.
@@ -42,9 +42,9 @@ public final class DtmfConfigurationsInternal {
      * Set the interToneTimeoutInSeconds property: Time to wait between DTMF inputs to stop recognizing.
      *
      * @param interToneTimeoutInSeconds the interToneTimeoutInSeconds value to set.
-     * @return the DtmfConfigurationsInternal object itself.
+     * @return the DtmfOptionsInternal object itself.
      */
-    public DtmfConfigurationsInternal setInterToneTimeoutInSeconds(Integer interToneTimeoutInSeconds) {
+    public DtmfOptionsInternal setInterToneTimeoutInSeconds(Integer interToneTimeoutInSeconds) {
         this.interToneTimeoutInSeconds = interToneTimeoutInSeconds;
         return this;
     }
@@ -62,9 +62,9 @@ public final class DtmfConfigurationsInternal {
      * Set the maxTonesToCollect property: Maximum number of DTMF tones to be collected.
      *
      * @param maxTonesToCollect the maxTonesToCollect value to set.
-     * @return the DtmfConfigurationsInternal object itself.
+     * @return the DtmfOptionsInternal object itself.
      */
-    public DtmfConfigurationsInternal setMaxTonesToCollect(Integer maxTonesToCollect) {
+    public DtmfOptionsInternal setMaxTonesToCollect(Integer maxTonesToCollect) {
         this.maxTonesToCollect = maxTonesToCollect;
         return this;
     }
@@ -74,7 +74,7 @@ public final class DtmfConfigurationsInternal {
      *
      * @return the stopTones value.
      */
-    public List<StopTonesInternal> getStopTones() {
+    public List<Tone> getStopTones() {
         return this.stopTones;
     }
 
@@ -82,9 +82,9 @@ public final class DtmfConfigurationsInternal {
      * Set the stopTones property: List of tones that will stop recognizing.
      *
      * @param stopTones the stopTones value to set.
-     * @return the DtmfConfigurationsInternal object itself.
+     * @return the DtmfOptionsInternal object itself.
      */
-    public DtmfConfigurationsInternal setStopTones(List<StopTonesInternal> stopTones) {
+    public DtmfOptionsInternal setStopTones(List<Tone> stopTones) {
         this.stopTones = stopTones;
         return this;
     }

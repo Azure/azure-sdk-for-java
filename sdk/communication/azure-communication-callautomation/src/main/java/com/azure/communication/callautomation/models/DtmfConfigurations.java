@@ -15,8 +15,8 @@ public final class DtmfConfigurations {
     /*
      * Time to wait between DTMF inputs to stop recognizing.
      */
-    @JsonProperty(value = "interToneTimeoutInSeconds")
-    private Duration interToneTimeoutInSeconds;
+    @JsonProperty(value = "interToneTimeout")
+    private Duration interToneTimeout;
 
     /*
      * Maximum number of DTMFs to be collected.
@@ -31,22 +31,22 @@ public final class DtmfConfigurations {
     private List<StopTones> stopTones;
 
     /**
-     * Get the interToneTimeoutInSeconds property: Time to wait between DTMF inputs to stop recognizing.
+     * Get the interToneTimeout property: Time to wait between DTMF inputs to stop recognizing.
      *
-     * @return the interToneTimeoutInSeconds value.
+     * @return the interToneTimeout value.
      */
-    public Duration getInterToneTimeoutInSeconds() {
-        return this.interToneTimeoutInSeconds;
+    public Duration getInterToneTimeout() {
+        return this.interToneTimeout;
     }
 
     /**
-     * Set the interToneTimeoutInSeconds property: Time to wait between DTMF inputs to stop recognizing.
+     * Set the interToneTimeout property: Time to wait between DTMF inputs to stop recognizing.
      *
-     * @param interToneTimeoutInSeconds the interToneTimeoutInSeconds value to set.
+     * @param interToneTimeout the interToneTimeout value to set.
      * @return the DtmfConfigurationsInternal object itself.
      */
-    public DtmfConfigurations setInterToneTimeoutInSeconds(Duration interToneTimeoutInSeconds) {
-        this.interToneTimeoutInSeconds = interToneTimeoutInSeconds;
+    public DtmfConfigurations setInterToneTimeout(Duration interToneTimeout) {
+        this.interToneTimeout = interToneTimeout;
         return this;
     }
 

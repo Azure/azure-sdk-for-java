@@ -3,8 +3,10 @@
 
 package com.azure.communication.callautomation.models;
 
+import com.azure.communication.common.CommunicationIdentifier;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.Duration;
 import java.util.List;
 
 /** The Recognize configurations specific for Dtmf. **/
@@ -13,8 +15,8 @@ public class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptions {
     /*
      * Time to wait between DTMF inputs to stop recognizing.
      */
-    @JsonProperty(value = "interToneTimeoutInSeconds")
-    private Integer interToneTimeoutInSeconds;
+    @JsonProperty(value = "interToneTimeout")
+    private Duration interToneTimeout;
 
     /*
      * Maximum number of DTMFs to be collected.
@@ -29,22 +31,22 @@ public class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptions {
     private List<StopTones> stopTones;
 
     /**
-     * Get the interToneTimeoutInSeconds property: Time to wait between DTMF inputs to stop recognizing.
+     * Get the interToneTimeout property: Time to wait between DTMF inputs to stop recognizing.
      *
-     * @return the interToneTimeoutInSeconds value.
+     * @return the interToneTimeout value.
      */
-    public Integer getInterToneTimeoutInSeconds() {
-        return this.interToneTimeoutInSeconds;
+    public Duration getInterToneTimeout() {
+        return this.interToneTimeout;
     }
 
     /**
-     * Set the interToneTimeoutInSeconds property: Time to wait between DTMF inputs to stop recognizing.
+     * Set the interToneTimeout property: Time to wait between DTMF inputs to stop recognizing.
      *
-     * @param interToneTimeoutInSeconds the interToneTimeoutInSeconds value to set.
+     * @param interToneTimeout the interToneTimeout value to set.
      * @return the DtmfConfigurationsInternal object itself.
      */
-    public CallMediaRecognizeDtmfOptions setInterToneTimeoutInSeconds(Integer interToneTimeoutInSeconds) {
-        this.interToneTimeoutInSeconds = interToneTimeoutInSeconds;
+    public CallMediaRecognizeDtmfOptions setInterToneTimeout(Duration interToneTimeout) {
+        this.interToneTimeout = interToneTimeout;
         return this;
     }
 
@@ -90,9 +92,9 @@ public class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptions {
 
     /**
      * Initializes a CallMediaRecognizeDtmfOptions object.
-     * @param recognizeInputType What input the operation should recognize.
+     * @param targetParticipant Target participant of DTFM tone recognition.
      */
-    public CallMediaRecognizeDtmfOptions(RecognizeInputType recognizeInputType) {
-        super(recognizeInputType);
+    public CallMediaRecognizeDtmfOptions(CommunicationIdentifier targetParticipant) {
+        super(RecognizeInputType.DTMF, targetParticipant);
     }
 }

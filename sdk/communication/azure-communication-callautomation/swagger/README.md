@@ -135,6 +135,12 @@ directive:
 - rename-model:
     from: MediaStreamingConfiguration
     to: MediaStreamingConfigurationInternal
+- rename-model:
+    from: DtmfOptions
+    to: DtmfOptionsInternal
+- rename-model:
+    from: RecognizeOptions
+    to: RecognizeOptionsInternal
     
 # Remove models
 - remove-model: AddParticipantsFailedEvent
@@ -286,4 +292,13 @@ directive:
   where: $.definitions.RecognitionType["x-ms-enum"]
   transform: >
     $.name = "RecognitionTypeInternal";
+```
+
+### Rename DtmfOptions to DtmfOptionsInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.DtmfOptions["x-ms-enum"]
+  transform: >
+    $.name = "DtmfOptionsInternal";
 ```

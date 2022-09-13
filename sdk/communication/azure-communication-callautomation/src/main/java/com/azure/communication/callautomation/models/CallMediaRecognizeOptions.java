@@ -3,6 +3,7 @@
 
 package com.azure.communication.callautomation.models;
 
+import com.azure.communication.callautomation.implementation.models.RecognizeRequest;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -26,6 +27,13 @@ public abstract class CallMediaRecognizeOptions {
      * If set recognize can barge into other existing
      * queued-up/currently-processing requests.
      */
+    @JsonProperty(value = "interruptCallMediaOperation")
+    private Boolean interruptCallMediaOperation;
+
+    /*
+     * If set recognize can barge into other existing
+     * queued-up/currently-processing requests.
+     */
     @JsonProperty(value = "stopCurrentOperations")
     private Boolean stopCurrentOperations;
 
@@ -38,14 +46,14 @@ public abstract class CallMediaRecognizeOptions {
     /*
      * Determines if we interrupt the prompt and start recognizing.
      */
-    @JsonProperty(value = "interruptPromptAndStartRecognition")
-    private Boolean interruptPromptAndStartRecognition;
+    @JsonProperty(value = "interruptPrompt")
+    private Boolean interruptPrompt;
 
     /*
      * Time to wait for first input after prompt (if any).
      */
-    @JsonProperty(value = "initialSilenceTimeoutInSeconds")
-    private Duration initialSilenceTimeoutInSeconds;
+    @JsonProperty(value = "initialSilenceTimeout")
+    private Duration initialSilenceTimeout;
 
     /*
      * Target participant of DTFM tone recognition.
@@ -56,8 +64,9 @@ public abstract class CallMediaRecognizeOptions {
     /**
      * Initializes a CallMediaRecognizeOptions object.
      * @param recognizeInputType What input the operation should recognize.
+     * @param targetParticipant Target participant of DTFM tone recognition.
      */
-    public CallMediaRecognizeOptions(RecognizeInputType recognizeInputType) {
+    public CallMediaRecognizeOptions(RecognizeInputType recognizeInputType, CommunicationIdentifier targetParticipant) {
         this.recognizeInputType = recognizeInputType;
     }
 
@@ -98,6 +107,28 @@ public abstract class CallMediaRecognizeOptions {
      */
     public CallMediaRecognizeOptions setPlayPrompt(PlaySource playPrompt) {
         this.playPrompt = playPrompt;
+        return this;
+    }
+
+    /**
+     * Get the interruptCallMediaOperation property: If set recognize can barge into other existing
+     * queued-up/currently-processing requests.
+     *
+     * @return the interruptCallMediaOperation value.
+     */
+    public Boolean isInterruptCallMediaOperation() {
+        return this.interruptCallMediaOperation;
+    }
+
+    /**
+     * Set the interruptCallMediaOperation property: If set recognize can barge into other existing
+     * queued-up/currently-processing requests.
+     *
+     * @param interruptCallMediaOperation the interruptCallMediaOperation value to set.
+     * @return the RecognizeRequest object itself.
+     */
+    public CallMediaRecognizeOptions setInterruptCallMediaOperation(Boolean interruptCallMediaOperation) {
+        this.interruptCallMediaOperation = interruptCallMediaOperation;
         return this;
     }
 
@@ -144,43 +175,43 @@ public abstract class CallMediaRecognizeOptions {
     }
 
     /**
-     * Get the interruptPromptAndStartRecognition property: Determines if we interrupt the prompt and start recognizing.
+     * Get the interruptPrompt property: Determines if we interrupt the prompt and start recognizing.
      *
-     * @return the interruptPromptAndStartRecognition value.
+     * @return the interruptPrompt value.
      */
-    public Boolean isInterruptPromptAndStartRecognition() {
-        return this.interruptPromptAndStartRecognition;
+    public Boolean isInterruptPrompt() {
+        return this.interruptPrompt;
     }
 
     /**
-     * Set the interruptPromptAndStartRecognition property: Determines if we interrupt the prompt and start recognizing.
+     * Set the interruptPrompt property: Determines if we interrupt the prompt and start recognizing.
      *
-     * @param interruptPromptAndStartRecognition the interruptPromptAndStartRecognition value to set.
+     * @param interruptPrompt the interruptPrompt value to set.
      * @return the RecognizeConfigurations object itself.
      */
-    public CallMediaRecognizeOptions setInterruptPromptAndStartRecognition(
-        Boolean interruptPromptAndStartRecognition) {
-        this.interruptPromptAndStartRecognition = interruptPromptAndStartRecognition;
+    public CallMediaRecognizeOptions setInterruptPrompt(
+        Boolean interruptPrompt) {
+        this.interruptPrompt = interruptPrompt;
         return this;
     }
 
     /**
-     * Get the initialSilenceTimeoutInSeconds property: Time to wait for first input after prompt (if any).
+     * Get the initialSilenceTimeout property: Time to wait for first input after prompt (if any).
      *
-     * @return the initialSilenceTimeoutInSeconds value.
+     * @return the initialSilenceTimeout value.
      */
-    public Duration getInitialSilenceTimeoutInSeconds() {
-        return this.initialSilenceTimeoutInSeconds;
+    public Duration getInitialSilenceTimeout() {
+        return this.initialSilenceTimeout;
     }
 
     /**
-     * Set the initialSilenceTimeoutInSeconds property: Time to wait for first input after prompt (if any).
+     * Set the initialSilenceTimeout property: Time to wait for first input after prompt (if any).
      *
-     * @param initialSilenceTimeoutInSeconds the initialSilenceTimeoutInSeconds value to set.
+     * @param initialSilenceTimeout the initialSilenceTimeout value to set.
      * @return the RecognizeConfigurations object itself.
      */
-    public CallMediaRecognizeOptions setInitialSilenceTimeoutInSeconds(Duration initialSilenceTimeoutInSeconds) {
-        this.initialSilenceTimeoutInSeconds = initialSilenceTimeoutInSeconds;
+    public CallMediaRecognizeOptions setInitialSilenceTimeout(Duration initialSilenceTimeout) {
+        this.initialSilenceTimeout = initialSilenceTimeout;
         return this;
     }
 

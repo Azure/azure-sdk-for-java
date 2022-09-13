@@ -6,16 +6,15 @@ package com.azure.communication.callautomation;
 import com.azure.communication.callautomation.implementation.ContentsImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.ErrorConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
-import com.azure.communication.callautomation.implementation.models.DtmfConfigurationsInternal;
+import com.azure.communication.callautomation.implementation.models.DtmfOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.FileSourceInternal;
 import com.azure.communication.callautomation.implementation.models.PlayOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.PlayRequest;
 import com.azure.communication.callautomation.implementation.models.PlaySourceInternal;
 import com.azure.communication.callautomation.implementation.models.PlaySourceTypeInternal;
-import com.azure.communication.callautomation.implementation.models.RecognizeConfigurationsInternal;
 import com.azure.communication.callautomation.implementation.models.RecognizeInputTypeInternal;
+import com.azure.communication.callautomation.implementation.models.RecognizeOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.RecognizeRequest;
-import com.azure.communication.callautomation.implementation.models.StopTonesInternal;
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
 import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.models.FileSource;
@@ -134,22 +133,24 @@ public class CallMediaAsync {
 
             if (recognizeOptions instanceof CallMediaRecognizeDtmfOptions) {
 
-                DtmfConfigurationsInternal dtmfConfigurationsInternal = new DtmfConfigurationsInternal()
-                    .setInterToneTimeoutInSeconds(((CallMediaRecognizeDtmfOptions) recognizeOptions).getInterToneTimeoutInSeconds())
-                    .setMaxTonesToCollect(((CallMediaRecognizeDtmfOptions) recognizeOptions).getMaxTonesToCollect());
+                DtmfOptionsInternal dtmfOptionsInternal = new DtmfOptionsInternal();
 
-                if (((CallMediaRecognizeDtmfOptions) recognizeOptions).getStopTones() != null) {
-                    dtmfConfigurationsInternal
-                        .setStopTones(((CallMediaRecognizeDtmfOptions) recognizeOptions).getStopTones().stream()
-                            .map(stopTones -> StopTonesInternal.fromString(stopTones.toString()))
-                            .collect(Collectors.toList()));
-
+                if (((CallMediaRecognizeDtmfOptions) recognizeOptions).getInterToneTimeout() != null) {
+                    dtmfOptionsInternal.setInterToneTimeoutInSeconds((int) ((CallMediaRecognizeDtmfOptions) recognizeOptions).getInterToneTimeout().toSeconds());
                 }
 
-                RecognizeConfigurationsInternal recognizeConfigurationsInternal = new RecognizeConfigurationsInternal()
-                    .setDtmfConfigurations(dtmfConfigurationsInternal)
-                    .setInterruptPromptAndStartRecognition(recognizeOptions.isInterruptPromptAndStartRecognition())
+                if (((CallMediaRecognizeDtmfOptions) recognizeOptions).getMaxTonesToCollect() != null) {
+                    dtmfOptionsInternal.setMaxTonesToCollect(((CallMediaRecognizeDtmfOptions) recognizeOptions).getMaxTonesToCollect());
+                }
+
+                RecognizeOptionsInternal recognizeOptionsInternal = new RecognizeOptionsInternal()
+                    .setDtmfOptions(dtmfOptionsInternal)
+                    .setInterruptPrompt(recognizeOptions.isInterruptPrompt())
                     .setTargetParticipant(CommunicationIdentifierConverter.convert(recognizeOptions.getTargetParticipant()));
+
+                if (recognizeOptions.getInitialSilenceTimeout() != null) {
+                    recognizeOptionsInternal.setInitialSilenceTimeoutInSeconds((int) recognizeOptions.getInitialSilenceTimeout().toSeconds());
+                }
 
                 PlaySourceInternal playSourceInternal = null;
                 if (recognizeOptions.getPlayPrompt() != null) {
@@ -161,9 +162,9 @@ public class CallMediaAsync {
 
                 RecognizeRequest recognizeRequest = new RecognizeRequest()
                     .setRecognizeInputType(RecognizeInputTypeInternal.fromString(recognizeOptions.getRecognizeInputType().toString()))
-                    .setRecognizeConfiguration(recognizeConfigurationsInternal)
-                    .setStopCurrentOperations(recognizeOptions.isStopCurrentOperations())
+                    .setInterruptCallMediaOperation(recognizeOptions.isInterruptCallMediaOperation())
                     .setPlayPrompt(playSourceInternal)
+                    .setRecognizeOptions(recognizeOptionsInternal)
                     .setOperationContext(recognizeOptions.getOperationContext());
 
                 return contentsInternal.recognizeWithResponseAsync(callConnectionId, recognizeRequest, context);
