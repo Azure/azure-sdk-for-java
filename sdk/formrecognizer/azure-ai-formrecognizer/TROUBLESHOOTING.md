@@ -16,7 +16,7 @@ This troubleshooting guide contains instructions to diagnose frequently encounte
 ### Handling HttpResponseException
 Form Recognizer service methods throw a [HttpResponseException](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java) or its subclass on failure.
 The HttpResponseException thrown by the Azure Form Recognizer client library includes detailed response error object
-that provides specific useful insights into what went wrong and include corrective actions to fix common issues.
+that provides specific useful insights into what went wrong and includes corrective actions to fix common issues.
 This error information can be found inside the message property of the HttpResponseException object.
 
 Here's the example of how to catch it with synchronous client
@@ -49,6 +49,9 @@ It looks like this:
 com.azure.core.exception.HttpResponseException: Invalid model created with model Id [modelId], errorCode: [2012], message: <specific-reason>"
 ```
 
+The most common scenarios when this might occur is, if you are building the model with an 
+[Invalid data set](#invalid-training-data-set) or an [Invalid SAS Url](#invalid-sas-url).
+
 #### Invalid training data set
 This error indicates that the provided data set does not match the training data requirements.
 Learn more about building a training data set, [here](https://aka.ms/customModelV3)
@@ -71,11 +74,12 @@ com.azure.core.exception.HttpResponseException: Invalid request, errorCode: [Mod
 ```
 
 #### Invalid SAS URL
+This error suggests you to specifically enable listing permissions on the blob storage SAS URL for the Form Recognizer service to access the training dataset resource.
+
 You may have seen this error like:
 ```
 com.azure.core.exception.HttpResponseException: Invalid model created with model Id [modelId], errorCode: [2012], message: Unable to list blobs on the Azure blob storage account.
 ```
-This error suggests you to specifically enable listing permissions on the blob storage SAS URL for the Form Recognizer service to access the training dataset resource.
 
 ### Generic Error
 A "Generic Error" in the SDK's is most often caused by heavy load on the service and throttling of the service and retrying after backoff time 
@@ -90,13 +94,13 @@ com.azure.core.exception.HttpResponseException: Status code 200, Invalid model c
 It is common to notice a longer time than what is expected to build a custom model when using `DocumentBuildMode: "neural"`.
 Depending on the service load you can usually expect it to ~10min.
 
-For simpler use-cases, you can use [Custom Template models] which are easy-to-train models and take lesser time (in seconds) to build over the 
-[Custom Neural models] that are deep learned models.
+For simpler use-cases, you can use [Custom Template models](https://aka.ms/custom-template-models) which are easy-to-train models and take lesser time (in seconds) to build over the 
+[Custom Neural models](https://aka.ms/custom-neural-models) that are deep learned models.
 
 ### Enable HTTP request/response logging
 
 Reviewing the HTTP request sent or response received over the wire to/from the Azure Form Recognizer service can be useful in
-troubleshooting issues. To enable logging the HTTP request and response payload, the `ContainerRegistryClient` can be configured as shown below:
+troubleshooting issues. To enable logging the HTTP request and response payload, the `DocumentAnalysisClient` can be configured as shown below:
 
 ```java readme-sample-enablehttplogging
 DocumentAnalysisClient client = new DocumentAnalysisClientBuilder()
