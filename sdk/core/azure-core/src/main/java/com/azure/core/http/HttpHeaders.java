@@ -120,9 +120,9 @@ public class HttpHeaders implements Iterable<HttpHeader> {
             return this;
         }
 
-        headers.compute(name.getHttp2Name(), (key, header) -> {
+        headers.compute(name.getCaseInsensitiveName(), (key, header) -> {
             if (header == null) {
-                return new HttpHeader(name.getHttp1Name(), name, value);
+                return new HttpHeader(name.getCaseSensitiveName(), name, value);
             } else  {
                 header.addValue(value);
                 return header;
@@ -175,9 +175,9 @@ public class HttpHeaders implements Iterable<HttpHeader> {
         }
 
         if (value == null) {
-            removeInternal(name.getHttp2Name());
+            removeInternal(name.getCaseInsensitiveName());
         } else {
-            headers.put(name.getHttp2Name(), new HttpHeader(name.getHttp1Name(), name, value));
+            headers.put(name.getCaseInsensitiveName(), new HttpHeader(name.getCaseSensitiveName(), name, value));
         }
 
         return this;
@@ -224,9 +224,9 @@ public class HttpHeaders implements Iterable<HttpHeader> {
         }
 
         if (CoreUtils.isNullOrEmpty(values)) {
-            removeInternal(name.getHttp2Name());
+            removeInternal(name.getCaseInsensitiveName());
         } else {
-            headers.put(name.getHttp2Name(), new HttpHeader(name.getHttp1Name(), name, values));
+            headers.put(name.getCaseInsensitiveName(), new HttpHeader(name.getCaseSensitiveName(), name, values));
         }
         return this;
     }
@@ -265,7 +265,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @return the header if found, null otherwise.
      */
     public HttpHeader get(HttpHeaderName name) {
-        return getInternal(name.getHttp2Name());
+        return getInternal(name.getCaseInsensitiveName());
     }
 
     private HttpHeader getInternal(String formattedName) {
@@ -291,7 +291,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @return the header if removed, null otherwise.
      */
     public HttpHeader remove(HttpHeaderName name) {
-        return removeInternal(name.getHttp2Name());
+        return removeInternal(name.getCaseInsensitiveName());
     }
 
     private HttpHeader removeInternal(String lowerCaseName) {
@@ -315,7 +315,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @return the value of the header, or null if the header isn't found
      */
     public String getValue(HttpHeaderName name) {
-        return getValueInternal(name.getHttp2Name());
+        return getValueInternal(name.getCaseInsensitiveName());
     }
 
     private String getValueInternal(String formattedName) {

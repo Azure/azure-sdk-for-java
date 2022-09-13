@@ -194,12 +194,12 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
         private final NettyToAzureCoreHttpHeadersWrapper allHeaders;
 
         NettyHttpHeader(NettyToAzureCoreHttpHeadersWrapper allHeaders, HttpHeaderName name, String value) {
-            super(name.getHttp1Name(), name, value);
+            super(name.getCaseSensitiveName(), name, value);
             this.allHeaders = allHeaders;
         }
 
         NettyHttpHeader(NettyToAzureCoreHttpHeadersWrapper allHeaders, HttpHeaderName name, List<String> values) {
-            super(name.getHttp1Name(), name, values);
+            super(name.getCaseSensitiveName(), name, values);
             this.allHeaders = allHeaders;
         }
 

@@ -3,7 +3,6 @@
 
 package com.azure.core.http;
 
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,15 +11,14 @@ import java.util.concurrent.ConcurrentHashMap;
  * Represents HTTP header names for multiple versions of HTTP.
  */
 public final class HttpHeaderName {
-    private static final Map<String, HttpHeaderName> KNOWN_HEADER_NAMES = new HashMap<>(256);
-    private static final Map<String, HttpHeaderName> DYNAMIC_HEADER_NAMES = new ConcurrentHashMap<>();
+    private static final Map<String, HttpHeaderName> HEADER_NAMES = new ConcurrentHashMap<>(256);
 
-    private final String http1Name;
-    private final String http2Name;
+    private final String caseSensitive;
+    private final String caseInsensitive;
 
     private HttpHeaderName(String name) {
-        this.http1Name = name;
-        this.http2Name = name.toLowerCase(Locale.ROOT);
+        this.caseSensitive = name;
+        this.caseInsensitive = name.toLowerCase(Locale.ROOT);
     }
 
     /**
@@ -28,17 +26,17 @@ public final class HttpHeaderName {
      *
      * @return The HTTP header name based on the construction of this {@link HttpHeaderName}.
      */
-    public String getHttp1Name() {
-        return http1Name;
+    public String getCaseSensitiveName() {
+        return caseSensitive;
     }
 
     /**
-     * Gets the HTTP header name lower cased for use with HTTP/2.
+     * Gets the HTTP header name lower cased.
      *
-     * @return The HTTP header name lower cased for use with HTTP/2.
+     * @return The HTTP header name lower cased.
      */
-    public String getHttp2Name() {
-        return http2Name;
+    public String getCaseInsensitiveName() {
+        return caseInsensitive;
     }
 
     /**
@@ -54,35 +52,25 @@ public final class HttpHeaderName {
             return null;
         }
 
-        HttpHeaderName httpHeaderName = KNOWN_HEADER_NAMES.get(name);
-        if (httpHeaderName != null) {
-            return httpHeaderName;
+        if (HEADER_NAMES.size() > 10000) {
+            HEADER_NAMES.clear();
         }
 
-        httpHeaderName = DYNAMIC_HEADER_NAMES.get(name);
-        if (httpHeaderName != null) {
-            return httpHeaderName;
-        }
-
-        if (DYNAMIC_HEADER_NAMES.size() > 10000) {
-            DYNAMIC_HEADER_NAMES.clear();
-        }
-
-        return DYNAMIC_HEADER_NAMES.computeIfAbsent(name, HttpHeaderName::new);
+        return HEADER_NAMES.computeIfAbsent(name, HttpHeaderName::new);
     }
 
     private static HttpHeaderName fromKnownHeader(String name) {
         HttpHeaderName knownHeader = new HttpHeaderName(name);
 
-        KNOWN_HEADER_NAMES.put(knownHeader.http1Name, knownHeader);
-        KNOWN_HEADER_NAMES.put(knownHeader.http2Name, knownHeader);
+        HEADER_NAMES.put(knownHeader.caseSensitive, knownHeader);
+        HEADER_NAMES.put(knownHeader.caseInsensitive, knownHeader);
 
         return knownHeader;
     }
 
     @Override
     public int hashCode() {
-        return http2Name.hashCode();
+        return caseInsensitive.hashCode();
     }
 
     @Override
@@ -96,7 +84,7 @@ public final class HttpHeaderName {
         }
 
         HttpHeaderName other = (HttpHeaderName) obj;
-        return http2Name.equals(other.http2Name);
+        return caseInsensitive.equals(other.caseInsensitive);
     }
 
     /**
