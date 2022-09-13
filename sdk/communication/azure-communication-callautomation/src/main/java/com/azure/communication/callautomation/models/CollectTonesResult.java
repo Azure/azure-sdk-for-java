@@ -15,14 +15,14 @@ public final class CollectTonesResult {
      * The tones property.
      */
     @JsonProperty(value = "tones")
-    private List<String> tones;
+    private List<Tone> tones;
 
     /**
      * Get the tones property: The tones property.
      *
      * @return the tones value.
      */
-    public List<String> getTones() {
+    public List<Tone> getTones() {
         return this.tones;
     }
 
@@ -32,7 +32,7 @@ public final class CollectTonesResult {
      * @param tones the tones value to set.
      * @return the CollectTonesResult object itself.
      */
-    public CollectTonesResult setTones(List<String> tones) {
+    public CollectTonesResult setTones(List<Tone> tones) {
         this.tones = tones;
         return this;
     }

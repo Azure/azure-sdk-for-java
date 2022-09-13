@@ -28,7 +28,7 @@ public class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptions {
      * List of tones that will stop recognizing.
      */
     @JsonProperty(value = "stopTones")
-    private List<StopTones> stopTones;
+    private List<Tone> stopTones;
 
     /**
      * Get the interToneTimeout property: Time to wait between DTMF inputs to stop recognizing.
@@ -75,7 +75,7 @@ public class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptions {
      *
      * @return the stopTones value.
      */
-    public List<StopTones> getStopTones() {
+    public List<Tone> getStopTones() {
         return this.stopTones;
     }
 
@@ -85,7 +85,7 @@ public class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptions {
      * @param stopTones the stopTones value to set.
      * @return the DtmfConfigurationsInternal object itself.
      */
-    public CallMediaRecognizeDtmfOptions setStopTones(List<StopTones> stopTones) {
+    public CallMediaRecognizeDtmfOptions setStopTones(List<Tone> stopTones) {
         this.stopTones = stopTones;
         return this;
     }
