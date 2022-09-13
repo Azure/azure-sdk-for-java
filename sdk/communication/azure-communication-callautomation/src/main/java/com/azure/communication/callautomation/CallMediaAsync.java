@@ -133,14 +133,15 @@ public class CallMediaAsync {
 
             if (recognizeOptions instanceof CallMediaRecognizeDtmfOptions) {
 
+                CallMediaRecognizeDtmfOptions dtmfRecognizeOptions = (CallMediaRecognizeDtmfOptions) recognizeOptions;
                 DtmfOptionsInternal dtmfOptionsInternal = new DtmfOptionsInternal();
 
-                if (((CallMediaRecognizeDtmfOptions) recognizeOptions).getInterToneTimeout() != null) {
-                    dtmfOptionsInternal.setInterToneTimeoutInSeconds((int) ((CallMediaRecognizeDtmfOptions) recognizeOptions).getInterToneTimeout().getSeconds());
+                if (dtmfRecognizeOptions.getInterToneTimeout() != null) {
+                    dtmfOptionsInternal.setInterToneTimeoutInSeconds((int) dtmfRecognizeOptions.getInterToneTimeout().getSeconds());
                 }
 
-                if (((CallMediaRecognizeDtmfOptions) recognizeOptions).getMaxTonesToCollect() != null) {
-                    dtmfOptionsInternal.setMaxTonesToCollect(((CallMediaRecognizeDtmfOptions) recognizeOptions).getMaxTonesToCollect());
+                if (dtmfRecognizeOptions.getMaxTonesToCollect() != null) {
+                    dtmfOptionsInternal.setMaxTonesToCollect(dtmfRecognizeOptions.getMaxTonesToCollect());
                 }
 
                 RecognizeOptionsInternal recognizeOptionsInternal = new RecognizeOptionsInternal()

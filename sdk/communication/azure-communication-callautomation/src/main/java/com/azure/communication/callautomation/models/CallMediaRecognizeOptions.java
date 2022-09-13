@@ -223,15 +223,4 @@ public abstract class CallMediaRecognizeOptions {
     public CommunicationIdentifier getTargetParticipant() {
         return this.targetParticipant;
     }
-
-    /**
-     * Set the targetParticipant property: Target participant of DTFM tone recognition.
-     *
-     * @param targetParticipant the targetParticipant value to set.
-     * @return the RecognizeConfigurations object itself.
-     */
-    public CallMediaRecognizeOptions setTargetParticipant(CommunicationIdentifier targetParticipant) {
-        this.targetParticipant = targetParticipant;
-        return this;
-    }
 }
