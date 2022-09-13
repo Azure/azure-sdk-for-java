@@ -19,7 +19,7 @@ public final class RecognizeFailed extends CallAutomationEventBase {
      * Defines the code, sub-code and message for the operation
      */
     @JsonProperty(value = "resultInfo")
-    private ResultInfo resultInfo;
+    private ResultInformation resultInfo;
 
     /**
      * Get the operationContext property: Operation context.
@@ -46,7 +46,7 @@ public final class RecognizeFailed extends CallAutomationEventBase {
      *
      * @return the resultInfo value.
      */
-    public ResultInfo getResultInfo() {
+    public ResultInformation getResultInfo() {
         return this.resultInfo;
     }
 
@@ -56,7 +56,7 @@ public final class RecognizeFailed extends CallAutomationEventBase {
      * @param resultInfo the resultInfo value to set.
      * @return the RecognizeFailed object itself.
      */
-    public RecognizeFailed setResultInfo(ResultInfo resultInfo) {
+    public RecognizeFailed setResultInfo(ResultInformation resultInfo) {
         this.resultInfo = resultInfo;
         return this;
     }
