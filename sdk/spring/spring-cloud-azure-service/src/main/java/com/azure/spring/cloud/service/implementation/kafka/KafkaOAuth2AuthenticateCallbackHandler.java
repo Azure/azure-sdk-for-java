@@ -6,19 +6,19 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.security.auth.login.AppConfigurationEntry;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.cloud.core.implementation.factory.credential.DefaultAzureCredentialBuilderFactory;
 import org.apache.kafka.common.security.auth.AuthenticateCallbackHandler;
-import org.apache.kafka.common.security.oauthbearer.OAuthBearerToken;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerTokenCallback;
+import reactor.core.publisher.Mono;
 
 import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.AZURE_TOKEN_CREDENTIAL;
 import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG;
@@ -36,6 +36,7 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
 
     private TokenCredential credential;
     private String tokenAudience;
+    private Function<TokenCredential, Mono<AzureOAuthBearerToken>> resolveToken;
 
     public KafkaOAuth2AuthenticateCallbackHandler() {
         this(null, null);
@@ -55,13 +56,23 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
                     + " with the format as {YOUR.EVENTHUBS.FQDN}:9093.");
         }
         String bootstrapServer = bootstrapServers.get(0);
-        if (!bootstrapServer.endsWith(":9093")) {
+        if (bootstrapServer == null || !bootstrapServer.endsWith(":9093")) {
             throw new IllegalArgumentException("Invalid bootstrap server configured for Azure Event Hubs for Kafka! The format should be {YOUR.EVENTHUBS.FQDN}:9093.");
         }
         URI uri = URI.create("https://" + bootstrapServer);
         this.tokenAudience = String.format(TOKEN_AUDIENCE_FORMAT, uri.getScheme(), uri.getHost());
-        credential = (TokenCredential) configs.get(AZURE_TOKEN_CREDENTIAL);
+        this.credential = (TokenCredential) configs.get(AZURE_TOKEN_CREDENTIAL);
         AzureKafkaPropertiesUtils.convertConfigMapToAzureProperties(configs, properties);
+
+        TokenRequestContext request = buildTokenRequestContext();
+        this.resolveToken = tokenCredential -> tokenCredential.getToken(request).map(AzureOAuthBearerToken::new);
+    }
+
+    private TokenRequestContext buildTokenRequestContext() {
+        TokenRequestContext request = new TokenRequestContext();
+        request.addScopes(tokenAudience);
+        request.setTenantId(properties.getProfile().getTenantId());
+        return request;
     }
 
     @Override
@@ -69,8 +80,11 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
         for (Callback callback : callbacks) {
             if (callback instanceof OAuthBearerTokenCallback) {
                 OAuthBearerTokenCallback oauthCallback = (OAuthBearerTokenCallback) callback;
-                OAuthBearerToken token = getOAuthBearerToken(getTokenCredential());
-                oauthCallback.token(token);
+                this.resolveToken
+                    .apply(getTokenCredential())
+                    .doOnNext(oauthCallback::token)
+                    .doOnError(throwable -> oauthCallback.error("invalid_grant", throwable.getMessage(), null))
+                    .block(ACCESS_TOKEN_REQUEST_BLOCK_TIME);
             } else {
                 throw new UnsupportedCallbackException(callback);
             }
@@ -87,14 +101,6 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
             }
         }
         return credential;
-    }
-
-    private OAuthBearerToken getOAuthBearerToken(TokenCredential credential) {
-        TokenRequestContext request = new TokenRequestContext();
-        request.addScopes(tokenAudience);
-        request.setTenantId(properties.getProfile().getTenantId());
-        AccessToken token = credential.getToken(request).block(ACCESS_TOKEN_REQUEST_BLOCK_TIME);
-        return token != null ? new AzureOAuthBearerToken(token) : null;
     }
 
     @Override
