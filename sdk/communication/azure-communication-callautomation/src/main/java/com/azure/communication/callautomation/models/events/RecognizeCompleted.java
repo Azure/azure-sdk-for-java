@@ -3,7 +3,7 @@
 
 package com.azure.communication.callautomation.models.events;
 
-import com.azure.communication.callautomation.models.RecognitionType;
+import com.azure.communication.callautomation.models.CallMediaRecognitionType;
 import com.azure.communication.callautomation.models.CollectTonesResult;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.azure.core.annotation.Immutable;
@@ -18,10 +18,10 @@ public final class RecognizeCompleted extends CallAutomationEventBase {
      * empty
      */
     @JsonProperty(value = "recognitionType", access = JsonProperty.Access.WRITE_ONLY)
-    private RecognitionType recognitionType;
+    private CallMediaRecognitionType recognitionType;
 
     /*
-     * Defines the result for RecognitionType = Dtmf
+     * Defines the result for CallMediaRecognitionType = Dtmf
      */
     @JsonProperty(value = "collectTonesResult", access = JsonProperty.Access.WRITE_ONLY)
     private CollectTonesResult collectTonesResult;
@@ -32,12 +32,12 @@ public final class RecognizeCompleted extends CallAutomationEventBase {
      *
      * @return the recognitionType value.
      */
-    public RecognitionType getRecognitionType() {
+    public CallMediaRecognitionType getRecognitionType() {
         return this.recognitionType;
     }
 
     /**
-     * Get the collectTonesResult property: Defines the result for RecognitionType = Dtmf.
+     * Get the collectTonesResult property: Defines the result for CallMediaRecognitionType = Dtmf.
      *
      * @return the collectTonesResult value.
      */

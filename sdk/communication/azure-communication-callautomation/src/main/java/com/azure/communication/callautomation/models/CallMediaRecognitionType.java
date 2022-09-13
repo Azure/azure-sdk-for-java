@@ -8,9 +8,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for RecognitionType. */
-public final class RecognitionType extends ExpandableStringEnum<RecognitionType> {
+public final class CallMediaRecognitionType extends ExpandableStringEnum<CallMediaRecognitionType> {
     /** Static value dtmf for RecognitionType. */
-    public static final RecognitionType DTMF = fromString("dtmf");
+    public static final CallMediaRecognitionType DTMF = fromString("dtmf");
 
     /**
      * Creates or finds a RecognitionType from its string representation.
@@ -19,12 +19,12 @@ public final class RecognitionType extends ExpandableStringEnum<RecognitionType>
      * @return the corresponding RecognitionType.
      */
     @JsonCreator
-    public static RecognitionType fromString(String name) {
-        return fromString(name, RecognitionType.class);
+    public static CallMediaRecognitionType fromString(String name) {
+        return fromString(name, CallMediaRecognitionType.class);
     }
 
     /** @return known RecognitionType values. */
-    public static Collection<RecognitionType> values() {
-        return values(RecognitionType.class);
+    public static Collection<CallMediaRecognitionType> values() {
+        return values(CallMediaRecognitionType.class);
     }
 }
