@@ -25,6 +25,7 @@ import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.nio.ByteBuffer;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -55,48 +56,87 @@ class VertxAsyncHttpClient implements HttpClient {
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
         boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
-        return Mono.create(sink -> toVertxHttpRequest(request).subscribe(vertxHttpRequest -> {
-            vertxHttpRequest.exceptionHandler(sink::error);
+        return Mono.create(sink -> {
+            toVertxHttpRequest(request).subscribe(vertxHttpRequest -> {
+                vertxHttpRequest.exceptionHandler(sink::error);
 
-            HttpHeaders requestHeaders = request.getHeaders();
-            if (requestHeaders != null) {
-                requestHeaders.stream().forEach(header ->
-                    vertxHttpRequest.putHeader(header.getName(), header.getValuesList()));
-                if (request.getHeaders().get("Content-Length") == null) {
-                    vertxHttpRequest.setChunked(true);
-                }
-            } else {
-                vertxHttpRequest.setChunked(true);
-            }
+                HttpHeaders requestHeaders = request.getHeaders();
 
-            vertxHttpRequest.response(event -> {
-                if (event.succeeded()) {
-                    HttpClientResponse vertxHttpResponse = event.result();
-                    vertxHttpResponse.exceptionHandler(sink::error);
-
-                    if (eagerlyReadResponse) {
-                        vertxHttpResponse.body(bodyEvent -> {
-                            if (bodyEvent.succeeded()) {
-                                sink.success(new BufferedVertxHttpResponse(request, vertxHttpResponse,
-                                    bodyEvent.result()));
-                            } else {
-                                sink.error(bodyEvent.cause());
-                            }
-                        });
-                    } else {
-                        sink.success(new VertxHttpAsyncResponse(request, vertxHttpResponse));
+                if (requestHeaders != null) {
+                    System.out.println("-================ request headers is NOT null=================");
+                    requestHeaders.stream().forEach(header -> {
+                        String headerName = header.getName();
+                        List<String> valuesList = header.getValuesList();
+                        for (String val : valuesList) {
+                            System.out.println("header name =" + headerName + ", val = " + val);
+                        }
+                        vertxHttpRequest.putHeader(header.getName(), valuesList);
+                    });
+                    if (request.getHeaders().get("Content-Length") == null) {
+                        vertxHttpRequest.setChunked(true);
                     }
                 } else {
-                    sink.error(event.cause());
-                }
-            });
+                    System.out.println("-================ request headers is null=================");
 
-            getRequestBody(request, progressReporter)
-                .subscribeOn(scheduler)
-                .map(Unpooled::wrappedBuffer)
-                .map(Buffer::buffer)
-                .subscribe(vertxHttpRequest::write, sink::error, vertxHttpRequest::end);
-        }, sink::error));
+                    vertxHttpRequest.setChunked(true);
+                }
+
+                vertxHttpRequest.response(event -> {
+                    if (event.succeeded()) {
+                        System.out.println("Event --- Succeeded -----------");
+                        HttpClientResponse vertxHttpResponse = event.result();
+                        vertxHttpResponse.exceptionHandler(sink::error);
+
+                        if (eagerlyReadResponse) {
+                            System.out.println("--------------Eagerly read response --------------------");
+                            vertxHttpResponse.body(bodyEvent -> {
+                                if (bodyEvent.succeeded()) {
+                                    System.out.println("------------- Body event succeeded --------------------");
+                                    sink.success(new BufferedVertxHttpResponse(request, vertxHttpResponse,
+                                        bodyEvent.result()));
+                                } else {
+                                    System.out.println("------------- Body event error --------------------");
+
+                                    sink.error(bodyEvent.cause());
+                                }
+                            });
+                        } else {
+                            System.out.println("------------NOT Eagerly read response --------------------");
+
+                            sink.success(new VertxHttpAsyncResponse(request, vertxHttpResponse));
+                        }
+                    } else {
+                        System.out.println("Event --- Failed -----------");
+                        sink.error(event.cause());
+                    }
+                });
+
+                getRequestBody(request, progressReporter)
+                    .subscribeOn(scheduler)
+                    .map(buffer -> {
+                        System.out.println("------------ByteBuffer to ByteBuf --------");
+                        return Unpooled.wrappedBuffer(buffer);
+                    })
+                    .map(byteBuf -> {
+                        System.out.println("------------Byte Buf --------");
+
+                        return Buffer.buffer(byteBuf);
+                    })
+                    .subscribe(
+                        t -> {
+                            System.out.println("------------tttttttt--------");
+                            vertxHttpRequest.write(t);
+                        },
+                        throwable -> {
+                            System.out.println("------------throwable--------");
+                            sink.error(throwable);
+                        },
+                        () -> {
+                            System.out.println("------------ end --------");
+                            vertxHttpRequest.end();
+                        });
+            }, sink::error);
+        });
     }
 
     private Mono<HttpClientRequest> toVertxHttpRequest(HttpRequest request) {
@@ -112,14 +152,20 @@ class VertxAsyncHttpClient implements HttpClient {
     private Flux<ByteBuffer> getRequestBody(HttpRequest request, ProgressReporter progressReporter) {
         Flux<ByteBuffer> body = request.getBody();
         if (body == null) {
+            System.out.println("getRequestBody: Request Body is null-----------------");
             return Flux.empty();
         }
 
         if (progressReporter != null) {
+            System.out.println("getRequestBody: progressReporter is NOT null ------------");
+
             body = body.map(buffer -> {
-                progressReporter.reportProgress(buffer.remaining());
+                int remaining = buffer.remaining();
+                System.out.println("remaining ==== " + remaining);
+                progressReporter.reportProgress(remaining);
                 return buffer;
             });
+
         }
 
         return body;

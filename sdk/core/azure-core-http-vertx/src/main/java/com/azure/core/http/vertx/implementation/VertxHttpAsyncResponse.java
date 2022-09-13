@@ -38,8 +38,12 @@ public class VertxHttpAsyncResponse extends VertxHttpResponseBase {
         HttpClientResponse vertxHttpResponse = getVertxHttpResponse();
         return Flux.create(sink -> {
             vertxHttpResponse.handler(buffer -> {
+
+
                 sink.next(buffer.getByteBuf().nioBuffer());
             }).endHandler(event -> {
+
+
                 sink.complete();
             }).exceptionHandler(sink::error);
 
