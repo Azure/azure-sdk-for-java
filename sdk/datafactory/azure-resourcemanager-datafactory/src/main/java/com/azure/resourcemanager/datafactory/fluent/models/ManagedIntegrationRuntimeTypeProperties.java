@@ -26,8 +26,7 @@ public final class ManagedIntegrationRuntimeTypeProperties {
     private IntegrationRuntimeSsisProperties ssisProperties;
 
     /*
-     * The name of virtual network to which Azure-SSIS integration runtime will
-     * join
+     * The name of virtual network to which Azure-SSIS integration runtime will join
      */
     @JsonProperty(value = "customerVirtualNetwork")
     private IntegrationRuntimeCustomerVirtualNetwork customerVirtualNetwork;

@@ -13,15 +13,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class TeradataLinkedServiceTypeProperties {
     /*
-     * Teradata ODBC connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * Teradata ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "connectionString")
     private Object connectionString;
 
     /*
-     * Server name for connection. Type: string (or Expression with resultType
-     * string).
+     * Server name for connection. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "server")
     private Object server;
@@ -33,8 +31,7 @@ public final class TeradataLinkedServiceTypeProperties {
     private TeradataAuthenticationType authenticationType;
 
     /*
-     * Username for authentication. Type: string (or Expression with resultType
-     * string).
+     * Username for authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "username")
     private Object username;
@@ -46,9 +43,8 @@ public final class TeradataLinkedServiceTypeProperties {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;

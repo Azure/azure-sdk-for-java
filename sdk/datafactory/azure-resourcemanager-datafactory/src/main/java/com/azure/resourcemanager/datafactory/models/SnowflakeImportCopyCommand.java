@@ -17,20 +17,18 @@ import java.util.Map;
 @Fluent
 public final class SnowflakeImportCopyCommand extends ImportSettings {
     /*
-     * Additional copy options directly passed to snowflake Copy Command. Type:
-     * key value pairs (value should be string type) (or Expression with
-     * resultType object). Example: "additionalCopyOptions": { "DATE_FORMAT":
-     * "MM/DD/YYYY", "TIME_FORMAT": "'HH24:MI:SS.FF'" }
+     * Additional copy options directly passed to snowflake Copy Command. Type: key value pairs (value should be string
+     * type) (or Expression with resultType object). Example: "additionalCopyOptions": { "DATE_FORMAT": "MM/DD/YYYY",
+     * "TIME_FORMAT": "'HH24:MI:SS.FF'" }
      */
     @JsonProperty(value = "additionalCopyOptions")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> additionalCopyOptions;
 
     /*
-     * Additional format options directly passed to snowflake Copy Command.
-     * Type: key value pairs (value should be string type) (or Expression with
-     * resultType object). Example: "additionalFormatOptions": { "FORCE":
-     * "TRUE", "LOAD_UNCERTAIN_FILES": "'FALSE'" }
+     * Additional format options directly passed to snowflake Copy Command. Type: key value pairs (value should be
+     * string type) (or Expression with resultType object). Example: "additionalFormatOptions": { "FORCE": "TRUE",
+     * "LOAD_UNCERTAIN_FILES": "'FALSE'" }
      */
     @JsonProperty(value = "additionalFormatOptions")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)

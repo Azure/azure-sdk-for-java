@@ -11,15 +11,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureDatabricksDeltaLakeDatasetTypeProperties {
     /*
-     * The name of delta table. Type: string (or Expression with resultType
-     * string).
+     * The name of delta table. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "table")
     private Object table;
 
     /*
-     * The database name of delta table. Type: string (or Expression with
-     * resultType string).
+     * The database name of delta table. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "database")
     private Object database;
