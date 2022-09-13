@@ -28,7 +28,7 @@ public final class CallConnectionProperties {
     private final CallConnectionState callConnectionState;
     private final String subject;
     private final URI callbackUri;
-    private String mediaSubscriptionId;
+    private final String mediaSubscriptionId;
 
     static {
         CallConnectionPropertiesConstructorProxy.setAccessor(
