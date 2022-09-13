@@ -12,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SsisExecutionParameter {
     /*
-     * SSIS package execution parameter value. Type: string (or Expression with
-     * resultType string).
+     * SSIS package execution parameter value. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "value", required = true)
     private Object value;

@@ -41,8 +41,7 @@ public final class ManagedPrivateEndpoint {
     private Boolean isReserved;
 
     /*
-     * The ARM resource ID of the resource to which the managed private
-     * endpoint is created
+     * The ARM resource ID of the resource to which the managed private endpoint is created
      */
     @JsonProperty(value = "privateLinkResourceId")
     private String privateLinkResourceId;

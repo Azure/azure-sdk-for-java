@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FactoryIdentityType. */
+/** The identity type. */
 public final class FactoryIdentityType extends ExpandableStringEnum<FactoryIdentityType> {
     /** Static value SystemAssigned for FactoryIdentityType. */
     public static final FactoryIdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
