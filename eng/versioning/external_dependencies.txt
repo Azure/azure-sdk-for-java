@@ -48,9 +48,9 @@ io.cloudevents:cloudevents-api;2.2.0
 io.cloudevents:cloudevents-core;2.2.0
 io.fabric8:kubernetes-client;5.12.1
 io.github.bonigarcia:webdrivermanager;4.3.1
-io.micrometer:micrometer-core;1.10.0-M3
-io.micrometer:micrometer-registry-azure-monitor;1.10.0-M3
-io.micrometer:micrometer-registry-graphite;1.10.0-M3
+io.micrometer:micrometer-core;1.9.4-SNAPSHOT
+io.micrometer:micrometer-registry-azure-monitor;1.9.4-SNAPSHOT
+io.micrometer:micrometer-registry-graphite;1.9.4-SNAPSHOT
 io.netty:netty-buffer;4.1.79.Final
 io.netty:netty-common;4.1.79.Final
 io.netty:netty-codec-http;4.1.79.Final

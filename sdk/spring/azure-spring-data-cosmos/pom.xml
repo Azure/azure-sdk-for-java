@@ -37,29 +37,6 @@
     </javaModulesSurefireArgLine>
   </properties>
 
-  <!-- Repositories definitions -->
-  <repositories>
-    <repository>
-      <id>spring-milestones</id>
-      <name>Spring Milestones</name>
-      <url>https://repo.spring.io/milestone</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
-
-  <pluginRepositories>
-    <pluginRepository>
-      <id>spring-milestones</id>
-      <name>Spring Milestones</name>
-      <url>https://repo.spring.io/milestone</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </pluginRepository>
-  </pluginRepositories>
-
   <dependencies>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -111,7 +88,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.35.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.36.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
@@ -227,6 +204,11 @@
                 <include>org.slf4j:slf4j-api:[1.7.36]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
               </includes>
             </bannedDependencies>
+            <requireReleaseDeps>
+              <excludes>
+                <exclude>io.micrometer:*</exclude>
+              </excludes>
+            </requireReleaseDeps>
           </rules>
         </configuration>
       </plugin>

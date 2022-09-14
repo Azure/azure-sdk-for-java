@@ -59,6 +59,16 @@
         <updatePolicy>daily</updatePolicy>
       </snapshots>
     </repository>
+    <repository>
+      <id>libs-snapshot</id>
+      <name>libs snapshot</name>
+      <url>https://repo.spring.io/libs-milestone</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>daily</updatePolicy>
+      </snapshots>
+    </repository>
   </repositories>
 
   <pluginRepositories>
@@ -74,6 +84,16 @@
       <id>ossrh</id>
       <name>Sonatype Snapshots</name>
       <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+    </pluginRepository>
+    <pluginRepository>
+      <id>libs-snapshot</id>
+      <name>libs snapshot</name>
+      <url>https://repo.spring.io/libs-milestone</url>
       <layout>default</layout>
       <snapshots>
         <enabled>true</enabled>
