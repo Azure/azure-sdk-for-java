@@ -159,6 +159,7 @@ def get_properties_contend(spring_boot_dependencies_version, spring_cloud_depend
     return """
     <spring.boot.version>{}</spring.boot.version>
     <spring.cloud.version>{}</spring.cloud.version>
+    <micrometer.version>1.10.0-M6</micrometer.version>
   """.format(spring_boot_dependencies_version, spring_cloud_dependencies_version)
 
 
