@@ -459,7 +459,7 @@ public abstract class HttpClientTests {
     }
 
     private static Stream<Arguments> getBinaryDataBodyVariants() {
-        return Stream.of(10 * 1024 * 1024 + 13)
+        return Stream.of(1, 2, 10, 127, 1024, 1024 + 157, 8 * 1024 + 3, 10 * 1024 * 1024 + 13)
             .flatMap(size -> {
                 try {
                     byte[] bytes = new byte[size];
