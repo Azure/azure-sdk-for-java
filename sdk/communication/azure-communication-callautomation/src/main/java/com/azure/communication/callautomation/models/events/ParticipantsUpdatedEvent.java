@@ -28,7 +28,6 @@ public final class ParticipantsUpdatedEvent extends CallAutomationEventBase {
 
     @JsonCreator
     private ParticipantsUpdatedEvent(@JsonProperty("participants") List<Map<String, Object>> participants) {
-
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         this.participants = participants
