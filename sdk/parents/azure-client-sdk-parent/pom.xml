@@ -60,14 +60,12 @@
       </snapshots>
     </repository>
     <repository>
-      <id>libs-snapshot</id>
-      <name>libs snapshot</name>
-      <url>https://repo.spring.io/libs-milestone</url>
-      <layout>default</layout>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>daily</updatePolicy>
-      </snapshots>
+      <id>spring-snapshots</id>
+      <name>Spring Snapshots</name>
+      <url>https://repo.spring.io/snapshot</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
     </repository>
   </repositories>
 
@@ -91,14 +89,12 @@
       </snapshots>
     </pluginRepository>
     <pluginRepository>
-      <id>libs-snapshot</id>
-      <name>libs snapshot</name>
-      <url>https://repo.spring.io/libs-milestone</url>
-      <layout>default</layout>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>always</updatePolicy>
-      </snapshots>
+      <id>spring-snapshots</id>
+      <name>Spring Snapshots</name>
+      <url>https://repo.spring.io/snapshot</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
     </pluginRepository>
   </pluginRepositories>
 

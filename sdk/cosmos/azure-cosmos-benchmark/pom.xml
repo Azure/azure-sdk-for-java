@@ -263,7 +263,16 @@ Licensed under the MIT License.
                 <include>org.apache.logging.log4j:log4j-slf4j-impl:[2.18.0]</include> <!-- {x-include-update;org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
                 <include>org.mpierce.metrics.reservoir:hdrhistogram-metrics-reservoir:[1.1.0]</include> <!-- {x-include-update;cosmos_org.mpierce.metrics.reservoir:hdrhistogram-metrics-reservoir;external_dependency} -->
               </includes>
+              <excludes>
+                <exclude>io.micrometer:micrometer-registry-azure-monitor:[1.9.4-SNAPSHOT]</exclude> <!-- {x-include-update;io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
+                <exclude>io.micrometer:micrometer-registry-graphite:[1.9.4-SNAPSHOT]</exclude> <!-- {x-include-update;io.micrometer:micrometer-registry-graphite;external_dependency} -->
+              </excludes>
             </bannedDependencies>
+            <requireReleaseDeps>
+              <excludes>
+                <exclude>io.micrometer:*</exclude>
+              </excludes>
+            </requireReleaseDeps>
           </rules>
         </configuration>
       </plugin>
