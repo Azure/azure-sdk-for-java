@@ -111,7 +111,7 @@ com.azure:azure-maps-route;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-maps-search;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-json;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-json-gson;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-messaging-eventgrid;4.12.1;4.13.0-beta.1
+com.azure:azure-messaging-eventgrid;4.12.1;4.12.2
 com.azure:azure-messaging-eventgrid-cloudnative-cloudevents;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-messaging-eventhubs;5.13.0;5.14.0-beta.1
 com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.15.0;1.16.0-beta.1
