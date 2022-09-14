@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <parent>
+    <artifactId>azure-autorest-parent</artifactId>
+    <groupId>com.azure.tools</groupId>
+    <version>1.0.0-beta.1</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+  <groupId>com.azure</groupId>
+    <artifactId>azure-maps-timezone-customization</artifactId>
+    <version>1.0.0-beta.1</version>
+  <modelVersion>4.0.0</modelVersion>
+
+  <dependencies>
+    <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+    <dependency>
+      <groupId>com.azure.tools</groupId>
+      <artifactId>azure-autorest-customization</artifactId>
+      <version>1.0.0-beta.4</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>
