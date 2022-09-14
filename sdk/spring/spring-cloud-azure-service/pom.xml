@@ -171,6 +171,11 @@
                 <include>org.apache.kafka:kafka-clients:[3.2.0]</include> <!-- {x-include-update;org.apache.kafka:kafka-clients;external_dependency} -->
               </includes>
             </bannedDependencies>
+            <requireReleaseDeps>
+              <excludes>
+                <exclude>io.micrometer:*</exclude>
+              </excludes>
+            </requireReleaseDeps>
           </rules>
         </configuration>
       </plugin>
