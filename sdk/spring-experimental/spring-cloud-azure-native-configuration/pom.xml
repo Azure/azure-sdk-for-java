@@ -141,11 +141,6 @@
                 <include>org.springframework.experimental:spring-aot:[0.11.4]</include> <!-- {x-include-update;org.springframework.experimental:spring-aot;external_dependency} -->
               </includes>
             </bannedDependencies>
-            <requireReleaseDeps>
-              <excludes>
-                <exclude>io.micrometer:*</exclude>
-              </excludes>
-            </requireReleaseDeps>
           </rules>
         </configuration>
       </plugin>

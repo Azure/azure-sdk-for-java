@@ -92,7 +92,7 @@
     <dependency>
       <groupId>io.micrometer</groupId>
       <artifactId>micrometer-core</artifactId>
-      <version>1.9.4-SNAPSHOT</version> <!-- {x-version-update;io.micrometer:micrometer-core;external_dependency} -->
+      <version>1.10.0-M6</version> <!-- {x-version-update;io.micrometer:micrometer-core;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <!-- Added this dependency to include necessary annotations used by reactor core.
@@ -124,21 +124,13 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.micrometer:micrometer-core:[1.9.4-SNAPSHOT]</include> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->
+                <include>io.micrometer:micrometer-core:[1.10.0-M6]</include> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->
                 <include>org.springframework.data:spring-data-commons:[3.0.0-M5]</include> <!-- {x-include-update;org.springframework.data:spring-data-commons;external_dependency} -->
                 <include>org.springframework:spring-messaging:[6.0.0-M5]</include> <!-- {x-include-update;org.springframework:spring-messaging;external_dependency} -->
                 <include>org.springframework:spring-tx:[6.0.0-M5]</include> <!-- {x-include-update;org.springframework:spring-tx;external_dependency} -->
                 <include>org.springframework.retry:spring-retry:[1.3.3]</include> <!-- {x-include-update;org.springframework.retry:spring-retry;external_dependency} -->
               </includes>
-              <excludes>
-                <exclude>io.micrometer:micrometer-core:[1.9.4-SNAPSHOT]</exclude> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->
-              </excludes>
             </bannedDependencies>
-            <requireReleaseDeps>
-              <excludes>
-                <exclude>io.micrometer:*</exclude>
-              </excludes>
-            </requireReleaseDeps>
           </rules>
         </configuration>
       </plugin>

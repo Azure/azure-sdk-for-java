@@ -59,14 +59,6 @@
         <updatePolicy>daily</updatePolicy>
       </snapshots>
     </repository>
-    <repository>
-      <id>spring-snapshots</id>
-      <name>Spring Snapshots</name>
-      <url>https://repo.spring.io/snapshot</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </repository>
   </repositories>
 
   <pluginRepositories>
@@ -87,14 +79,6 @@
         <enabled>true</enabled>
         <updatePolicy>always</updatePolicy>
       </snapshots>
-    </pluginRepository>
-    <pluginRepository>
-      <id>spring-snapshots</id>
-      <name>Spring Snapshots</name>
-      <url>https://repo.spring.io/snapshot</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
     </pluginRepository>
   </pluginRepositories>
 
