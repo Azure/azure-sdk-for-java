@@ -1,7 +1,7 @@
 ## Generate autorest code
 
 ```yaml
-require: C:/Users/harshanb/source/repos/azure-rest-api-specs/specification/loadtestservice/data-plane/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/9401446f22177696d920cf110893a0de7452ee9e/specification/loadtestservice/data-plane/readme.md
 output-folder: ../
 java: true
 regenerate-pom: false

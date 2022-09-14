@@ -1,0 +1,27 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.eus.cnt-prod.loadtesting.azure.com/testruns/33333333-1234-1234-1234-123456789012?api-version=2022-06-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-developer-loadtesting/1.0.0-beta.1 (17.0.4; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "c446af66-2eb0-41f5-a482-1d2780688de6",
+      "Content-Type" : "application/merge-patch+json"
+    },
+    "Response" : {
+      "content-length" : "2466",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "api-supported-versions" : "2021-07-01-preview, 2022-06-01-preview",
+      "X-Content-Type-Options" : "nosniff",
+      "Connection" : "keep-alive",
+      "mise-correlation-id" : "e8217b5a-9818-43c0-9b7f-9da41019a9b7",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"testRunId\":\"33333333-1234-1234-1234-123456789012\",\"displayName\":\"Java SDK Sample Test Run\",\"testId\":\"11111111-1234-1234-1234-123456789012\",\"resourceId\":\"/subscriptions/7c71b563-0dc0-4bc0-bcf6-06f8f0516c7a/resourcegroups/loadtest-sdk/providers/microsoft.loadtestservice/loadtests/loadtestingsdk\",\"description\":\"Sample Test Run\",\"status\":\"ACCEPTED\",\"startDateTime\":null,\"endDateTime\":null,\"loadTestConfig\":{\"engineInstances\":1,\"splitAllCSVs\":null},\"testResult\":\"NOT_APPLICABLE\",\"passFailCriteria\":null,\"testArtifacts\":{\"inputArtifacts\":{\"configUrl\":{\"url\":\"REDACTED\",\"fileId\":\"e480b12d-cad0-4071-b236-72ce70a6bf85\",\"filename\":\"config.yaml\",\"fileType\":2,\"expireTime\":\"2022-09-16T12:57:59.8079697+00:00\",\"validationStatus\":\"\"},\"testScriptUrl\":{\"url\":\"REDACTED\",\"fileId\":\"22222222-1234-1234-1234-123456789012\",\"filename\":\"sample-JMX-file.jmx\",\"fileType\":2,\"expireTime\":\"2022-09-16T12:57:59.8079697+00:00\",\"validationStatus\":\"VALIDATION_SUCCESS\"},\"userPropUrl\":null,\"inputArtifactsZipFileurl\":{\"url\":\"REDACTED\",\"fileId\":\"1da610a8-8dd1-40b0-ae82-2509a8f03538\",\"filename\":\"inputartifacts.zip\",\"fileType\":2,\"expireTime\":\"2022-09-16T12:57:59.8079697+00:00\",\"validationStatus\":\"\"},\"additionalUrls\":[]},\"outputArtifacts\":{\"resultUrl\":null,\"logsUrl\":null}},\"executedDateTime\":\"2022-09-16T12:47:59.439Z\",\"vusers\":null,\"testRunStatistics\":null,\"createdDateTime\":\"2022-09-16T12:47:59.712Z\",\"createdBy\":null,\"lastModifiedDateTime\":\"2022-09-16T12:47:59.712Z\",\"lastModifiedBy\":null,\"portalUrl\":\"https://portal.azure.com/#blade/Microsoft_Azure_CloudNativeTesting/NewReport//resourceId/%2fsubscriptions%2f7c71b563-0dc0-4bc0-bcf6-06f8f0516c7a%2fresourcegroups%2floadtest-sdk%2fproviders%2fmicrosoft.loadtestservice%2floadtests%2floadtestingsdk/testId/11111111-1234-1234-1234-123456789012/testRunId/33333333-1234-1234-1234-123456789012\",\"secrets\":null,\"environmentVariables\":{\"threads_per_engine\":\"1\",\"ramp_up_time\":\"0\",\"duration_in_sec\":\"10\",\"domain\":\"azure.microsoft.com\",\"protocol\":\"https\"},\"duration\":null,\"subnetId\":null,\"errorDetails\":null}",
+      "Date" : "Fri, 16 Sep 2022 12:47:59 GMT",
+      "x-ms-correlation-request-id" : "043f7468-76f5-445c-8d43-538a8e384395",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

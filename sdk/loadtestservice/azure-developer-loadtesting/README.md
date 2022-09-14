@@ -1,6 +1,6 @@
 # Azure Developer LoadTesting client library for Java
 
-Azure Developer LoadTesting client library for Java.
+Azure Load Testing provides client library in Java to the user by which they can interact natively with Azure Load Testing service. Azure Load Testing is a fully managed load-testing service that enables you to generate high-scale load. The service simulates traffic for your applications, regardless of where they're hosted. Developers, testers, and quality assurance (QA) engineers can use it to optimize application performance, scalability, or capacity
 
 This package contains Microsoft Azure Developer LoadTesting client library.
 
