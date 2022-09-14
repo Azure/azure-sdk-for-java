@@ -27,9 +27,6 @@
   </scm>
 
   <properties>
-    <!-- TODO: (https://github.com/Azure/azure-sdk-for-java/issues/18279) -->
-    <checkstyle.skip>false</checkstyle.skip>
-    <jacoco.skip>true</jacoco.skip>
   </properties>
 
   <dependencies>
