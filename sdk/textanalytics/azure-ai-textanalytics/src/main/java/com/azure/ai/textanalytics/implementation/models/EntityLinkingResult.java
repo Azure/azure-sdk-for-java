@@ -39,7 +39,7 @@ public final class EntityLinkingResult extends PreBuiltResult {
 
     /** {@inheritDoc} */
     @Override
-    public EntityLinkingResult setErrors(List<DocumentError> errors) {
+    public EntityLinkingResult setErrors(List<InputError> errors) {
         super.setErrors(errors);
         return this;
     }

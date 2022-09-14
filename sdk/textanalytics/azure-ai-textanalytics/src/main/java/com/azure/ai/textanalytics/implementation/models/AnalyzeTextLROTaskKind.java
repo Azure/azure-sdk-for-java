@@ -28,6 +28,9 @@ public final class AnalyzeTextLROTaskKind extends ExpandableStringEnum<AnalyzeTe
     /** Static value Healthcare for AnalyzeTextLROTaskKind. */
     public static final AnalyzeTextLROTaskKind HEALTHCARE = fromString("Healthcare");
 
+    /** Static value ExtractiveSummarization for AnalyzeTextLROTaskKind. */
+    public static final AnalyzeTextLROTaskKind EXTRACTIVE_SUMMARIZATION = fromString("ExtractiveSummarization");
+
     /** Static value CustomEntityRecognition for AnalyzeTextLROTaskKind. */
     public static final AnalyzeTextLROTaskKind CUSTOM_ENTITY_RECOGNITION = fromString("CustomEntityRecognition");
 
@@ -38,6 +41,9 @@ public final class AnalyzeTextLROTaskKind extends ExpandableStringEnum<AnalyzeTe
     /** Static value CustomMultiLabelClassification for AnalyzeTextLROTaskKind. */
     public static final AnalyzeTextLROTaskKind CUSTOM_MULTI_LABEL_CLASSIFICATION =
             fromString("CustomMultiLabelClassification");
+
+    /** Static value AbstractiveSummarization for AnalyzeTextLROTaskKind. */
+    public static final AnalyzeTextLROTaskKind ABSTRACTIVE_SUMMARIZATION = fromString("AbstractiveSummarization");
 
     /**
      * Creates or finds a AnalyzeTextLROTaskKind from its string representation.
