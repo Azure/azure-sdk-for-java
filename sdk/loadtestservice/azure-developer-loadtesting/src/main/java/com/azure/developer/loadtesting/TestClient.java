@@ -4,6 +4,8 @@
 
 package com.azure.developer.loadtesting;
 
+import java.io.IOException;
+
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -416,6 +418,57 @@ public final class TestClient {
     public Response<BinaryData> uploadTestFileWithResponse(
             String testId, String fileId, BinaryData file, RequestOptions requestOptions) {
         return this.client.uploadTestFileWithResponse(testId, fileId, file, requestOptions).block();
+    }
+
+    /**
+     * Upload input file for a given test name. File size can't be more than 50 MB. Existing file with same name for the
+     * given test will be overwritten. File should be provided in the request body as multipart/form-data.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>fileType</td><td>Integer</td><td>No</td><td>Integer representation of the file type (0 = JMX_FILE, 1 = USER_PROPERTIES, 2 = ADDITIONAL_ARTIFACTS).</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * BinaryData
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     url: String (Optional)
+     *     fileId: String (Optional)
+     *     filename: String (Optional)
+     *     fileType: String(0/1/2) (Optional)
+     *     expireTime: OffsetDateTime (Optional)
+     *     validationStatus: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testId Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$.
+     * @param fileId Unique identifier for test file, must be a valid URL character ^[a-z0-9_-]*$.
+     * @param fileName Name of test file, must be a valid URL character ^[a-z0-9_-]*$.
+     * @param file The file to be uploaded.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws IOException thrown if the multipart/form-data body cannot be constructed from file.
+     * @return fileUrl Model along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> uploadTestFileWithResponse(
+            String testId, String fileId, String fileName, BinaryData file, RequestOptions requestOptions) throws IOException {
+        return this.client.uploadTestFileWithResponse(testId, fileId, fileName, file, requestOptions).block();
     }
 
     /**

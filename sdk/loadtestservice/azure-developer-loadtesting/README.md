@@ -135,7 +135,7 @@ TestClient testClient = testClientBuilder
     .buildClient();
 
 BinaryData fileData = BinaryData.fromFile(new File("path/to/file").toPath());
-BinaryData fileUrlOut = testClient.uploadTestFileWithResponse("test12345", "file12345", fileData, null).getValue();
+BinaryData fileUrlOut = testClient.uploadTestFileWithResponse("test12345", "file12345", "sample-file.jmx", fileData, null).getValue();
 System.out.println(fileUrlOut.toString());
 ```
 
@@ -162,6 +162,17 @@ BinaryData testRunOut = testRunClient.createAndUpdateTestWithResponse("testrun12
 System.out.println(testRunOut.toString());
 ```
 
+## Troubleshooting
+
+Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite
+their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help
+locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
+
+## Next steps
+
+Azure Loading Testing Java SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered.
+See [Azure Load Testing samples][sample_code].
+
 ## Contributing
 
 For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
@@ -174,9 +185,11 @@ For details on contributing to this repository, see the [contributing guide](htt
 
 <!-- LINKS -->
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtesting/azure-developer-loadtesting/src
+[sample_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtesting/azure-developer-loadtesting/src/samples
 [api_reference_doc]: https://docs.microsoft.com/rest/api/loadtesting/
 [product_documentation]: https://azure.microsoft.com/services/load-testing/
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 [authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/AUTH.md
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK

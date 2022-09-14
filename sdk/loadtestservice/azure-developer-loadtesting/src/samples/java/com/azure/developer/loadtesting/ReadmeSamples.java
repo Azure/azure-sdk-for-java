@@ -5,6 +5,7 @@
 package com.azure.developer.loadtesting;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,7 +41,7 @@ public final class ReadmeSamples {
         // END: java-readme-sample-createTest
     }
 
-    public void uploadTestFile() {
+    public void uploadTestFile() throws IOException {
         // BEGIN: java-readme-sample-uploadTestFile
         TestClientBuilder testClientBuilder = new TestClientBuilder();
         TestClient testClient = testClientBuilder
@@ -49,7 +50,7 @@ public final class ReadmeSamples {
             .buildClient();
 
         BinaryData fileData = BinaryData.fromFile(new File("path/to/file").toPath());
-        BinaryData fileUrlOut = testClient.uploadTestFileWithResponse("test12345", "file12345", fileData, null).getValue();
+        BinaryData fileUrlOut = testClient.uploadTestFileWithResponse("test12345", "file12345", "sample-file.jmx", fileData, null).getValue();
         System.out.println(fileUrlOut.toString());
         // END: java-readme-sample-uploadTestFile
     }

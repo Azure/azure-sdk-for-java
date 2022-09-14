@@ -14,7 +14,7 @@ generate-models: true
 artifact-id: azure-developer-loadtesting
 generate-samples: false
 namespace: com.azure.developer.loadtesting
-partial-update: false
+partial-update: true
 service-versions:
 - 2022-06-01-preview
 ```
