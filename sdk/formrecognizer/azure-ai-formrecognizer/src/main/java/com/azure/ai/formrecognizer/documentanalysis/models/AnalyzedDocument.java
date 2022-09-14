@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * An object describing the location and semantic content of a document.
  */
-public final class AnalyzedDocument {
+public class AnalyzedDocument {
     /*
      * AnalyzeDocument type.
      */
@@ -50,9 +50,9 @@ public final class AnalyzedDocument {
      * Set the docType property: AnalyzeDocument type.
      *
      * @param docType the docType value to set.
-     * @return the AnalyzeDocument object itself.
+     *
      */
-    void setDocType(String docType) {
+    private void setDocType(String docType) {
         this.docType = docType;
     }
 
@@ -69,9 +69,9 @@ public final class AnalyzedDocument {
      * Set the boundingRegions property: Bounding regions covering the document.
      *
      * @param boundingRegions the boundingRegions value to set.
-     * @return the AnalyzeDocument object itself.
+     *
      */
-    void setBoundingRegions(List<BoundingRegion> boundingRegions) {
+    private void setBoundingRegions(List<BoundingRegion> boundingRegions) {
         this.boundingRegions = boundingRegions;
     }
 
@@ -88,9 +88,9 @@ public final class AnalyzedDocument {
      * Set the spans property: Location of the document in the reading order concatenated content.
      *
      * @param spans the spans value to set.
-     * @return the AnalyzeDocument object itself.
+     *
      */
-    void setSpans(List<DocumentSpan> spans) {
+    private void setSpans(List<DocumentSpan> spans) {
         this.spans = spans;
     }
 
@@ -107,9 +107,9 @@ public final class AnalyzedDocument {
      * Set the fields property: Dictionary of named field values.
      *
      * @param fields the fields value to set.
-     * @return the AnalyzeDocument object itself.
+     *
      */
-    void setFields(Map<String, DocumentField> fields) {
+    private void setFields(Map<String, DocumentField> fields) {
         this.fields = fields;
     }
 
@@ -126,9 +126,9 @@ public final class AnalyzedDocument {
      * Set the confidence property: Confidence of correctly extracting the document.
      *
      * @param confidence the confidence value to set.
-     * @return the AnalyzeDocument object itself.
+     *
      */
-    void setConfidence(float confidence) {
+    private void setConfidence(float confidence) {
         this.confidence = confidence;
     }
 

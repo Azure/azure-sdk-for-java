@@ -150,7 +150,7 @@
         <Method name="getX509Thumbprint"/>
       </And>
       <And>
-        <Class name="com.azure.json.DefaultJsonReader"/>
+        <Class name="com.azure.json.implementation.DefaultJsonReader"/>
         <Method name="getBinary"/>
       </And>
       <And>
@@ -762,28 +762,28 @@
 
   <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
   <Match>
-    <Class name="com.azure.core.util.polling.DefaultSyncPoller"/>
+    <Class name="com.azure.core.util.polling.SyncOverAsyncPoller"/>
     <Method name="getFinalResult"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
   <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
   <Match>
-    <Class name="com.azure.core.util.polling.DefaultSyncPoller"/>
+    <Class name="com.azure.core.util.polling.SyncOverAsyncPoller"/>
     <Method name="poll"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
   <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
   <Match>
-    <Class name="com.azure.core.util.polling.DefaultSyncPoller"/>
+    <Class name="com.azure.core.util.polling.SyncOverAsyncPoller"/>
     <Method name="waitForCompletion"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
   <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
   <Match>
-    <Class name="com.azure.core.util.polling.DefaultSyncPoller"/>
+    <Class name="com.azure.core.util.polling.SyncOverAsyncPoller"/>
     <Method name="waitUntil"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
@@ -2518,7 +2518,10 @@
 
   <Match>
     <Bug pattern="EI_EXPOSE_REP"/>
-    <Class name="com.azure.core.implementation.AccessibleByteArrayOutputStream"/>
+    <Or>
+      <Class name="com.azure.core.implementation.AccessibleByteArrayOutputStream"/>
+      <Class name="com.azure.core.implementation.ByteBufferCollector"/>
+    </Or>
   </Match>
 
   <!-- EventGrid swagger naming -->
@@ -2666,6 +2669,13 @@
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
 
+  <!-- This is inside Azure Maps Implementation package (codegen), and cannot be modified via a customization. -->
+  <Match>
+    <Class name="com.azure.maps.render.implementation.RenderV2sImpl"/>
+    <Method name="~getMap.*+"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
   <Match>
     <Class name="~com\.azure\.search.*"/>
     <Or>
@@ -2726,6 +2736,11 @@
     <Package name="~com\.azure\.json\.implementation\.jackson\.core.*"/>
   </Match>
 
+  <Match>
+    <Class name="com.azure.xml.implementation.DefaultXmlReader"/>
+    <Bug pattern="XXE_XMLSTREAMREADER"/>
+  </Match>
+
   <!-- Non Shipped code -->
   <Match>
     <Or>
@@ -2741,4 +2756,5 @@
                   DLS_DEAD_LOCAL_STORE,
                   DM_STRING_TOSTRING"/>
   </Match>
+
 </FindBugsFilter>

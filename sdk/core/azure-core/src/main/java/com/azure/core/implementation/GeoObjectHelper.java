@@ -29,7 +29,7 @@ public final class GeoObjectHelper {
     }
 
     /**
-     * The method called from {@link GeoObject} to set it's accessor.
+     * The method called from {@link GeoObject} to set its accessor.
      *
      * @param geoObjectAccessor The accessor.
      */

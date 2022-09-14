@@ -13,7 +13,9 @@ import com.azure.resourcemanager.mediaservices.models.OperationResultsGetRespons
 /** An instance of this class provides access to all the operations defined in OperationResultsClient. */
 public interface OperationResultsClient {
     /**
-     * Get asset track operation result.
+     * Get operation result.
+     *
+     * <p>Get asset track operation result.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -30,7 +32,9 @@ public interface OperationResultsClient {
         String resourceGroupName, String accountName, String assetName, String trackName, String operationId);
 
     /**
-     * Get asset track operation result.
+     * Get operation result.
+     *
+     * <p>Get asset track operation result.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.

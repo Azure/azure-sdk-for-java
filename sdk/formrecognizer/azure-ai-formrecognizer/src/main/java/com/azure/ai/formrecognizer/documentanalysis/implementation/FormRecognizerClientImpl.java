@@ -15,14 +15,14 @@ import com.azure.ai.formrecognizer.documentanalysis.implementation.models.Compos
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ContentType;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.CopyDocumentModelToHeaders;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelDetails;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelSummary;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ErrorResponseException;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.models.GetInfoResponse;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.models.GetModelsResponse;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.models.GetOperationResponse;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.GetDocumentModelsResponse;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.GetOperationsResponse;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ModelInfo;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ModelSummary;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationInfo;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationDetails;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.OperationSummary;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ResourceDetails;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.StringIndexType;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
@@ -217,20 +217,6 @@ public final class FormRecognizerClientImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/documentModels/{modelId}:analyze")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<ResponseBase<AnalyzeDocumentHeaders, Void>> analyzeDocument(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("modelId") String modelId,
-                @QueryParam("pages") String pages,
-                @QueryParam("locale") String locale,
-                @QueryParam("stringIndexType") StringIndexType stringIndexType,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("text/html") String analyzeRequest,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
         @Get("/documentModels/{modelId}/analyzeResults/{resultId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
@@ -295,7 +281,7 @@ public final class FormRecognizerClientImpl {
         @Get("/operations/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<GetOperationResponse>> getOperation(
+        Mono<Response<OperationDetails>> getOperation(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("operationId") String operationId,
                 @QueryParam("api-version") String apiVersion,
@@ -305,7 +291,7 @@ public final class FormRecognizerClientImpl {
         @Get("/documentModels")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<GetModelsResponse>> getModels(
+        Mono<Response<GetDocumentModelsResponse>> getDocumentModels(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -314,7 +300,7 @@ public final class FormRecognizerClientImpl {
         @Get("/documentModels/{modelId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<ModelInfo>> getModel(
+        Mono<Response<DocumentModelDetails>> getDocumentModel(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("modelId") String modelId,
                 @QueryParam("api-version") String apiVersion,
@@ -324,7 +310,7 @@ public final class FormRecognizerClientImpl {
         @Delete("/documentModels/{modelId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Void>> deleteModel(
+        Mono<Response<Void>> deleteDocumentModel(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("modelId") String modelId,
                 @QueryParam("api-version") String apiVersion,
@@ -334,7 +320,7 @@ public final class FormRecognizerClientImpl {
         @Get("/info")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<GetInfoResponse>> getInfo(
+        Mono<Response<ResourceDetails>> getResourceDetails(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -352,7 +338,7 @@ public final class FormRecognizerClientImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<GetModelsResponse>> getModelsNext(
+        Mono<Response<GetDocumentModelsResponse>> getDocumentModelsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -360,9 +346,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Analyzes document with model.
+     * Analyzes document with document model.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
      *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
@@ -396,9 +382,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Analyzes document with model.
+     * Analyzes document with document model.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
      *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
@@ -432,9 +418,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Analyzes document with model.
+     * Analyzes document with document model.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
      *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
@@ -457,9 +443,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Analyzes document with model.
+     * Analyzes document with document model.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
      *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
@@ -484,9 +470,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Analyzes document with model.
+     * Analyzes document with document model.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
      *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
@@ -507,9 +493,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Analyzes document with model.
+     * Analyzes document with document model.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
      *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
@@ -534,9 +520,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Analyzes document with model.
+     * Analyzes document with document model.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param contentType Upload file type.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
@@ -576,9 +562,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Analyzes document with model.
+     * Analyzes document with document model.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param contentType Upload file type.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
@@ -618,9 +604,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Analyzes document with model.
+     * Analyzes document with document model.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param contentType Upload file type.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
@@ -648,9 +634,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Analyzes document with model.
+     * Analyzes document with document model.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param contentType Upload file type.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
@@ -680,9 +666,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Analyzes document with model.
+     * Analyzes document with document model.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param contentType Upload file type.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
@@ -708,9 +694,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Analyzes document with model.
+     * Analyzes document with document model.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param contentType Upload file type.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
@@ -740,9 +726,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Analyzes document with model.
+     * Analyzes document with document model.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param contentType Upload file type.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
@@ -782,9 +768,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Analyzes document with model.
+     * Analyzes document with document model.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param contentType Upload file type.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
@@ -824,9 +810,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Analyzes document with model.
+     * Analyzes document with document model.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param contentType Upload file type.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
@@ -854,9 +840,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Analyzes document with model.
+     * Analyzes document with document model.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param contentType Upload file type.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
@@ -886,9 +872,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Analyzes document with model.
+     * Analyzes document with document model.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param contentType Upload file type.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
@@ -914,9 +900,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Analyzes document with model.
+     * Analyzes document with document model.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param contentType Upload file type.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
@@ -942,175 +928,13 @@ public final class FormRecognizerClientImpl {
             Context context) {
         return analyzeDocumentWithResponseAsync(
                         modelId, contentType, pages, locale, stringIndexType, analyzeRequest, contentLength, context)
-                .block();
-    }
-
-    /**
-     * Analyzes document with model.
-     *
-     * @param modelId Unique model name.
-     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
-     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
-     * @param stringIndexType Method used to compute string offset and length.
-     * @param analyzeRequest Analyze request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<AnalyzeDocumentHeaders, Void>> analyzeDocumentWithResponseAsync(
-            String modelId, String pages, String locale, StringIndexType stringIndexType, String analyzeRequest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.analyzeDocument(
-                                this.getEndpoint(),
-                                modelId,
-                                pages,
-                                locale,
-                                stringIndexType,
-                                this.getApiVersion(),
-                                analyzeRequest,
-                                accept,
-                                context));
-    }
-
-    /**
-     * Analyzes document with model.
-     *
-     * @param modelId Unique model name.
-     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
-     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
-     * @param stringIndexType Method used to compute string offset and length.
-     * @param analyzeRequest Analyze request parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<AnalyzeDocumentHeaders, Void>> analyzeDocumentWithResponseAsync(
-            String modelId,
-            String pages,
-            String locale,
-            StringIndexType stringIndexType,
-            String analyzeRequest,
-            Context context) {
-        final String accept = "application/json";
-        return service.analyzeDocument(
-                this.getEndpoint(),
-                modelId,
-                pages,
-                locale,
-                stringIndexType,
-                this.getApiVersion(),
-                analyzeRequest,
-                accept,
-                context);
-    }
-
-    /**
-     * Analyzes document with model.
-     *
-     * @param modelId Unique model name.
-     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
-     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
-     * @param stringIndexType Method used to compute string offset and length.
-     * @param analyzeRequest Analyze request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeDocumentAsync(
-            String modelId, String pages, String locale, StringIndexType stringIndexType, String analyzeRequest) {
-        return analyzeDocumentWithResponseAsync(modelId, pages, locale, stringIndexType, analyzeRequest)
-                .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Analyzes document with model.
-     *
-     * @param modelId Unique model name.
-     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
-     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
-     * @param stringIndexType Method used to compute string offset and length.
-     * @param analyzeRequest Analyze request parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeDocumentAsync(
-            String modelId,
-            String pages,
-            String locale,
-            StringIndexType stringIndexType,
-            String analyzeRequest,
-            Context context) {
-        return analyzeDocumentWithResponseAsync(modelId, pages, locale, stringIndexType, analyzeRequest, context)
-                .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Analyzes document with model.
-     *
-     * @param modelId Unique model name.
-     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
-     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
-     * @param stringIndexType Method used to compute string offset and length.
-     * @param analyzeRequest Analyze request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void analyzeDocument(
-            String modelId, String pages, String locale, StringIndexType stringIndexType, String analyzeRequest) {
-        analyzeDocumentAsync(modelId, pages, locale, stringIndexType, analyzeRequest).block();
-    }
-
-    /**
-     * Analyzes document with model.
-     *
-     * @param modelId Unique model name.
-     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
-     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
-     * @param stringIndexType Method used to compute string offset and length.
-     * @param analyzeRequest Analyze request parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<AnalyzeDocumentHeaders, Void> analyzeDocumentWithResponse(
-            String modelId,
-            String pages,
-            String locale,
-            StringIndexType stringIndexType,
-            String analyzeRequest,
-            Context context) {
-        return analyzeDocumentWithResponseAsync(modelId, pages, locale, stringIndexType, analyzeRequest, context)
                 .block();
     }
 
     /**
      * Gets the result of document analysis.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1130,7 +954,7 @@ public final class FormRecognizerClientImpl {
     /**
      * Gets the result of document analysis.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1149,7 +973,7 @@ public final class FormRecognizerClientImpl {
     /**
      * Gets the result of document analysis.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1165,7 +989,7 @@ public final class FormRecognizerClientImpl {
     /**
      * Gets the result of document analysis.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1183,7 +1007,7 @@ public final class FormRecognizerClientImpl {
     /**
      * Gets the result of document analysis.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1198,7 +1022,7 @@ public final class FormRecognizerClientImpl {
     /**
      * Gets the result of document analysis.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1307,7 +1131,7 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Creates a new model from document types of existing models.
+     * Creates a new document model from document types of existing document models.
      *
      * @param composeRequest Compose request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1326,7 +1150,7 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Creates a new model from document types of existing models.
+     * Creates a new document model from document types of existing document models.
      *
      * @param composeRequest Compose request parameters.
      * @param context The context to associate with this operation.
@@ -1343,7 +1167,7 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Creates a new model from document types of existing models.
+     * Creates a new document model from document types of existing document models.
      *
      * @param composeRequest Compose request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1357,7 +1181,7 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Creates a new model from document types of existing models.
+     * Creates a new document model from document types of existing document models.
      *
      * @param composeRequest Compose request parameters.
      * @param context The context to associate with this operation.
@@ -1372,7 +1196,7 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Creates a new model from document types of existing models.
+     * Creates a new document model from document types of existing document models.
      *
      * @param composeRequest Compose request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1385,7 +1209,7 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Creates a new model from document types of existing models.
+     * Creates a new document model from document types of existing document models.
      *
      * @param composeRequest Compose request parameters.
      * @param context The context to associate with this operation.
@@ -1401,14 +1225,15 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Generates authorization to copy a model to this location with specified modelId and optional description.
+     * Generates authorization to copy a document model to this location with specified modelId and optional
+     * description.
      *
      * @param authorizeCopyRequest Authorize copy request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authorization to copy a model to the specified target resource and modelId along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * @return authorization to copy a document model to the specified target resource and modelId along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CopyAuthorization>> authorizeCopyDocumentModelWithResponseAsync(
@@ -1421,15 +1246,16 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Generates authorization to copy a model to this location with specified modelId and optional description.
+     * Generates authorization to copy a document model to this location with specified modelId and optional
+     * description.
      *
      * @param authorizeCopyRequest Authorize copy request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authorization to copy a model to the specified target resource and modelId along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * @return authorization to copy a document model to the specified target resource and modelId along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CopyAuthorization>> authorizeCopyDocumentModelWithResponseAsync(
@@ -1440,14 +1266,15 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Generates authorization to copy a model to this location with specified modelId and optional description.
+     * Generates authorization to copy a document model to this location with specified modelId and optional
+     * description.
      *
      * @param authorizeCopyRequest Authorize copy request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authorization to copy a model to the specified target resource and modelId on successful completion of
-     *     {@link Mono}.
+     * @return authorization to copy a document model to the specified target resource and modelId on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyAuthorization> authorizeCopyDocumentModelAsync(AuthorizeCopyRequest authorizeCopyRequest) {
@@ -1456,15 +1283,16 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Generates authorization to copy a model to this location with specified modelId and optional description.
+     * Generates authorization to copy a document model to this location with specified modelId and optional
+     * description.
      *
      * @param authorizeCopyRequest Authorize copy request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authorization to copy a model to the specified target resource and modelId on successful completion of
-     *     {@link Mono}.
+     * @return authorization to copy a document model to the specified target resource and modelId on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyAuthorization> authorizeCopyDocumentModelAsync(
@@ -1474,13 +1302,14 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Generates authorization to copy a model to this location with specified modelId and optional description.
+     * Generates authorization to copy a document model to this location with specified modelId and optional
+     * description.
      *
      * @param authorizeCopyRequest Authorize copy request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authorization to copy a model to the specified target resource and modelId.
+     * @return authorization to copy a document model to the specified target resource and modelId.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CopyAuthorization authorizeCopyDocumentModel(AuthorizeCopyRequest authorizeCopyRequest) {
@@ -1488,14 +1317,16 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Generates authorization to copy a model to this location with specified modelId and optional description.
+     * Generates authorization to copy a document model to this location with specified modelId and optional
+     * description.
      *
      * @param authorizeCopyRequest Authorize copy request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authorization to copy a model to the specified target resource and modelId along with {@link Response}.
+     * @return authorization to copy a document model to the specified target resource and modelId along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CopyAuthorization> authorizeCopyDocumentModelWithResponse(
@@ -1504,9 +1335,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Copies model to the target resource, region, and modelId.
+     * Copies document model to the target resource, region, and modelId.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1524,9 +1355,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Copies model to the target resource, region, and modelId.
+     * Copies document model to the target resource, region, and modelId.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1543,9 +1374,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Copies model to the target resource, region, and modelId.
+     * Copies document model to the target resource, region, and modelId.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1558,9 +1389,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Copies model to the target resource, region, and modelId.
+     * Copies document model to the target resource, region, and modelId.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1574,9 +1405,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Copies model to the target resource, region, and modelId.
+     * Copies document model to the target resource, region, and modelId.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1588,9 +1419,9 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * Copies model to the target resource, region, and modelId.
+     * Copies document model to the target resource, region, and modelId.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1613,7 +1444,7 @@ public final class FormRecognizerClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<OperationInfo>> getOperationsSinglePageAsync() {
+    public Mono<PagedResponse<OperationSummary>> getOperationsSinglePageAsync() {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context -> service.getOperations(this.getEndpoint(), this.getApiVersion(), accept, context))
@@ -1639,7 +1470,7 @@ public final class FormRecognizerClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<OperationInfo>> getOperationsSinglePageAsync(Context context) {
+    public Mono<PagedResponse<OperationSummary>> getOperationsSinglePageAsync(Context context) {
         final String accept = "application/json";
         return service.getOperations(this.getEndpoint(), this.getApiVersion(), accept, context)
                 .map(
@@ -1661,7 +1492,7 @@ public final class FormRecognizerClientImpl {
      * @return list Operations response object as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<OperationInfo> getOperationsAsync() {
+    public PagedFlux<OperationSummary> getOperationsAsync() {
         return new PagedFlux<>(
                 () -> getOperationsSinglePageAsync(), nextLink -> getOperationsNextSinglePageAsync(nextLink));
     }
@@ -1676,7 +1507,7 @@ public final class FormRecognizerClientImpl {
      * @return list Operations response object as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<OperationInfo> getOperationsAsync(Context context) {
+    public PagedFlux<OperationSummary> getOperationsAsync(Context context) {
         return new PagedFlux<>(
                 () -> getOperationsSinglePageAsync(context),
                 nextLink -> getOperationsNextSinglePageAsync(nextLink, context));
@@ -1690,7 +1521,7 @@ public final class FormRecognizerClientImpl {
      * @return list Operations response object as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OperationInfo> getOperations() {
+    public PagedIterable<OperationSummary> getOperations() {
         return new PagedIterable<>(getOperationsAsync());
     }
 
@@ -1704,7 +1535,7 @@ public final class FormRecognizerClientImpl {
      * @return list Operations response object as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OperationInfo> getOperations(Context context) {
+    public PagedIterable<OperationSummary> getOperations(Context context) {
         return new PagedIterable<>(getOperationsAsync(context));
     }
 
@@ -1718,7 +1549,7 @@ public final class FormRecognizerClientImpl {
      * @return operation info along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<GetOperationResponse>> getOperationWithResponseAsync(String operationId) {
+    public Mono<Response<OperationDetails>> getOperationWithResponseAsync(String operationId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1736,7 +1567,7 @@ public final class FormRecognizerClientImpl {
      * @return operation info along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<GetOperationResponse>> getOperationWithResponseAsync(String operationId, Context context) {
+    public Mono<Response<OperationDetails>> getOperationWithResponseAsync(String operationId, Context context) {
         final String accept = "application/json";
         return service.getOperation(this.getEndpoint(), operationId, this.getApiVersion(), accept, context);
     }
@@ -1751,7 +1582,7 @@ public final class FormRecognizerClientImpl {
      * @return operation info on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GetOperationResponse> getOperationAsync(String operationId) {
+    public Mono<OperationDetails> getOperationAsync(String operationId) {
         return getOperationWithResponseAsync(operationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1766,7 +1597,7 @@ public final class FormRecognizerClientImpl {
      * @return operation info on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GetOperationResponse> getOperationAsync(String operationId, Context context) {
+    public Mono<OperationDetails> getOperationAsync(String operationId, Context context) {
         return getOperationWithResponseAsync(operationId, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1780,7 +1611,7 @@ public final class FormRecognizerClientImpl {
      * @return operation info.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GetOperationResponse getOperation(String operationId) {
+    public OperationDetails getOperation(String operationId) {
         return getOperationAsync(operationId).block();
     }
 
@@ -1795,22 +1626,23 @@ public final class FormRecognizerClientImpl {
      * @return operation info along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GetOperationResponse> getOperationWithResponse(String operationId, Context context) {
+    public Response<OperationDetails> getOperationWithResponse(String operationId, Context context) {
         return getOperationWithResponseAsync(operationId, context).block();
     }
 
     /**
-     * List all models.
+     * List all document models.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list Models response object along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list document models response object along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ModelSummary>> getModelsSinglePageAsync() {
+    public Mono<PagedResponse<DocumentModelSummary>> getDocumentModelsSinglePageAsync() {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.getModels(this.getEndpoint(), this.getApiVersion(), accept, context))
+                        context -> service.getDocumentModels(this.getEndpoint(), this.getApiVersion(), accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1823,18 +1655,19 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * List all models.
+     * List all document models.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list Models response object along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list document models response object along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ModelSummary>> getModelsSinglePageAsync(Context context) {
+    public Mono<PagedResponse<DocumentModelSummary>> getDocumentModelsSinglePageAsync(Context context) {
         final String accept = "application/json";
-        return service.getModels(this.getEndpoint(), this.getApiVersion(), accept, context)
+        return service.getDocumentModels(this.getEndpoint(), this.getApiVersion(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1847,168 +1680,173 @@ public final class FormRecognizerClientImpl {
     }
 
     /**
-     * List all models.
+     * List all document models.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list Models response object as paginated response with {@link PagedFlux}.
+     * @return list document models response object as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ModelSummary> getModelsAsync() {
-        return new PagedFlux<>(() -> getModelsSinglePageAsync(), nextLink -> getModelsNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * List all models.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list Models response object as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ModelSummary> getModelsAsync(Context context) {
+    public PagedFlux<DocumentModelSummary> getDocumentModelsAsync() {
         return new PagedFlux<>(
-                () -> getModelsSinglePageAsync(context), nextLink -> getModelsNextSinglePageAsync(nextLink, context));
+                () -> getDocumentModelsSinglePageAsync(), nextLink -> getDocumentModelsNextSinglePageAsync(nextLink));
     }
 
     /**
-     * List all models.
-     *
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list Models response object as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ModelSummary> getModels() {
-        return new PagedIterable<>(getModelsAsync());
-    }
-
-    /**
-     * List all models.
+     * List all document models.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list Models response object as paginated response with {@link PagedIterable}.
+     * @return list document models response object as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ModelSummary> getModels(Context context) {
-        return new PagedIterable<>(getModelsAsync(context));
+    public PagedFlux<DocumentModelSummary> getDocumentModelsAsync(Context context) {
+        return new PagedFlux<>(
+                () -> getDocumentModelsSinglePageAsync(context),
+                nextLink -> getDocumentModelsNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * Gets detailed model information.
+     * List all document models.
      *
-     * @param modelId Unique model name.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list document models response object as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DocumentModelSummary> getDocumentModels() {
+        return new PagedIterable<>(getDocumentModelsAsync());
+    }
+
+    /**
+     * List all document models.
+     *
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed model information along with {@link Response} on successful completion of {@link Mono}.
+     * @return list document models response object as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DocumentModelSummary> getDocumentModels(Context context) {
+        return new PagedIterable<>(getDocumentModelsAsync(context));
+    }
+
+    /**
+     * Gets detailed document model information.
+     *
+     * @param modelId Unique document model name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return detailed document model information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ModelInfo>> getModelWithResponseAsync(String modelId) {
+    public Mono<Response<DocumentModelDetails>> getDocumentModelWithResponseAsync(String modelId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getModel(this.getEndpoint(), modelId, this.getApiVersion(), accept, context));
+                context ->
+                        service.getDocumentModel(this.getEndpoint(), modelId, this.getApiVersion(), accept, context));
     }
 
     /**
-     * Gets detailed model information.
+     * Gets detailed document model information.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed model information along with {@link Response} on successful completion of {@link Mono}.
+     * @return detailed document model information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ModelInfo>> getModelWithResponseAsync(String modelId, Context context) {
+    public Mono<Response<DocumentModelDetails>> getDocumentModelWithResponseAsync(String modelId, Context context) {
         final String accept = "application/json";
-        return service.getModel(this.getEndpoint(), modelId, this.getApiVersion(), accept, context);
+        return service.getDocumentModel(this.getEndpoint(), modelId, this.getApiVersion(), accept, context);
     }
 
     /**
-     * Gets detailed model information.
+     * Gets detailed document model information.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed model information on successful completion of {@link Mono}.
+     * @return detailed document model information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ModelInfo> getModelAsync(String modelId) {
-        return getModelWithResponseAsync(modelId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<DocumentModelDetails> getDocumentModelAsync(String modelId) {
+        return getDocumentModelWithResponseAsync(modelId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Gets detailed model information.
+     * Gets detailed document model information.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed model information on successful completion of {@link Mono}.
+     * @return detailed document model information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ModelInfo> getModelAsync(String modelId, Context context) {
-        return getModelWithResponseAsync(modelId, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<DocumentModelDetails> getDocumentModelAsync(String modelId, Context context) {
+        return getDocumentModelWithResponseAsync(modelId, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Gets detailed model information.
+     * Gets detailed document model information.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed model information.
+     * @return detailed document model information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ModelInfo getModel(String modelId) {
-        return getModelAsync(modelId).block();
+    public DocumentModelDetails getDocumentModel(String modelId) {
+        return getDocumentModelAsync(modelId).block();
     }
 
     /**
-     * Gets detailed model information.
+     * Gets detailed document model information.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed model information along with {@link Response}.
+     * @return detailed document model information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ModelInfo> getModelWithResponse(String modelId, Context context) {
-        return getModelWithResponseAsync(modelId, context).block();
+    public Response<DocumentModelDetails> getDocumentModelWithResponse(String modelId, Context context) {
+        return getDocumentModelWithResponseAsync(modelId, context).block();
     }
 
     /**
-     * Deletes model.
+     * Deletes document model.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteModelWithResponseAsync(String modelId) {
+    public Mono<Response<Void>> deleteDocumentModelWithResponseAsync(String modelId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.deleteModel(this.getEndpoint(), modelId, this.getApiVersion(), accept, context));
+                context ->
+                        service.deleteDocumentModel(
+                                this.getEndpoint(), modelId, this.getApiVersion(), accept, context));
     }
 
     /**
-     * Deletes model.
+     * Deletes document model.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2016,29 +1854,29 @@ public final class FormRecognizerClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteModelWithResponseAsync(String modelId, Context context) {
+    public Mono<Response<Void>> deleteDocumentModelWithResponseAsync(String modelId, Context context) {
         final String accept = "application/json";
-        return service.deleteModel(this.getEndpoint(), modelId, this.getApiVersion(), accept, context);
+        return service.deleteDocumentModel(this.getEndpoint(), modelId, this.getApiVersion(), accept, context);
     }
 
     /**
-     * Deletes model.
+     * Deletes document model.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteModelAsync(String modelId) {
-        return deleteModelWithResponseAsync(modelId).flatMap(ignored -> Mono.empty());
+    public Mono<Void> deleteDocumentModelAsync(String modelId) {
+        return deleteDocumentModelWithResponseAsync(modelId).flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Deletes model.
+     * Deletes document model.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2046,27 +1884,27 @@ public final class FormRecognizerClientImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteModelAsync(String modelId, Context context) {
-        return deleteModelWithResponseAsync(modelId, context).flatMap(ignored -> Mono.empty());
+    public Mono<Void> deleteDocumentModelAsync(String modelId, Context context) {
+        return deleteDocumentModelWithResponseAsync(modelId, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Deletes model.
+     * Deletes document model.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteModel(String modelId) {
-        deleteModelAsync(modelId).block();
+    public void deleteDocumentModel(String modelId) {
+        deleteDocumentModelAsync(modelId).block();
     }
 
     /**
-     * Deletes model.
+     * Deletes document model.
      *
-     * @param modelId Unique model name.
+     * @param modelId Unique document model name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2074,12 +1912,12 @@ public final class FormRecognizerClientImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteModelWithResponse(String modelId, Context context) {
-        return deleteModelWithResponseAsync(modelId, context).block();
+    public Response<Void> deleteDocumentModelWithResponse(String modelId, Context context) {
+        return deleteDocumentModelWithResponseAsync(modelId, context).block();
     }
 
     /**
-     * Return basic info about the current resource.
+     * Return information about the current resource.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2087,14 +1925,14 @@ public final class FormRecognizerClientImpl {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<GetInfoResponse>> getInfoWithResponseAsync() {
+    public Mono<Response<ResourceDetails>> getResourceDetailsWithResponseAsync() {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getInfo(this.getEndpoint(), this.getApiVersion(), accept, context));
+                context -> service.getResourceDetails(this.getEndpoint(), this.getApiVersion(), accept, context));
     }
 
     /**
-     * Return basic info about the current resource.
+     * Return information about the current resource.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2104,25 +1942,25 @@ public final class FormRecognizerClientImpl {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<GetInfoResponse>> getInfoWithResponseAsync(Context context) {
+    public Mono<Response<ResourceDetails>> getResourceDetailsWithResponseAsync(Context context) {
         final String accept = "application/json";
-        return service.getInfo(this.getEndpoint(), this.getApiVersion(), accept, context);
+        return service.getResourceDetails(this.getEndpoint(), this.getApiVersion(), accept, context);
     }
 
     /**
-     * Return basic info about the current resource.
+     * Return information about the current resource.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return general information regarding the current resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GetInfoResponse> getInfoAsync() {
-        return getInfoWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<ResourceDetails> getResourceDetailsAsync() {
+        return getResourceDetailsWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Return basic info about the current resource.
+     * Return information about the current resource.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2131,24 +1969,24 @@ public final class FormRecognizerClientImpl {
      * @return general information regarding the current resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GetInfoResponse> getInfoAsync(Context context) {
-        return getInfoWithResponseAsync(context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<ResourceDetails> getResourceDetailsAsync(Context context) {
+        return getResourceDetailsWithResponseAsync(context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Return basic info about the current resource.
+     * Return information about the current resource.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return general information regarding the current resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GetInfoResponse getInfo() {
-        return getInfoAsync().block();
+    public ResourceDetails getResourceDetails() {
+        return getResourceDetailsAsync().block();
     }
 
     /**
-     * Return basic info about the current resource.
+     * Return information about the current resource.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2157,8 +1995,8 @@ public final class FormRecognizerClientImpl {
      * @return general information regarding the current resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GetInfoResponse> getInfoWithResponse(Context context) {
-        return getInfoWithResponseAsync(context).block();
+    public Response<ResourceDetails> getResourceDetailsWithResponse(Context context) {
+        return getResourceDetailsWithResponseAsync(context).block();
     }
 
     /**
@@ -2172,7 +2010,7 @@ public final class FormRecognizerClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<OperationInfo>> getOperationsNextSinglePageAsync(String nextLink) {
+    public Mono<PagedResponse<OperationSummary>> getOperationsNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getOperationsNext(nextLink, this.getEndpoint(), accept, context))
                 .map(
@@ -2198,7 +2036,7 @@ public final class FormRecognizerClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<OperationInfo>> getOperationsNextSinglePageAsync(String nextLink, Context context) {
+    public Mono<PagedResponse<OperationSummary>> getOperationsNextSinglePageAsync(String nextLink, Context context) {
         final String accept = "application/json";
         return service.getOperationsNext(nextLink, this.getEndpoint(), accept, context)
                 .map(
@@ -2219,12 +2057,14 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list Models response object along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list document models response object along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ModelSummary>> getModelsNextSinglePageAsync(String nextLink) {
+    public Mono<PagedResponse<DocumentModelSummary>> getDocumentModelsNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getModelsNext(nextLink, this.getEndpoint(), accept, context))
+        return FluxUtil.withContext(
+                        context -> service.getDocumentModelsNext(nextLink, this.getEndpoint(), accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -2244,12 +2084,14 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list Models response object along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list document models response object along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ModelSummary>> getModelsNextSinglePageAsync(String nextLink, Context context) {
+    public Mono<PagedResponse<DocumentModelSummary>> getDocumentModelsNextSinglePageAsync(
+            String nextLink, Context context) {
         final String accept = "application/json";
-        return service.getModelsNext(nextLink, this.getEndpoint(), accept, context)
+        return service.getDocumentModelsNext(nextLink, this.getEndpoint(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

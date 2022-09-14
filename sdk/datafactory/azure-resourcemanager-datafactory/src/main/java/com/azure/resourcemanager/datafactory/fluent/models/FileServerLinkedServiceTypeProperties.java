@@ -13,15 +13,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class FileServerLinkedServiceTypeProperties {
     /*
-     * Host name of the server. Type: string (or Expression with resultType
-     * string).
+     * Host name of the server. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "host", required = true)
     private Object host;
 
     /*
-     * User ID to logon the server. Type: string (or Expression with resultType
-     * string).
+     * User ID to logon the server. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "userId")
     private Object userId;
@@ -33,9 +31,8 @@ public final class FileServerLinkedServiceTypeProperties {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;

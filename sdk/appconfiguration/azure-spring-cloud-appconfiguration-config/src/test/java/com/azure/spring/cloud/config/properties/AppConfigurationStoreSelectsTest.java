@@ -66,7 +66,7 @@ public class AppConfigurationStoreSelectsTest {
     }
 
     @Test
-    public void multileLabels() {
+    public void multipleLabels() {
         AppConfigurationStoreSelects selects = new AppConfigurationStoreSelects().setLabelFilter("dev,test");
 
         String[] results = selects.getLabelFilter(new ArrayList<>());

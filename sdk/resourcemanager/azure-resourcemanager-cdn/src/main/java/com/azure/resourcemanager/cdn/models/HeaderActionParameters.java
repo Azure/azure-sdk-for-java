@@ -6,14 +6,11 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines the parameters for the request header action. */
 @Fluent
 public final class HeaderActionParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HeaderActionParameters.class);
-
     /*
      * The typeName property.
      */
@@ -130,16 +127,18 @@ public final class HeaderActionParameters {
      */
     public void validate() {
         if (headerAction() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property headerAction in model HeaderActionParameters"));
         }
         if (headerName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property headerName in model HeaderActionParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(HeaderActionParameters.class);
 }

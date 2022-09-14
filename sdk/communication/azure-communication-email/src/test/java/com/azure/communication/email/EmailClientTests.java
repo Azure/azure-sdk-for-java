@@ -22,7 +22,7 @@ public class EmailClientTests extends EmailTestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @MethodSource("getTestParameters")
     public void sendEmailToSingleRecipient(HttpClient httpClient) {
         emailClient = getEmailClient(httpClient);
 
@@ -44,7 +44,7 @@ public class EmailClientTests extends EmailTestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @MethodSource("getTestParameters")
     public void sendEmailToMultipleRecipients(HttpClient httpClient) {
         emailClient = getEmailClient(httpClient);
 
@@ -76,7 +76,7 @@ public class EmailClientTests extends EmailTestBase {
     }
     //
     @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @MethodSource("getTestParameters")
     public void sendEmailWithAttachment(HttpClient httpClient) {
         emailClient = getEmailClient(httpClient);
 
@@ -108,7 +108,7 @@ public class EmailClientTests extends EmailTestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @MethodSource("getTestParameters")
     public void getMessageStatus(HttpClient httpClient) {
         emailClient = getEmailClient(httpClient);
 

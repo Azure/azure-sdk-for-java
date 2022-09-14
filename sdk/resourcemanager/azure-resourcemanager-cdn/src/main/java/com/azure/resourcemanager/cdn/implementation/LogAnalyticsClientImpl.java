@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.fluent.LogAnalyticsClient;
 import com.azure.resourcemanager.cdn.fluent.models.ContinentsResponseInner;
 import com.azure.resourcemanager.cdn.fluent.models.MetricsResponseInner;
@@ -41,18 +40,14 @@ import com.azure.resourcemanager.cdn.models.WafRankingGroupBy;
 import com.azure.resourcemanager.cdn.models.WafRankingType;
 import com.azure.resourcemanager.cdn.models.WafRuleType;
 import java.time.OffsetDateTime;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LogAnalyticsClient. */
 public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
-    private final ClientLogger logger = new ClientLogger(LogAnalyticsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final LogAnalyticsService service;
 
@@ -269,47 +264,23 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         }
         final String accept = "application/json";
         List<String> metricsConverted =
-            Optional
-                .ofNullable(metrics)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            metrics.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> groupByConverted =
-            Optional
-                .ofNullable(groupBy)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            (groupBy == null)
+                ? new ArrayList<>()
+                : groupBy.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> continentsConverted =
-            Optional
-                .ofNullable(continents)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            (continents == null)
+                ? new ArrayList<>()
+                : continents.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> countryOrRegionsConverted =
-            Optional
-                .ofNullable(countryOrRegions)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            (countryOrRegions == null)
+                ? new ArrayList<>()
+                : countryOrRegions.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> customDomainsConverted =
-            Optional
-                .ofNullable(customDomains)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            customDomains.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> protocolsConverted =
-            Optional
-                .ofNullable(protocols)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            protocols.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil
             .withContext(
                 context ->
@@ -408,47 +379,23 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         }
         final String accept = "application/json";
         List<String> metricsConverted =
-            Optional
-                .ofNullable(metrics)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            metrics.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> groupByConverted =
-            Optional
-                .ofNullable(groupBy)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            (groupBy == null)
+                ? new ArrayList<>()
+                : groupBy.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> continentsConverted =
-            Optional
-                .ofNullable(continents)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            (continents == null)
+                ? new ArrayList<>()
+                : continents.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> countryOrRegionsConverted =
-            Optional
-                .ofNullable(countryOrRegions)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            (countryOrRegions == null)
+                ? new ArrayList<>()
+                : countryOrRegions.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> customDomainsConverted =
-            Optional
-                .ofNullable(customDomains)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            customDomains.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> protocolsConverted =
-            Optional
-                .ofNullable(protocols)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            protocols.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         context = this.client.mergeContext(context);
         return service
             .getLogAnalyticsMetrics(
@@ -515,14 +462,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
                 groupBy,
                 continents,
                 countryOrRegions)
-            .flatMap(
-                (Response<MetricsResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -567,14 +507,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
                 groupBy,
                 continents,
                 countryOrRegions)
-            .flatMap(
-                (Response<MetricsResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -734,26 +667,13 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         }
         final String accept = "application/json";
         List<String> rankingsConverted =
-            Optional
-                .ofNullable(rankings)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            rankings.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> metricsConverted =
-            Optional
-                .ofNullable(metrics)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            metrics.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> customDomainsConverted =
-            Optional
-                .ofNullable(customDomains)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            (customDomains == null)
+                ? new ArrayList<>()
+                : customDomains.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil
             .withContext(
                 context ->
@@ -838,26 +758,13 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         }
         final String accept = "application/json";
         List<String> rankingsConverted =
-            Optional
-                .ofNullable(rankings)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            rankings.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> metricsConverted =
-            Optional
-                .ofNullable(metrics)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            metrics.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> customDomainsConverted =
-            Optional
-                .ofNullable(customDomains)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            (customDomains == null)
+                ? new ArrayList<>()
+                : customDomains.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         context = this.client.mergeContext(context);
         return service
             .getLogAnalyticsRankings(
@@ -912,14 +819,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
                 dateTimeBegin,
                 dateTimeEnd,
                 customDomains)
-            .flatMap(
-                (Response<RankingsResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -957,14 +857,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
                 dateTimeBegin,
                 dateTimeEnd,
                 customDomains)
-            .flatMap(
-                (Response<RankingsResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1159,14 +1052,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContinentsResponseInner> getLogAnalyticsLocationsAsync(String resourceGroupName, String profileName) {
         return getLogAnalyticsLocationsWithResponseAsync(resourceGroupName, profileName)
-            .flatMap(
-                (Response<ContinentsResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1315,14 +1201,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResourcesResponseInner> getLogAnalyticsResourcesAsync(String resourceGroupName, String profileName) {
         return getLogAnalyticsResourcesWithResponseAsync(resourceGroupName, profileName)
-            .flatMap(
-                (Response<ResourcesResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1422,33 +1301,19 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         }
         final String accept = "application/json";
         List<String> metricsConverted =
-            Optional
-                .ofNullable(metrics)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            metrics.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> actionsConverted =
-            Optional
-                .ofNullable(actions)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            (actions == null)
+                ? new ArrayList<>()
+                : actions.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> groupByConverted =
-            Optional
-                .ofNullable(groupBy)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            (groupBy == null)
+                ? new ArrayList<>()
+                : groupBy.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> ruleTypesConverted =
-            Optional
-                .ofNullable(ruleTypes)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            (ruleTypes == null)
+                ? new ArrayList<>()
+                : ruleTypes.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil
             .withContext(
                 context ->
@@ -1536,33 +1401,19 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         }
         final String accept = "application/json";
         List<String> metricsConverted =
-            Optional
-                .ofNullable(metrics)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            metrics.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> actionsConverted =
-            Optional
-                .ofNullable(actions)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            (actions == null)
+                ? new ArrayList<>()
+                : actions.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> groupByConverted =
-            Optional
-                .ofNullable(groupBy)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            (groupBy == null)
+                ? new ArrayList<>()
+                : groupBy.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> ruleTypesConverted =
-            Optional
-                .ofNullable(ruleTypes)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            (ruleTypes == null)
+                ? new ArrayList<>()
+                : ruleTypes.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         context = this.client.mergeContext(context);
         return service
             .getWafLogAnalyticsMetrics(
@@ -1621,14 +1472,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
                 actions,
                 groupBy,
                 ruleTypes)
-            .flatMap(
-                (Response<WafMetricsResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1667,14 +1511,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
                 actions,
                 groupBy,
                 ruleTypes)
-            .flatMap(
-                (Response<WafMetricsResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1824,33 +1661,17 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         }
         final String accept = "application/json";
         List<String> metricsConverted =
-            Optional
-                .ofNullable(metrics)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            metrics.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> rankingsConverted =
-            Optional
-                .ofNullable(rankings)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            rankings.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> actionsConverted =
-            Optional
-                .ofNullable(actions)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            (actions == null)
+                ? new ArrayList<>()
+                : actions.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> ruleTypesConverted =
-            Optional
-                .ofNullable(ruleTypes)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            (ruleTypes == null)
+                ? new ArrayList<>()
+                : ruleTypes.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil
             .withContext(
                 context ->
@@ -1938,33 +1759,17 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         }
         final String accept = "application/json";
         List<String> metricsConverted =
-            Optional
-                .ofNullable(metrics)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            metrics.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> rankingsConverted =
-            Optional
-                .ofNullable(rankings)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            rankings.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> actionsConverted =
-            Optional
-                .ofNullable(actions)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            (actions == null)
+                ? new ArrayList<>()
+                : actions.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         List<String> ruleTypesConverted =
-            Optional
-                .ofNullable(ruleTypes)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map((item) -> Objects.toString(item, ""))
-                .collect(Collectors.toList());
+            (ruleTypes == null)
+                ? new ArrayList<>()
+                : ruleTypes.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         context = this.client.mergeContext(context);
         return service
             .getWafLogAnalyticsRankings(
@@ -2023,14 +1828,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
                 rankings,
                 actions,
                 ruleTypes)
-            .flatMap(
-                (Response<WafRankingsResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2070,14 +1868,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
                 rankings,
                 actions,
                 ruleTypes)
-            .flatMap(
-                (Response<WafRankingsResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

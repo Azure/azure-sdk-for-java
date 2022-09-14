@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LicenseType. */
+/**
+ * The license type to use for Windows VMs. See [Azure Hybrid User
+ * Benefits](https://azure.microsoft.com/pricing/hybrid-benefit/faq/) for more details.
+ */
 public final class LicenseType extends ExpandableStringEnum<LicenseType> {
     /** Static value None for LicenseType. */
     public static final LicenseType NONE = fromString("None");

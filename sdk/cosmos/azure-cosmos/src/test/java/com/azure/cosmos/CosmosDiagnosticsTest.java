@@ -42,6 +42,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedFlux;
+import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -378,6 +379,65 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         } finally {
             if (testSessionTokenClient != null) {
                 testSessionTokenClient.close();
+            }
+        }
+    }
+
+    @Test(groups = {"simple"})
+    public void databaseAccountToClients() {
+        CosmosClient testClient = null;
+        try {
+            testClient = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .directMode()
+                .buildClient();
+            CosmosContainer cosmosContainer =
+                testClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
+            InternalObjectNode internalObjectNode = getInternalObjectNode();
+            CosmosItemResponse<InternalObjectNode> createResponse = cosmosContainer.createItem(internalObjectNode);
+            String diagnostics = createResponse.getDiagnostics().toString();
+
+            // assert diagnostics shows the correct format for tracking client instances
+            assertThat(diagnostics).contains(String.format("\"clientEndpoints\"" +
+                    ":{\"%s\"", TestConfigurations.HOST));
+            // track number of clients currently mapped to account
+            int clientsIndex = diagnostics.indexOf("\"clientEndpoints\":");
+            // we do end at +120 to ensure we grab the bracket even if the account is very long or if
+            // we have hundreds of clients (triple digit ints) running at once in the pipelines
+            String[] substrings = diagnostics.substring(clientsIndex, clientsIndex + 120)
+                .split("}")[0].split(":");
+            String intString = substrings[substrings.length-1];
+            int intValue = Integer.parseInt(intString);
+
+
+            CosmosClient testClient2 = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .directMode()
+                .buildClient();
+
+            internalObjectNode = getInternalObjectNode();
+            createResponse = cosmosContainer.createItem(internalObjectNode);
+            diagnostics = createResponse.getDiagnostics().toString();
+            // assert diagnostics shows the correct format for tracking client instances
+            assertThat(diagnostics).contains(String.format("\"clientEndpoints\"" +
+                ":{\"%s\"", TestConfigurations.HOST));
+            // grab new value and assert one additional client is mapped to the same account used previously
+            clientsIndex = diagnostics.indexOf("\"clientEndpoints\":");
+            substrings = diagnostics.substring(clientsIndex, clientsIndex + 120)
+                .split("}")[0].split(":");
+            intString = substrings[substrings.length-1];
+            assertThat(Integer.parseInt(intString)).isEqualTo(intValue+1);
+
+            //close second client
+            testClient2.close();
+
+        } finally {
+            if (testClient != null) {
+                testClient.close();
             }
         }
     }
@@ -733,6 +793,17 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             isValidJSON(diagnostics);
             validateTransportRequestTimelineDirect(diagnostics);
             validateRegionContacted(createResponse.getDiagnostics(), client.asyncClient());
+
+            // TODO: add better store result diagnostic validation on exception
+            ObjectNode diagnosticsNode = (ObjectNode) OBJECT_MAPPER.readTree(diagnostics);
+            JsonNode responseStatisticsList = diagnosticsNode.get("responseStatisticsList");
+            assertThat(responseStatisticsList.isArray()).isTrue();
+            assertThat(responseStatisticsList.size()).isGreaterThan(0);
+            JsonNode storeResult = responseStatisticsList.get(0).get("storeResult");
+            assertThat(storeResult).isNotNull();
+            JsonNode replicaStatusList = storeResult.get("replicaStatusList");
+            assertThat(replicaStatusList.isArray()).isTrue();
+            assertThat(replicaStatusList.size()).isGreaterThan(0);
         } finally {
             if (client != null) {
                 client.close();
@@ -982,6 +1053,9 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
         assertThat(storeResult.get("channelTaskQueueSize").asInt(-1)).isGreaterThanOrEqualTo(0);
         assertThat(storeResult.get("pendingRequestsCount").asInt(-1)).isGreaterThanOrEqualTo(0);
+        JsonNode replicaStatusList = storeResult.get("replicaStatusList");
+        assertThat(replicaStatusList.isArray()).isTrue();
+        assertThat(replicaStatusList.size()).isGreaterThan(0);
 
         JsonNode serviceEndpointStatistics = storeResult.get("serviceEndpointStatistics");
         assertThat(serviceEndpointStatistics).isNotNull();
@@ -1180,7 +1254,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
     public void isValidJSON(final String json) {
         try {
-            final JsonParser parser = new ObjectMapper().createParser(json);
+            final JsonParser parser = new JsonFactory().createParser(json);
             while (parser.nextToken() != null) {
             }
         } catch (IOException ex) {

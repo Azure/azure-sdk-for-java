@@ -72,7 +72,9 @@ public final class MediaServicesOperationStatusesClientImpl implements MediaServ
     }
 
     /**
-     * Get media service operation status.
+     * Get operation status.
+     *
+     * <p>Get media service operation status.
      *
      * @param locationName Location name.
      * @param operationId Operation ID.
@@ -102,6 +104,7 @@ public final class MediaServicesOperationStatusesClientImpl implements MediaServ
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -112,14 +115,16 @@ public final class MediaServicesOperationStatusesClientImpl implements MediaServ
                             this.client.getSubscriptionId(),
                             locationName,
                             operationId,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Get media service operation status.
+     * Get operation status.
+     *
+     * <p>Get media service operation status.
      *
      * @param locationName Location name.
      * @param operationId Operation ID.
@@ -150,6 +155,7 @@ public final class MediaServicesOperationStatusesClientImpl implements MediaServ
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -158,13 +164,15 @@ public final class MediaServicesOperationStatusesClientImpl implements MediaServ
                 this.client.getSubscriptionId(),
                 locationName,
                 operationId,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
 
     /**
-     * Get media service operation status.
+     * Get operation status.
+     *
+     * <p>Get media service operation status.
      *
      * @param locationName Location name.
      * @param operationId Operation ID.
@@ -179,7 +187,9 @@ public final class MediaServicesOperationStatusesClientImpl implements MediaServ
     }
 
     /**
-     * Get media service operation status.
+     * Get operation status.
+     *
+     * <p>Get media service operation status.
      *
      * @param locationName Location name.
      * @param operationId Operation ID.
@@ -194,7 +204,9 @@ public final class MediaServicesOperationStatusesClientImpl implements MediaServ
     }
 
     /**
-     * Get media service operation status.
+     * Get operation status.
+     *
+     * <p>Get media service operation status.
      *
      * @param locationName Location name.
      * @param operationId Operation ID.

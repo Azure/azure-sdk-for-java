@@ -17,8 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class ManagedIntegrationRuntime extends IntegrationRuntime {
     /*
-     * Integration runtime state, only valid for managed dedicated integration
-     * runtime.
+     * Integration runtime state, only valid for managed dedicated integration runtime.
      */
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private IntegrationRuntimeState state;

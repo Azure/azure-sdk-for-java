@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Tracks List. */
 public final class TracksListSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/asset-tracks-list-all.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/asset-tracks-list-all.json
      */
     /**
      * Sample code: Lists all Tracks.

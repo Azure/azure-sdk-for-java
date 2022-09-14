@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RequestUriOperator. */
+/** Describes operator to be matched. */
 public final class RequestUriOperator extends ExpandableStringEnum<RequestUriOperator> {
     /** Static value Any for RequestUriOperator. */
     public static final RequestUriOperator ANY = fromString("Any");
@@ -51,7 +51,11 @@ public final class RequestUriOperator extends ExpandableStringEnum<RequestUriOpe
         return fromString(name, RequestUriOperator.class);
     }
 
-    /** @return known RequestUriOperator values. */
+    /**
+     * Gets known RequestUriOperator values.
+     *
+     * @return known RequestUriOperator values.
+     */
     public static Collection<RequestUriOperator> values() {
         return values(RequestUriOperator.class);
     }

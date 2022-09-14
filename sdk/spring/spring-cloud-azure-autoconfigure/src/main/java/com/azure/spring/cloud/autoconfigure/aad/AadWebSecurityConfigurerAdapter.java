@@ -9,6 +9,7 @@ import com.azure.spring.cloud.autoconfigure.aad.implementation.webapp.AadOAuth2A
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
@@ -23,8 +24,11 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequest
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestOperations;
 
 import javax.servlet.Filter;
+
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ClientRestOperationConfiguration.AAD_OAUTH_2_CLIENT_REST_OPERATION_BEAN_NAME;
 
 /**
  * Abstract configuration class, used to make AzureClientRegistrationRepository and AuthzCodeGrantRequestEntityConverter
@@ -39,6 +43,14 @@ public abstract class AadWebSecurityConfigurerAdapter extends WebSecurityConfigu
      */
     @Autowired
     protected ClientRegistrationRepository repo;
+
+
+    /**
+     * RestOperations bean used to get access token from Azure AD.
+     */
+    @Autowired
+    @Qualifier(AAD_OAUTH_2_CLIENT_REST_OPERATION_BEAN_NAME)
+    protected RestOperations restOperations;
 
     /**
      * OIDC user service.
@@ -122,6 +134,7 @@ public abstract class AadWebSecurityConfigurerAdapter extends WebSecurityConfigu
      */
     protected OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
         DefaultAuthorizationCodeTokenResponseClient result = new DefaultAuthorizationCodeTokenResponseClient();
+        result.setRestOperations(restOperations);
         if (repo instanceof AadClientRegistrationRepository) {
             AadOAuth2AuthorizationCodeGrantRequestEntityConverter converter =
                 new AadOAuth2AuthorizationCodeGrantRequestEntityConverter(

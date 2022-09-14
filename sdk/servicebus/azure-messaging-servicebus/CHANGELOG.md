@@ -7,9 +7,18 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-- Fixed incorrect message ordering after session processor abandon message and when `maxConcurrentSessions` is 1. ([#24064](https://github.com/Azure/azure-sdk-for-java/issues/24064), [#30027](https://github.com/Azure/azure-sdk-for-java/issues/30027))
+
 ### Other Changes
 
+## 7.10.1 (2022-08-18)
+
+### Bugs Fixed
+- Fixed incorrect message ordering after session processor abandon message and when `maxConcurrentSessions` is 1. ([#24064](https://github.com/Azure/azure-sdk-for-java/issues/24064), [#30027](https://github.com/Azure/azure-sdk-for-java/issues/30027))
+- Added default constructor For AuthRulesWrapper in `TopicDescription`
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.30.0` to `1.31.0`.
+- Upgraded `azure-core-amqp` from `2.6.0` to `2.7.0`.
 ## 7.10.0 (2022-07-12)
 
 ### Features Added

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ImpalaAuthenticationType. */
+/** The authentication type to use. */
 public final class ImpalaAuthenticationType extends ExpandableStringEnum<ImpalaAuthenticationType> {
     /** Static value Anonymous for ImpalaAuthenticationType. */
     public static final ImpalaAuthenticationType ANONYMOUS = fromString("Anonymous");

@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.DiagnosticsInstantSerializer;
+import com.azure.cosmos.implementation.directconnectivity.RntbdConnectionStateListenerMetricsDiagnostics;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -57,7 +58,7 @@ public class RntbdEndpointStatistics implements Serializable {
     }
 
     RntbdEndpointStatistics connectionStateListenerMetrics(RntbdConnectionStateListenerMetrics metrics) {
-        this.connectionStateListenerMetrics = metrics;
+        this.connectionStateListenerMetrics = new RntbdConnectionStateListenerMetricsDiagnostics(metrics.getLastCallTimestamp(), metrics.getLastActionableContext());
         return this;
     }
 
@@ -69,7 +70,7 @@ public class RntbdEndpointStatistics implements Serializable {
     private long lastSuccessfulRequestNanoTime;
     private long lastRequestNanoTime;
     private Instant createdTime;
-    private RntbdConnectionStateListenerMetrics connectionStateListenerMetrics;
+    private RntbdConnectionStateListenerMetricsDiagnostics connectionStateListenerMetrics;
 
     private final static Instant referenceInstant = Instant.now();
     private final static long referenceNanoTime = System.nanoTime();

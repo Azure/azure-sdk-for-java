@@ -13,11 +13,9 @@ import java.util.List;
 @Fluent
 public final class RunQueryFilter {
     /*
-     * Parameter name to be used for filter. The allowed operands to query
-     * pipeline runs are PipelineName, RunStart, RunEnd and Status; to query
-     * activity runs are ActivityName, ActivityRunStart, ActivityRunEnd,
-     * ActivityType and Status, and to query trigger runs are TriggerName,
-     * TriggerRunTimestamp and Status.
+     * Parameter name to be used for filter. The allowed operands to query pipeline runs are PipelineName, RunStart,
+     * RunEnd and Status; to query activity runs are ActivityName, ActivityRunStart, ActivityRunEnd, ActivityType and
+     * Status, and to query trigger runs are TriggerName, TriggerRunTimestamp and Status.
      */
     @JsonProperty(value = "operand", required = true)
     private RunQueryFilterOperand operand;

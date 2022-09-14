@@ -15,6 +15,7 @@ import com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceB
 import com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceBusSessionProcessorClientBuilderFactory;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessageListener;
+import com.azure.spring.messaging.servicebus.implementation.core.ServiceBusProcessorClientLifecycleManager;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -35,6 +36,15 @@ import org.springframework.util.StringUtils;
     AzureServiceBusProcessorClientConfiguration.NoneSessionProcessorClientConfiguration.class
 })
 class AzureServiceBusProcessorClientConfiguration {
+
+    @Bean
+    @ConditionalOnBean(ServiceBusProcessorClient.class)
+    @ConditionalOnMissingBean(ServiceBusProcessorClientLifecycleManager.class)
+    @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.processor.auto-startup", havingValue = "true",
+        matchIfMissing = true)
+    ServiceBusProcessorClientLifecycleManager processorClientLifecycleManager(ServiceBusProcessorClient processorClient) {
+        return new ServiceBusProcessorClientLifecycleManager(processorClient);
+    }
 
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.processor.session-enabled", havingValue = "false",
@@ -79,7 +89,7 @@ class AzureServiceBusProcessorClientConfiguration {
             return builderFactory.build();
         }
 
-        @Bean
+        @Bean()
         @ConditionalOnMissingBean
         public ServiceBusProcessorClient serviceBusProcessorClient(
             ServiceBusClientBuilder.ServiceBusProcessorClientBuilder processorClientBuilder) {
@@ -129,7 +139,7 @@ class AzureServiceBusProcessorClientConfiguration {
             return builderFactory.build();
         }
 
-        @Bean
+        @Bean()
         @ConditionalOnMissingBean
         public ServiceBusProcessorClient serviceBusProcessorClient(
             ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder processorClientBuilder) {

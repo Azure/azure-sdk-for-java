@@ -4,10 +4,12 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentLanguageHelper;
+import com.azure.core.annotation.Immutable;
 
 import java.util.List;
 
 /** An object representing the detected language for a given text span. */
+@Immutable
 public final class DocumentLanguage {
     /*
      * Detected language.  Value may an ISO 639-1 language code (ex. "en",
@@ -42,7 +44,7 @@ public final class DocumentLanguage {
      *
      * @param locale the code value to set.
      */
-    void setLocale(String locale) {
+    private void setLocale(String locale) {
         this.locale = locale;
     }
 
@@ -60,7 +62,7 @@ public final class DocumentLanguage {
      *
      * @param spans the spans value to set.
      */
-    void setSpans(List<DocumentSpan> spans) {
+    private void setSpans(List<DocumentSpan> spans) {
         this.spans = spans;
     }
 
@@ -78,7 +80,7 @@ public final class DocumentLanguage {
      *
      * @param confidence the confidence value to set.
      */
-    void setConfidence(float confidence) {
+    private void setConfidence(float confidence) {
         this.confidence = confidence;
     }
 

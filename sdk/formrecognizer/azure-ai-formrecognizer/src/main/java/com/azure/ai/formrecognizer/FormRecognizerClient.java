@@ -105,7 +105,7 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string-RecognizeCustomFormsOptions-Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string-Options-Context -->
      * <pre>
      * String analyzeFilePath = &quot;&#123;file_source_url&#125;&quot;;
      * String modelId = &quot;&#123;model_id&#125;&quot;;
@@ -124,7 +124,7 @@ public final class FormRecognizerClient {
      *         System.out.printf&#40;&quot;Confidence score: %.2f%n&quot;, formField.getConfidence&#40;&#41;&#41;;
      *     &#125;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string-RecognizeCustomFormsOptions-Context -->
+     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string-Options-Context -->
 
      * @param modelId The UUID string format custom trained model Id to be used.
      * @param formUrl The source URL to the input form.
@@ -197,7 +197,7 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeCustomForms#string-InputStream-long-RecognizeCustomFormsOptions-Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeCustomForms#string-InputStream-long-Options-Context -->
      * <pre>
      * File form = new File&#40;&quot;&#123;local&#47;file_path&#47;fileName.jpg&#125;&quot;&#41;;
      * String modelId = &quot;&#123;custom_trained_model_id&#125;&quot;;
@@ -220,7 +220,7 @@ public final class FormRecognizerClient {
      *         &#125;&#41;&#41;;
      * &#125;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeCustomForms#string-InputStream-long-RecognizeCustomFormsOptions-Context -->
+     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeCustomForms#string-InputStream-long-Options-Context -->
 
      * @param modelId The UUID string format custom trained model Id to be used.
      * @param form The data of the form to recognize form information from.
@@ -291,7 +291,7 @@ public final class FormRecognizerClient {
      * that specific language in the {@link RecognizeContentOptions options}.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeContentFromUrl#string-RecognizeContentOptions-Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeContentFromUrl#string-Options-Context -->
      * <pre>
      * String formPath = &quot;&#123;file_source_url&#125;&quot;;
      * formRecognizerClient.beginRecognizeContentFromUrl&#40;formPath,
@@ -309,7 +309,7 @@ public final class FormRecognizerClient {
      *             .forEach&#40;recognizedTableCell -&gt; System.out.printf&#40;&quot;%s &quot;, recognizedTableCell.getText&#40;&#41;&#41;&#41;;
      *     &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeContentFromUrl#string-RecognizeContentOptions-Context -->
+     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeContentFromUrl#string-Options-Context -->
 
      * @param formUrl The source URL to the input form.
      * @param recognizeContentOptions The additional configurable {@link RecognizeContentOptions options}
@@ -380,7 +380,7 @@ public final class FormRecognizerClient {
      * that specific language in the {@link RecognizeContentOptions options}.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeContent#InputStream-long-RecognizeContentOptions-Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeContent#InputStream-long-Options-Context -->
      * <pre>
      * File form = new File&#40;&quot;&#123;file_source_url&#125;&quot;&#41;;
      * byte[] fileContent = Files.readAllBytes&#40;form.toPath&#40;&#41;&#41;;
@@ -401,7 +401,7 @@ public final class FormRecognizerClient {
      *     &#125;
      * &#125;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeContent#InputStream-long-RecognizeContentOptions-Context -->
+     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeContent#InputStream-long-Options-Context -->
      *  @param form The data of the form to recognize content information from.
      * @param length The exact length of the data.
      * @param recognizeContentOptions The additional configurable {@link RecognizeContentOptions options}
@@ -506,7 +506,7 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string-RecognizeReceiptsOptions-Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string-Options-Context -->
      * <pre>
      * String receiptUrl = &quot;&#123;receipt_url&#125;&quot;;
      * formRecognizerClient.beginRecognizeReceiptsFromUrl&#40;receiptUrl,
@@ -565,7 +565,7 @@ public final class FormRecognizerClient {
      *         &#125;
      *     &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string-RecognizeReceiptsOptions-Context -->
+     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string-Options-Context -->
      * @param receiptUrl The source URL to the input receipt.
      * @param recognizeReceiptsOptions The additional configurable {@link RecognizeReceiptsOptions options}
      * that may be passed when analyzing a receipt.
@@ -674,7 +674,7 @@ public final class FormRecognizerClient {
      * See <a href="https://aka.ms/formrecognizer/receiptfields">here</a> for fields found on a receipt.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeReceipts#InputStream-long-RecognizeReceiptsOptions-Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeReceipts#InputStream-long-Options-Context -->
      * <pre>
      * File receipt = new File&#40;&quot;&#123;local&#47;file_path&#47;fileName.jpg&#125;&quot;&#41;;
      * boolean includeFieldElements = true;
@@ -735,7 +735,7 @@ public final class FormRecognizerClient {
      *     &#125;
      * &#125;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeReceipts#InputStream-long-RecognizeReceiptsOptions-Context -->
+     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeReceipts#InputStream-long-Options-Context -->
      * @param receipt The data of the receipt to recognize receipt information from.
      * @param length The exact length of the data.
      * @param recognizeReceiptsOptions The additional configurable {@link RecognizeReceiptsOptions options}
@@ -838,7 +838,7 @@ public final class FormRecognizerClient {
      * See <a href="https://aka.ms/formrecognizer/businesscardfields">here</a> for fields found on a business card.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeBusinessCardsFromUrl#string-RecognizeBusinessCardsOptions-Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeBusinessCardsFromUrl#string-Options-Context -->
      * <pre>
      * String businessCardUrl = &quot;&#123;business_card_url&#125;&quot;;
      * formRecognizerClient.beginRecognizeBusinessCardsFromUrl&#40;businessCardUrl,
@@ -890,7 +890,7 @@ public final class FormRecognizerClient {
      *         &#125;
      *     &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeBusinessCardsFromUrl#string-RecognizeBusinessCardsOptions-Context -->
+     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeBusinessCardsFromUrl#string-Options-Context -->
      * @param businessCardUrl The source URL to the input business card.
      * @param recognizeBusinessCardsOptions The additional configurable {@link RecognizeBusinessCardsOptions options}
      * that may be passed when analyzing a business card.
@@ -994,7 +994,7 @@ public final class FormRecognizerClient {
      * See <a href="https://aka.ms/formrecognizer/businesscardfields">here</a> for fields found on a business card.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeBusinessCards#InputStream-long-RecognizeBusinessCardsOptions-Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeBusinessCards#InputStream-long-Options-Context -->
      * <pre>
      * File businessCard = new File&#40;&quot;&#123;local&#47;file_path&#47;fileName.jpg&#125;&quot;&#41;;
      * boolean includeFieldElements = true;
@@ -1052,7 +1052,7 @@ public final class FormRecognizerClient {
      *     &#125;
      * &#125;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeBusinessCards#InputStream-long-RecognizeBusinessCardsOptions-Context -->
+     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeBusinessCards#InputStream-long-Options-Context -->
      *
      * @param businessCard The data of the business card to recognize business card information from.
      * @param length The exact length of the data.
@@ -1130,7 +1130,7 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeInvoicesFromUrl#string-RecognizeInvoicesOptions-Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeInvoicesFromUrl#string-Options-Context -->
      * <pre>
      * String invoiceUrl = &quot;invoice_url&quot;;
      * boolean includeFieldElements = true;
@@ -1159,7 +1159,7 @@ public final class FormRecognizerClient {
      *         &#125;
      *     &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeInvoicesFromUrl#string-RecognizeInvoicesOptions-Context -->
+     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeInvoicesFromUrl#string-Options-Context -->
      *
      * @param invoiceUrl The source URL to the input invoice document.
      * @param recognizeInvoicesOptions The additional configurable {@link RecognizeInvoicesOptions options}
@@ -1238,7 +1238,7 @@ public final class FormRecognizerClient {
      * See <a href="https://aka.ms/formrecognizer/invoicefields">here</a> for fields found on a invoice.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeInvoices#InputStream-long-RecognizeInvoicesOptions-Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeInvoices#InputStream-long-Options-Context -->
      * <pre>
      * File invoice = new File&#40;&quot;local&#47;file_path&#47;invoice.jpg&quot;&#41;;
      * boolean includeFieldElements = true;
@@ -1272,7 +1272,7 @@ public final class FormRecognizerClient {
      *         &#125;
      *     &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeInvoices#InputStream-long-RecognizeInvoicesOptions-Context -->
+     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeInvoices#InputStream-long-Options-Context -->
      *
      * @param invoice The data of the invoice to recognize invoice related information from.
      * @param length The exact length of the data.
@@ -1389,7 +1389,7 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeIdentityDocumentsFromUrl#string-RecognizeIdentityDocumentOptions-Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeIdentityDocumentsFromUrl#string-Options-Context -->
      * <pre>
      * String licenseDocumentUrl = &quot;licenseDocumentUrl&quot;;
      * boolean includeFieldElements = true;
@@ -1448,7 +1448,7 @@ public final class FormRecognizerClient {
      *         &#125;
      *     &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeIdentityDocumentsFromUrl#string-RecognizeIdentityDocumentOptions-Context -->
+     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeIdentityDocumentsFromUrl#string-Options-Context -->
      *
      * @param identityDocumentUrl The source URL to the input identity Document.
      * @param recognizeIdentityDocumentOptions The additional configurable
@@ -1558,7 +1558,7 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeIdentityDocuments#InputStream-long-RecognizeIdentityDocumentOptions-Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeIdentityDocuments#InputStream-long-Options-Context -->
      * <pre>
      * File licenseDocument = new File&#40;&quot;local&#47;file_path&#47;license.jpg&quot;&#41;;
      * boolean includeFieldElements = true;
@@ -1631,7 +1631,7 @@ public final class FormRecognizerClient {
      *         &#125;
      *     &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeIdentityDocuments#InputStream-long-RecognizeIdentityDocumentOptions-Context -->
+     * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerClient.beginRecognizeIdentityDocuments#InputStream-long-Options-Context -->
      *
      * @param identityDocument The data of the identity document to recognize information from.
      * @param length The exact length of the data.
