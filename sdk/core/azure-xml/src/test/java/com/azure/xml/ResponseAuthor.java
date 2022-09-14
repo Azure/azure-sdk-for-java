@@ -4,6 +4,7 @@
 package com.azure.xml;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
 public class ResponseAuthor implements XmlSerializable<ResponseAuthor> {
     private String name;
@@ -29,7 +30,7 @@ public class ResponseAuthor implements XmlSerializable<ResponseAuthor> {
     }
 
     @Override
-    public XmlWriter toXml(XmlWriter xmlWriter) {
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         xmlWriter.writeStartElement("author");
         xmlWriter.writeNamespace("http://www.w3.org/2005/Atom");
         xmlWriter.writeStringElement("name", name);
@@ -37,7 +38,7 @@ public class ResponseAuthor implements XmlSerializable<ResponseAuthor> {
         return xmlWriter.writeEndElement().flush();
     }
 
-    public static ResponseAuthor fromXml(XmlReader xmlReader) {
+    public static ResponseAuthor fromXml(XmlReader xmlReader) throws XMLStreamException {
         if (xmlReader.currentToken() != XmlToken.START_ELEMENT) {
             // Since ResponseAuthor only cares about XML elements use nextElement()
             xmlReader.nextElement();

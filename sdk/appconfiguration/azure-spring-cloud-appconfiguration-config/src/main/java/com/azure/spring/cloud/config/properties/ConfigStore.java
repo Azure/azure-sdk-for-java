@@ -11,7 +11,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.util.StringUtils;
 
-import com.azure.spring.cloud.config.resource.Connection;
+import com.azure.spring.cloud.config.implementation.AppConfigurationReplicaClientsBuilder;
 
 /**
  * Config Store Properties for Requests to an Azure App Configuration Store.
@@ -22,7 +22,11 @@ public final class ConfigStore {
 
     private String endpoint; // Config store endpoint
 
+    private List<String> endpoints = new ArrayList<>();
+
     private String connectionString;
+
+    private final List<String> connectionStrings = new ArrayList<>();
 
     // Label values separated by comma in the Azure Config Service, can be empty
     private List<AppConfigurationStoreSelects> selects = new ArrayList<>();
@@ -50,6 +54,20 @@ public final class ConfigStore {
     }
 
     /**
+     * @return list of endpoints
+     */
+    public List<String> getEndpoints() {
+        return endpoints;
+    }
+
+    /**
+     * @param endpoints list of endpoints to connect to geo-replicated config store instances.
+     */
+    public void setEndpoints(List<String> endpoints) {
+        this.endpoints = endpoints;
+    }
+
+    /**
      * @return the connectionString
      */
     public String getConnectionString() {
@@ -61,6 +79,13 @@ public final class ConfigStore {
      */
     public void setConnectionString(String connectionString) {
         this.connectionString = connectionString;
+    }
+
+    /**
+     * @return connectionStrings
+     */
+    public List<String> getConnectionStrings() {
+        return connectionStrings;
     }
 
     /**
@@ -147,7 +172,7 @@ public final class ConfigStore {
         }
 
         if (StringUtils.hasText(connectionString)) {
-            String endpoint = (new Connection(connectionString)).getEndpoint();
+            String endpoint = (AppConfigurationReplicaClientsBuilder.getEndpointFromConnectionString(connectionString));
             try {
                 // new URI is used to validate the endpoint as a valid URI
                 new URI(endpoint);
@@ -155,6 +180,22 @@ public final class ConfigStore {
             } catch (URISyntaxException e) {
                 throw new IllegalStateException("Endpoint in connection string is not a valid URI.", e);
             }
+        } else if (connectionStrings.size() > 0) {
+            for (String connection : connectionStrings) {
+
+                String endpoint = (AppConfigurationReplicaClientsBuilder.getEndpointFromConnectionString(connection));
+                try {
+                    // new URI is used to validate the endpoint as a valid URI
+                    new URI(endpoint);
+                    if (!StringUtils.hasText(this.endpoint)) {
+                        this.endpoint = endpoint;
+                    }
+                } catch (URISyntaxException e) {
+                    throw new IllegalStateException("Endpoint in connection string is not a valid URI.", e);
+                }
+            }
+        } else if (endpoints.size() > 0) {
+            endpoint = endpoints.get(0);
         }
 
         monitoring.validateAndInit();

@@ -13,6 +13,8 @@ import java.util.Map;
 public final class TestConstants {
 
     public static final String AUTOSCALE_MAX_THROUGHPUT = "4000";
+
+    public static final String MULTI_PARTITION_THROUGHPUT = "12000";
     private static final Address ADDRESS_1 = new Address("201107", "Zixing Road", "Shanghai");
     private static final Address ADDRESS_2 = new Address("200000", "Xuhui", "Shanghai");
     public static final String HOBBY1 = "photography";

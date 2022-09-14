@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-maps-render</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-maps-render;current} -->
+  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-maps-render;current} -->
   <packaging>jar</packaging>
 
   <name>Azure Maps SDK Render client library</name>
@@ -75,7 +75,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.5.4</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.5.5</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

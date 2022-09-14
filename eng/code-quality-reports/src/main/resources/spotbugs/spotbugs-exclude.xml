@@ -762,28 +762,28 @@
 
   <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
   <Match>
-    <Class name="com.azure.core.util.polling.DefaultSyncPoller"/>
+    <Class name="com.azure.core.util.polling.SyncOverAsyncPoller"/>
     <Method name="getFinalResult"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
   <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
   <Match>
-    <Class name="com.azure.core.util.polling.DefaultSyncPoller"/>
+    <Class name="com.azure.core.util.polling.SyncOverAsyncPoller"/>
     <Method name="poll"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
   <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
   <Match>
-    <Class name="com.azure.core.util.polling.DefaultSyncPoller"/>
+    <Class name="com.azure.core.util.polling.SyncOverAsyncPoller"/>
     <Method name="waitForCompletion"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
   <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
   <Match>
-    <Class name="com.azure.core.util.polling.DefaultSyncPoller"/>
+    <Class name="com.azure.core.util.polling.SyncOverAsyncPoller"/>
     <Method name="waitUntil"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
@@ -2516,7 +2516,10 @@
 
   <Match>
     <Bug pattern="EI_EXPOSE_REP"/>
-    <Class name="com.azure.core.implementation.AccessibleByteArrayOutputStream"/>
+    <Or>
+      <Class name="com.azure.core.implementation.AccessibleByteArrayOutputStream"/>
+      <Class name="com.azure.core.implementation.ByteBufferCollector"/>
+    </Or>
   </Match>
 
   <!-- EventGrid swagger naming -->
@@ -2751,4 +2754,5 @@
                   DLS_DEAD_LOCAL_STORE,
                   DM_STRING_TOSTRING"/>
   </Match>
+
 </FindBugsFilter>

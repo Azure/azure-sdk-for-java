@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IntegrationRuntimeState. */
+/** The state of integration runtime. */
 public final class IntegrationRuntimeState extends ExpandableStringEnum<IntegrationRuntimeState> {
     /** Static value Initial for IntegrationRuntimeState. */
     public static final IntegrationRuntimeState INITIAL = fromString("Initial");

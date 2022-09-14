@@ -11,15 +11,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class UpdateIntegrationRuntimeRequest {
     /*
-     * Enables or disables the auto-update feature of the self-hosted
-     * integration runtime. See https://go.microsoft.com/fwlink/?linkid=854189.
+     * Enables or disables the auto-update feature of the self-hosted integration runtime. See
+     * https://go.microsoft.com/fwlink/?linkid=854189.
      */
     @JsonProperty(value = "autoUpdate")
     private IntegrationRuntimeAutoUpdate autoUpdate;
 
     /*
-     * The time offset (in hours) in the day, e.g., PT03H is 3 hours. The
-     * integration runtime auto update will happen on that time.
+     * The time offset (in hours) in the day, e.g., PT03H is 3 hours. The integration runtime auto update will happen
+     * on that time.
      */
     @JsonProperty(value = "updateDelayOffset")
     private String updateDelayOffset;

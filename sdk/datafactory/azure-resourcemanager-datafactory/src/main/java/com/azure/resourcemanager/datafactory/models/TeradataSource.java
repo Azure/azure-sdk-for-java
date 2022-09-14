@@ -21,8 +21,8 @@ public final class TeradataSource extends TabularSource {
     private Object query;
 
     /*
-     * The partition mechanism that will be used for teradata read in parallel.
-     * Possible values include: "None", "Hash", "DynamicRange".
+     * The partition mechanism that will be used for teradata read in parallel. Possible values include: "None",
+     * "Hash", "DynamicRange".
      */
     @JsonProperty(value = "partitionOption")
     private Object partitionOption;

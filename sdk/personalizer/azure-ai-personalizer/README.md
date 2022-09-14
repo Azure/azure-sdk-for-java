@@ -47,10 +47,11 @@ The [PersonalizerClient][personalizer_sync_client] and
 Please refer the sample scenarios outlined in the [examples][examples].
 
 ## Troubleshooting
-TBD
+Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite
+their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help
+locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
 ## Next steps
-TBD
 
 ## Contributing
 
@@ -72,3 +73,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [exploration]: https://docs.microsoft.com/azure/cognitive-services/personalizer/concepts-exploration
 [multi_slot]: https://docs.microsoft.com/azure/cognitive-services/personalizer/concept-multi-slot-personalization
 [examples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/personalizer/azure-ai-personalizer/src/samples#examples
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fpersonalizer%2Fazure-ai-personalizer%2FREADME.png)

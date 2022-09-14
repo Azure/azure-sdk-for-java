@@ -52,9 +52,6 @@
     <javaModulesSurefireArgLine>
       --add-opens com.azure.core.http.jdk.httpclient/com.azure.core.http.jdk.httpclient=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <additionalSurefireArgLine>
-      -Djdk.httpclient.allowRestrictedHeaders=Content-Length
-    </additionalSurefireArgLine>
 
     <!-- Enables fail on deprecated API usage. -->
     <compiler.failondeprecatedstatus/>
