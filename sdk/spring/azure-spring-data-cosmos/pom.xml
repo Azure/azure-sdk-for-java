@@ -216,6 +216,7 @@
           <rules>
             <bannedDependencies>
               <includes>
+                <include>io.micrometer:micrometer-core:[1.10.0-M6]</include> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->
                 <include>org.springframework:spring-beans:[6.0.0-M5]</include> <!-- {x-include-update;org.springframework:spring-beans;external_dependency} -->
                 <include>org.springframework:spring-web:[6.0.0-M5]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
                 <include>org.springframework:spring-tx:[6.0.0-M5]</include> <!-- {x-include-update;org.springframework:spring-tx;external_dependency} -->
