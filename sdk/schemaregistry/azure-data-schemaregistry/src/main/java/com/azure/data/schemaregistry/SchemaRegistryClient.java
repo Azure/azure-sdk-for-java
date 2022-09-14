@@ -14,6 +14,8 @@ import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
 
+import java.io.UncheckedIOException;
+
 /**
  * HTTP-based client that interacts with Azure Schema Registry service to store and retrieve schemas on demand.
  *
@@ -134,6 +136,7 @@ public final class SchemaRegistryClient {
      * @throws NullPointerException if {@code schemaId} is null.
      * @throws ResourceNotFoundException if a schema with the matching {@code schemaId} could not be found.
      * @throws HttpResponseException if an issue was encountered while fetching the schema.
+     * @throws UncheckedIOException if an error occurred while deserializing response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaRegistrySchema getSchema(String schemaId) {
@@ -151,6 +154,7 @@ public final class SchemaRegistryClient {
      * @throws NullPointerException if {@code schemaId} is null.
      * @throws ResourceNotFoundException if a schema with the matching {@code schemaId} could not be found.
      * @throws HttpResponseException if an issue was encountered while fetching the schema.
+     * @throws UncheckedIOException if an error occurred while deserializing response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SchemaRegistrySchema> getSchemaWithResponse(String schemaId, Context context) {

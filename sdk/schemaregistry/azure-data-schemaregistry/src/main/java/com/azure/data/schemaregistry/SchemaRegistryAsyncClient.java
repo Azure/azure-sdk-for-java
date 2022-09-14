@@ -10,18 +10,23 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryImpl;
 import com.azure.data.schemaregistry.implementation.SchemaRegistryHelper;
 import com.azure.data.schemaregistry.implementation.models.ErrorException;
-import com.azure.data.schemaregistry.implementation.models.SchemasQueryIdByContentHeaders;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
 import reactor.core.publisher.Mono;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
@@ -160,9 +165,10 @@ public final class SchemaRegistryAsyncClient {
         logger.verbose("Registering schema. Group: '{}', name: '{}', serialization type: '{}', payload: '{}'",
             groupName, name, format, schemaDefinition);
 
-        final String contentType = getContentType(format);
+        final BinaryData binaryData = BinaryData.fromString(schemaDefinition);
 
-        return restService.getSchemas().registerWithResponseAsync(groupName, name, schemaDefinition, contentType, context)
+        return restService.getSchemas().registerWithResponseAsync(groupName, name, binaryData, binaryData.getLength(),
+                context)
             .map(response -> {
                 final SchemaProperties registered = SchemaRegistryHelper.getSchemaProperties(response);
 
@@ -182,6 +188,7 @@ public final class SchemaRegistryAsyncClient {
      * @throws NullPointerException if {@code schemaId} is null.
      * @throws ResourceNotFoundException if a schema with the matching {@code schemaId} could not be found.
      * @throws HttpResponseException if an issue was encountered while fetching the schema.
+     * @throws UncheckedIOException if an error occurred while deserializing response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SchemaRegistrySchema> getSchema(String schemaId) {
@@ -198,6 +205,7 @@ public final class SchemaRegistryAsyncClient {
      * @throws NullPointerException if {@code schemaId} is null.
      * @throws ResourceNotFoundException if a schema with the matching {@code schemaId} could not be found.
      * @throws HttpResponseException if an issue was encountered while fetching the schema.
+     * @throws UncheckedIOException if an error occurred while deserializing response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SchemaRegistrySchema>> getSchemaWithResponse(String schemaId) {
@@ -211,13 +219,21 @@ public final class SchemaRegistryAsyncClient {
 
         return this.restService.getSchemas().getByIdWithResponseAsync(schemaId, context)
             .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
-            .map(response -> {
+            .handle((response, sink) -> {
                 final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(response);
-                final String schema = new String(response.getValue(), StandardCharsets.UTF_8);
+                final String schema;
 
-                return new SimpleResponse<>(
+                try {
+                    schema = convertToString(response.getValue());
+                } catch (UncheckedIOException e) {
+                    sink.error(e);
+                    return;
+                }
+
+                sink.next(new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), new SchemaRegistrySchema(schemaObject, schema));
+                    response.getHeaders(), new SchemaRegistrySchema(schemaObject, schema)));
+                sink.complete();
             });
     }
 
@@ -232,8 +248,8 @@ public final class SchemaRegistryAsyncClient {
      *
      * @return A mono that completes with the properties for a matching schema.
      *
-     * @throws NullPointerException if {@code groupName}, {@code name}, {@code schemaDefinition}, or {@code format} is
-     *     null.
+     * @throws NullPointerException if {@code groupName}, {@code name}, {@code schemaDefinition}, or {@code format}
+     *     is null.
      * @throws ResourceNotFoundException if a schema with matching parameters could not be located.
      * @throws HttpResponseException if an issue was encountered while finding a matching schema.
      */
@@ -255,8 +271,8 @@ public final class SchemaRegistryAsyncClient {
      *
      * @return A mono that completes with the properties for a matching schema.
      *
-     * @throws NullPointerException if {@code groupName}, {@code name}, {@code schemaDefinition}, or {@code format} is
-     *     null.
+     * @throws NullPointerException if {@code groupName}, {@code name}, {@code schemaDefinition}, or {@code format}
+     *     is null.
      * @throws ResourceNotFoundException if a schema with matching parameters could not be located.
      * @throws HttpResponseException if an issue was encountered while finding a matching schema.
      */
@@ -279,8 +295,8 @@ public final class SchemaRegistryAsyncClient {
      *
      * @return A mono that completes with the properties for a matching schema.
      *
-     * @throws NullPointerException if {@code groupName}, {@code name}, {@code schemaDefinition}, or {@code format} is
-     *     null.
+     * @throws NullPointerException if {@code groupName}, {@code name}, {@code schemaDefinition}, or {@code format}
+     *     is null.
      * @throws ResourceNotFoundException if a schema with matching parameters could not be located.
      * @throws HttpResponseException if an issue was encountered while finding a matching schema.
      */
@@ -301,13 +317,12 @@ public final class SchemaRegistryAsyncClient {
             context = Context.NONE;
         }
 
-        final String contentType = getContentType(format);
+        final BinaryData binaryData = BinaryData.fromString(schemaDefinition);
 
         return restService.getSchemas()
-            .queryIdByContentWithResponseAsync(groupName, name, schemaDefinition, contentType, context)
+            .queryIdByContentWithResponseAsync(groupName, name, binaryData, binaryData.getLength(), context)
             .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
             .map(response -> {
-                final SchemasQueryIdByContentHeaders deserializedHeaders = response.getDeserializedHeaders();
                 final SchemaProperties properties = SchemaRegistryHelper.getSchemaProperties(response);
 
                 return new SimpleResponse<>(
@@ -338,7 +353,30 @@ public final class SchemaRegistryAsyncClient {
         return error;
     }
 
-    private static String getContentType(SchemaFormat schemaFormat) {
-        return "application/json; serialization=" + schemaFormat;
+    /**
+     * Converts an input stream into its string representation.
+     *
+     * @param inputStream Input stream.
+     *
+     * @return A string representation.
+     *
+     * @throws UncheckedIOException if an {@link IOException} is thrown when creating the readers.
+     */
+    private static String convertToString(InputStream inputStream) {
+        final StringBuilder builder = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(
+            new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+
+            String str;
+
+            while ((str = reader.readLine()) != null) {
+                builder.append(str);
+            }
+
+        } catch (IOException exception) {
+            throw new UncheckedIOException("Error occurred while deserializing schemaContent.", exception);
+        }
+
+        return builder.toString();
     }
 }
