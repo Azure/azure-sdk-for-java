@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -294,7 +295,19 @@ public class InterceptorManager implements AutoCloseable {
      */
     private File getRecordFolder() {
         URL folderUrl = InterceptorManager.class.getClassLoader().getResource(RECORD_FOLDER);
-        return new File(folderUrl.getPath());
+        if (folderUrl == null) {
+            // session-record folder doesn't exist, create it.
+            folderUrl = InterceptorManager.class.getClassLoader().getResource("");
+            Path recordFolder = new File(folderUrl.getPath()).toPath().resolve(RECORD_FOLDER);
+            try {
+                Files.createDirectory(recordFolder);
+            } catch (IOException ex) {
+                throw logger.logExceptionAsError(new UncheckedIOException(ex));
+            }
+            return recordFolder.toFile();
+        } else {
+            return new File(folderUrl.getPath());
+        }
     }
 
     /*
