@@ -37,6 +37,7 @@ import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.AuditableRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.assertj.core.util.Lists;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -148,6 +149,11 @@ public class CosmosTemplateIT {
                                                           GenIdEntity.class, AuditableEntity.class);
         insertedPerson = cosmosTemplate.insert(Person.class.getSimpleName(), TEST_PERSON,
             new PartitionKey(TEST_PERSON.getLastName()));
+    }
+
+    @AfterClass
+    public static void cleanUp() {
+        collectionManager.deleteContainer(personCrossPartitionInfo);
     }
 
     private CosmosTemplate createCosmosTemplate(CosmosConfig config, String dbName) throws ClassNotFoundException {
@@ -658,8 +664,6 @@ public class CosmosTemplateIT {
         allResults.addAll(resultPage1);
         allResults.addAll(resultPage2);
         assertThat(allResults).containsAll(expected);
-
-        collectionManager.deleteContainer(personCrossPartitionInfo);
     }
 
     @Test
