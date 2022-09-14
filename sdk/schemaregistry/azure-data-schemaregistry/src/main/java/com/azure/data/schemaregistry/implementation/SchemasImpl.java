@@ -25,6 +25,7 @@ import com.azure.core.util.Context;
 import com.azure.data.schemaregistry.implementation.models.ErrorException;
 import com.azure.data.schemaregistry.implementation.models.SchemaVersions;
 import com.azure.data.schemaregistry.implementation.models.SchemasGetByIdResponse;
+import com.azure.data.schemaregistry.implementation.models.SchemasGetSchemaVersionResponse;
 import com.azure.data.schemaregistry.implementation.models.SchemasQueryIdByContentResponse;
 import com.azure.data.schemaregistry.implementation.models.SchemasRegisterResponse;
 import java.nio.ByteBuffer;
@@ -73,6 +74,18 @@ public final class SchemasImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("groupName") String groupName,
                 @PathParam("schemaName") String schemaName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/$schemaGroups/{groupName}/schemas/{schemaName}/versions/{schemaVersion}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorException.class)
+        Mono<SchemasGetSchemaVersionResponse> getSchemaVersion(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("groupName") String groupName,
+                @PathParam("schemaName") String schemaName,
+                @PathParam("schemaVersion") int schemaVersion,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -168,7 +181,7 @@ public final class SchemasImpl {
      *
      * @param groupName Schema group under which schema is registered. Group's serialization type should match the
      *     serialization type specified in the request.
-     * @param schemaName Name of schema being registered.
+     * @param schemaName Name of schema.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -185,6 +198,35 @@ public final class SchemasImpl {
     }
 
     /**
+     * Get specific schema versions.
+     *
+     * <p>Gets one specific version of one schema.
+     *
+     * @param groupName Schema group under which schema is registered. Group's serialization type should match the
+     *     serialization type specified in the request.
+     * @param schemaName Name of schema.
+     * @param schemaVersion Version number of specific schema.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return one specific version of one schema on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SchemasGetSchemaVersionResponse> getSchemaVersionWithResponseAsync(
+            String groupName, String schemaName, int schemaVersion, Context context) {
+        final String accept = "application/json";
+        return service.getSchemaVersion(
+                this.client.getEndpoint(),
+                groupName,
+                schemaName,
+                schemaVersion,
+                this.client.getApiVersion(),
+                accept,
+                context);
+    }
+
+    /**
      * Get ID for existing schema.
      *
      * <p>Gets the ID referencing an existing schema within the specified schema group, as matched by schema content
@@ -192,7 +234,7 @@ public final class SchemasImpl {
      *
      * @param groupName Schema group under which schema is registered. Group's serialization type should match the
      *     serialization type specified in the request.
-     * @param schemaName Name of requested schema.
+     * @param schemaName Name of schema.
      * @param schemaContent String representation (UTF-8) of the registered schema.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -226,7 +268,7 @@ public final class SchemasImpl {
      *
      * @param groupName Schema group under which schema is registered. Group's serialization type should match the
      *     serialization type specified in the request.
-     * @param schemaName Name of requested schema.
+     * @param schemaName Name of schema.
      * @param schemaContent String representation (UTF-8) of the registered schema.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -261,7 +303,7 @@ public final class SchemasImpl {
      *
      * @param groupName Schema group under which schema should be registered. Group's serialization type should match
      *     the serialization type specified in the request.
-     * @param schemaName Name of schema being registered.
+     * @param schemaName Name of schema.
      * @param schemaContent String representation (UTF-8) of the schema being registered.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
@@ -295,7 +337,7 @@ public final class SchemasImpl {
      *
      * @param groupName Schema group under which schema should be registered. Group's serialization type should match
      *     the serialization type specified in the request.
-     * @param schemaName Name of schema being registered.
+     * @param schemaName Name of schema.
      * @param schemaContent String representation (UTF-8) of the schema being registered.
      * @param contentLength The Content-Length header for the request.
      * @param context The context to associate with this operation.
