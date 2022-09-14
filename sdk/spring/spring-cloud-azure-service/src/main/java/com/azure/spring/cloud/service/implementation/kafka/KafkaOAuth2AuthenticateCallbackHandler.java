@@ -35,7 +35,6 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
     private final AzureTokenCredentialResolver tokenCredentialResolver;
 
     private TokenCredential credential;
-    private String tokenAudience;
     private Function<TokenCredential, Mono<AzureOAuthBearerToken>> resolveToken;
 
     public KafkaOAuth2AuthenticateCallbackHandler() {
@@ -47,9 +46,17 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
         this.tokenCredentialResolver = tokenCredentialResolver == null ? new AzureTokenCredentialResolver() : tokenCredentialResolver;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void configure(Map<String, ?> configs, String mechanism, List<AppConfigurationEntry> jaasConfigEntries) {
+        URI uri = buildEventHubsServerUri(configs);
+        AzureKafkaPropertiesUtils.convertConfigMapToAzureProperties(configs, properties);
+        TokenRequestContext request = buildTokenRequestContext(buildTokenAudience(uri));
+        this.resolveToken = tokenCredential -> tokenCredential.getToken(request).map(AzureOAuthBearerToken::new);
+        this.credential = (TokenCredential) configs.get(AZURE_TOKEN_CREDENTIAL);
+    }
+
+    @SuppressWarnings("unchecked")
+    private URI buildEventHubsServerUri(Map<String, ?> configs) {
         List<String> bootstrapServers = (List<String>) configs.get(BOOTSTRAP_SERVERS_CONFIG);
         if (bootstrapServers == null || bootstrapServers.size() != 1) {
             throw new IllegalArgumentException("Invalid bootstrap servers configured for Azure Event Hubs for Kafka! Must supply exactly 1 non-null bootstrap server configuration,"
@@ -60,15 +67,14 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
             throw new IllegalArgumentException("Invalid bootstrap server configured for Azure Event Hubs for Kafka! The format should be {YOUR.EVENTHUBS.FQDN}:9093.");
         }
         URI uri = URI.create("https://" + bootstrapServer);
-        this.tokenAudience = String.format(TOKEN_AUDIENCE_FORMAT, uri.getScheme(), uri.getHost());
-        this.credential = (TokenCredential) configs.get(AZURE_TOKEN_CREDENTIAL);
-        AzureKafkaPropertiesUtils.convertConfigMapToAzureProperties(configs, properties);
-
-        TokenRequestContext request = buildTokenRequestContext();
-        this.resolveToken = tokenCredential -> tokenCredential.getToken(request).map(AzureOAuthBearerToken::new);
+        return uri;
     }
 
-    private TokenRequestContext buildTokenRequestContext() {
+    private String buildTokenAudience(URI uri) {
+        return String.format(TOKEN_AUDIENCE_FORMAT, uri.getScheme(), uri.getHost());
+    }
+
+    private TokenRequestContext buildTokenRequestContext(String tokenAudience) {
         TokenRequestContext request = new TokenRequestContext();
         request.addScopes(tokenAudience);
         request.setTenantId(properties.getProfile().getTenantId());

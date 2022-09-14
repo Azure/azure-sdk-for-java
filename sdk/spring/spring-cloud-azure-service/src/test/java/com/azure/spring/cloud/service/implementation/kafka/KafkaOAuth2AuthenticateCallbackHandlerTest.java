@@ -45,18 +45,6 @@ class KafkaOAuth2AuthenticateCallbackHandlerTest {
     private static final String GET_TOKEN_CREDENTIAL_METHOD_NAME = "getTokenCredential";
 
     @Test
-    void testTokenAudienceShouldConfig() {
-        Map<String, Object> configs = new HashMap<>();
-        configs.put(BOOTSTRAP_SERVERS_CONFIG, KAFKA_BOOTSTRAP_SERVER);
-
-        KafkaOAuth2AuthenticateCallbackHandler handler = new KafkaOAuth2AuthenticateCallbackHandler();
-        handler.configure(configs, null, null);
-
-        String tokenAudience = (String) ReflectionTestUtils.getField(handler, TOKEN_AUDIENCE_FIELD_NAME);
-        assertEquals("https://namespace.servicebus.windows.net/.default", tokenAudience);
-    }
-
-    @Test
     void testTokenCredentialShouldConfig() {
         TokenCredential tokenCredential = new TokenCredential() {
             @Override
