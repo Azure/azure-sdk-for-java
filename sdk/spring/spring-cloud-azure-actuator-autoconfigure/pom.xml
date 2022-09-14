@@ -155,6 +155,11 @@
                 <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[3.0.0-M4]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
               </includes>
             </bannedDependencies>
+            <requireReleaseDeps>
+              <excludes>
+                <exclude>io.micrometer:*</exclude>
+              </excludes>
+            </requireReleaseDeps>
           </rules>
         </configuration>
       </plugin>
