@@ -26,8 +26,8 @@ public final class LookupActivityTypeProperties {
     private DatasetReference dataset;
 
     /*
-     * Whether to return first row or all rows. Default value is true. Type:
-     * boolean (or Expression with resultType boolean).
+     * Whether to return first row or all rows. Default value is true. Type: boolean (or Expression with resultType
+     * boolean).
      */
     @JsonProperty(value = "firstRowOnly")
     private Object firstRowOnly;

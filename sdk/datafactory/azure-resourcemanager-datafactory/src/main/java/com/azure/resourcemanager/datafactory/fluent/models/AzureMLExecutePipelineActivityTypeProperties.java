@@ -11,67 +11,57 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureMLExecutePipelineActivityTypeProperties {
     /*
-     * ID of the published Azure ML pipeline. Type: string (or Expression with
-     * resultType string).
+     * ID of the published Azure ML pipeline. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "mlPipelineId")
     private Object mlPipelineId;
 
     /*
-     * ID of the published Azure ML pipeline endpoint. Type: string (or
-     * Expression with resultType string).
+     * ID of the published Azure ML pipeline endpoint. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "mlPipelineEndpointId")
     private Object mlPipelineEndpointId;
 
     /*
-     * Version of the published Azure ML pipeline endpoint. Type: string (or
-     * Expression with resultType string).
+     * Version of the published Azure ML pipeline endpoint. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "version")
     private Object version;
 
     /*
-     * Run history experiment name of the pipeline run. This information will
-     * be passed in the ExperimentName property of the published pipeline
-     * execution request. Type: string (or Expression with resultType string).
+     * Run history experiment name of the pipeline run. This information will be passed in the ExperimentName property
+     * of the published pipeline execution request. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "experimentName")
     private Object experimentName;
 
     /*
-     * Key,Value pairs to be passed to the published Azure ML pipeline
-     * endpoint. Keys must match the names of pipeline parameters defined in
-     * the published pipeline. Values will be passed in the
-     * ParameterAssignments property of the published pipeline execution
-     * request. Type: object with key value pairs (or Expression with
-     * resultType object).
+     * Key,Value pairs to be passed to the published Azure ML pipeline endpoint. Keys must match the names of pipeline
+     * parameters defined in the published pipeline. Values will be passed in the ParameterAssignments property of the
+     * published pipeline execution request. Type: object with key value pairs (or Expression with resultType object).
      */
     @JsonProperty(value = "mlPipelineParameters")
     private Object mlPipelineParameters;
 
     /*
-     * Dictionary used for changing data path assignments without retraining.
-     * Values will be passed in the dataPathAssignments property of the
-     * published pipeline execution request. Type: object with key value pairs
-     * (or Expression with resultType object).
+     * Dictionary used for changing data path assignments without retraining. Values will be passed in the
+     * dataPathAssignments property of the published pipeline execution request. Type: object with key value pairs (or
+     * Expression with resultType object).
      */
     @JsonProperty(value = "dataPathAssignments")
     private Object dataPathAssignments;
 
     /*
-     * The parent Azure ML Service pipeline run id. This information will be
-     * passed in the ParentRunId property of the published pipeline execution
-     * request. Type: string (or Expression with resultType string).
+     * The parent Azure ML Service pipeline run id. This information will be passed in the ParentRunId property of the
+     * published pipeline execution request. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "mlParentRunId")
     private Object mlParentRunId;
 
     /*
-     * Whether to continue execution of other steps in the PipelineRun if a
-     * step fails. This information will be passed in the continueOnStepFailure
-     * property of the published pipeline execution request. Type: boolean (or
-     * Expression with resultType boolean).
+     * Whether to continue execution of other steps in the PipelineRun if a step fails. This information will be passed
+     * in the continueOnStepFailure property of the published pipeline execution request. Type: boolean (or Expression
+     * with resultType boolean).
      */
     @JsonProperty(value = "continueOnStepFailure")
     private Object continueOnStepFailure;

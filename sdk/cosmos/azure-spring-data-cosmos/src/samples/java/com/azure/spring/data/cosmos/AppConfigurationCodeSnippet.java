@@ -42,6 +42,9 @@ public class AppConfigurationCodeSnippet extends AbstractCosmosConfiguration {
     @Value("${azure.cosmos.maxDegreeOfParallelism}")
     private int maxDegreeOfParallelism;
 
+    @Value("${azure.cosmos.maxBufferedItemCount}")
+    private int maxBufferedItemCount;
+
     // BEGIN: readme-sample-AppConfigurationCodeSnippet
     @Bean
     public CosmosClientBuilder getCosmosClientBuilder() {
@@ -58,6 +61,7 @@ public class AppConfigurationCodeSnippet extends AbstractCosmosConfiguration {
         return CosmosConfig.builder()
                            .enableQueryMetrics(queryMetricsEnabled)
                            .maxDegreeOfParallelism(maxDegreeOfParallelism)
+                           .maxBufferedItemCount(maxBufferedItemCount)
                            .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
                            .build();
     }

@@ -19,8 +19,7 @@ import java.util.Map;
 @Fluent
 public final class SapOpenHubLinkedService extends LinkedService {
     /*
-     * Properties specific to SAP Business Warehouse Open Hub Destination
-     * linked service type.
+     * Properties specific to SAP Business Warehouse Open Hub Destination linked service type.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private SapOpenHubLinkedServiceTypeProperties innerTypeProperties = new SapOpenHubLinkedServiceTypeProperties();

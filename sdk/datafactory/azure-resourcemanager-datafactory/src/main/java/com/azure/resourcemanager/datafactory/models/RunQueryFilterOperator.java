@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RunQueryFilterOperator. */
+/** Operator to be used for filter. */
 public final class RunQueryFilterOperator extends ExpandableStringEnum<RunQueryFilterOperator> {
     /** Static value Equals for RunQueryFilterOperator. */
     public static final RunQueryFilterOperator EQUALS = fromString("Equals");

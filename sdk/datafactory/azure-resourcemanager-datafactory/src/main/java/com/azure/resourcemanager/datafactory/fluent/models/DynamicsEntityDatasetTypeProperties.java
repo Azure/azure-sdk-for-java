@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class DynamicsEntityDatasetTypeProperties {
     /*
-     * The logical name of the entity. Type: string (or Expression with
-     * resultType string).
+     * The logical name of the entity. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "entityName")
     private Object entityName;

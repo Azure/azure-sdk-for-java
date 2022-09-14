@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VariableType. */
+/** Variable type. */
 public final class VariableType extends ExpandableStringEnum<VariableType> {
     /** Static value String for VariableType. */
     public static final VariableType STRING = fromString("String");
