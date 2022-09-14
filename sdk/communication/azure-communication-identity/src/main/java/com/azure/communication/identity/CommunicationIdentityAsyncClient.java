@@ -111,18 +111,18 @@ public final class CommunicationIdentityAsyncClient {
      * Creates a new CommunicationUserIdentifier with token.
      *
      * @param scopes The list of scopes for the token.
-     * @param tokenExpiresAfter Custom validity period of the Communication Identity access token within [1,24]
+     * @param tokenExpiresIn Custom validity period of the Communication Identity access token within [1,24]
      * hours range. If not provided, the default value of 24 hours will be used.
      * @return The created communication user and token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CommunicationUserIdentifierAndToken>
-        createUserAndToken(Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresAfter) {
+        createUserAndToken(Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresIn) {
         try {
             Objects.requireNonNull(scopes);
 
             CommunicationIdentityCreateRequest communicationIdentityCreateRequest =
-                CommunicationIdentityClientUtils.createCommunicationIdentityCreateRequest(scopes, tokenExpiresAfter, logger);
+                CommunicationIdentityClientUtils.createCommunicationIdentityCreateRequest(scopes, tokenExpiresIn, logger);
 
             return client.createAsync(communicationIdentityCreateRequest)
                 .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
@@ -151,18 +151,18 @@ public final class CommunicationIdentityAsyncClient {
      * Creates a new CommunicationUserIdentifier with token with response.
      *
      * @param scopes The list of scopes for the token.
-     * @param tokenExpiresAfter Custom validity period of the Communication Identity access token within [1,24]
+     * @param tokenExpiresIn Custom validity period of the Communication Identity access token within [1,24]
      * hours range. If not provided, the default value of 24 hours will be used.
      * @return The result with created communication user and token with response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CommunicationUserIdentifierAndToken>>
-        createUserAndTokenWithResponse(Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresAfter) {
+        createUserAndTokenWithResponse(Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresIn) {
         try {
             Objects.requireNonNull(scopes);
 
             CommunicationIdentityCreateRequest communicationIdentityCreateRequest =
-                CommunicationIdentityClientUtils.createCommunicationIdentityCreateRequest(scopes, tokenExpiresAfter, logger);
+                CommunicationIdentityClientUtils.createCommunicationIdentityCreateRequest(scopes, tokenExpiresIn, logger);
 
             return client.createWithResponseAsync(communicationIdentityCreateRequest)
                 .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
@@ -264,19 +264,19 @@ public final class CommunicationIdentityAsyncClient {
      * @param communicationUser A {@link CommunicationUserIdentifier} from whom to issue a Communication Identity
      * access token.
      * @param scopes List of {@link CommunicationTokenScope} scopes for the Communication Identity access token.
-     * @param tokenExpiresAfter Custom validity period of the Communication Identity access token within [1,24]
+     * @param tokenExpiresIn Custom validity period of the Communication Identity access token within [1,24]
      * hours range. If not provided, the default value of 24 hours will be used.
      * @return the Communication Identity access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessToken> getToken(CommunicationUserIdentifier communicationUser,
-        Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresAfter) {
+        Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresIn) {
         try {
             Objects.requireNonNull(communicationUser);
             Objects.requireNonNull(scopes);
 
             CommunicationIdentityAccessTokenRequest tokenRequest =
-                CommunicationIdentityClientUtils.createCommunicationIdentityAccessTokenRequest(scopes, tokenExpiresAfter, logger);
+                CommunicationIdentityClientUtils.createCommunicationIdentityAccessTokenRequest(scopes, tokenExpiresIn, logger);
 
             return client.issueAccessTokenAsync(communicationUser.getId(),
                     tokenRequest
@@ -310,19 +310,19 @@ public final class CommunicationIdentityAsyncClient {
      * @param communicationUser A {@link CommunicationUserIdentifier} from whom to issue a Communication Identity
      * access token.
      * @param scopes List of {@link CommunicationTokenScope} scopes for the Communication Identity access token.
-     * @param tokenExpiresAfter Custom validity period of the Communication Identity access token within [1,24]
+     * @param tokenExpiresIn Custom validity period of the Communication Identity access token within [1,24]
      * hours range. If not provided, the default value of 24 hours will be used.
      * @return the Communication Identity access token with response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessToken>> getTokenWithResponse(CommunicationUserIdentifier communicationUser,
-        Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresAfter) {
+        Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresIn) {
         try {
             Objects.requireNonNull(communicationUser);
             Objects.requireNonNull(scopes);
 
             CommunicationIdentityAccessTokenRequest tokenRequest =
-                CommunicationIdentityClientUtils.createCommunicationIdentityAccessTokenRequest(scopes, tokenExpiresAfter, logger);
+                CommunicationIdentityClientUtils.createCommunicationIdentityAccessTokenRequest(scopes, tokenExpiresIn, logger);
 
             return client.issueAccessTokenWithResponseAsync(communicationUser.getId(),
                     tokenRequest

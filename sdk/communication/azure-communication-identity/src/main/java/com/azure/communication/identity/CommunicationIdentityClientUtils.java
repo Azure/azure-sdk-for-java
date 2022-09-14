@@ -18,11 +18,11 @@ import java.util.stream.StreamSupport;
 
 final class CommunicationIdentityClientUtils {
 
-    static final String TOKEN_EXPIRATION_OVERFLOW_MESSAGE = "The tokenExpiresAfter argument is out of permitted bounds. Please refer to the documentation and set the value accordingly.";
+    static final String TOKEN_EXPIRATION_OVERFLOW_MESSAGE = "The tokenExpiresIn argument is out of permitted bounds. Please refer to the documentation and set the value accordingly.";
 
     static CommunicationIdentityCreateRequest createCommunicationIdentityCreateRequest(
         Iterable<CommunicationTokenScope> scopes,
-        Duration tokenExpiresAfter,
+        Duration tokenExpiresIn,
         ClientLogger logger) {
 
         final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
@@ -30,8 +30,8 @@ final class CommunicationIdentityClientUtils {
         CommunicationIdentityCreateRequest createRequest = new CommunicationIdentityCreateRequest();
         createRequest.setCreateTokenWithScopes(scopesInput);
 
-        if (tokenExpiresAfter != null) {
-            int expiresInMinutes = getTokenExpirationInMinutes(tokenExpiresAfter, logger);
+        if (tokenExpiresIn != null) {
+            int expiresInMinutes = getTokenExpirationInMinutes(tokenExpiresIn, logger);
             createRequest.setExpiresInMinutes(expiresInMinutes);
         }
 
@@ -40,7 +40,7 @@ final class CommunicationIdentityClientUtils {
 
     static CommunicationIdentityAccessTokenRequest createCommunicationIdentityAccessTokenRequest(
         Iterable<CommunicationTokenScope> scopes,
-        Duration tokenExpiresAfter,
+        Duration tokenExpiresIn,
         ClientLogger logger) {
 
         final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
@@ -48,29 +48,29 @@ final class CommunicationIdentityClientUtils {
         CommunicationIdentityAccessTokenRequest tokenRequest = new CommunicationIdentityAccessTokenRequest();
         tokenRequest.setScopes(scopesInput);
 
-        if (tokenExpiresAfter != null) {
-            int expiresInMinutes = getTokenExpirationInMinutes(tokenExpiresAfter, logger);
+        if (tokenExpiresIn != null) {
+            int expiresInMinutes = getTokenExpirationInMinutes(tokenExpiresIn, logger);
             tokenRequest.setExpiresInMinutes(expiresInMinutes);
         }
 
         return tokenRequest;
     }
 
-    static boolean isTokenExpirationValid(Duration expectedTokenExpiration, OffsetDateTime tokenExpiresAfter) {
+    static boolean isTokenExpirationValid(Duration expectedTokenExpiration, OffsetDateTime tokenExpiresIn) {
 
         Duration expectedExpiration = expectedTokenExpiration == null ? Duration.ofDays(1) : expectedTokenExpiration;
 
         OffsetDateTime utcDateTimeNow = OffsetDateTime.now(Clock.systemUTC());
-        long tokenSeconds = ChronoUnit.SECONDS.between(utcDateTimeNow, tokenExpiresAfter);
+        long tokenSeconds = ChronoUnit.SECONDS.between(utcDateTimeNow, tokenExpiresIn);
         long expectedTime = expectedExpiration.getSeconds();
         long timeDiff = Math.abs(expectedTime - tokenSeconds);
         double allowedTimeDiff = expectedTime * 0.05;
         return timeDiff < allowedTimeDiff;
     }
 
-    private static int getTokenExpirationInMinutes(Duration tokenExpiresAfter, ClientLogger logger) {
+    private static int getTokenExpirationInMinutes(Duration tokenExpiresIn, ClientLogger logger) {
         try {
-            return Math.toIntExact(tokenExpiresAfter.toMinutes());
+            return Math.toIntExact(tokenExpiresIn.toMinutes());
         } catch (ArithmeticException ex) {
             IllegalArgumentException expiresAfterOverflowEx = new IllegalArgumentException(TOKEN_EXPIRATION_OVERFLOW_MESSAGE, ex);
             throw logger.logExceptionAsError(expiresAfterOverflowEx);

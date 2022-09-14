@@ -94,17 +94,17 @@ public final class CommunicationIdentityClient {
      * Creates a new CommunicationUserIdentifier with token.
      *
      * @param scopes The list of scopes for the token.
-     * @param tokenExpiresAfter Custom validity period of the Communication Identity access token within [1,24]
+     * @param tokenExpiresIn Custom validity period of the Communication Identity access token within [1,24]
      * hours range. If not provided, the default value of 24 hours will be used.
      * @return The created communication user and token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunicationUserIdentifierAndToken createUserAndToken(
-        Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresAfter) {
+        Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresIn) {
         Objects.requireNonNull(scopes);
 
         CommunicationIdentityCreateRequest communicationIdentityCreateRequest =
-            CommunicationIdentityClientUtils.createCommunicationIdentityCreateRequest(scopes, tokenExpiresAfter, logger);
+            CommunicationIdentityClientUtils.createCommunicationIdentityCreateRequest(scopes, tokenExpiresIn, logger);
 
         CommunicationIdentityAccessTokenResult result = client.create(communicationIdentityCreateRequest);
         return userWithAccessTokenResultConverter(result);
@@ -126,19 +126,19 @@ public final class CommunicationIdentityClient {
      * Creates a new CommunicationUserIdentifier with token with response.
      *
      * @param scopes The list of scopes for the token.
-     * @param tokenExpiresAfter Custom validity period of the Communication Identity access token within [1,24]
+     * @param tokenExpiresIn Custom validity period of the Communication Identity access token within [1,24]
      * hours range. If not provided, the default value of 24 hours will be used.
      * @param context A {@link Context} representing the request context.
      * @return The created communication user and token with response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunicationUserIdentifierAndToken> createUserAndTokenWithResponse(
-        Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresAfter, Context context) {
+        Iterable<CommunicationTokenScope> scopes, Duration tokenExpiresIn, Context context) {
         Objects.requireNonNull(scopes);
         context = context == null ? Context.NONE : context;
 
         CommunicationIdentityCreateRequest communicationIdentityCreateRequest =
-            CommunicationIdentityClientUtils.createCommunicationIdentityCreateRequest(scopes, tokenExpiresAfter, logger);
+            CommunicationIdentityClientUtils.createCommunicationIdentityCreateRequest(scopes, tokenExpiresIn, logger);
 
         Response<CommunicationIdentityAccessTokenResult> response = client.createWithResponseAsync(
             communicationIdentityCreateRequest, context).block();
@@ -223,7 +223,7 @@ public final class CommunicationIdentityClient {
      * @param communicationUser A {@link CommunicationUserIdentifier} from whom to issue a Communication Identity
      * access token.
      * @param scopes List of {@link CommunicationTokenScope} scopes for the Communication Identity access token.
-     * @param tokenExpiresAfter Custom validity period of the Communication Identity access token within [1,24]
+     * @param tokenExpiresIn Custom validity period of the Communication Identity access token within [1,24]
      * hours range. If not provided, the default value of 24 hours will be used.
      * @return the Communication Identity access token.
      */
@@ -231,12 +231,12 @@ public final class CommunicationIdentityClient {
     public AccessToken getToken(
         CommunicationUserIdentifier communicationUser,
         Iterable<CommunicationTokenScope> scopes,
-        Duration tokenExpiresAfter) {
+        Duration tokenExpiresIn) {
         Objects.requireNonNull(communicationUser);
         Objects.requireNonNull(scopes);
 
         CommunicationIdentityAccessTokenRequest tokenRequest =
-            CommunicationIdentityClientUtils.createCommunicationIdentityAccessTokenRequest(scopes, tokenExpiresAfter, logger);
+            CommunicationIdentityClientUtils.createCommunicationIdentityAccessTokenRequest(scopes, tokenExpiresIn, logger);
 
         CommunicationIdentityAccessToken rawToken = client.issueAccessToken(
             communicationUser.getId(),
@@ -264,7 +264,7 @@ public final class CommunicationIdentityClient {
      * @param communicationUser A {@link CommunicationUserIdentifier} from whom to issue a Communication Identity
      * access token.
      * @param scopes List of {@link CommunicationTokenScope} scopes for the Communication Identity access token.
-     * @param tokenExpiresAfter Custom validity period of the Communication Identity access token within [1,24]
+     * @param tokenExpiresIn Custom validity period of the Communication Identity access token within [1,24]
      * hours range. If not provided, the default value of 24 hours will be used.
      * @param context the context of the request. Can also be null or Context.NONE.
      * @return the Communication Identity access token with response.
@@ -273,14 +273,14 @@ public final class CommunicationIdentityClient {
     public Response<AccessToken> getTokenWithResponse(
         CommunicationUserIdentifier communicationUser,
         Iterable<CommunicationTokenScope> scopes,
-        Duration tokenExpiresAfter,
+        Duration tokenExpiresIn,
         Context context) {
         Objects.requireNonNull(communicationUser);
         Objects.requireNonNull(scopes);
         context = context == null ? Context.NONE : context;
 
         CommunicationIdentityAccessTokenRequest tokenRequest =
-            CommunicationIdentityClientUtils.createCommunicationIdentityAccessTokenRequest(scopes, tokenExpiresAfter, logger);
+            CommunicationIdentityClientUtils.createCommunicationIdentityAccessTokenRequest(scopes, tokenExpiresIn, logger);
 
         Response<CommunicationIdentityAccessToken> response = client.issueAccessTokenWithResponseAsync(
                 communicationUser.getId(),
