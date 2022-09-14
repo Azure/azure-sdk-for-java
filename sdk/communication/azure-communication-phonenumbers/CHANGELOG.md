@@ -1,5 +1,15 @@
 # Release History
 
+## 1.1.0-beta.11 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.1.0-beta.10 (2022-09-13)
 
 ### Other Changes
@@ -8,6 +18,15 @@
 
 - Upgraded `azure-core` from `1.31.0` to version `1.32.0`
 - Upgraded `azure-communication-common` from `1.2.0` to version `1.2.1`
+
+## 1.0.15 (2022-09-09)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.31.0` to version `1.32.0`.
+- Upgraded `azure-communication-common` from `1.2.0` to version `1.2.1`.
 
 ## 1.1.0-beta.9 (2022-08-11)
 
@@ -18,6 +37,15 @@
 - Upgraded `azure-core` from `1.30.0` to version `1.31.0`
 - Upgraded `azure-communication-common` from `1.1.5` to version `1.2.0`
 
+## 1.0.14 (2022-08-11)
+
+### Other Changes
+
+#### Dependency Updates
+- 
+- Upgraded `azure-core` from `1.30.0` to version `1.31.0`.
+- Upgraded `azure-communication-common` from `1.1.5` to version `1.2.0`.
+
 ## 1.1.0-beta.8 (2022-07-18)
 
 ### Other Changes
@@ -26,6 +54,15 @@
 
 - Upgraded `azure-core` from `1.29.1` to version `1.30.0`
 - Upgraded `azure-communication-common` from `1.1.4` to version `1.1.5`
+
+## 1.0.13 (2022-07-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.1` to version `1.30.0`.
+- Upgraded `azure-communication-common` from `1.1.4` to version `1.1.5`.
 
 ## 1.1.0-beta.7 (2022-06-13)
 
