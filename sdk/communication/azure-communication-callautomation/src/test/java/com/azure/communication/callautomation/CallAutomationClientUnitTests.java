@@ -58,7 +58,7 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
         assertNotNull(createCallResult);
         assertEquals(201, createCallResult.getStatusCode());
         assertNotNull(createCallResult.getValue());
-        assertEquals("mediaSubscriptionId", null);
+        assertEquals(null, createCallResult.getValue().getCallConnectionProperties().getMediaSubscriptionId());
     }
 
     @Test
