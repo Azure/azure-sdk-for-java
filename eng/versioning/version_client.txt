@@ -396,3 +396,4 @@ unreleased_com.azure.spring:spring-cloud-azure-resourcemanager;6.0.0-beta.1
 unreleased_com.azure.spring:spring-cloud-azure-autoconfigure;6.0.0-beta.1
 unreleased_com.azure.spring:spring-integration-azure-storage-queue;6.0.0-beta.1
 unreleased_com.azure.spring:spring-integration-azure-eventhubs;6.0.0-beta.1
+unreleased_com.azure:azure-cosmos;4.36.0-beta.1
