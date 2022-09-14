@@ -166,7 +166,7 @@ class ChangeFeedQueryImpl<T> {
                                      .getHeaders()
                                      .get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID)) != null) {
 
-                                 rsp.getResponseHeaders().put(
+                                 rspHeaders.put(
                                      HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID,
                                      requestPkRangeId
                                  );
