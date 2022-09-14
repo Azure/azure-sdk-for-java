@@ -23,12 +23,19 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Tests. */
@@ -37,24 +44,24 @@ public final class TestsImpl {
     private final TestsService service;
 
     /** The service client containing this operation class. */
-    private final LoadTestClientImpl client;
+    private final LoadTestingClientImpl client;
 
     /**
      * Initializes an instance of TestsImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    TestsImpl(LoadTestClientImpl client) {
+    TestsImpl(LoadTestingClientImpl client) {
         this.service = RestProxy.create(TestsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for LoadTestClientTests to be used by the proxy service to perform REST
-     * calls.
+     * The interface defining all the services for LoadTestingClientTests to be used by the proxy service to perform
+     * REST calls.
      */
     @Host("https://{Endpoint}")
-    @ServiceInterface(name = "LoadTestClientTests")
+    @ServiceInterface(name = "LoadTestingClientTes")
     private interface TestsService {
         @Patch("/loadtests/{testId}")
         @ExpectedResponses({200, 201})
@@ -217,6 +224,44 @@ public final class TestsImpl {
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("testId") String testId,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listLoadTestSearchNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("Endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getAllTestFilesNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("Endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -808,19 +853,28 @@ public final class TestsImpl {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return all load tests by the fully qualified resource Id e.g
      *     subscriptions/{subId}/resourceGroups/{rg}/providers/Microsoft.LoadTestService/loadtests/{resName} along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     *     {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listLoadTestSearchWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<PagedResponse<BinaryData>> listLoadTestSearchSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.listLoadTestSearch(
-                                this.client.getEndpoint(),
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+                        context ->
+                                service.listLoadTestSearch(
+                                        this.client.getEndpoint(),
+                                        this.client.getServiceVersion().getVersion(),
+                                        accept,
+                                        requestOptions,
+                                        context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
     }
 
     /**
@@ -914,12 +968,118 @@ public final class TestsImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return all load tests by the fully qualified resource Id e.g
-     *     subscriptions/{subId}/resourceGroups/{rg}/providers/Microsoft.LoadTestService/loadtests/{resName} along with
-     *     {@link Response}.
+     *     subscriptions/{subId}/resourceGroups/{rg}/providers/Microsoft.LoadTestService/loadtests/{resName} as
+     *     paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listLoadTestSearchWithResponse(RequestOptions requestOptions) {
-        return listLoadTestSearchWithResponseAsync(requestOptions).block();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listLoadTestSearchAsync(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedFlux<>(
+                () -> listLoadTestSearchSinglePageAsync(requestOptions),
+                nextLink -> listLoadTestSearchNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+    }
+
+    /**
+     * Get all load tests by the fully qualified resource Id e.g
+     * subscriptions/{subId}/resourceGroups/{rg}/providers/Microsoft.LoadTestService/loadtests/{resName}.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>orderBy</td><td>String</td><td>No</td><td>Sort on one of the field - lastModifiedDateTime, displayName, createdBy in (field asc/desc) format. eg: displayName asc.</td></tr>
+     *     <tr><td>search</td><td>String</td><td>No</td><td>Filter search based on searchable fields - testId, createdBy.</td></tr>
+     *     <tr><td>lastUpdatedStartTime</td><td>OffsetDateTime</td><td>No</td><td>Start DateTime(ISO 8601 literal format) of the last updated time range to filter tests.</td></tr>
+     *     <tr><td>lastUpdatedEndTime</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(ISO 8601 literal format) of the last updated time range to filter tests.</td></tr>
+     *     <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token to get the next page of response.</td></tr>
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Number of results in response.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value (Required): [
+     *          (Required){
+     *             testId: String (Optional)
+     *             description: String (Optional)
+     *             displayName: String (Optional)
+     *             resourceId: String (Optional)
+     *             loadTestConfig (Optional): {
+     *                 engineInstances: Integer (Optional)
+     *                 splitAllCSVs: Boolean (Optional)
+     *             }
+     *             passFailCriteria (Optional): {
+     *                 passFailMetrics (Optional): {
+     *                     String (Optional): {
+     *                         clientmetric: String (Optional)
+     *                         aggregate: String (Optional)
+     *                         condition: String (Optional)
+     *                         requestName: String (Optional)
+     *                         value: Double (Optional)
+     *                         action: String (Optional)
+     *                         actualValue: Double (Optional)
+     *                         result: String (Optional)
+     *                     }
+     *                 }
+     *             }
+     *             createdDateTime: OffsetDateTime (Optional)
+     *             createdBy: String (Optional)
+     *             lastModifiedDateTime: OffsetDateTime (Optional)
+     *             lastModifiedBy: String (Optional)
+     *             inputArtifacts (Optional): {
+     *                 configUrl (Optional): {
+     *                     url: String (Optional)
+     *                     fileId: String (Optional)
+     *                     filename: String (Optional)
+     *                     fileType: String(0/1/2) (Optional)
+     *                     expireTime: OffsetDateTime (Optional)
+     *                     validationStatus: String (Optional)
+     *                 }
+     *                 testScriptUrl (Optional): (recursive schema, see testScriptUrl above)
+     *                 userPropUrl (Optional): (recursive schema, see userPropUrl above)
+     *                 inputArtifactsZipFileurl (Optional): (recursive schema, see inputArtifactsZipFileurl above)
+     *                 additionalUrls (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *             }
+     *             secrets (Optional): {
+     *                 String (Optional): {
+     *                     value: String (Optional)
+     *                     type: String (Optional)
+     *                 }
+     *             }
+     *             environmentVariables (Optional): {
+     *                 String: String (Optional)
+     *             }
+     *             subnetId: String (Optional)
+     *             keyvaultReferenceIdentityType: String (Optional)
+     *             keyvaultReferenceIdentityId: String (Optional)
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return all load tests by the fully qualified resource Id e.g
+     *     subscriptions/{subId}/resourceGroups/{rg}/providers/Microsoft.LoadTestService/loadtests/{resName} as
+     *     paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listLoadTestSearch(RequestOptions requestOptions) {
+        return new PagedIterable<>(listLoadTestSearchAsync(requestOptions));
     }
 
     /**
@@ -969,7 +1129,6 @@ public final class TestsImpl {
     public Mono<Response<BinaryData>> uploadTestFileWithResponseAsync(
             String testId, String fileId, BinaryData file, RequestOptions requestOptions) {
         final String accept = "application/json";
-        // Replace file with a request body containing file and multipart boundary
         return FluxUtil.withContext(
                 context ->
                         service.uploadTestFile(
@@ -1185,20 +1344,30 @@ public final class TestsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return all test files along with {@link Response} on successful completion of {@link Mono}.
+     * @return all test files along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAllTestFilesWithResponseAsync(String testId, RequestOptions requestOptions) {
+    public Mono<PagedResponse<BinaryData>> getAllTestFilesSinglePageAsync(
+            String testId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.getAllTestFiles(
-                                this.client.getEndpoint(),
-                                this.client.getServiceVersion().getVersion(),
-                                testId,
-                                accept,
-                                requestOptions,
-                                context));
+                        context ->
+                                service.getAllTestFiles(
+                                        this.client.getEndpoint(),
+                                        this.client.getServiceVersion().getVersion(),
+                                        testId,
+                                        accept,
+                                        requestOptions,
+                                        context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
     }
 
     /**
@@ -1238,10 +1407,226 @@ public final class TestsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return all test files along with {@link Response}.
+     * @return all test files as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> getAllTestFilesAsync(String testId, RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedFlux<>(
+                () -> getAllTestFilesSinglePageAsync(testId, requestOptions),
+                nextLink -> getAllTestFilesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+    }
+
+    /**
+     * Get all test files.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token to get the next page of response.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value (Required): [
+     *          (Required){
+     *             url: String (Optional)
+     *             fileId: String (Optional)
+     *             filename: String (Optional)
+     *             fileType: String(0/1/2) (Optional)
+     *             expireTime: OffsetDateTime (Optional)
+     *             validationStatus: String (Optional)
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testId Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return all test files as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> getAllTestFiles(String testId, RequestOptions requestOptions) {
+        return new PagedIterable<>(getAllTestFilesAsync(testId, requestOptions));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value (Required): [
+     *          (Required){
+     *             testId: String (Optional)
+     *             description: String (Optional)
+     *             displayName: String (Optional)
+     *             resourceId: String (Optional)
+     *             loadTestConfig (Optional): {
+     *                 engineInstances: Integer (Optional)
+     *                 splitAllCSVs: Boolean (Optional)
+     *             }
+     *             passFailCriteria (Optional): {
+     *                 passFailMetrics (Optional): {
+     *                     String (Optional): {
+     *                         clientmetric: String (Optional)
+     *                         aggregate: String (Optional)
+     *                         condition: String (Optional)
+     *                         requestName: String (Optional)
+     *                         value: Double (Optional)
+     *                         action: String (Optional)
+     *                         actualValue: Double (Optional)
+     *                         result: String (Optional)
+     *                     }
+     *                 }
+     *             }
+     *             createdDateTime: OffsetDateTime (Optional)
+     *             createdBy: String (Optional)
+     *             lastModifiedDateTime: OffsetDateTime (Optional)
+     *             lastModifiedBy: String (Optional)
+     *             inputArtifacts (Optional): {
+     *                 configUrl (Optional): {
+     *                     url: String (Optional)
+     *                     fileId: String (Optional)
+     *                     filename: String (Optional)
+     *                     fileType: String(0/1/2) (Optional)
+     *                     expireTime: OffsetDateTime (Optional)
+     *                     validationStatus: String (Optional)
+     *                 }
+     *                 testScriptUrl (Optional): (recursive schema, see testScriptUrl above)
+     *                 userPropUrl (Optional): (recursive schema, see userPropUrl above)
+     *                 inputArtifactsZipFileurl (Optional): (recursive schema, see inputArtifactsZipFileurl above)
+     *                 additionalUrls (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *             }
+     *             secrets (Optional): {
+     *                 String (Optional): {
+     *                     value: String (Optional)
+     *                     type: String (Optional)
+     *                 }
+     *             }
+     *             environmentVariables (Optional): {
+     *                 String: String (Optional)
+     *             }
+     *             subnetId: String (Optional)
+     *             keyvaultReferenceIdentityType: String (Optional)
+     *             keyvaultReferenceIdentityId: String (Optional)
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return list of Resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAllTestFilesWithResponse(String testId, RequestOptions requestOptions) {
-        return getAllTestFilesWithResponseAsync(testId, requestOptions).block();
+    public Mono<PagedResponse<BinaryData>> listLoadTestSearchNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                        context ->
+                                service.listLoadTestSearchNext(
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value (Required): [
+     *          (Required){
+     *             url: String (Optional)
+     *             fileId: String (Optional)
+     *             filename: String (Optional)
+     *             fileType: String(0/1/2) (Optional)
+     *             expireTime: OffsetDateTime (Optional)
+     *             validationStatus: String (Optional)
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BinaryData>> getAllTestFilesNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                        context ->
+                                service.getAllTestFilesNext(
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
+    }
+
+    private List<BinaryData> getValues(BinaryData binaryData, String path) {
+        try {
+            Map<?, ?> obj = binaryData.toObject(Map.class);
+            List<?> values = (List<?>) obj.get(path);
+            return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
+        } catch (RuntimeException e) {
+            return null;
+        }
+    }
+
+    private String getNextLink(BinaryData binaryData, String path) {
+        try {
+            Map<?, ?> obj = binaryData.toObject(Map.class);
+            return (String) obj.get(path);
+        } catch (RuntimeException e) {
+            return null;
+        }
     }
 }

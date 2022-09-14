@@ -11,10 +11,10 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.developer.loadtesting.LoadTestServiceVersion;
+import com.azure.developer.loadtesting.LoadTestingServiceVersion;
 
-/** Initializes a new instance of the LoadTestClient type. */
-public final class LoadTestClientImpl {
+/** Initializes a new instance of the LoadTestingClient type. */
+public final class LoadTestingClientImpl {
     /** URL to perform data plane API operations on the resource. */
     private final String endpoint;
 
@@ -28,14 +28,14 @@ public final class LoadTestClientImpl {
     }
 
     /** Service version. */
-    private final LoadTestServiceVersion serviceVersion;
+    private final LoadTestingServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
      *
      * @return the serviceVersion value.
      */
-    public LoadTestServiceVersion getServiceVersion() {
+    public LoadTestingServiceVersion getServiceVersion() {
         return this.serviceVersion;
     }
 
@@ -112,12 +112,12 @@ public final class LoadTestClientImpl {
     }
 
     /**
-     * Initializes an instance of LoadTestClient client.
+     * Initializes an instance of LoadTestingClient client.
      *
      * @param endpoint URL to perform data plane API operations on the resource.
      * @param serviceVersion Service version.
      */
-    public LoadTestClientImpl(String endpoint, LoadTestServiceVersion serviceVersion) {
+    public LoadTestingClientImpl(String endpoint, LoadTestingServiceVersion serviceVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
@@ -128,29 +128,29 @@ public final class LoadTestClientImpl {
     }
 
     /**
-     * Initializes an instance of LoadTestClient client.
+     * Initializes an instance of LoadTestingClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint URL to perform data plane API operations on the resource.
      * @param serviceVersion Service version.
      */
-    public LoadTestClientImpl(HttpPipeline httpPipeline, String endpoint, LoadTestServiceVersion serviceVersion) {
+    public LoadTestingClientImpl(HttpPipeline httpPipeline, String endpoint, LoadTestingServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
-     * Initializes an instance of LoadTestClient client.
+     * Initializes an instance of LoadTestingClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint URL to perform data plane API operations on the resource.
      * @param serviceVersion Service version.
      */
-    public LoadTestClientImpl(
+    public LoadTestingClientImpl(
             HttpPipeline httpPipeline,
             SerializerAdapter serializerAdapter,
             String endpoint,
-            LoadTestServiceVersion serviceVersion) {
+            LoadTestingServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;

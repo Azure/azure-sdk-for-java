@@ -12,8 +12,8 @@
   <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-developer-loadtesting;current} -->
   <packaging>jar</packaging>
 
-  <name>Microsoft Azure SDK for LoadTestClient Management</name>
-  <description>This package contains Microsoft Azure LoadTestClient client library.</description>
+  <name>Microsoft Azure SDK for LoadTestingClient Management</name>
+  <description>This package contains Microsoft Azure LoadTestingClient client library.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -44,12 +44,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.31.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.32.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.12.4</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.12.5</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -66,13 +66,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.11.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.12.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.5.4</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.5.5</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

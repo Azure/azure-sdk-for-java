@@ -36,25 +36,25 @@ public final class ServerMetricsImpl {
     private final ServerMetricsService service;
 
     /** The service client containing this operation class. */
-    private final LoadTestClientImpl client;
+    private final LoadTestingClientImpl client;
 
     /**
      * Initializes an instance of ServerMetricsImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ServerMetricsImpl(LoadTestClientImpl client) {
+    ServerMetricsImpl(LoadTestingClientImpl client) {
         this.service =
                 RestProxy.create(ServerMetricsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for LoadTestClientServerMetrics to be used by the proxy service to
+     * The interface defining all the services for LoadTestingClientServerMetrics to be used by the proxy service to
      * perform REST calls.
      */
     @Host("https://{Endpoint}")
-    @ServiceInterface(name = "LoadTestClientServer")
+    @ServiceInterface(name = "LoadTestingClientSer")
     private interface ServerMetricsService {
         @Patch("/serverMetricsConfig/{name}")
         @ExpectedResponses({200, 201})

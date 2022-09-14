@@ -8,8 +8,9 @@ This package contains Microsoft Azure Developer LoadTesting client library.
 
 Various documentation is available to help you get started
 
-- [API reference documentation][docs]
-- [Product documentation][product_documentation]
+- [Source code][source_code]
+- [API reference documentation][api_reference_doc]
+- [Product Documentation][product_documentation]
 
 ## Getting started
 
@@ -64,14 +65,102 @@ An important distinction is that Azure Management libraries use `authenticate` m
 
 ## Key concepts
 
+The following components make up the Azure Load Testing Service. The Azure Load Test client library for Python allows you to interact with each of these components through the use of a dedicated client object.
+
+### Load testing resource
+
+The Load testing resource is the top-level resource for your load-testing activities. This resource provides a centralized place to view and manage load tests, test results, and related artifacts. A load testing resource contains zero or more load tests.
+
+### Test
+
+A test specifies the test script, and configuration settings for running a load test. You can create one or more tests in an Azure Load Testing resource.
+
+### Test Engine
+
+A test engine is computing infrastructure that runs the Apache JMeter test script. You can scale out your load test by configuring the number of test engines. The test script runs in parallel across the specified number of test engines.
+
+### Test Run
+
+A test run represents one execution of a load test. It collects the logs associated with running the Apache JMeter script, the load test YAML configuration, the list of app components to monitor, and the results of the test.
+
+### App Component
+
+When you run a load test for an Azure-hosted application, you can monitor resource metrics for the different Azure application components (server-side metrics). While the load test runs, and after completion of the test, you can monitor and analyze the resource metrics in the Azure Load Testing dashboard.
+
+### Metrics
+
+During a load test, Azure Load Testing collects metrics about the test execution. There are two types of metrics:
+
+1. Client-side metrics give you details reported by the test engine. These metrics include the number of virtual users, the request response time, the number of failed requests, or the number of requests per second.
+
+2. Server-side metrics are available for Azure-hosted applications and provide information about your Azure application components. Metrics can be for the number of database reads, the type of HTTP responses, or container resource consumption.
+
 ## Examples
 
-```java com.azure.developer.loadtesting.readme
+### Creating a Load Test
+
+```java java-readme-sample-createTest
+TestClientBuilder testClientBuilder = new TestClientBuilder();
+TestClient testClient = testClientBuilder
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .endpoint("<endpoint>")
+    .buildClient();
+
+Map<String, Object> testMap = new HashMap<String, Object>();
+testMap.put("displayName", "Sample Display Name");
+testMap.put("description", "Sample Description");
+
+Map<String, Object> loadTestConfigMap = new HashMap<String, Object>();
+loadTestConfigMap.put("engineInstances", 1);
+testMap.put("loadTestConfig", loadTestConfigMap);
+
+Map<String, Object> envVarMap = new HashMap<String, Object>();
+envVarMap.put("a", "b");
+envVarMap.put("x", "y");
+testMap.put("environmentVariables", envVarMap);
+
+BinaryData test = BinaryData.fromObject(testMap);
+
+BinaryData testOut = testClient.createOrUpdateTestWithResponse("test12345", test, null).getValue();
+System.out.println(testOut.toString());
 ```
 
-## Troubleshooting
+### Uploading .jmx file to a Load Test
 
-## Next steps
+```java java-readme-sample-uploadTestFile
+TestClientBuilder testClientBuilder = new TestClientBuilder();
+TestClient testClient = testClientBuilder
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .endpoint("<endpoint>")
+    .buildClient();
+
+BinaryData fileData = BinaryData.fromFile(new File("path/to/file").toPath());
+BinaryData fileUrlOut = testClient.uploadTestFileWithResponse("test12345", "file12345", fileData, null).getValue();
+System.out.println(fileUrlOut.toString());
+```
+
+### Running a Load Test
+
+```java java-readme-sample-runTest
+TestRunClientBuilder testRunClientBuilder = new TestRunClientBuilder();
+TestRunClient testRunClient = testRunClientBuilder
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .endpoint("<endpoint>")
+    .buildClient();
+
+Map<String, Object> testRunMap = new HashMap<String, Object>();
+testRunMap.put("testId", "test12345");
+testRunMap.put("displayName", "SDK-Created-TestRun");
+
+Map<String, Object> loadTestConfigMap = new HashMap<String, Object>();
+loadTestConfigMap.put("engineInstances", 2);
+testRunMap.put("loadTestConfig", loadTestConfigMap);
+
+BinaryData testRun = BinaryData.fromObject(testRunMap);
+
+BinaryData testRunOut = testRunClient.createAndUpdateTestWithResponse("testrun12345", testRun, null).getValue();
+System.out.println(testRunOut.toString());
+```
 
 ## Contributing
 
@@ -84,8 +173,9 @@ For details on contributing to this repository, see the [contributing guide](htt
 1. Create new Pull Request
 
 <!-- LINKS -->
-[product_documentation]: https://azure.microsoft.com/services/
-[docs]: https://azure.github.io/azure-sdk-for-java/
+[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtesting/azure-developer-loadtesting/src
+[api_reference_doc]: https://docs.microsoft.com/rest/api/loadtesting/
+[product_documentation]: https://azure.microsoft.com/services/load-testing/
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity

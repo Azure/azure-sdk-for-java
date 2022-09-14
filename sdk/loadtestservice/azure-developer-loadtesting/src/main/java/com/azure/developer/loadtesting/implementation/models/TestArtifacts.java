@@ -14,7 +14,7 @@ public final class TestArtifacts {
     /*
      * The input artifacts for the test.
      */
-    @JsonProperty(value = "inputArtifacts", required = true, access = JsonProperty.Access.READ_WRITE)
+    @JsonProperty(value = "inputArtifacts", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private InputTestArtifacts inputArtifacts;
 
     /*
@@ -30,7 +30,7 @@ public final class TestArtifacts {
      */
     @JsonCreator
     public TestArtifacts(
-            @JsonProperty(value = "inputArtifacts", required = true, access = JsonProperty.Access.READ_WRITE)
+            @JsonProperty(value = "inputArtifacts", required = true, access = JsonProperty.Access.WRITE_ONLY)
                     InputTestArtifacts inputArtifacts) {
         this.inputArtifacts = inputArtifacts;
     }
@@ -51,17 +51,6 @@ public final class TestArtifacts {
      */
     public OutputTestArtifacts getOutputArtifacts() {
         return this.outputArtifacts;
-    }
-
-    /**
-     * Set the outputArtifacts property: The output artifacts for the test run.
-     *
-     * @param outputArtifacts the outputArtifacts value to set.
-     * @return the TestArtifacts object itself.
-     */
-    public TestArtifacts setInputArtifacts(InputTestArtifacts inputArtifacts) {
-        this.inputArtifacts = inputArtifacts;
-        return this;
     }
 
     /**

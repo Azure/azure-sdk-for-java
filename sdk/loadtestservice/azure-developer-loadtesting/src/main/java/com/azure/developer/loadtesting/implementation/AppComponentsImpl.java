@@ -36,25 +36,25 @@ public final class AppComponentsImpl {
     private final AppComponentsService service;
 
     /** The service client containing this operation class. */
-    private final LoadTestClientImpl client;
+    private final LoadTestingClientImpl client;
 
     /**
      * Initializes an instance of AppComponentsImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    AppComponentsImpl(LoadTestClientImpl client) {
+    AppComponentsImpl(LoadTestingClientImpl client) {
         this.service =
                 RestProxy.create(AppComponentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for LoadTestClientAppComponents to be used by the proxy service to
+     * The interface defining all the services for LoadTestingClientAppComponents to be used by the proxy service to
      * perform REST calls.
      */
     @Host("https://{Endpoint}")
-    @ServiceInterface(name = "LoadTestClientAppCom")
+    @ServiceInterface(name = "LoadTestingClientApp")
     private interface AppComponentsService {
         @Patch("/appcomponents/{name}")
         @ExpectedResponses({200, 201})

@@ -2,7 +2,7 @@
 
 ## 1.0.0-beta.1 (Unreleased)
 
-- Azure LoadTestClient client library for Java. This package contains Microsoft Azure LoadTestClient client library.
+- Azure LoadTestingClient client library for Java. This package contains Microsoft Azure LoadTestingClient client library.
 
 ### Features Added
 

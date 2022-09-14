@@ -1,20 +1,20 @@
 ## Generate autorest code
 
 ```yaml
-require: https://github.com/Azure/azure-rest-api-specs/blob/9401446f22177696d920cf110893a0de7452ee9e/specification/loadtestservice/data-plane/readme.md
+require: C:/Users/harshanb/source/repos/azure-rest-api-specs/specification/loadtestservice/data-plane/readme.md
 output-folder: ../
 java: true
 regenerate-pom: false
-title: LoadTestClient
+title: LoadTestingClient
 security: AADToken
 security-scopes: https://loadtest.azure-dev.com/.default
 data-plane: true
-generate-tests: true
+generate-tests: false
 generate-models: true
 artifact-id: azure-developer-loadtesting
-generate-samples: true
+generate-samples: false
 namespace: com.azure.developer.loadtesting
-partial-update: true
+partial-update: false
 service-versions:
 - 2022-06-01-preview
 ```

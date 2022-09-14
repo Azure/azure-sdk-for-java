@@ -4,9 +4,76 @@
 
 package com.azure.developer.loadtesting;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.azure.core.util.BinaryData;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+
 public final class ReadmeSamples {
-    public void readmeSamples() {
-        // BEGIN: com.azure.developer.loadtesting.readme
-        // END: com.azure.developer.loadtesting.readme
+    public void createTest() {
+        // BEGIN: java-readme-sample-createTest
+        TestClientBuilder testClientBuilder = new TestClientBuilder();
+        TestClient testClient = testClientBuilder
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint("<endpoint>")
+            .buildClient();
+
+        Map<String, Object> testMap = new HashMap<String, Object>();
+        testMap.put("displayName", "Sample Display Name");
+        testMap.put("description", "Sample Description");
+
+        Map<String, Object> loadTestConfigMap = new HashMap<String, Object>();
+        loadTestConfigMap.put("engineInstances", 1);
+        testMap.put("loadTestConfig", loadTestConfigMap);
+
+        Map<String, Object> envVarMap = new HashMap<String, Object>();
+        envVarMap.put("a", "b");
+        envVarMap.put("x", "y");
+        testMap.put("environmentVariables", envVarMap);
+
+        BinaryData test = BinaryData.fromObject(testMap);
+
+        BinaryData testOut = testClient.createOrUpdateTestWithResponse("test12345", test, null).getValue();
+        System.out.println(testOut.toString());
+        // END: java-readme-sample-createTest
+    }
+
+    public void uploadTestFile() {
+        // BEGIN: java-readme-sample-uploadTestFile
+        TestClientBuilder testClientBuilder = new TestClientBuilder();
+        TestClient testClient = testClientBuilder
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint("<endpoint>")
+            .buildClient();
+
+        BinaryData fileData = BinaryData.fromFile(new File("path/to/file").toPath());
+        BinaryData fileUrlOut = testClient.uploadTestFileWithResponse("test12345", "file12345", fileData, null).getValue();
+        System.out.println(fileUrlOut.toString());
+        // END: java-readme-sample-uploadTestFile
+    }
+
+    public void runTest() {
+        // BEGIN: java-readme-sample-runTest
+        TestRunClientBuilder testRunClientBuilder = new TestRunClientBuilder();
+        TestRunClient testRunClient = testRunClientBuilder
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint("<endpoint>")
+            .buildClient();
+
+        Map<String, Object> testRunMap = new HashMap<String, Object>();
+        testRunMap.put("testId", "test12345");
+        testRunMap.put("displayName", "SDK-Created-TestRun");
+
+        Map<String, Object> loadTestConfigMap = new HashMap<String, Object>();
+        loadTestConfigMap.put("engineInstances", 2);
+        testRunMap.put("loadTestConfig", loadTestConfigMap);
+
+        BinaryData testRun = BinaryData.fromObject(testRunMap);
+
+        BinaryData testRunOut = testRunClient.createAndUpdateTestWithResponse("testrun12345", testRun, null).getValue();
+        System.out.println(testRunOut.toString());
+        // END: java-readme-sample-runTest
     }
 }
