@@ -13,9 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-@Container()
+@Container(ru = TestConstants.MULTI_PARTITION_THROUGHPUT, autoScale = true)
 @CosmosIndexingPolicy()
-public class Person {
+public class PersonCrossPartition {
     private String id;
     private String firstName;
 
@@ -28,8 +28,8 @@ public class Person {
     @Version
     private String _etag;
 
-    public Person(String id, String firstName, String lastName, List<String> hobbies, List<Address> shippingAddresses,
-                  Integer age, Map<String, String> passportIDsByCountry) {
+    public PersonCrossPartition(String id, String firstName, String lastName, List<String> hobbies, List<Address> shippingAddresses,
+                                Integer age, Map<String, String> passportIDsByCountry) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -39,7 +39,7 @@ public class Person {
         this.passportIdsByCountry = passportIDsByCountry;
     }
 
-    public Person() {
+    public PersonCrossPartition() {
     }
 
     public String getId() {
@@ -114,7 +114,7 @@ public class Person {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Person person = (Person) o;
+        PersonCrossPartition person = (PersonCrossPartition) o;
         return Objects.equals(id, person.id)
             && Objects.equals(firstName, person.firstName)
             && Objects.equals(lastName, person.lastName)
