@@ -35,6 +35,7 @@
   <properties>
     <java.version>17</java.version>
     <skipSpringITs>true</skipSpringITs>
+    <micrometer.version>1.10.0-M6</micrometer.version>
   </properties>
 
   <!-- Repositories definitions -->

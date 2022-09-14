@@ -19,7 +19,6 @@ jobs:
           Paths:
             - 'sdk/spring'
             - 'parents/azure-client-sdk-parent'
-            - 'sdk/cosmos/azure-cosmos'
             - 'sdk/boms/spring-cloud-azure-dependencies'
       - script: |
           pip install termcolor
