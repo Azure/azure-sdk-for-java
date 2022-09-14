@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -105,6 +106,7 @@ public class SemanticVersionTests {
     }
 
     @Test
+    @Disabled
     public void classVersion() {
         SemanticVersion version = SemanticVersion
                 .getPackageVersionForClass("com.fasterxml.jackson.databind.ObjectMapper");

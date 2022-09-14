@@ -80,22 +80,16 @@ class VertxAsyncHttpClient implements HttpClient {
                         if (eagerlyReadResponse) {
                             vertxHttpResponse.body(bodyEvent -> {
                                 if (bodyEvent.succeeded()) {
-                                    System.out.println("------------- Body event succeeded --------------------");
                                     sink.success(new BufferedVertxHttpResponse(request, vertxHttpResponse,
                                         bodyEvent.result()));
                                 } else {
-                                    System.out.println("------------- Body event error --------------------");
-
                                     sink.error(bodyEvent.cause());
                                 }
                             });
                         } else {
-                            System.out.println("------------NOT Eagerly read response --------------------");
-
                             sink.success(new VertxHttpAsyncResponse(request, vertxHttpResponse));
                         }
                     } else {
-                        System.out.println("Event --- Failed -----------");
                         sink.error(event.cause());
                     }
                 });
@@ -106,11 +100,9 @@ class VertxAsyncHttpClient implements HttpClient {
                     .map(Buffer::buffer)
                     .subscribe(
                         t -> {
-                            System.out.println("------------tttttttt--------" + t);
                             vertxHttpRequest.write(t);
                         },
                         throwable -> {
-                            System.out.println("------------throwable--------");
                             sink.error(throwable);
                         },
                         () -> {
@@ -133,14 +125,12 @@ class VertxAsyncHttpClient implements HttpClient {
     private Flux<ByteBuffer> getRequestBody(HttpRequest request, ProgressReporter progressReporter) {
         Flux<ByteBuffer> body = request.getBody();
         if (body == null) {
-            System.out.println("getRequestBody: Request Body is null-----------------");
             return Flux.empty();
         }
 
         if (progressReporter != null) {
             body = body.map(buffer -> {
                 int remaining = buffer.remaining();
-                System.out.println("remaining ==== " + remaining);
                 progressReporter.reportProgress(remaining);
                 return buffer;
             });

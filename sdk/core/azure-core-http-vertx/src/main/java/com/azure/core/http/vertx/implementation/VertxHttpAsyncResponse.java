@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 import java.nio.ByteBuffer;
 
 /**
- * Default HTTP response for Vert.x.
+ * Default HTTP response for Vert.x HTTP client.
  */
 public class VertxHttpAsyncResponse extends VertxHttpResponseBase {
 
@@ -38,12 +38,8 @@ public class VertxHttpAsyncResponse extends VertxHttpResponseBase {
         HttpClientResponse vertxHttpResponse = getVertxHttpResponse();
         return Flux.create(sink -> {
             vertxHttpResponse.handler(buffer -> {
-
-
                 sink.next(buffer.getByteBuf().nioBuffer());
             }).endHandler(event -> {
-
-
                 sink.complete();
             }).exceptionHandler(sink::error);
 

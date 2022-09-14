@@ -13,21 +13,18 @@ import reactor.core.publisher.Mono;
 
 import java.nio.charset.Charset;
 
+/**
+ * Base response class for Vert.x HTTP client with implementations for response metadata.
+ */
 abstract class VertxHttpResponseBase extends HttpResponse {
 
     private final HttpClientResponse vertxHttpResponse;
-    private final HttpHeaders headers;
+    private final HttpHeaders azureHttpHeaders;
 
     VertxHttpResponseBase(HttpRequest azureHttpRequest, HttpClientResponse vertxHttpResponse) {
         super(azureHttpRequest);
         this.vertxHttpResponse = vertxHttpResponse;
-        this.headers = fromVertxHttpHeaders(vertxHttpResponse.headers());
-    }
-
-    private HttpHeaders fromVertxHttpHeaders(MultiMap headers) {
-        HttpHeaders azureHeaders = new HttpHeaders();
-        headers.names().forEach(name -> azureHeaders.set(name, headers.getAll(name)));
-        return azureHeaders;
+        this.azureHttpHeaders = fromVertxHttpHeaders(vertxHttpResponse.headers());
     }
 
     protected HttpClientResponse getVertxHttpResponse() {
@@ -41,12 +38,12 @@ abstract class VertxHttpResponseBase extends HttpResponse {
 
     @Override
     public String getHeaderValue(String name) {
-        return this.headers.getValue(name);
+        return this.azureHttpHeaders.getValue(name);
     }
 
     @Override
     public HttpHeaders getHeaders() {
-        return this.headers;
+        return this.azureHttpHeaders;
     }
 
     @Override
@@ -56,6 +53,18 @@ abstract class VertxHttpResponseBase extends HttpResponse {
 
     @Override
     public final Mono<String> getBodyAsString(Charset charset) {
-        return getBodyAsByteArray().map(bytes -> CoreUtils.bomAwareToString(bytes, charset.toString()));
+        return getBodyAsByteArray().map(bytes -> new String(bytes, charset));
+    }
+
+    /**
+     * Creates azure-core HttpHeaders from Vert.x HTTP headers.
+     *
+     * @param vertxHttpHeaders Vert.x HTTP response headers.
+     * @return Azure HTTP headers.
+     */
+    private HttpHeaders fromVertxHttpHeaders(MultiMap vertxHttpHeaders) {
+        HttpHeaders azureHttpHeaders = new HttpHeaders();
+        vertxHttpHeaders.names().forEach(name -> azureHttpHeaders.set(name, vertxHttpHeaders.getAll(name)));
+        return azureHttpHeaders;
     }
 }
