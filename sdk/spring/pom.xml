@@ -66,8 +66,8 @@
       <id>dev</id>
       <modules>
         <module>../../eng/code-quality-reports</module>
-        <module>../boms/spring-cloud-azure-dependencies</module>
         <module>../cosmos/azure-cosmos</module>
+        <module>../boms/spring-cloud-azure-dependencies</module>
         <module>azure-spring-data-cosmos</module>
         <module>spring-messaging-azure</module>
         <module>spring-messaging-azure-eventhubs</module>
