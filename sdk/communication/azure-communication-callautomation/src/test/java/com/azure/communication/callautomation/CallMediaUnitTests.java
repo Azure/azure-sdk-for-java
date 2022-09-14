@@ -62,7 +62,7 @@ public class CallMediaUnitTests {
 
     @Test
     public void recognizeWithResponseTest() {
-        CallMediaRecognizeDtmfOptions callMediaRecognizeOptions = new CallMediaRecognizeDtmfOptions(new CommunicationUserIdentifier("id"));
+        CallMediaRecognizeDtmfOptions callMediaRecognizeOptions = new CallMediaRecognizeDtmfOptions(new CommunicationUserIdentifier("id"), 5);
         Response<Void> response = callMedia.recognizeWithResponse(callMediaRecognizeOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
