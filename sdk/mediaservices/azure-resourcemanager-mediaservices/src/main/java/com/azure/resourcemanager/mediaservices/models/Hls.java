@@ -11,9 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class Hls {
     /*
-     * The number of fragments in an HTTP Live Streaming (HLS) TS segment in
-     * the output of the live event. This value does not affect the packing
-     * ratio for HLS CMAF output.
+     * The number of fragments in an HTTP Live Streaming (HLS) TS segment in the output of the live event. This value
+     * does not affect the packing ratio for HLS CMAF output.
      */
     @JsonProperty(value = "fragmentsPerTsSegment")
     private Integer fragmentsPerTsSegment;

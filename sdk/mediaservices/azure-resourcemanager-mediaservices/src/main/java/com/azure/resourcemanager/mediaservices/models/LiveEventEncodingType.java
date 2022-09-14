@@ -8,7 +8,13 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LiveEventEncodingType. */
+/**
+ * Live event type. When encodingType is set to PassthroughBasic or PassthroughStandard, the service simply passes
+ * through the incoming video and audio layer(s) to the output. When encodingType is set to Standard or Premium1080p, a
+ * live encoder transcodes the incoming stream into multiple bitrates or layers. See
+ * https://go.microsoft.com/fwlink/?linkid=2095101 for more information. This property cannot be modified after the live
+ * event is created.
+ */
 public final class LiveEventEncodingType extends ExpandableStringEnum<LiveEventEncodingType> {
     /** Static value None for LiveEventEncodingType. */
     public static final LiveEventEncodingType NONE = fromString("None");

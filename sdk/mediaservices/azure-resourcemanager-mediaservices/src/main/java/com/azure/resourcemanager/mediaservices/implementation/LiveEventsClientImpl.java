@@ -34,6 +34,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mediaservices.fluent.LiveEventsClient;
+import com.azure.resourcemanager.mediaservices.fluent.models.AsyncOperationResultInner;
 import com.azure.resourcemanager.mediaservices.fluent.models.LiveEventInner;
 import com.azure.resourcemanager.mediaservices.models.LiveEventActionInput;
 import com.azure.resourcemanager.mediaservices.models.LiveEventListResult;
@@ -215,6 +216,39 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
             Context context);
 
         @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
+                + "/{accountName}/liveEventOperations/{operationId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<AsyncOperationResultInner>> asyncOperation(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("operationId") String operationId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
+                + "/{accountName}/liveEvents/{liveEventName}/operationLocations/{operationId}")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<LiveEventInner>> operationLocation(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("liveEventName") String liveEventName,
+            @PathParam("operationId") String operationId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -226,7 +260,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Lists all the live events in the account.
+     * List live events
+     *
+     * <p>Lists all the live events in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -256,6 +292,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -266,7 +303,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<LiveEventInner>>map(
@@ -282,7 +319,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Lists all the live events in the account.
+     * List live events
+     *
+     * <p>Lists all the live events in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -314,6 +353,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -322,7 +362,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(
@@ -337,7 +377,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Lists all the live events in the account.
+     * List live events
+     *
+     * <p>Lists all the live events in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -353,7 +395,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Lists all the live events in the account.
+     * List live events
+     *
+     * <p>Lists all the live events in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -371,7 +415,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Lists all the live events in the account.
+     * List live events
+     *
+     * <p>Lists all the live events in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -386,7 +432,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Lists all the live events in the account.
+     * List live events
+     *
+     * <p>Lists all the live events in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -402,7 +450,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Gets properties of a live event.
+     * Get Live Event
+     *
+     * <p>Gets properties of a live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -437,6 +487,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         if (liveEventName == null) {
             return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -448,14 +499,16 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
                             resourceGroupName,
                             accountName,
                             liveEventName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Gets properties of a live event.
+     * Get Live Event
+     *
+     * <p>Gets properties of a live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -491,6 +544,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         if (liveEventName == null) {
             return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -500,13 +554,15 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
                 resourceGroupName,
                 accountName,
                 liveEventName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
 
     /**
-     * Gets properties of a live event.
+     * Get Live Event
+     *
+     * <p>Gets properties of a live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -523,7 +579,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Gets properties of a live event.
+     * Get Live Event
+     *
+     * <p>Gets properties of a live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -539,7 +597,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Gets properties of a live event.
+     * Get Live Event
+     *
+     * <p>Gets properties of a live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -557,7 +617,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Creates a new live event.
+     * Create Live Event
+     *
+     * <p>Creates a new live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -603,6 +665,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -614,7 +677,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
                             resourceGroupName,
                             accountName,
                             liveEventName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             autoStart,
                             parameters,
                             accept,
@@ -623,7 +686,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Creates a new live event.
+     * Create Live Event
+     *
+     * <p>Creates a new live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -671,6 +736,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -680,7 +746,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
                 resourceGroupName,
                 accountName,
                 liveEventName,
-                this.client.getApiVersion(),
+                apiVersion,
                 autoStart,
                 parameters,
                 accept,
@@ -688,7 +754,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Creates a new live event.
+     * Create Live Event
+     *
+     * <p>Creates a new live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -720,7 +788,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Creates a new live event.
+     * Create Live Event
+     *
+     * <p>Creates a new live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -751,7 +821,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Creates a new live event.
+     * Create Live Event
+     *
+     * <p>Creates a new live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -774,7 +846,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Creates a new live event.
+     * Create Live Event
+     *
+     * <p>Creates a new live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -800,7 +874,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Creates a new live event.
+     * Create Live Event
+     *
+     * <p>Creates a new live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -825,7 +901,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Creates a new live event.
+     * Create Live Event
+     *
+     * <p>Creates a new live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -846,7 +924,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Creates a new live event.
+     * Create Live Event
+     *
+     * <p>Creates a new live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -873,7 +953,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Creates a new live event.
+     * Create Live Event
+     *
+     * <p>Creates a new live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -896,7 +978,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Creates a new live event.
+     * Create Live Event
+     *
+     * <p>Creates a new live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -915,7 +999,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Creates a new live event.
+     * Create Live Event
+     *
+     * <p>Creates a new live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -981,6 +1067,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -992,7 +1079,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
                             resourceGroupName,
                             accountName,
                             liveEventName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -1046,6 +1133,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1055,7 +1143,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
                 resourceGroupName,
                 accountName,
                 liveEventName,
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -1245,7 +1333,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Deletes a live event.
+     * Delete Live Event
+     *
+     * <p>Deletes a live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1280,6 +1370,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         if (liveEventName == null) {
             return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1291,14 +1382,16 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
                             resourceGroupName,
                             accountName,
                             liveEventName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Deletes a live event.
+     * Delete Live Event
+     *
+     * <p>Deletes a live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1334,6 +1427,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         if (liveEventName == null) {
             return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1343,13 +1437,15 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
                 resourceGroupName,
                 accountName,
                 liveEventName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
 
     /**
-     * Deletes a live event.
+     * Delete Live Event
+     *
+     * <p>Deletes a live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1370,7 +1466,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Deletes a live event.
+     * Delete Live Event
+     *
+     * <p>Deletes a live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1393,7 +1491,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Deletes a live event.
+     * Delete Live Event
+     *
+     * <p>Deletes a live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1410,7 +1510,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Deletes a live event.
+     * Delete Live Event
+     *
+     * <p>Deletes a live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1428,7 +1530,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Deletes a live event.
+     * Delete Live Event
+     *
+     * <p>Deletes a live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1446,7 +1550,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Deletes a live event.
+     * Delete Live Event
+     *
+     * <p>Deletes a live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1466,7 +1572,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Deletes a live event.
+     * Delete Live Event
+     *
+     * <p>Deletes a live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1481,7 +1589,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Deletes a live event.
+     * Delete Live Event
+     *
+     * <p>Deletes a live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1497,7 +1607,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * A live event is in StandBy state after allocation completes, and is ready to start.
+     * Allocate resources for a live event
+     *
+     * <p>A live event is in StandBy state after allocation completes, and is ready to start.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1532,6 +1644,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         if (liveEventName == null) {
             return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1543,14 +1656,16 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
                             resourceGroupName,
                             accountName,
                             liveEventName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * A live event is in StandBy state after allocation completes, and is ready to start.
+     * Allocate resources for a live event
+     *
+     * <p>A live event is in StandBy state after allocation completes, and is ready to start.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1586,6 +1701,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         if (liveEventName == null) {
             return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1595,13 +1711,15 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
                 resourceGroupName,
                 accountName,
                 liveEventName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
 
     /**
-     * A live event is in StandBy state after allocation completes, and is ready to start.
+     * Allocate resources for a live event
+     *
+     * <p>A live event is in StandBy state after allocation completes, and is ready to start.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1623,7 +1741,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * A live event is in StandBy state after allocation completes, and is ready to start.
+     * Allocate resources for a live event
+     *
+     * <p>A live event is in StandBy state after allocation completes, and is ready to start.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1646,7 +1766,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * A live event is in StandBy state after allocation completes, and is ready to start.
+     * Allocate resources for a live event
+     *
+     * <p>A live event is in StandBy state after allocation completes, and is ready to start.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1663,7 +1785,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * A live event is in StandBy state after allocation completes, and is ready to start.
+     * Allocate resources for a live event
+     *
+     * <p>A live event is in StandBy state after allocation completes, and is ready to start.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1681,7 +1805,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * A live event is in StandBy state after allocation completes, and is ready to start.
+     * Allocate resources for a live event
+     *
+     * <p>A live event is in StandBy state after allocation completes, and is ready to start.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1699,7 +1825,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * A live event is in StandBy state after allocation completes, and is ready to start.
+     * Allocate resources for a live event
+     *
+     * <p>A live event is in StandBy state after allocation completes, and is ready to start.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1719,7 +1847,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * A live event is in StandBy state after allocation completes, and is ready to start.
+     * Allocate resources for a live event
+     *
+     * <p>A live event is in StandBy state after allocation completes, and is ready to start.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1734,7 +1864,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * A live event is in StandBy state after allocation completes, and is ready to start.
+     * Allocate resources for a live event
+     *
+     * <p>A live event is in StandBy state after allocation completes, and is ready to start.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1750,7 +1882,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * A live event in Stopped or StandBy state will be in Running state after the start operation completes.
+     * Start Live Event
+     *
+     * <p>A live event in Stopped or StandBy state will be in Running state after the start operation completes.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1785,6 +1919,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         if (liveEventName == null) {
             return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1796,14 +1931,16 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
                             resourceGroupName,
                             accountName,
                             liveEventName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * A live event in Stopped or StandBy state will be in Running state after the start operation completes.
+     * Start Live Event
+     *
+     * <p>A live event in Stopped or StandBy state will be in Running state after the start operation completes.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1839,6 +1976,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         if (liveEventName == null) {
             return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1848,13 +1986,15 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
                 resourceGroupName,
                 accountName,
                 liveEventName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
 
     /**
-     * A live event in Stopped or StandBy state will be in Running state after the start operation completes.
+     * Start Live Event
+     *
+     * <p>A live event in Stopped or StandBy state will be in Running state after the start operation completes.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1875,7 +2015,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * A live event in Stopped or StandBy state will be in Running state after the start operation completes.
+     * Start Live Event
+     *
+     * <p>A live event in Stopped or StandBy state will be in Running state after the start operation completes.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1898,7 +2040,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * A live event in Stopped or StandBy state will be in Running state after the start operation completes.
+     * Start Live Event
+     *
+     * <p>A live event in Stopped or StandBy state will be in Running state after the start operation completes.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1915,7 +2059,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * A live event in Stopped or StandBy state will be in Running state after the start operation completes.
+     * Start Live Event
+     *
+     * <p>A live event in Stopped or StandBy state will be in Running state after the start operation completes.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1933,7 +2079,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * A live event in Stopped or StandBy state will be in Running state after the start operation completes.
+     * Start Live Event
+     *
+     * <p>A live event in Stopped or StandBy state will be in Running state after the start operation completes.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1951,7 +2099,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * A live event in Stopped or StandBy state will be in Running state after the start operation completes.
+     * Start Live Event
+     *
+     * <p>A live event in Stopped or StandBy state will be in Running state after the start operation completes.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1970,7 +2120,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * A live event in Stopped or StandBy state will be in Running state after the start operation completes.
+     * Start Live Event
+     *
+     * <p>A live event in Stopped or StandBy state will be in Running state after the start operation completes.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1985,7 +2137,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * A live event in Stopped or StandBy state will be in Running state after the start operation completes.
+     * Start Live Event
+     *
+     * <p>A live event in Stopped or StandBy state will be in Running state after the start operation completes.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -2001,7 +2155,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Stops a running live event.
+     * Stop Live Event
+     *
+     * <p>Stops a running live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -2042,6 +2198,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2053,7 +2210,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
                             resourceGroupName,
                             accountName,
                             liveEventName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -2061,7 +2218,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Stops a running live event.
+     * Stop Live Event
+     *
+     * <p>Stops a running live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -2107,6 +2266,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2116,14 +2276,16 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
                 resourceGroupName,
                 accountName,
                 liveEventName,
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
     }
 
     /**
-     * Stops a running live event.
+     * Stop Live Event
+     *
+     * <p>Stops a running live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -2146,7 +2308,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Stops a running live event.
+     * Stop Live Event
+     *
+     * <p>Stops a running live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -2174,7 +2338,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Stops a running live event.
+     * Stop Live Event
+     *
+     * <p>Stops a running live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -2192,7 +2358,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Stops a running live event.
+     * Stop Live Event
+     *
+     * <p>Stops a running live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -2215,7 +2383,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Stops a running live event.
+     * Stop Live Event
+     *
+     * <p>Stops a running live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -2235,7 +2405,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Stops a running live event.
+     * Stop Live Event
+     *
+     * <p>Stops a running live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -2260,7 +2432,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Stops a running live event.
+     * Stop Live Event
+     *
+     * <p>Stops a running live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -2277,7 +2451,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Stops a running live event.
+     * Stop Live Event
+     *
+     * <p>Stops a running live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -2299,8 +2475,10 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped and
-     * will be started again. All assets used by the live outputs and streaming locators created on these assets are
+     * Reset Live Event
+     *
+     * <p>Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped
+     * and will be started again. All assets used by the live outputs and streaming locators created on these assets are
      * unaffected.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
@@ -2336,6 +2514,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         if (liveEventName == null) {
             return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2347,15 +2526,17 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
                             resourceGroupName,
                             accountName,
                             liveEventName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped and
-     * will be started again. All assets used by the live outputs and streaming locators created on these assets are
+     * Reset Live Event
+     *
+     * <p>Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped
+     * and will be started again. All assets used by the live outputs and streaming locators created on these assets are
      * unaffected.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
@@ -2392,6 +2573,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
         if (liveEventName == null) {
             return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2401,14 +2583,16 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
                 resourceGroupName,
                 accountName,
                 liveEventName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
 
     /**
-     * Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped and
-     * will be started again. All assets used by the live outputs and streaming locators created on these assets are
+     * Reset Live Event
+     *
+     * <p>Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped
+     * and will be started again. All assets used by the live outputs and streaming locators created on these assets are
      * unaffected.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
@@ -2430,8 +2614,10 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped and
-     * will be started again. All assets used by the live outputs and streaming locators created on these assets are
+     * Reset Live Event
+     *
+     * <p>Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped
+     * and will be started again. All assets used by the live outputs and streaming locators created on these assets are
      * unaffected.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
@@ -2455,8 +2641,10 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped and
-     * will be started again. All assets used by the live outputs and streaming locators created on these assets are
+     * Reset Live Event
+     *
+     * <p>Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped
+     * and will be started again. All assets used by the live outputs and streaming locators created on these assets are
      * unaffected.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
@@ -2474,8 +2662,10 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped and
-     * will be started again. All assets used by the live outputs and streaming locators created on these assets are
+     * Reset Live Event
+     *
+     * <p>Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped
+     * and will be started again. All assets used by the live outputs and streaming locators created on these assets are
      * unaffected.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
@@ -2494,8 +2684,10 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped and
-     * will be started again. All assets used by the live outputs and streaming locators created on these assets are
+     * Reset Live Event
+     *
+     * <p>Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped
+     * and will be started again. All assets used by the live outputs and streaming locators created on these assets are
      * unaffected.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
@@ -2514,8 +2706,10 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped and
-     * will be started again. All assets used by the live outputs and streaming locators created on these assets are
+     * Reset Live Event
+     *
+     * <p>Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped
+     * and will be started again. All assets used by the live outputs and streaming locators created on these assets are
      * unaffected.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
@@ -2535,8 +2729,10 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped and
-     * will be started again. All assets used by the live outputs and streaming locators created on these assets are
+     * Reset Live Event
+     *
+     * <p>Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped
+     * and will be started again. All assets used by the live outputs and streaming locators created on these assets are
      * unaffected.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
@@ -2552,8 +2748,10 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
-     * Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped and
-     * will be started again. All assets used by the live outputs and streaming locators created on these assets are
+     * Reset Live Event
+     *
+     * <p>Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped
+     * and will be started again. All assets used by the live outputs and streaming locators created on these assets are
      * unaffected.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
@@ -2570,9 +2768,361 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     }
 
     /**
+     * Get operation status.
+     *
+     * <p>Get a live event operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param operationId The ID of an ongoing async operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a live event operation status along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<AsyncOperationResultInner>> asyncOperationWithResponseAsync(
+        String resourceGroupName, String accountName, String operationId) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (operationId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
+        }
+        final String apiVersion = "2022-08-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .asyncOperation(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            operationId,
+                            apiVersion,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a live event operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param operationId The ID of an ongoing async operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a live event operation status along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<AsyncOperationResultInner>> asyncOperationWithResponseAsync(
+        String resourceGroupName, String accountName, String operationId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (operationId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
+        }
+        final String apiVersion = "2022-08-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .asyncOperation(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                operationId,
+                apiVersion,
+                accept,
+                context);
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a live event operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param operationId The ID of an ongoing async operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a live event operation status on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<AsyncOperationResultInner> asyncOperationAsync(
+        String resourceGroupName, String accountName, String operationId) {
+        return asyncOperationWithResponseAsync(resourceGroupName, accountName, operationId)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a live event operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param operationId The ID of an ongoing async operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a live event operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AsyncOperationResultInner asyncOperation(String resourceGroupName, String accountName, String operationId) {
+        return asyncOperationAsync(resourceGroupName, accountName, operationId).block();
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a live event operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param operationId The ID of an ongoing async operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a live event operation status along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AsyncOperationResultInner> asyncOperationWithResponse(
+        String resourceGroupName, String accountName, String operationId, Context context) {
+        return asyncOperationWithResponseAsync(resourceGroupName, accountName, operationId, context).block();
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a live event operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @param operationId The ID of an ongoing async operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a live event operation status along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<LiveEventInner>> operationLocationWithResponseAsync(
+        String resourceGroupName, String accountName, String liveEventName, String operationId) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (liveEventName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
+        }
+        if (operationId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
+        }
+        final String apiVersion = "2022-08-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .operationLocation(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            liveEventName,
+                            operationId,
+                            apiVersion,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a live event operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @param operationId The ID of an ongoing async operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a live event operation status along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<LiveEventInner>> operationLocationWithResponseAsync(
+        String resourceGroupName, String accountName, String liveEventName, String operationId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (liveEventName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
+        }
+        if (operationId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
+        }
+        final String apiVersion = "2022-08-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .operationLocation(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                liveEventName,
+                operationId,
+                apiVersion,
+                accept,
+                context);
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a live event operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @param operationId The ID of an ongoing async operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a live event operation status on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<LiveEventInner> operationLocationAsync(
+        String resourceGroupName, String accountName, String liveEventName, String operationId) {
+        return operationLocationWithResponseAsync(resourceGroupName, accountName, liveEventName, operationId)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a live event operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @param operationId The ID of an ongoing async operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a live event operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LiveEventInner operationLocation(
+        String resourceGroupName, String accountName, String liveEventName, String operationId) {
+        return operationLocationAsync(resourceGroupName, accountName, liveEventName, operationId).block();
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a live event operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @param operationId The ID of an ongoing async operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a live event operation status along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<LiveEventInner> operationLocationWithResponse(
+        String resourceGroupName, String accountName, String liveEventName, String operationId, Context context) {
+        return operationLocationWithResponseAsync(resourceGroupName, accountName, liveEventName, operationId, context)
+            .block();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2607,7 +3157,8 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
