@@ -129,7 +129,7 @@ public class CosmosTemplateIT {
             cosmosTemplate = createCosmosTemplate(cosmosConfig, TestConstants.DB_NAME);
         }
 
-        collectionManager.ensureContainersCreatedAndEmpty(cosmosTemplate, Person.class, PersonCrossPartition.class,
+        collectionManager.ensureContainersCreatedAndEmpty(cosmosTemplate, Person.class,
                                                           GenIdEntity.class, AuditableEntity.class);
         insertedPerson = cosmosTemplate.insert(Person.class.getSimpleName(), TEST_PERSON,
             new PartitionKey(TEST_PERSON.getLastName()));
