@@ -6,4 +6,4 @@
  * Package containing the data models for ServiceBusManagementClient. Azure Service Bus client for managing Queues,
  * Topics, and Subscriptions.
  */
-package com.azure.messaging.servicebus.administration.models;
+package com.azure.messaging.servicebus.administration.implementation.models;
