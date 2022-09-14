@@ -658,6 +658,8 @@ public class CosmosTemplateIT {
         allResults.addAll(resultPage1);
         allResults.addAll(resultPage2);
         assertThat(allResults).containsAll(expected);
+
+        collectionManager.deleteContainer(personCrossPartitionInfo);
     }
 
     @Test
