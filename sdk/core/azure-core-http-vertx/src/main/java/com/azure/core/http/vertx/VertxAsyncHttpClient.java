@@ -59,9 +59,10 @@ class VertxAsyncHttpClient implements HttpClient {
             vertxHttpRequest.exceptionHandler(sink::error);
 
             HttpHeaders requestHeaders = request.getHeaders();
+
             if (requestHeaders != null) {
-                requestHeaders.stream().forEach(header ->
-                    vertxHttpRequest.putHeader(header.getName(), header.getValuesList()));
+                // Transfer Azure request headers to vertx
+                requestHeaders.forEach(header -> vertxHttpRequest.putHeader(header.getName(), header.getValuesList()));
                 if (request.getHeaders().get("Content-Length") == null) {
                     vertxHttpRequest.setChunked(true);
                 }
@@ -100,13 +101,12 @@ class VertxAsyncHttpClient implements HttpClient {
     }
 
     private Mono<HttpClientRequest> toVertxHttpRequest(HttpRequest request) {
-        HttpMethod httpMethod = request.getHttpMethod();
-        io.vertx.core.http.HttpMethod requestMethod = io.vertx.core.http.HttpMethod.valueOf(httpMethod.name());
-
-        RequestOptions options = new RequestOptions();
-        options.setMethod(requestMethod);
-        options.setAbsoluteURI(request.getUrl());
-        return Mono.fromCompletionStage(client.request(options).toCompletionStage());
+        return Mono.fromCompletionStage(
+            client.request(
+                new RequestOptions()
+                    .setMethod(io.vertx.core.http.HttpMethod.valueOf(request.getHttpMethod().name()))
+                    .setAbsoluteURI(request.getUrl()))
+                .toCompletionStage());
     }
 
     private Flux<ByteBuffer> getRequestBody(HttpRequest request, ProgressReporter progressReporter) {
