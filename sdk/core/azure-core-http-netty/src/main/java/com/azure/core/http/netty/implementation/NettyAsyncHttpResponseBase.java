@@ -40,14 +40,22 @@ public abstract class NettyAsyncHttpResponseBase extends HttpResponse {
 
     @Override
     public final String getHeaderValue(String name) {
+        if (convertedHeaders != null) {
+            return convertedHeaders.getValue(name);
+        }
         return reactorNettyResponse.responseHeaders().get(name);
     }
 
     @Override
     public final HttpHeaders getHeaders() {
+        if (convertedHeaders != null) {
+            return convertedHeaders;
+        }
+
         if (headers == null) {
             headers = new NettyToAzureCoreHttpHeadersWrapper(reactorNettyResponse.responseHeaders());
         }
+
         return headers;
     }
 }
