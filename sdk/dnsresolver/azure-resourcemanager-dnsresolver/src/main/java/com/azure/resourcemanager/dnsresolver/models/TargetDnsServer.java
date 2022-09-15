@@ -6,18 +6,15 @@ package com.azure.resourcemanager.dnsresolver.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a server to forward the DNS queries to. */
 @Fluent
 public final class TargetDnsServer {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TargetDnsServer.class);
-
     /*
      * DNS server IP address.
      */
-    @JsonProperty(value = "ipAddress")
+    @JsonProperty(value = "ipAddress", required = true)
     private String ipAddress;
 
     /*
@@ -72,5 +69,12 @@ public final class TargetDnsServer {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (ipAddress() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property ipAddress in model TargetDnsServer"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TargetDnsServer.class);
 }
