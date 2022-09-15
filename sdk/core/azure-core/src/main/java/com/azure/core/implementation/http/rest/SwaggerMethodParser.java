@@ -102,6 +102,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private final boolean isStreamResponse;
     private final boolean returnTypeDecodeable;
     private final boolean responseEagerlyRead;
+    private final boolean headersEagerlyConverted;
     private final String spanName;
 
     private Map<Integer, UnexpectedExceptionInformation> exceptionMapping;
@@ -274,6 +275,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         Type unwrappedReturnType = unwrapReturnType(returnType);
         this.returnTypeDecodeable = isReturnTypeDecodeable(unwrappedReturnType);
         this.responseEagerlyRead = isResponseEagerlyRead(unwrappedReturnType);
+        this.headersEagerlyConverted = TypeUtil.isTypeOrSubTypeOf(returnType, ResponseBase.class);
         this.spanName = interfaceParser.getServiceName() + "." + swaggerMethod.getName();
     }
 
@@ -702,6 +704,11 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     @Override
     public boolean isResponseEagerlyRead() {
         return responseEagerlyRead;
+    }
+
+    @Override
+    public boolean isHeadersEagerlyConverted() {
+        return headersEagerlyConverted;
     }
 
     /**

@@ -32,8 +32,8 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
     private final boolean disableBufferCopy;
 
     public NettyAsyncHttpResponse(HttpClientResponse reactorNettyResponse, Connection reactorNettyConnection,
-        HttpRequest httpRequest, boolean disableBufferCopy) {
-        super(reactorNettyResponse, httpRequest);
+        HttpRequest httpRequest, boolean disableBufferCopy, boolean headersEagerlyConverted) {
+        super(reactorNettyResponse, httpRequest, headersEagerlyConverted);
         this.reactorNettyConnection = reactorNettyConnection;
         this.disableBufferCopy = disableBufferCopy;
     }

@@ -18,10 +18,19 @@ public abstract class NettyAsyncHttpResponseBase extends HttpResponse {
     // from Netty HttpHeaders to azure-core HttpHeaders. Instead, by wrapping it, there is no cost to pay as we map
     // the Netty HttpHeaders API into the azure-core HttpHeaders API.
     private NettyToAzureCoreHttpHeadersWrapper headers;
+    private HttpHeaders convertedHeaders;
 
-    NettyAsyncHttpResponseBase(HttpClientResponse reactorNettyResponse, HttpRequest httpRequest) {
+    NettyAsyncHttpResponseBase(HttpClientResponse reactorNettyResponse, HttpRequest httpRequest,
+        boolean headersEagerlyConverted) {
         super(httpRequest);
         this.reactorNettyResponse = reactorNettyResponse;
+
+        if (headersEagerlyConverted) {
+            io.netty.handler.codec.http.HttpHeaders nettyHeaders = reactorNettyResponse.responseHeaders();
+            convertedHeaders = new HttpHeaders((int) (nettyHeaders.size() / 0.75F));
+            reactorNettyResponse.responseHeaders().forEach(header ->
+                convertedHeaders.add(header.getKey(), header.getValue()));
+        }
     }
 
     @Override

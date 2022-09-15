@@ -301,6 +301,11 @@ class ResponseConstructorsCacheBenchMarkTestData {
                 public boolean isResponseEagerlyRead() {
                     return responseEagerlyRead;
                 }
+
+                @Override
+                public boolean isHeadersEagerlyConverted() {
+                    return false;
+                }
             }).block();
             this.bodyAsObject = bodyAsObject;
         }

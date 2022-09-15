@@ -105,8 +105,15 @@ public abstract class RestProxyBase {
             Context context = methodParser.setContext(args);
             context = RestProxyUtils.mergeRequestOptionsContext(context, options);
 
-            context = context.addData("caller-method", methodParser.getFullyQualifiedMethodName())
-                .addData("azure-eagerly-read-response", methodParser.isResponseEagerlyRead());
+            context = context.addData("caller-method", methodParser.getFullyQualifiedMethodName());
+
+            if (methodParser.isResponseEagerlyRead()) {
+                context = context.addData("azure-eagerly-read-response", true);
+            }
+
+            if (methodParser.isHeadersEagerlyConverted()) {
+                context = context.addData("azure-headers-eagerly-converted", true);
+            }
 
             return invoke(proxy, method, options, errorOptions, requestCallback, methodParser, request, context);
 
