@@ -11,7 +11,6 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.ParallelTransferOptions;
-import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
 
 import java.io.IOException;
@@ -287,16 +286,14 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     @Override
     public FileSystem getFileSystem(URI uri) {
         String endpoint = extractAccountEndpointOrGetDefault(uri);
-        AzureFileSystemConfig envConfig;
         if (this.openFileSystems.containsKey(endpoint)) {
             return this.openFileSystems.get(endpoint);
-        } else if (getEnvironmentAutoCreateFileSystems()
-            && (envConfig = getEnvironmentConfiguration()).isSufficient()) {
+        } else if (getEnvironmentAutoCreateFileSystems()) {
             synchronized (AzureFileSystemProvider.class) {
                 if (!this.openFileSystems.containsKey(endpoint)) {
                     FileSystem newSystem;
                     try {
-                        newSystem = new AzureFileSystem(this, endpoint, envConfig);
+                        newSystem = new AzureFileSystem(this, endpoint, getEnvironmentConfiguration());
                     } catch (IOException e) {
                         throw LoggingUtility.logError(ClientLoggerHolder.LOGGER,
                             new UncheckedIOException("Failed to open new FileSystem", e));
@@ -1208,21 +1205,16 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             throw LoggingUtility.logError(ClientLoggerHolder.LOGGER, new IllegalArgumentException(
                 "URI scheme does not match this provider"));
         }
-        String defaultEndpoint = null;
-        if (CoreUtils.isNullOrEmpty(uri.getQuery()) && CoreUtils.isNullOrEmpty((defaultEndpoint = getEnvironmentEndpoint()))) {
-            throw LoggingUtility.logError(ClientLoggerHolder.LOGGER,
-                new IllegalArgumentException("URI does not contain a query component. FileSystems require a URI of "
-                    + "the format \"azb://?endpoint=<account_endpoint>\"."));
-        }
 
         String endpoint = Arrays.stream((uri.getQuery() != null ? uri.getQuery() : "").split("&"))
             .filter(s -> s.startsWith(ENDPOINT_QUERY_KEY + "="))
             .map(s -> s.substring(ENDPOINT_QUERY_KEY.length() + 1)) // Trim the query key and =
-            .findFirst().orElse(defaultEndpoint);
+            .findFirst().orElseGet(AzureFileSystemProvider::getEnvironmentEndpoint);
 
         if (CoreUtils.isNullOrEmpty(endpoint)) {
             throw LoggingUtility.logError(ClientLoggerHolder.LOGGER,
-                new IllegalArgumentException("No account endpoint provided in URI query and no default configured."));
+                new IllegalArgumentException("No account endpoint provided in URI query and no default configured." +
+                    "FileSystems require a URI of the format \"azb://?endpoint=<account_endpoint>\"."));
         }
 
         return endpoint;
