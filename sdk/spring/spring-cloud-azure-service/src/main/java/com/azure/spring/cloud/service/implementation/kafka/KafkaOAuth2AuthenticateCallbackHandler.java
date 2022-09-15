@@ -53,7 +53,7 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
         AzureKafkaPropertiesUtils.convertConfigMapToAzureProperties(configs, properties);
         TokenRequestContext request = buildTokenRequestContext(configs);
         this.resolveToken = tokenCredential -> tokenCredential.getToken(request).map(AzureOAuthBearerToken::new);
-        this.tokenCredentialResolver = new internalCredentialResolver(externalTokenCredentialResolver, configs);
+        this.tokenCredentialResolver = new InternalCredentialResolver(externalTokenCredentialResolver, configs);
     }
 
     private TokenRequestContext buildTokenRequestContext(Map<String, ?> configs) {
@@ -106,12 +106,12 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
         // NOOP
     }
 
-    private static class internalCredentialResolver implements AzureCredentialResolver<TokenCredential> {
+    private static class InternalCredentialResolver implements AzureCredentialResolver<TokenCredential> {
         private final AzureCredentialResolver<TokenCredential> delegated;
         private final Map<String, ?> configs;
         private TokenCredential credential;
 
-        internalCredentialResolver(AzureCredentialResolver<TokenCredential> delegated, Map<String, ?> configs) {
+        InternalCredentialResolver(AzureCredentialResolver<TokenCredential> delegated, Map<String, ?> configs) {
             this.delegated = delegated;
             this.configs = configs;
         }
