@@ -1213,8 +1213,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
         if (CoreUtils.isNullOrEmpty(endpoint)) {
             throw LoggingUtility.logError(ClientLoggerHolder.LOGGER,
-                new IllegalArgumentException("No account endpoint provided in URI query and no default configured." +
-                    "FileSystems require a URI of the format \"azb://?endpoint=<account_endpoint>\"."));
+                new IllegalArgumentException("No account endpoint provided in URI query and no default configured."
+                    + "FileSystems require a URI of the format \"azb://?endpoint=<account_endpoint>\"."));
         }
 
         return endpoint;
