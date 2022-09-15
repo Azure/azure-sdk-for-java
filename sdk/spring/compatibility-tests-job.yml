@@ -2,7 +2,7 @@ parameters:
   Matrix: ''
   MaxParallel: 10
   SkipOptions: "-Dcheckstyle.skip -Dcodesnippet.skip -Denforcer.skip -Djacoco.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip"
-  BuildParallelization: '1'
+  BuildParallelization: '0'
 
 jobs:
   - job: 'compatibility_test'
