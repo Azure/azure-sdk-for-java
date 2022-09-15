@@ -5,7 +5,6 @@ package com.azure.core.http.vertx;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.vertx.implementation.BufferedVertxHttpResponse;
@@ -55,70 +54,58 @@ class VertxAsyncHttpClient implements HttpClient {
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
         boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
-        return Mono.create(sink -> {
-            toVertxHttpRequest(request).subscribe(vertxHttpRequest -> {
-                vertxHttpRequest.exceptionHandler(sink::error);
+        return Mono.create(sink -> toVertxHttpRequest(request).subscribe(vertxHttpRequest -> {
+            vertxHttpRequest.exceptionHandler(sink::error);
 
-                HttpHeaders requestHeaders = request.getHeaders();
+            HttpHeaders requestHeaders = request.getHeaders();
 
-                if (requestHeaders != null) {
-                    requestHeaders.stream().forEach(header ->
-                        vertxHttpRequest.putHeader(header.getName(), header.getValuesList()));
-                    if (request.getHeaders().get("Content-Length") == null) {
-                        vertxHttpRequest.setChunked(true);
-                    }
-                } else {
+            if (requestHeaders != null) {
+                // Transfer Azure request headers to vertx
+                requestHeaders.forEach(header -> vertxHttpRequest.putHeader(header.getName(), header.getValuesList()));
+                if (request.getHeaders().get("Content-Length") == null) {
                     vertxHttpRequest.setChunked(true);
                 }
+            } else {
+                vertxHttpRequest.setChunked(true);
+            }
 
-                vertxHttpRequest.response(event -> {
-                    if (event.succeeded()) {
-                        HttpClientResponse vertxHttpResponse = event.result();
-                        vertxHttpResponse.exceptionHandler(sink::error);
+            vertxHttpRequest.response(event -> {
+                if (event.succeeded()) {
+                    HttpClientResponse vertxHttpResponse = event.result();
+                    vertxHttpResponse.exceptionHandler(sink::error);
 
-                        if (eagerlyReadResponse) {
-                            vertxHttpResponse.body(bodyEvent -> {
-                                if (bodyEvent.succeeded()) {
-                                    sink.success(new BufferedVertxHttpResponse(request, vertxHttpResponse,
-                                        bodyEvent.result()));
-                                } else {
-                                    sink.error(bodyEvent.cause());
-                                }
-                            });
-                        } else {
-                            sink.success(new VertxHttpAsyncResponse(request, vertxHttpResponse));
-                        }
-                    } else {
-                        sink.error(event.cause());
-                    }
-                });
-
-                getRequestBody(request, progressReporter)
-                    .subscribeOn(scheduler)
-                    .map(Unpooled::wrappedBuffer)
-                    .map(Buffer::buffer)
-                    .subscribe(
-                        t -> {
-                            vertxHttpRequest.write(t);
-                        },
-                        throwable -> {
-                            sink.error(throwable);
-                        },
-                        () -> {
-                            vertxHttpRequest.end();
+                    if (eagerlyReadResponse) {
+                        vertxHttpResponse.body(bodyEvent -> {
+                            if (bodyEvent.succeeded()) {
+                                sink.success(new BufferedVertxHttpResponse(request, vertxHttpResponse,
+                                    bodyEvent.result()));
+                            } else {
+                                sink.error(bodyEvent.cause());
+                            }
                         });
-            }, sink::error);
-        });
+                    } else {
+                        sink.success(new VertxHttpAsyncResponse(request, vertxHttpResponse));
+                    }
+                } else {
+                    sink.error(event.cause());
+                }
+            });
+
+            getRequestBody(request, progressReporter)
+                .subscribeOn(scheduler)
+                .map(Unpooled::wrappedBuffer)
+                .map(Buffer::buffer)
+                .subscribe(vertxHttpRequest::write, sink::error, vertxHttpRequest::end);
+        }, sink::error));
     }
 
     private Mono<HttpClientRequest> toVertxHttpRequest(HttpRequest request) {
-        HttpMethod httpMethod = request.getHttpMethod();
-        io.vertx.core.http.HttpMethod requestMethod = io.vertx.core.http.HttpMethod.valueOf(httpMethod.name());
-
-        RequestOptions options = new RequestOptions();
-        options.setMethod(requestMethod);
-        options.setAbsoluteURI(request.getUrl());
-        return Mono.fromCompletionStage(client.request(options).toCompletionStage());
+        return Mono.fromFuture(() ->
+            client.request(
+                new RequestOptions()
+                    .setMethod(io.vertx.core.http.HttpMethod.valueOf(request.getHttpMethod().name()))
+                    .setAbsoluteURI(request.getUrl())).toCompletionStage().toCompletableFuture()
+        );
     }
 
     private Flux<ByteBuffer> getRequestBody(HttpRequest request, ProgressReporter progressReporter) {
@@ -129,8 +116,7 @@ class VertxAsyncHttpClient implements HttpClient {
 
         if (progressReporter != null) {
             body = body.map(buffer -> {
-                int remaining = buffer.remaining();
-                progressReporter.reportProgress(remaining);
+                progressReporter.reportProgress(buffer.remaining());
                 return buffer;
             });
         }
