@@ -22,7 +22,7 @@
     },
     "administratorLogin": {
       "type": "string",
-      "defaultValue": "rootlogintest",
+      "defaultValue": "loginit",
       "minLength": 1,
       "metadata": {
         "description": "Database administrator login name"
