@@ -123,6 +123,7 @@ In addition to setting the flag, implement `ResponseDiagnosticsProcessor` to log
 Set `maxDegreeOfParallelism` flag to an integer in application.properties to allow parallel processing; setting the value to -1 will lead to the SDK deciding the optimal value.
 Set `maxBufferedItemCount` flag to an integer in application.properties to allow the user to set the max number of items that can be buffered during parallel query execution; if set to less than 0, the system automatically decides the number of items to buffer.
 NOTE: Setting this to a very high value can result in high memory consumption.
+Set `responseContinuationTokenLimitInKb` flag to an integer in application.properties to allow the user to limit the length of the continuation token in the query response.
 
 ```java readme-sample-AppConfiguration
 @Configuration
@@ -151,6 +152,9 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
     
     @Value("${azure.cosmos.maxBufferedItemCount}")
     private int maxBufferedItemCount;
+    
+    @Value("${azure.cosmos.responseContinuationTokenLimitInKb}")
+    private int responseContinuationTokenLimitInKb;
 
     private AzureKeyCredential azureKeyCredential;
 
@@ -171,6 +175,7 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
                            .enableQueryMetrics(queryMetricsEnabled)
                            .maxDegreeOfParallelism(maxDegreeOfParallelism)
                            .maxBufferedItemCount(maxBufferedItemCount)
+                           .responseContinuationTokenLimitInKb(responseContinuationTokenLimitInKb)
                            .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
                            .build();
     }
@@ -214,6 +219,7 @@ public CosmosConfig cosmosConfig() {
                        .enableQueryMetrics(queryMetricsEnabled)
                        .maxDegreeOfParallelism(maxDegreeOfParallelism)
                        .maxBufferedItemCount(maxBufferedItemCount)
+                       .responseContinuationTokenLimitInKb(responseContinuationTokenLimitInKb)
                        .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
                        .build();
 }
@@ -692,6 +698,7 @@ public class SecondaryDatasourceConfiguration {
             .enableQueryMetrics(true)
             .maxDegreeOfParallelism(0)
             .maxBufferedItemCount(0)
+            .responseContinuationTokenLimitInKb(0)
             .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
             .build();
     }
@@ -729,12 +736,13 @@ public CosmosConfig getCosmosConfig() {
         .enableQueryMetrics(true)
         .maxDegreeOfParallelism(0)
         .maxBufferedItemCount(0)
+        .responseContinuationTokenLimitInKb(0)
         .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
         .build();
 }
 ```
 
-- Besides, if you want to define `queryMetricsEnabled`, `ResponseDiagnosticsProcessor`, `maxDegreeOfParallelism` or `maxBufferedItemCount` , you can create the `CosmosConfig` for your cosmos template.
+- Besides, if you want to define `queryMetricsEnabled`, `ResponseDiagnosticsProcessor`, `maxDegreeOfParallelism`, `maxBufferedItemCount` or `responseContinuationTokenLimitInKb` , you can create the `CosmosConfig` for your cosmos template.
 
 ```java
 @Bean("secondaryCosmosConfig")
@@ -743,6 +751,7 @@ public CosmosConfig getCosmosConfig() {
         .enableQueryMetrics(true)
         .maxDegreeOfParallelism(0)
         .maxBufferedItemCount(0)
+        .responseContinuationTokenLimitInKb(0)
         .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
         .build();
 }
