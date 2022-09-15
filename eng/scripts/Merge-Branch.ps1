@@ -1,0 +1,60 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+# Use case: This script merges changes from a source branch into the current branch with the behavior:
+# 1. Overwrite paths matching $Theirs (this includes deletes)
+# 2. Ensure files in $Ours remain untouched
+# 3. For paths matching $Merge, merge changes from $SourceBranch allowing the user to resolve conflicts manually
+#
+# Adding paths to $Merge excludes them from the default keep or overwrite behaviour of $Ours and $Theirs.
+#
+# This script can be run locally from the root of the repo:
+# .\eng\scripts\Merge-Branch.ps1 -SourceBranch 'main' -Theirs '**' -Ours '.\sdk\template' -Merge '.\sdk\template\ci.yml', '**\README.md'
+#
+# This would merge main into the local branch, making the working folder look like main. It not overwrite sdk\template.
+# Changes in sdk\template\ci.yml and readme.md files would be merged, not excluded or overwritten.
+
+[CmdLetBinding()]
+param(
+    [string]$SourceBranch,
+    [string[]]$Theirs, # paths to always overwrite
+    [string[]]$Ours, # paths to never merge or overwrite
+    [string[]]$Merge # paths to merge or overwrite
+)
+
+$mergeExcludes = @($Merge | ForEach-Object { ":(top,glob,exclude)$_" })
+$ourExcludes = @($Ours | ForEach-Object { ":(top,glob,exclude)$_" })
+
+function ErrorExit($exitCode) {
+    Write-Host "`nError creating merge commit`n" `
+    "  Your local repository is in an unknown state`n" `
+    "  Run `"git reset --hard`" to revert the partial merge"
+
+    exit $exitCode
+}
+
+# start a merge, but leave it open
+Write-Verbose "git merge $SourceBranch --no-ff --no-commit"
+git merge $SourceBranch --no-ff --no-commit
+if ($LASTEXITCODE) { ErrorExit $LASTEXITCODE }
+
+# update paths matching "theirs", except for "ours" and "merge", to the state in $SourceBranch
+if ($Theirs.Length) {
+    Write-Verbose "git restore -s $SourceBranch --staged --worktree -- `":(top,glob)$Theirs`" $ourExcludes $mergeExcludes"
+    git restore -s $SourceBranch --staged --worktree -- ":(top,glob)$Theirs" $ourExcludes $mergeExcludes
+    if ($LASTEXITCODE) { ErrorExit $LASTEXITCODE }
+}
+
+# update paths matching "ours", except for "merge", to their pre-merge state
+if ($Ours.Length) {
+    Write-Verbose "git restore -s (git rev-parse HEAD) --staged --worktree -- `":(top,glob)$Ours`" $mergeExcludes"
+    git restore -s (git rev-parse HEAD) --staged --worktree -- ":(top,glob)$Ours" $mergeExcludes
+    if ($LASTEXITCODE) { ErrorExit $LASTEXITCODE }
+}
+
+Write-Host "Merge commit started`n" `
+"  Use `"git reset --hard`" to revert the partial merge`n" `
+"  Use `"git commit --no-edit`" to complete the merge with the default merge message`n" `
+"  Use `"git commit -m <message>`" to complete the merge with a custom message"
+
+exit 0

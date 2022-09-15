@@ -1,42 +1,17 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+# Use case: This script merges changes from main into the current branch with the behavior:
+# 1. Overwrite everything except for Ours and Merge
+# 2. For paths in Merge, merge the changes and allow the caller to resolve conflicts
+# 3. For paths in Ours, don't do anything
+
 [CmdLetBinding()]
 param(
-    [string]$Source = 'main',
-    [string[]]$Theirs = @('**'), # paths to always overwrite
-    [string[]]$Ours = @('sdk/spring'), # paths to never merge or overwrite
-    [string[]]$Merge = @('eng/versioning/*.txt') # paths to merge or overwrite
 )
 
-# The net desired effect is:
-# - for paths matching $merge, merge changes from $Source allowing the user to resolve conflicts manually
-# - ensure files in $Ours remain untouched
-# - overwrite everything else matching $Theirs
-
-$mergeExcludes = @($Merge | ForEach-Object { ":(top,glob,exclude)$_" })
-$ourExcludes = @($Ours | ForEach-Object { ":(top,glob,exclude)$_" })
-
-function ErrorExit($exitCode) {
-    Write-Host "`nError creating merge commit`n" `
-    "  Your local repository is in an unknown state`n" `
-    "  Run `"git reset --hard`" to revert the partial merge"
-
-    exit $exitCode
-}
-
-# start a merge, but leave it open
-git merge $Source --no-ff --no-commit
-if ($LASTEXITCODE) { ErrorExit $LASTEXITCODE }
-
-# update paths matching "theirs" except for "ours" and "merge" to the state in $Source
-git restore -s $Source --staged --worktree -- ":(top,glob)$Theirs" $ourExcludes $mergeExcludes
-if ($LASTEXITCODE) { ErrorExit $LASTEXITCODE }
-
-# update paths matching "ours" except for "merge" to their pre-merge state
-git restore -s (git rev-parse HEAD) --staged --worktree -- ":(top,glob)$Ours" $mergeExcludes
-if ($LASTEXITCODE) { ErrorExit $LASTEXITCODE }
-
-Write-Host "Merge commit started`n" `
-"  Use `"git reset --hard`" to revert the partial merge`n" `
-"  Use `"git commit --no-edit`" to complete the merge with the default merge message`n" `
-"  Use `"git commit -m <message>`" to complete the merge with a custom message"
-
-exit 0
+& "$PSScriptRoot\..\..\..\eng\scripts\Merge-Branch.ps1" `
+    -SourceBranch main `
+    -Theirs @('**') `
+    -Ours @('sdk/spring', 'sdk/spring-experimental') `
+    -Merge @('eng/versioning/*.txt')
