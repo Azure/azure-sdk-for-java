@@ -9,9 +9,13 @@
       "defaultValue": "[subscription().tenantId]",
       "type": "string"
     },
+    "baseName": {
+      "defaultValue": "[resourceGroup().name]",
+      "type": "String"
+    },
     "serverName": {
       "type": "string",
-      "defaultValue": "passwordless-mysql-singleserver-it",
+      "defaultValue": "[concat(parameters('baseName'),'-passwordless-mysql-singleserver-it')]",
       "metadata": {
         "description": "Server Name for Azure database for MySQL"
       }
