@@ -34,14 +34,14 @@ public final class ListFilesAndDirectoriesSegmentResponse {
     /*
      * The DirectoryPath property.
      */
-    @JacksonXmlProperty(localName = "DirectoryPath", isAttribute = true)
-    private String directoryPath;
+    @JsonProperty(value = "DirectoryPath", required = true)
+    private StringEncoded directoryPath;
 
     /*
      * The Prefix property.
      */
     @JsonProperty(value = "Prefix", required = true)
-    private String prefix;
+    private StringEncoded prefix;
 
     /*
      * The Marker property.
@@ -138,7 +138,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
      *
      * @return the directoryPath value.
      */
-    public String getDirectoryPath() {
+    public StringEncoded getDirectoryPath() {
         return this.directoryPath;
     }
 
@@ -148,7 +148,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
      * @param directoryPath the directoryPath value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
      */
-    public ListFilesAndDirectoriesSegmentResponse setDirectoryPath(String directoryPath) {
+    public ListFilesAndDirectoriesSegmentResponse setDirectoryPath(StringEncoded directoryPath) {
         this.directoryPath = directoryPath;
         return this;
     }
@@ -158,7 +158,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
      *
      * @return the prefix value.
      */
-    public String getPrefix() {
+    public StringEncoded getPrefix() {
         return this.prefix;
     }
 
@@ -168,7 +168,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
      * @param prefix the prefix value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
      */
-    public ListFilesAndDirectoriesSegmentResponse setPrefix(String prefix) {
+    public ListFilesAndDirectoriesSegmentResponse setPrefix(StringEncoded prefix) {
         this.prefix = prefix;
         return this;
     }
