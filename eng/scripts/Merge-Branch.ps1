@@ -22,6 +22,8 @@ param(
     [string[]]$Merge # paths to merge or overwrite
 )
 
+$theirIncludes = @($Theirs | ForEach-Object { ":(top,glob)$_" })
+$ourIncludes = @($Ours | ForEach-Object { ":(top,glob)$_" })
 $mergeExcludes = @($Merge | ForEach-Object { ":(top,glob,exclude)$_" })
 $ourExcludes = @($Ours | ForEach-Object { ":(top,glob,exclude)$_" })
 
@@ -40,15 +42,15 @@ if ($LASTEXITCODE) { ErrorExit $LASTEXITCODE }
 
 # update paths matching "theirs", except for "ours" and "merge", to the state in $SourceBranch
 if ($Theirs.Length) {
-    Write-Verbose "git restore -s $SourceBranch --staged --worktree -- `":(top,glob)$Theirs`" $ourExcludes $mergeExcludes"
-    git restore -s $SourceBranch --staged --worktree -- ":(top,glob)$Theirs" $ourExcludes $mergeExcludes
+    Write-Verbose "git restore -s $SourceBranch --staged --worktree -- $theirIncludes $ourExcludes $mergeExcludes"
+    git restore -s $SourceBranch --staged --worktree -- $theirIncludes $ourExcludes $mergeExcludes
     if ($LASTEXITCODE) { ErrorExit $LASTEXITCODE }
 }
 
 # update paths matching "ours", except for "merge", to their pre-merge state
 if ($Ours.Length) {
-    Write-Verbose "git restore -s (git rev-parse HEAD) --staged --worktree -- `":(top,glob)$Ours`" $mergeExcludes"
-    git restore -s (git rev-parse HEAD) --staged --worktree -- ":(top,glob)$Ours" $mergeExcludes
+    Write-Verbose "git restore -s (git rev-parse HEAD) --staged --worktree -- $ourIncludes $mergeExcludes"
+    git restore -s (git rev-parse HEAD) --staged --worktree -- $ourIncludes $mergeExcludes
     if ($LASTEXITCODE) { ErrorExit $LASTEXITCODE }
 }
 
