@@ -10,6 +10,7 @@
 
 #### Other Changes
 * Updated `azure-cosmos` to version `4.36.0`.
+
 ### 3.26.0 (2022-08-19)
 #### Features Added
 * Added support for NOT CONTAINS. - See [PR 30379](https://github.com/Azure/azure-sdk-for-java/pull/30379)
