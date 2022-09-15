@@ -15,12 +15,14 @@
     },
     "serverName": {
       "type": "string",
+      "defaultValue": "passwordless-mysql-singleserver-it",
       "metadata": {
         "description": "Server Name for Azure database for MySQL"
       }
     },
     "administratorLogin": {
       "type": "string",
+      "defaultValue": "rootlogintest",
       "minLength": 1,
       "metadata": {
         "description": "Database administrator login name"
@@ -28,6 +30,7 @@
     },
     "administratorLoginPassword": {
       "type": "secureString",
+      "defaultValue": "1MySqlTestpw&",
       "minLength": 8,
       "metadata": {
         "description": "Database administrator password"
