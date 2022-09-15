@@ -12,4 +12,3 @@ spring:
             profile:
                 tenant-id: ${AZURE_SPRING_TENANT_ID}
             passwordlessEnabled: true
-        driver-class-name: com.mysql.cj.jdbc.Driver

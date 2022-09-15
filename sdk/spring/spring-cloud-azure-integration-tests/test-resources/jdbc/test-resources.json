@@ -43,39 +43,6 @@
         "description": "Azure database for MySQL compute capacity in vCores (2,4,8,16,32)"
       }
     },
-    "skuName": {
-      "type": "string",
-      "defaultValue": "GP_Gen5_2",
-      "metadata": {
-        "description": "Azure database for MySQL sku name "
-      }
-    },
-    "SkuSizeMB": {
-      "type": "int",
-      "defaultValue": 5120,
-      "metadata": {
-        "description": "Azure database for MySQL Sku Size "
-      }
-    },
-    "SkuTier": {
-      "type": "string",
-      "defaultValue": "GeneralPurpose",
-      "allowedValues": [
-        "Basic",
-        "GeneralPurpose",
-        "MemoryOptimized"
-      ],
-      "metadata": {
-        "description": "Azure database for MySQL pricing tier"
-      }
-    },
-    "skuFamily": {
-      "type": "string",
-      "defaultValue": "Gen5",
-      "metadata": {
-        "description": "Azure database for MySQL sku family"
-      }
-    },
     "mysqlVersion": {
       "type": "string",
       "defaultValue": "8.0",
@@ -107,41 +74,6 @@
       "defaultValue": "Disabled",
       "metadata": {
         "description": "Geo-Redundant Backup setting"
-      }
-    },
-    "virtualNetworkName": {
-      "type": "string",
-      "defaultValue": "azure_mysql_vnet",
-      "metadata": {
-        "description": "Virtual Network Name"
-      }
-    },
-    "subnetName": {
-      "type": "string",
-      "defaultValue": "azure_mysql_subnet",
-      "metadata": {
-        "description": "Subnet Name"
-      }
-    },
-    "virtualNetworkRuleName": {
-      "type": "string",
-      "defaultValue": "AllowSubnet",
-      "metadata": {
-        "description": "Virtual Network RuleName"
-      }
-    },
-    "vnetAddressPrefix": {
-      "type": "string",
-      "defaultValue": "10.0.0.0/16",
-      "metadata": {
-        "description": "Virtual Network Address Prefix"
-      }
-    },
-    "subnetPrefix": {
-      "type": "string",
-      "defaultValue": "10.0.0.0/16",
-      "metadata": {
-        "description": "Subnet Address Prefix"
       }
     }
   },
