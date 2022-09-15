@@ -22,6 +22,11 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 #### Bugs Fixed
 - Fix the Service Bus stream binder cannot automatically create Topic/Subscriptions from consumer. [#30722](https://github.com/Azure/azure-sdk-for-java/pull/30722).
 
+### Spring Cloud Azure Service
+
+#### Bugs Fixed
+- Fix Kafka OAuth2AuthenticateCallbackHandler cannot work with Kafka refreshing login mechanism [#30719](https://github.com/Azure/azure-sdk-for-java/issues/30719).
+
 ## 4.3.0 (2022-06-29)
 - This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.9, 2.7.0-2.7.1. (Note: 2.5.x (x>14), 2.6.y (y>9) and 2.7.z (z>1) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2020.0.3-2020.0.5, 2021.0.0-2021.0.3. (Note: 2020.0.x (x>5) and 2021.0.y (y>3) should be supported, but they aren't tested with this release.)
