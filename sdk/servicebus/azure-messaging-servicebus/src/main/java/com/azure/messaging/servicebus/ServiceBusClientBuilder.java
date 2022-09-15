@@ -1953,6 +1953,9 @@ public final class ServiceBusClientBuilder implements
         private String subscriptionName;
         private String topicName;
 
+        private ServiceBusRuleManagerBuilder() {
+        }
+
         /**
          * Sets the name of the topic. <b>{@link #subscriptionName(String)} must also be set.</b>
          *
