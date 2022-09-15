@@ -16,6 +16,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.ManagedIdentityCredential;
+import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerTokenCallback;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -30,7 +31,6 @@ import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CON
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -40,9 +40,8 @@ class KafkaOAuth2AuthenticateCallbackHandlerTest {
 
     private static final List<String> KAFKA_BOOTSTRAP_SERVER = Arrays.asList("namespace.servicebus.windows.net:9093");
     private static final String TOKEN_CREDENTIAL_FIELD_NAME = "credential";
-    private static final String TOKEN_AUDIENCE_FIELD_NAME = "tokenAudience";
     private static final String AZURE_THIRD_PARTY_SERVICE_PROPERTIES_FIELD_NAME = "properties";
-    private static final String GET_TOKEN_CREDENTIAL_METHOD_NAME = "getTokenCredential";
+    private static final String TOKEN_CREDENTIAL_RESOLVER_FIELD_NAME = "tokenCredentialResolver";
 
     @Test
     void testTokenCredentialShouldConfig() {
@@ -59,10 +58,11 @@ class KafkaOAuth2AuthenticateCallbackHandlerTest {
         KafkaOAuth2AuthenticateCallbackHandler handler = new KafkaOAuth2AuthenticateCallbackHandler();
         handler.configure(configs, null, null);
 
-        assertEquals(tokenCredential, ReflectionTestUtils.getField(handler, TOKEN_CREDENTIAL_FIELD_NAME));
-        TokenCredential getTokenCredential = ReflectionTestUtils.invokeMethod(handler,
-            GET_TOKEN_CREDENTIAL_METHOD_NAME);
-        assertEquals(tokenCredential, getTokenCredential);
+        AzureKafkaProperties properties = (AzureKafkaProperties) ReflectionTestUtils
+                .getField(handler, AZURE_THIRD_PARTY_SERVICE_PROPERTIES_FIELD_NAME);
+        AzureCredentialResolver<TokenCredential> azureTokenCredentialResolver = (AzureCredentialResolver<TokenCredential>) ReflectionTestUtils.getField(handler, TOKEN_CREDENTIAL_RESOLVER_FIELD_NAME);
+        assertNotNull(azureTokenCredentialResolver);
+        assertEquals(tokenCredential, azureTokenCredentialResolver.resolve(properties));
     }
 
     @Test
@@ -72,11 +72,11 @@ class KafkaOAuth2AuthenticateCallbackHandlerTest {
         KafkaOAuth2AuthenticateCallbackHandler handler = new KafkaOAuth2AuthenticateCallbackHandler();
         handler.configure(configs, null, null);
 
-        TokenCredential tokenCredential = (TokenCredential) ReflectionTestUtils.getField(handler, TOKEN_CREDENTIAL_FIELD_NAME);
-        assertNull(tokenCredential);
-        TokenCredential getTokenCredential = ReflectionTestUtils.invokeMethod(handler, GET_TOKEN_CREDENTIAL_METHOD_NAME);
-        assertNotNull(getTokenCredential);
-        assertTrue(getTokenCredential instanceof DefaultAzureCredential);
+        AzureKafkaProperties properties = (AzureKafkaProperties) ReflectionTestUtils
+                .getField(handler, AZURE_THIRD_PARTY_SERVICE_PROPERTIES_FIELD_NAME);
+        AzureCredentialResolver<TokenCredential> azureTokenCredentialResolver = (AzureCredentialResolver<TokenCredential>) ReflectionTestUtils.getField(handler, TOKEN_CREDENTIAL_RESOLVER_FIELD_NAME);
+        assertNotNull(azureTokenCredentialResolver);
+        assertTrue(azureTokenCredentialResolver.resolve(properties) instanceof DefaultAzureCredential);
     }
 
     @Test
@@ -91,11 +91,9 @@ class KafkaOAuth2AuthenticateCallbackHandlerTest {
         AzureKafkaProperties properties = (AzureKafkaProperties) ReflectionTestUtils
             .getField(handler, AZURE_THIRD_PARTY_SERVICE_PROPERTIES_FIELD_NAME);
         assertTrue(properties.getCredential().isManagedIdentityEnabled());
-        TokenCredential tokenCredential = (TokenCredential) ReflectionTestUtils.getField(handler, TOKEN_CREDENTIAL_FIELD_NAME);
-        assertNull(tokenCredential);
-        TokenCredential getTokenCredential = ReflectionTestUtils.invokeMethod(handler, GET_TOKEN_CREDENTIAL_METHOD_NAME);
-        assertNotNull(getTokenCredential);
-        assertTrue(getTokenCredential instanceof ManagedIdentityCredential);
+        AzureCredentialResolver<TokenCredential> azureTokenCredentialResolver = (AzureCredentialResolver<TokenCredential>) ReflectionTestUtils.getField(handler, TOKEN_CREDENTIAL_RESOLVER_FIELD_NAME);
+        assertNotNull(azureTokenCredentialResolver);
+        assertTrue(azureTokenCredentialResolver.resolve(properties) instanceof ManagedIdentityCredential);
     }
 
     @Test
