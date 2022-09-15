@@ -237,54 +237,6 @@
       }
     },
     {
-      "type": "Microsoft.DBforMySQL/servers/databases",
-      "apiVersion": "2017-12-01",
-      "name": "[concat(parameters('serverName'), '/information_schema')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.DBforMySQL/servers', parameters('serverName'))]"
-      ],
-      "properties": {
-        "charset": "utf8",
-        "collation": "utf8_general_ci"
-      }
-    },
-    {
-      "type": "Microsoft.DBforMySQL/servers/databases",
-      "apiVersion": "2017-12-01",
-      "name": "[concat(parameters('serverName'), '/mysql')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.DBforMySQL/servers', parameters('serverName'))]"
-      ],
-      "properties": {
-        "charset": "latin1",
-        "collation": "latin1_swedish_ci"
-      }
-    },
-    {
-      "type": "Microsoft.DBforMySQL/servers/databases",
-      "apiVersion": "2017-12-01",
-      "name": "[concat(parameters('serverName'), '/performance_schema')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.DBforMySQL/servers', parameters('serverName'))]"
-      ],
-      "properties": {
-        "charset": "utf8",
-        "collation": "utf8_general_ci"
-      }
-    },
-    {
-      "type": "Microsoft.DBforMySQL/servers/databases",
-      "apiVersion": "2017-12-01",
-      "name": "[concat(parameters('serverName'), '/sys')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.DBforMySQL/servers', parameters('serverName'))]"
-      ],
-      "properties": {
-        "charset": "utf8",
-        "collation": "utf8_general_ci"
-      }
-    },
-    {
       "type": "Microsoft.DBforMySQL/servers/firewallRules",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/AllowAll_2022-9-14_18-12-24')]",
