@@ -7,6 +7,7 @@ import com.azure.storage.common.implementation.Constants.ConfigurationConstants.
 
 import spock.lang.Isolated
 
+import java.nio.file.FileSystemNotFoundException
 import java.nio.file.Files
 import java.nio.file.Paths
 
@@ -14,7 +15,6 @@ import java.nio.file.Paths
 class EnvironmentConfigurationTest  extends APISpec {
     Map<String, String> environmentConfig
     String blobName
-    int blobSize
 
     def setup() {
         environmentConfig = [
@@ -23,12 +23,12 @@ class EnvironmentConfigurationTest  extends APISpec {
             (Nio.ENVIRONMENT_DEFAULT_ACCOUNT_KEY)   : environment.primaryAccount.key,
             (Nio.ENVIRONMENT_DEFAULT_FILE_STORES)   : cc.getBlobContainerName(),
             (Nio.ENVIRONMENT_AUTO_CREATE_FILESYSTEM): "true",
+            (Nio.ENVIRONMENT_DEFAULT_SKIP_CONTAINER_CHECK): "true",
         ]
         blobName = generateBlobName()
-        blobSize = Constants.KB
 
         cc.create()
-        cc.getBlobClient(blobName).upload(BinaryData.fromBytes(getRandomByteArray(blobSize)))
+        cc.getBlobClient(blobName).upload(data.defaultInputStream, data.defaultDataSize)
 
         def globalConfig = Configuration.getGlobalConfiguration()
         environmentConfig.each { key, val -> globalConfig.put(key, val)}
@@ -37,6 +37,8 @@ class EnvironmentConfigurationTest  extends APISpec {
     def cleanup() {
         def globalConfig = Configuration.getGlobalConfiguration()
         environmentConfig.each { key, val -> globalConfig.remove(key)}
+
+        cc.deleteIfExists()
     }
 
     def "Path auto resolves"() {
@@ -45,7 +47,16 @@ class EnvironmentConfigurationTest  extends APISpec {
         def path = Paths.get(new URI("azb://${cc.getBlobContainerName()}:/$blobName"))
 
         then:
-        path != null
-        Files.readAllBytes(path).length == blobSize
+        notThrown(FileSystemNotFoundException)
+        path.toString() == blobName
+    }
+
+    def "Explicit create with env configs"() {
+        when:
+        new AzureFileSystemProvider().newFileSystem(new URI("azb://?endpoint=https://foo.blob.core.windows.net"), null)
+
+        then:
+        // insufficient configuration will throw. no throw means env config was picked up
+        notThrown(Exception)
     }
 }

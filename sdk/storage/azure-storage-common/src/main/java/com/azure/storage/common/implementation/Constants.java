@@ -459,8 +459,8 @@ public final class Constants {
         public static final class Nio {
             public static final String ENVIRONMENT_DEFAULT_BLOB_ENDPOINT = "AZURE_STORAGE_NIO_BLOB_ENDPOINT";
             public static final String ENVIRONMENT_DEFAULT_BLOB_ENDPOINT_SECONDARY = "AZURE_STORAGE_NIO_BLOB_ENDPOINT_SECONDARY";
-            public static final String ENVIRONMENT_DEFAULT_ACCOUNT_NAME = "AZURE_STORAGE_ACCOUNT_NAME";
-            public static final String ENVIRONMENT_DEFAULT_ACCOUNT_KEY = "AZURE_STORAGE_ACCOUNT_KEY";
+            public static final String ENVIRONMENT_DEFAULT_ACCOUNT_NAME = "AZURE_STORAGE_NIO_ACCOUNT_NAME";
+            public static final String ENVIRONMENT_DEFAULT_ACCOUNT_KEY = "AZURE_STORAGE_NIO_ACCOUNT_KEY";
             public static final String ENVIRONMENT_DEFAULT_SAS_TOKEN = "AZURE_STORAGE_NIO_SAS";
 
             public static final String ENVIRONMENT_DEFAULT_BLOCK_SIZE = "AZURE_STORAGE_NIO_BLOCK_SIZE";
