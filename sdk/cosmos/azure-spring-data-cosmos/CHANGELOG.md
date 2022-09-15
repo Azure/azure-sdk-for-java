@@ -4,6 +4,7 @@
 
 #### Features Added
 * Exposed `maxBufferedItemCount` feature from `CosmosQueryRequestOptions` through `application.properties` flag - See [PR 30921](https://github.com/Azure/azure-sdk-for-java/pull/30921)
+* Exposed `responseContinuationTokenLimitInKb` feature from `CosmosQueryRequestOptions` through `application.properties` flag - See [PR 30980](https://github.com/Azure/azure-sdk-for-java/pull/30980)
 
 #### Breaking Changes
 
