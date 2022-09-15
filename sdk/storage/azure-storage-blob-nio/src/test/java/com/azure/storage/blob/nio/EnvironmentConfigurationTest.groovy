@@ -3,13 +3,14 @@ package com.azure.storage.blob.nio
 import com.azure.core.util.BinaryData
 import com.azure.core.util.Configuration
 import com.azure.storage.common.implementation.Constants
-import com.azure.storage.common.implementation.Constants.ConfigurationConstants.Nio
 
 import spock.lang.Isolated
 
 import java.nio.file.FileSystemNotFoundException
 import java.nio.file.Files
 import java.nio.file.Paths
+
+import static com.azure.storage.blob.nio.AzureFileSystem.EnvironmentConfigurationConstants
 
 @Isolated
 class EnvironmentConfigurationTest  extends APISpec {
@@ -18,12 +19,12 @@ class EnvironmentConfigurationTest  extends APISpec {
 
     def setup() {
         environmentConfig = [
-            (Nio.ENVIRONMENT_DEFAULT_BLOB_ENDPOINT) : "https://${environment.primaryAccount.name}.blob.core.windows.net",
-            (Nio.ENVIRONMENT_DEFAULT_ACCOUNT_NAME)  : environment.primaryAccount.name,
-            (Nio.ENVIRONMENT_DEFAULT_ACCOUNT_KEY)   : environment.primaryAccount.key,
-            (Nio.ENVIRONMENT_DEFAULT_FILE_STORES)   : cc.getBlobContainerName(),
-            (Nio.ENVIRONMENT_AUTO_CREATE_FILESYSTEM): "true",
-            (Nio.ENVIRONMENT_DEFAULT_SKIP_CONTAINER_CHECK): "true",
+            (EnvironmentConfigurationConstants.DEFAULT_BLOB_ENDPOINT)             : "https://${environment.primaryAccount.name}.blob.core.windows.net",
+            (EnvironmentConfigurationConstants.SHARED_KEY_CREDENTIAL_ACCOUNT_NAME): environment.primaryAccount.name,
+            (EnvironmentConfigurationConstants.SHARED_KEY_CREDENTIAL_ACCOUNT_KEY) : environment.primaryAccount.key,
+            (EnvironmentConfigurationConstants.FILE_STORES)                       : cc.getBlobContainerName(),
+            (EnvironmentConfigurationConstants.AUTO_CREATE_FILESYSTEMS)           : "true",
+            (EnvironmentConfigurationConstants.SKIP_CONTAINER_CHECK)              : "true",
         ]
         blobName = generateBlobName()
 

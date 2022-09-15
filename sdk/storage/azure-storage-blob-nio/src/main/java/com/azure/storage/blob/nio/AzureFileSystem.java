@@ -129,6 +129,72 @@ public final class AzureFileSystem extends FileSystem {
      */
     public static final String AZURE_STORAGE_SKIP_INITIAL_CONTAINER_CHECK = "AzureStorageSkipInitialContainerCheck";
 
+    /**
+     * Environment variable names for configuring an AzureFileSystem. All values are strings due to serial nature of
+     * environment variables. String formats documented on each definition.
+     */
+    public static final class EnvironmentConfigurationConstants {
+        /**
+         * Expected format: URI endpoint including scheme (e.g. HTTPS).
+         */
+        public static final String DEFAULT_BLOB_ENDPOINT = "AZURE_STORAGE_NIO_BLOB_ENDPOINT";
+
+        /**
+         * Expected format: URI endpoint including scheme (e.g. HTTPS).
+         */
+        public static final String DEFAULT_BLOB_ENDPOINT_SECONDARY = "AZURE_STORAGE_NIO_BLOB_ENDPOINT_SECONDARY";
+
+        /**
+         * Expected format: Account name for constructing a {@link com.azure.storage.common.StorageSharedKeyCredential}.
+         */
+        public static final String SHARED_KEY_CREDENTIAL_ACCOUNT_NAME = "AZURE_STORAGE_NIO_ACCOUNT_NAME";
+
+        /**
+         * Expected format: Base64 account key for constructing a {@link com.azure.storage.common.StorageSharedKeyCredential}.
+         */
+        public static final String SHARED_KEY_CREDENTIAL_ACCOUNT_KEY = "AZURE_STORAGE_NIO_ACCOUNT_KEY";
+
+        /**
+         * Expected format: SAS token.
+         */
+        public static final String SAS_TOKEN_CREDENTIAL = "AZURE_STORAGE_NIO_SAS";
+
+        /**
+         * Expected format: Long.
+         */
+        public static final String BLOCK_SIZE = "AZURE_STORAGE_NIO_BLOCK_SIZE";
+
+        /**
+         * Expected format: Long.
+         */
+        public static final String PUT_BLOB_THRESHOLD = "AZURE_STORAGE_NIO_PUT_BLOB_THRESHOLD";
+
+        /**
+         * Expected format: Integer.
+         */
+        public static final String PER_REQUEST_CONCURRENCY = "AZURE_STORAGE_NIO_PER_REQUEST_CONCURRENCY";
+
+        /**
+         * Expected format: Integer.
+         */
+        public static final String RESUME_RETRIES = "AZURE_STORAGE_NIO_RESUME_RETRIES";
+
+        /**
+         * Expected format: comma-separated file store names.
+         */
+        public static final String FILE_STORES = "AZURE_STORAGE_NIO_FILE_STORES";
+
+        /**
+         * Expected format: Boolean.
+         */
+        public static final String SKIP_CONTAINER_CHECK = "AZURE_STORAGE_NIO_SKIP_CONTAINER_CHECK";
+
+        /**
+         * Expected format: Boolean.
+         */
+        public static final String AUTO_CREATE_FILESYSTEMS = "AZURE_STORAGE_NIO_AUTO_CREATE_FILESYSTEMS";
+    }
+
     static final String PATH_SEPARATOR = "/";
 
     private static final Map<String, String> PROPERTIES =

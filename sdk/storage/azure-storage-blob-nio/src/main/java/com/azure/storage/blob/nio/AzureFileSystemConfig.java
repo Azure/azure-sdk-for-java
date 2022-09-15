@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import static com.azure.storage.common.implementation.Constants.ConfigurationConstants.Nio;
+import static com.azure.storage.blob.nio.AzureFileSystem.EnvironmentConfigurationConstants;
 
 class AzureFileSystemConfig {
     // BlobServiceClient configs
@@ -70,37 +70,38 @@ class AzureFileSystemConfig {
     }
 
     AzureFileSystemConfig(Configuration config) {
-        if (!CoreUtils.isNullOrEmpty(config.get(Nio.ENVIRONMENT_DEFAULT_ACCOUNT_NAME))
-            && !CoreUtils.isNullOrEmpty(config.get(Nio.ENVIRONMENT_DEFAULT_ACCOUNT_KEY))) {
+        if (!CoreUtils.isNullOrEmpty(config.get(EnvironmentConfigurationConstants.SHARED_KEY_CREDENTIAL_ACCOUNT_NAME))
+            && !CoreUtils.isNullOrEmpty(config.get(EnvironmentConfigurationConstants.SHARED_KEY_CREDENTIAL_ACCOUNT_KEY))) {
             sharedKeyCredential = new StorageSharedKeyCredential(
-                config.get(Nio.ENVIRONMENT_DEFAULT_ACCOUNT_NAME), config.get(Nio.ENVIRONMENT_DEFAULT_ACCOUNT_KEY));
+                config.get(EnvironmentConfigurationConstants.SHARED_KEY_CREDENTIAL_ACCOUNT_NAME),
+                config.get(EnvironmentConfigurationConstants.SHARED_KEY_CREDENTIAL_ACCOUNT_KEY));
         } else {
             sharedKeyCredential = null;
         }
-        sasCredential = getConfigFromStringConfiguration(config, Nio.ENVIRONMENT_DEFAULT_SAS_TOKEN,
+        sasCredential = getConfigFromStringConfiguration(config, EnvironmentConfigurationConstants.SAS_TOKEN_CREDENTIAL,
             AzureSasCredential::new);
 
         // HttpLogOptions initialized already and constructor does the environment read for us
 
         retryOptions = RequestRetryOptions.fromConfiguration(config,
-            config.get(Nio.ENVIRONMENT_DEFAULT_BLOB_ENDPOINT_SECONDARY));
+            config.get(EnvironmentConfigurationConstants.DEFAULT_BLOB_ENDPOINT_SECONDARY));
         httpClient = null; // cannot load from environment
 
         // cannot load policies from environment
 
-        blockSize = getConfigFromStringConfiguration(config, Nio.ENVIRONMENT_DEFAULT_BLOCK_SIZE, Long::valueOf);
-        putBlobThreshold = getConfigFromStringConfiguration(config, Nio.ENVIRONMENT_DEFAULT_PUT_BLOB_THRESHOLD,
+        blockSize = getConfigFromStringConfiguration(config, EnvironmentConfigurationConstants.BLOCK_SIZE, Long::valueOf);
+        putBlobThreshold = getConfigFromStringConfiguration(config, EnvironmentConfigurationConstants.PUT_BLOB_THRESHOLD,
             Long::valueOf);
         maxConcurrencyPerRequest = getConfigFromStringConfiguration(config,
-            Nio.ENVIRONMENT_DEFAULT_PER_REQUEST_CONCURRENCY, Integer::valueOf);
-        downloadResumeRetries = getConfigFromStringConfiguration(config, Nio.ENVIRONMENT_DEFAULT_RESUME_RETRIES,
+            EnvironmentConfigurationConstants.PER_REQUEST_CONCURRENCY, Integer::valueOf);
+        downloadResumeRetries = getConfigFromStringConfiguration(config, EnvironmentConfigurationConstants.RESUME_RETRIES,
             Integer::valueOf);
 
-        String fileStores = config.get(Nio.ENVIRONMENT_DEFAULT_FILE_STORES);
+        String fileStores = config.get(EnvironmentConfigurationConstants.FILE_STORES);
         Collections.addAll(fileStoreNames, (fileStores != null ? fileStores : "").split(","));
 
         skipInitialContainerCheck = getConfigFromStringConfiguration(config,
-            Nio.ENVIRONMENT_DEFAULT_SKIP_CONTAINER_CHECK, Boolean::valueOf);
+            EnvironmentConfigurationConstants.SKIP_CONTAINER_CHECK, Boolean::valueOf);
     }
 
     public StorageSharedKeyCredential getSharedKeyCredential() {

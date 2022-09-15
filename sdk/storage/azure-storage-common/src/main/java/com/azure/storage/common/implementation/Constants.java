@@ -452,25 +452,5 @@ public final class Constants {
          * Maximum delay between retries.
          */
         public static final String RETRY_OPTIONS_MAX_DELAY_MS = "AZURE_STORAGE_MAX_RETRY_DELAY_MS";
-
-        /**
-         * Defines constants for use with NIO plugin.
-         */
-        public static final class Nio {
-            public static final String ENVIRONMENT_DEFAULT_BLOB_ENDPOINT = "AZURE_STORAGE_NIO_BLOB_ENDPOINT";
-            public static final String ENVIRONMENT_DEFAULT_BLOB_ENDPOINT_SECONDARY = "AZURE_STORAGE_NIO_BLOB_ENDPOINT_SECONDARY";
-            public static final String ENVIRONMENT_DEFAULT_ACCOUNT_NAME = "AZURE_STORAGE_NIO_ACCOUNT_NAME";
-            public static final String ENVIRONMENT_DEFAULT_ACCOUNT_KEY = "AZURE_STORAGE_NIO_ACCOUNT_KEY";
-            public static final String ENVIRONMENT_DEFAULT_SAS_TOKEN = "AZURE_STORAGE_NIO_SAS";
-
-            public static final String ENVIRONMENT_DEFAULT_BLOCK_SIZE = "AZURE_STORAGE_NIO_BLOCK_SIZE";
-            public static final String ENVIRONMENT_DEFAULT_PUT_BLOB_THRESHOLD = "AZURE_STORAGE_NIO_PUT_BLOB_THRESHOLD";
-            public static final String ENVIRONMENT_DEFAULT_PER_REQUEST_CONCURRENCY = "AZURE_STORAGE_NIO_PER_REQUEST_CONCURRENCY";
-            public static final String ENVIRONMENT_DEFAULT_RESUME_RETRIES = "AZURE_STORAGE_NIO_RESUME_RETRIES";
-            public static final String ENVIRONMENT_DEFAULT_FILE_STORES = "AZURE_STORAGE_NIO_FILE_STORES";
-            public static final String ENVIRONMENT_DEFAULT_SKIP_CONTAINER_CHECK = "AZURE_STORAGE_NIO_SKIP_CONTAINER_CHECK";
-
-            public static final String ENVIRONMENT_AUTO_CREATE_FILESYSTEM = "AZURE_STORAGE_NIO_AUTO_CREATE_FILESYSTEMS";
-        }
     }
 }

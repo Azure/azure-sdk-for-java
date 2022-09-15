@@ -110,22 +110,22 @@ class AzureFileSystemConfigTest extends Specification {
         def skipCheck = true
         def configSource = new TestConfigurationSource()
         [
-            (Constants.ConfigurationConstants.Nio.ENVIRONMENT_DEFAULT_BLOB_ENDPOINT)          : endpoint,
-            (Constants.ConfigurationConstants.Nio.ENVIRONMENT_DEFAULT_ACCOUNT_NAME)           : accountName,
-            (Constants.ConfigurationConstants.Nio.ENVIRONMENT_DEFAULT_ACCOUNT_KEY)            : accountKey,
-            (Constants.ConfigurationConstants.Nio.ENVIRONMENT_DEFAULT_SAS_TOKEN)              : sasToken,
-            (Constants.ConfigurationConstants.RETRY_OPTIONS_RETRY_STRATEGY)                   : retryType,
-            (Constants.ConfigurationConstants.RETRY_OPTIONS_MAX_RETRY)                        : maxRetries,
-            (Constants.ConfigurationConstants.RETRY_OPTIONS_TIMEOUT_SECONDS)                  : timeout,
-            (Constants.ConfigurationConstants.RETRY_OPTIONS_DELAY_MS)                         : retryDelay,
-            (Constants.ConfigurationConstants.RETRY_OPTIONS_MAX_DELAY_MS)                     : maxRetryDelay,
-            (Constants.ConfigurationConstants.Nio.ENVIRONMENT_DEFAULT_BLOB_ENDPOINT_SECONDARY): secondaryEndpoint,
-            (Constants.ConfigurationConstants.Nio.ENVIRONMENT_DEFAULT_BLOCK_SIZE)             : blockSize,
-            (Constants.ConfigurationConstants.Nio.ENVIRONMENT_DEFAULT_PUT_BLOB_THRESHOLD)     : putBlob,
-            (Constants.ConfigurationConstants.Nio.ENVIRONMENT_DEFAULT_PER_REQUEST_CONCURRENCY): concurrency,
-            (Constants.ConfigurationConstants.Nio.ENVIRONMENT_DEFAULT_RESUME_RETRIES)         : resume,
-            (Constants.ConfigurationConstants.Nio.ENVIRONMENT_DEFAULT_FILE_STORES)            : fileStores,
-            (Constants.ConfigurationConstants.Nio.ENVIRONMENT_DEFAULT_SKIP_CONTAINER_CHECK)   : skipCheck
+            (AzureFileSystem.EnvironmentConfigurationConstants.DEFAULT_BLOB_ENDPOINT)             : endpoint,
+            (AzureFileSystem.EnvironmentConfigurationConstants.DEFAULT_BLOB_ENDPOINT_SECONDARY)   : secondaryEndpoint,
+            (AzureFileSystem.EnvironmentConfigurationConstants.SHARED_KEY_CREDENTIAL_ACCOUNT_NAME): accountName,
+            (AzureFileSystem.EnvironmentConfigurationConstants.SHARED_KEY_CREDENTIAL_ACCOUNT_KEY) : accountKey,
+            (AzureFileSystem.EnvironmentConfigurationConstants.SAS_TOKEN_CREDENTIAL)              : sasToken,
+            (Constants.ConfigurationConstants.RETRY_OPTIONS_RETRY_STRATEGY)                       : retryType,
+            (Constants.ConfigurationConstants.RETRY_OPTIONS_MAX_RETRY)                            : maxRetries,
+            (Constants.ConfigurationConstants.RETRY_OPTIONS_TIMEOUT_SECONDS)                      : timeout,
+            (Constants.ConfigurationConstants.RETRY_OPTIONS_DELAY_MS)                             : retryDelay,
+            (Constants.ConfigurationConstants.RETRY_OPTIONS_MAX_DELAY_MS)                         : maxRetryDelay,
+            (AzureFileSystem.EnvironmentConfigurationConstants.BLOCK_SIZE)                        : blockSize,
+            (AzureFileSystem.EnvironmentConfigurationConstants.PUT_BLOB_THRESHOLD)                : putBlob,
+            (AzureFileSystem.EnvironmentConfigurationConstants.PER_REQUEST_CONCURRENCY)           : concurrency,
+            (AzureFileSystem.EnvironmentConfigurationConstants.RESUME_RETRIES)                    : resume,
+            (AzureFileSystem.EnvironmentConfigurationConstants.FILE_STORES)                       : fileStores,
+            (AzureFileSystem.EnvironmentConfigurationConstants.SKIP_CONTAINER_CHECK)              : skipCheck
         ].each {configSource.put(it.key, it.value as String)}
 
         when:
