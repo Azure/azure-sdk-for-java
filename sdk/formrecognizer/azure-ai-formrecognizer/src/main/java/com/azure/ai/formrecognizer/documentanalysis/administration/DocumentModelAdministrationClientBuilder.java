@@ -134,7 +134,7 @@ public final class DocumentModelAdministrationClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public DocumentModelAdministrationClient buildClient() {
-        return new DocumentModelAdministrationClient(buildAsyncClient());
+        return new DocumentModelAdministrationClient(buildAsyncClient(), buildInnerClient());
     }
 
     /**
@@ -155,24 +155,36 @@ public final class DocumentModelAdministrationClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public DocumentModelAdministrationAsyncClient buildAsyncClient() {
+        if (audience == null) {
+            audience = DocumentAnalysisAudience.AZURE_PUBLIC_CLOUD;
+        }
+        return new DocumentModelAdministrationAsyncClient(buildInnerClient(), audience);
+    }
+
+    /**
+     * Builds an instance of FormRecognizerClientImpl with the provided parameters.
+     *
+     * @return an instance of FormRecognizerClientImpl.
+     */
+    private FormRecognizerClientImpl buildInnerClient() {
         // Endpoint cannot be null, which is required in request authentication
         Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
         if (audience == null) {
             audience = DocumentAnalysisAudience.AZURE_PUBLIC_CLOUD;
         }
-
         // Global Env configuration store
-        final Configuration buildConfiguration =
-            (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
+        final Configuration buildConfiguration = (configuration == null)
+            ? Configuration.getGlobalConfiguration().clone() : configuration;
 
-        // Service Version
+        // Service version
         final DocumentAnalysisServiceVersion serviceVersion =
             version != null ? version : DocumentAnalysisServiceVersion.getLatest();
 
         HttpPipeline pipeline = httpPipeline;
         // Create a default Pipeline if it is not given
         if (pipeline == null) {
-            pipeline = Utility.buildHttpPipeline(clientOptions,
+            pipeline = Utility.buildHttpPipeline(
+                clientOptions,
                 httpLogOptions,
                 buildConfiguration,
                 retryPolicy,
@@ -185,13 +197,11 @@ public final class DocumentModelAdministrationClientBuilder implements
                 httpClient);
         }
 
-        final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
+        return new FormRecognizerClientImplBuilder()
             .endpoint(endpoint)
             .apiVersion(serviceVersion.getVersion())
             .pipeline(pipeline)
             .buildClient();
-
-        return new DocumentModelAdministrationAsyncClient(formRecognizerAPI, serviceVersion, audience);
     }
 
     /**

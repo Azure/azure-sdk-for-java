@@ -57,18 +57,15 @@ import static com.azure.core.util.FluxUtil.monoError;
 public final class DocumentAnalysisAsyncClient {
     private final ClientLogger logger = new ClientLogger(DocumentAnalysisAsyncClient.class);
     private final FormRecognizerClientImpl service;
-    private final DocumentAnalysisServiceVersion serviceVersion;
 
     /**
      * Create a {@link DocumentAnalysisAsyncClient} that sends requests to the Form recognizer service's endpoint. Each
      * service call goes through the {@link DocumentAnalysisClientBuilder#pipeline(HttpPipeline)} http pipeline.
      *
      * @param service The proxy service used to perform REST calls.
-     * @param serviceVersion The versions of Azure Form Recognizer service supported by this client library.
      */
-    DocumentAnalysisAsyncClient(FormRecognizerClientImpl service, DocumentAnalysisServiceVersion serviceVersion) {
+    DocumentAnalysisAsyncClient(FormRecognizerClientImpl service) {
         this.service = service;
-        this.serviceVersion = serviceVersion;
     }
 
     /**

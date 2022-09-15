@@ -16,15 +16,25 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.Operat
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationSummary;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.FormRecognizerClientImpl;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AuthorizeCopyRequest;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.CopyAuthorization;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility;
 import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.SyncPoller;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -50,6 +60,7 @@ import java.util.List;
 public final class DocumentModelAdministrationClient {
 
     private final DocumentModelAdministrationAsyncClient client;
+    private final FormRecognizerClientImpl serviceClient;
 
     /**
      * Create a {@link DocumentModelAdministrationClient} that sends requests to the Form Recognizer service's endpoint.
@@ -57,8 +68,10 @@ public final class DocumentModelAdministrationClient {
      *
      * @param documentAnalysisTrainingAsyncClient The {@link DocumentModelAdministrationAsyncClient} that the client routes its request through.
      */
-    DocumentModelAdministrationClient(DocumentModelAdministrationAsyncClient documentAnalysisTrainingAsyncClient) {
+    DocumentModelAdministrationClient(DocumentModelAdministrationAsyncClient documentAnalysisTrainingAsyncClient,
+                                      FormRecognizerClientImpl formRecognizerClient) {
         this.client = documentAnalysisTrainingAsyncClient;
+        this.serviceClient = formRecognizerClient;
     }
 
     /**
@@ -232,7 +245,10 @@ public final class DocumentModelAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceDetails> getResourceDetailsWithResponse(Context context) {
-        return client.getResourceDetailsWithResponse(context).block();
+        Response<com.azure.ai.formrecognizer.documentanalysis.implementation.models.ResourceDetails>
+            innerResourceDetails = serviceClient.getResourceDetailsSyncWithResponse(context);
+        return new SimpleResponse<>(innerResourceDetails,
+            Transforms.toAccountProperties(innerResourceDetails.getValue()));
     }
 
     /**
@@ -277,7 +293,7 @@ public final class DocumentModelAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDocumentModelWithResponse(String modelId, Context context) {
-        return client.deleteDocumentModelWithResponse(modelId, context).block();
+        return serviceClient.deleteDocumentModelSyncWithResponse(modelId, context);
     }
 
     /**
@@ -352,7 +368,13 @@ public final class DocumentModelAdministrationClient {
     public Response<DocumentModelCopyAuthorization> getCopyAuthorizationWithResponse(
         CopyAuthorizationOptions copyAuthorizationOptions,
         Context context) {
-        return client.getCopyAuthorizationWithResponse(copyAuthorizationOptions, context).block();
+
+        Response<CopyAuthorization> innerCopyAuth =
+            serviceClient.authorizeCopyDocumentModelSyncWithResponse(
+                Transforms.toAuthorizeCopyRequest(copyAuthorizationOptions),
+                context);
+
+        return new SimpleResponse<>(innerCopyAuth, Transforms.toCopyAuthorization(innerCopyAuth.getValue()));
     }
 
     /**
@@ -593,6 +615,40 @@ public final class DocumentModelAdministrationClient {
     public PagedIterable<DocumentModelSummary> listDocumentModels(Context context) {
         return new PagedIterable<>(client.listDocumentModels(context));
     }
+
+    private PagedResponse<DocumentModelSummary> listFirstPageModelInfo(Context context) {
+        return serviceClient.getDocumentModelsSinglePageSync(context)
+            .doOnRequest(ignoredValue -> logger.info("Listing information for all models"))
+            .doOnSuccess(response -> logger.info("Listed all models"))
+            .doOnError(error -> logger.warning("Failed to list all models information", error))
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                Transforms.toDocumentModelInfo(res.getValue()),
+                res.getContinuationToken(),
+                null));
+    }
+
+    private PagedResponse<DocumentModelSummary> listNextPageModelInfo(String nextPageLink, Context context) {
+        if (CoreUtils.isNullOrEmpty(nextPageLink)) {
+            return Mono.empty();
+        }
+        return service.getDocumentModelsNextSinglePageAsync(nextPageLink, context)
+            .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
+            .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
+            .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
+                error))
+            .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                Transforms.toDocumentModelInfo(res.getValue()),
+                res.getContinuationToken(),
+                null));
+    }
+
 
     /**
      * Get detailed information for a specified model ID.

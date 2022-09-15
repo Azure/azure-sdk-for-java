@@ -5,7 +5,6 @@ package com.azure.ai.formrecognizer.documentanalysis.administration;
 
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient;
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientBuilder;
-import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeDocumentModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorizationOptions;
@@ -18,7 +17,6 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.Operat
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationSummary;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.FormRecognizerClientImpl;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AuthorizeCopyRequest;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobContentSource;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.BuildDocumentModelRequest;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ComponentDocumentModelDetails;
@@ -78,7 +76,6 @@ import static com.azure.core.util.FluxUtil.withContext;
 public final class DocumentModelAdministrationAsyncClient {
     private final ClientLogger logger = new ClientLogger(DocumentModelAdministrationAsyncClient.class);
     private final FormRecognizerClientImpl service;
-    private final DocumentAnalysisServiceVersion serviceVersion;
     private final DocumentAnalysisAudience audience;
 
     /**
@@ -86,14 +83,10 @@ public final class DocumentModelAdministrationAsyncClient {
      * Each service call goes through the {@link DocumentModelAdministrationClientBuilder#pipeline http pipeline}.
      *
      * @param service The proxy service used to perform REST calls.
-     * @param serviceVersion The versions of Azure Form Recognizer supported by this client library.
      * @param audience ARM management audience associated with the given form recognizer resource.
-     *
      */
-    DocumentModelAdministrationAsyncClient(FormRecognizerClientImpl service, DocumentAnalysisServiceVersion serviceVersion,
-        DocumentAnalysisAudience audience) {
+    DocumentModelAdministrationAsyncClient(FormRecognizerClientImpl service, DocumentAnalysisAudience audience) {
         this.service = service;
-        this.serviceVersion = serviceVersion;
         this.audience = audience;
     }
 
@@ -450,18 +443,10 @@ public final class DocumentModelAdministrationAsyncClient {
     Mono<Response<DocumentModelCopyAuthorization>> getCopyAuthorizationWithResponse(
         CopyAuthorizationOptions copyAuthorizationOptions,
         Context context) {
-        copyAuthorizationOptions = copyAuthorizationOptions == null
-            ? new CopyAuthorizationOptions() : copyAuthorizationOptions;
-        String modelId = copyAuthorizationOptions.getModelId();
-        modelId = modelId == null ? Utility.generateRandomModelID() : modelId;
 
-        AuthorizeCopyRequest authorizeCopyRequest
-            = new AuthorizeCopyRequest()
-            .setModelId(modelId)
-            .setDescription(copyAuthorizationOptions.getDescription())
-            .setTags(copyAuthorizationOptions.getTags());
-
-        return service.authorizeCopyDocumentModelWithResponseAsync(authorizeCopyRequest, context)
+        return service.authorizeCopyDocumentModelWithResponseAsync(
+            Transforms.toAuthorizeCopyRequest(copyAuthorizationOptions),
+                context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, Transforms.toCopyAuthorization(response.getValue())));
     }

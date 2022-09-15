@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.util;
 
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorizationOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentFieldSchema;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildOperationDetails;
@@ -17,6 +18,7 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.Operat
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationSummary;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AuthorizeCopyRequest;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.documentanalysis.models.AddressValue;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
@@ -267,6 +269,21 @@ public class Transforms {
             innerCopyAuthorization.getTargetModelLocation(),
             innerCopyAuthorization.getAccessToken(),
             innerCopyAuthorization.getExpirationDateTime());
+    }
+
+    public static AuthorizeCopyRequest toAuthorizeCopyRequest(CopyAuthorizationOptions copyAuthorizationOptions) {
+        copyAuthorizationOptions = copyAuthorizationOptions == null
+            ? new CopyAuthorizationOptions() : copyAuthorizationOptions;
+        String modelId = copyAuthorizationOptions.getModelId();
+        modelId = modelId == null ? Utility.generateRandomModelID() : modelId;
+
+        AuthorizeCopyRequest authorizeCopyRequest
+            = new AuthorizeCopyRequest()
+            .setModelId(modelId)
+            .setDescription(copyAuthorizationOptions.getDescription())
+            .setTags(copyAuthorizationOptions.getTags());
+
+        return authorizeCopyRequest;
     }
 
     public static ResourceDetails toAccountProperties(

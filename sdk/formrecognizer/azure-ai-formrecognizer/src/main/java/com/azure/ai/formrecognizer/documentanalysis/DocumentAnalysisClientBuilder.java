@@ -161,6 +161,15 @@ public final class DocumentAnalysisClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public DocumentAnalysisAsyncClient buildAsyncClient() {
+        return new DocumentAnalysisAsyncClient(buildInnerClient());
+    }
+
+    /**
+     * Builds an instance of FormRecognizerClientImpl with the provided parameters.
+     *
+     * @return an instance of FormRecognizerClientImpl.
+     */
+    private FormRecognizerClientImpl buildInnerClient() {
         // Endpoint cannot be null, which is required in request authentication
         Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
         if (audience == null) {
@@ -170,7 +179,7 @@ public final class DocumentAnalysisClientBuilder implements
         final Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration().clone() : configuration;
 
-        // Service Version
+        // Service version
         final DocumentAnalysisServiceVersion serviceVersion =
             version != null ? version : DocumentAnalysisServiceVersion.getLatest();
 
@@ -191,13 +200,11 @@ public final class DocumentAnalysisClientBuilder implements
                 httpClient);
         }
 
-        final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
+        return new FormRecognizerClientImplBuilder()
             .endpoint(endpoint)
             .apiVersion(serviceVersion.getVersion())
             .pipeline(pipeline)
             .buildClient();
-
-        return new DocumentAnalysisAsyncClient(formRecognizerAPI, serviceVersion);
     }
 
     /**
