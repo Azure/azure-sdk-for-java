@@ -159,6 +159,9 @@
         "capacity": 4
       },
       "properties": {
+        "createMode": "Default",
+        "administratorLogin": "[parameters('administratorLogin')]",
+        "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
         "storageProfile": {
           "storageMB": 102400,
           "backupRetentionDays": 7,
