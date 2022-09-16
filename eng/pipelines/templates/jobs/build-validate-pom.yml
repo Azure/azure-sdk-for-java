@@ -41,9 +41,9 @@ jobs:
         condition: and(succeeded(), eq(variables['Build.SourceBranchName'],'main'),eq(variables['Build.Reason'],'Schedule'))
 
       - task: UsePythonVersion@0
-        displayName: 'Use Python 3.6'
+        displayName: 'Use Python $(PythonVersion)'
         inputs:
-          versionSpec: '3.6'
+          versionSpec: $(PythonVersion)
 
       - template: /eng/common/pipelines/templates/steps/daily-dev-build-variable.yml
 
