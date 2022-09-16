@@ -16,6 +16,7 @@ import com.azure.storage.file.share.implementation.models.InternalShareFileItemP
 import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentHeaders;
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
+import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
 import com.azure.storage.file.share.models.ShareFileItemProperties;
 import com.azure.storage.file.share.models.ShareItem;
@@ -24,6 +25,8 @@ import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ModelHelper {
 
@@ -203,5 +206,25 @@ public class ModelHelper {
         }
         return new InternalShareFileItemProperties(property.getCreationTime(), property.getLastAccessTime(),
             property.getLastWriteTime(), property.getChangeTime(), property.getLastModified(), property.getEtag());
+    }
+
+    public static HandleItem transformHandleItem(com.azure.storage.file.share.implementation.models.HandleItem handleItem) {
+        return new HandleItem()
+            .setHandleId(handleItem.getHandleId())
+            .setPath(handleItem.getPath().getContent())
+            .setSessionId(handleItem.getSessionId())
+            .setClientIp(handleItem.getClientIp())
+            .setFileId(handleItem.getFileId())
+            .setParentId(handleItem.getParentId())
+            .setLastReconnectTime(handleItem.getLastReconnectTime())
+            .setOpenTime(handleItem.getOpenTime());
+    }
+
+    public static List<HandleItem> transformHandleItems(List<com.azure.storage.file.share.implementation.models.HandleItem> handleItems) {
+        List<HandleItem> result = new ArrayList<>();
+        for (var item : handleItems) {
+            result.add(transformHandleItem(item));
+        }
+        return result;
     }
 }

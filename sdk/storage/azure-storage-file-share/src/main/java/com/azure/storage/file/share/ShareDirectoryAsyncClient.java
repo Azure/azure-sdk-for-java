@@ -54,6 +54,7 @@ import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -1003,7 +1004,7 @@ public class ShareDirectoryAsyncClient {
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
-                    response.getValue().getHandleList(),
+                    ModelHelper.transformHandleItems(response.getValue().getHandleList()),
                     response.getValue().getNextMarker(),
                     response.getDeserializedHeaders()));
 
@@ -2134,14 +2135,22 @@ public class ShareDirectoryAsyncClient {
         Set<ShareFileItem> shareFileItems = new TreeSet<>(Comparator.comparing(ShareFileItem::getName));
         if (res.getValue().getSegment() != null) {
             res.getValue().getSegment().getDirectoryItems()
-                .forEach(directoryItem -> shareFileItems.add(new ShareFileItem(directoryItem.getName(), true,
-                    directoryItem.getFileId(), ModelHelper.transformFileProperty(directoryItem.getProperties()),
-                    NtfsFileAttributes.toAttributes(directoryItem.getAttributes()), directoryItem.getPermissionKey(),
+                .forEach(directoryItem -> shareFileItems.add(new ShareFileItem(
+                    directoryItem.getName().isEncoded() ? URLDecoder.decode(directoryItem.getName().getContent()) : directoryItem.getName().getContent(),
+                    true,
+                    directoryItem.getFileId(),
+                    ModelHelper.transformFileProperty(directoryItem.getProperties()),
+                    NtfsFileAttributes.toAttributes(directoryItem.getAttributes()),
+                    directoryItem.getPermissionKey(),
                     null)));
             res.getValue().getSegment().getFileItems()
-                .forEach(fileItem -> shareFileItems.add(new ShareFileItem(fileItem.getName(), false,
-                    fileItem.getFileId(), ModelHelper.transformFileProperty(fileItem.getProperties()),
-                    NtfsFileAttributes.toAttributes(fileItem.getAttributes()), fileItem.getPermissionKey(),
+                .forEach(fileItem -> shareFileItems.add(new ShareFileItem(
+                    fileItem.getName().isEncoded() ? URLDecoder.decode(fileItem.getName().getContent()) : fileItem.getName().getContent(),
+                    false,
+                    fileItem.getFileId(),
+                    ModelHelper.transformFileProperty(fileItem.getProperties()),
+                    NtfsFileAttributes.toAttributes(fileItem.getAttributes()),
+                    fileItem.getPermissionKey(),
                     fileItem.getProperties().getContentLength())));
         }
 
