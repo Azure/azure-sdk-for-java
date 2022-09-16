@@ -239,8 +239,8 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
             }
 
             // In RECEIVE_AND_DELETE, we cannot just release message when there is no downstream and prefetch is
-            // disabled, hence if `numberConsumed` is not increased and no `currentDownstream`, stop `drainQueue()` until
-            // next message or queue work invoke `drainQueue()`.
+            // disabled, because the message is deleted in service side, hence if `numberConsumed` is not increased and
+            // no `currentDownstream`, stop `drainQueue()` until next message or queue work is added to invoke `drainQueue()`.
             currentDownstream = getOrUpdateCurrentWork();
             if (numberConsumed == 0 && currentDownstream == null) {
                 break;
