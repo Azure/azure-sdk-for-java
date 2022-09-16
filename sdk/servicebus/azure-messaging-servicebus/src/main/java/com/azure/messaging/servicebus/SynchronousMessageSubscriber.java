@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LoggingEventBuilder;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Operators;
@@ -210,7 +211,8 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                 if (!isEmitted) {
                     // The only reason we can't emit was the downstream(s) were terminated hence nobody
                     // to receive the message.
-                    if (isPrefetchDisabled) {
+                    // In RECEIVE_AND_DELETE mode, we re-buffer the message because it is deleted in service side.
+                    if (isPrefetchDisabled && asyncClient.getReceiverOptions().getReceiveMode() == ServiceBusReceiveMode.PEEK_LOCK) {
                         // release is enabled only for no-prefetch scenario.
                         asyncClient.release(message).subscribe(__ -> { },
                             error -> LOGGER.atWarning()
@@ -234,6 +236,14 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
             final long requestedMessages = REQUESTED.get(this);
             if (requestedMessages != Long.MAX_VALUE) {
                 numberRequested = REQUESTED.addAndGet(this, -numberConsumed);
+            }
+
+            // In RECEIVE_AND_DELETE, we cannot just release message when there is no downstream and prefetch is
+            // disabled, hence if `numberConsumed` is not increased and no `currentDownstream`, stop `drainQueue()` until
+            // next message or queue work invoke `drainQueue()`.
+            currentDownstream = getOrUpdateCurrentWork();
+            if (numberConsumed == 0 && currentDownstream == null) {
+                break;
             }
         }
         if (numberRequested == 0L) {

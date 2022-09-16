@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed `ServiceBusReceiverClient` release messages if the prefetch is disabled and there is no active receive call in `RECEIVE_AND_DELETE` mode. ([#30861](https://github.com/Azure/azure-sdk-for-java/issues/30861))
 
 ### Other Changes
 
