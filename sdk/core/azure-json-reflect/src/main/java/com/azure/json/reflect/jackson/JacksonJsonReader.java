@@ -4,12 +4,16 @@ package com.azure.json.reflect.jackson;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.UncheckedIOException;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
+import java.nio.charset.StandardCharsets;
 import static java.lang.invoke.MethodType.methodType;
 
 public class JacksonJsonReader extends JsonReader {
@@ -31,8 +35,42 @@ public class JacksonJsonReader extends JsonReader {
 	private static Object jsonFactory;
 	private static Class<?> jacksonTokenEnum = null;
 	private final Object jacksonParser;
+	private final boolean resetSupported;
+	private final byte[] jsonBytes;
+	private final String jsonString;
+		
+	/**
+	 * Constructs an instance of {@link JacksonJsonReader from a {@code byte[]}
+	 * 
+	 * @param json JSON {@code byte[]}
+	 * @return An instance of {@link JacksonJsonReader}
+	 */
+	public static JsonReader fromBytes(byte[] json) {
+		return new JacksonJsonReader(new InputStreamReader(new ByteArrayInputStream(json), StandardCharsets.UTF_8),
+	            true, json, null);
+	}
 	
-    public JacksonJsonReader(Reader reader) {
+	/**
+	 * Constructs an instance of {@link JacksonJsonReader} from a String
+	 * 
+	 * @param json JSON String
+	 * @return An instance of {@link JacksonJsonReader}
+	 */
+	public static JsonReader fromString(String json) {
+		return new JacksonJsonReader(new StringReader(json), true, null, json);
+	}
+	
+	/**
+	 * Constructs an instance of {@link JacksonJsonReader} from an {@link InputStream}
+	 * 
+	 * @param json JSON {@link InputStream}
+	 * @return An instance of {@link JacksonJsonReaader}
+	 */
+	public static JsonReader fromStream(InputStream json) {
+		return new JacksonJsonReader(new InputStreamReader(json, StandardCharsets.UTF_8), false, null, null);
+	}
+	
+    public JacksonJsonReader(Reader reader, boolean resetSupported, byte[] jsonBytes, String jsonString) {
     	if (!initialized) {
 			initializeMethodHandles();
     	}
@@ -45,6 +83,10 @@ public class JacksonJsonReader extends JsonReader {
     			throw new IllegalStateException("Incorrect library present.");
     		}
     	}
+    	this.resetSupported = resetSupported;
+    	this.jsonBytes = jsonBytes;
+    	this.jsonString = jsonString;
+    	
     }
     
     private static void initializeMethodHandles() {
@@ -283,18 +325,24 @@ public class JacksonJsonReader extends JsonReader {
     		throw new IllegalStateException("Cannot buffer a JSON object from a non-object, non-field name "
                     + "starting location. Starting location: " + currentToken());
     	}
-    	StringReader stringReader = new StringReader(bufferedObject.toString());
-        return new JacksonJsonReader(stringReader);
+    	return fromString(bufferedObject.toString());
     }
-
+    
     @Override
     public boolean resetSupported() {
-        return false;
+        return this.resetSupported;
     }
 
     @Override
     public JsonReader reset() {
-        return null;
+        if (!this.resetSupported) {
+        	throw new IllegalStateException("'reset' isn't supported by this JsonReader");
+        }
+        if (jsonBytes != null) {
+        	return fromBytes(this.jsonBytes);
+        } else {
+        	return fromString(this.jsonString);
+        }
     }
 
     @Override
