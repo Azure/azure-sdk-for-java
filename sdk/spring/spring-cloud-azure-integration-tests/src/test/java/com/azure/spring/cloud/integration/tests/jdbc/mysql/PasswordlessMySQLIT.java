@@ -24,7 +24,7 @@ public class PasswordlessMySQLIT {
     private JdbcTemplate jdbcTemplate;
 
     @Test
-    public void testKeyVaultSecretOperation() {
+    public void testJdbcQuery() {
         String query = "show databases";
         SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(query);
 
