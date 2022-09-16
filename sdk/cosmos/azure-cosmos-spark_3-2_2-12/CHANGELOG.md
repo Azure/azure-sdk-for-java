@@ -1,14 +1,9 @@
 ## Release History
 
-### 4.13.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
+### 4.13.0 (2022-09-15)
 
 #### Other Changes
+* Added support to allow overriding json parsing behavior when a json document contains duplicated properties. Config entry `spark.cosmos.read.allowInvalidJsonWithDuplicateJsonProperties` can be used to not raise a hard error and use the last property instead. - See [PR 30916](https://github.com/Azure/azure-sdk-for-java/pull/30916)
 
 ### 4.12.2 (2022-08-04)
 

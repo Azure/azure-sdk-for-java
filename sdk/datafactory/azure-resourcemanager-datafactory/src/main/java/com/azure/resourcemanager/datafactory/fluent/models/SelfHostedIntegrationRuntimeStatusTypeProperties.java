@@ -18,8 +18,7 @@ import java.util.Map;
 @Fluent
 public final class SelfHostedIntegrationRuntimeStatusTypeProperties {
     /*
-     * The time at which the integration runtime was created, in ISO8601
-     * format.
+     * The time at which the integration runtime was created, in ISO8601 format.
      */
     @JsonProperty(value = "createTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createTime;
@@ -31,8 +30,8 @@ public final class SelfHostedIntegrationRuntimeStatusTypeProperties {
     private String taskQueueId;
 
     /*
-     * It is used to set the encryption mode for node-node communication
-     * channel (when more than 2 self-hosted integration runtime nodes exist).
+     * It is used to set the encryption mode for node-node communication channel (when more than 2 self-hosted
+     * integration runtime nodes exist).
      */
     @JsonProperty(value = "internalChannelEncryption", access = JsonProperty.Access.WRITE_ONLY)
     private IntegrationRuntimeInternalChannelEncryptionMode internalChannelEncryption;
@@ -50,15 +49,13 @@ public final class SelfHostedIntegrationRuntimeStatusTypeProperties {
     private List<SelfHostedIntegrationRuntimeNodeInner> nodes;
 
     /*
-     * The date at which the integration runtime will be scheduled to update,
-     * in ISO8601 format.
+     * The date at which the integration runtime will be scheduled to update, in ISO8601 format.
      */
     @JsonProperty(value = "scheduledUpdateDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime scheduledUpdateDate;
 
     /*
-     * The time in the date scheduled by service to update the integration
-     * runtime, e.g., PT03H is 3 hours
+     * The time in the date scheduled by service to update the integration runtime, e.g., PT03H is 3 hours
      */
     @JsonProperty(value = "updateDelayOffset", access = JsonProperty.Access.WRITE_ONLY)
     private String updateDelayOffset;
@@ -70,8 +67,7 @@ public final class SelfHostedIntegrationRuntimeStatusTypeProperties {
     private String localTimeZoneOffset;
 
     /*
-     * Object with additional information about integration runtime
-     * capabilities.
+     * Object with additional information about integration runtime capabilities.
      */
     @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
@@ -96,8 +92,7 @@ public final class SelfHostedIntegrationRuntimeStatusTypeProperties {
     private String versionStatus;
 
     /*
-     * The list of linked integration runtimes that are created to share with
-     * this integration runtime.
+     * The list of linked integration runtimes that are created to share with this integration runtime.
      */
     @JsonProperty(value = "links")
     private List<LinkedIntegrationRuntime> links;
@@ -115,8 +110,7 @@ public final class SelfHostedIntegrationRuntimeStatusTypeProperties {
     private String latestVersion;
 
     /*
-     * The estimated time when the self-hosted integration runtime will be
-     * updated.
+     * The estimated time when the self-hosted integration runtime will be updated.
      */
     @JsonProperty(value = "autoUpdateETA", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime autoUpdateEta;

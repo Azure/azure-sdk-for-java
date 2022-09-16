@@ -412,7 +412,9 @@ public interface MediaService {
     MediaService refresh(Context context);
 
     /**
-     * Synchronizes storage account keys for a storage account associated with the Media Service account.
+     * Synchronizes Storage Account Keys
+     *
+     * <p>Synchronizes storage account keys for a storage account associated with the Media Service account.
      *
      * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -422,7 +424,9 @@ public interface MediaService {
     void syncStorageKeys(SyncStorageKeysInput parameters);
 
     /**
-     * Synchronizes storage account keys for a storage account associated with the Media Service account.
+     * Synchronizes Storage Account Keys
+     *
+     * <p>Synchronizes storage account keys for a storage account associated with the Media Service account.
      *
      * @param parameters The request parameters.
      * @param context The context to associate with this operation.
@@ -434,7 +438,9 @@ public interface MediaService {
     Response<Void> syncStorageKeysWithResponse(SyncStorageKeysInput parameters, Context context);
 
     /**
-     * List all the media edge policies associated with the Media Services account.
+     * List the media edge policies associated with the Media Services account.
+     *
+     * <p>List all the media edge policies associated with the Media Services account.
      *
      * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -445,7 +451,9 @@ public interface MediaService {
     EdgePolicies listEdgePolicies(ListEdgePoliciesInput parameters);
 
     /**
-     * List all the media edge policies associated with the Media Services account.
+     * List the media edge policies associated with the Media Services account.
+     *
+     * <p>List all the media edge policies associated with the Media Services account.
      *
      * @param parameters The request parameters.
      * @param context The context to associate with this operation.

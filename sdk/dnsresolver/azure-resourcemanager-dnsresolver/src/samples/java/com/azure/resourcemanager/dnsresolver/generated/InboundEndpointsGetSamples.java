@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for InboundEndpoints Get. */
 public final class InboundEndpointsGetSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/InboundEndpoint_Get.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/InboundEndpoint_Get.json
      */
     /**
      * Sample code: Retrieve inbound endpoint for DNS resolver.

@@ -13,7 +13,7 @@ public final class PhoneNumberIdentifierModel {
     /*
      * The value property.
      */
-    @JsonProperty(value = "value")
+    @JsonProperty(value = "value", required = true)
     private String value;
 
     /**

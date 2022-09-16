@@ -13,31 +13,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class OdbcLinkedServiceTypeProperties {
     /*
-     * The non-access credential portion of the connection string as well as an
-     * optional encrypted credential. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * The non-access credential portion of the connection string as well as an optional encrypted credential. Type:
+     * string, SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "connectionString", required = true)
     private Object connectionString;
 
     /*
-     * Type of authentication used to connect to the ODBC data store. Possible
-     * values are: Anonymous and Basic. Type: string (or Expression with
-     * resultType string).
+     * Type of authentication used to connect to the ODBC data store. Possible values are: Anonymous and Basic. Type:
+     * string (or Expression with resultType string).
      */
     @JsonProperty(value = "authenticationType")
     private Object authenticationType;
 
     /*
-     * The access credential portion of the connection string specified in
-     * driver-specific property-value format.
+     * The access credential portion of the connection string specified in driver-specific property-value format.
      */
     @JsonProperty(value = "credential")
     private SecretBase credential;
 
     /*
-     * User name for Basic authentication. Type: string (or Expression with
-     * resultType string).
+     * User name for Basic authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "userName")
     private Object username;
@@ -49,9 +45,8 @@ public final class OdbcLinkedServiceTypeProperties {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
