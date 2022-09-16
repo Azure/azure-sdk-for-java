@@ -6,7 +6,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-starter-jdbc-mysql</artifactId>
-  <version>4.4.0-beta.1</version> <!-- {x-version-update;spring-cloud-azure-starter-jdbc-mysql;current} -->
+  <version>4.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-jdbc-mysql;current} -->
 
   <name>Spring Cloud Azure Starter JDBC MySQL</name>
   <description>Spring Cloud Azure Starter for building applications with JDBC and Azure MySQL Services. Support authenticating with Azure AD.</description>
