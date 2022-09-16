@@ -11,8 +11,9 @@ spring:
         client-secret: ${AZURE_SPRING_CLIENT_SECRET}
       profile:
         tenant-id: ${AZURE_SPRING_TENANT_ID}
-  datasource:
-    url: jdbc:h2:mem:test
+  autoconfigure:
+    # default not to enable DataSourceAutoConfiguration
+    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
 logging:
   level:
     com.azure:
@@ -22,3 +23,11 @@ logging:
         servicebus: WARN
         eventhubs: WARN
       identity: WARN
+
+---
+spring:
+  config:
+    activate:
+      on-profile: jdbc-mysql
+      # for jdbc enable DataSourceAutoConfiguration
+spring.autoconfigure.exclude:
