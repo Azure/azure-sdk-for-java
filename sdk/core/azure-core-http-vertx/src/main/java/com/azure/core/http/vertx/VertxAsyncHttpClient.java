@@ -55,14 +55,15 @@ class VertxAsyncHttpClient implements HttpClient {
         boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
         return Mono.create(sink -> toVertxHttpRequest(request).subscribe(vertxHttpRequest -> {
-            vertxHttpRequest.exceptionHandler(sink::error);
+//            vertxHttpRequest.exceptionHandler(sink::error);
 
-            HttpHeaders requestHeaders = request.getHeaders();
+            HttpHeaders azureRequestHeaders = request.getHeaders();
 
-            if (requestHeaders != null) {
+            if (azureRequestHeaders != null) {
                 // Transfer Azure request headers to vertx
-                requestHeaders.forEach(header -> vertxHttpRequest.putHeader(header.getName(), header.getValuesList()));
-                if (request.getHeaders().get("Content-Length") == null) {
+                azureRequestHeaders.forEach(
+                    header -> vertxHttpRequest.putHeader(header.getName(), header.getValuesList()));
+                if (azureRequestHeaders.get("Content-Length") == null) {
                     vertxHttpRequest.setChunked(true);
                 }
             } else {
@@ -72,7 +73,7 @@ class VertxAsyncHttpClient implements HttpClient {
             vertxHttpRequest.response(event -> {
                 if (event.succeeded()) {
                     HttpClientResponse vertxHttpResponse = event.result();
-                    vertxHttpResponse.exceptionHandler(sink::error);
+//                    vertxHttpResponse.exceptionHandler(sink::error);
 
                     if (eagerlyReadResponse) {
                         vertxHttpResponse.body(bodyEvent -> {
@@ -100,12 +101,12 @@ class VertxAsyncHttpClient implements HttpClient {
     }
 
     private Mono<HttpClientRequest> toVertxHttpRequest(HttpRequest request) {
-        return Mono.fromFuture(() ->
+        return Mono.fromCompletionStage(() ->
             client.request(
                 new RequestOptions()
                     .setMethod(io.vertx.core.http.HttpMethod.valueOf(request.getHttpMethod().name()))
-                    .setAbsoluteURI(request.getUrl())).toCompletionStage().toCompletableFuture()
-        );
+                    .setAbsoluteURI(request.getUrl()))
+                .toCompletionStage());
     }
 
     private Flux<ByteBuffer> getRequestBody(HttpRequest request, ProgressReporter progressReporter) {
@@ -116,6 +117,7 @@ class VertxAsyncHttpClient implements HttpClient {
 
         if (progressReporter != null) {
             body = body.map(buffer -> {
+                //
                 progressReporter.reportProgress(buffer.remaining());
                 return buffer;
             });
