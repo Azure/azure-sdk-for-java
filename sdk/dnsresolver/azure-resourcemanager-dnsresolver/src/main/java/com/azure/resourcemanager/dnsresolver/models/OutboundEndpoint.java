@@ -99,6 +99,13 @@ public interface OutboundEndpoint {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.dnsresolver.fluent.models.OutboundEndpointInner object.
      *
      * @return the inner object.
@@ -110,6 +117,7 @@ public interface OutboundEndpoint {
         extends DefinitionStages.Blank,
             DefinitionStages.WithLocation,
             DefinitionStages.WithParentResource,
+            DefinitionStages.WithSubnet,
             DefinitionStages.WithCreate {
     }
     /** The OutboundEndpoint definition stages. */
@@ -144,17 +152,24 @@ public interface OutboundEndpoint {
              * @param dnsResolverName The name of the DNS resolver.
              * @return the next definition stage.
              */
-            WithCreate withExistingDnsResolver(String resourceGroupName, String dnsResolverName);
+            WithSubnet withExistingDnsResolver(String resourceGroupName, String dnsResolverName);
+        }
+        /** The stage of the OutboundEndpoint definition allowing to specify subnet. */
+        interface WithSubnet {
+            /**
+             * Specifies the subnet property: The reference to the subnet used for the outbound endpoint..
+             *
+             * @param subnet The reference to the subnet used for the outbound endpoint.
+             * @return the next definition stage.
+             */
+            WithCreate withSubnet(SubResource subnet);
         }
         /**
          * The stage of the OutboundEndpoint definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithSubnet,
-                DefinitionStages.WithIfMatch,
-                DefinitionStages.WithIfNoneMatch {
+            extends DefinitionStages.WithTags, DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
             /**
              * Executes the create request.
              *
@@ -179,16 +194,6 @@ public interface OutboundEndpoint {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
-        }
-        /** The stage of the OutboundEndpoint definition allowing to specify subnet. */
-        interface WithSubnet {
-            /**
-             * Specifies the subnet property: The reference to the subnet used for the outbound endpoint..
-             *
-             * @param subnet The reference to the subnet used for the outbound endpoint.
-             * @return the next definition stage.
-             */
-            WithCreate withSubnet(SubResource subnet);
         }
         /** The stage of the OutboundEndpoint definition allowing to specify ifMatch. */
         interface WithIfMatch {

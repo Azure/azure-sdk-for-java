@@ -29,7 +29,7 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
         CallAutomationClient callAutomationClient = getCallAutomationClient(new ArrayList<>(
             Collections.singletonList(
                 new SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
-                    CALL_CALLER_ID, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL), 201)
+                    CALL_CALLER_ID, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, MEDIA_SUBSCRIPTION_ID), 201)
             )));
         CommunicationUserIdentifier caller = new CommunicationUserIdentifier(CALL_CALLER_ID);
         List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
@@ -46,7 +46,7 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
         CallAutomationClient callAutomationClient = getCallAutomationClient(new ArrayList<>(
             Collections.singletonList(
                 new SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
-                    CALL_CALLER_ID, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL), 201)
+                    CALL_CALLER_ID, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, null), 201)
             )));
         CommunicationUserIdentifier caller = new CommunicationUserIdentifier(CALL_CALLER_ID);
         List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
@@ -58,6 +58,7 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
         assertNotNull(createCallResult);
         assertEquals(201, createCallResult.getStatusCode());
         assertNotNull(createCallResult.getValue());
+        assertEquals(null, createCallResult.getValue().getCallConnectionProperties().getMediaSubscriptionId());
     }
 
     @Test
@@ -65,7 +66,7 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
         CallAutomationClient callAutomationClient = getCallAutomationClient(new ArrayList<>(
             Collections.singletonList(
                 new SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
-                    CALL_CALLER_ID, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL), 200)
+                    CALL_CALLER_ID, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, MEDIA_SUBSCRIPTION_ID), 200)
             )));
 
         AnswerCallResult answerCallResult = callAutomationClient.answerCall(CALL_INCOMING_CALL_CONTEXT, CALL_CALLBACK_URL);
@@ -78,7 +79,7 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
         CallAutomationClient callAutomationClient = getCallAutomationClient(new ArrayList<>(
             Collections.singletonList(
                 new SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
-                    CALL_CALLER_ID, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL), 200)
+                    CALL_CALLER_ID, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, MEDIA_SUBSCRIPTION_ID), 200)
             )));
 
         Response<AnswerCallResult> answerCallResult = callAutomationClient.answerCallWithResponse(
@@ -87,6 +88,7 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
         assertNotNull(answerCallResult);
         assertEquals(200, answerCallResult.getStatusCode());
         assertNotNull(answerCallResult.getValue());
+        assertEquals("mediaSubscriptionId", answerCallResult.getValue().getCallConnectionProperties().getMediaSubscriptionId());
     }
 
     @Test

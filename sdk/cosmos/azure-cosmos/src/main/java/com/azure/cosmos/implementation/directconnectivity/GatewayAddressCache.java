@@ -276,7 +276,7 @@ public class GatewayAddressCache implements IAddressCache {
                     if (Arrays
                             .stream(addressesValueHolder.v)
                             .anyMatch(addressInformation -> addressInformation.getPhysicalUri().shouldRefreshHealthStatus())) {
-                        logger.info("refresh cache due to address uri in unhealthy status");
+                        logger.debug("refresh cache due to address uri in unhealthy status for pkRangeId {}", partitionKeyRangeIdentity.getPartitionKeyRangeId());
                         this.serverPartitionAddressCache.refresh(
                                 partitionKeyRangeIdentity,
                                 cachedAddresses -> this.getAddressesForRangeId(request, partitionKeyRangeIdentity, true, cachedAddresses));

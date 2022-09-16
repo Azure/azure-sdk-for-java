@@ -61,17 +61,6 @@ public class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptions {
     }
 
     /**
-     * Set the maxTonesToCollect property: Maximum number of DTMFs to be collected.
-     *
-     * @param maxTonesToCollect the maxTonesToCollect value to set.
-     * @return the DtmfConfigurationsInternal object itself.
-     */
-    public CallMediaRecognizeDtmfOptions setMaxTonesToCollect(Integer maxTonesToCollect) {
-        this.maxTonesToCollect = maxTonesToCollect;
-        return this;
-    }
-
-    /**
      * Get the stopTones property: List of tones that will stop recognizing.
      *
      * @return the stopTones value.
@@ -93,10 +82,13 @@ public class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptions {
 
     /**
      * Initializes a CallMediaRecognizeDtmfOptions object.
+     *
      * @param targetParticipant Target participant of DTFM tone recognition.
+     * @param maxTonesToCollect Maximum number of DTMF tones to be collected.
      */
-    public CallMediaRecognizeDtmfOptions(CommunicationIdentifier targetParticipant) {
+    public CallMediaRecognizeDtmfOptions(CommunicationIdentifier targetParticipant, int maxTonesToCollect) {
         super(RecognizeInputType.DTMF, targetParticipant);
         this.interToneTimeout = Duration.ofSeconds(2);
+        this.maxTonesToCollect = maxTonesToCollect;
     }
 }
