@@ -114,8 +114,8 @@ public class CallMediaAsync {
      * @param recognizeOptions Different attributes for recognize.
      * @return Response for successful recognize request.
      */
-    public Mono<Void> recognize(CallMediaRecognizeOptions recognizeOptions) {
-        return recognizeWithResponse(recognizeOptions).then();
+    public Mono<Void> startRecognizing(CallMediaRecognizeOptions recognizeOptions) {
+        return startRecognizingWithResponse(recognizeOptions).then();
     }
 
     /**
@@ -123,7 +123,7 @@ public class CallMediaAsync {
      * @param recognizeOptions Different attributes for recognize.
      * @return Response for successful recognize request.
      */
-    public Mono<Response<Void>> recognizeWithResponse(CallMediaRecognizeOptions recognizeOptions) {
+    public Mono<Response<Void>> startRecognizingWithResponse(CallMediaRecognizeOptions recognizeOptions) {
         return withContext(context -> recognizeWithResponseInternal(recognizeOptions, context));
     }
 
