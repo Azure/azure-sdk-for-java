@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DynamicsServicePrincipalCredentialType. */
+/**
+ * The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for
+ * key/secret, 'ServicePrincipalCert' for certificate. Type: string (or Expression with resultType string).
+ */
 public final class DynamicsServicePrincipalCredentialType
         extends ExpandableStringEnum<DynamicsServicePrincipalCredentialType> {
     /** Static value ServicePrincipalKey for DynamicsServicePrincipalCredentialType. */
@@ -30,7 +33,11 @@ public final class DynamicsServicePrincipalCredentialType
         return fromString(name, DynamicsServicePrincipalCredentialType.class);
     }
 
-    /** @return known DynamicsServicePrincipalCredentialType values. */
+    /**
+     * Gets known DynamicsServicePrincipalCredentialType values.
+     *
+     * @return known DynamicsServicePrincipalCredentialType values.
+     */
     public static Collection<DynamicsServicePrincipalCredentialType> values() {
         return values(DynamicsServicePrincipalCredentialType.class);
     }
