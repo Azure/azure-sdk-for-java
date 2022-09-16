@@ -18,7 +18,7 @@ jobs:
         parameters:
           Paths:
             - 'sdk/spring'
-            - 'parents/azure-client-sdk-parent'
+            - 'sdk/parents/azure-client-sdk-parent'
             - 'sdk/boms/spring-cloud-azure-dependencies'
       - script: |
           pip install termcolor
