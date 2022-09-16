@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 import java.nio.ByteBuffer;
 
 /**
- * Default HTTP response for Vert.x HTTP client.
+ * Default HTTP response for Vert.x.
  */
 public class VertxHttpAsyncResponse extends VertxHttpResponseBase {
 

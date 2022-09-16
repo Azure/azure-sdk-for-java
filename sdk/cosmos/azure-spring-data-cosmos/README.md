@@ -99,7 +99,7 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-data-cosmos</artifactId>
-    <version>3.26.0</version>
+    <version>3.27.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -121,6 +121,8 @@ SLF4J is only needed if you plan to use logging, please also download an SLF4J b
 Set `queryMetricsEnabled` flag to true in application.properties to enable query metrics.
 In addition to setting the flag, implement `ResponseDiagnosticsProcessor` to log diagnostics information.
 Set `maxDegreeOfParallelism` flag to an integer in application.properties to allow parallel processing; setting the value to -1 will lead to the SDK deciding the optimal value.
+Set `maxBufferedItemCount` flag to an integer in application.properties to allow the user to set the max number of items that can be buffered during parallel query execution; if set to less than 0, the system automatically decides the number of items to buffer.
+NOTE: Setting this to a very high value can result in high memory consumption.
 
 ```java readme-sample-AppConfiguration
 @Configuration
@@ -146,6 +148,9 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
 
     @Value("${azure.cosmos.maxDegreeOfParallelism}")
     private int maxDegreeOfParallelism;
+    
+    @Value("${azure.cosmos.maxBufferedItemCount}")
+    private int maxBufferedItemCount;
 
     private AzureKeyCredential azureKeyCredential;
 
@@ -165,6 +170,7 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
         return CosmosConfig.builder()
                            .enableQueryMetrics(queryMetricsEnabled)
                            .maxDegreeOfParallelism(maxDegreeOfParallelism)
+                           .maxBufferedItemCount(maxBufferedItemCount)
                            .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
                            .build();
     }
@@ -207,6 +213,7 @@ public CosmosConfig cosmosConfig() {
     return CosmosConfig.builder()
                        .enableQueryMetrics(queryMetricsEnabled)
                        .maxDegreeOfParallelism(maxDegreeOfParallelism)
+                       .maxBufferedItemCount(maxBufferedItemCount)
                        .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
                        .build();
 }
@@ -684,6 +691,7 @@ public class SecondaryDatasourceConfiguration {
         return CosmosConfig.builder()
             .enableQueryMetrics(true)
             .maxDegreeOfParallelism(0)
+            .maxBufferedItemCount(0)
             .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
             .build();
     }
@@ -720,12 +728,13 @@ public CosmosConfig getCosmosConfig() {
     return CosmosConfig.builder()
         .enableQueryMetrics(true)
         .maxDegreeOfParallelism(0)
+        .maxBufferedItemCount(0)
         .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
         .build();
 }
 ```
 
-- Besides, if you want to define `queryMetricsEnabled`, `ResponseDiagnosticsProcessor` or `maxDegreeOfParallelism` , you can create the `CosmosConfig` for your cosmos template.
+- Besides, if you want to define `queryMetricsEnabled`, `ResponseDiagnosticsProcessor`, `maxDegreeOfParallelism` or `maxBufferedItemCount` , you can create the `CosmosConfig` for your cosmos template.
 
 ```java
 @Bean("secondaryCosmosConfig")
@@ -733,6 +742,7 @@ public CosmosConfig getCosmosConfig() {
     return CosmosConfig.builder()
         .enableQueryMetrics(true)
         .maxDegreeOfParallelism(0)
+        .maxBufferedItemCount(0)
         .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
         .build();
 }

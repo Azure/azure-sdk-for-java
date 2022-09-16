@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HttpAuthenticationType. */
+/** The authentication type to be used to connect to the HTTP server. */
 public final class HttpAuthenticationType extends ExpandableStringEnum<HttpAuthenticationType> {
     /** Static value Basic for HttpAuthenticationType. */
     public static final HttpAuthenticationType BASIC = fromString("Basic");

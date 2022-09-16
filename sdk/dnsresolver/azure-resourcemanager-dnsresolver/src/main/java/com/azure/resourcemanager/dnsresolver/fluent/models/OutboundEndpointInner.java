@@ -10,15 +10,12 @@ import com.azure.core.management.SubResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dnsresolver.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Describes an outbound endpoint for a DNS resolver. */
 @Fluent
 public final class OutboundEndpointInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OutboundEndpointInner.class);
-
     /*
      * ETag of the outbound endpoint.
      */
@@ -28,8 +25,8 @@ public final class OutboundEndpointInner extends Resource {
     /*
      * Properties of the outbound endpoint.
      */
-    @JsonProperty(value = "properties")
-    private OutboundEndpointProperties innerProperties;
+    @JsonProperty(value = "properties", required = true)
+    private OutboundEndpointProperties innerProperties = new OutboundEndpointProperties();
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
@@ -126,8 +123,15 @@ public final class OutboundEndpointInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model OutboundEndpointInner"));
+        } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OutboundEndpointInner.class);
 }

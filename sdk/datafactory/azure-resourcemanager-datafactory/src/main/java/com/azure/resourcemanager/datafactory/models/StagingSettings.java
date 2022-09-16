@@ -23,16 +23,14 @@ public final class StagingSettings {
     private LinkedServiceReference linkedServiceName;
 
     /*
-     * The path to storage for storing the interim data. Type: string (or
-     * Expression with resultType string).
+     * The path to storage for storing the interim data. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "path")
     private Object path;
 
     /*
-     * Specifies whether to use compression when copying data via an interim
-     * staging. Default value is false. Type: boolean (or Expression with
-     * resultType boolean).
+     * Specifies whether to use compression when copying data via an interim staging. Default value is false. Type:
+     * boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "enableCompression")
     private Object enableCompression;

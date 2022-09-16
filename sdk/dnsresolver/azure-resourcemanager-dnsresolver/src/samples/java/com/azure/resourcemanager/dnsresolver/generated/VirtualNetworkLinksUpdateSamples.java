@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for VirtualNetworkLinks Update. */
 public final class VirtualNetworkLinksUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/VirtualNetworkLink_Patch.json
+     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkLink_Patch.json
      */
     /**
      * Sample code: Update virtual network link to a DNS forwarding ruleset.

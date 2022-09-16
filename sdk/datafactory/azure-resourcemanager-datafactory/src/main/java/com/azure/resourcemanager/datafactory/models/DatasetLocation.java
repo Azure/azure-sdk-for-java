@@ -40,15 +40,13 @@ import java.util.Map;
 @Fluent
 public class DatasetLocation {
     /*
-     * Specify the folder path of dataset. Type: string (or Expression with
-     * resultType string)
+     * Specify the folder path of dataset. Type: string (or Expression with resultType string)
      */
     @JsonProperty(value = "folderPath")
     private Object folderPath;
 
     /*
-     * Specify the file name of dataset. Type: string (or Expression with
-     * resultType string).
+     * Specify the file name of dataset. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "fileName")
     private Object fileName;

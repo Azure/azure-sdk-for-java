@@ -18,12 +18,13 @@ import java.nio.charset.Charset;
  */
 abstract class OkHttpAsyncResponseBase extends HttpResponse {
     private final int statusCode;
-    private final HttpHeaders headers;
+    private Headers okhttpHeaders;
+    private HttpHeaders headers;
 
     OkHttpAsyncResponseBase(Response response, HttpRequest request) {
         super(request);
         this.statusCode = response.code();
-        this.headers = fromOkHttpHeaders(response.headers());
+        this.okhttpHeaders = response.headers();
     }
 
     @Override
@@ -33,11 +34,21 @@ abstract class OkHttpAsyncResponseBase extends HttpResponse {
 
     @Override
     public final String getHeaderValue(String name) {
+        if (this.headers == null) {
+            this.headers = fromOkHttpHeaders(okhttpHeaders);
+            this.okhttpHeaders = null;
+        }
+
         return this.headers.getValue(name);
     }
 
     @Override
     public final HttpHeaders getHeaders() {
+        if (this.headers == null) {
+            this.headers = fromOkHttpHeaders(okhttpHeaders);
+            this.okhttpHeaders = null;
+        }
+
         return this.headers;
     }
 
@@ -65,9 +76,14 @@ abstract class OkHttpAsyncResponseBase extends HttpResponse {
          * case-insensitive per their definition RFC but this could cause issues when/if the headers are used in
          * serialization or deserialization as casing may matter.
          */
-        HttpHeaders azureHeaders = new HttpHeaders();
+        HttpHeaders azureHeaders = new HttpHeaders((int) (okHttpHeaders.size() / 0.75F));
 
-        okHttpHeaders.names().forEach(name -> azureHeaders.set(name, okHttpHeaders.values(name)));
+        // Use OkHttp's Headers forEach instead of the previous names and values approach.
+        // forEach allows for a single iteration over the internal array of header values whereas names and values
+        // will iterate over the internal array of header values for each name. With the new approach use azure-core
+        // HttpHeaders add method.
+        // Overall, this is much better performing as almost all headers will have a single value.
+        okHttpHeaders.forEach(nameValuePair -> azureHeaders.add(nameValuePair.getFirst(), nameValuePair.getSecond()));
 
         return azureHeaders;
     }

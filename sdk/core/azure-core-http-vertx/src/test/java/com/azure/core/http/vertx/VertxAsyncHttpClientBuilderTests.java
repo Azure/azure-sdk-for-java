@@ -18,7 +18,6 @@ import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.http.impl.HttpClientImpl;
 import io.vertx.core.net.SocketAddress;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -255,7 +254,6 @@ public class VertxAsyncHttpClientBuilderTests {
         }
     }
 
-    @Disabled
     @Test
     public void buildWithCustomVertx() throws Exception {
         Vertx vertx = Vertx.vertx();

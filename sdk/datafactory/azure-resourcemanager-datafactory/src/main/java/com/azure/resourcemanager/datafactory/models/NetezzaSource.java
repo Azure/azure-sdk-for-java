@@ -15,15 +15,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class NetezzaSource extends TabularSource {
     /*
-     * A query to retrieve data from source. Type: string (or Expression with
-     * resultType string).
+     * A query to retrieve data from source. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "query")
     private Object query;
 
     /*
-     * The partition mechanism that will be used for Netezza read in parallel.
-     * Possible values include: "None", "DataSlice", "DynamicRange".
+     * The partition mechanism that will be used for Netezza read in parallel. Possible values include: "None",
+     * "DataSlice", "DynamicRange".
      */
     @JsonProperty(value = "partitionOption")
     private Object partitionOption;

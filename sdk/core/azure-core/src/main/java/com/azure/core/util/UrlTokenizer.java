@@ -31,20 +31,23 @@ class UrlTokenizer {
     }
 
     private void nextCharacter() {
-        nextCharacter(1);
-    }
-
-    private void nextCharacter(int step) {
         if (hasCurrentCharacter()) {
-            currentIndex += step;
+            currentIndex += 1;
         }
     }
 
     /*
      * Checks if the next range of characters matches the scheme-host separator (://)
      */
-    private boolean peekMatchesSchemeSeparator() {
-        return "://".regionMatches(0, text, currentIndex, 3);
+    private boolean peekMatchesSchemeSeparator(boolean step) {
+        if ("://".regionMatches(0, text, currentIndex, 3)) {
+            if (step) {
+                currentIndex += 3;
+            }
+            return true;
+        }
+
+        return false;
     }
 
     UrlToken current() {
@@ -55,6 +58,7 @@ class UrlTokenizer {
         if (!hasCurrentCharacter()) {
             currentToken = null;
         } else {
+            char c;
             switch (state) {
                 case SCHEME:
                     final String scheme = readUntilNotLetterOrDigit();
@@ -67,40 +71,46 @@ class UrlTokenizer {
                     break;
 
                 case SCHEME_OR_HOST:
-                    final String schemeOrHost = readUntilCharacter(':', '/', '?');
+                    final String schemeOrHost = readUntil(true);
                     if (!hasCurrentCharacter()) {
                         currentToken = UrlToken.host(schemeOrHost);
                         state = UrlTokenizerState.DONE;
-                    } else if (currentCharacter() == ':') {
-                        if (peekMatchesSchemeSeparator()) {
+                        break;
+                    }
+
+                    c = currentCharacter();
+                    if (c == ':') {
+                        if (peekMatchesSchemeSeparator(false)) {
                             currentToken = UrlToken.scheme(schemeOrHost);
                             state = UrlTokenizerState.HOST;
                         } else {
                             currentToken = UrlToken.host(schemeOrHost);
                             state = UrlTokenizerState.PORT;
                         }
-                    } else if (currentCharacter() == '/') {
+                    } else if (c == '/') {
                         currentToken = UrlToken.host(schemeOrHost);
                         state = UrlTokenizerState.PATH;
-                    } else if (currentCharacter() == '?') {
+                    } else if (c == '?') {
                         currentToken = UrlToken.host(schemeOrHost);
                         state = UrlTokenizerState.QUERY;
                     }
                     break;
 
                 case HOST:
-                    if (peekMatchesSchemeSeparator()) {
-                        nextCharacter(3);
-                    }
+                    peekMatchesSchemeSeparator(true);
 
-                    final String host = readUntilCharacter(':', '/', '?');
+                    final String host = readUntil(true);
                     currentToken = UrlToken.host(host);
 
                     if (!hasCurrentCharacter()) {
                         state = UrlTokenizerState.DONE;
-                    } else if (currentCharacter() == ':') {
+                        break;
+                    }
+
+                    c = currentCharacter();
+                    if (c == ':') {
                         state = UrlTokenizerState.PORT;
-                    } else if (currentCharacter() == '/') {
+                    } else if (c == '/') {
                         state = UrlTokenizerState.PATH;
                     } else {
                         state = UrlTokenizerState.QUERY;
@@ -108,16 +118,20 @@ class UrlTokenizer {
                     break;
 
                 case PORT:
-                    if (currentCharacter() == ':') {
+                    c = currentCharacter();
+                    if (c == ':') {
                         nextCharacter();
                     }
 
-                    final String port = readUntilCharacter('/', '?');
+                    final String port = readUntil(false);
                     currentToken = UrlToken.port(port);
 
                     if (!hasCurrentCharacter()) {
                         state = UrlTokenizerState.DONE;
-                    } else if (currentCharacter() == '/') {
+                        break;
+                    }
+
+                    if (currentCharacter() == '/') {
                         state = UrlTokenizerState.PATH;
                     } else {
                         state = UrlTokenizerState.QUERY;
@@ -125,7 +139,16 @@ class UrlTokenizer {
                     break;
 
                 case PATH:
-                    final String path = readUntilCharacter('?');
+                    int index = text.indexOf('?', currentIndex);
+                    String path;
+                    if (index == -1) {
+                        path = text.substring(currentIndex);
+                        currentIndex = textLength;
+                    } else {
+                        path = text.substring(currentIndex, index);
+                        currentIndex = index;
+                    }
+
                     currentToken = UrlToken.path(path);
 
                     if (!hasCurrentCharacter()) {
@@ -172,7 +195,7 @@ class UrlTokenizer {
         return text.substring(start);
     }
 
-    private String readUntilCharacter(char... terminatingCharacters) {
+    private String readUntil(boolean checkForColon) {
         if (!hasCurrentCharacter()) {
             return "";
         }
@@ -180,11 +203,9 @@ class UrlTokenizer {
         int start = currentIndex;
 
         while (hasCurrentCharacter()) {
-            char currentCharacter = currentCharacter();
-            for (char terminatingCharacter : terminatingCharacters) {
-                if (currentCharacter == terminatingCharacter) {
-                    return text.substring(start, currentIndex);
-                }
+            char c = currentCharacter();
+            if ((checkForColon && c == ':') || c == '/' || c == '?') {
+                return text.substring(start, currentIndex);
             }
 
             nextCharacter();

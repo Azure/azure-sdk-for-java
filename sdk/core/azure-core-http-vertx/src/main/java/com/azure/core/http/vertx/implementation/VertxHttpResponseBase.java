@@ -63,8 +63,8 @@ abstract class VertxHttpResponseBase extends HttpResponse {
      * @return Azure HTTP headers.
      */
     private HttpHeaders fromVertxHttpHeaders(MultiMap vertxHttpHeaders) {
-        HttpHeaders azureHttpHeaders = new HttpHeaders();
-        vertxHttpHeaders.names().forEach(name -> azureHttpHeaders.set(name, vertxHttpHeaders.getAll(name)));
-        return azureHttpHeaders;
+        HttpHeaders azureHeaders = new HttpHeaders(vertxHttpHeaders.size());
+        vertxHttpHeaders.forEach(azureHeaders::add);
+        return azureHeaders;
     }
 }

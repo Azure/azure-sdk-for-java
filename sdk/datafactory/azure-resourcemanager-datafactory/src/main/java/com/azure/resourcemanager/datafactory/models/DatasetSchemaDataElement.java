@@ -16,15 +16,13 @@ import java.util.Map;
 @Fluent
 public final class DatasetSchemaDataElement {
     /*
-     * Name of the schema column. Type: string (or Expression with resultType
-     * string).
+     * Name of the schema column. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "name")
     private Object name;
 
     /*
-     * Type of the schema column. Type: string (or Expression with resultType
-     * string).
+     * Type of the schema column. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "type")
     private Object type;

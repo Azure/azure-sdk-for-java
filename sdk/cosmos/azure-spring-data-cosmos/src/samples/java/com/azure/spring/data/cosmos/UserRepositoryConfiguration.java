@@ -47,6 +47,7 @@ public class UserRepositoryConfiguration extends AbstractCosmosConfiguration {
                            .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
                            .enableQueryMetrics(properties.isQueryMetricsEnabled())
                            .maxDegreeOfParallelism(properties.getMaxDegreeOfParallelism())
+                           .maxBufferedItemCount(properties.getMaxBufferedItemCount())
                            .build();
     }
 

@@ -11,15 +11,12 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dnsresolver.models.DnsResolverState;
 import com.azure.resourcemanager.dnsresolver.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Describes a DNS resolver. */
 @Fluent
 public final class DnsResolverInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DnsResolverInner.class);
-
     /*
      * ETag of the DNS resolver.
      */
@@ -29,8 +26,8 @@ public final class DnsResolverInner extends Resource {
     /*
      * Properties of the DNS resolver.
      */
-    @JsonProperty(value = "properties")
-    private DnsResolverProperties innerProperties;
+    @JsonProperty(value = "properties", required = true)
+    private DnsResolverProperties innerProperties = new DnsResolverProperties();
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
@@ -137,8 +134,15 @@ public final class DnsResolverInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model DnsResolverInner"));
+        } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DnsResolverInner.class);
 }

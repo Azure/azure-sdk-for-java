@@ -6,7 +6,7 @@ package com.azure.communication.callautomation;
 import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlaySource;
-import com.azure.communication.callautomation.models.RecognizeOptions;
+import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -87,23 +87,23 @@ public class CallMedia {
 
     /**
      * Recognize tones.
-     * @param recognizeOptions Optional elements for recognize.
+     * @param callMediaRecognizeOptions Optional elements for recognize.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void recognize(RecognizeOptions recognizeOptions) {
-        callMediaAsync.recognize(recognizeOptions).block();
+    public void startRecognizing(CallMediaRecognizeOptions callMediaRecognizeOptions) {
+        callMediaAsync.startRecognizing(callMediaRecognizeOptions).block();
     }
 
     /**
      * Recognize tones.
-     * @param recognizeOptions Optional elements for recognize.
+     * @param callMediaRecognizeOptions Optional elements for recognize.
      * @param context A {@link Context} representing the request context.
      * @return Response for a successful recognize request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> recognizeWithResponse(RecognizeOptions recognizeOptions, Context context) {
+    public Response<Void> startRecognizingWithResponse(CallMediaRecognizeOptions callMediaRecognizeOptions, Context context) {
         return callMediaAsync
-            .recognizeWithResponseInternal(recognizeOptions, context)
+            .recognizeWithResponseInternal(callMediaRecognizeOptions, context)
             .block();
     }
 

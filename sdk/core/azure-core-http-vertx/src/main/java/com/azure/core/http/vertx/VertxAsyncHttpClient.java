@@ -55,10 +55,7 @@ class VertxAsyncHttpClient implements HttpClient {
         boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
         return Mono.create(sink -> toVertxHttpRequest(request).subscribe(vertxHttpRequest -> {
-//            vertxHttpRequest.exceptionHandler(sink::error);
-
             HttpHeaders azureRequestHeaders = request.getHeaders();
-
             if (azureRequestHeaders != null) {
                 // Transfer Azure request headers to vertx
                 azureRequestHeaders.forEach(
@@ -73,7 +70,6 @@ class VertxAsyncHttpClient implements HttpClient {
             vertxHttpRequest.response(event -> {
                 if (event.succeeded()) {
                     HttpClientResponse vertxHttpResponse = event.result();
-//                    vertxHttpResponse.exceptionHandler(sink::error);
 
                     if (eagerlyReadResponse) {
                         vertxHttpResponse.body(bodyEvent -> {
@@ -101,7 +97,7 @@ class VertxAsyncHttpClient implements HttpClient {
     }
 
     private Mono<HttpClientRequest> toVertxHttpRequest(HttpRequest request) {
-        return Mono.fromCompletionStage(() ->
+        return Mono.fromCompletionStage(
             client.request(
                 new RequestOptions()
                     .setMethod(io.vertx.core.http.HttpMethod.valueOf(request.getHttpMethod().name()))
@@ -117,7 +113,6 @@ class VertxAsyncHttpClient implements HttpClient {
 
         if (progressReporter != null) {
             body = body.map(buffer -> {
-                //
                 progressReporter.reportProgress(buffer.remaining());
                 return buffer;
             });
