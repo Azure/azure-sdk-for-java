@@ -6,11 +6,10 @@ package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
-/** The CustomEntitiesResultDocumentsItem model. */
+/** The DocumentDetectedLanguage model. */
 @Fluent
-public final class CustomEntitiesResultDocumentsItem extends EntitiesDocumentResult {
+public class DocumentDetectedLanguage {
     /*
      * If 'language' is set to 'auto' for the document in the request this field will contain a 2 letter ISO 639-1
      * representation of the language detected for this document.
@@ -33,38 +32,10 @@ public final class CustomEntitiesResultDocumentsItem extends EntitiesDocumentRes
      * contain a 2 letter ISO 639-1 representation of the language detected for this document.
      *
      * @param detectedLanguage the detectedLanguage value to set.
-     * @return the CustomEntitiesResultDocumentsItem object itself.
+     * @return the DocumentDetectedLanguage object itself.
      */
-    public CustomEntitiesResultDocumentsItem setDetectedLanguage(DetectedLanguage detectedLanguage) {
+    public DocumentDetectedLanguage setDetectedLanguage(DetectedLanguage detectedLanguage) {
         this.detectedLanguage = detectedLanguage;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public CustomEntitiesResultDocumentsItem setEntities(List<EntityWithResolution> entities) {
-        super.setEntities(entities);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public CustomEntitiesResultDocumentsItem setId(String id) {
-        super.setId(id);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public CustomEntitiesResultDocumentsItem setWarnings(List<DocumentWarning> warnings) {
-        super.setWarnings(warnings);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public CustomEntitiesResultDocumentsItem setStatistics(DocumentStatistics statistics) {
-        super.setStatistics(statistics);
         return this;
     }
 }

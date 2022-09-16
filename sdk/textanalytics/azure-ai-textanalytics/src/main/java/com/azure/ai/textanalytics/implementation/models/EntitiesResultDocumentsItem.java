@@ -42,7 +42,7 @@ public final class EntitiesResultDocumentsItem extends EntitiesDocumentResult {
 
     /** {@inheritDoc} */
     @Override
-    public EntitiesResultDocumentsItem setEntities(List<Entity> entities) {
+    public EntitiesResultDocumentsItem setEntities(List<EntityWithResolution> entities) {
         super.setEntities(entities);
         return this;
     }

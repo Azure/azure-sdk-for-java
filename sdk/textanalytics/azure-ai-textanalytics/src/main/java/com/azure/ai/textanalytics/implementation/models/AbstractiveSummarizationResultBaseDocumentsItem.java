@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CustomEntitiesResultDocumentsItem model. */
+/** The AbstractiveSummarizationResultBaseDocumentsItem model. */
 @Fluent
-public final class CustomEntitiesResultDocumentsItem extends EntitiesDocumentResult {
+public final class AbstractiveSummarizationResultBaseDocumentsItem extends AbstractiveSummaryDocumentResult {
     /*
      * If 'language' is set to 'auto' for the document in the request this field will contain a 2 letter ISO 639-1
      * representation of the language detected for this document.
@@ -33,37 +33,37 @@ public final class CustomEntitiesResultDocumentsItem extends EntitiesDocumentRes
      * contain a 2 letter ISO 639-1 representation of the language detected for this document.
      *
      * @param detectedLanguage the detectedLanguage value to set.
-     * @return the CustomEntitiesResultDocumentsItem object itself.
+     * @return the AbstractiveSummarizationResultBaseDocumentsItem object itself.
      */
-    public CustomEntitiesResultDocumentsItem setDetectedLanguage(DetectedLanguage detectedLanguage) {
+    public AbstractiveSummarizationResultBaseDocumentsItem setDetectedLanguage(DetectedLanguage detectedLanguage) {
         this.detectedLanguage = detectedLanguage;
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public CustomEntitiesResultDocumentsItem setEntities(List<EntityWithResolution> entities) {
-        super.setEntities(entities);
+    public AbstractiveSummarizationResultBaseDocumentsItem setSummaries(List<AbstractiveSummary> summaries) {
+        super.setSummaries(summaries);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public CustomEntitiesResultDocumentsItem setId(String id) {
+    public AbstractiveSummarizationResultBaseDocumentsItem setId(String id) {
         super.setId(id);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public CustomEntitiesResultDocumentsItem setWarnings(List<DocumentWarning> warnings) {
+    public AbstractiveSummarizationResultBaseDocumentsItem setWarnings(List<DocumentWarning> warnings) {
         super.setWarnings(warnings);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public CustomEntitiesResultDocumentsItem setStatistics(DocumentStatistics statistics) {
+    public AbstractiveSummarizationResultBaseDocumentsItem setStatistics(DocumentStatistics statistics) {
         super.setStatistics(statistics);
         return this;
     }
