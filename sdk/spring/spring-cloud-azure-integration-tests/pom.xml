@@ -112,6 +112,8 @@
       <artifactId>spring-boot-starter-jdbc</artifactId>
       <scope>test</scope>
     </dependency>
+    <!-- `spring-boot-starter-jdbc` is imported, DataSourceAutoConfiguration will be enabled by default. -->
+    <!-- The h2 is used by DataSourceAutoConfiguration.  -->
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>

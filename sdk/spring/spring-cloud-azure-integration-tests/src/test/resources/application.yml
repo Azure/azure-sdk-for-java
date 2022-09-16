@@ -12,7 +12,7 @@ spring:
       profile:
         tenant-id: ${AZURE_SPRING_TENANT_ID}
   datasource:
-    url: jdbc:h2:mem:test
+    url: jdbc:h2:mem:test # used by DataSourceAutoConfiguration
 logging:
   level:
     com.azure:

@@ -17,14 +17,14 @@ import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("jdbc-mysql")
-public class PasswordlessMySQLIT {
+class PasswordlessMySQLIT {
     String VALUE = "information_schema,db,mysql,performance_schema,sys";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
     @Test
-    public void testJdbcQuery() {
+    void testJdbcQuery() {
         String query = "show databases";
         SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(query);
 
