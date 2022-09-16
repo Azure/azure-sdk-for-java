@@ -222,9 +222,9 @@ public class ModelHelper {
 
     public static List<HandleItem> transformHandleItems(List<com.azure.storage.file.share.implementation.models.HandleItem> handleItems) {
         List<HandleItem> result = new ArrayList<>();
-        for (var item : handleItems) {
+        handleItems.forEach(item -> {
             result.add(transformHandleItem(item));
-        }
+        });
         return result;
     }
 }
