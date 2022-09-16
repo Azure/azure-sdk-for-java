@@ -1,0 +1,31 @@
+parameters:
+  JdkVersion: $(JavaBuildVersion)
+
+steps:
+  # If the request JDK version is 8, 11, or 17 do nothing, these are already installed on the hosted agents.
+  - ${{ if not(in(parameters.JdkVersion, '1.17', '1.11', '1.8'}}:
+    # Check if the agent is using Windows, Windows uses '.zip' while Linux and macOS use 'tar.gz'
+    - ${{ if eq(variables['Agent.OS'], 'Windows_NT) }}:
+      - task: JavaToolInstaller@0
+        inputs:
+          versionSpec: '1.${{ parameters.JdkVersion }}'
+          jdkArchitectureOption: 'x64'
+          jdkSourceOption: AzureStorage
+#          azureResourceManagerEndpoint: myARMServiceConnection
+          azureStorageAccountName: azuresdkartifacts
+          azureContainerName: azure-sdk-for-java-jdk-storage
+          azureCommonVirtualFile: '$(Agent.OS)/${{ parameters.JdkVersion }}.zip'
+          jdkDestinationDirectory: '$(Agent.ToolsDirectory)/jdk${{ parameters.JdkVersion }}'
+          cleanDestinationDirectory: false
+    - $ {{ else }}:
+      - task: JavaToolInstaller@0
+        inputs:
+          versionSpec: '1.${{ parameters.JdkVersion }}'
+          jdkArchitectureOption: 'x64'
+          jdkSourceOption: AzureStorage
+#          azureResourceManagerEndpoint: myARMServiceConnection
+          azureStorageAccountName: azuresdkartifacts
+          azureContainerName: azure-sdk-for-java-jdk-storage
+          azureCommonVirtualFile: '$(Agent.OS)/${{ parameters.JdkVersion }}.tar.gz'
+          jdkDestinationDirectory: '$(Agent.ToolsDirectory)/jdk${{ parameters.JdkVersion }}'
+          cleanDestinationDirectory: false

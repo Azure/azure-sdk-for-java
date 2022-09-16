@@ -50,6 +50,16 @@
       "TestFromSource": false,
       "TestGoals": "surefire:test",
       "TestOptions": ""
+    },
+    {
+      "Agent": {
+        "ubuntu-20.04": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
+      },
+      "JavaTestVersion": "1.18",
+      "AZURE_TEST_HTTP_CLIENTS": "netty",
+      "TestFromSource": false,
+      "TestGoals": "surefire:test",
+      "TestOptions": ""
     }
   ]
 }
