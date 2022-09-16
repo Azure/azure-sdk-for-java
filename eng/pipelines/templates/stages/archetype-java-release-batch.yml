@@ -119,7 +119,6 @@ stages:
             - pwsh: |
                 $ArtifactsList = $('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId, uberJar | Where-Object -Not "uberJar")
                 $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
-                python --version
                 foreach($artifact in $ArtifactsList) {
                   $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 $($artifact.groupId) $($artifact.name) $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
                 }
