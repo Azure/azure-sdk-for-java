@@ -663,6 +663,35 @@ class BatchAPITest extends APISpec {
         versionedBlobServiceClient.deleteBlobContainer(containerName)
     }
 
+    def "Bulk delete versioned blobs"() {
+        setup:
+        batchClient = new BlobBatchClientBuilder(versionedBlobServiceClient).buildClient()
+        def containerName = generateContainerName()
+        def containerClient = versionedBlobServiceClient.createBlobContainer(containerName)
+        def blobClient = containerClient.getBlobClient(generateBlobName())
+        def inputV1 = new ByteArrayInputStream("contentV1".getBytes(StandardCharsets.UTF_8))
+        def inputV2 = new ByteArrayInputStream("contentV2".getBytes(StandardCharsets.UTF_8))
+        def blobItemV1 = blobClient.getBlockBlobClient().upload(inputV1, inputV1.available())
+        blobClient.getBlockBlobClient().upload(inputV2, inputV2.available(), true)
+
+        def blobUrls = new ArrayList<String>()
+        blobUrls.add(blobClient.getVersionClient(blobItemV1.getVersionId()).getBlobUrl())
+
+        when:
+        def responses = batchClient.deleteBlobs(blobUrls, DeleteSnapshotsOptionType.INCLUDE)
+
+        then:
+        def responseList = responses.stream().collect(Collectors.toList())
+        assert responseList.size() == 1
+        for (def response : responseList) {
+            assert response.getStatusCode() == 202
+        }
+        !blobClient.exists()
+
+        cleanup:
+        versionedBlobServiceClient.deleteBlobContainer(containerName)
+    }
+
     def "Too many operations fails"() {
         setup:
         def containerName = generateContainerName()
