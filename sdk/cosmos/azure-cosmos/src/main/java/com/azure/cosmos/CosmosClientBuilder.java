@@ -9,32 +9,27 @@ import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.implementation.ApiType;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
-import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.routing.LocationHelper;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.util.Beta;
 import io.micrometer.core.instrument.MeterRegistry;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 import static com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper;
 
@@ -782,7 +777,7 @@ public class CosmosClientBuilder implements
      * Returns the client telemetry config instance for this builder
      * @return the client telemetry config instance for this builder
      */
-    @Beta(value = Beta.SinceVersion.V4_35_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_36_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosClientTelemetryConfig clientTelemetryConfig() {
         return ImplementationBridgeHelpers
             .CosmosClientTelemetryConfigHelper

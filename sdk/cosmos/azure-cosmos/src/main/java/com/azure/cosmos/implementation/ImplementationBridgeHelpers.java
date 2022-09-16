@@ -1060,7 +1060,7 @@ public class ImplementationBridgeHelpers {
             if (!accessor.compareAndSet(null, newAccessor)) {
                 logger.debug("CosmosExceptionAccessor already initialized!");
             } else {
-                logger.info("Setting CosmosExceptionAccessor...");
+                logger.debug("Setting CosmosExceptionAccessor...");
                 cosmosExceptionClassLoaded.set(true);
             }
         }
@@ -1099,7 +1099,7 @@ public class ImplementationBridgeHelpers {
             if (!accessor.compareAndSet(null, newAccessor)) {
                 logger.debug("CosmosClientTelemetryConfigAccessor already initialized!");
             } else {
-                logger.info("Setting CosmosClientTelemetryConfigAccessor...");
+                logger.debug("Setting CosmosClientTelemetryConfigAccessor...");
                 cosmosClientTelemetryClassLoaded.set(true);
             }
         }

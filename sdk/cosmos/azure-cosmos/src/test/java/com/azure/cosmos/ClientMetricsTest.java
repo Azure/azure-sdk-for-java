@@ -84,7 +84,7 @@ public class ClientMetricsTest extends BatchTestBase {
         this.meterRegistry = null;
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT, singleThreaded = true)
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createItem() throws Exception {
         this.beforeTest();
         try {
@@ -112,7 +112,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT, singleThreaded = true)
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readItem() throws Exception {
         this.beforeTest();
         try {
@@ -144,7 +144,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT, singleThreaded = true)
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void replaceItem() throws Exception {
         this.beforeTest();
         try {
@@ -178,7 +178,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT, singleThreaded = true)
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void deleteItem() throws Exception {
         this.beforeTest();
         try {
@@ -206,7 +206,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT, singleThreaded = true)
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readAllItems() throws Exception {
         this.beforeTest();
         try {
@@ -238,7 +238,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT, singleThreaded = true)
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryItems() throws Exception {
         this.beforeTest();
         try {
