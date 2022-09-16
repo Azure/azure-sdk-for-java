@@ -13,10 +13,6 @@
 - Added Dataworld, AppFigures, Asana, Twilio connectors
 - Added Fail Activity
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 
 #### Dependency Updates
