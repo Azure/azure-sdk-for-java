@@ -18,10 +18,12 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
+import com.azure.messaging.eventhubs.implementation.EventHubsMetricsProvider;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
@@ -198,6 +200,8 @@ public class EventHubProducerAsyncClient implements Closeable {
     private final Runnable onClientClose;
     private final String identifier;
 
+    private final EventHubsMetricsProvider metricsProvider;
+
     /**
      * Creates a new instance of this {@link EventHubProducerAsyncClient} that can send messages to a single partition
      * when {@link CreateBatchOptions#getPartitionId()} is not null or an empty string. Otherwise, allows the service to
@@ -206,7 +210,7 @@ public class EventHubProducerAsyncClient implements Closeable {
     EventHubProducerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
         EventHubConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions, TracerProvider tracerProvider,
         MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose,
-        String identifier) {
+        String identifier, Meter meter) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
@@ -221,6 +225,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         this.scheduler = scheduler;
         this.isSharedConnection = isSharedConnection;
         this.identifier = identifier;
+        this.metricsProvider = new EventHubsMetricsProvider(meter, fullyQualifiedNamespace, eventHubName, null);
     }
 
     /**
@@ -317,7 +322,9 @@ public class EventHubProducerAsyncClient implements Closeable {
                 MAX_PARTITION_KEY_LENGTH)));
         }
 
-        return getSendLink(partitionId)
+        final String entityPath = getEntityPath(partitionId);
+
+        return getSendLink(entityPath)
             .flatMap(link -> link.getLinkSize()
                 .flatMap(size -> {
                     final int maximumLinkSize = size > 0
@@ -574,7 +581,8 @@ public class EventHubProducerAsyncClient implements Closeable {
             parentContext.set(tracerProvider.startSpan(AZ_TRACING_SERVICE_NAME, sharedContext, ProcessKind.SEND));
         }
 
-        final Mono<Void> sendMessage = getSendLink(batch.getPartitionId())
+        final String entityPath = getEntityPath(batch.getPartitionId());
+        final Mono<Void> sendMessage = getSendLink(entityPath)
             .flatMap(link -> messages.size() == 1
                 ? link.send(messages.get(0))
                 : link.send(messages));
@@ -583,9 +591,11 @@ public class EventHubProducerAsyncClient implements Closeable {
             String.format("partitionId[%s]: Sending messages timed out.", batch.getPartitionId()))
             .publishOn(scheduler)
             .doOnEach(signal -> {
+                Context context = isTracingEnabled ? parentContext.get() : Context.NONE;
                 if (isTracingEnabled) {
-                    tracerProvider.endSpan(parentContext.get(), signal);
+                    tracerProvider.endSpan(context, signal);
                 }
+                metricsProvider.reportBatchSend(batch, batch.getPartitionId(), signal.getThrowable(), context);
             });
     }
 
@@ -601,7 +611,8 @@ public class EventHubProducerAsyncClient implements Closeable {
                 partitionKey, partitionId)));
         }
 
-        return getSendLink(options.getPartitionId())
+        final String entityPath = getEntityPath(options.getPartitionId());
+        return getSendLink(entityPath)
             .flatMap(link -> link.getLinkSize()
                 .flatMap(size -> {
                     final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
@@ -630,9 +641,8 @@ public class EventHubProducerAsyncClient implements Closeable {
             : String.format(Locale.US, SENDER_ENTITY_PATH_FORMAT, eventHubName, partitionId);
     }
 
-    private Mono<AmqpSendLink> getSendLink(String partitionId) {
-        final String entityPath = getEntityPath(partitionId);
-        final String linkName = getEntityPath(partitionId);
+    private Mono<AmqpSendLink> getSendLink(String entityPath) {
+        final String linkName = entityPath;
 
         return connectionProcessor
             .flatMap(connection -> connection.createSendLink(linkName, entityPath, retryOptions, identifier));
