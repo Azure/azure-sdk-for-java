@@ -23,9 +23,7 @@ public class JacksonJsonWriter extends JsonWriter {
 
 
     //method handles
-    private static MethodHandle constructorGen;
     private static MethodHandle constructorFactory;
-    private static MethodHandle constructorFactoryStream;
     private final MethodHandle flush;
     private final MethodHandle close;
     private static  MethodHandle createGenerator = null;
@@ -37,7 +35,6 @@ public class JacksonJsonWriter extends JsonWriter {
     private final MethodHandle writeNull;
     private final MethodHandle writeBinary;
     private final MethodHandle writeBoolean;
-    private final MethodHandle writeNumber;
     private final MethodHandle writeDouble;
     private final MethodHandle writeFloat;
     private final MethodHandle writeInt;
@@ -45,7 +42,6 @@ public class JacksonJsonWriter extends JsonWriter {
     private final MethodHandle writeString;
     private final MethodHandle writeRawValue;
 
-    private JsonToken currentToken;
     public static JsonWriter toStream(OutputStream stream) {
         try {
             return new JacksonJsonWriter(new OutputStreamWriter(stream));
@@ -75,7 +71,6 @@ public class JacksonJsonWriter extends JsonWriter {
             writeNull = publicLookup.findVirtual(jacksonGeneratorClass, "writeNull", MethodType.methodType(void.class));
             writeBinary = publicLookup.findVirtual(jacksonGeneratorClass, "writeBinary", methodType(void.class, byte[].class));
             writeBoolean = publicLookup.findVirtual(jacksonGeneratorClass, "writeBoolean", MethodType.methodType(void.class,boolean.class));
-            writeNumber = publicLookup.findVirtual(jacksonGeneratorClass, "writeNumber", MethodType.methodType(void.class,double.class));
             writeDouble = publicLookup.findVirtual(jacksonGeneratorClass, "writeNumber", MethodType.methodType(void.class,double.class));
             writeFloat = publicLookup.findVirtual(jacksonGeneratorClass, "writeNumber", MethodType.methodType(void.class,float.class));
             writeInt = publicLookup.findVirtual(jacksonGeneratorClass, "writeNumber", MethodType.methodType(void.class,int.class));
