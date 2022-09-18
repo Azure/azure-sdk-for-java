@@ -140,6 +140,13 @@ def get_dependency_management_content():
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <!-- A compilation issue has been resolved since the 1.10.0-M6 version, 
+           review whether it's required when the minimum Spring Boot version 3.0.0-M4.  -->
+      <dependency>
+        <groupId>io.micrometer</groupId>
+        <artifactId>micrometer-core</artifactId>
+        <version>1.10.0-M6</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   
@@ -159,7 +166,6 @@ def get_properties_contend(spring_boot_dependencies_version, spring_cloud_depend
     return """
     <spring.boot.version>{}</spring.boot.version>
     <spring.cloud.version>{}</spring.cloud.version>
-    <micrometer.version>1.10.0-M6</micrometer.version>
   """.format(spring_boot_dependencies_version, spring_cloud_dependencies_version)
 
 
