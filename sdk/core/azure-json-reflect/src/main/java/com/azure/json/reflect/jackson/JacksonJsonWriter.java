@@ -22,11 +22,8 @@ public class JacksonJsonWriter extends JsonWriter {
     static Object FACTORY;
 
 
-    //method handles
-    private static MethodHandle constructorFactory;
     private final MethodHandle flush;
     private final MethodHandle close;
-    private static  MethodHandle createGenerator = null;
     private final MethodHandle writeStartObject;
     private final MethodHandle writeEndObject;
     private final MethodHandle writeStartArray;
@@ -56,8 +53,9 @@ public class JacksonJsonWriter extends JsonWriter {
             Class<?> jacksonGeneratorClass = Class.forName("com.fasterxml.jackson.core.JsonGenerator");
             Class<?> factoryClass = Class.forName("com.fasterxml.jackson.core.JsonFactory");
 
-            constructorFactory = publicLookup.findConstructor(factoryClass, methodType(void.class));
-            createGenerator = publicLookup.findVirtual(factoryClass, "createGenerator", methodType(jacksonGeneratorClass, Writer.class));
+            //method handles
+            MethodHandle constructorFactory = publicLookup.findConstructor(factoryClass, methodType(void.class));
+            MethodHandle createGenerator = publicLookup.findVirtual(factoryClass, "createGenerator", methodType(jacksonGeneratorClass, Writer.class));
             FACTORY = constructorFactory.invoke();
             generator = createGenerator.invoke(FACTORY,gen);
 
