@@ -117,6 +117,12 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
       <version>4.35.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <exclusions>
+        <exclusion>
+          <groupId>io.micrometer</groupId>
+          <artifactId>micrometer-core</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
