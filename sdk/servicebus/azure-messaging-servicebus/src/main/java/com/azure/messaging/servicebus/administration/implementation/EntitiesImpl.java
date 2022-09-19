@@ -60,10 +60,33 @@ public final class EntitiesImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Get("/{entityName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
+        Response<Object> getSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("entityName") String entityName,
+                @QueryParam("enrich") Boolean enrich,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Put("/{entityName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
         Mono<Response<Object>> put(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("entityName") String entityName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("If-Match") String ifMatch,
+                @BodyParam("application/atom+xml") Object requestBody,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/{entityName}")
+        @ExpectedResponses({200, 201})
+        @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
+        Response<Object> putSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("entityName") String entityName,
                 @QueryParam("api-version") String apiVersion,
@@ -81,6 +104,43 @@ public final class EntitiesImpl {
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 Context context);
+
+        @Delete("/{entityName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
+        Response<Object> deleteSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("entityName") String entityName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
+    }
+
+    /**
+     * Get Queue or Topic
+     *
+     * <p>Get the details about the Queue or Topic with the given entityName.
+     *
+     * @param entityName The name of the queue or topic relative to the Service Bus namespace.
+     * @param enrich A query parameter that sets enrich to true or false.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details about the Queue or Topic with the given entityName along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Object>> getWithResponseAsync(String entityName, Boolean enrich) {
+        final String accept = "application/xml, application/atom+xml";
+        return FluxUtil.withContext(
+                context ->
+                        service.get(
+                                this.client.getEndpoint(),
+                                entityName,
+                                enrich,
+                                this.client.getApiVersion(),
+                                accept,
+                                context));
     }
 
     /**
@@ -101,6 +161,144 @@ public final class EntitiesImpl {
     public Mono<Response<Object>> getWithResponseAsync(String entityName, Boolean enrich, Context context) {
         final String accept = "application/xml, application/atom+xml";
         return service.get(this.client.getEndpoint(), entityName, enrich, this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Get Queue or Topic
+     *
+     * <p>Get the details about the Queue or Topic with the given entityName.
+     *
+     * @param entityName The name of the queue or topic relative to the Service Bus namespace.
+     * @param enrich A query parameter that sets enrich to true or false.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details about the Queue or Topic with the given entityName on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Object> getAsync(String entityName, Boolean enrich) {
+        return getWithResponseAsync(entityName, enrich).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get Queue or Topic
+     *
+     * <p>Get the details about the Queue or Topic with the given entityName.
+     *
+     * @param entityName The name of the queue or topic relative to the Service Bus namespace.
+     * @param enrich A query parameter that sets enrich to true or false.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details about the Queue or Topic with the given entityName on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Object> getAsync(String entityName, Boolean enrich, Context context) {
+        return getWithResponseAsync(entityName, enrich, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get Queue or Topic
+     *
+     * <p>Get the details about the Queue or Topic with the given entityName.
+     *
+     * @param entityName The name of the queue or topic relative to the Service Bus namespace.
+     * @param enrich A query parameter that sets enrich to true or false.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details about the Queue or Topic with the given entityName along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Object> getSyncWithResponse(String entityName, Boolean enrich) {
+        final String accept = "application/xml, application/atom+xml";
+        return service.getSync(
+                this.client.getEndpoint(), entityName, enrich, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Get Queue or Topic
+     *
+     * <p>Get the details about the Queue or Topic with the given entityName.
+     *
+     * @param entityName The name of the queue or topic relative to the Service Bus namespace.
+     * @param enrich A query parameter that sets enrich to true or false.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details about the Queue or Topic with the given entityName along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Object> getSyncWithResponse(String entityName, Boolean enrich, Context context) {
+        final String accept = "application/xml, application/atom+xml";
+        return service.getSync(
+                this.client.getEndpoint(), entityName, enrich, this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Get Queue or Topic
+     *
+     * <p>Get the details about the Queue or Topic with the given entityName.
+     *
+     * @param entityName The name of the queue or topic relative to the Service Bus namespace.
+     * @param enrich A query parameter that sets enrich to true or false.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details about the Queue or Topic with the given entityName.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Object getSync(String entityName, Boolean enrich) {
+        return getSyncWithResponse(entityName, enrich, Context.NONE).getValue();
+    }
+
+    /**
+     * Get Queue or Topic
+     *
+     * <p>Get the details about the Queue or Topic with the given entityName.
+     *
+     * @param entityName The name of the queue or topic relative to the Service Bus namespace.
+     * @param enrich A query parameter that sets enrich to true or false.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details about the Queue or Topic with the given entityName.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Object getSync(String entityName, Boolean enrich, Context context) {
+        return getSyncWithResponse(entityName, enrich, context).getValue();
+    }
+
+    /**
+     * Create or update a queue or topic at the provided entityName.
+     *
+     * @param entityName The name of the queue or topic relative to the Service Bus namespace.
+     * @param requestBody Parameters required to make or edit a queue or topic.
+     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
+     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
+     *     an insert will be performed when no existing entity is found to update and a replace will be performed if an
+     *     existing entity is found.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Object>> putWithResponseAsync(String entityName, Object requestBody, String ifMatch) {
+        final String accept = "application/xml, application/atom+xml";
+        return FluxUtil.withContext(
+                context ->
+                        service.put(
+                                this.client.getEndpoint(),
+                                entityName,
+                                this.client.getApiVersion(),
+                                ifMatch,
+                                requestBody,
+                                accept,
+                                context));
     }
 
     /**
@@ -133,6 +331,161 @@ public final class EntitiesImpl {
     }
 
     /**
+     * Create or update a queue or topic at the provided entityName.
+     *
+     * @param entityName The name of the queue or topic relative to the Service Bus namespace.
+     * @param requestBody Parameters required to make or edit a queue or topic.
+     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
+     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
+     *     an insert will be performed when no existing entity is found to update and a replace will be performed if an
+     *     existing entity is found.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Object> putAsync(String entityName, Object requestBody, String ifMatch) {
+        return putWithResponseAsync(entityName, requestBody, ifMatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Create or update a queue or topic at the provided entityName.
+     *
+     * @param entityName The name of the queue or topic relative to the Service Bus namespace.
+     * @param requestBody Parameters required to make or edit a queue or topic.
+     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
+     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
+     *     an insert will be performed when no existing entity is found to update and a replace will be performed if an
+     *     existing entity is found.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Object> putAsync(String entityName, Object requestBody, String ifMatch, Context context) {
+        return putWithResponseAsync(entityName, requestBody, ifMatch, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Create or update a queue or topic at the provided entityName.
+     *
+     * @param entityName The name of the queue or topic relative to the Service Bus namespace.
+     * @param requestBody Parameters required to make or edit a queue or topic.
+     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
+     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
+     *     an insert will be performed when no existing entity is found to update and a replace will be performed if an
+     *     existing entity is found.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Object> putSyncWithResponse(String entityName, Object requestBody, String ifMatch) {
+        final String accept = "application/xml, application/atom+xml";
+        return service.putSync(
+                this.client.getEndpoint(),
+                entityName,
+                this.client.getApiVersion(),
+                ifMatch,
+                requestBody,
+                accept,
+                Context.NONE);
+    }
+
+    /**
+     * Create or update a queue or topic at the provided entityName.
+     *
+     * @param entityName The name of the queue or topic relative to the Service Bus namespace.
+     * @param requestBody Parameters required to make or edit a queue or topic.
+     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
+     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
+     *     an insert will be performed when no existing entity is found to update and a replace will be performed if an
+     *     existing entity is found.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Object> putSyncWithResponse(
+            String entityName, Object requestBody, String ifMatch, Context context) {
+        final String accept = "application/xml, application/atom+xml";
+        return service.putSync(
+                this.client.getEndpoint(),
+                entityName,
+                this.client.getApiVersion(),
+                ifMatch,
+                requestBody,
+                accept,
+                context);
+    }
+
+    /**
+     * Create or update a queue or topic at the provided entityName.
+     *
+     * @param entityName The name of the queue or topic relative to the Service Bus namespace.
+     * @param requestBody Parameters required to make or edit a queue or topic.
+     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
+     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
+     *     an insert will be performed when no existing entity is found to update and a replace will be performed if an
+     *     existing entity is found.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Object putSync(String entityName, Object requestBody, String ifMatch) {
+        return putSyncWithResponse(entityName, requestBody, ifMatch, Context.NONE).getValue();
+    }
+
+    /**
+     * Create or update a queue or topic at the provided entityName.
+     *
+     * @param entityName The name of the queue or topic relative to the Service Bus namespace.
+     * @param requestBody Parameters required to make or edit a queue or topic.
+     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
+     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
+     *     an insert will be performed when no existing entity is found to update and a replace will be performed if an
+     *     existing entity is found.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Object putSync(String entityName, Object requestBody, String ifMatch, Context context) {
+        return putSyncWithResponse(entityName, requestBody, ifMatch, context).getValue();
+    }
+
+    /**
+     * Delete Queue or Topic
+     *
+     * <p>Delete the Queue or Topic with the given entityName.
+     *
+     * @param entityName The name of the queue or topic relative to the Service Bus namespace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Object>> deleteWithResponseAsync(String entityName) {
+        final String accept = "application/xml, application/atom+xml";
+        return FluxUtil.withContext(
+                context ->
+                        service.delete(
+                                this.client.getEndpoint(), entityName, this.client.getApiVersion(), accept, context));
+    }
+
+    /**
      * Delete Queue or Topic
      *
      * <p>Delete the Queue or Topic with the given entityName.
@@ -148,5 +501,107 @@ public final class EntitiesImpl {
     public Mono<Response<Object>> deleteWithResponseAsync(String entityName, Context context) {
         final String accept = "application/xml, application/atom+xml";
         return service.delete(this.client.getEndpoint(), entityName, this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Delete Queue or Topic
+     *
+     * <p>Delete the Queue or Topic with the given entityName.
+     *
+     * @param entityName The name of the queue or topic relative to the Service Bus namespace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Object> deleteAsync(String entityName) {
+        return deleteWithResponseAsync(entityName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Delete Queue or Topic
+     *
+     * <p>Delete the Queue or Topic with the given entityName.
+     *
+     * @param entityName The name of the queue or topic relative to the Service Bus namespace.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Object> deleteAsync(String entityName, Context context) {
+        return deleteWithResponseAsync(entityName, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Delete Queue or Topic
+     *
+     * <p>Delete the Queue or Topic with the given entityName.
+     *
+     * @param entityName The name of the queue or topic relative to the Service Bus namespace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Object> deleteSyncWithResponse(String entityName) {
+        final String accept = "application/xml, application/atom+xml";
+        return service.deleteSync(
+                this.client.getEndpoint(), entityName, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Delete Queue or Topic
+     *
+     * <p>Delete the Queue or Topic with the given entityName.
+     *
+     * @param entityName The name of the queue or topic relative to the Service Bus namespace.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Object> deleteSyncWithResponse(String entityName, Context context) {
+        final String accept = "application/xml, application/atom+xml";
+        return service.deleteSync(this.client.getEndpoint(), entityName, this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Delete Queue or Topic
+     *
+     * <p>Delete the Queue or Topic with the given entityName.
+     *
+     * @param entityName The name of the queue or topic relative to the Service Bus namespace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Object deleteSync(String entityName) {
+        return deleteSyncWithResponse(entityName, Context.NONE).getValue();
+    }
+
+    /**
+     * Delete Queue or Topic
+     *
+     * <p>Delete the Queue or Topic with the given entityName.
+     *
+     * @param entityName The name of the queue or topic relative to the Service Bus namespace.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Object deleteSync(String entityName, Context context) {
+        return deleteSyncWithResponse(entityName, context).getValue();
     }
 }

@@ -42,4 +42,5 @@ custom-types: AccessRights,EntityStatus,NamespaceProperties,MessagingSku
 custom-types-subpackage: models
 context-client-method-parameter: true
 enable-xml: true
+enable-sync-stack: true
 ```

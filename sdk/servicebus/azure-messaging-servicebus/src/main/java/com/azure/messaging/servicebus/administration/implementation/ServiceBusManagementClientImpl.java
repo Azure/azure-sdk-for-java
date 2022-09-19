@@ -198,10 +198,35 @@ public final class ServiceBusManagementClientImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Get("/{topicName}/subscriptions")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
+        Response<Object> listSubscriptionsSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("topicName") String topicName,
+                @QueryParam("$skip") Integer skip,
+                @QueryParam("$top") Integer top,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Get("/{topicName}/subscriptions/{subscriptionName}/rules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
         Mono<Response<Object>> listRules(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("topicName") String topicName,
+                @PathParam("subscriptionName") String subscriptionName,
+                @QueryParam("$skip") Integer skip,
+                @QueryParam("$top") Integer top,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/{topicName}/subscriptions/{subscriptionName}/rules")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
+        Response<Object> listRulesSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("topicName") String topicName,
                 @PathParam("subscriptionName") String subscriptionName,
@@ -222,6 +247,41 @@ public final class ServiceBusManagementClientImpl {
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 Context context);
+
+        @Get("/$Resources/{entityType}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
+        Response<Object> listEntitiesSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("entityType") String entityType,
+                @QueryParam("$skip") Integer skip,
+                @QueryParam("$top") Integer top,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
+    }
+
+    /**
+     * Get subscriptions
+     *
+     * <p>Get the details about the subscriptions of the given topic.
+     *
+     * @param topicName name of the topic.
+     * @param skip The skip parameter.
+     * @param top The top parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details about the subscriptions of the given topic along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Object>> listSubscriptionsWithResponseAsync(String topicName, Integer skip, Integer top) {
+        final String accept = "application/xml, application/atom+xml";
+        return FluxUtil.withContext(
+                context ->
+                        service.listSubscriptions(
+                                this.getEndpoint(), topicName, skip, top, this.getApiVersion(), accept, context));
     }
 
     /**
@@ -245,6 +305,156 @@ public final class ServiceBusManagementClientImpl {
         final String accept = "application/xml, application/atom+xml";
         return service.listSubscriptions(
                 this.getEndpoint(), topicName, skip, top, this.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Get subscriptions
+     *
+     * <p>Get the details about the subscriptions of the given topic.
+     *
+     * @param topicName name of the topic.
+     * @param skip The skip parameter.
+     * @param top The top parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details about the subscriptions of the given topic on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Object> listSubscriptionsAsync(String topicName, Integer skip, Integer top) {
+        return listSubscriptionsWithResponseAsync(topicName, skip, top)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get subscriptions
+     *
+     * <p>Get the details about the subscriptions of the given topic.
+     *
+     * @param topicName name of the topic.
+     * @param skip The skip parameter.
+     * @param top The top parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details about the subscriptions of the given topic on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Object> listSubscriptionsAsync(String topicName, Integer skip, Integer top, Context context) {
+        return listSubscriptionsWithResponseAsync(topicName, skip, top, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get subscriptions
+     *
+     * <p>Get the details about the subscriptions of the given topic.
+     *
+     * @param topicName name of the topic.
+     * @param skip The skip parameter.
+     * @param top The top parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details about the subscriptions of the given topic along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Object> listSubscriptionsSyncWithResponse(String topicName, Integer skip, Integer top) {
+        final String accept = "application/xml, application/atom+xml";
+        return service.listSubscriptionsSync(
+                this.getEndpoint(), topicName, skip, top, this.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Get subscriptions
+     *
+     * <p>Get the details about the subscriptions of the given topic.
+     *
+     * @param topicName name of the topic.
+     * @param skip The skip parameter.
+     * @param top The top parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details about the subscriptions of the given topic along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Object> listSubscriptionsSyncWithResponse(
+            String topicName, Integer skip, Integer top, Context context) {
+        final String accept = "application/xml, application/atom+xml";
+        return service.listSubscriptionsSync(
+                this.getEndpoint(), topicName, skip, top, this.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Get subscriptions
+     *
+     * <p>Get the details about the subscriptions of the given topic.
+     *
+     * @param topicName name of the topic.
+     * @param skip The skip parameter.
+     * @param top The top parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details about the subscriptions of the given topic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Object listSubscriptionsSync(String topicName, Integer skip, Integer top) {
+        return listSubscriptionsSyncWithResponse(topicName, skip, top, Context.NONE).getValue();
+    }
+
+    /**
+     * Get subscriptions
+     *
+     * <p>Get the details about the subscriptions of the given topic.
+     *
+     * @param topicName name of the topic.
+     * @param skip The skip parameter.
+     * @param top The top parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details about the subscriptions of the given topic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Object listSubscriptionsSync(String topicName, Integer skip, Integer top, Context context) {
+        return listSubscriptionsSyncWithResponse(topicName, skip, top, context).getValue();
+    }
+
+    /**
+     * Get rules of a topic subscription
+     *
+     * <p>Get the details about the rules of the given topic subscription.
+     *
+     * @param topicName name of the topic.
+     * @param subscriptionName name of the subscription.
+     * @param skip The skip parameter.
+     * @param top The top parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details about the rules of the given topic subscription along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Object>> listRulesWithResponseAsync(
+            String topicName, String subscriptionName, Integer skip, Integer top) {
+        final String accept = "application/xml, application/atom+xml";
+        return FluxUtil.withContext(
+                context ->
+                        service.listRules(
+                                this.getEndpoint(),
+                                topicName,
+                                subscriptionName,
+                                skip,
+                                top,
+                                this.getApiVersion(),
+                                accept,
+                                context));
     }
 
     /**
@@ -272,6 +482,155 @@ public final class ServiceBusManagementClientImpl {
     }
 
     /**
+     * Get rules of a topic subscription
+     *
+     * <p>Get the details about the rules of the given topic subscription.
+     *
+     * @param topicName name of the topic.
+     * @param subscriptionName name of the subscription.
+     * @param skip The skip parameter.
+     * @param top The top parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details about the rules of the given topic subscription on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Object> listRulesAsync(String topicName, String subscriptionName, Integer skip, Integer top) {
+        return listRulesWithResponseAsync(topicName, subscriptionName, skip, top)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get rules of a topic subscription
+     *
+     * <p>Get the details about the rules of the given topic subscription.
+     *
+     * @param topicName name of the topic.
+     * @param subscriptionName name of the subscription.
+     * @param skip The skip parameter.
+     * @param top The top parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details about the rules of the given topic subscription on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Object> listRulesAsync(
+            String topicName, String subscriptionName, Integer skip, Integer top, Context context) {
+        return listRulesWithResponseAsync(topicName, subscriptionName, skip, top, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get rules of a topic subscription
+     *
+     * <p>Get the details about the rules of the given topic subscription.
+     *
+     * @param topicName name of the topic.
+     * @param subscriptionName name of the subscription.
+     * @param skip The skip parameter.
+     * @param top The top parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details about the rules of the given topic subscription along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Object> listRulesSyncWithResponse(
+            String topicName, String subscriptionName, Integer skip, Integer top) {
+        final String accept = "application/xml, application/atom+xml";
+        return service.listRulesSync(
+                this.getEndpoint(), topicName, subscriptionName, skip, top, this.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Get rules of a topic subscription
+     *
+     * <p>Get the details about the rules of the given topic subscription.
+     *
+     * @param topicName name of the topic.
+     * @param subscriptionName name of the subscription.
+     * @param skip The skip parameter.
+     * @param top The top parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details about the rules of the given topic subscription along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Object> listRulesSyncWithResponse(
+            String topicName, String subscriptionName, Integer skip, Integer top, Context context) {
+        final String accept = "application/xml, application/atom+xml";
+        return service.listRulesSync(
+                this.getEndpoint(), topicName, subscriptionName, skip, top, this.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Get rules of a topic subscription
+     *
+     * <p>Get the details about the rules of the given topic subscription.
+     *
+     * @param topicName name of the topic.
+     * @param subscriptionName name of the subscription.
+     * @param skip The skip parameter.
+     * @param top The top parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details about the rules of the given topic subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Object listRulesSync(String topicName, String subscriptionName, Integer skip, Integer top) {
+        return listRulesSyncWithResponse(topicName, subscriptionName, skip, top, Context.NONE).getValue();
+    }
+
+    /**
+     * Get rules of a topic subscription
+     *
+     * <p>Get the details about the rules of the given topic subscription.
+     *
+     * @param topicName name of the topic.
+     * @param subscriptionName name of the subscription.
+     * @param skip The skip parameter.
+     * @param top The top parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details about the rules of the given topic subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Object listRulesSync(String topicName, String subscriptionName, Integer skip, Integer top, Context context) {
+        return listRulesSyncWithResponse(topicName, subscriptionName, skip, top, context).getValue();
+    }
+
+    /**
+     * Get Queues or topics
+     *
+     * <p>Get the details about the entities of the given Service Bus namespace.
+     *
+     * @param entityType List all queues or all topics of the service bus. Value can be "queues" or "topics".
+     * @param skip The skip parameter.
+     * @param top The top parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details about the entities of the given Service Bus namespace along with {@link Response} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Object>> listEntitiesWithResponseAsync(String entityType, Integer skip, Integer top) {
+        final String accept = "application/xml, application/atom+xml";
+        return FluxUtil.withContext(
+                context ->
+                        service.listEntities(
+                                this.getEndpoint(), entityType, skip, top, this.getApiVersion(), accept, context));
+    }
+
+    /**
      * Get Queues or topics
      *
      * <p>Get the details about the entities of the given Service Bus namespace.
@@ -291,5 +650,124 @@ public final class ServiceBusManagementClientImpl {
             String entityType, Integer skip, Integer top, Context context) {
         final String accept = "application/xml, application/atom+xml";
         return service.listEntities(this.getEndpoint(), entityType, skip, top, this.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Get Queues or topics
+     *
+     * <p>Get the details about the entities of the given Service Bus namespace.
+     *
+     * @param entityType List all queues or all topics of the service bus. Value can be "queues" or "topics".
+     * @param skip The skip parameter.
+     * @param top The top parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details about the entities of the given Service Bus namespace on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Object> listEntitiesAsync(String entityType, Integer skip, Integer top) {
+        return listEntitiesWithResponseAsync(entityType, skip, top).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get Queues or topics
+     *
+     * <p>Get the details about the entities of the given Service Bus namespace.
+     *
+     * @param entityType List all queues or all topics of the service bus. Value can be "queues" or "topics".
+     * @param skip The skip parameter.
+     * @param top The top parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details about the entities of the given Service Bus namespace on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Object> listEntitiesAsync(String entityType, Integer skip, Integer top, Context context) {
+        return listEntitiesWithResponseAsync(entityType, skip, top, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get Queues or topics
+     *
+     * <p>Get the details about the entities of the given Service Bus namespace.
+     *
+     * @param entityType List all queues or all topics of the service bus. Value can be "queues" or "topics".
+     * @param skip The skip parameter.
+     * @param top The top parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details about the entities of the given Service Bus namespace along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Object> listEntitiesSyncWithResponse(String entityType, Integer skip, Integer top) {
+        final String accept = "application/xml, application/atom+xml";
+        return service.listEntitiesSync(
+                this.getEndpoint(), entityType, skip, top, this.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Get Queues or topics
+     *
+     * <p>Get the details about the entities of the given Service Bus namespace.
+     *
+     * @param entityType List all queues or all topics of the service bus. Value can be "queues" or "topics".
+     * @param skip The skip parameter.
+     * @param top The top parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details about the entities of the given Service Bus namespace along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Object> listEntitiesSyncWithResponse(
+            String entityType, Integer skip, Integer top, Context context) {
+        final String accept = "application/xml, application/atom+xml";
+        return service.listEntitiesSync(
+                this.getEndpoint(), entityType, skip, top, this.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Get Queues or topics
+     *
+     * <p>Get the details about the entities of the given Service Bus namespace.
+     *
+     * @param entityType List all queues or all topics of the service bus. Value can be "queues" or "topics".
+     * @param skip The skip parameter.
+     * @param top The top parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details about the entities of the given Service Bus namespace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Object listEntitiesSync(String entityType, Integer skip, Integer top) {
+        return listEntitiesSyncWithResponse(entityType, skip, top, Context.NONE).getValue();
+    }
+
+    /**
+     * Get Queues or topics
+     *
+     * <p>Get the details about the entities of the given Service Bus namespace.
+     *
+     * @param entityType List all queues or all topics of the service bus. Value can be "queues" or "topics".
+     * @param skip The skip parameter.
+     * @param top The top parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details about the entities of the given Service Bus namespace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Object listEntitiesSync(String entityType, Integer skip, Integer top, Context context) {
+        return listEntitiesSyncWithResponse(entityType, skip, top, context).getValue();
     }
 }
