@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.17 (Unreleased)
+## 1.0.0-beta.18 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,36 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.17 (2022-09-13)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.SynapseNotebookReference` was added
+
+* `models.SynapseSparkJobReference` was added
+
+* `models.AzureSynapseArtifactsLinkedService` was added
+
+* `models.SynapseNotebookActivity` was added
+
+* `models.BigDataPoolReferenceType` was added
+
+* `models.BigDataPoolParametrizationReference` was added
+
+* `models.SparkJobReferenceType` was added
+
+* `models.SynapseSparkJobDefinitionActivity` was added
+
+* `models.GoogleSheetsLinkedService` was added
+
+* `models.NotebookParameterType` was added
+
+* `models.NotebookParameter` was added
+
+* `models.NotebookReferenceType` was added
 
 ## 1.0.0-beta.16 (2022-06-20)
 

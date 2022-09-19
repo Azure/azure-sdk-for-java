@@ -13,31 +13,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SapBWLinkedServiceTypeProperties {
     /*
-     * Host name of the SAP BW instance. Type: string (or Expression with
-     * resultType string).
+     * Host name of the SAP BW instance. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "server", required = true)
     private Object server;
 
     /*
-     * System number of the BW system. (Usually a two-digit decimal number
-     * represented as a string.) Type: string (or Expression with resultType
-     * string).
+     * System number of the BW system. (Usually a two-digit decimal number represented as a string.) Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "systemNumber", required = true)
     private Object systemNumber;
 
     /*
-     * Client ID of the client on the BW system. (Usually a three-digit decimal
-     * number represented as a string) Type: string (or Expression with
-     * resultType string).
+     * Client ID of the client on the BW system. (Usually a three-digit decimal number represented as a string) Type:
+     * string (or Expression with resultType string).
      */
     @JsonProperty(value = "clientId", required = true)
     private Object clientId;
 
     /*
-     * Username to access the SAP BW server. Type: string (or Expression with
-     * resultType string).
+     * Username to access the SAP BW server. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "userName")
     private Object username;
@@ -49,9 +45,8 @@ public final class SapBWLinkedServiceTypeProperties {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;

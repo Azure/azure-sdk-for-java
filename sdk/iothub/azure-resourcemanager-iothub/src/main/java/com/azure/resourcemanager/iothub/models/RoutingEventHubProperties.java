@@ -6,14 +6,11 @@ package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties related to an event hub endpoint. */
 @Fluent
 public final class RoutingEventHubProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoutingEventHubProperties.class);
-
     /*
      * Id of the event hub endpoint
      */
@@ -51,11 +48,9 @@ public final class RoutingEventHubProperties {
     private ManagedIdentity identity;
 
     /*
-     * The name that identifies this endpoint. The name can only include
-     * alphanumeric characters, periods, underscores, hyphens and has a maximum
-     * length of 64 characters. The following names are reserved:  events,
-     * fileNotifications, $default. Endpoint names must be unique across
-     * endpoint types.
+     * The name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores,
+     * hyphens and has a maximum length of 64 characters. The following names are reserved:  events, fileNotifications,
+     * $default. Endpoint names must be unique across endpoint types.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -266,9 +261,11 @@ public final class RoutingEventHubProperties {
             identity().validate();
         }
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model RoutingEventHubProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RoutingEventHubProperties.class);
 }

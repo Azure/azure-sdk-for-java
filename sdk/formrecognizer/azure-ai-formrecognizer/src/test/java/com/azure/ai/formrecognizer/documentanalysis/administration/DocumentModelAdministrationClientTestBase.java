@@ -6,9 +6,9 @@ package com.azure.ai.formrecognizer.documentanalysis.administration;
 
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion;
 import com.azure.ai.formrecognizer.documentanalysis.TestUtils;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelCopyAuthorization;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.Constants;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisAudience;
 import com.azure.core.credential.AzureKeyCredential;
@@ -91,7 +91,7 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestBase
         }
     }
 
-    static void validateCopyAuthorizationResult(CopyAuthorization actualResult) {
+    static void validateCopyAuthorizationResult(DocumentModelCopyAuthorization actualResult) {
         assertNotNull(actualResult.getTargetModelId());
         assertNotNull(actualResult.getExpiresOn());
         assertNotNull(actualResult.getTargetResourceRegion());
@@ -100,8 +100,8 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestBase
     }
 
     static void validateResourceInfo(ResourceDetails actualResourceDetails) {
-        assertNotNull(actualResourceDetails.getDocumentModelLimit());
-        assertNotNull(actualResourceDetails.getDocumentModelCount());
+        assertNotNull(actualResourceDetails.getCustomDocumentModelLimit());
+        assertNotNull(actualResourceDetails.getCustomDocumentModelCount());
     }
 
     void validateDocumentModelData(DocumentModelDetails actualCustomModel) {

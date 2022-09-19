@@ -7,8 +7,9 @@ import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient;
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientBuilder;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentTable;
+import com.azure.ai.formrecognizer.documentanalysis.models.Point;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollerFlux;
@@ -21,10 +22,11 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * Async sample to analyze a custom document with a custom-built model. To learn how to build your own models,
- * look at BuildModelAsync.java and BuildModel.java.
+ * look at BuildDocumentModelAsync.java and BuildDocumentModel.java.
  */
 public class AnalyzeCustomDocumentAsync {
 
@@ -46,11 +48,11 @@ public class AnalyzeCustomDocumentAsync {
             + "sample-forms/forms/Invoice_6.pdf");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         String modelId = "{modelId}";
-        PollerFlux<DocumentOperationResult, AnalyzeResult> analyzeDocumentPoller;
+        PollerFlux<OperationResult, AnalyzeResult> analyzeDocumentPoller;
         try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
             analyzeDocumentPoller = client.beginAnalyzeDocument(modelId,
-                BinaryData.fromStream(targetStream),
-                sourceFile.length());
+                BinaryData.fromStream(targetStream)
+            );
         }
 
         Mono<AnalyzeResult> analyzeDocumentResult = analyzeDocumentPoller
@@ -82,7 +84,7 @@ public class AnalyzeCustomDocumentAsync {
                 documentPage.getLines().forEach(documentLine ->
                     System.out.printf("Line '%s' is within a bounding box %s.%n",
                         documentLine.getContent(),
-                        documentLine.getBoundingPolygon().toString()));
+                        getBoundingCoordinates(documentLine.getBoundingPolygon())));
 
                 // words
                 documentPage.getWords().forEach(documentWord ->
@@ -114,5 +116,13 @@ public class AnalyzeCustomDocumentAsync {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Utility function to get the bounding polygon coordinates.
+     */
+    private static String getBoundingCoordinates(List<Point> boundingPolygon) {
+        return boundingPolygon.stream().map(point -> String.format("[%.2f, %.2f]", point.getX(),
+            point.getY())).collect(Collectors.joining(", "));
     }
 }

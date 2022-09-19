@@ -17,7 +17,9 @@ import com.azure.resourcemanager.netapp.fluent.models.VolumeGroupInner;
 /** An instance of this class provides access to all the operations defined in VolumeGroupsClient. */
 public interface VolumeGroupsClient {
     /**
-     * List all volume groups for given account.
+     * Describe all volume groups
+     *
+     * <p>List all volume groups for given account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -30,7 +32,9 @@ public interface VolumeGroupsClient {
     PagedIterable<VolumeGroupInner> listByNetAppAccount(String resourceGroupName, String accountName);
 
     /**
-     * List all volume groups for given account.
+     * Describe all volume groups
+     *
+     * <p>List all volume groups for given account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -44,7 +48,9 @@ public interface VolumeGroupsClient {
     PagedIterable<VolumeGroupInner> listByNetAppAccount(String resourceGroupName, String accountName, Context context);
 
     /**
-     * Get details of the specified volume group.
+     * Describe a Volume Group
+     *
+     * <p>Get details of the specified volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -58,7 +64,9 @@ public interface VolumeGroupsClient {
     VolumeGroupDetailsInner get(String resourceGroupName, String accountName, String volumeGroupName);
 
     /**
-     * Get details of the specified volume group.
+     * Describe a Volume Group
+     *
+     * <p>Get details of the specified volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -74,7 +82,11 @@ public interface VolumeGroupsClient {
         String resourceGroupName, String accountName, String volumeGroupName, Context context);
 
     /**
-     * Create a volume group along with specified volumes.
+     * Create the specified volume group and volumes. Creating volume group will create all the volumes specified in
+     * request body implicitly. Once volumes are created using volume group, those will be treated as regular volumes
+     * thereafter.
+     *
+     * <p>Create a volume group along with specified volumes.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -90,7 +102,11 @@ public interface VolumeGroupsClient {
         String resourceGroupName, String accountName, String volumeGroupName, VolumeGroupDetailsInner body);
 
     /**
-     * Create a volume group along with specified volumes.
+     * Create the specified volume group and volumes. Creating volume group will create all the volumes specified in
+     * request body implicitly. Once volumes are created using volume group, those will be treated as regular volumes
+     * thereafter.
+     *
+     * <p>Create a volume group along with specified volumes.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -111,7 +127,11 @@ public interface VolumeGroupsClient {
         Context context);
 
     /**
-     * Create a volume group along with specified volumes.
+     * Create the specified volume group and volumes. Creating volume group will create all the volumes specified in
+     * request body implicitly. Once volumes are created using volume group, those will be treated as regular volumes
+     * thereafter.
+     *
+     * <p>Create a volume group along with specified volumes.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -127,7 +147,11 @@ public interface VolumeGroupsClient {
         String resourceGroupName, String accountName, String volumeGroupName, VolumeGroupDetailsInner body);
 
     /**
-     * Create a volume group along with specified volumes.
+     * Create the specified volume group and volumes. Creating volume group will create all the volumes specified in
+     * request body implicitly. Once volumes are created using volume group, those will be treated as regular volumes
+     * thereafter.
+     *
+     * <p>Create a volume group along with specified volumes.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -148,7 +172,9 @@ public interface VolumeGroupsClient {
         Context context);
 
     /**
-     * Delete the specified volume group only if there are no volumes under volume group.
+     * Delete a volume group
+     *
+     * <p>Delete the specified volume group only if there are no volumes under volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -163,7 +189,9 @@ public interface VolumeGroupsClient {
         String resourceGroupName, String accountName, String volumeGroupName);
 
     /**
-     * Delete the specified volume group only if there are no volumes under volume group.
+     * Delete a volume group
+     *
+     * <p>Delete the specified volume group only if there are no volumes under volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -179,7 +207,9 @@ public interface VolumeGroupsClient {
         String resourceGroupName, String accountName, String volumeGroupName, Context context);
 
     /**
-     * Delete the specified volume group only if there are no volumes under volume group.
+     * Delete a volume group
+     *
+     * <p>Delete the specified volume group only if there are no volumes under volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -192,7 +222,9 @@ public interface VolumeGroupsClient {
     void delete(String resourceGroupName, String accountName, String volumeGroupName);
 
     /**
-     * Delete the specified volume group only if there are no volumes under volume group.
+     * Delete a volume group
+     *
+     * <p>Delete the specified volume group only if there are no volumes under volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.

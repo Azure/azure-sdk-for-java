@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Public representation of one of the locations where a resource is provisioned. */
 @Fluent
 public final class IotHubLocationDescription {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IotHubLocationDescription.class);
-
     /*
      * The name of the Azure region
      */
@@ -21,10 +17,9 @@ public final class IotHubLocationDescription {
     private String location;
 
     /*
-     * The role of the region, can be either primary or secondary. The primary
-     * region is where the IoT hub is currently provisioned. The secondary
-     * region is the Azure disaster recovery (DR) paired region and also the
-     * region where the IoT hub can failover to.
+     * The role of the region, can be either primary or secondary. The primary region is where the IoT hub is currently
+     * provisioned. The secondary region is the Azure disaster recovery (DR) paired region and also the region where
+     * the IoT hub can failover to.
      */
     @JsonProperty(value = "role")
     private IotHubReplicaRoleType role;

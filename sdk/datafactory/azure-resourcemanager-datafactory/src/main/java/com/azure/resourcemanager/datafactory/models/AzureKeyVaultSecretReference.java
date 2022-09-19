@@ -22,16 +22,14 @@ public final class AzureKeyVaultSecretReference extends SecretBase {
     private LinkedServiceReference store;
 
     /*
-     * The name of the secret in Azure Key Vault. Type: string (or Expression
-     * with resultType string).
+     * The name of the secret in Azure Key Vault. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "secretName", required = true)
     private Object secretName;
 
     /*
-     * The version of the secret in Azure Key Vault. The default value is the
-     * latest version of the secret. Type: string (or Expression with
-     * resultType string).
+     * The version of the secret in Azure Key Vault. The default value is the latest version of the secret. Type:
+     * string (or Expression with resultType string).
      */
     @JsonProperty(value = "secretVersion")
     private Object secretVersion;

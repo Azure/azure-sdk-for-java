@@ -20,30 +20,26 @@ public final class ExcelDatasetTypeProperties {
     private DatasetLocation location;
 
     /*
-     * The sheet name of excel file. Type: string (or Expression with
-     * resultType string).
+     * The sheet name of excel file. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "sheetName")
     private Object sheetName;
 
     /*
-     * The sheet index of excel file and default value is 0. Type: integer (or
-     * Expression with resultType integer)
+     * The sheet index of excel file and default value is 0. Type: integer (or Expression with resultType integer)
      */
     @JsonProperty(value = "sheetIndex")
     private Object sheetIndex;
 
     /*
-     * The partial data of one sheet. Type: string (or Expression with
-     * resultType string).
+     * The partial data of one sheet. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "range")
     private Object range;
 
     /*
-     * When used as input, treat the first row of data as headers. When used as
-     * output,write the headers into the output as the first row of data. The
-     * default value is false. Type: boolean (or Expression with resultType
+     * When used as input, treat the first row of data as headers. When used as output,write the headers into the
+     * output as the first row of data. The default value is false. Type: boolean (or Expression with resultType
      * boolean).
      */
     @JsonProperty(value = "firstRowAsHeader")
@@ -56,8 +52,7 @@ public final class ExcelDatasetTypeProperties {
     private DatasetCompression compression;
 
     /*
-     * The null value string. Type: string (or Expression with resultType
-     * string).
+     * The null value string. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "nullValue")
     private Object nullValue;

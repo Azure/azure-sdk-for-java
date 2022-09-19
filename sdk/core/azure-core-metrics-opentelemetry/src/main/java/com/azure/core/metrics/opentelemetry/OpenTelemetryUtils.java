@@ -30,8 +30,16 @@ class OpenTelemetryUtils {
             attributesBuilder.put(AttributeKey.stringKey(key), (String) value);
         } else if (value instanceof Double) {
             attributesBuilder.put(AttributeKey.doubleKey(key), (Double) value);
+        } else if (value instanceof Float) {
+            attributesBuilder.put(AttributeKey.doubleKey(key), ((Float) value).doubleValue());
         } else if (value instanceof Long) {
             attributesBuilder.put(AttributeKey.longKey(key), (Long) value);
+        } else if (value instanceof Integer) {
+            attributesBuilder.put(AttributeKey.longKey(key), (Integer) value);
+        } else if (value instanceof Short) {
+            attributesBuilder.put(AttributeKey.longKey(key), (Short) value);
+        } else if (value instanceof Byte) {
+            attributesBuilder.put(AttributeKey.longKey(key), (Byte) value);
         } else {
             LOGGER.warning("Could not populate attribute with key '{}', type {} is not supported.", key, value.getClass().getName());
         }

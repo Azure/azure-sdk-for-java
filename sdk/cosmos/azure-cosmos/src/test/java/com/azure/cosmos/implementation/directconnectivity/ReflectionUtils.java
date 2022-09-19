@@ -23,6 +23,7 @@ import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
+import com.azure.cosmos.implementation.caches.AsyncCacheNonBlocking;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
@@ -48,6 +49,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.Duration;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -319,7 +321,17 @@ public class ReflectionUtils {
     }
 
     @SuppressWarnings("unchecked")
+    public static AsyncCacheNonBlocking<String, CollectionRoutingMap> getRoutingMapAsyncCacheNonBlocking(RxPartitionKeyRangeCache partitionKeyRangeCache) {
+        return get(AsyncCacheNonBlocking.class, partitionKeyRangeCache, "routingMapCache");
+    }
+
+    @SuppressWarnings("unchecked")
     public static <T> ConcurrentHashMap<String, ?> getValueMap(AsyncCache<String, T> asyncCache) {
+        return get(ConcurrentHashMap.class, asyncCache, "values");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> ConcurrentHashMap<String, ?> getValueMapNonBlockingCache(AsyncCacheNonBlocking<String, T> asyncCache) {
         return get(ConcurrentHashMap.class, asyncCache, "values");
     }
 
@@ -379,5 +391,15 @@ public class ReflectionUtils {
 
     public static void setClientTelemetryMetadataHttpClient(ClientTelemetry clientTelemetry, HttpClient HttpClient) {
         set(clientTelemetry, HttpClient, "metadataHttpClient");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static AtomicReference<Uri.HealthStatus> getHealthStatus(Uri uri) {
+        return get(AtomicReference.class, uri, "healthStatus");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Set<Uri.HealthStatus> getReplicaValidationScopes(GatewayAddressCache gatewayAddressCache) {
+        return get(Set.class, gatewayAddressCache, "replicaValidationScopes");
     }
 }

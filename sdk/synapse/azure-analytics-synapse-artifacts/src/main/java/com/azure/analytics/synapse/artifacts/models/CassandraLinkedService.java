@@ -19,29 +19,25 @@ import java.util.Map;
 @Fluent
 public class CassandraLinkedService extends LinkedService {
     /*
-     * Host name for connection. Type: string (or Expression with resultType
-     * string).
+     * Host name for connection. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.host", required = true)
     private Object host;
 
     /*
-     * AuthenticationType to be used for connection. Type: string (or
-     * Expression with resultType string).
+     * AuthenticationType to be used for connection. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.authenticationType")
     private Object authenticationType;
 
     /*
-     * The port for the connection. Type: integer (or Expression with
-     * resultType integer).
+     * The port for the connection. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "typeProperties.port")
     private Object port;
 
     /*
-     * Username for authentication. Type: string (or Expression with resultType
-     * string).
+     * Username for authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.username")
     private Object username;
@@ -53,9 +49,8 @@ public class CassandraLinkedService extends LinkedService {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;

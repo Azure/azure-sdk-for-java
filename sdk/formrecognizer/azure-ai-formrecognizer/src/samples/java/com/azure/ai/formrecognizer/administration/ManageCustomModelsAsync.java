@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.formrecognizer.documentanalysis.administration;
+package com.azure.ai.formrecognizer.administration;
 
+import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient;
+import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.concurrent.TimeUnit;
@@ -12,7 +14,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Async sample for demonstrating to perform common custom document analysis model management operations on your Form
  * Recognizer resource.
- * To learn how to build your own models, look at BuildModelAsync.java and BuildModel.java.
+ * To learn how to build your own models, look at BuildDocumentModelAsync.java and BuildDocumentModel.java.
  */
 public class ManageCustomModelsAsync {
 
@@ -33,16 +35,16 @@ public class ManageCustomModelsAsync {
         // First, we see how many models we have, and what our limit is
         client.getResourceDetails().subscribe(resourceInfo ->
             System.out.printf("The resource has %s  models, and we can have at most %s models.%n",
-                resourceInfo.getDocumentModelCount(), resourceInfo.getDocumentModelLimit()));
+                resourceInfo.getCustomDocumentModelCount(), resourceInfo.getCustomDocumentModelLimit()));
         // Next, we get a paged list of all of our models
         System.out.println("We have following models in the account:");
-        client.listModels().subscribe(documentModelInfo -> {
+        client.listDocumentModels().subscribe(documentModelInfo -> {
             String createdModelId = documentModelInfo.getModelId();
             System.out.printf("Model ID: %s%n", createdModelId);
 
             // get custom document analysis model info
             modelId.set(createdModelId);
-            client.getModel(documentModelInfo.getModelId()).subscribe(documentModel -> {
+            client.getDocumentModel(documentModelInfo.getModelId()).subscribe(documentModel -> {
                 System.out.printf("Model ID: %s%n", documentModel.getModelId());
                 System.out.printf("Model Description: %s%n", documentModel.getDescription());
                 System.out.printf("Model created on: %s%n", documentModel.getCreatedOn());
@@ -57,7 +59,7 @@ public class ManageCustomModelsAsync {
         });
 
         // Delete Custom Model
-        client.deleteModel(modelId.get());
+        client.deleteDocumentModel(modelId.get());
         System.out.printf("Deleted model with model ID: %s%n", modelId.get());
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep

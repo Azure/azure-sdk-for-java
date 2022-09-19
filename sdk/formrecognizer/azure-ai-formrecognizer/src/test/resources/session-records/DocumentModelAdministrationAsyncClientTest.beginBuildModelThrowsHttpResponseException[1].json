@@ -1,41 +1,41 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels:build?api-version=2022-06-30-preview",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels:build?api-version=2022-08-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.5 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "3f3ba9cb-beb5-4f09-8ebf-23f582d70695",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "e4e9380e-26de-4913-a5cd-5fb906c9803a",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "0",
-      "x-envoy-upstream-service-time" : "3202",
+      "x-envoy-upstream-service-time" : "2442",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "operation-location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/operations/31512255896_366ea593-c836-4a2b-879a-3ef36aeea1b5?api-version=2022-06-30-preview",
+      "operation-location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/operations/31505419047_1b5260e6-3771-4123-80c6-081a3cfb0e3a?api-version=2022-08-31",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "366ea593-c836-4a2b-879a-3ef36aeea1b5",
+      "apim-request-id" : "1b5260e6-3771-4123-80c6-081a3cfb0e3a",
       "retry-after" : "0",
       "StatusCode" : "202",
-      "Date" : "Wed, 01 Jun 2022 19:35:06 GMT"
+      "Date" : "Fri, 19 Aug 2022 22:42:35 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/operations/31512255896_366ea593-c836-4a2b-879a-3ef36aeea1b5?api-version=2022-06-30-preview",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/operations/31505419047_1b5260e6-3771-4123-80c6-081a3cfb0e3a?api-version=2022-08-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.5 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "4d7f0a5a-d8d2-4b7f-8f08-56098d31c17f"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "7c79aba2-733d-4848-b75d-2b8644d54b63"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "23",
+      "x-envoy-upstream-service-time" : "21",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "0b83f292-0092-43f1-9961-3e69dda32493",
+      "apim-request-id" : "e6a56729-e8de-4a95-bf6e-3464291c3cf9",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\n  \"operationId\": \"31512255896_366ea593-c836-4a2b-879a-3ef36aeea1b5\",\n  \"kind\": \"documentModelBuild\",\n  \"status\": \"failed\",\n  \"createdDateTime\": \"2022-06-01T19:35:04Z\",\n  \"lastUpdatedDateTime\": \"2022-06-01T19:35:08Z\",\n  \"resourceLocation\": \"https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/89727aa4-0dd5-496e-a8f1-c238559d8d36?api-version=2022-06-30-preview\",\n  \"percentCompleted\": 100,\n  \"error\": {\n    \"code\": \"InvalidRequest\",\n    \"message\": \"Invalid request.\",\n    \"details\": [\n      {\n        \"code\": \"ModelBuildError\",\n        \"message\": \"Could not build the model: Can\\u0027t find any OCR files for training.\"\n      }\n    ]\n  }\n}",
-      "Date" : "Wed, 01 Jun 2022 19:35:11 GMT",
+      "Body" : "{\n  \"operationId\": \"31505419047_1b5260e6-3771-4123-80c6-081a3cfb0e3a\",\n  \"kind\": \"documentModelBuild\",\n  \"status\": \"failed\",\n  \"createdDateTime\": \"2022-08-19T22:42:32Z\",\n  \"lastUpdatedDateTime\": \"2022-08-19T22:42:35Z\",\n  \"resourceLocation\": \"https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/dc36c443-aa98-40dc-8514-8a126f60beea?api-version=2022-08-31\",\n  \"percentCompleted\": 100,\n  \"error\": {\n    \"code\": \"InvalidRequest\",\n    \"message\": \"Invalid request.\",\n    \"details\": [\n      {\n        \"code\": \"ModelBuildError\",\n        \"message\": \"Could not build the model: Can\\u0027t find any OCR files for training.\"\n      }\n    ]\n  }\n}",
+      "Date" : "Fri, 19 Aug 2022 22:42:40 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

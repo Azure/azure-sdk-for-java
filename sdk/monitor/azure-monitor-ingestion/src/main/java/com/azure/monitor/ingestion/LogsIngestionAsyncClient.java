@@ -6,8 +6,13 @@ package com.azure.monitor.ingestion;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.models.ResponseError;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -44,6 +49,16 @@ import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * The asynchronous client for uploading logs to Azure Monitor.
+ *
+ * <p><strong>Instantiating an asynchronous Logs ingestion client</strong></p>
+ * <!-- src_embed com.azure.monitor.ingestion.LogsIngestionAsyncClient.instantiation -->
+ * <pre>
+ * LogsIngestionAsyncClient logsIngestionAsyncClient = new LogsIngestionClientBuilder&#40;&#41;
+ *         .credential&#40;tokenCredential&#41;
+ *         .endpoint&#40;&quot;&lt;data-collection-endpoint&gt;&quot;&#41;
+ *         .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.monitor.ingestion.LogsIngestionAsyncClient.instantiation -->
  */
 @ServiceClient(isAsync = true, builder = LogsIngestionClientBuilder.class)
 public final class LogsIngestionAsyncClient {
@@ -63,6 +78,16 @@ public final class LogsIngestionAsyncClient {
      * Uploads logs to Azure Monitor with specified data collection rule id and stream name. The input logs may be
      * too large to be sent as a single request to the Azure Monitor service. In such cases, this method will split
      * the input logs into multiple smaller requests before sending to the service.
+     *
+     * <p><strong>Upload logs to Azure Monitor</strong></p>
+     * <!-- src_embed com.azure.monitor.ingestion.LogsIngestionAsyncClient.upload -->
+     * <pre>
+     * List&lt;Object&gt; logs = getLogs&#40;&#41;;
+     * logsIngestionAsyncClient.upload&#40;&quot;&lt;data-collection-rule-id&gt;&quot;, &quot;&lt;stream-name&gt;&quot;, logs&#41;
+     *         .subscribe&#40;result -&gt; System.out.println&#40;&quot;Logs upload result status &quot; + result.getStatus&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.monitor.ingestion.LogsIngestionAsyncClient.upload -->
+     *
      * @param dataCollectionRuleId the data collection rule id that is configured to collect and transform the logs.
      * @param streamName the stream name configured in data collection rule that matches defines the structure of the
      * logs sent in this request.
@@ -80,6 +105,17 @@ public final class LogsIngestionAsyncClient {
      * Uploads logs to Azure Monitor with specified data collection rule id and stream name. The input logs may be
      * too large to be sent as a single request to the Azure Monitor service. In such cases, this method will split
      * the input logs into multiple smaller requests before sending to the service.
+     *
+     * <p><strong>Upload logs to Azure Monitor</strong></p>
+     * <!-- src_embed com.azure.monitor.ingestion.LogsIngestionAsyncClient.uploadWithConcurrency -->
+     * <pre>
+     * List&lt;Object&gt; logs = getLogs&#40;&#41;;
+     * UploadLogsOptions uploadLogsOptions = new UploadLogsOptions&#40;&#41;.setMaxConcurrency&#40;4&#41;;
+     * logsIngestionAsyncClient.upload&#40;&quot;&lt;data-collection-rule-id&gt;&quot;, &quot;&lt;stream-name&gt;&quot;, logs, uploadLogsOptions&#41;
+     *         .subscribe&#40;result -&gt; System.out.println&#40;&quot;Logs upload result status &quot; + result.getStatus&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.monitor.ingestion.LogsIngestionAsyncClient.uploadWithConcurrency -->
+     *
      * @param dataCollectionRuleId the data collection rule id that is configured to collect and transform the logs.
      * @param streamName the stream name configured in data collection rule that matches defines the structure of the
      * logs sent in this request.
@@ -93,6 +129,57 @@ public final class LogsIngestionAsyncClient {
     public Mono<UploadLogsResult> upload(String dataCollectionRuleId, String streamName,
                                          List<Object> logs, UploadLogsOptions options) {
         return withContext(context -> upload(dataCollectionRuleId, streamName, logs, options, context));
+    }
+
+    /**
+     * See error response code and error response message for more detail.
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>Content-Encoding</td><td>String</td><td>No</td><td>gzip</td></tr>
+     *     <tr><td>x-ms-client-request-id</td><td>String</td><td>No</td><td>Client request Id</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     Object
+     * ]
+     * }</pre>
+     *
+     * @param dataCollectionRuleId The immutable Id of the Data Collection Rule resource.
+     * @param streamName The streamDeclaration name as defined in the Data Collection Rule.
+     * @param logs An array of objects matching the schema defined by the provided stream.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> uploadWithResponse(
+            String dataCollectionRuleId, String streamName, BinaryData logs, RequestOptions requestOptions) {
+        Objects.requireNonNull(dataCollectionRuleId, "'dataCollectionRuleId' cannot be null.");
+        Objects.requireNonNull(dataCollectionRuleId, "'streamName' cannot be null.");
+        Objects.requireNonNull(dataCollectionRuleId, "'logs' cannot be null.");
+
+        if (requestOptions == null) {
+            requestOptions = new RequestOptions();
+        }
+        requestOptions.addRequestCallback(request -> {
+            HttpHeader httpHeader = request.getHeaders().get(CONTENT_ENCODING);
+            if (httpHeader == null) {
+                BinaryData gzippedRequest = BinaryData.fromBytes(gzipRequest(logs.toBytes()));
+                request.setBody(gzippedRequest);
+                request.setHeader(CONTENT_ENCODING, GZIP);
+            }
+        });
+        return service.uploadWithResponse(dataCollectionRuleId, streamName, logs, requestOptions);
     }
 
     Mono<UploadLogsResult> upload(String dataCollectionRuleId, String streamName,
