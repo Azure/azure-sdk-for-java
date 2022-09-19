@@ -187,26 +187,47 @@ extends:
     MatrixReplace:
       - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
     AdditionalStagesAfterBuild:
-      - stage: JacksonUnsupportedVersions
-        displayName: 'Jackson Unsupported Versions'
+      - stage: DependencyVersionOverridesTests
+        displayName: 'Dependency Version Overrides'
         dependsOn: []
         jobs:
           - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
             parameters:
               JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
               MatrixConfigs:
-                - Name: jackson_unsupported_version_tests
-                  Path: sdk/core/unsupported-version-matrix.json
-                  Selection: sparse
-                  NonSparseParameters:
-                    - AZURE_CORE_TEST_UNSUPPORTED_JACKSON_VERSION
+                - Name: version_overrides_tests
+                  Path: sdk/core/version-overrides-matrix.json
+                  Selection: all
                   GenerateVMJobs: true
               AdditionalParameters:
                 ServiceDirectory: core
                 Artifacts:
-                  - name: azure-core-jackson-tests
+                  - name: azure-core
                     groupId: com.azure
-                    safeName: azurecorejacksontests
+                    safeName: azurecore
+                  - name: azure-core-amqp
+                    groupId: com.azure
+                    safeName: azurecoreamqp
+                  - name: azure-core-http-jdk-httpclient
+                    groupId: com.azure
+                    safeName: azurecorehttpjdkhttpclient
+                    releaseInBatch: ${{ parameters.release_azurecorehttpjdkhttpclient }}
+                  - name: azure-core-http-netty
+                    groupId: com.azure
+                    safeName: azurecorehttpnetty
+                    releaseInBatch: ${{ parameters.release_azurecorehttpnetty }}
+                  - name: azure-core-http-okhttp
+                    groupId: com.azure
+                    safeName: azurecorehttpokhttp
+                    releaseInBatch: ${{ parameters.release_azurecorehttpokhttp }}
+                  - name: azure-core-management
+                    groupId: com.azure
+                    safeName: azurecoremanagement
+                    releaseInBatch: ${{ parameters.release_azurecoremanagement }}
+                  - name: azure-core-serializer-json-jackson
+                    groupId: com.azure
+                    safeName: azurecoreserializerjsonjackson
+                    releaseInBatch: ${{ parameters.release_azurecoreserializerjsonjackson }}
     LiveTestStages:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
         parameters:
@@ -262,11 +283,6 @@ extends:
               safeName: azurejsongson
           MatrixReplace:
             - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
-          AdditionalMatrixConfigs:
-            - Name: version_overrides_tests
-              Path: sdk/core/version-overrides-matrix.json
-              Selection: all
-              GenerateVMJobs: true
       - template: /sdk/storage/tests-template.yml
         parameters:
           AdditionalMatrixReplace:
