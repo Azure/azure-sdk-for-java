@@ -13,6 +13,7 @@ import java.util.Objects;
 import static java.lang.invoke.MethodType.methodType;
 
 public class JacksonJsonWriter extends JsonWriter {
+    private static boolean init = false;
     private static final MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
 
     private JsonWriteContext context = JsonWriteContext.ROOT;
@@ -22,22 +23,23 @@ public class JacksonJsonWriter extends JsonWriter {
     static Object FACTORY;
 
 
-    private final MethodHandle flush;
-    private final MethodHandle close;
-    private final MethodHandle writeStartObject;
-    private final MethodHandle writeEndObject;
-    private final MethodHandle writeStartArray;
-    private final MethodHandle writeEndArray;
-    private final MethodHandle writeFieldName;
-    private final MethodHandle writeNull;
-    private final MethodHandle writeBinary;
-    private final MethodHandle writeBoolean;
-    private final MethodHandle writeDouble;
-    private final MethodHandle writeFloat;
-    private final MethodHandle writeInt;
-    private final MethodHandle writeLong;
-    private final MethodHandle writeString;
-    private final MethodHandle writeRawValue;
+    private static MethodHandle flush;
+    private static MethodHandle close;
+    private static MethodHandle writeStartObject;
+    private static MethodHandle writeEndObject;
+    private static MethodHandle writeStartArray;
+    private static MethodHandle writeEndArray;
+    private static MethodHandle writeFieldName;
+    private static MethodHandle writeNull;
+    private static MethodHandle writeBinary;
+    private static MethodHandle writeBoolean;
+    private static MethodHandle writeDouble;
+    private static MethodHandle writeFloat;
+    private static MethodHandle writeInt;
+    private static MethodHandle writeLong;
+    private static MethodHandle writeString;
+    private static MethodHandle writeRawValue;
+    private static MethodHandle createGenerator;
 
     public static JsonWriter toStream(OutputStream stream) {
         try {
@@ -50,15 +52,30 @@ public class JacksonJsonWriter extends JsonWriter {
 
     public JacksonJsonWriter(OutputStreamWriter gen){
         try{
+            if (!init) {
+                initializeMethodHandles();
+            }
+
+            generator = createGenerator.invoke(FACTORY,gen);
+
+        } catch (Throwable e){
+            throw new RuntimeException(e);
+
+        }
+
+    }
+
+    private static void initializeMethodHandles() throws Throwable {
+        try{
             Class<?> jacksonGeneratorClass = Class.forName("com.fasterxml.jackson.core.JsonGenerator");
             Class<?> factoryClass = Class.forName("com.fasterxml.jackson.core.JsonFactory");
 
             //method handles
             MethodHandle constructorFactory = publicLookup.findConstructor(factoryClass, methodType(void.class));
-            MethodHandle createGenerator = publicLookup.findVirtual(factoryClass, "createGenerator", methodType(jacksonGeneratorClass, Writer.class));
+            createGenerator = publicLookup.findVirtual(factoryClass, "createGenerator", methodType(jacksonGeneratorClass, Writer.class));
             FACTORY = constructorFactory.invoke();
-            generator = createGenerator.invoke(FACTORY,gen);
 
+            writeRawValue = publicLookup.findVirtual(jacksonGeneratorClass, "writeRawValue", MethodType.methodType(void.class,String.class));
             flush = publicLookup.findVirtual(jacksonGeneratorClass, "flush", MethodType.methodType(void.class));
             close = publicLookup.findVirtual(jacksonGeneratorClass, "close", MethodType.methodType(void.class));
             writeStartObject = publicLookup.findVirtual(jacksonGeneratorClass, "writeStartObject", MethodType.methodType(void.class));
@@ -74,12 +91,11 @@ public class JacksonJsonWriter extends JsonWriter {
             writeInt = publicLookup.findVirtual(jacksonGeneratorClass, "writeNumber", MethodType.methodType(void.class,int.class));
             writeLong = publicLookup.findVirtual(jacksonGeneratorClass, "writeNumber", MethodType.methodType(void.class,long.class));
             writeString = publicLookup.findVirtual(jacksonGeneratorClass, "writeString", MethodType.methodType(void.class,String.class));
-            writeRawValue = publicLookup.findVirtual(jacksonGeneratorClass, "writeRawValue", MethodType.methodType(void.class,String.class));
-
-        } catch (Throwable e){
-            throw new RuntimeException(e);
-
         }
+        catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException e) {
+            throw new IllegalStateException("Incorrect Library Present");
+        }
+        init = true;
 
     }
     @Override
