@@ -20,12 +20,10 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.spring.cloud.config.KeyVaultCredentialProvider;
-import com.azure.spring.cloud.config.KeyVaultSecretProvider;
-import com.azure.spring.cloud.config.SecretClientBuilderSetup;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationKeyValueSelector;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProviderProperties;
+import com.azure.spring.cloud.config.implementation.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationStoreTrigger;
 import com.azure.spring.cloud.config.implementation.properties.ConfigStore;
 import com.azure.spring.cloud.config.implementation.properties.FeatureFlagKeyValueSelector;
@@ -49,11 +47,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
     private final AppConfigurationReplicaClientFactory clientFactory;
 
-    private final KeyVaultCredentialProvider keyVaultCredentialProvider;
-
-    private final SecretClientBuilderSetup keyVaultClientProvider;
-
-    private final KeyVaultSecretProvider keyVaultSecretProvider;
+    private final AppConfigurationKeyVaultClientFactory keyVaultClientFactory;
 
     static final AtomicBoolean STARTUP = new AtomicBoolean(true);
 
@@ -62,28 +56,23 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
      * @param properties Configurations for stores to be loaded.
      * @param appProperties Configurations for the library.
      * @param clientFactory factory for creating clients for connecting to Azure App Configuration.
-     * @param keyVaultCredentialProvider optional provider for Key Vault Credentials
-     * @param keyVaultClientProvider optional provider for modifying the Key Vault Client
-     * @param keyVaultSecretProvider optional provider for loading secrets instead of connecting to Key Vault
+     * @param keyVaultClientFactory factory for creating clients for connecting to Azure Key Vault
      */
     public AppConfigurationPropertySourceLocator(AppConfigurationProperties properties,
         AppConfigurationProviderProperties appProperties, AppConfigurationReplicaClientFactory clientFactory,
-        KeyVaultCredentialProvider keyVaultCredentialProvider, SecretClientBuilderSetup keyVaultClientProvider,
-        KeyVaultSecretProvider keyVaultSecretProvider) {
+        AppConfigurationKeyVaultClientFactory keyVaultClientFactory) {
         this.properties = properties;
         this.appProperties = appProperties;
         this.configStores = properties.getStores();
         this.clientFactory = clientFactory;
-        this.keyVaultCredentialProvider = keyVaultCredentialProvider;
-        this.keyVaultClientProvider = keyVaultClientProvider;
-        this.keyVaultSecretProvider = keyVaultSecretProvider;
-        
+        this.keyVaultClientFactory = keyVaultClientFactory;
+
         BackoffTimeCalculator.setDefaults(appProperties.getDefaultMaxBackoff(), appProperties.getDefaultMinBackoff());
     }
 
     @Override
     public PropertySource<?> locate(Environment environment) {
-    	 if (!(environment instanceof ConfigurableEnvironment)) {
+        if (!(environment instanceof ConfigurableEnvironment)) {
             return null;
         }
 
@@ -125,8 +114,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                     sourceList = new ArrayList<>();
 
                     if (!STARTUP.get() && reloadFailed
-                        && !AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(configStore.getFeatureFlags(), client,
-                        configStore.getEndpoint(), profiles)) {
+                        && !AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(client, clientFactory,
+                            configStore.getFeatureFlags(), profiles)) {
                         // This store doesn't have any changes where to refresh store did. Skipping Checking next.
                         continue;
                     }
@@ -138,24 +127,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                         sourceList.addAll(sources);
 
                         LOGGER.debug("PropertySource context.");
+                        setupMonitoring(configStore, client, sources, newState);
 
-                        // Setting new ETag values for Watch
-                        List<ConfigurationSetting> watchKeysSettings = getWatchKeys(client,
-                            configStore.getMonitoring().getTriggers());
-                        List<ConfigurationSetting> watchKeysFeatures = getFeatureFlagWatchKeys(client, configStore,
-                            sources);
-
-                        if (watchKeysFeatures.size() > 0) {
-                            newState.setStateFeatureFlag(configStore.getEndpoint(), watchKeysFeatures,
-                                configStore.getMonitoring().getFeatureFlagRefreshInterval());
-                            newState.setLoadStateFeatureFlag(configStore.getEndpoint(), true);
-                        } else {
-                            newState.setLoadStateFeatureFlag(configStore.getEndpoint(), false);
-                        }
-
-                        newState.setState(configStore.getEndpoint(), watchKeysSettings,
-                            configStore.getMonitoring().getRefreshInterval());
-                        newState.setLoadState(configStore.getEndpoint(), true);
                         generatedPropertySources = true;
                     } catch (AppConfigurationStatusException e) {
                         reloadFailed = true;
@@ -194,6 +167,34 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         return composite;
     }
 
+    private void setupMonitoring(ConfigStore configStore, AppConfigurationReplicaClient client,
+        List<AppConfigurationPropertySource> sources, StateHolder newState) {
+        AppConfigurationStoreMonitoring monitoring = configStore.getMonitoring();
+        if (monitoring.isEnabled()) {
+
+            // Setting new ETag values for Watch
+            List<ConfigurationSetting> watchKeysSettings = getWatchKeys(client,
+                monitoring.getTriggers());
+            List<ConfigurationSetting> watchKeysFeatures = getFeatureFlagWatchKeys(configStore,
+                sources);
+
+            if (watchKeysFeatures.size() > 0) {
+                newState.setStateFeatureFlag(configStore.getEndpoint(), watchKeysFeatures,
+                    monitoring.getFeatureFlagRefreshInterval());
+                newState.setLoadStateFeatureFlag(configStore.getEndpoint(), true);
+            } else {
+                newState.setLoadStateFeatureFlag(configStore.getEndpoint(), false);
+            }
+
+            newState.setState(configStore.getEndpoint(), watchKeysSettings,
+                monitoring.getRefreshInterval());
+            newState.setLoadState(configStore.getEndpoint(), true);
+        } else {
+            newState.setLoadState(configStore.getEndpoint(), false);
+            newState.setLoadStateFeatureFlag(configStore.getEndpoint(), false);
+        }
+    }
+
     private List<ConfigurationSetting> getWatchKeys(AppConfigurationReplicaClient client,
         List<AppConfigurationStoreTrigger> triggers) {
         List<ConfigurationSetting> watchKeysSettings = new ArrayList<>();
@@ -210,8 +211,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         return watchKeysSettings;
     }
 
-    private List<ConfigurationSetting> getFeatureFlagWatchKeys(AppConfigurationReplicaClient client,
-        ConfigStore configStore, List<AppConfigurationPropertySource> sources) {
+    private List<ConfigurationSetting> getFeatureFlagWatchKeys(ConfigStore configStore,
+        List<AppConfigurationPropertySource> sources) {
         List<ConfigurationSetting> watchKeysFeatures = new ArrayList<>();
 
         if (configStore.getFeatureFlags().getEnabled()) {
@@ -236,7 +237,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
             if (properties.getRefreshInterval() != null) {
                 // The next refresh will happen sooner if refresh interval is expired.
-                newState.updateNextRefreshTime(properties.getRefreshInterval(), appProperties);
+                newState.updateNextRefreshTime(properties.getRefreshInterval(), appProperties.getDefaultMinBackoff());
             }
             throw new RuntimeException(message, e);
         } else if (configStore.isFailFast()) {
@@ -268,8 +269,9 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
         for (AppConfigurationKeyValueSelector selectedKeys : selects) {
             AppConfigurationApplicationSettingPropertySource propertySource = new AppConfigurationApplicationSettingPropertySource(
-                store.getEndpoint(), client, selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles),
-                properties, appProperties.getMaxRetryTime(), keyVaultCredentialProvider, keyVaultClientProvider, keyVaultSecretProvider);
+                store.getEndpoint(), client, keyVaultClientFactory, selectedKeys.getKeyFilter(),
+                selectedKeys.getLabelFilter(profiles),
+                properties, appProperties.getMaxRetryTime());
             propertySource.initProperties();
             sourceList.add(propertySource);
         }

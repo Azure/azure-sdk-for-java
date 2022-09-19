@@ -3,6 +3,10 @@
 package com.azure.spring.cloud.config.implementation;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.util.StringUtils;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
@@ -87,6 +91,16 @@ class AppConfigurationReplicaClient {
                 throw new AppConfigurationStatusException(e.getMessage(), e.getResponse(), e.getValue());
             }
             throw e;
+        } catch (Exception e) { // TODO (mametcal) This should be an UnknownHostException, but currently it isn't
+            // catchable.
+            if (e.getMessage().startsWith("java.net.UnknownHostException")
+                || e.getMessage().startsWith("java.net.WebSocketHandshakeException")
+                || e.getMessage().startsWith("java.net.SocketException")
+                || e.getMessage().startsWith("java.io.IOException") || e.getMessage()
+                    .startsWith("io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused")) {
+                throw new AppConfigurationStatusException(e.getMessage(), null, null);
+            }
+            throw e;
         }
     }
 
@@ -96,17 +110,29 @@ class AppConfigurationReplicaClient {
      * @param settingSelector Information on which setting to pull. i.e. number of results, key value...
      * @return List of Configuration Settings.
      */
-    PagedIterable<ConfigurationSetting> listSettings(SettingSelector settingSelector)
+    List<ConfigurationSetting> listSettings(SettingSelector settingSelector)
         throws HttpResponseException {
+        List<ConfigurationSetting> configurationSettings = new ArrayList<>();
         try {
             PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(settingSelector);
             this.failedAttempts = 0;
-            return settings;
+            settings.forEach(setting -> configurationSettings.add(setting));
+            return configurationSettings;
         } catch (HttpResponseException e) {
             int statusCode = e.getResponse().getStatusCode();
 
             if (statusCode == 429 || statusCode == 408 || statusCode >= 500) {
                 throw new AppConfigurationStatusException(e.getMessage(), e.getResponse(), e.getValue());
+            }
+            throw e;
+        } catch (Exception e) { // TODO (mametcal) This should be an UnknownHostException, but currently it isn't
+            // catchable.
+            if (e.getMessage().startsWith("java.net.UnknownHostException")
+                || e.getMessage().startsWith("java.net.WebSocketHandshakeException")
+                || e.getMessage().startsWith("java.net.SocketException")
+                || e.getMessage().startsWith("java.io.IOException") || e.getMessage()
+                    .startsWith("io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused")) {
+                throw new AppConfigurationStatusException(e.getMessage(), null, null);
             }
             throw e;
         }
@@ -117,7 +143,7 @@ class AppConfigurationReplicaClient {
      * @param syncToken the sync token.
      */
     void updateSyncToken(String syncToken) {
-        if (syncToken != null) {
+        if (StringUtils.hasText(syncToken)) {
             client.updateSyncToken(syncToken);
         }
     }

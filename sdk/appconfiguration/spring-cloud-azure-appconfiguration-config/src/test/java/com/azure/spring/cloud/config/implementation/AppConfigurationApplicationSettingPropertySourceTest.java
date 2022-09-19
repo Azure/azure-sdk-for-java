@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
@@ -32,19 +32,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.spring.cloud.config.KeyVaultCredentialProvider;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProperties;
-import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProviderProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 public class AppConfigurationApplicationSettingPropertySourceTest {
 
@@ -66,44 +57,20 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
     private static final ConfigurationSetting ITEM_NULL = createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3,
         null);
 
-    private static ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private List<ConfigurationSetting> testItems = new ArrayList<>();
 
     private AppConfigurationApplicationSettingPropertySource propertySource;
 
-    private AppConfigurationProperties appConfigurationProperties;
-
     @Mock
     private AppConfigurationReplicaClient clientMock;
 
     @Mock
-    private ConfigurationAsyncClient configClientMock;
+    private AppConfigurationKeyVaultClientFactory keyVaultClientFactoryMock;
 
     @Mock
-    private PagedFlux<ConfigurationSetting> settingsMock;
-
-    @Mock
-    private Flux<PagedResponse<ConfigurationSetting>> pageMock;
-
-    @Mock
-    private Mono<List<PagedResponse<ConfigurationSetting>>> collectionMock;
-
-    @Mock
-    private List<PagedResponse<ConfigurationSetting>> itemsMock;
-
-    @Mock
-    private Iterator<PagedResponse<ConfigurationSetting>> itemsIteratorMock;
-
-    @Mock
-    private PagedResponse<ConfigurationSetting> pagedResponseMock;
-
-    private AppConfigurationProviderProperties appProperties;
-
-    private KeyVaultCredentialProvider tokenCredentialProvider = null;
-
-    @Mock
-    private PagedIterable<ConfigurationSetting> pagedFluxMock;
+    private List<ConfigurationSetting> configurationListMock;
 
     @BeforeAll
     public static void setup() {
@@ -112,28 +79,19 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
 
     @BeforeEach
     public void init() {
-        mapper.setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
+        MAPPER.setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
 
         MockitoAnnotations.openMocks(this);
-        appConfigurationProperties = new AppConfigurationProperties();
-        appProperties = new AppConfigurationProviderProperties();
 
-        testItems = new ArrayList<ConfigurationSetting>();
+        testItems = new ArrayList<>();
         testItems.add(ITEM_1);
         testItems.add(ITEM_2);
         testItems.add(ITEM_3);
 
-        when(configClientMock.listConfigurationSettings(Mockito.any())).thenReturn(settingsMock);
-        when(settingsMock.byPage()).thenReturn(pageMock);
-        when(pageMock.collectList()).thenReturn(collectionMock);
-        when(collectionMock.block()).thenReturn(itemsMock);
-        when(itemsMock.iterator()).thenReturn(itemsIteratorMock);
-        when(itemsIteratorMock.next()).thenReturn(pagedResponseMock);
-
         String[] labelFilter = { "\0" };
 
-        propertySource = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, clientMock, KEY_FILTER, labelFilter,
-            appConfigurationProperties, appProperties, tokenCredentialProvider, null, null);
+        propertySource = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, clientMock,
+            keyVaultClientFactoryMock, KEY_FILTER, labelFilter, new AppConfigurationProperties(), 60);
     }
 
     @AfterEach
@@ -143,9 +101,9 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
 
     @Test
     public void testPropCanBeInitAndQueried() throws IOException {
-        when(pagedFluxMock.iterator()).thenReturn(testItems.iterator());
-        when(clientMock.listSettings(Mockito.any())).thenReturn(pagedFluxMock)
-            .thenReturn(pagedFluxMock);
+        when(configurationListMock.iterator()).thenReturn(testItems.iterator());
+        when(clientMock.listSettings(Mockito.any())).thenReturn(configurationListMock)
+            .thenReturn(configurationListMock);
 
         propertySource.initProperties();
 
@@ -164,12 +122,12 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
     public void testPropertyNameSlashConvertedToDots() throws IOException {
         ConfigurationSetting slashedProp = createItem(KEY_FILTER, TEST_SLASH_KEY, TEST_SLASH_VALUE, null,
             EMPTY_CONTENT_TYPE);
-        List<ConfigurationSetting> settings = new ArrayList<ConfigurationSetting>();
+        List<ConfigurationSetting> settings = new ArrayList<>();
         settings.add(slashedProp);
-        when(pagedFluxMock.iterator()).thenReturn(settings.iterator())
-            .thenReturn(new ArrayList<ConfigurationSetting>().iterator());
-        when(clientMock.listSettings(Mockito.any())).thenReturn(pagedFluxMock)
-            .thenReturn(pagedFluxMock);
+        when(configurationListMock.iterator()).thenReturn(settings.iterator())
+            .thenReturn(Collections.emptyIterator());
+        when(clientMock.listSettings(Mockito.any())).thenReturn(configurationListMock)
+            .thenReturn(configurationListMock);
 
         propertySource.initProperties();
 
@@ -184,11 +142,11 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
 
     @Test
     public void initNullValidContentTypeTest() throws IOException {
-        ArrayList<ConfigurationSetting> items = new ArrayList<ConfigurationSetting>();
+        List<ConfigurationSetting> items = new ArrayList<>();
         items.add(ITEM_NULL);
-        when(pagedFluxMock.iterator()).thenReturn(items.iterator())
-            .thenReturn(new ArrayList<ConfigurationSetting>().iterator());
-        when(clientMock.listSettings(Mockito.any())).thenReturn(pagedFluxMock);
+        when(configurationListMock.iterator()).thenReturn(items.iterator())
+            .thenReturn(Collections.emptyIterator());
+        when(clientMock.listSettings(Mockito.any())).thenReturn(configurationListMock);
 
         propertySource.initProperties();
 

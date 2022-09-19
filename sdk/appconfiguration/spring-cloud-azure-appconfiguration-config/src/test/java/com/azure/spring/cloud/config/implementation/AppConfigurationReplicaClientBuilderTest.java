@@ -29,7 +29,6 @@ import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.identity.ManagedIdentityCredential;
 import com.azure.spring.cloud.config.AppConfigurationCredentialProvider;
 import com.azure.spring.cloud.config.ConfigurationClientBuilderSetup;
-import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.implementation.properties.ConfigStore;
 
 public class AppConfigurationReplicaClientBuilderTest {
@@ -50,8 +49,6 @@ public class AppConfigurationReplicaClientBuilderTest {
 
     private ConfigStore configStore;
 
-    private AppConfigurationProviderProperties providerProperties;
-
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
@@ -60,10 +57,6 @@ public class AppConfigurationReplicaClientBuilderTest {
         configStore.setEndpoint(TEST_ENDPOINT);
 
         configStore.validateAndInit();
-
-        providerProperties = new AppConfigurationProviderProperties();
-        providerProperties.setDefaultMaxBackoff((long) 1000);
-        providerProperties.setDefaultMinBackoff((long) 1000);
 
         clientBuilder = null;
     }

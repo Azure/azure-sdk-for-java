@@ -4,7 +4,12 @@ package com.azure.spring.cloud.config.implementation;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,7 +38,7 @@ public class AppConfigurationReplicaClientTest {
     @Mock
     private PagedIterable<ConfigurationSetting> settingsMock;
 
-    private final String endpoint = "clienttest.azconfig.io";
+    private final String endpoint = "clientTest.azconfig.io";
 
     @BeforeEach
     public void setup() {
@@ -56,7 +61,6 @@ public class AppConfigurationReplicaClientTest {
         when(responseMock.getStatusCode()).thenReturn(429);
         assertThrows(AppConfigurationStatusException.class, () -> client.getWatchKey("watch", "\0"));
 
-
         when(responseMock.getStatusCode()).thenReturn(408);
         assertThrows(AppConfigurationStatusException.class, () -> client.getWatchKey("watch", "\0"));
 
@@ -71,15 +75,17 @@ public class AppConfigurationReplicaClientTest {
     public void listSettingsTest() {
         AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock);
 
-        when(clientMock.listConfigurationSettings(Mockito.any())).thenReturn(settingsMock);
+        List<ConfigurationSetting> configurations = new ArrayList<>();
 
-        assertEquals(settingsMock, client.listSettings(new SettingSelector()));
+        when(clientMock.listConfigurationSettings(Mockito.any())).thenReturn(settingsMock);
+        when(settingsMock.iterator()).thenReturn(configurations.iterator());
+
+        assertEquals(configurations, client.listSettings(new SettingSelector()));
 
         when(clientMock.listConfigurationSettings(Mockito.any())).thenThrow(exceptionMock);
         when(exceptionMock.getResponse()).thenReturn(responseMock);
         when(responseMock.getStatusCode()).thenReturn(429);
         assertThrows(AppConfigurationStatusException.class, () -> client.listSettings(new SettingSelector()));
-
 
         when(responseMock.getStatusCode()).thenReturn(408);
         assertThrows(AppConfigurationStatusException.class, () -> client.listSettings(new SettingSelector()));
@@ -89,6 +95,33 @@ public class AppConfigurationReplicaClientTest {
 
         when(responseMock.getStatusCode()).thenReturn(499);
         assertThrows(HttpResponseException.class, () -> client.listSettings(new SettingSelector()));
+    }
+
+    @Test
+    public void backoffTest() {
+        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, clientMock);
+
+        // Setups in the past and with no errors.
+        assertTrue(client.getBackoffEndTime().isBefore(Instant.now()));
+        assertEquals(0, client.getFailedAttempts());
+
+        // Failing results in an increase in failed attempts
+        client.updateBackoffEndTime(Instant.now().plusSeconds(600));
+
+        assertTrue(client.getBackoffEndTime().isAfter(Instant.now()));
+        assertEquals(1, client.getFailedAttempts());
+
+        client.updateBackoffEndTime(Instant.now().minusSeconds(600));
+
+        assertTrue(client.getBackoffEndTime().isBefore(Instant.now()));
+        assertEquals(2, client.getFailedAttempts());
+
+        // Success in a list request results in a reset of failed attemtps
+        when(clientMock.listConfigurationSettings(Mockito.any(SettingSelector.class))).thenReturn(settingsMock);
+
+        client.listSettings(new SettingSelector());
+        assertTrue(client.getBackoffEndTime().isBefore(Instant.now()));
+        assertEquals(0, client.getFailedAttempts());
     }
 
 }

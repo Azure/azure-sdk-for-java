@@ -82,15 +82,6 @@ public final class FeatureFlagKeyValueSelector {
     }
 
     /**
-     * Used for Generating Property Source name only.
-     * 
-     * @return String all labels combined.
-     */
-    public String getLabel() {
-        return labelFilter;
-    }
-
-    /**
      * @param labelFilter the labelFilter to set
      * @return AppConfigurationStoreSelects
      */
@@ -104,7 +95,6 @@ public final class FeatureFlagKeyValueSelector {
      */
     @PostConstruct
     public void validateAndInit() {
-        Assert.isTrue(!keyFilter.contains("*"), "KeyFilter must not contain asterisk(*)");
         if (labelFilter != null) {
             Assert.isTrue(!labelFilter.contains("*"), "LabelFilter must not contain asterisk(*)");
         }

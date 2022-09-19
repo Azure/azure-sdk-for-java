@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.config.web.implementation;
+package com.azure.spring.cloud.config.web.implementation.config;
 
 import static com.azure.spring.cloud.config.web.implementation.TestConstants.CONN_STRING_PROP;
 import static com.azure.spring.cloud.config.web.implementation.TestConstants.STORE_ENDPOINT_PROP;

@@ -10,12 +10,10 @@ import java.util.Map.Entry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.config.implementation.pipline.policies.BaseAppConfigurationPolicy;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationStoreMonitoring;
-import com.azure.spring.cloud.config.implementation.properties.ConfigStore;
 import com.azure.spring.cloud.config.implementation.properties.FeatureFlagKeyValueSelector;
 import com.azure.spring.cloud.config.implementation.properties.FeatureFlagStore;
 
@@ -30,8 +28,7 @@ class AppConfigurationRefreshUtil {
      * @return If a refresh event is called.
      */
     static RefreshEventData refreshStoresCheck(AppConfigurationReplicaClientFactory clientFactory,
-        List<ConfigStore> configStores, Duration refreshInterval,
-        List<String> profiles, Long defaultMinBackoff) {
+        Duration refreshInterval, List<String> profiles, Long defaultMinBackoff) {
         RefreshEventData eventData = new RefreshEventData();
         BaseAppConfigurationPolicy.setWatchRequests(true);
 
@@ -42,7 +39,8 @@ class AppConfigurationRefreshUtil {
 
                 LOGGER.info(eventDataInfo);
 
-                eventData.setMessage(eventDataInfo);
+                eventData.setFullMessage(eventDataInfo);
+                return eventData;
             }
 
             for (Entry<String, ConnectionManager> entry : clientFactory.getConnections().entrySet()) {
@@ -68,10 +66,9 @@ class AppConfigurationRefreshUtil {
                             break;
                         } catch (AppConfigurationStatusException e) {
                             LOGGER.warn("Failed attempting to connect to " + client.getEndpoint()
-                                + " durring refresh check.");
+                                + " during refresh check.");
 
                             clientFactory.backoffClientClient(originEndpoint, client.getEndpoint());
-                            continue;
                         }
                     }
                 } else {
@@ -95,10 +92,9 @@ class AppConfigurationRefreshUtil {
                             break;
                         } catch (AppConfigurationStatusException e) {
                             LOGGER.warn("Failed attempting to connect to " + client.getEndpoint()
-                                + " durring refresh check.");
+                                + " during refresh check.");
 
                             clientFactory.backoffClientClient(originEndpoint, client.getEndpoint());
-                            continue;
                         }
                     }
                 } else {
@@ -122,10 +118,9 @@ class AppConfigurationRefreshUtil {
 
     /**
      * This is for a <b>refresh fail only</b>.
-     * @param configStores
-     * @param originEndpoint
+     *
      * @param client Client checking for refresh
-     * @param originEndpoint origin of the client
+     * @param originEndpoint config store origin endpoint
      * @return A refresh should be triggered.
      */
     private static boolean refreshStoreCheck(AppConfigurationReplicaClient client, String originEndpoint) {
@@ -138,12 +133,9 @@ class AppConfigurationRefreshUtil {
 
     /**
      * This is for a <b>refresh fail only</b>.
-     * @param featureStore
-     * @param clientFactory
-     * @param profiles
      * @param featureStore Feature info for the store
-     * @param client Client checking for refresh
      * @param profiles Current configured profiles, can be used as labels.
+     * @param client Client checking for refresh
      * @return true if a refresh should be triggered.
      */
     private static boolean refreshStoreFeatureFlagCheck(FeatureFlagStore featureStore,
@@ -214,7 +206,7 @@ class AppConfigurationRefreshUtil {
             for (FeatureFlagKeyValueSelector watchKey : featureStore.getSelects()) {
                 SettingSelector selector = new SettingSelector().setKeyFilter(watchKey.getKeyFilter())
                     .setLabelFilter(watchKey.getLabelFilterText(profiles));
-                PagedIterable<ConfigurationSetting> currentKeys = client.listSettings(selector);
+                List<ConfigurationSetting> currentKeys = client.listSettings(selector);
 
                 int watchedKeySize = 0;
 
@@ -225,14 +217,13 @@ class AppConfigurationRefreshUtil {
 
                         // If there is no result, etag will be considered empty.
                         // A refresh will trigger once the selector returns a value.
-                        if (watchFlag != null && watchFlag.getKey().equals(currentKey.getKey())) {
+                        if (watchFlag != null && watchFlag.getKey().equals(currentKey.getKey())
+                            && watchFlag.getLabel().equals(currentKey.getLabel())) {
                             checkETag(watchFlag, currentKey, client.getEndpoint(), eventData);
                             if (eventData.getDoRefresh()) {
                                 break keyCheck;
 
                             }
-                        } else {
-                            break keyCheck;
                         }
 
                     }
@@ -261,7 +252,7 @@ class AppConfigurationRefreshUtil {
         for (FeatureFlagKeyValueSelector watchKey : featureStore.getSelects()) {
             SettingSelector selector = new SettingSelector().setKeyFilter(watchKey.getKeyFilter())
                 .setLabelFilter(watchKey.getLabelFilterText(profiles));
-            PagedIterable<ConfigurationSetting> currentTriggerConfigurations = client.listSettings(selector);
+            List<ConfigurationSetting> currentTriggerConfigurations = client.listSettings(selector);
 
             int watchedKeySize = 0;
 
@@ -271,7 +262,8 @@ class AppConfigurationRefreshUtil {
 
                     // If there is no result, etag will be considered empty.
                     // A refresh will trigger once the selector returns a value.
-                    if (watchFlag != null && watchFlag.getKey().equals(currentTriggerConfiguration.getKey())) {
+                    if (watchFlag != null && watchFlag.getKey().equals(currentTriggerConfiguration.getKey())
+                        && watchFlag.getLabel().equals(currentTriggerConfiguration.getLabel())) {
                         checkETag(watchFlag, currentTriggerConfiguration, client.getEndpoint(), eventData);
                         if (eventData.getDoRefresh()) {
                             return;
@@ -333,7 +325,12 @@ class AppConfigurationRefreshUtil {
         }
 
         RefreshEventData setMessage(String prefix) {
-            this.message = String.format(MSG_TEMPLATE, prefix);
+            setFullMessage(String.format(MSG_TEMPLATE, prefix));
+            return this;
+        }
+        
+        RefreshEventData setFullMessage(String message) {
+            this.message = message;
             this.doRefresh = true;
             return this;
         }

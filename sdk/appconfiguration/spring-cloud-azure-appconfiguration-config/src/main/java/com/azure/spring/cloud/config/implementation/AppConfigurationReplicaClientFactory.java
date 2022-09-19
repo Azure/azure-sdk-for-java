@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.azure.spring.cloud.config.implementation.health.AppConfigurationStoreHealth;
-import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProperties;
-import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.implementation.properties.ConfigStore;
 
 /**
@@ -23,33 +21,19 @@ public class AppConfigurationReplicaClientFactory {
     /**
      * Sets up Connections to all configuration stores.
      *
-     * @param properties client properties
-     * @param appProperties library properties
+     * @param clientBuilder builder for app configuration replica clients
+     * @param configStores configuration info for config stores
      */
     public AppConfigurationReplicaClientFactory(AppConfigurationReplicaClientsBuilder clientBuilder,
-        AppConfigurationProperties properties, AppConfigurationProviderProperties appProperties) {
-        this.configStores = properties.getStores();
+        List<ConfigStore> configStores) {
+        this.configStores = configStores;
         if (CONNECTIONS.size() == 0) {
-            for (ConfigStore store : properties.getStores()) {
-                ConnectionManager manager = new ConnectionManager(clientBuilder, store, appProperties);
+            for (ConfigStore store : configStores) {
+                ConnectionManager manager = new ConnectionManager(clientBuilder, store);
                 CONNECTIONS.put(manager.getOriginEndpoint(), manager);
             }
         }
     }
-    
-    /**
-     * @return the connections
-     */
-    public Map<String, ConnectionManager> getConnections() {
-        return CONNECTIONS;
-    }
-
-    /**
-     * @return the configStores
-     */
-    List<ConfigStore> getConfigStores() {
-        return configStores;
-    }
 
     /**
      * @return the connections
@@ -61,7 +45,7 @@ public class AppConfigurationReplicaClientFactory {
     /**
      * @return the configStores
      */
-    List<ConfigStore> getConfigStores() {
+    List<ConfigStore> getConfigStores() { // TODO (mametcal) This is never used?
         return configStores;
     }
 
@@ -147,13 +131,8 @@ public class AppConfigurationReplicaClientFactory {
         CONNECTIONS.get(originEndpoint).setCurrentClient(replicaEndpoint);
     }
 
-    void updateSyncToken(String originEndpoint, String syncToken) {
-        ConnectionManager manager = CONNECTIONS.get(originEndpoint);
-        if (manager.getAllEndpoints().size() > 1) {
-            // Sync Token is only used for stores without replicas
-            return;
-        }
-        manager.updateSyncToken(syncToken);
+    void updateSyncToken(String originEndpoint, String endpoint, String syncToken) {
+        CONNECTIONS.get(originEndpoint).updateSyncToken(endpoint, syncToken);
     }
 
 }

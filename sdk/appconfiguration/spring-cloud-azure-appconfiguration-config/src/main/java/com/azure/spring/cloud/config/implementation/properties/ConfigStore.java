@@ -199,5 +199,6 @@ public final class ConfigStore {
         }
 
         monitoring.validateAndInit();
+        featureFlags.validateAndInit();
     }
 }

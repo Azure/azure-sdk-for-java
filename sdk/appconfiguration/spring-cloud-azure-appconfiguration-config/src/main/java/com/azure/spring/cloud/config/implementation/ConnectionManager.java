@@ -11,10 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.azure.spring.cloud.config.implementation.health.AppConfigurationStoreHealth;
-<<<<<<< HEAD
-=======
-import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProviderProperties;
->>>>>>> afebced172d6914fd3335bcf193c158c13e96e70
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.config.implementation.properties.ConfigStore;
 import com.azure.spring.cloud.config.implementation.properties.FeatureFlagStore;
@@ -40,12 +36,9 @@ public class ConnectionManager {
     private final ConfigStore configStore;
 
     /**
-     * Creates a set of connections to a app configuration store.
-     * @param clientBuilder
-     * @param configStore Connection info for the store
+     * Creates a set of connections to an app configuration store.
      * @param clientBuilder Builder for App Configuration Clients
      * @param configStore Connection info for the store
-     * @param appProperties Properties for setting up the connection
      */
     ConnectionManager(AppConfigurationReplicaClientsBuilder clientBuilder, ConfigStore configStore) {
         this.clientBuilder = clientBuilder;
@@ -121,7 +114,7 @@ public class ConnectionManager {
     }
 
     List<String> getAllEndpoints() {
-        return clients.stream().map(client -> client.getEndpoint()).collect(Collectors.toList());
+        return clients.stream().map(AppConfigurationReplicaClient::getEndpoint).collect(Collectors.toList());
     }
 
     /**
@@ -144,11 +137,9 @@ public class ConnectionManager {
      *
      * @param syncToken App Configuration sync token
      */
-    void updateSyncToken(String syncToken) {
-        // Currently sync tokens aren't supported in geo-replication
-        if (clients.size() == 1) {
-            clients.get(0).updateSyncToken(syncToken);
-        }
+    void updateSyncToken(String endpoint, String syncToken) {
+        clients.stream().filter(client -> client.getEndpoint().equals(endpoint)).findFirst()
+            .ifPresent(client -> client.updateSyncToken(syncToken));
     }
 
     AppConfigurationStoreMonitoring getMonitoring() {
@@ -158,12 +149,5 @@ public class ConnectionManager {
     FeatureFlagStore getFeatureFlagStore() {
         return configStore.getFeatureFlags();
     }
-    
-    AppConfigurationStoreMonitoring getMonitoring() {
-        return configStore.getMonitoring();
-    }
 
-    FeatureFlagStore getFeatureFlagStore() {
-        return configStore.getFeatureFlags();
-    }
 }

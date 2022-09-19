@@ -76,7 +76,7 @@ public class KeyVaultClientTest {
         AppConfigurationSecretClientManager test = Mockito.spy(clientStore);
         Mockito.doReturn(builderMock).when(test).getBuilder();
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> test.build());
+        Assertions.assertThrows(IllegalArgumentException.class, test::build);
     }
 
     @Test

@@ -41,6 +41,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -57,11 +58,9 @@ import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSettin
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
-import com.azure.spring.cloud.config.KeyVaultCredentialProvider;
-import com.azure.spring.cloud.config.KeyVaultSecretProvider;
 <<<<<<<< HEAD:sdk/appconfiguration/spring-cloud-azure-appconfiguration-config/src/test/java/com/azure/spring/cloud/config/implementation/AppConfigurationPropertySourceKeyVaultTest.java
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProperties;
-import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProviderProperties;
+import com.azure.spring.cloud.config.implementation.stores.AppConfigurationSecretClientManager;
 ========
 import com.azure.spring.cloud.config.feature.management.entity.FeatureSet;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
@@ -70,7 +69,6 @@ import com.azure.spring.cloud.config.properties.AppConfigurationStoreSelects;
 import com.azure.spring.cloud.config.properties.ConfigStore;
 >>>>>>>> c595c31b45e92273feaec522e5d53130d7537677:sdk/appconfiguration/azure-spring-cloud-appconfiguration-config/src/test/java/com/azure/spring/cloud/config/implementation/AppConfigurationPropertySourceKeyVaultTest.java
 
-import reactor.core.publisher.Mono;
 
 public class AppConfigurationPropertySourceKeyVaultTest {
 
@@ -97,12 +95,14 @@ public class AppConfigurationPropertySourceKeyVaultTest {
 
     private AppConfigurationApplicationSettingPropertySource propertySource;
 
-    private AppConfigurationProperties appConfigurationProperties;
-
-    private AppConfigurationProviderProperties appProperties;
-
     @Mock
     private SecretClientBuilder builderMock;
+
+    @Mock
+    private AppConfigurationKeyVaultClientFactory keyVaultClientFactory;
+
+    @Mock
+    private AppConfigurationSecretClientManager clientManagerMock;
 
     @Mock
     private AppConfigurationReplicaClient replicaClientMock;
@@ -111,9 +111,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
     private SecretAsyncClient clientMock;
 
     @Mock
-    private List<ConfigurationSetting> configurationListMock;
-
-    private KeyVaultCredentialProvider tokenCredentialProvider = null;
+    private List<ConfigurationSetting> keyVaultSecretListMock;
 
     @BeforeEach
     public void init() {
@@ -122,23 +120,11 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         KEY_VAULT_ITEM.setContentType(KEY_VAULT_CONTENT_TYPE);
 
         MockitoAnnotations.openMocks(this);
-        appConfigurationProperties = new AppConfigurationProperties();
-        appProperties = new AppConfigurationProviderProperties();
-        appProperties.setMaxRetryTime(0);
 <<<<<<<< HEAD:sdk/appconfiguration/spring-cloud-azure-appconfiguration-config/src/test/java/com/azure/spring/cloud/config/implementation/AppConfigurationPropertySourceKeyVaultTest.java
 
-        String[] labelFilter = {"\0"};
-        propertySource = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, replicaClientMock, KEY_FILTER, labelFilter,
-            appConfigurationProperties, appProperties, tokenCredentialProvider, null,
-========
-        ConfigStore testStore = new ConfigStore();
-        testStore.setEndpoint(TEST_STORE_NAME);
-        AppConfigurationStoreSelects selects = new AppConfigurationStoreSelects().setKeyFilter(KEY_FILTER)
-            .setLabelFilter("\0");
-        propertySource = new AppConfigurationPropertySource(testStore, selects, new ArrayList<>(),
-            appConfigurationProperties, replicaClientMock, appProperties, tokenCredentialProvider, null,
->>>>>>>> c595c31b45e92273feaec522e5d53130d7537677:sdk/appconfiguration/azure-spring-cloud-appconfiguration-config/src/test/java/com/azure/spring/cloud/config/implementation/AppConfigurationPropertySourceKeyVaultTest.java
-            new TestClient());
+        String[] labelFilter = { "\0" };
+        propertySource = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, replicaClientMock,
+            keyVaultClientFactory, KEY_FILTER, labelFilter, new AppConfigurationProperties(), 60);
 
         TEST_ITEMS.add(ITEM_1);
         TEST_ITEMS.add(ITEM_2);
@@ -151,22 +137,18 @@ public class AppConfigurationPropertySourceKeyVaultTest {
     }
 
     @Test
-    public void testKeyVaultTest() throws AppConfigurationStatusException, IOException {
+    public void testKeyVaultTest() {
         TEST_ITEMS.add(KEY_VAULT_ITEM);
-<<<<<<<< HEAD:sdk/appconfiguration/spring-cloud-azure-appconfiguration-config/src/test/java/com/azure/spring/cloud/config/implementation/AppConfigurationPropertySourceKeyVaultTest.java
-        when(pagedFluxMock.iterator()).thenReturn(TEST_ITEMS.iterator())
-            .thenReturn(new ArrayList<ConfigurationSetting>().iterator());
-        when(replicaClientMock.listSettings(Mockito.any())).thenReturn(pagedFluxMock).thenReturn(pagedFluxMock);
-========
-        when(configurationListMock.iterator()).thenReturn(TEST_ITEMS.iterator())
+        when(keyVaultSecretListMock.iterator()).thenReturn(TEST_ITEMS.iterator())
             .thenReturn(Collections.emptyIterator());
-        when(replicaClientMock.listConfigurationSettings(Mockito.any())).thenReturn(configurationListMock).thenReturn(configurationListMock);
->>>>>>>> c595c31b45e92273feaec522e5d53130d7537677:sdk/appconfiguration/azure-spring-cloud-appconfiguration-config/src/test/java/com/azure/spring/cloud/config/implementation/AppConfigurationPropertySourceKeyVaultTest.java
+        when(replicaClientMock.listSettings(Mockito.any())).thenReturn(keyVaultSecretListMock)
+            .thenReturn(keyVaultSecretListMock);
 
         Mockito.when(builderMock.buildAsyncClient()).thenReturn(clientMock);
 
         KeyVaultSecret secret = new KeyVaultSecret("mySecret", "mySecretValue");
-        when(clientMock.getSecret(Mockito.anyString(), Mockito.anyString())).thenReturn(Mono.just(secret));
+        when(keyVaultClientFactory.getClient(Mockito.any(URI.class), Mockito.any())).thenReturn(clientManagerMock);
+        when(clientManagerMock.getSecret(Mockito.any(URI.class), Mockito.anyInt())).thenReturn(secret);
 
 <<<<<<<< HEAD:sdk/appconfiguration/spring-cloud-azure-appconfiguration-config/src/test/java/com/azure/spring/cloud/config/implementation/AppConfigurationPropertySourceKeyVaultTest.java
         try {
@@ -190,14 +172,5 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         assertThat(propertySource.getProperty(TEST_KEY_2)).isEqualTo(TEST_VALUE_2);
         assertThat(propertySource.getProperty(TEST_KEY_3)).isEqualTo(TEST_VALUE_3);
         assertThat(propertySource.getProperty(TEST_KEY_VAULT_1)).isEqualTo("mySecretValue");
-    }
-
-    class TestClient implements KeyVaultSecretProvider {
-
-        @Override
-        public String getSecret(String uri) {
-            return "mySecretValue";
-        }
-
     }
 }

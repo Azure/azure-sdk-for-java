@@ -2,10 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.implementation.config;
 
-import java.util.Optional;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -20,6 +16,7 @@ import com.azure.spring.cloud.config.ConfigurationClientBuilderSetup;
 import com.azure.spring.cloud.config.KeyVaultCredentialProvider;
 import com.azure.spring.cloud.config.KeyVaultSecretProvider;
 import com.azure.spring.cloud.config.SecretClientBuilderSetup;
+import com.azure.spring.cloud.config.implementation.AppConfigurationKeyVaultClientFactory;
 import com.azure.spring.cloud.config.implementation.AppConfigurationPropertySourceLocator;
 import com.azure.spring.cloud.config.implementation.AppConfigurationReplicaClientFactory;
 import com.azure.spring.cloud.config.implementation.AppConfigurationReplicaClientsBuilder;
@@ -44,13 +41,26 @@ public class AppConfigurationBootstrapConfiguration {
      * @param properties Client properties
      * @param appProperties Library properties
      * @param clientFactory Store Connections
+     * @param keyVaultClientFactory keyVaultClientFactory
      * @return AppConfigurationPropertySourceLocator
      * @throws IllegalArgumentException if both KeyVaultClientProvider and KeyVaultSecretProvider exist.
      */
     @Bean
     AppConfigurationPropertySourceLocator sourceLocator(AppConfigurationProperties properties,
-        AppConfigurationProviderProperties appProperties,
-        AppConfigurationReplicaClientFactory clientFactory) throws IllegalArgumentException {
+        AppConfigurationProviderProperties appProperties, AppConfigurationReplicaClientFactory clientFactory,
+        AppConfigurationKeyVaultClientFactory keyVaultClientFactory)
+        throws IllegalArgumentException {
+
+        return new AppConfigurationPropertySourceLocator(properties, appProperties, clientFactory,
+            keyVaultClientFactory);
+    }
+
+    /**
+     *
+     * @throws IllegalArgumentException if both KeyVaultClientProvider and KeyVaultSecretProvider exist.
+     */
+    @Bean
+    AppConfigurationKeyVaultClientFactory keyVaultClientFactory() throws IllegalArgumentException {
 
         KeyVaultCredentialProvider keyVaultCredentialProvider = context
             .getBeanProvider(KeyVaultCredentialProvider.class).getIfAvailable();
@@ -64,8 +74,8 @@ public class AppConfigurationBootstrapConfiguration {
                 "KeyVaultClientProvider and KeyVaultSecretProvider both can't have Beans supplied.");
         }
 
-        return new AppConfigurationPropertySourceLocator(properties, appProperties, clientFactory,
-            keyVaultCredentialProvider, keyVaultClientProvider, keyVaultSecretProvider);
+        return new AppConfigurationKeyVaultClientFactory(keyVaultCredentialProvider, keyVaultClientProvider,
+            keyVaultSecretProvider);
     }
 
     /**
@@ -79,7 +89,7 @@ public class AppConfigurationBootstrapConfiguration {
     @ConditionalOnMissingBean
     AppConfigurationReplicaClientFactory buildClientFactory(AppConfigurationReplicaClientsBuilder clientBuilder,
         AppConfigurationProperties properties) {
-        return new AppConfigurationReplicaClientFactory(clientBuilder, properties);
+        return new AppConfigurationReplicaClientFactory(clientBuilder, properties.getStores());
     }
 
     /**
@@ -87,11 +97,6 @@ public class AppConfigurationBootstrapConfiguration {
      *
      * @param properties Client configurations for setting up connections to each config store.
      * @param appProperties Library configurations for setting up connections to each config store.
-     * @param tokenCredentialProviderOptional Optional provider for overriding Token Credentials for connecting to App
-     * Configuration.
-     * @param clientProviderOptional Optional client for overriding Client Connections to App Configuration stores.
-     * @param keyVaultCredentialProviderOptional optional provider, used to see if Key Vault is configured
-     * @param keyVaultClientProviderOptional optional client, used to see if Key Vault is configured
      * @return ClientStore
      */
     @Bean

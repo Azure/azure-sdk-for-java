@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -15,8 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProperties;
-import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.implementation.properties.ConfigStore;
 
 public class AppConfigurationReplicaClientFactoryTest {
@@ -24,22 +21,15 @@ public class AppConfigurationReplicaClientFactoryTest {
     private AppConfigurationReplicaClientFactory clientFactory;
 
     @Mock
-    private ConnectionManager connectionManagerMock;
-
-    @Mock
     private AppConfigurationReplicaClientsBuilder clientBuilderMock;
 
-    private AppConfigurationProperties properties;
+    private final String originEndpoint = "clientFactoryTest.azconfig.io";
 
-    private AppConfigurationProviderProperties clientProperties;
+    private final String replica1 = "clientFactoryTest-replica1.azconfig.io";
 
-    private String originEndpoint = "clientfactorytest.azconfig.io";
+    private final String noReplicaEndpoint = "noReplica.azconfig.io";
 
-    private String replica1 = "clientfactorytest-replica1.azconfig.io";
-
-    private String noReplicaEndpoint = "noReplica.azconfig.io";
-
-    private String invalidReplica = "invalidreplica.azconfig.io";
+    private final String invalidReplica = "invalidReplica.azconfig.io";
 
     @BeforeEach
     public void setup() {
@@ -60,17 +50,7 @@ public class AppConfigurationReplicaClientFactoryTest {
         storeNoReplica.setEndpoint(noReplicaEndpoint);
         stores.add(storeNoReplica);
 
-        properties = new AppConfigurationProperties();
-        properties.setStores(stores);
-        
-        clientProperties = new AppConfigurationProviderProperties();
-        clientProperties.setDefaultMaxBackoff((long) 600);
-        clientProperties.setDefaultMinBackoff((long) 30);
-
-        HashMap<String, ConnectionManager> connections = new HashMap<>();
-        connections.put(originEndpoint, connectionManagerMock);
-
-        clientFactory = new AppConfigurationReplicaClientFactory(clientBuilderMock, properties, clientProperties);
+        clientFactory = new AppConfigurationReplicaClientFactory(clientBuilderMock, stores);
     }
 
     @Test

@@ -25,7 +25,7 @@ public class ConfigStoreTest {
         selects.add(selectedKeys);
         configStore.setSelects(selects);
 
-        assertThrows(IllegalArgumentException.class, () -> configStore.validateAndInit());
+        assertThrows(IllegalArgumentException.class, configStore::validateAndInit);
     }
 
     @Test
@@ -35,8 +35,8 @@ public class ConfigStoreTest {
         List<AppConfigurationKeyValueSelector> selects = new ArrayList<>();
         selects.add(selectedKeys);
         configStore.setSelects(selects);
-        
-        assertThrows(IllegalArgumentException.class, () -> configStore.validateAndInit());
+
+        assertThrows(IllegalArgumentException.class, configStore::validateAndInit);
     }
 
     @Test
@@ -45,7 +45,7 @@ public class ConfigStoreTest {
         configStore.validateAndInit();
         configStore.setConnectionString("Endpoint=a^a;Id=fake-conn-id;Secret=ZmFrZS1jb25uLXNlY3JldA==");
 
-        assertThrows(IllegalStateException.class, () -> configStore.validateAndInit());
+        assertThrows(IllegalStateException.class, configStore::validateAndInit);
     }
 
     @Test

@@ -7,6 +7,8 @@ import static com.azure.spring.cloud.config.implementation.TestConstants.TEST_CO
 import static com.azure.spring.cloud.config.implementation.TestConstants.TEST_ENDPOINT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.Instant;
@@ -20,7 +22,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import com.azure.spring.cloud.config.implementation.health.AppConfigurationStoreHealth;
-import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.implementation.properties.ConfigStore;
 
 public class ConnectionManagerTest {
@@ -38,8 +39,6 @@ public class ConnectionManagerTest {
 
     private ConfigStore configStore;
 
-    private AppConfigurationProviderProperties providerProperties;
-
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
@@ -49,16 +48,12 @@ public class ConnectionManagerTest {
 
         configStore.validateAndInit();
 
-        providerProperties = new AppConfigurationProviderProperties();
-        providerProperties.setDefaultMaxBackoff((long) 1000);
-        providerProperties.setDefaultMinBackoff((long) 1000);
-
         connectionManager = null;
     }
 
     @Test
     public void getStoreIdentifierTest() {
-        connectionManager = new ConnectionManager(clientBuilderMock, configStore, providerProperties);
+        connectionManager = new ConnectionManager(clientBuilderMock, configStore);
 
         assertEquals(TEST_ENDPOINT, connectionManager.getOriginEndpoint());
 
@@ -71,7 +66,7 @@ public class ConnectionManagerTest {
         configStore.setEndpoints(endpoints);
         configStore.validateAndInit();
 
-        connectionManager = new ConnectionManager(clientBuilderMock, configStore, providerProperties);
+        connectionManager = new ConnectionManager(clientBuilderMock, configStore);
 
         assertEquals("first.endpoint", connectionManager.getOriginEndpoint());
     }
@@ -88,7 +83,7 @@ public class ConnectionManagerTest {
 
         configStore.validateAndInit();
 
-        connectionManager = new ConnectionManager(clientBuilderMock, configStore, providerProperties);
+        connectionManager = new ConnectionManager(clientBuilderMock, configStore);
 
         List<AppConfigurationReplicaClient> clients = new ArrayList<>();
         clients.add(replicaClient1);
@@ -141,5 +136,24 @@ public class ConnectionManagerTest {
         assertEquals(2, connectionManager.getAllEndpoints().size());
         assertTrue(connectionManager.getAllEndpoints().containsAll(expectedEndpoints));
         assertEquals(AppConfigurationStoreHealth.DOWN, connectionManager.getHealth());
+    }
+    
+    @Test
+    public void updateSyncTokenTest() {
+        String fakeToken = "fakeToken";
+        ConnectionManager manager = new ConnectionManager(clientBuilderMock, configStore);
+        
+        List<AppConfigurationReplicaClient> clients = new ArrayList<>();
+        clients.add(replicaClient1);
+
+        when(clientBuilderMock.buildClients(Mockito.eq(configStore))).thenReturn(clients);
+        when(replicaClient1.getEndpoint()).thenReturn(TEST_ENDPOINT);
+        
+        List<AppConfigurationReplicaClient> availableClients = manager.getAvailableClients();
+        assertEquals(1, availableClients.size());
+        
+        manager.updateSyncToken(TEST_ENDPOINT, fakeToken);
+        
+        verify(replicaClient1, times(1)).updateSyncToken(Mockito.eq(fakeToken));
     }
 }

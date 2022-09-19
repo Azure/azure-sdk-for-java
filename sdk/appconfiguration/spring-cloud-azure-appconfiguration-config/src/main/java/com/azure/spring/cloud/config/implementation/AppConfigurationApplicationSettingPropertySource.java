@@ -7,7 +7,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -17,16 +16,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
-import com.azure.spring.cloud.config.KeyVaultCredentialProvider;
-import com.azure.spring.cloud.config.KeyVaultSecretProvider;
-import com.azure.spring.cloud.config.SecretClientBuilderSetup;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProperties;
-import com.azure.spring.cloud.config.implementation.stores.AppConfigurationSecretClientManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
@@ -43,36 +37,26 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
 
     private final AppConfigurationProperties appConfigurationProperties;
 
-    private final Map<String, AppConfigurationSecretClientManager> keyVaultClients;
-
-    private final KeyVaultCredentialProvider keyVaultCredentialProvider;
-
-    private final SecretClientBuilderSetup keyVaultClientProvider;
-
-    private final KeyVaultSecretProvider keyVaultSecretProvider;
+    private final AppConfigurationKeyVaultClientFactory keyVaultClientFactory;
 
     private final int maxRetryTime;
 
-    AppConfigurationApplicationSettingPropertySource(String originEndpoint, AppConfigurationReplicaClient replicaClient, String keyFilter,
-        String[] labelFilter, AppConfigurationProperties appConfigurationProperties,
-        int maxRetryTime, KeyVaultCredentialProvider keyVaultCredentialProvider,
-        SecretClientBuilderSetup keyVaultClientProvider, KeyVaultSecretProvider keyVaultSecretProvider) {
+    AppConfigurationApplicationSettingPropertySource(String originEndpoint, AppConfigurationReplicaClient replicaClient,
+        AppConfigurationKeyVaultClientFactory keyVaultClientFactory, String keyFilter, String[] labelFilter,
+        AppConfigurationProperties appConfigurationProperties, int maxRetryTime) {
         // The context alone does not uniquely define a PropertySource, append storeName
         // and label to uniquely define a PropertySource
         super(originEndpoint, replicaClient, keyFilter, labelFilter);
+        this.keyVaultClientFactory = keyVaultClientFactory;
         this.appConfigurationProperties = appConfigurationProperties;
         this.maxRetryTime = maxRetryTime;
-        this.keyVaultClients = new HashMap<>();
-        this.keyVaultCredentialProvider = keyVaultCredentialProvider;
-        this.keyVaultClientProvider = keyVaultClientProvider;
-        this.keyVaultSecretProvider = keyVaultSecretProvider;
     }
 
     /**
      * <p>
      * Gets settings from Azure/Cache to set as configurations. Updates the cache.
      * </p>
-     * @throws JsonProcessingException
+     * @throws JsonProcessingException thrown if fails to parse Json content type
      */
     public void initProperties() throws JsonProcessingException {
         List<String> labels = Arrays.asList(labelFilter);
@@ -83,7 +67,7 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
                 .setLabelFilter(label);
 
             // * for wildcard match
-            PagedIterable<ConfigurationSetting> settings = replicaClient.listSettings(settingSelector);
+            List<ConfigurationSetting> settings = replicaClient.listSettings(settingSelector);
 
             for (ConfigurationSetting setting : settings) {
                 String key = setting.getKey().trim().substring(keyFilter.length())
@@ -128,15 +112,8 @@ final class AppConfigurationApplicationSettingPropertySource extends AppConfigur
                 ReflectionUtils.rethrowRuntimeException(e);
             }
 
-            // Check if we already have a client for this key vault, if not we will make
-            // one
-            if (!keyVaultClients.containsKey(uri.getHost())) {
-                AppConfigurationSecretClientManager client = new AppConfigurationSecretClientManager(
-                    appConfigurationProperties, uri, keyVaultCredentialProvider,
-                    keyVaultClientProvider, keyVaultSecretProvider);
-                keyVaultClients.put(uri.getHost(), client);
-            }
-            KeyVaultSecret secret = keyVaultClients.get(uri.getHost()).getSecret(uri, maxRetryTime);
+            KeyVaultSecret secret = keyVaultClientFactory.getClient(uri, appConfigurationProperties).getSecret(uri,
+                maxRetryTime);
             if (secret == null) {
                 throw new IOException("No Key Vault Secret found for Reference.");
             }
