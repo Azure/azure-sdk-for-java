@@ -34,11 +34,6 @@ public abstract class AzureEventHubsCommonProperties extends AbstractAzureAmqpCo
      */
     private String customEndpointAddress;
 
-    AzureEventHubsCommonProperties() {
-        // if the profile has value, will make it impossible to merge between
-        this.profile.setCloudType(null);
-    }
-
     protected String extractFqdnFromConnectionString() {
         if (this.connectionString == null) {
             return null;
@@ -59,7 +54,14 @@ public abstract class AzureEventHubsCommonProperties extends AbstractAzureAmqpCo
     // Endpoint=sb://<FQDN>/;SharedAccessKeyName=<KeyName>;SharedAccessKey=<KeyValue>
     // https://docs.microsoft.com/azure/event-hubs/event-hubs-get-connection-string
     public String getFullyQualifiedNamespace() {
-        return this.namespace == null ? extractFqdnFromConnectionString() : (this.namespace + "." + domainName);
+        return this.namespace == null ? extractFqdnFromConnectionString() : buildFqdnFromNamespace();
+    }
+
+    private String buildFqdnFromNamespace() {
+        if (namespace == null || domainName == null) {
+            return null;
+        }
+        return this.namespace + "." + domainName;
     }
 
     public String getDomainName() {

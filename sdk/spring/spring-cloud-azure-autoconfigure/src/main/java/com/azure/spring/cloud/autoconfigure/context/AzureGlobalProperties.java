@@ -44,7 +44,7 @@ public class AzureGlobalProperties implements AzureProperties, RetryOptionsProvi
     private final TokenCredentialConfigurationProperties credential = new TokenCredentialConfigurationProperties();
 
     @NestedConfigurationProperty
-    private final AzureProfileConfigurationProperties profile = new AzureProfileConfigurationProperties();
+    private final GlobalProfileConfigurationProperties profile = new GlobalProfileConfigurationProperties();
 
     @Override
     public GlobalClientConfigurationProperties getClient() {
@@ -421,5 +421,13 @@ public class AzureGlobalProperties implements AzureProperties, RetryOptionsProvi
         public void setTransportType(AmqpTransportType transportType) {
             this.transportType = transportType;
         }
+    }
+
+    public static class GlobalProfileConfigurationProperties extends AzureProfileConfigurationProperties {
+
+        public GlobalProfileConfigurationProperties() {
+            setCloudType(CloudType.AZURE);
+        }
+
     }
 }

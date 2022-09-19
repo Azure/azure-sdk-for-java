@@ -39,17 +39,11 @@ class AzureEventHubsPropertiesTest {
         AzureEventHubsProperties.Processor processor = eventHubsProperties.buildProcessorProperties();
         AzureEventHubsProperties.Processor.BlobCheckpointStore checkpointStore = processor.getCheckpointStore();
 
-        assertEquals(AZURE, eventHubsProperties.getProfile().getCloudType());
-        assertEquals(AZURE, producer.getProfile().getCloudType());
-        assertEquals(AZURE, consumer.getProfile().getCloudType());
-        assertEquals(AZURE, processor.getProfile().getCloudType());
-        assertEquals(AZURE, checkpointStore.getProfile().getCloudType());
-
-        assertEquals(AzureEnvironment.AZURE.getActiveDirectoryEndpoint(), eventHubsProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
-        assertEquals(AzureEnvironment.AZURE.getActiveDirectoryEndpoint(), producer.getProfile().getEnvironment().getActiveDirectoryEndpoint());
-        assertEquals(AzureEnvironment.AZURE.getActiveDirectoryEndpoint(), consumer.getProfile().getEnvironment().getActiveDirectoryEndpoint());
-        assertEquals(AzureEnvironment.AZURE.getActiveDirectoryEndpoint(), processor.getProfile().getEnvironment().getActiveDirectoryEndpoint());
-        assertEquals(AzureEnvironment.AZURE.getActiveDirectoryEndpoint(), checkpointStore.getProfile().getEnvironment().getActiveDirectoryEndpoint());
+        assertNull(eventHubsProperties.getProfile().getCloudType());
+        assertNull(producer.getProfile().getCloudType());
+        assertNull(consumer.getProfile().getCloudType());
+        assertNull(processor.getProfile().getCloudType());
+        assertNull(checkpointStore.getProfile().getCloudType());
     }
 
     @Test

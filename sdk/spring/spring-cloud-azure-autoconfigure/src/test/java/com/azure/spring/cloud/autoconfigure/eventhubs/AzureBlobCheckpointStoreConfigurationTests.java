@@ -147,7 +147,8 @@ class AzureBlobCheckpointStoreConfigurationTests {
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .withPropertyValues(
                 "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=abc",
-                "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-name=sa"
+                "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-name=sa",
+                "spring.cloud.azure.eventhubs.profile.cloud-type=Azure"
             )
             .run(context -> {
                 assertThat(context).doesNotHaveBean(BlobCheckpointStoreContainerInitializer.class);

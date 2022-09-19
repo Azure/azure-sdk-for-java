@@ -8,7 +8,6 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import org.junit.jupiter.api.Test;
 
-import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE;
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_CHINA;
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,13 +17,13 @@ class AzureServiceBusPropertiesTest {
 
     @Test
     void defaultAmqpTransportTypeIsNull() {
-        AzureServiceBusProperties eventHubsProperties = new AzureServiceBusProperties();
+        AzureServiceBusProperties serviceBusProperties = new AzureServiceBusProperties();
 
-        AzureServiceBusProperties.Producer producer = eventHubsProperties.buildProducerProperties();
-        AzureServiceBusProperties.Consumer consumer = eventHubsProperties.buildConsumerProperties();
-        AzureServiceBusProperties.Processor processor = eventHubsProperties.buildProcessorProperties();
+        AzureServiceBusProperties.Producer producer = serviceBusProperties.buildProducerProperties();
+        AzureServiceBusProperties.Consumer consumer = serviceBusProperties.buildConsumerProperties();
+        AzureServiceBusProperties.Processor processor = serviceBusProperties.buildProcessorProperties();
 
-        assertNull(eventHubsProperties.getClient().getTransportType());
+        assertNull(serviceBusProperties.getClient().getTransportType());
         assertNull(producer.getClient().getTransportType());
         assertNull(consumer.getClient().getTransportType());
         assertNull(processor.getClient().getTransportType());
@@ -32,32 +31,27 @@ class AzureServiceBusPropertiesTest {
 
     @Test
     void defaultProfileCloudTypeIsAzure() {
-        AzureServiceBusProperties eventHubsProperties = new AzureServiceBusProperties();
+        AzureServiceBusProperties serviceBusProperties = new AzureServiceBusProperties();
 
-        AzureServiceBusProperties.Producer producer = eventHubsProperties.buildProducerProperties();
-        AzureServiceBusProperties.Consumer consumer = eventHubsProperties.buildConsumerProperties();
-        AzureServiceBusProperties.Processor processor = eventHubsProperties.buildProcessorProperties();
+        AzureServiceBusProperties.Producer producer = serviceBusProperties.buildProducerProperties();
+        AzureServiceBusProperties.Consumer consumer = serviceBusProperties.buildConsumerProperties();
+        AzureServiceBusProperties.Processor processor = serviceBusProperties.buildProcessorProperties();
 
-        assertEquals(AZURE, eventHubsProperties.getProfile().getCloudType());
-        assertEquals(AZURE, producer.getProfile().getCloudType());
-        assertEquals(AZURE, consumer.getProfile().getCloudType());
-        assertEquals(AZURE, processor.getProfile().getCloudType());
-
-        assertEquals(AzureEnvironment.AZURE.getActiveDirectoryEndpoint(), eventHubsProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
-        assertEquals(AzureEnvironment.AZURE.getActiveDirectoryEndpoint(), producer.getProfile().getEnvironment().getActiveDirectoryEndpoint());
-        assertEquals(AzureEnvironment.AZURE.getActiveDirectoryEndpoint(), consumer.getProfile().getEnvironment().getActiveDirectoryEndpoint());
-        assertEquals(AzureEnvironment.AZURE.getActiveDirectoryEndpoint(), processor.getProfile().getEnvironment().getActiveDirectoryEndpoint());
+        assertNull(serviceBusProperties.getProfile().getCloudType());
+        assertNull(producer.getProfile().getCloudType());
+        assertNull(consumer.getProfile().getCloudType());
+        assertNull(processor.getProfile().getCloudType());
     }
 
     @Test
     void defaultDomainNameIsAzure() {
-        AzureServiceBusProperties eventHubsProperties = new AzureServiceBusProperties();
+        AzureServiceBusProperties serviceBusProperties = new AzureServiceBusProperties();
 
-        AzureServiceBusProperties.Producer producer = eventHubsProperties.buildProducerProperties();
-        AzureServiceBusProperties.Consumer consumer = eventHubsProperties.buildConsumerProperties();
-        AzureServiceBusProperties.Processor processor = eventHubsProperties.buildProcessorProperties();
+        AzureServiceBusProperties.Producer producer = serviceBusProperties.buildProducerProperties();
+        AzureServiceBusProperties.Consumer consumer = serviceBusProperties.buildConsumerProperties();
+        AzureServiceBusProperties.Processor processor = serviceBusProperties.buildProcessorProperties();
 
-        assertEquals("servicebus.windows.net", eventHubsProperties.getDomainName());
+        assertEquals("servicebus.windows.net", serviceBusProperties.getDomainName());
         assertEquals("servicebus.windows.net", producer.getDomainName());
         assertEquals("servicebus.windows.net", consumer.getDomainName());
         assertEquals("servicebus.windows.net", processor.getDomainName());
@@ -65,14 +59,14 @@ class AzureServiceBusPropertiesTest {
 
     @Test
     void childrenWillInheritParent() {
-        AzureServiceBusProperties eventHubsProperties = new AzureServiceBusProperties();
+        AzureServiceBusProperties serviceBusProperties = new AzureServiceBusProperties();
 
-        eventHubsProperties.getClient().setTransportType(AmqpTransportType.AMQP_WEB_SOCKETS);
-        eventHubsProperties.getProfile().setCloudType(AZURE_US_GOVERNMENT);
+        serviceBusProperties.getClient().setTransportType(AmqpTransportType.AMQP_WEB_SOCKETS);
+        serviceBusProperties.getProfile().setCloudType(AZURE_US_GOVERNMENT);
 
-        AzureServiceBusProperties.Producer producer = eventHubsProperties.buildProducerProperties();
-        AzureServiceBusProperties.Consumer consumer = eventHubsProperties.buildConsumerProperties();
-        AzureServiceBusProperties.Processor processor = eventHubsProperties.buildProcessorProperties();
+        AzureServiceBusProperties.Producer producer = serviceBusProperties.buildProducerProperties();
+        AzureServiceBusProperties.Consumer consumer = serviceBusProperties.buildConsumerProperties();
+        AzureServiceBusProperties.Processor processor = serviceBusProperties.buildProcessorProperties();
 
         assertEquals(AZURE_US_GOVERNMENT, producer.getProfile().getCloudType());
         assertEquals(AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint(),
@@ -92,12 +86,12 @@ class AzureServiceBusPropertiesTest {
 
     @Test
     void buildProducerPropertiesUseParent() {
-        AzureServiceBusProperties eventHubsProperties = new AzureServiceBusProperties();
-        eventHubsProperties.getProfile().setCloudType(AZURE_US_GOVERNMENT);
-        eventHubsProperties.setDomainName("parent-domain");
-        eventHubsProperties.getClient().setTransportType(AmqpTransportType.AMQP);
+        AzureServiceBusProperties serviceBusProperties = new AzureServiceBusProperties();
+        serviceBusProperties.getProfile().setCloudType(AZURE_US_GOVERNMENT);
+        serviceBusProperties.setDomainName("parent-domain");
+        serviceBusProperties.getClient().setTransportType(AmqpTransportType.AMQP);
 
-        AzureServiceBusProperties.Producer producer = eventHubsProperties.buildProducerProperties();
+        AzureServiceBusProperties.Producer producer = serviceBusProperties.buildProducerProperties();
         assertEquals(AZURE_US_GOVERNMENT, producer.getProfile().getCloudType());
         assertEquals(AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint(),
             producer.getProfile().getEnvironment().getActiveDirectoryEndpoint());
@@ -107,17 +101,17 @@ class AzureServiceBusPropertiesTest {
 
     @Test
     void buildProducerPropertiesUseChild() {
-        AzureServiceBusProperties eventHubsProperties = new AzureServiceBusProperties();
-        eventHubsProperties.getProfile().setCloudType(AZURE_US_GOVERNMENT);
-        eventHubsProperties.setDomainName("parent-domain");
-        eventHubsProperties.getClient().setTransportType(AmqpTransportType.AMQP);
+        AzureServiceBusProperties serviceBusProperties = new AzureServiceBusProperties();
+        serviceBusProperties.getProfile().setCloudType(AZURE_US_GOVERNMENT);
+        serviceBusProperties.setDomainName("parent-domain");
+        serviceBusProperties.getClient().setTransportType(AmqpTransportType.AMQP);
 
-        AzureServiceBusProperties.Producer producerProperties = eventHubsProperties.getProducer();
+        AzureServiceBusProperties.Producer producerProperties = serviceBusProperties.getProducer();
         producerProperties.setDomainName("child-domain");
         producerProperties.getProfile().setCloudType(AZURE_CHINA);
         producerProperties.getClient().setTransportType(AmqpTransportType.AMQP_WEB_SOCKETS);
 
-        AzureServiceBusProperties.Producer producer = eventHubsProperties.buildProducerProperties();
+        AzureServiceBusProperties.Producer producer = serviceBusProperties.buildProducerProperties();
         assertEquals(AZURE_CHINA, producer.getProfile().getCloudType());
         assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryEndpoint(),
             producer.getProfile().getEnvironment().getActiveDirectoryEndpoint());
@@ -127,12 +121,12 @@ class AzureServiceBusPropertiesTest {
 
     @Test
     void buildConsumerPropertiesUseParent() {
-        AzureServiceBusProperties eventHubsProperties = new AzureServiceBusProperties();
-        eventHubsProperties.getProfile().setCloudType(AZURE_US_GOVERNMENT);
-        eventHubsProperties.setDomainName("parent-domain");
-        eventHubsProperties.getClient().setTransportType(AmqpTransportType.AMQP);
+        AzureServiceBusProperties serviceBusProperties = new AzureServiceBusProperties();
+        serviceBusProperties.getProfile().setCloudType(AZURE_US_GOVERNMENT);
+        serviceBusProperties.setDomainName("parent-domain");
+        serviceBusProperties.getClient().setTransportType(AmqpTransportType.AMQP);
 
-        AzureServiceBusProperties.Consumer consumer = eventHubsProperties.buildConsumerProperties();
+        AzureServiceBusProperties.Consumer consumer = serviceBusProperties.buildConsumerProperties();
         assertEquals(AZURE_US_GOVERNMENT, consumer.getProfile().getCloudType());
         assertEquals(AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint(),
             consumer.getProfile().getEnvironment().getActiveDirectoryEndpoint());
@@ -142,17 +136,17 @@ class AzureServiceBusPropertiesTest {
 
     @Test
     void buildConsumerPropertiesUseChild() {
-        AzureServiceBusProperties eventHubsProperties = new AzureServiceBusProperties();
-        eventHubsProperties.getProfile().setCloudType(AZURE_US_GOVERNMENT);
-        eventHubsProperties.setDomainName("parent-domain");
-        eventHubsProperties.getClient().setTransportType(AmqpTransportType.AMQP);
+        AzureServiceBusProperties serviceBusProperties = new AzureServiceBusProperties();
+        serviceBusProperties.getProfile().setCloudType(AZURE_US_GOVERNMENT);
+        serviceBusProperties.setDomainName("parent-domain");
+        serviceBusProperties.getClient().setTransportType(AmqpTransportType.AMQP);
 
-        AzureServiceBusProperties.Consumer consumerProperties = eventHubsProperties.getConsumer();
+        AzureServiceBusProperties.Consumer consumerProperties = serviceBusProperties.getConsumer();
         consumerProperties.setDomainName("child-domain");
         consumerProperties.getProfile().setCloudType(AZURE_CHINA);
         consumerProperties.getClient().setTransportType(AmqpTransportType.AMQP_WEB_SOCKETS);
 
-        AzureServiceBusProperties.Consumer consumer = eventHubsProperties.buildConsumerProperties();
+        AzureServiceBusProperties.Consumer consumer = serviceBusProperties.buildConsumerProperties();
         assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_CHINA, consumer.getProfile().getCloudType());
         assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryEndpoint(),
             consumer.getProfile().getEnvironment().getActiveDirectoryEndpoint());
@@ -162,12 +156,12 @@ class AzureServiceBusPropertiesTest {
 
     @Test
     void buildProcessorPropertiesUseParent() {
-        AzureServiceBusProperties eventHubsProperties = new AzureServiceBusProperties();
-        eventHubsProperties.getProfile().setCloudType(AZURE_US_GOVERNMENT);
-        eventHubsProperties.setDomainName("parent-domain");
-        eventHubsProperties.getClient().setTransportType(AmqpTransportType.AMQP);
+        AzureServiceBusProperties serviceBusProperties = new AzureServiceBusProperties();
+        serviceBusProperties.getProfile().setCloudType(AZURE_US_GOVERNMENT);
+        serviceBusProperties.setDomainName("parent-domain");
+        serviceBusProperties.getClient().setTransportType(AmqpTransportType.AMQP);
 
-        AzureServiceBusProperties.Processor processor = eventHubsProperties.buildProcessorProperties();
+        AzureServiceBusProperties.Processor processor = serviceBusProperties.buildProcessorProperties();
         assertEquals(AZURE_US_GOVERNMENT, processor.getProfile().getCloudType());
         assertEquals(AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint(),
             processor.getProfile().getEnvironment().getActiveDirectoryEndpoint());
@@ -176,17 +170,17 @@ class AzureServiceBusPropertiesTest {
 
     @Test
     void buildProcessorPropertiesUseChild() {
-        AzureServiceBusProperties eventHubsProperties = new AzureServiceBusProperties();
-        eventHubsProperties.getProfile().setCloudType(AZURE_US_GOVERNMENT);
-        eventHubsProperties.setDomainName("parent-domain");
-        eventHubsProperties.getClient().setTransportType(AmqpTransportType.AMQP);
+        AzureServiceBusProperties serviceBusProperties = new AzureServiceBusProperties();
+        serviceBusProperties.getProfile().setCloudType(AZURE_US_GOVERNMENT);
+        serviceBusProperties.setDomainName("parent-domain");
+        serviceBusProperties.getClient().setTransportType(AmqpTransportType.AMQP);
 
-        AzureServiceBusProperties.Processor processorProperties = eventHubsProperties.getProcessor();
+        AzureServiceBusProperties.Processor processorProperties = serviceBusProperties.getProcessor();
         processorProperties.getProfile().setCloudType(AZURE_CHINA);
         processorProperties.setDomainName("child-domain");
         processorProperties.getClient().setTransportType(AmqpTransportType.AMQP_WEB_SOCKETS);
 
-        AzureServiceBusProperties.Processor processor = eventHubsProperties.buildProcessorProperties();
+        AzureServiceBusProperties.Processor processor = serviceBusProperties.buildProcessorProperties();
         assertEquals(AZURE_CHINA, processor.getProfile().getCloudType());
         assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryEndpoint(),
             processor.getProfile().getEnvironment().getActiveDirectoryEndpoint());

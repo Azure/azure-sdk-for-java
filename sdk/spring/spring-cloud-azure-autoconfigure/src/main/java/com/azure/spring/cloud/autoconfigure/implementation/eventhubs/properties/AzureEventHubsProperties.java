@@ -46,7 +46,6 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties
 
     public AzureEventHubsProperties() {
         this.setDomainName(DEFAULT_DOMAIN_NAME);
-        this.getProfile().setCloudType(CloudType.AZURE);
     }
 
     public Producer buildProducerProperties() {
@@ -374,10 +373,6 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties
          * Blob checkpoint store.
          */
         public static class BlobCheckpointStore extends AzureStorageBlobProperties {
-
-            public BlobCheckpointStore() {
-                this.profile.setCloudType(null);
-            }
 
             /**
              * Whether to create the container if it does not exist.

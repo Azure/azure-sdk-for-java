@@ -39,7 +39,6 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
 
     public AzureServiceBusProperties() {
         this.setDomainName(DEFAULT_DOMAIN_NAME);
-        this.getProfile().setCloudType(CloudType.AZURE);
     }
 
     public Boolean getCrossEntityTransactions() {

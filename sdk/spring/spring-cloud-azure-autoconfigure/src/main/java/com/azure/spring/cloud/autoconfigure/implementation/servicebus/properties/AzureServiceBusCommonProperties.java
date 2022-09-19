@@ -35,10 +35,6 @@ abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpConfigur
      */
     private ServiceBusEntityType entityType;
 
-    AzureServiceBusCommonProperties() {
-        this.profile.setCloudType(null);
-    }
-
     private String extractFqdnFromConnectionString() {
         if (this.connectionString == null) {
             return null;
@@ -47,7 +43,14 @@ abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpConfigur
     }
 
     public String getFullyQualifiedNamespace() {
-        return this.namespace == null ? extractFqdnFromConnectionString() : (this.namespace + "." + domainName);
+        return this.namespace == null ? extractFqdnFromConnectionString() : buildFqdnFromNamespace();
+    }
+
+    private String buildFqdnFromNamespace() {
+        if (namespace == null || domainName == null) {
+            return null;
+        }
+        return this.namespace + "." + domainName;
     }
 
     public String getDomainName() {
