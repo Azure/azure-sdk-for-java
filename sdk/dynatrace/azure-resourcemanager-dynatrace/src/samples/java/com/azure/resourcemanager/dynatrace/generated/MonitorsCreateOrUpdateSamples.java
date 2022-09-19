@@ -21,7 +21,7 @@ import java.util.Map;
 /** Samples for Monitors CreateOrUpdate. */
 public final class MonitorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/preview/2021-09-01-preview/examples/Monitors_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_CreateOrUpdate_MaximumSet_Gen.
@@ -61,7 +61,7 @@ public final class MonitorsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/preview/2021-09-01-preview/examples/Monitors_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_CreateOrUpdate_MinimumSet_Gen.

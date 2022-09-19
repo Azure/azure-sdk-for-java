@@ -148,7 +148,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * List backup policies for Netapp Account.
+     * List backup policies
+     *
+     * <p>List backup policies for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -199,7 +201,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * List backup policies for Netapp Account.
+     * List backup policies
+     *
+     * <p>List backup policies for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -249,7 +253,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * List backup policies for Netapp Account.
+     * List backup policies
+     *
+     * <p>List backup policies for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -264,7 +270,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * List backup policies for Netapp Account.
+     * List backup policies
+     *
+     * <p>List backup policies for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -280,7 +288,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * List backup policies for Netapp Account.
+     * List backup policies
+     *
+     * <p>List backup policies for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -295,7 +305,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * List backup policies for Netapp Account.
+     * List backup policies
+     *
+     * <p>List backup policies for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -311,7 +323,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Get a particular backup Policy.
+     * Get a backup Policy
+     *
+     * <p>Get a particular backup Policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -365,7 +379,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Get a particular backup Policy.
+     * Get a backup Policy
+     *
+     * <p>Get a particular backup Policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -417,7 +433,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Get a particular backup Policy.
+     * Get a backup Policy
+     *
+     * <p>Get a particular backup Policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -434,7 +452,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Get a particular backup Policy.
+     * Get a backup Policy
+     *
+     * <p>Get a particular backup Policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -450,7 +470,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Get a particular backup Policy.
+     * Get a backup Policy
+     *
+     * <p>Get a particular backup Policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -468,7 +490,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Create a backup policy for Netapp Account.
+     * Create a backup policy
+     *
+     * <p>Create a backup policy for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -529,7 +553,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Create a backup policy for Netapp Account.
+     * Create a backup policy
+     *
+     * <p>Create a backup policy for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -592,7 +618,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Create a backup policy for Netapp Account.
+     * Create a backup policy
+     *
+     * <p>Create a backup policy for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -619,7 +647,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Create a backup policy for Netapp Account.
+     * Create a backup policy
+     *
+     * <p>Create a backup policy for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -648,7 +678,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Create a backup policy for Netapp Account.
+     * Create a backup policy
+     *
+     * <p>Create a backup policy for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -666,7 +698,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Create a backup policy for Netapp Account.
+     * Create a backup policy
+     *
+     * <p>Create a backup policy for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -689,7 +723,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Create a backup policy for Netapp Account.
+     * Create a backup policy
+     *
+     * <p>Create a backup policy for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -709,7 +745,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Create a backup policy for Netapp Account.
+     * Create a backup policy
+     *
+     * <p>Create a backup policy for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -734,7 +772,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Create a backup policy for Netapp Account.
+     * Create a backup policy
+     *
+     * <p>Create a backup policy for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -752,7 +792,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Create a backup policy for Netapp Account.
+     * Create a backup policy
+     *
+     * <p>Create a backup policy for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -775,7 +817,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Patch a backup policy for Netapp Account.
+     * Patch a backup policy
+     *
+     * <p>Patch a backup policy for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -836,7 +880,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Patch a backup policy for Netapp Account.
+     * Patch a backup policy
+     *
+     * <p>Patch a backup policy for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -899,7 +945,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Patch a backup policy for Netapp Account.
+     * Patch a backup policy
+     *
+     * <p>Patch a backup policy for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -926,7 +974,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Patch a backup policy for Netapp Account.
+     * Patch a backup policy
+     *
+     * <p>Patch a backup policy for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -955,7 +1005,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Patch a backup policy for Netapp Account.
+     * Patch a backup policy
+     *
+     * <p>Patch a backup policy for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -973,7 +1025,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Patch a backup policy for Netapp Account.
+     * Patch a backup policy
+     *
+     * <p>Patch a backup policy for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -996,7 +1050,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Patch a backup policy for Netapp Account.
+     * Patch a backup policy
+     *
+     * <p>Patch a backup policy for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1016,7 +1072,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Patch a backup policy for Netapp Account.
+     * Patch a backup policy
+     *
+     * <p>Patch a backup policy for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1041,7 +1099,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Patch a backup policy for Netapp Account.
+     * Patch a backup policy
+     *
+     * <p>Patch a backup policy for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1059,7 +1119,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Patch a backup policy for Netapp Account.
+     * Patch a backup policy
+     *
+     * <p>Patch a backup policy for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1082,7 +1144,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Delete backup policy.
+     * Delete a backup policy
+     *
+     * <p>Delete backup policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1134,7 +1198,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Delete backup policy.
+     * Delete a backup policy
+     *
+     * <p>Delete backup policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1184,7 +1250,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Delete backup policy.
+     * Delete a backup policy
+     *
+     * <p>Delete backup policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1206,7 +1274,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Delete backup policy.
+     * Delete a backup policy
+     *
+     * <p>Delete backup policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1229,7 +1299,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Delete backup policy.
+     * Delete a backup policy
+     *
+     * <p>Delete backup policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1246,7 +1318,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Delete backup policy.
+     * Delete a backup policy
+     *
+     * <p>Delete backup policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1264,7 +1338,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Delete backup policy.
+     * Delete a backup policy
+     *
+     * <p>Delete backup policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1282,7 +1358,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Delete backup policy.
+     * Delete a backup policy
+     *
+     * <p>Delete backup policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1302,7 +1380,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Delete backup policy.
+     * Delete a backup policy
+     *
+     * <p>Delete backup policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1317,7 +1397,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
     }
 
     /**
-     * Delete backup policy.
+     * Delete a backup policy
+     *
+     * <p>Delete backup policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.

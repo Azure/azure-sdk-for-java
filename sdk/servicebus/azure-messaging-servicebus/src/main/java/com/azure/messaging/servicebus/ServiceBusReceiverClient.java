@@ -108,6 +108,15 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     /**
+     * Gets the identifier of the instance of {@link ServiceBusReceiverClient}.
+     *
+     * @return The identifier that can identify the instance of {@link ServiceBusReceiverClient}.
+     */
+    public String getIdentifier() {
+        return asyncClient.getIdentifier();
+    }
+
+    /**
      * Abandons a {@link ServiceBusReceivedMessage message}. This will make the message available again for processing.
      * Abandoning a message will increase the delivery count on the message.
      *

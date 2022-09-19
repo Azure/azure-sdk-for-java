@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LiftrResourceCategories. */
+/** Liftr resource category. */
 public final class LiftrResourceCategories extends ExpandableStringEnum<LiftrResourceCategories> {
     /** Static value Unknown for LiftrResourceCategories. */
     public static final LiftrResourceCategories UNKNOWN = fromString("Unknown");

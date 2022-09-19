@@ -17,7 +17,9 @@ import com.azure.resourcemanager.netapp.models.BackupPolicyPatch;
 /** An instance of this class provides access to all the operations defined in BackupPoliciesClient. */
 public interface BackupPoliciesClient {
     /**
-     * List backup policies for Netapp Account.
+     * List backup policies
+     *
+     * <p>List backup policies for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -30,7 +32,9 @@ public interface BackupPoliciesClient {
     PagedIterable<BackupPolicyInner> list(String resourceGroupName, String accountName);
 
     /**
-     * List backup policies for Netapp Account.
+     * List backup policies
+     *
+     * <p>List backup policies for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -44,7 +48,9 @@ public interface BackupPoliciesClient {
     PagedIterable<BackupPolicyInner> list(String resourceGroupName, String accountName, Context context);
 
     /**
-     * Get a particular backup Policy.
+     * Get a backup Policy
+     *
+     * <p>Get a particular backup Policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -58,7 +64,9 @@ public interface BackupPoliciesClient {
     BackupPolicyInner get(String resourceGroupName, String accountName, String backupPolicyName);
 
     /**
-     * Get a particular backup Policy.
+     * Get a backup Policy
+     *
+     * <p>Get a particular backup Policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -74,7 +82,9 @@ public interface BackupPoliciesClient {
         String resourceGroupName, String accountName, String backupPolicyName, Context context);
 
     /**
-     * Create a backup policy for Netapp Account.
+     * Create a backup policy
+     *
+     * <p>Create a backup policy for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -90,7 +100,9 @@ public interface BackupPoliciesClient {
         String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyInner body);
 
     /**
-     * Create a backup policy for Netapp Account.
+     * Create a backup policy
+     *
+     * <p>Create a backup policy for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -107,7 +119,9 @@ public interface BackupPoliciesClient {
         String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyInner body, Context context);
 
     /**
-     * Create a backup policy for Netapp Account.
+     * Create a backup policy
+     *
+     * <p>Create a backup policy for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -123,7 +137,9 @@ public interface BackupPoliciesClient {
         String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyInner body);
 
     /**
-     * Create a backup policy for Netapp Account.
+     * Create a backup policy
+     *
+     * <p>Create a backup policy for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -140,7 +156,9 @@ public interface BackupPoliciesClient {
         String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyInner body, Context context);
 
     /**
-     * Patch a backup policy for Netapp Account.
+     * Patch a backup policy
+     *
+     * <p>Patch a backup policy for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -156,7 +174,9 @@ public interface BackupPoliciesClient {
         String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyPatch body);
 
     /**
-     * Patch a backup policy for Netapp Account.
+     * Patch a backup policy
+     *
+     * <p>Patch a backup policy for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -173,7 +193,9 @@ public interface BackupPoliciesClient {
         String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyPatch body, Context context);
 
     /**
-     * Patch a backup policy for Netapp Account.
+     * Patch a backup policy
+     *
+     * <p>Patch a backup policy for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -189,7 +211,9 @@ public interface BackupPoliciesClient {
         String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyPatch body);
 
     /**
-     * Patch a backup policy for Netapp Account.
+     * Patch a backup policy
+     *
+     * <p>Patch a backup policy for Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -206,7 +230,9 @@ public interface BackupPoliciesClient {
         String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyPatch body, Context context);
 
     /**
-     * Delete backup policy.
+     * Delete a backup policy
+     *
+     * <p>Delete backup policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -221,7 +247,9 @@ public interface BackupPoliciesClient {
         String resourceGroupName, String accountName, String backupPolicyName);
 
     /**
-     * Delete backup policy.
+     * Delete a backup policy
+     *
+     * <p>Delete backup policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -237,7 +265,9 @@ public interface BackupPoliciesClient {
         String resourceGroupName, String accountName, String backupPolicyName, Context context);
 
     /**
-     * Delete backup policy.
+     * Delete a backup policy
+     *
+     * <p>Delete backup policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -250,7 +280,9 @@ public interface BackupPoliciesClient {
     void delete(String resourceGroupName, String accountName, String backupPolicyName);
 
     /**
-     * Delete backup policy.
+     * Delete a backup policy
+     *
+     * <p>Delete backup policy.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.

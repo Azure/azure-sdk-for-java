@@ -19,15 +19,13 @@ import java.util.Map;
 @Fluent
 public class Db2TableDataset extends Dataset {
     /*
-     * This property will be retired. Please consider using schema + table
-     * properties instead.
+     * This property will be retired. Please consider using schema + table properties instead.
      */
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
     /*
-     * The Db2 schema name. Type: string (or Expression with resultType
-     * string).
+     * The Db2 schema name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.schema")
     private Object schemaTypePropertiesSchema;

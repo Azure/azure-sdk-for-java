@@ -3,6 +3,7 @@
 ## 7.11.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added identifier to client. ([#28904](https://github.com/Azure/azure-sdk-for-java/issues/28904))
 
 ### Breaking Changes
 

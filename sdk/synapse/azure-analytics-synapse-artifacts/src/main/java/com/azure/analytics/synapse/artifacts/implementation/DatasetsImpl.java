@@ -288,14 +288,7 @@ public final class DatasetsImpl {
     public Mono<DatasetResource> createOrUpdateDatasetAsync(
             String datasetName, DatasetResource dataset, String ifMatch) {
         return createOrUpdateDatasetWithResponseAsync(datasetName, dataset, ifMatch)
-                .flatMap(
-                        (Response<DatasetResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -312,14 +305,7 @@ public final class DatasetsImpl {
     public Mono<DatasetResource> createOrUpdateDatasetAsync(String datasetName, DatasetResource dataset) {
         final String ifMatch = null;
         return createOrUpdateDatasetWithResponseAsync(datasetName, dataset, ifMatch)
-                .flatMap(
-                        (Response<DatasetResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -339,14 +325,7 @@ public final class DatasetsImpl {
     public Mono<DatasetResource> createOrUpdateDatasetAsync(
             String datasetName, DatasetResource dataset, String ifMatch, Context context) {
         return createOrUpdateDatasetWithResponseAsync(datasetName, dataset, ifMatch, context)
-                .flatMap(
-                        (Response<DatasetResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -455,15 +434,7 @@ public final class DatasetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatasetResource> getDatasetAsync(String datasetName, String ifNoneMatch) {
-        return getDatasetWithResponseAsync(datasetName, ifNoneMatch)
-                .flatMap(
-                        (Response<DatasetResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getDatasetWithResponseAsync(datasetName, ifNoneMatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -478,15 +449,7 @@ public final class DatasetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatasetResource> getDatasetAsync(String datasetName) {
         final String ifNoneMatch = null;
-        return getDatasetWithResponseAsync(datasetName, ifNoneMatch)
-                .flatMap(
-                        (Response<DatasetResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getDatasetWithResponseAsync(datasetName, ifNoneMatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -504,14 +467,7 @@ public final class DatasetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatasetResource> getDatasetAsync(String datasetName, String ifNoneMatch, Context context) {
         return getDatasetWithResponseAsync(datasetName, ifNoneMatch, context)
-                .flatMap(
-                        (Response<DatasetResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -607,7 +563,7 @@ public final class DatasetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteDatasetAsync(String datasetName) {
-        return deleteDatasetWithResponseAsync(datasetName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteDatasetWithResponseAsync(datasetName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -622,7 +578,7 @@ public final class DatasetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteDatasetAsync(String datasetName, Context context) {
-        return deleteDatasetWithResponseAsync(datasetName, context).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteDatasetWithResponseAsync(datasetName, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -704,7 +660,7 @@ public final class DatasetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> renameDatasetAsync(String datasetName, ArtifactRenameRequest request) {
-        return renameDatasetWithResponseAsync(datasetName, request).flatMap((Response<Void> res) -> Mono.empty());
+        return renameDatasetWithResponseAsync(datasetName, request).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -720,8 +676,7 @@ public final class DatasetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> renameDatasetAsync(String datasetName, ArtifactRenameRequest request, Context context) {
-        return renameDatasetWithResponseAsync(datasetName, request, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+        return renameDatasetWithResponseAsync(datasetName, request, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -758,7 +713,8 @@ public final class DatasetsImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -785,7 +741,8 @@ public final class DatasetsImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
