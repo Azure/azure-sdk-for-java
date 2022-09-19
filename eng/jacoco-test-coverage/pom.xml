@@ -113,7 +113,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-analytics-synapse-artifacts</artifactId>
-      <version>1.0.0-beta.11</version> <!-- {x-version-update;com.azure:azure-analytics-synapse-artifacts;current} -->
+      <version>1.0.0-beta.12</version> <!-- {x-version-update;com.azure:azure-analytics-synapse-artifacts;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -183,12 +183,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.36.0</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.37.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos-encryption</artifactId>
-      <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
+      <version>1.7.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -635,7 +635,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-spring-data-cosmos</artifactId>
-      <version>3.27.0</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
+      <version>3.28.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
     </dependency>
 	  <dependency>
       <groupId>com.azure</groupId>

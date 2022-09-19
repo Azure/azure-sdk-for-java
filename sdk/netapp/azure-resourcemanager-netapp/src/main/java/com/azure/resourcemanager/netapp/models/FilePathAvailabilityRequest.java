@@ -18,8 +18,7 @@ public final class FilePathAvailabilityRequest {
     private String name;
 
     /*
-     * The Azure Resource URI for a delegated subnet. Must have the delegation
-     * Microsoft.NetApp/volumes
+     * The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes
      */
     @JsonProperty(value = "subnetId", required = true)
     private String subnetId;

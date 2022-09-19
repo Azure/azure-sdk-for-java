@@ -7,16 +7,12 @@ package com.azure.resourcemanager.kusto.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class representing a managed private endpoint. */
 @Fluent
 public final class ManagedPrivateEndpointInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedPrivateEndpointInner.class);
-
     /*
      * A managed private endpoint.
      */

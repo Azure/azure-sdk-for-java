@@ -5,19 +5,17 @@
 package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.kusto.models.DatabaseShareOrigin;
 import com.azure.resourcemanager.kusto.models.DatabaseStatistics;
 import com.azure.resourcemanager.kusto.models.PrincipalsModificationKind;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.kusto.models.TableLevelSharingProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
 /** Class representing the Kusto database properties. */
 @Fluent
 public final class ReadOnlyFollowingDatabaseProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReadOnlyFollowingDatabaseProperties.class);
-
     /*
      * The provisioned state of the resource.
      */
@@ -25,8 +23,7 @@ public final class ReadOnlyFollowingDatabaseProperties {
     private ProvisioningState provisioningState;
 
     /*
-     * The time the data should be kept before it stops being accessible to
-     * queries in TimeSpan.
+     * The time the data should be kept before it stops being accessible to queries in TimeSpan.
      */
     @JsonProperty(value = "softDeletePeriod", access = JsonProperty.Access.WRITE_ONLY)
     private Duration softDeletePeriod;
@@ -60,6 +57,24 @@ public final class ReadOnlyFollowingDatabaseProperties {
      */
     @JsonProperty(value = "principalsModificationKind", access = JsonProperty.Access.WRITE_ONLY)
     private PrincipalsModificationKind principalsModificationKind;
+
+    /*
+     * Table level sharing specifications
+     */
+    @JsonProperty(value = "tableLevelSharingProperties", access = JsonProperty.Access.WRITE_ONLY)
+    private TableLevelSharingProperties tableLevelSharingProperties;
+
+    /*
+     * The original database name, before databaseNameOverride or databaseNamePrefix where applied.
+     */
+    @JsonProperty(value = "originalDatabaseName", access = JsonProperty.Access.WRITE_ONLY)
+    private String originalDatabaseName;
+
+    /*
+     * The origin of the following setup.
+     */
+    @JsonProperty(value = "databaseShareOrigin", access = JsonProperty.Access.WRITE_ONLY)
+    private DatabaseShareOrigin databaseShareOrigin;
 
     /**
      * Get the provisioningState property: The provisioned state of the resource.
@@ -137,6 +152,34 @@ public final class ReadOnlyFollowingDatabaseProperties {
     }
 
     /**
+     * Get the tableLevelSharingProperties property: Table level sharing specifications.
+     *
+     * @return the tableLevelSharingProperties value.
+     */
+    public TableLevelSharingProperties tableLevelSharingProperties() {
+        return this.tableLevelSharingProperties;
+    }
+
+    /**
+     * Get the originalDatabaseName property: The original database name, before databaseNameOverride or
+     * databaseNamePrefix where applied.
+     *
+     * @return the originalDatabaseName value.
+     */
+    public String originalDatabaseName() {
+        return this.originalDatabaseName;
+    }
+
+    /**
+     * Get the databaseShareOrigin property: The origin of the following setup.
+     *
+     * @return the databaseShareOrigin value.
+     */
+    public DatabaseShareOrigin databaseShareOrigin() {
+        return this.databaseShareOrigin;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -144,6 +187,9 @@ public final class ReadOnlyFollowingDatabaseProperties {
     public void validate() {
         if (statistics() != null) {
             statistics().validate();
+        }
+        if (tableLevelSharingProperties() != null) {
+            tableLevelSharingProperties().validate();
         }
     }
 }
