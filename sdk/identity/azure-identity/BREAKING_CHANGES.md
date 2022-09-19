@@ -12,7 +12,7 @@ DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilde
     .build();
 ```
 
-- Add `*` to enable token acquisition from any tenant. This is the original behavior and is compatible with versions 1.4.0 through 1.5.5. For example:
+- Add `*` to enable token acquisition from any tenant. This is the original behavior and is compatible previous versions supporting multi tenant authentication. For example:
 
 ```java
 DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder()
@@ -21,3 +21,5 @@ DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilde
 ```
 
 Note: Credential types which do not require a `tenantId` on construction will only throw `ClientAuthenticationException` when the application has provided a value for `tenantId` on the credential builder. If no `tenantId` is specified when building the credential, the credential will acquire tokens for any requested `tenantId` regardless of the value of `additionallyAllowedTenants`.
+
+More information on this change and the consideration behind it can be found [here](https://aka.ms/azsdk/blog/multi-tenant-guidance).
