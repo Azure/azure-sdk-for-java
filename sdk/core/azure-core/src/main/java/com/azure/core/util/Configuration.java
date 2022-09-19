@@ -202,11 +202,14 @@ public class Configuration implements Cloneable {
      * Sets the name of the {@link HttpClientProvider} implementation that should be used to construct instances of
      * {@link HttpClient}.
      * <p>
-     * The name must be the full class name, ex {@code java.lang.String} and not {@code String}, to disambiguate
-     * multiple providers with the same name but from different packages.
+     * The name must be the full class name, ex {@code com.azure.core.http.netty.NettyAsyncHttpClientProvider} and not
+     * {@code NettyAsyncHttpClientProvider}, to disambiguate multiple providers with the same name but from different
+     * packages.
      * <p>
-     * If a value isn't set or doesn't match an {@link HttpClientProvider} found on the class path the first found
-     * implementation will be used.
+     * If the value isn't set or is an empty string the first {@link HttpClientProvider} found on the class path will
+     * be used to create an instance of {@link HttpClient}. If the value is set and doesn't match any
+     * {@link HttpClientProvider} found on the class path an {@link IllegalStateException} will be thrown when
+     * attempting to create an instance of {@link HttpClient}.
      */
     public static final String PROPERTY_AZURE_HTTP_CLIENT_IMPLEMENTATION = "AZURE_HTTP_CLIENT_IMPLEMENTATION";
 

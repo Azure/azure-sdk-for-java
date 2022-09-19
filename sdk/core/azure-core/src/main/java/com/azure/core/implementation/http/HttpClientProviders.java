@@ -18,11 +18,19 @@ import java.util.ServiceLoader;
  * This class handles loading available HTTP clients
  */
 public final class HttpClientProviders {
-    private static final String CANNOT_FIND_HTTP_CLIENT = "A request was made to load the default HttpClient provider "
+    private static final String NO_DEFAULT_PROVIDER = "A request was made to load the default HttpClient provider "
         + "but one could not be found on the classpath. If you are using a dependency manager, consider including a "
         + "dependency on azure-core-http-netty or azure-core-http-okhttp. Depending on your existing dependencies, you "
         + "have the choice of Netty or OkHttp implementations. Additionally, refer to "
         + "https://aka.ms/azsdk/java/docs/custom-httpclient to learn about writing your own implementation.";
+
+    private static final String CANNOT_FIND_SPECIFIC_PROVIDER = "A request was made to use a specific "
+        + "HttpClientProvider to create an instance of HttpClient but it wasn't found on the classpath. If you're "
+        + "using a dependency manager ensure you're including the dependency that provides the specific "
+        + "implementation. If you're including the specific implementation ensure that the HttpClientProvider service "
+        + "it supplies is being included in the 'META-INF/services' file 'com'azure.core.http.HttpClientProvider'. "
+        + "The requested HttpClientProvider was: ";
+
 
     private static final ClientLogger LOGGER = new ClientLogger(HttpClientProviders.class);
 
@@ -68,7 +76,7 @@ public final class HttpClientProviders {
 
     public static HttpClient createInstance(ClientOptions clientOptions) {
         if (DEFAULT_PROVIDER == null) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(CANNOT_FIND_HTTP_CLIENT));
+            throw LOGGER.logExceptionAsError(new IllegalStateException(NO_DEFAULT_PROVIDER));
         }
 
         if (clientOptions instanceof HttpClientOptions) {
@@ -77,8 +85,13 @@ public final class HttpClientProviders {
             if (CoreUtils.isNullOrEmpty(selectedImplementation)) {
                 return DEFAULT_PROVIDER.createInstance(httpClientOptions);
             } else {
-                AVAILABLE_PROVIDERS.getOrDefault(selectedImplementation, DEFAULT_PROVIDER)
-                    .createInstance(httpClientOptions);
+                HttpClientProvider provider = AVAILABLE_PROVIDERS.get(selectedImplementation);
+                if (provider == null) {
+                    throw LOGGER.logExceptionAsError(
+                        new IllegalStateException(CANNOT_FIND_SPECIFIC_PROVIDER + selectedImplementation));
+                } else {
+                    return provider.createInstance(httpClientOptions);
+                }
             }
         }
 

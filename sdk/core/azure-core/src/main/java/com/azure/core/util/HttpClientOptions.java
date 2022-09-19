@@ -125,7 +125,7 @@ public final class HttpClientOptions extends ClientOptions {
      * applied. When applying the timeout the greatest of one millisecond and the value of {@code connectTimeout} will
      * be used.
      * <p>
-     * By default the connection timeout is 10 seconds.
+     * The default connection timeout is 10 seconds.
      *
      * @param connectTimeout Connect timeout duration.
      * @return The updated HttpClientOptions object.
@@ -138,7 +138,7 @@ public final class HttpClientOptions extends ClientOptions {
     /**
      * Gets the connection timeout for a request to be sent.
      * <p>
-     * By default the connection timeout is 10 seconds.
+     * The default connection timeout is 10 seconds.
      *
      * @return The connection timeout of a request to be sent.
      */
@@ -158,7 +158,7 @@ public final class HttpClientOptions extends ClientOptions {
      * applied. When applying the timeout the greatest of one millisecond and the value of {@code writeTimeout} will be
      * used.
      * <p>
-     * By default the writing timeout is 60 seconds.
+     * The default writing timeout is 60 seconds.
      *
      * @param writeTimeout Write operation timeout duration.
      * @return The updated HttpClientOptions object.
@@ -171,7 +171,7 @@ public final class HttpClientOptions extends ClientOptions {
     /**
      * Gets the writing timeout for a request to be sent.
      * <p>
-     * By default the writing timeout is 60 seconds.
+     * The default writing timeout is 60 seconds.
      *
      * @return The writing timeout of a request to be sent.
      */
@@ -190,7 +190,7 @@ public final class HttpClientOptions extends ClientOptions {
      * applied to the response. When applying the timeout the greatest of one millisecond and the value of
      * {@code responseTimeout} will be used.
      * <p>
-     * By default the response timeout is 60 seconds.
+     * The default response timeout is 60 seconds.
      *
      * @param responseTimeout Response timeout duration.
      * @return The updated HttpClientOptions object.
@@ -211,7 +211,7 @@ public final class HttpClientOptions extends ClientOptions {
      * applied to the response. When applying the timeout the greatest of one millisecond and the value of
      * {@code responseTimeout} will be used.
      * <p>
-     * By default the response timeout is 60 seconds.
+     * The default response timeout is 60 seconds.
      *
      * @param responseTimeout Response timeout duration.
      * @return The updated HttpClientOptions object.
@@ -224,7 +224,7 @@ public final class HttpClientOptions extends ClientOptions {
     /**
      * Gets the response timeout duration used when waiting for a server to reply.
      * <p>
-     * By default the response timeout is 60 seconds.
+     * The default response timeout is 60 seconds.
      *
      * @return The response timeout duration.
      */
@@ -244,7 +244,7 @@ public final class HttpClientOptions extends ClientOptions {
      * applied to response read. When applying the timeout the greatest of one millisecond and the value of
      * {@code readTimeout} will be used.
      * <p>
-     * By default the read timeout is 60 seconds.
+     * The default read timeout is 60 seconds.
      *
      * @param readTimeout Read timeout duration.
      * @return The updated HttpClientOptions object.
@@ -266,7 +266,7 @@ public final class HttpClientOptions extends ClientOptions {
      * applied to response read. When applying the timeout the greatest of one millisecond and the value of
      * {@code readTimeout} will be used.
      * <p>
-     * By default the read timeout is 60 seconds.
+     * The default read timeout is 60 seconds.
      *
      * @param readTimeout Read timeout duration.
      * @return The updated HttpClientOptions object.
@@ -279,7 +279,7 @@ public final class HttpClientOptions extends ClientOptions {
     /**
      * Gets the read timeout duration used when reading the server response.
      * <p>
-     * By default the read timeout is 60 seconds.
+     * The default read timeout is 60 seconds.
      *
      * @return The read timeout duration.
      */
@@ -298,7 +298,7 @@ public final class HttpClientOptions extends ClientOptions {
      * This maximum connection pool size is not a global configuration but an instance level configuration for each
      * {@link HttpClient} created using this {@link HttpClientOptions}.
      * <p>
-     * By default the maximum connection pool size is determined by the underlying HTTP client. Setting the maximum
+     * The default maximum connection pool size is determined by the underlying HTTP client. Setting the maximum
      * connection pool size to null resets the configuration to use the default determined by the underlying HTTP
      * client.
      *
@@ -327,7 +327,7 @@ public final class HttpClientOptions extends ClientOptions {
      * This maximum connection pool size is not a global configuration but an instance level configuration for each
      * {@link HttpClient} created using this {@link HttpClientOptions}.
      * <p>
-     * By default the maximum connection pool size is determined by the underlying HTTP client. Setting the maximum
+     * The default maximum connection pool size is determined by the underlying HTTP client. Setting the maximum
      * connection pool size to null resets the configuration to use the default determined by the underlying HTTP
      * client.
      *
@@ -347,7 +347,7 @@ public final class HttpClientOptions extends ClientOptions {
      * or equal to zero then no timeout period will be applied. When applying the timeout the greatest of one
      * millisecond and the value of {@code connectionIdleTimeout} will be used.
      * <p>
-     * By default the connection idle timeout is 60 seconds.
+     * The default connection idle timeout is 60 seconds.
      *
      * @param connectionIdleTimeout The connection idle timeout duration.
      * @return The updated HttpClientOptions object.
@@ -360,7 +360,7 @@ public final class HttpClientOptions extends ClientOptions {
     /**
      * Gets the duration of time before an idle connection is closed.
      * <p>
-     * By default the connection idle timeout is 60 seconds.
+     * The default connection idle timeout is 60 seconds.
      *
      * @return The connection idle timeout duration.
      */
@@ -372,13 +372,16 @@ public final class HttpClientOptions extends ClientOptions {
      * Sets the name of the {@link HttpClientProvider} implementation that should be used to construct an instance of
      * {@link HttpClient}.
      * <p>
-     * The name must be the full class name, ex {@code java.lang.String} and not {@code String}, to disambiguate
-     * multiple providers with the same name but from different packages.
+     * The name must be the full class name, ex {@code com.azure.core.http.netty.NettyAsyncHttpClientProvider} and not
+     * {@code NettyAsyncHttpClientProvider}, to disambiguate multiple providers with the same name but from different
+     * packages.
      * <p>
-     * If a value isn't set or doesn't match an {@link HttpClientProvider} found on the class path the first found
-     * implementation will be used.
+     * If the value isn't set or is an empty string the first {@link HttpClientProvider} found on the class path will
+     * be used to create an instance of {@link HttpClient}. If the value is set and doesn't match any
+     * {@link HttpClientProvider} found on the class path an {@link IllegalStateException} will be thrown when
+     * attempting to create an instance of {@link HttpClient}.
      *
-     * @param httpClientImplementation The name of an {@link HttpClientProvider} implementation.
+     * @param httpClientImplementation The fully qualified name of an {@link HttpClientProvider} implementation.
      * @return The updated HttpClientOptions object.
      */
     public HttpClientOptions setHttpClientImplementation(String httpClientImplementation) {
@@ -390,13 +393,16 @@ public final class HttpClientOptions extends ClientOptions {
      * Sets name of the {@link HttpClientProvider} implementation that should be used to construct an instance of
      * {@link HttpClient}.
      * <p>
-     * The name must be the full class name, ex {@code java.lang.String} and not {@code String}, to disambiguate
-     * multiple providers with the same name but from different packages.
+     * The name must be the full class name, ex {@code com.azure.core.http.netty.NettyAsyncHttpClientProvider} and not
+     * {@code NettyAsyncHttpClientProvider}, to disambiguate multiple providers with the same name but from different
+     * packages.
      * <p>
-     * If a value isn't set or doesn't match an {@link HttpClientProvider} found on the class path the first found
-     * implementation will be used.
+     * If the value isn't set or is an empty string the first {@link HttpClientProvider} found on the class path will
+     * be used to create an instance of {@link HttpClient}. If the value is set and doesn't match any
+     * {@link HttpClientProvider} found on the class path an {@link IllegalStateException} will be thrown when
+     * attempting to create an instance of {@link HttpClient}.
      *
-     * @return The name of an {@link HttpClientProvider} implementation.
+     * @return The fully qualified name of an {@link HttpClientProvider} implementation.
      */
     public String getHttpClientImplementation() {
         return httpClientImplementation;
