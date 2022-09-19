@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ContentKeyPolicyPlayReadyContentType. */
+/** The PlayReady content type. */
 public final class ContentKeyPolicyPlayReadyContentType
     extends ExpandableStringEnum<ContentKeyPolicyPlayReadyContentType> {
     /** Static value Unknown for ContentKeyPolicyPlayReadyContentType. */

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ActionType. */
+/** Indicates the action type. */
 public final class ActionType extends ExpandableStringEnum<ActionType> {
     /** Static value Internal for ActionType. */
     public static final ActionType INTERNAL = fromString("Internal");

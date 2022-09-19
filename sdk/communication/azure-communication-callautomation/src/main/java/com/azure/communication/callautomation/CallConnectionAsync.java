@@ -136,7 +136,7 @@ public class CallConnectionAsync {
         try {
             context = context == null ? Context.NONE : context;
 
-            return (isForEveryone ? callConnectionInternal.terminateCallWithResponseAsync(callConnectionId, context)
+            return (isForEveryone ? callConnectionInternal.terminateCallWithResponseAsync(callConnectionId, null, null, context)
                 : callConnectionInternal.hangupCallWithResponseAsync(callConnectionId, context))
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
         } catch (RuntimeException ex) {
@@ -259,7 +259,7 @@ public class CallConnectionAsync {
                 .setUserToUserInformation(transferToParticipantCallOptions.getUserToUserInformation())
                 .setOperationContext(transferToParticipantCallOptions.getOperationContext());
 
-            return callConnectionInternal.transferToParticipantWithResponseAsync(callConnectionId, request, context)
+            return callConnectionInternal.transferToParticipantWithResponseAsync(callConnectionId, request, null, null, context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response ->
                     new SimpleResponse<>(response, TransferCallResponseConstructorProxy.create(response.getValue())));
@@ -311,7 +311,7 @@ public class CallConnectionAsync {
                 request.setInvitationTimeoutInSeconds((int) addParticipantsOptions.getInvitationTimeout().getSeconds());
             }
 
-            return callConnectionInternal.addParticipantWithResponseAsync(callConnectionId, request, context)
+            return callConnectionInternal.addParticipantWithResponseAsync(callConnectionId, request, null, null, context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> new SimpleResponse<>(response, AddParticipantsResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
@@ -360,7 +360,7 @@ public class CallConnectionAsync {
                 .setParticipantsToRemove(participantModels)
                 .setOperationContext(operationContext);
 
-            return callConnectionInternal.removeParticipantsWithResponseAsync(callConnectionId, request, context)
+            return callConnectionInternal.removeParticipantsWithResponseAsync(callConnectionId, request, null, null, context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> new SimpleResponse<>(response, RemoveParticipantsResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {

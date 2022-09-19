@@ -9,6 +9,5 @@ import com.azure.core.annotation.Immutable;
 @Immutable
 public final class CallConnectedEvent extends CallAutomationEventBase {
     private CallConnectedEvent() {
-        super();
     }
 }

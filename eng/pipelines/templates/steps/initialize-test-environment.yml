@@ -27,9 +27,9 @@ steps:
             - '!sdk/**/session-records'
 
   - task: UsePythonVersion@0
-    displayName: 'Use Python 3.6'
+    displayName: 'Use Python $(PythonVersion)'
     inputs:
-      versionSpec: '3.6'
+      versionSpec: $(PythonVersion)
 
   - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
     parameters:

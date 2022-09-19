@@ -135,6 +135,12 @@ directive:
 - rename-model:
     from: MediaStreamingConfiguration
     to: MediaStreamingConfigurationInternal
+- rename-model:
+    from: DtmfOptions
+    to: DtmfOptionsInternal
+- rename-model:
+    from: RecognizeOptions
+    to: RecognizeOptionsInternal
     
 # Remove models
 - remove-model: AddParticipantsFailedEvent
@@ -148,6 +154,8 @@ directive:
 - remove-model: PlayCompleted
 - remove-model: PlayFailed
 - remove-model: ResultInfo
+- remove-model: RecognizeCompleted
+- remove-model: RecognizeFailed
 ```
 
 ### Rename RecordingChannelType to RecordingChannelInternal
@@ -275,4 +283,22 @@ directive:
   where: $.definitions.MediaStreamingTransportType["x-ms-enum"]
   transform: >
     $.name = "MediaStreamingTransportTypeInternal";
+```
+
+### Rename RecognitionType to RecognitionTypeInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.RecognitionType["x-ms-enum"]
+  transform: >
+    $.name = "RecognitionTypeInternal";
+```
+
+### Rename DtmfOptions to DtmfOptionsInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.DtmfOptions["x-ms-enum"]
+  transform: >
+    $.name = "DtmfOptionsInternal";
 ```

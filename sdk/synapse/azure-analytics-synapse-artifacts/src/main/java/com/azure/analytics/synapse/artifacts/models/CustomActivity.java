@@ -19,8 +19,7 @@ import java.util.Map;
 @Fluent
 public class CustomActivity extends ExecutionActivity {
     /*
-     * Command for custom activity Type: string (or Expression with resultType
-     * string).
+     * Command for custom activity Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.command", required = true)
     private Object command;
@@ -32,8 +31,7 @@ public class CustomActivity extends ExecutionActivity {
     private LinkedServiceReference resourceLinkedService;
 
     /*
-     * Folder path for resource files Type: string (or Expression with
-     * resultType string).
+     * Folder path for resource files Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.folderPath")
     private Object folderPath;
@@ -45,23 +43,22 @@ public class CustomActivity extends ExecutionActivity {
     private CustomActivityReferenceObject referenceObjects;
 
     /*
-     * User defined property bag. There is no restriction on the keys or values
-     * that can be used. The user specified custom activity has the full
-     * responsibility to consume and interpret the content defined.
+     * User defined property bag. There is no restriction on the keys or values that can be used. The user specified
+     * custom activity has the full responsibility to consume and interpret the content defined.
      */
     @JsonProperty(value = "typeProperties.extendedProperties")
     private Map<String, Object> extendedProperties;
 
     /*
-     * The retention time for the files submitted for custom activity. Type:
-     * double (or Expression with resultType double).
+     * The retention time for the files submitted for custom activity. Type: double (or Expression with resultType
+     * double).
      */
     @JsonProperty(value = "typeProperties.retentionTimeInDays")
     private Object retentionTimeInDays;
 
     /*
-     * Elevation level and scope for the user, default is nonadmin task. Type:
-     * string (or Expression with resultType double).
+     * Elevation level and scope for the user, default is nonadmin task. Type: string (or Expression with resultType
+     * double).
      */
     @JsonProperty(value = "typeProperties.autoUserSpecification")
     private Object autoUserSpecification;

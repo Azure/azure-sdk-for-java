@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SqlScriptType. */
+/** The type of the SQL script. */
 public final class SqlScriptType extends ExpandableStringEnum<SqlScriptType> {
     /** Static value SqlQuery for SqlScriptType. */
     public static final SqlScriptType SQL_QUERY = fromString("SqlQuery");
@@ -24,7 +24,11 @@ public final class SqlScriptType extends ExpandableStringEnum<SqlScriptType> {
         return fromString(name, SqlScriptType.class);
     }
 
-    /** @return known SqlScriptType values. */
+    /**
+     * Gets known SqlScriptType values.
+     *
+     * @return known SqlScriptType values.
+     */
     public static Collection<SqlScriptType> values() {
         return values(SqlScriptType.class);
     }

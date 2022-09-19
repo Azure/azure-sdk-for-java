@@ -19,9 +19,8 @@ import java.util.Map;
 @Fluent
 public class DatabricksSparkJarActivity extends ExecutionActivity {
     /*
-     * The full name of the class containing the main method to be executed.
-     * This class must be contained in a JAR provided as a library. Type:
-     * string (or Expression with resultType string).
+     * The full name of the class containing the main method to be executed. This class must be contained in a JAR
+     * provided as a library. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.mainClassName", required = true)
     private Object mainClassName;
@@ -33,8 +32,7 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
     private List<Object> parameters;
 
     /*
-     * A list of libraries to be installed on the cluster that will execute the
-     * job.
+     * A list of libraries to be installed on the cluster that will execute the job.
      */
     @JsonProperty(value = "typeProperties.libraries")
     private List<Map<String, Object>> libraries;

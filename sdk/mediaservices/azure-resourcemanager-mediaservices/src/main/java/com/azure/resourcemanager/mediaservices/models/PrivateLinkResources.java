@@ -10,7 +10,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of PrivateLinkResources. */
 public interface PrivateLinkResources {
     /**
-     * List supported group IDs.
+     * Get list of group IDs.
+     *
+     * <p>List supported group IDs.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -22,7 +24,9 @@ public interface PrivateLinkResources {
     PrivateLinkResourceListResult list(String resourceGroupName, String accountName);
 
     /**
-     * List supported group IDs.
+     * Get list of group IDs.
+     *
+     * <p>List supported group IDs.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -36,7 +40,9 @@ public interface PrivateLinkResources {
         String resourceGroupName, String accountName, Context context);
 
     /**
-     * Get details of a group ID.
+     * Get group ID.
+     *
+     * <p>Get details of a group ID.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -49,7 +55,9 @@ public interface PrivateLinkResources {
     PrivateLinkResource get(String resourceGroupName, String accountName, String name);
 
     /**
-     * Get details of a group ID.
+     * Get group ID.
+     *
+     * <p>Get details of a group ID.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.

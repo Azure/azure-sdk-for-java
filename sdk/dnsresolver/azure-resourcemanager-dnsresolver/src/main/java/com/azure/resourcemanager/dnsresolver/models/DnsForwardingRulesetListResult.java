@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.dnsresolver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dnsresolver.fluent.models.DnsForwardingRulesetInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response to an enumeration operation on DNS forwarding rulesets. */
 @Fluent
 public final class DnsForwardingRulesetListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DnsForwardingRulesetListResult.class);
-
     /*
      * Enumeration of the DNS forwarding rulesets.
      */

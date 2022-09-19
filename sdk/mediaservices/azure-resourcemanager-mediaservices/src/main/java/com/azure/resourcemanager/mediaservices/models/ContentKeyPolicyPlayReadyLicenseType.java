@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ContentKeyPolicyPlayReadyLicenseType. */
+/** The license type. */
 public final class ContentKeyPolicyPlayReadyLicenseType
     extends ExpandableStringEnum<ContentKeyPolicyPlayReadyLicenseType> {
     /** Static value Unknown for ContentKeyPolicyPlayReadyLicenseType. */
