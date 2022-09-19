@@ -4,7 +4,7 @@ parameters:
   default: 'Perf'
 - name: LinuxPool
   type: string
-  default: 'azsdk-pool-mms-ubuntu-2004-perf'
+  default: 'azsdk-pool-mms-ubuntu-2004-perf-experimental'
 - name: LinuxVmImage
   type: string
   default: 'MMSUbuntu20.04'
