@@ -1,15 +1,12 @@
-parameters:
-  JdkVersion: $(JavaBuildVersion)
-
 steps:
   # If the request JDK version is 8, 11, or 17 do nothing, these are already installed on the hosted agents.
-  - ${{ if not(in(parameters.JdkVersion, '1.17', '1.11', '1.8')) }}:
+  - ${{ if not(in(variables['JavaBuildVersion'], '1.17', '1.11', '1.8')) }}:
     # Non-standard JDK versions are only supported in Linux.
     # Make the assumption here Linux is being used, if it's not it's a configuration issue that needs to be fixed there.
     - task: Cache@2
       inputs:
         key: 'jdk | 18 | "$(CacheSalt)" | "$(Agent.OS)"'
-        path: $(Agent.ToolsDirectory)
+        path: $(Agent.ToolsDirectory)/OpenJDK18U-jdk_x64_linux_hotspot_18.0.2.1_1.tar.gz
 
     # PowerShell script will check if the cache was able to resolve the latest JDK version.
     # If not it will download the JDK version to the location where the cache would have placed it.
@@ -21,7 +18,7 @@ steps:
         pwsh: true
         filePath: eng/scripts/Install-Latest-JDK.ps1
         arguments: >
-          -ToolsDirectory $(Agent.ToolsDirectory)
+          -ToolsDirectory '$(Agent.ToolsDirectory)'
           -JdkName "jdk-18.0.2.1+1"
           -JdkUri "https://github.com/adoptium/temurin18-binaries/releases/download/jdk-18.0.2.1%2B1/OpenJDK18U-jdk_x64_linux_hotspot_18.0.2.1_1.tar.gz"
           -JdkZip "OpenJDK18U-jdk_x64_linux_hotspot_18.0.2.1_1.tar.gz"
