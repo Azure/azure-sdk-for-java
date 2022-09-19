@@ -14,15 +14,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class HDInsightLinkedServiceTypeProperties {
     /*
-     * HDInsight cluster URI. Type: string (or Expression with resultType
-     * string).
+     * HDInsight cluster URI. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "clusterUri", required = true)
     private Object clusterUri;
 
     /*
-     * HDInsight cluster user name. Type: string (or Expression with resultType
-     * string).
+     * HDInsight cluster user name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "userName")
     private Object username;
@@ -40,30 +38,27 @@ public final class HDInsightLinkedServiceTypeProperties {
     private LinkedServiceReference linkedServiceName;
 
     /*
-     * A reference to the Azure SQL linked service that points to the HCatalog
-     * database.
+     * A reference to the Azure SQL linked service that points to the HCatalog database.
      */
     @JsonProperty(value = "hcatalogLinkedServiceName")
     private LinkedServiceReference hcatalogLinkedServiceName;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
     /*
-     * Specify if the HDInsight is created with ESP (Enterprise Security
-     * Package). Type: Boolean.
+     * Specify if the HDInsight is created with ESP (Enterprise Security Package). Type: Boolean.
      */
     @JsonProperty(value = "isEspEnabled")
     private Object isEspEnabled;
 
     /*
-     * Specify the FileSystem if the main storage for the HDInsight is ADLS
-     * Gen2. Type: string (or Expression with resultType string).
+     * Specify the FileSystem if the main storage for the HDInsight is ADLS Gen2. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "fileSystem")
     private Object fileSystem;

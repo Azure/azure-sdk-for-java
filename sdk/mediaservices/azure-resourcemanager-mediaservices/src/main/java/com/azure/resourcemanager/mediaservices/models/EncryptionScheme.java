@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EncryptionScheme. */
+/** Encryption scheme. */
 public final class EncryptionScheme extends ExpandableStringEnum<EncryptionScheme> {
     /** Static value NoEncryption for EncryptionScheme. */
     public static final EncryptionScheme NO_ENCRYPTION = fromString("NoEncryption");

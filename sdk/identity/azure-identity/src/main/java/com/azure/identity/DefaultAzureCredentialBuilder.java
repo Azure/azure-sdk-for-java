@@ -9,8 +9,11 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityLogOptionsImpl;
 import com.azure.identity.implementation.util.IdentityConstants;
+import com.azure.identity.implementation.util.IdentityUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 
@@ -25,6 +28,9 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     private String tenantId;
     private String managedIdentityClientId;
     private String managedIdentityResourceId;
+    private List<String> additionallyAllowedTenants = IdentityUtil
+        .getAdditionalTenantsFromEnvironment(Configuration.getGlobalConfiguration().clone());
+
 
     /**
      * Creates an instance of a DefaultAzureCredentialBuilder.
@@ -137,6 +143,33 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     }
 
     /**
+     * For multi-tenant applications, specifies additional tenants for which the credential may acquire tokens.
+     * Add the wildcard value "*" to allow the credential to acquire tokens for any tenant the application is installed.
+     *
+     * @param additionallyAllowedTenants the additionally allowed tenants.
+     * @return An updated instance of this builder with the tenant id set as specified.
+     */
+    @SuppressWarnings("unchecked")
+    public DefaultAzureCredentialBuilder additionallyAllowedTenants(String... additionallyAllowedTenants) {
+        identityClientOptions.setAdditionallyAllowedTenants(IdentityUtil
+            .resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
+        return this;
+    }
+
+    /**
+     * For multi-tenant applications, specifies additional tenants for which the credential may acquire tokens.
+     * Add the wildcard value "*" to allow the credential to acquire tokens for any tenant the application is installed.
+     *
+     * @param additionallyAllowedTenants the additionally allowed tenants.
+     * @return An updated instance of this builder with the tenant id set as specified.
+     */
+    @SuppressWarnings("unchecked")
+    public DefaultAzureCredentialBuilder additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
+        identityClientOptions.setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
+        return this;
+    }
+
+    /**
      * Creates new {@link DefaultAzureCredential} with the configured options set.
      *
      * @return a {@link DefaultAzureCredential} with the current configurations.
@@ -147,6 +180,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
             throw LOGGER.logExceptionAsError(
                 new IllegalStateException("Only one of managedIdentityResourceId and managedIdentityClientId can be specified."));
         }
+        identityClientOptions.setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
         return new DefaultAzureCredential(getCredentialsChain());
     }
 

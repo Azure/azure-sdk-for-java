@@ -14,7 +14,9 @@ import com.azure.resourcemanager.mediaservices.fluent.models.PrivateEndpointConn
 /** An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient. */
 public interface PrivateEndpointConnectionsClient {
     /**
-     * List all private endpoint connections.
+     * List private endpoint connections.
+     *
+     * <p>List all private endpoint connections.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -27,7 +29,9 @@ public interface PrivateEndpointConnectionsClient {
     PrivateEndpointConnectionListResultInner list(String resourceGroupName, String accountName);
 
     /**
-     * List all private endpoint connections.
+     * List private endpoint connections.
+     *
+     * <p>List all private endpoint connections.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -43,7 +47,9 @@ public interface PrivateEndpointConnectionsClient {
         String resourceGroupName, String accountName, Context context);
 
     /**
-     * Get the details of a private endpoint connection.
+     * Get private endpoint connection.
+     *
+     * <p>Get the details of a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -57,7 +63,9 @@ public interface PrivateEndpointConnectionsClient {
     PrivateEndpointConnectionInner get(String resourceGroupName, String accountName, String name);
 
     /**
-     * Get the details of a private endpoint connection.
+     * Get private endpoint connection.
+     *
+     * <p>Get the details of a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -73,7 +81,9 @@ public interface PrivateEndpointConnectionsClient {
         String resourceGroupName, String accountName, String name, Context context);
 
     /**
-     * Update an existing private endpoint connection.
+     * Update a private endpoint connection.
+     *
+     * <p>Update an existing private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -89,7 +99,9 @@ public interface PrivateEndpointConnectionsClient {
         String resourceGroupName, String accountName, String name, PrivateEndpointConnectionInner parameters);
 
     /**
-     * Update an existing private endpoint connection.
+     * Update a private endpoint connection.
+     *
+     * <p>Update an existing private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -110,7 +122,9 @@ public interface PrivateEndpointConnectionsClient {
         Context context);
 
     /**
-     * Deletes a private endpoint connection.
+     * Delete a private endpoint connection.
+     *
+     * <p>Deletes a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -123,7 +137,9 @@ public interface PrivateEndpointConnectionsClient {
     void delete(String resourceGroupName, String accountName, String name);
 
     /**
-     * Deletes a private endpoint connection.
+     * Delete a private endpoint connection.
+     *
+     * <p>Deletes a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.

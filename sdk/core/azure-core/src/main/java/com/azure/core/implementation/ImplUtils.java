@@ -4,6 +4,7 @@
 package com.azure.core.implementation;
 
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.implementation.http.HttpHeadersHelper;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
@@ -30,7 +31,7 @@ import java.util.function.Supplier;
  * Utility class containing implementation specific methods.
  */
 public final class ImplUtils {
-    private static final String RETRY_AFTER_HEADER = "Retry-After";
+    private static final String RETRY_AFTER_HEADER = "retry-after";
     private static final String RETRY_AFTER_MS_HEADER = "retry-after-ms";
     private static final String X_MS_RETRY_AFTER_MS_HEADER = "x-ms-retry-after-ms";
 
@@ -76,9 +77,9 @@ public final class ImplUtils {
         return null;
     }
 
-    private static Duration tryGetRetryDelay(HttpHeaders headers, String headerName,
+    private static Duration tryGetRetryDelay(HttpHeaders headers, String headerNameLowerCase,
         Function<String, Duration> delayParser) {
-        String headerValue = headers.getValue(headerName);
+        String headerValue = HttpHeadersHelper.getValueNoKeyFormatting(headers, headerNameLowerCase);
 
         return CoreUtils.isNullOrEmpty(headerValue) ? null : delayParser.apply(headerValue);
     }

@@ -15,10 +15,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class MongoDbV2Sink extends CopySink {
     /*
-     * Specifies whether the document with same key to be overwritten (upsert)
-     * rather than throw exception (insert). The default value is "insert".
-     * Type: string (or Expression with resultType string). Type: string (or
-     * Expression with resultType string).
+     * Specifies whether the document with same key to be overwritten (upsert) rather than throw exception (insert).
+     * The default value is "insert". Type: string (or Expression with resultType string). Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "writeBehavior")
     private Object writeBehavior;

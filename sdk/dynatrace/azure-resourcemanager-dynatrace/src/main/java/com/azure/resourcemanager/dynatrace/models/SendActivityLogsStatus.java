@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SendActivityLogsStatus. */
+/** Indicates whether activity logs are being sent. */
 public final class SendActivityLogsStatus extends ExpandableStringEnum<SendActivityLogsStatus> {
     /** Static value Enabled for SendActivityLogsStatus. */
     public static final SendActivityLogsStatus ENABLED = fromString("Enabled");

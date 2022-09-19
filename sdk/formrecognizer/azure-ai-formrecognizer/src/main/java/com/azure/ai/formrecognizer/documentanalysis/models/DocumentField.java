@@ -54,20 +54,20 @@ public final class DocumentField extends TypedDocumentField<Object> {
     }
 
     /**
-     * Get the floating point value of the field.
+     * Get the double/floating point value of the field.
      *
      * @return the value.
      */
-    public Float getValueAsFloat() {
-        return (Float) super.getValue();
+    public Double getValueAsDouble() {
+        return (Double) super.getValue();
     }
 
     /**
-     * Get the integer value of the field.
+     * Get the long value of the field.
      *
      * @return the value.
      */
-    public Long getValueAsInteger() {
+    public Long getValueAsLong() {
         return (Long) super.getValue();
     }
 
@@ -76,8 +76,8 @@ public final class DocumentField extends TypedDocumentField<Object> {
      *
      * @return the value.
      */
-    public SelectionMarkState getValueAsSelectionMark() {
-        return (SelectionMarkState) super.getValue();
+    public DocumentSelectionMarkState getValueAsSelectionMark() {
+        return (DocumentSelectionMarkState) super.getValue();
     }
 
     /**

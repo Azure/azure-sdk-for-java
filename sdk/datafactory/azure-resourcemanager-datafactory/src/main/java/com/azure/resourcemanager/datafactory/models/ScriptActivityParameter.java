@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ScriptActivityParameter {
     /*
-     * The name of the parameter. Type: string (or Expression with resultType
-     * string).
+     * The name of the parameter. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "name")
     private Object name;
