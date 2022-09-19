@@ -12,6 +12,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
+import java.util.Objects;
 
 public final class BufferedVertxHttpResponse extends VertxHttpAsyncResponse {
 
@@ -19,7 +20,7 @@ public final class BufferedVertxHttpResponse extends VertxHttpAsyncResponse {
 
     public BufferedVertxHttpResponse(HttpRequest azureHttpRequest, HttpClientResponse vertxHttpResponse, Buffer body) {
         super(azureHttpRequest, vertxHttpResponse);
-        this.body = body;
+        this.body = Objects.requireNonNull(body);
     }
 
     @Override
