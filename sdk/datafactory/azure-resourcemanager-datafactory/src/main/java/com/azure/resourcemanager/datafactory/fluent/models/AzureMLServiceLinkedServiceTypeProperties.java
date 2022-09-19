@@ -13,52 +13,47 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureMLServiceLinkedServiceTypeProperties {
     /*
-     * Azure ML Service workspace subscription ID. Type: string (or Expression
-     * with resultType string).
+     * Azure ML Service workspace subscription ID. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "subscriptionId", required = true)
     private Object subscriptionId;
 
     /*
-     * Azure ML Service workspace resource group name. Type: string (or
-     * Expression with resultType string).
+     * Azure ML Service workspace resource group name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "resourceGroupName", required = true)
     private Object resourceGroupName;
 
     /*
-     * Azure ML Service workspace name. Type: string (or Expression with
-     * resultType string).
+     * Azure ML Service workspace name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "mlWorkspaceName", required = true)
     private Object mlWorkspaceName;
 
     /*
-     * The ID of the service principal used to authenticate against the
-     * endpoint of a published Azure ML Service pipeline. Type: string (or
-     * Expression with resultType string).
+     * The ID of the service principal used to authenticate against the endpoint of a published Azure ML Service
+     * pipeline. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
-     * The key of the service principal used to authenticate against the
-     * endpoint of a published Azure ML Service pipeline.
+     * The key of the service principal used to authenticate against the endpoint of a published Azure ML Service
+     * pipeline.
      */
     @JsonProperty(value = "servicePrincipalKey")
     private SecretBase servicePrincipalKey;
 
     /*
-     * The name or ID of the tenant to which the service principal belongs.
-     * Type: string (or Expression with resultType string).
+     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "tenant")
     private Object tenant;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;

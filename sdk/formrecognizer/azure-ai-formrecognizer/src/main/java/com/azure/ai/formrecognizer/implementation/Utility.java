@@ -58,7 +58,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 public final class Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
 
-    private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
+    private static final String DEFAULT_SCOPE = "/.default";
     private static final String FORM_RECOGNIZER_PROPERTIES = "azure-ai-formrecognizer.properties";
     private static final String NAME = "name";
     private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";

@@ -119,24 +119,26 @@ public final class AzureMediaServicesBuilder {
      * @return an instance of AzureMediaServicesImpl.
      */
     public AzureMediaServicesImpl buildClient() {
-        if (endpoint == null) {
-            this.endpoint = "https://management.azure.com";
-        }
-        if (environment == null) {
-            this.environment = AzureEnvironment.AZURE;
-        }
-        if (pipeline == null) {
-            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        }
-        if (defaultPollInterval == null) {
-            this.defaultPollInterval = Duration.ofSeconds(30);
-        }
-        if (serializerAdapter == null) {
-            this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
-        }
+        String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
+        AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
+        HttpPipeline localPipeline =
+            (pipeline != null)
+                ? pipeline
+                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval =
+            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter =
+            (serializerAdapter != null)
+                ? serializerAdapter
+                : SerializerFactory.createDefaultManagementSerializerAdapter();
         AzureMediaServicesImpl client =
             new AzureMediaServicesImpl(
-                pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
+                localPipeline,
+                localSerializerAdapter,
+                localDefaultPollInterval,
+                localEnvironment,
+                subscriptionId,
+                localEndpoint);
         return client;
     }
 }

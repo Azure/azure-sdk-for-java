@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PolybaseSettingsRejectType. */
+/** Indicates whether the RejectValue property is specified as a literal value or a percentage. */
 public final class PolybaseSettingsRejectType extends ExpandableStringEnum<PolybaseSettingsRejectType> {
     /** Static value value for PolybaseSettingsRejectType. */
     public static final PolybaseSettingsRejectType VALUE = fromString("value");
@@ -27,7 +27,11 @@ public final class PolybaseSettingsRejectType extends ExpandableStringEnum<Polyb
         return fromString(name, PolybaseSettingsRejectType.class);
     }
 
-    /** @return known PolybaseSettingsRejectType values. */
+    /**
+     * Gets known PolybaseSettingsRejectType values.
+     *
+     * @return known PolybaseSettingsRejectType values.
+     */
     public static Collection<PolybaseSettingsRejectType> values() {
         return values(PolybaseSettingsRejectType.class);
     }

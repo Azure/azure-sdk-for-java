@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Assets List. */
 public final class AssetsListSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/assets-list-by-date.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/assets-list-by-date.json
      */
     /**
      * Sample code: List Asset ordered by date.
@@ -21,7 +21,7 @@ public final class AssetsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/assets-list-in-date-range.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/assets-list-in-date-range.json
      */
     /**
      * Sample code: List Asset created in a date range.
@@ -42,7 +42,7 @@ public final class AssetsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/assets-list-all.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/assets-list-all.json
      */
     /**
      * Sample code: List all Assets.

@@ -123,7 +123,7 @@ public class CallRecordingAsync {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return contentsInternal
-                    .recordingWithResponseAsync(request, contextValue)
+                    .recordingWithResponseAsync(request, null, null, contextValue)
                     .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                     .map(response ->
                         new SimpleResponse<>(response, RecordingStateResponseConstructorProxy.create(response.getValue()))

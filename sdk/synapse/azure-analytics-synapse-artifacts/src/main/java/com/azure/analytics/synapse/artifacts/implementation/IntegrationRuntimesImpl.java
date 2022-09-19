@@ -112,15 +112,7 @@ public final class IntegrationRuntimesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IntegrationRuntimeListResponse> listAsync() {
-        return listWithResponseAsync()
-                .flatMap(
-                        (Response<IntegrationRuntimeListResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return listWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -134,15 +126,7 @@ public final class IntegrationRuntimesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IntegrationRuntimeListResponse> listAsync(Context context) {
-        return listWithResponseAsync(context)
-                .flatMap(
-                        (Response<IntegrationRuntimeListResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return listWithResponseAsync(context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -217,15 +201,7 @@ public final class IntegrationRuntimesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IntegrationRuntimeResource> getAsync(String integrationRuntimeName) {
-        return getWithResponseAsync(integrationRuntimeName)
-                .flatMap(
-                        (Response<IntegrationRuntimeResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getWithResponseAsync(integrationRuntimeName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -240,15 +216,7 @@ public final class IntegrationRuntimesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IntegrationRuntimeResource> getAsync(String integrationRuntimeName, Context context) {
-        return getWithResponseAsync(integrationRuntimeName, context)
-                .flatMap(
-                        (Response<IntegrationRuntimeResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getWithResponseAsync(integrationRuntimeName, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

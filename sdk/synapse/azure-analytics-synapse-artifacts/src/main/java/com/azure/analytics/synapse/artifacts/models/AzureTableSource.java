@@ -15,15 +15,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class AzureTableSource extends TabularSource {
     /*
-     * Azure Table source query. Type: string (or Expression with resultType
-     * string).
+     * Azure Table source query. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "azureTableSourceQuery")
     private Object azureTableSourceQuery;
 
     /*
-     * Azure Table source ignore table not found. Type: boolean (or Expression
-     * with resultType boolean).
+     * Azure Table source ignore table not found. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "azureTableSourceIgnoreTableNotFound")
     private Object azureTableSourceIgnoreTableNotFound;

@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public class SsisLogLocation {
     /*
-     * The SSIS package execution log path. Type: string (or Expression with
-     * resultType string).
+     * The SSIS package execution log path. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "logPath", required = true)
     private Object logPath;
@@ -32,9 +31,8 @@ public class SsisLogLocation {
     private SsisAccessCredential accessCredential;
 
     /*
-     * Specifies the interval to refresh log. The default interval is 5
-     * minutes. Type: string (or Expression with resultType string), pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Specifies the interval to refresh log. The default interval is 5 minutes. Type: string (or Expression with
+     * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "typeProperties.logRefreshInterval")
     private Object logRefreshInterval;
