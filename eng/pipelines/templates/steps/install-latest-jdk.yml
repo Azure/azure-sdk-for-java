@@ -17,7 +17,7 @@ steps:
           azureCommonVirtualFile: '$(Agent.OS)/${{ parameters.JdkVersion }}.zip'
           jdkDestinationDirectory: '$(Agent.ToolsDirectory)/jdk${{ parameters.JdkVersion }}'
           cleanDestinationDirectory: false
-    - $ {{ else }}:
+    - ${{ else }}:
       - task: JavaToolInstaller@0
         inputs:
           versionSpec: '1.${{ parameters.JdkVersion }}'
