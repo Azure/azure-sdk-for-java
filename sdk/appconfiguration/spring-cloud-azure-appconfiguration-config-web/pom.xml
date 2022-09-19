@@ -26,7 +26,7 @@
         <dependency>
             <groupId>com.azure.spring</groupId>
             <artifactId>spring-cloud-azure-appconfiguration-config</artifactId>
-            <version>4.0.0-beta.1</version><!-- {x-version-update;com.azure.spring:pring-cloud-azure-sappconfiguration-config;current} -->
+            <version>4.0.0-beta.1</version><!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config;current} -->
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
