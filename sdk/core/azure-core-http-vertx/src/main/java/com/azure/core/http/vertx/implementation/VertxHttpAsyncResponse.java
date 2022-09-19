@@ -31,7 +31,7 @@ public class VertxHttpAsyncResponse extends VertxHttpResponseBase {
         return FluxUtil.collectBytesFromNetworkResponse(streamResponseBody(), getHeaders())
             .flatMap(bytes -> (bytes == null || bytes.length == 0)
                 ? Mono.empty()
-                : Mono.just(bytes));
+                : Mono.defer(() -> Mono.just(bytes)));
     }
 
     private Flux<ByteBuffer> streamResponseBody() {
