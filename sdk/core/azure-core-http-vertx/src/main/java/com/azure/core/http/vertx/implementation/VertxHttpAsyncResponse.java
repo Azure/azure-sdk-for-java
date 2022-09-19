@@ -18,7 +18,6 @@ public class VertxHttpAsyncResponse extends VertxHttpResponseBase {
 
     public VertxHttpAsyncResponse(HttpRequest azureHttpRequest, HttpClientResponse vertxHttpResponse) {
         super(azureHttpRequest, vertxHttpResponse);
-        vertxHttpResponse.pause();
     }
 
     @Override
@@ -42,8 +41,6 @@ public class VertxHttpAsyncResponse extends VertxHttpResponseBase {
             }).endHandler(event -> {
                 sink.complete();
             }).exceptionHandler(sink::error);
-
-            vertxHttpResponse.resume();
         });
     }
 }
