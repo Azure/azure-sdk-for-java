@@ -423,11 +423,18 @@ public class AzureGlobalProperties implements AzureProperties, RetryOptionsProvi
         }
     }
 
+    /**
+     * Global profile properties. This global profile properties will have a default cloud type of Azure.
+     */
     public static class GlobalProfileConfigurationProperties extends AzureProfileConfigurationProperties {
 
+        /**
+         * Construct a default {@link GlobalProfileConfigurationProperties} with default cloud type Azure.
+         */
         public GlobalProfileConfigurationProperties() {
             setCloudType(CloudType.AZURE);
         }
 
     }
+
 }
