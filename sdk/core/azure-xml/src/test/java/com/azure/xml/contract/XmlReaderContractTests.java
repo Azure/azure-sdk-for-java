@@ -3,7 +3,7 @@
 
 package com.azure.xml.contract;
 
-import com.azure.xml.XMLStreamExceptionFunction;
+import com.azure.xml.ReadValueCallback;
 import com.azure.xml.XmlReader;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -38,7 +38,7 @@ public abstract class XmlReaderContractTests {
     @ParameterizedTest
     @MethodSource("basicElementOperationsSupplier")
     public <T> void basicElementOperations(String xml, T expectedValue,
-        XMLStreamExceptionFunction<XmlReader, T> function) throws XMLStreamException {
+        ReadValueCallback<XmlReader, T> function) throws XMLStreamException {
         XmlReader reader = getXmlReader(xml);
         reader.nextElement(); // Initialize the XmlReader for reading.
 
@@ -106,7 +106,7 @@ public abstract class XmlReaderContractTests {
     @ParameterizedTest
     @MethodSource("binaryElementOperationsSupplier")
     public void binaryElementOperations(String xml, byte[] expectedValue,
-        XMLStreamExceptionFunction<XmlReader, byte[]> function) throws XMLStreamException {
+        ReadValueCallback<XmlReader, byte[]> function) throws XMLStreamException {
         XmlReader reader = getXmlReader(xml);
         reader.nextElement(); // Initialize the XmlReader for reading.
 
@@ -128,7 +128,7 @@ public abstract class XmlReaderContractTests {
     @ParameterizedTest
     @MethodSource("basicAttributeOperationsSupplier")
     public <T> void basicAttributeOperations(String json, T expectedValue,
-        XMLStreamExceptionFunction<XmlReader, T> function) throws XMLStreamException {
+        ReadValueCallback<XmlReader, T> function) throws XMLStreamException {
         XmlReader reader = getXmlReader(json);
         reader.nextElement(); // Initialize the XmlReader for reading.
 
@@ -271,7 +271,7 @@ public abstract class XmlReaderContractTests {
     @ParameterizedTest
     @MethodSource("binaryAttributeOperationsSupplier")
     public void binaryAttributeOperations(String xml, byte[] expectedValue,
-        XMLStreamExceptionFunction<XmlReader, byte[]> function) throws XMLStreamException {
+        ReadValueCallback<XmlReader, byte[]> function) throws XMLStreamException {
         XmlReader reader = getXmlReader(xml);
         reader.nextElement(); // Initialize the XmlReader for reading.
 
@@ -300,8 +300,8 @@ public abstract class XmlReaderContractTests {
         );
     }
 
-    private static <T> XMLStreamExceptionFunction<XmlReader, T> createXmlConsumer(
-        XMLStreamExceptionFunction<XmlReader, T> func) {
+    private static <T> ReadValueCallback<XmlReader, T> createXmlConsumer(
+        ReadValueCallback<XmlReader, T> func) {
         return func;
     }
 }
