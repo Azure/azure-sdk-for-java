@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/storagesync/ci.yml
+      - sdk/storagesync/azure-resourcemanager-storagesync/
+    exclude:
+      - sdk/storagesync/pom.xml
+      - sdk/storagesync/azure-resourcemanager-storagesync/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/storagesync/ci.yml
+      - sdk/storagesync/azure-resourcemanager-storagesync/
+    exclude:
+      - sdk/storagesync/pom.xml
+      - sdk/storagesync/azure-resourcemanager-storagesync/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerstoragesync
+    displayName: azure-resourcemanager-storagesync
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: storagesync
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-storagesync
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerstoragesync
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerstoragesync }}
