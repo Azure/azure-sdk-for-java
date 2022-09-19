@@ -39,10 +39,13 @@ class CosmosAuditingRegistrar extends AuditingBeanDefinitionRegistrarSupport imp
         return Constants.AUDITING_HANDLER_BEAN_NAME;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.springframework.data.auditing.config.AuditingBeanDefinitionRegistrarSupport.postProcess()
+     */
     @Override
     protected void postProcess(BeanDefinitionBuilder builder, AuditingConfiguration configuration,
                                BeanDefinitionRegistry registry) {
-
         builder.setFactoryMethod("from").addConstructorArgReference("cosmosMappingContext");
     }
 
