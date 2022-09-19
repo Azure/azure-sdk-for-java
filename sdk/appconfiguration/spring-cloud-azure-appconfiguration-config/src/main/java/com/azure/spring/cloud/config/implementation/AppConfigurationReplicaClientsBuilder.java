@@ -162,17 +162,19 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
         ConfigurationClientBuilder builder = getBuilder();
 
         if (configStore.getConnectionString() != null) {
-            clients.add(buildClientConnectionString(configStore.getConnectionString(), builder));
+            clients.add(buildClientConnectionString(configStore.getConnectionString(), builder, 0));
         } else if (configStore.getConnectionStrings().size() > 0) {
             for (String connectionString : configStore.getConnectionStrings()) {
-                clients.add(buildClientConnectionString(connectionString, builder));
+                clients.add(buildClientConnectionString(connectionString, builder,
+                    configStore.getConnectionStrings().size() - 1));
             }
         } else if (configStore.getEndpoints().size() > 0) {
             for (String endpoint : configStore.getEndpoints()) {
-                clients.add(buildClientEndpoint(tokenCredential, endpoint, builder, clientIdIsPresent));
+                clients.add(buildClientEndpoint(tokenCredential, endpoint, builder, clientIdIsPresent,
+                    configStore.getEndpoints().size() - 1));
             }
         } else if (configStore.getEndpoint() != null) {
-            clients.add(buildClientEndpoint(tokenCredential, configStore.getEndpoint(), builder, clientIdIsPresent));
+            clients.add(buildClientEndpoint(tokenCredential, configStore.getEndpoint(), builder, clientIdIsPresent, 0));
         }
         return clients;
     }
@@ -185,7 +187,7 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
     }
 
     private AppConfigurationReplicaClient buildClientEndpoint(TokenCredential tokenCredential,
-        String endpoint, ConfigurationClientBuilder builder, boolean clientIdIsPresent)
+        String endpoint, ConfigurationClientBuilder builder, boolean clientIdIsPresent, Integer replicaCount)
         throws IllegalArgumentException {
         if (tokenCredential != null) {
             // User Provided Token Credential
@@ -207,25 +209,26 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
 
         builder.endpoint(endpoint);
 
-        return modifyAndBuildClient(builder, endpoint);
+        return modifyAndBuildClient(builder, endpoint, replicaCount);
     }
 
     private AppConfigurationReplicaClient buildClientConnectionString(String connectionString,
-        ConfigurationClientBuilder builder)
+        ConfigurationClientBuilder builder, Integer replicaCount)
         throws IllegalArgumentException {
         String endpoint = getEndpointFromConnectionString(connectionString);
         LOGGER.debug("Connecting to " + endpoint + " using Connecting String.");
 
         builder.connectionString(connectionString);
 
-        return modifyAndBuildClient(builder, endpoint);
+        return modifyAndBuildClient(builder, endpoint, replicaCount);
     }
 
-    private AppConfigurationReplicaClient modifyAndBuildClient(ConfigurationClientBuilder builder, String endpoint) {
+    private AppConfigurationReplicaClient modifyAndBuildClient(ConfigurationClientBuilder builder, String endpoint,
+        Integer replicaCount) {
         ExponentialBackoff retryPolicy = new ExponentialBackoff(maxRetries, DEFAULT_MIN_RETRY_POLICY,
             DEFAULT_MAX_RETRY_POLICY);
 
-        builder.addPolicy(new BaseAppConfigurationPolicy(isDev, isKeyVaultConfigured))
+        builder.addPolicy(new BaseAppConfigurationPolicy(isDev, isKeyVaultConfigured, replicaCount))
             .retryPolicy(new RetryPolicy(retryPolicy));
 
         if (clientProvider != null) {

@@ -3,7 +3,7 @@
 package com.azure.spring.cloud.config.implementation.properties;
 
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.EMPTY_LABEL;
-import static com.azure.spring.cloud.config.AppConfigurationConstants.LABEL_SEPARATOR;
+import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.LABEL_SEPARATOR;
 
 import java.util.Arrays;
 import java.util.Collections;

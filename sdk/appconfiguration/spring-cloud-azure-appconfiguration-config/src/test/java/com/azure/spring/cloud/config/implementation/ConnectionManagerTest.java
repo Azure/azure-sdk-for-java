@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.implementation;
 
-import static com.azure.spring.cloud.config.implementation.TestConstants.TEST_CONN_STRING;
-import static com.azure.spring.cloud.config.implementation.TestConstants.TEST_CONN_STRING_GEO;
 import static com.azure.spring.cloud.config.implementation.TestConstants.TEST_ENDPOINT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -74,12 +72,12 @@ public class ConnectionManagerTest {
     @Test
     public void backoffTest() {
         configStore = new ConfigStore();
-        List<String> connectionStrings = new ArrayList<>();
+        List<String> endpoints = new ArrayList<>();
 
-        connectionStrings.add(TEST_CONN_STRING);
-        connectionStrings.add(TEST_CONN_STRING_GEO);
+        endpoints.add("https://fake.test.config.io");
+        endpoints.add("https://fake.test.geo.config.io");
 
-        configStore.setConnectionStrings(connectionStrings);
+        configStore.setEndpoints(endpoints);
 
         configStore.validateAndInit();
 
@@ -94,8 +92,7 @@ public class ConnectionManagerTest {
         when(replicaClient2.getBackoffEndTime()).thenReturn(Instant.now().minusSeconds(60));
 
         String originEndpoint = configStore.getEndpoint();
-        String replicaEndpoint = AppConfigurationReplicaClientsBuilder
-            .getEndpointFromConnectionString(configStore.getConnectionStrings().get(1));
+        String replicaEndpoint = endpoints.get(1);
 
         when(replicaClient1.getEndpoint()).thenReturn(originEndpoint);
         when(replicaClient2.getEndpoint()).thenReturn(replicaEndpoint);
@@ -137,23 +134,23 @@ public class ConnectionManagerTest {
         assertTrue(connectionManager.getAllEndpoints().containsAll(expectedEndpoints));
         assertEquals(AppConfigurationStoreHealth.DOWN, connectionManager.getHealth());
     }
-    
+
     @Test
     public void updateSyncTokenTest() {
         String fakeToken = "fakeToken";
         ConnectionManager manager = new ConnectionManager(clientBuilderMock, configStore);
-        
+
         List<AppConfigurationReplicaClient> clients = new ArrayList<>();
         clients.add(replicaClient1);
 
         when(clientBuilderMock.buildClients(Mockito.eq(configStore))).thenReturn(clients);
         when(replicaClient1.getEndpoint()).thenReturn(TEST_ENDPOINT);
-        
+
         List<AppConfigurationReplicaClient> availableClients = manager.getAvailableClients();
         assertEquals(1, availableClients.size());
-        
+
         manager.updateSyncToken(TEST_ENDPOINT, fakeToken);
-        
+
         verify(replicaClient1, times(1)).updateSyncToken(Mockito.eq(fakeToken));
     }
 }

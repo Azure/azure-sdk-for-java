@@ -29,27 +29,8 @@ final class BackoffTimeCalculator {
         BackoffTimeCalculator.minBackoff = minBackoff;
     }
 
-    private static Long maxBackoff = (long) 600;
-
-    private static Long minBackoff = (long) 30;
-
-    /**
-     * 
-     * @param maxBackoff maximum amount of time between requests
-     * @param minBackoff minimum amount of time between requests
-     */
-    static void setDefaults(Long maxBackoffValue, Long minBackoffValue) {
-        maxBackoff = maxBackoffValue;
-        minBackoff = minBackoffValue;
-    }
-
     /**
      * Calculates the new Backoff time for requests.
-<<<<<<<< HEAD:sdk/appconfiguration/spring-cloud-azure-appconfiguration-config/src/main/java/com/azure/spring/cloud/config/implementation/BackoffTimeCalculator.java
-     *
-========
-     * 
->>>>>>>> c595c31b45e92273feaec522e5d53130d7537677:sdk/appconfiguration/azure-spring-cloud-appconfiguration-config/src/main/java/com/azure/spring/cloud/config/implementation/BackoffTimeCalculator.java
      * @param attempts Number of attempts so far
      * @return Nano Seconds to the next request
      * @throws IllegalArgumentException when back off time or attempt number is invalid

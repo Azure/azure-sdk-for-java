@@ -71,7 +71,8 @@ public class KeyVaultClientTest {
             }
         };
 
-        clientStore = new AppConfigurationSecretClientManager(azureProperties, new URI(keyVaultUri), provider, null, null);
+        clientStore = new AppConfigurationSecretClientManager(azureProperties, new URI(keyVaultUri), provider, null,
+            null);
 
         AppConfigurationSecretClientManager test = Mockito.spy(clientStore);
         Mockito.doReturn(builderMock).when(test).getBuilder();
@@ -82,7 +83,7 @@ public class KeyVaultClientTest {
     @Test
     public void configProviderAuth() throws URISyntaxException {
         azureProperties = new AppConfigurationProperties();
-        azureProperties.setManagedIdentity(null);
+        azureProperties.setClientId(null);
 
         String keyVaultUri = "https://keyvault.vault.azure.net/secrets/mySecret";
 
@@ -95,7 +96,8 @@ public class KeyVaultClientTest {
             }
         };
 
-        clientStore = new AppConfigurationSecretClientManager(azureProperties, new URI(keyVaultUri), provider, null, null);
+        clientStore = new AppConfigurationSecretClientManager(azureProperties, new URI(keyVaultUri), provider, null,
+            null);
 
         AppConfigurationSecretClientManager test = Mockito.spy(clientStore);
         Mockito.doReturn(builderMock).when(test).getBuilder();
@@ -169,7 +171,8 @@ public class KeyVaultClientTest {
 
         String keyVaultUri = "https://keyvault.vault.azure.net/secrets/mySecret";
 
-        clientStore = new AppConfigurationSecretClientManager(azureProperties, new URI(keyVaultUri), null, null, new TestSecretResolver());
+        clientStore = new AppConfigurationSecretClientManager(azureProperties, new URI(keyVaultUri), null, null,
+            new TestSecretResolver());
 
         AppConfigurationSecretClientManager test = Mockito.spy(clientStore);
         Mockito.doReturn(builderMock).when(test).getBuilder();

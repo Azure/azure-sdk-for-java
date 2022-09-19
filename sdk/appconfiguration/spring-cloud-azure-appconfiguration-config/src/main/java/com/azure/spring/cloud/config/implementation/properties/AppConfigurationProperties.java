@@ -29,7 +29,7 @@ public final class AppConfigurationProperties {
      * Prefix for client configurations for connecting to configuration stores.
      */
     public static final String CONFIG_PREFIX = "spring.cloud.azure.appconfiguration";
-    
+
     private boolean enabled = true;
 
     private List<ConfigStore> stores = new ArrayList<>();

@@ -33,7 +33,8 @@ public final class TestUtils {
         return String.format("%s=%s", propName, propValue);
     }
 
-    static ConfigurationSetting createItem(String keyFilter, String key, String value, String label, String contentType) {
+    static ConfigurationSetting createItem(String keyFilter, String key, String value, String label,
+        String contentType) {
         ConfigurationSetting item = new ConfigurationSetting();
         item.setKey(keyFilter + key);
         item.setValue(value);
@@ -65,13 +66,8 @@ public final class TestUtils {
                         Map<String, Object> result = MAPPER.convertValue(nodeParams,
                             new TypeReference<Map<String, Object>>() {
                             });
-<<<<<<<< HEAD:sdk/appconfiguration/spring-cloud-azure-appconfiguration-config/src/test/java/com/azure/spring/cloud/config/implementation/TestUtils.java
                         Set<String> parameters = result.keySet();
                         for (String paramKey : parameters) {
-========
-                        Set<String> parameterKeys = result.keySet();
-                        for (String paramKey : parameterKeys) {
->>>>>>>> c595c31b45e92273feaec522e5d53130d7537677:sdk/appconfiguration/azure-spring-cloud-appconfiguration-config/src/test/java/com/azure/spring/cloud/config/implementation/TestUtils.java
                             filter.addParameter(paramKey, result.get(paramKey));
                         }
                     }
@@ -84,7 +80,8 @@ public final class TestUtils {
         return item;
     }
 
-    static SecretReferenceConfigurationSetting createSecretReference(String keyFilter, String key, String value, String label, String contentType) {
+    static SecretReferenceConfigurationSetting createSecretReference(String keyFilter, String key, String value,
+        String label, String contentType) {
         SecretReferenceConfigurationSetting item = new SecretReferenceConfigurationSetting(key, value);
         item.setKey(keyFilter + key);
         item.setLabel(label);
@@ -93,17 +90,20 @@ public final class TestUtils {
         return item;
     }
 
-    static void addStore(AppConfigurationProperties properties, String storeEndpoint, String connectionString, String keyFilter) {
+    static void addStore(AppConfigurationProperties properties, String storeEndpoint, String connectionString,
+        String keyFilter) {
         addStore(properties, storeEndpoint, connectionString, keyFilter, "\0");
     }
 
-    static void addStore(AppConfigurationProperties properties, String storeEndpoint, String connectionString, String keyFilter,
+    static void addStore(AppConfigurationProperties properties, String storeEndpoint, String connectionString,
+        String keyFilter,
         String label) {
         List<ConfigStore> stores = properties.getStores();
         ConfigStore store = new ConfigStore();
         store.setConnectionString(connectionString);
         store.setEndpoint(storeEndpoint);
-        AppConfigurationKeyValueSelector selectedKeys = new AppConfigurationKeyValueSelector().setKeyFilter(keyFilter).setLabelFilter(label);
+        AppConfigurationKeyValueSelector selectedKeys = new AppConfigurationKeyValueSelector().setKeyFilter(keyFilter)
+            .setLabelFilter(label);
         List<AppConfigurationKeyValueSelector> selects = new ArrayList<>();
         selects.add(selectedKeys);
         store.setSelects(selects);

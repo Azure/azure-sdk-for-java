@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.implementation;
 
-<<<<<<<< HEAD:sdk/appconfiguration/spring-cloud-azure-appconfiguration-config/src/test/java/com/azure/spring/cloud/config/implementation/AppConfigurationPropertySourceKeyVaultTest.java
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.KEY_VAULT_CONTENT_TYPE;
 import static com.azure.spring.cloud.config.implementation.TestConstants.TEST_CONN_STRING;
 import static com.azure.spring.cloud.config.implementation.TestConstants.TEST_KEY_1;
@@ -18,26 +17,10 @@ import static com.azure.spring.cloud.config.implementation.TestConstants.TEST_UR
 import static com.azure.spring.cloud.config.implementation.TestConstants.TEST_VALUE_1;
 import static com.azure.spring.cloud.config.implementation.TestConstants.TEST_VALUE_2;
 import static com.azure.spring.cloud.config.implementation.TestConstants.TEST_VALUE_3;
-========
-import static com.azure.spring.cloud.config.AppConfigurationConstants.KEY_VAULT_CONTENT_TYPE;
-import static com.azure.spring.cloud.config.TestConstants.TEST_CONN_STRING;
-import static com.azure.spring.cloud.config.TestConstants.TEST_KEY_1;
-import static com.azure.spring.cloud.config.TestConstants.TEST_KEY_2;
-import static com.azure.spring.cloud.config.TestConstants.TEST_KEY_3;
-import static com.azure.spring.cloud.config.TestConstants.TEST_KEY_VAULT_1;
-import static com.azure.spring.cloud.config.TestConstants.TEST_LABEL_1;
-import static com.azure.spring.cloud.config.TestConstants.TEST_LABEL_2;
-import static com.azure.spring.cloud.config.TestConstants.TEST_LABEL_3;
-import static com.azure.spring.cloud.config.TestConstants.TEST_LABEL_VAULT_1;
-import static com.azure.spring.cloud.config.TestConstants.TEST_STORE_NAME;
-import static com.azure.spring.cloud.config.TestConstants.TEST_URI_VAULT_1;
-import static com.azure.spring.cloud.config.TestConstants.TEST_VALUE_1;
-import static com.azure.spring.cloud.config.TestConstants.TEST_VALUE_2;
-import static com.azure.spring.cloud.config.TestConstants.TEST_VALUE_3;
->>>>>>>> c595c31b45e92273feaec522e5d53130d7537677:sdk/appconfiguration/azure-spring-cloud-appconfiguration-config/src/test/java/com/azure/spring/cloud/config/implementation/AppConfigurationPropertySourceKeyVaultTest.java
 import static com.azure.spring.cloud.config.implementation.TestUtils.createItem;
 import static com.azure.spring.cloud.config.implementation.TestUtils.createSecretReference;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
@@ -58,17 +41,8 @@ import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSettin
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
-<<<<<<<< HEAD:sdk/appconfiguration/spring-cloud-azure-appconfiguration-config/src/test/java/com/azure/spring/cloud/config/implementation/AppConfigurationPropertySourceKeyVaultTest.java
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.implementation.stores.AppConfigurationSecretClientManager;
-========
-import com.azure.spring.cloud.config.feature.management.entity.FeatureSet;
-import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
-import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
-import com.azure.spring.cloud.config.properties.AppConfigurationStoreSelects;
-import com.azure.spring.cloud.config.properties.ConfigStore;
->>>>>>>> c595c31b45e92273feaec522e5d53130d7537677:sdk/appconfiguration/azure-spring-cloud-appconfiguration-config/src/test/java/com/azure/spring/cloud/config/implementation/AppConfigurationPropertySourceKeyVaultTest.java
-
 
 public class AppConfigurationPropertySourceKeyVaultTest {
 
@@ -120,7 +94,6 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         KEY_VAULT_ITEM.setContentType(KEY_VAULT_CONTENT_TYPE);
 
         MockitoAnnotations.openMocks(this);
-<<<<<<<< HEAD:sdk/appconfiguration/spring-cloud-azure-appconfiguration-config/src/test/java/com/azure/spring/cloud/config/implementation/AppConfigurationPropertySourceKeyVaultTest.java
 
         String[] labelFilter = { "\0" };
         propertySource = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, replicaClientMock,
@@ -150,17 +123,11 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         when(keyVaultClientFactory.getClient(Mockito.any(URI.class), Mockito.any())).thenReturn(clientManagerMock);
         when(clientManagerMock.getSecret(Mockito.any(URI.class), Mockito.anyInt())).thenReturn(secret);
 
-<<<<<<<< HEAD:sdk/appconfiguration/spring-cloud-azure-appconfiguration-config/src/test/java/com/azure/spring/cloud/config/implementation/AppConfigurationPropertySourceKeyVaultTest.java
         try {
             propertySource.initProperties();
         } catch (IOException e) {
             fail("Failed Reading in Feature Flags");
         }
-========
-        FeatureSet featureSet = new FeatureSet();
-
-        propertySource.initProperties(featureSet);
->>>>>>>> c595c31b45e92273feaec522e5d53130d7537677:sdk/appconfiguration/azure-spring-cloud-appconfiguration-config/src/test/java/com/azure/spring/cloud/config/implementation/AppConfigurationPropertySourceKeyVaultTest.java
 
         String[] keyNames = propertySource.getPropertyNames();
         String[] expectedKeyNames = TEST_ITEMS.stream()
