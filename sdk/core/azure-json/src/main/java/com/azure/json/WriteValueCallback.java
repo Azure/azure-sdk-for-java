@@ -4,7 +4,6 @@
 package com.azure.json;
 
 import java.io.IOException;
-import java.util.function.BiConsumer;
 
 /**
  * A callback used when writing a JSON value, such as {@link JsonWriter#writeArray(Object[], WriteValueCallback)}.

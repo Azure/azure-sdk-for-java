@@ -4,7 +4,6 @@
 package com.azure.json;
 
 import java.io.IOException;
-import java.util.function.Function;
 
 /**
  * A callback used when reading a JSON value, such as {@link JsonReader#readArray(ReadValueCallback)}.
