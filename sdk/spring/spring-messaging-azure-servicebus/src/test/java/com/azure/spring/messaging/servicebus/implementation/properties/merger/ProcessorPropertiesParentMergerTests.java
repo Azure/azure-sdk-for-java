@@ -3,6 +3,7 @@
 
 package com.azure.spring.messaging.servicebus.implementation.properties.merger;
 
+import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.servicebus.core.properties.ProcessorProperties;
@@ -24,6 +25,7 @@ public class ProcessorPropertiesParentMergerTests {
         parent.getProxy().setHostname("parent-hostname");
         parent.getProfile().setCloudType(AZURE_US_GOVERNMENT);
         parent.setDomainName("parent-domain");
+        parent.getClient().setTransportType(AmqpTransportType.AMQP_WEB_SOCKETS);
 
         ProcessorProperties result = merger.merge(child, parent);
 
@@ -33,6 +35,7 @@ public class ProcessorPropertiesParentMergerTests {
         Assertions.assertEquals(AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint(),
             result.getProfile().getEnvironment().getActiveDirectoryEndpoint());
         Assertions.assertEquals("parent-domain", result.getDomainName());
+        Assertions.assertEquals(AmqpTransportType.AMQP_WEB_SOCKETS, result.getClient().getTransportType());
     }
 
     @Test
@@ -44,12 +47,14 @@ public class ProcessorPropertiesParentMergerTests {
         child.setMaxConcurrentCalls(2);
         child.getProfile().setCloudType(AZURE_CHINA);
         child.setDomainName("child-domain");
+        child.getClient().setTransportType(AmqpTransportType.AMQP);
 
         NamespaceProperties parent = new NamespaceProperties();
         parent.setConnectionString("parent-connection-str");
         parent.getProxy().setHostname("parent-hostname");
         parent.getProfile().setCloudType(AZURE_US_GOVERNMENT);
         parent.setDomainName("parent-domain");
+        parent.getClient().setTransportType(AmqpTransportType.AMQP_WEB_SOCKETS);
 
         ProcessorProperties result = merger.merge(child, parent);
 
@@ -61,6 +66,7 @@ public class ProcessorPropertiesParentMergerTests {
         Assertions.assertEquals(AZURE_CHINA, result.getProfile().getCloudType());
         Assertions.assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryEndpoint(),
             result.getProfile().getEnvironment().getActiveDirectoryEndpoint());
+        Assertions.assertEquals(AmqpTransportType.AMQP, result.getClient().getTransportType());
     }
 
 }

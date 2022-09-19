@@ -41,9 +41,16 @@ public class CommonProperties extends AzureAmqpSdkProperties implements ServiceB
         return new ServiceBusConnectionString(this.connectionString).getFullyQualifiedNamespace();
     }
 
+    private String buildFqdnFromNamespace() {
+        if (namespace == null || domainName == null) {
+            return null;
+        }
+        return this.namespace + "." + domainName;
+    }
+
     @Override
     public String getFullyQualifiedNamespace() {
-        return this.namespace == null ? extractFqdnFromConnectionString() : (this.namespace + "." + domainName);
+        return this.namespace == null ? extractFqdnFromConnectionString() : buildFqdnFromNamespace();
     }
 
     @Override

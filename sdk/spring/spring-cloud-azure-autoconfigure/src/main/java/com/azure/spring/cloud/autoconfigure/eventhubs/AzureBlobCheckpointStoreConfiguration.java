@@ -81,16 +81,11 @@ public class AzureBlobCheckpointStoreConfiguration {
         AzureEventHubsProperties eventHubsProperties,
         ObjectProvider<AzureServiceClientBuilderCustomizer<BlobServiceClientBuilder>> customizers) {
         BlobServiceClientBuilderFactory factory =
-            new BlobServiceClientBuilderFactory(getCheckpointStoreProperties(eventHubsProperties));
+            new BlobServiceClientBuilderFactory(eventHubsProperties.buildProcessorProperties().getCheckpointStore());
 
         factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_EVENT_HUBS);
         customizers.orderedStream().forEach(factory::addBuilderCustomizer);
         return factory;
-    }
-
-    private AzureEventHubsProperties.Processor.BlobCheckpointStore getCheckpointStoreProperties(
-        AzureEventHubsProperties ehProperties) {
-        return ehProperties.buildProcessorProperties().getCheckpointStore();
     }
 
 }
