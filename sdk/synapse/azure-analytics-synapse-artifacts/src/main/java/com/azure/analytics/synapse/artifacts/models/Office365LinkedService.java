@@ -19,22 +19,20 @@ import java.util.Map;
 @Fluent
 public class Office365LinkedService extends LinkedService {
     /*
-     * Azure tenant ID to which the Office 365 account belongs. Type: string
-     * (or Expression with resultType string).
+     * Azure tenant ID to which the Office 365 account belongs. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.office365TenantId", required = true)
     private Object office365TenantId;
 
     /*
-     * Specify the tenant information under which your Azure AD web application
-     * resides. Type: string (or Expression with resultType string).
+     * Specify the tenant information under which your Azure AD web application resides. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "typeProperties.servicePrincipalTenantId", required = true)
     private Object servicePrincipalTenantId;
 
     /*
-     * Specify the application's client ID. Type: string (or Expression with
-     * resultType string).
+     * Specify the application's client ID. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.servicePrincipalId", required = true)
     private Object servicePrincipalId;
@@ -46,9 +44,8 @@ public class Office365LinkedService extends LinkedService {
     private SecretBase servicePrincipalKey;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;

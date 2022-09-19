@@ -42,6 +42,7 @@ public class CallAutomationUnitTestBase {
     static final String CALL_CALLBACK_URL = "https://REDACTED.com/events";
     static final String CALL_INCOMING_CALL_CONTEXT = "eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.REDACTED";
     static final String CALL_OPERATION_CONTEXT = "operationContext";
+    static final String MEDIA_SUBSCRIPTION_ID = "mediaSubscriptionId";
 
     static final MediaStreamingConfiguration MEDIA_STREAMING_CONFIGURATION = new MediaStreamingConfiguration(
         "https://websocket.url.com",
@@ -55,13 +56,15 @@ public class CallAutomationUnitTestBase {
     }
 
     public static String generateCallProperties(String callConnectionId, String serverCallId, String callerId,
-                                                String targetId, String connectionState, String subject, String callbackUri) {
+                                                String targetId, String connectionState, String subject, String callbackUri,
+                                                String mediaSubscriptionId) {
         CallConnectionPropertiesInternal result = new CallConnectionPropertiesInternal()
             .setCallConnectionId(callConnectionId)
             .setServerCallId(serverCallId)
             .setCallbackUri(callbackUri)
             .setSubject(subject)
             .setCallConnectionState(CallConnectionStateModelInternal.fromString(connectionState))
+            .setMediaSubscriptionId(mediaSubscriptionId)
             .setSource(new CallSourceInternal()
                 .setIdentifier(ModelGenerator.generateUserIdentifierModel(callerId)))
             .setTargets(new ArrayList<>(Collections.singletonList(ModelGenerator.generateUserIdentifierModel(targetId)))

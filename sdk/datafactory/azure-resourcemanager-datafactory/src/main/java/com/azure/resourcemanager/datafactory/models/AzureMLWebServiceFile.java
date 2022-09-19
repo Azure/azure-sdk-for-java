@@ -12,16 +12,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureMLWebServiceFile {
     /*
-     * The relative file path, including container name, in the Azure Blob
-     * Storage specified by the LinkedService. Type: string (or Expression with
-     * resultType string).
+     * The relative file path, including container name, in the Azure Blob Storage specified by the LinkedService.
+     * Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "filePath", required = true)
     private Object filePath;
 
     /*
-     * Reference to an Azure Storage LinkedService, where Azure ML WebService
-     * Input/Output file located.
+     * Reference to an Azure Storage LinkedService, where Azure ML WebService Input/Output file located.
      */
     @JsonProperty(value = "linkedServiceName", required = true)
     private LinkedServiceReference linkedServiceName;

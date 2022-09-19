@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.dnsresolver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dnsresolver.fluent.models.VirtualNetworkDnsForwardingRulesetInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response to an enumeration operation on Virtual Network DNS Forwarding Ruleset. */
 @Fluent
 public final class VirtualNetworkDnsForwardingRulesetListResult {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VirtualNetworkDnsForwardingRulesetListResult.class);
-
     /*
      * Enumeration of the Virtual Network DNS Forwarding Ruleset.
      */

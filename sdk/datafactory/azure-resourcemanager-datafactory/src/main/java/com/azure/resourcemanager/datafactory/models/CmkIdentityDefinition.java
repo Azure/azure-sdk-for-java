@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CmkIdentityDefinition {
     /*
-     * The resource id of the user assigned identity to authenticate to
-     * customer's key vault.
+     * The resource id of the user assigned identity to authenticate to customer's key vault.
      */
     @JsonProperty(value = "userAssignedIdentity")
     private String userAssignedIdentity;

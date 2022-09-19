@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Scripts Delete. */
 public final class ScriptsDeleteSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoScriptsDelete.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-07-07/examples/KustoScriptsDelete.json
      */
     /**
      * Sample code: KustoScriptsDelete.

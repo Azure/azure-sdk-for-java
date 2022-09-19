@@ -179,13 +179,14 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     private final String entityName;
     private final ServiceBusConnectionProcessor connectionProcessor;
     private final String viaEntityName;
+    private final String identifier;
 
     /**
      * Creates a new instance of this {@link ServiceBusSenderAsyncClient} that sends messages to a Service Bus entity.
      */
     ServiceBusSenderAsyncClient(String entityName, MessagingEntityType entityType,
         ServiceBusConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer, Runnable onClientClose, String viaEntityName) {
+        MessageSerializer messageSerializer, Runnable onClientClose, String viaEntityName, String identifier) {
         // Caching the created link so we don't invoke another link creation.
         this.messageSerializer = Objects.requireNonNull(messageSerializer,
             "'messageSerializer' cannot be null.");
@@ -198,6 +199,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         this.entityType = entityType;
         this.viaEntityName = viaEntityName;
         this.onClientClose = onClientClose;
+        this.identifier = identifier;
     }
 
     /**
@@ -216,6 +218,15 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      */
     public String getEntityPath() {
         return entityName;
+    }
+
+    /**
+     * Gets the identifier of the instance of {@link ServiceBusSenderAsyncClient}.
+     *
+     * @return The identifier that can identify the instance of {@link ServiceBusSenderAsyncClient}.
+     */
+    public String getIdentifier() {
+        return identifier;
     }
 
     /**
@@ -824,9 +835,9 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             .flatMap(connection -> {
                 if (!CoreUtils.isNullOrEmpty(viaEntityName)) {
                     return connection.createSendLink("VIA-".concat(viaEntityName), viaEntityName, retryOptions,
-                        entityName);
+                        entityName, identifier);
                 } else {
-                    return connection.createSendLink(entityName, entityName, retryOptions, null);
+                    return connection.createSendLink(entityName, entityName, retryOptions, null, identifier);
                 }
             })
             .doOnNext(next -> linkName.compareAndSet(null, next.getLinkName()));

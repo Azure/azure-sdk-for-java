@@ -21,8 +21,7 @@ public final class ForEachActivityTypeProperties {
     private Boolean isSequential;
 
     /*
-     * Batch count to be used for controlling the number of parallel execution
-     * (when isSequential is set to false).
+     * Batch count to be used for controlling the number of parallel execution (when isSequential is set to false).
      */
     @JsonProperty(value = "batchCount")
     private Integer batchCount;

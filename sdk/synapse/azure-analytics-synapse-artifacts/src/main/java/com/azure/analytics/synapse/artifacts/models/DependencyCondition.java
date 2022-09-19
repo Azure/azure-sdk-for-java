@@ -33,7 +33,11 @@ public final class DependencyCondition extends ExpandableStringEnum<DependencyCo
         return fromString(name, DependencyCondition.class);
     }
 
-    /** @return known DependencyCondition values. */
+    /**
+     * Gets known DependencyCondition values.
+     *
+     * @return known DependencyCondition values.
+     */
     public static Collection<DependencyCondition> values() {
         return values(DependencyCondition.class);
     }

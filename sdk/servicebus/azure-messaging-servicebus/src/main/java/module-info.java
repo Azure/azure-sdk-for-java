@@ -4,6 +4,8 @@
 module com.azure.messaging.servicebus {
     requires transitive com.azure.core.amqp;
 
+    requires com.fasterxml.jackson.dataformat.xml;
+
     exports com.azure.messaging.servicebus;
     exports com.azure.messaging.servicebus.administration;
     exports com.azure.messaging.servicebus.administration.models;

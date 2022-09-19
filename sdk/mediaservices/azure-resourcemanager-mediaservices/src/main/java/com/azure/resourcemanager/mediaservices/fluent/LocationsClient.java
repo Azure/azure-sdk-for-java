@@ -14,7 +14,9 @@ import com.azure.resourcemanager.mediaservices.models.CheckNameAvailabilityInput
 /** An instance of this class provides access to all the operations defined in LocationsClient. */
 public interface LocationsClient {
     /**
-     * Checks whether the Media Service resource name is available.
+     * Check Name Availability
+     *
+     * <p>Checks whether the Media Service resource name is available.
      *
      * @param locationName Location name.
      * @param parameters The request parameters.
@@ -28,7 +30,9 @@ public interface LocationsClient {
         String locationName, CheckNameAvailabilityInput parameters);
 
     /**
-     * Checks whether the Media Service resource name is available.
+     * Check Name Availability
+     *
+     * <p>Checks whether the Media Service resource name is available.
      *
      * @param locationName Location name.
      * @param parameters The request parameters.

@@ -13,8 +13,7 @@ import java.util.List;
 @Fluent
 public final class SsisPackageLocation {
     /*
-     * The SSIS package path. Type: string (or Expression with resultType
-     * string).
+     * The SSIS package path. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "packagePath")
     private Object packagePath;
