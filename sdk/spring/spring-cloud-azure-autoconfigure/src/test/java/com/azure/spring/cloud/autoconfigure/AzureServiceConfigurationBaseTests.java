@@ -347,10 +347,5 @@ class AzureServiceConfigurationBaseTests {
                 assertThat(properties).extracting("profile.environment.activeDirectoryEndpoint").isEqualTo(AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint());
             });
     }
-
-
-
-
-
-
+    
 }
