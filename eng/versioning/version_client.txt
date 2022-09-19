@@ -49,7 +49,7 @@ com.azure:azure-analytics-purview-catalog;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-analytics-purview-scanning;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-analytics-purview-administration;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-analytics-synapse-accesscontrol;1.0.0-beta.4;1.0.0-beta.5
-com.azure:azure-analytics-synapse-artifacts;1.0.0-beta.10;1.0.0-beta.11
+com.azure:azure-analytics-synapse-artifacts;1.0.0-beta.11;1.0.0-beta.12
 com.azure:azure-analytics-synapse-spark;1.0.0-beta.5;1.0.0-beta.6
 com.azure:azure-analytics-synapse-managedprivateendpoints;1.0.0-beta.5;1.0.0-beta.6
 com.azure:azure-analytics-synapse-monitoring;1.0.0-beta.3;1.0.0-beta.4
