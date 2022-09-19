@@ -10,6 +10,29 @@
 
 ### Other Changes
 
+## 1.12.5 (2022-09-01)
+
+### Bugs Fixed
+
+- Fixed a bug where `HttpResponse.writeBodyTo` could leak `ByteBuf`s. ([#30670](https://github.com/Azure/azure-sdk-for-java/pull/30670))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.31.0` to `1.32.0`.
+- Upgraded Reactor Netty from `1.0.21` to `1.0.22`.
+
+## 1.12.4 (2022-08-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.30.0` to `1.31.0`.
+- Upgraded Netty from `4.1.78.Final` to `4.1.79.Final`.
+- Upgraded Reactor Netty from `1.0.20` to `1.0.21`.
+
 ## 1.12.3 (2022-06-30)
 
 ### Features Added
@@ -29,7 +52,7 @@
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.29.1` to `1.30.0`.
-- Upgraded Netty from `4.1.76.Final` to `4.1.86.Final`.
+- Upgraded Netty from `4.1.76.Final` to `4.1.78.Final`.
 - Upgraded Reactor Netty from `1.0.18` to `1.0.20`.
 
 ## 1.12.2 (2022-06-03)

@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
@@ -46,7 +47,7 @@ public class JsonConfigurationParserTest {
 
         ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue(jsonText);
 
-        HashMap<String, Object> settings = JsonConfigurationParser.parseJsonSetting(setting);
+        Map<String, Object> settings = JsonConfigurationParser.parseJsonSetting(setting);
         assertEquals(13, settings.size());
     }
 

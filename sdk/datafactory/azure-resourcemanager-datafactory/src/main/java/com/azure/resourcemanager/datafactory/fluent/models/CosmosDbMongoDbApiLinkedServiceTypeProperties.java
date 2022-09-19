@@ -12,24 +12,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CosmosDbMongoDbApiLinkedServiceTypeProperties {
     /*
-     * Whether the CosmosDB (MongoDB API) server version is higher than 3.2.
-     * The default value is false. Type: boolean (or Expression with resultType
-     * boolean).
+     * Whether the CosmosDB (MongoDB API) server version is higher than 3.2. The default value is false. Type: boolean
+     * (or Expression with resultType boolean).
      */
     @JsonProperty(value = "isServerVersionAbove32")
     private Object isServerVersionAbove32;
 
     /*
-     * The CosmosDB (MongoDB API) connection string. Type: string, SecureString
-     * or AzureKeyVaultSecretReference. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * The CosmosDB (MongoDB API) connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Type:
+     * string, SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "connectionString", required = true)
     private Object connectionString;
 
     /*
-     * The name of the CosmosDB (MongoDB API) database that you want to access.
-     * Type: string (or Expression with resultType string).
+     * The name of the CosmosDB (MongoDB API) database that you want to access. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "database", required = true)
     private Object database;

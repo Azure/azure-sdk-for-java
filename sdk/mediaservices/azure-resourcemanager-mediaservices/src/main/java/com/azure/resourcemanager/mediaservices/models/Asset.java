@@ -283,8 +283,10 @@ public interface Asset {
     Asset refresh(Context context);
 
     /**
-     * Lists storage container URLs with shared access signatures (SAS) for uploading and downloading Asset content. The
-     * signatures are derived from the storage account keys.
+     * List the Asset URLs
+     *
+     * <p>Lists storage container URLs with shared access signatures (SAS) for uploading and downloading Asset content.
+     * The signatures are derived from the storage account keys.
      *
      * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -295,8 +297,10 @@ public interface Asset {
     AssetContainerSas listContainerSas(ListContainerSasInput parameters);
 
     /**
-     * Lists storage container URLs with shared access signatures (SAS) for uploading and downloading Asset content. The
-     * signatures are derived from the storage account keys.
+     * List the Asset URLs
+     *
+     * <p>Lists storage container URLs with shared access signatures (SAS) for uploading and downloading Asset content.
+     * The signatures are derived from the storage account keys.
      *
      * @param parameters The request parameters.
      * @param context The context to associate with this operation.
@@ -308,7 +312,9 @@ public interface Asset {
     Response<AssetContainerSas> listContainerSasWithResponse(ListContainerSasInput parameters, Context context);
 
     /**
-     * Gets the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services API.
+     * Gets the Asset storage key
+     *
+     * <p>Gets the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services API.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -317,7 +323,9 @@ public interface Asset {
     StorageEncryptedAssetDecryptionData getEncryptionKey();
 
     /**
-     * Gets the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services API.
+     * Gets the Asset storage key
+     *
+     * <p>Gets the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services API.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -329,7 +337,9 @@ public interface Asset {
     Response<StorageEncryptedAssetDecryptionData> getEncryptionKeyWithResponse(Context context);
 
     /**
-     * Lists Streaming Locators which are associated with this asset.
+     * List Streaming Locators
+     *
+     * <p>Lists Streaming Locators which are associated with this asset.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -338,7 +348,9 @@ public interface Asset {
     ListStreamingLocatorsResponse listStreamingLocators();
 
     /**
-     * Lists Streaming Locators which are associated with this asset.
+     * List Streaming Locators
+     *
+     * <p>Lists Streaming Locators which are associated with this asset.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

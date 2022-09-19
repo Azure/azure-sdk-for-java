@@ -52,7 +52,6 @@ import org.springframework.data.repository.query.parser.Part;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.util.ReflectionTestUtils;
-import reactor.core.publisher.Flux;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -413,6 +412,42 @@ public class CosmosTemplateIT {
     }
 
     @Test
+    public void testFindAllPageableMultiPagesPageSizeTwo() {
+        cosmosTemplate.insert(TEST_PERSON_2,
+            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
+        cosmosTemplate.insert(TEST_PERSON_3,
+            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_3)));
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+
+        final CosmosPageRequest pageRequest = new CosmosPageRequest(0, PAGE_SIZE_2, null);
+        final Page<Person> page1 = cosmosTemplate.findAll(pageRequest, Person.class, containerName);
+
+        final List<Person> resultPage1 = TestUtils.toList(page1);
+        final List<Person> expected = Lists.newArrayList(TEST_PERSON, TEST_PERSON_2);
+        assertThat(resultPage1.size()).isEqualTo(expected.size());
+        assertThat(resultPage1).containsAll(expected);
+        PageTestUtils.validateNonLastPage(page1, PAGE_SIZE_2);
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+
+        final Page<Person> page2 = cosmosTemplate.findAll(page1.nextPageable(), Person.class, containerName);
+
+        final List<Person> resultPage2 = TestUtils.toList(page2);
+        final List<Person> expected2 = Lists.newArrayList(TEST_PERSON_3);
+        assertThat(resultPage2.size()).isEqualTo(expected2.size());
+        assertThat(resultPage2).containsAll(expected2);
+        PageTestUtils.validateLastPage(page2, PAGE_SIZE_2);
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+    }
+
+    @Test
     public void testPaginationQuery() {
         cosmosTemplate.insert(TEST_PERSON_2,
             new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
@@ -427,7 +462,7 @@ public class CosmosTemplateIT {
 
         final Page<Person> page = cosmosTemplate.paginationQuery(query, Person.class, containerName);
         assertThat(page.getContent().size()).isEqualTo(1);
-        PageTestUtils.validateLastPage(page, page.getContent().size());
+        PageTestUtils.validateLastPage(page, PAGE_SIZE_2);
 
         // add ignore case testing
         final Criteria criteriaIgnoreCase = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
@@ -437,7 +472,7 @@ public class CosmosTemplateIT {
         final Page<Person> pageIgnoreCase = cosmosTemplate.paginationQuery(queryIgnoreCase, Person.class,
             containerName);
         assertThat(pageIgnoreCase.getContent().size()).isEqualTo(1);
-        PageTestUtils.validateLastPage(pageIgnoreCase, pageIgnoreCase.getContent().size());
+        PageTestUtils.validateLastPage(pageIgnoreCase, PAGE_SIZE_2);
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
@@ -566,7 +601,7 @@ public class CosmosTemplateIT {
             containerName);
 
         assertThat(secondPage.getContent().size()).isEqualTo(2);
-        PageTestUtils.validateLastPage(secondPage, secondPage.getContent().size());
+        PageTestUtils.validateLastPage(secondPage, PAGE_SIZE_3);
 
         final List<Person> secondPageResults = secondPage.getContent();
         assertThat(secondPageResults.get(0).getFirstName()).isEqualTo(NEW_FIRST_NAME);
@@ -601,6 +636,96 @@ public class CosmosTemplateIT {
             containerName));
 
         assertThat(people).containsExactly(TEST_PERSON);
+    }
+
+    @Test
+    public void testContainsCriteria() {
+        cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
+        cosmosTemplate.insert(TEST_PERSON_3, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_3)));
+        Person TEST_PERSON_4 = new Person("id-4", "NEW_FIRST_NAME", NEW_LAST_NAME, HOBBIES,
+            ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
+        cosmosTemplate.insert(TEST_PERSON_4, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_4)));
+
+        Criteria containsCaseSensitive = Criteria.getInstance(CriteriaType.CONTAINING, "firstName",
+            Collections.singletonList("first"), Part.IgnoreCaseType.NEVER);
+        List<Person> people = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(containsCaseSensitive), Person.class,
+            containerName));
+        assertThat(people).containsExactly(TEST_PERSON, TEST_PERSON_2, TEST_PERSON_3);
+
+        Criteria containsNotCaseSensitive = Criteria.getInstance(CriteriaType.CONTAINING, "firstName",
+            Collections.singletonList("first"), Part.IgnoreCaseType.ALWAYS);
+        List<Person> people2 = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(containsNotCaseSensitive), Person.class,
+            containerName));
+        assertThat(people2).containsExactly(TEST_PERSON, TEST_PERSON_2, TEST_PERSON_3, TEST_PERSON_4);
+    }
+
+    @Test
+    public void testContainsCriteria2() {
+        cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
+        cosmosTemplate.insert(TEST_PERSON_3, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_3)));
+
+        Criteria containsCaseSensitive = Criteria.getInstance(CriteriaType.CONTAINING, "id",
+            Collections.singletonList("1"), Part.IgnoreCaseType.NEVER);
+        List<Person> people = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(containsCaseSensitive), Person.class,
+            containerName));
+        assertThat(people).containsExactly(TEST_PERSON);
+
+        Criteria containsCaseSensitive2 = Criteria.getInstance(CriteriaType.CONTAINING, "id",
+            Collections.singletonList("2"), Part.IgnoreCaseType.NEVER);
+        List<Person> people2 = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(containsCaseSensitive2), Person.class,
+            containerName));
+        assertThat(people2).containsExactly(TEST_PERSON_2);
+
+        Criteria containsCaseSensitive3 = Criteria.getInstance(CriteriaType.CONTAINING, "id",
+            Collections.singletonList("3"), Part.IgnoreCaseType.NEVER);
+        List<Person> people3 = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(containsCaseSensitive3), Person.class,
+            containerName));
+        assertThat(people3).containsExactly(TEST_PERSON_3);
+    }
+
+    @Test
+    public void testNotContainsCriteria() {
+        cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
+        cosmosTemplate.insert(TEST_PERSON_3, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_3)));
+        Person TEST_PERSON_4 = new Person("id-4", "NEW_FIRST_NAME", NEW_LAST_NAME, HOBBIES,
+            ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
+        cosmosTemplate.insert(TEST_PERSON_4, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_4)));
+
+        Criteria notContainsCaseSensitive = Criteria.getInstance(CriteriaType.NOT_CONTAINING, "firstName",
+            Collections.singletonList("li"), Part.IgnoreCaseType.NEVER);
+        List<Person> people = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(notContainsCaseSensitive), Person.class,
+            containerName));
+        assertThat(people).containsExactly(TEST_PERSON_2, TEST_PERSON_3, TEST_PERSON_4);
+
+        Criteria notContainsNotCaseSensitive = Criteria.getInstance(CriteriaType.NOT_CONTAINING, "firstName",
+            Collections.singletonList("new"), Part.IgnoreCaseType.ALWAYS);
+        List<Person> people2 = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(notContainsNotCaseSensitive), Person.class,
+            containerName));
+        assertThat(people2).containsExactly(TEST_PERSON);
+    }
+
+    @Test
+    public void testNotContainsCriteria2() {
+        cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
+        cosmosTemplate.insert(TEST_PERSON_3, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_3)));
+
+        Criteria notContainsCaseSensitive = Criteria.getInstance(CriteriaType.NOT_CONTAINING, "id",
+            Collections.singletonList("1"), Part.IgnoreCaseType.NEVER);
+        List<Person> people = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(notContainsCaseSensitive), Person.class,
+            containerName));
+        assertThat(people).containsExactly(TEST_PERSON_2, TEST_PERSON_3);
+
+        Criteria notContainsCaseSensitive2 = Criteria.getInstance(CriteriaType.NOT_CONTAINING, "id",
+            Collections.singletonList("2"), Part.IgnoreCaseType.NEVER);
+        List<Person> people2 = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(notContainsCaseSensitive2), Person.class,
+            containerName));
+        assertThat(people2).containsExactly(TEST_PERSON, TEST_PERSON_3);
+
+        Criteria notContainsCaseSensitive3 = Criteria.getInstance(CriteriaType.NOT_CONTAINING, "id",
+            Collections.singletonList("3"), Part.IgnoreCaseType.NEVER);
+        List<Person> people3 = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(notContainsCaseSensitive3), Person.class,
+            containerName));
+        assertThat(people3).containsExactly(TEST_PERSON, TEST_PERSON_2);
     }
 
     @Test
@@ -739,7 +864,6 @@ public class CosmosTemplateIT {
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
             Collections.singletonList(FIRST_NAME), Part.IgnoreCaseType.NEVER);
         final PageRequest pageRequest = new CosmosPageRequest(0, PAGE_SIZE_2, null);
-        final CosmosQuery query = new CosmosQuery(criteria).with(pageRequest);
         final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(new CosmosQuery(criteria));
         final Slice<Person> slice = cosmosTemplate.runSliceQuery(sqlQuerySpec, pageRequest, Person.class, Person.class);
         assertThat(slice.getContent().size()).isEqualTo(1);
@@ -798,6 +922,22 @@ public class CosmosTemplateIT {
         final long count = maxDegreeOfParallelismCosmosTemplate.count(query, containerName);
 
         assertEquals((int) ReflectionTestUtils.getField(maxDegreeOfParallelismCosmosTemplate, "maxDegreeOfParallelism"), 20);
+    }
+
+    @Test
+    public void queryWithMaxBufferedItemCount() throws ClassNotFoundException {
+        final CosmosConfig config = CosmosConfig.builder()
+            .maxBufferedItemCount(500)
+            .build();
+        final CosmosTemplate maxBufferedItemCountCosmosTemplate = createCosmosTemplate(config, TestConstants.DB_NAME);
+
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
+        final CosmosQuery query = new CosmosQuery(criteria);
+
+        final long count = maxBufferedItemCountCosmosTemplate.count(query, containerName);
+
+        assertEquals((int) ReflectionTestUtils.getField(maxBufferedItemCountCosmosTemplate, "maxBufferedItemCount"), 500);
     }
 
     @Test

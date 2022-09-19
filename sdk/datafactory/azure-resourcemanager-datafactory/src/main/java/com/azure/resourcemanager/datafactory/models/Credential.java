@@ -45,9 +45,8 @@ public class Credential {
     private List<Object> annotations;
 
     /*
-     * The Azure Data Factory nested object which contains the information and
-     * credential which can be used to connect with related store or compute
-     * resource.
+     * The Azure Data Factory nested object which contains the information and credential which can be used to connect
+     * with related store or compute resource.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 

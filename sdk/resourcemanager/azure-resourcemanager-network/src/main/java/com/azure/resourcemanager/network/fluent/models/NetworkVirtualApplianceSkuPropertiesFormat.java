@@ -9,7 +9,11 @@ import com.azure.resourcemanager.network.models.NetworkVirtualApplianceSkuInstan
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Network Virtual Appliance Sku Properties Properties specific to NetworkVirtualApplianceSkus. */
+/**
+ * Network Virtual Appliance Sku Properties
+ *
+ * <p>Properties specific to NetworkVirtualApplianceSkus.
+ */
 @Fluent
 public final class NetworkVirtualApplianceSkuPropertiesFormat {
     /*

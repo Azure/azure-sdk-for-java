@@ -27,6 +27,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.implementation.TypeUtil;
+import com.azure.core.implementation.http.HttpHeadersHelper;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.util.BinaryData;
@@ -107,9 +108,7 @@ public abstract class RestProxyBase {
             context = context.addData("caller-method", methodParser.getFullyQualifiedMethodName())
                 .addData("azure-eagerly-read-response", methodParser.isResponseEagerlyRead());
 
-
-            return invoke(proxy, method, options, errorOptions != null ? errorOptions : null,
-                requestCallback != null ? requestCallback : null, methodParser, request, context);
+            return invoke(proxy, method, options, errorOptions, requestCallback, methodParser, request, context);
 
         } catch (IOException e) {
             if (isAsync) {
@@ -120,7 +119,9 @@ public abstract class RestProxyBase {
         }
     }
 
-    protected abstract Object invoke(Object proxy, Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions, Consumer<HttpRequest> httpRequestConsumer, SwaggerMethodParser methodParser, HttpRequest request, Context context);
+    protected abstract Object invoke(Object proxy, Method method, RequestOptions options,
+        EnumSet<ErrorOptions> errorOptions, Consumer<HttpRequest> httpRequestConsumer, SwaggerMethodParser methodParser,
+        HttpRequest request, Context context);
 
     public abstract void updateRequest(RequestDataConfiguration requestDataConfiguration, SerializerAdapter serializerAdapter) throws IOException;
 
@@ -176,7 +177,7 @@ public abstract class RestProxyBase {
      * @param context Context information about the current service call.
      * @return The updated context containing the span context.
      */
-    Context startTracingSpan(Method method, Context context) {
+    static Context startTracingSpan(SwaggerMethodParser method, Context context) {
         // First check if tracing is enabled. This is an optimized operation, so it is done first.
         if (!TracerProxy.isTracingEnabled()) {
             return context;
@@ -187,7 +188,7 @@ public abstract class RestProxyBase {
             return context;
         }
 
-        String spanName = interfaceParser.getServiceName() + "." + method.getName();
+        String spanName = method.getSpanName();
         context = TracerProxy.setSpanName(spanName, context);
         return TracerProxy.start(spanName, context);
     }
@@ -238,7 +239,7 @@ public abstract class RestProxyBase {
         // Sometimes people pass in a full URL for the value of their PathParam annotated argument.
         // This definitely happens in paging scenarios. In that case, just use the full URL and
         // ignore the Host annotation.
-        final String path = methodParser.setPath(args);
+        final String path = methodParser.setPath(args, serializer);
         final UrlBuilder pathUrlBuilder = UrlBuilder.parse(path);
 
         final UrlBuilder urlBuilder;
@@ -247,7 +248,7 @@ public abstract class RestProxyBase {
         } else {
             urlBuilder = new UrlBuilder();
 
-            methodParser.setSchemeAndHost(args, urlBuilder);
+            methodParser.setSchemeAndHost(args, urlBuilder, serializer);
 
             // Set the path after host, concatenating the path
             // segment in the host.
@@ -265,7 +266,7 @@ public abstract class RestProxyBase {
             }
         }
 
-        methodParser.setEncodedQueryParameters(args, urlBuilder);
+        methodParser.setEncodedQueryParameters(args, urlBuilder, serializer);
 
         final URL url = urlBuilder.toUrl();
         final HttpRequest request = configRequest(new HttpRequest(methodParser.getHttpMethod(), url),
@@ -273,7 +274,7 @@ public abstract class RestProxyBase {
 
         // Headers from Swagger method arguments always take precedence over inferred headers from body types
         HttpHeaders httpHeaders = request.getHeaders();
-        methodParser.setHeaders(args, httpHeaders);
+        methodParser.setHeaders(args, httpHeaders, serializer);
 
         return request;
     }
@@ -281,9 +282,9 @@ public abstract class RestProxyBase {
     @SuppressWarnings("unchecked")
     private HttpRequest configRequest(final HttpRequest request, final SwaggerMethodParser methodParser,
                                       SerializerAdapter serializerAdapter, boolean isAsync, final Object[] args) throws IOException {
-        final Object bodyContentObject = methodParser.setBody(args);
+        final Object bodyContentObject = methodParser.setBody(args, serializer);
         if (bodyContentObject == null) {
-            request.getHeaders().set("Content-Length", "0");
+            HttpHeadersHelper.setNoKeyFormatting(request.getHeaders(), "content-length", "Content-Length", "0");
         } else {
             // We read the content type from the @BodyParam annotation
             String contentType = methodParser.getBodyContentType();
@@ -298,11 +299,12 @@ public abstract class RestProxyBase {
                 }
             }
 
-            request.getHeaders().set("Content-Type", contentType);
+            HttpHeadersHelper.setNoKeyFormatting(request.getHeaders(), "content-type", "Content-Type", contentType);
             if (bodyContentObject instanceof BinaryData) {
                 BinaryData binaryData = (BinaryData) bodyContentObject;
                 if (binaryData.getLength() != null) {
-                    request.setHeader("Content-Length", binaryData.getLength().toString());
+                    HttpHeadersHelper.setNoKeyFormatting(request.getHeaders(), "content-length", "Content-Length",
+                        binaryData.getLength().toString());
                 }
                 // The request body is not read here. The call to `toFluxByteBuffer()` lazily converts the underlying
                 // content of BinaryData to a Flux<ByteBuffer> which is then read by HttpClient implementations when
@@ -345,7 +347,8 @@ public abstract class RestProxyBase {
 
         final String contentType = httpResponse.getHeaderValue("Content-Type");
         if ("application/octet-stream".equalsIgnoreCase(contentType)) {
-            exceptionMessage.append("(").append(httpResponse.getHeaderValue("Content-Length")).append("-byte body)");
+            String contentLength = HttpHeadersHelper.getValueNoKeyFormatting(httpResponse.getHeaders(), "content-length");
+            exceptionMessage.append("(").append(contentLength).append("-byte body)");
         } else if (responseContent == null || responseContent.length == 0) {
             exceptionMessage.append("(empty body)");
         } else {

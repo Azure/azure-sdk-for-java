@@ -3,6 +3,7 @@
 package com.azure.spring.cloud.config.implementation.properties;
 
 import static com.azure.spring.cloud.config.implementation.AppConfigurationConstants.EMPTY_LABEL;
+import static com.azure.spring.cloud.config.AppConfigurationConstants.LABEL_SEPARATOR;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,11 +24,6 @@ public final class FeatureFlagKeyValueSelector {
      * Label for requesting all configurations with (No Label)
      */
     private static final String[] EMPTY_LABEL_ARRAY = { EMPTY_LABEL };
-
-    /**
-     * Separator for multiple labels
-     */
-    public static final String LABEL_SEPARATOR = ",";
 
     private String keyFilter = "";
 

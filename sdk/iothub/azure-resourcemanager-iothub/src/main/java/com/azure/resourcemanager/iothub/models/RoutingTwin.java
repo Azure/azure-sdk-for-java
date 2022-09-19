@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Twin reference input parameter. This is an optional parameter. */
 @Fluent
 public final class RoutingTwin {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoutingTwin.class);
-
     /*
      * Twin Tags
      */

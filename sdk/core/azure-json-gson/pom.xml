@@ -67,7 +67,7 @@
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
-      <version>2.9.0</version> <!-- {x-version-update;com.google.code.gson:gson;external_dependency} -->
+      <version>2.9.1</version> <!-- {x-version-update;com.google.code.gson:gson;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -108,7 +108,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.google.code.gson:gson:[2.9.0]</include> <!-- {x-include-update;com.google.code.gson:gson;external_dependency} -->
+                <include>com.google.code.gson:gson:[2.9.1]</include> <!-- {x-include-update;com.google.code.gson:gson;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -134,7 +134,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
         <configuration>
           <compilerArgs>
             <arg>-Xlint:deprecation</arg>

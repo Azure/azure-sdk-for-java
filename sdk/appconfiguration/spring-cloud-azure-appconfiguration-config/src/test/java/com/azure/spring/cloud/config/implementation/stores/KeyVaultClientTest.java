@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -29,8 +28,6 @@ import com.azure.spring.cloud.config.implementation.properties.AppConfigurationP
 import reactor.core.publisher.Mono;
 
 public class KeyVaultClientTest {
-
-    static TokenCredential tokenCredential;
 
     private AppConfigurationSecretClientManager clientStore;
 
@@ -59,7 +56,7 @@ public class KeyVaultClientTest {
     }
 
     @Test
-    public void multipleArguments() throws IOException, URISyntaxException {
+    public void multipleArguments() throws URISyntaxException {
         azureProperties = new AppConfigurationProperties();
         azureProperties.setClientId("clientId");
 
@@ -83,8 +80,10 @@ public class KeyVaultClientTest {
     }
 
     @Test
-    public void configProviderAuth() throws IOException, URISyntaxException {
+    public void configProviderAuth() throws URISyntaxException {
         azureProperties = new AppConfigurationProperties();
+        azureProperties.setManagedIdentity(null);
+
         String keyVaultUri = "https://keyvault.vault.azure.net/secrets/mySecret";
 
         KeyVaultCredentialProvider provider = new KeyVaultCredentialProvider() {
@@ -115,7 +114,7 @@ public class KeyVaultClientTest {
     }
 
     @Test
-    public void configClientIdAuth() throws IOException, URISyntaxException {
+    public void configClientIdAuth() throws URISyntaxException {
         azureProperties = new AppConfigurationProperties();
         azureProperties.setClientId("testclientid");
 
@@ -140,7 +139,7 @@ public class KeyVaultClientTest {
     }
 
     @Test
-    public void systemAssignedCredentials() throws IOException, URISyntaxException {
+    public void systemAssignedCredentials() throws URISyntaxException {
         azureProperties = new AppConfigurationProperties();
         azureProperties.setClientId("");
 

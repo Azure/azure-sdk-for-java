@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExpressRouteCircuitSkuFamily. */
+/** The family of the SKU. */
 public final class ExpressRouteCircuitSkuFamily extends ExpandableStringEnum<ExpressRouteCircuitSkuFamily> {
     /** Static value UnlimitedData for ExpressRouteCircuitSkuFamily. */
     public static final ExpressRouteCircuitSkuFamily UNLIMITED_DATA = fromString("UnlimitedData");

@@ -1,5 +1,36 @@
 # Release History
 
+## 2.19.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.18.0 (2022-08-26)
+
+### Breaking Changes
+
+- Removed class `CaptureDescription`.
+- Removed class `Destination`.
+- Removed class `EncodingCaptureDescription`.
+- Removed class `EventHubListResult`.
+- Removed class `NameSpaceType`.
+- Removed class `PremiumMessagingRegionProperties`.
+- Removed class `PremiumMessagingRegionsListResult`.
+- Removed class `SBNamespaceMigrate`.
+- Changed class `SBNamespaceUpdateParameters` to be `final`.
+- Class `SBNamespaceUpdateParameters` is no longer annotated with `JsonFlatten`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2021-11-01`.
+
 ## 2.17.0 (2022-07-25)
 
 ### Other Changes

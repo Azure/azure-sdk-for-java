@@ -1811,7 +1811,7 @@ class ContainerAPITest extends APISpec {
 
         then:
         blobItem.getName() == (delimiter ? "dir1/dir2/file\uFFFE.b" : blobName)
-        blobItem.isPrefix() == (delimiter ? true : null)
+        blobItem.isPrefix() == delimiter
 
         where:
         delimiter | _
@@ -1903,10 +1903,7 @@ class ContainerAPITest extends APISpec {
         }
 
         expect:
-        for (ContinuablePage page :
-            cc.findBlobsByTags(
-                new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(PAGE_RESULTS), null, Context.NONE)
-                .iterableByPage()) {
+        for (ContinuablePage page : cc.findBlobsByTags(new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(PAGE_RESULTS), null, Context.NONE).iterableByPage()) {
             assert page.iterator().size() <= PAGE_RESULTS
         }
     }
@@ -1924,10 +1921,7 @@ class ContainerAPITest extends APISpec {
         }
 
         expect:
-        for (ContinuablePage page :
-            cc.findBlobsByTags(
-                new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)), null, Context.NONE)
-                .iterableByPage(PAGE_RESULTS)) {
+        for (ContinuablePage page : cc.findBlobsByTags(new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)), null, Context.NONE).iterableByPage(PAGE_RESULTS)) {
             assert page.iterator().size() <= PAGE_RESULTS
         }
     }
@@ -2214,6 +2208,8 @@ class ContainerAPITest extends APISpec {
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
 
+// TODO: Reintroduce these tests once service starts supporting it.
+
 //    def "Rename"() {
 //        setup:
 //        def newName = generateContainerName()
@@ -2227,11 +2223,25 @@ class ContainerAPITest extends APISpec {
 //        cleanup:
 //        renamedContainer.delete()
 //    }
-//
+
 //    def "Rename sas"() {
 //        setup:
 //        def newName = generateContainerName()
-//        def sas = primaryBlobServiceClient.generateAccountSas(new AccountSasSignatureValues(namer.getUtcNow().plusHours(1), AccountSasPermission.parse("rwdxlacuptf"), AccountSasService.parse("b"), AccountSasResourceType.parse("c")))
+//        def service = new AccountSasService()
+//            .setBlobAccess(true)
+//        def resourceType = new AccountSasResourceType()
+//            .setContainer(true)
+//            .setService(true)
+//            .setObject(true)
+//        def expiryTime = namer.getUtcNow().plusDays(1)
+//        def permissions = new AccountSasPermission()
+//            .setReadPermission(true)
+//            .setWritePermission(true)
+//            .setCreatePermission(true)
+//            .setDeletePermission(true)
+//
+//        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+//        def sas = primaryBlobServiceClient.generateAccountSas(sasValues)
 //        def sasClient = getContainerClient(sas, cc.getBlobContainerUrl())
 //
 //        when:
@@ -2243,7 +2253,7 @@ class ContainerAPITest extends APISpec {
 //        cleanup:
 //        renamedContainer.delete()
 //    }
-//
+
 //    @Unroll
 //    def "Rename AC"() {
 //        setup:
@@ -2260,7 +2270,7 @@ class ContainerAPITest extends APISpec {
 //        null            || _
 //        receivedLeaseID || _
 //    }
-//
+
 //    @Unroll
 //    def "Rename AC fail"() {
 //        setup:
@@ -2278,7 +2288,7 @@ class ContainerAPITest extends APISpec {
 //        leaseID         || _
 //        garbageLeaseID  || _
 //    }
-//
+
 //    @Unroll
 //    def "Rename AC illegal"() {
 //        setup:
@@ -2299,7 +2309,7 @@ class ContainerAPITest extends APISpec {
 //        null     | null       | null         | garbageEtag  | null
 //        null     | null       | null         | null         | "tags"
 //    }
-//
+
 //    def "Rename error"() {
 //        setup:
 //        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())

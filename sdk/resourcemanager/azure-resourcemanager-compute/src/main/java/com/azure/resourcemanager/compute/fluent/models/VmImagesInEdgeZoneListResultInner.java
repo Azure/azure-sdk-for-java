@@ -18,8 +18,8 @@ public final class VmImagesInEdgeZoneListResultInner {
     private List<VirtualMachineImageResourceInner> value;
 
     /*
-     * The URI to fetch the next page of VMImages in EdgeZone. Call ListNext()
-     * with this URI to fetch the next page of VmImages.
+     * The URI to fetch the next page of VMImages in EdgeZone. Call ListNext() with this URI to fetch the next page of
+     * VmImages.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;

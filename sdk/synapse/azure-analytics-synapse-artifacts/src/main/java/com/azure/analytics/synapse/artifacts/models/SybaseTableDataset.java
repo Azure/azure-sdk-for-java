@@ -19,8 +19,7 @@ import java.util.Map;
 @Fluent
 public class SybaseTableDataset extends Dataset {
     /*
-     * The Sybase table name. Type: string (or Expression with resultType
-     * string).
+     * The Sybase table name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;

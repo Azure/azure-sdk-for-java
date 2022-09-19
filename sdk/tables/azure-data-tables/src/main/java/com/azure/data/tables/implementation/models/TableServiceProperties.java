@@ -24,15 +24,13 @@ public final class TableServiceProperties {
     private Logging logging;
 
     /*
-     * A summary of request statistics grouped by API in hourly aggregates for
-     * tables.
+     * A summary of request statistics grouped by API in hourly aggregates for tables.
      */
     @JsonProperty(value = "HourMetrics")
     private Metrics hourMetrics;
 
     /*
-     * A summary of request statistics grouped by API in minute aggregates for
-     * tables.
+     * A summary of request statistics grouped by API in minute aggregates for tables.
      */
     @JsonProperty(value = "MinuteMetrics")
     private Metrics minuteMetrics;
@@ -133,7 +131,6 @@ public final class TableServiceProperties {
      */
     public TableServiceProperties setCors(List<CorsRule> cors) {
         this.cors = new CorsWrapper(cors);
-
         return this;
     }
 }

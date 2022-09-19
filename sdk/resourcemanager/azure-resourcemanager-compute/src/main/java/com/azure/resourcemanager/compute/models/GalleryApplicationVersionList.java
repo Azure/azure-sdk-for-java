@@ -20,9 +20,8 @@ public final class GalleryApplicationVersionList {
     private List<GalleryApplicationVersionInner> value;
 
     /*
-     * The uri to fetch the next page of gallery Application Versions. Call
-     * ListNext() with this to fetch the next page of gallery Application
-     * Versions.
+     * The uri to fetch the next page of gallery Application Versions. Call ListNext() with this to fetch the next page
+     * of gallery Application Versions.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;

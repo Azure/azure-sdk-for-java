@@ -7,7 +7,7 @@ package com.azure.resourcemanager.mediaservices.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The HLS setting for a text track. */
+/** The HLS setting for a track. */
 @Fluent
 public final class HlsSettings {
     /*

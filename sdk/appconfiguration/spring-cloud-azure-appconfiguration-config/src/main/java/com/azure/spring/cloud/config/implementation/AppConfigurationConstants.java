@@ -31,6 +31,11 @@ public class AppConfigurationConstants {
      * Feature Store Prefix
      */
     public static final String FEATURE_STORE_SUFFIX = ".appconfig";
+    
+    /**
+     * Separator for multiple labels.
+     */
+    public static final String LABEL_SEPARATOR = ",";
 
     /**
      * Key for returning all feature flags
@@ -52,6 +57,11 @@ public class AppConfigurationConstants {
      */
     public static final String KEY_VAULT_CONFIGURED_TRACING = "UsesKeyVault";
 
+    /**
+     * Constant for tracing for Replica Count
+     */
+    public static final String REPLICA_COUNT = "ReplicaCount";
+    
     /**
      * Http Header User Agent
      */

@@ -20,8 +20,7 @@ public final class TopologyInner {
     private String id;
 
     /*
-     * The datetime when the topology was initially created for the resource
-     * group.
+     * The datetime when the topology was initially created for the resource group.
      */
     @JsonProperty(value = "createdDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdDateTime;

@@ -36,8 +36,19 @@ public final class DeviceManagementAsyncClient {
     }
 
     /**
-     * Gets a list of all device classes (unique combinations of device manufacturer and model) for all devices
-     * connected to Device Update for IoT Hub.
+     * Gets a list of all device classes (sets of devices compatible with the same updates based on the model Id and
+     * compat properties reported in the Device Update PnP interface in IoT Hub) for all devices connected to Device
+     * Update for IoT Hub.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of device classes returned. You can filter on friendly name.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -76,8 +87,9 @@ public final class DeviceManagementAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of all device classes (unique combinations of device manufacturer and model) for all devices
-     *     connected to Device Update for IoT Hub as paginated response with {@link PagedFlux}.
+     * @return a list of all device classes (sets of devices compatible with the same updates based on the model Id and
+     *     compat properties reported in the Device Update PnP interface in IoT Hub) for all devices connected to Device
+     *     Update for IoT Hub as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -249,7 +261,7 @@ public final class DeviceManagementAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of devices returned. You can filter on GroupId, DeviceClassId, or GroupId and DeploymentStatus.</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of devices returned. You can filter on GroupId, DeviceClassId, or GroupId and DeploymentStatus. Use DeploymentStatus eq null to query for devices with no deployment status (that have never been deployed to).</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -486,7 +498,7 @@ public final class DeviceManagementAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of groups returned. You can order by any combination of groupId, device count, created date, subgroupsWithNewUpdatesAvailableCount, subgroupsWithUpdatesInProgressCount, or subgroupsOnLatestUpdateCount.</td></tr>
+     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of groups returned. You can order by groupId, deviceCount, createdDate, subgroupsWithNewUpdatesAvailableCount, subgroupsWithUpdatesInProgressCount, or subgroupsOnLatestUpdateCount.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -546,7 +558,7 @@ public final class DeviceManagementAsyncClient {
      * }
      * }</pre>
      *
-     * @param groupId Group identity.
+     * @param groupId Group identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -567,7 +579,7 @@ public final class DeviceManagementAsyncClient {
      * the history of the group and no longer need it. If a device is ever connected again for this group after the
      * group was deleted it will be automatically re-created but there will be no history.
      *
-     * @param groupId Group identity.
+     * @param groupId Group identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -596,7 +608,7 @@ public final class DeviceManagementAsyncClient {
      * }
      * }</pre>
      *
-     * @param groupId Group identity.
+     * @param groupId Group identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -615,16 +627,6 @@ public final class DeviceManagementAsyncClient {
 
     /**
      * Get the best available updates for a device group and a count of how many devices need each update.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of bestUpdates returned. You can filter on update Provider, Name and Version property. This filter is deprecated and should not be used.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -650,7 +652,7 @@ public final class DeviceManagementAsyncClient {
      * }
      * }</pre>
      *
-     * @param groupId Group identity.
+     * @param groupId Group identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -715,7 +717,7 @@ public final class DeviceManagementAsyncClient {
      * }
      * }</pre>
      *
-     * @param groupId Group identity.
+     * @param groupId Group identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -764,7 +766,7 @@ public final class DeviceManagementAsyncClient {
      * }
      * }</pre>
      *
-     * @param groupId Group identity.
+     * @param groupId Group identifier.
      * @param deploymentId Deployment identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -847,7 +849,7 @@ public final class DeviceManagementAsyncClient {
      * }
      * }</pre>
      *
-     * @param groupId Group identity.
+     * @param groupId Group identifier.
      * @param deploymentId Deployment identifier.
      * @param deployment The deployment properties.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -868,7 +870,7 @@ public final class DeviceManagementAsyncClient {
     /**
      * Deletes a deployment.
      *
-     * @param groupId Group identity.
+     * @param groupId Group identifier.
      * @param deploymentId Deployment identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -925,7 +927,7 @@ public final class DeviceManagementAsyncClient {
      * }
      * }</pre>
      *
-     * @param groupId Group identity.
+     * @param groupId Group identifier.
      * @param deploymentId Deployment identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -943,14 +945,15 @@ public final class DeviceManagementAsyncClient {
     }
 
     /**
-     * Get the device class subgroups for the group.
+     * Get the device class subgroups for the group. A device class subgroup is the set of devices within the group that
+     * share the same device class. All devices within the same device class are compatible with the same updates.
      *
      * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of device class subgroups returned. You can filter on compat properties by name and value.</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of device class subgroups returned. You can filter on compat properties by name and value. (i.e. filter=compatProperties/propertyName1 eq 'value1' and compatProperties/propertyName2 eq 'value2')</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -972,7 +975,7 @@ public final class DeviceManagementAsyncClient {
      * }
      * }</pre>
      *
-     * @param groupId Group identity.
+     * @param groupId Group identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -987,7 +990,8 @@ public final class DeviceManagementAsyncClient {
     }
 
     /**
-     * Gets device class subgroup details.
+     * Gets device class subgroup details. A device class subgroup is the set of devices within the group that share the
+     * same device class. All devices within the same device class are compatible with the same updates.
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1001,7 +1005,7 @@ public final class DeviceManagementAsyncClient {
      * }
      * }</pre>
      *
-     * @param groupId Group identity.
+     * @param groupId Group identifier.
      * @param deviceClassId Device class identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1018,9 +1022,13 @@ public final class DeviceManagementAsyncClient {
     }
 
     /**
-     * Deletes a device class subgroup.
+     * Deletes a device class subgroup. This subgroup is automatically created when a Device Update-enabled device is
+     * connected to the hub and reports its properties. Groups, subgroups, and deployments are not automatically cleaned
+     * up but are retained for history purposes. Users can call this method to delete a subgroup if they do not need to
+     * retain any of the history of the subgroup and no longer need it. If a device is ever connected again for this
+     * subgroup after the subgroup was deleted it will be automatically re-created but there will be no history.
      *
-     * @param groupId Group identity.
+     * @param groupId Group identifier.
      * @param deviceClassId Device class identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1051,7 +1059,7 @@ public final class DeviceManagementAsyncClient {
      * }
      * }</pre>
      *
-     * @param groupId Group identity.
+     * @param groupId Group identifier.
      * @param deviceClassId Device class identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1092,7 +1100,7 @@ public final class DeviceManagementAsyncClient {
      * }
      * }</pre>
      *
-     * @param groupId Group identity.
+     * @param groupId Group identifier.
      * @param deviceClassId Device class identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1160,7 +1168,7 @@ public final class DeviceManagementAsyncClient {
      * }
      * }</pre>
      *
-     * @param groupId Group identity.
+     * @param groupId Group identifier.
      * @param deviceClassId Device class identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1211,7 +1219,7 @@ public final class DeviceManagementAsyncClient {
      * }
      * }</pre>
      *
-     * @param groupId Group identity.
+     * @param groupId Group identifier.
      * @param deviceClassId Device class identifier.
      * @param deploymentId Deployment identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1232,7 +1240,7 @@ public final class DeviceManagementAsyncClient {
     /**
      * Deletes a device class subgroup deployment.
      *
-     * @param groupId Group identity.
+     * @param groupId Group identifier.
      * @param deviceClassId Device class identifier.
      * @param deploymentId Deployment identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1285,7 +1293,7 @@ public final class DeviceManagementAsyncClient {
      * }
      * }</pre>
      *
-     * @param groupId Group identity.
+     * @param groupId Group identifier.
      * @param deviceClassId Device class identifier.
      * @param deploymentId Deployment identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1337,7 +1345,7 @@ public final class DeviceManagementAsyncClient {
      * }
      * }</pre>
      *
-     * @param groupId Group identity.
+     * @param groupId Group identifier.
      * @param deviceClassId Device class identifier.
      * @param deploymentId Deployment identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1389,7 +1397,7 @@ public final class DeviceManagementAsyncClient {
      * }
      * }</pre>
      *
-     * @param groupId Group identity.
+     * @param groupId Group identifier.
      * @param deviceClassId Device class identifier.
      * @param deploymentId Deployment identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1438,7 +1446,7 @@ public final class DeviceManagementAsyncClient {
      * }
      * }</pre>
      *
-     * @param groupId Group identity.
+     * @param groupId Group identifier.
      * @param deviceClassId Device class identifier.
      * @param deploymentId Deployment identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1507,8 +1515,9 @@ public final class DeviceManagementAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getOperationWithResponse(String operationId, RequestOptions requestOptions) {
-        return this.serviceClient.getOperationWithResponseAsync(operationId, requestOptions);
+    public Mono<Response<BinaryData>> getOperationStatusWithResponse(
+            String operationId, RequestOptions requestOptions) {
+        return this.serviceClient.getOperationStatusWithResponseAsync(operationId, requestOptions);
     }
 
     /**
@@ -1567,8 +1576,8 @@ public final class DeviceManagementAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listOperations(RequestOptions requestOptions) {
-        return this.serviceClient.listOperationsAsync(requestOptions);
+    public PagedFlux<BinaryData> listOperationStatuses(RequestOptions requestOptions) {
+        return this.serviceClient.listOperationStatusesAsync(requestOptions);
     }
 
     /**
@@ -1578,7 +1587,7 @@ public final class DeviceManagementAsyncClient {
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String (Optional)
+     *     operationId: String (Optional)
      *     deviceList (Required): [
      *          (Required){
      *             deviceId: String (Required)
@@ -1596,7 +1605,7 @@ public final class DeviceManagementAsyncClient {
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String (Optional)
+     *     operationId: String (Optional)
      *     deviceList (Required): [
      *          (Required){
      *             deviceId: String (Required)
@@ -1633,7 +1642,7 @@ public final class DeviceManagementAsyncClient {
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String (Optional)
+     *     operationId: String (Optional)
      *     deviceList (Required): [
      *          (Required){
      *             deviceId: String (Required)
@@ -1672,7 +1681,7 @@ public final class DeviceManagementAsyncClient {
      * {
      *     value (Required): [
      *          (Required){
-     *             logCollectionId: String (Optional)
+     *             operationId: String (Optional)
      *             deviceList (Required): [
      *                  (Required){
      *                     deviceId: String (Required)
@@ -1709,7 +1718,7 @@ public final class DeviceManagementAsyncClient {
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String (Optional)
+     *     operationId: String (Optional)
      *     createdDateTime: String (Optional)
      *     lastActionDateTime: String (Optional)
      *     status: String(NotStarted/Running/Succeeded/Failed) (Optional)
@@ -1727,7 +1736,7 @@ public final class DeviceManagementAsyncClient {
      * }
      * }</pre>
      *
-     * @param operationId Operation identifier.
+     * @param logCollectionId Log collection identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1738,8 +1747,8 @@ public final class DeviceManagementAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLogCollectionDetailedStatusWithResponse(
-            String operationId, RequestOptions requestOptions) {
-        return this.serviceClient.getLogCollectionDetailedStatusWithResponseAsync(operationId, requestOptions);
+            String logCollectionId, RequestOptions requestOptions) {
+        return this.serviceClient.getLogCollectionDetailedStatusWithResponseAsync(logCollectionId, requestOptions);
     }
 
     /**
@@ -1767,7 +1776,8 @@ public final class DeviceManagementAsyncClient {
      * }
      * }</pre>
      *
-     * @param filter Filter list by specified properties.
+     * @param filter Restricts the set of devices for which device health is returned. You can filter on status, device
+     *     id and module id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1777,7 +1787,7 @@ public final class DeviceManagementAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listDeviceHealth(String filter, RequestOptions requestOptions) {
-        return this.serviceClient.listDeviceHealthAsync(filter, requestOptions);
+    public PagedFlux<BinaryData> listHealthOfDevices(String filter, RequestOptions requestOptions) {
+        return this.serviceClient.listHealthOfDevicesAsync(filter, requestOptions);
     }
 }

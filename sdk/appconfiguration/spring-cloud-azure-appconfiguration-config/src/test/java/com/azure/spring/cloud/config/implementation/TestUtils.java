@@ -65,8 +65,13 @@ public final class TestUtils {
                         Map<String, Object> result = MAPPER.convertValue(nodeParams,
                             new TypeReference<Map<String, Object>>() {
                             });
+<<<<<<<< HEAD:sdk/appconfiguration/spring-cloud-azure-appconfiguration-config/src/test/java/com/azure/spring/cloud/config/implementation/TestUtils.java
                         Set<String> parameters = result.keySet();
                         for (String paramKey : parameters) {
+========
+                        Set<String> parameterKeys = result.keySet();
+                        for (String paramKey : parameterKeys) {
+>>>>>>>> c595c31b45e92273feaec522e5d53130d7537677:sdk/appconfiguration/azure-spring-cloud-appconfiguration-config/src/test/java/com/azure/spring/cloud/config/implementation/TestUtils.java
                             filter.addParameter(paramKey, result.get(paramKey));
                         }
                     }

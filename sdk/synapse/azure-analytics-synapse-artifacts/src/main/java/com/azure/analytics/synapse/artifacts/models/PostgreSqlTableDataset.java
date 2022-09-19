@@ -19,22 +19,19 @@ import java.util.Map;
 @Fluent
 public class PostgreSqlTableDataset extends Dataset {
     /*
-     * This property will be retired. Please consider using schema + table
-     * properties instead.
+     * This property will be retired. Please consider using schema + table properties instead.
      */
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
     /*
-     * The PostgreSQL table name. Type: string (or Expression with resultType
-     * string).
+     * The PostgreSQL table name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.table")
     private Object table;
 
     /*
-     * The PostgreSQL schema name. Type: string (or Expression with resultType
-     * string).
+     * The PostgreSQL schema name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.schema")
     private Object schemaTypePropertiesSchema;

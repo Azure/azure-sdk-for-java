@@ -100,25 +100,25 @@ public class HttpLogOptions {
     }
 
     /**
-     * Gets the whitelisted headers that should be logged.
+     * Gets the allowed headers that should be logged.
      *
-     * @return The list of whitelisted headers.
+     * @return The list of allowed headers.
      */
     public Set<String> getAllowedHeaderNames() {
         return allowedHeaderNames;
     }
 
     /**
-     * Sets the given whitelisted headers that should be logged.
+     * Sets the given allowed headers that should be logged.
      *
      * <p>
-     * This method sets the provided header names to be the whitelisted header names which will be logged for all HTTP
+     * This method sets the provided header names to be the allowed header names which will be logged for all HTTP
      * requests and responses, overwriting any previously configured headers. Additionally, users can use {@link
      * HttpLogOptions#addAllowedHeaderName(String)} or {@link HttpLogOptions#getAllowedHeaderNames()} to add or remove
      * more headers names to the existing set of allowed header names.
      * </p>
      *
-     * @param allowedHeaderNames The list of whitelisted header names from the user.
+     * @param allowedHeaderNames The list of allowed header names from the user.
      * @return The updated HttpLogOptions object.
      */
     public HttpLogOptions setAllowedHeaderNames(final Set<String> allowedHeaderNames) {
@@ -127,9 +127,9 @@ public class HttpLogOptions {
     }
 
     /**
-     * Sets the given whitelisted header to the default header set that should be logged.
+     * Sets the given allowed header to the default header set that should be logged.
      *
-     * @param allowedHeaderName The whitelisted header name from the user.
+     * @param allowedHeaderName The allowed header name from the user.
      * @return The updated HttpLogOptions object.
      * @throws NullPointerException If {@code allowedHeaderName} is {@code null}.
      */
@@ -140,18 +140,18 @@ public class HttpLogOptions {
     }
 
     /**
-     * Gets the whitelisted query parameters.
+     * Gets the allowed query parameters.
      *
-     * @return The list of whitelisted query parameters.
+     * @return The list of allowed query parameters.
      */
     public Set<String> getAllowedQueryParamNames() {
         return allowedQueryParamNames;
     }
 
     /**
-     * Sets the given whitelisted query params to be displayed in the logging info.
+     * Sets the given allowed query params to be displayed in the logging info.
      *
-     * @param allowedQueryParamNames The list of whitelisted query params from the user.
+     * @param allowedQueryParamNames The list of allowed query params from the user.
      * @return The updated HttpLogOptions object.
      */
     public HttpLogOptions setAllowedQueryParamNames(final Set<String> allowedQueryParamNames) {
@@ -160,15 +160,17 @@ public class HttpLogOptions {
     }
 
     /**
-     * Sets the given whitelisted query param that should be logged.
+     * Sets the given allowed query param that should be logged.
      *
-     * @param allowedQueryParamName The whitelisted query param name from the user.
+     * @param allowedQueryParamName The allowed query param name from the user.
      * @return The updated HttpLogOptions object.
      * @throws NullPointerException If {@code allowedQueryParamName} is {@code null}.
      */
     public HttpLogOptions addAllowedQueryParamName(final String allowedQueryParamName) {
         this.allowedQueryParamNames.add(allowedQueryParamName);
+        this.getClass().getName();
         return this;
+
     }
 
     /**

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CloudServiceOperatingSystems ListOSVersions. */
 public final class CloudServiceOperatingSystemsListOSVersionsSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudServiceOSVersion_List.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-04-04/examples/CloudServiceOSVersion_List.json
      */
     /**
      * Sample code: List Cloud Service OS Versions in a subscription.

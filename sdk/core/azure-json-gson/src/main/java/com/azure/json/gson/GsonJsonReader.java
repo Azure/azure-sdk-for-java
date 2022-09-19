@@ -3,7 +3,7 @@
 
 package com.azure.json.gson;
 
-import com.azure.json.DefaultJsonReader;
+import com.azure.json.JsonOptions;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 
@@ -13,9 +13,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
-import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.Objects;
 
 /**
  * GSON-based implementation of {@link JsonReader}
@@ -26,46 +26,79 @@ public final class GsonJsonReader extends JsonReader {
     private final byte[] jsonBytes;
     private final String jsonString;
     private final boolean resetSupported;
+    private final boolean nonNumericNumbersSupported;
 
-    private com.google.gson.stream.JsonToken gsonCurrentToken;
     private JsonToken currentToken;
+    private boolean consumed = false;
+    private boolean complete = false;
 
     /**
-     * Constructs an instance of {@link GsonJsonReader} from a {@code byte[]}.
+     * Constructs an instance of {@link JsonReader} from a {@code byte[]}.
      *
      * @param json JSON {@code byte[]}.
-     * @return An instance of {@link GsonJsonReader}.
+     * @param options {@link JsonOptions} to configure the creation of the {@link JsonReader}.
+     * @return An instance of {@link JsonReader}.
+     * @throws NullPointerException If {@code json} is null.
      */
-    public static JsonReader fromBytes(byte[] json) {
+    static JsonReader fromBytes(byte[] json, JsonOptions options) {
+        Objects.requireNonNull(json, "'json' cannot be null.");
         return new GsonJsonReader(new InputStreamReader(new ByteArrayInputStream(json), StandardCharsets.UTF_8),
-            true, json, null);
+            true, json, null, options);
     }
 
     /**
-     * Constructs an instance of {@link GsonJsonReader} from a String.
+     * Constructs an instance of {@link JsonReader} from a String.
      *
      * @param json JSON String.
-     * @return An instance of {@link GsonJsonReader}.
+     * @param options {@link JsonOptions} to configure the creation of the {@link JsonReader}.
+     * @return An instance of {@link JsonReader}.
+     * @throws NullPointerException If {@code json} is null.
      */
-    public static JsonReader fromString(String json) {
-        return new GsonJsonReader(new StringReader(json), true, null, json);
+    static JsonReader fromString(String json, JsonOptions options) {
+        Objects.requireNonNull(json, "'json' cannot be null.");
+        return new GsonJsonReader(new StringReader(json), true, null, json, options);
     }
 
     /**
-     * Constructs an instance of {@link GsonJsonReader} from an {@link InputStream}.
+     * Constructs an instance of {@link JsonReader} from an {@link InputStream}.
      *
      * @param json JSON {@link InputStream}.
-     * @return An instance of {@link GsonJsonReader}.
+     * @param options {@link JsonOptions} to configure the creation of the {@link JsonReader}.
+     * @return An instance of {@link JsonReader}.
+     * @throws NullPointerException If {@code json} is null.
      */
-    public static JsonReader fromStream(InputStream json) {
-        return new GsonJsonReader(new InputStreamReader(json, StandardCharsets.UTF_8), false, null, null);
+    static JsonReader fromStream(InputStream json, JsonOptions options) {
+        Objects.requireNonNull(json, "'json' cannot be null.");
+        return new GsonJsonReader(new InputStreamReader(json, StandardCharsets.UTF_8), json.markSupported(), null, null,
+            options);
     }
 
-    private GsonJsonReader(Reader reader, boolean resetSupported, byte[] jsonBytes, String jsonString) {
+    /**
+     * Constructs an instance of {@link GsonJsonReader} from a {@link Reader}.
+     *
+     * @param json JSON {@link Reader}.
+     * @param options {@link JsonOptions} to configure the creation of the {@link JsonReader}.
+     * @return An instance of {@link GsonJsonReader}.
+     * @throws NullPointerException If {@code json} is null.
+     */
+    static JsonReader fromReader(Reader json, JsonOptions options) {
+        Objects.requireNonNull(json, "'json' cannot be null.");
+        return new GsonJsonReader(json, json.markSupported(), null, null, options);
+    }
+
+    private GsonJsonReader(Reader reader, boolean resetSupported, byte[] jsonBytes, String jsonString,
+        JsonOptions options) {
+        this(reader, resetSupported, jsonBytes, jsonString, options.isNonNumericNumbersSupported());
+    }
+
+    private GsonJsonReader(Reader reader, boolean resetSupported, byte[] jsonBytes, String jsonString,
+        boolean nonNumericNumbersSupported) {
         this.reader = new com.google.gson.stream.JsonReader(reader);
+        this.reader.setLenient(nonNumericNumbersSupported);
         this.resetSupported = resetSupported;
         this.jsonBytes = jsonBytes;
         this.jsonString = jsonString;
+        this.nonNumericNumbersSupported = nonNumericNumbersSupported;
     }
 
     @Override
@@ -74,173 +107,143 @@ public final class GsonJsonReader extends JsonReader {
     }
 
     @Override
-    public JsonToken nextToken() {
+    public JsonToken nextToken() throws IOException {
+        if (complete) {
+            return currentToken;
+        }
+
         // GSON requires explicitly beginning and ending arrays and objects and consuming null values.
         // The contract of JsonReader implicitly overlooks these properties.
-        try {
-            if (gsonCurrentToken == com.google.gson.stream.JsonToken.BEGIN_OBJECT) {
-                reader.beginObject();
-            } else if (gsonCurrentToken == com.google.gson.stream.JsonToken.END_OBJECT) {
-                reader.endObject();
-            } else if (gsonCurrentToken == com.google.gson.stream.JsonToken.BEGIN_ARRAY) {
-                reader.beginArray();
-            } else if (gsonCurrentToken == com.google.gson.stream.JsonToken.END_ARRAY) {
-                reader.endArray();
-            } else if (currentToken == JsonToken.NULL) {
-                reader.nextNull();
+        if (currentToken == JsonToken.START_OBJECT) {
+            reader.beginObject();
+        } else if (currentToken == JsonToken.END_OBJECT) {
+            reader.endObject();
+        } else if (currentToken == JsonToken.START_ARRAY) {
+            reader.beginArray();
+        } else if (currentToken == JsonToken.END_ARRAY) {
+            reader.endArray();
+        } else if (currentToken == JsonToken.NULL) {
+            reader.nextNull();
+        }
+
+        if (!consumed && currentToken != null) {
+            switch (currentToken) {
+                case FIELD_NAME:
+                    reader.nextName();
+                    break;
+
+                case BOOLEAN:
+                    reader.nextBoolean();
+                    break;
+
+                case NUMBER:
+                    reader.nextDouble();
+                    break;
+
+                case STRING:
+                    reader.nextString();
+                    break;
+
+                default:
+                    break;
             }
+        }
 
-            gsonCurrentToken = reader.peek();
-            currentToken = mapToken(gsonCurrentToken);
-            return currentToken;
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
+        com.google.gson.stream.JsonToken gsonToken = reader.peek();
+        if (gsonToken == com.google.gson.stream.JsonToken.END_DOCUMENT) {
+            complete = true;
+        }
+
+        currentToken = mapToken(reader.peek());
+        consumed = false;
+        return currentToken;
+    }
+
+    @Override
+    public byte[] getBinary() throws IOException {
+        consumed = true;
+
+        if (currentToken == JsonToken.NULL) {
+            reader.nextNull();
+            return null;
+        } else {
+            return Base64.getDecoder().decode(reader.nextString());
         }
     }
 
     @Override
-    public byte[] getBinaryValue() {
-        try {
-            if (currentToken == JsonToken.NULL) {
-                reader.nextNull();
-                return null;
-            } else {
-                return Base64.getDecoder().decode(reader.nextString());
-            }
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
+    public boolean getBoolean() throws IOException {
+        consumed = true;
+
+        return reader.nextBoolean();
+    }
+
+    @Override
+    public double getDouble() throws IOException {
+        consumed = true;
+
+        return reader.nextDouble();
+    }
+
+    @Override
+    public float getFloat() throws IOException {
+        consumed = true;
+
+        return (float) reader.nextDouble();
+    }
+
+    @Override
+    public int getInt() throws IOException {
+        consumed = true;
+
+        return reader.nextInt();
+    }
+
+    @Override
+    public long getLong() throws IOException {
+        consumed = true;
+
+        return reader.nextLong();
+    }
+
+    @Override
+    public String getString() throws IOException {
+        consumed = true;
+
+        if (currentToken == JsonToken.NULL) {
+            return null;
+        } else {
+            return reader.nextString();
         }
     }
 
     @Override
-    public boolean getBooleanValue() {
-        try {
-            return reader.nextBoolean();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    public String getFieldName() throws IOException {
+        consumed = true;
+
+        return reader.nextName();
     }
 
     @Override
-    public double getDoubleValue() {
-        try {
-            return reader.nextDouble();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    public void skipChildren() throws IOException {
+        consumed = true;
+
+        reader.skipValue();
     }
 
     @Override
-    public float getFloatValue() {
-        try {
-            return (float) reader.nextDouble();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-    }
-
-    @Override
-    public int getIntValue() {
-        try {
-            return reader.nextInt();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-    }
-
-    @Override
-    public long getLongValue() {
-        try {
-            return reader.nextLong();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-    }
-
-    @Override
-    public String getStringValue() {
-        try {
-            if (currentToken == JsonToken.NULL) {
-                return null;
-            } else {
-                return reader.nextString();
-            }
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-    }
-
-    @Override
-    public String getFieldName() {
-        try {
-            return reader.nextName();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-    }
-
-    @Override
-    public void skipChildren() {
-        try {
-            reader.skipValue();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-    }
-
-    @Override
-    public JsonReader bufferObject() {
-        StringBuilder bufferedObject = new StringBuilder();
-        if (isStartArrayOrObject()) {
-            // If the current token is the beginning of an array or object use JsonReader's readChildren method.
+    public JsonReader bufferObject() throws IOException {
+        if (currentToken == JsonToken.START_OBJECT
+            || (currentToken == JsonToken.FIELD_NAME && nextToken() == JsonToken.START_OBJECT)) {
+            consumed = true;
+            StringBuilder bufferedObject = new StringBuilder();
             readChildren(bufferedObject);
-        } else if (currentToken() == JsonToken.FIELD_NAME) {
-            // Otherwise, we're in a complex case where the reading needs to be handled.
-
-            // Add a starting object token.
-            bufferedObject.append("{");
-
-            JsonToken token = currentToken();
-            boolean needsComa = false;
-            while (token != JsonToken.END_OBJECT) {
-                // Appending comas happens in the subsequent loop run to prevent the case of appending comas before
-                // the end of the object, ex {"fieldName":true,}
-                if (needsComa) {
-                    bufferedObject.append(",");
-                }
-
-                if (token == JsonToken.FIELD_NAME) {
-                    // Field names need to have quotes added and a trailing colon.
-                    bufferedObject.append("\"").append(getFieldName()).append("\":");
-
-                    // Comas shouldn't happen after a field name.
-                    needsComa = false;
-                } else {
-                    if (token == JsonToken.STRING) {
-                        // String fields need to have quotes added.
-                        bufferedObject.append("\"").append(getStringValue()).append("\"");
-                    } else if (isStartArrayOrObject()) {
-                        // Structures use readChildren.
-                        readChildren(bufferedObject);
-                    } else {
-                        // All other value types use text value.
-                        bufferedObject.append(getTextValue());
-                    }
-
-                    // Comas should happen after a field value.
-                    needsComa = true;
-                }
-
-                token = nextToken();
-            }
-
-            bufferedObject.append("}");
+            String json = bufferedObject.toString();
+            return new GsonJsonReader(new StringReader(json), true, null, json, nonNumericNumbersSupported);
         } else {
             throw new IllegalStateException("Cannot buffer a JSON object from a non-object, non-field name "
                 + "starting location. Starting location: " + currentToken());
         }
-
-        return DefaultJsonReader.fromString(bufferedObject.toString());
     }
 
     @Override
@@ -249,15 +252,17 @@ public final class GsonJsonReader extends JsonReader {
     }
 
     @Override
-    public JsonReader reset() {
+    public JsonReader reset() throws IOException {
         if (!resetSupported) {
             throw new IllegalStateException("'reset' isn't supported by this JsonReader.");
         }
 
         if (jsonBytes != null) {
-            return DefaultJsonReader.fromBytes(jsonBytes);
+            return new GsonJsonReader(
+                new InputStreamReader(new ByteArrayInputStream(jsonBytes), StandardCharsets.UTF_8), true, jsonBytes,
+                null, nonNumericNumbersSupported);
         } else {
-            return DefaultJsonReader.fromString(jsonString);
+            return new GsonJsonReader(new StringReader(jsonString), true, null, jsonString, nonNumericNumbersSupported);
         }
     }
 
@@ -278,31 +283,27 @@ public final class GsonJsonReader extends JsonReader {
         switch (token) {
             case BEGIN_OBJECT:
                 return JsonToken.START_OBJECT;
-
             case END_OBJECT:
-            case END_DOCUMENT:
                 return JsonToken.END_OBJECT;
 
             case BEGIN_ARRAY:
                 return JsonToken.START_ARRAY;
-
             case END_ARRAY:
                 return JsonToken.END_ARRAY;
 
             case NAME:
                 return JsonToken.FIELD_NAME;
-
             case STRING:
                 return JsonToken.STRING;
-
             case NUMBER:
                 return JsonToken.NUMBER;
-
             case BOOLEAN:
                 return JsonToken.BOOLEAN;
-
             case NULL:
                 return JsonToken.NULL;
+
+            case END_DOCUMENT:
+                return JsonToken.END_DOCUMENT;
 
             default:
                 throw new IllegalStateException("Unsupported token type: '" + token + "'.");

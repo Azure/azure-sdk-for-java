@@ -12,29 +12,39 @@ import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.Status;
 
+<<<<<<<< HEAD:sdk/appconfiguration/spring-cloud-azure-appconfiguration-config/src/test/java/com/azure/spring/cloud/config/implementation/AppConfigurationHealthIndicatorTest.java
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.spring.cloud.config.AppConfigurationRefresh;
 import com.azure.spring.cloud.config.implementation.health.AppConfigurationHealthIndicator;
 import com.azure.spring.cloud.config.implementation.health.AppConfigurationStoreHealth;
 import com.azure.spring.cloud.config.implementation.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.implementation.properties.ConfigStore;
+========
+import com.azure.spring.cloud.config.AppConfigurationRefresh;
+import com.azure.spring.cloud.config.health.AppConfigurationHealthIndicator;
+import com.azure.spring.cloud.config.health.AppConfigurationStoreHealth;
+import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
+import com.azure.spring.cloud.config.properties.ConfigStore;
+>>>>>>>> c595c31b45e92273feaec522e5d53130d7537677:sdk/appconfiguration/azure-spring-cloud-appconfiguration-config/src/test/java/com/azure/spring/cloud/config/implementation/AppConfigurationHealthIndicatorTest.java
 
 public class AppConfigurationHealthIndicatorTest {
 
     @Mock
     private AppConfigurationRefresh refreshMock;
 
+<<<<<<<< HEAD:sdk/appconfiguration/spring-cloud-azure-appconfiguration-config/src/test/java/com/azure/spring/cloud/config/implementation/AppConfigurationHealthIndicatorTest.java
     @Mock
     private ConfigurationClient client;
 
+========
+>>>>>>>> c595c31b45e92273feaec522e5d53130d7537677:sdk/appconfiguration/azure-spring-cloud-appconfiguration-config/src/test/java/com/azure/spring/cloud/config/implementation/AppConfigurationHealthIndicatorTest.java
     @BeforeEach
-    public void setup(TestInfo testInfo) {
+    public void setup() {
         MockitoAnnotations.openMocks(this);
     }
 
@@ -51,16 +61,19 @@ public class AppConfigurationHealthIndicatorTest {
     }
 
     @Test
-    public void heathlyConfigurationStore() {
+    public void healthyConfigurationStore() {
         String storeName = "singleHealthyStoreIndicatorTest";
 
         AppConfigurationHealthIndicator indicator = new AppConfigurationHealthIndicator(refreshMock);
         Map<String, AppConfigurationStoreHealth> storeHealth = new HashMap<>();
 
+<<<<<<<< HEAD:sdk/appconfiguration/spring-cloud-azure-appconfiguration-config/src/test/java/com/azure/spring/cloud/config/implementation/AppConfigurationHealthIndicatorTest.java
         List<AppConfigurationReplicaClient> clients = new ArrayList<>();
 
         clients.add(new AppConfigurationReplicaClient(storeName, client));
 
+========
+>>>>>>>> c595c31b45e92273feaec522e5d53130d7537677:sdk/appconfiguration/azure-spring-cloud-appconfiguration-config/src/test/java/com/azure/spring/cloud/config/implementation/AppConfigurationHealthIndicatorTest.java
         storeHealth.put(storeName, AppConfigurationStoreHealth.UP);
 
         when(refreshMock.getAppConfigurationStoresHealth()).thenReturn(storeHealth);
@@ -86,11 +99,19 @@ public class AppConfigurationHealthIndicatorTest {
         properties.setStores(stores);
 
         AppConfigurationHealthIndicator indicator = new AppConfigurationHealthIndicator(refreshMock);
+<<<<<<<< HEAD:sdk/appconfiguration/spring-cloud-azure-appconfiguration-config/src/test/java/com/azure/spring/cloud/config/implementation/AppConfigurationHealthIndicatorTest.java
         
         Map<String,  AppConfigurationStoreHealth> mockHealth = new HashMap<String, AppConfigurationStoreHealth>();
         
         mockHealth.put(storeName, AppConfigurationStoreHealth.NOT_LOADED);
         
+========
+
+        Map<String,  AppConfigurationStoreHealth> mockHealth = new HashMap<>();
+
+        mockHealth.put(storeName, AppConfigurationStoreHealth.NOT_LOADED);
+
+>>>>>>>> c595c31b45e92273feaec522e5d53130d7537677:sdk/appconfiguration/azure-spring-cloud-appconfiguration-config/src/test/java/com/azure/spring/cloud/config/implementation/AppConfigurationHealthIndicatorTest.java
         when(refreshMock.getAppConfigurationStoresHealth()).thenReturn(mockHealth);
 
         Health health = indicator.health();
@@ -100,7 +121,7 @@ public class AppConfigurationHealthIndicatorTest {
     }
 
     @Test
-    public void unheathlyConfigurationStore() {
+    public void unhealthyConfigurationStore() {
         String storeName = "singleUnhealthyStoreIndicatorTest";
 
         AppConfigurationHealthIndicator indicator = new AppConfigurationHealthIndicator(refreshMock);

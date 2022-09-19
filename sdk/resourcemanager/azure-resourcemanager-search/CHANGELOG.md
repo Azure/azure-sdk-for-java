@@ -1,5 +1,23 @@
 # Release History
 
+## 2.19.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.18.0 (2022-08-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
 ## 2.17.0 (2022-07-25)
 
 ### Breaking Changes

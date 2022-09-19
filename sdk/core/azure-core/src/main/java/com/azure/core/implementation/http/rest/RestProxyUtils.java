@@ -12,6 +12,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.implementation.http.HttpHeadersHelper;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.FluxByteBufferContent;
@@ -41,7 +42,6 @@ public final class RestProxyUtils {
     public static final String BODY_TOO_SMALL = "Request body emitted %d bytes, less than the expected %d bytes.";
     public static final ClientLogger LOGGER = new ClientLogger(RestProxyUtils.class);
 
-
     private RestProxyUtils() {
     }
 
@@ -54,7 +54,8 @@ public final class RestProxyUtils {
 
         return Mono.fromCallable(() -> {
             BinaryDataContent content = BinaryDataHelper.getContent(body);
-            long expectedLength = Long.parseLong(request.getHeaders().getValue("Content-Length"));
+            long expectedLength = Long.parseLong(HttpHeadersHelper.getValueNoKeyFormatting(request.getHeaders(),
+                "content-length"));
             if (content instanceof InputStreamContent) {
                 InputStream validatingInputStream = new LengthValidatingInputStream(
                     content.toStream(), expectedLength);
@@ -125,7 +126,8 @@ public final class RestProxyUtils {
             return null;
         }
 
-        final long expectedLength = Long.parseLong(request.getHeaders().getValue("Content-Length"));
+        final long expectedLength = Long.parseLong(HttpHeadersHelper.getValueNoKeyFormatting(request.getHeaders(),
+            "content-length"));
         Long length = binaryData.getLength();
         BinaryDataContent bdc = BinaryDataHelper.getContent(binaryData);
         if (bdc instanceof FluxByteBufferContent) {
@@ -219,5 +221,4 @@ public final class RestProxyUtils {
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .build();
     }
-
 }

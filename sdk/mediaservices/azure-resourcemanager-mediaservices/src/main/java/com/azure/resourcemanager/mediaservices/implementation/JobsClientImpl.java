@@ -177,7 +177,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Lists all of the Jobs for the Transform.
+     * List Jobs
+     *
+     * <p>Lists all of the Jobs for the Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -214,6 +216,7 @@ public final class JobsClientImpl implements JobsClient {
         if (transformName == null) {
             return Mono.error(new IllegalArgumentException("Parameter transformName is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -225,7 +228,7 @@ public final class JobsClientImpl implements JobsClient {
                             resourceGroupName,
                             accountName,
                             transformName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             filter,
                             orderby,
                             accept,
@@ -243,7 +246,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Lists all of the Jobs for the Transform.
+     * List Jobs
+     *
+     * <p>Lists all of the Jobs for the Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -286,6 +291,7 @@ public final class JobsClientImpl implements JobsClient {
         if (transformName == null) {
             return Mono.error(new IllegalArgumentException("Parameter transformName is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -295,7 +301,7 @@ public final class JobsClientImpl implements JobsClient {
                 resourceGroupName,
                 accountName,
                 transformName,
-                this.client.getApiVersion(),
+                apiVersion,
                 filter,
                 orderby,
                 accept,
@@ -312,7 +318,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Lists all of the Jobs for the Transform.
+     * List Jobs
+     *
+     * <p>Lists all of the Jobs for the Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -333,7 +341,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Lists all of the Jobs for the Transform.
+     * List Jobs
+     *
+     * <p>Lists all of the Jobs for the Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -353,7 +363,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Lists all of the Jobs for the Transform.
+     * List Jobs
+     *
+     * <p>Lists all of the Jobs for the Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -380,7 +392,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Lists all of the Jobs for the Transform.
+     * List Jobs
+     *
+     * <p>Lists all of the Jobs for the Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -398,7 +412,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Lists all of the Jobs for the Transform.
+     * List Jobs
+     *
+     * <p>Lists all of the Jobs for the Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -423,7 +439,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Gets a Job.
+     * Get Job
+     *
+     * <p>Gets a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -462,6 +480,7 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -474,14 +493,16 @@ public final class JobsClientImpl implements JobsClient {
                             accountName,
                             transformName,
                             jobName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Gets a Job.
+     * Get Job
+     *
+     * <p>Gets a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -521,6 +542,7 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -531,13 +553,15 @@ public final class JobsClientImpl implements JobsClient {
                 accountName,
                 transformName,
                 jobName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
 
     /**
-     * Gets a Job.
+     * Get Job
+     *
+     * <p>Gets a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -556,7 +580,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Gets a Job.
+     * Get Job
+     *
+     * <p>Gets a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -573,7 +599,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Gets a Job.
+     * Get Job
+     *
+     * <p>Gets a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -592,7 +620,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Creates a Job.
+     * Create Job
+     *
+     * <p>Creates a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -637,6 +667,7 @@ public final class JobsClientImpl implements JobsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -649,7 +680,7 @@ public final class JobsClientImpl implements JobsClient {
                             accountName,
                             transformName,
                             jobName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -657,7 +688,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Creates a Job.
+     * Create Job
+     *
+     * <p>Creates a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -708,6 +741,7 @@ public final class JobsClientImpl implements JobsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -718,14 +752,16 @@ public final class JobsClientImpl implements JobsClient {
                 accountName,
                 transformName,
                 jobName,
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
     }
 
     /**
-     * Creates a Job.
+     * Create Job
+     *
+     * <p>Creates a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -745,7 +781,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Creates a Job.
+     * Create Job
+     *
+     * <p>Creates a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -764,7 +802,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Creates a Job.
+     * Create Job
+     *
+     * <p>Creates a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -790,7 +830,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Deletes a Job.
+     * Delete Job
+     *
+     * <p>Deletes a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -829,6 +871,7 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -841,14 +884,16 @@ public final class JobsClientImpl implements JobsClient {
                             accountName,
                             transformName,
                             jobName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Deletes a Job.
+     * Delete Job
+     *
+     * <p>Deletes a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -888,6 +933,7 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -898,13 +944,15 @@ public final class JobsClientImpl implements JobsClient {
                 accountName,
                 transformName,
                 jobName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
 
     /**
-     * Deletes a Job.
+     * Delete Job
+     *
+     * <p>Deletes a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -922,7 +970,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Deletes a Job.
+     * Delete Job
+     *
+     * <p>Deletes a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -938,7 +988,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Deletes a Job.
+     * Delete Job
+     *
+     * <p>Deletes a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -957,8 +1009,10 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Update is only supported for description and priority. Updating Priority will take effect when the Job state is
-     * Queued or Scheduled and depending on the timing the priority update may be ignored.
+     * Update Job
+     *
+     * <p>Update is only supported for description and priority. Updating Priority will take effect when the Job state
+     * is Queued or Scheduled and depending on the timing the priority update may be ignored.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1003,6 +1057,7 @@ public final class JobsClientImpl implements JobsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1015,7 +1070,7 @@ public final class JobsClientImpl implements JobsClient {
                             accountName,
                             transformName,
                             jobName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -1023,8 +1078,10 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Update is only supported for description and priority. Updating Priority will take effect when the Job state is
-     * Queued or Scheduled and depending on the timing the priority update may be ignored.
+     * Update Job
+     *
+     * <p>Update is only supported for description and priority. Updating Priority will take effect when the Job state
+     * is Queued or Scheduled and depending on the timing the priority update may be ignored.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1075,6 +1132,7 @@ public final class JobsClientImpl implements JobsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1085,15 +1143,17 @@ public final class JobsClientImpl implements JobsClient {
                 accountName,
                 transformName,
                 jobName,
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
     }
 
     /**
-     * Update is only supported for description and priority. Updating Priority will take effect when the Job state is
-     * Queued or Scheduled and depending on the timing the priority update may be ignored.
+     * Update Job
+     *
+     * <p>Update is only supported for description and priority. Updating Priority will take effect when the Job state
+     * is Queued or Scheduled and depending on the timing the priority update may be ignored.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1113,8 +1173,10 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Update is only supported for description and priority. Updating Priority will take effect when the Job state is
-     * Queued or Scheduled and depending on the timing the priority update may be ignored.
+     * Update Job
+     *
+     * <p>Update is only supported for description and priority. Updating Priority will take effect when the Job state
+     * is Queued or Scheduled and depending on the timing the priority update may be ignored.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1133,8 +1195,10 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Update is only supported for description and priority. Updating Priority will take effect when the Job state is
-     * Queued or Scheduled and depending on the timing the priority update may be ignored.
+     * Update Job
+     *
+     * <p>Update is only supported for description and priority. Updating Priority will take effect when the Job state
+     * is Queued or Scheduled and depending on the timing the priority update may be ignored.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1160,7 +1224,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Cancel a Job.
+     * Cancel Job
+     *
+     * <p>Cancel a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1199,6 +1265,7 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1211,14 +1278,16 @@ public final class JobsClientImpl implements JobsClient {
                             accountName,
                             transformName,
                             jobName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Cancel a Job.
+     * Cancel Job
+     *
+     * <p>Cancel a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1258,6 +1327,7 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1268,13 +1338,15 @@ public final class JobsClientImpl implements JobsClient {
                 accountName,
                 transformName,
                 jobName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
 
     /**
-     * Cancel a Job.
+     * Cancel Job
+     *
+     * <p>Cancel a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1293,7 +1365,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Cancel a Job.
+     * Cancel Job
+     *
+     * <p>Cancel a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1309,7 +1383,9 @@ public final class JobsClientImpl implements JobsClient {
     }
 
     /**
-     * Cancel a Job.
+     * Cancel Job
+     *
+     * <p>Cancel a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1330,7 +1406,8 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1365,7 +1442,8 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

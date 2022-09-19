@@ -15,16 +15,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class SharePointOnlineListSource extends CopySource {
     /*
-     * The OData query to filter the data in SharePoint Online list. For
-     * example, "$top=1". Type: string (or Expression with resultType string).
+     * The OData query to filter the data in SharePoint Online list. For example, "$top=1". Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "query")
     private Object query;
 
     /*
-     * The wait time to get a response from SharePoint Online. Default value is
-     * 5 minutes (00:05:00). Type: string (or Expression with resultType
-     * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * The wait time to get a response from SharePoint Online. Default value is 5 minutes (00:05:00). Type: string (or
+     * Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "httpRequestTimeout")
     private Object httpRequestTimeout;
