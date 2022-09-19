@@ -55,8 +55,6 @@ jobs:
           SDKType: ${{ parameters.SDKType }}
 
       - template: ../steps/install-latest-jdk.yml
-        parameters:
-          JdkVersion: $(JavaTestVersion)
 
       - template: ../steps/install-reporting-tools.yml
         parameters:
