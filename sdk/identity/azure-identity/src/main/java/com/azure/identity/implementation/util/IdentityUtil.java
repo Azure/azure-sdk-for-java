@@ -54,7 +54,7 @@ public final class IdentityUtil {
                 && !options.getAdditionallyAllowedTenants().contains(resolvedTenantId)) {
                 throw LOGGER.logExceptionAsError(new ClientAuthenticationException("The current credential is not configured to acquire tokens for tenant "
                     +  resolvedTenantId + ". To enable acquiring tokens for this tenant add it to the AdditionallyAllowedTenants on the credential options, "
-                    + "or add \"*\" to AdditionallyAllowedTenants to allow acquiring tokens for any tenant.", null));
+                    + "or add \"*\" to AdditionallyAllowedTenants to allow acquiring tokens for any tenant. See the troubleshooting guide for more information. https://aka.ms/azsdk/java/identity/multitenant/troubleshoot", null));
             }
             return resolvedTenantId;
         }
