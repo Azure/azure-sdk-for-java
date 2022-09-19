@@ -193,7 +193,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Get the status of the backup for a volume.
+     * Get volume's backup status
+     *
+     * <p>Get the status of the backup for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -252,7 +254,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Get the status of the backup for a volume.
+     * Get volume's backup status
+     *
+     * <p>Get the status of the backup for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -309,7 +313,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Get the status of the backup for a volume.
+     * Get volume's backup status
+     *
+     * <p>Get the status of the backup for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -328,7 +334,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Get the status of the backup for a volume.
+     * Get volume's backup status
+     *
+     * <p>Get the status of the backup for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -346,7 +354,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Get the status of the backup for a volume.
+     * Get volume's backup status
+     *
+     * <p>Get the status of the backup for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -365,7 +375,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Get the status of the restore for a volume.
+     * Get volume's restore status
+     *
+     * <p>Get the status of the restore for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -424,7 +436,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Get the status of the restore for a volume.
+     * Get volume's restore status
+     *
+     * <p>Get the status of the restore for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -481,7 +495,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Get the status of the restore for a volume.
+     * Get volume's restore status
+     *
+     * <p>Get the status of the restore for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -500,7 +516,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Get the status of the restore for a volume.
+     * Get volume's restore status
+     *
+     * <p>Get the status of the restore for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -518,7 +536,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Get the status of the restore for a volume.
+     * Get volume's restore status
+     *
+     * <p>Get the status of the restore for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -538,7 +558,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * List all backups for a volume.
+     * List Backups
+     *
+     * <p>List all backups for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -600,7 +622,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * List all backups for a volume.
+     * List Backups
+     *
+     * <p>List all backups for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -660,7 +684,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * List all backups for a volume.
+     * List Backups
+     *
+     * <p>List all backups for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -678,7 +704,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * List all backups for a volume.
+     * List Backups
+     *
+     * <p>List all backups for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -698,7 +726,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * List all backups for a volume.
+     * List Backups
+     *
+     * <p>List all backups for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -716,7 +746,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * List all backups for a volume.
+     * List Backups
+     *
+     * <p>List all backups for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -735,7 +767,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Gets the specified backup of the volume.
+     * Get a backup
+     *
+     * <p>Gets the specified backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -798,7 +832,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Gets the specified backup of the volume.
+     * Get a backup
+     *
+     * <p>Gets the specified backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -864,7 +900,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Gets the specified backup of the volume.
+     * Get a backup
+     *
+     * <p>Gets the specified backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -884,7 +922,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Gets the specified backup of the volume.
+     * Get a backup
+     *
+     * <p>Gets the specified backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -903,7 +943,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Gets the specified backup of the volume.
+     * Get a backup
+     *
+     * <p>Gets the specified backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -928,7 +970,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Create a backup for the volume.
+     * Create a backup
+     *
+     * <p>Create a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1003,7 +1047,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Create a backup for the volume.
+     * Create a backup
+     *
+     * <p>Create a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1077,7 +1123,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Create a backup for the volume.
+     * Create a backup
+     *
+     * <p>Create a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1107,7 +1155,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Create a backup for the volume.
+     * Create a backup
+     *
+     * <p>Create a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1140,7 +1190,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Create a backup for the volume.
+     * Create a backup
+     *
+     * <p>Create a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1165,7 +1217,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Create a backup for the volume.
+     * Create a backup
+     *
+     * <p>Create a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1193,7 +1247,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Create a backup for the volume.
+     * Create a backup
+     *
+     * <p>Create a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1220,7 +1276,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Create a backup for the volume.
+     * Create a backup
+     *
+     * <p>Create a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1249,7 +1307,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Create a backup for the volume.
+     * Create a backup
+     *
+     * <p>Create a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1274,7 +1334,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Create a backup for the volume.
+     * Create a backup
+     *
+     * <p>Create a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1301,7 +1363,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Patch a backup for the volume.
+     * Patch a backup
+     *
+     * <p>Patch a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1374,7 +1438,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Patch a backup for the volume.
+     * Patch a backup
+     *
+     * <p>Patch a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1446,7 +1512,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Patch a backup for the volume.
+     * Patch a backup
+     *
+     * <p>Patch a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1476,7 +1544,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Patch a backup for the volume.
+     * Patch a backup
+     *
+     * <p>Patch a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1509,7 +1579,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Patch a backup for the volume.
+     * Patch a backup
+     *
+     * <p>Patch a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1534,7 +1606,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Patch a backup for the volume.
+     * Patch a backup
+     *
+     * <p>Patch a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1562,7 +1636,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Patch a backup for the volume.
+     * Patch a backup
+     *
+     * <p>Patch a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1589,7 +1665,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Patch a backup for the volume.
+     * Patch a backup
+     *
+     * <p>Patch a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1611,7 +1689,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Patch a backup for the volume.
+     * Patch a backup
+     *
+     * <p>Patch a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1640,7 +1720,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Patch a backup for the volume.
+     * Patch a backup
+     *
+     * <p>Patch a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1665,7 +1747,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Patch a backup for the volume.
+     * Patch a backup
+     *
+     * <p>Patch a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1685,7 +1769,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Patch a backup for the volume.
+     * Patch a backup
+     *
+     * <p>Patch a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1712,7 +1798,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Delete a backup of the volume.
+     * Delete backup
+     *
+     * <p>Delete a backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1773,7 +1861,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Delete a backup of the volume.
+     * Delete backup
+     *
+     * <p>Delete a backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1837,7 +1927,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Delete a backup of the volume.
+     * Delete backup
+     *
+     * <p>Delete a backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1861,7 +1953,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Delete a backup of the volume.
+     * Delete backup
+     *
+     * <p>Delete a backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1891,7 +1985,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Delete a backup of the volume.
+     * Delete backup
+     *
+     * <p>Delete a backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1910,7 +2006,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Delete a backup of the volume.
+     * Delete backup
+     *
+     * <p>Delete a backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1936,7 +2034,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Delete a backup of the volume.
+     * Delete backup
+     *
+     * <p>Delete a backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1957,7 +2057,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Delete a backup of the volume.
+     * Delete backup
+     *
+     * <p>Delete a backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1984,7 +2086,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Delete a backup of the volume.
+     * Delete backup
+     *
+     * <p>Delete a backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2002,7 +2106,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Delete a backup of the volume.
+     * Delete backup
+     *
+     * <p>Delete a backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.

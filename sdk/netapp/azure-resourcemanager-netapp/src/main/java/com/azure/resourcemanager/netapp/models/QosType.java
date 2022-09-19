@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for QosType. */
+/** The qos type of the pool. */
 public final class QosType extends ExpandableStringEnum<QosType> {
     /** Static value Auto for QosType. */
     public static final QosType AUTO = fromString("Auto");
