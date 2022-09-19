@@ -20,33 +20,29 @@ public final class WebhookActivityTypeProperties {
     private WebhookActivityMethod method;
 
     /*
-     * WebHook activity target endpoint and path. Type: string (or Expression
-     * with resultType string).
+     * WebHook activity target endpoint and path. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "url", required = true)
     private Object url;
 
     /*
-     * The timeout within which the webhook should be called back. If there is
-     * no value specified, it defaults to 10 minutes. Type: string. Pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * The timeout within which the webhook should be called back. If there is no value specified, it defaults to 10
+     * minutes. Type: string. Pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "timeout")
     private String timeout;
 
     /*
-     * Represents the headers that will be sent to the request. For example, to
-     * set the language and type on a request: "headers" : { "Accept-Language":
-     * "en-us", "Content-Type": "application/json" }. Type: string (or
-     * Expression with resultType string).
+     * Represents the headers that will be sent to the request. For example, to set the language and type on a request:
+     * "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "headers")
     private Object headers;
 
     /*
-     * Represents the payload that will be sent to the endpoint. Required for
-     * POST/PUT method, not allowed for GET method Type: string (or Expression
-     * with resultType string).
+     * Represents the payload that will be sent to the endpoint. Required for POST/PUT method, not allowed for GET
+     * method Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "body")
     private Object body;
@@ -58,9 +54,8 @@ public final class WebhookActivityTypeProperties {
     private WebActivityAuthentication authentication;
 
     /*
-     * When set to true, statusCode, output and error in callback request body
-     * will be consumed by activity. The activity can be marked as failed by
-     * setting statusCode >= 400 in callback request. Default is false. Type:
+     * When set to true, statusCode, output and error in callback request body will be consumed by activity. The
+     * activity can be marked as failed by setting statusCode >= 400 in callback request. Default is false. Type:
      * boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "reportStatusOnCallBack")

@@ -3,8 +3,8 @@
 package com.azure.cosmos.spark
 
 import java.util.UUID
-import com.azure.cosmos.implementation.{TestConfigurations, Utils}
-import com.azure.cosmos.models.PartitionKey
+import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, TestConfigurations, Utils}
+import com.azure.cosmos.models.{CosmosItemRequestOptions, PartitionKey}
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 
@@ -1205,6 +1205,54 @@ class SparkE2EQueryITest
 
     val item2 = rowsArray(1)
     item2.getAs[Int]("_value") shouldEqual 8
+  }
+
+  "spark query" can "read invalid json with duplicate properties if setting is overridden" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+    val id = UUID.randomUUID().toString
+
+    val rawItem = s"""
+                     | {
+                     |   "id" : "${id}",
+                     |   "prop1" : 5,
+                     |   "prop1" : 7,
+                     |   "nestedObject" : {
+                     |     "prop2" : "6"
+                     |   }
+                     | }
+                     |""".stripMargin
+
+    val blob = rawItem.getBytes("UTF-8")
+
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+    val requestOptions = new CosmosItemRequestOptions()
+    container.createItem(blob, new PartitionKey(id), requestOptions).block()
+
+    val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
+      "spark.cosmos.read.allowInvalidJsonWithDuplicateJsonProperties" -> "true"
+    )
+
+    try {
+      val df = spark.read.format("cosmos.oltp").options(cfg).load()
+      val rowsArray = df.where("nestedObject.prop2 = '6'").collect()
+      rowsArray should have size 1
+
+      val item = rowsArray(0)
+      item.getAs[String]("id") shouldEqual id
+      item.getAs[Int]("prop1") shouldEqual 7
+    } finally {
+      try {
+        container.deleteItem(id, new PartitionKey(id)).block()
+      } finally {
+        SparkBridgeImplementationInternal.configureSimpleObjectMapper(false)
+      }
+    }
   }
 
   //scalastyle:on magic.number

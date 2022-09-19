@@ -11,31 +11,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SapTablePartitionSettings {
     /*
-     * The name of the column that will be used for proceeding range
-     * partitioning. Type: string (or Expression with resultType string).
+     * The name of the column that will be used for proceeding range partitioning. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "partitionColumnName")
     private Object partitionColumnName;
 
     /*
-     * The maximum value of column specified in partitionColumnName that will
-     * be used for proceeding range partitioning. Type: string (or Expression
-     * with resultType string).
+     * The maximum value of column specified in partitionColumnName that will be used for proceeding range
+     * partitioning. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "partitionUpperBound")
     private Object partitionUpperBound;
 
     /*
-     * The minimum value of column specified in partitionColumnName that will
-     * be used for proceeding range partitioning. Type: string (or Expression
-     * with resultType string).
+     * The minimum value of column specified in partitionColumnName that will be used for proceeding range
+     * partitioning. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "partitionLowerBound")
     private Object partitionLowerBound;
 
     /*
-     * The maximum value of partitions the table will be split into. Type:
-     * integer (or Expression with resultType string).
+     * The maximum value of partitions the table will be split into. Type: integer (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "maxPartitionsNumber")
     private Object maxPartitionsNumber;

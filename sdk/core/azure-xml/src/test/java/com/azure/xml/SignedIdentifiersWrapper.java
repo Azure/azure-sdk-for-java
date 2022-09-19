@@ -4,6 +4,7 @@
 package com.azure.xml;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,17 +20,19 @@ public class SignedIdentifiersWrapper implements XmlSerializable<SignedIdentifie
     }
 
     @Override
-    public XmlWriter toXml(XmlWriter xmlWriter) {
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         xmlWriter.writeStartElement("SignedIdentifiers");
 
         if (signedIdentifiers != null) {
-            signedIdentifiers.forEach(xmlWriter::writeXml);
+            for (SignedIdentifier signedIdentifier : signedIdentifiers) {
+                xmlWriter.writeXml(signedIdentifier);
+            }
         }
 
         return xmlWriter.writeEndElement();
     }
 
-    public static SignedIdentifiersWrapper fromXml(XmlReader xmlReader) {
+    public static SignedIdentifiersWrapper fromXml(XmlReader xmlReader) throws XMLStreamException {
         if (xmlReader.currentToken() != XmlToken.START_ELEMENT) {
             // Since SignedIdentifiersWrapper only cares about XML elements use nextElement()
             xmlReader.nextElement();

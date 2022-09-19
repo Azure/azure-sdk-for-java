@@ -14,6 +14,8 @@ import com.nimbusds.jose.proc.BadJOSEException;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -39,7 +41,11 @@ import static org.mockito.Mockito.when;
 public class AadAuthenticationFilterTests {
     private static final String TOKEN = "dummy-token";
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AzureGlobalPropertiesAutoConfiguration.class, AadAuthenticationFilterAutoConfiguration.class));
+            .withConfiguration(AutoConfigurations.of(
+                    AzureGlobalPropertiesAutoConfiguration.class,
+                    AadAuthenticationFilterAutoConfiguration.class,
+                    HttpMessageConvertersAutoConfiguration.class,
+                    RestTemplateAutoConfiguration.class));
     private final UserPrincipalManager userPrincipalManager;
     private final HttpServletRequest request;
     private final HttpServletResponse response;

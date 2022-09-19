@@ -20,8 +20,7 @@ public final class ImpalaLinkedServiceTypeProperties {
     private Object host;
 
     /*
-     * The TCP port that the Impala server uses to listen for client
-     * connections. The default value is 21050.
+     * The TCP port that the Impala server uses to listen for client connections. The default value is 21050.
      */
     @JsonProperty(value = "port")
     private Object port;
@@ -33,61 +32,54 @@ public final class ImpalaLinkedServiceTypeProperties {
     private ImpalaAuthenticationType authenticationType;
 
     /*
-     * The user name used to access the Impala server. The default value is
-     * anonymous when using SASLUsername.
+     * The user name used to access the Impala server. The default value is anonymous when using SASLUsername.
      */
     @JsonProperty(value = "username")
     private Object username;
 
     /*
-     * The password corresponding to the user name when using
-     * UsernameAndPassword.
+     * The password corresponding to the user name when using UsernameAndPassword.
      */
     @JsonProperty(value = "password")
     private SecretBase password;
 
     /*
-     * Specifies whether the connections to the server are encrypted using SSL.
-     * The default value is false.
+     * Specifies whether the connections to the server are encrypted using SSL. The default value is false.
      */
     @JsonProperty(value = "enableSsl")
     private Object enableSsl;
 
     /*
-     * The full path of the .pem file containing trusted CA certificates for
-     * verifying the server when connecting over SSL. This property can only be
-     * set when using SSL on self-hosted IR. The default value is the
-     * cacerts.pem file installed with the IR.
+     * The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over
+     * SSL. This property can only be set when using SSL on self-hosted IR. The default value is the cacerts.pem file
+     * installed with the IR.
      */
     @JsonProperty(value = "trustedCertPath")
     private Object trustedCertPath;
 
     /*
-     * Specifies whether to use a CA certificate from the system trust store or
-     * from a specified PEM file. The default value is false.
+     * Specifies whether to use a CA certificate from the system trust store or from a specified PEM file. The default
+     * value is false.
      */
     @JsonProperty(value = "useSystemTrustStore")
     private Object useSystemTrustStore;
 
     /*
-     * Specifies whether to require a CA-issued SSL certificate name to match
-     * the host name of the server when connecting over SSL. The default value
-     * is false.
+     * Specifies whether to require a CA-issued SSL certificate name to match the host name of the server when
+     * connecting over SSL. The default value is false.
      */
     @JsonProperty(value = "allowHostNameCNMismatch")
     private Object allowHostnameCNMismatch;
 
     /*
-     * Specifies whether to allow self-signed certificates from the server. The
-     * default value is false.
+     * Specifies whether to allow self-signed certificates from the server. The default value is false.
      */
     @JsonProperty(value = "allowSelfSignedServerCert")
     private Object allowSelfSignedServerCert;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;

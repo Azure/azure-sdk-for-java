@@ -7,7 +7,7 @@ import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient;
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientBuilder;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzedDocument;
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentTable;
 import com.azure.ai.formrecognizer.documentanalysis.models.Point;
 import com.azure.core.credential.AzureKeyCredential;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 /**
  * Sample to analyze a custom document with a custom-built model. To learn how to build your own models,
- * look at BuildModelAsync.java and BuildModel.java.
+ * look at BuildDocumentModelAsync.java and BuildDocumentModel.java.
  */
 public class AnalyzeCustomDocumentFromUrl {
 
@@ -36,7 +36,7 @@ public class AnalyzeCustomDocumentFromUrl {
 
         String documentUrl = "{document-url}";
         String modelId = "{custom-built-model-ID}";
-        SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeDocumentPoller =
+        SyncPoller<OperationResult, AnalyzeResult> analyzeDocumentPoller =
             client.beginAnalyzeDocumentFromUrl(modelId, documentUrl);
 
         AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();

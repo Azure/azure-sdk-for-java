@@ -151,30 +151,14 @@ class NettyAsyncHttpClient implements HttpClient {
         final HttpRequest restRequest) {
         return (reactorNettyRequest, reactorNettyOutbound) -> {
             for (HttpHeader hdr : restRequest.getHeaders()) {
-                // Reactor-Netty allows for headers with multiple values, but it treats them as separate headers,
-                // therefore, we must call rb.addHeader for each value, using the same key for all of them.
-                // We would ideally replace this for-loop with code akin to the code in ReactorNettyHttpResponseBase,
-                // whereby we would wrap the azure-core HttpHeaders in a Netty HttpHeaders wrapper, but as of today it
-                // is not possible in reactor-netty to do this without copying occurring within that library. This
-                // issue has been reported to the reactor-netty team at
-                // https://github.com/reactor/reactor-netty/issues/1479
-                if (reactorNettyRequest.requestHeaders().contains(hdr.getName())) {
-                    // The Reactor-Netty request headers include headers by default, to prevent a scenario where we end
-                    // adding a header twice that isn't allowed, such as User-Agent, check against the initial request
-                    // header names. If our request header already exists in the Netty request we overwrite it initially
-                    // then append our additional values if it is a multi-value header.
-                    boolean first = true;
-                    for (String value : hdr.getValuesList()) {
-                        if (first) {
-                            first = false;
-                            reactorNettyRequest.header(hdr.getName(), value);
-                        } else {
-                            reactorNettyRequest.addHeader(hdr.getName(), value);
-                        }
-                    }
-                } else {
-                    hdr.getValuesList().forEach(value -> reactorNettyRequest.addHeader(hdr.getName(), value));
-                }
+                // Get the Netty headers from Reactor Netty and work with the Netty headers directly. This removes the
+                // need to do contains checks to determine if headers added by Reactor Netty need to be overwritten.
+                // Additionally, this gives direct access to the set(String, Iterable<String>) API which is more
+                // performant as it only needs to validate the header name once instead of each time a value from the
+                // list is added.
+                // This reduces header name and header name equality checks greatly, once for getting rid of contains
+                // and once for each additional value in the header.
+                reactorNettyRequest.requestHeaders().set(hdr.getName(), hdr.getValuesList());
             }
             BinaryData body = restRequest.getBodyAsBinaryData();
             if (body != null) {

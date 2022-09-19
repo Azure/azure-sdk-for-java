@@ -6,6 +6,7 @@ package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 
 /** The LinkConnectionDetailedStatus model. */
 @Fluent
@@ -63,6 +64,18 @@ public final class LinkConnectionDetailedStatus {
      */
     @JsonProperty(value = "error")
     private Object error;
+
+    /*
+     * Link connection refresh status
+     */
+    @JsonProperty(value = "refreshStatus")
+    private LinkConnectionRefreshStatus refreshStatus;
+
+    /*
+     * Link connection landing zone credential expire time
+     */
+    @JsonProperty(value = "landingZoneCredentialExpireTime")
+    private OffsetDateTime landingZoneCredentialExpireTime;
 
     /**
      * Get the id property: Link connection id.
@@ -241,6 +254,47 @@ public final class LinkConnectionDetailedStatus {
      */
     public LinkConnectionDetailedStatus setError(Object error) {
         this.error = error;
+        return this;
+    }
+
+    /**
+     * Get the refreshStatus property: Link connection refresh status.
+     *
+     * @return the refreshStatus value.
+     */
+    public LinkConnectionRefreshStatus getRefreshStatus() {
+        return this.refreshStatus;
+    }
+
+    /**
+     * Set the refreshStatus property: Link connection refresh status.
+     *
+     * @param refreshStatus the refreshStatus value to set.
+     * @return the LinkConnectionDetailedStatus object itself.
+     */
+    public LinkConnectionDetailedStatus setRefreshStatus(LinkConnectionRefreshStatus refreshStatus) {
+        this.refreshStatus = refreshStatus;
+        return this;
+    }
+
+    /**
+     * Get the landingZoneCredentialExpireTime property: Link connection landing zone credential expire time.
+     *
+     * @return the landingZoneCredentialExpireTime value.
+     */
+    public OffsetDateTime getLandingZoneCredentialExpireTime() {
+        return this.landingZoneCredentialExpireTime;
+    }
+
+    /**
+     * Set the landingZoneCredentialExpireTime property: Link connection landing zone credential expire time.
+     *
+     * @param landingZoneCredentialExpireTime the landingZoneCredentialExpireTime value to set.
+     * @return the LinkConnectionDetailedStatus object itself.
+     */
+    public LinkConnectionDetailedStatus setLandingZoneCredentialExpireTime(
+            OffsetDateTime landingZoneCredentialExpireTime) {
+        this.landingZoneCredentialExpireTime = landingZoneCredentialExpireTime;
         return this;
     }
 }

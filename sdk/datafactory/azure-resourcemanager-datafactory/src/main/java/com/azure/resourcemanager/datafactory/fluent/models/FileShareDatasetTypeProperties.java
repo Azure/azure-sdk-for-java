@@ -13,29 +13,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class FileShareDatasetTypeProperties {
     /*
-     * The path of the on-premises file system. Type: string (or Expression
-     * with resultType string).
+     * The path of the on-premises file system. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "folderPath")
     private Object folderPath;
 
     /*
-     * The name of the on-premises file system. Type: string (or Expression
-     * with resultType string).
+     * The name of the on-premises file system. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "fileName")
     private Object fileName;
 
     /*
-     * The start of file's modified datetime. Type: string (or Expression with
-     * resultType string).
+     * The start of file's modified datetime. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "modifiedDatetimeStart")
     private Object modifiedDatetimeStart;
 
     /*
-     * The end of file's modified datetime. Type: string (or Expression with
-     * resultType string).
+     * The end of file's modified datetime. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "modifiedDatetimeEnd")
     private Object modifiedDatetimeEnd;
@@ -47,9 +43,8 @@ public final class FileShareDatasetTypeProperties {
     private DatasetStorageFormat format;
 
     /*
-     * Specify a filter to be used to select a subset of files in the
-     * folderPath rather than all files. Type: string (or Expression with
-     * resultType string).
+     * Specify a filter to be used to select a subset of files in the folderPath rather than all files. Type: string
+     * (or Expression with resultType string).
      */
     @JsonProperty(value = "fileFilter")
     private Object fileFilter;

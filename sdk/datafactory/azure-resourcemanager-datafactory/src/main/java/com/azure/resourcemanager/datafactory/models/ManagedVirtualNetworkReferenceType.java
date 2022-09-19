@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ManagedVirtualNetworkReferenceType. */
+/** Managed Virtual Network reference type. */
 public final class ManagedVirtualNetworkReferenceType extends ExpandableStringEnum<ManagedVirtualNetworkReferenceType> {
     /** Static value ManagedVirtualNetworkReference for ManagedVirtualNetworkReferenceType. */
     public static final ManagedVirtualNetworkReferenceType MANAGED_VIRTUAL_NETWORK_REFERENCE =

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Type. */
+/** Linked service reference type. */
 public final class Type extends ExpandableStringEnum<Type> {
     /** Static value LinkedServiceReference for Type. */
     public static final Type LINKED_SERVICE_REFERENCE = fromString("LinkedServiceReference");
@@ -24,7 +24,11 @@ public final class Type extends ExpandableStringEnum<Type> {
         return fromString(name, Type.class);
     }
 
-    /** @return known Type values. */
+    /**
+     * Gets known Type values.
+     *
+     * @return known Type values.
+     */
     public static Collection<Type> values() {
         return values(Type.class);
     }

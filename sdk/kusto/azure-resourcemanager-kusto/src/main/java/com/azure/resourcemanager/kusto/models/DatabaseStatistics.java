@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A class that contains database statistics information. */
 @Fluent
 public final class DatabaseStatistics {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseStatistics.class);
-
     /*
-     * The database size - the total size of compressed data and index in
-     * bytes.
+     * The database size - the total size of compressed data and index in bytes.
      */
     @JsonProperty(value = "size")
     private Float size;

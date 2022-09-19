@@ -19,8 +19,7 @@ import java.util.Map;
 @Fluent
 public class DynamicsAXResourceDataset extends Dataset {
     /*
-     * The path of the Dynamics AX OData entity. Type: string (or Expression
-     * with resultType string).
+     * The path of the Dynamics AX OData entity. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.path", required = true)
     private Object path;

@@ -327,14 +327,7 @@ public final class TriggersImpl {
     public Mono<TriggerResource> createOrUpdateTriggerAsync(
             String triggerName, TriggerResource trigger, String ifMatch) {
         return createOrUpdateTriggerWithResponseAsync(triggerName, trigger, ifMatch)
-                .flatMap(
-                        (Response<TriggerResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -351,14 +344,7 @@ public final class TriggersImpl {
     public Mono<TriggerResource> createOrUpdateTriggerAsync(String triggerName, TriggerResource trigger) {
         final String ifMatch = null;
         return createOrUpdateTriggerWithResponseAsync(triggerName, trigger, ifMatch)
-                .flatMap(
-                        (Response<TriggerResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -378,14 +364,7 @@ public final class TriggersImpl {
     public Mono<TriggerResource> createOrUpdateTriggerAsync(
             String triggerName, TriggerResource trigger, String ifMatch, Context context) {
         return createOrUpdateTriggerWithResponseAsync(triggerName, trigger, ifMatch, context)
-                .flatMap(
-                        (Response<TriggerResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -494,15 +473,7 @@ public final class TriggersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TriggerResource> getTriggerAsync(String triggerName, String ifNoneMatch) {
-        return getTriggerWithResponseAsync(triggerName, ifNoneMatch)
-                .flatMap(
-                        (Response<TriggerResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getTriggerWithResponseAsync(triggerName, ifNoneMatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -517,15 +488,7 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TriggerResource> getTriggerAsync(String triggerName) {
         final String ifNoneMatch = null;
-        return getTriggerWithResponseAsync(triggerName, ifNoneMatch)
-                .flatMap(
-                        (Response<TriggerResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getTriggerWithResponseAsync(triggerName, ifNoneMatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -543,14 +506,7 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TriggerResource> getTriggerAsync(String triggerName, String ifNoneMatch, Context context) {
         return getTriggerWithResponseAsync(triggerName, ifNoneMatch, context)
-                .flatMap(
-                        (Response<TriggerResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -646,7 +602,7 @@ public final class TriggersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteTriggerAsync(String triggerName) {
-        return deleteTriggerWithResponseAsync(triggerName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteTriggerWithResponseAsync(triggerName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -661,7 +617,7 @@ public final class TriggersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteTriggerAsync(String triggerName, Context context) {
-        return deleteTriggerWithResponseAsync(triggerName, context).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteTriggerWithResponseAsync(triggerName, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -743,15 +699,7 @@ public final class TriggersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TriggerSubscriptionOperationStatus> subscribeTriggerToEventsAsync(String triggerName) {
-        return subscribeTriggerToEventsWithResponseAsync(triggerName)
-                .flatMap(
-                        (Response<TriggerSubscriptionOperationStatus> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return subscribeTriggerToEventsWithResponseAsync(triggerName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -767,14 +715,7 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TriggerSubscriptionOperationStatus> subscribeTriggerToEventsAsync(String triggerName, Context context) {
         return subscribeTriggerToEventsWithResponseAsync(triggerName, context)
-                .flatMap(
-                        (Response<TriggerSubscriptionOperationStatus> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -859,14 +800,7 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TriggerSubscriptionOperationStatus> getEventSubscriptionStatusAsync(String triggerName) {
         return getEventSubscriptionStatusWithResponseAsync(triggerName)
-                .flatMap(
-                        (Response<TriggerSubscriptionOperationStatus> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -883,14 +817,7 @@ public final class TriggersImpl {
     public Mono<TriggerSubscriptionOperationStatus> getEventSubscriptionStatusAsync(
             String triggerName, Context context) {
         return getEventSubscriptionStatusWithResponseAsync(triggerName, context)
-                .flatMap(
-                        (Response<TriggerSubscriptionOperationStatus> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -976,14 +903,7 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TriggerSubscriptionOperationStatus> unsubscribeTriggerFromEventsAsync(String triggerName) {
         return unsubscribeTriggerFromEventsWithResponseAsync(triggerName)
-                .flatMap(
-                        (Response<TriggerSubscriptionOperationStatus> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1000,14 +920,7 @@ public final class TriggersImpl {
     public Mono<TriggerSubscriptionOperationStatus> unsubscribeTriggerFromEventsAsync(
             String triggerName, Context context) {
         return unsubscribeTriggerFromEventsWithResponseAsync(triggerName, context)
-                .flatMap(
-                        (Response<TriggerSubscriptionOperationStatus> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1085,7 +998,7 @@ public final class TriggersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startTriggerAsync(String triggerName) {
-        return startTriggerWithResponseAsync(triggerName).flatMap((Response<Void> res) -> Mono.empty());
+        return startTriggerWithResponseAsync(triggerName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1100,7 +1013,7 @@ public final class TriggersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startTriggerAsync(String triggerName, Context context) {
-        return startTriggerWithResponseAsync(triggerName, context).flatMap((Response<Void> res) -> Mono.empty());
+        return startTriggerWithResponseAsync(triggerName, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1176,7 +1089,7 @@ public final class TriggersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopTriggerAsync(String triggerName) {
-        return stopTriggerWithResponseAsync(triggerName).flatMap((Response<Void> res) -> Mono.empty());
+        return stopTriggerWithResponseAsync(triggerName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1191,7 +1104,7 @@ public final class TriggersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopTriggerAsync(String triggerName, Context context) {
-        return stopTriggerWithResponseAsync(triggerName, context).flatMap((Response<Void> res) -> Mono.empty());
+        return stopTriggerWithResponseAsync(triggerName, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1225,7 +1138,8 @@ public final class TriggersImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1252,7 +1166,8 @@ public final class TriggersImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

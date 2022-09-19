@@ -22,16 +22,15 @@ public final class DynamicsSink extends CopySink {
     private DynamicsSinkWriteBehavior writeBehavior;
 
     /*
-     * The flag indicating whether ignore null values from input dataset
-     * (except key fields) during write operation. Default is false. Type:
-     * boolean (or Expression with resultType boolean).
+     * The flag indicating whether ignore null values from input dataset (except key fields) during write operation.
+     * Default is false. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "ignoreNullValues")
     private Object ignoreNullValues;
 
     /*
-     * The logical name of the alternate key which will be used when upserting
-     * records. Type: string (or Expression with resultType string).
+     * The logical name of the alternate key which will be used when upserting records. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "alternateKeyName")
     private Object alternateKeyName;

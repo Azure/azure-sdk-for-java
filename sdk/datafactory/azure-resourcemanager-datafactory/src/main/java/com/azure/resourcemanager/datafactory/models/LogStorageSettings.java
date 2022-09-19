@@ -23,22 +23,20 @@ public final class LogStorageSettings {
     private LinkedServiceReference linkedServiceName;
 
     /*
-     * The path to storage for storing detailed logs of activity execution.
-     * Type: string (or Expression with resultType string).
+     * The path to storage for storing detailed logs of activity execution. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "path")
     private Object path;
 
     /*
-     * Gets or sets the log level, support: Info, Warning. Type: string (or
-     * Expression with resultType string).
+     * Gets or sets the log level, support: Info, Warning. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "logLevel")
     private Object logLevel;
 
     /*
-     * Specifies whether to enable reliable logging. Type: boolean (or
-     * Expression with resultType boolean).
+     * Specifies whether to enable reliable logging. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "enableReliableLogging")
     private Object enableReliableLogging;

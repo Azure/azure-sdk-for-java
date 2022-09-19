@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SybaseTableDatasetTypeProperties {
     /*
-     * The Sybase table name. Type: string (or Expression with resultType
-     * string).
+     * The Sybase table name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "tableName")
     private Object tableName;

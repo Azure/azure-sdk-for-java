@@ -53,7 +53,7 @@ public class OperationResourcePollingStrategyWithEndpoint<T, U> extends Operatio
      */
     public OperationResourcePollingStrategyWithEndpoint(HttpPipeline httpPipeline, String endpoint, ObjectSerializer serializer,
                                             String operationLocationHeaderName, Context context) {
-        super(httpPipeline, serializer, operationLocationHeaderName, context);
+        super(httpPipeline, endpoint, serializer, operationLocationHeaderName, context);
         this.operationLocationHeaderName = operationLocationHeaderName != null ? operationLocationHeaderName : "Operation-Location";
         this.endpoint = endpoint;
         this.serializer = serializer != null ? serializer : new DefaultJsonSerializer();
