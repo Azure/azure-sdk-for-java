@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.integration.tests.storage.queue;
 
-import com.azure.spring.cloud.integration.tests.ApplicationConfiguration;
 import com.azure.storage.queue.QueueClient;
 import com.azure.storage.queue.models.QueueMessageItem;
 import org.junit.jupiter.api.Assertions;
