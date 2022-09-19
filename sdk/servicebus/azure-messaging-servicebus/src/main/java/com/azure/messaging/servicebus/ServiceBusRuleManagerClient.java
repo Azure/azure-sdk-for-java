@@ -107,7 +107,7 @@ public class ServiceBusRuleManagerClient implements AutoCloseable {
      * @throws IllegalStateException if client is disposed.
      * @throws UnsupportedOperationException if client cannot support filter with descriptor in message body.
      */
-    public Iterable<RuleProperties> getRules() {
+    public IterableStream<RuleProperties> getRules() {
         return new IterableStream<>(asyncClient.getRules());
     }
 
