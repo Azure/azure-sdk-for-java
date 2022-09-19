@@ -2,7 +2,7 @@
 
 ### Behavioral change to credential types supporting multi-tenant authentication
 
-As of `azure-identiy` 1.6.0, the default behavior of credentials supporting multi-tenant authentication has changed. Each of these credentials will throw an `ClientAuthenticationException` if the requested `tenantId` doesn't match the tenant ID originally configured on the credential. Apps must now do one of the following things:
+As of `azure-identity` 1.6.0, the default behavior of credentials supporting multi-tenant authentication has changed. Each of these credentials will throw an `ClientAuthenticationException` if the requested `tenantId` doesn't match the tenant ID originally configured on the credential. Apps must now do one of the following things:
 
 - Add all IDs, of tenants from which tokens should be acquired, to the `additionallyAllowedTenants` list on the credential builder. For example:
 
