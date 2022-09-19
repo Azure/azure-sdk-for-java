@@ -170,8 +170,8 @@ public class BlobCheckpointStoreMetricsTests {
         assertEquals(2L, seqNoMeasurement.getValue());
         assertCommonAttributes(checkpoint, seqNoMeasurement.getAttributes());
 
-        assertTrue(meter.getCounters().containsKey("messaging.eventhubs.checkpoint"));
-        TestCounter checkpoints = meter.getCounters().get("messaging.eventhubs.checkpoint");
+        assertTrue(meter.getCounters().containsKey("messaging.eventhubs.checkpoints"));
+        TestCounter checkpoints = meter.getCounters().get("messaging.eventhubs.checkpoints");
         assertEquals(1, checkpoints.getMeasurements().size());
         TestMeasurement<Long> checkpointMeasurements = checkpoints.getMeasurements().get(0);
         assertEquals(1, checkpointMeasurements.getValue());
@@ -202,7 +202,7 @@ public class BlobCheckpointStoreMetricsTests {
         // sequence number is only reported for successfull checkpoints
         assertEquals(0, meter.getGauges().get("messaging.eventhubs.checkpoint.sequence_number").getSubscriptions().size());
 
-        TestCounter checkpoints = meter.getCounters().get("messaging.eventhubs.checkpoint");
+        TestCounter checkpoints = meter.getCounters().get("messaging.eventhubs.checkpoints");
         TestMeasurement<Long> checkpointMeasurements = checkpoints.getMeasurements().get(0);
         assertEquals(1, checkpointMeasurements.getValue());
         assertStatusAttributes(checkpoint, "error", checkpointMeasurements.getAttributes());
@@ -225,7 +225,7 @@ public class BlobCheckpointStoreMetricsTests {
 
         assertEquals(0, meter.getGauges().get("messaging.eventhubs.checkpoint.sequence_number").getSubscriptions().size());
 
-        TestCounter checkpoints = meter.getCounters().get("messaging.eventhubs.checkpoint");
+        TestCounter checkpoints = meter.getCounters().get("messaging.eventhubs.checkpoints");
         TestMeasurement<Long> checkpointMeasurements = checkpoints.getMeasurements().get(0);
         assertEquals(1, checkpointMeasurements.getValue());
         assertStatusAttributes(checkpoint, "ok", checkpointMeasurements.getAttributes());
@@ -265,7 +265,7 @@ public class BlobCheckpointStoreMetricsTests {
             i[0]++;
         });
 
-        TestCounter checkpointCounter = meter.getCounters().get("messaging.eventhubs.checkpoint");
+        TestCounter checkpointCounter = meter.getCounters().get("messaging.eventhubs.checkpoints");
         assertEquals(MAX_ATTRIBUTES_SETS, checkpointCounter.getMeasurements().size());
 
         final int[] j = {0};
@@ -311,7 +311,7 @@ public class BlobCheckpointStoreMetricsTests {
         TestMeasurement<Long> seqNoMeasurement = subs.getMeasurements().get(0);
         assertEquals(42L, seqNoMeasurement.getValue());
 
-        TestCounter checkpoints = meter.getCounters().get("messaging.eventhubs.checkpoint");
+        TestCounter checkpoints = meter.getCounters().get("messaging.eventhubs.checkpoints");
         assertEquals(2, checkpoints.getMeasurements().size());
 
         assertEquals(1, checkpoints.getMeasurements().get(0).getValue());
@@ -363,7 +363,7 @@ public class BlobCheckpointStoreMetricsTests {
         assertEquals(42L, seqNoMeasurement2.getValue());
         assertCommonAttributes(checkpoint2, seqNoMeasurement2.getAttributes());
 
-        TestCounter checkpoints = meter.getCounters().get("messaging.eventhubs.checkpoint");
+        TestCounter checkpoints = meter.getCounters().get("messaging.eventhubs.checkpoints");
         assertEquals(2, checkpoints.getMeasurements().size());
 
         assertEquals(1, checkpoints.getMeasurements().get(0).getValue());

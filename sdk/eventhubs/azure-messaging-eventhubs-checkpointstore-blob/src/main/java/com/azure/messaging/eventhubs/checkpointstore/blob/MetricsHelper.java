@@ -21,10 +21,14 @@ import java.util.concurrent.atomic.AtomicReference;
 
 class MetricsHelper {
     private static final ClientLogger LOGGER = new ClientLogger(MetricsHelper.class);
-    public static final String ENTITY_NAME_KEY = "entityName";
-    public static final String HOSTNAME_KEY = "hostName";
-    public static final String PARTITION_ID_KEY = "partitionId";
-    public static final String CONSUMER_GROUP_KEY = "consumerGroup";
+
+    // Make sure attribute names are consistent across AMQP Core, EventHubs, ServiceBus when applicable
+    // and mapped correctly in OTel Metrics https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-metrics-opentelemetry/src/main/java/com/azure/core/metrics/opentelemetry/OpenTelemetryAttributes.java
+    private static final String ENTITY_NAME_KEY = "entityName";
+    private static final String HOSTNAME_KEY = "hostName";
+    private static final String PARTITION_ID_KEY = "partitionId";
+    private static final String CONSUMER_GROUP_KEY = "consumerGroup";
+    private static final String STATUS_KEY = "status";
 
     // since checkpoint store is stateless it might be used for endless number of eventhubs.
     // we'll have as many subscriptions as there are combinations of fqdn, eventhub name, partitionId and consumer group.
@@ -67,7 +71,7 @@ class MetricsHelper {
         this.isEnabled = meter != null && meter.isEnabled();
         if (isEnabled) {
             this.lastSequenceNumber = this.meter.createLongGauge("messaging.eventhubs.checkpoint.sequence_number", "Last successfully checkpointed sequence number.", "seqNo");
-            this.checkpointCounter = this.meter.createLongCounter("messaging.eventhubs.checkpoint", "Number of checkpoints.", null);
+            this.checkpointCounter = this.meter.createLongCounter("messaging.eventhubs.checkpoints", "Number of checkpoints.", null);
         } else {
             this.lastSequenceNumber = null;
             this.checkpointCounter = null;
@@ -124,7 +128,7 @@ class MetricsHelper {
         attributesMap.put(PARTITION_ID_KEY, checkpoint.getPartitionId());
         attributesMap.put(CONSUMER_GROUP_KEY, checkpoint.getConsumerGroup());
         if (status != null) {
-            attributesMap.put("status", status);
+            attributesMap.put(STATUS_KEY, status);
         }
 
         return attributesMap;

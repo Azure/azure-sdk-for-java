@@ -17,9 +17,12 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_NAME_KEY;
+import static com.azure.core.amqp.implementation.ClientConstants.HOSTNAME_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.CONSUMER_GROUP_KEY;
 
 public class EventHubsMetricsProvider {
     private static final String PARTITION_ID_KEY = "partitionId";
+    private static final String SEND_STATUS_KEY = "status";
     private final Meter meter;
     private final boolean isEnabled;
 
@@ -34,18 +37,18 @@ public class EventHubsMetricsProvider {
         this.isEnabled = meter != null && meter.isEnabled();
         if (this.isEnabled) {
             Map<String, Object> commonAttributesMap = new HashMap<>();
-            commonAttributesMap.put("hostName", namespace);
+            commonAttributesMap.put(HOSTNAME_KEY, namespace);
             commonAttributesMap.put(ENTITY_NAME_KEY, entityName);
             if (consumerGroup != null) {
-                commonAttributesMap.put("consumerGroup", consumerGroup);
+                commonAttributesMap.put(CONSUMER_GROUP_KEY, consumerGroup);
             }
 
             Map<String, Object> successMap = new HashMap<>(commonAttributesMap);
-            successMap.put("status", "ok");
+            successMap.put(SEND_STATUS_KEY, "ok");
             this.sendAttributeCacheSuccess = new AttributeCache(PARTITION_ID_KEY,  successMap);
 
             Map<String, Object> failureMap = new HashMap<>(commonAttributesMap);
-            failureMap.put("status", "error");
+            failureMap.put(SEND_STATUS_KEY, "error");
             this.sendAttributeCacheFailure = new AttributeCache(PARTITION_ID_KEY,  failureMap);
 
             this.receiveAttributeCache = new AttributeCache(PARTITION_ID_KEY,  commonAttributesMap);

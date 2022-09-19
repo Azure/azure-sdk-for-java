@@ -322,9 +322,7 @@ public class EventHubProducerAsyncClient implements Closeable {
                 MAX_PARTITION_KEY_LENGTH)));
         }
 
-        final String entityPath = getEntityPath(partitionId);
-
-        return getSendLink(entityPath)
+        return getSendLink(partitionId)
             .flatMap(link -> link.getLinkSize()
                 .flatMap(size -> {
                     final int maximumLinkSize = size > 0
@@ -581,8 +579,7 @@ public class EventHubProducerAsyncClient implements Closeable {
             parentContext.set(tracerProvider.startSpan(AZ_TRACING_SERVICE_NAME, sharedContext, ProcessKind.SEND));
         }
 
-        final String entityPath = getEntityPath(batch.getPartitionId());
-        final Mono<Void> sendMessage = getSendLink(entityPath)
+        final Mono<Void> sendMessage = getSendLink(batch.getPartitionId())
             .flatMap(link -> messages.size() == 1
                 ? link.send(messages.get(0))
                 : link.send(messages));
@@ -592,10 +589,10 @@ public class EventHubProducerAsyncClient implements Closeable {
             .publishOn(scheduler)
             .doOnEach(signal -> {
                 Context context = isTracingEnabled ? parentContext.get() : Context.NONE;
+                metricsProvider.reportBatchSend(batch, batch.getPartitionId(), signal.getThrowable(), context);
                 if (isTracingEnabled) {
                     tracerProvider.endSpan(context, signal);
                 }
-                metricsProvider.reportBatchSend(batch, batch.getPartitionId(), signal.getThrowable(), context);
             });
     }
 
@@ -611,8 +608,7 @@ public class EventHubProducerAsyncClient implements Closeable {
                 partitionKey, partitionId)));
         }
 
-        final String entityPath = getEntityPath(options.getPartitionId());
-        return getSendLink(entityPath)
+        return getSendLink(options.getPartitionId())
             .flatMap(link -> link.getLinkSize()
                 .flatMap(size -> {
                     final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
@@ -641,7 +637,8 @@ public class EventHubProducerAsyncClient implements Closeable {
             : String.format(Locale.US, SENDER_ENTITY_PATH_FORMAT, eventHubName, partitionId);
     }
 
-    private Mono<AmqpSendLink> getSendLink(String entityPath) {
+    private Mono<AmqpSendLink> getSendLink(String partitionId) {
+        final String entityPath = getEntityPath(partitionId);
         final String linkName = entityPath;
 
         return connectionProcessor

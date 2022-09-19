@@ -209,6 +209,7 @@ public class EventHubClientBuilder implements
         LIBRARY_NAME = properties.getOrDefault(NAME_KEY, UNKNOWN);
         LIBRARY_VERSION = properties.getOrDefault(VERSION_KEY, UNKNOWN);
     }
+
     /**
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
      */
