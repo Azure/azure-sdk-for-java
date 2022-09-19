@@ -144,8 +144,10 @@ def get_dependency_management_content():
            review whether it's required when the minimum Spring Boot version 3.0.0-M4.  -->
       <dependency>
         <groupId>io.micrometer</groupId>
-        <artifactId>micrometer-core</artifactId>
+        <artifactId>micrometer-bom</artifactId>
         <version>1.10.0-M6</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
