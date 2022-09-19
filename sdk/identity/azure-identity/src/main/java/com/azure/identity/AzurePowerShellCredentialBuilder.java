@@ -33,10 +33,10 @@ public class AzurePowerShellCredentialBuilder extends CredentialBuilderBase<Azur
     }
 
     /**
-     * For multi-tenant applications, specifies additional tenants for which the credential may acquire tokens.
-     * Add the wildcard value "*" to allow the credential to acquire tokens for any tenant on which the application is installed.
-     * If no value is specified for TenantId this option will have no effect, and the credential will
-     * acquire tokens for any requested tenant.
+     * Specifies tenants in addition to the specified tenantId for which the credential may acquire tokens.
+     * Add the wildcard value "*" to allow the credential to acquire tokens for any tenant the logged in account can access.
+     * If no value is specified for tenantId this option will have no effect, and the credential will acquire tokens
+     * for any requested tenant.
      *
      * @param additionallyAllowedTenants the additionally allowed tenants.
      * @return An updated instance of this builder with the additional tenants configured.
@@ -49,10 +49,10 @@ public class AzurePowerShellCredentialBuilder extends CredentialBuilderBase<Azur
     }
 
     /**
-     * For multi-tenant applications, specifies additional tenants for which the credential may acquire tokens.
-     * Add the wildcard value "*" to allow the credential to acquire tokens for any tenant on which the application is installed.
-     * If no value is specified for TenantId this option will have no effect, and the credential will
-     * acquire tokens for any requested tenant.
+     * Specifies tenants in addition to the specified tenantId for which the credential may acquire tokens.
+     * Add the wildcard value "*" to allow the credential to acquire tokens for any tenant the logged in account can access.
+     * If no value is specified for tenantId this option will have no effect, and the credential will acquire tokens
+     * for any requested tenant.
      *
      * @param additionallyAllowedTenants the additionally allowed tenants.
      * @return An updated instance of this builder with the additional tenants configured.

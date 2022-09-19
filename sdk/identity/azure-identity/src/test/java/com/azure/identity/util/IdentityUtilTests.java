@@ -55,6 +55,20 @@ public class IdentityUtilTests {
         Assert.assertEquals(newTenant, resolvedTenant);
     }
 
+    @Test
+    public void testAdditionallyAllowedTenantsCaseInsensitive() {
+        String currentTenant = "tenant";
+        String newTenant = "newTenant";
+        TokenRequestContext trc = new TokenRequestContext()
+            .setScopes(Arrays.asList("http://vault.azure.net/.default"))
+            .setTenantId(newTenant);
+        IdentityClientOptions options = new IdentityClientOptions();
+        options.setAdditionallyAllowedTenants(Arrays.asList("newtenant"));
+
+        String resolvedTenant = IdentityUtil.resolveTenantId(currentTenant, trc, options);
+        Assert.assertEquals(newTenant, resolvedTenant);
+    }
+
     @Test(expected = ClientAuthenticationException.class)
     public void testAlienTenantWithAdditionallyAllowedTenants() throws Exception {
         String currentTenant = "tenant";

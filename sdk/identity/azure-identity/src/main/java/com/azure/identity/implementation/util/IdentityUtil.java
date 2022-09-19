@@ -35,7 +35,7 @@ public final class IdentityUtil {
 
         String contextTenantId = requestContext.getTenantId();
 
-        if (contextTenantId != null && currentTenantId != null && !currentTenantId.equals(contextTenantId)) {
+        if (contextTenantId != null && currentTenantId != null && !currentTenantId.equalsIgnoreCase(contextTenantId)) {
             if (options.isMultiTenantAuthenticationDisabled()) {
                 throw LOGGER.logExceptionAsError(new ClientAuthenticationException("The Multi Tenant Authentication "
                     + "is disabled. An updated Tenant Id provided via TokenRequestContext cannot be used in this "
@@ -50,7 +50,7 @@ public final class IdentityUtil {
             String resolvedTenantId =  CoreUtils.isNullOrEmpty(contextTenantId) ? currentTenantId
                 : contextTenantId;
 
-            if (resolvedTenantId != currentTenantId && !options.getAdditionallyAllowedTenants().contains(ALL_TENANTS)
+            if (!resolvedTenantId.equalsIgnoreCase(currentTenantId) && !options.getAdditionallyAllowedTenants().contains(ALL_TENANTS)
                 && !options.getAdditionallyAllowedTenants().contains(resolvedTenantId)) {
                 throw LOGGER.logExceptionAsError(new ClientAuthenticationException("The current credential is not configured to acquire tokens for tenant "
                     +  resolvedTenantId + ". To enable acquiring tokens for this tenant add it to the AdditionallyAllowedTenants on the credential options, "

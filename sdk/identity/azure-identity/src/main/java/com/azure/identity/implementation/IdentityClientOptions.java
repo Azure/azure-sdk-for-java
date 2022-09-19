@@ -19,6 +19,7 @@ import java.time.Duration;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
@@ -477,7 +478,8 @@ public final class IdentityClientOptions {
      */
     @SuppressWarnings("unchecked")
     public IdentityClientOptions setAdditionallyAllowedTenants(List<String> additionallyAllowedTenants) {
-        this.additionallyAllowedTenants = new HashSet<>(additionallyAllowedTenants);
+        this.additionallyAllowedTenants = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        this.additionallyAllowedTenants.addAll(additionallyAllowedTenants);
         return this;
     }
 
