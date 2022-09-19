@@ -42,7 +42,7 @@ public abstract class XmlReaderContractTests {
         XmlReader reader = getXmlReader(xml);
         reader.nextElement(); // Initialize the XmlReader for reading.
 
-        T actualValue = assertDoesNotThrow(() -> function.apply(reader));
+        T actualValue = assertDoesNotThrow(() -> function.read(reader));
 
         assertEquals(expectedValue, actualValue);
     }
@@ -110,7 +110,7 @@ public abstract class XmlReaderContractTests {
         XmlReader reader = getXmlReader(xml);
         reader.nextElement(); // Initialize the XmlReader for reading.
 
-        byte[] actualValue = assertDoesNotThrow(() -> function.apply(reader));
+        byte[] actualValue = assertDoesNotThrow(() -> function.read(reader));
 
         assertArrayEquals(expectedValue, actualValue);
     }
@@ -132,7 +132,7 @@ public abstract class XmlReaderContractTests {
         XmlReader reader = getXmlReader(json);
         reader.nextElement(); // Initialize the XmlReader for reading.
 
-        T actualValue = assertDoesNotThrow(() -> function.apply(reader));
+        T actualValue = assertDoesNotThrow(() -> function.read(reader));
 
         assertEquals(expectedValue, actualValue);
     }
@@ -275,7 +275,7 @@ public abstract class XmlReaderContractTests {
         XmlReader reader = getXmlReader(xml);
         reader.nextElement(); // Initialize the XmlReader for reading.
 
-        byte[] actualValue = assertDoesNotThrow(() -> function.apply(reader));
+        byte[] actualValue = assertDoesNotThrow(() -> function.read(reader));
 
         assertArrayEquals(expectedValue, actualValue);
     }

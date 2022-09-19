@@ -58,7 +58,7 @@ public abstract class JsonReaderContractTests {
         try (JsonReader reader = getJsonReader(json)) {
             reader.nextToken(); // Initialize the JsonReader for reading.
 
-            T actualValue = assertDoesNotThrow(() -> function.apply(reader));
+            T actualValue = assertDoesNotThrow(() -> function.read(reader));
 
             assertEquals(expectedValue, actualValue);
         }
@@ -112,7 +112,7 @@ public abstract class JsonReaderContractTests {
         try (JsonReader reader = getJsonReader(json)) {
             reader.nextToken(); // Initialize the JsonReader for reading.
 
-            byte[] actualValue = assertDoesNotThrow(() -> function.apply(reader));
+            byte[] actualValue = assertDoesNotThrow(() -> function.read(reader));
 
             assertArrayEquals(expectedValue, actualValue);
         }

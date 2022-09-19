@@ -5,13 +5,9 @@ package com.azure.xml;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
-import java.util.function.Function;
 
 /**
- * A callback used when reading a JSON value, such as {@link XmlReader#getNullableElement(ReadValueCallback)}.
- * <p>
- * This interface has a similar API as {@link Function}, except that {@link #apply(Object)} is checked with
- * {@link XMLStreamException} and {@link IOException}, to provide a familiar feel.
+ * A callback used when reading an XML value, such as {@link XmlReader#getNullableElement(ReadValueCallback)}.
  *
  * @param <T> Input type of the callback.
  * @param <R> Output type of the callback.
@@ -19,7 +15,7 @@ import java.util.function.Function;
 @FunctionalInterface
 public interface ReadValueCallback<T, R> {
     /**
-     * Applies the callback to the {@code input}.
+     * Applies the read callback to the {@code input}.
      *
      * @param input Input to the callback.
      * @return The output of the callback.
@@ -28,5 +24,5 @@ public interface ReadValueCallback<T, R> {
      * {@link XmlWriter} APIs will catch {@link IOException IOExceptions} and wrap them in an
      * {@link XMLStreamException}.
      */
-    R apply(T input) throws XMLStreamException, IOException;
+    R read(T input) throws XMLStreamException, IOException;
 }

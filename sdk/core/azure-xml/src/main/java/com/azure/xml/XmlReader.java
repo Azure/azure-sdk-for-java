@@ -154,7 +154,7 @@ public abstract class XmlReader implements AutoCloseable {
         }
 
         try {
-            return converter.apply(textValue);
+            return converter.read(textValue);
         } catch (IOException ex) {
             throw new XMLStreamException(ex);
         }
@@ -248,7 +248,7 @@ public abstract class XmlReader implements AutoCloseable {
         }
 
         try {
-            return converter.apply(textValue);
+            return converter.read(textValue);
         } catch (IOException ex) {
             throw new XMLStreamException(ex);
         }
@@ -311,7 +311,7 @@ public abstract class XmlReader implements AutoCloseable {
         }
 
         try {
-            return converter.apply(this);
+            return converter.read(this);
         } catch (IOException ex) {
             throw new XMLStreamException(ex);
         }

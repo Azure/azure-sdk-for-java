@@ -171,7 +171,7 @@ public abstract class JsonWriter implements Closeable {
         writeStartArray();
 
         for (T element : array) {
-            elementWriterFunc.accept(this, element);
+            elementWriterFunc.write(this, element);
         }
 
         return writeEndArray();
@@ -207,7 +207,7 @@ public abstract class JsonWriter implements Closeable {
         writeStartArray();
 
         for (T element : array) {
-            elementWriterFunc.accept(this, element);
+            elementWriterFunc.write(this, element);
         }
 
         return writeEndArray();
@@ -244,7 +244,7 @@ public abstract class JsonWriter implements Closeable {
 
         for (Map.Entry<String, T> entry : map.entrySet()) {
             writeFieldName(entry.getKey());
-            valueWriterFunc.accept(this, entry.getValue());
+            valueWriterFunc.write(this, entry.getValue());
         }
 
         return writeEndObject();
@@ -446,7 +446,7 @@ public abstract class JsonWriter implements Closeable {
             return writeNullField(fieldName);
         }
 
-        writerFunc.accept(writeFieldName(fieldName), nullable);
+        writerFunc.write(writeFieldName(fieldName), nullable);
         return this;
     }
 
@@ -504,7 +504,7 @@ public abstract class JsonWriter implements Closeable {
         writeStartArray(fieldName);
 
         for (T element : array) {
-            elementWriterFunc.accept(this, element);
+            elementWriterFunc.write(this, element);
         }
 
         return writeEndArray();
@@ -543,7 +543,7 @@ public abstract class JsonWriter implements Closeable {
         writeStartArray(fieldName);
 
         for (T element : array) {
-            elementWriterFunc.accept(this, element);
+            elementWriterFunc.write(this, element);
         }
 
         return writeEndArray();
@@ -583,7 +583,7 @@ public abstract class JsonWriter implements Closeable {
 
         for (Map.Entry<String, T> entry : map.entrySet()) {
             writeFieldName(entry.getKey());
-            valueWriterFunc.accept(this, entry.getValue());
+            valueWriterFunc.write(this, entry.getValue());
         }
 
         return writeEndObject();

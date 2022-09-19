@@ -216,7 +216,7 @@ public abstract class JsonReader implements Closeable {
      * @throws IOException If the next value cannot be read as a nullable.
      */
     public final <T> T getNullable(ReadValueCallback<JsonReader, T> nonNullGetter) throws IOException {
-        return currentToken() == JsonToken.NULL ? null : nonNullGetter.apply(this);
+        return currentToken() == JsonToken.NULL ? null : nonNullGetter.read(this);
     }
 
     /**
@@ -375,7 +375,7 @@ public abstract class JsonReader implements Closeable {
             throw new IllegalStateException("Unexpected token to begin deserialization: " + currentToken);
         }
 
-        return objectReaderFunc.apply(this);
+        return objectReaderFunc.read(this);
     }
 
     /**
@@ -414,7 +414,7 @@ public abstract class JsonReader implements Closeable {
         List<T> array = new LinkedList<>();
 
         while (nextToken() != JsonToken.END_ARRAY) {
-            array.add(elementReaderFunc.apply(this));
+            array.add(elementReaderFunc.read(this));
         }
 
         return array;
@@ -460,7 +460,7 @@ public abstract class JsonReader implements Closeable {
             String fieldName = getFieldName();
             nextToken();
 
-            map.put(fieldName, valueReaderFunc.apply(this));
+            map.put(fieldName, valueReaderFunc.read(this));
         }
 
         return map;
