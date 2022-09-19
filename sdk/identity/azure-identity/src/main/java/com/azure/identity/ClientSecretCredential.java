@@ -77,4 +77,14 @@ public class ClientSecretCredential implements TokenCredential {
             .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request,
                 error));
     }
+
+    @Override
+    public AccessToken getTokenSync(TokenRequestContext request) {
+        return identityClient.authenticateWithConfidentialClientCacheSync(request);
+//            .onErrorResume(t -> Mono.empty())
+//            .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithConfidentialClient(request)))
+//            .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
+//            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request,
+//                error));
+    }
 }

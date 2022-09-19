@@ -3,6 +3,10 @@
 
 package com.azure.core.credential;
 
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.implementation.http.HttpPipelineNextSyncPolicyHelper;
 import reactor.core.publisher.Mono;
 
 /**
@@ -21,4 +25,19 @@ public interface TokenCredential {
      * @return a Publisher that emits a single access token
      */
     Mono<AccessToken> getToken(TokenRequestContext request);
+
+
+    /**
+     * Synchronously get a token for a given resource/audience.
+     *
+     * This method is called automatically by Azure SDK client libraries.
+     * You may call this method directly, but you must also handle token
+     * caching and token refreshing.
+     *
+     * @param request the details of the token request
+     * @return The Access Token
+     */
+    default AccessToken getTokenSync(TokenRequestContext request) {
+        return getToken(request).block();
+    }
 }

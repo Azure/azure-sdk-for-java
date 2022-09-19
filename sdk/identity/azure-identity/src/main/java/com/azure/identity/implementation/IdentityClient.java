@@ -92,6 +92,7 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -915,6 +916,23 @@ public class IdentityClient {
                 }
             }).map(ar -> (AccessToken) new MsalToken(ar))
                 .filter(t -> OffsetDateTime.now().isBefore(t.getExpiresAt().minus(REFRESH_OFFSET))));
+    }
+
+    public AccessToken authenticateWithConfidentialClientCacheSync(TokenRequestContext request) {
+         ConfidentialClientApplication confidentialClientApplication = confidentialClientApplicationAccessor.getValue().block();
+         SilentParameters.SilentParametersBuilder parametersBuilder = SilentParameters.builder(new HashSet<>(request.getScopes()))
+                        .tenant(IdentityUtil.resolveTenantId(tenantId, request, options));
+
+        try {
+             IAuthenticationResult authenticationResult = confidentialClientApplication.acquireTokenSilently(parametersBuilder.build()).get();
+             return new MsalToken(authenticationResult);
+        } catch (MalformedURLException e) {
+            throw LOGGER.logExceptionAsError(new ClientAuthenticationException(e.getMessage(), null, e));
+        } catch (ExecutionException | InterruptedException e) {
+            throw LOGGER.logExceptionAsError(new ClientAuthenticationException(e.getMessage(), null, e));
+        }
+//        .map(ar -> (AccessToken) new MsalToken(ar))
+//                .filter(t -> OffsetDateTime.now().isBefore(t.getExpiresAt().minus(REFRESH_OFFSET))));
     }
 
     /**
