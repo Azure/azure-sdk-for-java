@@ -337,7 +337,7 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DeletedSecret, Void> beginDeleteSecret(String name) {
-        return implClient.beginDeleteSecret(name, Context.NONE);
+        return implClient.beginDeleteSecretAsync(name).getSyncPoller();
     }
 
     /**
