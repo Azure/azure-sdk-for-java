@@ -35,6 +35,7 @@ import com.azure.storage.file.share.implementation.models.DirectoriesSetProperti
 import com.azure.storage.file.share.implementation.models.ListFilesAndDirectoriesSegmentResponse;
 import com.azure.storage.file.share.implementation.models.ListFilesIncludeType;
 import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
+import com.azure.storage.file.share.implementation.models.StringEncoded;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
@@ -2135,8 +2136,7 @@ public class ShareDirectoryAsyncClient {
         Set<ShareFileItem> shareFileItems = new TreeSet<>(Comparator.comparing(ShareFileItem::getName));
         if (res.getValue().getSegment() != null) {
             res.getValue().getSegment().getDirectoryItems()
-                .forEach(directoryItem -> shareFileItems.add(new ShareFileItem(
-                    directoryItem.getName().isEncoded() ? URLDecoder.decode(directoryItem.getName().getContent()) : directoryItem.getName().getContent(),
+                .forEach(directoryItem -> shareFileItems.add(new ShareFileItem(decodeName(directoryItem.getName()),
                     true,
                     directoryItem.getFileId(),
                     ModelHelper.transformFileProperty(directoryItem.getProperties()),
@@ -2144,8 +2144,7 @@ public class ShareDirectoryAsyncClient {
                     directoryItem.getPermissionKey(),
                     null)));
             res.getValue().getSegment().getFileItems()
-                .forEach(fileItem -> shareFileItems.add(new ShareFileItem(
-                    fileItem.getName().isEncoded() ? URLDecoder.decode(fileItem.getName().getContent()) : fileItem.getName().getContent(),
+                .forEach(fileItem -> shareFileItems.add(new ShareFileItem(decodeName(fileItem.getName()),
                     false,
                     fileItem.getFileId(),
                     ModelHelper.transformFileProperty(fileItem.getProperties()),
@@ -2155,6 +2154,14 @@ public class ShareDirectoryAsyncClient {
         }
 
         return new ArrayList<>(shareFileItems);
+    }
+
+    private static String decodeName(StringEncoded stringEncoded) {
+        if (stringEncoded.isEncoded() != null && stringEncoded.isEncoded()) {
+            return URLDecoder.decode(stringEncoded.getContent());
+        } else {
+            return stringEncoded.getContent();
+        }
     }
 
     /**
