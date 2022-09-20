@@ -5,7 +5,7 @@ steps:
     # Make the assumption here Linux is being used, if it's not it's a configuration issue that needs to be fixed there.
     - task: Cache@2
       inputs:
-        key: 'jdk | $(JavaBuildVersion) | "$(CacheSalt)" | "$(Agent.OS)"'
+        key: 'jdk | "$(JavaBuildVersion)" | "$(CacheSalt)" | "$(Agent.OS)"'
         path: $(System.DefaultWorkingDirectory)/OpenJDK18U-jdk_x64_linux_hotspot_18.0.2.1_1.tar.gz
 
     # PowerShell script will check if the cache was able to resolve the latest JDK version.
