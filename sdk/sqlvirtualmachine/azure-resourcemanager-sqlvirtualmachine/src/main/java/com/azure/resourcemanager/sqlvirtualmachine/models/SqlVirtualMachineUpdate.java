@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +12,6 @@ import java.util.Map;
 /** An update to a SQL virtual machine. */
 @Fluent
 public final class SqlVirtualMachineUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlVirtualMachineUpdate.class);
-
     /*
      * Resource tags.
      */
