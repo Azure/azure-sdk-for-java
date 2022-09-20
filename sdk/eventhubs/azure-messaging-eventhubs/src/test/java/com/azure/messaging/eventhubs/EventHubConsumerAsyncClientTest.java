@@ -732,7 +732,7 @@ class EventHubConsumerAsyncClientTest {
 
                 List<TestMeasurement<Double>> measurements = consumerLag.getMeasurements();
                 TestMeasurement<Double> last = measurements.get(measurements.size() - 1);
-                assertEquals(Duration.between(enqueuedTime, afterReceived).toMillis(), last.getValue() * 1000, 10d);
+                assertEquals(Duration.between(enqueuedTime, afterReceived).toMillis() / 1000d, last.getValue(), 1);
                 assertAttributes(EVENT_HUB_NAME, e.getPartitionContext().getPartitionId(), last.getAttributes());
                 return true;
             })
