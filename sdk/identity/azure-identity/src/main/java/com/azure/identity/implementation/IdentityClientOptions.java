@@ -27,7 +27,7 @@ import java.util.function.Function;
 /**
  * Options to configure the IdentityClient.
  */
-public final class IdentityClientOptions {
+public final class IdentityClientOptions implements Cloneable {
     private static final ClientLogger LOGGER = new ClientLogger(IdentityClientOptions.class);
     private static final int MAX_RETRY_DEFAULT_LIMIT = 3;
     public static final String AZURE_IDENTITY_DISABLE_MULTI_TENANT_AUTH = "AZURE_IDENTITY_DISABLE_MULTITENANTAUTH";
@@ -95,6 +95,11 @@ public final class IdentityClientOptions {
      */
     public String getImdsAuthorityHost() {
         return imdsAuthorityHost;
+    }
+
+    IdentityClientOptions setImdsAuthorityHost(String imdsAuthorityHost) {
+        this.imdsAuthorityHost = imdsAuthorityHost;
+        return this;
     }
 
     /**
@@ -256,6 +261,11 @@ public final class IdentityClientOptions {
         return this;
     }
 
+    IdentityClientOptions setPersistenceCache(boolean persistenceCache) {
+        this.sharedTokenCacheEnabled = persistenceCache;
+        return this;
+    }
+
     /*
      * Get the KeePass database path.
      * @return the KeePass database path to extract inellij credentials from.
@@ -366,6 +376,11 @@ public final class IdentityClientOptions {
         return this;
     }
 
+    IdentityClientOptions setUserAssertion(UserAssertion userAssertion) {
+        this.userAssertion = userAssertion;
+        return this;
+    }
+
     /**
      * Get the configured {@link UserAssertion}
      *
@@ -401,6 +416,11 @@ public final class IdentityClientOptions {
     public IdentityClientOptions setConfiguration(Configuration configuration) {
         this.configuration = configuration;
         loadFromConfiguration(configuration);
+        return this;
+    }
+
+    IdentityClientOptions setConfigurationStore(Configuration configuration) {
+        this.configuration = configuration;
         return this;
     }
 
@@ -444,6 +464,11 @@ public final class IdentityClientOptions {
         return this;
     }
 
+    IdentityClientOptions setAdditionallyAllowedTenants(Set<String> additionallyAllowedTenants) {
+        this.additionallyAllowedTenants = additionallyAllowedTenants;
+        return this;
+    }
+
     /**
      * Get the Additionally Allowed Tenants.
      * @return the List containing additionally allowed tenants.
@@ -452,6 +477,15 @@ public final class IdentityClientOptions {
         return this.additionallyAllowedTenants;
     }
 
+    IdentityClientOptions setCp1Disabled(boolean cp1Disabled) {
+        this.cp1Disabled = cp1Disabled;
+        return this;
+    }
+
+    IdentityClientOptions setMultiTenantAuthDisabled(boolean multiTenantAuthDisabled) {
+        this.multiTenantAuthDisabled = multiTenantAuthDisabled;
+        return this;
+    }
 
     /**
      * Loads the details from the specified Configuration Store.
@@ -465,5 +499,30 @@ public final class IdentityClientOptions {
         cp1Disabled = configuration.get(Configuration.PROPERTY_AZURE_IDENTITY_DISABLE_CP1, false);
         multiTenantAuthDisabled = configuration
             .get(AZURE_IDENTITY_DISABLE_MULTI_TENANT_AUTH, false);
+    }
+
+    public IdentityClientOptions clone() {
+        return new IdentityClientOptions()
+            .setAdditionallyAllowedTenants(this.additionallyAllowedTenants)
+            .setAllowUnencryptedCache(this.allowUnencryptedCache)
+            .setHttpClient(this.httpClient)
+            .setAuthenticationRecord(this.authenticationRecord)
+            .setExecutorService(this.executorService)
+            .setIdentityLogOptionsImpl(this.identityLogOptionsImpl)
+            .setTokenCacheOptions(this.tokenCachePersistenceOptions)
+            .setRetryTimeout(this.retryTimeout)
+            .setRegionalAuthority(this.regionalAuthority)
+            .setHttpPipeline(this.httpPipeline)
+            .setIncludeX5c(this.includeX5c)
+            .setProxyOptions(this.proxyOptions)
+            .setMaxRetry(this.maxRetry)
+            .setIntelliJKeePassDatabasePath(this.keePassDatabasePath)
+            .setAuthorityHost(this.authorityHost)
+            .setImdsAuthorityHost(this.imdsAuthorityHost)
+            .setCp1Disabled(this.cp1Disabled)
+            .setMultiTenantAuthDisabled(this.multiTenantAuthDisabled)
+            .setUserAssertion(this.userAssertion)
+            .setConfigurationStore(this.configuration)
+            .setPersistenceCache(this.sharedTokenCacheEnabled);
     }
 }
