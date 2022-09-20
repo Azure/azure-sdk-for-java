@@ -14,8 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ReplicationInner {
     /*
-     * Indicates whether the local volume is the source or destination for the
-     * Volume Replication
+     * Indicates whether the local volume is the source or destination for the Volume Replication
      */
     @JsonProperty(value = "endpointType")
     private EndpointType endpointType;

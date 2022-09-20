@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IntegrationRuntimeType. */
+/** The type of integration runtime. */
 public final class IntegrationRuntimeType extends ExpandableStringEnum<IntegrationRuntimeType> {
     /** Static value Managed for IntegrationRuntimeType. */
     public static final IntegrationRuntimeType MANAGED = fromString("Managed");
@@ -27,7 +27,11 @@ public final class IntegrationRuntimeType extends ExpandableStringEnum<Integrati
         return fromString(name, IntegrationRuntimeType.class);
     }
 
-    /** @return known IntegrationRuntimeType values. */
+    /**
+     * Gets known IntegrationRuntimeType values.
+     *
+     * @return known IntegrationRuntimeType values.
+     */
     public static Collection<IntegrationRuntimeType> values() {
         return values(IntegrationRuntimeType.class);
     }

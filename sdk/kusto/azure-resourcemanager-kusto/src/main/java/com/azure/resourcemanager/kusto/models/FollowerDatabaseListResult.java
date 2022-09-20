@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.fluent.models.FollowerDatabaseDefinitionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list Kusto database principals operation response. */
 @Fluent
 public final class FollowerDatabaseListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FollowerDatabaseListResult.class);
-
     /*
      * The list of follower database result.
      */

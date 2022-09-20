@@ -19,8 +19,7 @@ import java.util.Map;
 @Fluent
 public class MongoDbLinkedService extends LinkedService {
     /*
-     * The IP address or server name of the MongoDB server. Type: string (or
-     * Expression with resultType string).
+     * The IP address or server name of the MongoDB server. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.server", required = true)
     private Object server;
@@ -32,15 +31,13 @@ public class MongoDbLinkedService extends LinkedService {
     private MongoDbAuthenticationType authenticationType;
 
     /*
-     * The name of the MongoDB database that you want to access. Type: string
-     * (or Expression with resultType string).
+     * The name of the MongoDB database that you want to access. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.databaseName", required = true)
     private Object databaseName;
 
     /*
-     * Username for authentication. Type: string (or Expression with resultType
-     * string).
+     * Username for authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.username")
     private Object username;
@@ -52,40 +49,35 @@ public class MongoDbLinkedService extends LinkedService {
     private SecretBase password;
 
     /*
-     * Database to verify the username and password. Type: string (or
-     * Expression with resultType string).
+     * Database to verify the username and password. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.authSource")
     private Object authSource;
 
     /*
-     * The TCP port number that the MongoDB server uses to listen for client
-     * connections. The default value is 27017. Type: integer (or Expression
-     * with resultType integer), minimum: 0.
+     * The TCP port number that the MongoDB server uses to listen for client connections. The default value is 27017.
+     * Type: integer (or Expression with resultType integer), minimum: 0.
      */
     @JsonProperty(value = "typeProperties.port")
     private Object port;
 
     /*
-     * Specifies whether the connections to the server are encrypted using SSL.
-     * The default value is false. Type: boolean (or Expression with resultType
-     * boolean).
+     * Specifies whether the connections to the server are encrypted using SSL. The default value is false. Type:
+     * boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "typeProperties.enableSsl")
     private Object enableSsl;
 
     /*
-     * Specifies whether to allow self-signed certificates from the server. The
-     * default value is false. Type: boolean (or Expression with resultType
-     * boolean).
+     * Specifies whether to allow self-signed certificates from the server. The default value is false. Type: boolean
+     * (or Expression with resultType boolean).
      */
     @JsonProperty(value = "typeProperties.allowSelfSignedServerCert")
     private Object allowSelfSignedServerCert;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;

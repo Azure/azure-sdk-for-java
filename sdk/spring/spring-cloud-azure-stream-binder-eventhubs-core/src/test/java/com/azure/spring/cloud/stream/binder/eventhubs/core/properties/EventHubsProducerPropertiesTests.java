@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 class EventHubsProducerPropertiesTests {
 
-    private static final String CONNECTION_STRING = "Endpoint=sb://test.servicebus.windows.net/;SharedAccessKeyName=test;SharedAccessKey=accessKey;EntityPath=testeh";
+    static final String CONNECTION_STRING = "Endpoint=sb://test.servicebus.windows.net/;SharedAccessKeyName=test;SharedAccessKey=accessKey;EntityPath=testeh";
 
     private EventHubsProducerProperties producerProperties;
 
@@ -46,31 +46,54 @@ class EventHubsProducerPropertiesTests {
     }
 
     @Test
-    void domainNameDefaultsToFalse() {
-        assertEquals("servicebus.windows.net", producerProperties.getDomainName());
+    void domainNameDefaultsToNull() {
+        assertNull(producerProperties.getDomainName());
     }
 
     @Test
-    void customDomainName() {
+    void customDomainNameShouldSet() {
         producerProperties.setDomainName("new.servicebus.windows.net");
         assertEquals("new.servicebus.windows.net", producerProperties.getDomainName());
     }
 
     @Test
-    void getFqnWhenNamespaceIsNull() {
+    void getFqdnWhenNamespaceIsNullButConnectionStringIsNot() {
         producerProperties.setConnectionString(CONNECTION_STRING);
         assertEquals("test.servicebus.windows.net", producerProperties.getFullyQualifiedNamespace());
     }
 
     @Test
-    void getFqnWhenNamespaceIsNotNull() {
+    void getFqdnWhenNamespaceAndDomainNameAreNotNull() {
         producerProperties.setNamespace("dev-namespace");
+        producerProperties.setDomainName("servicebus.windows.net");
         assertEquals("dev-namespace.servicebus.windows.net", producerProperties.getFullyQualifiedNamespace());
     }
 
     @Test
-    void getFqnReturnNullWhenNamespaceAndConnectionStringAreNull() {
+    void getFqdnWhenNamespaceAndDomainAreNull() {
         assertNull(producerProperties.getFullyQualifiedNamespace());
+    }
+
+    @Test
+    void getFqdnWhenNamespaceIsNullButDomainNameIsNot() {
+        producerProperties.setDomainName("servicebus.windows.net");
+        assertNull(producerProperties.getFullyQualifiedNamespace());
+    }
+
+    @Test
+    void getFqdnWhenDomainNameIsNullButNamespaceIsNot() {
+        producerProperties.setNamespace("test");
+        assertNull(producerProperties.getFullyQualifiedNamespace());
+    }
+
+    @Test
+    void getFqdnReturnNullWhenNamespaceAndConnectionStringAreNull() {
+        assertNull(producerProperties.getFullyQualifiedNamespace());
+    }
+
+    @Test
+    void amqpTransportTypeDefaultIsNull() {
+        assertNull(producerProperties.getClient().getTransportType());
     }
 
     @Test

@@ -235,6 +235,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private final Runnable onClientClose;
     private final ServiceBusSessionManager sessionManager;
     private final Semaphore completionLock = new Semaphore(1);
+    private final String identifier;
 
     // Starting at -1 because that is before the beginning of the stream.
     private final AtomicLong lastPeekedSequenceNumber = new AtomicLong(-1);
@@ -254,7 +255,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
         ReceiverOptions receiverOptions, ServiceBusConnectionProcessor connectionProcessor, Duration cleanupInterval,
-        TracerProvider tracerProvider, MessageSerializer messageSerializer, Runnable onClientClose) {
+        TracerProvider tracerProvider, MessageSerializer messageSerializer, Runnable onClientClose, String identifier) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
@@ -275,6 +276,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         });
 
         this.sessionManager = null;
+        this.identifier = identifier;
     }
 
     ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
@@ -300,6 +302,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 .log("Closing expired renewal operation.", renewal.getThrowable());
             renewal.close();
         });
+
+        this.identifier = sessionManager.getIdentifier();
     }
 
     /**
@@ -328,6 +332,15 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public String getSessionId() {
         return receiverOptions.getSessionId();
+    }
+
+    /**
+     * Gets the identifier of the instance of {@link ServiceBusReceiverAsyncClient}.
+     *
+     * @return The identifier that can identify the instance of {@link ServiceBusReceiverAsyncClient}.
+     */
+    public String getIdentifier() {
+        return identifier;
     }
 
     /**
@@ -1450,10 +1463,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         final Mono<ServiceBusReceiveLink> receiveLinkMono = connectionProcessor.flatMap(connection -> {
             if (receiverOptions.isSessionReceiver()) {
                 return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(),
-                        null, entityType, receiverOptions.getSessionId());
+                        null, entityType, identifier, receiverOptions.getSessionId());
             } else {
                 return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(),
-                    null, entityType);
+                    null, entityType, identifier);
             }
         }).doOnNext(next -> {
             LOGGER.atVerbose()

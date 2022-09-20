@@ -72,19 +72,18 @@ public class CallMediaAsyncUnitTests {
 
     @Test
     public void recognizeWithResponse() {
-        CallMediaRecognizeDtmfOptions recognizeOptions = new CallMediaRecognizeDtmfOptions(new CommunicationUserIdentifier("id"));
+        CallMediaRecognizeDtmfOptions recognizeOptions = new CallMediaRecognizeDtmfOptions(new CommunicationUserIdentifier("id"), 1);
         StepVerifier.create(
-                callMedia.recognizeWithResponse(recognizeOptions))
+                callMedia.startRecognizingWithResponse(recognizeOptions))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }
 
     @Test
     public void recognizeWithResponseFilledDtmfOptions() {
-        CallMediaRecognizeDtmfOptions recognizeOptions = new CallMediaRecognizeDtmfOptions(new CommunicationUserIdentifier("id"));
+        CallMediaRecognizeDtmfOptions recognizeOptions = new CallMediaRecognizeDtmfOptions(new CommunicationUserIdentifier("id"), 5);
 
         recognizeOptions.setInterToneTimeout(Duration.ofSeconds(3));
-        recognizeOptions.setMaxTonesToCollect(3);
         List<Tone> stopTones = new ArrayList<Tone>();
         stopTones.add(Tone.ZERO);
         stopTones.add(Tone.ONE);
@@ -98,7 +97,7 @@ public class CallMediaAsyncUnitTests {
         recognizeOptions.setInitialSilenceTimeout(Duration.ofSeconds(4));
 
         StepVerifier.create(
-                callMedia.recognizeWithResponse(recognizeOptions))
+                callMedia.startRecognizingWithResponse(recognizeOptions))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }

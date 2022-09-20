@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SqlPartitionOption. */
+/** The partition mechanism that will be used for Sql read in parallel. */
 public final class SqlPartitionOption extends ExpandableStringEnum<SqlPartitionOption> {
     /** Static value None for SqlPartitionOption. */
     public static final SqlPartitionOption NONE = fromString("None");
@@ -30,7 +30,11 @@ public final class SqlPartitionOption extends ExpandableStringEnum<SqlPartitionO
         return fromString(name, SqlPartitionOption.class);
     }
 
-    /** @return known SqlPartitionOption values. */
+    /**
+     * Gets known SqlPartitionOption values.
+     *
+     * @return known SqlPartitionOption values.
+     */
     public static Collection<SqlPartitionOption> values() {
         return values(SqlPartitionOption.class);
     }
