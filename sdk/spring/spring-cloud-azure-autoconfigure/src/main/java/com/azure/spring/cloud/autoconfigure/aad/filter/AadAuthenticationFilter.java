@@ -56,6 +56,7 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
      *
      * @param aadAuthenticationProperties the AAD authentication properties
      * @param endpoints the AAD authorization server endpoints
+     * @param restOperations the restOperations
      * @param resourceRetriever the resource retriever
      */
     public AadAuthenticationFilter(AadAuthenticationProperties aadAuthenticationProperties,
@@ -81,6 +82,7 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
      * @param aadAuthenticationProperties the AAD authentication properties
      * @param endpoints the AAD authorization server endpoints
      * @param resourceRetriever the resource retriever
+     * @param restOperations the restOperations
      * @param jwkSetCache the JWK set cache
      */
     public AadAuthenticationFilter(AadAuthenticationProperties aadAuthenticationProperties,
@@ -108,6 +110,7 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
      * @param aadAuthenticationProperties the AAD authentication properties
      * @param endpoints the AAD authorization server endpoints
      * @param userPrincipalManager the user principal manager
+     * @param restOperations restOperations
      */
     public AadAuthenticationFilter(AadAuthenticationProperties aadAuthenticationProperties,
                                    AadAuthorizationServerEndpoints endpoints,

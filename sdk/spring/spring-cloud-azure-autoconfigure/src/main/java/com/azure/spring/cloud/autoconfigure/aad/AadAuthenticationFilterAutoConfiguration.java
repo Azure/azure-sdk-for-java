@@ -72,6 +72,7 @@ public class AadAuthenticationFilterAutoConfiguration {
      *
      * @param resourceRetriever the resource retriever
      * @param jwkSetCache the JWK set cache
+     * @param restOperations the restOperations
      * @return AADAuthenticationFilter bean
      */
     @Bean
