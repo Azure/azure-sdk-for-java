@@ -31,20 +31,20 @@ public final class BufferedVertxHttpResponse extends VertxHttpAsyncResponse {
     @Override
     public Flux<ByteBuffer> getBody() {
         return Flux.defer(() -> {
-            if (this.body.length() == 0) {
+            if (body.length() == 0) {
                 return Flux.empty();
             }
-            return Flux.just(ByteBuffer.wrap(this.body.getBytes()));
+            return Flux.just(ByteBuffer.wrap(body.getBytes()));
         });
     }
 
     @Override
     public Mono<byte[]> getBodyAsByteArray() {
         return Mono.defer(() -> {
-            if (this.body.length() == 0) {
+            if (body.length() == 0) {
                 return Mono.empty();
             }
-            return Mono.just(this.body.getBytes());
+            return Mono.just(body.getBytes());
         });
     }
 
