@@ -24,14 +24,14 @@ import java.util.function.Supplier;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@ActiveProfiles("servicebus-binder-multi")
-class MultiServiceBusQueueAndTopicBinderIT {
+@ActiveProfiles("servicebus-binder-single")
+class ServiceBusSingleBinderIT {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MultiServiceBusQueueAndTopicBinderIT.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusSingleBinderIT.class);
 
-    private static String message = UUID.randomUUID().toString();
+    private static final String MESSAGE = UUID.randomUUID().toString();
 
-    private static CountDownLatch latch = new CountDownLatch(2);
+    private static final CountDownLatch LATCH = new CountDownLatch(2);
 
     @Autowired
     private Sinks.Many<Message<String>> manyQueue;
@@ -57,9 +57,9 @@ class MultiServiceBusQueueAndTopicBinderIT {
         @Bean
         Consumer<Message<String>> queueConsume() {
             return message -> {
-                LOGGER.info("Test queue new message received: '{}'", message);
-                if (message.getPayload().equals(MultiServiceBusQueueAndTopicBinderIT.message)) {
-                    latch.countDown();
+                LOGGER.info("---Test queue new message received: '{}'", message);
+                if (message.getPayload().equals(ServiceBusSingleBinderIT.MESSAGE)) {
+                    LATCH.countDown();
                 }
             };
         }
@@ -83,26 +83,26 @@ class MultiServiceBusQueueAndTopicBinderIT {
         @Bean
         Consumer<Message<String>> topicConsume() {
             return message -> {
-                LOGGER.info("Test topic new message received: '{}'", message);
-                if (message.getPayload().equals(MultiServiceBusQueueAndTopicBinderIT.message)) {
-                    latch.countDown();
+                LOGGER.info("---Test topic new message received: '{}'", message);
+                if (message.getPayload().equals(ServiceBusSingleBinderIT.MESSAGE)) {
+                    LATCH.countDown();
                 }
             };
         }
     }
 
     @Test
-    void testMultiServiceBusSendAndReceiveMessage() throws InterruptedException {
-        LOGGER.info("MultiServiceBusQueueAndTopicBinderIT begin.");
-        GenericMessage<String> genericMessage = new GenericMessage<>(message);
+    void testSingleServiceBusSendAndReceiveMessage() throws InterruptedException {
+        LOGGER.info("SingleServiceBusQueueAndTopicBinderIT begin.");
+        GenericMessage<String> genericMessage = new GenericMessage<>(MESSAGE);
 
-        LOGGER.info("Send a message:" + message + " to the queue.");
+        LOGGER.info("Send a message:" + MESSAGE + " to the queue.");
         manyQueue.emitNext(genericMessage, Sinks.EmitFailureHandler.FAIL_FAST);
-        LOGGER.info("Send a message:" + message + " to the topic.");
+        LOGGER.info("Send a message:" + MESSAGE + " to the topic.");
         manyTopic.emitNext(genericMessage, Sinks.EmitFailureHandler.FAIL_FAST);
 
-        assertThat(MultiServiceBusQueueAndTopicBinderIT.latch.await(15, TimeUnit.SECONDS)).isTrue();
-        LOGGER.info("MultiServiceBusQueueAndTopicBinderIT end.");
+        assertThat(ServiceBusSingleBinderIT.LATCH.await(15, TimeUnit.SECONDS)).isTrue();
+        LOGGER.info("SingleServiceBusQueueAndTopicBinderIT end.");
     }
 
 }

@@ -10,6 +10,8 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 #### Bugs Fixed
 - Fix bug: Cannot configure "azure" authorization client. [#30354](https://github.com/Azure/azure-sdk-for-java/issues/30354).
 - Fix parameter `requested_token_use` missing when using On behalf of process [#30359](https://github.com/Azure/azure-sdk-for-java/issues/30359).
+- Fix Kafka `OAuth2AuthenticateCallbackHandler` cannot work with Kafka refreshing login mechanism [#30719](https://github.com/Azure/azure-sdk-for-java/issues/30719).
+- Fix the cloud type cannot be configured for a consumer/producer/processor of Service Bus / Event Hubs bug [#30936](https://github.com/Azure/azure-sdk-for-java/issues/30936).
 
 #### Features Added
 - Support auto start-up for the auto-configured Service Bus Processor Client by enabling a new property of `spring.cloud.azure.servicebus.processor.auto-startup`. [#29997](https://github.com/Azure/azure-sdk-for-java/issues/29997)
@@ -17,15 +19,16 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 - Provide the property of `spring.cloud.azure.eventhubs.kafka.enabled` to turn of/off the OAuth2 support of Spring Cloud Azure for Event Hubs for Kafka [#30574](https://github.com/Azure/azure-sdk-for-java/issues/30574).
 - Support connecting to Azure AD via proxy. To achieve this, customer need provide a custom `RestTemplateCustomizer` bean. [#26493](https://github.com/Azure/azure-sdk-for-java/issues/26493).
 
-### Spring Cloud Azure Resource Manager
-
+### Spring Cloud Stream Event Hubs Binder
 #### Bugs Fixed
-- Fix the Service Bus stream binder cannot automatically create Topic/Subscriptions from consumer. [#30722](https://github.com/Azure/azure-sdk-for-java/pull/30722).
+- Fix the cloud type cannot be configured for Event Hubs Binder bug [#30936](https://github.com/Azure/azure-sdk-for-java/issues/30936).
 
-### Spring Cloud Azure Service
-
+### Spring Cloud Stream Service Bus Binder
 #### Bugs Fixed
-- Fix Kafka OAuth2AuthenticateCallbackHandler cannot work with Kafka refreshing login mechanism [#30719](https://github.com/Azure/azure-sdk-for-java/issues/30719).
+- Fix the Service Bus Binder cannot automatically create Topic/Subscriptions from consumer bug. [#30722](https://github.com/Azure/azure-sdk-for-java/pull/30722).
+- Fix the cloud type cannot be configured for Service Bus Binder bug [#30936](https://github.com/Azure/azure-sdk-for-java/issues/30936).
+
+
 
 ## 4.3.0 (2022-06-29)
 - This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.9, 2.7.0-2.7.1. (Note: 2.5.x (x>14), 2.6.y (y>9) and 2.7.z (z>1) should be supported, but they aren't tested with this release.)
