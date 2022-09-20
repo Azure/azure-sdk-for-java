@@ -91,6 +91,10 @@ public final class ContentKeyPolicyPlayReadyPlayRight {
     @JsonProperty(value = "uncompressedDigitalAudioOpl")
     private Integer uncompressedDigitalAudioOpl;
 
+    /** Creates an instance of ContentKeyPolicyPlayReadyPlayRight class. */
+    public ContentKeyPolicyPlayReadyPlayRight() {
+    }
+
     /**
      * Get the firstPlayExpiration property: The amount of time that the license is valid after the license is first
      * used to play content.

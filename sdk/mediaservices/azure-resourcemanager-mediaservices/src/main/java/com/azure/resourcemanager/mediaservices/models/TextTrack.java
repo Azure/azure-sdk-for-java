@@ -49,6 +49,10 @@ public final class TextTrack extends TrackBase {
     @JsonProperty(value = "hlsSettings")
     private HlsSettings hlsSettings;
 
+    /** Creates an instance of TextTrack class. */
+    public TextTrack() {
+    }
+
     /**
      * Get the fileName property: The file name to the source file. This file is located in the storage container of the
      * asset.

@@ -21,6 +21,10 @@ public final class OutputFile {
     @JsonProperty(value = "labels", required = true)
     private List<String> labels;
 
+    /** Creates an instance of OutputFile class. */
+    public OutputFile() {
+    }
+
     /**
      * Get the labels property: The list of labels that describe how the encoder should multiplex video and audio into
      * an output file. For example, if the encoder is producing two video layers with labels v1 and v2, and one audio

@@ -28,6 +28,10 @@ public final class HlsSettings {
     @JsonProperty(value = "characteristics")
     private String characteristics;
 
+    /** Creates an instance of HlsSettings class. */
+    public HlsSettings() {
+    }
+
     /**
      * Get the defaultProperty property: The default for the HLS setting.
      *

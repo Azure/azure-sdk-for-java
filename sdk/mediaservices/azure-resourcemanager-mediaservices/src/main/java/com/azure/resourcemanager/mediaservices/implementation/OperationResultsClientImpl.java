@@ -243,9 +243,9 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
      * @return asset track operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssetTrackInner get(
+    public OperationResultsGetResponse getWithResponse(
         String resourceGroupName, String accountName, String assetName, String trackName, String operationId) {
-        return getAsync(resourceGroupName, accountName, assetName, trackName, operationId).block();
+        return getWithResponseAsync(resourceGroupName, accountName, assetName, trackName, operationId).block();
     }
 
     /**
@@ -273,5 +273,27 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
         String operationId,
         Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, assetName, trackName, operationId, context).block();
+    }
+
+    /**
+     * Get operation result.
+     *
+     * <p>Get asset track operation result.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param assetName The Asset name.
+     * @param trackName The Asset Track name.
+     * @param operationId Operation Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return asset track operation result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AssetTrackInner get(
+        String resourceGroupName, String accountName, String assetName, String trackName, String operationId) {
+        return getWithResponse(resourceGroupName, accountName, assetName, trackName, operationId, Context.NONE)
+            .getValue();
     }
 }

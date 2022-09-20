@@ -17,6 +17,25 @@ public interface ContentKeyPolicies {
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
+     * @param filter Restricts the set of items returned.
+     * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
+     *     service returns the number of available items up to but not greater than the specified value n.
+     * @param orderby Specifies the key by which the result collection should be ordered.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a collection of ContentKeyPolicy items as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<ContentKeyPolicy> list(
+        String resourceGroupName, String accountName, String filter, Integer top, String orderby);
+
+    /**
+     * List Content Key Policies
+     *
+     * <p>Lists the Content Key Policies in the account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -52,21 +71,6 @@ public interface ContentKeyPolicies {
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Content Key Policy in the Media Services account.
-     */
-    ContentKeyPolicy get(String resourceGroupName, String accountName, String contentKeyPolicyName);
-
-    /**
-     * Get a Content Key Policy
-     *
-     * <p>Get the details of a Content Key Policy in the Media Services account.
-     *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param contentKeyPolicyName The Content Key Policy name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -77,9 +81,9 @@ public interface ContentKeyPolicies {
         String resourceGroupName, String accountName, String contentKeyPolicyName, Context context);
 
     /**
-     * Delete a Content Key Policy
+     * Get a Content Key Policy
      *
-     * <p>Deletes a Content Key Policy in the Media Services account.
+     * <p>Get the details of a Content Key Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -87,8 +91,9 @@ public interface ContentKeyPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of a Content Key Policy in the Media Services account.
      */
-    void delete(String resourceGroupName, String accountName, String contentKeyPolicyName);
+    ContentKeyPolicy get(String resourceGroupName, String accountName, String contentKeyPolicyName);
 
     /**
      * Delete a Content Key Policy
@@ -108,9 +113,9 @@ public interface ContentKeyPolicies {
         String resourceGroupName, String accountName, String contentKeyPolicyName, Context context);
 
     /**
-     * Get a Content Key Policy with secrets
+     * Delete a Content Key Policy
      *
-     * <p>Get a Content Key Policy including secret values.
+     * <p>Deletes a Content Key Policy in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -118,10 +123,8 @@ public interface ContentKeyPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Content Key Policy including secret values.
      */
-    ContentKeyPolicyProperties getPolicyPropertiesWithSecrets(
-        String resourceGroupName, String accountName, String contentKeyPolicyName);
+    void delete(String resourceGroupName, String accountName, String contentKeyPolicyName);
 
     /**
      * Get a Content Key Policy with secrets
@@ -139,6 +142,22 @@ public interface ContentKeyPolicies {
      */
     Response<ContentKeyPolicyProperties> getPolicyPropertiesWithSecretsWithResponse(
         String resourceGroupName, String accountName, String contentKeyPolicyName, Context context);
+
+    /**
+     * Get a Content Key Policy with secrets
+     *
+     * <p>Get a Content Key Policy including secret values.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param contentKeyPolicyName The Content Key Policy name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Content Key Policy including secret values.
+     */
+    ContentKeyPolicyProperties getPolicyPropertiesWithSecrets(
+        String resourceGroupName, String accountName, String contentKeyPolicyName);
 
     /**
      * Get a Content Key Policy

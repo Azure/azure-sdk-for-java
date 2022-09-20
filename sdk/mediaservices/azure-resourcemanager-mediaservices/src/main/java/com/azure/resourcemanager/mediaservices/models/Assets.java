@@ -17,6 +17,24 @@ public interface Assets {
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
+     * @param filter Restricts the set of items returned.
+     * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
+     *     service returns the number of available items up to but not greater than the specified value n.
+     * @param orderby Specifies the key by which the result collection should be ordered.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a collection of Asset items as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<Asset> list(String resourceGroupName, String accountName, String filter, Integer top, String orderby);
+
+    /**
+     * List Assets
+     *
+     * <p>List Assets in the Media Services account with optional filtering and ordering.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -52,21 +70,6 @@ public interface Assets {
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of an Asset in the Media Services account.
-     */
-    Asset get(String resourceGroupName, String accountName, String assetName);
-
-    /**
-     * Get an Asset
-     *
-     * <p>Get the details of an Asset in the Media Services account.
-     *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param assetName The Asset name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -76,9 +79,9 @@ public interface Assets {
     Response<Asset> getWithResponse(String resourceGroupName, String accountName, String assetName, Context context);
 
     /**
-     * Delete an Asset.
+     * Get an Asset
      *
-     * <p>Deletes an Asset in the Media Services account.
+     * <p>Get the details of an Asset in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -86,8 +89,9 @@ public interface Assets {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of an Asset in the Media Services account.
      */
-    void delete(String resourceGroupName, String accountName, String assetName);
+    Asset get(String resourceGroupName, String accountName, String assetName);
 
     /**
      * Delete an Asset.
@@ -106,22 +110,18 @@ public interface Assets {
     Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String assetName, Context context);
 
     /**
-     * List the Asset URLs
+     * Delete an Asset.
      *
-     * <p>Lists storage container URLs with shared access signatures (SAS) for uploading and downloading Asset content.
-     * The signatures are derived from the storage account keys.
+     * <p>Deletes an Asset in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
-     * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Asset Storage container SAS URLs.
      */
-    AssetContainerSas listContainerSas(
-        String resourceGroupName, String accountName, String assetName, ListContainerSasInput parameters);
+    void delete(String resourceGroupName, String accountName, String assetName);
 
     /**
      * List the Asset URLs
@@ -147,20 +147,22 @@ public interface Assets {
         Context context);
 
     /**
-     * Gets the Asset storage key
+     * List the Asset URLs
      *
-     * <p>Gets the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services API.
+     * <p>Lists storage container URLs with shared access signatures (SAS) for uploading and downloading Asset content.
+     * The signatures are derived from the storage account keys.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
+     * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services API.
+     * @return the Asset Storage container SAS URLs.
      */
-    StorageEncryptedAssetDecryptionData getEncryptionKey(
-        String resourceGroupName, String accountName, String assetName);
+    AssetContainerSas listContainerSas(
+        String resourceGroupName, String accountName, String assetName, ListContainerSasInput parameters);
 
     /**
      * Gets the Asset storage key
@@ -181,9 +183,9 @@ public interface Assets {
         String resourceGroupName, String accountName, String assetName, Context context);
 
     /**
-     * List Streaming Locators
+     * Gets the Asset storage key
      *
-     * <p>Lists Streaming Locators which are associated with this asset.
+     * <p>Gets the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services API.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -191,9 +193,10 @@ public interface Assets {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Streaming Locators associated with this Asset.
+     * @return the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services API.
      */
-    ListStreamingLocatorsResponse listStreamingLocators(String resourceGroupName, String accountName, String assetName);
+    StorageEncryptedAssetDecryptionData getEncryptionKey(
+        String resourceGroupName, String accountName, String assetName);
 
     /**
      * List Streaming Locators
@@ -211,6 +214,21 @@ public interface Assets {
      */
     Response<ListStreamingLocatorsResponse> listStreamingLocatorsWithResponse(
         String resourceGroupName, String accountName, String assetName, Context context);
+
+    /**
+     * List Streaming Locators
+     *
+     * <p>Lists Streaming Locators which are associated with this asset.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param assetName The Asset name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Streaming Locators associated with this Asset.
+     */
+    ListStreamingLocatorsResponse listStreamingLocators(String resourceGroupName, String accountName, String assetName);
 
     /**
      * Get an Asset

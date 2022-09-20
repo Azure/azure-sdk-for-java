@@ -14,6 +14,10 @@ import java.time.Duration;
 @JsonTypeName("#Microsoft.Media.AudioOverlay")
 @Fluent
 public final class AudioOverlay extends Overlay {
+    /** Creates an instance of AudioOverlay class. */
+    public AudioOverlay() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public AudioOverlay withInputLabel(String inputLabel) {

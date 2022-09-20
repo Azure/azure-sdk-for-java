@@ -17,6 +17,10 @@ import java.util.List;
 @JsonTypeName("#Microsoft.Media.FromEachInputFile")
 @Fluent
 public final class FromEachInputFile extends InputDefinition {
+    /** Creates an instance of FromEachInputFile class. */
+    public FromEachInputFile() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public FromEachInputFile withIncludedTracks(List<TrackDescriptor> includedTracks) {

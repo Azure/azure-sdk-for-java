@@ -37,6 +37,10 @@ public final class LiveEventTranscription {
     @JsonProperty(value = "outputTranscriptionTrack")
     private LiveEventOutputTranscriptionTrack outputTranscriptionTrack;
 
+    /** Creates an instance of LiveEventTranscription class. */
+    public LiveEventTranscription() {
+    }
+
     /**
      * Get the language property: Specifies the language (locale) to be used for speech-to-text transcription – it
      * should match the spoken language in the audio track. The value should be in BCP-47 format (e.g: 'en-US'). See

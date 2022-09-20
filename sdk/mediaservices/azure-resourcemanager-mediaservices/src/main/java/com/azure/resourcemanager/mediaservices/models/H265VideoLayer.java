@@ -54,6 +54,10 @@ public class H265VideoLayer extends Layer {
     @JsonProperty(value = "adaptiveBFrame")
     private Boolean adaptiveBFrame;
 
+    /** Creates an instance of H265VideoLayer class. */
+    public H265VideoLayer() {
+    }
+
     /**
      * Get the bitrate property: The average bitrate in bits per second at which to encode the input video when
      * generating this layer. For example: a target bitrate of 3000Kbps or 3Mbps means this value should be 3000000 This

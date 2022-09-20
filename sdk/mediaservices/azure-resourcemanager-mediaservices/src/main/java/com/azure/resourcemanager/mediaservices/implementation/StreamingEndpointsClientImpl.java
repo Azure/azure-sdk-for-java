@@ -594,11 +594,12 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a streaming endpoint.
+     * @return a streaming endpoint along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StreamingEndpointInner get(String resourceGroupName, String accountName, String streamingEndpointName) {
-        return getAsync(resourceGroupName, accountName, streamingEndpointName).block();
+    public Response<StreamingEndpointInner> getWithResponse(
+        String resourceGroupName, String accountName, String streamingEndpointName) {
+        return getWithResponseAsync(resourceGroupName, accountName, streamingEndpointName).block();
     }
 
     /**
@@ -619,6 +620,24 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     public Response<StreamingEndpointInner> getWithResponse(
         String resourceGroupName, String accountName, String streamingEndpointName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, streamingEndpointName, context).block();
+    }
+
+    /**
+     * Get StreamingEndpoint
+     *
+     * <p>Gets a streaming endpoint.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a streaming endpoint.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StreamingEndpointInner get(String resourceGroupName, String accountName, String streamingEndpointName) {
+        return getWithResponse(resourceGroupName, accountName, streamingEndpointName, Context.NONE).getValue();
     }
 
     /**
@@ -1793,12 +1812,12 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StreamingEndpointSkuInfoListResultInner skus(
+    public Response<StreamingEndpointSkuInfoListResultInner> skusWithResponse(
         String resourceGroupName, String accountName, String streamingEndpointName) {
-        return skusAsync(resourceGroupName, accountName, streamingEndpointName).block();
+        return skusWithResponseAsync(resourceGroupName, accountName, streamingEndpointName).block();
     }
 
     /**
@@ -1819,6 +1838,25 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     public Response<StreamingEndpointSkuInfoListResultInner> skusWithResponse(
         String resourceGroupName, String accountName, String streamingEndpointName, Context context) {
         return skusWithResponseAsync(resourceGroupName, accountName, streamingEndpointName, context).block();
+    }
+
+    /**
+     * List StreamingEndpoint skus
+     *
+     * <p>List streaming endpoint supported skus.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StreamingEndpointSkuInfoListResultInner skus(
+        String resourceGroupName, String accountName, String streamingEndpointName) {
+        return skusWithResponse(resourceGroupName, accountName, streamingEndpointName, Context.NONE).getValue();
     }
 
     /**
@@ -2856,11 +2894,12 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a streaming endpoint operation status.
+     * @return a streaming endpoint operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AsyncOperationResultInner asyncOperation(String resourceGroupName, String accountName, String operationId) {
-        return asyncOperationAsync(resourceGroupName, accountName, operationId).block();
+    public Response<AsyncOperationResultInner> asyncOperationWithResponse(
+        String resourceGroupName, String accountName, String operationId) {
+        return asyncOperationWithResponseAsync(resourceGroupName, accountName, operationId).block();
     }
 
     /**
@@ -2881,6 +2920,24 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     public Response<AsyncOperationResultInner> asyncOperationWithResponse(
         String resourceGroupName, String accountName, String operationId, Context context) {
         return asyncOperationWithResponseAsync(resourceGroupName, accountName, operationId, context).block();
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a streaming endpoint operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param operationId The ID of an ongoing async operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a streaming endpoint operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AsyncOperationResultInner asyncOperation(String resourceGroupName, String accountName, String operationId) {
+        return asyncOperationWithResponse(resourceGroupName, accountName, operationId, Context.NONE).getValue();
     }
 
     /**
@@ -3044,12 +3101,13 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a streaming endpoint operation status.
+     * @return a streaming endpoint operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StreamingEndpointInner operationLocation(
+    public Response<StreamingEndpointInner> operationLocationWithResponse(
         String resourceGroupName, String accountName, String streamingEndpointName, String operationId) {
-        return operationLocationAsync(resourceGroupName, accountName, streamingEndpointName, operationId).block();
+        return operationLocationWithResponseAsync(resourceGroupName, accountName, streamingEndpointName, operationId)
+            .block();
     }
 
     /**
@@ -3077,6 +3135,28 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
         return operationLocationWithResponseAsync(
                 resourceGroupName, accountName, streamingEndpointName, operationId, context)
             .block();
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a streaming endpoint operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
+     * @param operationId The ID of an ongoing async operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a streaming endpoint operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StreamingEndpointInner operationLocation(
+        String resourceGroupName, String accountName, String streamingEndpointName, String operationId) {
+        return operationLocationWithResponse(
+                resourceGroupName, accountName, streamingEndpointName, operationId, Context.NONE)
+            .getValue();
     }
 
     /**

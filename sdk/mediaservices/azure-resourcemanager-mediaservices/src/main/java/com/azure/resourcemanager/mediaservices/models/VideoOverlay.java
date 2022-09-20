@@ -34,6 +34,10 @@ public final class VideoOverlay extends Overlay {
     @JsonProperty(value = "cropRectangle")
     private Rectangle cropRectangle;
 
+    /** Creates an instance of VideoOverlay class. */
+    public VideoOverlay() {
+    }
+
     /**
      * Get the position property: The location in the input video where the overlay is applied.
      *

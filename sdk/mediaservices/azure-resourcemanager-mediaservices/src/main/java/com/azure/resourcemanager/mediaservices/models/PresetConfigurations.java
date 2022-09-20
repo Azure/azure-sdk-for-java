@@ -67,6 +67,10 @@ public final class PresetConfigurations {
     @JsonProperty(value = "minHeight")
     private Integer minHeight;
 
+    /** Creates an instance of PresetConfigurations class. */
+    public PresetConfigurations() {
+    }
+
     /**
      * Get the complexity property: Allows you to configure the encoder settings to control the balance between speed
      * and quality. Example: set Complexity as Speed for faster encoding but less compression efficiency.

@@ -61,6 +61,10 @@ public class JobInputClip extends JobInput {
     @JsonProperty(value = "inputDefinitions")
     private List<InputDefinition> inputDefinitions;
 
+    /** Creates an instance of JobInputClip class. */
+    public JobInputClip() {
+    }
+
     /**
      * Get the files property: List of files. Required for JobInputHttp. Maximum of 4000 characters each. Query strings
      * will not be returned in service responses to prevent sensitive data exposure.

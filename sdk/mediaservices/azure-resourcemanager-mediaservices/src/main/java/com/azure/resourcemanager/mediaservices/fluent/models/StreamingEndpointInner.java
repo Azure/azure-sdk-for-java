@@ -37,6 +37,10 @@ public final class StreamingEndpointInner extends Resource {
     @JsonProperty(value = "sku")
     private ArmStreamingEndpointCurrentSku sku;
 
+    /** Creates an instance of StreamingEndpointInner class. */
+    public StreamingEndpointInner() {
+    }
+
     /**
      * Get the innerProperties property: The streaming endpoint properties.
      *

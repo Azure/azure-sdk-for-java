@@ -78,6 +78,10 @@ public final class StreamingLocatorProperties {
     @JsonProperty(value = "filters")
     private List<String> filters;
 
+    /** Creates an instance of StreamingLocatorProperties class. */
+    public StreamingLocatorProperties() {
+    }
+
     /**
      * Get the assetName property: Asset Name.
      *

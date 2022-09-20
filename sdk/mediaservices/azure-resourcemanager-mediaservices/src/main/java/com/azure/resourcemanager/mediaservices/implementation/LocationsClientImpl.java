@@ -201,12 +201,12 @@ public final class LocationsClientImpl implements LocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the check name availability request.
+     * @return the response from the check name availability request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EntityNameAvailabilityCheckOutputInner checkNameAvailability(
+    public Response<EntityNameAvailabilityCheckOutputInner> checkNameAvailabilityWithResponse(
         String locationName, CheckNameAvailabilityInput parameters) {
-        return checkNameAvailabilityAsync(locationName, parameters).block();
+        return checkNameAvailabilityWithResponseAsync(locationName, parameters).block();
     }
 
     /**
@@ -226,5 +226,23 @@ public final class LocationsClientImpl implements LocationsClient {
     public Response<EntityNameAvailabilityCheckOutputInner> checkNameAvailabilityWithResponse(
         String locationName, CheckNameAvailabilityInput parameters, Context context) {
         return checkNameAvailabilityWithResponseAsync(locationName, parameters, context).block();
+    }
+
+    /**
+     * Check Name Availability
+     *
+     * <p>Checks whether the Media Service resource name is available.
+     *
+     * @param locationName Location name.
+     * @param parameters The request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from the check name availability request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EntityNameAvailabilityCheckOutputInner checkNameAvailability(
+        String locationName, CheckNameAvailabilityInput parameters) {
+        return checkNameAvailabilityWithResponse(locationName, parameters, Context.NONE).getValue();
     }
 }

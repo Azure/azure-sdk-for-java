@@ -28,6 +28,13 @@ public final class StreamingPoliciesImpl implements StreamingPolicies {
         this.serviceManager = serviceManager;
     }
 
+    public PagedIterable<StreamingPolicy> list(
+        String resourceGroupName, String accountName, String filter, Integer top, String orderby) {
+        PagedIterable<StreamingPolicyInner> inner =
+            this.serviceClient().list(resourceGroupName, accountName, filter, top, orderby);
+        return Utils.mapPage(inner, inner1 -> new StreamingPolicyImpl(inner1, this.manager()));
+    }
+
     public PagedIterable<StreamingPolicy> list(String resourceGroupName, String accountName) {
         PagedIterable<StreamingPolicyInner> inner = this.serviceClient().list(resourceGroupName, accountName);
         return Utils.mapPage(inner, inner1 -> new StreamingPolicyImpl(inner1, this.manager()));
@@ -38,15 +45,6 @@ public final class StreamingPoliciesImpl implements StreamingPolicies {
         PagedIterable<StreamingPolicyInner> inner =
             this.serviceClient().list(resourceGroupName, accountName, filter, top, orderby, context);
         return Utils.mapPage(inner, inner1 -> new StreamingPolicyImpl(inner1, this.manager()));
-    }
-
-    public StreamingPolicy get(String resourceGroupName, String accountName, String streamingPolicyName) {
-        StreamingPolicyInner inner = this.serviceClient().get(resourceGroupName, accountName, streamingPolicyName);
-        if (inner != null) {
-            return new StreamingPolicyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<StreamingPolicy> getWithResponse(
@@ -64,13 +62,22 @@ public final class StreamingPoliciesImpl implements StreamingPolicies {
         }
     }
 
-    public void delete(String resourceGroupName, String accountName, String streamingPolicyName) {
-        this.serviceClient().delete(resourceGroupName, accountName, streamingPolicyName);
+    public StreamingPolicy get(String resourceGroupName, String accountName, String streamingPolicyName) {
+        StreamingPolicyInner inner = this.serviceClient().get(resourceGroupName, accountName, streamingPolicyName);
+        if (inner != null) {
+            return new StreamingPolicyImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String accountName, String streamingPolicyName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, accountName, streamingPolicyName, context);
+    }
+
+    public void delete(String resourceGroupName, String accountName, String streamingPolicyName) {
+        this.serviceClient().delete(resourceGroupName, accountName, streamingPolicyName);
     }
 
     public StreamingPolicy getById(String id) {

@@ -240,12 +240,12 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return asset track operation status.
+     * @return asset track operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssetTrackOperationStatusInner get(
+    public Response<AssetTrackOperationStatusInner> getWithResponse(
         String resourceGroupName, String accountName, String assetName, String trackName, String operationId) {
-        return getAsync(resourceGroupName, accountName, assetName, trackName, operationId).block();
+        return getWithResponseAsync(resourceGroupName, accountName, assetName, trackName, operationId).block();
     }
 
     /**
@@ -273,5 +273,27 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
         String operationId,
         Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, assetName, trackName, operationId, context).block();
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get asset track operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param assetName The Asset name.
+     * @param trackName The Asset Track name.
+     * @param operationId Operation Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return asset track operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AssetTrackOperationStatusInner get(
+        String resourceGroupName, String accountName, String assetName, String trackName, String operationId) {
+        return getWithResponse(resourceGroupName, accountName, assetName, trackName, operationId, Context.NONE)
+            .getValue();
     }
 }

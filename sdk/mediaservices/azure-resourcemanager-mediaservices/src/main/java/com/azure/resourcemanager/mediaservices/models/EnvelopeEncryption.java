@@ -39,6 +39,10 @@ public final class EnvelopeEncryption {
     @JsonProperty(value = "customKeyAcquisitionUrlTemplate")
     private String customKeyAcquisitionUrlTemplate;
 
+    /** Creates an instance of EnvelopeEncryption class. */
+    public EnvelopeEncryption() {
+    }
+
     /**
      * Get the enabledProtocols property: Representing supported protocols.
      *

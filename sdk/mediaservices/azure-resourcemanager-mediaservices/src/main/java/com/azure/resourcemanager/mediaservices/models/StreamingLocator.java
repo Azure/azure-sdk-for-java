@@ -293,17 +293,6 @@ public interface StreamingLocator {
      *
      * <p>List Content Keys used by this Streaming Locator.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class of response for listContentKeys action.
-     */
-    ListContentKeysResponse listContentKeys();
-
-    /**
-     * List Content Keys
-     *
-     * <p>List Content Keys used by this Streaming Locator.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -313,15 +302,15 @@ public interface StreamingLocator {
     Response<ListContentKeysResponse> listContentKeysWithResponse(Context context);
 
     /**
-     * List Paths
+     * List Content Keys
      *
-     * <p>List Paths supported by this Streaming Locator.
+     * <p>List Content Keys used by this Streaming Locator.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class of response for listPaths action.
+     * @return class of response for listContentKeys action.
      */
-    ListPathsResponse listPaths();
+    ListContentKeysResponse listContentKeys();
 
     /**
      * List Paths
@@ -335,4 +324,15 @@ public interface StreamingLocator {
      * @return class of response for listPaths action along with {@link Response}.
      */
     Response<ListPathsResponse> listPathsWithResponse(Context context);
+
+    /**
+     * List Paths
+     *
+     * <p>List Paths supported by this Streaming Locator.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class of response for listPaths action.
+     */
+    ListPathsResponse listPaths();
 }

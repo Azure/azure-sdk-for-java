@@ -22,6 +22,10 @@ public final class CrossSiteAccessPolicies {
     @JsonProperty(value = "crossDomainPolicy")
     private String crossDomainPolicy;
 
+    /** Creates an instance of CrossSiteAccessPolicies class. */
+    public CrossSiteAccessPolicies() {
+    }
+
     /**
      * Get the clientAccessPolicy property: The content of clientaccesspolicy.xml used by Silverlight.
      *

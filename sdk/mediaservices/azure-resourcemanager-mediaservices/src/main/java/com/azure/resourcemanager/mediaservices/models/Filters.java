@@ -38,6 +38,10 @@ public final class Filters {
     @JsonProperty(value = "overlays")
     private List<Overlay> overlays;
 
+    /** Creates an instance of Filters class. */
+    public Filters() {
+    }
+
     /**
      * Get the deinterlace property: The de-interlacing settings.
      *

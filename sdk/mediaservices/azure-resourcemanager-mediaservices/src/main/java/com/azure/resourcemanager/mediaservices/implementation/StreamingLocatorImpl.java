@@ -162,24 +162,24 @@ public final class StreamingLocatorImpl implements StreamingLocator, StreamingLo
         return this;
     }
 
-    public ListContentKeysResponse listContentKeys() {
-        return serviceManager.streamingLocators().listContentKeys(resourceGroupName, accountName, streamingLocatorName);
-    }
-
     public Response<ListContentKeysResponse> listContentKeysWithResponse(Context context) {
         return serviceManager
             .streamingLocators()
             .listContentKeysWithResponse(resourceGroupName, accountName, streamingLocatorName, context);
     }
 
-    public ListPathsResponse listPaths() {
-        return serviceManager.streamingLocators().listPaths(resourceGroupName, accountName, streamingLocatorName);
+    public ListContentKeysResponse listContentKeys() {
+        return serviceManager.streamingLocators().listContentKeys(resourceGroupName, accountName, streamingLocatorName);
     }
 
     public Response<ListPathsResponse> listPathsWithResponse(Context context) {
         return serviceManager
             .streamingLocators()
             .listPathsWithResponse(resourceGroupName, accountName, streamingLocatorName, context);
+    }
+
+    public ListPathsResponse listPaths() {
+        return serviceManager.streamingLocators().listPaths(resourceGroupName, accountName, streamingLocatorName);
     }
 
     public StreamingLocatorImpl withAssetName(String assetName) {

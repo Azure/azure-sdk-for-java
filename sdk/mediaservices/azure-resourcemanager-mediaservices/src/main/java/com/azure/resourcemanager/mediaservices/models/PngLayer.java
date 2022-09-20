@@ -9,6 +9,10 @@ import com.azure.core.annotation.Fluent;
 /** Describes the settings to produce a PNG image from the input video. */
 @Fluent
 public final class PngLayer extends Layer {
+    /** Creates an instance of PngLayer class. */
+    public PngLayer() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public PngLayer withWidth(String width) {

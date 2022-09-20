@@ -25,6 +25,10 @@ public final class ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction 
     @JsonProperty(value = "configurationData", required = true)
     private int configurationData;
 
+    /** Creates an instance of ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction class. */
+    public ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction() {
+    }
+
     /**
      * Get the bestEffort property: Indicates whether this restriction is enforced on a Best Effort basis.
      *

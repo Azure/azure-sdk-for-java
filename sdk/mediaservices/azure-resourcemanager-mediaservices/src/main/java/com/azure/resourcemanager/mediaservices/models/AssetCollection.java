@@ -25,6 +25,10 @@ public final class AssetCollection {
     @JsonProperty(value = "@odata.nextLink")
     private String odataNextLink;
 
+    /** Creates an instance of AssetCollection class. */
+    public AssetCollection() {
+    }
+
     /**
      * Get the value property: A collection of Asset items.
      *

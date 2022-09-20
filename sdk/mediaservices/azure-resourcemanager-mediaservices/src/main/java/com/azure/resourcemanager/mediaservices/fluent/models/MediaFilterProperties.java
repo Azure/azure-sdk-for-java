@@ -32,6 +32,10 @@ public final class MediaFilterProperties {
     @JsonProperty(value = "tracks")
     private List<FilterTrackSelection> tracks;
 
+    /** Creates an instance of MediaFilterProperties class. */
+    public MediaFilterProperties() {
+    }
+
     /**
      * Get the presentationTimeRange property: The presentation time range.
      *

@@ -71,6 +71,10 @@ public class Overlay {
     @JsonProperty(value = "audioGainLevel")
     private Double audioGainLevel;
 
+    /** Creates an instance of Overlay class. */
+    public Overlay() {
+    }
+
     /**
      * Get the inputLabel property: The label of the job input which is to be used as an overlay. The Input must specify
      * exactly one file. You can specify an image file in JPG, PNG, GIF or BMP format, or an audio file (such as a WAV,

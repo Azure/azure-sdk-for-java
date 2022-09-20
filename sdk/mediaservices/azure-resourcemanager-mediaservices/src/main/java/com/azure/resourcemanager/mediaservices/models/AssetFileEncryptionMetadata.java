@@ -30,6 +30,10 @@ public final class AssetFileEncryptionMetadata {
     @JsonProperty(value = "assetFileId", required = true)
     private UUID assetFileId;
 
+    /** Creates an instance of AssetFileEncryptionMetadata class. */
+    public AssetFileEncryptionMetadata() {
+    }
+
     /**
      * Get the initializationVector property: The Asset File initialization vector.
      *

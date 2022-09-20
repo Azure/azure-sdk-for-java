@@ -53,6 +53,10 @@ public class AudioAnalyzerPreset extends Preset {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> experimentalOptions;
 
+    /** Creates an instance of AudioAnalyzerPreset class. */
+    public AudioAnalyzerPreset() {
+    }
+
     /**
      * Get the audioLanguage property: The language for the audio payload in the input using the BCP-47 format of
      * 'language tag-region' (e.g: 'en-US'). If you know the language of your content, it is recommended that you

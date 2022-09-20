@@ -349,6 +349,28 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
+     * @param filter Restricts the set of items returned.
+     * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
+     *     service returns the number of available items up to but not greater than the specified value n.
+     * @param orderby Specifies the key by which the result collection should be ordered.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a collection of StreamingPolicy items as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<StreamingPolicyInner> list(
+        String resourceGroupName, String accountName, String filter, Integer top, String orderby) {
+        return new PagedIterable<>(listAsync(resourceGroupName, accountName, filter, top, orderby));
+    }
+
+    /**
+     * List Streaming Policies
+     *
+     * <p>Lists the Streaming Policies in the account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -530,11 +552,12 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Streaming Policy in the Media Services account.
+     * @return the details of a Streaming Policy in the Media Services account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StreamingPolicyInner get(String resourceGroupName, String accountName, String streamingPolicyName) {
-        return getAsync(resourceGroupName, accountName, streamingPolicyName).block();
+    public Response<StreamingPolicyInner> getWithResponse(
+        String resourceGroupName, String accountName, String streamingPolicyName) {
+        return getWithResponseAsync(resourceGroupName, accountName, streamingPolicyName).block();
     }
 
     /**
@@ -555,6 +578,24 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
     public Response<StreamingPolicyInner> getWithResponse(
         String resourceGroupName, String accountName, String streamingPolicyName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, streamingPolicyName, context).block();
+    }
+
+    /**
+     * Get a Streaming Policy
+     *
+     * <p>Get the details of a Streaming Policy in the Media Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param streamingPolicyName The Streaming Policy name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of a Streaming Policy in the Media Services account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StreamingPolicyInner get(String resourceGroupName, String accountName, String streamingPolicyName) {
+        return getWithResponse(resourceGroupName, accountName, streamingPolicyName, Context.NONE).getValue();
     }
 
     /**
@@ -720,12 +761,12 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Streaming Policy resource.
+     * @return a Streaming Policy resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StreamingPolicyInner create(
+    public Response<StreamingPolicyInner> createWithResponse(
         String resourceGroupName, String accountName, String streamingPolicyName, StreamingPolicyInner parameters) {
-        return createAsync(resourceGroupName, accountName, streamingPolicyName, parameters).block();
+        return createWithResponseAsync(resourceGroupName, accountName, streamingPolicyName, parameters).block();
     }
 
     /**
@@ -752,6 +793,27 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
         Context context) {
         return createWithResponseAsync(resourceGroupName, accountName, streamingPolicyName, parameters, context)
             .block();
+    }
+
+    /**
+     * Create a Streaming Policy
+     *
+     * <p>Create a Streaming Policy in the Media Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param streamingPolicyName The Streaming Policy name.
+     * @param parameters The request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Streaming Policy resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StreamingPolicyInner create(
+        String resourceGroupName, String accountName, String streamingPolicyName, StreamingPolicyInner parameters) {
+        return createWithResponse(resourceGroupName, accountName, streamingPolicyName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -896,10 +958,11 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String accountName, String streamingPolicyName) {
-        deleteAsync(resourceGroupName, accountName, streamingPolicyName).block();
+    public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String streamingPolicyName) {
+        return deleteWithResponseAsync(resourceGroupName, accountName, streamingPolicyName).block();
     }
 
     /**
@@ -920,6 +983,23 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String accountName, String streamingPolicyName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, accountName, streamingPolicyName, context).block();
+    }
+
+    /**
+     * Delete a Streaming Policy
+     *
+     * <p>Deletes a Streaming Policy in the Media Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param streamingPolicyName The Streaming Policy name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String accountName, String streamingPolicyName) {
+        deleteWithResponse(resourceGroupName, accountName, streamingPolicyName, Context.NONE);
     }
 
     /**

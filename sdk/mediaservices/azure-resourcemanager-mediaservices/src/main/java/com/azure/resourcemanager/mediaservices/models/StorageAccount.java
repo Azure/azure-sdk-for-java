@@ -37,6 +37,10 @@ public final class StorageAccount {
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
+    /** Creates an instance of StorageAccount class. */
+    public StorageAccount() {
+    }
+
     /**
      * Get the id property: The ID of the storage account resource. Media Services relies on tables and queues as well
      * as blobs, so the primary storage account must be a Standard Storage account (either Microsoft.ClassicStorage or

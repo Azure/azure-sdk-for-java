@@ -252,11 +252,13 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private endpoint connection associated with the specified storage account.
+     * @return list of private endpoint connection associated with the specified storage account along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionListResultInner list(String resourceGroupName, String accountName) {
-        return listAsync(resourceGroupName, accountName).block();
+    public Response<PrivateEndpointConnectionListResultInner> listWithResponse(
+        String resourceGroupName, String accountName) {
+        return listWithResponseAsync(resourceGroupName, accountName).block();
     }
 
     /**
@@ -277,6 +279,23 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     public Response<PrivateEndpointConnectionListResultInner> listWithResponse(
         String resourceGroupName, String accountName, Context context) {
         return listWithResponseAsync(resourceGroupName, accountName, context).block();
+    }
+
+    /**
+     * List private endpoint connections.
+     *
+     * <p>List all private endpoint connections.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of private endpoint connection associated with the specified storage account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateEndpointConnectionListResultInner list(String resourceGroupName, String accountName) {
+        return listWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
     }
 
     /**
@@ -421,11 +440,12 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a private endpoint connection.
+     * @return the details of a private endpoint connection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner get(String resourceGroupName, String accountName, String name) {
-        return getAsync(resourceGroupName, accountName, name).block();
+    public Response<PrivateEndpointConnectionInner> getWithResponse(
+        String resourceGroupName, String accountName, String name) {
+        return getWithResponseAsync(resourceGroupName, accountName, name).block();
     }
 
     /**
@@ -446,6 +466,24 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     public Response<PrivateEndpointConnectionInner> getWithResponse(
         String resourceGroupName, String accountName, String name, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, name, context).block();
+    }
+
+    /**
+     * Get private endpoint connection.
+     *
+     * <p>Get the details of a private endpoint connection.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param name The name parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of a private endpoint connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateEndpointConnectionInner get(String resourceGroupName, String accountName, String name) {
+        return getWithResponse(resourceGroupName, accountName, name, Context.NONE).getValue();
     }
 
     /**
@@ -611,12 +649,12 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
+     * @return the Private Endpoint Connection resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner createOrUpdate(
+    public Response<PrivateEndpointConnectionInner> createOrUpdateWithResponse(
         String resourceGroupName, String accountName, String name, PrivateEndpointConnectionInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, accountName, name, parameters).block();
+        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, name, parameters).block();
     }
 
     /**
@@ -642,6 +680,26 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         PrivateEndpointConnectionInner parameters,
         Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, name, parameters, context).block();
+    }
+
+    /**
+     * Update a private endpoint connection.
+     *
+     * <p>Update an existing private endpoint connection.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param name The name parameter.
+     * @param parameters The request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Private Endpoint Connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateEndpointConnectionInner createOrUpdate(
+        String resourceGroupName, String accountName, String name, PrivateEndpointConnectionInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, accountName, name, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -782,10 +840,11 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String accountName, String name) {
-        deleteAsync(resourceGroupName, accountName, name).block();
+    public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String name) {
+        return deleteWithResponseAsync(resourceGroupName, accountName, name).block();
     }
 
     /**
@@ -806,5 +865,22 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String accountName, String name, Context context) {
         return deleteWithResponseAsync(resourceGroupName, accountName, name, context).block();
+    }
+
+    /**
+     * Delete a private endpoint connection.
+     *
+     * <p>Deletes a private endpoint connection.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param name The name parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String accountName, String name) {
+        deleteWithResponse(resourceGroupName, accountName, name, Context.NONE);
     }
 }

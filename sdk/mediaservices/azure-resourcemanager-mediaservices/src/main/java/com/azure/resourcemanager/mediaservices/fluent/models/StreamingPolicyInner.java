@@ -29,6 +29,10 @@ public final class StreamingPolicyInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of StreamingPolicyInner class. */
+    public StreamingPolicyInner() {
+    }
+
     /**
      * Get the innerProperties property: Class to specify properties of Streaming Policy.
      *

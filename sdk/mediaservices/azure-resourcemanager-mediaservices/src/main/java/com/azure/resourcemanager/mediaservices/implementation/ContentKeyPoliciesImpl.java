@@ -30,6 +30,13 @@ public final class ContentKeyPoliciesImpl implements ContentKeyPolicies {
         this.serviceManager = serviceManager;
     }
 
+    public PagedIterable<ContentKeyPolicy> list(
+        String resourceGroupName, String accountName, String filter, Integer top, String orderby) {
+        PagedIterable<ContentKeyPolicyInner> inner =
+            this.serviceClient().list(resourceGroupName, accountName, filter, top, orderby);
+        return Utils.mapPage(inner, inner1 -> new ContentKeyPolicyImpl(inner1, this.manager()));
+    }
+
     public PagedIterable<ContentKeyPolicy> list(String resourceGroupName, String accountName) {
         PagedIterable<ContentKeyPolicyInner> inner = this.serviceClient().list(resourceGroupName, accountName);
         return Utils.mapPage(inner, inner1 -> new ContentKeyPolicyImpl(inner1, this.manager()));
@@ -40,15 +47,6 @@ public final class ContentKeyPoliciesImpl implements ContentKeyPolicies {
         PagedIterable<ContentKeyPolicyInner> inner =
             this.serviceClient().list(resourceGroupName, accountName, filter, top, orderby, context);
         return Utils.mapPage(inner, inner1 -> new ContentKeyPolicyImpl(inner1, this.manager()));
-    }
-
-    public ContentKeyPolicy get(String resourceGroupName, String accountName, String contentKeyPolicyName) {
-        ContentKeyPolicyInner inner = this.serviceClient().get(resourceGroupName, accountName, contentKeyPolicyName);
-        if (inner != null) {
-            return new ContentKeyPolicyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<ContentKeyPolicy> getWithResponse(
@@ -66,8 +64,13 @@ public final class ContentKeyPoliciesImpl implements ContentKeyPolicies {
         }
     }
 
-    public void delete(String resourceGroupName, String accountName, String contentKeyPolicyName) {
-        this.serviceClient().delete(resourceGroupName, accountName, contentKeyPolicyName);
+    public ContentKeyPolicy get(String resourceGroupName, String accountName, String contentKeyPolicyName) {
+        ContentKeyPolicyInner inner = this.serviceClient().get(resourceGroupName, accountName, contentKeyPolicyName);
+        if (inner != null) {
+            return new ContentKeyPolicyImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -75,15 +78,8 @@ public final class ContentKeyPoliciesImpl implements ContentKeyPolicies {
         return this.serviceClient().deleteWithResponse(resourceGroupName, accountName, contentKeyPolicyName, context);
     }
 
-    public ContentKeyPolicyProperties getPolicyPropertiesWithSecrets(
-        String resourceGroupName, String accountName, String contentKeyPolicyName) {
-        ContentKeyPolicyPropertiesInner inner =
-            this.serviceClient().getPolicyPropertiesWithSecrets(resourceGroupName, accountName, contentKeyPolicyName);
-        if (inner != null) {
-            return new ContentKeyPolicyPropertiesImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String accountName, String contentKeyPolicyName) {
+        this.serviceClient().delete(resourceGroupName, accountName, contentKeyPolicyName);
     }
 
     public Response<ContentKeyPolicyProperties> getPolicyPropertiesWithSecretsWithResponse(
@@ -99,6 +95,17 @@ public final class ContentKeyPoliciesImpl implements ContentKeyPolicies {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ContentKeyPolicyPropertiesImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ContentKeyPolicyProperties getPolicyPropertiesWithSecrets(
+        String resourceGroupName, String accountName, String contentKeyPolicyName) {
+        ContentKeyPolicyPropertiesInner inner =
+            this.serviceClient().getPolicyPropertiesWithSecrets(resourceGroupName, accountName, contentKeyPolicyName);
+        if (inner != null) {
+            return new ContentKeyPolicyPropertiesImpl(inner, this.manager());
         } else {
             return null;
         }

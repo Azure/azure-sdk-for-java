@@ -38,6 +38,10 @@ public class Audio extends Codec {
     @JsonProperty(value = "bitrate")
     private Integer bitrate;
 
+    /** Creates an instance of Audio class. */
+    public Audio() {
+    }
+
     /**
      * Get the channels property: The number of channels in the audio.
      *

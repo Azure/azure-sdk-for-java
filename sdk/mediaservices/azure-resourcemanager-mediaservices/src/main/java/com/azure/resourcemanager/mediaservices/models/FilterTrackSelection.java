@@ -21,6 +21,10 @@ public final class FilterTrackSelection {
     @JsonProperty(value = "trackSelections", required = true)
     private List<FilterTrackPropertyCondition> trackSelections;
 
+    /** Creates an instance of FilterTrackSelection class. */
+    public FilterTrackSelection() {
+    }
+
     /**
      * Get the trackSelections property: The track selections.
      *

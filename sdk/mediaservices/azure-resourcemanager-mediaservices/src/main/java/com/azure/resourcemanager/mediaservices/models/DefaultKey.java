@@ -22,6 +22,10 @@ public final class DefaultKey {
     @JsonProperty(value = "policyName")
     private String policyName;
 
+    /** Creates an instance of DefaultKey class. */
+    public DefaultKey() {
+    }
+
     /**
      * Get the label property: Label can be used to specify Content Key when creating a Streaming Locator.
      *

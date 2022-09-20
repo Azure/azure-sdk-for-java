@@ -31,6 +31,10 @@ public final class JpgImage extends Image {
     @JsonProperty(value = "spriteColumn")
     private Integer spriteColumn;
 
+    /** Creates an instance of JpgImage class. */
+    public JpgImage() {
+    }
+
     /**
      * Get the layers property: A collection of output JPEG image layers to be produced by the encoder.
      *

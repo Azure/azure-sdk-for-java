@@ -61,6 +61,10 @@ public final class AssetProperties {
     @JsonProperty(value = "storageEncryptionFormat", access = JsonProperty.Access.WRITE_ONLY)
     private AssetStorageEncryptionFormat storageEncryptionFormat;
 
+    /** Creates an instance of AssetProperties class. */
+    public AssetProperties() {
+    }
+
     /**
      * Get the assetId property: The Asset ID.
      *

@@ -199,8 +199,8 @@ public final class MediaServicesOperationResultsClientImpl implements MediaServi
      * @return media service operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MediaServiceInner get(String locationName, String operationId) {
-        return getAsync(locationName, operationId).block();
+    public MediaServicesOperationResultsGetResponse getWithResponse(String locationName, String operationId) {
+        return getWithResponseAsync(locationName, operationId).block();
     }
 
     /**
@@ -220,5 +220,22 @@ public final class MediaServicesOperationResultsClientImpl implements MediaServi
     public MediaServicesOperationResultsGetResponse getWithResponse(
         String locationName, String operationId, Context context) {
         return getWithResponseAsync(locationName, operationId, context).block();
+    }
+
+    /**
+     * Get operation result.
+     *
+     * <p>Get media service operation result.
+     *
+     * @param locationName Location name.
+     * @param operationId Operation Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return media service operation result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MediaServiceInner get(String locationName, String operationId) {
+        return getWithResponse(locationName, operationId, Context.NONE).getValue();
     }
 }

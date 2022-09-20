@@ -16,6 +16,10 @@ public final class ArmStreamingEndpointSku {
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
+    /** Creates an instance of ArmStreamingEndpointSku class. */
+    public ArmStreamingEndpointSku() {
+    }
+
     /**
      * Get the name property: The streaming endpoint sku name.
      *

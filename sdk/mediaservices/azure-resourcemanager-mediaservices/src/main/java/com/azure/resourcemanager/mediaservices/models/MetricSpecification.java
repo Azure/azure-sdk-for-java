@@ -83,6 +83,10 @@ public final class MetricSpecification {
     @JsonProperty(value = "supportedTimeGrainTypes", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> supportedTimeGrainTypes;
 
+    /** Creates an instance of MetricSpecification class. */
+    public MetricSpecification() {
+    }
+
     /**
      * Get the name property: The metric name.
      *

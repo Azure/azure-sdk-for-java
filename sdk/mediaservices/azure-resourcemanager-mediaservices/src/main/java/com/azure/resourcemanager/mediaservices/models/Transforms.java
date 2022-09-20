@@ -17,6 +17,22 @@ public interface Transforms {
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
+     * @param filter Restricts the set of items returned.
+     * @param orderby Specifies the key by which the result collection should be ordered.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a collection of Transform items as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<Transform> list(String resourceGroupName, String accountName, String filter, String orderby);
+
+    /**
+     * List Transforms
+     *
+     * <p>Lists the Transforms in the account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -50,21 +66,6 @@ public interface Transforms {
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Transform.
-     */
-    Transform get(String resourceGroupName, String accountName, String transformName);
-
-    /**
-     * Get Transform
-     *
-     * <p>Gets a Transform.
-     *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param transformName The Transform name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -75,9 +76,9 @@ public interface Transforms {
         String resourceGroupName, String accountName, String transformName, Context context);
 
     /**
-     * Delete Transform
+     * Get Transform
      *
-     * <p>Deletes a Transform.
+     * <p>Gets a Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -85,8 +86,9 @@ public interface Transforms {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Transform.
      */
-    void delete(String resourceGroupName, String accountName, String transformName);
+    Transform get(String resourceGroupName, String accountName, String transformName);
 
     /**
      * Delete Transform
@@ -104,6 +106,20 @@ public interface Transforms {
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String accountName, String transformName, Context context);
+
+    /**
+     * Delete Transform
+     *
+     * <p>Deletes a Transform.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param transformName The Transform name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String accountName, String transformName);
 
     /**
      * Get Transform

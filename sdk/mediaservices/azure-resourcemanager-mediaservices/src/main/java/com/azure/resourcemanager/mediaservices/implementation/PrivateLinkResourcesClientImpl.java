@@ -212,11 +212,11 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources.
+     * @return a list of private link resources along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateLinkResourceListResultInner list(String resourceGroupName, String accountName) {
-        return listAsync(resourceGroupName, accountName).block();
+    public Response<PrivateLinkResourceListResultInner> listWithResponse(String resourceGroupName, String accountName) {
+        return listWithResponseAsync(resourceGroupName, accountName).block();
     }
 
     /**
@@ -236,6 +236,23 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     public Response<PrivateLinkResourceListResultInner> listWithResponse(
         String resourceGroupName, String accountName, Context context) {
         return listWithResponseAsync(resourceGroupName, accountName, context).block();
+    }
+
+    /**
+     * Get list of group IDs.
+     *
+     * <p>List supported group IDs.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of private link resources.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateLinkResourceListResultInner list(String resourceGroupName, String accountName) {
+        return listWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
     }
 
     /**
@@ -378,11 +395,12 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of a group ID.
+     * @return details of a group ID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateLinkResourceInner get(String resourceGroupName, String accountName, String name) {
-        return getAsync(resourceGroupName, accountName, name).block();
+    public Response<PrivateLinkResourceInner> getWithResponse(
+        String resourceGroupName, String accountName, String name) {
+        return getWithResponseAsync(resourceGroupName, accountName, name).block();
     }
 
     /**
@@ -403,5 +421,23 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     public Response<PrivateLinkResourceInner> getWithResponse(
         String resourceGroupName, String accountName, String name, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, name, context).block();
+    }
+
+    /**
+     * Get group ID.
+     *
+     * <p>Get details of a group ID.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param name The name parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of a group ID.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateLinkResourceInner get(String resourceGroupName, String accountName, String name) {
+        return getWithResponse(resourceGroupName, accountName, name, Context.NONE).getValue();
     }
 }

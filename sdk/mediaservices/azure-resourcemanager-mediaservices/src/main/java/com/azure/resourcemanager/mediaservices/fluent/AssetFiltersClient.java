@@ -56,23 +56,6 @@ public interface AssetFiltersClient {
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
      * @param filterName The Asset Filter name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of an Asset Filter associated with the specified Asset.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AssetFilterInner get(String resourceGroupName, String accountName, String assetName, String filterName);
-
-    /**
-     * Get an Asset Filter.
-     *
-     * <p>Get the details of an Asset Filter associated with the specified Asset.
-     *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param assetName The Asset name.
-     * @param filterName The Asset Filter name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -84,23 +67,21 @@ public interface AssetFiltersClient {
         String resourceGroupName, String accountName, String assetName, String filterName, Context context);
 
     /**
-     * Create or update an Asset Filter
+     * Get an Asset Filter.
      *
-     * <p>Creates or updates an Asset Filter associated with the specified Asset.
+     * <p>Get the details of an Asset Filter associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
      * @param filterName The Asset Filter name.
-     * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Asset Filter.
+     * @return the details of an Asset Filter associated with the specified Asset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AssetFilterInner createOrUpdate(
-        String resourceGroupName, String accountName, String assetName, String filterName, AssetFilterInner parameters);
+    AssetFilterInner get(String resourceGroupName, String accountName, String assetName, String filterName);
 
     /**
      * Create or update an Asset Filter
@@ -128,20 +109,23 @@ public interface AssetFiltersClient {
         Context context);
 
     /**
-     * Delete an Asset Filter.
+     * Create or update an Asset Filter
      *
-     * <p>Deletes an Asset Filter associated with the specified Asset.
+     * <p>Creates or updates an Asset Filter associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
      * @param filterName The Asset Filter name.
+     * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Asset Filter.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String accountName, String assetName, String filterName);
+    AssetFilterInner createOrUpdate(
+        String resourceGroupName, String accountName, String assetName, String filterName, AssetFilterInner parameters);
 
     /**
      * Delete an Asset Filter.
@@ -163,23 +147,20 @@ public interface AssetFiltersClient {
         String resourceGroupName, String accountName, String assetName, String filterName, Context context);
 
     /**
-     * Update an Asset Filter
+     * Delete an Asset Filter.
      *
-     * <p>Updates an existing Asset Filter associated with the specified Asset.
+     * <p>Deletes an Asset Filter associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
      * @param filterName The Asset Filter name.
-     * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Asset Filter.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AssetFilterInner update(
-        String resourceGroupName, String accountName, String assetName, String filterName, AssetFilterInner parameters);
+    void delete(String resourceGroupName, String accountName, String assetName, String filterName);
 
     /**
      * Update an Asset Filter
@@ -205,4 +186,23 @@ public interface AssetFiltersClient {
         String filterName,
         AssetFilterInner parameters,
         Context context);
+
+    /**
+     * Update an Asset Filter
+     *
+     * <p>Updates an existing Asset Filter associated with the specified Asset.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param assetName The Asset name.
+     * @param filterName The Asset Filter name.
+     * @param parameters The request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Asset Filter.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AssetFilterInner update(
+        String resourceGroupName, String accountName, String assetName, String filterName, AssetFilterInner parameters);
 }
