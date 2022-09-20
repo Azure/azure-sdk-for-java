@@ -16,7 +16,7 @@ trigger:
       - sdk/appconfiguration/spring-cloud-azure-appconfiguration-config-web/
       - sdk/appconfiguration/azure-spring-cloud-feature-management/
       - sdk/appconfiguration/azure-spring-cloud-feature-management-web/
-      - sdk/appconfiguration/spring-cloud-azure-starter-appconfiguration-config/
+      - sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config/
       - sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config/
     exclude:
       - sdk/appconfiguration/pom.xml
@@ -27,7 +27,7 @@ trigger:
       - sdk/appconfiguration/spring-cloud-azure-appconfiguration-config-web/pom.xml
       - sdk/appconfiguration/azure-spring-cloud-feature-management/pom.xml
       - sdk/appconfiguration/azure-spring-cloud-feature-management-web/pom.xml
-      - sdk/appconfiguration/spring-cloud-azure-starter-appconfiguration-config/pom.xml
+      - sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config/pom.xml
       - sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config/pom.xml
 
 pr:
@@ -47,7 +47,7 @@ pr:
       - sdk/appconfiguration/spring-cloud-azure-appconfiguration-config-web/
       - sdk/appconfiguration/azure-spring-cloud-feature-management/
       - sdk/appconfiguration/azure-spring-cloud-feature-management-web/
-      - sdk/appconfiguration/spring-cloud-azure-starter-appconfiguration-config/
+      - sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config/
       - sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config/
     exclude:
       - sdk/appconfiguration/pom.xml
@@ -58,7 +58,7 @@ pr:
       - sdk/appconfiguration/spring-cloud-azure-appconfiguration-config-web/pom.xml
       - sdk/appconfiguration/azure-spring-cloud-feature-management/pom.xml
       - sdk/appconfiguration/azure-spring-cloud-feature-management-web/pom.xml
-      - sdk/appconfiguration/spring-cloud-azure-starter-appconfiguration-config/pom.xml
+      - sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config/pom.xml
       - sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config/pom.xml
 
 parameters:
@@ -83,7 +83,7 @@ parameters:
   type: boolean
   default: true
 - name: release_azurespringcloudstarterappconfigurationconfig
-  displayName: 'spring-cloud-azure-starter-appconfiguration-config'
+  displayName: 'azure-spring-cloud-starter-appconfiguration-config'
   type: boolean
   default: true
 - name: release_azureresourcemanagerappconfiguration
@@ -117,7 +117,7 @@ extends:
         groupId: com.azure.spring
         safeName: azurespringcloudfeaturemanagementweb
         releaseInBatch: ${{ parameters.release_azurespringcloudfeaturemanagementweb }}
-      - name: spring-cloud-azure-starter-appconfiguration-config
+      - name: azure-spring-cloud-starter-appconfiguration-config
         groupId: com.azure.spring
         safeName: azurespringcloudstarterappconfigurationconfig
         releaseInBatch: ${{ parameters.release_azurespringcloudstarterappconfigurationconfig }}
