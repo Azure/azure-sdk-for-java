@@ -34,6 +34,7 @@ import com.azure.ai.textanalytics.implementation.models.HealthcareAssertion;
 import com.azure.ai.textanalytics.implementation.models.HealthcareResult;
 import com.azure.ai.textanalytics.implementation.models.InnerErrorCode;
 import com.azure.ai.textanalytics.implementation.models.InnerErrorModel;
+import com.azure.ai.textanalytics.implementation.models.InputError;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseResultDocumentsItem;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseTaskResult;
@@ -439,7 +440,7 @@ public final class Utility {
                 )));
         }
         // Document errors
-        for (DocumentError documentError : languageResult.getErrors()) {
+        for (InputError documentError : languageResult.getErrors()) {
             detectLanguageResults.add(new DetectLanguageResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError()), null));
         }
@@ -467,7 +468,7 @@ public final class Utility {
                         warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList())))));
         }
         // Document errors
-        for (DocumentError documentError : keyPhraseResult.getErrors()) {
+        for (InputError documentError : keyPhraseResult.getErrors()) {
             keyPhraseResultList.add(new ExtractKeyPhraseResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError()), null));
         }
@@ -495,7 +496,7 @@ public final class Utility {
                         warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList())))));
         }
         // Document errors
-        for (DocumentError documentError : keyPhraseResult.getErrors()) {
+        for (InputError documentError : keyPhraseResult.getErrors()) {
             keyPhraseResultList.add(new ExtractKeyPhraseResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError()), null));
         }
@@ -514,7 +515,7 @@ public final class Utility {
         entitiesResult.getDocuments().forEach(documentEntities ->
             recognizeEntitiesResults.add(toRecognizeEntitiesResult(documentEntities)));
         // Document errors
-        for (DocumentError documentError : entitiesResult.getErrors()) {
+        for (InputError documentError : entitiesResult.getErrors()) {
             recognizeEntitiesResults.add(new RecognizeEntitiesResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError()), null));
         }
@@ -567,7 +568,7 @@ public final class Utility {
                             documentEntities.getWarnings().stream()
                                 .map(warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))))));
         // Document errors
-        for (DocumentError documentError : results.getErrors()) {
+        for (InputError documentError : results.getErrors()) {
             recognizeEntitiesResults.add(new RecognizeEntitiesResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError()), null));
         }
@@ -666,7 +667,7 @@ public final class Utility {
             ));
         });
         // Document errors
-        for (DocumentError documentError : piiEntitiesResult.getErrors()) {
+        for (InputError documentError : piiEntitiesResult.getErrors()) {
             recognizeEntitiesResults.add(new RecognizePiiEntitiesResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError()), null));
         }
@@ -722,7 +723,7 @@ public final class Utility {
             ));
         });
         // Document errors
-        for (DocumentError documentError : piiEntitiesResult.getErrors()) {
+        for (InputError documentError : piiEntitiesResult.getErrors()) {
             recognizeEntitiesResults.add(new RecognizePiiEntitiesResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError()), null));
         }
@@ -747,7 +748,7 @@ public final class Utility {
                         warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList())))));
         }
         // Document errors
-        for (DocumentError documentError : keyPhraseResult.getErrors()) {
+        for (InputError documentError : keyPhraseResult.getErrors()) {
             keyPhraseResultList.add(new ExtractKeyPhraseResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError()), null));
         }
@@ -813,7 +814,7 @@ public final class Utility {
                             warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))))
             ).collect(Collectors.toList());
         // Document errors
-        for (DocumentError documentError : entityLinkingResult.getErrors()) {
+        for (InputError documentError : entityLinkingResult.getErrors()) {
             linkedEntitiesResults.add(new RecognizeLinkedEntitiesResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError()), null));
         }
@@ -837,7 +838,7 @@ public final class Utility {
         for (SentimentResponseDocumentsItem documentSentiment : documentSentiments) {
             analyzeSentimentResults.add(toAnalyzeSentimentResult(documentSentiment, documentSentiments));
         }
-        for (DocumentError documentError : sentimentResponse.getErrors()) {
+        for (InputError documentError : sentimentResponse.getErrors()) {
             analyzeSentimentResults.add(new AnalyzeSentimentResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError()), null));
         }
