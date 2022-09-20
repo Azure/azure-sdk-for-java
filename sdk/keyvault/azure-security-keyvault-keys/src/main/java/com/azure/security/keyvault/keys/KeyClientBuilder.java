@@ -72,23 +72,6 @@ import java.util.Map;
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.instantiation.withHttpClient -->
  *
- * <p>Alternatively, custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies and
- * {@link String vaultUrl} can be specified. It provides finer control over the construction of {@link KeyAsyncClient}
- * and {@link KeyClient}</p>
- *
- * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.instantiation.withPipeline -->
- * <pre>
- * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
- *     .policies&#40;
- *         new KeyVaultCredentialPolicy&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;, false&#41;, new RetryPolicy&#40;&#41;&#41;
- *     .build&#40;&#41;;
- * KeyAsyncClient keyAsyncClient = new KeyClientBuilder&#40;&#41;
- *     .pipeline&#40;pipeline&#41;
- *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
- *     .buildAsyncClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.instantiation.withPipeline -->
- *
  * <p> The minimal configuration options required by {@link KeyClientBuilder secretClientBuilder} to build {@link
  * KeyClient} are {@link String vaultUrl} and {@link TokenCredential credential}. </p>
  *

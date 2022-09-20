@@ -78,19 +78,6 @@ import java.util.Map;
  * can be specified. It provides finer control over the construction of {@link CertificateAsyncClient} and {@link
  * CertificateClient}</p>
  *
- * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation.withPipeline -->
- * <pre>
- * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
- *     .policies&#40;
- *         new KeyVaultCredentialPolicy&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;, false&#41;, new RetryPolicy&#40;&#41;&#41;
- *     .build&#40;&#41;;
- * CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder&#40;&#41;
- *     .pipeline&#40;pipeline&#41;
- *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
- *     .buildAsyncClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation.withPipeline -->
- *
  * <p> The minimal configuration options required by {@link CertificateClientBuilder certificateClientBuilder} to build
  * {@link CertificateClient}
  * are {@link String vaultUrl} and {@link TokenCredential credential}. </p>

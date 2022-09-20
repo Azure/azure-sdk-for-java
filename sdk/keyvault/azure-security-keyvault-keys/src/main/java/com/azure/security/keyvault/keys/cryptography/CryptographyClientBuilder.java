@@ -75,29 +75,12 @@ import java.util.Map;
  * <pre>
  * CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder&#40;&#41;
  *     .keyIdentifier&#40;&quot;&lt;your-key-id&gt;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
- *     .addPolicy&#40;new KeyVaultCredentialPolicy&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;, false&#41;&#41;
  *     .httpClient&#40;HttpClient.createDefault&#40;&#41;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withHttpClient.instantiation -->
- *
- * <p>Alternatively, a custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies
- * can be specified. It provides finer control over the construction of {@link CryptographyAsyncClient} and
- * {@link CryptographyClient}</p>
- *
- * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withPipeline.instantiation -->
- * <pre>
- * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
- *     .policies&#40;
- *         new KeyVaultCredentialPolicy&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;, false&#41;, new RetryPolicy&#40;&#41;&#41;
- *     .build&#40;&#41;;
- * CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder&#40;&#41;
- *     .pipeline&#40;pipeline&#41;
- *     .keyIdentifier&#40;&quot;&lt;your-key-id&gt;&quot;&#41;
- *     .buildAsyncClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withPipeline.instantiation -->
  *
  * <p>The minimal configuration options required by {@link CryptographyClientBuilder cryptographyClientBuilder} to
  * build {@link CryptographyClient} are {@link JsonWebKey jsonWebKey} or
