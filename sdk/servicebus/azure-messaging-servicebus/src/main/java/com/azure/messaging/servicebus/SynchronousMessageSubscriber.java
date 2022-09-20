@@ -38,6 +38,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     private final ServiceBusReceiverAsyncClient asyncClient;
     private final boolean isPrefetchDisabled;
     private final Duration operationTimeout;
+    private final boolean isPeekLockReceiveMode;
 
     private volatile SynchronousReceiveWork currentWork;
 
@@ -79,6 +80,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
         this.workQueue.add(Objects.requireNonNull(initialWork, "'initialWork' cannot be null."));
 
         this.isPrefetchDisabled = isPrefetchDisabled;
+        this.isPeekLockReceiveMode = asyncClient.getReceiverOptions().getReceiveMode() == ServiceBusReceiveMode.PEEK_LOCK;
         if (initialWork.getNumberOfEvents() < 1) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'numberOfEvents' cannot be less than 1. Actual: " + initialWork.getNumberOfEvents()));
@@ -209,11 +211,10 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                 }
 
                 if (!isEmitted) {
-                    // The only reason we can't emit was the downstream(s) were terminated hence nobody
-                    // to receive the message.
-                    // In RECEIVE_AND_DELETE mode, we re-buffer the message because it is deleted in service side.
-                    if (isPrefetchDisabled && asyncClient.getReceiverOptions().getReceiveMode() == ServiceBusReceiveMode.PEEK_LOCK) {
-                        // release is enabled only for no-prefetch scenario.
+                    if (isPrefetchDisabled && isPeekLockReceiveMode) {
+                        // When Prefetch is disabled, for the receive mode that influences the delivery count
+                        // (today, only PeekLock ReceiveMode), we try to release undelivered messages to adjust
+                        // the delivery count on the broker.
                         asyncClient.release(message).subscribe(__ -> { },
                             error -> LOGGER.atWarning()
                                 .addKeyValue(LOCK_TOKEN_KEY, message.getLockToken())
@@ -222,7 +223,8 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                                 .addKeyValue(LOCK_TOKEN_KEY, message.getLockToken())
                                 .log("Message successfully released."));
                     } else {
-                        // Re-buffer the message as it couldn't be emitted or release was disabled.
+                        // Re-buffer the message as it couldn't be emitted or release was disabled. In RECEIVE_AND_DELETE mode,
+                        // messages are deleted in service side, hence we also need re-buffer them.
                         bufferMessages.addFirst(message);
                         break;
                     }
