@@ -1,7 +1,7 @@
 # Release History
 
 ## 7.12.0-beta.1 (Unreleased)
-
+- Enabled distributed tracing for producer and missing sender operations. ([#30508](https://github.com/Azure/azure-sdk-for-java/pull/30508))
 ### Features Added
 
 ### Breaking Changes

@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.test.utils.metrics.TestMeter;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.DeferOptions;
 import io.opentelemetry.api.GlobalOpenTelemetry;
@@ -259,6 +260,15 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                 assertReceiveSpan(received.get(0), Collections.singletonList(receivedMessage), "ServiceBus.peekMessage");
             })
             .verifyComplete();
+    }
+
+    @Test
+    public void peekNonExistingMessage() {
+        StepVerifier.create(receiver.peekMessage(Long.MAX_VALUE - 1))
+            .verifyComplete();
+
+        List<ReadableSpan> received = findSpans(spanProcessor.getEndedSpans(), "ServiceBus.peekMessage");
+        assertReceiveSpan(received.get(0), Collections.emptyList(), "ServiceBus.peekMessage");
     }
 
     @Test
