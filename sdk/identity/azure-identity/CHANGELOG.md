@@ -1,6 +1,16 @@
 # Release History
 
-## 1.6.0-beta.2 (Unreleased)
+## 1.7.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.6.0 (2022-09-19)
 
 ### Features Added
 - Added `additionallyAllowedTenants` to the following credential builders to force explicit opt-in behavior for multi-tenant authentication:
@@ -15,13 +25,20 @@
     - `UsernamePasswordCredentialBuilder`
     - `VisualStudioCodeCredentialBuilder`
     - `VisualStudioCredentialBuilder`
-    
-### Breaking Changes
-- Credential types supporting multi-tenant authentication will now throw `ClientAuthenticationException` if the requested tenant ID doesn't match the credential's tenant ID, and is not included in the `additionallyAllowedTenants` option. Applications must now explicitly add additional tenants to the `additionallyAllowedTenants` list, or add '*' to list, to enable acquiring tokens from tenants other than the originally specified tenant ID. See [BREAKING_CHANGES.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/BREAKING_CHANGES.md).
 
-### Bugs Fixed
+### Breaking Changes
+- Credential types supporting multi-tenant authentication will now throw `ClientAuthenticationException` if the requested tenant ID doesn't match the credential's tenant ID, and is not included in the `additionallyAllowedTenants` option. Applications must now explicitly add additional tenants to the `additionallyAllowedTenants` list, or add '*' to list, to enable acquiring tokens from tenants other than the originally specified tenant ID. See [BREAKING_CHANGES.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/BREAKING_CHANGES.md#160).
+
+- These beta features in version `1.6.0-beta.1` have been removed from this release and will be added back in version `1.7.0-beta.1`:
+    - removed `VisualStudioCodeCredential` from `DefaultAzureCredential` token chain
+    - `AZURE_CLIENT_CERTIFICATE_PASSWORD` support for `EnvironmentCredential`
+    - in-memory token caching support for `ManagedIdentityCredential`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `msal4j` from `1.13.0` to `1.13.1`.
 
 ## 1.5.5 (2022-09-02)
 
