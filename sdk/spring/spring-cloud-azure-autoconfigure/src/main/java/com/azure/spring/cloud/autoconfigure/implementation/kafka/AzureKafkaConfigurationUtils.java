@@ -64,6 +64,9 @@ public final class AzureKafkaConfigurationUtils {
     private AzureKafkaConfigurationUtils() {
     }
 
+    /**
+     * Configure Spring Cloud Azure user-agent for Kafka client. This method is idempotent to avoid configuring UA repeatedly.
+     */
     public static void configureKafkaUserAgent() {
         Method dataMethod = ReflectionUtils.findMethod(ApiVersionsRequest.class, "data");
         if (dataMethod != null) {
@@ -88,10 +91,10 @@ public final class AzureKafkaConfigurationUtils {
      * @return whether we need to configure with Spring Cloud Azure MSI support or not.
      */
     public static boolean needConfigureSaslOAuth(Map<String, Object> sourceProperties) {
-        return judgeBootstrapServerConditions(sourceProperties) && judgeSaslConditions(sourceProperties);
+        return meetAzureBootstrapServerConditions(sourceProperties) && meetSaslOAuthConditions(sourceProperties);
     }
 
-    private static boolean judgeSaslConditions(Map<String, Object> sourceProperties) {
+    private static boolean meetSaslOAuthConditions(Map<String, Object> sourceProperties) {
         String securityProtocol = (String) sourceProperties.get(SECURITY_PROTOCOL_CONFIG);
         String saslMechanism = (String) sourceProperties.get(SASL_MECHANISM);
         if (securityProtocol == null || (SECURITY_PROTOCOL_CONFIG_SASL.equalsIgnoreCase(securityProtocol)
@@ -102,7 +105,7 @@ public final class AzureKafkaConfigurationUtils {
         return false;
     }
 
-    private static boolean judgeBootstrapServerConditions(Map<String, Object> sourceProperties) {
+    private static boolean meetAzureBootstrapServerConditions(Map<String, Object> sourceProperties) {
         Object bootstrapServers = sourceProperties.get(BOOTSTRAP_SERVERS_CONFIG);
         List<String> serverList;
         if (bootstrapServers instanceof String) {
