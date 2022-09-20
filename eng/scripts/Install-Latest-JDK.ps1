@@ -7,6 +7,9 @@ param(
 
 $latestJdkPath = Join-Path -Path $ToolsDirectory -ChildPath $JdkZip
 if (!(Test-Path -Path $latestJdkPath -PathType leaf)) {
+  if (!(Test-Path -Path $ToolsDirectory)) {
+    New-Item -Path $ToolsDirectory -ItemType "directory"
+  }
   $latestJdkUri = "https://github.com/adoptium/temurin18-binaries/releases/download/jdk-18.0.2.1%2B1/$JdkZip"
   Invoke-WebRequest -URI $JdkUri -OutFile $latestJdkPath
 }
