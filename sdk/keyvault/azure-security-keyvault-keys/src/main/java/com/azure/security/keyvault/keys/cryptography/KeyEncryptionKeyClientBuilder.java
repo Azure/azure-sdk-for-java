@@ -389,16 +389,13 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
     }
 
     /**
-     * Sets whether to verify the authentication challenge resource matches the Key Vault or Managed HSM domain. The
-     * default is set to {@code false}.
-     *
-     * @param disableChallengeResourceVerification A flag indicating if the authentication challenge resource must be
-     * verified.
+     * Disables verifying if the authentication challenge resource matches the Key Vault or Managed HSM domain. This
+     * verification is performed by default.
      *
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
      */
-    public KeyEncryptionKeyClientBuilder disableChallengeResourceVerification(boolean disableChallengeResourceVerification) {
-        builder.disableChallengeResourceVerification(disableChallengeResourceVerification);
+    public KeyEncryptionKeyClientBuilder disableChallengeResourceVerification() {
+        builder.disableChallengeResourceVerification();
 
         return this;
     }

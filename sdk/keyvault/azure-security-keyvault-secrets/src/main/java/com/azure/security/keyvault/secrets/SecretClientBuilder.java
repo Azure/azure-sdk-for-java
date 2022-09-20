@@ -491,16 +491,13 @@ public final class SecretClientBuilder implements
     }
 
     /**
-     * Sets whether to verify the authentication challenge resource matches the Key Vault or Managed HSM domain. The
-     * default is set to {@code false}.
-     *
-     * @param disableChallengeResourceVerification A flag indicating if the authentication challenge resource must be
-     * verified.
+     * Disables verifying if the authentication challenge resource matches the Key Vault domain. This verification is
+     * performed by default.
      *
      * @return The updated {@link SecretClientBuilder} object.
      */
-    public SecretClientBuilder disableChallengeResourceVerification(boolean disableChallengeResourceVerification) {
-        this.disableChallengeResourceVerification = disableChallengeResourceVerification;
+    public SecretClientBuilder disableChallengeResourceVerification() {
+        this.disableChallengeResourceVerification = true;
 
         return this;
     }

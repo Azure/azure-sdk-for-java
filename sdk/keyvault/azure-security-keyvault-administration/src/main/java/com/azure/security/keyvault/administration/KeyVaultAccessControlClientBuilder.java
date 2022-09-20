@@ -442,16 +442,13 @@ public final class KeyVaultAccessControlClientBuilder implements
     }
 
     /**
-     * Sets whether to verify the authentication challenge resource matches the Key Vault or Managed HSM domain. The
-     * default is set to {@code false}.
-     *
-     * @param disableChallengeResourceVerification A flag indicating if the authentication challenge resource must be
-     * verified.
+     * Disables verifying if the authentication challenge resource matches the Key Vault or Managed HSM domain. This
+     * verification is performed by default.
      *
      * @return The updated {@link KeyVaultAccessControlClientBuilder} object.
      */
-    public KeyVaultAccessControlClientBuilder disableChallengeResourceVerification(boolean disableChallengeResourceVerification) {
-        this.disableChallengeResourceVerification = disableChallengeResourceVerification;
+    public KeyVaultAccessControlClientBuilder disableChallengeResourceVerification() {
+        this.disableChallengeResourceVerification = true;
 
         return this;
     }
