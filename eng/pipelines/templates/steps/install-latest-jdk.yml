@@ -1,6 +1,6 @@
 steps:
   # If the request JDK version is 8, 11, or 17 do nothing, these are already installed on the hosted agents.
-  - ${{ if not(in(variables['JavaBuildVersion'], '1.17', '1.11', '1.8')) }}:
+  - ${{ if eq(variables['LatestJdkVersion'], 'true') }}:
     # Non-standard JDK versions are only supported in Linux.
     # Make the assumption here Linux is being used, if it's not it's a configuration issue that needs to be fixed there.
     - task: Cache@2
