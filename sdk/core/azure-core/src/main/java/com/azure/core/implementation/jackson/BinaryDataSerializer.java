@@ -12,6 +12,7 @@ import com.azure.core.implementation.util.InputStreamContent;
 import com.azure.core.implementation.util.SerializableContent;
 import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -23,6 +24,8 @@ import java.io.IOException;
  * Custom serializer for serializing {@link BinaryData}.
  */
 final class BinaryDataSerializer extends JsonSerializer<BinaryData> {
+    private static final ClientLogger LOGGER = new ClientLogger(BinaryDataSerializer.class);
+
     /**
      * Gets a module wrapping this serializer as an adapter for the Jackson ObjectMapper.
      *
@@ -48,6 +51,9 @@ final class BinaryDataSerializer extends JsonSerializer<BinaryData> {
             gen.writeRawValue(content.toString());
         } else if (content instanceof StringContent) {
             gen.writeString(content.toString());
+        } else {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
+                "Unsupported BinaryData content type: " + content.getClass().getName()));
         }
     }
 }
