@@ -127,7 +127,7 @@ public final class SecretClientBuilder implements
     private Configuration configuration;
     private SecretServiceVersion version;
     private ClientOptions clientOptions;
-    private boolean verifyChallengeResource = true;
+    private boolean disableChallengeResourceVerification = false;
 
     /**
      * The constructor with defaults.
@@ -232,7 +232,7 @@ public final class SecretClientBuilder implements
         // Add retry policy.
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
 
-        policies.add(new KeyVaultCredentialPolicy(credential, verifyChallengeResource));
+        policies.add(new KeyVaultCredentialPolicy(credential, disableChallengeResourceVerification));
 
         // Add per retry additional policies.
         policies.addAll(perRetryPolicies);
@@ -493,12 +493,13 @@ public final class SecretClientBuilder implements
     /** Gets or sets whether to verify the authentication challenge resource matches the Key Vault or Managed HSM
      * domain. The default is set to {@code true}.
      *
-     * @param verifyChallengeResource A flag indicating if the authentication challenge resource must be verified.
+     * @param disableChallengeResourceVerification A flag indicating if the authentication challenge resource must be
+     * verified.
      *
      * @return The updated {@link SecretClientBuilder} object.
      */
-    public SecretClientBuilder verifyChallengeResource(boolean verifyChallengeResource) {
-        this.verifyChallengeResource = verifyChallengeResource;
+    public SecretClientBuilder disableChallengeResourceVerification(boolean disableChallengeResourceVerification) {
+        this.disableChallengeResourceVerification = disableChallengeResourceVerification;
 
         return this;
     }

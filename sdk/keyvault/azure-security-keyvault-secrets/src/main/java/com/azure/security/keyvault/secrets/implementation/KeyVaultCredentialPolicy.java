@@ -41,17 +41,17 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
     private static final String WWW_AUTHENTICATE = "WWW-Authenticate";
     private static final ConcurrentMap<String, ChallengeParameters> CHALLENGE_CACHE = new ConcurrentHashMap<>();
     private ChallengeParameters challenge;
-    private final boolean verifyChallengeResource;
+    private final boolean disableChallengeResourceVerification;
 
     /**
      * Creates a {@link KeyVaultCredentialPolicy}.
      *
      * @param credential The token credential to authenticate the request.
      */
-    public KeyVaultCredentialPolicy(TokenCredential credential, boolean verifyChallengeResource) {
+    public KeyVaultCredentialPolicy(TokenCredential credential, boolean disableChallengeResourceVerification) {
         super(credential);
 
-        this.verifyChallengeResource = verifyChallengeResource;
+        this.disableChallengeResourceVerification = disableChallengeResourceVerification;
     }
 
     /**
@@ -167,14 +167,14 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                     return Mono.just(false);
                 }
             } else {
-                if (verifyChallengeResource) {
+                if (!disableChallengeResourceVerification) {
                     if (!isChallengeResourceValid(request, scope)) {
                         throw LOGGER.logExceptionAsError(
                             new RuntimeException(String.format(
                                 "The challenge resource '%s' does not match the requested domain. If you wish to "
-                                + "disable this check for your client, pass 'true' to the SecretClientBuilder"
-                                + ".disableChallengeResourceVerification() method when building it. See "
-                                + "https://aka.ms/azsdk/blog/vault-uri for more information.", scope)));
+                                    + "disable this check for your client, pass 'true' to the SecretClientBuilder"
+                                    + ".disableChallengeResourceVerification() method when building it. See "
+                                    + "https://aka.ms/azsdk/blog/vault-uri for more information.", scope)));
                     }
                 }
 
@@ -275,14 +275,14 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                 return false;
             }
         } else {
-            if (verifyChallengeResource) {
+            if (!disableChallengeResourceVerification) {
                 if (!isChallengeResourceValid(request, scope)) {
                     throw LOGGER.logExceptionAsError(
                         new RuntimeException(String.format(
                             "The challenge resource '%s' does not match the requested domain. If you wish to disable "
-                            + "this check for your client, pass 'true' to the SecretClientBuilder"
-                            + ".disableChallengeResourceVerification() method when building it. See "
-                            + "https://aka.ms/azsdk/blog/vault-uri for more information.", scope)));
+                                + "this check for your client, pass 'true' to the SecretClientBuilder"
+                                + ".disableChallengeResourceVerification() method when building it. See "
+                                + "https://aka.ms/azsdk/blog/vault-uri for more information.", scope)));
                 }
             }
 

@@ -112,7 +112,7 @@ public class KeyVaultCredentialPolicyTest {
 
     @SyncAsyncTest
     public void onChallengeCredentialPolicy() {
-        KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential, true);
+        KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential, false);
 
         boolean onChallenge = SyncAsyncExtension.execute(
             () -> onChallengeSync(policy, this.callContext, this.unauthorizedHttpResponseWithHeader),
@@ -129,7 +129,7 @@ public class KeyVaultCredentialPolicyTest {
 
     @Test
     public void onAuthorizeRequestChallengeCachePresent() {
-        KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential, true);
+        KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential, false);
 
         // Challenge cache created
         onChallenge(policy, this.callContext, unauthorizedHttpResponseWithHeader).block();
@@ -143,7 +143,7 @@ public class KeyVaultCredentialPolicyTest {
 
     @SyncAsyncTest
     public void onAuthorizeRequestNoCache() {
-        KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential, true);
+        KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential, false);
 
         // No challenge cache to use
         SyncAsyncExtension.execute(
@@ -156,7 +156,7 @@ public class KeyVaultCredentialPolicyTest {
 
     @SyncAsyncTest
     public void testSetContentLengthHeader() {
-        KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential, true);
+        KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential, false);
 
         boolean onChallenge = SyncAsyncExtension.execute(
             () -> onChallengeSync(policy, this.bodyContext, this.unauthorizedHttpResponseWithHeader),
@@ -181,7 +181,7 @@ public class KeyVaultCredentialPolicyTest {
 
     @SyncAsyncTest
     public void onAuthorizeRequestNoScope() {
-        KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential, true);
+        KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential, false);
 
         boolean onChallenge = SyncAsyncExtension.execute(
             () -> onChallengeSync(policy, this.callContext, this.unauthorizedHttpResponseWithoutHeader),
@@ -193,7 +193,7 @@ public class KeyVaultCredentialPolicyTest {
 
     @Test
     public void onAuthorizeRequestDifferentScope() {
-        KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential, true);
+        KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential, false);
 
         assertThrows(RuntimeException.class,
             () -> onChallengeSync(policy, this.differentScopeContext, this.unauthorizedHttpResponseWithHeader));
@@ -207,7 +207,7 @@ public class KeyVaultCredentialPolicyTest {
 
     @SyncAsyncTest
     public void onAuthorizeRequestDifferentScopeVerifyFalse() {
-        KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential, false);
+        KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential, true);
 
         boolean onChallenge = SyncAsyncExtension.execute(
             () -> onChallengeSync(policy, this.differentScopeContext, this.unauthorizedHttpResponseWithHeader),
@@ -219,7 +219,7 @@ public class KeyVaultCredentialPolicyTest {
 
     @Test
     public void onAuthorizeRequestChallengeCachePresentSync() {
-        KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential, true);
+        KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential, false);
 
         // Challenge cache created
         onChallengeSync(policy, this.callContext, unauthorizedHttpResponseWithHeader);
