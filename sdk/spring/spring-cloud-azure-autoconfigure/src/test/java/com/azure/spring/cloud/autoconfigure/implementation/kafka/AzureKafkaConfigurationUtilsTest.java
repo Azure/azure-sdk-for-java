@@ -9,6 +9,8 @@ import java.util.Map;
 import org.apache.kafka.common.requests.ApiVersionsRequest;
 import org.junit.jupiter.api.Test;
 
+import org.springframework.util.ReflectionUtils;
+
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.SASL_JAAS_CONFIG_OAUTH;
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH;
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.SASL_MECHANISM_OAUTH;
@@ -114,22 +116,29 @@ class AzureKafkaConfigurationUtilsTest {
 
     @Test
     void testConfigureKafkaUserAgent() {
-        configureKafkaUserAgent();
-        ApiVersionsRequest apiVersionsRequest = new ApiVersionsRequest.Builder().build();
-        assertTrue(apiVersionsRequest.data().clientSoftwareName().contains(kafkaOauth2UserAgent));
-        assertEquals(VERSION, apiVersionsRequest.data().clientSoftwareVersion());
-        assertTrue(apiVersionsRequest.isValid());
+        if (isKafkaVersionSatisfied()) {
+            configureKafkaUserAgent();
+            ApiVersionsRequest apiVersionsRequest = new ApiVersionsRequest.Builder().build();
+            assertTrue(apiVersionsRequest.data().clientSoftwareName()
+                    .contains(kafkaOauth2UserAgent));
+            assertEquals(VERSION, apiVersionsRequest.data().clientSoftwareVersion());
+            assertTrue(apiVersionsRequest.isValid());
+        }
     }
 
     @Test
     void testConfigureKafkaUserAgentMultipleTimes() {
-        configureKafkaUserAgent();
-        configureKafkaUserAgent();
-        ApiVersionsRequest apiVersionsRequest = new ApiVersionsRequest.Builder().build();
-        assertTrue(apiVersionsRequest.data().clientSoftwareName().contains(kafkaOauth2UserAgent));
-        assertEquals(1, apiVersionsRequest.data().clientSoftwareName().split(kafkaOauth2UserAgent, -1).length - 1);
-        assertEquals(VERSION, apiVersionsRequest.data().clientSoftwareVersion());
-        assertTrue(apiVersionsRequest.isValid());
+        if (isKafkaVersionSatisfied()) {
+            configureKafkaUserAgent();
+            configureKafkaUserAgent();
+            ApiVersionsRequest apiVersionsRequest = new ApiVersionsRequest.Builder().build();
+            assertTrue(apiVersionsRequest.data().clientSoftwareName()
+                    .contains(kafkaOauth2UserAgent));
+            assertEquals(1, apiVersionsRequest.data().clientSoftwareName()
+                    .split(kafkaOauth2UserAgent, -1).length - 1);
+            assertEquals(VERSION, apiVersionsRequest.data().clientSoftwareVersion());
+            assertTrue(apiVersionsRequest.isValid());
+        }
     }
 
     private void shouldConfigureOAuthTargetProperties(Map<String, String> targetConfigs) {
@@ -137,6 +146,10 @@ class AzureKafkaConfigurationUtilsTest {
         assertEquals(SASL_MECHANISM_OAUTH, targetConfigs.get(SASL_MECHANISM));
         assertEquals(SASL_JAAS_CONFIG_OAUTH, targetConfigs.get(SASL_JAAS_CONFIG));
         assertEquals(SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH, targetConfigs.get(SASL_LOGIN_CALLBACK_HANDLER_CLASS));
+    }
+
+    private boolean isKafkaVersionSatisfied() {
+        return ReflectionUtils.findMethod(ApiVersionsRequest.class, "data") != null;
     }
 
 }
