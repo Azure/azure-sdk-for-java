@@ -6,7 +6,7 @@ steps:
     - task: Cache@2
       inputs:
         key: 'jdk | "$(JavaBuildVersion)" | "$(CacheSalt)" | "$(Agent.OS)"'
-        path: $(Agent.ToolsDirectory)/customjdks/OpenJDK18U-jdk_x64_linux_hotspot_18.0.2.1_1.tar.gz
+        path: $(Agent.BuildDirectory)/customjdks/OpenJDK18U-jdk_x64_linux_hotspot_18.0.2.1_1.tar.gz
 
     # PowerShell script will check if the cache was able to resolve the latest JDK version.
     # If not it will download the JDK version to the location where the cache would have placed it.
@@ -18,7 +18,7 @@ steps:
         pwsh: true
         filePath: eng/scripts/Install-Latest-JDK.ps1
         arguments: >
-          -ToolsDirectory $(Agent.ToolsDirectory)/customjdks
+          -ToolsDirectory $(Agent.BuildDirectory)/customjdks
           -JdkName "jdk-18.0.2.1+1"
           -JdkUri "https://github.com/adoptium/temurin18-binaries/releases/download/jdk-18.0.2.1%2B1/OpenJDK18U-jdk_x64_linux_hotspot_18.0.2.1_1.tar.gz"
           -JdkZip "OpenJDK18U-jdk_x64_linux_hotspot_18.0.2.1_1.tar.gz"

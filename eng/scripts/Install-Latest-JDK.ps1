@@ -15,11 +15,15 @@ if (!(Test-Path -Path $latestJdkPath -PathType leaf)) {
 }
 
 $latestJdkUnzipPath = Join-Path -Path $ToolsDirectory -ChildPath $JdkName
-tar -xf $latestJdkPath -C $latestJdkUnzipPath
+tar -xf $latestJdkPath -C $ToolsDirectory
 
 $javaHome = Join-Path -Path $latestJdkUnzipPath -ChildPath "bin"
 [System.Environment]::SetEnvironmentVariable("JAVA_HOME", $javaHome, [System.EnvironmentVariableTarget]::Machine)
 [System.Environment]::SetEnvironmentVariable("JAVA_HOME_18_X64", $javaHome, [System.EnvironmentVariableTarget]::Machine)
 $path = [System.Environment]::GetEnvironmentVariable("PATH", [System.EnvironmentVariableTarget]::Machine)
-$path = $javaHome + ":" + $path
+if ($IsWindows) {
+  $path = $javaHome + ";" + $path
+} else {
+  $path = $javaHome + ":" + $path
+}
 [System.Environment]::SetEnvironmentVariable("PATH", $path, [System.EnvironmentVariableTarget]::Machine)
