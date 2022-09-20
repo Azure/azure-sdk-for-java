@@ -2,7 +2,7 @@
 
 ## 1.2.2 (Unreleased)
 ### Bug Fixes
-- Fixed the logic of `getIdentifierRawId` and `createIdentifierFromRawId` for `PhoneNumberIdentifier` to always maintain the original phone number string whether it included the leading `+` sign or not.
+- Fixed the logic of `PhoneNumberIdentifier` to always maintain the original phone number string whether it included the leading `+` sign or not.
 
 ## 1.2.1 (2022-09-07)
 
