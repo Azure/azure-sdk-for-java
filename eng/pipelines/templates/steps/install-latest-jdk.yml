@@ -1,7 +1,7 @@
 parameters:
   - name: LatestJdkVersion
     type: boolean
-    default: $(LatestJdkVersion)
+    default: false
 
 steps:
   # If the request JDK version is 8, 11, or 17 do nothing, these are already installed on the hosted agents.
