@@ -3,7 +3,7 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20220329.1
+      ref: refs/tags/azure-sdk-build-tools_20220920.1
 
 parameters:
 - name: Artifacts
@@ -73,9 +73,9 @@ stages:
             TestPipeline: ${{parameters.TestPipeline}}
 
         - task: UsePythonVersion@0
-          displayName: 'Use Python 3.6'
+          displayName: 'Use Python $(PythonVersion)'
           inputs:
-            versionSpec: '3.6'
+            versionSpec: $(PythonVersion)
 
         - task: PythonScript@0
           displayName: 'Set versions for source build'
@@ -190,9 +190,9 @@ stages:
 
       steps:
         - task: UsePythonVersion@0
-          displayName: 'Use Python 3.6'
+          displayName: 'Use Python $(PythonVersion)'
           inputs:
-            versionSpec: '3.6'
+            versionSpec: $(PythonVersion)
 
         - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
           parameters:

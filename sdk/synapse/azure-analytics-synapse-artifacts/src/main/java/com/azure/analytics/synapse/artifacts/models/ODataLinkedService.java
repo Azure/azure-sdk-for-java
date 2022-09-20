@@ -19,8 +19,7 @@ import java.util.Map;
 @Fluent
 public class ODataLinkedService extends LinkedService {
     /*
-     * The URL of the OData service endpoint. Type: string (or Expression with
-     * resultType string).
+     * The URL of the OData service endpoint. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.url", required = true)
     private Object url;
@@ -32,8 +31,7 @@ public class ODataLinkedService extends LinkedService {
     private ODataAuthenticationType authenticationType;
 
     /*
-     * User name of the OData service. Type: string (or Expression with
-     * resultType string).
+     * User name of the OData service. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.userName")
     private Object userName;
@@ -45,32 +43,30 @@ public class ODataLinkedService extends LinkedService {
     private SecretBase password;
 
     /*
-     * Specify the tenant information (domain name or tenant ID) under which
-     * your application resides. Type: string (or Expression with resultType
-     * string).
+     * Specify the tenant information (domain name or tenant ID) under which your application resides. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.tenant")
     private Object tenant;
 
     /*
-     * Specify the application id of your application registered in Azure
-     * Active Directory. Type: string (or Expression with resultType string).
+     * Specify the application id of your application registered in Azure Active Directory. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "typeProperties.servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
-     * Indicates the azure cloud type of the service principle auth. Allowed
-     * values are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany.
-     * Default value is the data factory regions’ cloud type. Type: string (or
+     * Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina,
+     * AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or
      * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.azureCloudType")
     private Object azureCloudType;
 
     /*
-     * Specify the resource you are requesting authorization to use Directory.
-     * Type: string (or Expression with resultType string).
+     * Specify the resource you are requesting authorization to use Directory. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "typeProperties.aadResourceId")
     private Object aadResourceId;
@@ -82,32 +78,29 @@ public class ODataLinkedService extends LinkedService {
     private ODataAadServicePrincipalCredentialType aadServicePrincipalCredentialType;
 
     /*
-     * Specify the secret of your application registered in Azure Active
-     * Directory. Type: string (or Expression with resultType string).
+     * Specify the secret of your application registered in Azure Active Directory. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "typeProperties.servicePrincipalKey")
     private SecretBase servicePrincipalKey;
 
     /*
-     * Specify the base64 encoded certificate of your application registered in
-     * Azure Active Directory. Type: string (or Expression with resultType
-     * string).
+     * Specify the base64 encoded certificate of your application registered in Azure Active Directory. Type: string
+     * (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.servicePrincipalEmbeddedCert")
     private SecretBase servicePrincipalEmbeddedCert;
 
     /*
-     * Specify the password of your certificate if your certificate has a
-     * password and you are using AadServicePrincipal authentication. Type:
-     * string (or Expression with resultType string).
+     * Specify the password of your certificate if your certificate has a password and you are using
+     * AadServicePrincipal authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.servicePrincipalEmbeddedCertPassword")
     private SecretBase servicePrincipalEmbeddedCertPassword;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
