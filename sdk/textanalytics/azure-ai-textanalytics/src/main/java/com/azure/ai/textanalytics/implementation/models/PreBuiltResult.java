@@ -15,7 +15,7 @@ public class PreBuiltResult {
      * Errors by document id.
      */
     @JsonProperty(value = "errors", required = true)
-    private List<DocumentError> errors;
+    private List<InputError> errors;
 
     /*
      * if showStats=true was specified in the request this field will contain information about the request payload.
@@ -34,7 +34,7 @@ public class PreBuiltResult {
      *
      * @return the errors value.
      */
-    public List<DocumentError> getErrors() {
+    public List<InputError> getErrors() {
         return this.errors;
     }
 
@@ -44,7 +44,7 @@ public class PreBuiltResult {
      * @param errors the errors value to set.
      * @return the PreBuiltResult object itself.
      */
-    public PreBuiltResult setErrors(List<DocumentError> errors) {
+    public PreBuiltResult setErrors(List<InputError> errors) {
         this.errors = errors;
         return this;
     }

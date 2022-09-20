@@ -64,8 +64,8 @@ public final class HealthcareEntityCategory extends ExpandableStringEnum<Healthc
     /** Static value SymptomOrSign for HealthcareEntityCategory. */
     public static final HealthcareEntityCategory SYMPTOM_OR_SIGN = fromString("SymptomOrSign");
 
-    /** Static value ConditionQualifier for HealthcareEntityCategory. */
-    public static final HealthcareEntityCategory CONDITION_QUALIFIER = fromString("ConditionQualifier");
+    /** Static value ConditionalQualifier for HealthcareEntityCategory. */
+    public static final HealthcareEntityCategory CONDITIONAL_QUALIFIER = fromString("ConditionalQualifier");
 
     /** Static value MedicationClass for HealthcareEntityCategory. */
     public static final HealthcareEntityCategory MEDICATION_CLASS = fromString("MedicationClass");

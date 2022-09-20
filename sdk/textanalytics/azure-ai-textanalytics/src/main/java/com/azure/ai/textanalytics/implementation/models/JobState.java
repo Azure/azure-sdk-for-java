@@ -43,7 +43,7 @@ public class JobState {
     private OffsetDateTime lastUpdatedDateTime;
 
     /*
-     * The status property.
+     * The status of the task at the mentioned last update time.
      */
     @JsonProperty(value = "status", required = true)
     private State status;
@@ -161,7 +161,7 @@ public class JobState {
     }
 
     /**
-     * Get the status property: The status property.
+     * Get the status property: The status of the task at the mentioned last update time.
      *
      * @return the status value.
      */
@@ -170,7 +170,7 @@ public class JobState {
     }
 
     /**
-     * Set the status property: The status property.
+     * Set the status property: The status of the task at the mentioned last update time.
      *
      * @param status the status value to set.
      * @return the JobState object itself.

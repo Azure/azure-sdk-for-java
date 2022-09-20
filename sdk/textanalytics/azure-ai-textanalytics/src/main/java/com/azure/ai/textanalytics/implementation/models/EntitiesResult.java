@@ -39,7 +39,7 @@ public final class EntitiesResult extends PreBuiltResult {
 
     /** {@inheritDoc} */
     @Override
-    public EntitiesResult setErrors(List<DocumentError> errors) {
+    public EntitiesResult setErrors(List<InputError> errors) {
         super.setErrors(errors);
         return this;
     }

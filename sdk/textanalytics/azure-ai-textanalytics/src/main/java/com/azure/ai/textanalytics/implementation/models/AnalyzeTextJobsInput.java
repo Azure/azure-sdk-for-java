@@ -18,6 +18,12 @@ public final class AnalyzeTextJobsInput {
     private String displayName;
 
     /*
+     * Default language to use for records requesting automatic language detection.
+     */
+    @JsonProperty(value = "defaultLanguage")
+    private String defaultLanguage;
+
+    /*
      * The analysisInput property.
      */
     @JsonProperty(value = "analysisInput", required = true)
@@ -46,6 +52,26 @@ public final class AnalyzeTextJobsInput {
      */
     public AnalyzeTextJobsInput setDisplayName(String displayName) {
         this.displayName = displayName;
+        return this;
+    }
+
+    /**
+     * Get the defaultLanguage property: Default language to use for records requesting automatic language detection.
+     *
+     * @return the defaultLanguage value.
+     */
+    public String getDefaultLanguage() {
+        return this.defaultLanguage;
+    }
+
+    /**
+     * Set the defaultLanguage property: Default language to use for records requesting automatic language detection.
+     *
+     * @param defaultLanguage the defaultLanguage value to set.
+     * @return the AnalyzeTextJobsInput object itself.
+     */
+    public AnalyzeTextJobsInput setDefaultLanguage(String defaultLanguage) {
+        this.defaultLanguage = defaultLanguage;
         return this;
     }
 
