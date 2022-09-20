@@ -5,15 +5,18 @@ param(
     [Parameter(Mandatory=$true)][string]$JdkZip
 )
 
-$latestJdkPath = "$ToolsDirectory/$JdkZip"
+$latestJdkPath = Join-Path -Path $ToolsDirectory -ChildPath $JdkZip
 if (!(Test-Path -Path $latestJdkPath -PathType leaf)) {
-  $latestJdkUri = "https://github.com/adoptium/temurin18-binaries/releases/download/jdk-18.0.2.1%2B1/" + $JdkZip
+  $latestJdkUri = "https://github.com/adoptium/temurin18-binaries/releases/download/jdk-18.0.2.1%2B1/$JdkZip"
   Invoke-WebRequest -URI $JdkUri -OutFile $latestJdkPath
 }
 
-tar -xf $latestJdkPath -C '$(Agent.ToolsDirectory)'
+$latestJdkUnzipPath = Join-Path -Path $ToolsDirectory -ChildPath $JdkName
+tar -xf $latestJdkPath -C $latestJdkUnzipPath
 
-$javaHome = "$ToolsDirectory/$JdkName/bin"
-$env:JAVA_HOME=$javaHome
-$env:JAVA_HOME_18_X64=$javaHome
-$env:PATH = $javaHome + ':' + $env:PATH
+$javaHome = Join-Path -Path $latestJdkUnzipPath -ChildPath "bin"
+[System.Environment]::SetEnvironmentVariable("JAVA_HOME", $javaHome, [System.EnvironmentVariableTarget]::Machine)
+[System.Environment]::SetEnvironmentVariable("JAVA_HOME_18_X64", $javaHome, [System.EnvironmentVariableTarget]::Machine)
+$path = [System.Environment]::GetEnvironmentVariable("PATH", [System.EnvironmentVariableTarget]::Machine)
+$path = $javaHome + ":" + $path
+[System.Environment]::SetEnvironmentVariable("PATH", $path, [System.EnvironmentVariableTarget]::Machine)
