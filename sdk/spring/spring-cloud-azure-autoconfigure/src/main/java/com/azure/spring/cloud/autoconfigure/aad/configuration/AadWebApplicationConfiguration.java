@@ -36,10 +36,17 @@ public class AadWebApplicationConfiguration {
 
     private final RestOperations operations;
 
+    /**
+     * Creates a new instance of {@link AadWebApplicationConfiguration}.
+     *
+     * @param operations the RestOperations
+     *
+     */
     public AadWebApplicationConfiguration(
             @Qualifier(AAD_OAUTH_2_CLIENT_REST_OPERATION_BEAN_NAME) RestOperations operations) {
         this.operations = operations;
     }
+
     /**
      * Declare OAuth2UserService bean.
      *
