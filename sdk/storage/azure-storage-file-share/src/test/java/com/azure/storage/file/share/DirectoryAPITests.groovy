@@ -1046,6 +1046,7 @@ class DirectoryAPITests extends APISpec {
         garbageLeaseID | _
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_02_12")
     def "rename sas token"() {
         setup:
         def permissions = new ShareFileSasPermission()

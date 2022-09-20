@@ -44,6 +44,7 @@ import com.azure.storage.file.datalake.models.PathHttpHeaders
 import com.azure.storage.file.datalake.models.PathPermissions
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry
 import com.azure.storage.file.datalake.models.RolePermissions
+import com.azure.storage.file.datalake.options.DataLakeFileAppendOptions
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions
 import com.azure.storage.file.datalake.options.DataLakePathScheduleDeletionOptions
@@ -2596,6 +2597,23 @@ class FileAPITest extends APISpec {
         os.toByteArray() == data.defaultBytes
     }
 
+    def "Append data flush"() {
+        setup:
+        def appendOptions = new DataLakeFileAppendOptions().setFlush(true)
+        def response = fc.appendWithResponse(data.defaultInputStream, 0, data.defaultDataSize, appendOptions, null, null)
+        def headers = response.getHeaders()
+
+        expect:
+        response.getStatusCode() == 202
+        headers.getValue("x-ms-request-id") != null
+        headers.getValue("x-ms-version") != null
+        headers.getValue("Date") != null
+        Boolean.parseBoolean(headers.getValue("x-ms-request-server-encrypted"))
+        def os = new ByteArrayOutputStream()
+        fc.read(os)
+        os.toByteArray() == data.defaultBytes
+    }
+
     def "Append binary data min"() {
         when:
         fc.append(data.defaultBinaryData, 0)
@@ -2607,6 +2625,19 @@ class FileAPITest extends APISpec {
     def "Append binary data"() {
         setup:
         def response = fc.appendWithResponse(data.defaultBinaryData, 0, null, null, null, null)
+        def headers = response.getHeaders()
+        expect:
+        response.getStatusCode() == 202
+        headers.getValue("x-ms-request-id") != null
+        headers.getValue("x-ms-version") != null
+        headers.getValue("Date") != null
+        Boolean.parseBoolean(headers.getValue("x-ms-request-server-encrypted"))
+    }
+
+    def "Append binary data flush"() {
+        setup:
+        def appendOptions = new DataLakeFileAppendOptions().setFlush(true)
+        def response = fc.appendWithResponse(data.defaultBinaryData, 0, appendOptions, null, null)
         def headers = response.getHeaders()
 
         expect:
@@ -3471,7 +3502,7 @@ class FileAPITest extends APISpec {
 
         then:
         fac.getProperties().block().getFileSize() == dataSize
-        numAppends * spyClient.appendWithResponse(_, _, _, _, _, _)
+        numAppends * spyClient.appendWithResponse(_, _, _, (DataLakeFileAppendOptions)_, _)
 
         where:
         dataSize                 | singleUploadSize | blockSize || numAppends
@@ -4765,7 +4796,7 @@ class FileAPITest extends APISpec {
 
         then:
         fac.getProperties().block().getFileSize() == dataSize
-        numAppends * spyClient.appendWithResponse(_, _, _, _, _, _)
+        numAppends * spyClient.appendWithResponse(_, _, _, (DataLakeFileAppendOptions)_, _)
 
         where:
         dataSize                 | singleUploadSize | blockSize || numAppends

@@ -14,7 +14,6 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -176,7 +175,7 @@ public class SmsClientTests extends SmsTestBase {
         client = setupSyncClient(builder, "checkForRepeatabilityOptions");
         // Action & Assert
         Response<Iterable<SmsSendResult>> response = client.sendWithResponse(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE, null, Context.NONE);
-        String bodyRequest = StandardCharsets.UTF_8.decode(response.getRequest().getBody().blockLast()).toString();
+        String bodyRequest = response.getRequest().getBodyAsBinaryData().toString();
         assertTrue(bodyRequest.contains("repeatabilityRequestId"));
         assertTrue(bodyRequest.contains("repeatabilityFirstSent"));
     }

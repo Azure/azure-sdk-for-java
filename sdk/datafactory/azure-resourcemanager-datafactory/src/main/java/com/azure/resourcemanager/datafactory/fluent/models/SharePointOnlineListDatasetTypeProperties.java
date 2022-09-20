@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SharePointOnlineListDatasetTypeProperties {
     /*
-     * The name of the SharePoint Online list. Type: string (or Expression with
-     * resultType string).
+     * The name of the SharePoint Online list. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "listName")
     private Object listName;

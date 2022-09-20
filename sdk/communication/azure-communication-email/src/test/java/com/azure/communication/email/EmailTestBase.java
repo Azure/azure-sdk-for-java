@@ -9,16 +9,20 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
+import org.junit.jupiter.params.provider.Arguments;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.stream.Stream;
 
 
 public class EmailTestBase extends TestBase {
     protected static final TestMode TEST_MODE = initializeTestMode();
 
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
+        .get("COMMUNICATION_CONNECTION_STRING_EMAIL", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
 
     protected static final String RECIPIENT_ADDRESS = Configuration.getGlobalConfiguration()
         .get("RECIPIENT_ADDRESS", "customer@contoso.com");
@@ -70,5 +74,16 @@ public class EmailTestBase extends TestBase {
         } else {
             return TestMode.PLAYBACK;
         }
+    }
+
+    static Stream<Arguments> getTestParameters() {
+        // When this issues is closed, the newer version of junit will have better support for cartesian product of
+        // arguments - https://github.com/junit-team/junit5/issues/1427
+        List<Arguments> argumentsList = new ArrayList<>();
+
+        getHttpClients()
+            .forEach(httpClient -> argumentsList.add(Arguments.of(httpClient)));
+
+        return argumentsList.stream();
     }
 }

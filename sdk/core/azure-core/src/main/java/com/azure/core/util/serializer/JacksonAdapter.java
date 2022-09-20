@@ -41,10 +41,9 @@ public class JacksonAdapter implements SerializerAdapter {
      * An instance of {@link ObjectMapperShim} to serialize/deserialize objects.
      */
     private final ObjectMapperShim mapper;
-
-    private final ObjectMapperShim xmlMapper;
-
     private final ObjectMapperShim headerMapper;
+
+    private volatile ObjectMapperShim xmlMapper;
 
     /**
      * Raw mappers are needed only to support deprecated simpleMapper() and serializer().
@@ -63,11 +62,11 @@ public class JacksonAdapter implements SerializerAdapter {
     /**
      * Creates a new JacksonAdapter instance with Azure Core mapper settings and applies additional configuration
      * through {@code configureSerialization} callback.
-     *
+     * <p>
      * {@code configureSerialization} callback provides outer and inner instances of {@link ObjectMapper}. Both of them
      * are pre-configured for Azure serialization needs, but only outer mapper capable of flattening and populating
      * additionalProperties. Outer mapper is used by {@code JacksonAdapter} for all serialization needs.
-     *
+     * <p>
      * Register modules on the outer instance to add custom (de)serializers similar to {@code new JacksonAdapter((outer,
      * inner) -> outer.registerModule(new MyModule()))}
      *
@@ -79,7 +78,6 @@ public class JacksonAdapter implements SerializerAdapter {
     public JacksonAdapter(BiConsumer<ObjectMapper, ObjectMapper> configureSerialization) {
         Objects.requireNonNull(configureSerialization, "'configureSerialization' cannot be null.");
         this.headerMapper = ObjectMapperShim.createHeaderMapper();
-        this.xmlMapper = ObjectMapperShim.createXmlMapper();
         this.mapper = ObjectMapperShim.createJsonMapper(ObjectMapperShim.createSimpleMapper(),
             (outerMapper, innerMapper) -> captureRawMappersAndConfigure(outerMapper, innerMapper, configureSerialization));
     }
@@ -140,7 +138,7 @@ public class JacksonAdapter implements SerializerAdapter {
         }
 
         return (String) useAccessHelper(() -> (encoding == SerializerEncoding.XML)
-            ? xmlMapper.writeValueAsString(object)
+            ? getXmlMapper().writeValueAsString(object)
             : mapper.writeValueAsString(object));
     }
 
@@ -151,7 +149,7 @@ public class JacksonAdapter implements SerializerAdapter {
         }
 
         return (byte[]) useAccessHelper(() -> (encoding == SerializerEncoding.XML)
-            ? xmlMapper.writeValueAsBytes(object)
+            ? getXmlMapper().writeValueAsBytes(object)
             : mapper.writeValueAsBytes(object));
     }
 
@@ -163,7 +161,7 @@ public class JacksonAdapter implements SerializerAdapter {
 
         useAccessHelper(() -> {
             if (encoding == SerializerEncoding.XML) {
-                xmlMapper.writeValue(outputStream, object);
+                getXmlMapper().writeValue(outputStream, object);
             } else {
                 mapper.writeValue(outputStream, object);
             }
@@ -209,7 +207,7 @@ public class JacksonAdapter implements SerializerAdapter {
         }
 
         return (T) useAccessHelper(() -> (encoding == SerializerEncoding.XML)
-            ? xmlMapper.readValue(value, type)
+            ? getXmlMapper().readValue(value, type)
             : mapper.readValue(value, type));
     }
 
@@ -221,7 +219,7 @@ public class JacksonAdapter implements SerializerAdapter {
         }
 
         return (T) useAccessHelper(() -> (encoding == SerializerEncoding.XML)
-            ? xmlMapper.readValue(bytes, type)
+            ? getXmlMapper().readValue(bytes, type)
             : mapper.readValue(bytes, type));
     }
 
@@ -234,7 +232,7 @@ public class JacksonAdapter implements SerializerAdapter {
         }
 
         return (T) useAccessHelper(() -> (encoding == SerializerEncoding.XML)
-            ? xmlMapper.readValue(inputStream, type)
+            ? getXmlMapper().readValue(inputStream, type)
             : mapper.readValue(inputStream, type));
     }
 
@@ -248,6 +246,18 @@ public class JacksonAdapter implements SerializerAdapter {
     @Override
     public <T> T deserializeHeader(Header header, Type type) throws IOException {
         return (T) useAccessHelper(() -> headerMapper.readValue(header.getValue(), type));
+    }
+
+    private ObjectMapperShim getXmlMapper() {
+        if (xmlMapper == null) {
+            synchronized (mapper) {
+                if (xmlMapper == null) {
+                    xmlMapper = ObjectMapperShim.createXmlMapper();
+                }
+            }
+        }
+
+        return xmlMapper;
     }
 
     @SuppressWarnings("removal")

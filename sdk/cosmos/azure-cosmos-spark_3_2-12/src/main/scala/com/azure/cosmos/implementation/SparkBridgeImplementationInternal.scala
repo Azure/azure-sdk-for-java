@@ -294,4 +294,8 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
       None
     ).json()
   }
+
+  def configureSimpleObjectMapper(allowDuplicateProperties: Boolean) : Unit = {
+    Utils.configureSimpleObjectMapper(allowDuplicateProperties)
+  }
 }

@@ -20,7 +20,7 @@ public enum TextAnalyticsServiceVersion implements ServiceVersion {
     V3_1("v3.1"),
 
     /**
-     * Service Version {@code 2022-05-01}.
+     * Service Version {@code 2022-05-01}. A newer version than V3_0 and V3_1.
      */
     V2022_05_01("2022-05-01");
 

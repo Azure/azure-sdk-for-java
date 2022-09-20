@@ -48,6 +48,7 @@ import com.azure.storage.file.datalake.models.FileReadAsyncResponse;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathProperties;
+import com.azure.storage.file.datalake.options.DataLakeFileAppendOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
@@ -681,8 +682,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                 if (progressReporter != null) {
                     appendContexts.setHttpRequestProgressReporter(progressReporter.createChild());
                 }
-                return appendWithResponse(bufferAggregator.asFlux(), currentOffset, currentBufferLength, null,
-                    requestConditions.getLeaseId(), appendContexts.getContext())
+                return appendWithResponse(bufferAggregator.asFlux(), currentOffset, currentBufferLength,
+                    new DataLakeFileAppendOptions().setLeaseId(requestConditions.getLeaseId()), appendContexts.getContext())
                     .map(resp -> offset) /* End of file after append to pass to flush. */
                     .flux();
             }, parallelTransferOptions.getMaxConcurrency(), 1)
@@ -697,8 +698,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
             appendContexts.setHttpRequestProgressReporter(
                 ProgressReporter.withProgressListener(progressListener));
         }
-        return appendWithResponse(data, fileOffset, length, null,
-            requestConditions.getLeaseId(), appendContexts.getContext())
+        return appendWithResponse(data, fileOffset, length, new DataLakeFileAppendOptions().setLeaseId(requestConditions.getLeaseId()),
+            appendContexts.getContext())
             .flatMap(resp -> flushWithResponse(fileOffset + length, false, false, httpHeaders,
                 requestConditions));
     }
@@ -918,8 +919,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                 if (progressReporter != null) {
                     appendContexts.setHttpRequestProgressReporter(progressReporter.createChild());
                 }
-                return appendWithResponse(data, fileOffset + chunk.getOffset(), chunk.getCount(), null,
-                    requestConditions.getLeaseId(), appendContexts.getContext());
+                return appendWithResponse(data, fileOffset + chunk.getOffset(), chunk.getCount(),
+                    new DataLakeFileAppendOptions().setLeaseId(requestConditions.getLeaseId()), appendContexts.getContext());
             }, parallelTransferOptions.getMaxConcurrency())
             .then(Mono.defer(() -> flushWithResponse(fileSize, false, false, headers, requestConditions)));
     }
@@ -966,7 +967,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> append(Flux<ByteBuffer> data, long fileOffset, long length) {
-        return appendWithResponse(data, fileOffset, length, null, null).flatMap(FluxUtil::toMono);
+        return appendWithResponse(data, fileOffset, length, new DataLakeFileAppendOptions(), null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1031,8 +1032,12 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> appendWithResponse(Flux<ByteBuffer> data, long fileOffset, long length,
         byte[] contentMd5, String leaseId) {
+        DataLakeFileAppendOptions appendOptions = new DataLakeFileAppendOptions()
+            .setLeaseId(leaseId)
+            .setContentHash(contentMd5)
+            .setFlush(null);
         try {
-            return withContext(context -> appendWithResponse(data, fileOffset, length, contentMd5, leaseId, context));
+            return withContext(context -> appendWithResponse(data, fileOffset, length, appendOptions, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1043,16 +1048,54 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileAsyncClient.appendWithResponse#Flux-long-long-byte-String -->
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileAsyncClient.appendWithResponse#Flux-long-long-DataLakeFileAppendOptions -->
+     * <pre>
+     * FileRange range = new FileRange&#40;1024, 2048L&#41;;
+     * byte[] contentMd5 = new byte[0]; &#47;&#47; Replace with valid md5
+     * DataLakeFileAppendOptions appendOptions = new DataLakeFileAppendOptions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setContentHash&#40;contentMd5&#41;
+     *     .setFlush&#40;true&#41;;
+     *
+     * client.appendWithResponse&#40;data, offset, length, appendOptions&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Append data completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileAsyncClient.appendWithResponse#Flux-long-long-DataLakeFileAppendOptions -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure
+     * Docs</a></p>
+     *
+     * @param data The data to write to the file.
+     * @param fileOffset The position where the data is to be appended.
+     * @param length The exact length of the data. It is important that this value match precisely the length of the
+     * data emitted by the {@code Flux}.
+     * @param appendOptions {@link DataLakeFileAppendOptions}
+     *
+     * @return A reactive response signalling completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> appendWithResponse(Flux<ByteBuffer> data, long fileOffset, long length,
+        DataLakeFileAppendOptions appendOptions) {
+        return appendWithResponse(data, fileOffset, length, appendOptions, null);
+    }
+
+    /**
+     * Appends data to the specified resource to later be flushed (written) by a call to flush
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileAsyncClient.appendWithResponse#BinaryData-long-byte-String -->
      * <pre>
      * FileRange range = new FileRange&#40;1024, 2048L&#41;;
      * DownloadRetryOptions options = new DownloadRetryOptions&#40;&#41;.setMaxRetryRequests&#40;5&#41;;
      * byte[] contentMd5 = new byte[0]; &#47;&#47; Replace with valid md5
+     * BinaryData data = BinaryData.fromString&#40;&quot;Data!&quot;&#41;;
      *
-     * client.appendWithResponse&#40;data, offset, length, contentMd5, leaseId&#41;.subscribe&#40;response -&gt;
+     * client.appendWithResponse&#40;data, offset, contentMd5, leaseId&#41;.subscribe&#40;response -&gt;
      *     System.out.printf&#40;&quot;Append data completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeFileAsyncClient.appendWithResponse#Flux-long-long-byte-String -->
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileAsyncClient.appendWithResponse#BinaryData-long-byte-String -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure
@@ -1073,21 +1116,63 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
             Objects.requireNonNull(data);
             Flux<ByteBuffer> fluxData = data.toFluxByteBuffer();
             long length = data.getLength();
-            return withContext(context -> appendWithResponse(fluxData, fileOffset, length, contentMd5, leaseId, context));
+            DataLakeFileAppendOptions options = new DataLakeFileAppendOptions()
+                .setLeaseId(leaseId)
+                .setContentHash(contentMd5)
+                .setFlush(null);
+            return withContext(context -> appendWithResponse(fluxData, fileOffset, length, options, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
+    /**
+     * Appends data to the specified resource to later be flushed (written) by a call to flush
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileAsyncClient.appendWithResponse#BinaryData-long-DataLakeFileAppendOptions -->
+     * <pre>
+     * FileRange range = new FileRange&#40;1024, 2048L&#41;;
+     * byte[] contentMd5 = new byte[0]; &#47;&#47; Replace with valid md5
+     * DataLakeFileAppendOptions appendOptions = new DataLakeFileAppendOptions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setContentHash&#40;contentMd5&#41;
+     *     .setFlush&#40;true&#41;;
+     * BinaryData data = BinaryData.fromString&#40;&quot;Data!&quot;&#41;;
+     *
+     * client.appendWithResponse&#40;data, offset, appendOptions&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Append data completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileAsyncClient.appendWithResponse#BinaryData-long-DataLakeFileAppendOptions -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure
+     * Docs</a></p>
+     *
+     * @param data The data to write to the file.
+     * @param fileOffset The position where the data is to be appended.
+     * @param appendOptions {@link DataLakeFileAppendOptions}
+     *
+     * @return A reactive response signalling completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> appendWithResponse(BinaryData data, long fileOffset, DataLakeFileAppendOptions appendOptions) {
+        Objects.requireNonNull(data);
+        Flux<ByteBuffer> fluxData = data.toFluxByteBuffer();
+        long length = data.getLength();
+        return appendWithResponse(fluxData, fileOffset, length, appendOptions, null);
+    }
+
     Mono<Response<Void>> appendWithResponse(Flux<ByteBuffer> data, long fileOffset, long length,
-        byte[] contentMd5, String leaseId, Context context) {
+        DataLakeFileAppendOptions appendOptions, Context context) {
+        appendOptions = appendOptions == null ? new DataLakeFileAppendOptions() : appendOptions;
+        LeaseAccessConditions leaseAccessConditions = new LeaseAccessConditions().setLeaseId(appendOptions.getLeaseId());
+        PathHttpHeaders headers = new PathHttpHeaders().setTransactionalContentHash(appendOptions.getContentMd5());
+        context = context == null ? Context.NONE : context;
 
-        LeaseAccessConditions leaseAccessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
-
-        PathHttpHeaders headers = new PathHttpHeaders().setTransactionalContentHash(contentMd5);
-
-        return this.dataLakeStorage.getPaths().appendDataWithResponseAsync(data, fileOffset, null, length, null, null,
-            headers, leaseAccessConditions, getCpkInfo(), context)
+        return this.dataLakeStorage.getPaths().appendDataWithResponseAsync(
+            data, fileOffset, null, length, null, null, appendOptions.isFlush(), headers, leaseAccessConditions, getCpkInfo(), context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 

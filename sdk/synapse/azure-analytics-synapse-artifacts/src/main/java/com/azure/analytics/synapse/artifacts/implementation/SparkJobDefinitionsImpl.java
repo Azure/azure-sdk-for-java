@@ -330,14 +330,7 @@ public final class SparkJobDefinitionsImpl {
     public Mono<SparkJobDefinitionResource> createOrUpdateSparkJobDefinitionAsync(
             String sparkJobDefinitionName, SparkJobDefinitionResource sparkJobDefinition, String ifMatch) {
         return createOrUpdateSparkJobDefinitionWithResponseAsync(sparkJobDefinitionName, sparkJobDefinition, ifMatch)
-                .flatMap(
-                        (Response<SparkJobDefinitionResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -355,14 +348,7 @@ public final class SparkJobDefinitionsImpl {
             String sparkJobDefinitionName, SparkJobDefinitionResource sparkJobDefinition) {
         final String ifMatch = null;
         return createOrUpdateSparkJobDefinitionWithResponseAsync(sparkJobDefinitionName, sparkJobDefinition, ifMatch)
-                .flatMap(
-                        (Response<SparkJobDefinitionResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -386,14 +372,7 @@ public final class SparkJobDefinitionsImpl {
             Context context) {
         return createOrUpdateSparkJobDefinitionWithResponseAsync(
                         sparkJobDefinitionName, sparkJobDefinition, ifMatch, context)
-                .flatMap(
-                        (Response<SparkJobDefinitionResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -518,14 +497,7 @@ public final class SparkJobDefinitionsImpl {
     public Mono<SparkJobDefinitionResource> getSparkJobDefinitionAsync(
             String sparkJobDefinitionName, String ifNoneMatch) {
         return getSparkJobDefinitionWithResponseAsync(sparkJobDefinitionName, ifNoneMatch)
-                .flatMap(
-                        (Response<SparkJobDefinitionResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -541,14 +513,7 @@ public final class SparkJobDefinitionsImpl {
     public Mono<SparkJobDefinitionResource> getSparkJobDefinitionAsync(String sparkJobDefinitionName) {
         final String ifNoneMatch = null;
         return getSparkJobDefinitionWithResponseAsync(sparkJobDefinitionName, ifNoneMatch)
-                .flatMap(
-                        (Response<SparkJobDefinitionResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -567,14 +532,7 @@ public final class SparkJobDefinitionsImpl {
     public Mono<SparkJobDefinitionResource> getSparkJobDefinitionAsync(
             String sparkJobDefinitionName, String ifNoneMatch, Context context) {
         return getSparkJobDefinitionWithResponseAsync(sparkJobDefinitionName, ifNoneMatch, context)
-                .flatMap(
-                        (Response<SparkJobDefinitionResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -675,8 +633,7 @@ public final class SparkJobDefinitionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteSparkJobDefinitionAsync(String sparkJobDefinitionName) {
-        return deleteSparkJobDefinitionWithResponseAsync(sparkJobDefinitionName)
-                .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteSparkJobDefinitionWithResponseAsync(sparkJobDefinitionName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -692,7 +649,7 @@ public final class SparkJobDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteSparkJobDefinitionAsync(String sparkJobDefinitionName, Context context) {
         return deleteSparkJobDefinitionWithResponseAsync(sparkJobDefinitionName, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -773,14 +730,7 @@ public final class SparkJobDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SparkBatchJob> executeSparkJobDefinitionAsync(String sparkJobDefinitionName) {
         return executeSparkJobDefinitionWithResponseAsync(sparkJobDefinitionName)
-                .flatMap(
-                        (Response<SparkBatchJob> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -796,14 +746,7 @@ public final class SparkJobDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SparkBatchJob> executeSparkJobDefinitionAsync(String sparkJobDefinitionName, Context context) {
         return executeSparkJobDefinitionWithResponseAsync(sparkJobDefinitionName, context)
-                .flatMap(
-                        (Response<SparkBatchJob> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -895,7 +838,7 @@ public final class SparkJobDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> renameSparkJobDefinitionAsync(String sparkJobDefinitionName, ArtifactRenameRequest request) {
         return renameSparkJobDefinitionWithResponseAsync(sparkJobDefinitionName, request)
-                .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -913,7 +856,7 @@ public final class SparkJobDefinitionsImpl {
     public Mono<Void> renameSparkJobDefinitionAsync(
             String sparkJobDefinitionName, ArtifactRenameRequest request, Context context) {
         return renameSparkJobDefinitionWithResponseAsync(sparkJobDefinitionName, request, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1003,14 +946,7 @@ public final class SparkJobDefinitionsImpl {
     public Mono<SparkBatchJob> debugSparkJobDefinitionAsync(
             SparkJobDefinitionResource sparkJobDefinitionAzureResource) {
         return debugSparkJobDefinitionWithResponseAsync(sparkJobDefinitionAzureResource)
-                .flatMap(
-                        (Response<SparkBatchJob> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1027,14 +963,7 @@ public final class SparkJobDefinitionsImpl {
     public Mono<SparkBatchJob> debugSparkJobDefinitionAsync(
             SparkJobDefinitionResource sparkJobDefinitionAzureResource, Context context) {
         return debugSparkJobDefinitionWithResponseAsync(sparkJobDefinitionAzureResource, context)
-                .flatMap(
-                        (Response<SparkBatchJob> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1070,7 +999,8 @@ public final class SparkJobDefinitionsImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1099,7 +1029,8 @@ public final class SparkJobDefinitionsImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

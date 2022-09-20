@@ -11,22 +11,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class GoogleBigQueryDatasetTypeProperties {
     /*
-     * This property will be retired. Please consider using database + table
-     * properties instead.
+     * This property will be retired. Please consider using database + table properties instead.
      */
     @JsonProperty(value = "tableName")
     private Object tableName;
 
     /*
-     * The table name of the Google BigQuery. Type: string (or Expression with
-     * resultType string).
+     * The table name of the Google BigQuery. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "table")
     private Object table;
 
     /*
-     * The database name of the Google BigQuery. Type: string (or Expression
-     * with resultType string).
+     * The database name of the Google BigQuery. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "dataset")
     private Object dataset;

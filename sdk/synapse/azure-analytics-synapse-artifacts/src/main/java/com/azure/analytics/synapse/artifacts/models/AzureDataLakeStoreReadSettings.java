@@ -15,48 +15,43 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class AzureDataLakeStoreReadSettings extends StoreReadSettings {
     /*
-     * If true, files under the folder path will be read recursively. Default
-     * is true. Type: boolean (or Expression with resultType boolean).
+     * If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression
+     * with resultType boolean).
      */
     @JsonProperty(value = "recursive")
     private Object recursive;
 
     /*
-     * ADLS wildcardFolderPath. Type: string (or Expression with resultType
-     * string).
+     * ADLS wildcardFolderPath. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "wildcardFolderPath")
     private Object wildcardFolderPath;
 
     /*
-     * ADLS wildcardFileName. Type: string (or Expression with resultType
-     * string).
+     * ADLS wildcardFileName. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "wildcardFileName")
     private Object wildcardFileName;
 
     /*
-     * Point to a text file that lists each file (relative path to the path
-     * configured in the dataset) that you want to copy. Type: string (or
-     * Expression with resultType string).
+     * Point to a text file that lists each file (relative path to the path configured in the dataset) that you want to
+     * copy. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "fileListPath")
     private Object fileListPath;
 
     /*
-     * Lists files after the value (exclusive) based on file/folder names’
-     * lexicographical order. Applies under the folderPath in data set, and
-     * filter files/sub-folders under the folderPath. Type: string (or
-     * Expression with resultType string).
+     * Lists files after the value (exclusive) based on file/folder names’ lexicographical order. Applies under the
+     * folderPath in data set, and filter files/sub-folders under the folderPath. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "listAfter")
     private Object listAfter;
 
     /*
-     * Lists files before the value (inclusive) based on file/folder names’
-     * lexicographical order. Applies under the folderPath in data set, and
-     * filter files/sub-folders under the folderPath. Type: string (or
-     * Expression with resultType string).
+     * Lists files before the value (inclusive) based on file/folder names’ lexicographical order. Applies under the
+     * folderPath in data set, and filter files/sub-folders under the folderPath. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "listBefore")
     private Object listBefore;
@@ -68,30 +63,27 @@ public final class AzureDataLakeStoreReadSettings extends StoreReadSettings {
     private Boolean enablePartitionDiscovery;
 
     /*
-     * Specify the root path where partition discovery starts from. Type:
-     * string (or Expression with resultType string).
+     * Specify the root path where partition discovery starts from. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "partitionRootPath")
     private Object partitionRootPath;
 
     /*
-     * Indicates whether the source files need to be deleted after copy
-     * completion. Default is false. Type: boolean (or Expression with
-     * resultType boolean).
+     * Indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or
+     * Expression with resultType boolean).
      */
     @JsonProperty(value = "deleteFilesAfterCompletion")
     private Object deleteFilesAfterCompletion;
 
     /*
-     * The start of file's modified datetime. Type: string (or Expression with
-     * resultType string).
+     * The start of file's modified datetime. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "modifiedDatetimeStart")
     private Object modifiedDatetimeStart;
 
     /*
-     * The end of file's modified datetime. Type: string (or Expression with
-     * resultType string).
+     * The end of file's modified datetime. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "modifiedDatetimeEnd")
     private Object modifiedDatetimeEnd;

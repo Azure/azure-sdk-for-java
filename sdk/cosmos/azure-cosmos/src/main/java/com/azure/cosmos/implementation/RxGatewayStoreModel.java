@@ -30,6 +30,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
@@ -429,7 +430,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                     ? status.reasonPhrase().replace(" ", "")
                     : "";
 
-            String body = bodyAsBytes != null ? new String(bodyAsBytes) : null;
+            String body = bodyAsBytes != null ? new String(bodyAsBytes, StandardCharsets.UTF_8) : null;
             CosmosError cosmosError;
             cosmosError = (StringUtils.isNotEmpty(body)) ? new CosmosError(body) : new CosmosError();
             cosmosError = new CosmosError(statusCodeString,

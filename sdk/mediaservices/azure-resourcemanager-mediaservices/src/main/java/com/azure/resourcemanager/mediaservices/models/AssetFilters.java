@@ -11,7 +11,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of AssetFilters. */
 public interface AssetFilters {
     /**
-     * List Asset Filters associated with the specified Asset.
+     * List Asset Filters
+     *
+     * <p>List Asset Filters associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -24,7 +26,9 @@ public interface AssetFilters {
     PagedIterable<AssetFilter> list(String resourceGroupName, String accountName, String assetName);
 
     /**
-     * List Asset Filters associated with the specified Asset.
+     * List Asset Filters
+     *
+     * <p>List Asset Filters associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -38,7 +42,9 @@ public interface AssetFilters {
     PagedIterable<AssetFilter> list(String resourceGroupName, String accountName, String assetName, Context context);
 
     /**
-     * Get the details of an Asset Filter associated with the specified Asset.
+     * Get an Asset Filter.
+     *
+     * <p>Get the details of an Asset Filter associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -52,7 +58,9 @@ public interface AssetFilters {
     AssetFilter get(String resourceGroupName, String accountName, String assetName, String filterName);
 
     /**
-     * Get the details of an Asset Filter associated with the specified Asset.
+     * Get an Asset Filter.
+     *
+     * <p>Get the details of an Asset Filter associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -68,7 +76,9 @@ public interface AssetFilters {
         String resourceGroupName, String accountName, String assetName, String filterName, Context context);
 
     /**
-     * Deletes an Asset Filter associated with the specified Asset.
+     * Delete an Asset Filter.
+     *
+     * <p>Deletes an Asset Filter associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -81,7 +91,9 @@ public interface AssetFilters {
     void delete(String resourceGroupName, String accountName, String assetName, String filterName);
 
     /**
-     * Deletes an Asset Filter associated with the specified Asset.
+     * Delete an Asset Filter.
+     *
+     * <p>Deletes an Asset Filter associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -97,7 +109,9 @@ public interface AssetFilters {
         String resourceGroupName, String accountName, String assetName, String filterName, Context context);
 
     /**
-     * Get the details of an Asset Filter associated with the specified Asset.
+     * Get an Asset Filter.
+     *
+     * <p>Get the details of an Asset Filter associated with the specified Asset.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -108,7 +122,9 @@ public interface AssetFilters {
     AssetFilter getById(String id);
 
     /**
-     * Get the details of an Asset Filter associated with the specified Asset.
+     * Get an Asset Filter.
+     *
+     * <p>Get the details of an Asset Filter associated with the specified Asset.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -120,7 +136,9 @@ public interface AssetFilters {
     Response<AssetFilter> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes an Asset Filter associated with the specified Asset.
+     * Delete an Asset Filter.
+     *
+     * <p>Deletes an Asset Filter associated with the specified Asset.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -130,7 +148,9 @@ public interface AssetFilters {
     void deleteById(String id);
 
     /**
-     * Deletes an Asset Filter associated with the specified Asset.
+     * Delete an Asset Filter.
+     *
+     * <p>Deletes an Asset Filter associated with the specified Asset.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

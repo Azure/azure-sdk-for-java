@@ -41,6 +41,9 @@ public class TestRepositoryConfig extends AbstractCosmosConfiguration {
     @Value("${cosmos.maxDegreeOfParallelism}")
     private int maxDegreeOfParallelism;
 
+    @Value("${cosmos.maxBufferedItemCount}")
+    private int maxBufferedItemCount;
+
     @Bean
     public ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils() {
         return new ResponseDiagnosticsTestUtils();
@@ -60,6 +63,7 @@ public class TestRepositoryConfig extends AbstractCosmosConfiguration {
         return CosmosConfig.builder()
                            .enableQueryMetrics(queryMetricsEnabled)
                            .maxDegreeOfParallelism(maxDegreeOfParallelism)
+                           .maxBufferedItemCount(maxBufferedItemCount)
                            .responseDiagnosticsProcessor(responseDiagnosticsTestUtils().getResponseDiagnosticsProcessor())
                            .build();
     }

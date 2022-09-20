@@ -3,7 +3,6 @@
 
 package com.azure.core.util;
 
-import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedResponse;
@@ -18,10 +17,10 @@ import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -308,11 +307,18 @@ public final class CoreUtils {
             return null;
         }
 
-        List<HttpHeader> httpHeaderList = new ArrayList<>();
-        clientOptions.getHeaders().forEach(
-            header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+        Iterator<Header> headerIterator = clientOptions.getHeaders().iterator();
+        if (!headerIterator.hasNext()) {
+            return null;
+        }
 
-        return httpHeaderList.isEmpty() ? null : new HttpHeaders(httpHeaderList);
+        HttpHeaders headers = new HttpHeaders();
+        do {
+            Header header = headerIterator.next();
+            headers.set(header.getName(), header.getValue());
+        } while (headerIterator.hasNext());
+
+        return headers;
     }
 
     /**
@@ -380,5 +386,45 @@ public final class CoreUtils {
         }
 
         return returnContext;
+    }
+
+    /**
+     * Optimized version of {@link String#join(CharSequence, Iterable)} when the {@code values} has a small
+     * set of object.
+     *
+     * @param delimiter Delimiter between the values.
+     * @param values The values to join.
+     * @return The {@code values} joined delimited by the {@code delimiter}.
+     * @throws NullPointerException If {@code delimiter} or {@code values} is null.
+     */
+    public static String stringJoin(String delimiter, List<String> values) {
+        Objects.requireNonNull(delimiter, "'delimiter' cannot be null.");
+        Objects.requireNonNull(values, "'values' cannot be null.");
+
+        int count = values.size();
+        switch (count) {
+            case 0: return "";
+            case 1: return values.get(0);
+            case 2: return values.get(0) + delimiter + values.get(1);
+            case 3: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2);
+            case 4: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
+                + values.get(3);
+            case 5: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
+                + values.get(3) + delimiter + values.get(4);
+            case 6: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
+                + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5);
+            case 7: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
+                + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6);
+            case 8: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
+                + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6)
+                + delimiter + values.get(7);
+            case 9: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
+                + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6)
+                + delimiter + values.get(7) + delimiter + values.get(8);
+            case 10: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
+                + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6)
+                + delimiter + values.get(7) + delimiter + values.get(8) + delimiter + values.get(9);
+            default: return String.join(delimiter, values);
+        }
     }
 }

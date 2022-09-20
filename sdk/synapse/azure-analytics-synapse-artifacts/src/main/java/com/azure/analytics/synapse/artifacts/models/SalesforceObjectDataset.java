@@ -19,8 +19,7 @@ import java.util.Map;
 @Fluent
 public class SalesforceObjectDataset extends Dataset {
     /*
-     * The Salesforce object API name. Type: string (or Expression with
-     * resultType string).
+     * The Salesforce object API name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.objectApiName")
     private Object objectApiName;
