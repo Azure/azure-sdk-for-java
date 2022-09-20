@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.AmqpClientOptions;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
@@ -59,6 +60,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ServiceLoader;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
@@ -953,8 +955,16 @@ public final class ServiceBusClientBuilder implements
                         new IllegalArgumentException("Unknown entity type: " + entityType));
             }
 
+            final String clientIdentifier;
+            if (clientOptions instanceof AmqpClientOptions) {
+                String clientOptionIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
+                clientIdentifier = CoreUtils.isNullOrEmpty(clientOptionIdentifier) ? UUID.randomUUID().toString() : clientOptionIdentifier;
+            } else {
+                clientIdentifier = UUID.randomUUID().toString();
+            }
+
             return new ServiceBusSenderAsyncClient(entityName, entityType, connectionProcessor, retryOptions,
-                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose, null);
+                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose, null, clientIdentifier);
         }
 
         /**
@@ -1425,8 +1435,16 @@ public final class ServiceBusClientBuilder implements
                 maxAutoLockRenewDuration, enableAutoComplete, null,
                 maxConcurrentSessions);
 
+            final String clientIdentifier;
+            if (clientOptions instanceof AmqpClientOptions) {
+                String clientOptionIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
+                clientIdentifier = CoreUtils.isNullOrEmpty(clientOptionIdentifier) ? UUID.randomUUID().toString() : clientOptionIdentifier;
+            } else {
+                clientIdentifier = UUID.randomUUID().toString();
+            }
+
             final ServiceBusSessionManager sessionManager = new ServiceBusSessionManager(entityPath, entityType,
-                connectionProcessor, tracerProvider, messageSerializer, receiverOptions);
+                connectionProcessor, tracerProvider, messageSerializer, receiverOptions, clientIdentifier);
 
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
                 entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
@@ -1494,9 +1512,17 @@ public final class ServiceBusClientBuilder implements
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration, enableAutoComplete, null, maxConcurrentSessions);
 
+            final String clientIdentifier;
+            if (clientOptions instanceof AmqpClientOptions) {
+                String clientOptionIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
+                clientIdentifier = CoreUtils.isNullOrEmpty(clientOptionIdentifier) ? UUID.randomUUID().toString() : clientOptionIdentifier;
+            } else {
+                clientIdentifier = UUID.randomUUID().toString();
+            }
+
             return new ServiceBusSessionReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(),
                 entityPath, entityType, receiverOptions, connectionProcessor, tracerProvider, messageSerializer,
-                ServiceBusClientBuilder.this::onClientClose);
+                ServiceBusClientBuilder.this::onClientClose, clientIdentifier);
         }
     }
 
@@ -1928,9 +1954,17 @@ public final class ServiceBusClientBuilder implements
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration, enableAutoComplete);
 
+            final String clientIdentifier;
+            if (clientOptions instanceof AmqpClientOptions) {
+                String clientOptionIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
+                clientIdentifier = CoreUtils.isNullOrEmpty(clientOptionIdentifier) ? UUID.randomUUID().toString() : clientOptionIdentifier;
+            } else {
+                clientIdentifier = UUID.randomUUID().toString();
+            }
+
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
                 entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
-                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose);
+                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose, clientIdentifier);
         }
     }
 

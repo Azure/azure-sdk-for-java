@@ -6,18 +6,14 @@ package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.models.EndpointDependency;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Endpoints accessed for a common purpose that the Kusto Service Environment requires outbound network access to. */
 @Fluent
 public final class OutboundNetworkDependenciesEndpointInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OutboundNetworkDependenciesEndpointInner.class);
-
     /*
      * The outbound environment endpoint properties.
      */

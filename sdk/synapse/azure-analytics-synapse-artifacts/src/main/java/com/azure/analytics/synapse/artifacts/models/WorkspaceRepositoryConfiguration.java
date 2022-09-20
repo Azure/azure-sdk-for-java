@@ -12,8 +12,7 @@ import java.util.UUID;
 @Fluent
 public final class WorkspaceRepositoryConfiguration {
     /*
-     * Type of workspace repositoryID configuration. Example
-     * WorkspaceVSTSConfiguration, WorkspaceGitHubConfiguration
+     * Type of workspace repositoryID configuration. Example WorkspaceVSTSConfiguration, WorkspaceGitHubConfiguration
      */
     @JsonProperty(value = "type")
     private String type;

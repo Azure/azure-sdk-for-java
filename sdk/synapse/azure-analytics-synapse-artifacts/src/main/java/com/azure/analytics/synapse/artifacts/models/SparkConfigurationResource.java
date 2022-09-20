@@ -12,14 +12,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class SparkConfigurationResource extends SubResource {
     /*
      * Information about a SparkConfiguration created at the workspace level.
+     *
      * Properties of Spark Configuration.
      */
     @JsonProperty(value = "properties", required = true)
     private SparkConfiguration properties;
 
     /**
-     * Get the properties property: Information about a SparkConfiguration created at the workspace level. Properties of
-     * Spark Configuration.
+     * Get the properties property: Information about a SparkConfiguration created at the workspace level.
+     *
+     * <p>Properties of Spark Configuration.
      *
      * @return the properties value.
      */
@@ -28,8 +30,9 @@ public final class SparkConfigurationResource extends SubResource {
     }
 
     /**
-     * Set the properties property: Information about a SparkConfiguration created at the workspace level. Properties of
-     * Spark Configuration.
+     * Set the properties property: Information about a SparkConfiguration created at the workspace level.
+     *
+     * <p>Properties of Spark Configuration.
      *
      * @param properties the properties value to set.
      * @return the SparkConfigurationResource object itself.

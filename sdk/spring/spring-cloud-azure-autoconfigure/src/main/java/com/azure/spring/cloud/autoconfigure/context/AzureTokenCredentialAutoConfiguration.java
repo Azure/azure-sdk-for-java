@@ -251,4 +251,8 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
     static class IdentityClientProperties extends AbstractAzureHttpConfigurationProperties {
 
     }
+
+    IdentityClientProperties getIdentityClientProperties() {
+        return identityClientProperties;
+    }
 }

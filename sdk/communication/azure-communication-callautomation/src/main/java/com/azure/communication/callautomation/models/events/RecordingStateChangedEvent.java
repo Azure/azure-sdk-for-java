@@ -37,8 +37,8 @@ public final class RecordingStateChangedEvent extends CallAutomationEventBase {
     @JsonCreator
     private RecordingStateChangedEvent(@JsonProperty("startDateTime") String startDateTime) {
         this.startDateTime = OffsetDateTime.parse(startDateTime, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        recordingId = null;
-        recordingState = null;
+        this.recordingId = null;
+        this.recordingState = null;
     }
 
     /**

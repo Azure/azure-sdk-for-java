@@ -14,7 +14,9 @@ import com.azure.resourcemanager.mediaservices.fluent.models.AccountFilterInner;
 /** An instance of this class provides access to all the operations defined in AccountFiltersClient. */
 public interface AccountFiltersClient {
     /**
-     * List Account Filters in the Media Services account.
+     * List Account Filters
+     *
+     * <p>List Account Filters in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -27,7 +29,9 @@ public interface AccountFiltersClient {
     PagedIterable<AccountFilterInner> list(String resourceGroupName, String accountName);
 
     /**
-     * List Account Filters in the Media Services account.
+     * List Account Filters
+     *
+     * <p>List Account Filters in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -41,7 +45,9 @@ public interface AccountFiltersClient {
     PagedIterable<AccountFilterInner> list(String resourceGroupName, String accountName, Context context);
 
     /**
-     * Get the details of an Account Filter in the Media Services account.
+     * Get an Account Filter.
+     *
+     * <p>Get the details of an Account Filter in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -55,7 +61,9 @@ public interface AccountFiltersClient {
     AccountFilterInner get(String resourceGroupName, String accountName, String filterName);
 
     /**
-     * Get the details of an Account Filter in the Media Services account.
+     * Get an Account Filter.
+     *
+     * <p>Get the details of an Account Filter in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -71,7 +79,9 @@ public interface AccountFiltersClient {
         String resourceGroupName, String accountName, String filterName, Context context);
 
     /**
-     * Creates or updates an Account Filter in the Media Services account.
+     * Create or update an Account Filter
+     *
+     * <p>Creates or updates an Account Filter in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -87,7 +97,9 @@ public interface AccountFiltersClient {
         String resourceGroupName, String accountName, String filterName, AccountFilterInner parameters);
 
     /**
-     * Creates or updates an Account Filter in the Media Services account.
+     * Create or update an Account Filter
+     *
+     * <p>Creates or updates an Account Filter in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -108,7 +120,9 @@ public interface AccountFiltersClient {
         Context context);
 
     /**
-     * Deletes an Account Filter in the Media Services account.
+     * Delete an Account Filter.
+     *
+     * <p>Deletes an Account Filter in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -121,7 +135,9 @@ public interface AccountFiltersClient {
     void delete(String resourceGroupName, String accountName, String filterName);
 
     /**
-     * Deletes an Account Filter in the Media Services account.
+     * Delete an Account Filter.
+     *
+     * <p>Deletes an Account Filter in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -136,7 +152,9 @@ public interface AccountFiltersClient {
     Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String filterName, Context context);
 
     /**
-     * Updates an existing Account Filter in the Media Services account.
+     * Update an Account Filter
+     *
+     * <p>Updates an existing Account Filter in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -152,7 +170,9 @@ public interface AccountFiltersClient {
         String resourceGroupName, String accountName, String filterName, AccountFilterInner parameters);
 
     /**
-     * Updates an existing Account Filter in the Media Services account.
+     * Update an Account Filter
+     *
+     * <p>Updates an existing Account Filter in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.

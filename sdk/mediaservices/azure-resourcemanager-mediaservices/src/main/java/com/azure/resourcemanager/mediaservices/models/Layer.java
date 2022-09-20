@@ -14,24 +14,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public class Layer {
     /*
-     * The width of the output video for this layer. The value can be absolute
-     * (in pixels) or relative (in percentage). For example 50% means the
-     * output video has half as many pixels in width as the input.
+     * The width of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage).
+     * For example 50% means the output video has half as many pixels in width as the input.
      */
     @JsonProperty(value = "width")
     private String width;
 
     /*
-     * The height of the output video for this layer. The value can be absolute
-     * (in pixels) or relative (in percentage). For example 50% means the
-     * output video has half as many pixels in height as the input.
+     * The height of the output video for this layer. The value can be absolute (in pixels) or relative (in
+     * percentage). For example 50% means the output video has half as many pixels in height as the input.
      */
     @JsonProperty(value = "height")
     private String height;
 
     /*
-     * The alphanumeric label for this layer, which can be used in multiplexing
-     * different video and audio layers, or in naming the output file.
+     * The alphanumeric label for this layer, which can be used in multiplexing different video and audio layers, or in
+     * naming the output file.
      */
     @JsonProperty(value = "label")
     private String label;

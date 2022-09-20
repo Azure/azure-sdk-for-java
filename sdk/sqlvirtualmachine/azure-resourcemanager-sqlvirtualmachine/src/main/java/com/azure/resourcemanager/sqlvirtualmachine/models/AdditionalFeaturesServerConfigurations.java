@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Additional SQL Server feature settings. */
 @Fluent
 public final class AdditionalFeaturesServerConfigurations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdditionalFeaturesServerConfigurations.class);
-
     /*
      * Enable or disable R services (SQL 2016 onwards).
      */
