@@ -27,6 +27,7 @@ import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestOperations;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -65,8 +66,8 @@ public class AadOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
      *
      * @param properties the AAD authentication properties
      */
-    public AadOAuth2UserService(AadAuthenticationProperties properties) {
-        this(properties, new GraphClient(properties));
+    public AadOAuth2UserService(AadAuthenticationProperties properties, RestOperations operations) {
+        this(properties, new GraphClient(properties, operations));
     }
 
     /**

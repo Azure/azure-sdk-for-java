@@ -3,13 +3,14 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.implementation.graph;
 
-import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,7 +33,7 @@ class AadGraphClientTests {
         activeDirectoryGroups.add("Test_Group");
         AadAuthenticationProperties aadAuthenticationProperties = new AadAuthenticationProperties();
         aadAuthenticationProperties.getUserGroup().setAllowedGroupNames(activeDirectoryGroups);
-        client = new AadGraphClient("client", "pass", aadAuthenticationProperties, endpoints);
+        client = new AadGraphClient("client", "pass", aadAuthenticationProperties, endpoints, new RestTemplate());
     }
 
     @Test

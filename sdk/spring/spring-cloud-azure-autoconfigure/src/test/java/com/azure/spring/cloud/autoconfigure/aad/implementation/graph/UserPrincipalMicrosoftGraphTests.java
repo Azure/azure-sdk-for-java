@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -84,8 +85,8 @@ class UserPrincipalMicrosoftGraphTests {
     @Test
     void getGroups() throws Exception {
         properties.getUserGroup().setAllowedGroupNames(Arrays.asList("group1", "group2", "group3"));
-        AadGraphClient graphClientMock = new AadGraphClient(clientId, clientSecret, properties,
-            endpoints);
+        AadGraphClient graphClientMock = new AadGraphClient(
+                clientId, clientSecret, properties, endpoints, new RestTemplate());
         stubFor(get(urlEqualTo("/v1.0/me/memberOf"))
             .withHeader(ACCEPT, equalTo(APPLICATION_JSON_VALUE))
             .willReturn(aResponse()

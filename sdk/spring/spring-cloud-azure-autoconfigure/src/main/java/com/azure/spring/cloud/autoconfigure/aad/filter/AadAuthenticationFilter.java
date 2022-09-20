@@ -21,6 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
+import org.springframework.web.client.RestOperations;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.naming.ServiceUnavailableException;
@@ -59,7 +60,8 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
      */
     public AadAuthenticationFilter(AadAuthenticationProperties aadAuthenticationProperties,
                                    AadAuthorizationServerEndpoints endpoints,
-                                   ResourceRetriever resourceRetriever) {
+                                   ResourceRetriever resourceRetriever,
+                                   RestOperations restOperations) {
         this(
             aadAuthenticationProperties,
             endpoints,
@@ -68,7 +70,8 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
                 aadAuthenticationProperties,
                 resourceRetriever,
                 false
-            )
+            ),
+            restOperations
         );
     }
 
@@ -83,7 +86,8 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
     public AadAuthenticationFilter(AadAuthenticationProperties aadAuthenticationProperties,
                                    AadAuthorizationServerEndpoints endpoints,
                                    ResourceRetriever resourceRetriever,
-                                   JWKSetCache jwkSetCache) {
+                                   JWKSetCache jwkSetCache,
+                                   RestOperations restOperations) {
         this(
             aadAuthenticationProperties,
             endpoints,
@@ -93,7 +97,8 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
                 resourceRetriever,
                 false,
                 jwkSetCache
-            )
+            ),
+            restOperations
         );
     }
 
@@ -106,13 +111,15 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
      */
     public AadAuthenticationFilter(AadAuthenticationProperties aadAuthenticationProperties,
                                    AadAuthorizationServerEndpoints endpoints,
-                                   UserPrincipalManager userPrincipalManager) {
+                                   UserPrincipalManager userPrincipalManager,
+                                   RestOperations restOperations) {
         this.userPrincipalManager = userPrincipalManager;
         this.aadGraphClient = new AadGraphClient(
             aadAuthenticationProperties.getCredential().getClientId(),
             aadAuthenticationProperties.getCredential().getClientSecret(),
             aadAuthenticationProperties,
-            endpoints
+            endpoints,
+            restOperations
         );
     }
 
