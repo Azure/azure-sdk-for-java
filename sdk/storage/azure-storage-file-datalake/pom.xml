@@ -41,7 +41,6 @@
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
       --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
-      --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
       --add-opens com.azure.storage.common/com.azure.storage.common.implementation=ALL-UNNAMED
       --add-opens com.azure.storage.blob/com.azure.storage.blob.implementation.util=ALL-UNNAMED
       --add-opens com.azure.storage.blob/com.azure.storage.blob.implementation=ALL-UNNAMED
@@ -121,7 +120,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.5.5</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
