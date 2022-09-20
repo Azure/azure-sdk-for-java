@@ -81,7 +81,8 @@ import java.util.Map;
  * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation.withPipeline -->
  * <pre>
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
- *     .policies&#40;new KeyVaultCredentialPolicy&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;, new RetryPolicy&#40;&#41;&#41;
+ *     .policies&#40;
+ *         new KeyVaultCredentialPolicy&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;, false&#41;, new RetryPolicy&#40;&#41;&#41;
  *     .build&#40;&#41;;
  * CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder&#40;&#41;
  *     .pipeline&#40;pipeline&#41;
@@ -488,8 +489,9 @@ public final class CertificateClientBuilder implements
         return this;
     }
 
-    /** Gets or sets whether to verify the authentication challenge resource matches the Key Vault or Managed HSM
-     * domain. The default is set to {@code true}.
+    /**
+     * Sets whether to verify the authentication challenge resource matches the Key Vault or Managed HSM domain. The
+     * default is set to {@code false}.
      *
      * @param disableChallengeResourceVerification A flag indicating if the authentication challenge resource must be
      * verified.

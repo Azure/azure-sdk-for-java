@@ -76,7 +76,7 @@ import java.util.Map;
  * CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder&#40;&#41;
  *     .keyIdentifier&#40;&quot;&lt;your-key-id&gt;&quot;&#41;
  *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
- *     .addPolicy&#40;new KeyVaultCredentialPolicy&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;&#41;
+ *     .addPolicy&#40;new KeyVaultCredentialPolicy&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;, false&#41;&#41;
  *     .httpClient&#40;HttpClient.createDefault&#40;&#41;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
@@ -89,7 +89,8 @@ import java.util.Map;
  * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withPipeline.instantiation -->
  * <pre>
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
- *     .policies&#40;new KeyVaultCredentialPolicy&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;, new RetryPolicy&#40;&#41;&#41;
+ *     .policies&#40;
+ *         new KeyVaultCredentialPolicy&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;, false&#41;, new RetryPolicy&#40;&#41;&#41;
  *     .build&#40;&#41;;
  * CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder&#40;&#41;
  *     .pipeline&#40;pipeline&#41;
@@ -550,8 +551,9 @@ public final class CryptographyClientBuilder implements
         return this;
     }
 
-    /** Gets or sets whether to verify the authentication challenge resource matches the Key Vault or Managed HSM
-     * domain. The default is set to {@code true}.
+    /**
+     * Sets whether to verify the authentication challenge resource matches the Key Vault or Managed HSM domain. The
+     * default is set to {@code false}.
      *
      * @param disableChallengeResourceVerification A flag indicating if the authentication challenge resource must be
      * verified.
