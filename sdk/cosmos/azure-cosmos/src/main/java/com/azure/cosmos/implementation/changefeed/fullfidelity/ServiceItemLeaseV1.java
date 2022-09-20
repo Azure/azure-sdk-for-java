@@ -159,7 +159,7 @@ public class ServiceItemLeaseV1 implements Lease {
         return new ChangeFeedStateV1(
             containerRid,
             this.feedRangeInternal,
-            ChangeFeedMode.FULL_FIDELITY,
+            ChangeFeedMode.ALL_VERSIONS_AND_DELETES,
             ChangeFeedStartFromInternal.createFromETagAndFeedRange(token, this.feedRangeInternal),
             changeFeedState.getContinuation());
     }

@@ -283,7 +283,7 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
     val changeFeedState: ChangeFeedState = new ChangeFeedStateV1(
       containerResourceId,
       FeedRangeEpkImpl.forFullRange,
-      ChangeFeedMode.INCREMENTAL,
+      ChangeFeedMode.LATEST_VERSION,
       ChangeFeedStartFromInternal.createFromLegacyContinuation(),
       feedRangeContinuation
     )

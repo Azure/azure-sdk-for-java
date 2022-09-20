@@ -278,8 +278,8 @@ public class HttpConstants {
     }
 
     public static class A_IMHeaderValues {
-        public static final String INCREMENTAL_FEED = "Incremental Feed";
-        public static final String FullFidelityFeed = "Full-Fidelity Feed";
+        public static final String LATEST_VERSION_FEED = "Incremental Feed";
+        public static final String ALL_VERSIONS_AND_DELETES_FEED = "Full-Fidelity Feed";
     }
 
     public static class Versions {

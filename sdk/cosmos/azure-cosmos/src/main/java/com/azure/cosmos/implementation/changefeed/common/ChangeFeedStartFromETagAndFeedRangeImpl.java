@@ -74,7 +74,7 @@ class ChangeFeedStartFromETagAndFeedRangeImpl extends ChangeFeedStartFromInterna
         if (this.eTag != null) {
             // On REST level, change feed is using IfNoneMatch/ETag instead of continuation
             request.getHeaders().put(HttpConstants.HttpHeaders.IF_NONE_MATCH, this.eTag);
-        } else if (ChangeFeedMode.FULL_FIDELITY == changeFeedMode) {
+        } else if (ChangeFeedMode.ALL_VERSIONS_AND_DELETES == changeFeedMode) {
             //  If there is no continuation token, we start from now (which is by default).
             //  On REST level, change feed is using IfNoneMatch/ETag instead of continuation.
             request.getHeaders().put(HttpConstants.HttpHeaders.IF_NONE_MATCH,

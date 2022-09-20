@@ -37,7 +37,7 @@ public class ChangeFeedProcessorBuilder {
     private ChangeFeedProcessorOptions changeFeedProcessorOptions;
     private Consumer<List<JsonNode>> partitionKeyBasedLeaseConsumer;
     private Consumer<List<ChangeFeedProcessorItem>> epkRangeBasedLeaseConsumer;
-    private ChangeFeedMode changeFeedMode = ChangeFeedMode.INCREMENTAL;
+    private ChangeFeedMode changeFeedMode = ChangeFeedMode.LATEST_VERSION;
 
     /**
      * Instantiates a new Cosmos a new ChangeFeedProcessor builder.
@@ -113,7 +113,7 @@ public class ChangeFeedProcessorBuilder {
      *             .feedContainer(feedContainer)
      *             .leaseContainer(leaseContainer)
      *             .changeFeedMode(ChangeFeedMode.FULL_FIDELITY)
-     *             .handleAllChanges(docs -> {
+     *             .handleAllVersionsAndDeletesChanges(docs -> {
      *                 for (ChangeFeedProcessorItem item : docs) {
      *                     // Implementation for handling and processing of each ChangeFeedProcessorItem item goes here
      *                 }
@@ -125,18 +125,8 @@ public class ChangeFeedProcessorBuilder {
      * @param consumer the {@link Consumer} to call for handling the feeds.
      * @return current Builder.
      */
-    //  TODO:(kuthapar) - finalize the name for this.
-    //  Full Fidelity -> operationLogs
-    //  Incremental -> itemLogs
-    //  handleChangesWithOperationLogs() ?
-    //  handleChangesWithFullFidelity() ?
-    //  handleChangesForFullFidelity() ?
-    //  handleOperationChanges() ?
-    //  Future options -> handleChangesWithMergeSupport() ?
-    //  Future options -> handleChangesWithLogicalPartition() ?
-    //  Or keep it generic and open for future -> handleChangesV1() ?
-    @Beta(value = Beta.SinceVersion.V4_36_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ChangeFeedProcessorBuilder handleAllChanges(Consumer<List<ChangeFeedProcessorItem>> consumer) {
+    @Beta(value = Beta.SinceVersion.V4_37_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ChangeFeedProcessorBuilder handleAllVersionsAndDeletesChanges(Consumer<List<ChangeFeedProcessorItem>> consumer) {
         this.epkRangeBasedLeaseConsumer = consumer;
 
         return this;
@@ -165,12 +155,12 @@ public class ChangeFeedProcessorBuilder {
 
     /**
      * Sets the Change Feed Mode to be used with this {@link ChangeFeedProcessor}.
-     * Unless specifically set, the default will be {@link ChangeFeedMode#INCREMENTAL} to support backward-compatibility.
+     * Unless specifically set, the default will be {@link ChangeFeedMode#LATEST_VERSION} to support backward-compatibility.
      *
      * @param changeFeedMode changeFeedMode to be used for this {@link ChangeFeedProcessor}
      * @return current Builder
      */
-    @Beta(value = Beta.SinceVersion.V4_36_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_37_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ChangeFeedProcessorBuilder changeFeedMode(ChangeFeedMode changeFeedMode) {
         this.changeFeedMode = changeFeedMode;
         return this;
@@ -184,7 +174,7 @@ public class ChangeFeedProcessorBuilder {
     public ChangeFeedProcessor buildChangeFeedProcessor() {
         validateChangeFeedProcessorBuilder();
 
-        if (ChangeFeedMode.INCREMENTAL.equals(changeFeedMode)) {
+        if (ChangeFeedMode.LATEST_VERSION.equals(changeFeedMode)) {
             ChangeFeedProcessorBuilderImpl builder = new ChangeFeedProcessorBuilderImpl()
                 .hostName(this.hostName)
                 .feedContainer(this.feedContainer)
@@ -224,10 +214,10 @@ public class ChangeFeedProcessorBuilder {
             || (partitionKeyBasedLeaseConsumer != null && epkRangeBasedLeaseConsumer != null)) {
             throw new IllegalArgumentException("expecting either incremental or full fidelity consumer for handling change feed processor changes");
         }
-        if (ChangeFeedMode.INCREMENTAL.equals(changeFeedMode) && partitionKeyBasedLeaseConsumer == null) {
+        if (ChangeFeedMode.LATEST_VERSION.equals(changeFeedMode) && partitionKeyBasedLeaseConsumer == null) {
             throw new IllegalArgumentException("consumer for handling change feed processor incremental changes cannot be null when using incremental mode");
         }
-        if (ChangeFeedMode.FULL_FIDELITY.equals(changeFeedMode) && epkRangeBasedLeaseConsumer == null) {
+        if (ChangeFeedMode.ALL_VERSIONS_AND_DELETES.equals(changeFeedMode) && epkRangeBasedLeaseConsumer == null) {
             throw new IllegalArgumentException("consumer for handling change feed processor full fidelity changes cannot be null when using full fidelity mode");
         }
         validateChangeFeedProcessorOptions();
@@ -243,7 +233,7 @@ public class ChangeFeedProcessorBuilder {
             throw new IllegalArgumentException("changeFeedProcessorOptions: expecting leaseRenewInterval less than leaseExpirationInterval");
         }
         //  Some extra checks for full fidelity mode
-        if (ChangeFeedMode.FULL_FIDELITY.equals(changeFeedMode)) {
+        if (ChangeFeedMode.ALL_VERSIONS_AND_DELETES.equals(changeFeedMode)) {
             if (this.changeFeedProcessorOptions.getStartTime() != null) {
                 throw new IllegalStateException("changeFeedProcessorOptions: Full fidelity change feed is not supported for startTime option.");
             }

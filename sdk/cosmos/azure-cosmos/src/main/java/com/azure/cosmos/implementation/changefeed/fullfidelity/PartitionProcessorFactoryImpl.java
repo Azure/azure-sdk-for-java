@@ -93,7 +93,7 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory<ChangeF
             state = new ChangeFeedStateV1(
                 BridgeInternal.extractContainerSelfLink(this.collectionSelfLink),
                 lease.getFeedRange(),
-                ChangeFeedMode.FULL_FIDELITY,
+                ChangeFeedMode.ALL_VERSIONS_AND_DELETES,
                 getStartFromSettings(
                     lease.getFeedRange(),
                     this.changeFeedProcessorOptions),

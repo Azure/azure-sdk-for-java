@@ -162,15 +162,15 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
             String.valueOf(maxItemCount));
         request.getHeaders().put(HttpConstants.HttpHeaders.POPULATE_QUERY_METRICS, String.valueOf(true));
         switch (this.mode) {
-            case INCREMENTAL:
+            case LATEST_VERSION:
                 request.getHeaders().put(
                     HttpConstants.HttpHeaders.A_IM,
-                    HttpConstants.A_IMHeaderValues.INCREMENTAL_FEED);
+                    HttpConstants.A_IMHeaderValues.LATEST_VERSION_FEED);
                 break;
-            case FULL_FIDELITY:
+            case ALL_VERSIONS_AND_DELETES:
                 request.getHeaders().put(
                     HttpConstants.HttpHeaders.A_IM,
-                    HttpConstants.A_IMHeaderValues.FullFidelityFeed);
+                    HttpConstants.A_IMHeaderValues.ALL_VERSIONS_AND_DELETES_FEED);
                 //  This is the new wire format, which only gets passed for Full Fidelity Change Feed
                 request.getHeaders().put(
                     HttpConstants.HttpHeaders.CHANGE_FEED_WIRE_FORMAT_VERSION,

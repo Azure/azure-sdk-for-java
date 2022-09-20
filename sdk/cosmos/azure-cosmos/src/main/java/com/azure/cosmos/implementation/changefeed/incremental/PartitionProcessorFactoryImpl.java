@@ -104,7 +104,7 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory<JsonNod
             state = new ChangeFeedStateV1(
                 BridgeInternal.extractContainerSelfLink(this.collectionSelfLink),
                 new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken()),
-                ChangeFeedMode.INCREMENTAL,
+                ChangeFeedMode.LATEST_VERSION,
                 getStartFromSettings(
                     feedRange,
                     this.changeFeedProcessorOptions),

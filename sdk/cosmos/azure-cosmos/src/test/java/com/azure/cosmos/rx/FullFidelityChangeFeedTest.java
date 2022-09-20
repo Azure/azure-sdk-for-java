@@ -65,7 +65,7 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
         CosmosContainer cosmosContainer = initializeFFCFContainer(2);
         CosmosChangeFeedRequestOptions options1 = CosmosChangeFeedRequestOptions
             .createForProcessingFromNow(FeedRange.forLogicalPartition(new PartitionKey("mypk-1")));
-        options1.fullFidelity();
+        options1.allVersionsAndDeletes();
 
         Iterator<FeedResponse<JsonNode>> results1 = cosmosContainer
             .queryChangeFeed(options1, JsonNode.class)
@@ -99,7 +99,7 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
 
         options1 = CosmosChangeFeedRequestOptions
             .createForProcessingFromContinuation(continuationToken1);
-        options1.fullFidelity();
+        options1.allVersionsAndDeletes();
 
         results1 = cosmosContainer
             .queryChangeFeed(options1, JsonNode.class)
@@ -151,7 +151,7 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
 
         CosmosChangeFeedRequestOptions options2 = CosmosChangeFeedRequestOptions
             .createForProcessingFromNow(FeedRange.forLogicalPartition(new PartitionKey("mypk-2")));
-        options2.fullFidelity();
+        options2.allVersionsAndDeletes();
 
         Iterator<FeedResponse<JsonNode>> results2 = cosmosContainer
             .queryChangeFeed(options2, JsonNode.class)
@@ -172,7 +172,7 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
 
         options2 = CosmosChangeFeedRequestOptions
             .createForProcessingFromContinuation(continuationToken2);
-        options2.fullFidelity();
+        options2.allVersionsAndDeletes();
 
         results2 = cosmosContainer
             .queryChangeFeed(options2, JsonNode.class)
@@ -211,7 +211,7 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
         CosmosContainer cosmosContainer = initializeFFCFContainer(2);
         CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
             .createForProcessingFromNow(FeedRange.forFullRange());
-        options.fullFidelity();
+        options.allVersionsAndDeletes();
 
         Iterator<FeedResponse<JsonNode>> results = cosmosContainer
             .queryChangeFeed(options, JsonNode.class)
@@ -226,7 +226,7 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
 
         options = CosmosChangeFeedRequestOptions
             .createForProcessingFromContinuation(continuationToken);
-        options.fullFidelity();
+        options.allVersionsAndDeletes();
 
         TestItem item1 = new TestItem(
             UUID.randomUUID().toString(),
@@ -288,7 +288,7 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
         CosmosContainer cosmosContainer = initializeFFCFContainer(0);
         CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
             .createForProcessingFromNow(FeedRange.forFullRange());
-        options.fullFidelity();
+        options.allVersionsAndDeletes();
 
         Iterator<FeedResponse<JsonNode>> results = cosmosContainer
             .queryChangeFeed(options, JsonNode.class)
@@ -302,7 +302,7 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
         }
 
         options = CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(continuationToken);
-        options.fullFidelity();
+        options.allVersionsAndDeletes();
         options.setMaxItemCount(150); // get all results in one page
 
         // Create, replace, and delete 50 objects for 150 total operations
@@ -340,7 +340,7 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
         CosmosContainer cosmosContainer = initializeFFCFContainer(2);
         CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
             .createForProcessingFromNow(FeedRange.forFullRange());
-        options.fullFidelity();
+        options.allVersionsAndDeletes();
 
         Iterator<FeedResponse<JsonNode>> results = cosmosContainer
             .queryChangeFeed(options, JsonNode.class)
@@ -355,7 +355,7 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
 
         options = CosmosChangeFeedRequestOptions
             .createForProcessingFromContinuation(continuationToken);
-        options.fullFidelity();
+        options.allVersionsAndDeletes();
 
         TestItem item1 = new TestItem(
             UUID.randomUUID().toString(),
@@ -431,7 +431,7 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
         if (ttl != 0) {
             containerProperties.setDefaultTimeToLiveInSeconds(ttl);
         }
-        containerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(5)));
+        containerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(5)));
 
         CosmosDatabaseResponse databaseResponse = ffcfCosmosClient.createDatabaseIfNotExists(createdDatabase.getId());
         CosmosDatabase database = ffcfCosmosClient.getDatabase(databaseResponse.getProperties().getId());

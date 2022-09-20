@@ -151,7 +151,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
                            CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
                                .createForProcessingFromNow(lease.getFeedRange())
                                .setMaxItemCount(1)
-                               .fullFidelity();
+                               .allVersionsAndDeletes();
 
                            return this.feedContextClient
                                .createDocumentChangeFeedQuery(this.feedContextClient.getContainerClient(), options, ChangeFeedProcessorItem.class)

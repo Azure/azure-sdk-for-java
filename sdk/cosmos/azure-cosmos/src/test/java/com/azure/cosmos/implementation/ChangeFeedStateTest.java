@@ -30,7 +30,7 @@ public class ChangeFeedStateTest {
         ChangeFeedState stateWithoutContinuation = new ChangeFeedStateV1(
             containerRid,
             feedRange,
-            ChangeFeedMode.INCREMENTAL,
+            ChangeFeedMode.LATEST_VERSION,
             startFromSettings,
             null);
 
@@ -43,7 +43,7 @@ public class ChangeFeedStateTest {
                 String.format(
                     "{\"V\":1," +
                         "\"Rid\":\"%s\"," +
-                        "\"Mode\":\"INCREMENTAL\"," +
+                        "\"Mode\":\"LATEST_VERSION\"," +
                         "\"StartFrom\":{\"Type\":\"NOW\"}," +
                         "\"PKRangeId\":\"%s\"}",
                     containerRid,
@@ -87,7 +87,7 @@ public class ChangeFeedStateTest {
                 String.format(
                     "{\"V\":1," +
                         "\"Rid\":\"%s\"," +
-                        "\"Mode\":\"INCREMENTAL\"," +
+                        "\"Mode\":\"LATEST_VERSION\"," +
                         "\"StartFrom\":{\"Type\":\"NOW\"}," +
                         "\"Continuation\":%s}",
                     containerRid,
@@ -127,7 +127,7 @@ public class ChangeFeedStateTest {
         return new ChangeFeedStateV1(
             containerRid,
             feedRange,
-            ChangeFeedMode.INCREMENTAL,
+            ChangeFeedMode.LATEST_VERSION,
             startFromSettings,
             continuation);
     }

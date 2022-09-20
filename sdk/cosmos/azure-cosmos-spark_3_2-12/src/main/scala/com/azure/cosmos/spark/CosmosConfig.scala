@@ -1072,6 +1072,8 @@ private object ChangeFeedModes extends Enumeration {
 
   val Incremental: ChangeFeedModes.Value = Value("Incremental")
   val FullFidelity: ChangeFeedModes.Value = Value("FullFidelity")
+  val LatestVersion: ChangeFeedModes.Value = Value("LatestVersion")
+  val AllVersionsAndDeletes: ChangeFeedModes.Value = Value("AllVersionsAndDeletes")
 }
 
 private object ChangeFeedStartFromModes extends Enumeration {
@@ -1103,7 +1105,9 @@ private case class CosmosChangeFeedConfig
 
     this.changeFeedMode match {
       case ChangeFeedModes.Incremental => options
-      case ChangeFeedModes.FullFidelity => options.fullFidelity()
+      case ChangeFeedModes.LatestVersion => options
+      case ChangeFeedModes.FullFidelity => options.allVersionsAndDeletes()
+      case ChangeFeedModes.AllVersionsAndDeletes => options.allVersionsAndDeletes()
     }
   }
 
@@ -1116,7 +1120,7 @@ private case class CosmosChangeFeedConfig
 }
 
 private object CosmosChangeFeedConfig {
-  private val DefaultChangeFeedMode: ChangeFeedMode = ChangeFeedModes.Incremental
+  private val DefaultChangeFeedMode: ChangeFeedMode = ChangeFeedModes.LatestVersion
   private val DefaultStartFromMode: ChangeFeedStartFromMode = ChangeFeedStartFromModes.Beginning
 
   private val startFrom = CosmosConfigEntry[ChangeFeedStartFromMode](
@@ -1140,9 +1144,9 @@ private object CosmosChangeFeedConfig {
   private val changeFeedMode = CosmosConfigEntry[ChangeFeedMode](
     key = CosmosConfigNames.ChangeFeedMode,
     mandatory = false,
-    defaultValue = Some(ChangeFeedModes.Incremental),
+    defaultValue = Some(ChangeFeedModes.LatestVersion),
     parseFromStringFunction = changeFeedModeString => CosmosConfigEntry.parseEnumeration(changeFeedModeString, ChangeFeedModes),
-    helpMessage = "ChangeFeed mode (Incremental or FullFidelity)")
+    helpMessage = "ChangeFeed mode (Incremental/LatestVersion or FullFidelity/AllVersionsAndDeletes)")
 
   private val maxItemCountPerTriggerHint = CosmosConfigEntry[Long](
     key = CosmosConfigNames.ChangeFeedItemCountPerTriggerHint,

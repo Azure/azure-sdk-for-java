@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Change feed operation type
  */
-@Beta(value = Beta.SinceVersion.V4_36_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+@Beta(value = Beta.SinceVersion.V4_37_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public enum ChangeFeedOperationType {
     /**
      * Represents Create operation

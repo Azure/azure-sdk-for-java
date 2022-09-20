@@ -64,7 +64,7 @@ public class ChangeFeedFullFidelityTest {
 
         CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
             .createForProcessingFromNow(FeedRange.forFullRange());
-        options.fullFidelity();
+        options.allVersionsAndDeletes();
 
         String continuationToken = "";
 

@@ -37,14 +37,14 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class ChangeFeedProcessorFullFidelityTest {
+public class ChangeFeedProcessorAllVersionsAndDeletesTest {
 
     private static final String databaseId = "SampleDatabase";
     private static final String feedContainerId = "GreenTaxiRecords";
     private static final String leaseContainerId = "newleasecontainer";
     private static final String feedContainerPartitionKeyPath = "/myPk";
     private static final String leaseContainerPartitionKeyPath = "/id";
-    private static final Logger logger = LoggerFactory.getLogger(ChangeFeedProcessorFullFidelityTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(ChangeFeedProcessorAllVersionsAndDeletesTest.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static CosmosAsyncDatabase testDatabase;
     private static CosmosAsyncContainer feedContainer;
@@ -60,7 +60,7 @@ public class ChangeFeedProcessorFullFidelityTest {
 
     public static void main(String[] args) {
         setup();
-        runFullFidelityChangeFeedProcessorFromNow();
+        runAllVersionsAndDeletesChangeFeedProcessorFromNow();
         createItems();
         countNumberOfRecords();
         replaceItems();
@@ -68,7 +68,7 @@ public class ChangeFeedProcessorFullFidelityTest {
         deleteItems();
         countNumberOfRecords();
         ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(1);
-        executorService.scheduleAtFixedRate(ChangeFeedProcessorFullFidelityTest::checkChangeFeedMapDetails,
+        executorService.scheduleAtFixedRate(ChangeFeedProcessorAllVersionsAndDeletesTest::checkChangeFeedMapDetails,
             30, 30, TimeUnit.SECONDS);
     }
 
@@ -193,10 +193,10 @@ public class ChangeFeedProcessorFullFidelityTest {
         CosmosContainerProperties cosmosContainerProperties = new CosmosContainerProperties(feedContainerId,
             feedContainerPartitionKeyPath);
         ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(100000);
-        cosmosContainerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(60)));
+        cosmosContainerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(60)));
         testDatabase.createContainerIfNotExists(cosmosContainerProperties, throughputProperties).block();
 //        cosmosContainerProperties = feedContainer.read().block().getProperties();
-//        cosmosContainerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(5)));
+//        cosmosContainerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(60)));
 //        feedContainer.replace(cosmosContainerProperties).block();
         logger.info("Feed container created if not existed");
 
@@ -204,7 +204,7 @@ public class ChangeFeedProcessorFullFidelityTest {
         logger.info("Lease container created if not existed");
     }
 
-    private static void runFullFidelityChangeFeedProcessorFromNow() {
+    private static void runAllVersionsAndDeletesChangeFeedProcessorFromNow() {
         ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
         changeFeedProcessorOptions.setMaxItemCount(1000);
         ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
@@ -212,8 +212,8 @@ public class ChangeFeedProcessorFullFidelityTest {
             .leaseContainer(leaseContainer)
             .options(changeFeedProcessorOptions)
             .hostName("example-host")
-            .changeFeedMode(ChangeFeedMode.FULL_FIDELITY)
-            .handleAllChanges(changeFeedProcessorItems -> {
+            .changeFeedMode(ChangeFeedMode.ALL_VERSIONS_AND_DELETES)
+            .handleAllVersionsAndDeletesChanges(changeFeedProcessorItems -> {
                 for (ChangeFeedProcessorItem item : changeFeedProcessorItems) {
                     try {
                         logger.info("Item is : {}", item.toString());

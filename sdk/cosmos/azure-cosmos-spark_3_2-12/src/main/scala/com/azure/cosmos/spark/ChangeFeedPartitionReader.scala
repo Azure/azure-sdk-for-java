@@ -83,8 +83,12 @@ private case class ChangeFeedPartitionReader
       cosmosChangeFeedConfig.changeFeedMode match {
           case ChangeFeedModes.Incremental =>
               factoryMethod = (jsonNode: JsonNode) => changeFeedItemFactoryMethod(jsonNode)
+          case ChangeFeedModes.LatestVersion =>
+            factoryMethod = (jsonNode: JsonNode) => changeFeedItemFactoryMethod(jsonNode)
           case ChangeFeedModes.FullFidelity =>
               factoryMethod = (jsonNode: JsonNode) => changeFeedItemFactoryMethodV1(jsonNode)
+          case ChangeFeedModes.AllVersionsAndDeletes =>
+            factoryMethod = (jsonNode: JsonNode) => changeFeedItemFactoryMethodV1(jsonNode)
     }
 
     ImplementationBridgeHelpers

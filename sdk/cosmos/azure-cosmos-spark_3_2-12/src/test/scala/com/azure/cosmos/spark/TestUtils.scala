@@ -211,7 +211,7 @@ trait CosmosContainerWithRetention extends CosmosContainer {
     val properties: CosmosContainerProperties =
       new CosmosContainerProperties(cosmosContainer, partitionKeyPath)
     properties.setChangeFeedPolicy(
-      ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(10)))
+      ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(10)))
 
     val throughputProperties = ThroughputProperties.createManualThroughput(Defaults.DefaultContainerThroughput)
 

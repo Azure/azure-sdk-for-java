@@ -7,9 +7,9 @@ import com.azure.cosmos.models.ChangeFeedMode;
 import com.azure.cosmos.models.ChangeFeedProcessorItem;
 
 /**
- * Code snippets for FullFidelityChangeFeedProcessor
+ * Code snippets for AllVersionsAndDeletesChangeFeedProcessor
  */
-public class ChangeFeedProcessorFullFidelityModeCodeSnippet {
+public class ChangeFeedProcessorAllVersionsAndDeletesModeCodeSnippet {
 
     public void changeFeedProcessorBuilderCodeSnippet() {
         String hostName = "test-host-name";
@@ -22,19 +22,19 @@ public class ChangeFeedProcessorFullFidelityModeCodeSnippet {
         CosmosAsyncDatabase cosmosAsyncDatabase = cosmosAsyncClient.getDatabase("testDb");
         CosmosAsyncContainer feedContainer = cosmosAsyncDatabase.getContainer("feedContainer");
         CosmosAsyncContainer leaseContainer = cosmosAsyncDatabase.getContainer("leaseContainer");
-        // BEGIN: com.azure.cosmos.fullFidelityChangeFeedProcessor.builder
+        // BEGIN: com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessor.builder
         ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
             .hostName(hostName)
             .feedContainer(feedContainer)
             .leaseContainer(leaseContainer)
-            .changeFeedMode(ChangeFeedMode.FULL_FIDELITY)
-            .handleAllChanges(docs -> {
+            .changeFeedMode(ChangeFeedMode.ALL_VERSIONS_AND_DELETES)
+            .handleAllVersionsAndDeletesChanges(docs -> {
                 for (ChangeFeedProcessorItem item : docs) {
                     // Implementation for handling and processing of each ChangeFeedProcessorItem item goes here
                 }
             })
             .buildChangeFeedProcessor();
-        // END: com.azure.cosmos.fullFidelityChangeFeedProcessor.builder
+        // END: com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessor.builder
     }
 
     public void handleChangesCodeSnippet() {
@@ -53,8 +53,8 @@ public class ChangeFeedProcessorFullFidelityModeCodeSnippet {
             .feedContainer(feedContainer)
             .leaseContainer(leaseContainer)
             // BEGIN: com.azure.cosmos.fullFidelityChangeFeedProcessor.handleChanges
-            .changeFeedMode(ChangeFeedMode.FULL_FIDELITY)
-            .handleAllChanges(docs -> {
+            .changeFeedMode(ChangeFeedMode.ALL_VERSIONS_AND_DELETES)
+            .handleAllVersionsAndDeletesChanges(docs -> {
                 for (ChangeFeedProcessorItem item : docs) {
                     // Implementation for handling and processing of each ChangeFeedProcessorItem item goes here
                 }
