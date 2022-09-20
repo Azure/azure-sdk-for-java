@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.microsoft.com/map/tileset?api-version=2.1&tilesetId=microsoft.base",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaRenderSDK/2.1 (14.0.2; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "content-length" : "365",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-azuremaps-region" : "West US 2",
+      "Expires" : "Thu, 25 Aug 2022 20:36:13 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "X-MSEdge-Ref" : "Ref A: 4EA54F261CC44D4C9916B474BE0E3E72 Ref B: PAOEDGE0611 Ref C: 2022-08-18T20:36:13Z",
+      "Body" : "{\"tilejson\":\"2.2.0\",\"name\":\"microsoft.base\",\"version\":\"1.0.0\",\"attribution\":\"<a data-azure-maps-attribution-tileset=\\\"microsoft.base\\\">&copy;2022 TomTom</a>\",\"scheme\":\"xyz\",\"tiles\":[\"https://atlas.microsoft.com/map/tile?api-version=2.1&tilesetId=microsoft.base&zoom={z}&x={x}&y={y}\"],\"grids\":[],\"data\":[],\"minzoom\":0,\"maxzoom\":22,\"bounds\":[-180.0,-90.0,180.0,90.0]}",
+      "Date" : "Thu, 18 Aug 2022 20:36:13 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -1,22 +1,57 @@
 # Release History
 
-## 4.0.0-beta.7 (Unreleased)
-This version of the SDK defaults to the latest supported API version, which currently is 2021-09-30-preview.
+## 4.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
-- Removed property `kind` from model `DocumentPage`
-- Removed model `DocumentPageKind`
-- Renamed models `ModelOperationDetails`, `ModelOperationSummary`, `ModelOperationKind` and `ModelOperationStatus`
-to `DocumentModelOperationDetails`, `DocumentModelOperationSummary`, `DocumentOperationKind` and `DocumentModelOperationStatus` 
-respectively.
-- Renamed properties `documentModelCount` and `documentModelLimit` to `customDocumentModelCount` 
-and `customDocumentModelLimit` on model `ResourceDetails`.
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.0.0 (2022-09-08)
+This version of the SDK defaults 2022-08-31 going forward.
+
+### Features Added
+- Added a method `getWords()` on model `DocumentLine`.
+- Added `TypedDocumentField<T>` model for strongly typed representation of `Fields` on analyzed documents.
+`DocumentField` extends from `TypedDocumentField<T>`.
+- Added interfaces from `com.azure.core.client.traits` to `FormRecognizerClientBuilder` and `FormTrainingClientBuilder`
+
+### Breaking Changes
+- Removed property `kind` from model `DocumentPage`
+- Removed model `DocumentPageKind`, `DocumentEntity`, `DocumentFootnote`, and `DocumentCaption`.
+- Renamed models:
+  - `ModelOperationDetails` to `OperationDetails`
+  - `ModelOperationSummary` to `OperationSummary` 
+  - `ModelOperationKind` to `OperationKind`
+  - `ModelOperationStatus` to `OperationStatus` 
+  - `DocumentOperationKind` to `OperationKind`
+  - `BuildModelOptions` to `BuildDocumentModelOptions`
+  - `ComposeModelOptions` to `ComposeDocumentModelOptions`
+  - `DocumentOperationResult` to `OperationResult`
+  - `CopyAuthorization` to `DocumentModelCopyAuthorization`
+  - `LengthUnit` to `DocumentPageLengthUnit`
+  - `SelectionMarkState` to `DocumentSelectionMarkState`
+- Renamed properties `documentModelCount` and `documentModelLimit` to `customDocumentModelCount` 
+and `customDocumentModelLimit` on model `ResourceDetails`.
+- Renamed clients methods:
+  - `getModel` to `getDocumentModel`
+  - `listModels` to `listDocumentModels`
+  - `deleteModel` to `deleteDocumentModel`
+  - `beginBuildModel` to `beginBuildDocumentModel`
+  - `beginComposeModel` to `beginComposeDocumentModel`
+- Renamed property `DocumentFieldType.INTEGER` to `DocumentFieldType.LONG`
+- Renamed method `getValueInteger` to `getValueLong` and `getValueFloat` to `getValueLong` on `DocumentField` model
+- Renamed properties on model `DocumentAnalysisAudience`
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.32.0`.
+- Upgraded `azure-core-http-netty` to `1.12.5`.
 
 ## 3.1.14 (2022-08-11)
 
@@ -42,7 +77,7 @@ and `customDocumentModelLimit` on model `ResourceDetails`.
 - Renamed `ModelOperationInfo` model to `ModelOperationSummary`
 - Renamed `getAccountProperties` method to `getResourceDetails`
 - Renamed `AccountProperties` model to `ResourceDetails`
-- Renamed `state` property on model `DocumentSelectionMark` to `selectionMarkState`
+- Renamed `state` property on model `DocumentSelectionMark` to `documentSelectionMarkState`
 - Renamed `getValue*` accessor methods on `DocumentField` to `getValueAs*`
 - Renamed `DocTypeInfo` model to `DocumentTypeDetails`
 - Renamed `docTypes` property on `DocumentModelDetails` model to `documentTypes`

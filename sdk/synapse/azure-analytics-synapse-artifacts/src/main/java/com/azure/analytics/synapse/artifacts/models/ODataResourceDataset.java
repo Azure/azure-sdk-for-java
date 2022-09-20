@@ -19,8 +19,7 @@ import java.util.Map;
 @Fluent
 public class ODataResourceDataset extends Dataset {
     /*
-     * The OData resource path. Type: string (or Expression with resultType
-     * string).
+     * The OData resource path. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.path")
     private Object path;

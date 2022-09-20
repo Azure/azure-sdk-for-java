@@ -9,15 +9,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.models.DefaultPrincipalsModificationKind;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
 import com.azure.resourcemanager.kusto.models.TableLevelSharingProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Class representing the an attached database configuration properties of kind specific. */
 @Fluent
 public final class AttachedDatabaseConfigurationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AttachedDatabaseConfigurationProperties.class);
-
     /*
      * The provisioned state of the resource.
      */
@@ -25,22 +22,20 @@ public final class AttachedDatabaseConfigurationProperties {
     private ProvisioningState provisioningState;
 
     /*
-     * The name of the database which you would like to attach, use * if you
-     * want to follow all current and future databases.
+     * The name of the database which you would like to attach, use * if you want to follow all current and future
+     * databases.
      */
     @JsonProperty(value = "databaseName", required = true)
     private String databaseName;
 
     /*
-     * The resource id of the cluster where the databases you would like to
-     * attach reside.
+     * The resource id of the cluster where the databases you would like to attach reside.
      */
     @JsonProperty(value = "clusterResourceId", required = true)
     private String clusterResourceId;
 
     /*
-     * The list of databases from the clusterResourceId which are currently
-     * attached to the cluster.
+     * The list of databases from the clusterResourceId which are currently attached to the cluster.
      */
     @JsonProperty(value = "attachedDatabaseNames", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> attachedDatabaseNames;
@@ -56,6 +51,19 @@ public final class AttachedDatabaseConfigurationProperties {
      */
     @JsonProperty(value = "tableLevelSharingProperties")
     private TableLevelSharingProperties tableLevelSharingProperties;
+
+    /*
+     * Overrides the original database name. Relevant only when attaching to a specific database.
+     */
+    @JsonProperty(value = "databaseNameOverride")
+    private String databaseNameOverride;
+
+    /*
+     * Adds a prefix to the attached databases name. When following an entire cluster, that prefix would be added to
+     * all of the databases original names from leader cluster.
+     */
+    @JsonProperty(value = "databaseNamePrefix")
+    private String databaseNamePrefix;
 
     /**
      * Get the provisioningState property: The provisioned state of the resource.
@@ -163,26 +171,70 @@ public final class AttachedDatabaseConfigurationProperties {
     }
 
     /**
+     * Get the databaseNameOverride property: Overrides the original database name. Relevant only when attaching to a
+     * specific database.
+     *
+     * @return the databaseNameOverride value.
+     */
+    public String databaseNameOverride() {
+        return this.databaseNameOverride;
+    }
+
+    /**
+     * Set the databaseNameOverride property: Overrides the original database name. Relevant only when attaching to a
+     * specific database.
+     *
+     * @param databaseNameOverride the databaseNameOverride value to set.
+     * @return the AttachedDatabaseConfigurationProperties object itself.
+     */
+    public AttachedDatabaseConfigurationProperties withDatabaseNameOverride(String databaseNameOverride) {
+        this.databaseNameOverride = databaseNameOverride;
+        return this;
+    }
+
+    /**
+     * Get the databaseNamePrefix property: Adds a prefix to the attached databases name. When following an entire
+     * cluster, that prefix would be added to all of the databases original names from leader cluster.
+     *
+     * @return the databaseNamePrefix value.
+     */
+    public String databaseNamePrefix() {
+        return this.databaseNamePrefix;
+    }
+
+    /**
+     * Set the databaseNamePrefix property: Adds a prefix to the attached databases name. When following an entire
+     * cluster, that prefix would be added to all of the databases original names from leader cluster.
+     *
+     * @param databaseNamePrefix the databaseNamePrefix value to set.
+     * @return the AttachedDatabaseConfigurationProperties object itself.
+     */
+    public AttachedDatabaseConfigurationProperties withDatabaseNamePrefix(String databaseNamePrefix) {
+        this.databaseNamePrefix = databaseNamePrefix;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (databaseName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property databaseName in model AttachedDatabaseConfigurationProperties"));
         }
         if (clusterResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property clusterResourceId in model"
                             + " AttachedDatabaseConfigurationProperties"));
         }
         if (defaultPrincipalsModificationKind() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property defaultPrincipalsModificationKind in model"
@@ -192,4 +244,6 @@ public final class AttachedDatabaseConfigurationProperties {
             tableLevelSharingProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AttachedDatabaseConfigurationProperties.class);
 }

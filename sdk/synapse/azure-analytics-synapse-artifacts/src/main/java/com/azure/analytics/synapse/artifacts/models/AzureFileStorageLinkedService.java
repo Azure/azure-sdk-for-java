@@ -19,15 +19,13 @@ import java.util.Map;
 @Fluent
 public class AzureFileStorageLinkedService extends LinkedService {
     /*
-     * Host name of the server. Type: string (or Expression with resultType
-     * string).
+     * Host name of the server. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.host", required = true)
     private Object host;
 
     /*
-     * User ID to logon the server. Type: string (or Expression with resultType
-     * string).
+     * User ID to logon the server. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.userId")
     private Object userId;
@@ -39,8 +37,8 @@ public class AzureFileStorageLinkedService extends LinkedService {
     private SecretBase password;
 
     /*
-     * The connection string. It is mutually exclusive with sasUri property.
-     * Type: string, SecureString or AzureKeyVaultSecretReference.
+     * The connection string. It is mutually exclusive with sasUri property. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "typeProperties.connectionString")
     private Object connectionString;
@@ -52,9 +50,8 @@ public class AzureFileStorageLinkedService extends LinkedService {
     private AzureKeyVaultSecretReference accountKey;
 
     /*
-     * SAS URI of the Azure File resource. It is mutually exclusive with
-     * connectionString property. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * SAS URI of the Azure File resource. It is mutually exclusive with connectionString property. Type: string,
+     * SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "typeProperties.sasUri")
     private Object sasUri;
@@ -66,24 +63,21 @@ public class AzureFileStorageLinkedService extends LinkedService {
     private AzureKeyVaultSecretReference sasToken;
 
     /*
-     * The azure file share name. It is required when auth with
-     * accountKey/sasToken. Type: string (or Expression with resultType
-     * string).
+     * The azure file share name. It is required when auth with accountKey/sasToken. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "typeProperties.fileShare")
     private Object fileShare;
 
     /*
-     * The azure file share snapshot version. Type: string (or Expression with
-     * resultType string).
+     * The azure file share snapshot version. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.snapshot")
     private Object snapshot;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;

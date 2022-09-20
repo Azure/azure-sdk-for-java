@@ -19,13 +19,14 @@ import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyRsaTokenKe
 import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicySymmetricTokenKey;
 import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyTokenRestriction;
 import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyWidevineConfiguration;
+import com.azure.resourcemanager.mediaservices.models.SecurityLevel;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
 /** Samples for ContentKeyPolicies CreateOrUpdate. */
 public final class ContentKeyPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/content-key-policies-create-multiple-options.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/content-key-policies-create-multiple-options.json
      */
     /**
      * Sample code: Creates a Content Key Policy with multiple options.
@@ -64,7 +65,7 @@ public final class ContentKeyPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/content-key-policies-create-nodrm-token.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/content-key-policies-create-nodrm-token.json
      */
     /**
      * Sample code: Creates a Content Key Policy with ClearKey option and Token Restriction.
@@ -96,7 +97,7 @@ public final class ContentKeyPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/content-key-policies-create-playready-open.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/content-key-policies-create-playready-open.json
      */
     /**
      * Sample code: Creates a Content Key Policy with PlayReady option and Open Restriction.
@@ -122,6 +123,7 @@ public final class ContentKeyPoliciesCreateOrUpdateSamples {
                                             .asList(
                                                 new ContentKeyPolicyPlayReadyLicense()
                                                     .withAllowTestDevices(true)
+                                                    .withSecurityLevel(SecurityLevel.SL150)
                                                     .withBeginDate(OffsetDateTime.parse("2017-10-16T18:22:53.46Z"))
                                                     .withPlayRight(
                                                         new ContentKeyPolicyPlayReadyPlayRight()
@@ -143,7 +145,7 @@ public final class ContentKeyPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/content-key-policies-create-widevine-token.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/content-key-policies-create-widevine-token.json
      */
     /**
      * Sample code: Creates a Content Key Policy with Widevine option and Token Restriction.

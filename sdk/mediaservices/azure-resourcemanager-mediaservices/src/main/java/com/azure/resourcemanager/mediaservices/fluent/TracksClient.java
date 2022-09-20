@@ -16,7 +16,9 @@ import com.azure.resourcemanager.mediaservices.fluent.models.AssetTrackInner;
 /** An instance of this class provides access to all the operations defined in TracksClient. */
 public interface TracksClient {
     /**
-     * Lists the Tracks in the asset.
+     * List Tracks in the Asset
+     *
+     * <p>Lists the Tracks in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -30,7 +32,9 @@ public interface TracksClient {
     PagedIterable<AssetTrackInner> list(String resourceGroupName, String accountName, String assetName);
 
     /**
-     * Lists the Tracks in the asset.
+     * List Tracks in the Asset
+     *
+     * <p>Lists the Tracks in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -46,7 +50,9 @@ public interface TracksClient {
         String resourceGroupName, String accountName, String assetName, Context context);
 
     /**
-     * Get the details of a Track in the Asset.
+     * Get a Track
+     *
+     * <p>Get the details of a Track in the Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -61,7 +67,9 @@ public interface TracksClient {
     AssetTrackInner get(String resourceGroupName, String accountName, String assetName, String trackName);
 
     /**
-     * Get the details of a Track in the Asset.
+     * Get a Track
+     *
+     * <p>Get the details of a Track in the Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -78,7 +86,9 @@ public interface TracksClient {
         String resourceGroupName, String accountName, String assetName, String trackName, Context context);
 
     /**
-     * Create or update a Track in the asset.
+     * Create or update a Track
+     *
+     * <p>Create or update a Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -95,7 +105,9 @@ public interface TracksClient {
         String resourceGroupName, String accountName, String assetName, String trackName, AssetTrackInner parameters);
 
     /**
-     * Create or update a Track in the asset.
+     * Create or update a Track
+     *
+     * <p>Create or update a Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -118,7 +130,9 @@ public interface TracksClient {
         Context context);
 
     /**
-     * Create or update a Track in the asset.
+     * Create or update a Track
+     *
+     * <p>Create or update a Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -135,7 +149,9 @@ public interface TracksClient {
         String resourceGroupName, String accountName, String assetName, String trackName, AssetTrackInner parameters);
 
     /**
-     * Create or update a Track in the asset.
+     * Create or update a Track
+     *
+     * <p>Create or update a Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -158,7 +174,9 @@ public interface TracksClient {
         Context context);
 
     /**
-     * Deletes a Track in the asset.
+     * Delete a Track
+     *
+     * <p>Deletes a Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -174,7 +192,9 @@ public interface TracksClient {
         String resourceGroupName, String accountName, String assetName, String trackName);
 
     /**
-     * Deletes a Track in the asset.
+     * Delete a Track
+     *
+     * <p>Deletes a Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -191,7 +211,9 @@ public interface TracksClient {
         String resourceGroupName, String accountName, String assetName, String trackName, Context context);
 
     /**
-     * Deletes a Track in the asset.
+     * Delete a Track
+     *
+     * <p>Deletes a Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -205,7 +227,9 @@ public interface TracksClient {
     void delete(String resourceGroupName, String accountName, String assetName, String trackName);
 
     /**
-     * Deletes a Track in the asset.
+     * Delete a Track
+     *
+     * <p>Deletes a Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -220,7 +244,9 @@ public interface TracksClient {
     void delete(String resourceGroupName, String accountName, String assetName, String trackName, Context context);
 
     /**
-     * Updates an existing Track in the asset.
+     * Update an Track
+     *
+     * <p>Updates an existing Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -237,7 +263,9 @@ public interface TracksClient {
         String resourceGroupName, String accountName, String assetName, String trackName, AssetTrackInner parameters);
 
     /**
-     * Updates an existing Track in the asset.
+     * Update an Track
+     *
+     * <p>Updates an existing Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -260,7 +288,9 @@ public interface TracksClient {
         Context context);
 
     /**
-     * Updates an existing Track in the asset.
+     * Update an Track
+     *
+     * <p>Updates an existing Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -277,7 +307,9 @@ public interface TracksClient {
         String resourceGroupName, String accountName, String assetName, String trackName, AssetTrackInner parameters);
 
     /**
-     * Updates an existing Track in the asset.
+     * Update an Track
+     *
+     * <p>Updates an existing Track in the asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -300,10 +332,12 @@ public interface TracksClient {
         Context context);
 
     /**
-     * Update the track data. Call this API after any changes are made to the track data stored in the asset container.
-     * For example, you have modified the WebVTT captions file in the Azure blob storage container for the asset,
-     * viewers will not see the new version of the captions unless this API is called. Note, the changes may not be
-     * reflected immediately. CDN cache may also need to be purged if applicable.
+     * Update the track data
+     *
+     * <p>Update the track data. Call this API after any changes are made to the track data stored in the asset
+     * container. For example, you have modified the WebVTT captions file in the Azure blob storage container for the
+     * asset, viewers will not see the new version of the captions unless this API is called. Note, the changes may not
+     * be reflected immediately. CDN cache may also need to be purged if applicable.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -319,10 +353,12 @@ public interface TracksClient {
         String resourceGroupName, String accountName, String assetName, String trackName);
 
     /**
-     * Update the track data. Call this API after any changes are made to the track data stored in the asset container.
-     * For example, you have modified the WebVTT captions file in the Azure blob storage container for the asset,
-     * viewers will not see the new version of the captions unless this API is called. Note, the changes may not be
-     * reflected immediately. CDN cache may also need to be purged if applicable.
+     * Update the track data
+     *
+     * <p>Update the track data. Call this API after any changes are made to the track data stored in the asset
+     * container. For example, you have modified the WebVTT captions file in the Azure blob storage container for the
+     * asset, viewers will not see the new version of the captions unless this API is called. Note, the changes may not
+     * be reflected immediately. CDN cache may also need to be purged if applicable.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -339,10 +375,12 @@ public interface TracksClient {
         String resourceGroupName, String accountName, String assetName, String trackName, Context context);
 
     /**
-     * Update the track data. Call this API after any changes are made to the track data stored in the asset container.
-     * For example, you have modified the WebVTT captions file in the Azure blob storage container for the asset,
-     * viewers will not see the new version of the captions unless this API is called. Note, the changes may not be
-     * reflected immediately. CDN cache may also need to be purged if applicable.
+     * Update the track data
+     *
+     * <p>Update the track data. Call this API after any changes are made to the track data stored in the asset
+     * container. For example, you have modified the WebVTT captions file in the Azure blob storage container for the
+     * asset, viewers will not see the new version of the captions unless this API is called. Note, the changes may not
+     * be reflected immediately. CDN cache may also need to be purged if applicable.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -356,10 +394,12 @@ public interface TracksClient {
     void updateTrackData(String resourceGroupName, String accountName, String assetName, String trackName);
 
     /**
-     * Update the track data. Call this API after any changes are made to the track data stored in the asset container.
-     * For example, you have modified the WebVTT captions file in the Azure blob storage container for the asset,
-     * viewers will not see the new version of the captions unless this API is called. Note, the changes may not be
-     * reflected immediately. CDN cache may also need to be purged if applicable.
+     * Update the track data
+     *
+     * <p>Update the track data. Call this API after any changes are made to the track data stored in the asset
+     * container. For example, you have modified the WebVTT captions file in the Azure blob storage container for the
+     * asset, viewers will not see the new version of the captions unless this API is called. Note, the changes may not
+     * be reflected immediately. CDN cache may also need to be purged if applicable.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.

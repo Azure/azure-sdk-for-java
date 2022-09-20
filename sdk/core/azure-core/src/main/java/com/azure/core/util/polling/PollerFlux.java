@@ -464,11 +464,11 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
      * @return a synchronous blocking poller.
      */
     public SyncPoller<T, U> getSyncPoller() {
-        return new DefaultSyncPoller<>(this.pollInterval,
-                this.syncActivationOperation,
-                this.pollOperation,
-                this.cancelOperation,
-                this.fetchResultOperation);
+        return DefaultSyncPoller.createSyncOverAsyncPoller(this.pollInterval,
+            this.syncActivationOperation,
+            this.pollOperation,
+            this.cancelOperation,
+            this.fetchResultOperation);
     }
 
     /**

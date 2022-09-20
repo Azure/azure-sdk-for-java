@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.microsoft.com/route/matrix/json?api-version=1.0&waitForResults=true",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-JavaSearchSDK/1.0 (14.0.2; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "content-length" : "1047",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-azuremaps-region" : "West US 2",
+      "Vary" : "Accept-Encoding,User-Agent",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "X-MSEdge-Ref" : "Ref A: DA581EFFBC5F4CA09BB2CBE1146C1444 Ref B: PAOEDGE0508 Ref C: 2022-08-18T20:22:16Z",
+      "Body" : "{\"formatVersion\":\"0.0.1\",\"matrix\":[[{\"statusCode\":200,\"response\":{\"routeSummary\":{\"lengthInMeters\":495,\"travelTimeInSeconds\":119,\"trafficDelayInSeconds\":0,\"trafficLengthInMeters\":0,\"departureTime\":\"2022-08-18T22:22:16+02:00\",\"arrivalTime\":\"2022-08-18T22:24:14+02:00\"}}},{\"statusCode\":200,\"response\":{\"routeSummary\":{\"lengthInMeters\":669268,\"travelTimeInSeconds\":20240,\"trafficDelayInSeconds\":221,\"trafficLengthInMeters\":15963,\"departureTime\":\"2022-08-18T22:22:16+02:00\",\"arrivalTime\":\"2022-08-19T03:59:36+02:00\"}}}],[{\"statusCode\":200,\"response\":{\"routeSummary\":{\"lengthInMeters\":338,\"travelTimeInSeconds\":101,\"trafficDelayInSeconds\":0,\"trafficLengthInMeters\":0,\"departureTime\":\"2022-08-18T22:22:16+02:00\",\"arrivalTime\":\"2022-08-18T22:23:56+02:00\"}}},{\"statusCode\":200,\"response\":{\"routeSummary\":{\"lengthInMeters\":669111,\"travelTimeInSeconds\":20201,\"trafficDelayInSeconds\":221,\"trafficLengthInMeters\":15963,\"departureTime\":\"2022-08-18T22:22:16+02:00\",\"arrivalTime\":\"2022-08-19T03:58:57+02:00\"}}}]],\"summary\":{\"successfulRoutes\":4,\"totalRoutes\":4}}",
+      "Date" : "Thu, 18 Aug 2022 20:22:16 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -17,22 +17,19 @@ public final class CreateLinkedIntegrationRuntimeRequest {
     private String name;
 
     /*
-     * The ID of the subscription that the linked integration runtime belongs
-     * to.
+     * The ID of the subscription that the linked integration runtime belongs to.
      */
     @JsonProperty(value = "subscriptionId")
     private String subscriptionId;
 
     /*
-     * The name of the data factory that the linked integration runtime belongs
-     * to.
+     * The name of the data factory that the linked integration runtime belongs to.
      */
     @JsonProperty(value = "dataFactoryName")
     private String dataFactoryName;
 
     /*
-     * The location of the data factory that the linked integration runtime
-     * belongs to.
+     * The location of the data factory that the linked integration runtime belongs to.
      */
     @JsonProperty(value = "dataFactoryLocation")
     private String dataFactoryLocation;

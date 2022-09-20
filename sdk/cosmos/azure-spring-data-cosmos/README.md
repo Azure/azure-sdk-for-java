@@ -99,7 +99,7 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-data-cosmos</artifactId>
-    <version>3.26.0</version>
+    <version>3.27.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -121,6 +121,9 @@ SLF4J is only needed if you plan to use logging, please also download an SLF4J b
 Set `queryMetricsEnabled` flag to true in application.properties to enable query metrics.
 In addition to setting the flag, implement `ResponseDiagnosticsProcessor` to log diagnostics information.
 Set `maxDegreeOfParallelism` flag to an integer in application.properties to allow parallel processing; setting the value to -1 will lead to the SDK deciding the optimal value.
+Set `maxBufferedItemCount` flag to an integer in application.properties to allow the user to set the max number of items that can be buffered during parallel query execution; if set to less than 0, the system automatically decides the number of items to buffer.
+NOTE: Setting this to a very high value can result in high memory consumption.
+Set `responseContinuationTokenLimitInKb` flag to an integer in application.properties to allow the user to limit the length of the continuation token in the query response. The continuation token contains both required and optional fields. The required fields are necessary for resuming the execution from where it was stoped. The optional fields may contain serialized index lookup work that was done but not yet utilized. This avoids redoing the work again in subsequent continuations and hence improve the query performance. Setting the maximum continuation size to 1KB, the Azure Cosmos DB service will only serialize required fields. Starting from 2KB, the Azure Cosmos DB service would serialize as much as it could fit till it reaches the maximum specified size.
 
 ```java readme-sample-AppConfiguration
 @Configuration
@@ -146,6 +149,12 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
 
     @Value("${azure.cosmos.maxDegreeOfParallelism}")
     private int maxDegreeOfParallelism;
+    
+    @Value("${azure.cosmos.maxBufferedItemCount}")
+    private int maxBufferedItemCount;
+    
+    @Value("${azure.cosmos.responseContinuationTokenLimitInKb}")
+    private int responseContinuationTokenLimitInKb;
 
     private AzureKeyCredential azureKeyCredential;
 
@@ -165,6 +174,8 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
         return CosmosConfig.builder()
                            .enableQueryMetrics(queryMetricsEnabled)
                            .maxDegreeOfParallelism(maxDegreeOfParallelism)
+                           .maxBufferedItemCount(maxBufferedItemCount)
+                           .responseContinuationTokenLimitInKb(responseContinuationTokenLimitInKb)
                            .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
                            .build();
     }
@@ -207,6 +218,8 @@ public CosmosConfig cosmosConfig() {
     return CosmosConfig.builder()
                        .enableQueryMetrics(queryMetricsEnabled)
                        .maxDegreeOfParallelism(maxDegreeOfParallelism)
+                       .maxBufferedItemCount(maxBufferedItemCount)
+                       .responseContinuationTokenLimitInKb(responseContinuationTokenLimitInKb)
                        .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
                        .build();
 }
@@ -684,6 +697,8 @@ public class SecondaryDatasourceConfiguration {
         return CosmosConfig.builder()
             .enableQueryMetrics(true)
             .maxDegreeOfParallelism(0)
+            .maxBufferedItemCount(0)
+            .responseContinuationTokenLimitInKb(0)
             .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
             .build();
     }
@@ -720,12 +735,14 @@ public CosmosConfig getCosmosConfig() {
     return CosmosConfig.builder()
         .enableQueryMetrics(true)
         .maxDegreeOfParallelism(0)
+        .maxBufferedItemCount(0)
+        .responseContinuationTokenLimitInKb(0)
         .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
         .build();
 }
 ```
 
-- Besides, if you want to define `queryMetricsEnabled`, `ResponseDiagnosticsProcessor` or `maxDegreeOfParallelism` , you can create the `CosmosConfig` for your cosmos template.
+- Besides, if you want to define `queryMetricsEnabled`, `ResponseDiagnosticsProcessor`, `maxDegreeOfParallelism`, `maxBufferedItemCount` or `responseContinuationTokenLimitInKb` , you can create the `CosmosConfig` for your cosmos template.
 
 ```java
 @Bean("secondaryCosmosConfig")
@@ -733,6 +750,8 @@ public CosmosConfig getCosmosConfig() {
     return CosmosConfig.builder()
         .enableQueryMetrics(true)
         .maxDegreeOfParallelism(0)
+        .maxBufferedItemCount(0)
+        .responseContinuationTokenLimitInKb(0)
         .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
         .build();
 }
@@ -989,8 +1008,8 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [coc_contact]: mailto:opencode@microsoft.com
 [azure_subscription]: https://azure.microsoft.com/free/
 [samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-spring-data-cosmos/src/samples/java/com/azure/spring/data/cosmos
-[sample-for-multi-database]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/cosmos/azure-spring-boot-sample-cosmos-multi-database-multi-account
-[sample-for-multi-database-single-account]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/cosmos/azure-spring-boot-sample-cosmos-multi-database-single-account
+[sample-for-multi-database]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_v4.3.0/cosmos/azure-spring-data-cosmos/cosmos-multi-database-multi-account
+[sample-for-multi-database-single-account]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_v4.3.0/cosmos/azure-spring-data-cosmos/cosmos-multi-database-single-account
 [sql_api_query]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sql-query
 [local_emulator]: https://docs.microsoft.com/azure/cosmos-db/local-emulator
 [local_emulator_export_ssl_certificates]: https://docs.microsoft.com/azure/cosmos-db/local-emulator-export-ssl-certificates

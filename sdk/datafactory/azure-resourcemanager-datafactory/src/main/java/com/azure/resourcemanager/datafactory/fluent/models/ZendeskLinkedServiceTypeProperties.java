@@ -20,15 +20,13 @@ public final class ZendeskLinkedServiceTypeProperties {
     private ZendeskAuthenticationType authenticationType;
 
     /*
-     * The url to connect Zendesk source. Type: string (or Expression with
-     * resultType string).
+     * The url to connect Zendesk source. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "url", required = true)
     private Object url;
 
     /*
-     * The username of the Zendesk source. Type: string (or Expression with
-     * resultType string).
+     * The username of the Zendesk source. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "userName")
     private Object username;
@@ -46,9 +44,8 @@ public final class ZendeskLinkedServiceTypeProperties {
     private SecretBase apiToken;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;

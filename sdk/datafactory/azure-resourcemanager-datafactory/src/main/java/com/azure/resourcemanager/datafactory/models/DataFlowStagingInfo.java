@@ -17,8 +17,7 @@ public final class DataFlowStagingInfo {
     private LinkedServiceReference linkedService;
 
     /*
-     * Folder path for staging blob. Type: string (or Expression with
-     * resultType string)
+     * Folder path for staging blob. Type: string (or Expression with resultType string)
      */
     @JsonProperty(value = "folderPath")
     private Object folderPath;

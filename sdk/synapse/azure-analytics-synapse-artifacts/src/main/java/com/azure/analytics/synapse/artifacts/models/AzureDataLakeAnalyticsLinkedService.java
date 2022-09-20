@@ -19,59 +19,54 @@ import java.util.Map;
 @Fluent
 public class AzureDataLakeAnalyticsLinkedService extends LinkedService {
     /*
-     * The Azure Data Lake Analytics account name. Type: string (or Expression
-     * with resultType string).
+     * The Azure Data Lake Analytics account name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.accountName", required = true)
     private Object accountName;
 
     /*
-     * The ID of the application used to authenticate against the Azure Data
-     * Lake Analytics account. Type: string (or Expression with resultType
-     * string).
+     * The ID of the application used to authenticate against the Azure Data Lake Analytics account. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
-     * The Key of the application used to authenticate against the Azure Data
-     * Lake Analytics account.
+     * The Key of the application used to authenticate against the Azure Data Lake Analytics account.
      */
     @JsonProperty(value = "typeProperties.servicePrincipalKey")
     private SecretBase servicePrincipalKey;
 
     /*
-     * The name or ID of the tenant to which the service principal belongs.
-     * Type: string (or Expression with resultType string).
+     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "typeProperties.tenant", required = true)
     private Object tenant;
 
     /*
-     * Data Lake Analytics account subscription ID (if different from Data
-     * Factory account). Type: string (or Expression with resultType string).
+     * Data Lake Analytics account subscription ID (if different from Data Factory account). Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.subscriptionId")
     private Object subscriptionId;
 
     /*
-     * Data Lake Analytics account resource group name (if different from Data
-     * Factory account). Type: string (or Expression with resultType string).
+     * Data Lake Analytics account resource group name (if different from Data Factory account). Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.resourceGroupName")
     private Object resourceGroupName;
 
     /*
-     * Azure Data Lake Analytics URI Type: string (or Expression with
-     * resultType string).
+     * Azure Data Lake Analytics URI Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.dataLakeAnalyticsUri")
     private Object dataLakeAnalyticsUri;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;

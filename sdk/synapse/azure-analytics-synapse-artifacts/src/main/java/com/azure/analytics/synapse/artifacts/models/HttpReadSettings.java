@@ -15,29 +15,28 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class HttpReadSettings extends StoreReadSettings {
     /*
-     * The HTTP method used to call the RESTful API. The default is GET. Type:
-     * string (or Expression with resultType string).
+     * The HTTP method used to call the RESTful API. The default is GET. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "requestMethod")
     private Object requestMethod;
 
     /*
-     * The HTTP request body to the RESTful API if requestMethod is POST. Type:
-     * string (or Expression with resultType string).
+     * The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "requestBody")
     private Object requestBody;
 
     /*
-     * The additional HTTP headers in the request to the RESTful API. Type:
-     * string (or Expression with resultType string).
+     * The additional HTTP headers in the request to the RESTful API. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "additionalHeaders")
     private Object additionalHeaders;
 
     /*
-     * Specifies the timeout for a HTTP client to get HTTP response from HTTP
-     * server.
+     * Specifies the timeout for a HTTP client to get HTTP response from HTTP server.
      */
     @JsonProperty(value = "requestTimeout")
     private Object requestTimeout;
@@ -49,8 +48,8 @@ public final class HttpReadSettings extends StoreReadSettings {
     private Boolean enablePartitionDiscovery;
 
     /*
-     * Specify the root path where partition discovery starts from. Type:
-     * string (or Expression with resultType string).
+     * Specify the root path where partition discovery starts from. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "partitionRootPath")
     private Object partitionRootPath;
