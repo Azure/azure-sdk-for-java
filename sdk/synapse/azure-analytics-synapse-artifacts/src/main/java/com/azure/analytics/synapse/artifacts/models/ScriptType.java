@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ScriptType. */
+/** The type of the query. Type: string. */
 public final class ScriptType extends ExpandableStringEnum<ScriptType> {
     /** Static value Query for ScriptType. */
     public static final ScriptType QUERY = fromString("Query");
@@ -27,7 +27,11 @@ public final class ScriptType extends ExpandableStringEnum<ScriptType> {
         return fromString(name, ScriptType.class);
     }
 
-    /** @return known ScriptType values. */
+    /**
+     * Gets known ScriptType values.
+     *
+     * @return known ScriptType values.
+     */
     public static Collection<ScriptType> values() {
         return values(ScriptType.class);
     }

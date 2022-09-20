@@ -13,7 +13,9 @@ import com.azure.resourcemanager.mediaservices.models.MediaServicesOperationResu
 /** An instance of this class provides access to all the operations defined in MediaServicesOperationResultsClient. */
 public interface MediaServicesOperationResultsClient {
     /**
-     * Get media service operation result.
+     * Get operation result.
+     *
+     * <p>Get media service operation result.
      *
      * @param locationName Location name.
      * @param operationId Operation Id.
@@ -26,7 +28,9 @@ public interface MediaServicesOperationResultsClient {
     MediaServiceInner get(String locationName, String operationId);
 
     /**
-     * Get media service operation result.
+     * Get operation result.
+     *
+     * <p>Get media service operation result.
      *
      * @param locationName Location name.
      * @param operationId Operation Id.

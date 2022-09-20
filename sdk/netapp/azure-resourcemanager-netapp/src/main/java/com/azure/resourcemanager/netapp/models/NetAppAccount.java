@@ -55,6 +55,13 @@ public interface NetAppAccount {
     String etag();
 
     /**
+     * Gets the identity property: The identity of the resource.
+     *
+     * @return the identity value.
+     */
+    Identity identity();
+
+    /**
      * Gets the provisioningState property: Azure lifecycle management.
      *
      * @return the provisioningState value.
@@ -74,6 +81,14 @@ public interface NetAppAccount {
      * @return the encryption value.
      */
     AccountEncryption encryption();
+
+    /**
+     * Gets the disableShowmount property: Shows the status of disableShowmount for all volumes under the subscription,
+     * null equals false.
+     *
+     * @return the disableShowmount value.
+     */
+    Boolean disableShowmount();
 
     /**
      * Gets the region of the resource.
@@ -148,7 +163,10 @@ public interface NetAppAccount {
          * to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags, DefinitionStages.WithActiveDirectories, DefinitionStages.WithEncryption {
+            extends DefinitionStages.WithTags,
+                DefinitionStages.WithIdentity,
+                DefinitionStages.WithActiveDirectories,
+                DefinitionStages.WithEncryption {
             /**
              * Executes the create request.
              *
@@ -173,6 +191,16 @@ public interface NetAppAccount {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
+        }
+        /** The stage of the NetAppAccount definition allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The identity of the resource..
+             *
+             * @param identity The identity of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withIdentity(Identity identity);
         }
         /** The stage of the NetAppAccount definition allowing to specify activeDirectories. */
         interface WithActiveDirectories {
@@ -266,4 +294,28 @@ public interface NetAppAccount {
      * @return the refreshed resource.
      */
     NetAppAccount refresh(Context context);
+
+    /**
+     * Renew identity credentials
+     *
+     * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
+     * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void renewCredentials();
+
+    /**
+     * Renew identity credentials
+     *
+     * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
+     * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void renewCredentials(Context context);
 }

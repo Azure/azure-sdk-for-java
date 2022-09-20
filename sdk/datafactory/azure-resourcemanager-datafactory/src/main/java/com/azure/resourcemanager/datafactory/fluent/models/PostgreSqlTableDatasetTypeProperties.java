@@ -11,22 +11,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PostgreSqlTableDatasetTypeProperties {
     /*
-     * This property will be retired. Please consider using schema + table
-     * properties instead.
+     * This property will be retired. Please consider using schema + table properties instead.
      */
     @JsonProperty(value = "tableName")
     private Object tableName;
 
     /*
-     * The PostgreSQL table name. Type: string (or Expression with resultType
-     * string).
+     * The PostgreSQL table name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "table")
     private Object table;
 
     /*
-     * The PostgreSQL schema name. Type: string (or Expression with resultType
-     * string).
+     * The PostgreSQL schema name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "schema")
     private Object schema;

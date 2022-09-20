@@ -6,23 +6,21 @@ package com.azure.communication.callautomation;
 import com.azure.communication.callautomation.implementation.ContentsImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.ErrorConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
-import com.azure.communication.callautomation.implementation.models.DtmfConfigurationsInternal;
+import com.azure.communication.callautomation.implementation.models.DtmfOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.FileSourceInternal;
 import com.azure.communication.callautomation.implementation.models.PlayOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.PlayRequest;
 import com.azure.communication.callautomation.implementation.models.PlaySourceInternal;
 import com.azure.communication.callautomation.implementation.models.PlaySourceTypeInternal;
-import com.azure.communication.callautomation.implementation.models.RecognizeConfigurationsInternal;
 import com.azure.communication.callautomation.implementation.models.RecognizeInputTypeInternal;
+import com.azure.communication.callautomation.implementation.models.RecognizeOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.RecognizeRequest;
-import com.azure.communication.callautomation.implementation.models.StopTonesInternal;
+import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
 import com.azure.communication.callautomation.models.CallingServerErrorException;
-import com.azure.communication.callautomation.models.DtmfConfigurations;
 import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlaySource;
-import com.azure.communication.callautomation.models.RecognizeConfigurations;
-import com.azure.communication.callautomation.models.RecognizeOptions;
+import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -116,8 +114,8 @@ public class CallMediaAsync {
      * @param recognizeOptions Different attributes for recognize.
      * @return Response for successful recognize request.
      */
-    public Mono<Void> recognize(RecognizeOptions recognizeOptions) {
-        return recognizeWithResponse(recognizeOptions).then();
+    public Mono<Void> startRecognizing(CallMediaRecognizeOptions recognizeOptions) {
+        return startRecognizingWithResponse(recognizeOptions).then();
     }
 
     /**
@@ -125,55 +123,54 @@ public class CallMediaAsync {
      * @param recognizeOptions Different attributes for recognize.
      * @return Response for successful recognize request.
      */
-    public Mono<Response<Void>> recognizeWithResponse(RecognizeOptions recognizeOptions) {
+    public Mono<Response<Void>> startRecognizingWithResponse(CallMediaRecognizeOptions recognizeOptions) {
         return withContext(context -> recognizeWithResponseInternal(recognizeOptions, context));
     }
 
-    Mono<Response<Void>> recognizeWithResponseInternal(RecognizeOptions recognizeOptions, Context context) {
+    Mono<Response<Void>> recognizeWithResponseInternal(CallMediaRecognizeOptions recognizeOptions, Context context) {
         try {
             context = context == null ? Context.NONE : context;
 
-            RecognizeConfigurations recognizeConfigurations = recognizeOptions.getRecognizeConfiguration();
-            DtmfConfigurationsInternal dtmfConfigurationsInternal = null;
-            if (recognizeConfigurations.getDtmfConfigurations() != null) {
-                DtmfConfigurations dtmfConfigurations = recognizeConfigurations.getDtmfConfigurations();
-                dtmfConfigurationsInternal = new DtmfConfigurationsInternal()
-                    .setMaxTonesToCollect(dtmfConfigurations.getMaxTonesToCollect());
+            if (recognizeOptions instanceof CallMediaRecognizeDtmfOptions) {
 
-                if (dtmfConfigurations.getInterToneTimeoutInSeconds() != null) {
-                    dtmfConfigurationsInternal.setInterToneTimeoutInSeconds((int) dtmfConfigurations.getInterToneTimeoutInSeconds().getSeconds());
+                CallMediaRecognizeDtmfOptions dtmfRecognizeOptions = (CallMediaRecognizeDtmfOptions) recognizeOptions;
+                DtmfOptionsInternal dtmfOptionsInternal = new DtmfOptionsInternal();
+
+
+                dtmfOptionsInternal.setInterToneTimeoutInSeconds((int) dtmfRecognizeOptions.getInterToneTimeout().getSeconds());
+
+
+                if (dtmfRecognizeOptions.getMaxTonesToCollect() != null) {
+                    dtmfOptionsInternal.setMaxTonesToCollect(dtmfRecognizeOptions.getMaxTonesToCollect());
                 }
-                if (dtmfConfigurations.getStopTones() != null) {
-                    dtmfConfigurationsInternal
-                        .setStopTones(dtmfConfigurations.getStopTones().stream()
-                            .map(stopTones -> StopTonesInternal.fromString(stopTones.toString()))
-                            .collect(Collectors.toList()));
 
+                RecognizeOptionsInternal recognizeOptionsInternal = new RecognizeOptionsInternal()
+                    .setDtmfOptions(dtmfOptionsInternal)
+                    .setInterruptPrompt(recognizeOptions.isInterruptPrompt())
+                    .setTargetParticipant(CommunicationIdentifierConverter.convert(recognizeOptions.getTargetParticipant()));
+
+                recognizeOptionsInternal.setInitialSilenceTimeoutInSeconds((int) recognizeOptions.getInitialSilenceTimeout().getSeconds());
+
+                PlaySourceInternal playSourceInternal = null;
+                if (recognizeOptions.getPlayPrompt() != null) {
+                    PlaySource playSource = recognizeOptions.getPlayPrompt();
+                    if (playSource instanceof FileSource) {
+                        playSourceInternal = getPlaySourceInternal((FileSource) playSource);
+                    }
                 }
-            }
-            RecognizeConfigurationsInternal recognizeConfigurationsInternal = new RecognizeConfigurationsInternal()
-                .setDtmfConfigurations(dtmfConfigurationsInternal)
-                .setInterruptPromptAndStartRecognition(recognizeConfigurations.isInterruptPromptAndStartRecognition())
-                .setTargetParticipant(CommunicationIdentifierConverter.convert(recognizeConfigurations.getTargetParticipant()));
-            if (recognizeConfigurations.getInitialSilenceTimeoutInSeconds() != null) {
-                recognizeConfigurationsInternal.setInitialSilenceTimeoutInSeconds((int) recognizeConfigurations.getInitialSilenceTimeoutInSeconds().getSeconds());
-            }
 
-            PlaySourceInternal playSourceInternal = null;
-            if (recognizeOptions.getPlayPrompt() != null) {
-                PlaySource playSource = recognizeOptions.getPlayPrompt();
-                if (playSource instanceof FileSource) {
-                    playSourceInternal = getPlaySourceInternal((FileSource) playSource);
-                }
-            }
-            RecognizeRequest recognizeRequest = new RecognizeRequest()
-                .setRecognizeInputType(RecognizeInputTypeInternal.fromString(recognizeOptions.getRecognizeInputType().toString()))
-                .setRecognizeConfiguration(recognizeConfigurationsInternal)
-                .setStopCurrentOperations(recognizeOptions.isStopCurrentOperations())
-                .setPlayPrompt(playSourceInternal)
-                .setOperationContext(recognizeOptions.getOperationContext());
+                RecognizeRequest recognizeRequest = new RecognizeRequest()
+                    .setRecognizeInputType(RecognizeInputTypeInternal.fromString(recognizeOptions.getRecognizeInputType().toString()))
+                    .setInterruptCallMediaOperation(recognizeOptions.isInterruptCallMediaOperation())
+                    .setPlayPrompt(playSourceInternal)
+                    .setRecognizeOptions(recognizeOptionsInternal)
+                    .setOperationContext(recognizeOptions.getOperationContext());
 
-            return contentsInternal.recognizeWithResponseAsync(callConnectionId, recognizeRequest, context);
+                return contentsInternal.recognizeWithResponseAsync(callConnectionId, recognizeRequest, context);
+
+            } else {
+                return monoError(logger, new UnsupportedOperationException(recognizeOptions.getClass().getName()));
+            }
 
         } catch (RuntimeException e) {
             return monoError(logger, e);

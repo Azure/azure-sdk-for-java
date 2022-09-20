@@ -116,7 +116,7 @@ public final class CallAutomationAsyncClient {
             context = context == null ? Context.NONE : context;
             CreateCallRequestInternal request = getCreateCallRequestInternal(createCallOptions);
 
-            return serverCallingInternal.createCallWithResponseAsync(request, context)
+            return serverCallingInternal.createCallWithResponseAsync(request, null, null, context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> {
                     try {
@@ -222,7 +222,7 @@ public final class CallAutomationAsyncClient {
             }
 
 
-            return serverCallingInternal.answerCallWithResponseAsync(request, context)
+            return serverCallingInternal.answerCallWithResponseAsync(request, null, null, context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> {
                     try {
@@ -276,7 +276,7 @@ public final class CallAutomationAsyncClient {
                 .setIncomingCallContext(incomingCallContext)
                 .setTarget(CommunicationIdentifierConverter.convert(target));
 
-            return serverCallingInternal.redirectCallWithResponseAsync(request, context)
+            return serverCallingInternal.redirectCallWithResponseAsync(request, null, null, context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -320,7 +320,7 @@ public final class CallAutomationAsyncClient {
                 .setIncomingCallContext(incomingCallContext)
                 .setCallRejectReason(CallRejectReasonInternal.fromString(callRejectReason.toString()));
 
-            return serverCallingInternal.rejectCallWithResponseAsync(request, context)
+            return serverCallingInternal.rejectCallWithResponseAsync(request, null, null, context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

@@ -26,14 +26,14 @@ public final class RecognizeRequest {
      * If set recognize can barge into other existing
      * queued-up/currently-processing requests.
      */
-    @JsonProperty(value = "stopCurrentOperations")
-    private Boolean stopCurrentOperations;
+    @JsonProperty(value = "interruptCallMediaOperation")
+    private Boolean interruptCallMediaOperation;
 
     /*
      * Defines options for recognition.
      */
-    @JsonProperty(value = "recognizeConfiguration", required = true)
-    private RecognizeConfigurationsInternal recognizeConfiguration;
+    @JsonProperty(value = "recognizeOptions", required = true)
+    private RecognizeOptionsInternal recognizeOptions;
 
     /*
      * The value to identify context of the operation.
@@ -82,44 +82,44 @@ public final class RecognizeRequest {
     }
 
     /**
-     * Get the stopCurrentOperations property: If set recognize can barge into other existing
+     * Get the interruptCallMediaOperation property: If set recognize can barge into other existing
      * queued-up/currently-processing requests.
      *
-     * @return the stopCurrentOperations value.
+     * @return the interruptCallMediaOperation value.
      */
-    public Boolean isStopCurrentOperations() {
-        return this.stopCurrentOperations;
+    public Boolean isInterruptCallMediaOperation() {
+        return this.interruptCallMediaOperation;
     }
 
     /**
-     * Set the stopCurrentOperations property: If set recognize can barge into other existing
+     * Set the interruptCallMediaOperation property: If set recognize can barge into other existing
      * queued-up/currently-processing requests.
      *
-     * @param stopCurrentOperations the stopCurrentOperations value to set.
+     * @param interruptCallMediaOperation the interruptCallMediaOperation value to set.
      * @return the RecognizeRequest object itself.
      */
-    public RecognizeRequest setStopCurrentOperations(Boolean stopCurrentOperations) {
-        this.stopCurrentOperations = stopCurrentOperations;
+    public RecognizeRequest setInterruptCallMediaOperation(Boolean interruptCallMediaOperation) {
+        this.interruptCallMediaOperation = interruptCallMediaOperation;
         return this;
     }
 
     /**
-     * Get the recognizeConfiguration property: Defines options for recognition.
+     * Get the recognizeOptions property: Defines options for recognition.
      *
-     * @return the recognizeConfiguration value.
+     * @return the recognizeOptions value.
      */
-    public RecognizeConfigurationsInternal getRecognizeConfiguration() {
-        return this.recognizeConfiguration;
+    public RecognizeOptionsInternal getRecognizeOptions() {
+        return this.recognizeOptions;
     }
 
     /**
-     * Set the recognizeConfiguration property: Defines options for recognition.
+     * Set the recognizeOptions property: Defines options for recognition.
      *
-     * @param recognizeConfiguration the recognizeConfiguration value to set.
+     * @param recognizeOptions the recognizeOptions value to set.
      * @return the RecognizeRequest object itself.
      */
-    public RecognizeRequest setRecognizeConfiguration(RecognizeConfigurationsInternal recognizeConfiguration) {
-        this.recognizeConfiguration = recognizeConfiguration;
+    public RecognizeRequest setRecognizeOptions(RecognizeOptionsInternal recognizeOptions) {
+        this.recognizeOptions = recognizeOptions;
         return this;
     }
 

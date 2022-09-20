@@ -4,8 +4,10 @@
 package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.MsalServiceException;
 import org.junit.Assert;
@@ -142,8 +144,6 @@ public class UsernamePasswordCredentialTest {
         TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
-
-
         // mock
         try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
             when(identityClient.authenticateWithUsernamePassword(eq(request1), eq(username), eq(password)))
@@ -161,6 +161,58 @@ public class UsernamePasswordCredentialTest {
                 .verifyComplete();
             Assert.assertNotNull(identityClientMock);
         }
+    }
+
+    @Test
+    public void testAdditionalTenantNoImpact() {
+        // setup
+        String username = "testuser";
+        String password = "P@ssw0rd";
+
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
+            .setTenantId("newTenant");
+
+        UsernamePasswordCredential credential =
+            new UsernamePasswordCredentialBuilder().username(username).password(password)
+                .clientId(clientId).additionallyAllowedTenants("RANDOM").build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e.getCause() instanceof MsalServiceException)
+            .verify();
+    }
+
+    @Test
+    public void testInvalidMultiTenantAuth() {
+        // setup
+        String username = "testuser";
+        String password = "P@ssw0rd";
+
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
+            .setTenantId("newTenant");
+
+        UsernamePasswordCredential credential =
+            new UsernamePasswordCredentialBuilder().tenantId("tenant").username(username).password(password)
+                .clientId(clientId).build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e instanceof ClientAuthenticationException && (e.getCause().getMessage().startsWith("The current credential is not configured to")))
+            .verify();
+    }
+
+    @Test
+    public void testValidMultiTenantAuth() {
+        // setup
+        String username = "testuser";
+        String password = "P@ssw0rd";
+
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
+            .setTenantId("newTenant");
+
+        UsernamePasswordCredential credential =
+            new UsernamePasswordCredentialBuilder().username(username).password(password).tenantId("tenant")
+                .clientId(clientId).additionallyAllowedTenants(IdentityUtil.ALL_TENANTS).build();
+
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e.getCause() instanceof MsalServiceException)
+            .verify();
     }
 }
 

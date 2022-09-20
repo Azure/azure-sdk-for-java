@@ -19,16 +19,14 @@ import java.util.Map;
 @Fluent
 public class Office365Dataset extends Dataset {
     /*
-     * Name of the dataset to extract from Office 365. Type: string (or
-     * Expression with resultType string).
+     * Name of the dataset to extract from Office 365. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.tableName", required = true)
     private Object tableName;
 
     /*
-     * A predicate expression that can be used to filter the specific rows to
-     * extract from Office 365. Type: string (or Expression with resultType
-     * string).
+     * A predicate expression that can be used to filter the specific rows to extract from Office 365. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.predicate")
     private Object predicate;

@@ -19,15 +19,13 @@ import java.util.Map;
 @Fluent
 public class AmazonRedshiftLinkedService extends LinkedService {
     /*
-     * The name of the Amazon Redshift server. Type: string (or Expression with
-     * resultType string).
+     * The name of the Amazon Redshift server. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.server", required = true)
     private Object server;
 
     /*
-     * The username of the Amazon Redshift source. Type: string (or Expression
-     * with resultType string).
+     * The username of the Amazon Redshift source. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.username")
     private Object username;
@@ -39,24 +37,21 @@ public class AmazonRedshiftLinkedService extends LinkedService {
     private SecretBase password;
 
     /*
-     * The database name of the Amazon Redshift source. Type: string (or
-     * Expression with resultType string).
+     * The database name of the Amazon Redshift source. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.database", required = true)
     private Object database;
 
     /*
-     * The TCP port number that the Amazon Redshift server uses to listen for
-     * client connections. The default value is 5439. Type: integer (or
-     * Expression with resultType integer).
+     * The TCP port number that the Amazon Redshift server uses to listen for client connections. The default value is
+     * 5439. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "typeProperties.port")
     private Object port;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;

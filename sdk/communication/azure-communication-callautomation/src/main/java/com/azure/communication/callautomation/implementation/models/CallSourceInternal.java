@@ -18,6 +18,12 @@ public final class CallSourceInternal {
     private PhoneNumberIdentifierModel callerId;
 
     /*
+     * Display name of the call if dialing out to a pstn number
+     */
+    @JsonProperty(value = "displayName")
+    private String displayName;
+
+    /*
      * The identifier of the source of the call
      */
     @JsonProperty(value = "identifier", required = true)
@@ -40,6 +46,26 @@ public final class CallSourceInternal {
      */
     public CallSourceInternal setCallerId(PhoneNumberIdentifierModel callerId) {
         this.callerId = callerId;
+        return this;
+    }
+
+    /**
+     * Get the displayName property: Display name of the call if dialing out to a pstn number.
+     *
+     * @return the displayName value.
+     */
+    public String getDisplayName() {
+        return this.displayName;
+    }
+
+    /**
+     * Set the displayName property: Display name of the call if dialing out to a pstn number.
+     *
+     * @param displayName the displayName value to set.
+     * @return the CallSourceInternal object itself.
+     */
+    public CallSourceInternal setDisplayName(String displayName) {
+        this.displayName = displayName;
         return this;
     }
 

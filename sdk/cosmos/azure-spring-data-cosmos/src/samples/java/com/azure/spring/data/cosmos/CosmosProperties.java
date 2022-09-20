@@ -24,6 +24,8 @@ public class CosmosProperties {
 
     private int maxDegreeOfParallelism;
 
+    private int maxBufferedItemCount;
+
     public String getUri() {
         return uri;
     }
@@ -68,7 +70,15 @@ public class CosmosProperties {
         return maxDegreeOfParallelism;
     }
 
+    public int getMaxBufferedItemCount() {
+        return maxBufferedItemCount;
+    }
+
     public void setMaxDegreeOfParallelism(int maxDegreeOfParallelism) {
         this.maxDegreeOfParallelism = maxDegreeOfParallelism;
+    }
+
+    public void setMaxBufferedItemCount(int maxBufferedItemCount) {
+        this.maxBufferedItemCount = maxBufferedItemCount;
     }
 }

@@ -15,17 +15,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class SftpWriteSettings extends StoreWriteSettings {
     /*
-     * Specifies the timeout for writing each chunk to SFTP server. Default
-     * value: 01:00:00 (one hour). Type: string (or Expression with resultType
-     * string).
+     * Specifies the timeout for writing each chunk to SFTP server. Default value: 01:00:00 (one hour). Type: string
+     * (or Expression with resultType string).
      */
     @JsonProperty(value = "operationTimeout")
     private Object operationTimeout;
 
     /*
-     * Upload to temporary file(s) and rename. Disable this option if your SFTP
-     * server doesn't support rename operation. Type: boolean (or Expression
-     * with resultType boolean).
+     * Upload to temporary file(s) and rename. Disable this option if your SFTP server doesn't support rename
+     * operation. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "useTempFileRename")
     private Object useTempFileRename;

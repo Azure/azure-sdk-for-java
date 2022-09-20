@@ -46,5 +46,5 @@ security-scopes: https://dev.azuresynapse.net/.default
 custom-strongly-typed-header-deserialization: true
 model-override-setter-from-superclass: true
 require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/$(branch)/specification/synapse/data-plane/readme.md
-tag: package-artifacts-composite-v4
+tag: package-artifacts-composite-v5
 ```
