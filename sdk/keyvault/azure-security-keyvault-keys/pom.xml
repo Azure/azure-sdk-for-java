@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-security-keyvault-keys</artifactId>
-  <version>4.4.7</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
+  <version>4.5.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
 
   <name>Microsoft Azure client library for KeyVault Keys</name>
   <description>This module contains client library for Microsoft Azure KeyVault Keys.</description>
@@ -50,6 +50,7 @@
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+      --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
 
       --add-opens com.azure.security.keyvault.keys/com.azure.security.keyvault.keys=ALL-UNNAMED
       --add-opens com.azure.security.keyvault.keys/com.azure.security.keyvault.keys.cryptography=ALL-UNNAMED
