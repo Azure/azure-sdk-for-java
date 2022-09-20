@@ -123,6 +123,7 @@
             <include>**/*IT.java</include>
           </includes>
           <useSystemClassLoader>false</useSystemClassLoader>
+          <skipTests>${skipSpringITs}</skipTests>
         </configuration>
       </plugin>
     </plugins>
