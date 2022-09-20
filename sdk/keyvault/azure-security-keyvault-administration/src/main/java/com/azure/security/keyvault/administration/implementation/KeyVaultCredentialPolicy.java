@@ -10,6 +10,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -32,6 +33,7 @@ import java.util.concurrent.ConcurrentMap;
  * @see TokenCredential
  */
 public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
+    private static final ClientLogger LOGGER = new ClientLogger(KeyVaultCredentialPolicy.class);
     private static final String BEARER_TOKEN_PREFIX = "Bearer ";
     private static final String CONTENT_LENGTH_HEADER = "Content-Length";
     private static final String KEY_VAULT_STASHED_CONTENT_KEY = "KeyVaultCredentialPolicyStashedBody";
@@ -167,7 +169,12 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
             } else {
                 if (verifyChallengeResource) {
                     if (!isChallengeResourceValid(request, scope)) {
-                        return Mono.just(false);
+                        throw LOGGER.logExceptionAsError(
+                            new RuntimeException(String.format(
+                                "The challenge resource '%s' does not match the requested domain. If you wish to "
+                                    + "disable this check for your client, pass 'true' to the SecretClientBuilder"
+                                    + ".disableChallengeResourceVerification() method when building it. See "
+                                    + "https://aka.ms/azsdk/blog/vault-uri for more information.", scope)));
                     }
                 }
 
@@ -182,8 +189,9 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                 try {
                     authorizationUri = new URI(authorization);
                 } catch (URISyntaxException e) {
-                    // The challenge authorization URI is invalid.
-                    return Mono.just(false);
+                    throw LOGGER.logExceptionAsError(
+                        new RuntimeException(
+                            String.format("The challenge authorization URI '%s' is invalid.", authorization), e));
                 }
 
                 this.challenge = new ChallengeParameters(authorizationUri, new String[] {scope});
@@ -269,7 +277,12 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         } else {
             if (verifyChallengeResource) {
                 if (!isChallengeResourceValid(request, scope)) {
-                    return false;
+                    throw LOGGER.logExceptionAsError(
+                        new RuntimeException(String.format(
+                            "The challenge resource '%s' does not match the requested domain. If you wish to disable "
+                                + "this check for your client, pass 'true' to the SecretClientBuilder"
+                                + ".disableChallengeResourceVerification() method when building it. See "
+                                + "https://aka.ms/azsdk/blog/vault-uri for more information.", scope)));
                 }
             }
 
@@ -284,8 +297,9 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
             try {
                 authorizationUri = new URI(authorization);
             } catch (URISyntaxException e) {
-                // The challenge authorization URI is invalid.
-                return false;
+                throw LOGGER.logExceptionAsError(
+                    new RuntimeException(
+                        String.format("The challenge authorization URI '%s' is invalid.", authorization), e));
             }
 
             this.challenge = new ChallengeParameters(authorizationUri, new String[] {scope});
@@ -299,10 +313,6 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
 
         setAuthorizationHeaderSync(context, tokenRequestContext);
         return true;
-    }
-
-    public static void clearCache() {
-        CHALLENGE_CACHE.clear();
     }
 
     private static class ChallengeParameters {
@@ -339,6 +349,10 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         }
     }
 
+    public static void clearCache() {
+        CHALLENGE_CACHE.clear();
+    }
+
     /**
      * Gets the host name and port of the Key Vault or Managed HSM endpoint.
      *
@@ -365,17 +379,13 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         try {
             scopeUri = new URI(scope);
         } catch (URISyntaxException e) {
-            // The challenge contains an invalid scope.
-            return false;
+            throw LOGGER.logExceptionAsError(
+                new RuntimeException(
+                    String.format("The challenge resource '%s' is not a valid URI.", scope), e));
         }
 
-        if (!request.getUrl().getHost().toLowerCase(Locale.ROOT)
-            .endsWith("." + scopeUri.getHost().toLowerCase(Locale.ROOT))) {
-
-            // The host specified in the scope does not match the requested domain.
-            return false;
-        }
-
-        return true;
+        // Returns false if the host specified in the scope does not match the requested domain.
+        return request.getUrl().getHost().toLowerCase(Locale.ROOT)
+            .endsWith("." + scopeUri.getHost().toLowerCase(Locale.ROOT));
     }
 }

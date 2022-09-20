@@ -21,6 +21,7 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -30,6 +31,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -189,16 +191,18 @@ public class KeyVaultCredentialPolicyTest {
         assertFalse(onChallenge);
     }
 
-    @SyncAsyncTest
+    @Test
     public void onAuthorizeRequestDifferentScope() {
         KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential, true);
 
-        boolean onChallenge = SyncAsyncExtension.execute(
-            () -> onChallengeSync(policy, this.differentScopeContext, this.unauthorizedHttpResponseWithHeader),
-            () -> onChallenge(policy, this.differentScopeContext, this.unauthorizedHttpResponseWithHeader)
-        );
+        assertThrows(RuntimeException.class,
+            () -> onChallengeSync(policy, this.differentScopeContext, this.unauthorizedHttpResponseWithHeader));
 
-        assertFalse(onChallenge);
+        StepVerifier.create(onChallenge(policy, this.differentScopeContext, this.unauthorizedHttpResponseWithHeader))
+            .verifyErrorMessage("The challenge resource 'https://vault.azure.net/.default' does not match the "
+                + "requested domain. If you wish to disable this check for your client, pass 'true' to the "
+                + "SecretClientBuilder.disableChallengeResourceVerification() method when building it. See "
+                + "https://aka.ms/azsdk/blog/vault-uri for more information.");
     }
 
     @SyncAsyncTest

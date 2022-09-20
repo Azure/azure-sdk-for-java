@@ -1,9 +1,9 @@
 # Release History
 
-## 4.4.0 (2022-09-09)
+## 4.4.0 (2022-09-19)
 
 ### Breaking Changes
-- Made it so that we verify the challenge resource matches the vault domain by default. This should affect few customers who can pass `false` to the `verifyChallengeResource()` method in client builders to disable this functionality.
+- Made it so that we verify the challenge resource matches the vault domain by default. This should affect few customers who can pass `false` to the `verifyChallengeResource()` method in client builders to disable this functionality. See https://aka.ms/azsdk/blog/vault-uri for more information.
 
 ### Other Changes
 
