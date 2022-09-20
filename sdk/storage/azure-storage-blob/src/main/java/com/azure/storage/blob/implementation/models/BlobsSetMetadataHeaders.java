@@ -67,7 +67,7 @@ public final class BlobsSetMetadataHeaders {
      * The Date property.
      */
     @JsonProperty(value = "Date")
-    private DateTimeRfc1123 dateProperty;
+    private DateTimeRfc1123 date;
 
     /*
      * The x-ms-encryption-scope property.
@@ -96,9 +96,9 @@ public final class BlobsSetMetadataHeaders {
             this.xMsRequestServerEncrypted = Boolean.parseBoolean(xMsRequestServerEncrypted);
         }
         this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
-        String dateProperty = rawHeaders.getValue("Date");
-        if (dateProperty != null) {
-            this.dateProperty = new DateTimeRfc1123(dateProperty);
+        String date = rawHeaders.getValue("Date");
+        if (date != null) {
+            this.date = new DateTimeRfc1123(date);
         }
         this.xMsEncryptionScope = rawHeaders.getValue("x-ms-encryption-scope");
     }
@@ -271,28 +271,28 @@ public final class BlobsSetMetadataHeaders {
     }
 
     /**
-     * Get the dateProperty property: The Date property.
+     * Get the date property: The Date property.
      *
-     * @return the dateProperty value.
+     * @return the date value.
      */
-    public OffsetDateTime getDateProperty() {
-        if (this.dateProperty == null) {
+    public OffsetDateTime getDate() {
+        if (this.date == null) {
             return null;
         }
-        return this.dateProperty.getDateTime();
+        return this.date.getDateTime();
     }
 
     /**
-     * Set the dateProperty property: The Date property.
+     * Set the date property: The Date property.
      *
-     * @param dateProperty the dateProperty value to set.
+     * @param date the date value to set.
      * @return the BlobsSetMetadataHeaders object itself.
      */
-    public BlobsSetMetadataHeaders setDateProperty(OffsetDateTime dateProperty) {
-        if (dateProperty == null) {
-            this.dateProperty = null;
+    public BlobsSetMetadataHeaders setDate(OffsetDateTime date) {
+        if (date == null) {
+            this.date = null;
         } else {
-            this.dateProperty = new DateTimeRfc1123(dateProperty);
+            this.date = new DateTimeRfc1123(date);
         }
         return this;
     }

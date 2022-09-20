@@ -156,7 +156,7 @@ public final class BlobsQueryHeaders {
      * The Date property.
      */
     @JsonProperty(value = "Date")
-    private DateTimeRfc1123 dateProperty;
+    private DateTimeRfc1123 date;
 
     /*
      * The Content-MD5 property.
@@ -231,30 +231,18 @@ public final class BlobsQueryHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public BlobsQueryHeaders(HttpHeaders rawHeaders) {
-        String xMsLeaseStatus = rawHeaders.getValue("x-ms-lease-status");
-        if (xMsLeaseStatus != null) {
-            this.xMsLeaseStatus = LeaseStatusType.fromString(xMsLeaseStatus);
-        }
+        this.xMsLeaseStatus = LeaseStatusType.fromString(rawHeaders.getValue("x-ms-lease-status"));
         this.contentRange = rawHeaders.getValue("Content-Range");
-        String xMsLeaseState = rawHeaders.getValue("x-ms-lease-state");
-        if (xMsLeaseState != null) {
-            this.xMsLeaseState = LeaseStateType.fromString(xMsLeaseState);
-        }
+        this.xMsLeaseState = LeaseStateType.fromString(rawHeaders.getValue("x-ms-lease-state"));
         String lastModified = rawHeaders.getValue("Last-Modified");
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
         this.xMsEncryptionKeySha256 = rawHeaders.getValue("x-ms-encryption-key-sha256");
-        String xMsBlobType = rawHeaders.getValue("x-ms-blob-type");
-        if (xMsBlobType != null) {
-            this.xMsBlobType = BlobType.fromString(xMsBlobType);
-        }
+        this.xMsBlobType = BlobType.fromString(rawHeaders.getValue("x-ms-blob-type"));
         this.contentEncoding = rawHeaders.getValue("Content-Encoding");
         this.xMsCopyStatusDescription = rawHeaders.getValue("x-ms-copy-status-description");
-        String xMsLeaseDuration = rawHeaders.getValue("x-ms-lease-duration");
-        if (xMsLeaseDuration != null) {
-            this.xMsLeaseDuration = LeaseDurationType.fromString(xMsLeaseDuration);
-        }
+        this.xMsLeaseDuration = LeaseDurationType.fromString(rawHeaders.getValue("x-ms-lease-duration"));
         String contentLength = rawHeaders.getValue("Content-Length");
         if (contentLength != null) {
             this.contentLength = Long.parseLong(contentLength);
@@ -281,9 +269,9 @@ public final class BlobsQueryHeaders {
         if (xMsBlobContentMd5 != null) {
             this.xMsBlobContentMd5 = Base64.getDecoder().decode(xMsBlobContentMd5);
         }
-        String dateProperty = rawHeaders.getValue("Date");
-        if (dateProperty != null) {
-            this.dateProperty = new DateTimeRfc1123(dateProperty);
+        String date = rawHeaders.getValue("Date");
+        if (date != null) {
+            this.date = new DateTimeRfc1123(date);
         }
         String contentMD5 = rawHeaders.getValue("Content-MD5");
         if (contentMD5 != null) {
@@ -301,10 +289,7 @@ public final class BlobsQueryHeaders {
         this.cacheControl = rawHeaders.getValue("Cache-Control");
         this.eTag = rawHeaders.getValue("ETag");
         this.contentDisposition = rawHeaders.getValue("Content-Disposition");
-        String xMsCopyStatus = rawHeaders.getValue("x-ms-copy-status");
-        if (xMsCopyStatus != null) {
-            this.xMsCopyStatus = CopyStatusType.fromString(xMsCopyStatus);
-        }
+        this.xMsCopyStatus = CopyStatusType.fromString(rawHeaders.getValue("x-ms-copy-status"));
         this.contentLanguage = rawHeaders.getValue("Content-Language");
         this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
         this.xMsEncryptionScope = rawHeaders.getValue("x-ms-encryption-scope");
@@ -748,28 +733,28 @@ public final class BlobsQueryHeaders {
     }
 
     /**
-     * Get the dateProperty property: The Date property.
+     * Get the date property: The Date property.
      *
-     * @return the dateProperty value.
+     * @return the date value.
      */
-    public OffsetDateTime getDateProperty() {
-        if (this.dateProperty == null) {
+    public OffsetDateTime getDate() {
+        if (this.date == null) {
             return null;
         }
-        return this.dateProperty.getDateTime();
+        return this.date.getDateTime();
     }
 
     /**
-     * Set the dateProperty property: The Date property.
+     * Set the date property: The Date property.
      *
-     * @param dateProperty the dateProperty value to set.
+     * @param date the date value to set.
      * @return the BlobsQueryHeaders object itself.
      */
-    public BlobsQueryHeaders setDateProperty(OffsetDateTime dateProperty) {
-        if (dateProperty == null) {
-            this.dateProperty = null;
+    public BlobsQueryHeaders setDate(OffsetDateTime date) {
+        if (date == null) {
+            this.date = null;
         } else {
-            this.dateProperty = new DateTimeRfc1123(dateProperty);
+            this.date = new DateTimeRfc1123(date);
         }
         return this;
     }

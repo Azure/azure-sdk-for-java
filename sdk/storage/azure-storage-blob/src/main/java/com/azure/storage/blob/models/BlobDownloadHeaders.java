@@ -732,7 +732,7 @@ public final class BlobDownloadHeaders {
      * @return the dateProperty value.
      */
     public OffsetDateTime getDateProperty() {
-        return internalHeaders.getDateProperty();
+        return internalHeaders.getDate();
     }
 
     /**
@@ -743,7 +743,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setDateProperty(OffsetDateTime dateProperty) {
-        internalHeaders.setDateProperty(dateProperty);
+        internalHeaders.setDate(dateProperty);
         return this;
     }
 

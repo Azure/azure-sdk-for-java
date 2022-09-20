@@ -204,7 +204,7 @@ public final class BlobsDownloadHeaders {
      * The Date property.
      */
     @JsonProperty(value = "Date")
-    private DateTimeRfc1123 dateProperty;
+    private DateTimeRfc1123 date;
 
     /*
      * The Content-MD5 property.
@@ -295,19 +295,13 @@ public final class BlobsDownloadHeaders {
         if (xMsIsCurrentVersion != null) {
             this.xMsIsCurrentVersion = Boolean.parseBoolean(xMsIsCurrentVersion);
         }
-        String xMsLeaseStatus = rawHeaders.getValue("x-ms-lease-status");
-        if (xMsLeaseStatus != null) {
-            this.xMsLeaseStatus = LeaseStatusType.fromString(xMsLeaseStatus);
-        }
+        this.xMsLeaseStatus = LeaseStatusType.fromString(rawHeaders.getValue("x-ms-lease-status"));
         String xMsTagCount = rawHeaders.getValue("x-ms-tag-count");
         if (xMsTagCount != null) {
             this.xMsTagCount = Long.parseLong(xMsTagCount);
         }
         this.contentRange = rawHeaders.getValue("Content-Range");
-        String xMsLeaseState = rawHeaders.getValue("x-ms-lease-state");
-        if (xMsLeaseState != null) {
-            this.xMsLeaseState = LeaseStateType.fromString(xMsLeaseState);
-        }
+        this.xMsLeaseState = LeaseStateType.fromString(rawHeaders.getValue("x-ms-lease-state"));
         String xMsBlobSealed = rawHeaders.getValue("x-ms-blob-sealed");
         if (xMsBlobSealed != null) {
             this.xMsBlobSealed = Boolean.parseBoolean(xMsBlobSealed);
@@ -318,17 +312,11 @@ public final class BlobsDownloadHeaders {
         }
         this.xMsVersionId = rawHeaders.getValue("x-ms-version-id");
         this.xMsEncryptionKeySha256 = rawHeaders.getValue("x-ms-encryption-key-sha256");
-        String xMsBlobType = rawHeaders.getValue("x-ms-blob-type");
-        if (xMsBlobType != null) {
-            this.xMsBlobType = BlobType.fromString(xMsBlobType);
-        }
+        this.xMsBlobType = BlobType.fromString(rawHeaders.getValue("x-ms-blob-type"));
         this.xMsImmutabilityPolicyMode = rawHeaders.getValue("x-ms-immutability-policy-mode");
         this.contentEncoding = rawHeaders.getValue("Content-Encoding");
         this.xMsCopyStatusDescription = rawHeaders.getValue("x-ms-copy-status-description");
-        String xMsLeaseDuration = rawHeaders.getValue("x-ms-lease-duration");
-        if (xMsLeaseDuration != null) {
-            this.xMsLeaseDuration = LeaseDurationType.fromString(xMsLeaseDuration);
-        }
+        this.xMsLeaseDuration = LeaseDurationType.fromString(rawHeaders.getValue("x-ms-lease-duration"));
         String contentLength = rawHeaders.getValue("Content-Length");
         if (contentLength != null) {
             this.contentLength = Long.parseLong(contentLength);
@@ -367,9 +355,9 @@ public final class BlobsDownloadHeaders {
         if (xMsLegalHold != null) {
             this.xMsLegalHold = Boolean.parseBoolean(xMsLegalHold);
         }
-        String dateProperty = rawHeaders.getValue("Date");
-        if (dateProperty != null) {
-            this.dateProperty = new DateTimeRfc1123(dateProperty);
+        String date = rawHeaders.getValue("Date");
+        if (date != null) {
+            this.date = new DateTimeRfc1123(date);
         }
         String contentMD5 = rawHeaders.getValue("Content-MD5");
         if (contentMD5 != null) {
@@ -388,10 +376,7 @@ public final class BlobsDownloadHeaders {
         this.cacheControl = rawHeaders.getValue("Cache-Control");
         this.eTag = rawHeaders.getValue("ETag");
         this.contentDisposition = rawHeaders.getValue("Content-Disposition");
-        String xMsCopyStatus = rawHeaders.getValue("x-ms-copy-status");
-        if (xMsCopyStatus != null) {
-            this.xMsCopyStatus = CopyStatusType.fromString(xMsCopyStatus);
-        }
+        this.xMsCopyStatus = CopyStatusType.fromString(rawHeaders.getValue("x-ms-copy-status"));
         this.contentLanguage = rawHeaders.getValue("Content-Language");
         this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
         this.xMsEncryptionScope = rawHeaders.getValue("x-ms-encryption-scope");
@@ -1015,28 +1000,28 @@ public final class BlobsDownloadHeaders {
     }
 
     /**
-     * Get the dateProperty property: The Date property.
+     * Get the date property: The Date property.
      *
-     * @return the dateProperty value.
+     * @return the date value.
      */
-    public OffsetDateTime getDateProperty() {
-        if (this.dateProperty == null) {
+    public OffsetDateTime getDate() {
+        if (this.date == null) {
             return null;
         }
-        return this.dateProperty.getDateTime();
+        return this.date.getDateTime();
     }
 
     /**
-     * Set the dateProperty property: The Date property.
+     * Set the date property: The Date property.
      *
-     * @param dateProperty the dateProperty value to set.
+     * @param date the date value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
-    public BlobsDownloadHeaders setDateProperty(OffsetDateTime dateProperty) {
-        if (dateProperty == null) {
-            this.dateProperty = null;
+    public BlobsDownloadHeaders setDate(OffsetDateTime date) {
+        if (date == null) {
+            this.date = null;
         } else {
-            this.dateProperty = new DateTimeRfc1123(dateProperty);
+            this.date = new DateTimeRfc1123(date);
         }
         return this;
     }
