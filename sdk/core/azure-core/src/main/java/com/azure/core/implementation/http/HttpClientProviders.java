@@ -5,6 +5,7 @@ package com.azure.core.implementation.http;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
@@ -13,6 +14,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.ServiceLoader;
+
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_HTTP_CLIENT_IMPLEMENTATION;
 
 /**
  * This class handles loading available HTTP clients
@@ -36,6 +39,9 @@ public final class HttpClientProviders {
 
     private static final HttpClientProvider DEFAULT_PROVIDER;
     private static final Map<String, HttpClientProvider> AVAILABLE_PROVIDERS;
+
+    private static final String DEFAULT_HTTP_CLIENT_IMPLEMENTATION;
+    private static final boolean NO_DEFAULT_HTTP_CLIENT_IMPLEMENTATION;
 
     static {
         // Use as classloader to load provider-configuration files and provider classes the classloader
@@ -64,6 +70,10 @@ public final class HttpClientProviders {
             AVAILABLE_PROVIDERS.put(additionalProviderName, additionalProvider);
             LOGGER.verbose("Additional provider found on the classpath: {}", additionalProviderName);
         }
+
+        DEFAULT_HTTP_CLIENT_IMPLEMENTATION = Configuration.getGlobalConfiguration()
+            .get(PROPERTY_AZURE_HTTP_CLIENT_IMPLEMENTATION);
+        NO_DEFAULT_HTTP_CLIENT_IMPLEMENTATION = CoreUtils.isNullOrEmpty(DEFAULT_HTTP_CLIENT_IMPLEMENTATION);
     }
 
     private HttpClientProviders() {
@@ -81,14 +91,17 @@ public final class HttpClientProviders {
 
         if (clientOptions instanceof HttpClientOptions) {
             HttpClientOptions httpClientOptions = (HttpClientOptions) clientOptions;
-            String selectedImplementation = httpClientOptions.getHttpClientImplementation();
-            if (CoreUtils.isNullOrEmpty(selectedImplementation)) {
+            Class<? extends HttpClientProvider> selectedImplementation = httpClientOptions.getHttpClientProvider();
+            if (selectedImplementation == null && NO_DEFAULT_HTTP_CLIENT_IMPLEMENTATION) {
                 return DEFAULT_PROVIDER.createInstance(httpClientOptions);
             } else {
-                HttpClientProvider provider = AVAILABLE_PROVIDERS.get(selectedImplementation);
+                String implementationName = (selectedImplementation == null)
+                    ? DEFAULT_HTTP_CLIENT_IMPLEMENTATION
+                    : selectedImplementation.getName();
+                HttpClientProvider provider = AVAILABLE_PROVIDERS.get(implementationName);
                 if (provider == null) {
                     throw LOGGER.logExceptionAsError(
-                        new IllegalStateException(CANNOT_FIND_SPECIFIC_PROVIDER + selectedImplementation));
+                        new IllegalStateException(CANNOT_FIND_SPECIFIC_PROVIDER + implementationName));
                 } else {
                     return provider.createInstance(httpClientOptions);
                 }

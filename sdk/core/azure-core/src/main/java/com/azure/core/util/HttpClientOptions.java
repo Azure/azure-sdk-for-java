@@ -11,7 +11,6 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
 
-import static com.azure.core.util.Configuration.PROPERTY_AZURE_HTTP_CLIENT_IMPLEMENTATION;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT;
@@ -32,7 +31,6 @@ public final class HttpClientOptions extends ClientOptions {
     private static final Duration DEFAULT_READ_TIMEOUT;
     private static final Duration DEFAULT_CONNECTION_IDLE_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration NO_TIMEOUT = Duration.ZERO;
-    private static final String DEFAULT_HTTP_CLIENT_IMPLEMENTATION;
 
     private static final ClientLogger LOGGER = new ClientLogger(HttpClientOptions.class);
 
@@ -47,7 +45,6 @@ public final class HttpClientOptions extends ClientOptions {
             PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, Duration.ofSeconds(60), LOGGER);
         DEFAULT_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT,
             Duration.ofSeconds(60), LOGGER);
-        DEFAULT_HTTP_CLIENT_IMPLEMENTATION = configuration.get(PROPERTY_AZURE_HTTP_CLIENT_IMPLEMENTATION);
     }
 
     private ProxyOptions proxyOptions;
@@ -58,7 +55,7 @@ public final class HttpClientOptions extends ClientOptions {
     private Duration readTimeout;
     private Integer maximumConnectionPoolSize;
     private Duration connectionIdleTimeout;
-    private String httpClientImplementation = DEFAULT_HTTP_CLIENT_IMPLEMENTATION;
+    private Class<? extends HttpClientProvider> httpClientProvider;
 
     @Override
     public HttpClientOptions setApplicationId(String applicationId) {
@@ -381,11 +378,12 @@ public final class HttpClientOptions extends ClientOptions {
      * {@link HttpClientProvider} found on the class path an {@link IllegalStateException} will be thrown when
      * attempting to create an instance of {@link HttpClient}.
      *
-     * @param httpClientImplementation The fully qualified name of an {@link HttpClientProvider} implementation.
+     * @param httpClientProvider The {@link HttpClientProvider} implementation used to create an instance of
+     * {@link HttpClient}.
      * @return The updated HttpClientOptions object.
      */
-    public HttpClientOptions setHttpClientImplementation(String httpClientImplementation) {
-        this.httpClientImplementation = httpClientImplementation;
+    public HttpClientOptions setHttpClientProvider(Class<? extends HttpClientProvider> httpClientProvider) {
+        this.httpClientProvider = httpClientProvider;
         return this;
     }
 
@@ -402,10 +400,10 @@ public final class HttpClientOptions extends ClientOptions {
      * {@link HttpClientProvider} found on the class path an {@link IllegalStateException} will be thrown when
      * attempting to create an instance of {@link HttpClient}.
      *
-     * @return The fully qualified name of an {@link HttpClientProvider} implementation.
+     * @return The {@link HttpClientProvider} implementation used to create an instance of {@link HttpClient}.
      */
-    public String getHttpClientImplementation() {
-        return httpClientImplementation;
+    public Class<? extends HttpClientProvider> getHttpClientProvider() {
+        return httpClientProvider;
     }
 
     private static Duration getTimeout(Duration configuredTimeout, Duration defaultTimeout) {
