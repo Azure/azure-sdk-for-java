@@ -67,7 +67,7 @@ public final class AzureKafkaConfigurationUtils {
     /**
      * Configure Spring Cloud Azure user-agent for Kafka client. This method is idempotent to avoid configuring UA repeatedly.
      */
-    public static void configureKafkaUserAgent() {
+    public synchronized static void configureKafkaUserAgent() {
         Method dataMethod = ReflectionUtils.findMethod(ApiVersionsRequest.class, "data");
         if (dataMethod != null) {
             ApiVersionsRequest apiVersionsRequest = new ApiVersionsRequest.Builder().build();
