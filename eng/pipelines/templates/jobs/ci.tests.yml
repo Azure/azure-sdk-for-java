@@ -77,7 +77,7 @@ jobs:
 
       - template: ../steps/install-latest-jdk.yml
         parameters:
-          LatestJdkVersion: $(LatestJdkVersion)
+          LatestJdkVersion: eq($(LatestJdkVersion), $(JavaTestVersion))
 
       - template: ../steps/install-reporting-tools.yml
         parameters:

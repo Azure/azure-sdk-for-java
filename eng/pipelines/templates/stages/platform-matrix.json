@@ -11,7 +11,6 @@
     "JavaTestVersion": [ "1.8", "1.17" ],
     "AZURE_TEST_HTTP_CLIENTS": [ "okhttp", "netty" ],
     "TestFromSource": false,
-    "LatestJdkVersion": false,
     "TestGoals": "surefire:test",
     "TestOptions": ""
   },
@@ -29,7 +28,6 @@
       "JavaTestVersion": "1.17",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
       "TestFromSource": true,
-      "LatestJdkVersion": false,
       "TestGoals": "verify",
       "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false"
     },
@@ -40,7 +38,6 @@
       "JavaTestVersion": "1.17",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
       "TestFromSource": false,
-      "LatestJdkVersion": false,
       "TestGoals": "verify",
       "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false"
     },
@@ -51,7 +48,6 @@
       "JavaTestVersion": "1.11",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
       "TestFromSource": false,
-      "LatestJdkVersion": false,
       "TestGoals": "surefire:test",
       "TestOptions": ""
     },
@@ -60,7 +56,6 @@
         "ubuntu-20.04": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
       },
       "JavaTestVersion": "1.18",
-      "LatestJdkVersion": true,
       "AZURE_TEST_HTTP_CLIENTS": "netty",
       "TestFromSource": false,
       "TestGoals": "surefire:test",
