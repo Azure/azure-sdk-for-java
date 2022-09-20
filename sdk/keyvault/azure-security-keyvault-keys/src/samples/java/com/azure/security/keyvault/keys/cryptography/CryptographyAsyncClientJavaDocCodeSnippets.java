@@ -4,18 +4,14 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
-import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import reactor.util.context.Context;
 
@@ -68,30 +64,11 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withHttpClient.instantiation
         CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder()
             .keyIdentifier("<your-key-id>")
+            .credential(new DefaultAzureCredentialBuilder().build())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .addPolicy(new KeyVaultCredentialPolicy(new DefaultAzureCredentialBuilder().build()))
             .httpClient(HttpClient.createDefault())
             .buildAsyncClient();
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withHttpClient.instantiation
-
-        return cryptographyAsyncClient;
-    }
-
-    /**
-     * Generates a code sample for creating a {@link CryptographyAsyncClient} with a given {@link HttpPipeline}.
-     *
-     * @return An instance of {@link CryptographyAsyncClient}.
-     */
-    public CryptographyAsyncClient createAsyncClientWithPipeline() {
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withPipeline.instantiation
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(new KeyVaultCredentialPolicy(new DefaultAzureCredentialBuilder().build()), new RetryPolicy())
-            .build();
-        CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder()
-            .pipeline(pipeline)
-            .keyIdentifier("<your-key-id>")
-            .buildAsyncClient();
-        // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withPipeline.instantiation
 
         return cryptographyAsyncClient;
     }
