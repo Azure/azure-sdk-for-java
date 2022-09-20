@@ -1,29 +1,27 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.tracing.opentelemetry;
+package com.azure.messaging.eventhubs;
 
-import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.EventDataBatch;
-import com.azure.messaging.eventhubs.EventHubClientBuilder;
-import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
-import com.azure.messaging.eventhubs.EventHubProducerClient;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
-import io.opentelemetry.exporter.jaeger.JaegerGrpcSpanExporter;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
+import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
+import io.opentelemetry.sdk.trace.export.SpanExporter;
 import reactor.core.publisher.Flux;
 
-import java.time.Duration;
+import java.util.Collection;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 
 /**
- * Sample to demonstrate using {@link JaegerGrpcSpanExporter} to export telemetry events when publishing multiple events
- * to an eventhub instance using the {@link EventHubProducerAsyncClient}.
+ * Demonstrates how to use OpenTelemtery to trace EventHubs calls and set trace context manually
+ * on {@link EventData}. Note that in most cases (when you use Reactor or write synchronous code)
+ * setting context manually should not be necessary.
  */
 public class PublishEventsJaegerExporterSample {
 
@@ -40,22 +38,16 @@ public class PublishEventsJaegerExporterSample {
     }
 
     /**
-     * Configure the OpenTelemetry {@link JaegerGrpcSpanExporter} to enable tracing.
+     * Configure the OpenTelemetry {@link SampleTraceExporter} to enable tracing.
      *
      * @return The OpenTelemetry {@link Tracer} instance.
      */
     private static Tracer configureJaegerExporter() {
-        // Export traces to Jaeger
-        JaegerGrpcSpanExporter jaegerExporter =
-            JaegerGrpcSpanExporter.builder()
-                .setEndpoint("http://localhost:14250")
-                .setTimeout(Duration.ofMinutes(30000))
-                .build();
-
-        // Set to process the spans by the Jaeger Exporter
+        // configure exporter to your tracing backend instead.
         OpenTelemetrySdk openTelemetry = OpenTelemetrySdk.builder()
-            .setTracerProvider(
-                SdkTracerProvider.builder().addSpanProcessor(SimpleSpanProcessor.create(jaegerExporter)).build())
+            .setTracerProvider(SdkTracerProvider.builder()
+                    .addSpanProcessor(SimpleSpanProcessor.create(new SampleTraceExporter()))
+                    .build())
             .build();
         return openTelemetry.getSdkTracerProvider().get("Publish-Events-Eventhub-Sample");
     }
@@ -99,5 +91,23 @@ public class PublishEventsJaegerExporterSample {
             .block();
         // END: readme-sample-context-manual-propagation-amqp
         producer.close();
+    }
+
+    private static class SampleTraceExporter implements SpanExporter {
+        @Override
+        public CompletableResultCode export(Collection<SpanData> collection) {
+            collection.stream().forEach(System.out::println);
+            return CompletableResultCode.ofSuccess();
+        }
+
+        @Override
+        public CompletableResultCode flush() {
+            return CompletableResultCode.ofSuccess();
+        }
+
+        @Override
+        public CompletableResultCode shutdown() {
+            return CompletableResultCode.ofSuccess();
+        }
     }
 }

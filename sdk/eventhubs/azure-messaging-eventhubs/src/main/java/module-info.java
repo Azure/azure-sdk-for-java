@@ -14,6 +14,7 @@ module com.azure.messaging.eventhubs {
     opens com.azure.messaging.eventhubs.models;
 
     opens com.azure.messaging.eventhubs.implementation;
+    opens com.azure.messaging.eventhubs.implementation.instrumentation;
 
     uses com.azure.core.util.tracing.Tracer;
 }

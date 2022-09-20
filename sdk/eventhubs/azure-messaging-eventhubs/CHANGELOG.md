@@ -14,6 +14,8 @@
 
 ### Features Added
 
+- Enabled metrics for sent events, consumer lag, checkpointing. ([#31024](https://github.com/Azure/azure-sdk-for-java/pull/31024))
+- Enabled distributed tracing for consumer and batch processor. ([#31197](https://github.com/Azure/azure-sdk-for-java/pull/31197)) 
 - Added algorithm for mapping partition keys to partition ids.
 - Added EventHubBufferedProducerAsyncClient and EventHubBufferedProducerClient
 

@@ -22,6 +22,7 @@ import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
 
+import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.Objects;
@@ -36,6 +37,8 @@ import java.util.Optional;
  */
 public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     private static final StartSpanOptions DEFAULT_OPTIONS = new StartSpanOptions(com.azure.core.util.tracing.SpanKind.INTERNAL);
+    private static final String SPAN_KIND_KEY = "span-kind";
+    private static final String START_TIME_KEY = "span-start-time";
     private final Tracer tracer;
 
     /**
@@ -65,7 +68,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
 
     private static final ClientLogger LOGGER = new ClientLogger(OpenTelemetryTracer.class);
     private static final AutoCloseable NOOP_CLOSEABLE = () -> { };
-    private static final SpanKind SHARED_SPAN_BUILDER_KIND = SpanKind.CLIENT;
+    private static final SpanKind DEFAULT_SHARED_SPAN_BUILDER_KIND = SpanKind.CLIENT;
     private static final String SUPPRESSED_SPAN_FLAG = "suppressed-span-flag";
     private static final String CLIENT_METHOD_CALL_FLAG = "client-method-call-flag";
 
@@ -114,7 +117,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         context = unsuppress(context);
         switch (processKind) {
             case SEND:
-                // use previously created span builder from the LINK process.
+                // use previously created span builder with the links
                 spanBuilder = getOrNull(context, SPAN_BUILDER_KEY, SpanBuilder.class);
                 if (spanBuilder == null) {
                     // we can't return context here, because caller would not know that span was not created.
@@ -123,17 +126,23 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
                         .addKeyValue("spanName", spanName)
                         .addKeyValue("processKind", processKind)
                         .log("Start span is called without builder on the context, creating default builder.");
-                    spanBuilder = createSpanBuilder(spanName, null, SHARED_SPAN_BUILDER_KIND, null, context);
+                    spanBuilder = createSpanBuilder(spanName, null, SpanKind.CLIENT, null, context);
                 }
 
-                return startSpanInternal(spanBuilder, isClientCall(SHARED_SPAN_BUILDER_KIND), this::addMessagingAttributes, context);
+                return startSpanInternal(spanBuilder, true, this::addMessagingAttributes, context);
             case MESSAGE:
                 spanBuilder = createSpanBuilder(spanName, null, SpanKind.PRODUCER, null, context);
                 context = startSpanInternal(spanBuilder, false, this::addMessagingAttributes, context);
                 return setDiagnosticId(context);
             case PROCESS:
-                SpanContext remoteParentContext = getOrNull(context, SPAN_CONTEXT_KEY, SpanContext.class);
-                spanBuilder = createSpanBuilder(spanName, remoteParentContext, SpanKind.CONSUMER, null, context);
+                // use previously created span builder with the links
+                spanBuilder = getOrNull(context, SPAN_BUILDER_KEY, SpanBuilder.class);
+                if (spanBuilder == null) {
+                    // if there is no builder, create new one from parent in context
+                    SpanContext remoteParentContext = getOrNull(context, SPAN_CONTEXT_KEY, SpanContext.class);
+                    spanBuilder = createSpanBuilder(spanName, remoteParentContext, SpanKind.CONSUMER, null, context);
+                }
+
                 context = startSpanInternal(spanBuilder, false, this::addMessagingAttributes, context);
 
                 // TODO (limolkova) we should do this in the EventHub/ServiceBus SDK instead to make sure scope is
@@ -227,7 +236,14 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         if (spanContext == null) {
             return;
         }
-        spanBuilder.addLink(spanContext);
+
+        Attributes linkAttributes = Attributes.empty();
+        Long messageEnqueuedTime = getOrNull(context, MESSAGE_ENQUEUED_TIME, Long.class);
+        if (messageEnqueuedTime != null) {
+            linkAttributes = Attributes.of(AttributeKey.longKey(MESSAGE_ENQUEUED_TIME), messageEnqueuedTime);
+        }
+
+        spanBuilder.addLink(spanContext, linkAttributes);
     }
 
     /**
@@ -243,8 +259,18 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      */
     @Override
     public Context getSharedSpanBuilder(String spanName, Context context) {
-        // this is used to create messaging send spanBuilder, and it's a CLIENT span
-        return context.addData(SPAN_BUILDER_KEY, createSpanBuilder(spanName, null, SHARED_SPAN_BUILDER_KIND, null, context));
+        com.azure.core.util.tracing.SpanKind spanKind = getOrNull(context, SPAN_KIND_KEY, com.azure.core.util.tracing.SpanKind.class);
+        if (spanKind == null) {
+            spanKind = com.azure.core.util.tracing.SpanKind.CLIENT;
+        }
+
+        SpanBuilder builder = createSpanBuilder(spanName, null, convertToOtelKind(spanKind), null, context);
+        Instant startTime = getOrNull(context, START_TIME_KEY, Instant.class);
+        if (startTime != null) {
+            builder.setStartTimestamp(startTime);
+        }
+
+        return context.addData(SPAN_BUILDER_KEY, builder);
     }
 
     /**
@@ -567,7 +593,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     private SpanKind processKindToSpanKind(ProcessKind processKind) {
         switch (processKind) {
             case SEND:
-                return SHARED_SPAN_BUILDER_KIND;
+                return SpanKind.CLIENT;
             case MESSAGE:
                 return SpanKind.PRODUCER;
             case PROCESS:

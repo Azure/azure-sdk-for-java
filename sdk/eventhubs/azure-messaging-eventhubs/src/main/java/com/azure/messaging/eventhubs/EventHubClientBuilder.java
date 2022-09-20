@@ -17,7 +17,6 @@ import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
-import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.annotation.ServiceClientProtocol;
@@ -36,12 +35,12 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.metrics.MeterProvider;
-import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
+import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
 import org.apache.qpid.proton.engine.SslDomain;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Scheduler;
@@ -54,7 +53,6 @@ import java.net.URL;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.ServiceLoader;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -727,7 +725,7 @@ public class EventHubClientBuilder implements
                 + "string. using EventHubClientBuilder.consumerGroup(String)"));
         }
 
-        return buildAsyncClient().createConsumer(consumerGroup, prefetchCount);
+        return buildAsyncClient().createConsumer(consumerGroup, prefetchCount, false);
     }
 
     /**
@@ -808,6 +806,7 @@ public class EventHubClientBuilder implements
 
         final Meter meter = MeterProvider.getDefaultProvider().createMeter(LIBRARY_NAME, LIBRARY_VERSION,
             clientOptions == null ? null : clientOptions.getMetricsOptions());
+
         final MessageSerializer messageSerializer = new EventHubMessageSerializer();
 
         final EventHubConnectionProcessor processor;
@@ -826,8 +825,6 @@ public class EventHubClientBuilder implements
             processor = buildConnectionProcessor(messageSerializer, meter);
         }
 
-        final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
-
         String identifier;
         if (clientOptions instanceof AmqpClientOptions) {
             String clientOptionIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
@@ -836,8 +833,8 @@ public class EventHubClientBuilder implements
             identifier = UUID.randomUUID().toString();
         }
 
-        return new EventHubAsyncClient(processor, tracerProvider, messageSerializer, scheduler,
-            isSharedConnection.get(), this::onClientClose, identifier, meter);
+        return new EventHubAsyncClient(processor, messageSerializer, scheduler,
+            isSharedConnection.get(), this::onClientClose, identifier, meter, EventHubsTracer.getDefaultTracer());
     }
 
     /**
@@ -895,6 +892,11 @@ public class EventHubClientBuilder implements
                 LOGGER.warning("Shared EventHubConnectionProcessor was already disposed.");
             }
         }
+    }
+
+    Meter createMeter() {
+        return MeterProvider.getDefaultProvider().createMeter(LIBRARY_NAME, LIBRARY_VERSION,
+            clientOptions == null ? null : clientOptions.getMetricsOptions());
     }
 
     private EventHubConnectionProcessor buildConnectionProcessor(MessageSerializer messageSerializer, Meter meter) {
