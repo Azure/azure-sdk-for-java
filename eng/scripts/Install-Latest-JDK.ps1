@@ -10,7 +10,7 @@ if (!(Test-Path -Path $jdkZipName -PathType leaf)) {
 
 tar -xvf $jdkZipName
 
-$javaHome = Join-Path -Path (Convert-Path $jdkUnzipName) -ChildPath "bin"
+$javaHome = (Convert-Path $jdkUnzipName)
 Write-Host "Latest JDK: $javaHome"
 
 Write-Host "Current JAVA_HOME: $Env:JAVA_HOME"
@@ -19,9 +19,10 @@ Write-Host "Updated JAVA_HOME: $Env:JAVA_HOME"
 
 $Env:JAVA_HOME_18_X64 = $javaHome
 
+Write-Host "Java 8 JDK: $Env:JAVA_HOME_8_X64"
+Write-Host "Java 11 JDK: $Env:JAVA_HOME_11_X64"
+Write-Host "Java 17 JDK: $Env:JAVA_HOME_17_X64"
+Write-Host "Latest JDK: $Env:JAVA_HOME_18_X64"
+
 $path = $Env:PATH
 $path = $javaHome + ";" + $path
-
-Write-Host "Current Path: $Env:PATH"
-$Env:PATH = $path
-Write-Host "Updated PATH: $Env:PATH"
