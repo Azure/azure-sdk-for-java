@@ -121,6 +121,36 @@
       "ignore": true,
       "differences": [
         {
+          "code": "java.annotation.added",
+          "new": "class com.azure.spring.cloud.autoconfigure.aad.configuration.AadWebApplicationConfiguration",
+          "justification": "The change is expected. This is bean definition class, will not be used by customer's java code directly."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method com.azure.spring.cloud.autoconfigure.aad.filter.AadAuthenticationFilter com.azure.spring.cloud.autoconfigure.aad.AadAuthenticationFilterAutoConfiguration::aadAuthenticationFilter(com.nimbusds.jose.util.ResourceRetriever, com.nimbusds.jose.jwk.source.JWKSetCache, org.springframework.web.client.RestOperations)",
+          "justification": "The change is expected. This will not be used by customer's java code directly."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method void com.azure.spring.cloud.autoconfigure.aad.configuration.AadWebApplicationConfiguration::<init>(org.springframework.web.client.RestOperations)",
+          "justification": "The change is expected. This will not be used by customer's java code directly."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method void com.azure.spring.cloud.autoconfigure.aad.filter.AadAuthenticationFilter::<init>(com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties, com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints, com.azure.spring.cloud.autoconfigure.aad.filter.UserPrincipalManager, org.springframework.web.client.RestOperations)",
+          "justification": "The change is expected. This will not be used by customer's java code directly."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method void com.azure.spring.cloud.autoconfigure.aad.filter.AadAuthenticationFilter::<init>(com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties, com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints, com.nimbusds.jose.util.ResourceRetriever, org.springframework.web.client.RestOperations)",
+          "justification": "The change is expected. This will not be used by customer's java code directly."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method void com.azure.spring.cloud.autoconfigure.aad.filter.AadAuthenticationFilter::<init>(com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties, com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints, com.nimbusds.jose.util.ResourceRetriever, com.nimbusds.jose.jwk.source.JWKSetCache, org.springframework.web.client.RestOperations)",
+          "justification": "The change is expected. This will not be used by customer's java code directly."
+        },
+        {
           "code": "java.method.numberOfParametersChanged",
           "new": "method void com.azure.spring.cloud.autoconfigure.aad.AadAuthenticationFilterAutoConfiguration::<init>(com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties, org.springframework.web.client.RestOperations)",
           "justification": "The change is expected. This will not be used by customer's java code directly."
