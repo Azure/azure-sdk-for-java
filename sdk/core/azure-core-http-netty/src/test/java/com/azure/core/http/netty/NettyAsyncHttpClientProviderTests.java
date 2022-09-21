@@ -81,8 +81,9 @@ public class NettyAsyncHttpClientProviderTests {
         NettyAsyncHttpClient httpClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientProvider()
             .createInstance(clientOptions);
 
-        assertEquals((int) expectedTimeout, (int) httpClient.nettyClient.configuration().options()
-            .get(ChannelOption.CONNECT_TIMEOUT_MILLIS));
+        Integer connectTimeout = (Integer) httpClient.nettyClient.configuration().options()
+            .get(ChannelOption.CONNECT_TIMEOUT_MILLIS);
+        assertEquals((int) expectedTimeout, connectTimeout.intValue());
         assertEquals(expectedTimeout, httpClient.writeTimeout);
         assertEquals(expectedTimeout, httpClient.responseTimeout);
         assertEquals(expectedTimeout, httpClient.readTimeout);
