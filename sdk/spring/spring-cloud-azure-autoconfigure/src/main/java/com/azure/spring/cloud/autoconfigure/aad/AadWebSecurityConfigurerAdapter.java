@@ -28,7 +28,7 @@ import org.springframework.web.client.RestOperations;
 
 import javax.servlet.Filter;
 
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ClientRestOperationConfiguration.AAD_OAUTH_2_CLIENT_REST_OPERATION_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ClientRestOperationConfiguration.AAD_OAUTH2_CLIENT_REST_OPERATION_BEAN_NAME;
 
 /**
  * Abstract configuration class, used to make AzureClientRegistrationRepository and AuthzCodeGrantRequestEntityConverter
@@ -49,7 +49,7 @@ public abstract class AadWebSecurityConfigurerAdapter extends WebSecurityConfigu
      * RestOperations bean used to get access token from Azure AD.
      */
     @Autowired
-    @Qualifier(AAD_OAUTH_2_CLIENT_REST_OPERATION_BEAN_NAME)
+    @Qualifier(AAD_OAUTH2_CLIENT_REST_OPERATION_BEAN_NAME)
     protected RestOperations restOperations;
 
     /**

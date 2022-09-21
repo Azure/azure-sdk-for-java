@@ -32,7 +32,7 @@ public class AadOauth2ClientRestOperationConfiguration {
      *
      * @see AadOauth2ClientRestOperationConfiguration#aadOAuth2ClientRestOperation(RestTemplateBuilder)
      */
-    public static final String AAD_OAUTH_2_CLIENT_REST_OPERATION_BEAN_NAME = "aadOAuth2ClientRestOperation";
+    public static final String AAD_OAUTH2_CLIENT_REST_OPERATION_BEAN_NAME = "aadOAuth2ClientRestOperation";
 
     /**
      * Declare {@link RestOperations} bean used to retrieve access token from Azure AD(or Azure AD B2C) endpoints like:
@@ -54,8 +54,8 @@ public class AadOauth2ClientRestOperationConfiguration {
      * @see AadOAuth2ClientConfiguration
      * @see AadB2cOAuth2ClientConfiguration
      */
-    @Bean(AAD_OAUTH_2_CLIENT_REST_OPERATION_BEAN_NAME)
-    @ConditionalOnMissingBean(name = AAD_OAUTH_2_CLIENT_REST_OPERATION_BEAN_NAME)
+    @Bean(AAD_OAUTH2_CLIENT_REST_OPERATION_BEAN_NAME)
+    @ConditionalOnMissingBean(name = AAD_OAUTH2_CLIENT_REST_OPERATION_BEAN_NAME)
     public RestOperations aadOAuth2ClientRestOperation(RestTemplateBuilder builder) {
         RestTemplate restTemplate = builder.build();
         restTemplate.setErrorHandler(new OAuth2ErrorResponseErrorHandler());

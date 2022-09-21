@@ -26,7 +26,7 @@ public class AadOauth2ResourceServerRestOperationConfiguration {
      *
      * @see AadOauth2ResourceServerRestOperationConfiguration#aadOauth2ResourceServerRestOperation(RestTemplateBuilder)
      */
-    public static final String AAD_OAUTH_2_RESOURCE_SERVER_REST_OPERATION_BEAN_NAME =
+    public static final String AAD_OAUTH2_RESOURCE_SERVER_REST_OPERATION_BEAN_NAME =
             "aadOauth2ResourceServerRestOperation";
 
     /**
@@ -52,8 +52,8 @@ public class AadOauth2ResourceServerRestOperationConfiguration {
      * @see AadResourceServerConfiguration
      * @see AadB2cResourceServerAutoConfiguration
      */
-    @Bean(AAD_OAUTH_2_RESOURCE_SERVER_REST_OPERATION_BEAN_NAME)
-    @ConditionalOnMissingBean(name = AAD_OAUTH_2_RESOURCE_SERVER_REST_OPERATION_BEAN_NAME)
+    @Bean(AAD_OAUTH2_RESOURCE_SERVER_REST_OPERATION_BEAN_NAME)
+    @ConditionalOnMissingBean(name = AAD_OAUTH2_RESOURCE_SERVER_REST_OPERATION_BEAN_NAME)
     public RestOperations aadOauth2ResourceServerRestOperation(RestTemplateBuilder builder) {
         return builder.build();
     }
