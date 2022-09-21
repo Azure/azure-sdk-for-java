@@ -5,9 +5,9 @@ package com.azure.core.http.policy;
 
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.UrlBuilder;
-
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import reactor.core.publisher.Mono;
@@ -22,6 +22,21 @@ public class HostPolicy implements HttpPipelinePolicy {
 
     private final String host;
 
+    private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
+        @Override
+        protected void beforeSendingRequest(HttpPipelineCallContext context) {
+            LOGGER.log(LogLevel.VERBOSE, () -> "Setting host to " + host);
+
+            final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
+            try {
+                context.getHttpRequest().setUrl(urlBuilder.setHost(host).toUrl());
+            } catch (MalformedURLException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(String.format("Host URL '%s' is invalid.", host),
+                    e));
+            }
+        }
+    };
+
     /**
      * Create HostPolicy.
      *
@@ -33,14 +48,11 @@ public class HostPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        LOGGER.log(LogLevel.VERBOSE, () -> "Setting host to " + host);
+        return inner.process(context, next);
+    }
 
-        final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
-        try {
-            context.getHttpRequest().setUrl(urlBuilder.setHost(host).toUrl());
-            return next.process();
-        } catch (MalformedURLException e) {
-            return Mono.error(new RuntimeException(String.format("Host URL '%s' is invalid.", host), e));
-        }
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+        return inner.processSync(context, next);
     }
 }

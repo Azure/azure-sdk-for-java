@@ -1,14 +1,34 @@
 # Release History
 
-## 2.16.0-beta.1 (Unreleased)
+## 2.19.0-beta.1 (Unreleased)
 
-### Features Added
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-08-15`.
+
+## 2.18.0 (2022-08-26)
 
 ### Breaking Changes
 
-### Bugs Fixed
+- Fixed incorrect class name of `CassandraClusterPublicStatusDataCentersItemNode`.
+
+## 2.17.0 (2022-07-25)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-05-15`.
+
+## 2.16.0 (2022-06-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.15.0 (2022-05-25)
 

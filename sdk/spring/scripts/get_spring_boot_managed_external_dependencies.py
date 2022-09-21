@@ -58,7 +58,7 @@ def get_spring_boot_managed_external_dependencies_file_name(spring_boot_dependen
 
 def main():
     start_time = time.time()
-    change_to_root_dir()
+    change_to_repo_root_dir()
     log.debug('Current working directory = {}.'.format(os.getcwd()))
     dependency_dict = {}
     args = get_args()
@@ -71,7 +71,7 @@ def main():
     log.info('elapsed_time = {}'.format(elapsed_time))
 
 
-def change_to_root_dir():
+def change_to_repo_root_dir():
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
     os.chdir('../../..')
 

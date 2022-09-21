@@ -17,8 +17,10 @@ import org.springframework.context.annotation.Bean;
  *  @since 4.0.0
  */
 @ConditionalOnClass({ AzureStorageBlobProtocolResolver.class })
-@ConditionalOnProperty(value = "spring.cloud.azure.storage.blob.enabled", havingValue = "true", matchIfMissing = true)
-@ConditionalOnAnyProperty(prefixes = { "spring.cloud.azure.storage.blob", "spring.cloud.azure.storage" }, name = { "account-name", "endpoint", "connection-string" })
+@ConditionalOnProperty(value = { "spring.cloud.azure.storage.blob.enabled",  "spring.cloud.azure.storage.enabled" }, havingValue = "true", matchIfMissing = true)
+@ConditionalOnAnyProperty(
+    prefixes = { "spring.cloud.azure.storage.blob", "spring.cloud.azure.storage" },
+    name = { "account-name", "endpoint", "connection-string" })
 public class AzureStorageBlobResourceAutoConfiguration {
 
     /**

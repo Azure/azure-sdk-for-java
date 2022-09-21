@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NetworkFeatures. */
+/**
+ * Network features
+ *
+ * <p>Basic network, or Standard features available to the volume.
+ */
 public final class NetworkFeatures extends ExpandableStringEnum<NetworkFeatures> {
     /** Static value Basic for NetworkFeatures. */
     public static final NetworkFeatures BASIC = fromString("Basic");
@@ -27,7 +31,11 @@ public final class NetworkFeatures extends ExpandableStringEnum<NetworkFeatures>
         return fromString(name, NetworkFeatures.class);
     }
 
-    /** @return known NetworkFeatures values. */
+    /**
+     * Gets known NetworkFeatures values.
+     *
+     * @return known NetworkFeatures values.
+     */
     public static Collection<NetworkFeatures> values() {
         return values(NetworkFeatures.class);
     }

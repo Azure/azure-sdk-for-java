@@ -24,7 +24,11 @@ public final class ScalingHostPoolType extends ExpandableStringEnum<ScalingHostP
         return fromString(name, ScalingHostPoolType.class);
     }
 
-    /** @return known ScalingHostPoolType values. */
+    /**
+     * Gets known ScalingHostPoolType values.
+     *
+     * @return known ScalingHostPoolType values.
+     */
     public static Collection<ScalingHostPoolType> values() {
         return values(ScalingHostPoolType.class);
     }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The array of capabilities of a lab services SKU. */
 @Immutable
 public final class LabServicesSkuCapabilities {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LabServicesSkuCapabilities.class);
-
     /*
      * The name of the capability for a SKU.
      */

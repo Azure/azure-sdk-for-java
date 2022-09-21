@@ -195,7 +195,7 @@ def compare_with_maven_package(sdk_root: str, service: str, stable_version: str,
             raise Exception('Cannot found built jar in {0}'.format(new_jar))
         breaking, changelog = generate_changelog_and_breaking_change(
             sdk_root, old_jar, new_jar)
-        if changelog:
+        if changelog is not None:
             changelog_file = os.path.join(
                 sdk_root,
                 CHANGELOG_FORMAT.format(service = service,
@@ -252,7 +252,7 @@ def read_api_specs(api_specs_file: str) -> Tuple[str, dict]:
 def write_api_specs(api_specs_file: str, comment: str, api_specs: dict):
     with open(api_specs_file, 'w') as fout:
         fout.write(comment)
-        fout.write(yaml.dump(api_specs, Dumper=ListIndentDumper))
+        fout.write(yaml.dump(api_specs, width=sys.maxsize, Dumper=ListIndentDumper))
 
 
 def get_and_update_service_from_api_specs(

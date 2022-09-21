@@ -21,7 +21,7 @@ pr:
   paths:
     include:
       - sdk/communication/azure-communication-sms/
-      
+
     exclude:
       - sdk/communication/azure-communication-sms/pom.xml
 
@@ -29,6 +29,7 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: communication
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-communication-sms
         groupId: com.azure

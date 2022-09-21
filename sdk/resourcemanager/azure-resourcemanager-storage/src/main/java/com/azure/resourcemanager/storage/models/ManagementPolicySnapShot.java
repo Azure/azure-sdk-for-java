@@ -11,15 +11,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ManagementPolicySnapShot {
     /*
-     * The function to tier blob snapshot to cool storage. Support blob
-     * snapshot currently at Hot tier
+     * The function to tier blob snapshot to cool storage. Support blob snapshot currently at Hot tier
      */
     @JsonProperty(value = "tierToCool")
     private DateAfterCreation tierToCool;
 
     /*
-     * The function to tier blob snapshot to archive storage. Support blob
-     * snapshot currently at Hot or Cool tier
+     * The function to tier blob snapshot to archive storage. Support blob snapshot currently at Hot or Cool tier
      */
     @JsonProperty(value = "tierToArchive")
     private DateAfterCreation tierToArchive;

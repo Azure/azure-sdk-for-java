@@ -27,7 +27,11 @@ public final class NetworkRuleAction extends ExpandableStringEnum<NetworkRuleAct
         return fromString(name, NetworkRuleAction.class);
     }
 
-    /** @return known NetworkRuleAction values. */
+    /**
+     * Gets known NetworkRuleAction values.
+     *
+     * @return known NetworkRuleAction values.
+     */
     public static Collection<NetworkRuleAction> values() {
         return values(NetworkRuleAction.class);
     }

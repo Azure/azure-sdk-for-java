@@ -63,6 +63,7 @@ class ServiceBusSessionManager implements AutoCloseable {
     private final Duration operationTimeout;
     private final TracerProvider tracerProvider;
     private final MessageSerializer messageSerializer;
+    private final String identifier;
 
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicBoolean isStarted = new AtomicBoolean();
@@ -81,7 +82,7 @@ class ServiceBusSessionManager implements AutoCloseable {
 
     ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
         ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer, ReceiverOptions receiverOptions, ServiceBusReceiveLink receiveLink) {
+        MessageSerializer messageSerializer, ReceiverOptions receiverOptions, ServiceBusReceiveLink receiveLink, String identifier) {
         this.entityPath = entityPath;
         this.entityType = entityType;
         this.receiverOptions = receiverOptions;
@@ -90,6 +91,7 @@ class ServiceBusSessionManager implements AutoCloseable {
         this.tracerProvider = tracerProvider;
         this.messageSerializer = messageSerializer;
         this.maxSessionLockRenewDuration = receiverOptions.getMaxLockRenewDuration();
+        this.identifier = identifier;
 
         // According to the documentation, if a sequence is not finite, it should be published on their own scheduler.
         // It's possible that some of these sessions have a lot of messages.
@@ -112,9 +114,9 @@ class ServiceBusSessionManager implements AutoCloseable {
 
     ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
         ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer, ReceiverOptions receiverOptions) {
+        MessageSerializer messageSerializer, ReceiverOptions receiverOptions, String identifier) {
         this(entityPath, entityType, connectionProcessor, tracerProvider,
-            messageSerializer, receiverOptions, null);
+            messageSerializer, receiverOptions, null, identifier);
     }
 
     /**
@@ -127,6 +129,15 @@ class ServiceBusSessionManager implements AutoCloseable {
     String getLinkName(String sessionId) {
         final ServiceBusSessionReceiver receiver = sessionReceivers.get(sessionId);
         return receiver != null ? receiver.getLinkName() : null;
+    }
+
+    /**
+     * Gets the identifier of the instance of {@link ServiceBusSessionManager}.
+     *
+     * @return The identifier that can identify the instance of {@link ServiceBusSessionManager}.
+     */
+    public String getIdentifier() {
+        return this.identifier;
     }
 
     /**
@@ -253,7 +264,7 @@ class ServiceBusSessionManager implements AutoCloseable {
         return connectionProcessor
             .flatMap(connection -> {
                 return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(),
-                null, entityType, sessionId);
+                null, entityType, identifier, sessionId);
             });
     }
 
@@ -324,8 +335,7 @@ class ServiceBusSessionManager implements AutoCloseable {
                 if (receiverOptions.isRollingSessionReceiver()) {
                     onSessionRequest(1L);
                 }
-            }))
-            .publishOn(scheduler, 1);
+            }));
     }
 
     private Mono<ServiceBusManagementNode> getManagementNode() {

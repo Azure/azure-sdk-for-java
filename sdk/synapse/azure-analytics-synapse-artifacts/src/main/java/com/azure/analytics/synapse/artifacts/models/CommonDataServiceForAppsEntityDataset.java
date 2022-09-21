@@ -19,8 +19,7 @@ import java.util.Map;
 @Fluent
 public class CommonDataServiceForAppsEntityDataset extends Dataset {
     /*
-     * The logical name of the entity. Type: string (or Expression with
-     * resultType string).
+     * The logical name of the entity. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.entityName")
     private Object entityName;

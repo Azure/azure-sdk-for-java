@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NextHopType. */
+/** Next hop type. */
 public final class NextHopType extends ExpandableStringEnum<NextHopType> {
     /** Static value Internet for NextHopType. */
     public static final NextHopType INTERNET = fromString("Internet");
@@ -39,7 +39,11 @@ public final class NextHopType extends ExpandableStringEnum<NextHopType> {
         return fromString(name, NextHopType.class);
     }
 
-    /** @return known NextHopType values. */
+    /**
+     * Gets known NextHopType values.
+     *
+     * @return known NextHopType values.
+     */
     public static Collection<NextHopType> values() {
         return values(NextHopType.class);
     }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IpFlowProtocol. */
+/** Protocol to be verified on. */
 public final class IpFlowProtocol extends ExpandableStringEnum<IpFlowProtocol> {
     /** Static value TCP for IpFlowProtocol. */
     public static final IpFlowProtocol TCP = fromString("TCP");
@@ -27,7 +27,11 @@ public final class IpFlowProtocol extends ExpandableStringEnum<IpFlowProtocol> {
         return fromString(name, IpFlowProtocol.class);
     }
 
-    /** @return known IpFlowProtocol values. */
+    /**
+     * Gets known IpFlowProtocol values.
+     *
+     * @return known IpFlowProtocol values.
+     */
     public static Collection<IpFlowProtocol> values() {
         return values(IpFlowProtocol.class);
     }

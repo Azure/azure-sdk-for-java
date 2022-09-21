@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ApplicationGatewayTier. */
+/** Tier of an application gateway. */
 public final class ApplicationGatewayTier extends ExpandableStringEnum<ApplicationGatewayTier> {
     /** Static value Standard for ApplicationGatewayTier. */
     public static final ApplicationGatewayTier STANDARD = fromString("Standard");
@@ -33,7 +33,11 @@ public final class ApplicationGatewayTier extends ExpandableStringEnum<Applicati
         return fromString(name, ApplicationGatewayTier.class);
     }
 
-    /** @return known ApplicationGatewayTier values. */
+    /**
+     * Gets known ApplicationGatewayTier values.
+     *
+     * @return known ApplicationGatewayTier values.
+     */
     public static Collection<ApplicationGatewayTier> values() {
         return values(ApplicationGatewayTier.class);
     }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AuthorizationUseStatus. */
+/** The authorization use status. */
 public final class AuthorizationUseStatus extends ExpandableStringEnum<AuthorizationUseStatus> {
     /** Static value Available for AuthorizationUseStatus. */
     public static final AuthorizationUseStatus AVAILABLE = fromString("Available");
@@ -27,7 +27,11 @@ public final class AuthorizationUseStatus extends ExpandableStringEnum<Authoriza
         return fromString(name, AuthorizationUseStatus.class);
     }
 
-    /** @return known AuthorizationUseStatus values. */
+    /**
+     * Gets known AuthorizationUseStatus values.
+     *
+     * @return known AuthorizationUseStatus values.
+     */
     public static Collection<AuthorizationUseStatus> values() {
         return values(AuthorizationUseStatus.class);
     }

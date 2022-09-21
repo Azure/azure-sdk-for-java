@@ -371,7 +371,7 @@ public class ShareFileClient {
     public SyncPoller<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata,
         Duration pollInterval) {
         ShareFileCopyOptions options = new ShareFileCopyOptions().setMetadata(metadata);
-        return this.beginCopy(sourceUrl, pollInterval, options);
+        return this.beginCopy(sourceUrl, options, pollInterval);
     }
 
     /**
@@ -431,11 +431,11 @@ public class ShareFileClient {
             .setFilePermission(filePermission)
             .setPermissionCopyModeType(filePermissionCopyMode)
             .setIgnoreReadOnly(ignoreReadOnly)
-            .setSetArchiveAttribute(setArchiveAttribute)
+            .setArchiveAttribute(setArchiveAttribute)
             .setMetadata(metadata)
             .setDestinationRequestConditions(destinationRequestConditions);
 
-        return beginCopy(sourceUrl, pollInterval, options);
+        return beginCopy(sourceUrl, options, pollInterval);
     }
 
     /**
@@ -464,14 +464,14 @@ public class ShareFileClient {
      *     .setSmbProperties&#40;smbProperties&#41;
      *     .setFilePermission&#40;filePermission&#41;
      *     .setIgnoreReadOnly&#40;ignoreReadOnly&#41;
-     *     .setSetArchiveAttribute&#40;setArchiveAttribute&#41;
+     *     .setArchiveAttribute&#40;setArchiveAttribute&#41;
      *     .setDestinationRequestConditions&#40;requestConditions&#41;
      *     .setSmbPropertiesToCopy&#40;list&#41;
      *     .setPermissionCopyModeType&#40;PermissionCopyModeType.SOURCE&#41;
      *     .setMetadata&#40;Collections.singletonMap&#40;&quot;file&quot;, &quot;metadata&quot;&#41;&#41;;
      *
      * SyncPoller&lt;ShareFileCopyInfo, Void&gt; poller = fileClient.beginCopy&#40;
-     *     &quot;https:&#47;&#47;&#123;accountName&#125;.file.core.windows.net?&#123;SASToken&#125;&quot;, Duration.ofSeconds&#40;2&#41;, options&#41;;
+     *     &quot;https:&#47;&#47;&#123;accountName&#125;.file.core.windows.net?&#123;SASToken&#125;&quot;, options, Duration.ofSeconds&#40;2&#41;&#41;;
      *
      * final PollResponse&lt;ShareFileCopyInfo&gt; pollResponse = poller.poll&#40;&#41;;
      * final ShareFileCopyInfo value = pollResponse.getValue&#40;&#41;;
@@ -489,8 +489,8 @@ public class ShareFileClient {
      * @return A {@link SyncPoller} to poll the progress of copy operation.
      * @see <a href="https://docs.microsoft.com/dotnet/csharp/language-reference/">C# identifiers</a>
      */
-    public SyncPoller<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, Duration pollInterval, ShareFileCopyOptions options) {
-        return shareFileAsyncClient.beginCopy(sourceUrl, pollInterval, options).getSyncPoller();
+    public SyncPoller<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, ShareFileCopyOptions options, Duration pollInterval) {
+        return shareFileAsyncClient.beginCopy(sourceUrl, options, pollInterval).getSyncPoller();
     }
 
     /**
@@ -1433,8 +1433,8 @@ public class ShareFileClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param data The data which will upload to the storage file.
-     * @param length Specifies the number of bytes being transmitted in the request body. When the
-     * ShareFileRangeWriteType is set to clear, the value of this header must be set to zero.
+     * @param length Specifies the number of bytes being transmitted in the request body. Value must be greater than or
+     * equal to 1.
      * @return The {@link ShareFileUploadInfo file upload info}
      * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
      * status code 413 (Request Entity Too Large)
@@ -1471,7 +1471,8 @@ public class ShareFileClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param data The data which will upload to the storage file.
-     * @param length Specifies the number of bytes being transmitted in the request body.
+     * @param length Specifies the number of bytes being transmitted in the request body. Value must be greater than or
+     * equal to 1.
      * @param offset Starting point of the upload range, if {@code null} it will start from the beginning.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
@@ -1516,7 +1517,8 @@ public class ShareFileClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param data The data which will upload to the storage file.
-     * @param length Specifies the number of bytes being transmitted in the request body.
+     * @param length Specifies the number of bytes being transmitted in the request body. Value must be greater than or
+     * equal to 1.
      * @param offset Starting point of the upload range, if {@code null} it will start from the beginning.
      * @param requestConditions {@link ShareRequestConditions}
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
@@ -1561,7 +1563,8 @@ public class ShareFileClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param data The data which will upload to the storage file.
-     * @param length Specifies the number of bytes being transmitted in the request body.
+     * @param length Specifies the number of bytes being transmitted in the request body. Value must be greater than or
+     * equal to 1.
      * @param transferOptions {@link ParallelTransferOptions} for file transfer.
      * @return The {@link ShareFileUploadInfo file upload info}
      */
@@ -1623,7 +1626,8 @@ public class ShareFileClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param data The data which will upload to the storage file.
-     * @param length Specifies the number of bytes being transmitted in the request body.
+     * @param length Specifies the number of bytes being transmitted in the request body. Value must be greater than or
+     * equal to 1.
      * @return The {@link ShareFileUploadInfo file upload info}
      * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
      * status code 413 (Request Entity Too Large)

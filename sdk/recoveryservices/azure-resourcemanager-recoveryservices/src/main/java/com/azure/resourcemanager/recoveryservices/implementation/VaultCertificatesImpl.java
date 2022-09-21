@@ -5,19 +5,19 @@
 package com.azure.resourcemanager.recoveryservices.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.recoveryservices.RecoveryServicesManager;
 import com.azure.resourcemanager.recoveryservices.fluent.VaultCertificatesClient;
 import com.azure.resourcemanager.recoveryservices.models.VaultCertificates;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class VaultCertificatesImpl implements VaultCertificates {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VaultCertificatesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VaultCertificatesImpl.class);
 
     private final VaultCertificatesClient innerClient;
 
-    private final RecoveryServicesManager serviceManager;
+    private final com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager;
 
-    public VaultCertificatesImpl(VaultCertificatesClient innerClient, RecoveryServicesManager serviceManager) {
+    public VaultCertificatesImpl(
+        VaultCertificatesClient innerClient,
+        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -26,7 +26,7 @@ public final class VaultCertificatesImpl implements VaultCertificates {
         return this.innerClient;
     }
 
-    private RecoveryServicesManager manager() {
+    private com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager() {
         return this.serviceManager;
     }
 

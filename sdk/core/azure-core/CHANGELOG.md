@@ -1,6 +1,6 @@
 # Release History
 
-## 1.30.0-beta.1 (Unreleased)
+## 1.33.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,79 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.32.0 (2022-09-01)
+
+### Features Added
+
+- Added new constructor overloads to `PagedIterable` and introduced `PageRetrieverSync`.
+- Added `com.azure.core.util.metrics.LongGauge` instrument support to metrics.
+- Added `CoreUtils.stringJoin` which optimizes `String.join` for small `List`s.
+
+### Other Changes
+
+- Miscellaneous performance improvements.
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.4.2` to `3.4.22`.
+
+## 1.31.0 (2022-08-05)
+
+### Features Added
+
+- Added support for relative paths returned by polling operations. ([#29676](https://github.com/Azure/azure-sdk-for-java/pull/29676))
+- Added the ability to transfer the body of an `HttpResponse` to an `AsynchronousByteChannel` or `WriteableByteChannel`.
+- Added `AZURE_CLIENT_CERTIFICATE_PASSWORD` property to `Configuration`.
+- Added `AZURE_METRICS_DISABLED` property to `Configuration`.
+
+### Bugs Fixed
+
+- Fixed bug where `RestProxy` could leak connection if service method returned `Mono<Void>` or `void`. ([#30072](https://github.com/Azure/azure-sdk-for-java/pull/30072))
+- Fixed bug where query parameters with Base64 encoded values with trailing `=`s would be stripped. ([#30164](https://github.com/Azure/azure-sdk-for-java/pull/30164))
+
+### Other Changes
+
+- Added additional information to log messages and exceptions when requests are retried.
+- Removed requirement for `Multi-Release: true` to be included in a manifest when creating an all-in-one JAR including `azure-core`.
+- Updated log messages to mention when there is a fallback being used.
+- Miscellaneous performance improvements.
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.4.19` to `3.4.21`.
+
+## 1.30.0 (2022-06-30)
+
+### Features Added
+
+- Added `BinaryData.isReplayable()` to indicate if multiple consumptions of the content are safe.
+- Added `BinaryData.toReplayableBinaryData` and `BinaryData.toReplayableBinaryDataAsync` to allow
+  transforming `BinaryData` instances into replayable `BinaryData` for all content types.
+- Added support for sending synchronous requests using `sendSync` in `HttpPipeline`:
+  - Added `HttpPipelinePolicy.processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next)` to allow processing policies synchronously.
+  - Added `HttpPipelineSyncPolicy` to represent synchronous `HttpPipelinePolicy`.
+  - Added `HttpPipelineNextSyncPolicy` to invoke the next synchronous policy in pipeline. to process synchronous policy pipeline.
+  - Added `HttpPipelineCallState` to maintain request specific pipeline and contextual data.
+- Added `ProgressReporter` and `ProgressListener` to provide ability to track progress of I/O operations.
+- Added `Contexts` utility to manipulate known cross-cutting key-value pairs.
+  - Added ability to get and set `ProgressReporter` on `Context`.
+- Added `HttpPipelineCallContext.getContext()`.
+- Added `com.azure.core.util.metrics` package and metrics abstractions (intended for client libraries):
+  `MeterProvider`, `Meter`, `LongCounter` and `DoubleHistogram`.
+
+### Bugs Fixed
+
+- Fixed bug where `BinaryData.fromFile(path).toFluxByteBuffer()` and `BinaryData.fromFile(path).toBytes()`
+  could block file deletion on Windows.
+- Fixed bug where `Context.getData("key")` throws if the `null` value has been set by calling `Context.addData("key", null)`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.4.17` to `3.4.19`.
+- Upgraded Jackson from `2.13.2.2` to `2.13.3`.
 
 ## 1.29.1 (2022-06-03)
 

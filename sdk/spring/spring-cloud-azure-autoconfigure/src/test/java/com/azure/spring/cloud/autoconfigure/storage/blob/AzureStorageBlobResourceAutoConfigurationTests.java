@@ -19,9 +19,9 @@ class AzureStorageBlobResourceAutoConfigurationTests {
 
     @ParameterizedTest
     @ValueSource(strings = { "spring.cloud.azure.storage.blob.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
-    void accountNameShouldConfigure(String accoutNameProperty) {
+    void accountNameShouldConfigure(String accountNameProperty) {
         this.contextRunner
-            .withPropertyValues(accoutNameProperty)
+            .withPropertyValues(accountNameProperty)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureStorageBlobResourceAutoConfiguration.class);
                 assertThat(context).hasSingleBean(AzureStorageBlobProtocolResolver.class);
@@ -52,11 +52,22 @@ class AzureStorageBlobResourceAutoConfigurationTests {
 
     @ParameterizedTest
     @ValueSource(strings = { "spring.cloud.azure.storage.blob.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
-    void configureWithStorageBlobResourceDisabled(String accoutNameProperty) {
+    void configureWithStorageBlobResourceDisabled(String accountNameProperty) {
         this.contextRunner
             .withPropertyValues(
-                accoutNameProperty,
+                accountNameProperty,
                 "spring.cloud.azure.storage.blob.enabled:false")
             .run((context) -> assertThat(context).doesNotHaveBean(AzureStorageBlobResourceAutoConfiguration.class));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "spring.cloud.azure.storage.blob.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
+    void configureWithStorageGlobalDisabled(String accoutNameProperty) {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.storage.enabled=false",
+                accoutNameProperty
+            )
+            .run(context -> assertThat(context).doesNotHaveBean(AzureStorageBlobResourceAutoConfiguration.class));
     }
 }

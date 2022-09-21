@@ -83,7 +83,7 @@ import java.util.Map;
 /** Samples for VirtualMachineScaleSets Update. */
 public final class VirtualMachineScaleSetsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_Update_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSets_Update_MinimumSet_Gen.
@@ -101,7 +101,7 @@ public final class VirtualMachineScaleSetsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSets_Update_MaximumSet_Gen.
@@ -370,7 +370,7 @@ public final class VirtualMachineScaleSetsUpdateSamples {
                                                     .withSuppressFailures(true)))
                                     .withExtensionsTimeBudget("PT1H20M"))
                             .withLicenseType("aaaaaaaaaaaa")
-                            .withBillingProfile(new BillingProfile().withMaxPrice(-1.0))
+                            .withBillingProfile(new BillingProfile().withMaxPrice(-1.0D))
                             .withScheduledEventsProfile(
                                 new ScheduledEventsProfile()
                                     .withTerminateNotificationProfile(

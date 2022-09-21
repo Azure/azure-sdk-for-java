@@ -44,7 +44,7 @@ import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.STO
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties
 @ConditionalOnClass(BlobServiceClientBuilder.class)
-@ConditionalOnProperty(value = "spring.cloud.azure.storage.blob.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(value = { "spring.cloud.azure.storage.blob.enabled",  "spring.cloud.azure.storage.enabled" }, havingValue = "true", matchIfMissing = true)
 @ConditionalOnAnyProperty(
     prefixes = { "spring.cloud.azure.storage.blob", "spring.cloud.azure.storage" },
     name = { "account-name", "endpoint", "connection-string" })

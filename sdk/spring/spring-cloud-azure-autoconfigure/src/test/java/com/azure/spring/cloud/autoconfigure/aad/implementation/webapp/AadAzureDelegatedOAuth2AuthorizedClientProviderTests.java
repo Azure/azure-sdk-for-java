@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.implementation.webapp;
 
-import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.ClientAuthorizationRequiredException;
@@ -12,36 +11,38 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.RefreshTokenOAuth2AuthorizedClientProvider;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2RefreshToken;
 
 import java.time.Instant;
 
 import static com.azure.spring.cloud.autoconfigure.aad.AadClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.constants.Constants.AZURE_DELEGATED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.oauth2.core.AuthorizationGrantType.AUTHORIZATION_CODE;
+import static org.springframework.security.oauth2.core.AuthorizationGrantType.CLIENT_CREDENTIALS;
 
 class AadAzureDelegatedOAuth2AuthorizedClientProviderTests {
 
     private static final ClientRegistration AZURE_CLIENT_REGISTRATION =
         toClientRegistrationBuilder(AZURE_CLIENT_REGISTRATION_ID)
-            .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+            .authorizationGrantType(AUTHORIZATION_CODE)
             .build();
 
     private static final ClientRegistration DELEGATED_CLIENT_REGISTRATION =
         toClientRegistrationBuilder("delegated")
-            .authorizationGrantType(new AuthorizationGrantType(AadAuthorizationGrantType.AZURE_DELEGATED.getValue()))
+            .authorizationGrantType(AZURE_DELEGATED)
             .scope("testScope")
             .build();
 
     private static final ClientRegistration CLIENT_CREDENTIALS_CLIENT_REGISTRATION =
         toClientRegistrationBuilder("clientCredentials")
-            .authorizationGrantType(new AuthorizationGrantType(AadAuthorizationGrantType.CLIENT_CREDENTIALS.getValue()))
+            .authorizationGrantType(CLIENT_CREDENTIALS)
             .build();
 
     private static ClientRegistration.Builder toClientRegistrationBuilder(String registrationId) {

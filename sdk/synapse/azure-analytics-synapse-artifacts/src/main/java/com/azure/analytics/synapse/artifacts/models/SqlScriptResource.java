@@ -24,8 +24,7 @@ public final class SqlScriptResource {
     private String name;
 
     /*
-     * The type of the resource. Ex- Microsoft.Compute/virtualMachines or
-     * Microsoft.Storage/storageAccounts.
+     * The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;

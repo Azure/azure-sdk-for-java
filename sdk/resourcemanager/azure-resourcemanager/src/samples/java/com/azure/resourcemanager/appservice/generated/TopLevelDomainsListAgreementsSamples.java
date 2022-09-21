@@ -10,7 +10,7 @@ import com.azure.resourcemanager.appservice.models.TopLevelDomainAgreementOption
 /** Samples for TopLevelDomains ListAgreements. */
 public final class TopLevelDomainsListAgreementsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2021-03-01/examples/ListTopLevelDomainAgreements.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2022-03-01/examples/ListTopLevelDomainAgreements.json
      */
     /**
      * Sample code: List Top Level Domain Agreements.

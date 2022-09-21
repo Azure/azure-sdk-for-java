@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.extendedlocation.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the properties of a Custom Locations Operation Value Display. */
 @Immutable
 public final class CustomLocationOperationValueDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomLocationOperationValueDisplay.class);
-
     /*
      * The description of the operation.
      */

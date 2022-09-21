@@ -36,7 +36,7 @@ public interface JobStreams {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job stream.
+     * @return definition of the job stream along with {@link Response}.
      */
     Response<JobStream> getWithResponse(
         String resourceGroupName,
@@ -55,7 +55,7 @@ public interface JobStreams {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list job stream operation.
+     * @return the response model for the list job stream operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<JobStream> listByJob(String resourceGroupName, String automationAccountName, String jobName);
 
@@ -71,7 +71,7 @@ public interface JobStreams {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list job stream operation.
+     * @return the response model for the list job stream operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<JobStream> listByJob(
         String resourceGroupName,

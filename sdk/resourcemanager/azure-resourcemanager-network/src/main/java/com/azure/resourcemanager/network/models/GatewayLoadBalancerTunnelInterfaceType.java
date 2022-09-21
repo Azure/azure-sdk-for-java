@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for GatewayLoadBalancerTunnelInterfaceType. */
+/** Traffic type of gateway load balancer tunnel interface. */
 public final class GatewayLoadBalancerTunnelInterfaceType
     extends ExpandableStringEnum<GatewayLoadBalancerTunnelInterfaceType> {
     /** Static value None for GatewayLoadBalancerTunnelInterfaceType. */
@@ -31,7 +31,11 @@ public final class GatewayLoadBalancerTunnelInterfaceType
         return fromString(name, GatewayLoadBalancerTunnelInterfaceType.class);
     }
 
-    /** @return known GatewayLoadBalancerTunnelInterfaceType values. */
+    /**
+     * Gets known GatewayLoadBalancerTunnelInterfaceType values.
+     *
+     * @return known GatewayLoadBalancerTunnelInterfaceType values.
+     */
     public static Collection<GatewayLoadBalancerTunnelInterfaceType> values() {
         return values(GatewayLoadBalancerTunnelInterfaceType.class);
     }

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.models.SubvolumeInfoInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of Subvolumes. */
 @Fluent
 public final class SubvolumesList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubvolumesList.class);
-
     /*
      * A list of Subvolumes
      */

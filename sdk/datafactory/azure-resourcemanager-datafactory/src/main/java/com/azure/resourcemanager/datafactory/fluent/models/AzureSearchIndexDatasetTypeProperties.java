@@ -12,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureSearchIndexDatasetTypeProperties {
     /*
-     * The name of the Azure Search Index. Type: string (or Expression with
-     * resultType string).
+     * The name of the Azure Search Index. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "indexName", required = true)
     private Object indexName;

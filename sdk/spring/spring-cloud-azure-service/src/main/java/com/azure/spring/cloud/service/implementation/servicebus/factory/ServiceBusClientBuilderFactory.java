@@ -72,12 +72,9 @@ public class ServiceBusClientBuilderFactory extends AbstractAzureAmqpClientBuild
     @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(ServiceBusClientBuilder builder) {
         return Arrays.asList(
-            new NamedKeyAuthenticationDescriptor(credential -> builder.credential(
-                clientCommonProperties.getFullyQualifiedNamespace(), credential)),
-            new SasAuthenticationDescriptor(credential -> builder.credential(
-                clientCommonProperties.getFullyQualifiedNamespace(), credential)),
-            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, credential -> builder.credential(
-                clientCommonProperties.getFullyQualifiedNamespace(), credential))
+            new NamedKeyAuthenticationDescriptor(builder::credential),
+            new SasAuthenticationDescriptor(builder::credential),
+            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, builder::credential)
         );
     }
 
@@ -85,9 +82,12 @@ public class ServiceBusClientBuilderFactory extends AbstractAzureAmqpClientBuild
     protected void configureService(ServiceBusClientBuilder builder) {
         PropertyMapper mapper = new PropertyMapper();
 
+        mapper.from(this.clientCommonProperties.getFullyQualifiedNamespace()).to(builder::fullyQualifiedNamespace);
+
         if (this.clientCommonProperties instanceof ServiceBusNamespaceProperties) {
             mapper.from(((ServiceBusNamespaceProperties) this.clientCommonProperties).getCrossEntityTransactions())
-                  .whenTrue().to(t -> builder.enableCrossEntityTransactions());
+                  .whenTrue()
+                  .to(t -> builder.enableCrossEntityTransactions());
         }
     }
 

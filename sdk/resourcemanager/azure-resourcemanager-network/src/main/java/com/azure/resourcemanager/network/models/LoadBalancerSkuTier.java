@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LoadBalancerSkuTier. */
+/** Tier of a load balancer SKU. */
 public final class LoadBalancerSkuTier extends ExpandableStringEnum<LoadBalancerSkuTier> {
     /** Static value Regional for LoadBalancerSkuTier. */
     public static final LoadBalancerSkuTier REGIONAL = fromString("Regional");
@@ -27,7 +27,11 @@ public final class LoadBalancerSkuTier extends ExpandableStringEnum<LoadBalancer
         return fromString(name, LoadBalancerSkuTier.class);
     }
 
-    /** @return known LoadBalancerSkuTier values. */
+    /**
+     * Gets known LoadBalancerSkuTier values.
+     *
+     * @return known LoadBalancerSkuTier values.
+     */
     public static Collection<LoadBalancerSkuTier> values() {
         return values(LoadBalancerSkuTier.class);
     }

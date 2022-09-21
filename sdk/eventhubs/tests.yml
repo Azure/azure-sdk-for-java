@@ -11,10 +11,15 @@ stages:
         - name: azure-messaging-eventhubs-checkpointstore-blob
           groupId: com.azure
           safeName: azuremessagingeventhubscheckpointstoreblob
-        - name: azure-messaging-eventhubs-checkpointstore-redis
+        - name: azure-messaging-eventhubs-checkpointstore-jedis
           groupId: com.azure
-          safeName: azuremessagingeventhubscheckpointstoreredis
+          safeName: azuremessagingeventhubscheckpointstorejedis
       TimeoutInMinutes: 120
       SupportedClouds: 'Public,UsGov,China'
       EnvVars:
         AZURE_LOG_LEVEL: 2
+      AdditionalMatrixConfigs:
+        - Name: version_overrides_tests
+          Path: sdk/eventhubs/version-overrides-matrix.json
+          Selection: all
+          GenerateVMJobs: true

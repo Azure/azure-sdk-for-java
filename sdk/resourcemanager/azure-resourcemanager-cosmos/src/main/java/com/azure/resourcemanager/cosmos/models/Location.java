@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A region in which the Azure Cosmos DB database account is deployed. */
 @Fluent
 public final class Location {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Location.class);
-
     /*
-     * The unique identifier of the region within the database account.
-     * Example: &lt;accountName&gt;-&lt;locationName&gt;.
+     * The unique identifier of the region within the database account. Example:
+     * &lt;accountName&gt;-&lt;locationName&gt;.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
@@ -35,31 +31,26 @@ public final class Location {
     private String documentEndpoint;
 
     /*
-     * The status of the Cosmos DB account at the time the operation was
-     * called. The status can be one of following. 'Creating' – the Cosmos DB
-     * account is being created. When an account is in Creating state, only
-     * properties that are specified as input for the Create Cosmos DB account
-     * operation are returned. 'Succeeded' – the Cosmos DB account is active
-     * for use. 'Updating' – the Cosmos DB account is being updated. 'Deleting'
-     * – the Cosmos DB account is being deleted. 'Failed' – the Cosmos DB
-     * account failed creation. 'DeletionFailed' – the Cosmos DB account
-     * deletion failed.
+     * The status of the Cosmos DB account at the time the operation was called. The status can be one of following.
+     * 'Creating' – the Cosmos DB account is being created. When an account is in Creating state, only properties that
+     * are specified as input for the Create Cosmos DB account operation are returned. 'Succeeded' – the Cosmos DB
+     * account is active for use. 'Updating' – the Cosmos DB account is being updated. 'Deleting' – the Cosmos DB
+     * account is being deleted. 'Failed' – the Cosmos DB account failed creation. 'DeletionFailed' – the Cosmos DB
+     * account deletion failed.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
-     * The failover priority of the region. A failover priority of 0 indicates
-     * a write region. The maximum value for a failover priority = (total
-     * number of regions - 1). Failover priority values must be unique for each
-     * of the regions in which the database account exists.
+     * The failover priority of the region. A failover priority of 0 indicates a write region. The maximum value for a
+     * failover priority = (total number of regions - 1). Failover priority values must be unique for each of the
+     * regions in which the database account exists.
      */
     @JsonProperty(value = "failoverPriority")
     private Integer failoverPriority;
 
     /*
-     * Flag to indicate whether or not this region is an AvailabilityZone
-     * region
+     * Flag to indicate whether or not this region is an AvailabilityZone region
      */
     @JsonProperty(value = "isZoneRedundant")
     private Boolean isZoneRedundant;

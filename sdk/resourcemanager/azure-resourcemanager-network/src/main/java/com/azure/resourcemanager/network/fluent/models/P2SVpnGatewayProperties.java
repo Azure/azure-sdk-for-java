@@ -58,8 +58,7 @@ public final class P2SVpnGatewayProperties {
     private List<String> customDnsServers;
 
     /*
-     * Enable Routing Preference property for the Public IP Interface of the
-     * P2SVpnGateway.
+     * Enable Routing Preference property for the Public IP Interface of the P2SVpnGateway.
      */
     @JsonProperty(value = "isRoutingPreferenceInternet")
     private Boolean isRoutingPreferenceInternet;

@@ -38,7 +38,7 @@ import org.springframework.context.annotation.Import;
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties
 @ConditionalOnClass(QueueServiceClientBuilder.class)
-@ConditionalOnProperty(value = "spring.cloud.azure.storage.queue.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(value = { "spring.cloud.azure.storage.queue.enabled", "spring.cloud.azure.storage.enabled" }, havingValue = "true", matchIfMissing = true)
 @ConditionalOnAnyProperty(
     prefixes = { "spring.cloud.azure.storage.queue", "spring.cloud.azure.storage" },
     name = { "account-name", "endpoint", "connection-string" })

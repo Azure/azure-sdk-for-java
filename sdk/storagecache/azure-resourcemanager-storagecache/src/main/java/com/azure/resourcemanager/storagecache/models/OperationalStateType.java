@@ -33,7 +33,11 @@ public final class OperationalStateType extends ExpandableStringEnum<Operational
         return fromString(name, OperationalStateType.class);
     }
 
-    /** @return known OperationalStateType values. */
+    /**
+     * Gets known OperationalStateType values.
+     *
+     * @return known OperationalStateType values.
+     */
     public static Collection<OperationalStateType> values() {
         return values(OperationalStateType.class);
     }

@@ -9,11 +9,11 @@ import com.azure.resourcemanager.mobilenetwork.fluent.models.SimInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for list Sims API service call. */
+/** Response for list SIMs API service call. */
 @Fluent
 public final class SimListResult {
     /*
-     * A list of Sims in a resource group.
+     * A list of SIMs in a resource group.
      */
     @JsonProperty(value = "value")
     private List<SimInner> value;
@@ -25,7 +25,7 @@ public final class SimListResult {
     private String nextLink;
 
     /**
-     * Get the value property: A list of Sims in a resource group.
+     * Get the value property: A list of SIMs in a resource group.
      *
      * @return the value value.
      */
@@ -34,7 +34,7 @@ public final class SimListResult {
     }
 
     /**
-     * Set the value property: A list of Sims in a resource group.
+     * Set the value property: A list of SIMs in a resource group.
      *
      * @param value the value value to set.
      * @return the SimListResult object itself.

@@ -122,6 +122,7 @@ public final class EncryptedBlobClientBuilder implements
     private String snapshot;
     private String versionId;
     private boolean requiresEncryption;
+    private final EncryptionVersion encryptionVersion;
 
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
@@ -148,9 +149,33 @@ public final class EncryptedBlobClientBuilder implements
 
     /**
      * Creates a new instance of the EncryptedBlobClientBuilder
+     * @deprecated Use {@link EncryptedBlobClientBuilder#EncryptedBlobClientBuilder(EncryptionVersion)}.
      */
+    @Deprecated
     public EncryptedBlobClientBuilder() {
         logOptions = getDefaultHttpLogOptions();
+        this.encryptionVersion = EncryptionVersion.V1;
+        LOGGER.warning("Client is being configured to use v1 of client side encryption, "
+            + "which is no longer considered secure. The default is v1 for compatibility reasons, but it is highly"
+            + "recommended the version be set to v2 using the constructor");
+    }
+
+    /**
+     * Creates a new instance of the EncryptedBlobClientbuilder.
+     *
+     * @param version The version of the client side encryption protocol to use. It is highly recommended that v2 be
+     * preferred for security reasons, though v1 continues to be supported for compatibility reasons. Note that even a
+     * client configured to encrypt using v2 can decrypt blobs that use the v1 protocol.
+     */
+    public EncryptedBlobClientBuilder(EncryptionVersion version) {
+        Objects.requireNonNull(version);
+        logOptions = getDefaultHttpLogOptions();
+        this.encryptionVersion = version;
+        if (EncryptionVersion.V1.equals(this.encryptionVersion)) {
+            LOGGER.warning("Client is being configured to use v1 of client side encryption, "
+                + "which is no longer considered secure. The default is v1 for compatibility reasons, but it is highly"
+                + "recommended the version be set to v2 using the constructor");
+        }
     }
 
     /**
@@ -164,6 +189,8 @@ public final class EncryptedBlobClientBuilder implements
      *     .key&#40;key, keyWrapAlgorithm&#41;
      *     .keyResolver&#40;keyResolver&#41;
      *     .connectionString&#40;connectionString&#41;
+     *     .containerName&#40;&quot;&lt;YOUR CONTAINER NAME&gt;&quot;&#41;
+     *     .blobName&#40;&quot;&lt;YOUR BLOB NAME&gt;&quot;&#41;
      *     .buildEncryptedBlobAsyncClient&#40;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlobAsyncClient -->
@@ -189,6 +216,8 @@ public final class EncryptedBlobClientBuilder implements
      *     .key&#40;key, keyWrapAlgorithm&#41;
      *     .keyResolver&#40;keyResolver&#41;
      *     .connectionString&#40;connectionString&#41;
+     *     .containerName&#40;&quot;&lt;YOUR CONTAINER NAME&gt;&quot;&#41;
+     *     .blobName&#40;&quot;&lt;YOUR BLOB NAME&gt;&quot;&#41;
      *     .buildEncryptedBlobClient&#40;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlobClient -->
@@ -214,7 +243,7 @@ public final class EncryptedBlobClientBuilder implements
 
         return new EncryptedBlobAsyncClient(addBlobUserAgentModificationPolicy(getHttpPipeline()), endpoint,
             serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope,
-            keyWrapper, keyWrapAlgorithm, versionId);
+            keyWrapper, keyWrapAlgorithm, versionId, encryptionVersion, requiresEncryption);
     }
 
 

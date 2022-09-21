@@ -13,10 +13,9 @@ import com.azure.resourcemanager.loganalytics.fluent.StorageInsightConfigsClient
 import com.azure.resourcemanager.loganalytics.fluent.models.StorageInsightInner;
 import com.azure.resourcemanager.loganalytics.models.StorageInsight;
 import com.azure.resourcemanager.loganalytics.models.StorageInsightConfigs;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class StorageInsightConfigsImpl implements StorageInsightConfigs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageInsightConfigsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(StorageInsightConfigsImpl.class);
 
     private final StorageInsightConfigsClient innerClient;
 
@@ -78,7 +77,7 @@ public final class StorageInsightConfigsImpl implements StorageInsightConfigs {
     public StorageInsight getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -86,14 +85,14 @@ public final class StorageInsightConfigsImpl implements StorageInsightConfigs {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String storageInsightName = Utils.getValueFromIdByName(id, "storageInsightConfigs");
         if (storageInsightName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -107,7 +106,7 @@ public final class StorageInsightConfigsImpl implements StorageInsightConfigs {
     public Response<StorageInsight> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -115,14 +114,14 @@ public final class StorageInsightConfigsImpl implements StorageInsightConfigs {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String storageInsightName = Utils.getValueFromIdByName(id, "storageInsightConfigs");
         if (storageInsightName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -136,7 +135,7 @@ public final class StorageInsightConfigsImpl implements StorageInsightConfigs {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -144,14 +143,14 @@ public final class StorageInsightConfigsImpl implements StorageInsightConfigs {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String storageInsightName = Utils.getValueFromIdByName(id, "storageInsightConfigs");
         if (storageInsightName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -159,13 +158,13 @@ public final class StorageInsightConfigsImpl implements StorageInsightConfigs {
                                 "The resource ID '%s' is not valid. Missing path segment 'storageInsightConfigs'.",
                                 id)));
         }
-        this.deleteWithResponse(resourceGroupName, workspaceName, storageInsightName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, workspaceName, storageInsightName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -173,14 +172,14 @@ public final class StorageInsightConfigsImpl implements StorageInsightConfigs {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String storageInsightName = Utils.getValueFromIdByName(id, "storageInsightConfigs");
         if (storageInsightName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

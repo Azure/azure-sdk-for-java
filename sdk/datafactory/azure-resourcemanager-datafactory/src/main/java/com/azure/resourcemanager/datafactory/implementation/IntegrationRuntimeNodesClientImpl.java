@@ -264,14 +264,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
     private Mono<SelfHostedIntegrationRuntimeNodeInner> getAsync(
         String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName) {
         return getWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, nodeName)
-            .flatMap(
-                (Response<SelfHostedIntegrationRuntimeNodeInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -445,7 +438,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
     private Mono<Void> deleteAsync(
         String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName) {
         return deleteWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, nodeName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -655,14 +648,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
         UpdateIntegrationRuntimeNodeRequest updateIntegrationRuntimeNodeRequest) {
         return updateWithResponseAsync(
                 resourceGroupName, factoryName, integrationRuntimeName, nodeName, updateIntegrationRuntimeNodeRequest)
-            .flatMap(
-                (Response<SelfHostedIntegrationRuntimeNodeInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -858,14 +844,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
     private Mono<IntegrationRuntimeNodeIpAddressInner> getIpAddressAsync(
         String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName) {
         return getIpAddressWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, nodeName)
-            .flatMap(
-                (Response<IntegrationRuntimeNodeIpAddressInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

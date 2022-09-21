@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CosmosDbServicePrincipalCredentialType. */
+/**
+ * The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for
+ * key/secret, 'ServicePrincipalCert' for certificate. Type: string (or Expression with resultType string).
+ */
 public final class CosmosDbServicePrincipalCredentialType
     extends ExpandableStringEnum<CosmosDbServicePrincipalCredentialType> {
     /** Static value ServicePrincipalKey for CosmosDbServicePrincipalCredentialType. */

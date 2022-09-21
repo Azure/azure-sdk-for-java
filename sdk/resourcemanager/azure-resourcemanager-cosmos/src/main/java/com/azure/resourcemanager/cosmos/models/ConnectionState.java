@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConnectionState. */
+/** The kind of connection error that occurred. */
 public final class ConnectionState extends ExpandableStringEnum<ConnectionState> {
     /** Static value Unknown for ConnectionState. */
     public static final ConnectionState UNKNOWN = fromString("Unknown");
@@ -42,7 +42,11 @@ public final class ConnectionState extends ExpandableStringEnum<ConnectionState>
         return fromString(name, ConnectionState.class);
     }
 
-    /** @return known ConnectionState values. */
+    /**
+     * Gets known ConnectionState values.
+     *
+     * @return known ConnectionState values.
+     */
     public static Collection<ConnectionState> values() {
         return values(ConnectionState.class);
     }

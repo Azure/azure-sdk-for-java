@@ -8,15 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.BackupType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Backup of a Volume. */
 @Fluent
 public final class BackupInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupInner.class);
-
     /*
      * Resource location
      */
@@ -59,7 +56,9 @@ public final class BackupInner extends ProxyResource {
     }
 
     /**
-     * Get the backupId property: backupId UUID v4 used to identify the Backup.
+     * Get the backupId property: backupId
+     *
+     * <p>UUID v4 used to identify the Backup.
      *
      * @return the backupId value.
      */
@@ -68,7 +67,9 @@ public final class BackupInner extends ProxyResource {
     }
 
     /**
-     * Get the creationDate property: creationDate The creation date of the backup.
+     * Get the creationDate property: creationDate
+     *
+     * <p>The creation date of the backup.
      *
      * @return the creationDate value.
      */
@@ -118,7 +119,9 @@ public final class BackupInner extends ProxyResource {
     }
 
     /**
-     * Get the backupType property: backupType Type of backup Manual or Scheduled.
+     * Get the backupType property: backupType
+     *
+     * <p>Type of backup Manual or Scheduled.
      *
      * @return the backupType value.
      */
@@ -176,16 +179,18 @@ public final class BackupInner extends ProxyResource {
      */
     public void validate() {
         if (location() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property location in model BackupInner"));
         }
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property innerProperties in model BackupInner"));
         } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BackupInner.class);
 }

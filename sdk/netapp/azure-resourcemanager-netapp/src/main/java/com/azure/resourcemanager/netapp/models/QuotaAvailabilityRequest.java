@@ -6,14 +6,11 @@ package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Quota availability request content. */
 @Fluent
 public final class QuotaAvailabilityRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QuotaAvailabilityRequest.class);
-
     /*
      * Name of the resource to verify.
      */
@@ -99,20 +96,22 @@ public final class QuotaAvailabilityRequest {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model QuotaAvailabilityRequest"));
         }
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property type in model QuotaAvailabilityRequest"));
         }
         if (resourceGroup() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property resourceGroup in model QuotaAvailabilityRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(QuotaAvailabilityRequest.class);
 }

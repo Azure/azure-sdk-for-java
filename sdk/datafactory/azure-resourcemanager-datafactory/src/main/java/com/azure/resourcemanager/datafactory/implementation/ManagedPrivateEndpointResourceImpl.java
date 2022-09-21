@@ -37,6 +37,10 @@ public final class ManagedPrivateEndpointResourceImpl
         return this.innerModel().etag();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ManagedPrivateEndpointResourceInner innerModel() {
         return this.innerObject;
     }

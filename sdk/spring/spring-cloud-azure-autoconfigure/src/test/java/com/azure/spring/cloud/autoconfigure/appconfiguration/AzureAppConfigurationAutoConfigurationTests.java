@@ -7,10 +7,11 @@ import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
+import com.azure.spring.cloud.autoconfigure.AbstractAzureServiceConfigurationTests;
 import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.appconfiguration.AzureAppConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultSecretAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.service.implementation.appconfiguration.ConfigurationClientBuilderFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -22,12 +23,34 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  *
  */
-class AzureAppConfigurationAutoConfigurationTests {
+class AzureAppConfigurationAutoConfigurationTests extends AbstractAzureServiceConfigurationTests<
+    ConfigurationClientBuilderFactory, AzureAppConfigurationProperties> {
 
     private static final String ENDPOINT = "https://%s.azconfig.io";
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureAppConfigurationAutoConfiguration.class));
+
+    @Override
+    protected ApplicationContextRunner getMinimalContextRunner() {
+        return this.contextRunner
+            .withPropertyValues("spring.cloud.azure.appconfiguration.endpoint=" + String.format(ENDPOINT, "my-appconfig"));
+    }
+
+    @Override
+    protected String getPropertyPrefix() {
+        return AzureAppConfigurationProperties.PREFIX;
+    }
+
+    @Override
+    protected Class<ConfigurationClientBuilderFactory> getBuilderFactoryType() {
+        return ConfigurationClientBuilderFactory.class;
+    }
+
+    @Override
+    protected Class<AzureAppConfigurationProperties> getConfigurationPropertiesType() {
+        return AzureAppConfigurationProperties.class;
+    }
 
     @Test
     void withoutConfigurationClientBuilderShouldNotConfigure() {

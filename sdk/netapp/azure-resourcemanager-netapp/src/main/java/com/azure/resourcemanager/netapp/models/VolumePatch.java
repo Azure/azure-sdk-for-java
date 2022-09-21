@@ -6,17 +6,13 @@ package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.models.VolumePatchProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Volume patch resource. */
 @Fluent
 public final class VolumePatch extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VolumePatch.class);
-
     /*
      * Patchable volume properties
      */
@@ -47,7 +43,9 @@ public final class VolumePatch extends Resource {
     }
 
     /**
-     * Get the serviceLevel property: serviceLevel The service level of the file system.
+     * Get the serviceLevel property: serviceLevel
+     *
+     * <p>The service level of the file system.
      *
      * @return the serviceLevel value.
      */
@@ -56,7 +54,9 @@ public final class VolumePatch extends Resource {
     }
 
     /**
-     * Set the serviceLevel property: serviceLevel The service level of the file system.
+     * Set the serviceLevel property: serviceLevel
+     *
+     * <p>The service level of the file system.
      *
      * @param serviceLevel the serviceLevel value to set.
      * @return the VolumePatch object itself.
@@ -70,8 +70,10 @@ public final class VolumePatch extends Resource {
     }
 
     /**
-     * Get the usageThreshold property: usageThreshold Maximum storage quota allowed for a file system in bytes. This is
-     * a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB. Specified in bytes.
+     * Get the usageThreshold property: usageThreshold
+     *
+     * <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
+     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
      *
      * @return the usageThreshold value.
      */
@@ -80,8 +82,10 @@ public final class VolumePatch extends Resource {
     }
 
     /**
-     * Set the usageThreshold property: usageThreshold Maximum storage quota allowed for a file system in bytes. This is
-     * a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB. Specified in bytes.
+     * Set the usageThreshold property: usageThreshold
+     *
+     * <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
+     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
      *
      * @param usageThreshold the usageThreshold value to set.
      * @return the VolumePatch object itself.
@@ -95,7 +99,9 @@ public final class VolumePatch extends Resource {
     }
 
     /**
-     * Get the exportPolicy property: exportPolicy Set of export policy rules.
+     * Get the exportPolicy property: exportPolicy
+     *
+     * <p>Set of export policy rules.
      *
      * @return the exportPolicy value.
      */
@@ -104,7 +110,9 @@ public final class VolumePatch extends Resource {
     }
 
     /**
-     * Set the exportPolicy property: exportPolicy Set of export policy rules.
+     * Set the exportPolicy property: exportPolicy
+     *
+     * <p>Set of export policy rules.
      *
      * @param exportPolicy the exportPolicy value to set.
      * @return the VolumePatch object itself.
@@ -143,8 +151,9 @@ public final class VolumePatch extends Resource {
     }
 
     /**
-     * Get the dataProtection property: DataProtection DataProtection type volumes include an object containing details
-     * of the replication.
+     * Get the dataProtection property: DataProtection
+     *
+     * <p>DataProtection type volumes include an object containing details of the replication.
      *
      * @return the dataProtection value.
      */
@@ -153,8 +162,9 @@ public final class VolumePatch extends Resource {
     }
 
     /**
-     * Set the dataProtection property: DataProtection DataProtection type volumes include an object containing details
-     * of the replication.
+     * Set the dataProtection property: DataProtection
+     *
+     * <p>DataProtection type volumes include an object containing details of the replication.
      *
      * @param dataProtection the dataProtection value to set.
      * @return the VolumePatch object itself.
@@ -268,6 +278,54 @@ public final class VolumePatch extends Resource {
             this.innerProperties = new VolumePatchProperties();
         }
         this.innerProperties().withUnixPermissions(unixPermissions);
+        return this;
+    }
+
+    /**
+     * Get the coolAccess property: Specifies whether Cool Access(tiering) is enabled for the volume.
+     *
+     * @return the coolAccess value.
+     */
+    public Boolean coolAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().coolAccess();
+    }
+
+    /**
+     * Set the coolAccess property: Specifies whether Cool Access(tiering) is enabled for the volume.
+     *
+     * @param coolAccess the coolAccess value to set.
+     * @return the VolumePatch object itself.
+     */
+    public VolumePatch withCoolAccess(Boolean coolAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumePatchProperties();
+        }
+        this.innerProperties().withCoolAccess(coolAccess);
+        return this;
+    }
+
+    /**
+     * Get the coolnessPeriod property: Specifies the number of days after which data that is not accessed by clients
+     * will be tiered.
+     *
+     * @return the coolnessPeriod value.
+     */
+    public Integer coolnessPeriod() {
+        return this.innerProperties() == null ? null : this.innerProperties().coolnessPeriod();
+    }
+
+    /**
+     * Set the coolnessPeriod property: Specifies the number of days after which data that is not accessed by clients
+     * will be tiered.
+     *
+     * @param coolnessPeriod the coolnessPeriod value to set.
+     * @return the VolumePatch object itself.
+     */
+    public VolumePatch withCoolnessPeriod(Integer coolnessPeriod) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumePatchProperties();
+        }
+        this.innerProperties().withCoolnessPeriod(coolnessPeriod);
         return this;
     }
 

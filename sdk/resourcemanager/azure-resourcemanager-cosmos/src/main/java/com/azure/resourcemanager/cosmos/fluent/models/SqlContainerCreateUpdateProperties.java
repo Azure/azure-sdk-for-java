@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.SqlContainerResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties to create and update Azure Cosmos DB container. */
 @Fluent
 public final class SqlContainerCreateUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlContainerCreateUpdateProperties.class);
-
     /*
      * The standard JSON format of a container
      */
@@ -23,8 +20,8 @@ public final class SqlContainerCreateUpdateProperties {
     private SqlContainerResource resource;
 
     /*
-     * A key-value pair of options to be applied for the request. This
-     * corresponds to the headers sent with the request.
+     * A key-value pair of options to be applied for the request. This corresponds to the headers sent with the
+     * request.
      */
     @JsonProperty(value = "options")
     private CreateUpdateOptions options;
@@ -78,7 +75,7 @@ public final class SqlContainerCreateUpdateProperties {
      */
     public void validate() {
         if (resource() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property resource in model SqlContainerCreateUpdateProperties"));
@@ -89,4 +86,6 @@ public final class SqlContainerCreateUpdateProperties {
             options().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SqlContainerCreateUpdateProperties.class);
 }

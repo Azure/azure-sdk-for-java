@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VerbosityLevel. */
+/** Verbosity level. */
 public final class VerbosityLevel extends ExpandableStringEnum<VerbosityLevel> {
     /** Static value Normal for VerbosityLevel. */
     public static final VerbosityLevel NORMAL = fromString("Normal");
@@ -30,7 +30,11 @@ public final class VerbosityLevel extends ExpandableStringEnum<VerbosityLevel> {
         return fromString(name, VerbosityLevel.class);
     }
 
-    /** @return known VerbosityLevel values. */
+    /**
+     * Gets known VerbosityLevel values.
+     *
+     * @return known VerbosityLevel values.
+     */
     public static Collection<VerbosityLevel> values() {
         return values(VerbosityLevel.class);
     }

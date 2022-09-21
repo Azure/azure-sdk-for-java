@@ -1,18 +1,62 @@
 # Release History
 
-## 5.13.0-beta.1 (Unreleased)
+## 5.14.0-beta.1 (Unreleased)
 
 ### Features Added
-
-- Updated processor client process error when load balance occurs errors.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
-- Fixes trace context propagation issue: links to *message* spans were not populated on *send* span. ([#28951](https://github.com/Azure/azure-sdk-for-java/pull/28951))  
+### Other Changes
+
+## 5.13.1 (2022-09-11)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.32.0`.
+- Upgraded `azure-core-amqp` to `2.7.1`.
+
+## 5.13.0 (2022-08-18)
+
+### Features Added
+
+- Added identifier to client. ([#22981](https://github.com/Azure/azure-sdk-for-java/issues/22981))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.31.0`.
+- Upgraded `azure-core-amqp` to `2.7.0`.
+
+## 5.12.2 (2022-07-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.30.0`.
+- Upgraded `azure-core-amqp` to `2.6.0`.
+
+## 5.12.1 (2022-06-10)
+
+### Features Added
+
+- Updated processor client process error when load balance occurs errors.
+
+### Bugs Fixed
+
+- Fixes trace context propagation issue: links to *message* spans were not populated on *send* span. ([#28951](https://github.com/Azure/azure-sdk-for-java/pull/28951))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.29.1`.
+- Upgraded `azure-core-amqp` to `2.5.2`.
 
 ## 5.12.0 (2022-05-16)
 

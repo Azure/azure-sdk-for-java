@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.extendedlocation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.extendedlocation.models.EnabledResourceTypePropertiesTypesMetadataItem;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties for EnabledResourceType of a custom location. */
 @Fluent
 public final class EnabledResourceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnabledResourceTypeProperties.class);
-
     /*
      * Cluster Extension ID
      */

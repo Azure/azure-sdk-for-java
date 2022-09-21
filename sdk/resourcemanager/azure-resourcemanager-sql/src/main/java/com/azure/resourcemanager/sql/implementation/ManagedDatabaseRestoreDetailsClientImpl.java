@@ -6,6 +6,7 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -20,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.ManagedDatabaseRestoreDetailsClient;
 import com.azure.resourcemanager.sql.fluent.models.ManagedDatabaseRestoreDetailsResultInner;
 import com.azure.resourcemanager.sql.models.RestoreDetailsName;
@@ -28,8 +28,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ManagedDatabaseRestoreDetailsClient. */
 public final class ManagedDatabaseRestoreDetailsClientImpl implements ManagedDatabaseRestoreDetailsClient {
-    private final ClientLogger logger = new ClientLogger(ManagedDatabaseRestoreDetailsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ManagedDatabaseRestoreDetailsService service;
 
@@ -58,7 +56,7 @@ public final class ManagedDatabaseRestoreDetailsClientImpl implements ManagedDat
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientM")
     private interface ManagedDatabaseRestoreDetailsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/managedInstances/{managedInstanceName}/databases/{databaseName}/restoreDetails"
@@ -73,6 +71,7 @@ public final class ManagedDatabaseRestoreDetailsClientImpl implements ManagedDat
             @PathParam("restoreDetailsName") RestoreDetailsName restoreDetailsName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -87,7 +86,7 @@ public final class ManagedDatabaseRestoreDetailsClientImpl implements ManagedDat
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed database restore details.
+     * @return managed database restore details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedDatabaseRestoreDetailsResultInner>> getWithResponseAsync(
@@ -123,6 +122,7 @@ public final class ManagedDatabaseRestoreDetailsClientImpl implements ManagedDat
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-06-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -135,8 +135,9 @@ public final class ManagedDatabaseRestoreDetailsClientImpl implements ManagedDat
                             restoreDetailsName,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -151,7 +152,7 @@ public final class ManagedDatabaseRestoreDetailsClientImpl implements ManagedDat
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed database restore details.
+     * @return managed database restore details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ManagedDatabaseRestoreDetailsResultInner>> getWithResponseAsync(
@@ -188,6 +189,7 @@ public final class ManagedDatabaseRestoreDetailsClientImpl implements ManagedDat
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-06-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -198,6 +200,7 @@ public final class ManagedDatabaseRestoreDetailsClientImpl implements ManagedDat
                 restoreDetailsName,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -212,7 +215,7 @@ public final class ManagedDatabaseRestoreDetailsClientImpl implements ManagedDat
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed database restore details.
+     * @return managed database restore details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedDatabaseRestoreDetailsResultInner> getAsync(
@@ -221,14 +224,7 @@ public final class ManagedDatabaseRestoreDetailsClientImpl implements ManagedDat
         String databaseName,
         RestoreDetailsName restoreDetailsName) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, restoreDetailsName)
-            .flatMap(
-                (Response<ManagedDatabaseRestoreDetailsResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -265,7 +261,7 @@ public final class ManagedDatabaseRestoreDetailsClientImpl implements ManagedDat
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed database restore details.
+     * @return managed database restore details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedDatabaseRestoreDetailsResultInner> getWithResponse(

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines the parameters for the route configuration override action. */
 @Fluent
 public final class RouteConfigurationOverrideActionParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RouteConfigurationOverrideActionParameters.class);
-
     /*
      * The typeName property.
      */
@@ -21,15 +17,14 @@ public final class RouteConfigurationOverrideActionParameters {
     private String typeName = "DeliveryRuleRouteConfigurationOverrideActionParameters";
 
     /*
-     * A reference to the origin group override configuration. Leave empty to
-     * use the default origin group on route.
+     * A reference to the origin group override configuration. Leave empty to use the default origin group on route.
      */
     @JsonProperty(value = "originGroupOverride")
     private OriginGroupOverride originGroupOverride;
 
     /*
-     * The caching configuration associated with this rule. To disable caching,
-     * do not provide a cacheConfiguration object.
+     * The caching configuration associated with this rule. To disable caching, do not provide a cacheConfiguration
+     * object.
      */
     @JsonProperty(value = "cacheConfiguration")
     private CacheConfiguration cacheConfiguration;

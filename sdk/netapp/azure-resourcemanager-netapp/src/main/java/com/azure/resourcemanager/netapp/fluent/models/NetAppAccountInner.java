@@ -6,11 +6,9 @@ package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.AccountEncryption;
 import com.azure.resourcemanager.netapp.models.ActiveDirectory;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.netapp.models.Identity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -18,8 +16,6 @@ import java.util.Map;
 /** NetApp account resource. */
 @Fluent
 public final class NetAppAccountInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetAppAccountInner.class);
-
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
@@ -33,10 +29,10 @@ public final class NetAppAccountInner extends Resource {
     private AccountProperties innerProperties;
 
     /*
-     * The system meta data relating to this resource.
+     * The identity of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    @JsonProperty(value = "identity")
+    private Identity identity;
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
@@ -57,12 +53,23 @@ public final class NetAppAccountInner extends Resource {
     }
 
     /**
-     * Get the systemData property: The system meta data relating to this resource.
+     * Get the identity property: The identity of the resource.
      *
-     * @return the systemData value.
+     * @return the identity value.
      */
-    public SystemData systemData() {
-        return this.systemData;
+    public Identity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity of the resource.
+     *
+     * @param identity the identity value to set.
+     * @return the NetAppAccountInner object itself.
+     */
+    public NetAppAccountInner withIdentity(Identity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -135,6 +142,16 @@ public final class NetAppAccountInner extends Resource {
     }
 
     /**
+     * Get the disableShowmount property: Shows the status of disableShowmount for all volumes under the subscription,
+     * null equals false.
+     *
+     * @return the disableShowmount value.
+     */
+    public Boolean disableShowmount() {
+        return this.innerProperties() == null ? null : this.innerProperties().disableShowmount();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -142,6 +159,9 @@ public final class NetAppAccountInner extends Resource {
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 }

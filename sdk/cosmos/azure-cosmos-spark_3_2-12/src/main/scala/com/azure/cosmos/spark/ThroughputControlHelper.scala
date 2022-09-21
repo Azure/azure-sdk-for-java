@@ -3,19 +3,23 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.{CosmosAsyncClient, CosmosAsyncContainer, ThroughputControlGroupConfigBuilder}
+import com.azure.cosmos.{CosmosAsyncContainer, ThroughputControlGroupConfigBuilder}
+import org.apache.spark.broadcast.Broadcast
 
 private object ThroughputControlHelper {
     def getContainer(userConfig: Map[String, String],
                      cosmosContainerConfig: CosmosContainerConfig,
-                     client: CosmosAsyncClient): CosmosAsyncContainer = {
+                     cacheItem: CosmosClientCacheItem,
+                     throughputControlCacheItemOpt: Option[CosmosClientCacheItem]): CosmosAsyncContainer = {
 
-        val container = client.getDatabase(cosmosContainerConfig.database).getContainer(cosmosContainerConfig.container)
-        val cosmosThroughputControlConfig = CosmosThroughputControlConfig.parseThroughputControlConfig(userConfig)
+        val throughputControlConfigOpt = CosmosThroughputControlConfig.parseThroughputControlConfig(userConfig)
 
-        if (cosmosThroughputControlConfig.isDefined) {
-            val throughputControlConfig = cosmosThroughputControlConfig.get
+        val container = cacheItem.client.getDatabase(cosmosContainerConfig.database).getContainer(cosmosContainerConfig.container)
 
+        if (throughputControlConfigOpt.isDefined) {
+            assert(throughputControlCacheItemOpt.isDefined)
+            val throughputControlCacheItem = throughputControlCacheItemOpt.get
+            val throughputControlConfig = throughputControlConfigOpt.get
             val groupConfigBuilder = new ThroughputControlGroupConfigBuilder()
                 .groupName(throughputControlConfig.groupName)
                 .defaultControlGroup(true)
@@ -27,7 +31,7 @@ private object ThroughputControlHelper {
                 groupConfigBuilder.targetThroughputThreshold(throughputControlConfig.targetThroughputThreshold.get)
             }
 
-            val globalThroughputControlConfigBuilder = client.createGlobalThroughputControlConfigBuilder(
+            val globalThroughputControlConfigBuilder = throughputControlCacheItem.client.createGlobalThroughputControlConfigBuilder(
                 throughputControlConfig.globalControlDatabase,
                 throughputControlConfig.globalControlContainer)
 
@@ -42,5 +46,29 @@ private object ThroughputControlHelper {
         }
 
         container
+    }
+
+    def getThroughputControlClientCacheItem(userConfig: Map[String, String],
+                                            calledFrom: String,
+                                            cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]]): Option[CosmosClientCacheItem] = {
+        val throughputControlConfigOpt = CosmosThroughputControlConfig.parseThroughputControlConfig(userConfig)
+        val diagnosticConfig = DiagnosticsConfig.parseDiagnosticsConfig(userConfig)
+
+        if (throughputControlConfigOpt.isDefined) {
+            val throughputControlClientConfig =
+                CosmosClientConfiguration.apply(throughputControlConfigOpt.get.cosmosAccountConfig, diagnosticConfig, false)
+
+            val throughputControlClientMetadata =
+                cosmosClientStateHandles match {
+                    case None => None
+                    case Some(_) => cosmosClientStateHandles.get.value.throughputControlClientMetadataCaches
+                }
+            Some(CosmosClientCache.apply(
+                throughputControlClientConfig,
+                throughputControlClientMetadata,
+                s"ThroughputControl: $calledFrom"))
+        } else {
+            None
+        }
     }
 }

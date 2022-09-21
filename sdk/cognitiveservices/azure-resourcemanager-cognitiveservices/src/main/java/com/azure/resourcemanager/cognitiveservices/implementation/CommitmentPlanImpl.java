@@ -39,6 +39,10 @@ public final class CommitmentPlanImpl implements CommitmentPlan, CommitmentPlan.
         return this.innerModel().properties();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public CommitmentPlanInner innerModel() {
         return this.innerObject;
     }

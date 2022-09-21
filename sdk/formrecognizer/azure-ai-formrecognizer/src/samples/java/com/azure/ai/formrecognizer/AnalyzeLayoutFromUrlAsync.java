@@ -3,9 +3,12 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.AnalyzeResult;
-import com.azure.ai.formrecognizer.models.DocumentOperationResult;
-import com.azure.ai.formrecognizer.models.DocumentTable;
+import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient;
+import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientBuilder;
+import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentTable;
+import com.azure.ai.formrecognizer.documentanalysis.models.Point;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
@@ -13,6 +16,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * Async sample for analyzing layout information from a document given through a URL.
@@ -31,7 +35,7 @@ public class AnalyzeLayoutFromUrlAsync {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        PollerFlux<DocumentOperationResult, AnalyzeResult> analyzeLayoutPoller =
+        PollerFlux<OperationResult, AnalyzeResult> analyzeLayoutPoller =
             client.beginAnalyzeDocumentFromUrl("prebuilt-layout",
                 "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer/"
                     + "azure-ai-formrecognizer/src/samples/resources/sample-forms/forms/selectionMarkForm.pdf");
@@ -62,7 +66,7 @@ public class AnalyzeLayoutFromUrlAsync {
                 documentPage.getLines().forEach(documentLine ->
                     System.out.printf("Line '%s' is within a bounding box %s.%n",
                         documentLine.getContent(),
-                        documentLine.getBoundingPolygon().toString()));
+                        getBoundingCoordinates(documentLine.getBoundingPolygon())));
 
                 // words
                 documentPage.getWords().forEach(documentWord ->
@@ -72,9 +76,9 @@ public class AnalyzeLayoutFromUrlAsync {
 
                 // selection marks
                 documentPage.getSelectionMarks().forEach(documentSelectionMark ->
-                    System.out.printf("Selection mark is '%s' and is within a bounding box %s with confidence %.2f.%n",
-                        documentSelectionMark.getState().toString(),
-                        documentSelectionMark.getBoundingPolygon().toString(),
+                    System.out.printf("Selection mark is '%s' and is within a bounding polygon %s with confidence %.2f.%n",
+                        documentSelectionMark.getSelectionMarkState().toString(),
+                        getBoundingCoordinates(documentSelectionMark.getBoundingPolygon()),
                         documentSelectionMark.getConfidence()));
             });
 
@@ -105,5 +109,13 @@ public class AnalyzeLayoutFromUrlAsync {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Utility function to get the bounding polygon coordinates.
+     */
+    private static String getBoundingCoordinates(List<Point> boundingPolygon) {
+        return boundingPolygon.stream().map(point -> String.format("[%.2f, %.2f]", point.getX(),
+            point.getY())).collect(Collectors.joining(", "));
     }
 }

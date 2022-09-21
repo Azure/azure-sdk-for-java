@@ -14,7 +14,7 @@ import scala.collection.mutable.ArrayBuffer
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-private case class ChangeFeedOffset
+private[cosmos] case class ChangeFeedOffset
 (
   changeFeedState: String,
   inputPartitions: Option[Array[CosmosInputPartition]]
@@ -34,7 +34,7 @@ private case class ChangeFeedOffset
   override def json(): String = jsonPersisted
 }
 
-private[spark] object ChangeFeedOffset {
+private[cosmos] object ChangeFeedOffset {
   private val IdPropertyName: String = "id"
   private val StatePropertyName: String = "state"
   private val InputPartitionsPropertyName: String = "partitions"

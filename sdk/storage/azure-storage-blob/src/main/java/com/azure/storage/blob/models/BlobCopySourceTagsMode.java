@@ -27,7 +27,11 @@ public final class BlobCopySourceTagsMode extends ExpandableStringEnum<BlobCopyS
         return fromString(name, BlobCopySourceTagsMode.class);
     }
 
-    /** @return known BlobCopySourceTags values. */
+    /**
+     * Gets known BlobCopySourceTags values.
+     *
+     * @return known BlobCopySourceTags values.
+     */
     public static Collection<BlobCopySourceTagsMode> values() {
         return values(BlobCopySourceTagsMode.class);
     }

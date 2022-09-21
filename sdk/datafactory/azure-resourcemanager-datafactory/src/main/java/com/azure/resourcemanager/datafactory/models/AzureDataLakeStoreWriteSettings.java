@@ -15,9 +15,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class AzureDataLakeStoreWriteSettings extends StoreWriteSettings {
     /*
-     * Specifies the expiry time of the written files. The time is applied to
-     * the UTC time zone in the format of "2018-12-01T05:00:00Z". Default value
-     * is NULL. Type: integer (or Expression with resultType integer).
+     * Specifies the expiry time of the written files. The time is applied to the UTC time zone in the format of
+     * "2018-12-01T05:00:00Z". Default value is NULL. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "expiryDateTime")
     private Object expiryDateTime;

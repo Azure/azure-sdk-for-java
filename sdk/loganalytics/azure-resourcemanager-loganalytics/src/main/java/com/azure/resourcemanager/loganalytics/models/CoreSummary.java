@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The core summary of a search. */
 @Fluent
 public final class CoreSummary {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CoreSummary.class);
-
     /*
      * The status of a core summary.
      */

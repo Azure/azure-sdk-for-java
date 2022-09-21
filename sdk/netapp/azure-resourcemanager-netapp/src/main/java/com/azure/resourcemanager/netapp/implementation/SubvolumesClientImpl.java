@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.SubvolumesClient;
@@ -45,8 +44,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SubvolumesClient. */
 public final class SubvolumesClientImpl implements SubvolumesClient {
-    private final ClientLogger logger = new ClientLogger(SubvolumesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SubvolumesService service;
 
@@ -196,7 +193,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Returns a list of the subvolumes in the volume.
+     * List of all the subvolumes
+     *
+     * <p>Returns a list of the subvolumes in the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -263,7 +262,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Returns a list of the subvolumes in the volume.
+     * List of all the subvolumes
+     *
+     * <p>Returns a list of the subvolumes in the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -328,7 +329,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Returns a list of the subvolumes in the volume.
+     * List of all the subvolumes
+     *
+     * <p>Returns a list of the subvolumes in the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -348,7 +351,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Returns a list of the subvolumes in the volume.
+     * List of all the subvolumes
+     *
+     * <p>Returns a list of the subvolumes in the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -369,7 +374,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Returns a list of the subvolumes in the volume.
+     * List of all the subvolumes
+     *
+     * <p>Returns a list of the subvolumes in the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -387,7 +394,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Returns a list of the subvolumes in the volume.
+     * List of all the subvolumes
+     *
+     * <p>Returns a list of the subvolumes in the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -406,7 +415,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Returns the path associated with the subvolumeName provided.
+     * Get the path associated with the subvolumeName
+     *
+     * <p>Returns the path associated with the subvolumeName provided.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -469,7 +480,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Returns the path associated with the subvolumeName provided.
+     * Get the path associated with the subvolumeName
+     *
+     * <p>Returns the path associated with the subvolumeName provided.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -535,7 +548,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Returns the path associated with the subvolumeName provided.
+     * Get the path associated with the subvolumeName
+     *
+     * <p>Returns the path associated with the subvolumeName provided.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -551,18 +566,13 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     private Mono<SubvolumeInfoInner> getAsync(
         String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName) {
         return getWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName)
-            .flatMap(
-                (Response<SubvolumeInfoInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Returns the path associated with the subvolumeName provided.
+     * Get the path associated with the subvolumeName
+     *
+     * <p>Returns the path associated with the subvolumeName provided.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -581,7 +591,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Returns the path associated with the subvolumeName provided.
+     * Get the path associated with the subvolumeName
+     *
+     * <p>Returns the path associated with the subvolumeName provided.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -607,7 +619,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * Create or clone a new subvolume
+     *
+     * <p>Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -682,7 +696,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * Create or clone a new subvolume
+     *
+     * <p>Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -756,7 +772,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * Create or clone a new subvolume
+     *
+     * <p>Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -790,7 +808,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * Create or clone a new subvolume
+     *
+     * <p>Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -823,7 +843,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * Create or clone a new subvolume
+     *
+     * <p>Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -849,7 +871,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * Create or clone a new subvolume
+     *
+     * <p>Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -877,7 +901,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * Create or clone a new subvolume
+     *
+     * <p>Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -904,7 +930,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * Create or clone a new subvolume
+     *
+     * <p>Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -933,7 +961,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * Create or clone a new subvolume
+     *
+     * <p>Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -958,7 +988,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * Create or clone a new subvolume
+     *
+     * <p>Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -985,7 +1017,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Patch a subvolume.
+     * Update a subvolume
+     *
+     * <p>Patch a subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1060,7 +1094,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Patch a subvolume.
+     * Update a subvolume
+     *
+     * <p>Patch a subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1134,7 +1170,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Patch a subvolume.
+     * Update a subvolume
+     *
+     * <p>Patch a subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1168,7 +1206,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Patch a subvolume.
+     * Update a subvolume
+     *
+     * <p>Patch a subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1201,7 +1241,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Patch a subvolume.
+     * Update a subvolume
+     *
+     * <p>Patch a subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1227,7 +1269,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Patch a subvolume.
+     * Update a subvolume
+     *
+     * <p>Patch a subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1255,7 +1299,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Patch a subvolume.
+     * Update a subvolume
+     *
+     * <p>Patch a subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1282,7 +1328,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Patch a subvolume.
+     * Update a subvolume
+     *
+     * <p>Patch a subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1311,7 +1359,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Patch a subvolume.
+     * Update a subvolume
+     *
+     * <p>Patch a subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1336,7 +1386,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Patch a subvolume.
+     * Update a subvolume
+     *
+     * <p>Patch a subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1363,7 +1415,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Delete subvolume.
+     * Delete a subvolume
+     *
+     * <p>Delete subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1424,7 +1478,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Delete subvolume.
+     * Delete a subvolume
+     *
+     * <p>Delete subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1488,7 +1544,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Delete subvolume.
+     * Delete a subvolume
+     *
+     * <p>Delete subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1512,7 +1570,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Delete subvolume.
+     * Delete a subvolume
+     *
+     * <p>Delete subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1542,7 +1602,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Delete subvolume.
+     * Delete a subvolume
+     *
+     * <p>Delete subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1561,7 +1623,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Delete subvolume.
+     * Delete a subvolume
+     *
+     * <p>Delete subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1587,7 +1651,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Delete subvolume.
+     * Delete a subvolume
+     *
+     * <p>Delete subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1608,7 +1674,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Delete subvolume.
+     * Delete a subvolume
+     *
+     * <p>Delete subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1635,7 +1703,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Delete subvolume.
+     * Delete a subvolume
+     *
+     * <p>Delete subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1653,7 +1723,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Delete subvolume.
+     * Delete a subvolume
+     *
+     * <p>Delete subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1677,7 +1749,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Get details of the specified subvolume.
+     * Describe a subvolume
+     *
+     * <p>Get details of the specified subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1740,7 +1814,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Get details of the specified subvolume.
+     * Describe a subvolume
+     *
+     * <p>Get details of the specified subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1806,7 +1882,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Get details of the specified subvolume.
+     * Describe a subvolume
+     *
+     * <p>Get details of the specified subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1834,7 +1912,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Get details of the specified subvolume.
+     * Describe a subvolume
+     *
+     * <p>Get details of the specified subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1865,7 +1945,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Get details of the specified subvolume.
+     * Describe a subvolume
+     *
+     * <p>Get details of the specified subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1885,7 +1967,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Get details of the specified subvolume.
+     * Describe a subvolume
+     *
+     * <p>Get details of the specified subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1911,7 +1995,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Get details of the specified subvolume.
+     * Describe a subvolume
+     *
+     * <p>Get details of the specified subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1932,7 +2018,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Get details of the specified subvolume.
+     * Describe a subvolume
+     *
+     * <p>Get details of the specified subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1959,7 +2047,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Get details of the specified subvolume.
+     * Describe a subvolume
+     *
+     * <p>Get details of the specified subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1978,7 +2068,9 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Get details of the specified subvolume.
+     * Describe a subvolume
+     *
+     * <p>Get details of the specified subvolume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -2005,7 +2097,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2040,7 +2133,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

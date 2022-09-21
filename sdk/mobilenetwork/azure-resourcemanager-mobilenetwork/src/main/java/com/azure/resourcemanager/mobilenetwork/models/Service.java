@@ -64,8 +64,8 @@ public interface Service {
 
     /**
      * Gets the servicePrecedence property: A precedence value that is used to decide between services when identifying
-     * the QoS values to use for a particular Sim. A lower value means a higher priority. This value should be unique
-     * among all services configured in the Mobile Network.
+     * the QoS values to use for a particular SIM. A lower value means a higher priority. This value should be unique
+     * among all services configured in the mobile network.
      *
      * @return the servicePrecedence value.
      */
@@ -74,14 +74,14 @@ public interface Service {
     /**
      * Gets the serviceQosPolicy property: The QoS policy to use for packets matching this service. This can be
      * overridden for particular flows using the ruleQosPolicy field in a PccRuleConfiguration. If this field is null
-     * then the UE's simPolicy will define the QoS settings.
+     * then the UE's SIM policy will define the QoS settings.
      *
      * @return the serviceQosPolicy value.
      */
     QosPolicy serviceQosPolicy();
 
     /**
-     * Gets the pccRules property: The set of PCC Rules that make up this service.
+     * Gets the pccRules property: The set of data flow policy rules that make up this service.
      *
      * @return the pccRules value.
      */
@@ -100,6 +100,13 @@ public interface Service {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.mobilenetwork.fluent.models.ServiceInner object.
@@ -155,12 +162,12 @@ public interface Service {
         interface WithServicePrecedence {
             /**
              * Specifies the servicePrecedence property: A precedence value that is used to decide between services when
-             * identifying the QoS values to use for a particular Sim. A lower value means a higher priority. This value
-             * should be unique among all services configured in the Mobile Network..
+             * identifying the QoS values to use for a particular SIM. A lower value means a higher priority. This value
+             * should be unique among all services configured in the mobile network..
              *
              * @param servicePrecedence A precedence value that is used to decide between services when identifying the
-             *     QoS values to use for a particular Sim. A lower value means a higher priority. This value should be
-             *     unique among all services configured in the Mobile Network.
+             *     QoS values to use for a particular SIM. A lower value means a higher priority. This value should be
+             *     unique among all services configured in the mobile network.
              * @return the next definition stage.
              */
             WithPccRules withServicePrecedence(int servicePrecedence);
@@ -168,9 +175,9 @@ public interface Service {
         /** The stage of the Service definition allowing to specify pccRules. */
         interface WithPccRules {
             /**
-             * Specifies the pccRules property: The set of PCC Rules that make up this service..
+             * Specifies the pccRules property: The set of data flow policy rules that make up this service..
              *
-             * @param pccRules The set of PCC Rules that make up this service.
+             * @param pccRules The set of data flow policy rules that make up this service.
              * @return the next definition stage.
              */
             WithCreate withPccRules(List<PccRuleConfiguration> pccRules);
@@ -210,11 +217,11 @@ public interface Service {
             /**
              * Specifies the serviceQosPolicy property: The QoS policy to use for packets matching this service. This
              * can be overridden for particular flows using the ruleQosPolicy field in a PccRuleConfiguration. If this
-             * field is null then the UE's simPolicy will define the QoS settings..
+             * field is null then the UE's SIM policy will define the QoS settings..
              *
              * @param serviceQosPolicy The QoS policy to use for packets matching this service. This can be overridden
              *     for particular flows using the ruleQosPolicy field in a PccRuleConfiguration. If this field is null
-             *     then the UE's simPolicy will define the QoS settings.
+             *     then the UE's SIM policy will define the QoS settings.
              * @return the next definition stage.
              */
             WithCreate withServiceQosPolicy(QosPolicy serviceQosPolicy);

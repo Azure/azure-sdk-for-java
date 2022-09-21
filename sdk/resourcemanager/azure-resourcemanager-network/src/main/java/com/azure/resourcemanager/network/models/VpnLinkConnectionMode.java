@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VpnLinkConnectionMode. */
+/** Vpn link connection mode. */
 public final class VpnLinkConnectionMode extends ExpandableStringEnum<VpnLinkConnectionMode> {
     /** Static value Default for VpnLinkConnectionMode. */
     public static final VpnLinkConnectionMode DEFAULT = fromString("Default");
@@ -30,7 +30,11 @@ public final class VpnLinkConnectionMode extends ExpandableStringEnum<VpnLinkCon
         return fromString(name, VpnLinkConnectionMode.class);
     }
 
-    /** @return known VpnLinkConnectionMode values. */
+    /**
+     * Gets known VpnLinkConnectionMode values.
+     *
+     * @return known VpnLinkConnectionMode values.
+     */
     public static Collection<VpnLinkConnectionMode> values() {
         return values(VpnLinkConnectionMode.class);
     }

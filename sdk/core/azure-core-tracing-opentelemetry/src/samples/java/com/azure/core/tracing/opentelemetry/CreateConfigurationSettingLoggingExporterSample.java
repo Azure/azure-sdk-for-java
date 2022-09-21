@@ -18,7 +18,6 @@ import io.opentelemetry.sdk.trace.export.BatchSpanProcessor;
  * in App Configuration through the {@link ConfigurationClient}.
  */
 public class CreateConfigurationSettingLoggingExporterSample {
-
     private static final Tracer TRACER = configureLoggingExporter();
     private static final String CONNECTION_STRING = "<YOUR_CONNECTION_STRING>";
 
@@ -28,7 +27,13 @@ public class CreateConfigurationSettingLoggingExporterSample {
      * @param args Ignored args.
      */
     public static void main(String[] args) {
-        doClientWork();
+        configureLoggingExporter();
+
+        ConfigurationClient client = new ConfigurationClientBuilder()
+            .connectionString(CONNECTION_STRING)
+            .buildClient();
+
+        doClientWork(client);
     }
 
     /**
@@ -37,8 +42,6 @@ public class CreateConfigurationSettingLoggingExporterSample {
      * @return The OpenTelemetry {@link Tracer} instance.
      */
     private static Tracer configureLoggingExporter() {
-        // Tracer provider configured to export spans with SimpleSpanProcessor using
-        // the logging exporter.
         SdkTracerProvider tracerProvider =
             SdkTracerProvider.builder()
                 .addSpanProcessor(BatchSpanProcessor.builder(LoggingSpanExporter.create()).build())
@@ -54,19 +57,15 @@ public class CreateConfigurationSettingLoggingExporterSample {
      * Creates the {@link ConfigurationClient} and creates a configuration in Azure App Configuration with distributed
      * tracing enabled and using the Logging exporter to export telemetry events.
      */
-    private static void doClientWork() {
-        ConfigurationClient client = new ConfigurationClientBuilder()
-            .connectionString(CONNECTION_STRING)
-            .buildClient();
-
-        Span userParentSpan = TRACER.spanBuilder("user-parent-span").startSpan();
-        final Scope scope = userParentSpan.makeCurrent();
-        try {
-            // Thread bound (sync) calls will automatically pick up the parent span and you don't need to pass it explicitly.
+    @SuppressWarnings("try")
+    private static void doClientWork(ConfigurationClient client) {
+        Span span = TRACER.spanBuilder("my-span").startSpan();
+        try (Scope s = span.makeCurrent()) {
+            // current span propagates into synchronous calls automatically. ApplicationInsights or OpenTelemetry agent
+            // also propagate context through async reactor calls.
             client.setConfigurationSetting("hello", "text", "World");
         } finally {
-            userParentSpan.end();
-            scope.close();
+            span.end();
         }
     }
 }

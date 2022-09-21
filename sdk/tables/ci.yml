@@ -33,6 +33,7 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: tables
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-data-tables
         groupId: com.azure

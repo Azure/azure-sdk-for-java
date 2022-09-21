@@ -1,6 +1,6 @@
 # Release History
 
-## 12.17.0-beta.1 (Unreleased)
+## 12.19.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,42 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.18.1 (2022-09-12)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.31.0` to version `1.32.0`.
+- Upgraded `azure-core-http-netty` from `1.12.4` to version `1.12.5`.
+
+## 12.19.0-beta.1 (2022-09-06)
+
+### Features Added
+- Added support for 2021-10-04 service version.
+
+## 12.18.0 (2022-08-12)
+
+### Features Added
+- Added `ParallelTransferOptions.getProgressListener` and `ParallelTransferOptions.setProgressListener`
+  that replaces deprecated `ParallelTransferOptions.getProgressReceiver` and `ParallelTransferOptions.setProgressReceiver`
+- `com.azure.storage.common.ProgressReceiver` extends `com.azure.core.util.ProgressListener` for backwards compatibility.
+
+### Bugs Fixed
+- Fixed bug where connection string with SAS token would not work if the token contains leading `?`.
+
+### Other Changes
+- `com.azure.storage.common.ProgressReceiver` and `com.azure.storage.common.ProgressReporter` are deprecated
+  and replaced by `com.azure.core.util.ProgressListener` and `com.azure.core.util.ProgressReporter`.
+
+## 12.17.0 (2022-07-07)
+
+### Features Added
+- GA release for 2021-08-06 service version.
+
+## 12.17.0-beta.1 (2022-06-15)
+### Features Added
+- Added support for 2021-08-06 service version.
 
 ## 12.16.1 (2022-06-08)
 

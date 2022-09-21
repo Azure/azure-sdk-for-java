@@ -3,6 +3,9 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.properties;
 
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
+
 import java.util.List;
 
 /**
@@ -12,14 +15,16 @@ public class AuthorizationClientProperties {
 
     private List<String> scopes;
 
-    private AadAuthorizationGrantType authorizationGrantType;
+    private AuthorizationGrantType authorizationGrantType;
+
+    private ClientAuthenticationMethod clientAuthenticationMethod;
 
     /**
      * Gets the authorization grant type.
      *
      * @return the authorization grant type
      */
-    public AadAuthorizationGrantType getAuthorizationGrantType() {
+    public AuthorizationGrantType getAuthorizationGrantType() {
         return authorizationGrantType;
     }
 
@@ -28,7 +33,7 @@ public class AuthorizationClientProperties {
      *
      * @param authorizationGrantType the authorization grant type
      */
-    public void setAuthorizationGrantType(AadAuthorizationGrantType authorizationGrantType) {
+    public void setAuthorizationGrantType(AuthorizationGrantType authorizationGrantType) {
         this.authorizationGrantType = authorizationGrantType;
     }
 
@@ -48,5 +53,23 @@ public class AuthorizationClientProperties {
      */
     public List<String> getScopes() {
         return scopes;
+    }
+
+    /**
+     * Gets the client authentication method.
+     *
+     * @return the client authentication method
+     */
+    public ClientAuthenticationMethod getClientAuthenticationMethod() {
+        return clientAuthenticationMethod;
+    }
+
+    /**
+     * Sets the client authentication method.
+     *
+     * @param clientAuthenticationMethod the client authentication method
+     */
+    public void setClientAuthenticationMethod(ClientAuthenticationMethod clientAuthenticationMethod) {
+        this.clientAuthenticationMethod = clientAuthenticationMethod;
     }
 }

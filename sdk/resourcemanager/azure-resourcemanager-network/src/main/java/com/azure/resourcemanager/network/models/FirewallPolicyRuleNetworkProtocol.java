@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FirewallPolicyRuleNetworkProtocol. */
+/** The Network protocol of a Rule. */
 public final class FirewallPolicyRuleNetworkProtocol extends ExpandableStringEnum<FirewallPolicyRuleNetworkProtocol> {
     /** Static value TCP for FirewallPolicyRuleNetworkProtocol. */
     public static final FirewallPolicyRuleNetworkProtocol TCP = fromString("TCP");
@@ -33,7 +33,11 @@ public final class FirewallPolicyRuleNetworkProtocol extends ExpandableStringEnu
         return fromString(name, FirewallPolicyRuleNetworkProtocol.class);
     }
 
-    /** @return known FirewallPolicyRuleNetworkProtocol values. */
+    /**
+     * Gets known FirewallPolicyRuleNetworkProtocol values.
+     *
+     * @return known FirewallPolicyRuleNetworkProtocol values.
+     */
     public static Collection<FirewallPolicyRuleNetworkProtocol> values() {
         return values(FirewallPolicyRuleNetworkProtocol.class);
     }

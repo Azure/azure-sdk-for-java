@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.recoveryservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservices.models.JobsSummary;
 import com.azure.resourcemanager.recoveryservices.models.MonitoringSummary;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Replication usages of a vault. */
 @Fluent
 public final class ReplicationUsageInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReplicationUsageInner.class);
-
     /*
      * Summary of the replication monitoring data for this vault.
      */

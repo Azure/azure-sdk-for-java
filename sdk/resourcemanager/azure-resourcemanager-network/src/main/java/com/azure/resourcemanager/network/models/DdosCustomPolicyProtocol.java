@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DdosCustomPolicyProtocol. */
+/** The protocol for which the DDoS protection policy is being customized. */
 public final class DdosCustomPolicyProtocol extends ExpandableStringEnum<DdosCustomPolicyProtocol> {
     /** Static value Tcp for DdosCustomPolicyProtocol. */
     public static final DdosCustomPolicyProtocol TCP = fromString("Tcp");
@@ -30,7 +30,11 @@ public final class DdosCustomPolicyProtocol extends ExpandableStringEnum<DdosCus
         return fromString(name, DdosCustomPolicyProtocol.class);
     }
 
-    /** @return known DdosCustomPolicyProtocol values. */
+    /**
+     * Gets known DdosCustomPolicyProtocol values.
+     *
+     * @return known DdosCustomPolicyProtocol values.
+     */
     public static Collection<DdosCustomPolicyProtocol> values() {
         return values(DdosCustomPolicyProtocol.class);
     }

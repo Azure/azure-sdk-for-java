@@ -49,6 +49,10 @@ public final class LinkedServiceImpl implements LinkedService, LinkedService.Def
         return this.innerModel().provisioningState();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public LinkedServiceInner innerModel() {
         return this.innerObject;
     }

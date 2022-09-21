@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TriggerOperation. */
+/** The operation the trigger is associated with. */
 public final class TriggerOperation extends ExpandableStringEnum<TriggerOperation> {
     /** Static value All for TriggerOperation. */
     public static final TriggerOperation ALL = fromString("All");
@@ -36,7 +36,11 @@ public final class TriggerOperation extends ExpandableStringEnum<TriggerOperatio
         return fromString(name, TriggerOperation.class);
     }
 
-    /** @return known TriggerOperation values. */
+    /**
+     * Gets known TriggerOperation values.
+     *
+     * @return known TriggerOperation values.
+     */
     public static Collection<TriggerOperation> values() {
         return values(TriggerOperation.class);
     }

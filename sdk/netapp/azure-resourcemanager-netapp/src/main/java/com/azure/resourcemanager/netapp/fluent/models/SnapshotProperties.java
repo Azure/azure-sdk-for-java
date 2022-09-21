@@ -5,24 +5,24 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Snapshot properties. */
 @Immutable
 public final class SnapshotProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SnapshotProperties.class);
-
     /*
-     * snapshotId UUID v4 used to identify the Snapshot
+     * snapshotId
+     *
+     * UUID v4 used to identify the Snapshot
      */
     @JsonProperty(value = "snapshotId", access = JsonProperty.Access.WRITE_ONLY)
     private String snapshotId;
 
     /*
-     * name The creation date of the snapshot
+     * name
+     *
+     * The creation date of the snapshot
      */
     @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime created;
@@ -34,7 +34,9 @@ public final class SnapshotProperties {
     private String provisioningState;
 
     /**
-     * Get the snapshotId property: snapshotId UUID v4 used to identify the Snapshot.
+     * Get the snapshotId property: snapshotId
+     *
+     * <p>UUID v4 used to identify the Snapshot.
      *
      * @return the snapshotId value.
      */
@@ -43,7 +45,9 @@ public final class SnapshotProperties {
     }
 
     /**
-     * Get the created property: name The creation date of the snapshot.
+     * Get the created property: name
+     *
+     * <p>The creation date of the snapshot.
      *
      * @return the created value.
      */

@@ -1,15 +1,54 @@
 # Release History
 
-## 1.13.0-beta.1 (Unreleased)
+## 1.16.0-beta.1 (Unreleased)
 
 ### Features Added
-- Updated return error when claim ownership occurs an error. Changed the behavior of `claimOwnership` method from __return empty when error__ to __return error when error__
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.15.1 (2022-09-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.13.1`.
+- Update `azure-storage-blob` dependency to `12.19.1`.
+
+## 1.15.0 (2022-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.13.0`.
+- Update `azure-storage-blob` dependency to `12.19.0`.
+
+## 1.14.0 (2022-07-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.12.2`.
+- Update `azure-storage-blob` dependency to `12.18.0`.
+
+## 1.13.0 (2022-06-10)
+
+### Features Added
+
+- Updated return error when claim ownership occurs an error. Changed the behavior of `claimOwnership` method from __return empty when error__ to __return error when error__
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.12.1`.
+- Update `azure-storage-blob` dependency to `12.17.1`.
 
 ## 1.12.2 (2022-05-16)
 

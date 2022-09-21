@@ -12,15 +12,15 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class GlossaryDeleteGlossaryTerm {
     public static void main(String[] args) {
-        // BEGIN: com.azure.analytics.purview.catalog.generated.glossarydeleteglossaryterm.glossarydeleteglossaryterm
         GlossaryClient glossaryClient =
                 new GlossaryClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.glossarydeleteglossaryterm.glossarydeleteglossaryterm
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response =
                 glossaryClient.deleteGlossaryTermWithResponse("b0942506-2d7d-1f45-d286-c29ca9e7f2ef", requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.glossarydeleteglossaryterm.glossarydeleteglossaryterm
+        // END:com.azure.analytics.purview.catalog.generated.glossarydeleteglossaryterm.glossarydeleteglossaryterm
     }
 }

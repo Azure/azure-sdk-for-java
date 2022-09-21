@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure;
 
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.management.AzureEnvironment;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
@@ -29,6 +30,7 @@ import java.util.Set;
 
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE;
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_CHINA;
+import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT;
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.OTHER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -52,7 +54,7 @@ class AzureServiceConfigurationBaseTests {
         AzureGlobalProperties azureProperties = new AzureGlobalProperties();
         azureProperties.getCredential().setClientId("global-client-id");
         azureProperties.getCredential().setClientSecret("global-client-secret");
-        azureProperties.getClient().setApplicationId("global-application-id");
+        azureProperties.getClient().setApplicationId("app");
         azureProperties.getClient().getAmqp().setTransportType(AmqpTransportType.AMQP_WEB_SOCKETS);
         azureProperties.getClient().getHttp().setConnectTimeout(Duration.ofMinutes(1));
         azureProperties.getClient().getHttp().getLogging().setLevel(HttpLogDetailLevel.HEADERS);
@@ -82,7 +84,7 @@ class AzureServiceConfigurationBaseTests {
                 final AzureCosmosProperties properties = context.getBean(AzureCosmosProperties.class);
                 assertThat(properties).extracting("credential.clientId").isEqualTo("global-client-id");
                 assertThat(properties).extracting("credential.clientSecret").isEqualTo("global-client-secret");
-                assertThat(properties).extracting("client.applicationId").isEqualTo("global-application-id");
+                assertThat(properties).extracting("client.applicationId").isEqualTo("app");
                 assertThat(properties).extracting("proxy.hostname").isEqualTo("localhost");
                 assertThat(properties).extracting("proxy.nonProxyHosts").isEqualTo("localhost");
 
@@ -159,7 +161,7 @@ class AzureServiceConfigurationBaseTests {
         AzureGlobalProperties azureProperties = new AzureGlobalProperties();
         azureProperties.getCredential().setClientId("global-client-id");
         azureProperties.getCredential().setClientSecret("global-client-secret");
-        azureProperties.getClient().setApplicationId("global-application-id");
+        azureProperties.getClient().setApplicationId("app");
         azureProperties.getClient().getAmqp().setTransportType(AmqpTransportType.AMQP_WEB_SOCKETS);
         azureProperties.getClient().getHttp().getHeaders().add(headerProperties);
         azureProperties.getClient().getHttp().setConnectTimeout(Duration.ofMinutes(1));
@@ -188,7 +190,7 @@ class AzureServiceConfigurationBaseTests {
                 assertThat(properties).extracting("credential.clientId").isEqualTo("global-client-id");
                 assertThat(properties).extracting("credential.clientSecret").isEqualTo("global-client-secret");
 
-                assertThat(properties).extracting("client.applicationId").isEqualTo("global-application-id");
+                assertThat(properties).extracting("client.applicationId").isEqualTo("app");
                 assertThat(properties).extracting("client.transportType").isEqualTo(AmqpTransportType.AMQP_WEB_SOCKETS);
 
                 assertThat(properties).extracting("proxy.hostname").isEqualTo("localhost");
@@ -229,7 +231,7 @@ class AzureServiceConfigurationBaseTests {
         AzureGlobalProperties azureProperties = new AzureGlobalProperties();
         azureProperties.getCredential().setClientId("global-client-id");
         azureProperties.getCredential().setClientSecret("global-client-secret");
-        azureProperties.getClient().setApplicationId("global-application-id");
+        azureProperties.getClient().setApplicationId("app");
         azureProperties.getClient().getAmqp().setTransportType(AmqpTransportType.AMQP_WEB_SOCKETS);
         azureProperties.getClient().getHttp().getHeaders().add(headerProperties);
         azureProperties.getClient().getHttp().setConnectTimeout(Duration.ofMinutes(1));
@@ -259,7 +261,7 @@ class AzureServiceConfigurationBaseTests {
                 assertThat(properties).extracting("credential.clientId").isEqualTo("global-client-id");
                 assertThat(properties).extracting("credential.clientSecret").isEqualTo("global-client-secret");
 
-                assertThat(properties).extracting("client.applicationId").isEqualTo("global-application-id");
+                assertThat(properties).extracting("client.applicationId").isEqualTo("app");
                 assertThat(properties).extracting("client.connectTimeout").isEqualTo(Duration.ofMinutes(1));
                 assertThat(properties).extracting("client.logging.level").isEqualTo(HttpLogDetailLevel.HEADERS);
                 Set<String> allowedHeaderNames = new HashSet<>();
@@ -291,5 +293,59 @@ class AzureServiceConfigurationBaseTests {
             });
     }
 
+    @Test
+    void configureGlobalCloudShouldApplyToAzureKeyVaultSecretProperties() {
+        AzureGlobalProperties azureProperties = new AzureGlobalProperties();
+        azureProperties.getProfile().setCloudType(AZURE_US_GOVERNMENT);
+
+        this.contextRunner
+            .withBean(AzureGlobalProperties.class, () -> azureProperties)
+            .withBean(SecretClientBuilder.class, () -> mock(SecretClientBuilder.class))
+            .withPropertyValues(
+                "spring.cloud.azure.keyvault.secret.endpoint=test"
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureKeyVaultSecretProperties.class);
+                final AzureKeyVaultSecretProperties properties = context.getBean(AzureKeyVaultSecretProperties.class);
+                assertThat(properties).extracting("profile.cloudType").isEqualTo(AZURE_US_GOVERNMENT);
+                assertThat(properties).extracting("profile.environment.activeDirectoryEndpoint").isEqualTo(AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint());
+            });
+    }
+
+    @Test
+    void configureGlobalCloudShouldApplyToAzureEventHubsProperties() {
+        AzureGlobalProperties azureProperties = new AzureGlobalProperties();
+        azureProperties.getProfile().setCloudType(AZURE_US_GOVERNMENT);
+
+        this.contextRunner
+            .withBean(AzureGlobalProperties.class, () -> azureProperties)
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.namespace=test-namespace"
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureEventHubsProperties.class);
+                final AzureEventHubsProperties properties = context.getBean(AzureEventHubsProperties.class);
+                assertThat(properties).extracting("profile.cloudType").isEqualTo(AZURE_US_GOVERNMENT);
+                assertThat(properties).extracting("profile.environment.activeDirectoryEndpoint").isEqualTo(AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint());
+            });
+    }
+
+    @Test
+    void globalDefaultShouldNotApplyWhenServiceSpecifyCloudType() {
+        AzureGlobalProperties azureProperties = new AzureGlobalProperties();
+
+        this.contextRunner
+            .withBean(AzureGlobalProperties.class, () -> azureProperties)
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.namespace=test-namespace",
+                "spring.cloud.azure.eventhubs.profile.cloud-type=AZURE_US_GOVERNMENT"
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureEventHubsProperties.class);
+                final AzureEventHubsProperties properties = context.getBean(AzureEventHubsProperties.class);
+                assertThat(properties).extracting("profile.cloudType").isEqualTo(AZURE_US_GOVERNMENT);
+                assertThat(properties).extracting("profile.environment.activeDirectoryEndpoint").isEqualTo(AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint());
+            });
+    }
 
 }

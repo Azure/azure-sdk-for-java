@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DdosCustomPolicyTriggerSensitivityOverride. */
+/**
+ * The customized DDoS protection trigger rate sensitivity degrees. High: Trigger rate set with most sensitivity w.r.t.
+ * normal traffic. Default: Trigger rate set with moderate sensitivity w.r.t. normal traffic. Low: Trigger rate set with
+ * less sensitivity w.r.t. normal traffic. Relaxed: Trigger rate set with least sensitivity w.r.t. normal traffic.
+ */
 public final class DdosCustomPolicyTriggerSensitivityOverride
     extends ExpandableStringEnum<DdosCustomPolicyTriggerSensitivityOverride> {
     /** Static value Relaxed for DdosCustomPolicyTriggerSensitivityOverride. */
@@ -34,7 +38,11 @@ public final class DdosCustomPolicyTriggerSensitivityOverride
         return fromString(name, DdosCustomPolicyTriggerSensitivityOverride.class);
     }
 
-    /** @return known DdosCustomPolicyTriggerSensitivityOverride values. */
+    /**
+     * Gets known DdosCustomPolicyTriggerSensitivityOverride values.
+     *
+     * @return known DdosCustomPolicyTriggerSensitivityOverride values.
+     */
     public static Collection<DdosCustomPolicyTriggerSensitivityOverride> values() {
         return values(DdosCustomPolicyTriggerSensitivityOverride.class);
     }

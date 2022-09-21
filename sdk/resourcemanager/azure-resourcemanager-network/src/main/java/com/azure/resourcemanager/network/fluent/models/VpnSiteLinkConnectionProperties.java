@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.resourcemanager.network.models.GatewayCustomBgpIpAddressIpConfiguration;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionProtocol;
@@ -76,6 +77,12 @@ public final class VpnSiteLinkConnectionProperties {
      */
     @JsonProperty(value = "enableBgp")
     private Boolean enableBgp;
+
+    /*
+     * vpnGatewayCustomBgpAddresses used by this connection.
+     */
+    @JsonProperty(value = "vpnGatewayCustomBgpAddresses")
+    private List<GatewayCustomBgpIpAddressIpConfiguration> vpnGatewayCustomBgpAddresses;
 
     /*
      * Enable policy-based traffic selectors.
@@ -288,6 +295,27 @@ public final class VpnSiteLinkConnectionProperties {
     }
 
     /**
+     * Get the vpnGatewayCustomBgpAddresses property: vpnGatewayCustomBgpAddresses used by this connection.
+     *
+     * @return the vpnGatewayCustomBgpAddresses value.
+     */
+    public List<GatewayCustomBgpIpAddressIpConfiguration> vpnGatewayCustomBgpAddresses() {
+        return this.vpnGatewayCustomBgpAddresses;
+    }
+
+    /**
+     * Set the vpnGatewayCustomBgpAddresses property: vpnGatewayCustomBgpAddresses used by this connection.
+     *
+     * @param vpnGatewayCustomBgpAddresses the vpnGatewayCustomBgpAddresses value to set.
+     * @return the VpnSiteLinkConnectionProperties object itself.
+     */
+    public VpnSiteLinkConnectionProperties withVpnGatewayCustomBgpAddresses(
+        List<GatewayCustomBgpIpAddressIpConfiguration> vpnGatewayCustomBgpAddresses) {
+        this.vpnGatewayCustomBgpAddresses = vpnGatewayCustomBgpAddresses;
+        return this;
+    }
+
+    /**
      * Get the usePolicyBasedTrafficSelectors property: Enable policy-based traffic selectors.
      *
      * @return the usePolicyBasedTrafficSelectors value.
@@ -422,6 +450,9 @@ public final class VpnSiteLinkConnectionProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (vpnGatewayCustomBgpAddresses() != null) {
+            vpnGatewayCustomBgpAddresses().forEach(e -> e.validate());
+        }
         if (ipsecPolicies() != null) {
             ipsecPolicies().forEach(e -> e.validate());
         }

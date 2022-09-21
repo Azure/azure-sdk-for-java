@@ -230,14 +230,7 @@ public final class PipelineRunsClientImpl implements PipelineRunsClient {
     private Mono<PipelineRunsQueryResponseInner> queryByFactoryAsync(
         String resourceGroupName, String factoryName, RunFilterParameters filterParameters) {
         return queryByFactoryWithResponseAsync(resourceGroupName, factoryName, filterParameters)
-            .flatMap(
-                (Response<PipelineRunsQueryResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -393,14 +386,7 @@ public final class PipelineRunsClientImpl implements PipelineRunsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PipelineRunInner> getAsync(String resourceGroupName, String factoryName, String runId) {
         return getWithResponseAsync(resourceGroupName, factoryName, runId)
-            .flatMap(
-                (Response<PipelineRunInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -560,7 +546,7 @@ public final class PipelineRunsClientImpl implements PipelineRunsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> cancelAsync(String resourceGroupName, String factoryName, String runId, Boolean isRecursive) {
         return cancelWithResponseAsync(resourceGroupName, factoryName, runId, isRecursive)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -578,7 +564,7 @@ public final class PipelineRunsClientImpl implements PipelineRunsClient {
     private Mono<Void> cancelAsync(String resourceGroupName, String factoryName, String runId) {
         final Boolean isRecursive = null;
         return cancelWithResponseAsync(resourceGroupName, factoryName, runId, isRecursive)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**

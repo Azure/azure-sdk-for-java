@@ -13,19 +13,17 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class GlossaryPartialUpdateGlossary {
     public static void main(String[] args) {
-        // BEGIN:
-        // com.azure.analytics.purview.catalog.generated.glossarypartialupdateglossary.glossarypartialupdateglossary
         GlossaryClient glossaryClient =
                 new GlossaryClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.glossarypartialupdateglossary.glossarypartialupdateglossary
         BinaryData partialUpdates = BinaryData.fromString("{\"longDescription\":\"Example Long Description\"}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
                 glossaryClient.partialUpdateGlossaryWithResponse(
                         "c018ddaf-7c21-4b37-a838-dae5f110c3d8", partialUpdates, requestOptions);
-        // END:
-        // com.azure.analytics.purview.catalog.generated.glossarypartialupdateglossary.glossarypartialupdateglossary
+        // END:com.azure.analytics.purview.catalog.generated.glossarypartialupdateglossary.glossarypartialupdateglossary
     }
 }

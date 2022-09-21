@@ -482,7 +482,7 @@ public class CosmosAsyncContainer {
 
                     ConcurrentHashMap<String, Boolean> endPointOpenConnectionsStatistics = new ConcurrentHashMap<>();
                     for (OpenConnectionResponse openConnectionResponse : openConnectionResponses) {
-                        endPointOpenConnectionsStatistics.compute(openConnectionResponse.getUri().getURIAsString(), (key, value) -> {
+                        endPointOpenConnectionsStatistics.compute(openConnectionResponse.getUri().getURI().getAuthority(), (key, value) -> {
                             if (value == null) {
                                 return openConnectionResponse.isConnected();
                             }
@@ -685,7 +685,7 @@ public class CosmosAsyncContainer {
 
         boolean useEtagAsContinuation = isChangeFeed;
         boolean isNoChangesResponse = isChangeFeed ?
-            ModelBridgeInternal.getNoCHangesFromFeedResponse(response)
+            ModelBridgeInternal.getNoChangesFromFeedResponse(response)
             : false;
 
         return BridgeInternal.createFeedResponseWithQueryMetrics(

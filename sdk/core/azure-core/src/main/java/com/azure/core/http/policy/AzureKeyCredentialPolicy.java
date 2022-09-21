@@ -6,10 +6,13 @@ package com.azure.core.http.policy;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.implementation.http.HttpHeadersHelper;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -21,9 +24,22 @@ import java.util.Objects;
 public final class AzureKeyCredentialPolicy implements HttpPipelinePolicy {
     // AzureKeyCredentialPolicy can be a commonly used policy, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(AzureKeyCredentialPolicy.class);
-
     private final String name;
+    private final String nameLowerCase;
     private final AzureKeyCredential credential;
+
+    private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
+        @Override
+        protected void beforeSendingRequest(HttpPipelineCallContext context) {
+            if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
+                throw LOGGER.logExceptionAsError(
+                    new IllegalStateException("Key credentials require HTTPS to prevent leaking the key."));
+            }
+
+            HttpHeadersHelper.setNoKeyFormatting(context.getHttpRequest().getHeaders(), nameLowerCase, name,
+                credential.getKey());
+        }
+    };
 
     /**
      * Creates a policy that uses the passed {@link AzureKeyCredential} to set the specified header name.
@@ -41,16 +57,17 @@ public final class AzureKeyCredentialPolicy implements HttpPipelinePolicy {
         }
 
         this.name = name;
+        this.nameLowerCase = name.toLowerCase(Locale.ROOT);
         this.credential = credential;
     }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
-            return Mono.error(new IllegalStateException("Key credentials require HTTPS to prevent leaking the key."));
-        }
+        return inner.process(context, next);
+    }
 
-        context.getHttpRequest().setHeader(name, credential.getKey());
-        return next.process();
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+        return inner.processSync(context, next);
     }
 }

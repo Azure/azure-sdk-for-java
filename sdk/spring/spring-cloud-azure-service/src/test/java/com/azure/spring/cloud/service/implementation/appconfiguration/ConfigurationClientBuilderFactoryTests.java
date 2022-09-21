@@ -32,25 +32,15 @@ public class ConfigurationClientBuilderFactoryTests extends
 
     private static final String ENDPOINT = "https://abc.azconfig.io";
 
-
     @Test
-    void testServiceVersionConfigured() {
+    void testConnectionStringConfigured() {
         AzureAppConfigurationTestProperties properties = new AzureAppConfigurationTestProperties();
-        properties.setServiceVersion(ConfigurationServiceVersion.V1_0);
+        properties.setConnectionString("test-connection-string");
 
         final ConfigurationClientBuilderFactoryExt factoryExt = new ConfigurationClientBuilderFactoryExt(properties);
         final ConfigurationClientBuilder builder = factoryExt.build();
-        verify(builder, times(1)).serviceVersion(ConfigurationServiceVersion.V1_0);
-    }
 
-    @Test
-    void testEndpointConfigured() {
-        AzureAppConfigurationTestProperties properties = new AzureAppConfigurationTestProperties();
-        properties.setEndpoint(ENDPOINT);
-
-        final ConfigurationClientBuilderFactoryExt factoryExt = new ConfigurationClientBuilderFactoryExt(properties);
-        final ConfigurationClientBuilder builder = factoryExt.build();
-        verify(builder, times(1)).endpoint(ENDPOINT);
+        verify(builder, times(1)).connectionString("test-connection-string");
     }
 
     @Override
@@ -67,6 +57,20 @@ public class ConfigurationClientBuilderFactoryTests extends
     @Override
     protected void buildClient(ConfigurationClientBuilder builder) {
         builder.buildClient();
+    }
+
+    @Override
+    protected void verifyServicePropertiesConfigured() {
+        AzureAppConfigurationTestProperties properties = new AzureAppConfigurationTestProperties();
+        properties.setEndpoint(ENDPOINT);
+        properties.setConnectionString("test-connection-string");
+        properties.setServiceVersion(ConfigurationServiceVersion.V1_0);
+
+        final ConfigurationClientBuilderFactoryExt factoryExt = new ConfigurationClientBuilderFactoryExt(properties);
+        final ConfigurationClientBuilder builder = factoryExt.build();
+
+        verify(builder, times(1)).endpoint(ENDPOINT);
+        verify(builder, times(1)).serviceVersion(ConfigurationServiceVersion.V1_0);
     }
 
     @Override

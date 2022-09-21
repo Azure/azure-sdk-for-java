@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.models.BackupProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** Backup patch. */
 @Fluent
 public final class BackupPatch {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupPatch.class);
-
     /*
      * Resource tags
      */
@@ -61,7 +57,9 @@ public final class BackupPatch {
     }
 
     /**
-     * Get the backupId property: backupId UUID v4 used to identify the Backup.
+     * Get the backupId property: backupId
+     *
+     * <p>UUID v4 used to identify the Backup.
      *
      * @return the backupId value.
      */
@@ -70,7 +68,9 @@ public final class BackupPatch {
     }
 
     /**
-     * Get the creationDate property: creationDate The creation date of the backup.
+     * Get the creationDate property: creationDate
+     *
+     * <p>The creation date of the backup.
      *
      * @return the creationDate value.
      */
@@ -120,7 +120,9 @@ public final class BackupPatch {
     }
 
     /**
-     * Get the backupType property: backupType Type of backup Manual or Scheduled.
+     * Get the backupType property: backupType
+     *
+     * <p>Type of backup Manual or Scheduled.
      *
      * @return the backupType value.
      */

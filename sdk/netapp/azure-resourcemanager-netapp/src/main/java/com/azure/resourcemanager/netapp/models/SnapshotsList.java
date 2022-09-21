@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.models.SnapshotInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of Snapshots. */
 @Fluent
 public final class SnapshotsList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SnapshotsList.class);
-
     /*
      * A list of Snapshots
      */

@@ -13,17 +13,17 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class DiscoveryBrowsePath {
     public static void main(String[] args) {
-        // BEGIN: com.azure.analytics.purview.catalog.generated.discoverybrowse.discoverybrowsepath
         DiscoveryClient discoveryClient =
                 new DiscoveryClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.discoverybrowse.discoverybrowsepath
         BinaryData browseRequest =
                 BinaryData.fromString(
                         "{\"path\":\"/azure_data_explorer_cluster#examplecluster.westus.kusto.windows.net\",\"limit\":10}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = discoveryClient.browseWithResponse(browseRequest, requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.discoverybrowse.discoverybrowsepath
+        // END:com.azure.analytics.purview.catalog.generated.discoverybrowse.discoverybrowsepath
     }
 }

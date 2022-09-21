@@ -7,45 +7,16 @@ package com.azure.resourcemanager.netapp.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Vault information. */
 @Fluent
 public final class VaultInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VaultInner.class);
-
-    /*
-     * Resource location
-     */
-    @JsonProperty(value = "location", required = true)
-    private String location;
-
     /*
      * Vault Properties
      */
     @JsonProperty(value = "properties", required = true)
     private VaultProperties innerProperties = new VaultProperties();
-
-    /**
-     * Get the location property: Resource location.
-     *
-     * @return the location value.
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
-     * Set the location property: Resource location.
-     *
-     * @param location the location value to set.
-     * @return the VaultInner object itself.
-     */
-    public VaultInner withLocation(String location) {
-        this.location = location;
-        return this;
-    }
 
     /**
      * Get the innerProperties property: Vault Properties.
@@ -85,17 +56,14 @@ public final class VaultInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (location() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property location in model VaultInner"));
-        }
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property innerProperties in model VaultInner"));
         } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VaultInner.class);
 }

@@ -13,17 +13,17 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class DiscoveryQueryFacet {
     public static void main(String[] args) {
-        // BEGIN: com.azure.analytics.purview.catalog.generated.discoveryquery.discoveryqueryfacet
         DiscoveryClient discoveryClient =
                 new DiscoveryClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.discoveryquery.discoveryqueryfacet
         BinaryData searchRequest =
                 BinaryData.fromString(
                         "{\"facets\":[{\"count\":10,\"facet\":\"assetType\"},{\"count\":10,\"facet\":\"classification\"},{\"count\":10,\"facet\":\"term\"},{\"count\":10,\"facet\":\"label\"}],\"filter\":{\"and\":[{\"not\":{\"entityType\":\"AtlasGlossaryTerm\",\"includeSubTypes\":false}}]},\"keywords\":null,\"limit\":10,\"offset\":0}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = discoveryClient.queryWithResponse(searchRequest, requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.discoveryquery.discoveryqueryfacet
+        // END:com.azure.analytics.purview.catalog.generated.discoveryquery.discoveryqueryfacet
     }
 }

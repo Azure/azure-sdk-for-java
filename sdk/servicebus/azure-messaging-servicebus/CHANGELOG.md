@@ -1,15 +1,53 @@
 # Release History
 
-## 7.10.0-beta.1 (Unreleased)
+## 7.12.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
-- Removed the thread hopping overhead with default max-concurrent-calls; this saves allocations incurred by the parallel operator and addresses the undesired prefetching when prefetch is disabled and max-concurrent-calls is set to default. ([#29011](https://github.com/Azure/azure-sdk-for-java/pull/29011))
 
 ### Other Changes
+
+## 7.11.0 (2022-09-19)
+
+### Features Added
+- Added identifier to client. ([#28904](https://github.com/Azure/azure-sdk-for-java/issues/28904))
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.31.0` to `1.32.0`.
+- Upgraded `azure-core-amqp` from `2.7.0` to `2.7.1`.
+- Upgraded `azure-identity` from `1.5.3` to `1.5.5`.
+## 7.10.1 (2022-08-18)
+
+### Bugs Fixed
+- Fixed incorrect message ordering after session processor abandon message and when `maxConcurrentSessions` is 1. ([#24064](https://github.com/Azure/azure-sdk-for-java/issues/24064), [#30027](https://github.com/Azure/azure-sdk-for-java/issues/30027))
+- Added default constructor For AuthRulesWrapper in `TopicDescription`
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.30.0` to `1.31.0`.
+- Upgraded `azure-core-amqp` from `2.6.0` to `2.7.0`.
+## 7.10.0 (2022-07-12)
+
+### Features Added
+- Exposing `ServiceBusClientBuilder.customEndpointAddress` to support connecting to an intermediary before Azure ServiceBus.
+
+### Other Changes
+- Moved message state key to `azure-core-amqp` constants. ([#26898](https://github.com/Azure/azure-sdk-for-java/issues/26898))
+#### Dependency Updates
+- Upgraded `azure-core` from `1.29.1` to `1.30.0`.
+- Upgraded `azure-core-amqp` from `2.5.2` to `2.6.0`.
+- Upgraded `azure-identity` from `1.5.2` to `1.5.3`.
+## 7.9.1 (2022-06-16)
+
+### Bugs Fixed
+- Removed the thread hopping overhead with default max-concurrent-calls; this saves allocations incurred by the parallel operator and addresses the undesired prefetching when prefetch is disabled and max-concurrent-calls is set to default. ([#29011](https://github.com/Azure/azure-sdk-for-java/pull/29011))
+- Added default constructor For AuthRulesWrapper to cover corner case when payload returned empty
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.28.0` to `1.29.1`.
+- Upgraded `azure-core-amqp` from `2.5.0` to `2.5.2`.
 
 ## 7.9.0 (2022-05-18)
 

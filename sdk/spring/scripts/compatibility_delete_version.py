@@ -13,17 +13,19 @@ import time
 
 from log import log
 
+IGNORED_ARTIFACTS = {'com.github.tomakehurst:wiremock-jre8'}
+
 
 def main():
     start_time = time.time()
-    change_to_root_dir()
+    change_to_repo_root_dir()
     log.debug('Current working directory = {}.'.format(os.getcwd()))
     find_all_poms_do_version_control("./sdk/spring")
     elapsed_time = time.time() - start_time
     log.info('elapsed_time = {}'.format(elapsed_time))
 
 
-def change_to_root_dir():
+def change_to_repo_root_dir():
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
     os.chdir('../../..')
 
@@ -43,8 +45,30 @@ def delete_dependency_version(file_path):
         lines = pom_file.readlines()
     with open(file_path, 'w', encoding = 'utf-8') as new_pom_file:
         for line in lines:
-            if '<!-- {x-version-update;org.springframework' not in line:
+            if ';external_dependency} -->' not in line:
                 new_pom_file.write(line)
+            elif line.split(";")[1] in IGNORED_ARTIFACTS:
+                new_pom_file.write(line)
+            elif line.split(";")[1] not in external_dependencies_managed_list():
+                # listed in external-dependencies.txt but not managed by spring
+                new_pom_file.write(line)
+
+
+def external_dependencies_managed_list():
+    dependencies = set()
+    with open(get_managed_file_name(), 'r', encoding = 'utf-8') as managed_file:
+        lines = managed_file.readlines()
+        for dependency in lines:
+            dependencies.add(dependency.split(";")[0])
+    return dependencies
+
+
+def get_managed_file_name():
+    with open("./eng/versioning/external_dependencies.txt", "r", encoding = 'utf-8') as external_file:
+        lines = external_file.readlines()
+        for line in lines:
+            if "org.springframework.boot:spring-boot-dependencies;" in line:
+                return "sdk/spring/scripts/spring_boot_{}_managed_external_dependencies.txt".format(line.split(";")[1].replace("\n", ""))
 
 
 if __name__ == '__main__':

@@ -21,20 +21,19 @@ public final class SingleQueryResult {
      * The current mode enforced, 0 - Disabled, 1 - Alert, 2 -Deny
      */
     @JsonProperty(value = "mode")
-    private SingleQueryResultMode mode;
+    private FirewallPolicyIdpsSignatureMode mode;
 
     /*
      * Describes the severity of signature: 1 - Low, 2 - Medium, 3 - High
      */
     @JsonProperty(value = "severity")
-    private SingleQueryResultSeverity severity;
+    private FirewallPolicyIdpsSignatureSeverity severity;
 
     /*
-     * Describes in which direction signature is being enforced: 0 - Inbound, 1
-     * - OutBound, 2 - Bidirectional
+     * Describes in which direction signature is being enforced: 0 - Inbound, 1 - OutBound, 2 - Bidirectional
      */
     @JsonProperty(value = "direction")
-    private SingleQueryResultDirection direction;
+    private FirewallPolicyIdpsSignatureDirection direction;
 
     /*
      * Describes the groups the signature belongs to
@@ -67,8 +66,7 @@ public final class SingleQueryResult {
     private List<String> destinationPorts;
 
     /*
-     * Describes the last updated time of the signature (provided from 3rd
-     * party vendor)
+     * Describes the last updated time of the signature (provided from 3rd party vendor)
      */
     @JsonProperty(value = "lastUpdated")
     private String lastUpdated;
@@ -104,7 +102,7 @@ public final class SingleQueryResult {
      *
      * @return the mode value.
      */
-    public SingleQueryResultMode mode() {
+    public FirewallPolicyIdpsSignatureMode mode() {
         return this.mode;
     }
 
@@ -114,7 +112,7 @@ public final class SingleQueryResult {
      * @param mode the mode value to set.
      * @return the SingleQueryResult object itself.
      */
-    public SingleQueryResult withMode(SingleQueryResultMode mode) {
+    public SingleQueryResult withMode(FirewallPolicyIdpsSignatureMode mode) {
         this.mode = mode;
         return this;
     }
@@ -124,7 +122,7 @@ public final class SingleQueryResult {
      *
      * @return the severity value.
      */
-    public SingleQueryResultSeverity severity() {
+    public FirewallPolicyIdpsSignatureSeverity severity() {
         return this.severity;
     }
 
@@ -134,7 +132,7 @@ public final class SingleQueryResult {
      * @param severity the severity value to set.
      * @return the SingleQueryResult object itself.
      */
-    public SingleQueryResult withSeverity(SingleQueryResultSeverity severity) {
+    public SingleQueryResult withSeverity(FirewallPolicyIdpsSignatureSeverity severity) {
         this.severity = severity;
         return this;
     }
@@ -145,7 +143,7 @@ public final class SingleQueryResult {
      *
      * @return the direction value.
      */
-    public SingleQueryResultDirection direction() {
+    public FirewallPolicyIdpsSignatureDirection direction() {
         return this.direction;
     }
 
@@ -156,7 +154,7 @@ public final class SingleQueryResult {
      * @param direction the direction value to set.
      * @return the SingleQueryResult object itself.
      */
-    public SingleQueryResult withDirection(SingleQueryResultDirection direction) {
+    public SingleQueryResult withDirection(FirewallPolicyIdpsSignatureDirection direction) {
         this.direction = direction;
         return this;
     }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CustomHttpsProvisioningState. */
+/** Provisioning status of the custom domain. */
 public final class CustomHttpsProvisioningState extends ExpandableStringEnum<CustomHttpsProvisioningState> {
     /** Static value Enabling for CustomHttpsProvisioningState. */
     public static final CustomHttpsProvisioningState ENABLING = fromString("Enabling");
@@ -36,7 +36,11 @@ public final class CustomHttpsProvisioningState extends ExpandableStringEnum<Cus
         return fromString(name, CustomHttpsProvisioningState.class);
     }
 
-    /** @return known CustomHttpsProvisioningState values. */
+    /**
+     * Gets known CustomHttpsProvisioningState values.
+     *
+     * @return known CustomHttpsProvisioningState values.
+     */
     public static Collection<CustomHttpsProvisioningState> values() {
         return values(CustomHttpsProvisioningState.class);
     }

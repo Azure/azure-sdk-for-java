@@ -192,6 +192,10 @@ public final class HostPoolImpl implements HostPool, HostPool.Definition, HostPo
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public HostPoolInner innerModel() {
         return this.innerObject;
     }

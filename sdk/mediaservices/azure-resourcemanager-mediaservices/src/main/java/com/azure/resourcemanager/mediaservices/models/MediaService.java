@@ -51,18 +51,18 @@ public interface MediaService {
     Map<String, String> tags();
 
     /**
-     * Gets the identity property: The Managed Identity for the Media Services account.
-     *
-     * @return the identity value.
-     */
-    MediaServiceIdentity identity();
-
-    /**
      * Gets the systemData property: The system metadata relating to this resource.
      *
      * @return the systemData value.
      */
     SystemData systemData();
+
+    /**
+     * Gets the identity property: The Managed Identity for the Media Services account.
+     *
+     * @return the identity value.
+     */
+    MediaServiceIdentity identity();
 
     /**
      * Gets the mediaServiceId property: The Media Services account ID.
@@ -108,6 +108,21 @@ public interface MediaService {
     PublicNetworkAccess publicNetworkAccess();
 
     /**
+     * Gets the provisioningState property: Provisioning state of the Media Services account.
+     *
+     * @return the provisioningState value.
+     */
+    ProvisioningState provisioningState();
+
+    /**
+     * Gets the privateEndpointConnections property: The Private Endpoint Connections created for the Media Service
+     * account.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    List<PrivateEndpointConnection> privateEndpointConnections();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -120,6 +135,13 @@ public interface MediaService {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.mediaservices.fluent.models.MediaServiceInner object.
@@ -390,7 +412,9 @@ public interface MediaService {
     MediaService refresh(Context context);
 
     /**
-     * Synchronizes storage account keys for a storage account associated with the Media Service account.
+     * Synchronizes Storage Account Keys
+     *
+     * <p>Synchronizes storage account keys for a storage account associated with the Media Service account.
      *
      * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -400,7 +424,9 @@ public interface MediaService {
     void syncStorageKeys(SyncStorageKeysInput parameters);
 
     /**
-     * Synchronizes storage account keys for a storage account associated with the Media Service account.
+     * Synchronizes Storage Account Keys
+     *
+     * <p>Synchronizes storage account keys for a storage account associated with the Media Service account.
      *
      * @param parameters The request parameters.
      * @param context The context to associate with this operation.
@@ -414,6 +440,8 @@ public interface MediaService {
     /**
      * List the media edge policies associated with the Media Services account.
      *
+     * <p>List all the media edge policies associated with the Media Services account.
+     *
      * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -424,6 +452,8 @@ public interface MediaService {
 
     /**
      * List the media edge policies associated with the Media Services account.
+     *
+     * <p>List all the media edge policies associated with the Media Services account.
      *
      * @param parameters The request parameters.
      * @param context The context to associate with this operation.

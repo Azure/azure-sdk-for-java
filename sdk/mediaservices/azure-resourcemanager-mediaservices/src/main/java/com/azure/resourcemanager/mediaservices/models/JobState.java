@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for JobState. */
+/** Describes the state of the JobOutput. */
 public final class JobState extends ExpandableStringEnum<JobState> {
     /** Static value Canceled for JobState. */
     public static final JobState CANCELED = fromString("Canceled");
@@ -42,7 +42,11 @@ public final class JobState extends ExpandableStringEnum<JobState> {
         return fromString(name, JobState.class);
     }
 
-    /** @return known JobState values. */
+    /**
+     * Gets known JobState values.
+     *
+     * @return known JobState values.
+     */
     public static Collection<JobState> values() {
         return values(JobState.class);
     }

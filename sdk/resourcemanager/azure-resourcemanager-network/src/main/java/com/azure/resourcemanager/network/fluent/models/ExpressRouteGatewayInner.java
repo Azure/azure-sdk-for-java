@@ -120,6 +120,21 @@ public final class ExpressRouteGatewayInner extends Resource {
     }
 
     /**
+     * Set the expressRouteConnections property: List of ExpressRoute connections to the ExpressRoute gateway.
+     *
+     * @param expressRouteConnections the expressRouteConnections value to set.
+     * @return the ExpressRouteGatewayInner object itself.
+     */
+    public ExpressRouteGatewayInner withExpressRouteConnections(
+        List<ExpressRouteConnectionInner> expressRouteConnections) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteGatewayProperties();
+        }
+        this.innerProperties().withExpressRouteConnections(expressRouteConnections);
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the express route gateway resource.
      *
      * @return the provisioningState value.

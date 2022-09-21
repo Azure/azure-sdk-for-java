@@ -9,6 +9,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -30,11 +31,15 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 import static org.apache.commons.io.FileUtils.ONE_MB;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -154,6 +159,39 @@ public class CosmosItemTest extends TestSuiteBase {
                                                                                     InternalObjectNode.class);
         validateItemResponse(properties, readResponse1);
 
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void queryItemWithDuplicateJsonProperties() throws Exception {
+        String id = UUID.randomUUID().toString();
+        String rawJson = String.format(
+            "{ "
+                + "\"id\": \"%s\", "
+                + "\"mypk\": \"%s\", "
+                + "\"property1\": \"5\", "
+                + "\"property1\": \"7\", "
+                + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]"
+                + "}",
+            id,
+            id);
+        container.createItem(
+            rawJson.getBytes(StandardCharsets.UTF_8),
+            new PartitionKey(id),
+            new CosmosItemRequestOptions());
+
+        Utils.configureSimpleObjectMapper(true);
+        try {
+            CosmosPagedIterable<ObjectNode> pagedIterable = container.queryItems (
+                "SELECT * FROM c WHERE c.id = '" + id + "'",
+                new CosmosQueryRequestOptions(),
+                ObjectNode.class);
+            List<ObjectNode> items = pagedIterable.stream().collect(Collectors.toList());
+
+            assertThat(items).hasSize(1);
+            assertThat(items.get(0).get("property1").asText()).isEqualTo("7");
+        } finally {
+            Utils.configureSimpleObjectMapper(false);
+        }
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -351,9 +389,30 @@ public class CosmosItemTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void distinctQueryItems() throws Exception{
+
+        for (int i = 0; i < 10; i++) {
+            container.createItem(
+                getDocumentDefinition(UUID.randomUUID().toString(), "somePartitionKey")
+            );
+        }
+
+        String query = "SELECT DISTINCT c.mypk from c";
+        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
+
+        CosmosPagedIterable<PartitionKeyWrapper> feedResponseIterator1 =
+            container.queryItems(query, cosmosQueryRequestOptions, PartitionKeyWrapper.class);
+
+        // Very basic validation
+        assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
+        long totalRecordCount = feedResponseIterator1.stream().count();
+        assertThat(totalRecordCount == 1L);
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryItemsWithCustomCorrelationActivityId() throws Exception{
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
-        CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
+        container.createItem(properties);
 
         String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
@@ -559,5 +618,20 @@ public class CosmosItemTest extends TestSuiteBase {
         assertThat(BridgeInternal.getProperties(createResponse).getId())
             .as("check Resource Id")
             .isEqualTo(expectedId);
+    }
+
+    private static class PartitionKeyWrapper {
+        private String mypk;
+
+        public PartitionKeyWrapper() {
+        }
+
+        public String getMypk() {
+            return mypk;
+        }
+
+        public void setMypk(String mypk) {
+            this.mypk = mypk;
+        }
     }
 }

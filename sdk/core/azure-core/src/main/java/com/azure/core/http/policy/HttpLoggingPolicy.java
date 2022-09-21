@@ -8,11 +8,12 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.ImplUtils;
-import com.azure.core.implementation.http.HttpPipelineCallContextHelper;
+import com.azure.core.implementation.http.HttpHeadersHelper;
 import com.azure.core.implementation.jackson.ObjectMapperShim;
 import com.azure.core.implementation.logging.LoggingKeys;
 import com.azure.core.util.Context;
@@ -116,7 +117,6 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             return next.process();
         }
 
-
         final ClientLogger logger = getOrCreateMethodLogger((String) context.getData("caller-method").orElse(""));
         final long startNs = System.nanoTime();
 
@@ -127,17 +127,41 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             .doOnError(throwable -> logger.warning("<-- HTTP FAILED: ", throwable));
     }
 
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+        // No logging will be performed, trigger a no-op.
+        if (httpLogDetailLevel == HttpLogDetailLevel.NONE) {
+            return next.processSync();
+        }
+
+        final ClientLogger logger = getOrCreateMethodLogger((String) context.getData("caller-method").orElse(""));
+        final long startNs = System.nanoTime();
+
+        requestLogger.logRequestSync(logger, getRequestLoggingOptions(context));
+        try {
+            HttpResponse response = next.processSync();
+            if (response != null) {
+                response = responseLogger.logResponseSync(
+                    logger, getResponseLoggingOptions(response, startNs, context));
+            }
+            return response;
+        } catch (RuntimeException e) {
+            logger.warning("<-- HTTP FAILED: ", e);
+            throw logger.logExceptionAsWarning(e);
+        }
+    }
+
     private HttpRequestLoggingContext getRequestLoggingOptions(HttpPipelineCallContext callContext) {
         return new HttpRequestLoggingContext(callContext.getHttpRequest(),
-            HttpPipelineCallContextHelper.getContext(callContext),
-            getRequestRetryCount(HttpPipelineCallContextHelper.getContext(callContext)));
+            callContext.getContext(),
+            getRequestRetryCount(callContext.getContext()));
     }
 
     private HttpResponseLoggingContext getResponseLoggingOptions(HttpResponse httpResponse, long startNs,
         HttpPipelineCallContext callContext) {
         return new HttpResponseLoggingContext(httpResponse, Duration.ofNanos(System.nanoTime() - startNs),
-            HttpPipelineCallContextHelper.getContext(callContext),
-            getRequestRetryCount(HttpPipelineCallContextHelper.getContext(callContext)));
+            callContext.getContext(),
+            getRequestRetryCount(callContext.getContext()));
     }
 
     private final class DefaultHttpRequestLogger implements HttpRequestLogger {
@@ -149,6 +173,14 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             }
 
             return Mono.empty();
+        }
+
+        @Override
+        public void logRequestSync(ClientLogger logger, HttpRequestLoggingContext loggingOptions) {
+            final LogLevel logLevel = getLogLevel(loggingOptions);
+            if (logger.canLogAtLevel(logLevel)) {
+                log(logLevel, logger, loggingOptions);
+            }
         }
 
         private void log(LogLevel logLevel, ClientLogger logger, HttpRequestLoggingContext loggingOptions) {
@@ -176,7 +208,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 return;
             }
 
-            String contentType = request.getHeaders().getValue("Content-Type");
+            String contentType = HttpHeadersHelper.getValueNoKeyFormatting(request.getHeaders(), "content-type");
             long contentLength = getContentLength(logger, request.getHeaders());
 
             logBuilder.addKeyValue(LoggingKeys.CONTENT_LENGTH_KEY, contentLength);
@@ -194,12 +226,10 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                                 throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
                             }
                         })
-                        .doFinally(ignored -> {
-                            logBuilder.addKeyValue(LoggingKeys.BODY_KEY, prettyPrintIfNeeded(logger, prettyPrintBody, contentType,
-                                    new String(stream.toByteArray(), 0, stream.count(), StandardCharsets.UTF_8)))
-                                .log(REQUEST_LOG_MESSAGE);
-
-                        }));
+                        .doFinally(ignored -> logBuilder.addKeyValue(LoggingKeys.BODY_KEY,
+                                prettyPrintIfNeeded(logger, prettyPrintBody, contentType,
+                                stream.toString(StandardCharsets.UTF_8)))
+                            .log(REQUEST_LOG_MESSAGE)));
                 return;
             }
 
@@ -218,21 +248,12 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             }
 
             LoggingEventBuilder logBuilder = getLogBuilder(logLevel, logger);
-            String contentLengthString = response.getHeaderValue("Content-Length");
-            if (!CoreUtils.isNullOrEmpty(contentLengthString)) {
-                logBuilder.addKeyValue(LoggingKeys.CONTENT_LENGTH_KEY, contentLengthString);
-            }
 
-            if (httpLogDetailLevel.shouldLogUrl()) {
-                logBuilder
-                    .addKeyValue(LoggingKeys.STATUS_CODE_KEY, response.getStatusCode())
-                    .addKeyValue(LoggingKeys.URL_KEY, getRedactedUrl(response.getRequest().getUrl(), allowedQueryParameterNames))
-                    .addKeyValue(LoggingKeys.DURATION_MS_KEY, loggingOptions.getResponseDuration().toMillis());
-            }
+            logContentLength(response, logBuilder);
 
-            if (httpLogDetailLevel.shouldLogHeaders() && logger.canLogAtLevel(LogLevel.VERBOSE)) {
-                addHeadersToLogMessage(allowedHeaderNames, response.getHeaders(), logBuilder);
-            }
+            logUrl(loggingOptions, response, logBuilder);
+
+            logHeaders(logger, response, logBuilder);
 
             if (httpLogDetailLevel.shouldLogBody()) {
                 String contentTypeHeader = response.getHeaderValue("Content-Type");
@@ -246,6 +267,58 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             logBuilder.log(RESPONSE_LOG_MESSAGE);
             return Mono.just(response);
         }
+
+        private void logHeaders(ClientLogger logger, HttpResponse response, LoggingEventBuilder logBuilder) {
+            if (httpLogDetailLevel.shouldLogHeaders() && logger.canLogAtLevel(LogLevel.VERBOSE)) {
+                addHeadersToLogMessage(allowedHeaderNames, response.getHeaders(), logBuilder);
+            }
+        }
+
+        private void logUrl(HttpResponseLoggingContext loggingOptions, HttpResponse response,
+                               LoggingEventBuilder logBuilder) {
+            if (httpLogDetailLevel.shouldLogUrl()) {
+                logBuilder
+                    .addKeyValue(LoggingKeys.STATUS_CODE_KEY, response.getStatusCode())
+                    .addKeyValue(LoggingKeys.URL_KEY, getRedactedUrl(response.getRequest().getUrl(), allowedQueryParameterNames))
+                    .addKeyValue(LoggingKeys.DURATION_MS_KEY, loggingOptions.getResponseDuration().toMillis());
+            }
+        }
+
+        private void logContentLength(HttpResponse response, LoggingEventBuilder logBuilder) {
+            String contentLengthString = response.getHeaderValue("Content-Length");
+            if (!CoreUtils.isNullOrEmpty(contentLengthString)) {
+                logBuilder.addKeyValue(LoggingKeys.CONTENT_LENGTH_KEY, contentLengthString);
+            }
+        }
+
+        @Override
+        public HttpResponse logResponseSync(ClientLogger logger, HttpResponseLoggingContext loggingOptions) {
+            final LogLevel logLevel = getLogLevel(loggingOptions);
+            final HttpResponse response = loggingOptions.getHttpResponse();
+
+            if (!logger.canLogAtLevel(logLevel)) {
+                return response;
+            }
+            LoggingEventBuilder logBuilder = getLogBuilder(logLevel, logger);
+
+            logContentLength(response, logBuilder);
+
+            logUrl(loggingOptions, response, logBuilder);
+
+            logHeaders(logger, response, logBuilder);
+
+            if (httpLogDetailLevel.shouldLogBody()) {
+                String contentTypeHeader = response.getHeaderValue("Content-Type");
+                long contentLength = getContentLength(logger, response.getHeaders());
+                if (shouldBodyBeLogged(contentTypeHeader, contentLength)) {
+                    return new LoggingHttpResponse(response, logBuilder, logger,
+                        (int) contentLength, contentTypeHeader, prettyPrintBody);
+                }
+            }
+
+            logBuilder.log(RESPONSE_LOG_MESSAGE);
+            return response;
+        }
     }
 
     /*
@@ -255,52 +328,25 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @return A URL with query parameters redacted based on configurations in this policy.
      */
     private static String getRedactedUrl(URL url, Set<String> allowedQueryParameterNames) {
-        UrlBuilder builder = UrlBuilder.parse(url);
-        String allowedQueryString = getAllowedQueryString(url.getQuery(), allowedQueryParameterNames);
-
-        // return a UrlBuilder with a new query.
-        // builder.clearQuery() is required here to explicitly clear
-        // UrlBuilder.query field - simply calling setQuery() will not do it.
-        // setQuery() could have full-replacement semantics, but some SDKs are
-        // using it as an appending mechanism.
-        return builder
-                .clearQuery()
-                .setQuery(allowedQueryString)
-                .toString();
-    }
-
-    /*
-     * Generates the logging safe query parameters string.
-     *
-     * @param queryString Query parameter string from the request URL.
-     * @return A query parameter string redacted based on the configurations in this policy.
-     */
-    private static String getAllowedQueryString(String queryString, Set<String> allowedQueryParameterNames) {
-        if (CoreUtils.isNullOrEmpty(queryString)) {
-            return "";
+        String query = url.getQuery();
+        if (CoreUtils.isNullOrEmpty(query)) {
+            // URL doesn't have a query string, just return the URL as-is.
+            return url.toString();
         }
 
-        StringBuilder queryStringBuilder = new StringBuilder();
-        String[] queryParams = queryString.split("&");
-        for (String queryParam : queryParams) {
-            if (queryStringBuilder.length() > 0) {
-                queryStringBuilder.append("&");
-            }
+        // URL does have a query string that may need redactions.
+        // Use UrlBuilder to break apart the URL, clear the query string, and add the redacted query string.
+        UrlBuilder urlBuilder = ImplUtils.parseUrl(url, false);
 
-            String[] queryPair = queryParam.split("=", 2);
-            if (queryPair.length == 2) {
-                String queryName = queryPair[0];
-                if (allowedQueryParameterNames.contains(queryName.toLowerCase(Locale.ROOT))) {
-                    queryStringBuilder.append(queryParam);
-                } else {
-                    queryStringBuilder.append(queryPair[0]).append("=").append(REDACTED_PLACEHOLDER);
-                }
+        ImplUtils.parseQueryParameters(query).forEachRemaining(queryParam -> {
+            if (allowedQueryParameterNames.contains(queryParam.getKey().toLowerCase(Locale.ROOT))) {
+                urlBuilder.addQueryParameter(queryParam.getKey(), queryParam.getValue());
             } else {
-                queryStringBuilder.append(queryParam);
+                urlBuilder.addQueryParameter(queryParam.getKey(), REDACTED_PLACEHOLDER);
             }
-        }
+        });
 
-        return queryStringBuilder.toString();
+        return urlBuilder.toString();
     }
 
     /*
@@ -310,10 +356,12 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @param sb StringBuilder that is generating the log message.
      * @param logLevel Log level the environment is configured to use.
      */
-    private static void addHeadersToLogMessage(Set<String> allowedHeaderNames, HttpHeaders headers, LoggingEventBuilder logBuilder) {
+    private static void addHeadersToLogMessage(Set<String> allowedHeaderNames, HttpHeaders headers,
+        LoggingEventBuilder logBuilder) {
         for (HttpHeader header : headers) {
             String headerName = header.getName();
-            logBuilder.addKeyValue(headerName, allowedHeaderNames.contains(headerName.toLowerCase(Locale.ROOT)) ? header.getValue() : REDACTED_PLACEHOLDER);
+            logBuilder.addKeyValue(headerName, allowedHeaderNames.contains(headerName.toLowerCase(Locale.ROOT))
+                ? header.getValue() : REDACTED_PLACEHOLDER);
         }
     }
 
@@ -352,7 +400,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private static long getContentLength(ClientLogger logger, HttpHeaders headers) {
         long contentLength = 0;
 
-        String contentLengthString = headers.getValue("Content-Length");
+        String contentLengthString = HttpHeadersHelper.getValueNoKeyFormatting(headers, "content-length");
         if (CoreUtils.isNullOrEmpty(contentLengthString)) {
             return contentLength;
         }
@@ -360,8 +408,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         try {
             contentLength = Long.parseLong(contentLengthString);
         } catch (NumberFormatException | NullPointerException e) {
-            logger.warning("Could not parse the HTTP header content-length: '{}'.",
-                headers.getValue("content-length"), e);
+            logger.warning("Could not parse the HTTP header content-length: '{}'.", contentLengthString, e);
         }
 
         return contentLength;
@@ -386,7 +433,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     /*
      * Gets the request retry count to include in logging.
      *
-     * If there is no value set or it isn't a valid number null will be returned indicating that retry count won't be
+     * If there is no value set, or it isn't a valid number null will be returned indicating that retry count won't be
      * logged.
      */
     private static Integer getRequestRetryCount(Context context) {
@@ -475,11 +522,10 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                         throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
                     }
                 })
-                .doFinally(ignored -> {
-                    logBuilder.addKeyValue(LoggingKeys.BODY_KEY, prettyPrintIfNeeded(logger, prettyPrintBody, contentTypeHeader,
-                            new String(stream.toByteArray(), 0, stream.count(), StandardCharsets.UTF_8)))
-                        .log(RESPONSE_LOG_MESSAGE);
-                });
+                .doFinally(ignored -> logBuilder.addKeyValue(LoggingKeys.BODY_KEY,
+                        prettyPrintIfNeeded(logger, prettyPrintBody, contentTypeHeader,
+                            stream.toString(StandardCharsets.UTF_8)))
+                    .log(RESPONSE_LOG_MESSAGE));
         }
 
         @Override

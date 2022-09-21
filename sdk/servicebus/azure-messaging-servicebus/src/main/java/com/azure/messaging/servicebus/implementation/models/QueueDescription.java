@@ -13,6 +13,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /** The QueueDescription model. */
@@ -140,6 +141,11 @@ public final class QueueDescription {
         @JacksonXmlProperty(localName = "AuthorizationRule",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
         private final List<AuthorizationRuleImpl> items;
+
+        @JsonCreator
+        private AuthorizationRulesWrapper() {
+            this.items = Collections.emptyList();
+        }
 
         @JsonCreator
         private AuthorizationRulesWrapper(

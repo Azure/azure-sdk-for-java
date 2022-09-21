@@ -33,7 +33,7 @@ import org.springframework.context.annotation.Import;
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties
 @ConditionalOnClass(SecretClientBuilder.class)
-@ConditionalOnProperty(value = "spring.cloud.azure.keyvault.secret.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(value = { "spring.cloud.azure.keyvault.secret.enabled", "spring.cloud.azure.keyvault.enabled" }, havingValue = "true", matchIfMissing = true)
 @ConditionalOnAnyProperty(prefixes = { "spring.cloud.azure.keyvault.secret", "spring.cloud.azure.keyvault" }, name = { "endpoint" })
 @Import(AzureKeyVaultConfiguration.class)
 public class AzureKeyVaultSecretAutoConfiguration {

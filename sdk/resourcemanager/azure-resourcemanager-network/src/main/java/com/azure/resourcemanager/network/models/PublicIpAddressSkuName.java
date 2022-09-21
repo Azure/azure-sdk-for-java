@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PublicIpAddressSkuName. */
+/** Name of a public IP address SKU. */
 public final class PublicIpAddressSkuName extends ExpandableStringEnum<PublicIpAddressSkuName> {
     /** Static value Basic for PublicIpAddressSkuName. */
     public static final PublicIpAddressSkuName BASIC = fromString("Basic");
@@ -27,7 +27,11 @@ public final class PublicIpAddressSkuName extends ExpandableStringEnum<PublicIpA
         return fromString(name, PublicIpAddressSkuName.class);
     }
 
-    /** @return known PublicIpAddressSkuName values. */
+    /**
+     * Gets known PublicIpAddressSkuName values.
+     *
+     * @return known PublicIpAddressSkuName values.
+     */
     public static Collection<PublicIpAddressSkuName> values() {
         return values(PublicIpAddressSkuName.class);
     }

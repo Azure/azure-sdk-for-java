@@ -1,6 +1,40 @@
 # Release History
 
-## 2.16.0-beta.1 (Unreleased)
+## 2.19.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.18.0 (2022-08-26)
+
+### Bugs Fixed
+
+- Fixed bug where `withDataFromDisk(Disk managedDisk)` in `Snapshot` mistakenly used SKU from Disk. ([#29811](https://github.com/Azure/azure-sdk-for-java/issues/29811))
+
+## 2.17.0 (2022-07-25)
+
+### Breaking Changes
+
+- Property `protectedSettings` in `CloudServiceExtensionProperties` changed from `String` to `Object`.
+- Property `settings` in `CloudServiceExtensionProperties` changed from `String` to `Object`.
+- Property `communityGalleryInfo` in `SharingProfile` changed from `Object` to `CommunityGalleryInfo`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-04-04`.
+
+## 2.16.0 (2022-06-24)
+
+### Features Added
+
+- Supported swapping OS disk in `VirtualMachine`.
 
 ### Breaking Changes
 

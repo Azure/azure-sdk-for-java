@@ -4,10 +4,16 @@
 package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobRange;
 
 
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_BLOCK_SIZE;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V1;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.GCM_ENCRYPTION_REGION_LENGTH;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.NONCE_LENGTH;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.TAG_LENGTH;
 
 /**
  * This is a representation of a range of bytes on an encrypted blob, which may be expanded from the requested range to
@@ -16,6 +22,7 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
  * to the entire range of the blob.
  */
 final class EncryptedBlobRange {
+    private static final ClientLogger LOGGER = new ClientLogger(EncryptedBlobRange.class);
 
     /**
      * The BlobRange passed by the customer and the range we must actually return.
@@ -23,8 +30,10 @@ final class EncryptedBlobRange {
     private final BlobRange originalRange;
 
     /**
-     * Amount the beginning of the range, 0-31, needs to be adjusted in order to align along an encryption block
+     * Amount the beginning of the range needs to be adjusted in order to align along an encryption block
      * boundary and include the IV.
+     * 0-31 for v1
+     * 0-(4mb+12-1)
      */
     private final int offsetAdjustment;
 
@@ -34,11 +43,23 @@ final class EncryptedBlobRange {
      */
     private Long adjustedDownloadCount;
 
-    static EncryptedBlobRange getEncryptedBlobRangeFromHeader(String stringRange) {
+    /**
+     * Identical to offsetAdjustment in v1, but v2 ciphertext includes the nonce and tag, which are removed during
+     * decryption, so we must separately track how much plaintext to skip distinct from how many extra bytes we
+     * download.
+     */
+    private final long amountPlaintextToSkip;
+
+    static EncryptedBlobRange getEncryptedBlobRangeFromHeader(String stringRange, EncryptionData encryptionData) {
+        if (encryptionData == null) {
+            return null;
+        }
+
         // Null case
         if (CoreUtils.isNullOrEmpty(stringRange)) {
-            return new EncryptedBlobRange(null);
+            return new EncryptedBlobRange(null, null);
         }
+
         // Non-null case
         String trimmed = stringRange.substring(stringRange.indexOf("=") + 1); // Trim off the "bytes=" part
         String[] pieces = trimmed.split("-"); // Split on the "-"
@@ -51,13 +72,14 @@ final class EncryptedBlobRange {
             long count = rangeEnd - offset + 1;
             range = new BlobRange(offset, count);
         }
-        return new EncryptedBlobRange(range);
+        return new EncryptedBlobRange(range, encryptionData);
     }
 
-    EncryptedBlobRange(BlobRange originalRange) {
+    EncryptedBlobRange(BlobRange originalRange, EncryptionData encryptionData) {
         if (originalRange == null) {
             this.originalRange = new BlobRange(0);
             this.offsetAdjustment = 0;
+            this.amountPlaintextToSkip = 0; // In cases where this block is executed, this value does not matter
             return;
         }
 
@@ -65,39 +87,76 @@ final class EncryptedBlobRange {
         int tempOffsetAdjustment = 0;
         this.adjustedDownloadCount = this.originalRange.getCount();
 
-        // Calculate offsetAdjustment.
-        if (originalRange.getOffset() != 0) {
+        switch (encryptionData.getEncryptionAgent().getProtocol()) {
+            case ENCRYPTION_PROTOCOL_V1:
+                // Calculate offsetAdjustment.
+                if (originalRange.getOffset() != 0) {
 
-            // Align with encryption block boundary.
-            if (originalRange.getOffset() % ENCRYPTION_BLOCK_SIZE != 0) {
-                long diff = this.originalRange.getOffset() % ENCRYPTION_BLOCK_SIZE;
-                tempOffsetAdjustment += diff;
-                if (this.adjustedDownloadCount != null) {
-                    this.adjustedDownloadCount += diff;
+                    // Align with encryption block boundary.
+                    if (originalRange.getOffset() % ENCRYPTION_BLOCK_SIZE != 0) {
+                        long diff = this.originalRange.getOffset() % ENCRYPTION_BLOCK_SIZE;
+                        tempOffsetAdjustment += diff;
+                        if (this.adjustedDownloadCount != null) {
+                            this.adjustedDownloadCount += diff;
+                        }
+                    }
+
+                    // Account for IV.
+                    if (this.originalRange.getOffset() >= ENCRYPTION_BLOCK_SIZE) {
+                        tempOffsetAdjustment += ENCRYPTION_BLOCK_SIZE;
+                        // Increment adjustedDownloadCount if necessary.
+                        if (this.adjustedDownloadCount != null) {
+                            this.adjustedDownloadCount += ENCRYPTION_BLOCK_SIZE;
+                        }
+                    }
                 }
-            }
 
-            // Account for IV.
-            if (this.originalRange.getOffset() >= ENCRYPTION_BLOCK_SIZE) {
-                tempOffsetAdjustment += ENCRYPTION_BLOCK_SIZE;
-                // Increment adjustedDownloadCount if necessary.
+                this.offsetAdjustment = tempOffsetAdjustment;
+
+                /*
+                Align adjustedDownloadCount with encryption block boundary at the end of the range. Note that it is impossible
+                to adjust past the end of the blob as an encrypted blob was padded to align to an encryption block boundary.
+                 */
                 if (this.adjustedDownloadCount != null) {
-                    this.adjustedDownloadCount += ENCRYPTION_BLOCK_SIZE;
+                    this.adjustedDownloadCount += ENCRYPTION_BLOCK_SIZE
+                        - (int) (this.adjustedDownloadCount % ENCRYPTION_BLOCK_SIZE);
                 }
-            }
+                // These values are the same here because, barring padding, which is irrelevant here, the cipher text
+                // length is the same as the plaintext length.
+                this.amountPlaintextToSkip = offsetAdjustment;
+                break;
+            case ENCRYPTION_PROTOCOL_V2:
+                // Calculate offsetAdjustment.
+                // Get the start of the encryption region for the original offset
+                long regionNumber = originalRange.getOffset() / GCM_ENCRYPTION_REGION_LENGTH;
+
+                long regionStartOffset = regionNumber
+                    * (NONCE_LENGTH + GCM_ENCRYPTION_REGION_LENGTH + TAG_LENGTH);
+
+                // This is the plaintext original offset minus the beginning of the containing encryption region also in plaintext.
+                // It is effectively the amount of extra plaintext we grabbed. This is necessary because the nonces and tags
+                // are stored in the data, which skews our counting.
+                this.amountPlaintextToSkip = originalRange.getOffset() - (regionNumber * GCM_ENCRYPTION_REGION_LENGTH);
+
+                if (originalRange.getCount() != null) {
+                    // Get the end of the encryption region for the end of the original range
+                    regionNumber = (originalRange.getOffset() + originalRange.getCount() - 1)
+                        / GCM_ENCRYPTION_REGION_LENGTH;
+                    // Read: Get the starting offset for the last encryption region as above and add the length of a region
+                    // to get the end offset for the region
+                    long regionEndOffset = (regionNumber + 1)
+                        * (NONCE_LENGTH + GCM_ENCRYPTION_REGION_LENGTH + TAG_LENGTH);
+                    // adjusted download count is the difference in the end and start of the range.
+                    this.adjustedDownloadCount = regionEndOffset - regionStartOffset;
+                }
+
+                // Offset adjustment is difference in two starting values
+                this.offsetAdjustment = (int) (originalRange.getOffset() - regionStartOffset);
+
+                break;
+            default:
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unexpected protocol version"));
         }
-
-        this.offsetAdjustment = tempOffsetAdjustment;
-
-        /*
-        Align adjustedDownloadCount with encryption block boundary at the end of the range. Note that it is impossible
-        to adjust past the end of the blob as an encrypted blob was padded to align to an encryption block boundary.
-         */
-        if (this.adjustedDownloadCount != null) {
-            this.adjustedDownloadCount += ENCRYPTION_BLOCK_SIZE
-                - (int) (this.adjustedDownloadCount % ENCRYPTION_BLOCK_SIZE);
-        }
-
     }
 
     /**
@@ -112,6 +171,10 @@ final class EncryptedBlobRange {
      */
     int getOffsetAdjustment() {
         return this.offsetAdjustment;
+    }
+
+    int getAmountPlaintextToSkip() {
+        return (int) this.amountPlaintextToSkip; // Casting is fine as an encryption region is 4mb
     }
 
     /**

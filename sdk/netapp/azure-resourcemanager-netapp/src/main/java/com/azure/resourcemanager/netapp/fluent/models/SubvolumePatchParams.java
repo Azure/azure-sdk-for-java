@@ -5,29 +5,31 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters with which a subvolume can be updated. */
 @Fluent
 public final class SubvolumePatchParams {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubvolumePatchParams.class);
-
     /*
-     * size Truncate subvolume to the provided size in bytes
+     * size
+     *
+     * Truncate subvolume to the provided size in bytes
      */
     @JsonProperty(value = "size")
     private Long size;
 
     /*
-     * path path to the subvolume
+     * path
+     *
+     * path to the subvolume
      */
     @JsonProperty(value = "path")
     private String path;
 
     /**
-     * Get the size property: size Truncate subvolume to the provided size in bytes.
+     * Get the size property: size
+     *
+     * <p>Truncate subvolume to the provided size in bytes.
      *
      * @return the size value.
      */
@@ -36,7 +38,9 @@ public final class SubvolumePatchParams {
     }
 
     /**
-     * Set the size property: size Truncate subvolume to the provided size in bytes.
+     * Set the size property: size
+     *
+     * <p>Truncate subvolume to the provided size in bytes.
      *
      * @param size the size value to set.
      * @return the SubvolumePatchParams object itself.
@@ -47,7 +51,9 @@ public final class SubvolumePatchParams {
     }
 
     /**
-     * Get the path property: path path to the subvolume.
+     * Get the path property: path
+     *
+     * <p>path to the subvolume.
      *
      * @return the path value.
      */
@@ -56,7 +62,9 @@ public final class SubvolumePatchParams {
     }
 
     /**
-     * Set the path property: path path to the subvolume.
+     * Set the path property: path
+     *
+     * <p>path to the subvolume.
      *
      * @param path the path value to set.
      * @return the SubvolumePatchParams object itself.

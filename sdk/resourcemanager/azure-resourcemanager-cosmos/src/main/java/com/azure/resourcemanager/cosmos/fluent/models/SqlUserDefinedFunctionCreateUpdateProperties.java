@@ -8,15 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.SqlUserDefinedFunctionResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties to create and update Azure Cosmos DB userDefinedFunction. */
 @Fluent
 public final class SqlUserDefinedFunctionCreateUpdateProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(SqlUserDefinedFunctionCreateUpdateProperties.class);
-
     /*
      * The standard JSON format of a userDefinedFunction
      */
@@ -24,8 +20,8 @@ public final class SqlUserDefinedFunctionCreateUpdateProperties {
     private SqlUserDefinedFunctionResource resource;
 
     /*
-     * A key-value pair of options to be applied for the request. This
-     * corresponds to the headers sent with the request.
+     * A key-value pair of options to be applied for the request. This corresponds to the headers sent with the
+     * request.
      */
     @JsonProperty(value = "options")
     private CreateUpdateOptions options;
@@ -79,7 +75,7 @@ public final class SqlUserDefinedFunctionCreateUpdateProperties {
      */
     public void validate() {
         if (resource() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property resource in model SqlUserDefinedFunctionCreateUpdateProperties"));
@@ -90,4 +86,6 @@ public final class SqlUserDefinedFunctionCreateUpdateProperties {
             options().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SqlUserDefinedFunctionCreateUpdateProperties.class);
 }
