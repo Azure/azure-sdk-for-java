@@ -21,7 +21,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
@@ -103,34 +102,6 @@ public final class DataFlowDebugSessionClient {
     public CreateDataFlowDebugSessionResponse createDataFlowDebugSession(
             CreateDataFlowDebugSessionRequest request, Context context) {
         return this.serviceClient.createDataFlowDebugSession(request, context);
-    }
-
-    /**
-     * Query all active data flow debug sessions.
-     *
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of active debug sessions along with {@link PagedResponse}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DataFlowDebugSessionInfo> queryDataFlowDebugSessionsByWorkspaceSinglePage() {
-        return this.serviceClient.queryDataFlowDebugSessionsByWorkspaceSinglePage();
-    }
-
-    /**
-     * Query all active data flow debug sessions.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of active debug sessions along with {@link PagedResponse}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DataFlowDebugSessionInfo> queryDataFlowDebugSessionsByWorkspaceSinglePage(Context context) {
-        return this.serviceClient.queryDataFlowDebugSessionsByWorkspaceSinglePage(context);
     }
 
     /**
@@ -346,40 +317,5 @@ public final class DataFlowDebugSessionClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataFlowDebugCommandResponse executeCommand(DataFlowDebugCommandRequest request, Context context) {
         return this.serviceClient.executeCommand(request, context);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of active debug sessions along with {@link PagedResponse}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DataFlowDebugSessionInfo> queryDataFlowDebugSessionsByWorkspaceNextSinglePage(
-            String nextLink) {
-        return this.serviceClient.queryDataFlowDebugSessionsByWorkspaceNextSinglePage(nextLink);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of active debug sessions along with {@link PagedResponse}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DataFlowDebugSessionInfo> queryDataFlowDebugSessionsByWorkspaceNextSinglePage(
-            String nextLink, Context context) {
-        return this.serviceClient.queryDataFlowDebugSessionsByWorkspaceNextSinglePage(nextLink, context);
     }
 }

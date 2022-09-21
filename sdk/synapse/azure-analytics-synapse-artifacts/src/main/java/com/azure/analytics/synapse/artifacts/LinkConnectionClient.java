@@ -18,7 +18,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
@@ -35,34 +34,6 @@ public final class LinkConnectionClient {
     @Generated
     LinkConnectionClient(LinkConnectionsImpl serviceClient) {
         this.serviceClient = serviceClient;
-    }
-
-    /**
-     * List link connections.
-     *
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<LinkConnectionResource> listLinkConnectionsByWorkspaceSinglePage() {
-        return this.serviceClient.listLinkConnectionsByWorkspaceSinglePage();
-    }
-
-    /**
-     * List link connections.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<LinkConnectionResource> listLinkConnectionsByWorkspaceSinglePage(Context context) {
-        return this.serviceClient.listLinkConnectionsByWorkspaceSinglePage(context);
     }
 
     /**
@@ -737,39 +708,5 @@ public final class LinkConnectionClient {
             UpdateLandingZoneCredential updateLandingZoneCredentialRequest,
             Context context) {
         this.serviceClient.updateLandingZoneCredential(linkConnectionName, updateLandingZoneCredentialRequest, context);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<LinkConnectionResource> listLinkConnectionsByWorkspaceNextSinglePage(String nextLink) {
-        return this.serviceClient.listLinkConnectionsByWorkspaceNextSinglePage(nextLink);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<LinkConnectionResource> listLinkConnectionsByWorkspaceNextSinglePage(
-            String nextLink, Context context) {
-        return this.serviceClient.listLinkConnectionsByWorkspaceNextSinglePage(nextLink, context);
     }
 }

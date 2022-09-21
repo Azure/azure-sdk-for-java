@@ -13,7 +13,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
@@ -30,34 +29,6 @@ public final class DatasetClient {
     @Generated
     DatasetClient(DatasetsImpl serviceClient) {
         this.serviceClient = serviceClient;
-    }
-
-    /**
-     * Lists datasets.
-     *
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of dataset resources along with {@link PagedResponse}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DatasetResource> getDatasetsByWorkspaceSinglePage() {
-        return this.serviceClient.getDatasetsByWorkspaceSinglePage();
-    }
-
-    /**
-     * Lists datasets.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of dataset resources along with {@link PagedResponse}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DatasetResource> getDatasetsByWorkspaceSinglePage(Context context) {
-        return this.serviceClient.getDatasetsByWorkspaceSinglePage(context);
     }
 
     /**
@@ -389,38 +360,5 @@ public final class DatasetClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void renameDataset(String datasetName, ArtifactRenameRequest request, Context context) {
         this.serviceClient.renameDataset(datasetName, request, context);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of dataset resources along with {@link PagedResponse}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DatasetResource> getDatasetsByWorkspaceNextSinglePage(String nextLink) {
-        return this.serviceClient.getDatasetsByWorkspaceNextSinglePage(nextLink);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of dataset resources along with {@link PagedResponse}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DatasetResource> getDatasetsByWorkspaceNextSinglePage(String nextLink, Context context) {
-        return this.serviceClient.getDatasetsByWorkspaceNextSinglePage(nextLink, context);
     }
 }

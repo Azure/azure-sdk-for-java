@@ -13,7 +13,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
@@ -30,34 +29,6 @@ public final class NotebookClient {
     @Generated
     NotebookClient(NotebooksImpl serviceClient) {
         this.serviceClient = serviceClient;
-    }
-
-    /**
-     * Lists Notebooks.
-     *
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources along with {@link PagedResponse}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<NotebookResource> getNotebooksByWorkspaceSinglePage() {
-        return this.serviceClient.getNotebooksByWorkspaceSinglePage();
-    }
-
-    /**
-     * Lists Notebooks.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources along with {@link PagedResponse}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<NotebookResource> getNotebooksByWorkspaceSinglePage(Context context) {
-        return this.serviceClient.getNotebooksByWorkspaceSinglePage(context);
     }
 
     /**
@@ -86,34 +57,6 @@ public final class NotebookClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NotebookResource> getNotebooksByWorkspace(Context context) {
         return this.serviceClient.getNotebooksByWorkspace(context);
-    }
-
-    /**
-     * Lists a summary of Notebooks.
-     *
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources along with {@link PagedResponse}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<NotebookResource> getNotebookSummaryByWorkSpaceSinglePage() {
-        return this.serviceClient.getNotebookSummaryByWorkSpaceSinglePage();
-    }
-
-    /**
-     * Lists a summary of Notebooks.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources along with {@link PagedResponse}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<NotebookResource> getNotebookSummaryByWorkSpaceSinglePage(Context context) {
-        return this.serviceClient.getNotebookSummaryByWorkSpaceSinglePage(context);
     }
 
     /**
@@ -446,72 +389,5 @@ public final class NotebookClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void renameNotebook(String notebookName, ArtifactRenameRequest request, Context context) {
         this.serviceClient.renameNotebook(notebookName, request, context);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources along with {@link PagedResponse}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<NotebookResource> getNotebooksByWorkspaceNextSinglePage(String nextLink) {
-        return this.serviceClient.getNotebooksByWorkspaceNextSinglePage(nextLink);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources along with {@link PagedResponse}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<NotebookResource> getNotebooksByWorkspaceNextSinglePage(String nextLink, Context context) {
-        return this.serviceClient.getNotebooksByWorkspaceNextSinglePage(nextLink, context);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources along with {@link PagedResponse}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<NotebookResource> getNotebookSummaryByWorkSpaceNextSinglePage(String nextLink) {
-        return this.serviceClient.getNotebookSummaryByWorkSpaceNextSinglePage(nextLink);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources along with {@link PagedResponse}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<NotebookResource> getNotebookSummaryByWorkSpaceNextSinglePage(
-            String nextLink, Context context) {
-        return this.serviceClient.getNotebookSummaryByWorkSpaceNextSinglePage(nextLink, context);
     }
 }

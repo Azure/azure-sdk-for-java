@@ -13,7 +13,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
@@ -30,34 +29,6 @@ public final class TriggerClient {
     @Generated
     TriggerClient(TriggersImpl serviceClient) {
         this.serviceClient = serviceClient;
-    }
-
-    /**
-     * Lists triggers.
-     *
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of trigger resources along with {@link PagedResponse}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<TriggerResource> getTriggersByWorkspaceSinglePage() {
-        return this.serviceClient.getTriggersByWorkspaceSinglePage();
-    }
-
-    /**
-     * Lists triggers.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of trigger resources along with {@link PagedResponse}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<TriggerResource> getTriggersByWorkspaceSinglePage(Context context) {
-        return this.serviceClient.getTriggersByWorkspaceSinglePage(context);
     }
 
     /**
@@ -633,38 +604,5 @@ public final class TriggerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stopTrigger(String triggerName, Context context) {
         this.serviceClient.stopTrigger(triggerName, context);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of trigger resources along with {@link PagedResponse}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<TriggerResource> getTriggersByWorkspaceNextSinglePage(String nextLink) {
-        return this.serviceClient.getTriggersByWorkspaceNextSinglePage(nextLink);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of trigger resources along with {@link PagedResponse}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<TriggerResource> getTriggersByWorkspaceNextSinglePage(String nextLink, Context context) {
-        return this.serviceClient.getTriggersByWorkspaceNextSinglePage(nextLink, context);
     }
 }

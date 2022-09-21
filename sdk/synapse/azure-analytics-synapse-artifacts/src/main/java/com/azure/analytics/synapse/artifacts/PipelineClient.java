@@ -14,7 +14,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import java.util.Map;
@@ -32,34 +31,6 @@ public final class PipelineClient {
     @Generated
     PipelineClient(PipelinesImpl serviceClient) {
         this.serviceClient = serviceClient;
-    }
-
-    /**
-     * Lists pipelines.
-     *
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of pipeline resources along with {@link PagedResponse}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<PipelineResource> getPipelinesByWorkspaceSinglePage() {
-        return this.serviceClient.getPipelinesByWorkspaceSinglePage();
-    }
-
-    /**
-     * Lists pipelines.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of pipeline resources along with {@link PagedResponse}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<PipelineResource> getPipelinesByWorkspaceSinglePage(Context context) {
-        return this.serviceClient.getPipelinesByWorkspaceSinglePage(context);
     }
 
     /**
@@ -527,38 +498,5 @@ public final class PipelineClient {
             Context context) {
         return this.serviceClient.createPipelineRun(
                 pipelineName, referencePipelineRunId, isRecovery, startActivityName, parameters, context);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of pipeline resources along with {@link PagedResponse}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<PipelineResource> getPipelinesByWorkspaceNextSinglePage(String nextLink) {
-        return this.serviceClient.getPipelinesByWorkspaceNextSinglePage(nextLink);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of pipeline resources along with {@link PagedResponse}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<PipelineResource> getPipelinesByWorkspaceNextSinglePage(String nextLink, Context context) {
-        return this.serviceClient.getPipelinesByWorkspaceNextSinglePage(nextLink, context);
     }
 }

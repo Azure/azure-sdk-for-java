@@ -12,7 +12,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Context;
 
 /** Initializes a new instance of the synchronous ArtifactsClient type. */
@@ -28,34 +27,6 @@ public final class KqlScriptsClient {
     @Generated
     KqlScriptsClient(KqlScriptsImpl serviceClient) {
         this.serviceClient = serviceClient;
-    }
-
-    /**
-     * Get all KQL scripts.
-     *
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all KQL scripts along with {@link PagedResponse}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KqlScriptResource> getAllSinglePage() {
-        return this.serviceClient.getAllSinglePage();
-    }
-
-    /**
-     * Get all KQL scripts.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all KQL scripts along with {@link PagedResponse}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KqlScriptResource> getAllSinglePage(Context context) {
-        return this.serviceClient.getAllSinglePage(context);
     }
 
     /**
@@ -84,38 +55,5 @@ public final class KqlScriptsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KqlScriptResource> getAll(Context context) {
         return this.serviceClient.getAll(context);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KqlScriptResource> getAllNextSinglePage(String nextLink) {
-        return this.serviceClient.getAllNextSinglePage(nextLink);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KqlScriptResource> getAllNextSinglePage(String nextLink, Context context) {
-        return this.serviceClient.getAllNextSinglePage(nextLink, context);
     }
 }
