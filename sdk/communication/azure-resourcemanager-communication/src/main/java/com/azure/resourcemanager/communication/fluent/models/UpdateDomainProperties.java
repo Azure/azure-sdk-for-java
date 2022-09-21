@@ -14,8 +14,7 @@ import java.util.Map;
 @Fluent
 public final class UpdateDomainProperties {
     /*
-     * Collection of valid sender usernames. This is a key-value pair where
-     * key=username and value=display name.
+     * Collection of valid sender usernames. This is a key-value pair where key=username and value=display name.
      */
     @JsonProperty(value = "validSenderUsernames")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)

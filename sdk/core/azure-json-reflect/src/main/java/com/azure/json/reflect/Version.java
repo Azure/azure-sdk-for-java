@@ -17,8 +17,8 @@ public class Version implements Comparable<Version> {
         try {
             String[] verInts = ver.split(".");
             _major = Integer.parseInt(verInts[0]);
-            _minor = Integer.parseInt(verInts[1]);
-            _patch = Integer.parseInt(verInts[2]);
+            _minor = verInts.length > 1 ? Integer.parseInt(verInts[1]) : 0;
+            _patch = verInts.length > 2 ? Integer.parseInt(verInts[2]) : 0;
             UNKNOWN = false;
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException();
