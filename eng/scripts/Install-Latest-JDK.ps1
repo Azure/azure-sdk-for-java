@@ -14,7 +14,7 @@ $javaHome = (Convert-Path $jdkUnzipName)
 Write-Host "Latest JDK: $javaHome"
 
 Write-Host "Current JAVA_HOME: $Env:JAVA_HOME"
-$Env:JAVA_HOME = $javaHome
+Write-Host "##vso[task.setvariable variable=JAVA_HOME;]$javaHome"
 Write-Host "Updated JAVA_HOME: $Env:JAVA_HOME"
 
-$Env:JAVA_HOME_18_X64 = $javaHome
+Write-Host "##vso[task.setvariable variable=JAVA_HOME_18_X64;]$javaHome"
