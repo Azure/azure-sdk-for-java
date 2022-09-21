@@ -19,10 +19,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_NAME_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.HOSTNAME_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.CONSUMER_GROUP_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
 
 public class EventHubsMetricsProvider {
-    private static final String PARTITION_ID_KEY = "partitionId";
-    private static final String SEND_STATUS_KEY = "status";
+    private static final String GENERIC_STATUS_KEY = "status";
     private final Meter meter;
     private final boolean isEnabled;
 
@@ -44,11 +44,11 @@ public class EventHubsMetricsProvider {
             }
 
             Map<String, Object> successMap = new HashMap<>(commonAttributesMap);
-            successMap.put(SEND_STATUS_KEY, "ok");
+            successMap.put(GENERIC_STATUS_KEY, "ok");
             this.sendAttributeCacheSuccess = new AttributeCache(PARTITION_ID_KEY,  successMap);
 
             Map<String, Object> failureMap = new HashMap<>(commonAttributesMap);
-            failureMap.put(SEND_STATUS_KEY, "error");
+            failureMap.put(GENERIC_STATUS_KEY, "error");
             this.sendAttributeCacheFailure = new AttributeCache(PARTITION_ID_KEY,  failureMap);
 
             this.receiveAttributeCache = new AttributeCache(PARTITION_ID_KEY,  commonAttributesMap);
@@ -59,7 +59,6 @@ public class EventHubsMetricsProvider {
 
     public void reportBatchSend(EventDataBatch batch, String partitionId, Throwable throwable, Context context) {
         if (isEnabled && sentEventsCounter.isEnabled()) {
-            // entity name is already reported
             AttributeCache cache = throwable == null ? sendAttributeCacheSuccess : sendAttributeCacheFailure;
             sentEventsCounter.add(batch.getCount(), cache.getOrCreate(partitionId), context);
         }

@@ -7,6 +7,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.metrics.MeterProvider;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.models.Checkpoint;
@@ -90,7 +91,7 @@ public class BlobCheckpointStore implements CheckpointStore {
      */
     public BlobCheckpointStore(BlobContainerAsyncClient blobContainerAsyncClient, ClientOptions options) {
         this.blobContainerAsyncClient = blobContainerAsyncClient;
-        this.metricsHelper = new MetricsHelper(options == null ? null : options.getMetricsOptions());
+        this.metricsHelper = new MetricsHelper(options == null ? null : options.getMetricsOptions(), MeterProvider.getDefaultProvider());
     }
 
     /**
@@ -273,7 +274,9 @@ public class BlobCheckpointStore implements CheckpointStore {
             }
         })
         .doOnEach(signal -> {
-            metricsHelper.reportCheckpoint(checkpoint, blobName, !signal.hasError());
+            if (signal.isOnComplete() || signal.isOnError()) {
+                metricsHelper.reportCheckpoint(checkpoint, blobName, !signal.hasError());
+            }
         });
     }
 

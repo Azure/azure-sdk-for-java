@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
-class MetricsHelper {
+final class MetricsHelper {
     private static final ClientLogger LOGGER = new ClientLogger(MetricsHelper.class);
 
     // Make sure attribute names are consistent across AMQP Core, EventHubs, ServiceBus when applicable
@@ -41,8 +41,6 @@ class MetricsHelper {
     private static final String VERSION_KEY = "version";
     private static final String LIBRARY_NAME;
     private static final String LIBRARY_VERSION;
-    private static MeterProvider meterProvider = MeterProvider.getDefaultProvider();
-
     private static final String UNKNOWN = "UNKNOWN";
 
     static {
@@ -62,13 +60,16 @@ class MetricsHelper {
     private final LongGauge lastSequenceNumber;
     private final LongCounter checkpointCounter;
     private final boolean isEnabled;
-    MetricsHelper(MetricsOptions metricsOptions) {
-        if (metricsOptions != null && !metricsOptions.isEnabled()) {
-            this.meter = null;
-        } else {
+
+    MetricsHelper(MetricsOptions metricsOptions, MeterProvider meterProvider) {
+        if (areMetricsEnabled(metricsOptions)) {
             this.meter = meterProvider.createMeter(LIBRARY_NAME, LIBRARY_VERSION, metricsOptions);
+            this.isEnabled = this.meter.isEnabled();
+        } else {
+            this.isEnabled = false;
+            this.meter = null;
         }
-        this.isEnabled = meter != null && meter.isEnabled();
+
         if (isEnabled) {
             this.lastSequenceNumber = this.meter.createLongGauge("messaging.eventhubs.checkpoint.sequence_number", "Last successfully checkpointed sequence number.", "seqNo");
             this.checkpointCounter = this.meter.createLongCounter("messaging.eventhubs.checkpoints", "Number of checkpoints.", null);
@@ -76,14 +77,6 @@ class MetricsHelper {
             this.lastSequenceNumber = null;
             this.checkpointCounter = null;
         }
-    }
-
-    /**
-     * Sets test meter provider.
-     */
-    static synchronized void setMeterProvider(MeterProvider testMeterProvider) {
-        // TODO (lmolkova) add TestMeterProvider to azure-core-test
-        MetricsHelper.meterProvider = testMeterProvider;
     }
 
     void reportCheckpoint(Checkpoint checkpoint, String attributesId, boolean success) {
@@ -158,6 +151,14 @@ class MetricsHelper {
         if (valueSupplier != null) {
             valueSupplier.set(checkpoint.getSequenceNumber());
         }
+    }
+
+    private static boolean areMetricsEnabled(MetricsOptions options) {
+        if (options == null || options.isEnabled()) {
+            return true;
+        }
+
+        return false;
     }
 
     private static class CurrentValue {

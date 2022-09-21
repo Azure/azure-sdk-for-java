@@ -86,7 +86,7 @@ public class OpenTelemetryAttributesTests {
         assertEquals("rejected", attributes.get(AttributeKey.stringKey("amqp.delivery_state")));
         assertEquals("peek", attributes.get(AttributeKey.stringKey("amqp.operation")));
         assertEquals("no_content", attributes.get(AttributeKey.stringKey("amqp.status_code")));
-        assertEquals(42, attributes.get(AttributeKey.longKey("messaging.az.partition_id")));
+        assertEquals(42, attributes.get(AttributeKey.longKey("messaging.eventhubs.partition_id")));
         assertEquals("error", attributes.get(AttributeKey.stringKey("otel.status_code")));
         assertEquals("$Default", attributes.get(AttributeKey.stringKey("messaging.eventhubs.consumer_group")));
     }

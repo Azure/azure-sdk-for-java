@@ -3,35 +3,19 @@
 
 package com.azure.messaging.eventhubs.checkpointstore.blob;
 
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.test.utils.metrics.TestCounter;
 import com.azure.core.test.utils.metrics.TestGauge;
 import com.azure.core.test.utils.metrics.TestMeasurement;
 import com.azure.core.test.utils.metrics.TestMeter;
-import com.azure.core.util.ClientOptions;
 import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.metrics.Meter;
 import com.azure.messaging.eventhubs.models.Checkpoint;
-import com.azure.storage.blob.BlobAsyncClient;
-import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.models.BlobItem;
-import com.azure.storage.blob.models.ListBlobsOptions;
-import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +24,6 @@ import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyMap;
@@ -52,35 +35,8 @@ import static org.mockito.Mockito.when;
 
 @Execution(ExecutionMode.SAME_THREAD)
 @Isolated
-public class BlobCheckpointStoreMetricsTests {
-
+public class MetricsHelperTests {
     private static final int MAX_ATTRIBUTES_SETS = 100;
-
-    @Mock
-    private BlobContainerAsyncClient blobContainerAsyncClient;
-
-    @Mock
-    private BlockBlobAsyncClient blockBlobAsyncClient;
-
-    @Mock
-    private BlobAsyncClient blobAsyncClient;
-
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-        BlobItem blobItem = getCheckpointBlobItem("230", "1", "ns/eh/cg/checkpoint/0");
-        PagedFlux<BlobItem> response = new PagedFlux<BlobItem>(() -> Mono.just(new PagedResponseBase<HttpHeaders,
-            BlobItem>(null, 200, null,
-            Arrays.asList(blobItem), null,
-            null)));
-
-        when(blobContainerAsyncClient.getBlobAsyncClient("ns/eh/cg/checkpoint/0")).thenReturn(blobAsyncClient);
-        when(blobContainerAsyncClient.listBlobs(any(ListBlobsOptions.class))).thenReturn(response);
-        when(blobAsyncClient.getBlockBlobAsyncClient()).thenReturn(blockBlobAsyncClient);
-        when(blobAsyncClient.exists()).thenReturn(Mono.just(true));
-        when(blobAsyncClient.setMetadata(ArgumentMatchers.<Map<String, String>>any()))
-            .thenReturn(Mono.empty());
-    }
 
     @Test
     public void testUpdateDisabledMetrics() {
@@ -93,18 +49,17 @@ public class BlobCheckpointStoreMetricsTests {
             .setOffset(100L);
 
         Meter meter = mock(Meter.class);
+        when(meter.isEnabled()).thenReturn(false);
+
         TestMeterProvider testProvider = new TestMeterProvider((lib, ver, opts) -> {
             assertEquals("azure-messaging-eventhubs-checkpointstore-blob", lib);
             assertNotNull(ver);
-            assertNull(opts);
             return meter;
         });
 
-        when(meter.isEnabled()).thenReturn(false);
-        MetricsHelper.setMeterProvider(testProvider);
 
-        BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
-        StepVerifier.create(blobCheckpointStore.updateCheckpoint(checkpoint)).verifyComplete();
+        MetricsHelper helper = new MetricsHelper(new MetricsOptions(), testProvider);
+        helper.reportCheckpoint(checkpoint, "ns/eh/ch/0", true);
 
         verify(meter, atLeastOnce()).isEnabled();
         verify(meter, never()).createAttributes(anyMap());
@@ -124,11 +79,8 @@ public class BlobCheckpointStoreMetricsTests {
 
         Meter meter = mock(Meter.class);
         TestMeterProvider testProvider = new TestMeterProvider((lib, ver, opts) -> meter);
-        MetricsHelper.setMeterProvider(testProvider);
-
-        ClientOptions disabledMetrics = new ClientOptions().setMetricsOptions(new MetricsOptions().setEnabled(false));
-        BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient, disabledMetrics);
-        StepVerifier.create(blobCheckpointStore.updateCheckpoint(checkpoint)).verifyComplete();
+        MetricsHelper helper = new MetricsHelper(new MetricsOptions().setEnabled(false), testProvider);
+        helper.reportCheckpoint(checkpoint, "ns/eh/cg/0", true);
 
         verify(meter, never()).createAttributes(anyMap());
         verify(meter, never()).createLongGauge(any(), any(), any());
@@ -149,14 +101,11 @@ public class BlobCheckpointStoreMetricsTests {
         TestMeterProvider testProvider = new TestMeterProvider((lib, ver, opts) -> {
             assertEquals("azure-messaging-eventhubs-checkpointstore-blob", lib);
             assertNotNull(ver);
-            assertNull(opts);
             return meter;
         });
 
-        MetricsHelper.setMeterProvider(testProvider);
-
-        BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
-        StepVerifier.create(blobCheckpointStore.updateCheckpoint(checkpoint)).verifyComplete();
+        MetricsHelper helper = new MetricsHelper(new MetricsOptions(), testProvider);
+        helper.reportCheckpoint(checkpoint, "ns/eh/cg/0", true);
 
         assertTrue(meter.getGauges().containsKey("messaging.eventhubs.checkpoint.sequence_number"));
         TestGauge seqNo = meter.getGauges().get("messaging.eventhubs.checkpoint.sequence_number");
@@ -190,16 +139,10 @@ public class BlobCheckpointStoreMetricsTests {
             .setOffset(100L);
 
         TestMeter meter = new TestMeter();
-        MetricsHelper.setMeterProvider(new TestMeterProvider((lib, ver, opts) -> meter));
+        MetricsHelper helper = new MetricsHelper(new MetricsOptions(), new TestMeterProvider((lib, ver, opts) -> meter));
+        helper.reportCheckpoint(checkpoint, "ns/eh/cg/0", false);
 
-        BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
-        when(blobAsyncClient.exists()).thenReturn(Mono.defer(() -> Mono.error(new RuntimeException("foo"))));
-
-        StepVerifier.create(blobCheckpointStore.updateCheckpoint(checkpoint))
-            .expectErrorMatches(e -> e instanceof RuntimeException)
-            .verify();
-
-        // sequence number is only reported for successfull checkpoints
+        // sequence number is only reported for successful checkpoints
         assertEquals(0, meter.getGauges().get("messaging.eventhubs.checkpoint.sequence_number").getSubscriptions().size());
 
         TestCounter checkpoints = meter.getCounters().get("messaging.eventhubs.checkpoints");
@@ -218,10 +161,8 @@ public class BlobCheckpointStoreMetricsTests {
             .setOffset(100L);
 
         TestMeter meter = new TestMeter();
-        MetricsHelper.setMeterProvider(new TestMeterProvider((lib, ver, opts) -> meter));
-
-        BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
-        StepVerifier.create(blobCheckpointStore.updateCheckpoint(checkpoint)).verifyComplete();
+        MetricsHelper helper = new MetricsHelper(new MetricsOptions(), new TestMeterProvider((lib, ver, opts) -> meter));
+        helper.reportCheckpoint(checkpoint, "ns/eh/cg/0", true);
 
         assertEquals(0, meter.getGauges().get("messaging.eventhubs.checkpoint.sequence_number").getSubscriptions().size());
 
@@ -234,11 +175,6 @@ public class BlobCheckpointStoreMetricsTests {
     @Test
     public void testUpdateEnabledMetricsTooManyAttributes() {
         TestMeter meter = new TestMeter();
-        MetricsHelper.setMeterProvider(new TestMeterProvider((lib, ver, opts) -> meter));
-
-        BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
-        when(blobContainerAsyncClient.getBlobAsyncClient(any())).thenReturn(blobAsyncClient);
-
         List<Checkpoint> checkpoints = IntStream.range(0, MAX_ATTRIBUTES_SETS + 10)
             .mapToObj(n -> new Checkpoint()
                     .setFullyQualifiedNamespace("ns")
@@ -248,9 +184,9 @@ public class BlobCheckpointStoreMetricsTests {
                     .setSequenceNumber((long) n)
                     .setOffset(100L))
             .collect(Collectors.toList());
-        StepVerifier.create(Flux.fromIterable(checkpoints)
-            .flatMap(c -> blobCheckpointStore.updateCheckpoint(c)))
-            .verifyComplete();
+
+        MetricsHelper helper = new MetricsHelper(new MetricsOptions(), new TestMeterProvider((lib, ver, opts) -> meter));
+        checkpoints.forEach(ch -> helper.reportCheckpoint(ch, "ns/eh/cg/" + ch.getPartitionId(), true));
 
         List<TestGauge.Subscription> subscriptions = meter.getGauges().get("messaging.eventhubs.checkpoint.sequence_number").getSubscriptions();
         assertEquals(MAX_ATTRIBUTES_SETS, subscriptions.size());
@@ -295,14 +231,9 @@ public class BlobCheckpointStoreMetricsTests {
             .setOffset(100L);
 
         TestMeter meter = new TestMeter();
-        TestMeterProvider testProvider = new TestMeterProvider((lib, ver, opts) -> meter);
-
-        MetricsHelper.setMeterProvider(testProvider);
-
-        BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
-        StepVerifier.create(blobCheckpointStore.updateCheckpoint(checkpoint1)
-            .then(blobCheckpointStore.updateCheckpoint(checkpoint2)))
-            .verifyComplete();
+        MetricsHelper helper = new MetricsHelper(new MetricsOptions(), new TestMeterProvider((lib, ver, opts) -> meter));
+        helper.reportCheckpoint(checkpoint1, "ns/eh/cg/0", true);
+        helper.reportCheckpoint(checkpoint2, "ns/eh/cg/0", true);
 
         TestGauge seqNo = meter.getGauges().get("messaging.eventhubs.checkpoint.sequence_number");
         TestGauge.Subscription subs = seqNo.getSubscriptions().get(0);
@@ -336,17 +267,12 @@ public class BlobCheckpointStoreMetricsTests {
             .setPartitionId("0")
             .setSequenceNumber(42L)
             .setOffset(100L);
-        when(blobContainerAsyncClient.getBlobAsyncClient("ns/eh1/cg/checkpoint/0")).thenReturn(blobAsyncClient);
-        when(blobContainerAsyncClient.getBlobAsyncClient("ns/eh2/cg/checkpoint/0")).thenReturn(blobAsyncClient);
-
 
         TestMeter meter = new TestMeter();
-        MetricsHelper.setMeterProvider(new TestMeterProvider((lib, ver, opts) -> meter));
+        MetricsHelper helper = new MetricsHelper(new MetricsOptions(), new TestMeterProvider((lib, ver, opts) -> meter));
 
-        BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient, null);
-        StepVerifier.create(blobCheckpointStore.updateCheckpoint(checkpoint1)
-                .then(blobCheckpointStore.updateCheckpoint(checkpoint2)))
-            .verifyComplete();
+        helper.reportCheckpoint(checkpoint1, "ns/eh1/cg/0", true);
+        helper.reportCheckpoint(checkpoint2, "ns/eh2/cg/0", true);
 
         TestGauge seqNo = meter.getGauges().get("messaging.eventhubs.checkpoint.sequence_number");
         assertEquals(2, seqNo.getSubscriptions().size());

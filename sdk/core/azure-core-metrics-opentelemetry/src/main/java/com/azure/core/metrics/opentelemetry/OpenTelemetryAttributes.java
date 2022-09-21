@@ -29,7 +29,7 @@ class OpenTelemetryAttributes implements TelemetryAttributes {
         mappings.put("amqpStatusCode", "amqp.status_code");
         mappings.put("amqpOperation", "amqp.operation");
         mappings.put("deliveryState", "amqp.delivery_state");
-        mappings.put("partitionId", "messaging.az.partition_id");
+        mappings.put("partitionId", "messaging.eventhubs.partition_id");
         mappings.put("consumerGroup", "messaging.eventhubs.consumer_group");
 
         return Collections.unmodifiableMap(mappings);
