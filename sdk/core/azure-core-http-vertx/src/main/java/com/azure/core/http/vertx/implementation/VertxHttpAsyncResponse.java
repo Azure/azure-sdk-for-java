@@ -31,7 +31,8 @@ public class VertxHttpAsyncResponse extends VertxHttpResponseBase {
         return FluxUtil.collectBytesFromNetworkResponse(streamResponseBody(), getHeaders())
             .flatMap(bytes -> (bytes == null || bytes.length == 0)
                 ? Mono.empty()
-                : Mono.defer(() -> Mono.just(bytes)));
+                : Mono.just(bytes)
+            );
     }
 
     private Flux<ByteBuffer> streamResponseBody() {
@@ -43,13 +44,4 @@ public class VertxHttpAsyncResponse extends VertxHttpResponseBase {
                 .resume()
         );
     }
-
-//    private ByteBuffer clone(ByteBuffer original) {
-//        ByteBuffer clone = ByteBuffer.allocate(original.capacity());
-//        original.rewind();
-//        clone.put(original);
-//        original.rewind();
-//        clone.flip();
-//        return clone;
-//    }
 }
