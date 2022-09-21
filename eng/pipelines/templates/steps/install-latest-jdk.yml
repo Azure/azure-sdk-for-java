@@ -8,14 +8,19 @@ steps:
     displayName: 'Cache Latest JDK'
     condition: eq(variables['LatestJdkVersion'], variables['JavaTestVersion'])
 
-  # PowerShell script will check if the cache was able to resolve the latest JDK version.
-  # If not it will download the JDK version to the location where the cache would have placed it.
-  # Unzip the JDK to the current directory, update JAVA_HOME to it, update the PATH to include it,
-  # and add an emulation of the environment variables DevOps uses for JDK 8, 11, and 17 (JAVA_HOME_<version>_X64).
   - task: PowerShell@2
-    displayName: 'Install Latest JDK'
+    displayName: 'Download Latest JDK'
     inputs:
       pwsh: true
       workingDirectory: $(Agent.BuildDirectory)
       filePath: eng/scripts/Install-Latest-JDK.ps1
+    condition: eq(variables['LatestJdkVersion'], variables['JavaTestVersion'])
+
+  - task: JavaToolInstaller@0
+    inputs:
+      versionSpec: '18'
+      jdkArchitectureOption: 'x64'
+      jdkSourceOption: 'LocalDirectory'
+      jdkFile: '$(Agent.BuildDirectory)/OpenJDK18U-jdk_x64_linux_hotspot_18.0.2.1_1.tar.gz'
+      jdkDestinationDirectory: $(Agent.BuildDirectory)
     condition: eq(variables['LatestJdkVersion'], variables['JavaTestVersion'])
