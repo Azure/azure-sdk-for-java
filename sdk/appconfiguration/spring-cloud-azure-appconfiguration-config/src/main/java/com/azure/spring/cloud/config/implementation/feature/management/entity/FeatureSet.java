@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.config.feature.management.entity;
+package com.azure.spring.cloud.config.implementation.feature.management.entity;
 
 import java.util.HashMap;
 
