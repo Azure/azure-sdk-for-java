@@ -576,7 +576,7 @@ class PartitionMetadataSpec extends UnitSpec {
     val json = String.format(
       "{\"V\":1," +
         "\"Rid\":\"%s\"," +
-        "\"Mode\":\"INCREMENTAL\"," +
+        "\"Mode\":\"LATEST_VERSION\"," +
         "\"StartFrom\":{\"Type\":\"BEGINNING\"}," +
         "\"Continuation\":%s}",
       collectionRid,
