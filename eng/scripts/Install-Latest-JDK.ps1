@@ -1,9 +1,9 @@
+$jdkUri = "https://github.com/adoptium/temurin18-binaries/releases/download/jdk-18.0.2.1%2B1/OpenJDK18U-jdk_x64_linux_hotspot_18.0.2.1_1.tar.gz"
 $jdkZipName = "OpenJDK18U-jdk_x64_linux_hotspot_18.0.2.1_1.tar.gz"
 $jdkUnzipName = "jdk-18.0.2.1+1"
 
 if (!(Test-Path -Path $jdkZipName -PathType leaf)) {
-  $latestJdkUri = "https://github.com/adoptium/temurin18-binaries/releases/download/jdk-18.0.2.1%2B1/$JdkZip"
-  Invoke-WebRequest -URI $JdkUri -OutFile $jdkZipName
+  Invoke-WebRequest -URI $jdkUri -OutFile $jdkZipName
 }
 
 tar -xvf $jdkZipName
