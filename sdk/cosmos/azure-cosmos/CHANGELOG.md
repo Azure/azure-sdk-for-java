@@ -3,6 +3,7 @@
 ### 4.37.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added support for Move operation - See [PR 31078](https://github.com/Azure/azure-sdk-for-java/pull/31078)
 
 #### Breaking Changes
 
