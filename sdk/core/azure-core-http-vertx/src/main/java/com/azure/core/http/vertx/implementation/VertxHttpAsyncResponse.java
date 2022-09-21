@@ -37,19 +37,19 @@ public class VertxHttpAsyncResponse extends VertxHttpResponseBase {
     private Flux<ByteBuffer> streamResponseBody() {
         return Flux.create(sink ->
             getVertxHttpResponse()
-                .handler(buffer -> sink.next(clone(buffer.getByteBuf().nioBuffer())))
+                .handler(buffer -> sink.next(buffer.getByteBuf().nioBuffer().duplicate()))
                 .endHandler(event -> sink.complete())
                 .exceptionHandler(sink::error)
                 .resume()
         );
     }
 
-    private ByteBuffer clone(ByteBuffer original) {
-        ByteBuffer clone = ByteBuffer.allocate(original.capacity());
-        original.rewind();
-        clone.put(original);
-        original.rewind();
-        clone.flip();
-        return clone;
-    }
+//    private ByteBuffer clone(ByteBuffer original) {
+//        ByteBuffer clone = ByteBuffer.allocate(original.capacity());
+//        original.rewind();
+//        clone.put(original);
+//        original.rewind();
+//        clone.flip();
+//        return clone;
+//    }
 }
