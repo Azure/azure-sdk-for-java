@@ -2,14 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.kafka;
 
-import java.util.Map;
-
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.service.implementation.kafka.AzureKafkaProperties;
 import org.junit.jupiter.api.Test;
-
-import org.springframework.boot.test.context.assertj.AssertableApplicationContext;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.context.ApplicationContext;
+
+import java.util.Map;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.SASL_JAAS_CONFIG_OAUTH;
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH;
@@ -20,6 +19,7 @@ import static org.apache.kafka.clients.CommonClientConfigs.SECURITY_PROTOCOL_CON
 import static org.apache.kafka.common.config.SaslConfigs.SASL_JAAS_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_LOGIN_CALLBACK_HANDLER_CLASS;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_MECHANISM;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 abstract class AbstractAzureKafkaOAuth2AutoConfigurationTests {
@@ -28,9 +28,8 @@ abstract class AbstractAzureKafkaOAuth2AutoConfigurationTests {
     protected static final String CLIENT_ID = "azure.credential.client-id";
 
     protected abstract ApplicationContextRunner getContextRunner();
-    protected abstract void assertBeansConfigured(AssertableApplicationContext context);
-    protected abstract Map<String, Object> getConsumerProperties(AssertableApplicationContext context);
-    protected abstract Map<String, Object> getProducerProperties(AssertableApplicationContext context);
+    protected abstract Map<String, Object> getConsumerProperties(ApplicationContext context);
+    protected abstract Map<String, Object> getProducerProperties(ApplicationContext context);
 
     @Test
     void testBindSpringBootKafkaProperties() {
@@ -41,7 +40,7 @@ abstract class AbstractAzureKafkaOAuth2AutoConfigurationTests {
                         "spring.cloud.azure.credential.client-id=azure-client-id"
                 )
                 .run(context -> {
-                    assertBeansConfigured(context);
+                    assertThat(context).hasSingleBean(AzureGlobalProperties.class);
 
                     AzureGlobalProperties azureGlobalProperties = context.getBean(AzureGlobalProperties.class);
                     assertEquals("azure-client-id", azureGlobalProperties.getCredential().getClientId());
@@ -61,8 +60,7 @@ abstract class AbstractAzureKafkaOAuth2AutoConfigurationTests {
                         "spring.cloud.azure.credential.client-id=azure-client-id"
                 )
                 .run(context -> {
-                    assertBeansConfigured(context);
-
+                    assertThat(context).hasSingleBean(AzureGlobalProperties.class);
                     AzureGlobalProperties azureGlobalProperties = context.getBean(AzureGlobalProperties.class);
                     assertEquals("azure-client-id", azureGlobalProperties.getCredential().getClientId());
                     Map<String, Object> producerProperties = getProducerProperties(context);

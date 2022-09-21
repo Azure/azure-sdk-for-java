@@ -2,24 +2,22 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.kafka;
 
-import java.util.Map;
-
-import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration;
 import org.junit.jupiter.api.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
-import org.springframework.boot.test.context.assertj.AssertableApplicationContext;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.cloud.stream.binder.kafka.KafkaMessageChannelBinder;
 import org.springframework.cloud.stream.binder.kafka.config.KafkaBinderConfiguration;
 import org.springframework.cloud.stream.binder.kafka.properties.KafkaBinderConfigurationProperties;
 import org.springframework.cloud.stream.binder.kafka.provisioning.KafkaTopicProvisioner;
+import org.springframework.context.ApplicationContext;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -110,19 +108,12 @@ class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2A
     }
 
     @Override
-    protected void assertBeansConfigured(AssertableApplicationContext context) {
-        assertThat(context).hasSingleBean(KafkaBinderConfigurationPropertiesBeanPostProcessor.class);
-        assertThat(context).hasSingleBean(AzureGlobalProperties.class);
-        assertThat(context).hasSingleBean(KafkaBinderConfigurationProperties.class);
-    }
-
-    @Override
-    protected Map<String, Object> getConsumerProperties(AssertableApplicationContext context) {
+    protected Map<String, Object> getConsumerProperties(ApplicationContext context) {
         return context.getBean(KafkaBinderConfigurationProperties.class).mergedConsumerConfiguration();
     }
 
     @Override
-    protected Map<String, Object> getProducerProperties(AssertableApplicationContext context) {
+    protected Map<String, Object> getProducerProperties(ApplicationContext context) {
         return context.getBean(KafkaBinderConfigurationProperties.class).mergedProducerConfiguration();
     }
 
