@@ -3,28 +3,26 @@
 
 package com.azure.spring.cloud.autoconfigure.kafka;
 
-import java.util.Map;
-
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.ManagedIdentityCredential;
-import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration;
 import org.junit.jupiter.api.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.kafka.DefaultKafkaConsumerFactoryCustomizer;
 import org.springframework.boot.autoconfigure.kafka.DefaultKafkaProducerFactoryCustomizer;
 import org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
-import org.springframework.boot.test.context.assertj.AssertableApplicationContext;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.context.ApplicationContext;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
+
+import java.util.Map;
 
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
 import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.AZURE_TOKEN_CREDENTIAL;
@@ -96,19 +94,12 @@ class AzureKafkaOAuth2BootConfigurationTests extends AbstractAzureKafkaOAuth2Aut
     }
 
     @Override
-    protected void assertBeansConfigured(AssertableApplicationContext context) {
-        assertThat(context).hasSingleBean(AzureEventHubsKafkaOAuth2AutoConfiguration.class);
-        assertThat(context).hasSingleBean(AzureGlobalProperties.class);
-        assertThat(context).hasSingleBean(KafkaProperties.class);
-    }
-
-    @Override
-    protected Map<String, Object> getConsumerProperties(AssertableApplicationContext context) {
+    protected Map<String, Object> getConsumerProperties(ApplicationContext context) {
         return context.getBean(KafkaProperties.class).buildConsumerProperties();
     }
 
     @Override
-    protected Map<String, Object> getProducerProperties(AssertableApplicationContext context) {
+    protected Map<String, Object> getProducerProperties(ApplicationContext context) {
         return context.getBean(KafkaProperties.class).buildProducerProperties();
     }
 
