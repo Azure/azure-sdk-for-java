@@ -44,7 +44,7 @@ public final class DeviceUpdateAsyncClient {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>search</td><td>String</td><td>No</td><td>Request updates matching a free-text search expression.</td></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Optional to filter updates by isDeployable property.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -139,13 +139,58 @@ public final class DeviceUpdateAsyncClient {
      * ]
      * }</pre>
      *
-     * @param updateToImport The update to be imported.
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     updateId (Required): {
+     *         provider: String (Required)
+     *         name: String (Required)
+     *         version: String (Required)
+     *     }
+     *     description: String (Optional)
+     *     friendlyName: String (Optional)
+     *     isDeployable: Boolean (Optional)
+     *     updateType: String (Optional)
+     *     installedCriteria: String (Optional)
+     *     compatibility (Required): [
+     *          (Required){
+     *             String: String (Required)
+     *         }
+     *     ]
+     *     instructions (Optional): {
+     *         steps (Required): [
+     *              (Required){
+     *                 type: String(Inline/Reference) (Optional)
+     *                 description: String (Optional)
+     *                 handler: String (Optional)
+     *                 handlerProperties: Object (Optional)
+     *                 files (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 updateId (Optional): (recursive schema, see updateId above)
+     *             }
+     *         ]
+     *     }
+     *     referencedBy (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     scanResult: String (Optional)
+     *     manifestVersion: String (Required)
+     *     importedDateTime: OffsetDateTime (Required)
+     *     createdDateTime: OffsetDateTime (Required)
+     *     etag: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param updateToImport The update to be imported (see schema
+     *     https://json.schemastore.org/azure-deviceupdate-import-manifest-5.0.json for details).
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of update metadata.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -314,7 +359,7 @@ public final class DeviceUpdateAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Optional to filter updates by isDeployable property.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -457,7 +502,7 @@ public final class DeviceUpdateAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Optional to filter operations by status property. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
      *     <tr><td>top</td><td>Integer</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
      * </table>
      *
@@ -515,8 +560,8 @@ public final class DeviceUpdateAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listOperations(RequestOptions requestOptions) {
-        return this.serviceClient.listOperationsAsync(requestOptions);
+    public PagedFlux<BinaryData> listOperationStatuses(RequestOptions requestOptions) {
+        return this.serviceClient.listOperationStatusesAsync(requestOptions);
     }
 
     /**
@@ -580,7 +625,8 @@ public final class DeviceUpdateAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getOperationWithResponse(String operationId, RequestOptions requestOptions) {
-        return this.serviceClient.getOperationWithResponseAsync(operationId, requestOptions);
+    public Mono<Response<BinaryData>> getOperationStatusWithResponse(
+            String operationId, RequestOptions requestOptions) {
+        return this.serviceClient.getOperationStatusWithResponseAsync(operationId, requestOptions);
     }
 }

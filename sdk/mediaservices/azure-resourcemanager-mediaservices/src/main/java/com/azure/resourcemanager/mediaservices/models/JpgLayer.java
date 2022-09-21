@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class JpgLayer extends Layer {
     /*
-     * The compression quality of the JPEG output. Range is from 0-100 and the
-     * default is 70.
+     * The compression quality of the JPEG output. Range is from 0-100 and the default is 70.
      */
     @JsonProperty(value = "quality")
     private Integer quality;

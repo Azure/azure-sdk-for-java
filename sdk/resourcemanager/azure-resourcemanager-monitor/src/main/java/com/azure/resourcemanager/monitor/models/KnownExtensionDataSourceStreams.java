@@ -37,7 +37,11 @@ public final class KnownExtensionDataSourceStreams extends ExpandableStringEnum<
         return fromString(name, KnownExtensionDataSourceStreams.class);
     }
 
-    /** @return known KnownExtensionDataSourceStreams values. */
+    /**
+     * Gets known KnownExtensionDataSourceStreams values.
+     *
+     * @return known KnownExtensionDataSourceStreams values.
+     */
     public static Collection<KnownExtensionDataSourceStreams> values() {
         return values(KnownExtensionDataSourceStreams.class);
     }

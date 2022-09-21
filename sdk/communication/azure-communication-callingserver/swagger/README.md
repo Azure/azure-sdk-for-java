@@ -49,7 +49,7 @@ context-client-method-parameter: true
 title: Azure Communication CallingServer Service 
 directive:
 - rename-model:
-    from: AcsCallParticipantDto
+    from: AcsCallParticipant
     to: AcsCallParticipantInternal    
 - rename-model:
     from: AddParticipantsRequest
@@ -58,16 +58,16 @@ directive:
     from: AddParticipantsResponse
     to: AddParticipantsResponseInternal
 - rename-model:
-    from: CallConnectionPropertiesDto
+    from: CallConnectionProperties
     to: CallConnectionPropertiesInternal     
 - rename-model:
-    from: CallingOperationResultDetailsDto
+    from: CallingOperationResultDetails
     to: CallingOperationResultDetailsInternal
 - rename-model:
-    from: CallingOperationStatusDto
+    from: CallingOperationStatus
     to: CallingOperationStatusInternal
 - rename-model:
-    from: CallSourceDto
+    from: CallSource
     to: CallSourceInternal
 - rename-model:
     from: CommunicationCloudEnvironmentModel
@@ -126,6 +126,15 @@ directive:
 - rename-model:
     from: ChannelAffinity
     to: ChannelAffinityInternal        
+- rename-model:
+    from: DtmfConfigurations
+    to: DtmfConfigurationsInternal        
+- rename-model:
+    from: RecognizeConfigurations
+    to: RecognizeConfigurationsInternal   
+- rename-model:
+    from: MediaStreamingConfiguration
+    to: MediaStreamingConfigurationInternal
     
 # Remove models
 - remove-model: AddParticipantsFailedEvent
@@ -220,4 +229,50 @@ directive:
   where: $.definitions.CallRejectReason["x-ms-enum"]
   transform: >
     $.name = "CallRejectReasonInternal";
+```
+
+### Rename StopTones to StopTonesInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.StopTones["x-ms-enum"]
+  transform: >
+    $.name = "StopTonesInternal";
+```
+
+
+### Rename RecognizeInputType to RecognizeInputTypeInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.RecognizeInputType["x-ms-enum"]
+  transform: >
+    $.name = "RecognizeInputTypeInternal";
+```
+
+### Rename MediaStreamingAudioChannelType to MediaStreamingAudioChannelTypeInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.MediaStreamingAudioChannelType["x-ms-enum"]
+  transform: >
+    $.name = "MediaStreamingAudioChannelTypeInternal";
+```
+
+### Rename MediaStreamingContentType to MediaStreamingContentTypeInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.MediaStreamingContentType["x-ms-enum"]
+  transform: >
+    $.name = "MediaStreamingContentTypeInternal";
+```
+
+### Rename MediaStreamingTransportType to MediaStreamingTransportType
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.MediaStreamingTransportType["x-ms-enum"]
+  transform: >
+    $.name = "MediaStreamingTransportTypeInternal";
 ```

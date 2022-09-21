@@ -20,31 +20,20 @@ autorest --java --use=C:/work/autorest.java
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/cognitiveservices/data-plane/FormRecognizer/preview/2022-06-30-preview/FormRecognizer.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/cognitiveservices/data-plane/FormRecognizer/stable/v2.1/FormRecognizer.json
 java: true
 output-folder: ..\
 generate-client-as-impl: true
-namespace: com.azure.ai.formrecognizer
+namespace: com.azure.ai.formrecognizer.documentanalysis
 generate-client-interfaces: false
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
 context-client-method-parameter: true
-custom-types-subpackage: models
 service-interface-as-public: true
 custom-strongly-typed-header-deserialization: true
 generic-response-type: true
-```
-
-### Change GetOperationResponse result from Object to ModelInfo
-
-``` yaml $(java)
-directive:
-  - from: swagger-document
-    where: $.definitions.GetOperationResponse
-    transform: >
-      delete $.properties.result.type;
-      $.properties.result["$ref"] = "#/definitions/ModelInfo"; 
+custom-types-subpackage: models
 ```
 

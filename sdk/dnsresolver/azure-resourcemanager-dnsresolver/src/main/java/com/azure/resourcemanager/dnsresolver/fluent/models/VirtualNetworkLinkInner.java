@@ -10,15 +10,12 @@ import com.azure.core.management.SubResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dnsresolver.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Describes a virtual network link. */
 @Fluent
 public final class VirtualNetworkLinkInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkLinkInner.class);
-
     /*
      * ETag of the virtual network link.
      */
@@ -28,8 +25,8 @@ public final class VirtualNetworkLinkInner extends ProxyResource {
     /*
      * Properties of the virtual network link.
      */
-    @JsonProperty(value = "properties")
-    private VirtualNetworkLinkProperties innerProperties;
+    @JsonProperty(value = "properties", required = true)
+    private VirtualNetworkLinkProperties innerProperties = new VirtualNetworkLinkProperties();
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
@@ -126,8 +123,15 @@ public final class VirtualNetworkLinkInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model VirtualNetworkLinkInner"));
+        } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkLinkInner.class);
 }

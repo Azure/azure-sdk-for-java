@@ -19,15 +19,13 @@ import java.util.Map;
 @Fluent
 public class SapHanaTableDataset extends Dataset {
     /*
-     * The schema name of SAP HANA. Type: string (or Expression with resultType
-     * string).
+     * The schema name of SAP HANA. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.schema")
     private Object schemaTypePropertiesSchema;
 
     /*
-     * The table name of SAP HANA. Type: string (or Expression with resultType
-     * string).
+     * The table name of SAP HANA. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.table")
     private Object table;

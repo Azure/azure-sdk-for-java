@@ -7,7 +7,7 @@ package com.azure.resourcemanager.iothub.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for AccessRights. */
+/** The permissions assigned to the shared access policy. */
 public enum AccessRights {
     /** Enum value RegistryRead. */
     REGISTRY_READ("RegistryRead"),
@@ -70,6 +70,9 @@ public enum AccessRights {
      */
     @JsonCreator
     public static AccessRights fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AccessRights[] items = AccessRights.values();
         for (AccessRights item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -79,6 +82,7 @@ public enum AccessRights {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

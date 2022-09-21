@@ -23,7 +23,7 @@ public class ServiceBusNamespaceCrudTests extends AbstractResourceCrudTests<Serv
     void getStubManagementException(int statusCode, String message) {
         ServiceBusNamespaces namespaces = mock(ServiceBusNamespaces.class);
         when(resourceManager.serviceBusNamespaces()).thenReturn(namespaces);
-        ManagementException exception = getManagementException(statusCode, message);
+        ManagementException exception = createManagementException(statusCode, message);
         when(namespaces.getByResourceGroup(resourceMetadata.getResourceGroup(), getKey()))
             .thenThrow(exception);
     }
@@ -32,7 +32,7 @@ public class ServiceBusNamespaceCrudTests extends AbstractResourceCrudTests<Serv
     void createStubManagementException() {
         ServiceBusNamespaces namespaces = mock(ServiceBusNamespaces.class);
         when(resourceManager.serviceBusNamespaces()).thenReturn(namespaces);
-        ManagementException exception = getManagementException(500, "Create service bus namespace exception");
+        ManagementException exception = createManagementException(500, "Create service bus namespace exception");
 
         ServiceBusNamespace.DefinitionStages.Blank define = mock(ServiceBusNamespace.DefinitionStages.Blank.class);
         when(namespaces.define(NAMESPACE)).thenReturn(define);

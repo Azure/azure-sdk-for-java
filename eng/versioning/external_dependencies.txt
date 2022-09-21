@@ -1,6 +1,6 @@
 # To avoid dependency conflicts between SDK and Spring, when modifying or adding dependencies,
-# make sure the version is same to sdk/spring/scripts/spring_boot_2.7.2_managed_external_dependencies.txt
-# If your version is different from sdk/spring/scripts/spring_boot_2.7.2_managed_external_dependencies.txt,
+# make sure the version is same to sdk/spring/scripts/spring_boot_2.7.3_managed_external_dependencies.txt
+# If your version is different from sdk/spring/scripts/spring_boot_2.7.3_managed_external_dependencies.txt,
 # please discuss with Spring Integration team members:
 # @chenrujun (rujche), @saragluna (xiada), @yiliuTo (yiliu6), @backwind1233 (zhihaoguo).
 # Thanks.
@@ -20,7 +20,7 @@ com.fasterxml.jackson.module:jackson-module-scala_2.12;2.13.3
 com.github.spotbugs:spotbugs;4.2.2
 com.github.spotbugs:spotbugs-annotations;4.2.2
 com.github.spotbugs:spotbugs-maven-plugin;4.2.2
-com.google.code.gson:gson;2.9.0
+com.google.code.gson:gson;2.9.1
 com.google.guava:guava;30.1.1-jre
 com.h3xstream.findsecbugs:findsecbugs-plugin;1.9.0
 com.microsoft.azure:azure-annotations;1.7.0
@@ -46,11 +46,11 @@ commons-codec:commons-codec;1.15
 commons-net:commons-net;3.6
 io.cloudevents:cloudevents-api;2.2.0
 io.cloudevents:cloudevents-core;2.2.0
-io.fabric8:kubernetes-client;5.10.2
+io.fabric8:kubernetes-client;5.12.3
 io.github.bonigarcia:webdrivermanager;4.3.1
-io.micrometer:micrometer-core;1.9.2
-io.micrometer:micrometer-registry-azure-monitor;1.9.2
-io.micrometer:micrometer-registry-graphite;1.9.2
+io.micrometer:micrometer-core;1.9.3
+io.micrometer:micrometer-registry-azure-monitor;1.9.3
+io.micrometer:micrometer-registry-graphite;1.9.3
 io.netty:netty-buffer;4.1.79.Final
 io.netty:netty-common;4.1.79.Final
 io.netty:netty-codec-http;4.1.79.Final
@@ -63,12 +63,12 @@ io.netty:netty-tcnative-boringssl-static;2.0.53.Final
 io.netty:netty-transport-native-epoll;4.1.79.Final
 io.netty:netty-transport-native-unix-common;4.1.79.Final
 io.netty:netty-transport-native-kqueue;4.1.79.Final
-io.projectreactor.netty:reactor-netty;1.0.21
-io.projectreactor.netty:reactor-netty-http;1.0.21
-io.projectreactor:reactor-core;3.4.21
+io.projectreactor.netty:reactor-netty;1.0.22
+io.projectreactor.netty:reactor-netty-http;1.0.22
+io.projectreactor:reactor-core;3.4.22
 io.reactivex:rxjava;1.3.8
-io.vertx:vertx-codegen;4.2.7
-io.vertx:vertx-core;4.2.7
+io.vertx:vertx-codegen;4.3.3
+io.vertx:vertx-core;4.3.3
 jakarta.validation:jakarta.validation-api;2.0.2
 jakarta.xml.bind:jakarta.xml.bind-api;2.3.3
 javax.annotation:javax.annotation-api;1.3.2
@@ -76,7 +76,7 @@ javax.json:javax.json-api;1.1.4
 javax.servlet:javax.servlet-api;4.0.1
 javax.validation:validation-api;2.0.1.Final
 javax.websocket:javax.websocket-api;1.1
-mysql:mysql-connector-java;8.0.29
+mysql:mysql-connector-java;8.0.30
 org.apache.ant:ant;1.9.4
 org.apache.avro:avro;1.11.0
 org.apache.avro:avro-maven-plugin;1.11.0
@@ -97,11 +97,11 @@ org.asynchttpclient:async-http-client;2.12.1
 org.codehaus.gmavenplus:gmavenplus-plugin;1.13.1
 org.codehaus.groovy:groovy-eclipse-batch;2.5.8-01
 org.codehaus.groovy:groovy-eclipse-compiler;3.4.0-01
-org.codehaus.groovy:groovy-jsr223;3.0.11
+org.codehaus.groovy:groovy-jsr223;3.0.12
 org.codehaus.janino:janino;3.1.7
 org.conscrypt:conscrypt-openjdk-uber;2.2.1
 org.glassfish.tyrus:tyrus-client;1.16
-org.hibernate.validator:hibernate-validator;6.2.3.Final
+org.hibernate.validator:hibernate-validator;6.2.4.Final
 org.javatuples:javatuples;1.2
 org.linguafranca.pwdb:KeePassJava2;2.1.4
 org.graalvm.buildtools:junit-platform-native;0.9.10
@@ -118,41 +118,41 @@ org.slf4j:slf4j-simple;1.7.36
 redis.clients:jedis;4.2.3
 io.lettuce:lettuce-core;6.2.0.RELEASE
 org.redisson:redisson;3.17.0
-net.bytebuddy:byte-buddy;1.12.9
+net.bytebuddy:byte-buddy;1.12.13
 
 ## Spring boot dependency versions
-org.springframework.boot:spring-boot-dependencies;2.7.2
-org.springframework.boot:spring-boot-actuator;2.7.2
-org.springframework.boot:spring-boot-actuator-autoconfigure;2.7.2
-org.springframework.boot:spring-boot-autoconfigure-processor;2.7.2
-org.springframework.boot:spring-boot-autoconfigure;2.7.2
-org.springframework.boot:spring-boot-configuration-metadata;2.7.2
-org.springframework.boot:spring-boot-configuration-processor;2.7.2
-org.springframework.boot:spring-boot-starter-actuator;2.7.2
-org.springframework.boot:spring-boot-starter-aop;2.7.2
-org.springframework.boot:spring-boot-starter-cache;2.7.2
-org.springframework.boot:spring-boot-starter-data-redis;2.7.2
-org.springframework.boot:spring-boot-starter-integration;2.7.2
-org.springframework.boot:spring-boot-starter-logging;2.7.2
-org.springframework.boot:spring-boot-starter-test;2.7.2
-org.springframework.boot:spring-boot-starter-validation;2.7.2
-org.springframework.boot:spring-boot-starter-web;2.7.2
-org.springframework.boot:spring-boot-starter;2.7.2
-org.springframework.boot:spring-boot-test;2.7.2
-org.springframework.boot:spring-boot;2.7.2
+org.springframework.boot:spring-boot-dependencies;2.7.3
+org.springframework.boot:spring-boot-actuator;2.7.3
+org.springframework.boot:spring-boot-actuator-autoconfigure;2.7.3
+org.springframework.boot:spring-boot-autoconfigure-processor;2.7.3
+org.springframework.boot:spring-boot-autoconfigure;2.7.3
+org.springframework.boot:spring-boot-configuration-metadata;2.7.3
+org.springframework.boot:spring-boot-configuration-processor;2.7.3
+org.springframework.boot:spring-boot-starter-actuator;2.7.3
+org.springframework.boot:spring-boot-starter-aop;2.7.3
+org.springframework.boot:spring-boot-starter-cache;2.7.3
+org.springframework.boot:spring-boot-starter-data-redis;2.7.3
+org.springframework.boot:spring-boot-starter-integration;2.7.3
+org.springframework.boot:spring-boot-starter-logging;2.7.3
+org.springframework.boot:spring-boot-starter-test;2.7.3
+org.springframework.boot:spring-boot-starter-validation;2.7.3
+org.springframework.boot:spring-boot-starter-web;2.7.3
+org.springframework.boot:spring-boot-starter;2.7.3
+org.springframework.boot:spring-boot-test;2.7.3
+org.springframework.boot:spring-boot;2.7.3
 org.springframework.data:spring-data-commons;2.7.2
 org.springframework.data:spring-data-mongodb;3.4.2
 org.springframework.data:spring-data-redis;2.7.2
 org.springframework.experimental:spring-aot;0.11.4
 org.springframework.integration:spring-integration-core;5.5.14
 org.springframework.kafka:spring-kafka;2.8.8
-org.springframework.security:spring-security-config;5.7.2
-org.springframework.security:spring-security-core;5.7.2
-org.springframework.security:spring-security-oauth2-client;5.7.2
-org.springframework.security:spring-security-oauth2-resource-server;5.7.2
-org.springframework.security:spring-security-oauth2-core;5.7.2
-org.springframework.security:spring-security-oauth2-jose;5.7.2
-org.springframework.security:spring-security-web;5.7.2
+org.springframework.security:spring-security-config;5.7.3
+org.springframework.security:spring-security-core;5.7.3
+org.springframework.security:spring-security-oauth2-client;5.7.3
+org.springframework.security:spring-security-oauth2-resource-server;5.7.3
+org.springframework.security:spring-security-oauth2-core;5.7.3
+org.springframework.security:spring-security-oauth2-jose;5.7.3
+org.springframework.security:spring-security-web;5.7.3
 org.springframework:spring-beans;5.3.22
 org.springframework:spring-context-support;5.3.22
 org.springframework:spring-context;5.3.22
@@ -166,7 +166,7 @@ org.springframework:spring-web;5.3.22
 org.springframework:spring-webmvc;5.3.22
 org.springframework:spring-test;5.3.22
 org.springframework.retry:spring-retry;1.3.3
-org.springframework.boot:spring-boot-starter-parent;2.7.2
+org.springframework.boot:spring-boot-starter-parent;2.7.3
 
 ## Spring cloud dependency versions
 org.springframework.cloud:spring-cloud-dependencies;2021.0.3
@@ -199,7 +199,7 @@ com.microsoft.azure:azure-mgmt-resources;1.3.0
 com.microsoft.azure:azure-mgmt-search;1.24.1
 com.microsoft.azure:azure-mgmt-storage;1.3.0
 com.microsoft.azure:azure-storage;8.0.0
-com.microsoft.azure:msal4j;1.13.0
+com.microsoft.azure:msal4j;1.13.1
 com.microsoft.azure:msal4j-persistence-extension;1.1.0
 com.sun.activation:jakarta.activation;1.2.2
 io.opentelemetry:opentelemetry-api;1.14.0
@@ -209,7 +209,8 @@ io.opentelemetry:opentelemetry-exporter-jaeger;1.14.0
 io.opentelemetry:opentelemetry-exporter-otlp;1.14.0
 io.opentelemetry:opentelemetry-sdk-testing;1.14.0
 io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;1.14.0-alpha
-io.projectreactor:reactor-test;3.4.21
+io.opentelemetry:opentelemetry-sdk-logs;1.14.0-alpha
+io.projectreactor:reactor-test;3.4.22
 junit:junit;4.13.2
 commons-cli:commons-cli;1.3
 org.apache.maven:maven-compat;3.6.2
@@ -252,7 +253,7 @@ com.google.truth:truth;1.1.3
 
 ## Maven Tools versions
 com.azure:sdk-build-tools;1.0.0
-com.azure.tools:codesnippet-maven-plugin;1.0.0-beta.7
+com.azure.tools:codesnippet-maven-plugin;1.0.0-beta.8
 com.beust:jcommander;1.78
 com.github.javaparser:javaparser-core;3.24.2
 com.google.code.findbugs:jsr305;3.0.2
@@ -261,9 +262,9 @@ com.nimbusds:nimbus-jose-jwt;9.22
 com.puppycrawl.tools:checkstyle;9.2
 commons-io:commons-io;2.11.0
 commons-validator:commons-validator;1.6
-io.dropwizard.metrics:metrics-core;4.2.10
-io.dropwizard.metrics:metrics-graphite;4.2.10
-io.dropwizard.metrics:metrics-jvm;4.2.10
+io.dropwizard.metrics:metrics-core;4.2.11
+io.dropwizard.metrics:metrics-graphite;4.2.11
+io.dropwizard.metrics:metrics-jvm;4.2.11
 io.reactivex.rxjava2:rxjava;2.2.21
 net.java.dev.jna:jna-platform;5.6.0
 net.oneandone.reflections8:reflections8;0.11.7
@@ -395,5 +396,5 @@ resourcemanager_com.jcraft:jsch;0.1.55
 # sdk\storage\azure-storage-blob-cryptography\pom.xml
 storage_com.microsoft.azure:azure-storage;8.4.0
 
-# sdk\spring\azure-spring-boot\pom.xml
+# sdk\appconfiguration\azure-spring-cloud-test-appconfiguration-config\pom.xml
 spring_com.microsoft.azure:azure;1.34.0
