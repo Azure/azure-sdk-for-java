@@ -5,6 +5,7 @@ package com.azure.core.util;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.models.CloudEventDataFormat;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Collections;
@@ -26,6 +27,12 @@ public class ClientOptions {
     private String applicationId;
 
     private MetricsOptions metricsOptions;
+
+    /**
+     * Creates a new instance of {@link ClientOptions}.
+     */
+    public ClientOptions() {
+    }
 
     /**
      * Gets the application ID.

@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SuppressWarnings("removal")
 @Execution(ExecutionMode.SAME_THREAD)
 @Isolated("Mutates the global SecurityManager")
-public class JacksonAdapterSecurityTests {
+public class JacksonAdapterSecurityIT {
     private static final String A_PROPERTY_JSON = "{\"aProperty\":\"aValue\"}";
     private static final SimplePojo EXPECTED_SIMPLE_POJO = new SimplePojo("aValue");
 
@@ -156,7 +156,7 @@ public class JacksonAdapterSecurityTests {
     }
 
     private static URIParameter getUriParameter(String policyFile) throws URISyntaxException {
-        return new URIParameter(JacksonAdapterSecurityTests.class
+        return new URIParameter(JacksonAdapterSecurityIT.class
             .getResource("/JacksonAdapterSecurityPolicies/" + policyFile)
             .toURI());
     }

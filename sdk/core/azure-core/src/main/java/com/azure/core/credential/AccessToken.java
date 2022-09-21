@@ -14,6 +14,7 @@ public class AccessToken {
 
     /**
      * Creates an access token instance.
+     *
      * @param token the token string.
      * @param expiresAt the expiration time.
      */
@@ -23,21 +24,27 @@ public class AccessToken {
     }
 
     /**
-     * @return the token string.
+     * Gets the token.
+     *
+     * @return The token.
      */
     public String getToken() {
         return token;
     }
 
     /**
-     * @return the time when the token expires, in UTC.
+     * Gets the time when the token expires, in UTC.
+     *
+     * @return The time when the token expires, in UTC.
      */
     public OffsetDateTime getExpiresAt() {
         return expiresAt;
     }
 
     /**
-     * @return if the token has expired.
+     * Whether the token has expired.
+     *
+     * @return Whether the token has expired.
      */
     public boolean isExpired() {
         return OffsetDateTime.now().isAfter(expiresAt);

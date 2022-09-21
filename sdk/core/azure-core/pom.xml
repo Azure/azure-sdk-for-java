@@ -237,6 +237,23 @@
         </configuration>
       </plugin>
 
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>3.0.0-M7</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+        <configuration>
+          <systemPropertyVariables>
+            <!-- Allow configuring the SecurityManager in testing. -->
+            <java.security.manager>default</java.security.manager>
+          </systemPropertyVariables>
+          <!-- This configures failsafe to use the compiled JAR in the build directory. -->
+          <classesDirectory>${project.build.directory}</classesDirectory>
+          <additionalClasspathElements>
+            <additionalClasspathElement>${project.build.directory}${file.separator}${project.artifactId}-${project.version}.jar</additionalClasspathElement>
+          </additionalClasspathElements>
+        </configuration>
+      </plugin>
+
       <!-- This plugin scans reports spotbugs in the code -->
       <plugin>
         <groupId>com.github.spotbugs</groupId>

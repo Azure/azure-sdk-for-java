@@ -54,6 +54,7 @@ public final class AsyncPollResponse<T, U> {
 
     /**
      * Represents the status of the long-running operation at the time the last polling operation finished successfully.
+     *
      * @return A {@link LongRunningOperationStatus} representing the result of the poll operation.
      */
     public LongRunningOperationStatus getStatus() {
@@ -71,7 +72,10 @@ public final class AsyncPollResponse<T, U> {
     }
 
     /**
-     * @return a Mono, upon subscription it cancels the remote long-running operation if cancellation
+     * Gets a {@link Mono} whereupon subscription it cancels the remote long-running operation if cancellation is
+     * supported by the service.
+     *
+     * @return A {@link Mono} whereupon subscription it cancels the remote long-running operation if cancellation
      * is supported by the service.
      */
     public Mono<T> cancelOperation() {
@@ -86,9 +90,14 @@ public final class AsyncPollResponse<T, U> {
     }
 
     /**
-     * @return a Mono, upon subscription it fetches the final result of long-running operation if it
-     * is supported by the service. If the long-running operation is not completed, then an empty
-     * Mono will be returned.
+     * Gets a {@link Mono} whereupon subscription it fetches the final result of the long-running operation if it is
+     * supported by the service.
+     * <p>
+     * If the long-running operation isn't complete an empty {@link Mono} will be returned.
+     *
+     * @return A {@link Mono} whereupon subscription it fetches the final result of the long-running operation if it is
+     * supported by the service. If the long-running operation is not completed, then an empty {@link Mono} will be
+     * returned.
      */
     public Mono<U> getFinalResult() {
         return Mono.defer(() -> {
