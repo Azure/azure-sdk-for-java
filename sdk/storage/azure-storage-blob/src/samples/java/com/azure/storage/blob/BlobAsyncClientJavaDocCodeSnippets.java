@@ -432,24 +432,6 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobAsyncClient#upload(Flux, ParallelTransferOptions, Long)}
-     */
-    public void uploadLengthCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.upload#Flux-ParallelTransferOptions-Long
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSizeLong(blockSize)
-            .setMaxConcurrency(maxConcurrency);
-
-        // length should be accurate to size of Flux<ByteBuffer>
-        Long length = (long) "data".getBytes(StandardCharsets.UTF_8).length;
-
-        client.upload(data, parallelTransferOptions, length).subscribe(response ->
-            System.out.printf("Uploaded BlockBlob MD5 is %s%n",
-                Base64.getEncoder().encodeToString(response.getContentMd5())));
-        // END: com.azure.storage.blob.BlobAsyncClient.upload#Flux-ParallelTransferOptions-Long
-    }
-
-    /**
      * Code snippet for {@link BlobAsyncClient#upload(Flux, ParallelTransferOptions, boolean)}
      */
     public void uploadOverwrite() {
@@ -462,53 +444,6 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             System.out.printf("Uploaded BlockBlob MD5 is %s%n",
                 Base64.getEncoder().encodeToString(response.getContentMd5())));
         // END: com.azure.storage.blob.BlobAsyncClient.upload#Flux-ParallelTransferOptions-boolean
-    }
-
-    /**
-     * Code snippet for {@link BlobAsyncClient#upload(Flux, ParallelTransferOptions, Long, boolean)}
-     */
-    public void uploadWithLengthOverwriteCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.upload#Flux-ParallelTransferOptions-Long-boolean
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSizeLong(blockSize)
-            .setMaxConcurrency(maxConcurrency);
-
-        // length should be accurate to size of Flux<ByteBuffer>
-        Long length = (long) "data".getBytes(StandardCharsets.UTF_8).length;
-
-        boolean overwrite = false; // Default behavior
-        client.upload(data, parallelTransferOptions, length, overwrite).subscribe(response ->
-            System.out.printf("Uploaded BlockBlob MD5 is %s%n",
-                Base64.getEncoder().encodeToString(response.getContentMd5())));
-        // END: com.azure.storage.blob.BlobAsyncClient.upload#Flux-ParallelTransferOptions-Long-boolean
-    }
-
-    /**
-     * Code snippet for {@link BlobAsyncClient#uploadWithResponse(Flux, ParallelTransferOptions, Long, BlobHttpHeaders, Map, AccessTier, BlobRequestConditions)}
-     */
-    public void uploadLengthWithResponseCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-Long-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions
-        BlobHttpHeaders headers = new BlobHttpHeaders()
-            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
-            .setContentLanguage("en-US")
-            .setContentType("binary");
-
-        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        BlobRequestConditions requestConditions = new BlobRequestConditions()
-            .setLeaseId(leaseId)
-            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
-
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSizeLong(blockSize)
-            .setMaxConcurrency(maxConcurrency);
-
-        // length should be accurate to size of Flux<ByteBuffer>
-        Long length = (long) "data".getBytes(StandardCharsets.UTF_8).length;
-
-        client.uploadWithResponse(data, parallelTransferOptions, length, headers, metadata, AccessTier.HOT, requestConditions)
-            .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
-                Base64.getEncoder().encodeToString(response.getValue().getContentMd5())));
-        // END: com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-Long-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions
     }
 
     /**

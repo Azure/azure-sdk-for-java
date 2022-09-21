@@ -344,58 +344,6 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Creates a new block blob. By default, this method will not overwrite an existing blob.
-     * <p>
-     * Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not supported
-     * with this method; the content of the existing blob is overwritten with the new content. To perform a partial
-     * update of a block blob's, use {@link BlockBlobAsyncClient#stageBlock(String, Flux, long) stageBlock} and {@link
-     * BlockBlobAsyncClient#commitBlockList(List) commitBlockList}. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs for Put Block</a> and the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs for Put Block List</a>.
-     * <p>
-     * The data passed need not support multiple subscriptions/be replayable as is required in other upload methods when
-     * retries are enabled, and the length of the data need not be known in advance. Therefore, this method does
-     * support uploading any arbitrary data source, including network streams. This behavior is possible because this
-     * method will perform some internal buffering as configured by the blockSize and numBuffers parameters, so while
-     * this method may offer additional convenience, it will not be as performant as other options, which should be
-     * preferred when possible.
-     * <p>
-     * Typically, the greater the number of buffers used, the greater the possible parallelism when transferring the
-     * data. Larger buffers means we will have to stage fewer blocks and therefore require fewer IO operations. The
-     * trade-offs between these values are context-dependent, so some experimentation may be required to optimize inputs
-     * for a given scenario.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.storage.blob.BlobAsyncClient.upload#Flux-ParallelTransferOptions-Long -->
-     * <pre>
-     * ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions&#40;&#41;
-     *     .setBlockSizeLong&#40;blockSize&#41;
-     *     .setMaxConcurrency&#40;maxConcurrency&#41;;
-     *
-     * &#47;&#47; length should be accurate to size of Flux&lt;ByteBuffer&gt;
-     * Long length = &#40;long&#41; &quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;.length;
-     *
-     * client.upload&#40;data, parallelTransferOptions, length&#41;.subscribe&#40;response -&gt;
-     *     System.out.printf&#40;&quot;Uploaded BlockBlob MD5 is %s%n&quot;,
-     *         Base64.getEncoder&#40;&#41;.encodeToString&#40;response.getContentMd5&#40;&#41;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobAsyncClient.upload#Flux-ParallelTransferOptions-Long -->
-     *
-     * @param data The data to write to the blob. Unlike other upload methods, this method does not require that the
-     * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
-     * to produce the same values across subscriptions.
-     * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
-     * @param length known length of the data.
-     * @return A reactive response containing the information of the uploaded block blob.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions,
-        Long length) {
-        return upload(data, parallelTransferOptions, length, false);
-    }
-
-    /**
      * Creates a new block blob, or updates the content of an existing block blob.
      * <p>
      * Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not supported
@@ -456,78 +404,6 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
 
         return overwriteCheck
             .then(uploadWithResponse(data, parallelTransferOptions, null, null, null, requestConditions))
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Creates a new block blob, or updates the content of an existing block blob.
-     * <p>
-     * Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not supported
-     * with this method; the content of the existing blob is overwritten with the new content. To perform a partial
-     * update of a block blob's, use {@link BlockBlobAsyncClient#stageBlock(String, Flux, long) stageBlock} and {@link
-     * BlockBlobAsyncClient#commitBlockList(List) commitBlockList}. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs for Put Block</a> and the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs for Put Block List</a>.
-     * <p>
-     * The data passed need not support multiple subscriptions/be replayable as is required in other upload methods when
-     * retries are enabled, and the length of the data need not be known in advance. Therefore, this method does
-     * support uploading any arbitrary data source, including network streams. This behavior is possible because this
-     * method will perform some internal buffering as configured by the blockSize and numBuffers parameters, so while
-     * this method may offer additional convenience, it will not be as performant as other options, which should be
-     * preferred when possible.
-     * <p>
-     * Typically, the greater the number of buffers used, the greater the possible parallelism when transferring the
-     * data. Larger buffers means we will have to stage fewer blocks and therefore require fewer IO operations. The
-     * trade-offs between these values are context-dependent, so some experimentation may be required to optimize inputs
-     * for a given scenario.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.storage.blob.BlobAsyncClient.upload#Flux-ParallelTransferOptions-Long-boolean -->
-     * <pre>
-     * ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions&#40;&#41;
-     *     .setBlockSizeLong&#40;blockSize&#41;
-     *     .setMaxConcurrency&#40;maxConcurrency&#41;;
-     *
-     * &#47;&#47; length should be accurate to size of Flux&lt;ByteBuffer&gt;
-     * Long length = &#40;long&#41; &quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;.length;
-     *
-     * boolean overwrite = false; &#47;&#47; Default behavior
-     * client.upload&#40;data, parallelTransferOptions, length, overwrite&#41;.subscribe&#40;response -&gt;
-     *     System.out.printf&#40;&quot;Uploaded BlockBlob MD5 is %s%n&quot;,
-     *         Base64.getEncoder&#40;&#41;.encodeToString&#40;response.getContentMd5&#40;&#41;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobAsyncClient.upload#Flux-ParallelTransferOptions-Long-boolean -->
-     *
-     * @param data The data to write to the blob. Unlike other upload methods, this method does not require that the
-     * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
-     * to produce the same values across subscriptions.
-     * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
-     * @param length known length of the data.
-     * @param overwrite Whether to overwrite, should the blob already exist.
-     * @return A reactive response containing the information of the uploaded block blob.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions,
-        Long length, boolean overwrite) {
-        Mono<Void> overwriteCheck;
-        BlobRequestConditions requestConditions;
-
-        if (overwrite) {
-            overwriteCheck = Mono.empty();
-            requestConditions = null;
-        } else {
-            overwriteCheck = exists().flatMap(exists -> exists
-                ? monoError(LOGGER, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
-                : Mono.empty());
-            requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
-        }
-
-        BlobParallelUploadOptions options = new BlobParallelUploadOptions(data, length)
-            .setRequestConditions(requestConditions).setParallelTransferOptions(parallelTransferOptions);
-
-        return overwriteCheck
-            .then(uploadWithResponse(options))
             .flatMap(FluxUtil::toMono);
     }
 
@@ -714,106 +590,6 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions -->
-     * <pre>
-     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
-     *     .setContentMd5&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;
-     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
-     *     .setContentType&#40;&quot;binary&quot;&#41;;
-     *
-     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
-     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;
-     *     .setLeaseId&#40;leaseId&#41;
-     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
-     *
-     * ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions&#40;&#41;
-     *     .setBlockSizeLong&#40;blockSize&#41;
-     *     .setMaxConcurrency&#40;maxConcurrency&#41;;
-     *
-     * client.uploadWithResponse&#40;data, parallelTransferOptions, headers, metadata, AccessTier.HOT, requestConditions&#41;
-     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Uploaded BlockBlob MD5 is %s%n&quot;,
-     *         Base64.getEncoder&#40;&#41;.encodeToString&#40;response.getValue&#40;&#41;.getContentMd5&#40;&#41;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions -->
-     *
-     * <p><strong>Using Progress Reporting</strong></p>
-     *
-     * <!-- src_embed com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-Long-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions -->
-     * <pre>
-     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
-     *     .setContentMd5&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;
-     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
-     *     .setContentType&#40;&quot;binary&quot;&#41;;
-     *
-     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
-     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;
-     *     .setLeaseId&#40;leaseId&#41;
-     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
-     *
-     * ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions&#40;&#41;
-     *     .setBlockSizeLong&#40;blockSize&#41;
-     *     .setMaxConcurrency&#40;maxConcurrency&#41;;
-     *
-     * &#47;&#47; length should be accurate to size of Flux&lt;ByteBuffer&gt;
-     * Long length = &#40;long&#41; &quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;.length;
-     *
-     * client.uploadWithResponse&#40;data, parallelTransferOptions, length, headers, metadata, AccessTier.HOT, requestConditions&#41;
-     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Uploaded BlockBlob MD5 is %s%n&quot;,
-     *         Base64.getEncoder&#40;&#41;.encodeToString&#40;response.getValue&#40;&#41;.getContentMd5&#40;&#41;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions--Long-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions -->
-     *
-     * @param data The data to write to the blob. Unlike other upload methods, this method does not require that the
-     * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
-     * to produce the same values across subscriptions.
-     * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
-     * @param length known length of the data.
-     * @param headers {@link BlobHttpHeaders}
-     * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any
-     * metadata key or value, it must be removed or encoded.
-     * @param tier {@link AccessTier} for the destination blob.
-     * @param requestConditions {@link BlobRequestConditions}
-     * @return A reactive response containing the information of the uploaded block blob.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data,
-        ParallelTransferOptions parallelTransferOptions, Long length, BlobHttpHeaders headers, Map<String,
-        String> metadata, AccessTier tier, BlobRequestConditions requestConditions) {
-        try {
-            return this.uploadWithResponse(new BlobParallelUploadOptions(data, length)
-                .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-                .setTier(tier).setRequestConditions(requestConditions));
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
-    }
-
-    /**
-     * Creates a new block blob, or updates the content of an existing block blob.
-     * <p>
-     * Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not supported
-     * with this method; the content of the existing blob is overwritten with the new content. To perform a partial
-     * update of a block blob's, use {@link BlockBlobAsyncClient#stageBlock(String, Flux, long) stageBlock} and {@link
-     * BlockBlobAsyncClient#commitBlockList(List) commitBlockList}. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs for Put Block</a> and the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs for Put Block List</a>.
-     * <p>
-     * The data passed need not support multiple subscriptions/be replayable as is required in other upload methods when
-     * retries are enabled, and the length of the data need not be known in advance. Therefore, this method does
-     * support uploading any arbitrary data source, including network streams. This behavior is possible because this
-     * method will perform some internal buffering as configured by the blockSize and numBuffers parameters, so while
-     * this method may offer additional convenience, it will not be as performant as other options, which should be
-     * preferred when possible.
-     * <p>
-     * Typically, the greater the number of buffers used, the greater the possible parallelism when transferring the
-     * data. Larger buffers means we will have to stage fewer blocks and therefore require fewer IO operations. The
-     * trade-offs between these values are context-dependent, so some experimentation may be required to optimize inputs
-     * for a given scenario.
-     * <p>
-     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
      * <!-- src_embed com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#BlobParallelUploadOptions -->
      * <pre>
      * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
@@ -939,7 +715,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             }
 
             return UploadUtils.uploadFullOrChunked(data, ModelHelper.wrapBlobOptions(parallelTransferOptions),
-                options.getOptionalLength(), uploadInChunksFunction, uploadFullBlobFunction);
+                uploadInChunksFunction, uploadFullBlobFunction);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

@@ -3,9 +3,12 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.util.BinaryData;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
 
 import java.io.IOException;
@@ -15,7 +18,7 @@ import java.util.Locale;
 import java.util.Random;
 
 /**
- * This example shows how to use the buffered upload method on BlockBlobAsyncClient.
+ * This example shows how to use the buffered upload method on BlockBlobAsyncClient with a known length.
  *
  * Note that the use of .block() in the method is only used to enable the sample to run effectively in isolation. It is
  * not recommended for use in async environments.
@@ -36,7 +39,7 @@ public class BufferedUploadWithKnownLengthExample {
         String accountKey = SampleHelper.getAccountKey();
         StorageSharedKeyCredential credential = new StorageSharedKeyCredential(accountName, accountKey);
         String endpoint = String.format(Locale.ROOT, "https://%s.blob.core.windows.net", accountName);
-        String containerName = "myjavacontainerbufferedupload" + System.currentTimeMillis();
+        String containerName = "myjavacontainerbuffereduploadlength" + System.currentTimeMillis();
         BlobServiceAsyncClient storageClient = new BlobServiceClientBuilder().endpoint(endpoint).credential(credential)
             .buildAsyncClient();
 
@@ -56,30 +59,37 @@ public class BufferedUploadWithKnownLengthExample {
         argument list.
          */
         Flux<ByteBuffer> sourceData = getSourceBlobClient(endpoint, credential, containerName).downloadStream()
-            // Perform some unpredicatable transformation.
-            .map(AsyncBufferedUploadExample::randomTransformation);
+            // Perform transformation with length of 1 GB.
+            .map(BufferedUploadWithKnownLengthExample::bufferTransformation);
 
         /*
-        This upload overload permits the use of such unreliable data sources. The length need not be specified, but
-        the tradeoff is that data must be buffered, so a buffer size and maximum concurrency is required instead. The
-        Javadoc on the method will give more detailed information on the significance of these parameters, but they are
-        likely context dependent.
+        Although this upload overload permits the use of such unreliable data sources, with known length we can speed
+        up the upload process. A buffer size and maximum concurrency can still be passed in to achieve optimized upload.
          */
+        long length = 10;
         long blockSize = 10 * 1024;
         int maxConcurrency = 5;
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSizeLong(blockSize)
             .setMaxConcurrency(maxConcurrency);
-        blobClient.upload(sourceData, parallelTransferOptions).block();
+
+        // Since we already know the size of our buffered bytes, we can pass the ByteBuffer and length to the BinaryData.
+        // This will internally convert the BinaryData to a Flux<ByteBuffer>, but with known length we can optimize the
+        // upload speed.
+        BinaryData binaryData = BinaryData.fromFlux(sourceData, length).block();
+        BlobParallelUploadOptions parallelUploadOptions = new BlobParallelUploadOptions(binaryData)
+            .setParallelTransferOptions(parallelTransferOptions);
+        blobClient.uploadWithResponse(parallelUploadOptions).block();
     }
 
     @SuppressWarnings("cast")
-    private static ByteBuffer randomTransformation(ByteBuffer buffer) {
+    private static ByteBuffer bufferTransformation(ByteBuffer buffer) {
         // The JDK changed the return type of ByteBuffer#limit between 8 and 9. In 8 and below it returns Buffer, whereas
         // in JDK 9 and later, it returns ByteBuffer. To compile on both, we explicitly cast the returned value to
         // ByteBuffer.
         // See https://bugs-stage.openjdk.java.net/browse/JDK-8062376
-        return (ByteBuffer) buffer.limit(new Random().nextInt(buffer.limit()));
+        int length = 10;
+        return (ByteBuffer) buffer.limit(length);
     }
 
     private static void uploadSourceBlob(String endpoint, StorageSharedKeyCredential credential, String containerName) {
@@ -88,7 +98,7 @@ public class BufferedUploadWithKnownLengthExample {
     }
 
     private static BlockBlobAsyncClient getSourceBlobClient(String endpoint, StorageSharedKeyCredential credential,
-                                                            String containerName) {
+        String containerName) {
         return new BlobServiceClientBuilder().endpoint(endpoint).credential(credential).buildAsyncClient()
             .getBlobContainerAsyncClient(containerName).getBlobAsyncClient("sourceBlob").getBlockBlobAsyncClient();
     }

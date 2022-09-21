@@ -297,11 +297,6 @@ public abstract class BlobOutputStream extends StorageOutputStream {
         protected Mono<Void> dispatchWrite(byte[] data, int writeLength, long offset) {
             return Mono.empty();
         }
-
-        @Override
-        public void flush() {
-            
-        }
     }
 
     private static final class PageBlobOutputStream extends BlobOutputStream {
