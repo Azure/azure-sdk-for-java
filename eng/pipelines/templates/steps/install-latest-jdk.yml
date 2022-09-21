@@ -4,7 +4,7 @@ steps:
   - task: Cache@2
     inputs:
       key: 'jdk | "$(JavaTestVersion)" | "$(CacheSalt)" | "$(Agent.OS)"'
-      path: $(Agent.BuildDirectory)/OpenJDK18U-jdk_x64_linux_hotspot_18.0.2.1_1.tar.gz
+      path: $(Agent.BuildDirectory)/jdk-18.0.2.1+1
     displayName: 'Cache Latest JDK'
     condition: eq(variables['LatestJdkVersion'], variables['JavaTestVersion'])
 
