@@ -214,7 +214,6 @@ public class PatchTest extends TestSuiteBase {
         // Both the patch's result.
         assertThat(patchedItem.children[1].camelCase).isEqualTo("beta");
         assertThat(patchedItem.children[0].camelCase).isEqualTo("alpha");
-//        assertThat(patchedItem.children[0].camelCase).isNull();
         assertThat(patchedItem.description).isNull();
         assertThat(patchedItem.taskNum).isEqualTo(newTaskNum);
         assertThat(patchedItem.cost).isEqualTo(100);

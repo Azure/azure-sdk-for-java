@@ -27,6 +27,10 @@ public final class PatchOperationCore<T> extends PatchOperation {
     public PatchOperationCore(PatchOperationType operationType, String path, T value) {
         super(operationType);
 
+        if (!(value instanceof String)) {
+            throw new IllegalArgumentException("Parameter 'value' is not of type 'String'");
+        }
+
         checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
 
         if(operationType == PatchOperationType.MOVE) {
