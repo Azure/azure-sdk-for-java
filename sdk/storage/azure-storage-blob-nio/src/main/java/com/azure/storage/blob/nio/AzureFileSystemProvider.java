@@ -1206,10 +1206,12 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
                 "URI scheme does not match this provider"));
         }
 
-        String endpoint = Arrays.stream((uri.getQuery() != null ? uri.getQuery() : "").split("&"))
-            .filter(s -> s.startsWith(ENDPOINT_QUERY_KEY + "="))
-            .map(s -> s.substring(ENDPOINT_QUERY_KEY.length() + 1)) // Trim the query key and =
-            .findFirst().orElseGet(AzureFileSystemProvider::getEnvironmentEndpoint);
+        String endpoint = CoreUtils.isNullOrEmpty(uri.getQuery())
+            ? getEnvironmentEndpoint()
+            : Arrays.stream(uri.getQuery().split("&"))
+                .filter(s -> s.startsWith(ENDPOINT_QUERY_KEY + "="))
+                .map(s -> s.substring(ENDPOINT_QUERY_KEY.length() + 1)) // Trim the query key and =
+                .findFirst().orElseGet(AzureFileSystemProvider::getEnvironmentEndpoint);
 
         if (CoreUtils.isNullOrEmpty(endpoint)) {
             throw LoggingUtility.logError(ClientLoggerHolder.LOGGER,
