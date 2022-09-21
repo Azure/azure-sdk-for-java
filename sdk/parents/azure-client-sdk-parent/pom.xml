@@ -633,6 +633,12 @@
               <artifactId>spotbugs</artifactId>
               <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
             </dependency>
+            <!-- Needed as the version of Spotbugs being used isn't compatible is Java 18+ without this. -->
+            <dependency>
+              <groupId>org.ow2.asm</groupId>
+              <artifactId>asm</artifactId>
+              <version>9.3</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+            </dependency>
           </dependencies>
           <configuration>
             <skip>${spotbugs.skip}</skip>
@@ -645,6 +651,9 @@
             <failOnError>${spotbugs.failOnError}</failOnError>
             <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
             <includeTests>${spotbugs.includeTests}</includeTests>
+            <jvmArgs>
+              -Djava.security.manager=allow
+            </jvmArgs>
 
             <!-- Enable this plugin when issues documented are fixed -->
             <!--          <plugins>-->
@@ -1148,6 +1157,7 @@
                 <!-- In later versions of Java, java.base doesn't open java.lang.invoke to azure-core, so it needs to be done with this directive. This only affects tests. -->
                 --add-opens java.base/java.lang.invoke=com.azure.core
                 ${additionalFailsafeArgLine}
+                -Djava.security.manager=allow
               </argLine>
             </configuration>
           </plugin>

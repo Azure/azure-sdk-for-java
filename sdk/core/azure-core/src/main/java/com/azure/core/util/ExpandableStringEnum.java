@@ -24,6 +24,15 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
     private Class<T> clazz;
 
     /**
+     * Creates a new instance of {@link ExpandableStringEnum} without a {@link #toString()} value.
+     * <p>
+     * This constructor shouldn't be called as it will produce a {@link ExpandableStringEnum} which doesn't
+     * have a String enum value.
+     */
+    public ExpandableStringEnum() {
+    }
+
+    /**
      * Creates an instance of the specific expandable string enum from a String.
      *
      * @param name The value to create the instance from.

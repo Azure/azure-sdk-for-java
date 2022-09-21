@@ -126,6 +126,12 @@ public final class RequestOptions {
     private Context context;
 
     /**
+     * Creates a new instance of {@link RequestOptions}.
+     */
+    public RequestOptions() {
+    }
+
+    /**
      * Gets the request callback, applying all the configurations set on this RequestOptions.
      *
      * @return the request callback

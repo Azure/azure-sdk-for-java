@@ -16,6 +16,15 @@ import com.azure.core.util.ExpandableStringEnum;
  */
 public final class CloudEventDataFormat extends ExpandableStringEnum<CloudEventDataFormat> {
     /**
+     * Creates a new instance of {@link CloudEventDataFormat} without a {@link #toString()} value.
+     * <p>
+     * This constructor shouldn't be called as it will produce a {@link CloudEventDataFormat} which doesn't
+     * have a String enum value.
+     */
+    public CloudEventDataFormat() {
+    }
+
+    /**
      * Bytes format.
      */
     public static final CloudEventDataFormat BYTES = fromString("BYTES", CloudEventDataFormat.class);
