@@ -2046,12 +2046,13 @@ class BlockBlobAPITest extends APISpec {
     @LiveOnly
     def "Buffered upload with length"() {
         setup:
-        def data = getRandomData(dataSize)
+        def data = Flux.just(getRandomData(dataSize))
+        def binaryData = BinaryData.fromFlux(data, dataSize).block()
+        def parallelUploadOptions = new BlobParallelUploadOptions(binaryData)
+            .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(singleUploadSize))
 
         when:
-        blobAsyncClient.uploadWithResponse(Flux.just(data),
-            new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(singleUploadSize),
-            dataSize, null, null, null, null).block()
+        blobAsyncClient.uploadWithResponse(parallelUploadOptions).block()
 
         then:
         blobAsyncClient.getBlockBlobAsyncClient()
@@ -2273,9 +2274,13 @@ class BlockBlobAPITest extends APISpec {
 
     @LiveOnly
     def "Buffered upload with specified length"() {
+        setup:
+        def fluxData = Flux.just(getRandomData(data.getDefaultDataSizeLong() as int))
+        def binaryData = BinaryData.fromFlux(fluxData, data.getDefaultDataSizeLong()).block()
+        def parallelUploadOptions = new BlobParallelUploadOptions(binaryData)
         expect:
-        StepVerifier.create(blobAsyncClient.upload(data.defaultFlux, null, data.getDefaultDataSizeLong(), true))
-            .assertNext({ assert it.getETag() != null }).verifyComplete()
+        StepVerifier.create(blobAsyncClient.uploadWithResponse(parallelUploadOptions))
+            .assertNext({ assert it.getValue().getETag() != null }).verifyComplete()
     }
 
     @LiveOnly
