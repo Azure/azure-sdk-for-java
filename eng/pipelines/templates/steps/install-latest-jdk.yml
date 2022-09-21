@@ -16,6 +16,6 @@ steps:
     displayName: 'Install Latest JDK'
     inputs:
       pwsh: true
+      workingDirectory: $(Agent.BuildDirectory)
       filePath: eng/scripts/Install-Latest-JDK.ps1
-    workingDirectory: $(Agent.BuildDirectory)
     condition: eq(variables['LatestJdkVersion'], variables['JavaTestVersion'])
