@@ -14,7 +14,9 @@ import com.azure.resourcemanager.netapp.fluent.models.SubscriptionQuotaItemInner
 /** An instance of this class provides access to all the operations defined in NetAppResourceQuotaLimitsClient. */
 public interface NetAppResourceQuotaLimitsClient {
     /**
-     * Get the default and current limits for quotas.
+     * Get quota limits
+     *
+     * <p>Get the default and current limits for quotas.
      *
      * @param location The location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -26,7 +28,9 @@ public interface NetAppResourceQuotaLimitsClient {
     PagedIterable<SubscriptionQuotaItemInner> list(String location);
 
     /**
-     * Get the default and current limits for quotas.
+     * Get quota limits
+     *
+     * <p>Get the default and current limits for quotas.
      *
      * @param location The location.
      * @param context The context to associate with this operation.
@@ -39,7 +43,9 @@ public interface NetAppResourceQuotaLimitsClient {
     PagedIterable<SubscriptionQuotaItemInner> list(String location, Context context);
 
     /**
-     * Get the default and current subscription quota limit.
+     * Get quota limits
+     *
+     * <p>Get the default and current subscription quota limit.
      *
      * @param location The location.
      * @param quotaLimitName The name of the Quota Limit.
@@ -52,7 +58,9 @@ public interface NetAppResourceQuotaLimitsClient {
     SubscriptionQuotaItemInner get(String location, String quotaLimitName);
 
     /**
-     * Get the default and current subscription quota limit.
+     * Get quota limits
+     *
+     * <p>Get the default and current subscription quota limit.
      *
      * @param location The location.
      * @param quotaLimitName The name of the Quota Limit.

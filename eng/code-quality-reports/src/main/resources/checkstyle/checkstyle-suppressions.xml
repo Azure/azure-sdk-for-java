@@ -508,4 +508,8 @@ the main ServiceBusClientBuilder. -->
 
   <!-- Star import is ok in impl class - it makes it easier to import all parent APIs, etc -->
   <suppress checks="AvoidStarImport" files="com.azure.jedis.AzureJedisClient.java"/>
+
+  <!-- Field additionallyAllowedTenants is not set in constructor and can be changed using the builder option. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.identity.DefaultAzureCredentialBuilder"/>
+
 </suppressions>

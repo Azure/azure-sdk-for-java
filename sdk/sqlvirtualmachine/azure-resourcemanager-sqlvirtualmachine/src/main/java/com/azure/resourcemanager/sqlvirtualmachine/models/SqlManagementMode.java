@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SqlManagementMode. */
+/** SQL Server Management type. */
 public final class SqlManagementMode extends ExpandableStringEnum<SqlManagementMode> {
     /** Static value Full for SqlManagementMode. */
     public static final SqlManagementMode FULL = fromString("Full");
@@ -30,7 +30,11 @@ public final class SqlManagementMode extends ExpandableStringEnum<SqlManagementM
         return fromString(name, SqlManagementMode.class);
     }
 
-    /** @return known SqlManagementMode values. */
+    /**
+     * Gets known SqlManagementMode values.
+     *
+     * @return known SqlManagementMode values.
+     */
     public static Collection<SqlManagementMode> values() {
         return values(SqlManagementMode.class);
     }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for UpdateStatus. */
+/** The current update status of OneAgent. */
 public final class UpdateStatus extends ExpandableStringEnum<UpdateStatus> {
     /** Static value INCOMPATIBLE for UpdateStatus. */
     public static final UpdateStatus INCOMPATIBLE = fromString("INCOMPATIBLE");

@@ -30,13 +30,6 @@ public interface Vault {
     String type();
 
     /**
-     * Gets the location property: Resource location.
-     *
-     * @return the location value.
-     */
-    String location();
-
-    /**
      * Gets the vaultName property: Vault Name.
      *
      * @return the vaultName value.
