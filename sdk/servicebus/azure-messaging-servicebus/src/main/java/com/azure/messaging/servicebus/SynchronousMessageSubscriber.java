@@ -38,7 +38,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     private final ServiceBusReceiverAsyncClient asyncClient;
     private final boolean isPrefetchDisabled;
     private final Duration operationTimeout;
-    private final boolean isPeekLockReceiveMode;
+    private final boolean isReceiveDeleteMode;
 
     private volatile SynchronousReceiveWork currentWork;
 
@@ -80,7 +80,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
         this.workQueue.add(Objects.requireNonNull(initialWork, "'initialWork' cannot be null."));
 
         this.isPrefetchDisabled = isPrefetchDisabled;
-        this.isPeekLockReceiveMode = asyncClient.getReceiverOptions().getReceiveMode() == ServiceBusReceiveMode.PEEK_LOCK;
+        this.isReceiveDeleteMode = asyncClient.getReceiverOptions().getReceiveMode() == ServiceBusReceiveMode.RECEIVE_AND_DELETE;
         if (initialWork.getNumberOfEvents() < 1) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'numberOfEvents' cannot be less than 1. Actual: " + initialWork.getNumberOfEvents()));
@@ -203,6 +203,11 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                 boolean isEmitted = false;
                 while (!isEmitted) {
                     currentDownstream = getOrUpdateCurrentWork();
+                    // If no downstream and is RECEIVE_AND_DELETE mode, re-buffer message and return.
+                    if (currentDownstream == null && isReceiveDeleteMode) {
+                        bufferMessages.addFirst(message);
+                        return;
+                    }
                     if (currentDownstream == null) {
                         break;
                     }
@@ -211,7 +216,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                 }
 
                 if (!isEmitted) {
-                    if (isPrefetchDisabled && isPeekLockReceiveMode) {
+                    if (isPrefetchDisabled) {
                         // When Prefetch is disabled, for the receive mode that influences the delivery count
                         // (today, only PeekLock ReceiveMode), we try to release undelivered messages to adjust
                         // the delivery count on the broker.
@@ -223,8 +228,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                                 .addKeyValue(LOCK_TOKEN_KEY, message.getLockToken())
                                 .log("Message successfully released."));
                     } else {
-                        // Re-buffer the message as it couldn't be emitted or release was disabled. In RECEIVE_AND_DELETE mode,
-                        // messages are deleted in service side, hence we also need re-buffer them.
+                        // Re-buffer the message as it couldn't be emitted or release was disabled.
                         bufferMessages.addFirst(message);
                         break;
                     }
@@ -238,14 +242,6 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
             final long requestedMessages = REQUESTED.get(this);
             if (requestedMessages != Long.MAX_VALUE) {
                 numberRequested = REQUESTED.addAndGet(this, -numberConsumed);
-            }
-
-            // In RECEIVE_AND_DELETE, we cannot just release message when there is no downstream and prefetch is
-            // disabled, because the message is deleted in service side, hence if `numberConsumed` is not increased and
-            // no `currentDownstream`, stop `drainQueue()` until next message or queue work is added to invoke `drainQueue()`.
-            currentDownstream = getOrUpdateCurrentWork();
-            if (numberConsumed == 0 && currentDownstream == null) {
-                break;
             }
         }
         if (numberRequested == 0L) {
