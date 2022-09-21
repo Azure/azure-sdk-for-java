@@ -3,14 +3,16 @@
 
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -24,9 +26,9 @@ abstract class Fetcher<T> {
     private final OperationContextAndListenerTuple operationContext;
     private Supplier<String> operationContextTextProvider;
 
-    private volatile boolean shouldFetchMore;
-    private volatile int maxItemCount;
-    private volatile int top;
+    private final AtomicBoolean shouldFetchMore;
+    private final AtomicInteger maxItemCount;
+    private final AtomicInteger top;
 
     public Fetcher(
         Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
@@ -48,18 +50,18 @@ abstract class Fetcher<T> {
             return operationContextText;
         };
 
-        this.top = top;
+        this.top = new AtomicInteger(top);
         if (top == -1) {
-            this.maxItemCount = maxItemCount;
+            this.maxItemCount = new AtomicInteger(maxItemCount);
         } else {
             // it is a top query, we should not retrieve more than requested top.
-            this.maxItemCount = Math.min(maxItemCount, top);
+            this.maxItemCount = new AtomicInteger(Math.min(maxItemCount, top));
         }
-        this.shouldFetchMore = true;
+        this.shouldFetchMore = new AtomicBoolean(true);
     }
 
     public final boolean shouldFetchMore() {
-        return shouldFetchMore;
+        return shouldFetchMore.get();
     }
 
     public Mono<FeedResponse<T>> nextPage() {
@@ -88,39 +90,43 @@ abstract class Fetcher<T> {
             this.applyServerResponseContinuation(response.getContinuationToken(), request);
 
         ModelBridgeInternal.setFeedResponseContinuationToken(transformedContinuation, response);
-        if (top != -1) {
-            top -= response.getResults().size();
-            if (top < 0) {
+        if (top.get() != -1) {
+            top.accumulateAndGet(response.getResults().size(), (left, right) -> left - right);
+            if (top.get() < 0) {
                 // this shouldn't happen
                 // this means backend retrieved more items than requested
                 logger.warn("Azure Cosmos DB BackEnd Service returned more than requested {} items, Context: {}",
-                    maxItemCount,
+                    maxItemCount.get(),
                     this.operationContextTextProvider.get());
-                top = 0;
+                top.set(0);
             }
-            maxItemCount = Math.min(maxItemCount, top);
+            maxItemCount.accumulateAndGet(top.get(), Math::min);
         }
 
-        shouldFetchMore = shouldFetchMore &&
+        if (shouldFetchMore.get() &&
             // if top == 0 then done
-            (top != 0) &&
+            (top.get() != 0) &&
             // if fullyDrained then done
-            !this.isFullyDrained(this.isChangeFeed, response);
+            !this.isFullyDrained(this.isChangeFeed, response)) {
+            shouldFetchMore.set(true);
+        } else {
+            shouldFetchMore.set(false);
+        }
 
         if (logger.isDebugEnabled()) {
             logger.debug("Fetcher state updated: " +
                     "isChangeFeed = {}, continuation token = {}, max item count = {}, should fetch more = {}, Context: {}",
-                isChangeFeed, this.getContinuationForLogging(), maxItemCount, shouldFetchMore,
+                isChangeFeed, this.getContinuationForLogging(), maxItemCount.get(), shouldFetchMore.get(),
                 this.operationContextTextProvider.get());
         }
     }
 
-    protected void reenableShouldFetchMoreForRetry() {
-        this.shouldFetchMore = true;
+    protected void reEnableShouldFetchMoreForRetry() {
+        this.shouldFetchMore.set(true);
     }
 
     private RxDocumentServiceRequest createRequest() {
-        if (!shouldFetchMore) {
+        if (!shouldFetchMore.get()) {
             // this should never happen
             logger.error(
                 "invalid state, trying to fetch more after completion, Context: {}",
@@ -128,7 +134,7 @@ abstract class Fetcher<T> {
             throw new IllegalStateException("INVALID state, trying to fetch more after completion");
         }
 
-        return this.createRequest(maxItemCount);
+        return this.createRequest(maxItemCount.get());
     }
 
     protected abstract RxDocumentServiceRequest createRequest(int maxItemCount);

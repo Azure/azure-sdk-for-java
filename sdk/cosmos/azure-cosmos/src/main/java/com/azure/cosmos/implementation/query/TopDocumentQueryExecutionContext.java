@@ -69,12 +69,13 @@ public class TopDocumentQueryExecutionContext<T>
                                                                          takeContinuationToken.getTakeCount()));
     }
 
+    //  A must-read article on lambdas and anonymous classes - https://www.infoq.com/articles/Java-8-Lambdas-A-Peek-Under-the-Hood/
     @Override
     public Flux<FeedResponse<T>> drainAsync(int maxPageSize) {
 
         return this.component.drainAsync(maxPageSize).takeUntil(new Predicate<FeedResponse<T>>() {
 
-            private volatile int fetchedItems = 0;
+            private int fetchedItems = 0;
 
             @Override
             public boolean test(FeedResponse<T> frp) {
@@ -86,8 +87,8 @@ public class TopDocumentQueryExecutionContext<T>
             }
         }).map(new Function<FeedResponse<T>, FeedResponse<T>>() {
 
-            private volatile int collectedItems = 0;
-            private volatile boolean lastPage = false;
+            private int collectedItems = 0;
+            private boolean lastPage = false;
             @Override
             public FeedResponse<T> apply(FeedResponse<T> t) {
 

@@ -91,7 +91,7 @@ public abstract class JsonReader implements Closeable {
      * <p>
      * If the reader is pointing to any other token type an {@link IllegalStateException} will be thrown.
      * <p>
-     * If {@link Boolean} should be read use {@link #getNullable(IOExceptionFunction)}.
+     * If {@link Boolean} should be read use {@link #getNullable(ReadValueCallback)}.
      *
      * @return The boolean value based on the {@link JsonToken#BOOLEAN}.
      * @throws IllegalStateException If the reader isn't pointing to {@link JsonToken#BOOLEAN}.
@@ -108,7 +108,7 @@ public abstract class JsonReader implements Closeable {
      * <p>
      * All other {@link JsonToken} types will throw an {@link IllegalStateException}.
      * <p>
-     * If {@link Float} should be read use {@link #getNullable(IOExceptionFunction)}.
+     * If {@link Float} should be read use {@link #getNullable(ReadValueCallback)}.
      *
      * @return The float value based on the current token.
      * @throws NumberFormatException If the current token is a {@link JsonToken#STRING} and cannot be converted to a
@@ -127,7 +127,7 @@ public abstract class JsonReader implements Closeable {
      * <p>
      * All other {@link JsonToken} types will throw an {@link IllegalStateException}.
      * <p>
-     * If {@link Double} should be read use {@link #getNullable(IOExceptionFunction)}.
+     * If {@link Double} should be read use {@link #getNullable(ReadValueCallback)}.
      *
      * @return The double value based on the current token.
      * @throws NumberFormatException If the current token is a {@link JsonToken#STRING} and cannot be converted to a
@@ -146,7 +146,7 @@ public abstract class JsonReader implements Closeable {
      * <p>
      * All other {@link JsonToken} types will throw an {@link IllegalStateException}.
      * <p>
-     * If {@link Integer} should be read use {@link #getNullable(IOExceptionFunction)}.
+     * If {@link Integer} should be read use {@link #getNullable(ReadValueCallback)}.
      *
      * @return The int value based on the current token.
      * @throws NumberFormatException If the current token is a {@link JsonToken#STRING} and cannot be converted to an
@@ -165,7 +165,7 @@ public abstract class JsonReader implements Closeable {
      * <p>
      * All other {@link JsonToken} types will throw an {@link IllegalStateException}.
      * <p>
-     * If {@link Long} should be read use {@link #getNullable(IOExceptionFunction)}.
+     * If {@link Long} should be read use {@link #getNullable(ReadValueCallback)}.
      *
      * @return The long value based on the current token.
      * @throws NumberFormatException If the current token is a {@link JsonToken#STRING} and cannot be converted to a
@@ -215,8 +215,8 @@ public abstract class JsonReader implements Closeable {
      * {@code nonNullGetter}.
      * @throws IOException If the next value cannot be read as a nullable.
      */
-    public final <T> T getNullable(IOExceptionFunction<JsonReader, T> nonNullGetter) throws IOException {
-        return currentToken() == JsonToken.NULL ? null : nonNullGetter.apply(this);
+    public final <T> T getNullable(ReadValueCallback<JsonReader, T> nonNullGetter) throws IOException {
+        return currentToken() == JsonToken.NULL ? null : nonNullGetter.read(this);
     }
 
     /**
@@ -350,8 +350,8 @@ public abstract class JsonReader implements Closeable {
      * Once the JSON stream is prepared for object reading this will get the next token and pass this {@link JsonReader}
      * into the {@code objectReaderFunc} to handle reading the object.
      * <p>
-     * If a JSON array should be read use {@link #readArray(IOExceptionFunction)} or if a JSON map should be read use
-     * {@link #readMap(IOExceptionFunction)}.
+     * If a JSON array should be read use {@link #readArray(ReadValueCallback)} or if a JSON map should be read use
+     * {@link #readMap(ReadValueCallback)}.
      *
      * @param objectReaderFunc Function that reads each value of the key-value pair.
      * @param <T> The value element type.
@@ -360,7 +360,7 @@ public abstract class JsonReader implements Closeable {
      * null.
      * @throws IOException If the object cannot be read.
      */
-    public final <T> T readObject(IOExceptionFunction<JsonReader, T> objectReaderFunc) throws IOException {
+    public final <T> T readObject(ReadValueCallback<JsonReader, T> objectReaderFunc) throws IOException {
         JsonToken currentToken = currentToken();
         if (currentToken == null) {
             currentToken = nextToken();
@@ -375,7 +375,7 @@ public abstract class JsonReader implements Closeable {
             throw new IllegalStateException("Unexpected token to begin deserialization: " + currentToken);
         }
 
-        return objectReaderFunc.apply(this);
+        return objectReaderFunc.read(this);
     }
 
     /**
@@ -389,8 +389,8 @@ public abstract class JsonReader implements Closeable {
      * {@link JsonReader} into the {@code elementReaderFunc} to handle reading the element of the array. If the array
      * has no elements an empty list will be returned.
      * <p>
-     * If a JSON object should be read use {@link #readObject(IOExceptionFunction)} or if a JSON map should be read use
-     * {@link #readMap(IOExceptionFunction)}.
+     * If a JSON object should be read use {@link #readObject(ReadValueCallback)} or if a JSON map should be read use
+     * {@link #readMap(ReadValueCallback)}.
      *
      * @param elementReaderFunc Function that reads each element of the array.
      * @param <T> The array element type.
@@ -398,7 +398,7 @@ public abstract class JsonReader implements Closeable {
      * @throws IllegalStateException If the token isn't {@link JsonToken#START_ARRAY}, {@link JsonToken#NULL}, or null.
      * @throws IOException If the array cannot be read.
      */
-    public final <T> List<T> readArray(IOExceptionFunction<JsonReader, T> elementReaderFunc) throws IOException {
+    public final <T> List<T> readArray(ReadValueCallback<JsonReader, T> elementReaderFunc) throws IOException {
         JsonToken currentToken = currentToken();
         if (currentToken == null) {
             currentToken = nextToken();
@@ -414,7 +414,7 @@ public abstract class JsonReader implements Closeable {
         List<T> array = new LinkedList<>();
 
         while (nextToken() != JsonToken.END_ARRAY) {
-            array.add(elementReaderFunc.apply(this));
+            array.add(elementReaderFunc.read(this));
         }
 
         return array;
@@ -431,8 +431,8 @@ public abstract class JsonReader implements Closeable {
      * the key then get the next token after that and pass this {@link JsonReader} into the {@code valueReaderFunc} to
      * handle reading the value of the key-value pair. If the object has no elements an empty map will be returned.
      * <p>
-     * If a JSON object should be read use {@link #readObject(IOExceptionFunction)} or if a JSON array should be read use
-     * {@link #readArray(IOExceptionFunction)}.
+     * If a JSON object should be read use {@link #readObject(ReadValueCallback)} or if a JSON array should be read use
+     * {@link #readArray(ReadValueCallback)}.
      *
      * @param valueReaderFunc Function that reads each value of the key-value pair.
      * @param <T> The value element type.
@@ -441,7 +441,7 @@ public abstract class JsonReader implements Closeable {
      * null.
      * @throws IOException If the map cannot be read.
      */
-    public final <T> Map<String, T> readMap(IOExceptionFunction<JsonReader, T> valueReaderFunc) throws IOException {
+    public final <T> Map<String, T> readMap(ReadValueCallback<JsonReader, T> valueReaderFunc) throws IOException {
         JsonToken currentToken = currentToken();
         if (currentToken == null) {
             currentToken = nextToken();
@@ -460,7 +460,7 @@ public abstract class JsonReader implements Closeable {
             String fieldName = getFieldName();
             nextToken();
 
-            map.put(fieldName, valueReaderFunc.apply(this));
+            map.put(fieldName, valueReaderFunc.read(this));
         }
 
         return map;

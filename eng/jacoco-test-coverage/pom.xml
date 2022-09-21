@@ -113,7 +113,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-analytics-synapse-artifacts</artifactId>
-      <version>1.0.0-beta.11</version> <!-- {x-version-update;com.azure:azure-analytics-synapse-artifacts;current} -->
+      <version>1.0.0-beta.12</version> <!-- {x-version-update;com.azure:azure-analytics-synapse-artifacts;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -213,7 +213,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.6.0-beta.2</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
+      <version>1.7.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -253,7 +253,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.11.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
+      <version>7.12.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -283,12 +283,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-administration</artifactId>
-      <version>4.1.6</version> <!-- {x-version-update;com.azure:azure-security-keyvault-administration;current} -->
+      <version>4.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-administration;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-certificates</artifactId>
-      <version>4.3.6</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;current} -->
+      <version>4.5.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -298,12 +298,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-keys</artifactId>
-      <version>4.4.7</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
+      <version>4.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-secrets</artifactId>
-      <version>4.4.7</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;current} -->
+      <version>4.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
