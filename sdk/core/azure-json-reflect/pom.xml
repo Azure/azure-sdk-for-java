@@ -67,7 +67,7 @@
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
-      <version>2.9.0</version> <!-- {x-version-update;com.google.code.gson:gson;external_dependency} -->
+      <version>2.5</version> <!-- {x-version-update;com.google.code.gson:gson;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
