@@ -1,0 +1,27 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.eus.cnt-prod.loadtesting.azure.com/loadtests/11111111-1234-1234-1234-123456789012?api-version=2022-06-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-developer-loadtesting/1.0.0-beta.1 (17.0.4; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "dd8b74c4-e127-44f5-8922-693ec90bae99",
+      "Content-Type" : "application/merge-patch+json"
+    },
+    "Response" : {
+      "content-length" : "1276",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "api-supported-versions" : "2021-07-01-preview, 2022-06-01-preview",
+      "X-Content-Type-Options" : "nosniff",
+      "Connection" : "keep-alive",
+      "mise-correlation-id" : "9eca5390-b4a5-4478-9465-1b5786c69ea8",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"testId\":\"11111111-1234-1234-1234-123456789012\",\"description\":\"Sample Test\",\"displayName\":\"Java SDK Sample Test\",\"resourceId\":\"/subscriptions/REDACTED/resourcegroups/loadtest-sdk/providers/microsoft.loadtestservice/loadtests/loadtestingsdk\",\"loadTestConfig\":{\"engineInstances\":1,\"splitAllCSVs\":null},\"passFailCriteria\":null,\"createdDateTime\":\"2022-09-16T12:47:01.824Z\",\"createdBy\":null,\"lastModifiedDateTime\":\"2022-09-16T12:47:01.824Z\",\"lastModifiedBy\":null,\"inputArtifacts\":{\"configUrl\":null,\"testScriptUrl\":{\"url\":\"REDACTED\",\"fileId\":\"22222222-1234-1234-1234-123456789012\",\"filename\":\"sample-JMX-file.jmx\",\"fileType\":2,\"expireTime\":\"2022-09-21T20:32:56.5669242+00:00\",\"validationStatus\":\"VALIDATION_INITIATED\"},\"userPropUrl\":null,\"inputArtifactsZipFileurl\":null,\"additionalUrls\":[]},\"secrets\":null,\"environmentVariables\":{\"threads_per_engine\":\"1\",\"ramp_up_time\":\"0\",\"duration_in_sec\":\"10\",\"domain\":\"azure.microsoft.com\",\"protocol\":\"https\"},\"subnetId\":null,\"keyvaultReferenceIdentityType\":null,\"keyvaultReferenceIdentityId\":null}",
+      "Date" : "Wed, 21 Sep 2022 20:22:56 GMT",
+      "x-ms-correlation-request-id" : "069fcfe3-1d7c-4988-8455-da8335dc93f4",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -100,8 +100,7 @@ During a load test, Azure Load Testing collects metrics about the test execution
 ### Creating a Load Test
 
 ```java java-readme-sample-createTest
-TestClientBuilder testClientBuilder = new TestClientBuilder();
-TestClient testClient = testClientBuilder
+LoadTestingClient client = new LoadTestingClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .endpoint("<endpoint>")
     .buildClient();
@@ -121,29 +120,27 @@ testMap.put("environmentVariables", envVarMap);
 
 BinaryData test = BinaryData.fromObject(testMap);
 
-BinaryData testOut = testClient.createOrUpdateTestWithResponse("test12345", test, null).getValue();
-System.out.println(testOut.toString());
+Response<BinaryData> testOutResponse = client.getAdministration().createOrUpdateTestWithResponse("test12345", test, null);
+System.out.println(testOutResponse.getValue().toString());
 ```
 
 ### Uploading .jmx file to a Load Test
 
 ```java java-readme-sample-uploadTestFile
-TestClientBuilder testClientBuilder = new TestClientBuilder();
-TestClient testClient = testClientBuilder
+LoadTestingClient client = new LoadTestingClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .endpoint("<endpoint>")
     .buildClient();
 
 BinaryData fileData = BinaryData.fromFile(new File("path/to/file").toPath());
-BinaryData fileUrlOut = testClient.uploadTestFileWithResponse("test12345", "file12345", "sample-file.jmx", fileData, null).getValue();
-System.out.println(fileUrlOut.toString());
+Response<BinaryData> fileUrlOut = client.getAdministration().uploadTestFileWithResponse("test12345", "file12345", "sample-file.jmx", fileData, null);
+System.out.println(fileUrlOut.getValue().toString());
 ```
 
 ### Running a Load Test
 
 ```java java-readme-sample-runTest
-TestRunClientBuilder testRunClientBuilder = new TestRunClientBuilder();
-TestRunClient testRunClient = testRunClientBuilder
+LoadTestingClient client = new LoadTestingClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .endpoint("<endpoint>")
     .buildClient();
@@ -158,8 +155,8 @@ testRunMap.put("loadTestConfig", loadTestConfigMap);
 
 BinaryData testRun = BinaryData.fromObject(testRunMap);
 
-BinaryData testRunOut = testRunClient.createAndUpdateTestWithResponse("testrun12345", testRun, null).getValue();
-System.out.println(testRunOut.toString());
+Response<BinaryData> testRunOut = client.getTestRun().createAndUpdateTestRunWithResponse("testrun12345", testRun, null);
+System.out.println(testRunOut.getValue().toString());
 ```
 
 ## Troubleshooting

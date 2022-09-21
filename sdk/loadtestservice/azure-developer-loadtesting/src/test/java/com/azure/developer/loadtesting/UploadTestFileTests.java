@@ -20,7 +20,7 @@ public final class UploadTestFileTests extends LoadTestingClientTestBase {
     public void uploadTestFile() throws IOException {
         BinaryData file = BinaryData.fromFile(new File(FILE_JMX_URL.getPath()).toPath());
         RequestOptions requestOptions = new RequestOptions().addQueryParam("fileType", "2");
-        Response<BinaryData> response = testClient.uploadTestFileWithResponse(
+        Response<BinaryData> response = client.getAdministration().uploadTestFileWithResponse(
                                                 DEFAULT_TEST_ID,
                                                 DEFAULT_FILE_ID,
                                                 FILE_JXM_NAME,

@@ -9,14 +9,14 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public final class ReadmeSamples {
     public void createTest() {
         // BEGIN: java-readme-sample-createTest
-        TestClientBuilder testClientBuilder = new TestClientBuilder();
-        TestClient testClient = testClientBuilder
+        LoadTestingClient client = new LoadTestingClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("<endpoint>")
             .buildClient();
@@ -36,29 +36,27 @@ public final class ReadmeSamples {
 
         BinaryData test = BinaryData.fromObject(testMap);
 
-        BinaryData testOut = testClient.createOrUpdateTestWithResponse("test12345", test, null).getValue();
-        System.out.println(testOut.toString());
+        Response<BinaryData> testOutResponse = client.getAdministration().createOrUpdateTestWithResponse("test12345", test, null);
+        System.out.println(testOutResponse.getValue().toString());
         // END: java-readme-sample-createTest
     }
 
     public void uploadTestFile() throws IOException {
         // BEGIN: java-readme-sample-uploadTestFile
-        TestClientBuilder testClientBuilder = new TestClientBuilder();
-        TestClient testClient = testClientBuilder
+        LoadTestingClient client = new LoadTestingClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("<endpoint>")
             .buildClient();
 
         BinaryData fileData = BinaryData.fromFile(new File("path/to/file").toPath());
-        BinaryData fileUrlOut = testClient.uploadTestFileWithResponse("test12345", "file12345", "sample-file.jmx", fileData, null).getValue();
-        System.out.println(fileUrlOut.toString());
+        Response<BinaryData> fileUrlOut = client.getAdministration().uploadTestFileWithResponse("test12345", "file12345", "sample-file.jmx", fileData, null);
+        System.out.println(fileUrlOut.getValue().toString());
         // END: java-readme-sample-uploadTestFile
     }
 
     public void runTest() {
         // BEGIN: java-readme-sample-runTest
-        TestRunClientBuilder testRunClientBuilder = new TestRunClientBuilder();
-        TestRunClient testRunClient = testRunClientBuilder
+        LoadTestingClient client = new LoadTestingClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("<endpoint>")
             .buildClient();
@@ -73,8 +71,8 @@ public final class ReadmeSamples {
 
         BinaryData testRun = BinaryData.fromObject(testRunMap);
 
-        BinaryData testRunOut = testRunClient.createAndUpdateTestWithResponse("testrun12345", testRun, null).getValue();
-        System.out.println(testRunOut.toString());
+        Response<BinaryData> testRunOut = client.getTestRun().createAndUpdateTestRunWithResponse("testrun12345", testRun, null);
+        System.out.println(testRunOut.getValue().toString());
         // END: java-readme-sample-runTest
     }
 }

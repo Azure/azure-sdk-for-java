@@ -4,21 +4,21 @@
     "Uri" : "https://REDACTED.eus.cnt-prod.loadtesting.azure.com/loadtests/11111111-1234-1234-1234-123456789012/files/22222222-1234-1234-1234-123456789012?api-version=2022-06-01-preview&fileType=2",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-developer-loadtesting/1.0.0-beta.1 (17.0.4; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "5388f4f0-9bb3-4230-966e-56a0b58b85b5",
-      "Content-Type" : "multipart/form-data;boundary=----WebkitFormBoundary2871a4"
+      "x-ms-client-request-id" : "dc2233a4-bd01-4c62-adc1-ffc558b70f67",
+      "Content-Type" : "multipart/form-data;boundary=----WebkitFormBoundaryfb0748"
     },
     "Response" : {
-      "content-length" : "411",
+      "content-length" : "412",
       "api-supported-versions" : "2021-07-01-preview, 2022-06-01-preview",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
-      "mise-correlation-id" : "b048adb5-cb74-46a1-930e-f76c2ce3985a",
+      "mise-correlation-id" : "92e9f78c-48e1-43bb-b52e-92dcc1e35e96",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Fri, 16 Sep 2022 12:48:02 GMT",
-      "x-ms-correlation-request-id" : "03060620-e08d-4a60-8560-d64b31931b85",
+      "Date" : "Wed, 21 Sep 2022 20:22:57 GMT",
+      "x-ms-correlation-request-id" : "de2eb6d6-b9d9-4045-af1e-ef682449188f",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Body" : "{\"url\":\"REDACTED\",\"fileId\":\"22222222-1234-1234-1234-123456789012\",\"filename\":\"sample-JMX-file.jmx\",\"fileType\":2,\"expireTime\":\"2022-09-16T12:58:02.020837\",\"validationStatus\":\"VALIDATION_INITIATED\"}",
+      "Body" : "{\"url\":\"REDACTED\",\"fileId\":\"22222222-1234-1234-1234-123456789012\",\"filename\":\"sample-JMX-file.jmx\",\"fileType\":2,\"expireTime\":\"2022-09-21T20:32:57.2856498\",\"validationStatus\":\"VALIDATION_INITIATED\"}",
       "Content-Type" : "application/json; charset=utf-8",
       "Location" : "https://REDACTED.eus.cnt-prod.loadtesting.azure.com/loadtests/11111111-1234-1234-1234-123456789012/files/22222222-1234-1234-1234-123456789012?resourceId=%2fsubscriptions%2fREDACTED%2fresourcegroups%2floadtest-sdk%2fproviders%2fmicrosoft.loadtestservice%2floadtests%2floadtestingsdk&api-version=2022-06-01-preview"
     },

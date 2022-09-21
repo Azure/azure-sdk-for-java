@@ -15,13 +15,7 @@ import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 
 class LoadTestingClientTestBase extends TestBase {
-    protected AppComponentClient appComponentClient;
-
-    protected ServerMetricsClient serverMetricsClient;
-
-    protected TestClient testClient;
-
-    protected TestRunClient testRunClient;
+    protected LoadTestingClient client;
 
     private final String DEFAULT_ENDPOINT = "REDACTED.eus.cnt-prod.loadtesting.azure.com";
 
@@ -31,76 +25,22 @@ class LoadTestingClientTestBase extends TestBase {
 
     @Override
     protected void beforeTest() {
-        AppComponentClientBuilder appComponentClientbuilder =
-                new AppComponentClientBuilder()
+        LoadTestingClientBuilder loadTestingClientBuilder =
+                new LoadTestingClientBuilder()
                         .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", DEFAULT_ENDPOINT))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            appComponentClientbuilder
+            loadTestingClientBuilder
                     .httpClient(interceptorManager.getPlaybackClient())
                     .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
         } else if (getTestMode() == TestMode.RECORD) {
-            appComponentClientbuilder
+            loadTestingClientBuilder
                     .addPolicy(interceptorManager.getRecordPolicy())
                     .credential(new DefaultAzureCredentialBuilder().build());
         } else if (getTestMode() == TestMode.LIVE) {
-            appComponentClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+            loadTestingClientBuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
-        appComponentClient = appComponentClientbuilder.buildClient();
-
-        ServerMetricsClientBuilder serverMetricsClientbuilder =
-                new ServerMetricsClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", DEFAULT_ENDPOINT))
-                        .httpClient(HttpClient.createDefault())
-                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-        if (getTestMode() == TestMode.PLAYBACK) {
-            serverMetricsClientbuilder
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
-        } else if (getTestMode() == TestMode.RECORD) {
-            serverMetricsClientbuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
-        } else if (getTestMode() == TestMode.LIVE) {
-            serverMetricsClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
-        }
-        serverMetricsClient = serverMetricsClientbuilder.buildClient();
-
-        TestClientBuilder testClientbuilder =
-                new TestClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", DEFAULT_ENDPOINT))
-                        .httpClient(HttpClient.createDefault())
-                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-        if (getTestMode() == TestMode.PLAYBACK) {
-            testClientbuilder
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
-        } else if (getTestMode() == TestMode.RECORD) {
-            testClientbuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
-        } else if (getTestMode() == TestMode.LIVE) {
-            testClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
-        }
-        testClient = testClientbuilder.buildClient();
-
-        TestRunClientBuilder testRunClientbuilder =
-                new TestRunClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", DEFAULT_ENDPOINT))
-                        .httpClient(HttpClient.createDefault())
-                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-        if (getTestMode() == TestMode.PLAYBACK) {
-            testRunClientbuilder
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
-        } else if (getTestMode() == TestMode.RECORD) {
-            testRunClientbuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
-        } else if (getTestMode() == TestMode.LIVE) {
-            testRunClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
-        }
-        testRunClient = testRunClientbuilder.buildClient();
+        client = loadTestingClientBuilder.buildClient();
     }
 }
