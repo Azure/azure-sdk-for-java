@@ -62,7 +62,15 @@ public class SynchronousMessageSubscriberTest {
     @Mock
     private ReceiverOptions options;
 
+    @Mock
+    private ReceiverOptions deleteModeOptions;
+
+    @Mock
+    private ServiceBusReceiverAsyncClient deleteModeAsyncClient;
+
     private SynchronousMessageSubscriber syncSubscriber;
+    private SynchronousMessageSubscriber deleteModeSyncSubscriber;
+
     private AutoCloseable mocksCloseable;
 
     @BeforeEach
@@ -75,7 +83,15 @@ public class SynchronousMessageSubscriberTest {
         when(work2.getId()).thenReturn(WORK_ID_2);
         when(work2.getNumberOfEvents()).thenReturn(NUMBER_OF_WORK_ITEMS_2);
 
+        when(asyncClient.getReceiverOptions()).thenReturn(options);
+        when(options.getReceiveMode()).thenReturn(ServiceBusReceiveMode.PEEK_LOCK);
+
         syncSubscriber = new SynchronousMessageSubscriber(asyncClient, work1, false, operationTimeout);
+
+        when(deleteModeAsyncClient.getReceiverOptions()).thenReturn(deleteModeOptions);
+        when(deleteModeOptions.getReceiveMode()).thenReturn(ServiceBusReceiveMode.RECEIVE_AND_DELETE);
+
+        deleteModeSyncSubscriber = new SynchronousMessageSubscriber(deleteModeAsyncClient, work1, false, operationTimeout);
     }
 
     @AfterEach
@@ -317,9 +333,6 @@ public class SynchronousMessageSubscriberTest {
     @Test
     public void releaseIfNoActiveReceiveInPeekMode() {
         // Arrange
-        // Set async client receive mode PEEK_LOCK.
-        when(asyncClient.getReceiverOptions()).thenReturn(options);
-        when(options.getReceiveMode()).thenReturn(ServiceBusReceiveMode.PEEK_LOCK);
 
         // The work1 happily accept any message.
         when(work1.emitNext(any(ServiceBusReceivedMessage.class))).thenReturn(true);
@@ -379,9 +392,6 @@ public class SynchronousMessageSubscriberTest {
     @Test
     public void noReleaseIfNoActiveReceiveInDelMode() {
         // Arrange
-        // Set async client receive mode RECEIVE_AND_DELETE.
-        when(asyncClient.getReceiverOptions()).thenReturn(options);
-        when(options.getReceiveMode()).thenReturn(ServiceBusReceiveMode.RECEIVE_AND_DELETE);
 
         // The work1 and work2 happily accept any message.
         when(work1.emitNext(any(ServiceBusReceivedMessage.class))).thenReturn(true);
@@ -397,23 +407,20 @@ public class SynchronousMessageSubscriberTest {
         final AtomicBoolean isTerminal = new AtomicBoolean(false);
         doAnswer(invocation -> isTerminal.get()).when(work1).isTerminal();
 
-        // The subscriber with prefetch-disabled - indicate any received messages that cannot be emitted should be released.
-        syncSubscriber = new SynchronousMessageSubscriber(asyncClient, work1, true, operationTimeout);
-
         // Act
-        syncSubscriber.hookOnSubscribe(subscription);
+        deleteModeSyncSubscriber.hookOnSubscribe(subscription);
 
         // The work1 places a credit of 4; let's say link produced two messages
-        syncSubscriber.hookOnNext(message1beforeTimeout);
-        syncSubscriber.hookOnNext(message2beforeTimeout);
+        deleteModeSyncSubscriber.hookOnNext(message1beforeTimeout);
+        deleteModeSyncSubscriber.hookOnNext(message2beforeTimeout);
         // then the work1 timeout (terminated)
         isTerminal.set(true);
         // then the remaining two messages produced by the link
-        syncSubscriber.hookOnNext(message1afterTimeout);
-        syncSubscriber.hookOnNext(message2afterTimeout);
+        deleteModeSyncSubscriber.hookOnNext(message1afterTimeout);
+        deleteModeSyncSubscriber.hookOnNext(message2afterTimeout);
         // add a new queue work to consume remained messages. In RECEIVE_AND_DELETE mode, messages won't be released
         // and could be consumed even though prefetch is disabled and no current downstream.
-        syncSubscriber.queueWork(work2);
+        deleteModeSyncSubscriber.queueWork(work2);
 
         // Assert
 
