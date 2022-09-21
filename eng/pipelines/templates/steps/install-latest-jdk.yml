@@ -15,3 +15,11 @@ steps:
       workingDirectory: $(Agent.BuildDirectory)
       filePath: eng/scripts/Install-Latest-JDK.ps1
     condition: eq(variables['LatestJdkVersion'], variables['JavaTestVersion'])
+
+  - pwsh: |
+      Write-Host "Java 8 JDK: $Env:JAVA_HOME_8_X64"
+      Write-Host "Java 11 JDK: $Env:JAVA_HOME_11_X64"
+      Write-Host "Java 17 JDK: $Env:JAVA_HOME_17_X64"
+      Write-Host "Latest JDK: $Env:JAVA_HOME_18_X64"
+    displayName: 'Verify Latest JDK Install'
+    condition: eq(variables['LatestJdkVersion'], variables['JavaTestVersion'])

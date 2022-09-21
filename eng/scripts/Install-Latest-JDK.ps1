@@ -18,11 +18,3 @@ $Env:JAVA_HOME = $javaHome
 Write-Host "Updated JAVA_HOME: $Env:JAVA_HOME"
 
 $Env:JAVA_HOME_18_X64 = $javaHome
-
-Write-Host "Java 8 JDK: $Env:JAVA_HOME_8_X64"
-Write-Host "Java 11 JDK: $Env:JAVA_HOME_11_X64"
-Write-Host "Java 17 JDK: $Env:JAVA_HOME_17_X64"
-Write-Host "Latest JDK: $Env:JAVA_HOME_18_X64"
-
-$path = $Env:PATH
-$path = $javaHome + ";" + $path
