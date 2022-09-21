@@ -9,18 +9,9 @@ steps:
     condition: eq(variables['LatestJdkVersion'], variables['JavaTestVersion'])
 
   - task: PowerShell@2
-    displayName: 'Download Latest JDK'
+    displayName: 'Install Latest JDK'
     inputs:
       pwsh: true
       workingDirectory: $(Agent.BuildDirectory)
       filePath: eng/scripts/Install-Latest-JDK.ps1
-    condition: eq(variables['LatestJdkVersion'], variables['JavaTestVersion'])
-
-  - task: JavaToolInstaller@0
-    inputs:
-      versionSpec: '18'
-      jdkArchitectureOption: 'x64'
-      jdkSourceOption: 'LocalDirectory'
-      jdkFile: '$(Agent.BuildDirectory)/OpenJDK18U-jdk_x64_linux_hotspot_18.0.2.1_1.tar.gz'
-      jdkDestinationDirectory: $(Agent.BuildDirectory)
     condition: eq(variables['LatestJdkVersion'], variables['JavaTestVersion'])
