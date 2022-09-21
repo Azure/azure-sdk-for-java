@@ -7,11 +7,12 @@ package com.azure.maps.timezone;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.maps.timezone.implementation.TimezonesImpl;
 import com.azure.maps.timezone.implementation.helper.Utility;
-import com.azure.maps.timezone.models.ErrorResponseException;
+import com.azure.maps.timezone.implementation.models.ErrorResponseException;
 import com.azure.maps.timezone.models.IanaId;
 import com.azure.maps.timezone.models.TimezoneCoordinateOptions;
 import com.azure.maps.timezone.models.TimezoneIdOptions;
@@ -45,7 +46,7 @@ public final class TimezoneAsyncClient {
      *
      * @param options contains parameters for get timezone by id 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Timezone By ID call or By Coordinates call.
      */
@@ -66,7 +67,7 @@ public final class TimezoneAsyncClient {
      *
      * @param options contains parameters for get timezone by id 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Timezone By ID call or By Coordinates call.
      */
@@ -85,7 +86,7 @@ public final class TimezoneAsyncClient {
      * @param options contains parameters for get timezone by id 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Timezone By ID call or By Coordinates call.
      */
@@ -98,7 +99,13 @@ public final class TimezoneAsyncClient {
             options.getTimeStamp(),
             options.getDaylightSavingsTimeFrom(),
             options.getDaylightSavingsTimeLastingYears(), 
-            context);
+            context).onErrorMap(throwable -> {
+                if (!(throwable instanceof ErrorResponseException)) {
+                    return throwable;
+                }
+                ErrorResponseException exception = (ErrorResponseException) throwable;
+                return new HttpResponseException(exception.getMessage(), exception.getResponse());
+            });
     }
 
     /**
@@ -111,7 +118,7 @@ public final class TimezoneAsyncClient {
      *
      * @param options options contains parameters for get timezone by coordinates
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Timezone By ID call or By Coordinates call.
      */
@@ -133,7 +140,7 @@ public final class TimezoneAsyncClient {
      *
      * @param options options contains parameters for get timezone by coordinates
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Timezone By ID call or By Coordinates call.
      */
@@ -153,7 +160,7 @@ public final class TimezoneAsyncClient {
      * @param options options contains parameters for get timezone by coordinates
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Timezone By ID call or By Coordinates call.
      */
@@ -166,7 +173,13 @@ public final class TimezoneAsyncClient {
             options.getTimeStamp(),
             options.getDaylightSavingsTimeFrom(),
             options.getDaylightSavingsTimeLastingYears(), 
-            context);
+            context).onErrorMap(throwable -> {
+                if (!(throwable instanceof ErrorResponseException)) {
+                    return throwable;
+                }
+                ErrorResponseException exception = (ErrorResponseException) throwable;
+                return new HttpResponseException(exception.getMessage(), exception.getResponse());
+            });
     }
 
     /**
@@ -177,7 +190,7 @@ public final class TimezoneAsyncClient {
      * <p>This API returns a full list of Windows Time Zone IDs.
      * 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Timezone Enum Windows call.
      */
@@ -197,7 +210,7 @@ public final class TimezoneAsyncClient {
      * <p>This API returns a full list of Windows Time Zone IDs.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Timezone Enum Windows call.
      */
@@ -215,12 +228,18 @@ public final class TimezoneAsyncClient {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Timezone Enum Windows call.
      */
     Mono<Response<List<TimezoneWindows>>> getWindowsTimezoneIdsWithResponse(Context context) {
-        return this.serviceClient.getWindowsTimezoneIdsWithResponseAsync(JsonFormat.JSON, context);
+        return this.serviceClient.getWindowsTimezoneIdsWithResponseAsync(JsonFormat.JSON, context).onErrorMap(throwable -> {
+            if (!(throwable instanceof ErrorResponseException)) {
+                return throwable;
+            }
+            ErrorResponseException exception = (ErrorResponseException) throwable;
+            return new HttpResponseException(exception.getMessage(), exception.getResponse());
+        });
     }
 
     /**
@@ -232,7 +251,7 @@ public final class TimezoneAsyncClient {
      * system within one day.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Timezone Enum IANA call.
      */
@@ -253,7 +272,7 @@ public final class TimezoneAsyncClient {
      * system within one day.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Timezone Enum IANA call.
      */
@@ -272,12 +291,18 @@ public final class TimezoneAsyncClient {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Timezone Enum IANA call.
      */
     Mono<Response<List<IanaId>>> getIanaTimezoneIdsWithResponse(Context context) {
-        return this.serviceClient.getIanaTimezoneIdsWithResponseAsync(JsonFormat.JSON, context);
+        return this.serviceClient.getIanaTimezoneIdsWithResponseAsync(JsonFormat.JSON, context).onErrorMap(throwable -> {
+            if (!(throwable instanceof ErrorResponseException)) {
+                return throwable;
+            }
+            ErrorResponseException exception = (ErrorResponseException) throwable;
+            return new HttpResponseException(exception.getMessage(), exception.getResponse());
+        });
     }
 
     /**
@@ -288,7 +313,7 @@ public final class TimezoneAsyncClient {
      * <p>This API returns the current IANA version number as Metadata.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Timezone IANA Version call.
      */
@@ -308,7 +333,7 @@ public final class TimezoneAsyncClient {
      * <p>This API returns the current IANA version number as Metadata.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Timezone IANA Version call.
      */
@@ -326,12 +351,18 @@ public final class TimezoneAsyncClient {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Timezone IANA Version call.
      */
     Mono<Response<TimezoneIanaVersionResult>> getIanaVersionWithResponse(Context context) {
-        return this.serviceClient.getIanaVersionWithResponseAsync(JsonFormat.JSON, context);
+        return this.serviceClient.getIanaVersionWithResponseAsync(JsonFormat.JSON, context).onErrorMap(throwable -> {
+            if (!(throwable instanceof ErrorResponseException)) {
+                return throwable;
+            }
+            ErrorResponseException exception = (ErrorResponseException) throwable;
+            return new HttpResponseException(exception.getMessage(), exception.getResponse());
+        });
     }
 
     /**
@@ -346,7 +377,7 @@ public final class TimezoneAsyncClient {
      * @param windowsTimezoneId The Windows time zone ID.
      * @param windowsTerritoryCode Windows Time Zone territory code.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Timezone Windows To IANA call.
      */
@@ -370,7 +401,7 @@ public final class TimezoneAsyncClient {
      * @param windowsTimezoneId The Windows time zone ID.
      * @param windowsTerritoryCode Windows Time Zone territory code.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Timezone Windows To IANA call.
      */
@@ -392,12 +423,18 @@ public final class TimezoneAsyncClient {
      * @param windowsTimezoneId The Windows time zone ID.
      * @param windowsTerritoryCode Windows Time Zone territory code.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Timezone Windows To IANA call.
      */
     Mono<Response<List<IanaId>>> convertWindowsTimezoneToIanaWithResponse(String windowsTimezoneId, String windowsTerritoryCode, Context context) {
         return this.serviceClient.convertWindowsTimezoneToIanaWithResponseAsync(
-            JsonFormat.JSON, windowsTimezoneId, windowsTerritoryCode, context);
+            JsonFormat.JSON, windowsTimezoneId, windowsTerritoryCode, context).onErrorMap(throwable -> {
+                if (!(throwable instanceof ErrorResponseException)) {
+                    return throwable;
+                }
+                ErrorResponseException exception = (ErrorResponseException) throwable;
+                return new HttpResponseException(exception.getMessage(), exception.getResponse());
+            });
     }
 }

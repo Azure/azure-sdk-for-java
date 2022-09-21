@@ -65,7 +65,7 @@ generate-sync-async-clients: false
 polling: {}
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException,CountryRecord,IanaId,TimezoneWindows,TimezoneResult,TimezoneOptions,TimezoneNames,TimezoneId,TimezoneIanaVersionResult,ReferenceTime,TimeTransition
+custom-types: CountryRecord,IanaId,TimezoneWindows,TimezoneResult,TimezoneOptions,TimezoneNames,TimezoneId,TimezoneIanaVersionResult,ReferenceTime,TimeTransition
 customization-jar-path: target/azure-maps-timezone-customization-1.0.0-beta.1.jar
 customization-class: TimezoneCustomization
 ```

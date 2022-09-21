@@ -9,7 +9,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.maps.timezone.models.ErrorResponseException;
+import com.azure.maps.timezone.implementation.models.ErrorResponseException;
 import com.azure.maps.timezone.models.IanaId;
 import com.azure.maps.timezone.models.TimezoneCoordinateOptions;
 import com.azure.maps.timezone.models.TimezoneIdOptions;

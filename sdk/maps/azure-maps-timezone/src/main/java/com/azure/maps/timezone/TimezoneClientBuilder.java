@@ -113,6 +113,7 @@ public final class TimezoneClientBuilder implements AzureKeyCredentialTrait<Time
      * @param endpoint url of the service
      * @return TimezoneClientBuilder
      */
+    @Override
     public TimezoneClientBuilder endpoint(String endpoint) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
         return this;
@@ -141,6 +142,7 @@ public final class TimezoneClientBuilder implements AzureKeyCredentialTrait<Time
      * @param pipeline the pipeline value.
      * @return the TimezoneClientBuilder.
      */
+    @Override
     public TimezoneClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
             LOGGER.info("Pipeline is being set to 'null' when it was previously configured.");
@@ -155,6 +157,7 @@ public final class TimezoneClientBuilder implements AzureKeyCredentialTrait<Time
      * @param httpClient the httpClient value.
      * @return the TimezoneClientBuilder.
      */
+    @Override
     public TimezoneClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
             LOGGER.info("HttpClient is being set to 'null' when it was previously configured.");
@@ -169,6 +172,7 @@ public final class TimezoneClientBuilder implements AzureKeyCredentialTrait<Time
      * @param configuration the configuration value.
      * @return the TimezoneClientBuilder.
      */
+    @Override
     public TimezoneClientBuilder configuration(Configuration configuration) {
         this.configuration = Objects.requireNonNull(configuration, "'configuration' cannot be null.");
         return this;
@@ -180,6 +184,7 @@ public final class TimezoneClientBuilder implements AzureKeyCredentialTrait<Time
      * @param httpLogOptions the httpLogOptions value.
      * @return the TimezoneClientBuilder.
      */
+    @Override
     public TimezoneClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = Objects.requireNonNull(httpLogOptions, "'logOptions' cannot be null.");
         return this;
@@ -202,6 +207,7 @@ public final class TimezoneClientBuilder implements AzureKeyCredentialTrait<Time
      * @param clientOptions the clientOptions value.
      * @return the TimezoneClientBuilder.
      */
+    @Override
     public TimezoneClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
         return this;
@@ -213,6 +219,7 @@ public final class TimezoneClientBuilder implements AzureKeyCredentialTrait<Time
      * @param customPolicy The custom Http pipeline policy to add.
      * @return the TimezoneClientBuilder.
      */
+    @Override
     public TimezoneClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         pipelinePolicies.add(Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null."));
         return this;
@@ -225,6 +232,7 @@ public final class TimezoneClientBuilder implements AzureKeyCredentialTrait<Time
      * @return The updated {@link TimezoneClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
+    @Override
     public TimezoneClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         return this;
@@ -237,6 +245,7 @@ public final class TimezoneClientBuilder implements AzureKeyCredentialTrait<Time
      * @return The updated {@link TimezoneClientBuilder} object.
      * @throws NullPointerException If {@code keyCredential} is null.
      */
+    @Override
     public TimezoneClientBuilder credential(AzureKeyCredential keyCredential)  {
         this.keyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;
