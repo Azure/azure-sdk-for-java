@@ -69,7 +69,7 @@ public final class ChangeFeedPolicy {
      */
     @Beta(value = Beta.SinceVersion.V4_12_0,
         warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated(since = "V4_37_0", forRemoval = true)
+    @Deprecated //since = "V4_37_0", forRemoval = true
     public static ChangeFeedPolicy createFullFidelityPolicy(Duration retentionDuration) {
 
         if (retentionDuration.isNegative() ||
@@ -124,7 +124,7 @@ public final class ChangeFeedPolicy {
      */
     @Beta(value = Beta.SinceVersion.V4_12_0,
         warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated(since = "V4_37_0", forRemoval = true)
+    @Deprecated //since = "V4_37_0", forRemoval = true
     public static ChangeFeedPolicy createIncrementalPolicy() {
 
         ChangeFeedPolicy policy = new ChangeFeedPolicy();
@@ -186,7 +186,7 @@ public final class ChangeFeedPolicy {
      */
     @Beta(value = Beta.SinceVersion.V4_12_0,
         warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated(since = "V4_37_0", forRemoval = true)
+    @Deprecated //since = "V4_37_0", forRemoval = true
     public Duration getFullFidelityRetentionDuration() {
         return Duration.ofMinutes(this.getAllVersionsAndDeletesRetentionDurationInMinutes());
     }

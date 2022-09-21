@@ -392,7 +392,7 @@ public final class CosmosChangeFeedRequestOptions {
      */
     @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
         Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated(since = "V4_37_0", forRemoval = true)
+    @Deprecated //since = "V4_37_0", forRemoval = true
     public CosmosChangeFeedRequestOptions fullFidelity() {
 
         if (!this.startFromInternal.supportsFullFidelityRetention()) {
