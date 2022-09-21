@@ -245,21 +245,6 @@ public final class ClientTelemetryMetrics {
             effectiveTags.add(Tag.of(TagName.OperationStatusCode.toString(), String.valueOf(statusCode)));
         }
 
-        // TODO @fabianm - remove this completely if we agree in the PR that this metric can be removed
-        /*
-        if (isPointOperation &&
-            metricTagNames.contains(TagName.IsPayloadLargerThan1KB)) {
-
-            effectiveTags.add(Tag.of(
-                TagName.IsPayloadLargerThan1KB.toString(),
-                String.valueOf(
-                    Math.max(
-                        requestPayloadSizeInBytes,
-                        responsePayloadSizeInBytes
-                    ) > ClientTelemetry.ONE_KB_TO_BYTES)
-            ));
-        }*/
-
         if (metricTagNames.contains(TagName.ConsistencyLevel)) {
             effectiveTags.add(Tag.of(
                 TagName.ConsistencyLevel.toString(),
@@ -517,34 +502,6 @@ public final class ClientTelemetryMetrics {
             return Tags.of(effectiveTags);
         }
 
-        // TODO @fabianm - delete completely if we agree in PR that this metric isn't needed
-        /*
-        private void recordRntbdChannelStatistics(
-            int pendingRequestQueueSize,
-            int channelTaskQueueSize,
-            Tags requestTags) {
-
-            DistributionSummary pendingRequestQueueSizeMeter = DistributionSummary
-                .builder(nameOf("req.rntbd.stats.channel.pendingRequestQueueSize"))
-                .baseUnit("#")
-                .description("Channel statistics(Pending request queue size)")
-                .publishPercentiles()
-                .publishPercentileHistogram(false)
-                .tags(requestTags)
-                .register(compositeRegistry);
-            pendingRequestQueueSizeMeter.record(pendingRequestQueueSize);
-
-            DistributionSummary channelTaskQueueSizeMeter = DistributionSummary
-                .builder(nameOf("req.rntbd.stats.channel.channelTaskQueueSize"))
-                .baseUnit("#")
-                .description("Channel statistics(Channel task queue size)")
-                .publishPercentiles()
-                .publishPercentileHistogram(false)
-                .tags(requestTags)
-                .register(compositeRegistry);
-            channelTaskQueueSizeMeter.record(channelTaskQueueSize);
-        }*/
-
         private void recordRntbdEndpointStatistics(RntbdEndpointStatistics endpointStatistics, Tags requestTags) {
             if (endpointStatistics == null) {
                 return;
@@ -582,50 +539,7 @@ public final class ClientTelemetryMetrics {
                 .publishPercentileHistogram(true)
                 .register(compositeRegistry);
             inflightRequestsMeter.record(endpointStatistics.getInflightRequests());
-
-            // TODO @fabianm - delete completely if we agree in PR that this metric isn't needed
-            /*
-            DistributionSummary executorTaskQueueSizeMeter = DistributionSummary
-                .builder(nameOf("req.rntbd.stats.endpoint.executorTaskQueueSize"))
-                .baseUnit("#")
-                .description("Endpoint statistics(executor task queue size)")
-                .publishPercentiles()
-                .publishPercentileHistogram(false)
-                .tags(requestTags)
-                .register(compositeRegistry);
-            executorTaskQueueSizeMeter.record(endpointStatistics.getExecutorTaskQueueSize());*/
         }
-
-        // TODO @fabianm - delete completely if we agree in PR that this metric isn't needed
-        /*
-        private void recordRntbdChannelAcquisitionTimeline(
-            RntbdChannelAcquisitionTimeline acquisitionTimeline,
-            Tags requestTags) {
-
-            if (acquisitionTimeline == null) {
-                return;
-            }
-
-            for (RntbdChannelAcquisitionEvent acquisitionEvent : acquisitionTimeline.getEvents()) {
-                Duration duration = acquisitionEvent.getDuration();
-                if (duration == null) {
-                    continue;
-                }
-
-                String name = nameOf(
-                    "req.rntbd.channel.acquisition.timeline." +
-                        escape(acquisitionEvent.getEventType().toString()));
-                Timer acquisitionEventMeter = Timer
-                    .builder(name)
-                    .description(String.format("Channel acquisition timeline (%s)", name))
-                    .maximumExpectedValue(Duration.ofSeconds(300))
-                    .publishPercentiles()
-                    .publishPercentileHistogram(false)
-                    .tags(requestTags)
-                    .register(compositeRegistry);
-                acquisitionEventMeter.record(duration);
-            }
-        }*/
 
         private void recordRequestTimeline(String prefix, RequestTimeline requestTimeline, Tags requestTags) {
             if (requestTimeline == null) {
@@ -703,24 +617,10 @@ public final class ClientTelemetryMetrics {
                     "req.rntbd.timeline.",
                     storeResponseDiagnostics.getRequestTimeline(), requestTags);
 
-                // TODO @fabianm - delete completely if we agree in PR that this metric isn't needed
-                /*
-                recordRntbdChannelAcquisitionTimeline(
-                    storeResponseDiagnostics.getChannelAcquisitionTimeline(),
-                    requestTags);*/
-
                 recordRequestPayloadSizes(
                     storeResponseDiagnostics.getRequestPayloadLength(),
                     storeResponseDiagnostics.getResponsePayloadLength()
                 );
-
-                // TODO @fabianm - delete completely if we agree in PR that this metric isn't needed
-                /*
-                recordRntbdChannelStatistics(
-                    storeResponseDiagnostics.getPendingRequestQueueSize(),
-                    storeResponseDiagnostics.getRntbdChannelTaskQueueSize(),
-                    requestTags
-                );*/
 
                 recordRntbdEndpointStatistics(
                     storeResponseDiagnostics.getRntbdEndpointStatistics(),
@@ -847,6 +747,8 @@ public final class ClientTelemetryMetrics {
                 .description("RNTBD successful request latency")
                 .tags(tags)
                 .maximumExpectedValue(Duration.ofSeconds(300))
+                .publishPercentileHistogram(true)
+                .publishPercentiles(0.95, 0.99)
                 .register(registry);
 
             Gauge.builder(nameOf("rntbd.endpoints.count"), client, RntbdTransportClient::endpointCount)
