@@ -6,7 +6,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestOperations;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
@@ -26,7 +26,6 @@ public final class AadJwtDecoderProviderConfiguration {
     }
 
     private static final String OIDC_METADATA_PATH = "/.well-known/openid-configuration";
-    private static final RestTemplate REST = new RestTemplate();
     private static final ParameterizedTypeReference<Map<String, Object>> TYPE_REFERENCE =
         new ParameterizedTypeReference<Map<String, Object>>() {
         };
@@ -37,45 +36,36 @@ public final class AadJwtDecoderProviderConfiguration {
      * @param oidcIssuerLocation the OIDC issuer location
      * @return the configuraton for OIDC issue location
      */
-    public static Map<String, Object> getConfigurationForOidcIssuerLocation(String oidcIssuerLocation) {
-        return getConfiguration(oidcIssuerLocation, oidc(URI.create(oidcIssuerLocation)));
-    }
+    static Map<String, Object> getConfigurationForOidcIssuerLocation(RestOperations restOperations, String oidcIssuerLocation) {
+        URI issuer = URI.create(oidcIssuerLocation);
+        String errorMessage = "Unable to resolve the Configuration with the provided Issuer of " + oidcIssuerLocation;
+        URI uri = UriComponentsBuilder.fromUriString(oidcIssuerLocation)
+                                      .replacePath(issuer.getPath() + OIDC_METADATA_PATH)
+                                      .build(Collections.emptyMap());
+        try {
+            RequestEntity<Void> request = RequestEntity.get(uri).build();
+            ResponseEntity<Map<String, Object>> response = restOperations.exchange(request,
+                TYPE_REFERENCE);
+            Map<String, Object> configuration = response.getBody();
+            if (configuration == null) {
+                throw new IllegalArgumentException("The configuration must not be null");
+            }
+            if (configuration.get("jwks_uri") == null) {
+                throw new IllegalArgumentException("The public JWK set URI must not be null");
+            }
 
-    private static Map<String, Object> getConfiguration(String issuer, URI... uris) {
-        String errorMessage = "Unable to resolve the Configuration with the provided Issuer of " + issuer;
-
-        for (URI uri : uris) {
-            try {
-                RequestEntity<Void> request = RequestEntity.get(uri).build();
-                ResponseEntity<Map<String, Object>> response = REST.exchange(request,
-                    TYPE_REFERENCE);
-                Map<String, Object> configuration = response.getBody();
-                if (configuration == null) {
-                    throw new IllegalArgumentException("The configuration must not be null");
-                }
-                if (configuration.get("jwks_uri") == null) {
-                    throw new IllegalArgumentException("The public JWK set URI must not be null");
-                }
-
-                return configuration;
-            } catch (IllegalArgumentException e) {
-                throw e;
-            } catch (RuntimeException e) {
-                if (!(e instanceof HttpClientErrorException
-                    && ((HttpClientErrorException) e).getStatusCode().is4xxClientError())) {
-                    throw new IllegalArgumentException(errorMessage, e);
-                }
-                // else try another endpoint
+            return configuration;
+        } catch (IllegalArgumentException e) {
+            throw e;
+        } catch (RuntimeException e) {
+            if (!(e instanceof HttpClientErrorException
+                && ((HttpClientErrorException) e).getStatusCode().is4xxClientError())) {
+                throw new IllegalArgumentException(errorMessage, e);
             }
         }
         throw new IllegalArgumentException(errorMessage);
     }
 
-    private static URI oidc(URI issuer) {
-        return UriComponentsBuilder.fromUri(issuer)
-                                   .replacePath(issuer.getPath() + OIDC_METADATA_PATH)
-                                   .build(Collections.emptyMap());
-    }
 
 }
 

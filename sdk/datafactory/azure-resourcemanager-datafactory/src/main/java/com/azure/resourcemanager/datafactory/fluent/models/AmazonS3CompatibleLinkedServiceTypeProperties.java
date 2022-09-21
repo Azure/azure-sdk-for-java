@@ -12,41 +12,36 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AmazonS3CompatibleLinkedServiceTypeProperties {
     /*
-     * The access key identifier of the Amazon S3 Compatible Identity and
-     * Access Management (IAM) user. Type: string (or Expression with
-     * resultType string).
+     * The access key identifier of the Amazon S3 Compatible Identity and Access Management (IAM) user. Type: string
+     * (or Expression with resultType string).
      */
     @JsonProperty(value = "accessKeyId")
     private Object accessKeyId;
 
     /*
-     * The secret access key of the Amazon S3 Compatible Identity and Access
-     * Management (IAM) user.
+     * The secret access key of the Amazon S3 Compatible Identity and Access Management (IAM) user.
      */
     @JsonProperty(value = "secretAccessKey")
     private SecretBase secretAccessKey;
 
     /*
-     * This value specifies the endpoint to access with the Amazon S3
-     * Compatible Connector. This is an optional property; change it only if
-     * you want to try a different service endpoint or want to switch between
-     * https and http. Type: string (or Expression with resultType string).
+     * This value specifies the endpoint to access with the Amazon S3 Compatible Connector. This is an optional
+     * property; change it only if you want to try a different service endpoint or want to switch between https and
+     * http. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "serviceUrl")
     private Object serviceUrl;
 
     /*
-     * If true, use S3 path-style access instead of virtual hosted-style
-     * access. Default value is false. Type: boolean (or Expression with
-     * resultType boolean).
+     * If true, use S3 path-style access instead of virtual hosted-style access. Default value is false. Type: boolean
+     * (or Expression with resultType boolean).
      */
     @JsonProperty(value = "forcePathStyle")
     private Object forcePathStyle;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;

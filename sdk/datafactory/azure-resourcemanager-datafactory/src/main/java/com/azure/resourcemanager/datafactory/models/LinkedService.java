@@ -87,6 +87,7 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "AppFigures", value = AppFiguresLinkedService.class),
     @JsonSubTypes.Type(name = "Asana", value = AsanaLinkedService.class),
     @JsonSubTypes.Type(name = "Twilio", value = TwilioLinkedService.class),
+    @JsonSubTypes.Type(name = "GoogleSheets", value = GoogleSheetsLinkedService.class),
     @JsonSubTypes.Type(name = "AmazonS3", value = AmazonS3LinkedService.class),
     @JsonSubTypes.Type(name = "AmazonRedshift", value = AmazonRedshiftLinkedService.class),
     @JsonSubTypes.Type(name = "CustomDataSource", value = CustomDataSourceLinkedService.class),
@@ -138,7 +139,8 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "AzureDataExplorer", value = AzureDataExplorerLinkedService.class),
     @JsonSubTypes.Type(name = "AzureFunction", value = AzureFunctionLinkedService.class),
     @JsonSubTypes.Type(name = "Snowflake", value = SnowflakeLinkedService.class),
-    @JsonSubTypes.Type(name = "SharePointOnlineList", value = SharePointOnlineListLinkedService.class)
+    @JsonSubTypes.Type(name = "SharePointOnlineList", value = SharePointOnlineListLinkedService.class),
+    @JsonSubTypes.Type(name = "AzureSynapseArtifacts", value = AzureSynapseArtifactsLinkedService.class)
 })
 @Fluent
 public class LinkedService {
@@ -168,8 +170,8 @@ public class LinkedService {
     private List<Object> annotations;
 
     /*
-     * The nested object which contains the information and credential which
-     * can be used to connect with related store or compute resource.
+     * The nested object which contains the information and credential which can be used to connect with related store
+     * or compute resource.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 

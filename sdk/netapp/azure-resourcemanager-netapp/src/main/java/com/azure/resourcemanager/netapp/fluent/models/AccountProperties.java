@@ -31,6 +31,12 @@ public final class AccountProperties {
     @JsonProperty(value = "encryption")
     private AccountEncryption encryption;
 
+    /*
+     * Shows the status of disableShowmount for all volumes under the subscription, null equals false
+     */
+    @JsonProperty(value = "disableShowmount", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean disableShowmount;
+
     /**
      * Get the provisioningState property: Azure lifecycle management.
      *
@@ -78,6 +84,16 @@ public final class AccountProperties {
     public AccountProperties withEncryption(AccountEncryption encryption) {
         this.encryption = encryption;
         return this;
+    }
+
+    /**
+     * Get the disableShowmount property: Shows the status of disableShowmount for all volumes under the subscription,
+     * null equals false.
+     *
+     * @return the disableShowmount value.
+     */
+    public Boolean disableShowmount() {
+        return this.disableShowmount;
     }
 
     /**

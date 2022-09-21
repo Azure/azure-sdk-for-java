@@ -6,14 +6,11 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Information about a container with data for a given resource. */
 @Fluent
 public final class DataContainer {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataContainer.class);
-
     /*
      * Log Analytics workspace information.
      */
@@ -47,11 +44,13 @@ public final class DataContainer {
      */
     public void validate() {
         if (workspace() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property workspace in model DataContainer"));
         } else {
             workspace().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataContainer.class);
 }

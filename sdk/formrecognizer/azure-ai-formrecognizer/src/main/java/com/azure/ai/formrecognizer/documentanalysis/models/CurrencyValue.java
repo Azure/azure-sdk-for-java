@@ -35,7 +35,7 @@ public final class CurrencyValue {
      *
      * @param amount the amount value to set.
      */
-    void setAmount(double amount) {
+    private void setAmount(double amount) {
         this.amount = amount;
     }
 
@@ -53,7 +53,7 @@ public final class CurrencyValue {
      *
      * @param symbol the currencySymbol value to set.
      */
-    void setSymbol(String symbol) {
+    private void setSymbol(String symbol) {
         this.symbol = symbol;
     }
 

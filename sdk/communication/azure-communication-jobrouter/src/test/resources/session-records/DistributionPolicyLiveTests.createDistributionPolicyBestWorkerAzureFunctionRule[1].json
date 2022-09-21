@@ -1,0 +1,46 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.int.communication.azure.net/routing/distributionPolicies/JAVA_LIVE_TESTS-BestWorkerAzureFunctionRule-DistributionPolicy?api-version=2022-07-18-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "0e65437a-1287-4ffb-abea-677b724e2aee",
+      "Content-Type" : "application/merge-patch+json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-azure-ref" : "20220809T220819Z-gu5mc89ux17apbrm5n76u6e4ng00000000kg00000001bmqx",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2021-10-20-preview2, 2022-07-18-preview",
+      "Connection" : "keep-alive",
+      "Last-Modified" : "Tue, 09 Aug 2022 22:08:20 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 09 Aug 2022 22:08:20 GMT",
+      "ETag" : "\"2d01199a-0000-0700-0000-62f2dad40000\"",
+      "trace-id" : "e6f27e093d937bd6e36e44a1d2157143",
+      "Body" : "{\"id\":\"JAVA_LIVE_TESTS-BestWorkerAzureFunctionRule-DistributionPolicy\",\"name\":\"JAVA_LIVE_TESTS-BestWorkerAzureFunctionRule-DistributionPolicy-Name\",\"offerTtlSeconds\":10,\"mode\":{\"kind\":\"best-worker\",\"scoringRule\":{\"kind\":\"azure-function-rule\",\"credential\":{\"appKey\":\"MyAppKey\",\"clientId\":\"MyClientId\"}},\"scoringRuleOptions\":{\"scoringParameters\":[\"jobLabels\",\"workerSelectors\"],\"allowScoringBatchOfWorkers\":false,\"descendingOrder\":true},\"minConcurrentOffers\":1,\"maxConcurrentOffers\":10,\"bypassSelectors\":false}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Request-Context" : "appId="
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.int.communication.azure.net/routing/distributionPolicies/JAVA_LIVE_TESTS-BestWorkerAzureFunctionRule-DistributionPolicy?api-version=2022-07-18-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "65ab2288-129d-4d0f-bf34-c3fa42e782aa"
+    },
+    "Response" : {
+      "x-azure-ref" : "20220809T220820Z-gu5mc89ux17apbrm5n76u6e4ng00000000kg00000001bn00",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "trace-id" : "b1134bee3624fb73376da9abbb0ece0c",
+      "api-supported-versions" : "2021-04-07-preview1, 2021-10-20-preview2, 2022-07-18-preview",
+      "Connection" : "keep-alive",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Tue, 09 Aug 2022 22:08:21 GMT",
+      "Request-Context" : "appId="
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

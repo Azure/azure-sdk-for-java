@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for H265VideoProfile. */
+/** We currently support Main. Default is Auto. */
 public final class H265VideoProfile extends ExpandableStringEnum<H265VideoProfile> {
     /** Static value Auto for H265VideoProfile. */
     public static final H265VideoProfile AUTO = fromString("Auto");

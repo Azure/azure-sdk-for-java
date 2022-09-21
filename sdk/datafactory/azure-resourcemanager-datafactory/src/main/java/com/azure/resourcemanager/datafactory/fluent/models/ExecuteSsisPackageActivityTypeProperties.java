@@ -26,22 +26,20 @@ public final class ExecuteSsisPackageActivityTypeProperties {
     private SsisPackageLocation packageLocation;
 
     /*
-     * Specifies the runtime to execute SSIS package. The value should be "x86"
-     * or "x64". Type: string (or Expression with resultType string).
+     * Specifies the runtime to execute SSIS package. The value should be "x86" or "x64". Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "runtime")
     private Object runtime;
 
     /*
-     * The logging level of SSIS package execution. Type: string (or Expression
-     * with resultType string).
+     * The logging level of SSIS package execution. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "loggingLevel")
     private Object loggingLevel;
 
     /*
-     * The environment path to execute the SSIS package. Type: string (or
-     * Expression with resultType string).
+     * The environment path to execute the SSIS package. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "environmentPath")
     private Object environmentPath;

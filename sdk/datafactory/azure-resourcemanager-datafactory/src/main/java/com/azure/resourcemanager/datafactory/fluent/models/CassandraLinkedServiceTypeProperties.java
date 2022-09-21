@@ -13,29 +13,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CassandraLinkedServiceTypeProperties {
     /*
-     * Host name for connection. Type: string (or Expression with resultType
-     * string).
+     * Host name for connection. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "host", required = true)
     private Object host;
 
     /*
-     * AuthenticationType to be used for connection. Type: string (or
-     * Expression with resultType string).
+     * AuthenticationType to be used for connection. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "authenticationType")
     private Object authenticationType;
 
     /*
-     * The port for the connection. Type: integer (or Expression with
-     * resultType integer).
+     * The port for the connection. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "port")
     private Object port;
 
     /*
-     * Username for authentication. Type: string (or Expression with resultType
-     * string).
+     * Username for authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "username")
     private Object username;
@@ -47,9 +43,8 @@ public final class CassandraLinkedServiceTypeProperties {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;

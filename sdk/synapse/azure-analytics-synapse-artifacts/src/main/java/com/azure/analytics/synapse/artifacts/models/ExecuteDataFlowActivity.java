@@ -42,28 +42,32 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
     private ExecuteDataFlowActivityTypePropertiesCompute compute;
 
     /*
-     * Trace level setting used for data flow monitoring output. Supported
-     * values are: 'coarse', 'fine', and 'none'. Type: string (or Expression
-     * with resultType string)
+     * Trace level setting used for data flow monitoring output. Supported values are: 'coarse', 'fine', and 'none'.
+     * Type: string (or Expression with resultType string)
      */
     @JsonProperty(value = "typeProperties.traceLevel")
     private Object traceLevel;
 
     /*
-     * Continue on error setting used for data flow execution. Enables
-     * processing to continue if a sink fails. Type: boolean (or Expression
-     * with resultType boolean)
+     * Continue on error setting used for data flow execution. Enables processing to continue if a sink fails. Type:
+     * boolean (or Expression with resultType boolean)
      */
     @JsonProperty(value = "typeProperties.continueOnError")
     private Object continueOnError;
 
     /*
-     * Concurrent run setting used for data flow execution. Allows sinks with
-     * the same save order to be processed concurrently. Type: boolean (or
-     * Expression with resultType boolean)
+     * Concurrent run setting used for data flow execution. Allows sinks with the same save order to be processed
+     * concurrently. Type: boolean (or Expression with resultType boolean)
      */
     @JsonProperty(value = "typeProperties.runConcurrently")
     private Object runConcurrently;
+
+    /*
+     * Specify number of parallel staging for sources applicable to the sink. Type: integer (or Expression with
+     * resultType integer)
+     */
+    @JsonProperty(value = "typeProperties.sourceStagingConcurrency")
+    private Object sourceStagingConcurrency;
 
     /**
      * Get the dataflow property: Data flow reference.
@@ -208,6 +212,28 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
      */
     public ExecuteDataFlowActivity setRunConcurrently(Object runConcurrently) {
         this.runConcurrently = runConcurrently;
+        return this;
+    }
+
+    /**
+     * Get the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the sink.
+     * Type: integer (or Expression with resultType integer).
+     *
+     * @return the sourceStagingConcurrency value.
+     */
+    public Object getSourceStagingConcurrency() {
+        return this.sourceStagingConcurrency;
+    }
+
+    /**
+     * Set the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the sink.
+     * Type: integer (or Expression with resultType integer).
+     *
+     * @param sourceStagingConcurrency the sourceStagingConcurrency value to set.
+     * @return the ExecuteDataFlowActivity object itself.
+     */
+    public ExecuteDataFlowActivity setSourceStagingConcurrency(Object sourceStagingConcurrency) {
+        this.sourceStagingConcurrency = sourceStagingConcurrency;
         return this;
     }
 

@@ -131,7 +131,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
 
                            // not all continuations have been drained yet
                            // repeat with the next continuation
-                           this.reenableShouldFetchMoreForRetry();
+                           this.reEnableShouldFetchMoreForRetry();
                            return Mono.empty();
                        }
 

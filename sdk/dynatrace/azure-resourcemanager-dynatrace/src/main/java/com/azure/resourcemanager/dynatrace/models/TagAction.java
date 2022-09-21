@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TagAction. */
+/** Valid actions for a filtering tag. Exclusion takes priority over inclusion. */
 public final class TagAction extends ExpandableStringEnum<TagAction> {
     /** Static value Include for TagAction. */
     public static final TagAction INCLUDE = fromString("Include");

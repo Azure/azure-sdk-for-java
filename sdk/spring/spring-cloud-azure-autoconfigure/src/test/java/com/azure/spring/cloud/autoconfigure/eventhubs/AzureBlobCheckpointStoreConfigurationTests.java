@@ -6,8 +6,8 @@ package com.azure.spring.cloud.autoconfigure.eventhubs;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
 import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
-import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobAutoConfiguration;
 import com.azure.spring.cloud.service.implementation.storage.blob.BlobServiceClientBuilderFactory;
 import com.azure.storage.blob.BlobContainerAsyncClient;
@@ -144,11 +144,12 @@ class AzureBlobCheckpointStoreConfigurationTests {
     @Test
     void blobContainerInitializerShouldNotConfigureByDefault() {
         this.contextRunner
+            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .withPropertyValues(
                 "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=abc",
-                "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-name=sa"
+                "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-name=sa",
+                "spring.cloud.azure.eventhubs.profile.cloud-type=Azure"
             )
-            .withBean(AzureEventHubsProperties.class, AzureEventHubsProperties::new)
             .run(context -> {
                 assertThat(context).doesNotHaveBean(BlobCheckpointStoreContainerInitializer.class);
             });

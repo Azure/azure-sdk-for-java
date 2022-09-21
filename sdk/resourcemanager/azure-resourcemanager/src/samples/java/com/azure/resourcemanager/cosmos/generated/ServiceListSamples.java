@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Service List. */
 public final class ServiceListSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBServicesList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBServicesList.json
      */
     /**
      * Sample code: CosmosDBServicesList.
