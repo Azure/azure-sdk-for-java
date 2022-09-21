@@ -22,6 +22,8 @@ public final class AnalyzeActionsResult {
     private IterableStream<SingleLabelClassifyActionResult> singleLabelClassifyResults;
     private IterableStream<MultiLabelClassifyActionResult> multiLabelClassifyResults;
 
+    private IterableStream<ExtractSummaryActionResult> extractSummaryResults;
+
     static {
         AnalyzeActionsResultPropertiesHelper.setAccessor(
             new AnalyzeActionsResultPropertiesHelper.AnalyzeActionsResultAccessor() {
@@ -79,6 +81,12 @@ public final class AnalyzeActionsResult {
                 public void setMultiCategoryClassifyResults(AnalyzeActionsResult analyzeActionsResult,
                     IterableStream<MultiLabelClassifyActionResult> multiCategoryClassifyResults) {
                     analyzeActionsResult.setMultiLabelClassifyResults(multiCategoryClassifyResults);
+                }
+
+                @Override
+                public void setExtractSummaryResults(AnalyzeActionsResult analyzeActionsResult,
+                                                     IterableStream<ExtractSummaryActionResult> extractSummaryResult) {
+                    analyzeActionsResult.setExtractSummaryResults(extractSummaryResult);
                 }
             });
     }
@@ -170,6 +178,15 @@ public final class AnalyzeActionsResult {
         return multiLabelClassifyResults;
     }
 
+    /**
+     * Gets the {@code extractSummaryResults} property: the extractive summarization actions results property.
+     *
+     * @return the extractSummaryResults value.
+     */
+    public IterableStream<ExtractSummaryActionResult> getExtractSummaryResults() {
+        return extractSummaryResults;
+    }
+
     private void setRecognizeEntitiesResults(
         IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesResults) {
         this.recognizeEntitiesResults = recognizeEntitiesResults;
@@ -211,5 +228,9 @@ public final class AnalyzeActionsResult {
     private void setMultiLabelClassifyResults(
         IterableStream<MultiLabelClassifyActionResult> multiLabelClassifyResults) {
         this.multiLabelClassifyResults = multiLabelClassifyResults;
+    }
+
+    private void setExtractSummaryResults(IterableStream<ExtractSummaryActionResult> extractSummaryResults) {
+        this.extractSummaryResults = extractSummaryResults;
     }
 }

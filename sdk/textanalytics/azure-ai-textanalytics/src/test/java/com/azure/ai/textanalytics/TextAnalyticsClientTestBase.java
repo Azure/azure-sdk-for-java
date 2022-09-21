@@ -18,6 +18,9 @@ import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
+import com.azure.ai.textanalytics.models.ExtractSummaryAction;
+import com.azure.ai.textanalytics.models.ExtractSummaryActionResult;
+import com.azure.ai.textanalytics.models.ExtractSummaryResult;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
@@ -41,6 +44,8 @@ import com.azure.ai.textanalytics.models.SentenceOpinion;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SingleLabelClassifyAction;
 import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
+import com.azure.ai.textanalytics.models.SummarySentence;
+import com.azure.ai.textanalytics.models.SummarySentencesOrder;
 import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
@@ -53,6 +58,7 @@ import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
+import com.azure.ai.textanalytics.util.ExtractSummaryResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
@@ -91,6 +97,7 @@ import static com.azure.ai.textanalytics.TestUtils.KEY_PHRASE_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.LINKED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.PII_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.SENTIMENT_INPUTS;
+import static com.azure.ai.textanalytics.TestUtils.SUMMARY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.TOO_LONG_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.getDuplicateTextDocumentInputs;
 import static com.azure.ai.textanalytics.TestUtils.getWarningsTextDocumentInputs;
@@ -696,6 +703,32 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     @Test
     abstract void multiLabelClassification(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
+    // Extractive Summarization
+//    @Test
+//    abstract void analyzeExtractSummaryActionWithDefaultParameterValues(HttpClient httpClient,
+//        TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeExtractSummaryActionSortedByOffset(HttpClient httpClient,
+                                                            TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeExtractSummaryActionSortedByRankScore(HttpClient httpClient,
+                                                               TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeExtractSummaryActionWithSentenceCountLessThanMaxCount(HttpClient httpClient,
+                                                                               TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeExtractSummaryActionWithNonDefaultSentenceCount(HttpClient httpClient,
+                                                                         TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeExtractSummaryActionMaxSentenceCountInvalidRangeException(HttpClient httpClient,
+                                                                                   TextAnalyticsServiceVersion serviceVersion);
+
+
     // Detect Language runner
     void detectLanguageShowStatisticsRunner(BiConsumer<List<DetectLanguageInput>,
         TextAnalyticsRequestOptions> testRunner) {
@@ -1105,6 +1138,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                     new RecognizeLinkedEntitiesAction())
                 .setAnalyzeSentimentActions(new AnalyzeSentimentAction().setActionName(CUSTOM_ACTION_NAME),
                     new AnalyzeSentimentAction())
+                .setExtractSummaryActions(new ExtractSummaryAction().setActionName(CUSTOM_ACTION_NAME),
+                    new ExtractSummaryAction())
             // TODO: https://github.com/Azure/azure-sdk-for-java/issues/24908
 
 //                .setRecognizeCustomEntitiesActions(
@@ -1137,6 +1172,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction().setActionName(CUSTOM_ACTION_NAME))
                 .setRecognizeLinkedEntitiesActions(new RecognizeLinkedEntitiesAction().setActionName(CUSTOM_ACTION_NAME))
                 .setAnalyzeSentimentActions(new AnalyzeSentimentAction().setActionName(CUSTOM_ACTION_NAME))
+                .setExtractSummaryActions(new ExtractSummaryAction().setActionName(CUSTOM_ACTION_NAME))
             // TODO: https://github.com/Azure/azure-sdk-for-java/issues/24908
 
 //                .setRecognizeCustomEntitiesActions(
@@ -1768,6 +1804,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         validateAnalyzeSentimentActionResults(showStatistics, includeOpinionMining,
             expected.getAnalyzeSentimentResults().stream().collect(Collectors.toList()),
             actual.getAnalyzeSentimentResults().stream().collect(Collectors.toList()));
+        validateExtractSummaryActionResults(showStatistics,
+            expected.getExtractSummaryResults().stream().collect(Collectors.toList()),
+            actual.getExtractSummaryResults().stream().collect(Collectors.toList()));
     }
 
     // Action results validation
@@ -2010,5 +2049,91 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static void validateErrorDocument(TextAnalyticsError expectedError, TextAnalyticsError actualError) {
         assertEquals(expectedError.getErrorCode(), actualError.getErrorCode());
         assertNotNull(actualError.getMessage());
+    }
+
+    void analyzeExtractSummaryRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner,
+                                     Integer maxSentenceCount, SummarySentencesOrder summarySentencesOrder) {
+        testRunner.accept(SUMMARY_INPUTS,
+            new TextAnalyticsActions()
+                .setExtractSummaryActions(
+                    new ExtractSummaryAction()
+                        .setMaxSentenceCount(maxSentenceCount)
+                        .setOrderBy(summarySentencesOrder)));
+    }
+
+    static void validateExtractSummaryResultCollection(boolean showStatistics,
+        ExtractSummaryResultCollection expected, ExtractSummaryResultCollection actual) {
+        validateTextAnalyticsResult(showStatistics, expected, actual,
+            (expectedItem, actualItem) -> validateDocumentExtractSummaryResult(expectedItem, actualItem));
+    }
+
+    static void validateDocumentExtractSummaryResult(ExtractSummaryResult expect,
+                                                     ExtractSummaryResult actual) {
+        validateSummarySentenceList(
+            expect.getSentences().stream().collect(Collectors.toList()),
+            actual.getSentences().stream().collect(Collectors.toList())
+        );
+    }
+
+    static void validateExtractSummaryActionResults(boolean showStatistics,
+        List<ExtractSummaryActionResult> expected, List<ExtractSummaryActionResult> actual) {
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < actual.size(); i++) {
+            validateExtractSummaryActionResult(showStatistics, expected.get(i), actual.get(i));
+        }
+    }
+
+    static void validateExtractSummaryActionResult(boolean showStatistics,
+                                                   ExtractSummaryActionResult expected, ExtractSummaryActionResult actual) {
+        assertEquals(expected.isError(), actual.isError());
+        if (actual.isError()) {
+            if (expected.getError() == null) {
+                assertNull(actual.getError());
+            } else {
+                assertNotNull(actual.getError());
+                validateErrorDocument(expected.getError(), actual.getError());
+            }
+        } else {
+            validateExtractSummaryResultCollection(showStatistics,
+                expected.getDocumentsResults(), actual.getDocumentsResults());
+        }
+    }
+
+    static void validateSummarySentenceList(List<SummarySentence> expect, List<SummarySentence> actual) {
+        assertEquals(expect.size(), actual.size());
+        for (int i = 0; i < expect.size(); i++) {
+            validateSummarySentence(expect.get(i), actual.get(i));
+        }
+    }
+
+    static void validateSummarySentence(SummarySentence expect, SummarySentence actual) {
+        assertEquals(expect.getText(), actual.getText());
+        assertEquals(expect.getOffset(), actual.getOffset());
+        assertEquals(expect.getLength(), actual.getLength());
+        assertNotNull(actual.getRankScore());
+    }
+
+    static boolean isAscendingOrderByOffSet(List<SummarySentence> summarySentences) {
+        int currMin = Integer.MIN_VALUE;
+        for (SummarySentence summarySentence : summarySentences) {
+            if (summarySentence.getOffset() <= currMin) {
+                return false;
+            } else {
+                currMin = summarySentence.getOffset();
+            }
+        }
+        return true;
+    }
+
+    static boolean isDescendingOrderByRankScore(List<SummarySentence> summarySentences) {
+        double currentMax = Double.MAX_VALUE;
+        for (SummarySentence summarySentence : summarySentences) {
+            if (summarySentence.getRankScore() > currentMax) {
+                return false;
+            } else {
+                currentMax = summarySentence.getRankScore();
+            }
+        }
+        return true;
     }
 }
