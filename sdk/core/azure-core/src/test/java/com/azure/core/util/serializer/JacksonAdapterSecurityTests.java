@@ -13,7 +13,6 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
 
 import java.net.URISyntaxException;
-import java.security.Policy;
 import java.security.URIParameter;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -32,12 +31,12 @@ public class JacksonAdapterSecurityTests {
 
     private boolean originalUseAccessHelper;
     private SecurityManager originalManager;
-    private Policy originalPolicy;
+    private java.security.Policy originalPolicy;
 
     public void captureDefaultConfigurations() {
         originalUseAccessHelper = JacksonAdapter.isUseAccessHelper();
         originalManager = System.getSecurityManager();
-        originalPolicy = Policy.getPolicy();
+        originalPolicy = java.security.Policy.getPolicy();
 
         // Set the System property codebase.azure-core to the location of JacksonAdapter's codebase.
         // This gets picked up by the policy setting to prevent needing to hardcode the code base location.
@@ -56,7 +55,7 @@ public class JacksonAdapterSecurityTests {
     public void revertDefaultConfigurations() throws NoSuchMethodException, NoSuchFieldException {
         JacksonAdapter.setUseAccessHelper(originalUseAccessHelper);
         System.setSecurityManager(originalManager);
-        Policy.setPolicy(originalPolicy);
+        java.security.Policy.setPolicy(originalPolicy);
 
         // Now that the properties have been used, clear them.
         System.clearProperty("codebase.azure-core");
@@ -81,7 +80,8 @@ public class JacksonAdapterSecurityTests {
         try {
             JacksonAdapter adapter = new JacksonAdapter();
 
-            Policy.setPolicy(Policy.getInstance("JavaPolicy", getUriParameter("basic-permissions.policy")));
+            java.security.Policy.setPolicy(java.security.Policy
+                .getInstance("JavaPolicy", getUriParameter("basic-permissions.policy")));
             System.setSecurityManager(new SecurityManager());
 
             assertThrows(InvalidDefinitionException.class, () ->
@@ -102,7 +102,8 @@ public class JacksonAdapterSecurityTests {
             JacksonAdapter adapter = new JacksonAdapter();
             JacksonAdapter.setUseAccessHelper(true);
 
-            Policy.setPolicy(Policy.getInstance("JavaPolicy", getUriParameter("basic-permissions.policy")));
+            java.security.Policy.setPolicy(java.security.Policy
+                .getInstance("JavaPolicy", getUriParameter("basic-permissions.policy")));
             System.setSecurityManager(new SecurityManager());
 
             assertThrows(InvalidDefinitionException.class, () ->
@@ -123,7 +124,8 @@ public class JacksonAdapterSecurityTests {
             JacksonAdapter adapter = new JacksonAdapter();
             JacksonAdapter.setUseAccessHelper(true);
 
-            Policy.setPolicy(Policy.getInstance("JavaPolicy", getUriParameter("access-helper-succeeds.policy")));
+            java.security.Policy.setPolicy(java.security.Policy
+                .getInstance("JavaPolicy", getUriParameter("access-helper-succeeds.policy")));
             System.setSecurityManager(new SecurityManager());
 
             SimplePojo actual = assertDoesNotThrow(() ->
