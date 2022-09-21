@@ -15,12 +15,10 @@ import org.apache.avro.message.SchemaStore;
 @org.apache.avro.specific.AvroGenerated
 public class PlayingCard extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = -4337560961736900860L;
-
-
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"PlayingCard\",\"namespace\":\"com.azure.data.schemaregistry.apacheavro.generatedtestsources\",\"fields\":[{\"name\":\"isFaceCard\",\"type\":\"boolean\"},{\"name\":\"cardValue\",\"type\":\"int\"},{\"name\":\"playingCardSuit\",\"type\":{\"type\":\"enum\",\"name\":\"PlayingCardSuit\",\"symbols\":[\"SPADES\",\"HEARTS\",\"DIAMONDS\",\"CLUBS\"]}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
-  private static final SpecificData MODEL$ = new SpecificData();
+  private static SpecificData MODEL$ = new SpecificData();
 
   private static final BinaryMessageEncoder<PlayingCard> ENCODER =
       new BinaryMessageEncoder<PlayingCard>(MODEL$, SCHEMA$);
@@ -73,9 +71,9 @@ public class PlayingCard extends org.apache.avro.specific.SpecificRecordBase imp
     return DECODER.decode(b);
   }
 
-  private boolean isFaceCard;
-  private int cardValue;
-  private com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCardSuit playingCardSuit;
+   private boolean isFaceCard;
+   private int cardValue;
+   private com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCardSuit playingCardSuit;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -217,7 +215,7 @@ public class PlayingCard extends org.apache.avro.specific.SpecificRecordBase imp
 
     /** Creates a new Builder */
     private Builder() {
-      super(SCHEMA$, MODEL$);
+      super(SCHEMA$);
     }
 
     /**
@@ -245,7 +243,7 @@ public class PlayingCard extends org.apache.avro.specific.SpecificRecordBase imp
      * @param other The existing instance to copy.
      */
     private Builder(com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCard other) {
-      super(SCHEMA$, MODEL$);
+      super(SCHEMA$);
       if (isValidValue(fields()[0], other.isFaceCard)) {
         this.isFaceCard = data().deepCopy(fields()[0].schema(), other.isFaceCard);
         fieldSetFlags()[0] = true;
