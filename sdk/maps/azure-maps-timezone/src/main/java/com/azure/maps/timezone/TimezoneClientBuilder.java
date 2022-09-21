@@ -5,6 +5,11 @@
 package com.azure.maps.timezone;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureKeyCredentialTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.EndpointTrait;
+import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -19,11 +24,13 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.maps.timezone.implementation.TimezoneClientImpl;
 import com.azure.maps.timezone.implementation.TimezoneClientImplBuilder;
 
@@ -35,7 +42,10 @@ import java.util.Objects;
 
 /** A builder for creating a new instance of the TimezoneClient type. */
 @ServiceClientBuilder(serviceClients = {TimezoneClient.class, TimezoneAsyncClient.class})
-public final class TimezoneClientBuilder {
+public final class TimezoneClientBuilder implements AzureKeyCredentialTrait<TimezoneClientBuilder>,
+    TokenCredentialTrait<TimezoneClientBuilder>, HttpTrait<TimezoneClientBuilder>,
+    ConfigurationTrait<TimezoneClientBuilder>, EndpointTrait<TimezoneClientBuilder> {
+
     // auth scope
     static final String[] DEFAULT_SCOPES = new String[] {"https://atlas.microsoft.com/.default"};
 
@@ -46,6 +56,7 @@ public final class TimezoneClientBuilder {
     private static final String X_MS_CLIENT_ID = "x-ms-client-id";
 
     // instance fields
+    private static final ClientLogger LOGGER = new ClientLogger(TimezoneClientBuilder.class);
     private final Map<String, String> properties = new HashMap<>();
     private String endpoint;
     private TimezoneServiceVersion serviceVersion;
@@ -71,6 +82,7 @@ public final class TimezoneClientBuilder {
     private ClientOptions clientOptions;
     // The retry policy that will attempt to retry failed requests, if applicable.
     private RetryPolicy retryPolicy;
+    private RetryOptions retryOptions;
 
     // credentials
     private AzureKeyCredential keyCredential;
@@ -91,7 +103,7 @@ public final class TimezoneClientBuilder {
      * @return the TimezoneClientBuilder.
      */
     public TimezoneClientBuilder timezoneClientId(String timezoneClientId) {
-        this.timezoneClientId = Objects.requireNonNull(timezoneClientId, "'timezoneClientId' cannot be null.");;
+        this.timezoneClientId = Objects.requireNonNull(timezoneClientId, "'timezoneClientId' cannot be null.");
         return this;
     }
 
@@ -130,7 +142,10 @@ public final class TimezoneClientBuilder {
      * @return the TimezoneClientBuilder.
      */
     public TimezoneClientBuilder pipeline(HttpPipeline pipeline) {
-        this.pipeline = Objects.requireNonNull(pipeline, "'pipeline' cannot be null.");
+        if (this.pipeline != null && pipeline == null) {
+            LOGGER.info("Pipeline is being set to 'null' when it was previously configured.");
+        }
+        this.pipeline = pipeline;
         return this;
     }
 
@@ -141,7 +156,10 @@ public final class TimezoneClientBuilder {
      * @return the TimezoneClientBuilder.
      */
     public TimezoneClientBuilder httpClient(HttpClient httpClient) {
-        this.httpClient = Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
+        if (this.httpClient != null && httpClient == null) {
+            LOGGER.info("HttpClient is being set to 'null' when it was previously configured.");
+        }
+        this.httpClient = httpClient;
         return this;
     }
 
@@ -152,7 +170,7 @@ public final class TimezoneClientBuilder {
      * @return the TimezoneClientBuilder.
      */
     public TimezoneClientBuilder configuration(Configuration configuration) {
-        this.configuration = Objects.requireNonNull(configuration, "'configuration' cannot be null.");;
+        this.configuration = Objects.requireNonNull(configuration, "'configuration' cannot be null.");
         return this;
     }
 
@@ -225,6 +243,17 @@ public final class TimezoneClientBuilder {
     }
 
     /**
+     * Sets retry options
+     * @param retryOptions the retry options for the client
+     * @return a reference to this {@code TimezoneClientBuilder}
+     */
+    @Override
+    public TimezoneClientBuilder retryOptions(RetryOptions retryOptions) {
+        this.retryOptions = retryOptions;
+        return this;
+    }
+
+    /**
      * Builds an instance of TimezoneClientImpl with the provided parameters.
      *
      * @return an instance of TimezoneClientImpl.
@@ -279,7 +308,8 @@ public final class TimezoneClientBuilder {
         // Authentications
         if (tokenCredential != null) {
             if (this.timezoneClientId == null) {
-                throw new IllegalArgumentException("Missing 'timezoneClientId' parameter required for Azure AD Authentication");
+                throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("Missing 'timezoneClientId' parameter required for Azure AD Authentication"));
             }
             // we need the x-ms-client header
             HttpHeaders clientHeader = new HttpHeaders();
@@ -292,7 +322,8 @@ public final class TimezoneClientBuilder {
             policies.add(new AzureKeyCredentialPolicy(MAPS_SUBSCRIPTION_KEY, keyCredential));
         } else {
             // Throw exception that credential and tokenCredential cannot be null
-            throw new IllegalArgumentException("Missing credential information while building a client.");
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing credential information while building a client."));
         }
 
         // Add final policies

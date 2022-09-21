@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.timezone;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -23,24 +26,6 @@ public class TimezoneClientBuilderTest {
         assertThrows(NullPointerException.class, () -> {
             final TimezoneClientBuilder builder = new TimezoneClientBuilder();
             builder.endpoint(null);
-        });
-    }
-
-    // Test for missing pipeline
-    @Test
-    public void missingPipeline() {
-        assertThrows(NullPointerException.class, () -> {
-            final TimezoneClientBuilder builder = new TimezoneClientBuilder();
-            builder.pipeline(null);
-        });
-    }
-
-    // Test for missing http client
-    @Test
-    public void missingHttpClient() {
-        assertThrows(NullPointerException.class, () -> {
-            final TimezoneClientBuilder builder = new TimezoneClientBuilder();
-            builder.httpClient(null);
         });
     }
 

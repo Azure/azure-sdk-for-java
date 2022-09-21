@@ -1,3 +1,7 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+// See License.txt in the project root for license information.
+
 package com.azure.maps.timezone.models;
 
 import java.time.OffsetDateTime;
@@ -14,7 +18,7 @@ public final class TimezoneIdOptions {
 
     /**
      * get timezoneId
-     * @return
+     * @return the timezone id, the IANA time zone ID.
      */
     public String getTimezoneId() {
         return timezoneId;
@@ -22,8 +26,8 @@ public final class TimezoneIdOptions {
 
     /**
      * Set timezone id
-     * @param timezoneId
-     * @return
+     * @param timezoneId the IANA time zone ID.
+     * @return TimezoneIdOptions
      */
     public TimezoneIdOptions setTimezoneId(String timezoneId) {
         this.timezoneId = timezoneId;
@@ -32,7 +36,9 @@ public final class TimezoneIdOptions {
 
     /**
      * get accept language
-     * @return
+     * @return the accept language. Specifies the language code in which the timezone names should be returned. If no language
+     *     code is provided, the response will be in "EN". Please refer to [Supported
+     *     Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
      */
     public String getAcceptLanguage() {
         return acceptLanguage;
@@ -40,8 +46,10 @@ public final class TimezoneIdOptions {
 
     /**
      * set accept language
-     * @param acceptLanguage
-     * @return
+     * @param acceptLanguage Specifies the language code in which the timezone names should be returned. If no language
+     *     code is provided, the response will be in "EN". Please refer to [Supported
+     *     Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
+     * @return TimezoneIdOptions
      */
     public TimezoneIdOptions setAcceptLanguage(String acceptLanguage) {
         this.acceptLanguage = acceptLanguage;
@@ -50,7 +58,7 @@ public final class TimezoneIdOptions {
 
     /**
      * get timezone options
-     * @return
+     * @return TimezoneOptions. Alternatively, use alias "o". Options available for types of information returned in the result.
      */
     public TimezoneOptions getOptions() {
         return options;
@@ -58,8 +66,8 @@ public final class TimezoneIdOptions {
 
     /**
      * set timezone options
-     * @param options
-     * @return
+     * @param options Alternatively, use alias "o". Options available for types of information returned in the result.
+     * @return TimezoneIdOptions
      */
     public TimezoneIdOptions setOptions(TimezoneOptions options) {
         this.options = options;
@@ -68,7 +76,8 @@ public final class TimezoneIdOptions {
 
     /**
      * get time stamp
-     * @return
+     * @return the time stamp. Alternatively, use alias "stamp", or "s". Reference time, if omitted, the API will use the
+     *     machine time serving the request.
      */
     public OffsetDateTime getTimeStamp() {
         return timeStamp;
@@ -76,8 +85,9 @@ public final class TimezoneIdOptions {
 
     /**
      * set time stamp
-     * @param timeStamp
-     * @return
+     * @param timeStamp Alternatively, use alias "stamp", or "s". Reference time, if omitted, the API will use the
+     *     machine time serving the request.
+     * @return TimezoneIdOptions
      */
     public TimezoneIdOptions setTimeStamp(OffsetDateTime timeStamp) {
         this.timeStamp = timeStamp;
@@ -86,7 +96,8 @@ public final class TimezoneIdOptions {
 
     /**
      * get daylight savings time from
-     * @return
+     * @return the daylight savings time in offset date time. Alternatively, use alias "tf". The start date from which daylight savings time
+     *     (DST) transitions are requested, only applies when "options" = all or "options" = transitions.
      */
     public OffsetDateTime getDaylightSavingsTimeFrom() {
         return daylightSavingsTimeFrom;
@@ -94,8 +105,9 @@ public final class TimezoneIdOptions {
 
     /**
      * set daylight savings time from
-     * @param daylightSavingsTimeFrom
-     * @return
+     * @param daylightSavingsTimeFrom Alternatively, use alias "tf". The start date from which daylight savings time
+     *     (DST) transitions are requested, only applies when "options" = all or "options" = transitions.
+     * @return TimezoneIdOptions
      */
     public TimezoneIdOptions setDaylightSavingsTimeFrom(OffsetDateTime daylightSavingsTimeFrom) {
         this.daylightSavingsTimeFrom = daylightSavingsTimeFrom;
@@ -104,7 +116,8 @@ public final class TimezoneIdOptions {
 
     /**
      * get daylight savings time lasting years
-     * @return
+     * @return the daylight savings time in lasting years. Alternatively, use alias "ty". The number of years from "transitionsFrom"
+     *     for which DST transitions are requested, only applies when "options" = all or "options" = transitions.
      */
     public Integer getDaylightSavingsTimeLastingYears() {
         return daylightSavingsTimeLastingYears;
@@ -112,8 +125,9 @@ public final class TimezoneIdOptions {
 
     /**
      * set daylight savings time lasting years
-     * @param daylightSavingsTimeLastingYears
-     * @return
+     * @param daylightSavingsTimeLastingYears Alternatively, use alias "ty". The number of years from "transitionsFrom"
+     *     for which DST transitions are requested, only applies when "options" = all or "options" = transitions.
+     * @return TimezoneIdOptions
      */
     public TimezoneIdOptions setDaylightSavingsTimeLastingYears(Integer daylightSavingsTimeLastingYears) {
         this.daylightSavingsTimeLastingYears = daylightSavingsTimeLastingYears;

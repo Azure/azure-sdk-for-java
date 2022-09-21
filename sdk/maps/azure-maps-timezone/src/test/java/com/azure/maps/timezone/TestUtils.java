@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.timezone;
 
 import java.io.BufferedReader;
@@ -127,8 +130,7 @@ public class TestUtils {
         byte[] buffer = new byte[1024];
         int len;
         // read bytes from the input stream and store them in the buffer
-        while ((len = in.read(buffer)) != -1)
-        {
+        while ((len = in.read(buffer)) != -1) {
             // write bytes from the buffer into the output stream
             os.write(buffer, 0, len);
         }

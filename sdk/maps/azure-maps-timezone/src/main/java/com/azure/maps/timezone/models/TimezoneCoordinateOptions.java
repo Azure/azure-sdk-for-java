@@ -1,3 +1,7 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+// See License.txt in the project root for license information.
+
 package com.azure.maps.timezone.models;
 
 import java.time.OffsetDateTime;
@@ -16,7 +20,9 @@ public final class TimezoneCoordinateOptions {
 
     /**
      * Get coordinates
-     * @return GeoPosition coordinate
+     * @return GeoPosition coordinates of the point for which time zone information is requested. This parameter is a
+     *     list of coordinates, containing a pair of coordinate(lon, lat). When this endpoint is called directly,
+     *     coordinates are passed in as a single string containing coordinates, separated by commas.
      */
     public GeoPosition getCoordinates() {
         return coordinates;
@@ -24,8 +30,10 @@ public final class TimezoneCoordinateOptions {
 
     /**
      * Set geoposition coordinate
-     * @param coordinates
-     * @return
+     * @param coordinates GeoPosition coordinates of the point for which time zone information is requested. This parameter is a
+     *     list of coordinates, containing a pair of coordinate(lon, lat). When this endpoint is called directly,
+     *     coordinates are passed in as a single string containing coordinates, separated by commas.
+     * @return returns TimezoneCoordinateOptions
      */
     public TimezoneCoordinateOptions setCoordinates(GeoPosition coordinates) {
         this.coordinates = coordinates;
@@ -34,7 +42,9 @@ public final class TimezoneCoordinateOptions {
 
     /**
      * Get accept language
-     * @return
+     * @return Specifies the language code in which the timezone names should be returned. If no language
+     *     code is provided, the response will be in "EN". Please refer to [Supported
+     *     Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
      */
     public String getAcceptLanguage() {
         return acceptLanguage;
@@ -42,8 +52,10 @@ public final class TimezoneCoordinateOptions {
 
     /**
      * Set accept language
-     * @param acceptLanguage
-     * @return
+     * @param acceptLanguage Specifies the language code in which the timezone names should be returned. If no language
+     *     code is provided, the response will be in "EN". Please refer to [Supported
+     *     Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
+     * @return TimezoneCoordinateOptions
      */
     public TimezoneCoordinateOptions setAcceptLanguage(String acceptLanguage) {
         this.acceptLanguage = acceptLanguage;
@@ -52,7 +64,7 @@ public final class TimezoneCoordinateOptions {
 
     /**
      * Get timezone options
-     * @return
+     * @return returns timezone options. Alternatively, use alias "o". Options available for types of information returned in the result.
      */
     public TimezoneOptions getOptions() {
         return options;
@@ -60,8 +72,8 @@ public final class TimezoneCoordinateOptions {
 
     /**
      * Set timezone options
-     * @param options
-     * @return
+     * @param options Alternatively, use alias "o". Options available for types of information returned in the result.
+     * @return TimezoneCoordinateOptions
      */
     public TimezoneCoordinateOptions setOptions(TimezoneOptions options) {
         this.options = options;
@@ -70,7 +82,8 @@ public final class TimezoneCoordinateOptions {
 
     /**
      * Get timestamp
-     * @return
+     * @return the time stamp. Alternatively, use alias "stamp", or "s". Reference time, if omitted, the API will use the
+     *     machine time serving the request.
      */
     public OffsetDateTime getTimeStamp() {
         return timeStamp;
@@ -78,8 +91,9 @@ public final class TimezoneCoordinateOptions {
 
     /**
      * Set timestamp
-     * @param timeStamp
-     * @return
+     * @param timeStamp Alternatively, use alias "stamp", or "s". Reference time, if omitted, the API will use the
+     *     machine time serving the request.
+     * @return TimezoneCoordinateOptions
      */
     public TimezoneCoordinateOptions setTimeStamp(OffsetDateTime timeStamp) {
         this.timeStamp = timeStamp;
@@ -88,7 +102,8 @@ public final class TimezoneCoordinateOptions {
 
     /**
      * Get daylight savings time from
-     * @return
+     * @return daylight savings time. Alternatively, use alias "tf". The start date from which daylight savings time
+     *     (DST) transitions are requested, only applies when "options" = all or "options" = transitions.
      */
     public OffsetDateTime getDaylightSavingsTimeFrom() {
         return daylightSavingsTimeFrom;
@@ -96,8 +111,9 @@ public final class TimezoneCoordinateOptions {
 
     /**
      * Set daylight savings time from
-     * @param daylightSavingsTimeFrom
-     * @return
+     * @param daylightSavingsTimeFrom Alternatively, use alias "tf". The start date from which daylight savings time
+     *     (DST) transitions are requested, only applies when "options" = all or "options" = transitions.
+     * @return TimezoneCoordinateOptions
      */
     public TimezoneCoordinateOptions setDaylightSavingsTimeFrom(OffsetDateTime daylightSavingsTimeFrom) {
         this.daylightSavingsTimeFrom = daylightSavingsTimeFrom;
@@ -106,7 +122,8 @@ public final class TimezoneCoordinateOptions {
 
     /**
      * Get daylight savings time lasting years
-     * @return
+     * @return daylight savings time in lasting years. Alternatively, use alias "ty". The number of years from "transitionsFrom"
+     *     for which DST transitions are requested, only applies when "options" = all or "options" = transitions.
      */
     public Integer getDaylightSavingsTimeLastingYears() {
         return daylightSavingsTimeLastingYears;
@@ -114,8 +131,9 @@ public final class TimezoneCoordinateOptions {
 
     /**
      * Set daylight savings time lasting years
-     * @param daylightSavingsTimeLastingYears
-     * @return
+     * @param daylightSavingsTimeLastingYears Alternatively, use alias "ty". The number of years from "transitionsFrom"
+     *     for which DST transitions are requested, only applies when "options" = all or "options" = transitions.
+     * @return TimezoneCoordinateOptions
      */
     public TimezoneCoordinateOptions setDaylightSavingsTimeLastingYears(Integer daylightSavingsTimeLastingYears) {
         this.daylightSavingsTimeLastingYears = daylightSavingsTimeLastingYears;

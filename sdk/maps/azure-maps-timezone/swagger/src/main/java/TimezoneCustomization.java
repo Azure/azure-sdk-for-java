@@ -26,16 +26,15 @@ public class TimezoneCustomization extends Customization {
     private void customizeTimezoneId(PackageCustomization models) {
         ClassCustomization classCustomization = models.getClass("TimezoneId");
         classCustomization.removeMethod("getRepresentativePoint");
-        final String getRepresentativePointMethod = 
-            "/**" +
-            " * Returns a {@link GeoPosition} coordinate." +
-            "*" +
-            "* return the coordinate" +
-            "*/" + 
-            "public GeoPosition getRepresentativePoint() {" +
-            "       return new GeoPosition(this.representativePoint.getLongitude(), this.representativePoint.getLatitude());" +
-            "}";
-        classCustomization.addMethod(getRepresentativePointMethod, Arrays.asList("com.azure.core.models.GeoPosition"));
+        // Get representative point
+        classCustomization.addMethod(
+            "public GeoPosition getRepresentativePoint() {\n" +
+            "       return new GeoPosition(this.representativePoint.getLongitude(), this.representativePoint.getLatitude());\n" +
+            "}")
+            .getJavadoc()
+            .setDescription("Returns the coordinate")
+            .setReturn("Returns a {@link GeoPosition} coordinate.");
+        classCustomization.addImports("com.azure.core.models.GeoPosition");
     }
 
     // Customizes the reference time class
@@ -44,42 +43,58 @@ public class TimezoneCustomization extends Customization {
         classCustomization.removeMethod("getStandardOffset");
         classCustomization.removeMethod("getDaylightSavings");
         classCustomization.removeMethod("getWallTime");
-        final String getStandardOffset = 
-            "/**" +
-            "Returns a {@link ZoneOffset} time offset." +
-            "*" +
-            "* return the standard offset" +
-            "*/" + 
-            "public ZoneOffset getStandardOffset() {" +
-            "       if (standardOffset.charAt(0) != '+' && standardOffset.charAt(0) != '-') {" +
-            "              standardOffset = \"+\" + standardOffset;" +
-            "       }" +
-            "       return ZoneOffset.of(standardOffset);" +
-            "}";
-        final String getDaylightSavings = 
-            "/**" +
-            "Returns a {@link ZoneOffset} daylight savings. Get the daylightSavings property: Time saving in minutes in effect at the `ReferenceUTCTimestamp" +
-            "*" +
-            "return the daylight savings value" +
-            "*/" + 
-            "public ZoneOffset getDaylightSavings() {" +
-            "       if (daylightSavings.charAt(0) != '+' && daylightSavings.charAt(0) != '-') {" +
-            "              daylightSavings = \"+\" + daylightSavings;" +
-            "       }" +
-            "       return ZoneOffset.of(daylightSavings);" +
-            "}";
-        final String getWallTime = 
-            "/**" +
-            "Returns a {@link OffsetDateTime} offset date time." +
-            "*" +
-            "* return the wall time" +
-            "*/" + 
-            "public OffsetDateTime getWallTime() {" +
-            "       return OffsetDateTime.parse(wallTime);" +
-            "}";
-        classCustomization.addMethod(getStandardOffset, Arrays.asList("java.time.ZoneOffset;"));
-        classCustomization.addMethod(getDaylightSavings, Arrays.asList("java.time.ZoneOffset;"));
-        classCustomization.addMethod(getWallTime, Arrays.asList("java.time.OffsetDateTime;"));
+
+        classCustomization.addConstructor(
+            "public ReferenceTime() {\n" + 
+            "}")
+            .getJavadoc()
+            .setDescription("ReferenceTime constructor");
+        
+        classCustomization.addConstructor(
+            "public ReferenceTime(ZoneOffset daylightSavings, ZoneOffset standardOffset) {\n" + 
+            "   this.daylightSavings = daylightSavings.toString();\n" + 
+            "   this.standardOffset = standardOffset.toString();\n" +
+            "}")
+            .getJavadoc()
+            .setDescription("ReferenceTime constructor")
+            .setParam("daylightSavings", "daylightSavings Time saving in minutes in effect at the `ReferenceUTCTimestamp`.")
+            .setParam("standardOffset", "UTC offset in effect at the `ReferenceUTCTimestamp`.");
+
+        // Get standard offset
+        classCustomization.addMethod(
+            "public ZoneOffset getStandardOffset() {\n" +
+            "       if (standardOffset.charAt(0) != '+' && standardOffset.charAt(0) != '-') {\n" +
+            "              standardOffset = \"+\" + standardOffset;\n" +
+            "       }\n" +
+            "       return ZoneOffset.of(standardOffset);\n" +
+            "}")
+            .getJavadoc()
+            .setDescription("Get the standard offset.")
+            .setReturn("Returns a {@link ZoneOffset} time offset.");
+
+        // Get daylight savings
+        classCustomization.addMethod(
+            "public ZoneOffset getDaylightSavings() {\n" +
+            "       if (daylightSavings.charAt(0) != '+' && daylightSavings.charAt(0) != '-') {\n" +
+            "              daylightSavings = \"+\" + daylightSavings;\n" +
+            "       }\n" +
+            "       return ZoneOffset.of(daylightSavings);\n" +
+            "}")
+            .getJavadoc()
+            .setDescription("Returns the daylight savings value")
+            .setReturn("Returns a {@link ZoneOffset} daylight savings. Get the daylightSavings property: Time saving in minutes in effect at the `ReferenceUTCTimestamp.");
+
+        // Get wall time
+        classCustomization.addMethod(
+            "public OffsetDateTime getWallTime() {\n" +
+            "       return OffsetDateTime.parse(wallTime);\n" +
+            "}")
+            .getJavadoc()
+            .setDescription("Returns the wall time")
+            .setReturn("Returns a {@link OffsetDateTime} offset date time.");
+
+        classCustomization.addImports("java.time.ZoneOffset");
+        classCustomization.addImports("java.time.OffsetDateTime");
     }
 
     // Customizes the time transition class
@@ -87,31 +102,47 @@ public class TimezoneCustomization extends Customization {
         ClassCustomization classCustomization = models.getClass("TimeTransition");
         classCustomization.removeMethod("getStandardOffset");
         classCustomization.removeMethod("getDaylightSavings");
-        final String getStandardOffset = 
-            "/**" +
-            "Returns a {@link ZoneOffset} time offset." +
-            "*" +
-            "* return the standardOffset value" +
-            "*/" + 
-            "public ZoneOffset getStandardOffset() {" +
-            "       if (standardOffset.charAt(0) != '+' && standardOffset.charAt(0) != '-') {" +
-            "              standardOffset = \"+\" + standardOffset;" +
-            "       }" +
-            "       return ZoneOffset.of(standardOffset);" +
-            "}";
-        final String getDaylightSavings = 
-            "/**" +
-            "Returns a {@link ZoneOffset} daylight savings. Get the daylightSavings property: Time saving in minutes in effect at the `ReferenceUTCTimestamp" +
-            "*" +
-            "return the daylight savings value" +
-            "*/" + 
-            "public ZoneOffset getDaylightSavings() {" +
-            "       if (daylightSavings.charAt(0) != '+' && daylightSavings.charAt(0) != '-') {" +
-            "              daylightSavings = \"+\" + daylightSavings;" +
-            "       }" +
-            "       return ZoneOffset.of(daylightSavings);" +
-            "}";
-        classCustomization.addMethod(getStandardOffset, Arrays.asList("java.time.ZoneOffset;"));
-        classCustomization.addMethod(getDaylightSavings, Arrays.asList("java.time.ZoneOffset;"));
+
+        classCustomization.addConstructor(
+            "public TimeTransition() {\n" + 
+            "}")
+            .getJavadoc()
+            .setDescription("TimeTransition constructor");
+        
+        classCustomization.addConstructor(
+            "public TimeTransition(ZoneOffset daylightSavings, ZoneOffset standardOffset) {\n" + 
+            "   this.daylightSavings = daylightSavings.toString();\n" + 
+            "   this.standardOffset = standardOffset.toString();\n" +
+            "}")
+            .getJavadoc()
+            .setDescription("TimeTransition constructor")
+            .setParam("daylightSavings", "daylightSavings Time saving in minutes in effect at the `ReferenceUTCTimestamp`.")
+            .setParam("standardOffset", "UTC offset in effect at the `ReferenceUTCTimestamp`.");
+
+        // Get standard offset
+        classCustomization.addMethod(
+            "public ZoneOffset getStandardOffset() {\n" +
+            "       if (standardOffset.charAt(0) != '+' && standardOffset.charAt(0) != '-') {\n" +
+            "              standardOffset = \"+\" + standardOffset;\n" +
+            "       }\n" +
+            "       return ZoneOffset.of(standardOffset);\n" +
+            "}")
+            .getJavadoc()
+            .setDescription("return the standardOffset value")
+            .setReturn("Returns a {@link ZoneOffset} time offset.");
+
+        // Get daylight savings
+        classCustomization.addMethod(
+            "public ZoneOffset getDaylightSavings() {\n" +
+            "       if (daylightSavings.charAt(0) != '+' && daylightSavings.charAt(0) != '-') {\n" +
+            "              daylightSavings = \"+\" + daylightSavings;\n" +
+            "       }\n" +
+            "       return ZoneOffset.of(daylightSavings);\n" +
+            "}")
+            .getJavadoc()
+            .setDescription("return the daylight savings value")
+            .setReturn("Returns a {@link ZoneOffset} daylight savings. Get the daylightSavings property: Time saving in minutes in effect at the `ReferenceUTCTimestamp.");
+
+            classCustomization.addImports("java.time.ZoneOffset");
     }
 }

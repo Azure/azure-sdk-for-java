@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.timezone;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -44,8 +47,7 @@ public class TimezoneAsyncClientTest extends TimezoneClientTestBase {
         TimezoneAsyncClient client = getTimezoneAsyncClient(httpClient, serviceVersion);
         TimezoneIdOptions options = new TimezoneIdOptions().setTimezoneId("Asia/Bahrain").setOptions(TimezoneOptions.ALL).setAcceptLanguage(null)
             .setTimeStamp(null).setDaylightSavingsTimeFrom(null).setDaylightSavingsTimeLastingYears(null);
-        StepVerifier.create(client.getTimezoneById
-        (options))
+        StepVerifier.create(client.getTimezoneById(options))
             .assertNext(actualResults -> {
                 try {
                     validateGetTimezoneById(TestUtils.getExpectedTimezoneById(), actualResults);

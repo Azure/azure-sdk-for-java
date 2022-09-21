@@ -12,11 +12,11 @@
   </parent>
 
   <groupId>com.azure</groupId>
-  <artifactId>azure-resourcemanager-timezone-generated</artifactId>
+  <artifactId>azure-maps-timezone</artifactId>
   <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-timezone-generated;current} -->
   <packaging>jar</packaging>
 
-  <name>Microsoft Azure client library for azure-maps-timezone service</name>
+  <name>Azure Maps SDK Timezone Client Library</name>
   <description>This package contains Microsoft Azure SDK for Timezone Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Azure Maps Time Zone REST APIs. Package tag 1.0-preview.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
@@ -48,7 +48,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.24.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.32.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

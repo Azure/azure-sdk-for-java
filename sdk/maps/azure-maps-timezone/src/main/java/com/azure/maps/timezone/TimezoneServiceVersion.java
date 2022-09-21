@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.maps.timezone;
 
 import com.azure.core.util.ServiceVersion;
@@ -16,7 +19,7 @@ public enum TimezoneServiceVersion implements ServiceVersion {
     /**
      * Creates a new {@link TimezoneServiceVersion} with a version string.
      *
-     * @param version
+     * @param version service version
      */
     TimezoneServiceVersion(String version) {
         this.version = version;
