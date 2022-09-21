@@ -25,7 +25,7 @@ public class RestProxyWithHttpProxyJdkHttpClientTests extends RestProxyTests {
     }
 
     @AfterAll
-    public static void shutJdkAsyncHttpClientBuilderdownWireMockServer() {
+    public static void shutJdkHttpClientBuilderDownWireMockServer() {
         if (server != null) {
             server.shutdown();
         }
@@ -39,6 +39,6 @@ public class RestProxyWithHttpProxyJdkHttpClientTests extends RestProxyTests {
     @Override
     protected HttpClient createHttpClient() {
         InetSocketAddress address = new InetSocketAddress("localhost", 8888);
-        return new JdkAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, address)).build();
+        return new JdkHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, address)).build();
     }
 }
