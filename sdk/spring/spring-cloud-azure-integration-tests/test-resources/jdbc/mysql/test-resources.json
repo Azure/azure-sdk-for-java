@@ -77,13 +77,15 @@
       }
     }
   },
-  "variables": {},
+  "variables": {
+    "location": "[resourceGroup().location]"
+  },
   "resources": [
     {
       "type": "Microsoft.DBforMySQL/servers",
       "apiVersion": "2017-12-01",
       "name": "[parameters('serverName')]",
-      "location": "eastus",
+      "location": "[variables('location')]",
       "sku": {
         "name": "GP_Gen5_4",
         "tier": "GeneralPurpose",

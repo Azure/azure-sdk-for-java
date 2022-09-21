@@ -17,34 +17,6 @@
   <name>Azure Identity Providers Core</name>
   <description>This package contains the business logic of authenticating with Azure AD and returning a token as a password.</description>
   <url>https://github.com/azure/azure-sdk-for-java</url>
-  <licenses>
-    <license>
-      <name>The MIT License (MIT)</name>
-      <url>http://opensource.org/licenses/MIT</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-  <developers>
-    <developer>
-      <id>microsoft</id>
-      <name>Microsoft Corporation</name>
-    </developer>
-  </developers>
-  <scm>
-    <connection>scm:git:git://github.com/azure/azure-sdk-for-java</connection>
-    <developerConnection>scm:git:git://github.com/azure/azure-sdk-for-java</developerConnection>
-    <url>https://github.com/azure/azure-sdk-for-java</url>
-  </scm>
-  <issueManagement>
-    <system>GitHub</system>
-    <url>https://github.com/azure/azure-sdk-for-java/issues</url>
-  </issueManagement>
-
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-  </properties>
 
   <dependencies>
     <dependency>

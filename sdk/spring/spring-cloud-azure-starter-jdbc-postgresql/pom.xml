@@ -113,7 +113,7 @@
         <configuration>
           <archive>
             <manifestEntries>
-              <Automatic-Module-Name>com.azure.spring.cloud.starter.storage.blob</Automatic-Module-Name>
+              <Automatic-Module-Name>com.azure.spring.cloud.starter.jdbc.postgresql</Automatic-Module-Name>
             </manifestEntries>
             <manifest>
               <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
