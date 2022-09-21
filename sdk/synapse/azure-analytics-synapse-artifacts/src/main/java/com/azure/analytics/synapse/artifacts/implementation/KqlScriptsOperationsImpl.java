@@ -179,11 +179,11 @@ public final class KqlScriptsOperationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KqlScriptResource createOrUpdate(String kqlScriptName, KqlScriptResource kqlScript) {
-        return createOrUpdateAsync(kqlScriptName, kqlScript).block();
+    public Response<KqlScriptResource> createOrUpdateWithResponse(String kqlScriptName, KqlScriptResource kqlScript) {
+        return createOrUpdateWithResponseAsync(kqlScriptName, kqlScript).block();
     }
 
     /**
@@ -201,6 +201,37 @@ public final class KqlScriptsOperationsImpl {
     public Response<KqlScriptResource> createOrUpdateWithResponse(
             String kqlScriptName, KqlScriptResource kqlScript, Context context) {
         return createOrUpdateWithResponseAsync(kqlScriptName, kqlScript, context).block();
+    }
+
+    /**
+     * Creates or updates a KQL Script.
+     *
+     * @param kqlScriptName KQL script name.
+     * @param kqlScript KQL script.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KqlScriptResource createOrUpdate(String kqlScriptName, KqlScriptResource kqlScript) {
+        return createOrUpdateWithResponse(kqlScriptName, kqlScript, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates or updates a KQL Script.
+     *
+     * @param kqlScriptName KQL script name.
+     * @param kqlScript KQL script.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KqlScriptResource createOrUpdate(String kqlScriptName, KqlScriptResource kqlScript, Context context) {
+        return createOrUpdateWithResponse(kqlScriptName, kqlScript, context).getValue();
     }
 
     /**
@@ -273,11 +304,11 @@ public final class KqlScriptsOperationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return kQL script by name.
+     * @return kQL script by name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KqlScriptResource getByName(String kqlScriptName) {
-        return getByNameAsync(kqlScriptName).block();
+    public Response<KqlScriptResource> getByNameWithResponse(String kqlScriptName) {
+        return getByNameWithResponseAsync(kqlScriptName).block();
     }
 
     /**
@@ -293,6 +324,35 @@ public final class KqlScriptsOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KqlScriptResource> getByNameWithResponse(String kqlScriptName, Context context) {
         return getByNameWithResponseAsync(kqlScriptName, context).block();
+    }
+
+    /**
+     * Get KQL script by name.
+     *
+     * @param kqlScriptName KQL script name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return kQL script by name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KqlScriptResource getByName(String kqlScriptName) {
+        return getByNameWithResponse(kqlScriptName, Context.NONE).getValue();
+    }
+
+    /**
+     * Get KQL script by name.
+     *
+     * @param kqlScriptName KQL script name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return kQL script by name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KqlScriptResource getByName(String kqlScriptName, Context context) {
+        return getByNameWithResponse(kqlScriptName, context).getValue();
     }
 
     /**
@@ -365,10 +425,11 @@ public final class KqlScriptsOperationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteByName(String kqlScriptName) {
-        deleteByNameAsync(kqlScriptName).block();
+    public Response<Void> deleteByNameWithResponse(String kqlScriptName) {
+        return deleteByNameWithResponseAsync(kqlScriptName).block();
     }
 
     /**
@@ -384,6 +445,33 @@ public final class KqlScriptsOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteByNameWithResponse(String kqlScriptName, Context context) {
         return deleteByNameWithResponseAsync(kqlScriptName, context).block();
+    }
+
+    /**
+     * Delete KQL script by name.
+     *
+     * @param kqlScriptName KQL script name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteByName(String kqlScriptName) {
+        deleteByNameWithResponse(kqlScriptName, Context.NONE);
+    }
+
+    /**
+     * Delete KQL script by name.
+     *
+     * @param kqlScriptName KQL script name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteByName(String kqlScriptName, Context context) {
+        deleteByNameWithResponse(kqlScriptName, context);
     }
 
     /**
@@ -464,10 +552,11 @@ public final class KqlScriptsOperationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void rename(String kqlScriptName, ArtifactRenameRequest renameRequest) {
-        renameAsync(kqlScriptName, renameRequest).block();
+    public Response<Void> renameWithResponse(String kqlScriptName, ArtifactRenameRequest renameRequest) {
+        return renameWithResponseAsync(kqlScriptName, renameRequest).block();
     }
 
     /**
@@ -485,5 +574,34 @@ public final class KqlScriptsOperationsImpl {
     public Response<Void> renameWithResponse(
             String kqlScriptName, ArtifactRenameRequest renameRequest, Context context) {
         return renameWithResponseAsync(kqlScriptName, renameRequest, context).block();
+    }
+
+    /**
+     * Rename KQL script.
+     *
+     * @param kqlScriptName KQL script name.
+     * @param renameRequest Rename request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void rename(String kqlScriptName, ArtifactRenameRequest renameRequest) {
+        renameWithResponse(kqlScriptName, renameRequest, Context.NONE);
+    }
+
+    /**
+     * Rename KQL script.
+     *
+     * @param kqlScriptName KQL script name.
+     * @param renameRequest Rename request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void rename(String kqlScriptName, ArtifactRenameRequest renameRequest, Context context) {
+        renameWithResponse(kqlScriptName, renameRequest, context);
     }
 }

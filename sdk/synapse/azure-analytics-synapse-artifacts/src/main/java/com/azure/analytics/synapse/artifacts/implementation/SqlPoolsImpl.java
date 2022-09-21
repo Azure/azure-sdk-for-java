@@ -130,11 +130,11 @@ public final class SqlPoolsImpl {
      *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool collection.
+     * @return sQL pool collection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlPoolInfoListResult list() {
-        return listAsync().block();
+    public Response<SqlPoolInfoListResult> listWithResponse() {
+        return listWithResponseAsync().block();
     }
 
     /**
@@ -149,6 +149,32 @@ public final class SqlPoolsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SqlPoolInfoListResult> listWithResponse(Context context) {
         return listWithResponseAsync(context).block();
+    }
+
+    /**
+     * List Sql Pools.
+     *
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sQL pool collection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SqlPoolInfoListResult list() {
+        return listWithResponse(Context.NONE).getValue();
+    }
+
+    /**
+     * List Sql Pools.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sQL pool collection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SqlPoolInfoListResult list(Context context) {
+        return listWithResponse(context).getValue();
     }
 
     /**
@@ -221,11 +247,11 @@ public final class SqlPoolsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Pool.
+     * @return sql Pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlPool get(String sqlPoolName) {
-        return getAsync(sqlPoolName).block();
+    public Response<SqlPool> getWithResponse(String sqlPoolName) {
+        return getWithResponseAsync(sqlPoolName).block();
     }
 
     /**
@@ -241,5 +267,34 @@ public final class SqlPoolsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SqlPool> getWithResponse(String sqlPoolName, Context context) {
         return getWithResponseAsync(sqlPoolName, context).block();
+    }
+
+    /**
+     * Get Sql Pool.
+     *
+     * @param sqlPoolName The Sql Pool name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sql Pool.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SqlPool get(String sqlPoolName) {
+        return getWithResponse(sqlPoolName, Context.NONE).getValue();
+    }
+
+    /**
+     * Get Sql Pool.
+     *
+     * @param sqlPoolName The Sql Pool name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sql Pool.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SqlPool get(String sqlPoolName, Context context) {
+        return getWithResponse(sqlPoolName, context).getValue();
     }
 }

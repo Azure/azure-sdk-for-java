@@ -13,6 +13,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
@@ -29,6 +30,34 @@ public final class SparkConfigurationClient {
     @Generated
     SparkConfigurationClient(SparkConfigurationsImpl serviceClient) {
         this.serviceClient = serviceClient;
+    }
+
+    /**
+     * Lists sparkconfigurations.
+     *
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of sparkconfiguration resources along with {@link PagedResponse}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<SparkConfigurationResource> getSparkConfigurationsByWorkspaceSinglePage() {
+        return this.serviceClient.getSparkConfigurationsByWorkspaceSinglePage();
+    }
+
+    /**
+     * Lists sparkconfigurations.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of sparkconfiguration resources along with {@link PagedResponse}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<SparkConfigurationResource> getSparkConfigurationsByWorkspaceSinglePage(Context context) {
+        return this.serviceClient.getSparkConfigurationsByWorkspaceSinglePage(context);
     }
 
     /**
@@ -57,6 +86,50 @@ public final class SparkConfigurationClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SparkConfigurationResource> getSparkConfigurationsByWorkspace(Context context) {
         return this.serviceClient.getSparkConfigurationsByWorkspace(context);
+    }
+
+    /**
+     * Creates or updates a sparkconfiguration.
+     *
+     * @param sparkConfigurationName The spark Configuration name.
+     * @param sparkConfiguration SparkConfiguration resource definition.
+     * @param ifMatch ETag of the sparkConfiguration entity. Should only be specified for update, for which it should
+     *     match existing entity or can be * for unconditional update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return spark Configuration resource type along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SparkConfigurationResource> createOrUpdateSparkConfigurationWithResponse(
+            String sparkConfigurationName, SparkConfigurationResource sparkConfiguration, String ifMatch) {
+        return this.serviceClient.createOrUpdateSparkConfigurationWithResponse(
+                sparkConfigurationName, sparkConfiguration, ifMatch);
+    }
+
+    /**
+     * Creates or updates a sparkconfiguration.
+     *
+     * @param sparkConfigurationName The spark Configuration name.
+     * @param sparkConfiguration SparkConfiguration resource definition.
+     * @param ifMatch ETag of the sparkConfiguration entity. Should only be specified for update, for which it should
+     *     match existing entity or can be * for unconditional update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return spark Configuration resource type along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SparkConfigurationResource> createOrUpdateSparkConfigurationWithResponse(
+            String sparkConfigurationName,
+            SparkConfigurationResource sparkConfiguration,
+            String ifMatch,
+            Context context) {
+        return this.serviceClient.createOrUpdateSparkConfigurationWithResponse(
+                sparkConfigurationName, sparkConfiguration, ifMatch, context);
     }
 
     /**
@@ -106,17 +179,54 @@ public final class SparkConfigurationClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spark Configuration resource type along with {@link Response}.
+     * @return spark Configuration resource type.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SparkConfigurationResource> createOrUpdateSparkConfigurationWithResponse(
+    public SparkConfigurationResource createOrUpdateSparkConfiguration(
             String sparkConfigurationName,
             SparkConfigurationResource sparkConfiguration,
             String ifMatch,
             Context context) {
-        return this.serviceClient.createOrUpdateSparkConfigurationWithResponse(
+        return this.serviceClient.createOrUpdateSparkConfiguration(
                 sparkConfigurationName, sparkConfiguration, ifMatch, context);
+    }
+
+    /**
+     * Gets a sparkConfiguration.
+     *
+     * @param sparkConfigurationName The spark Configuration name.
+     * @param ifNoneMatch ETag of the sparkConfiguration entity. Should only be specified for get. If the ETag matches
+     *     the existing entity tag, or if * was provided, then no content will be returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a sparkConfiguration along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SparkConfigurationResource> getSparkConfigurationWithResponse(
+            String sparkConfigurationName, String ifNoneMatch) {
+        return this.serviceClient.getSparkConfigurationWithResponse(sparkConfigurationName, ifNoneMatch);
+    }
+
+    /**
+     * Gets a sparkConfiguration.
+     *
+     * @param sparkConfigurationName The spark Configuration name.
+     * @param ifNoneMatch ETag of the sparkConfiguration entity. Should only be specified for get. If the ETag matches
+     *     the existing entity tag, or if * was provided, then no content will be returned.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a sparkConfiguration along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SparkConfigurationResource> getSparkConfigurationWithResponse(
+            String sparkConfigurationName, String ifNoneMatch, Context context) {
+        return this.serviceClient.getSparkConfigurationWithResponse(sparkConfigurationName, ifNoneMatch, context);
     }
 
     /**
@@ -161,13 +271,44 @@ public final class SparkConfigurationClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sparkConfiguration along with {@link Response}.
+     * @return a sparkConfiguration.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SparkConfigurationResource> getSparkConfigurationWithResponse(
+    public SparkConfigurationResource getSparkConfiguration(
             String sparkConfigurationName, String ifNoneMatch, Context context) {
-        return this.serviceClient.getSparkConfigurationWithResponse(sparkConfigurationName, ifNoneMatch, context);
+        return this.serviceClient.getSparkConfiguration(sparkConfigurationName, ifNoneMatch, context);
+    }
+
+    /**
+     * Deletes a sparkConfiguration.
+     *
+     * @param sparkConfigurationName The spark Configuration name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteSparkConfigurationWithResponse(String sparkConfigurationName) {
+        return this.serviceClient.deleteSparkConfigurationWithResponse(sparkConfigurationName);
+    }
+
+    /**
+     * Deletes a sparkConfiguration.
+     *
+     * @param sparkConfigurationName The spark Configuration name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteSparkConfigurationWithResponse(String sparkConfigurationName, Context context) {
+        return this.serviceClient.deleteSparkConfigurationWithResponse(sparkConfigurationName, context);
     }
 
     /**
@@ -192,12 +333,46 @@ public final class SparkConfigurationClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteSparkConfiguration(String sparkConfigurationName, Context context) {
+        this.serviceClient.deleteSparkConfiguration(sparkConfigurationName, context);
+    }
+
+    /**
+     * Renames a sparkConfiguration.
+     *
+     * @param sparkConfigurationName The spark Configuration name.
+     * @param request proposed new name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteSparkConfigurationWithResponse(String sparkConfigurationName, Context context) {
-        return this.serviceClient.deleteSparkConfigurationWithResponse(sparkConfigurationName, context);
+    public Response<Void> renameSparkConfigurationWithResponse(
+            String sparkConfigurationName, ArtifactRenameRequest request) {
+        return this.serviceClient.renameSparkConfigurationWithResponse(sparkConfigurationName, request);
+    }
+
+    /**
+     * Renames a sparkConfiguration.
+     *
+     * @param sparkConfigurationName The spark Configuration name.
+     * @param request proposed new name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> renameSparkConfigurationWithResponse(
+            String sparkConfigurationName, ArtifactRenameRequest request, Context context) {
+        return this.serviceClient.renameSparkConfigurationWithResponse(sparkConfigurationName, request, context);
     }
 
     /**
@@ -224,12 +399,45 @@ public final class SparkConfigurationClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> renameSparkConfigurationWithResponse(
+    public void renameSparkConfiguration(
             String sparkConfigurationName, ArtifactRenameRequest request, Context context) {
-        return this.serviceClient.renameSparkConfigurationWithResponse(sparkConfigurationName, request, context);
+        this.serviceClient.renameSparkConfiguration(sparkConfigurationName, request, context);
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of sparkconfiguration resources along with {@link PagedResponse}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<SparkConfigurationResource> getSparkConfigurationsByWorkspaceNextSinglePage(String nextLink) {
+        return this.serviceClient.getSparkConfigurationsByWorkspaceNextSinglePage(nextLink);
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of sparkconfiguration resources along with {@link PagedResponse}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<SparkConfigurationResource> getSparkConfigurationsByWorkspaceNextSinglePage(
+            String nextLink, Context context) {
+        return this.serviceClient.getSparkConfigurationsByWorkspaceNextSinglePage(nextLink, context);
     }
 }

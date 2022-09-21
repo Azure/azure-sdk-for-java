@@ -119,11 +119,11 @@ public final class WorkspacesImpl {
      *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace.
+     * @return workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Workspace get() {
-        return getAsync().block();
+    public Response<Workspace> getWithResponse() {
+        return getWithResponseAsync().block();
     }
 
     /**
@@ -138,5 +138,31 @@ public final class WorkspacesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Workspace> getWithResponse(Context context) {
         return getWithResponseAsync(context).block();
+    }
+
+    /**
+     * Get Workspace.
+     *
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Workspace get() {
+        return getWithResponse(Context.NONE).getValue();
+    }
+
+    /**
+     * Get Workspace.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Workspace get(Context context) {
+        return getWithResponse(context).getValue();
     }
 }

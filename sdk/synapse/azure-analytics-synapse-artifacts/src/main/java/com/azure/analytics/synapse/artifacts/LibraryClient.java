@@ -13,6 +13,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -32,6 +33,34 @@ public final class LibraryClient {
     @Generated
     LibraryClient(LibrariesImpl serviceClient) {
         this.serviceClient = serviceClient;
+    }
+
+    /**
+     * Lists Library.
+     *
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of Library resources along with {@link PagedResponse}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<LibraryResource> listSinglePage() {
+        return this.serviceClient.listSinglePage();
+    }
+
+    /**
+     * Lists Library.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of Library resources along with {@link PagedResponse}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<LibraryResource> listSinglePage(Context context) {
+        return this.serviceClient.listSinglePage(context);
     }
 
     /**
@@ -70,12 +99,12 @@ public final class LibraryClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LibraryResourceInfo flush(String libraryName) {
-        return this.serviceClient.flush(libraryName);
+    public Response<LibraryResourceInfo> flushWithResponse(String libraryName) {
+        return this.serviceClient.flushWithResponse(libraryName);
     }
 
     /**
@@ -93,6 +122,70 @@ public final class LibraryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LibraryResourceInfo> flushWithResponse(String libraryName, Context context) {
         return this.serviceClient.flushWithResponse(libraryName, context);
+    }
+
+    /**
+     * Flush Library.
+     *
+     * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
+     *     length.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LibraryResourceInfo flush(String libraryName) {
+        return this.serviceClient.flush(libraryName);
+    }
+
+    /**
+     * Flush Library.
+     *
+     * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
+     *     length.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LibraryResourceInfo flush(String libraryName, Context context) {
+        return this.serviceClient.flush(libraryName, context);
+    }
+
+    /**
+     * Get Operation result for Library.
+     *
+     * @param operationId operation id for which status is requested.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operation result for Library along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<LibraryResource> getOperationResultWithResponse(String operationId) {
+        return this.serviceClient.getOperationResultWithResponse(operationId);
+    }
+
+    /**
+     * Get Operation result for Library.
+     *
+     * @param operationId operation id for which status is requested.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operation result for Library along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<LibraryResource> getOperationResultWithResponse(String operationId, Context context) {
+        return this.serviceClient.getOperationResultWithResponse(operationId, context);
     }
 
     /**
@@ -118,12 +211,45 @@ public final class LibraryClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation result for Library along with {@link Response}.
+     * @return operation result for Library.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LibraryResource> getOperationResultWithResponse(String operationId, Context context) {
-        return this.serviceClient.getOperationResultWithResponse(operationId, context);
+    public LibraryResource getOperationResult(String operationId, Context context) {
+        return this.serviceClient.getOperationResult(operationId, context);
+    }
+
+    /**
+     * Delete Library.
+     *
+     * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
+     *     length.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<LibraryResourceInfo> deleteWithResponse(String libraryName) {
+        return this.serviceClient.deleteWithResponse(libraryName);
+    }
+
+    /**
+     * Delete Library.
+     *
+     * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
+     *     length.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<LibraryResourceInfo> deleteWithResponse(String libraryName, Context context) {
+        return this.serviceClient.deleteWithResponse(libraryName, context);
     }
 
     /**
@@ -151,12 +277,45 @@ public final class LibraryClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the response.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LibraryResourceInfo> deleteWithResponse(String libraryName, Context context) {
-        return this.serviceClient.deleteWithResponse(libraryName, context);
+    public LibraryResourceInfo delete(String libraryName, Context context) {
+        return this.serviceClient.delete(libraryName, context);
+    }
+
+    /**
+     * Get Library.
+     *
+     * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
+     *     length.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return library along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<LibraryResource> getWithResponse(String libraryName) {
+        return this.serviceClient.getWithResponse(libraryName);
+    }
+
+    /**
+     * Get Library.
+     *
+     * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
+     *     length.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return library along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<LibraryResource> getWithResponse(String libraryName, Context context) {
+        return this.serviceClient.getWithResponse(libraryName, context);
     }
 
     /**
@@ -184,12 +343,45 @@ public final class LibraryClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return library along with {@link Response}.
+     * @return library.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LibraryResource> getWithResponse(String libraryName, Context context) {
-        return this.serviceClient.getWithResponse(libraryName, context);
+    public LibraryResource get(String libraryName, Context context) {
+        return this.serviceClient.get(libraryName, context);
+    }
+
+    /**
+     * Creates a library with the library name.
+     *
+     * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
+     *     length.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<LibraryResourceInfo> createWithResponse(String libraryName) {
+        return this.serviceClient.createWithResponse(libraryName);
+    }
+
+    /**
+     * Creates a library with the library name.
+     *
+     * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
+     *     length.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<LibraryResourceInfo> createWithResponse(String libraryName, Context context) {
+        return this.serviceClient.createWithResponse(libraryName, context);
     }
 
     /**
@@ -217,12 +409,64 @@ public final class LibraryClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the response.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LibraryResourceInfo> createWithResponse(String libraryName, Context context) {
-        return this.serviceClient.createWithResponse(libraryName, context);
+    public LibraryResourceInfo create(String libraryName, Context context) {
+        return this.serviceClient.create(libraryName, context);
+    }
+
+    /**
+     * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
+     * Content larger than 4MiB must be appended in 4MiB chunks.
+     *
+     * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
+     *     length.
+     * @param content Library file chunk.
+     * @param contentLength The Content-Length header for the request.
+     * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
+     *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
+     *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> appendWithResponse(
+            String libraryName, Flux<ByteBuffer> content, long contentLength, Long blobConditionAppendPosition) {
+        return this.serviceClient.appendWithResponse(libraryName, content, contentLength, blobConditionAppendPosition);
+    }
+
+    /**
+     * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
+     * Content larger than 4MiB must be appended in 4MiB chunks.
+     *
+     * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
+     *     length.
+     * @param content Library file chunk.
+     * @param contentLength The Content-Length header for the request.
+     * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
+     *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
+     *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> appendWithResponse(
+            String libraryName,
+            Flux<ByteBuffer> content,
+            long contentLength,
+            Long blobConditionAppendPosition,
+            Context context) {
+        return this.serviceClient.appendWithResponse(
+                libraryName, content, contentLength, blobConditionAppendPosition, context);
     }
 
     /**
@@ -280,13 +524,63 @@ public final class LibraryClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void append(
+            String libraryName,
+            Flux<ByteBuffer> content,
+            long contentLength,
+            Long blobConditionAppendPosition,
+            Context context) {
+        this.serviceClient.append(libraryName, content, contentLength, blobConditionAppendPosition, context);
+    }
+
+    /**
+     * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
+     * Content larger than 4MiB must be appended in 4MiB chunks.
+     *
+     * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
+     *     length.
+     * @param content Library file chunk.
+     * @param contentLength The Content-Length header for the request.
+     * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
+     *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
+     *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> appendWithResponse(
+            String libraryName, BinaryData content, long contentLength, Long blobConditionAppendPosition) {
+        return this.serviceClient.appendWithResponse(libraryName, content, contentLength, blobConditionAppendPosition);
+    }
+
+    /**
+     * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
+     * Content larger than 4MiB must be appended in 4MiB chunks.
+     *
+     * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
+     *     length.
+     * @param content Library file chunk.
+     * @param contentLength The Content-Length header for the request.
+     * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
+     *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
+     *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> appendWithResponse(
             String libraryName,
-            Flux<ByteBuffer> content,
+            BinaryData content,
             long contentLength,
             Long blobConditionAppendPosition,
             Context context) {
@@ -348,17 +642,48 @@ public final class LibraryClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> appendWithResponse(
+    public void append(
             String libraryName,
             BinaryData content,
             long contentLength,
             Long blobConditionAppendPosition,
             Context context) {
-        return this.serviceClient.appendWithResponse(
-                libraryName, content, contentLength, blobConditionAppendPosition, context);
+        this.serviceClient.append(libraryName, content, contentLength, blobConditionAppendPosition, context);
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of Library resources along with {@link PagedResponse}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<LibraryResource> listNextSinglePage(String nextLink) {
+        return this.serviceClient.listNextSinglePage(nextLink);
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of Library resources along with {@link PagedResponse}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<LibraryResource> listNextSinglePage(String nextLink, Context context) {
+        return this.serviceClient.listNextSinglePage(nextLink, context);
     }
 }

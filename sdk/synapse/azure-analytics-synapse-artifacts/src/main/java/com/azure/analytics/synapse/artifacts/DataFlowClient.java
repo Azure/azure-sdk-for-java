@@ -13,6 +13,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
@@ -29,6 +30,45 @@ public final class DataFlowClient {
     @Generated
     DataFlowClient(DataFlowsImpl serviceClient) {
         this.serviceClient = serviceClient;
+    }
+
+    /**
+     * Creates or updates a data flow.
+     *
+     * @param dataFlowName The data flow name.
+     * @param dataFlow Data flow resource definition.
+     * @param ifMatch ETag of the data flow entity. Should only be specified for update, for which it should match
+     *     existing entity or can be * for unconditional update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data flow resource type along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DataFlowResource> createOrUpdateDataFlowWithResponse(
+            String dataFlowName, DataFlowResource dataFlow, String ifMatch) {
+        return this.serviceClient.createOrUpdateDataFlowWithResponse(dataFlowName, dataFlow, ifMatch);
+    }
+
+    /**
+     * Creates or updates a data flow.
+     *
+     * @param dataFlowName The data flow name.
+     * @param dataFlow Data flow resource definition.
+     * @param ifMatch ETag of the data flow entity. Should only be specified for update, for which it should match
+     *     existing entity or can be * for unconditional update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data flow resource type along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DataFlowResource> createOrUpdateDataFlowWithResponse(
+            String dataFlowName, DataFlowResource dataFlow, String ifMatch, Context context) {
+        return this.serviceClient.createOrUpdateDataFlowWithResponse(dataFlowName, dataFlow, ifMatch, context);
     }
 
     /**
@@ -76,13 +116,49 @@ public final class DataFlowClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data flow resource type along with {@link Response}.
+     * @return data flow resource type.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataFlowResource> createOrUpdateDataFlowWithResponse(
+    public DataFlowResource createOrUpdateDataFlow(
             String dataFlowName, DataFlowResource dataFlow, String ifMatch, Context context) {
-        return this.serviceClient.createOrUpdateDataFlowWithResponse(dataFlowName, dataFlow, ifMatch, context);
+        return this.serviceClient.createOrUpdateDataFlow(dataFlowName, dataFlow, ifMatch, context);
+    }
+
+    /**
+     * Gets a data flow.
+     *
+     * @param dataFlowName The data flow name.
+     * @param ifNoneMatch ETag of the data flow entity. Should only be specified for get. If the ETag matches the
+     *     existing entity tag, or if * was provided, then no content will be returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a data flow along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DataFlowResource> getDataFlowWithResponse(String dataFlowName, String ifNoneMatch) {
+        return this.serviceClient.getDataFlowWithResponse(dataFlowName, ifNoneMatch);
+    }
+
+    /**
+     * Gets a data flow.
+     *
+     * @param dataFlowName The data flow name.
+     * @param ifNoneMatch ETag of the data flow entity. Should only be specified for get. If the ETag matches the
+     *     existing entity tag, or if * was provided, then no content will be returned.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a data flow along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DataFlowResource> getDataFlowWithResponse(
+            String dataFlowName, String ifNoneMatch, Context context) {
+        return this.serviceClient.getDataFlowWithResponse(dataFlowName, ifNoneMatch, context);
     }
 
     /**
@@ -127,13 +203,43 @@ public final class DataFlowClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data flow along with {@link Response}.
+     * @return a data flow.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataFlowResource> getDataFlowWithResponse(
-            String dataFlowName, String ifNoneMatch, Context context) {
-        return this.serviceClient.getDataFlowWithResponse(dataFlowName, ifNoneMatch, context);
+    public DataFlowResource getDataFlow(String dataFlowName, String ifNoneMatch, Context context) {
+        return this.serviceClient.getDataFlow(dataFlowName, ifNoneMatch, context);
+    }
+
+    /**
+     * Deletes a data flow.
+     *
+     * @param dataFlowName The data flow name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteDataFlowWithResponse(String dataFlowName) {
+        return this.serviceClient.deleteDataFlowWithResponse(dataFlowName);
+    }
+
+    /**
+     * Deletes a data flow.
+     *
+     * @param dataFlowName The data flow name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteDataFlowWithResponse(String dataFlowName, Context context) {
+        return this.serviceClient.deleteDataFlowWithResponse(dataFlowName, context);
     }
 
     /**
@@ -158,12 +264,45 @@ public final class DataFlowClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteDataFlow(String dataFlowName, Context context) {
+        this.serviceClient.deleteDataFlow(dataFlowName, context);
+    }
+
+    /**
+     * Renames a dataflow.
+     *
+     * @param dataFlowName The data flow name.
+     * @param request proposed new name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteDataFlowWithResponse(String dataFlowName, Context context) {
-        return this.serviceClient.deleteDataFlowWithResponse(dataFlowName, context);
+    public Response<Void> renameDataFlowWithResponse(String dataFlowName, ArtifactRenameRequest request) {
+        return this.serviceClient.renameDataFlowWithResponse(dataFlowName, request);
+    }
+
+    /**
+     * Renames a dataflow.
+     *
+     * @param dataFlowName The data flow name.
+     * @param request proposed new name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> renameDataFlowWithResponse(
+            String dataFlowName, ArtifactRenameRequest request, Context context) {
+        return this.serviceClient.renameDataFlowWithResponse(dataFlowName, request, context);
     }
 
     /**
@@ -190,13 +329,39 @@ public final class DataFlowClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> renameDataFlowWithResponse(
-            String dataFlowName, ArtifactRenameRequest request, Context context) {
-        return this.serviceClient.renameDataFlowWithResponse(dataFlowName, request, context);
+    public void renameDataFlow(String dataFlowName, ArtifactRenameRequest request, Context context) {
+        this.serviceClient.renameDataFlow(dataFlowName, request, context);
+    }
+
+    /**
+     * Lists data flows.
+     *
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of data flow resources along with {@link PagedResponse}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<DataFlowResource> getDataFlowsByWorkspaceSinglePage() {
+        return this.serviceClient.getDataFlowsByWorkspaceSinglePage();
+    }
+
+    /**
+     * Lists data flows.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of data flow resources along with {@link PagedResponse}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<DataFlowResource> getDataFlowsByWorkspaceSinglePage(Context context) {
+        return this.serviceClient.getDataFlowsByWorkspaceSinglePage(context);
     }
 
     /**
@@ -225,5 +390,38 @@ public final class DataFlowClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataFlowResource> getDataFlowsByWorkspace(Context context) {
         return this.serviceClient.getDataFlowsByWorkspace(context);
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of data flow resources along with {@link PagedResponse}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<DataFlowResource> getDataFlowsByWorkspaceNextSinglePage(String nextLink) {
+        return this.serviceClient.getDataFlowsByWorkspaceNextSinglePage(nextLink);
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of data flow resources along with {@link PagedResponse}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<DataFlowResource> getDataFlowsByWorkspaceNextSinglePage(String nextLink, Context context) {
+        return this.serviceClient.getDataFlowsByWorkspaceNextSinglePage(nextLink, context);
     }
 }
