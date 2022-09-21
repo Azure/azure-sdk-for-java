@@ -744,7 +744,6 @@ public final class BulkExecutor<TContext> {
     private void completeAllSinks() {
         logger.info("Closing all sinks, Context: {}", this.operationContextText);
 
-        executorService.shutdown();
         logger.debug("Executor service shut down, Context: {}", this.operationContextText);
         mainSink.tryEmitComplete();
         logger.debug("Main sink completed, Context: {}", this.operationContextText);
@@ -752,8 +751,17 @@ public final class BulkExecutor<TContext> {
         logger.debug("All group sinks completed, Context: {}", this.operationContextText);
 
         try {
+            logger.info("Cancelling the scheduledFutureForFlush task");
+            this.scheduledFutureForFlush.cancel(true);
+            logger.info("Successfully cancelled the scheduledFutureForFlush task");
+        } catch (Exception e) {
+            logger.warn("Failed to cancel the scheduledFutureForFlush task", e);
+        }
+
+        try {
+            logger.info("Shutting down the executor service");
             this.executorService.shutdown();
-            logger.debug("Shutting down the executor service");
+            logger.info("Successfully shut down the executor service");
         } catch (Exception e) {
             logger.warn("Failed to shut down the executor service", e);
         }
