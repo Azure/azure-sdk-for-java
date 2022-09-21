@@ -10,36 +10,36 @@ import java.net.InetSocketAddress;
 import java.time.Duration;
 
 /**
- * Code snippets for {@link JdkAsyncHttpClientBuilder}
+ * Code snippets for {@link JdkHttpClientBuilder}
  */
-public class JdkAsyncHttpClientBuilderJavaDocCodeSnippets {
+public class JdkHttpClientBuilderJavaDocCodeSnippets {
 
     /**
      * Code snippet for simple http client instantiation.
      */
     public void simpleInstantiation() {
         // BEGIN: com.azure.core.http.jdk.httpclient.instantiation-simple
-        HttpClient client = new JdkAsyncHttpClientBuilder()
+        HttpClient client = new JdkHttpClientBuilder()
                 .build();
         // END: com.azure.core.http.jdk.httpclient.instantiation-simple
     }
 
     public void proxySample() {
-        // BEGIN: com.azure.core.http.jdk.httpclient.JdkAsyncHttpClientBuilder.proxy#ProxyOptions
+        // BEGIN: com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.proxy#ProxyOptions
         final String proxyHost = "<proxy-host>"; // e.g. localhost
         final int proxyPort = 9999; // Proxy port
         ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP,
                 new InetSocketAddress(proxyHost, proxyPort));
-        HttpClient client = new JdkAsyncHttpClientBuilder()
+        HttpClient client = new JdkHttpClientBuilder()
                 .proxy(proxyOptions)
                 .build();
-        // END: com.azure.core.http.jdk.httpclient.JdkAsyncHttpClientBuilder.proxy#ProxyOptions
+        // END: com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.proxy#ProxyOptions
 
     }
 
     public void proxyBasicAuthenticationSample() {
 
-        // BEGIN: com.azure.core.http.jdk.httpclient.JdkAsyncHttpClientBuilder#setProxyAuthenticator
+        // BEGIN: com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder#setProxyAuthenticator
         final String proxyHost = "<proxy-host>"; // e.g. localhost
         final int proxyPort = 9999; // Proxy port
         final String proxyUser = "<proxy-user>";
@@ -48,20 +48,20 @@ public class JdkAsyncHttpClientBuilderJavaDocCodeSnippets {
         ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP,
                 new InetSocketAddress(proxyHost, proxyPort));
         proxyOptions = proxyOptions.setCredentials(proxyUser, proxyPassword);
-        HttpClient client = new JdkAsyncHttpClientBuilder()
+        HttpClient client = new JdkHttpClientBuilder()
                 .proxy(proxyOptions)
                 .build();
-        // END: com.azure.core.http.jdk.httpclient.JdkAsyncHttpClientBuilder#setProxyAuthenticator
+        // END: com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder#setProxyAuthenticator
 
     }
 
     public void connectionTimeoutSample() {
 
-        // BEGIN: com.azure.core.http.jdk.httpclient.JdkAsyncHttpClientBuilder.connectionTimeout#Duration
-        HttpClient client = new JdkAsyncHttpClientBuilder()
+        // BEGIN: com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.connectionTimeout#Duration
+        HttpClient client = new JdkHttpClientBuilder()
                 .connectionTimeout(Duration.ofSeconds(250)) // connection timeout of 250 seconds
                 .build();
-        // END: com.azure.core.http.jdk.httpclient.JdkAsyncHttpClientBuilder.connectionTimeout#Duration
+        // END: com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.connectionTimeout#Duration
 
     }
 }

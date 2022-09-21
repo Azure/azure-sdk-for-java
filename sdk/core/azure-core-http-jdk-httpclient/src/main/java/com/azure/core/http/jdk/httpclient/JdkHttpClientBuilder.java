@@ -28,7 +28,7 @@ import java.util.concurrent.Executor;
  * Builder to configure and build an instance of the azure-core {@link HttpClient} type using the JDK HttpClient APIs,
  * first introduced as preview in JDK 9, but made generally available from JDK 11 onwards.
  */
-public class JdkAsyncHttpClientBuilder {
+public class JdkHttpClientBuilder {
 
     private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(60);
     private static final String JAVA_HOME = System.getProperty("java.home");
@@ -55,7 +55,7 @@ public class JdkAsyncHttpClientBuilder {
         DEFAULT_RESTRICTED_HEADERS = Collections.unmodifiableSet(treeSet);
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(JdkAsyncHttpClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(JdkHttpClientBuilder.class);
 
     private java.net.http.HttpClient.Builder httpClientBuilder;
     private Duration connectionTimeout;
@@ -64,18 +64,18 @@ public class JdkAsyncHttpClientBuilder {
     private Executor executor;
 
     /**
-     * Creates JdkAsyncHttpClientBuilder.
+     * Creates JdkHttpClientBuilder.
      */
-    public JdkAsyncHttpClientBuilder() {
+    public JdkHttpClientBuilder() {
     }
 
     /**
-     * Creates JdkAsyncHttpClientBuilder from the builder of an existing {@link java.net.http.HttpClient.Builder}.
+     * Creates JdkHttpClientBuilder from the builder of an existing {@link java.net.http.HttpClient.Builder}.
      *
      * @param httpClientBuilder the HttpClient builder to use
      * @throws NullPointerException if {@code httpClientBuilder} is null
      */
-    public JdkAsyncHttpClientBuilder(java.net.http.HttpClient.Builder httpClientBuilder) {
+    public JdkHttpClientBuilder(java.net.http.HttpClient.Builder httpClientBuilder) {
         this.httpClientBuilder = Objects.requireNonNull(httpClientBuilder, "'httpClientBuilder' cannot be null.");
     }
 
@@ -86,10 +86,10 @@ public class JdkAsyncHttpClientBuilder {
      * newly built {@code HttpClient}.
      *
      * @param executor the executor to be used for asynchronous and dependent tasks
-     * @return the updated JdkAsyncHttpClientBuilder object
+     * @return the updated JdkHttpClientBuilder object
      * @throws NullPointerException if {@code executor} is null
      */
-    public JdkAsyncHttpClientBuilder executor(Executor executor) {
+    public JdkHttpClientBuilder executor(Executor executor) {
         this.executor = Objects.requireNonNull(executor, "executor can not be null");
         return this;
     }
@@ -99,20 +99,20 @@ public class JdkAsyncHttpClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.core.http.jdk.httpclient.JdkAsyncHttpClientBuilder.connectionTimeout#Duration -->
+     * <!-- src_embed com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.connectionTimeout#Duration -->
      * <pre>
-     * HttpClient client = new JdkAsyncHttpClientBuilder&#40;&#41;
+     * HttpClient client = new JdkHttpClientBuilder&#40;&#41;
      *         .connectionTimeout&#40;Duration.ofSeconds&#40;250&#41;&#41; &#47;&#47; connection timeout of 250 seconds
      *         .build&#40;&#41;;
      * </pre>
-     * <!-- end com.azure.core.http.jdk.httpclient.JdkAsyncHttpClientBuilder.connectionTimeout#Duration -->
+     * <!-- end com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.connectionTimeout#Duration -->
      *
      * The default connection timeout is 60 seconds.
      *
      * @param connectionTimeout the connection timeout
-     * @return the updated JdkAsyncHttpClientBuilder object
+     * @return the updated JdkHttpClientBuilder object
      */
-    public JdkAsyncHttpClientBuilder connectionTimeout(Duration connectionTimeout) {
+    public JdkHttpClientBuilder connectionTimeout(Duration connectionTimeout) {
         // setConnectionTimeout can be null
         this.connectionTimeout = connectionTimeout;
         return this;
@@ -123,22 +123,22 @@ public class JdkAsyncHttpClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.core.http.jdk.httpclient.JdkAsyncHttpClientBuilder.proxy#ProxyOptions -->
+     * <!-- src_embed com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.proxy#ProxyOptions -->
      * <pre>
      * final String proxyHost = &quot;&lt;proxy-host&gt;&quot;; &#47;&#47; e.g. localhost
      * final int proxyPort = 9999; &#47;&#47; Proxy port
      * ProxyOptions proxyOptions = new ProxyOptions&#40;ProxyOptions.Type.HTTP,
      *         new InetSocketAddress&#40;proxyHost, proxyPort&#41;&#41;;
-     * HttpClient client = new JdkAsyncHttpClientBuilder&#40;&#41;
+     * HttpClient client = new JdkHttpClientBuilder&#40;&#41;
      *         .proxy&#40;proxyOptions&#41;
      *         .build&#40;&#41;;
      * </pre>
-     * <!-- end com.azure.core.http.jdk.httpclient.JdkAsyncHttpClientBuilder.proxy#ProxyOptions -->
+     * <!-- end com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.proxy#ProxyOptions -->
      *
      * @param proxyOptions The proxy configuration to use.
-     * @return the updated {@link JdkAsyncHttpClientBuilder} object
+     * @return the updated JdkHttpClientBuilder object
      */
-    public JdkAsyncHttpClientBuilder proxy(ProxyOptions proxyOptions) {
+    public JdkHttpClientBuilder proxy(ProxyOptions proxyOptions) {
         // proxyOptions can be null
         this.proxyOptions = proxyOptions;
         return this;
@@ -151,9 +151,9 @@ public class JdkAsyncHttpClientBuilder {
      * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
      * @param configuration The configuration store used to
-     * @return The updated JdkAsyncHttpClientBuilder object.
+     * @return The updated JdkHttpClientBuilder object.
      */
-    public JdkAsyncHttpClientBuilder configuration(Configuration configuration) {
+    public JdkHttpClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
