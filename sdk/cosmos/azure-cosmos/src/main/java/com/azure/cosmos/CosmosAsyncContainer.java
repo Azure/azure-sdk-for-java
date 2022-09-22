@@ -61,6 +61,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -856,7 +857,31 @@ public class CosmosAsyncContainer {
         return Flux.deferContextual(context -> {
             final BulkExecutor<TContext> executor = new BulkExecutor<>(this, operations, cosmosBulkExecutionOptions);
 
-            return executor.execute().publishOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC);
+            return executor
+                .execute()
+                .doFinally((SignalType signal) -> {
+                    if (signal == SignalType.ON_COMPLETE) {
+                        logger.debug("BulkExecutor.execute flux completed - # left items {}, Context: {}",
+                            executor.getItemsLeftSnapshot(),
+                            executor.getOperationContext());
+                    } else {
+                        int itemsLeftSnapshot = executor.getItemsLeftSnapshot();
+                        if (itemsLeftSnapshot > 0) {
+                            logger.info("BulkExecutor.execute flux terminated - Signal: {} - # left items {}, Context: {}",
+                                signal,
+                                itemsLeftSnapshot,
+                                executor.getOperationContext());
+                        } else {
+                            logger.debug("BulkExecutor.execute flux terminated - Signal: {} - # left items {}, Context: {}",
+                                signal,
+                                itemsLeftSnapshot,
+                                executor.getOperationContext());
+                        }
+                    }
+
+                    executor.dispose();
+                })
+                .publishOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC);
         });
     }
 

@@ -26,6 +26,7 @@ import com.azure.cosmos.models.CosmosItemOperationType;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.Disposable;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxProcessor;
@@ -75,7 +76,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *
  *    For our use case, Sinks.many().unicast() will work.
  */
-public final class BulkExecutor<TContext> {
+public final class BulkExecutor<TContext> implements Disposable {
 
     private final static Logger logger = LoggerFactory.getLogger(BulkExecutor.class);
     private final static AtomicLong instanceCount = new AtomicLong(0);
@@ -95,6 +96,8 @@ public final class BulkExecutor<TContext> {
 
     // Handle gone error:
     private final AtomicBoolean mainSourceCompleted;
+    private final AtomicBoolean isDisposed = new AtomicBoolean(false);
+    private final AtomicBoolean isShutdown = new AtomicBoolean(false);
     private final AtomicInteger totalCount;
     private final Sinks.EmitFailureHandler serializedEmitFailureHandler;
     private final Sinks.Many<CosmosItemOperation> mainSink;
@@ -169,12 +172,24 @@ public final class BulkExecutor<TContext> {
             this.operationContextText);
     }
 
-    private void shutdown() {
-        logger.debug("Shutting down, Context: {}", this.operationContextText);
+    @Override
+    public void dispose() {
+        if (this.isDisposed.compareAndSet(false, true)) {
+            long totalCountSnapshot = totalCount.get();
+            if (totalCountSnapshot == 0) {
+                completeAllSinks();
+            } else {
+                this.shutdown();
+            }
+        }
+    }
 
-        groupSinks.forEach(FluxSink::complete);
-        logger.debug("All group sinks completed, Context: {}", this.operationContextText);
+    @Override
+    public boolean isDisposed() {
+        return this.isDisposed.get();
+    }
 
+    private void cancelFlushTask() {
         ScheduledFuture<?> scheduledFutureSnapshot = this.scheduledFutureForFlush;
 
         if (scheduledFutureSnapshot != null) {
@@ -185,16 +200,34 @@ public final class BulkExecutor<TContext> {
                 logger.warn("Failed to cancel scheduled tasks{}, Context: {}", getThreadInfo(), this.operationContextText, e);
             }
         }
+    }
 
-        try {
-            logger.debug("Shutting down the executor service, Context: {}", this.operationContextText);
-            this.executorService.shutdownNow();
-            logger.debug("Successfully shut down the executor service, Context: {}", this.operationContextText);
-        } catch (Exception e) {
-            logger.warn("Failed to shut down the executor service, Context: {}",this.operationContextText, e);
+    private void shutdown() {
+        if (this.isShutdown.compareAndSet(false, true)) {
+            logger.debug("Shutting down, Context: {}", this.operationContextText);
+
+            groupSinks.forEach(FluxSink::complete);
+            logger.debug("All group sinks completed, Context: {}", this.operationContextText);
+
+            this.cancelFlushTask();
+
+            try {
+                logger.debug("Shutting down the executor service, Context: {}", this.operationContextText);
+                this.executorService.shutdownNow();
+                logger.debug("Successfully shut down the executor service, Context: {}", this.operationContextText);
+            } catch (Exception e) {
+                logger.warn("Failed to shut down the executor service, Context: {}", this.operationContextText, e);
+            }
         }
     }
 
+    public int getItemsLeftSnapshot() {
+        return this.totalCount.get();
+    }
+
+    public String getOperationContext() {
+        return this.operationContextText;
+    }
 
     public Flux<CosmosBulkOperationResponse<TContext>> execute() {
 
@@ -268,16 +301,7 @@ public final class BulkExecutor<TContext> {
 
                             completeAllSinks();
                         } else {
-                            ScheduledFuture<?> scheduledFutureSnapshot = this.scheduledFutureForFlush;
-
-                            if (scheduledFutureSnapshot != null) {
-                                try {
-                                    scheduledFutureSnapshot.cancel(true);
-                                    logger.debug("Cancelled all future scheduled tasks {}, Context: {}", getThreadInfo(), this.operationContextText);
-                                } catch (Exception e) {
-                                    logger.warn("Failed to cancel scheduled tasks{}, Context: {}", getThreadInfo(), this.operationContextText, e);
-                                }
-                            }
+                            this.cancelFlushTask();
 
                             this.onFlush();
 
