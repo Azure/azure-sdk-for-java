@@ -73,8 +73,39 @@ See [Authentication][authenticate] for more options.
 See [API design][design] for general introduction on design and key concepts on Azure Management Libraries.
 
 ## Examples
+Get Timezone By Id
+```java com.azure.maps.timezone.sync.get_timezone_by_id
+TimezoneIdOptions options = new TimezoneIdOptions().setTimezoneId("Asia/Bahrain").setOptions(TimezoneOptions.  ALL).setAcceptLanguage(null).setTimeStamp(null).setDaylightSavingsTimeFrom(null).setDaylightSavingsTimeLastingYears(null);
+client.getTimezoneById(options);
+```
 
+Get Timezone By Coordinates
+```java com.azure.maps.timezone.sync.get_timezone_by_coordinates
+GeoPosition coordinate = new GeoPosition(-122, 47.0);
+TimezoneCoordinateOptions options = new TimezoneCoordinateOptions().setCoordinates(coordinate).setOptions(TimezoneOptions.ALL);
+client.getTimezoneByCoordinates(options);
+```
 
+Get Iana Timezone Ids
+```java com.azure.maps.timezone.async.get_timezone_enum_iana
+client.getIanaTimezoneIds();
+```
+
+Get Iana Version
+```java com.azure.maps.timezone.sync.get_timezone_iana_version
+client.getIanaVersion();
+```
+
+Convert Windows Timezone To Iana
+Get Iana Version
+```java com.azure.maps.timezone.sync.convert_windows_timezone_to_iana
+client.convertWindowsTimezoneToIana("pacific standard time", null);
+```
+
+Get Windows Timezone Ids
+```java com.azure.maps.timezone.async.get_timezone_enum_windows
+client.getWindowsTimezoneIds();
+```
 
 ## Troubleshooting
 When you interact with the Azure Maps Services, errors returned by the Maps service correspond to the same HTTP status codes returned for REST API requests.
