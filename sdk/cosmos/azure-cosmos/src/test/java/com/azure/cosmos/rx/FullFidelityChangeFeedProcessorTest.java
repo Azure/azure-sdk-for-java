@@ -59,8 +59,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
     private final String hostName = RandomStringUtils.randomAlphabetic(6);
     private final int FEED_COUNT = 10;
     private final int CHANGE_FEED_PROCESSOR_TIMEOUT = 5000;
-    private final int FEED_COLLECTION_THROUGHPUT_MAX = 20000;
-    private final int FEED_COLLECTION_THROUGHPUT = 10100;
+    private final int FEED_COLLECTION_THROUGHPUT = 400;
     private final int LEASE_COLLECTION_THROUGHPUT = 400;
 
     private CosmosAsyncClient client;
@@ -790,7 +789,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
     @Test(groups = { "emulator" }, timeOut = 20 * TIMEOUT)
     public void inactiveOwnersRecovery() throws InterruptedException {
-        CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT_MAX);
+        CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
 
         try {
