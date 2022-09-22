@@ -40,7 +40,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/** A builder for creating a new instance of the TimezoneClient type. */
+/**
+ * Builder class used to instantiate both synchronous and asynchronous {@link TimezoneClient} clients.
+ * <p><b>Example usage</b></p>
+ * Creating a sync client using a {@link AzureKeyCredential}:
+ * <!-- src_embed com.azure.maps.timezone.sync.builder.key.instantiation -->
+ * <pre>
+ * &#47;&#47; Authenticates using subscription key
+ * AzureKeyCredential keyCredential = new AzureKeyCredential&#40;System.getenv&#40;&quot;SUBSCRIPTION_KEY&quot;&#41;&#41;;
+ *
+ * &#47;&#47; Creates a builder
+ * TimezoneClientBuilder builder = new TimezoneClientBuilder&#40;&#41;;
+ * builder.credential&#40;keyCredential&#41;;
+ * builder.httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;;
+ *
+ * &#47;&#47; Builds the client
+ * TimezoneClient client = builder.buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.maps.timezone.sync.builder.ad.instantiation -->
+ */
 @ServiceClientBuilder(serviceClients = {TimezoneClient.class, TimezoneAsyncClient.class})
 public final class TimezoneClientBuilder implements AzureKeyCredentialTrait<TimezoneClientBuilder>,
     TokenCredentialTrait<TimezoneClientBuilder>, HttpTrait<TimezoneClientBuilder>,

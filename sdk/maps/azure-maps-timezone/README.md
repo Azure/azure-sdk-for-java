@@ -1,16 +1,10 @@
-# Azure Resource Manager Timezone client library for Java
+# Azure Maps SDK Timezone client library for Java
 
-Azure Resource Manager Timezone client library for Java.
+Azure Maps SDK Timezone client library for Java.
 
-This package contains Microsoft Azure SDK for Timezone Management SDK. Azure Maps Time Zone REST APIs. Package tag 1.0-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains the Azure Maps SDK Timezone client library which contains Azure Maps Timezone APIs. For documentation on how to use this package, please see [Azure Maps Timezone SDK for Java](https://docs.microsoft.com/rest/api/maps/timezone).
 
-## We'd love to hear your feedback
-
-We're always working on improving our products and the way we communicate with our users. So we'd love to learn what's working and how we can do better.
-
-If you haven't already, please take a few minutes to [complete this short survey][survey] we have put together.
-
-Thank you in advance for your collaboration. We really appreciate your time!
+[Source code][source] | [API reference documentation][docs] | [REST API documentation][rest_docs] | [Product documentation][product_docs] | [Samples][samples]
 
 ## Documentation
 
@@ -27,11 +21,11 @@ Various documentation is available to help you get started
 
 ### Adding the package to your product
 
-[//]: # ({x-version-update-start;com.azure.resourcemanager:azure-resourcemanager-timezone-generated;current})
+[//]: # ({x-version-update-start;com.azure:azure-maps-timezone;current})
 ```xml
 <dependency>
-    <groupId>com.azure.resourcemanager</groupId>
-    <artifactId>azure-resourcemanager-timezone-generated</artifactId>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-maps-timezone</artifactId>
     <version>1.0.0-beta.1</version>
 </dependency>
 ```
@@ -55,13 +49,19 @@ In addition, Azure subscription ID can be configured via environment variable `A
 
 With above configuration, `azure` client can be authenticated by following code:
 
-```java
-AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
-TokenCredential credential = new DefaultAzureCredentialBuilder()
-    .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
-    .build();
-TimezoneManager manager = TimezoneManager
-    .authenticate(credential, profile);
+```java com.azure.maps.timezone.sync.builder.ad.instantiation
+// Authenticates using Azure AD building a default credential
+// This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
+DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+
+// Creates a builder
+TimezoneClientBuilder builder = new TimezoneClientBuilder();
+builder.credential(tokenCredential);
+builder.timezoneClientId(System.getenv("MAPS_CLIENT_ID"));
+builder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+
+// Builds a client
+TimezoneClient client = builder.buildClient();
 ```
 
 The sample code assumes global Azure. Please change `AzureEnvironment.AZURE` variable if otherwise.
@@ -77,8 +77,13 @@ See [API design][design] for general introduction on design and key concepts on 
 
 
 ## Troubleshooting
+When you interact with the Azure Maps Services, errors returned by the Maps service correspond to the same HTTP status codes returned for REST API requests.
+
+For example, if you search with an invalid coordinate, a error is returned, indicating "Bad Request".400
 
 ## Next steps
+Several Azure Maps Search Java SDK samples are available to you in the SDK's GitHub repository.
+[Azure Maps Timezone Samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/maps/azure-maps-timezone/src/samples)
 
 ## Contributing
 
@@ -91,11 +96,16 @@ For details on contributing to this repository, see the [contributing guide](htt
 1. Create new Pull Request
 
 <!-- LINKS -->
-[survey]: https://microsoft.qualtrics.com/jfe/form/SV_ehN0lIk2FKEBkwd?Q_CHL=DOCS
+[source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/maps/azure-maps-timezone/src
+[samples]:  https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/maps/azure-maps-timezone/src/samples
+[rest_docs]: https://docs.microsoft.com/rest/api/maps
+[product_docs]: https://docs.microsoft.com/azure/azure-maps/
 [docs]: https://azure.github.io/azure-sdk-for-java/
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
-[azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity
-[azure_core_http_netty]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-http-netty
-[authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/AUTH.md
-[design]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/DESIGN.md
+[azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
+[azure_core_http_netty]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-netty
+[authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/AUTH.md
+[design]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/DESIGN.md
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fmaps%2Fazure-maps-timezone%2FREADME.png)

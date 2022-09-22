@@ -7,6 +7,7 @@ package com.azure.maps.timezone;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.maps.timezone.implementation.models.ErrorResponseException;
@@ -19,7 +20,24 @@ import com.azure.maps.timezone.models.TimezoneWindows;
 
 import java.util.List;
 
-/** Initializes a new instance of the synchronous TimezoneClient type. */
+/**
+ * {@link TimezoneClient} instances are created via the {@link TimezoneClientBuilder}, as shown below.
+ * Creating a sync client using a {@link AzureKeyCredential}:
+ * <!-- src_embed com.azure.maps.timezone.sync.builder.key.instantiation -->
+ * <pre>
+ * &#47;&#47; Authenticates using subscription key
+ * AzureKeyCredential keyCredential = new AzureKeyCredential&#40;System.getenv&#40;&quot;SUBSCRIPTION_KEY&quot;&#41;&#41;;
+ *
+ * &#47;&#47; Creates a builder
+ * TimezoneClientBuilder builder = new TimezoneClientBuilder&#40;&#41;;
+ * builder.credential&#40;keyCredential&#41;;
+ * builder.httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;;
+ *
+ * &#47;&#47; Builds the client
+ * TimezoneClient client = builder.buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.maps.timezone.sync.builder.ad.instantiation -->
+ */
 @ServiceClient(builder = TimezoneClientBuilder.class)
 public final class TimezoneClient {
     private final TimezoneAsyncClient asyncClient;
