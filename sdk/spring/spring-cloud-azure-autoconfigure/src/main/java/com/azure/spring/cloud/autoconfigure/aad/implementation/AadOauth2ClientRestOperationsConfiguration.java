@@ -25,12 +25,12 @@ import java.util.List;
  * Configure RestOperation bean used for accessing Azure AD and Azure AD B2C
  */
 @Configuration(proxyBeanMethods = false)
-public class AadOauth2ClientRestOperationConfiguration {
+public class AadOauth2ClientRestOperationsConfiguration {
 
     /**
      * Bean name of RestOperation bean. The bean is used to retrieve access token.
      *
-     * @see AadOauth2ClientRestOperationConfiguration#aadOAuth2ClientRestOperation(RestTemplateBuilder)
+     * @see AadOauth2ClientRestOperationsConfiguration#aadOAuth2ClientRestOperation(RestTemplateBuilder)
      */
     public static final String AAD_OAUTH2_CLIENT_REST_OPERATIONS_BEAN_NAME = "aadOAuth2ClientRestOperations";
 

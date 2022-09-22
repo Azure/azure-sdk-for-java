@@ -14,29 +14,29 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ResourceServerRestOperationConfiguration.AAD_OAUTH2_RESOURCE_SERVER_REST_OPERATIONS_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ClientRestOperationsConfiguration.AAD_OAUTH2_CLIENT_REST_OPERATIONS_BEAN_NAME;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2RestOperationConfigurationTestUtil.hasItemOfClass;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class AadOauth2ResourceServerRestOperationConfigurationTest {
+class AadOauth2ClientRestOperationsConfigurationTest {
 
     @Test
     void testRestOperationBeanConfiguration() {
         new ApplicationContextRunner()
                 .withUserConfiguration(
-                        AadOauth2ResourceServerRestOperationConfiguration.class,
+                        AadOauth2ClientRestOperationsConfiguration.class,
                         RestTemplateAutoConfiguration.class)
                 .run((context) -> {
-                    assertThat(context).hasBean(AAD_OAUTH2_RESOURCE_SERVER_REST_OPERATIONS_BEAN_NAME);
+                    assertThat(context).hasBean(AAD_OAUTH2_CLIENT_REST_OPERATIONS_BEAN_NAME);
 
-                    RestTemplate restTemplate = (RestTemplate) context.getBean(AAD_OAUTH2_RESOURCE_SERVER_REST_OPERATIONS_BEAN_NAME);
-                    assertFalse(restTemplate.getErrorHandler() instanceof OAuth2ErrorResponseErrorHandler);
+                    RestTemplate restTemplate = (RestTemplate) context.getBean(AAD_OAUTH2_CLIENT_REST_OPERATIONS_BEAN_NAME);
+                    assertTrue(restTemplate.getErrorHandler() instanceof OAuth2ErrorResponseErrorHandler);
 
                     List<HttpMessageConverter<?>> converters = restTemplate.getMessageConverters();
-                    assertFalse(hasItemOfClass(converters, FormHttpMessageConverter.class));
-                    assertFalse(hasItemOfClass(converters, OAuth2AccessTokenResponseHttpMessageConverter.class));
+                    assertTrue(hasItemOfClass(converters, FormHttpMessageConverter.class));
+                    assertTrue(hasItemOfClass(converters, OAuth2AccessTokenResponseHttpMessageConverter.class));
                 });
     }
 
@@ -44,13 +44,13 @@ class AadOauth2ResourceServerRestOperationConfigurationTest {
     void testRestOperationProxyConfiguration() {
         new ApplicationContextRunner()
                 .withUserConfiguration(
-                        AadOauth2ResourceServerRestOperationConfiguration.class,
+                        AadOauth2ClientRestOperationsConfiguration.class,
                         RestTemplateAutoConfiguration.class,
                         AadOauth2RestOperationConfigurationTestUtil.RestTemplateProxyCustomizerConfiguration.class)
                 .run((context) -> {
-                    assertThat(context).hasBean(AAD_OAUTH2_RESOURCE_SERVER_REST_OPERATIONS_BEAN_NAME);
+                    assertThat(context).hasBean(AAD_OAUTH2_CLIENT_REST_OPERATIONS_BEAN_NAME);
 
-                    RestTemplate restTemplate = (RestTemplate) context.getBean(AAD_OAUTH2_RESOURCE_SERVER_REST_OPERATIONS_BEAN_NAME);
+                    RestTemplate restTemplate = (RestTemplate) context.getBean(AAD_OAUTH2_CLIENT_REST_OPERATIONS_BEAN_NAME);
                     assertSame(restTemplate.getRequestFactory(), AadOauth2RestOperationConfigurationTestUtil.RestTemplateProxyCustomizerConfiguration.FACTORY);
                 });
     }

@@ -19,12 +19,12 @@ import org.springframework.web.client.RestOperations;
  * Configure RestOperation bean used for accessing Azure AD and Azure AD B2C
  */
 @Configuration(proxyBeanMethods = false)
-public class AadOauth2ResourceServerRestOperationConfiguration {
+public class AadOauth2ResourceServerRestOperationsConfiguration {
 
     /**
      * Bean name of RestOperation bean. The bean is used to get key to validate access token in oAuth2 resource server.
      *
-     * @see AadOauth2ResourceServerRestOperationConfiguration#aadOauth2ResourceServerRestOperation(RestTemplateBuilder)
+     * @see AadOauth2ResourceServerRestOperationsConfiguration#aadOauth2ResourceServerRestOperation(RestTemplateBuilder)
      */
     public static final String AAD_OAUTH2_RESOURCE_SERVER_REST_OPERATIONS_BEAN_NAME =
             "aadOauth2ResourceServerRestOperations";

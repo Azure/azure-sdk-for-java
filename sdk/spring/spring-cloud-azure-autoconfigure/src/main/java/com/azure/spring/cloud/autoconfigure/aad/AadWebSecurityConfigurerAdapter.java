@@ -28,7 +28,7 @@ import org.springframework.web.client.RestOperations;
 
 import javax.servlet.Filter;
 
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ClientRestOperationConfiguration.AAD_OAUTH2_CLIENT_REST_OPERATIONS_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ClientRestOperationsConfiguration.AAD_OAUTH2_CLIENT_REST_OPERATIONS_BEAN_NAME;
 
 /**
  * Abstract configuration class, used to make AzureClientRegistrationRepository and AuthzCodeGrantRequestEntityConverter

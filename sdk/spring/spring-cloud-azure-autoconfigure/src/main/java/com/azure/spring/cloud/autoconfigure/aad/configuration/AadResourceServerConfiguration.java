@@ -4,7 +4,7 @@ package com.azure.spring.cloud.autoconfigure.aad.configuration;
 
 
 import com.azure.spring.cloud.autoconfigure.aad.AadResourceServerWebSecurityConfigurerAdapter;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ResourceServerRestOperationConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ResourceServerRestOperationsConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.ResourceServerCondition;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadJwtClaimNames;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.validator.AadJwtIssuerValidator;
@@ -35,7 +35,7 @@ import org.springframework.web.client.RestOperations;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ResourceServerRestOperationConfiguration.AAD_OAUTH2_RESOURCE_SERVER_REST_OPERATIONS_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ResourceServerRestOperationsConfiguration.AAD_OAUTH2_RESOURCE_SERVER_REST_OPERATIONS_BEAN_NAME;
 
 /**
  * <p>
@@ -45,7 +45,7 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2R
  */
 @Configuration(proxyBeanMethods = false)
 @Conditional(ResourceServerCondition.class)
-@Import(AadOauth2ResourceServerRestOperationConfiguration.class)
+@Import(AadOauth2ResourceServerRestOperationsConfiguration.class)
 public class AadResourceServerConfiguration {
 
     private final RestOperations restOperations;

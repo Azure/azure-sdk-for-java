@@ -7,7 +7,7 @@ import com.azure.spring.cloud.autoconfigure.aad.configuration.AadPropertiesConfi
 import com.azure.spring.cloud.autoconfigure.aad.filter.AadAppRoleStatelessAuthenticationFilter;
 import com.azure.spring.cloud.autoconfigure.aad.filter.AadAuthenticationFilter;
 import com.azure.spring.cloud.autoconfigure.aad.filter.UserPrincipalManager;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ResourceServerRestOperationConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ResourceServerRestOperationsConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.RestOperationsResourceRetriever;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
@@ -29,7 +29,7 @@ import org.springframework.web.client.RestOperations;
 
 import java.util.concurrent.TimeUnit;
 
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ResourceServerRestOperationConfiguration.AAD_OAUTH2_RESOURCE_SERVER_REST_OPERATIONS_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ResourceServerRestOperationsConfiguration.AAD_OAUTH2_RESOURCE_SERVER_REST_OPERATIONS_BEAN_NAME;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Azure Active Authentication filters.
@@ -43,7 +43,7 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2R
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnExpression("${spring.cloud.azure.active-directory.enabled:false}")
 @ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken" })
-@Import({AadPropertiesConfiguration.class, AadOauth2ResourceServerRestOperationConfiguration.class})
+@Import({AadPropertiesConfiguration.class, AadOauth2ResourceServerRestOperationsConfiguration.class})
 public class AadAuthenticationFilterAutoConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AadAuthenticationProperties.class);

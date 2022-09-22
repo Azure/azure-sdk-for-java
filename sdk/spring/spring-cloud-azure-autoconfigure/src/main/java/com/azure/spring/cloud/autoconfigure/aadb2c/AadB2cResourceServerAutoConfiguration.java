@@ -3,7 +3,7 @@
 package com.azure.spring.cloud.autoconfigure.aadb2c;
 
 import com.azure.spring.cloud.autoconfigure.aad.AadTrustedIssuerRepository;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ResourceServerRestOperationConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ResourceServerRestOperationsConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadJwtClaimNames;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.AadIssuerJwsKeySelector;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.RestOperationsResourceRetriever;
@@ -39,7 +39,7 @@ import org.springframework.web.client.RestOperations;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ResourceServerRestOperationConfiguration.AAD_OAUTH2_RESOURCE_SERVER_REST_OPERATIONS_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ResourceServerRestOperationsConfiguration.AAD_OAUTH2_RESOURCE_SERVER_REST_OPERATIONS_BEAN_NAME;
 
 /**
  * Configure necessary beans for Azure AD B2C resource server beans, and import {@link AadB2cOAuth2ClientConfiguration} class for Azure AD
@@ -49,7 +49,7 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2R
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnProperty(value = "spring.cloud.azure.active-directory.b2c.enabled", havingValue = "true")
 @ConditionalOnClass(BearerTokenAuthenticationToken.class)
-@Import({ AadB2cPropertiesConfiguration.class, AadB2cOAuth2ClientConfiguration.class, AadOauth2ResourceServerRestOperationConfiguration.class})
+@Import({ AadB2cPropertiesConfiguration.class, AadB2cOAuth2ClientConfiguration.class, AadOauth2ResourceServerRestOperationsConfiguration.class})
 public class AadB2cResourceServerAutoConfiguration {
 
     private final AadB2cProperties properties;
