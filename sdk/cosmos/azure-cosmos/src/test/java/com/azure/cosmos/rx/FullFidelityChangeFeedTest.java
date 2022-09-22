@@ -334,7 +334,8 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    // TODO: re-enable this test once pipeline emulator has these changes - currently only in preview
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT, enabled = false)
     public void fullFidelityChangeFeed_VerifyPreviousPresentOnReplace() throws Exception {
         CosmosAsyncContainer cosmosContainer = initializeFFCFContainer(2);
         try {
