@@ -63,40 +63,16 @@ public final class LoadTestingClientImpl {
         return this.serializerAdapter;
     }
 
-    /** The AppComponentsImpl object to access its operations. */
-    private final AppComponentsImpl appComponents;
+    /** The LoadTestAdministrationsImpl object to access its operations. */
+    private final LoadTestAdministrationsImpl loadTestAdministrations;
 
     /**
-     * Gets the AppComponentsImpl object to access its operations.
+     * Gets the LoadTestAdministrationsImpl object to access its operations.
      *
-     * @return the AppComponentsImpl object.
+     * @return the LoadTestAdministrationsImpl object.
      */
-    public AppComponentsImpl getAppComponents() {
-        return this.appComponents;
-    }
-
-    /** The ServerMetricsImpl object to access its operations. */
-    private final ServerMetricsImpl serverMetrics;
-
-    /**
-     * Gets the ServerMetricsImpl object to access its operations.
-     *
-     * @return the ServerMetricsImpl object.
-     */
-    public ServerMetricsImpl getServerMetrics() {
-        return this.serverMetrics;
-    }
-
-    /** The TestsImpl object to access its operations. */
-    private final TestsImpl tests;
-
-    /**
-     * Gets the TestsImpl object to access its operations.
-     *
-     * @return the TestsImpl object.
-     */
-    public TestsImpl getTests() {
-        return this.tests;
+    public LoadTestAdministrationsImpl getLoadTestAdministrations() {
+        return this.loadTestAdministrations;
     }
 
     /** The TestRunsImpl object to access its operations. */
@@ -155,9 +131,7 @@ public final class LoadTestingClientImpl {
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
-        this.appComponents = new AppComponentsImpl(this);
-        this.serverMetrics = new ServerMetricsImpl(this);
-        this.tests = new TestsImpl(this);
+        this.loadTestAdministrations = new LoadTestAdministrationsImpl(this);
         this.testRuns = new TestRunsImpl(this);
     }
 }

@@ -13,17 +13,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public final class UploadTestFileTests extends LoadTestingClientTestBase {
-    private final String FILE_JXM_NAME = "sample-JMX-file.jmx";
-    private final URL FILE_JMX_URL = UploadTestFileTests.class.getClassLoader().getResource(FILE_JXM_NAME);
+    private final String fileJmxName = "sample-JMX-file.jmx";
+    private final URL fileJmxUrl = UploadTestFileTests.class.getClassLoader().getResource(fileJmxName);
 
     @Test
     public void uploadTestFile() throws IOException {
-        BinaryData file = BinaryData.fromFile(new File(FILE_JMX_URL.getPath()).toPath());
+        BinaryData file = BinaryData.fromFile(new File(fileJmxUrl.getPath()).toPath());
         RequestOptions requestOptions = new RequestOptions().addQueryParam("fileType", "2");
-        Response<BinaryData> response = testClient.uploadTestFileWithResponse(
-                                                DEFAULT_TEST_ID,
-                                                DEFAULT_FILE_ID,
-                                                FILE_JXM_NAME,
+        Response<BinaryData> response = client.getLoadTestAdministration().uploadTestFileWithResponse(
+                                                defaultTestId,
+                                                defaultFileId,
+                                                fileJmxName,
                                                 file,
                                                 requestOptions);
         Assertions.assertEquals(201, response.getStatusCode());

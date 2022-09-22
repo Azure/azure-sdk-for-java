@@ -50,219 +50,6 @@ public final class TestRunClient {
     }
 
     /**
-     * Create and start a new test run with the given name.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>oldTestRunId</td><td>String</td><td>No</td><td>Existing test run Id that should be rerun.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     testRunId: String (Optional)
-     *     displayName: String (Optional)
-     *     testId: String (Optional)
-     *     resourceId: String (Optional)
-     *     description: String (Optional)
-     *     status: String (Optional)
-     *     startDateTime: OffsetDateTime (Optional)
-     *     endDateTime: OffsetDateTime (Optional)
-     *     loadTestConfig (Optional): {
-     *         engineInstances: Integer (Optional)
-     *         splitAllCSVs: Boolean (Optional)
-     *     }
-     *     testResult: String (Optional)
-     *     passFailCriteria (Optional): {
-     *         passFailMetrics (Optional): {
-     *             String (Optional): {
-     *                 clientmetric: String (Optional)
-     *                 aggregate: String (Optional)
-     *                 condition: String (Optional)
-     *                 requestName: String (Optional)
-     *                 value: Double (Optional)
-     *                 action: String (Optional)
-     *                 actualValue: Double (Optional)
-     *                 result: String (Optional)
-     *             }
-     *         }
-     *     }
-     *     testArtifacts (Optional): {
-     *         inputArtifacts (Required): {
-     *             configUrl (Optional): {
-     *                 url: String (Optional)
-     *                 fileId: String (Optional)
-     *                 filename: String (Optional)
-     *                 fileType: String(0/1/2) (Optional)
-     *                 expireTime: OffsetDateTime (Optional)
-     *                 validationStatus: String (Optional)
-     *             }
-     *             testScriptUrl (Optional): (recursive schema, see testScriptUrl above)
-     *             userPropUrl (Optional): (recursive schema, see userPropUrl above)
-     *             inputArtifactsZipFileurl (Optional): (recursive schema, see inputArtifactsZipFileurl above)
-     *             additionalUrls (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *         }
-     *         outputArtifacts (Optional): {
-     *             resultUrl (Optional): (recursive schema, see resultUrl above)
-     *             logsUrl (Optional): (recursive schema, see logsUrl above)
-     *         }
-     *     }
-     *     executedDateTime: OffsetDateTime (Optional)
-     *     vusers: Integer (Optional)
-     *     testRunStatistics (Optional): {
-     *         String (Optional): {
-     *             transaction: String (Optional)
-     *             sampleCount: Double (Optional)
-     *             errorCount: Double (Optional)
-     *             errorPct: Double (Optional)
-     *             meanResTime: Double (Optional)
-     *             medianResTime: Double (Optional)
-     *             maxResTime: Double (Optional)
-     *             minResTime: Double (Optional)
-     *             pct1ResTime: Double (Optional)
-     *             pct2ResTime: Double (Optional)
-     *             pct3ResTime: Double (Optional)
-     *             throughput: Double (Optional)
-     *             receivedKBytesPerSec: Double (Optional)
-     *             sentKBytesPerSec: Double (Optional)
-     *         }
-     *     }
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     createdBy: String (Optional)
-     *     lastModifiedDateTime: OffsetDateTime (Optional)
-     *     lastModifiedBy: String (Optional)
-     *     portalUrl: String (Optional)
-     *     secrets (Optional): {
-     *         String (Optional): {
-     *             value: String (Optional)
-     *             type: String (Optional)
-     *         }
-     *     }
-     *     environmentVariables (Optional): {
-     *         String: String (Optional)
-     *     }
-     *     duration: Long (Optional)
-     *     subnetId: String (Optional)
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     testRunId: String (Optional)
-     *     displayName: String (Optional)
-     *     testId: String (Optional)
-     *     resourceId: String (Optional)
-     *     description: String (Optional)
-     *     status: String (Optional)
-     *     startDateTime: OffsetDateTime (Optional)
-     *     endDateTime: OffsetDateTime (Optional)
-     *     loadTestConfig (Optional): {
-     *         engineInstances: Integer (Optional)
-     *         splitAllCSVs: Boolean (Optional)
-     *     }
-     *     testResult: String (Optional)
-     *     passFailCriteria (Optional): {
-     *         passFailMetrics (Optional): {
-     *             String (Optional): {
-     *                 clientmetric: String (Optional)
-     *                 aggregate: String (Optional)
-     *                 condition: String (Optional)
-     *                 requestName: String (Optional)
-     *                 value: Double (Optional)
-     *                 action: String (Optional)
-     *                 actualValue: Double (Optional)
-     *                 result: String (Optional)
-     *             }
-     *         }
-     *     }
-     *     testArtifacts (Optional): {
-     *         inputArtifacts (Required): {
-     *             configUrl (Optional): {
-     *                 url: String (Optional)
-     *                 fileId: String (Optional)
-     *                 filename: String (Optional)
-     *                 fileType: String(0/1/2) (Optional)
-     *                 expireTime: OffsetDateTime (Optional)
-     *                 validationStatus: String (Optional)
-     *             }
-     *             testScriptUrl (Optional): (recursive schema, see testScriptUrl above)
-     *             userPropUrl (Optional): (recursive schema, see userPropUrl above)
-     *             inputArtifactsZipFileurl (Optional): (recursive schema, see inputArtifactsZipFileurl above)
-     *             additionalUrls (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *         }
-     *         outputArtifacts (Optional): {
-     *             resultUrl (Optional): (recursive schema, see resultUrl above)
-     *             logsUrl (Optional): (recursive schema, see logsUrl above)
-     *         }
-     *     }
-     *     executedDateTime: OffsetDateTime (Optional)
-     *     vusers: Integer (Optional)
-     *     testRunStatistics (Optional): {
-     *         String (Optional): {
-     *             transaction: String (Optional)
-     *             sampleCount: Double (Optional)
-     *             errorCount: Double (Optional)
-     *             errorPct: Double (Optional)
-     *             meanResTime: Double (Optional)
-     *             medianResTime: Double (Optional)
-     *             maxResTime: Double (Optional)
-     *             minResTime: Double (Optional)
-     *             pct1ResTime: Double (Optional)
-     *             pct2ResTime: Double (Optional)
-     *             pct3ResTime: Double (Optional)
-     *             throughput: Double (Optional)
-     *             receivedKBytesPerSec: Double (Optional)
-     *             sentKBytesPerSec: Double (Optional)
-     *         }
-     *     }
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     createdBy: String (Optional)
-     *     lastModifiedDateTime: OffsetDateTime (Optional)
-     *     lastModifiedBy: String (Optional)
-     *     portalUrl: String (Optional)
-     *     secrets (Optional): {
-     *         String (Optional): {
-     *             value: String (Optional)
-     *             type: String (Optional)
-     *         }
-     *     }
-     *     environmentVariables (Optional): {
-     *         String: String (Optional)
-     *     }
-     *     duration: Long (Optional)
-     *     subnetId: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param testRunId Unique name of the load test run, must be a valid URL character ^[a-z0-9_-]*$.
-     * @param body Load test run model.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return load test run model along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createAndUpdateTestWithResponse(
-            String testRunId, BinaryData body, RequestOptions requestOptions) {
-        return this.client.createAndUpdateTestWithResponse(testRunId, body, requestOptions).block();
-    }
-
-    /**
      * Get test run details by name.
      *
      * <p><strong>Response Body Schema</strong>
@@ -401,137 +188,6 @@ public final class TestRunClient {
     public Response<BinaryData> getTestRunFileWithResponse(
             String testRunId, String fileId, RequestOptions requestOptions) {
         return this.client.getTestRunFileWithResponse(testRunId, fileId, requestOptions).block();
-    }
-
-    /**
-     * Get all test runs with given filters.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>orderBy</td><td>String</td><td>No</td><td>Sort on one of the field - status, displayName, executedDateTime in (field asc/desc) format. eg: displayName asc.</td></tr>
-     *     <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token to get the next page of response.</td></tr>
-     *     <tr><td>search</td><td>String</td><td>No</td><td>Filter search based on searchable fields - description, executedUser.</td></tr>
-     *     <tr><td>executionFrom</td><td>OffsetDateTime</td><td>No</td><td>The end DateTime(ISO 8601 literal format) of test-run execution time filter range.</td></tr>
-     *     <tr><td>executionTo</td><td>OffsetDateTime</td><td>No</td><td>The start DateTime(ISO 8601 literal format) of test-run execution time filter range.</td></tr>
-     *     <tr><td>status</td><td>String</td><td>No</td><td>Comma separated list of test run status, value can be -  "ACCEPTED", "NOTSTARTED","PROVISIONING","PROVISIONED","CONFIGURING",
-     * "CONFIGURED","EXECUTING","EXECUTED","DEPROVISIONING","DEPROVISIONED","DONE","CANCELLED","FAILED".</td></tr>
-     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Number of results in response.</td></tr>
-     *     <tr><td>testId</td><td>String</td><td>No</td><td>Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value (Required): [
-     *          (Required){
-     *             testRunId: String (Optional)
-     *             displayName: String (Optional)
-     *             testId: String (Optional)
-     *             resourceId: String (Optional)
-     *             description: String (Optional)
-     *             status: String (Optional)
-     *             startDateTime: OffsetDateTime (Optional)
-     *             endDateTime: OffsetDateTime (Optional)
-     *             loadTestConfig (Optional): {
-     *                 engineInstances: Integer (Optional)
-     *                 splitAllCSVs: Boolean (Optional)
-     *             }
-     *             testResult: String (Optional)
-     *             passFailCriteria (Optional): {
-     *                 passFailMetrics (Optional): {
-     *                     String (Optional): {
-     *                         clientmetric: String (Optional)
-     *                         aggregate: String (Optional)
-     *                         condition: String (Optional)
-     *                         requestName: String (Optional)
-     *                         value: Double (Optional)
-     *                         action: String (Optional)
-     *                         actualValue: Double (Optional)
-     *                         result: String (Optional)
-     *                     }
-     *                 }
-     *             }
-     *             testArtifacts (Optional): {
-     *                 inputArtifacts (Required): {
-     *                     configUrl (Optional): {
-     *                         url: String (Optional)
-     *                         fileId: String (Optional)
-     *                         filename: String (Optional)
-     *                         fileType: String(0/1/2) (Optional)
-     *                         expireTime: OffsetDateTime (Optional)
-     *                         validationStatus: String (Optional)
-     *                     }
-     *                     testScriptUrl (Optional): (recursive schema, see testScriptUrl above)
-     *                     userPropUrl (Optional): (recursive schema, see userPropUrl above)
-     *                     inputArtifactsZipFileurl (Optional): (recursive schema, see inputArtifactsZipFileurl above)
-     *                     additionalUrls (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                 }
-     *                 outputArtifacts (Optional): {
-     *                     resultUrl (Optional): (recursive schema, see resultUrl above)
-     *                     logsUrl (Optional): (recursive schema, see logsUrl above)
-     *                 }
-     *             }
-     *             executedDateTime: OffsetDateTime (Optional)
-     *             vusers: Integer (Optional)
-     *             testRunStatistics (Optional): {
-     *                 String (Optional): {
-     *                     transaction: String (Optional)
-     *                     sampleCount: Double (Optional)
-     *                     errorCount: Double (Optional)
-     *                     errorPct: Double (Optional)
-     *                     meanResTime: Double (Optional)
-     *                     medianResTime: Double (Optional)
-     *                     maxResTime: Double (Optional)
-     *                     minResTime: Double (Optional)
-     *                     pct1ResTime: Double (Optional)
-     *                     pct2ResTime: Double (Optional)
-     *                     pct3ResTime: Double (Optional)
-     *                     throughput: Double (Optional)
-     *                     receivedKBytesPerSec: Double (Optional)
-     *                     sentKBytesPerSec: Double (Optional)
-     *                 }
-     *             }
-     *             createdDateTime: OffsetDateTime (Optional)
-     *             createdBy: String (Optional)
-     *             lastModifiedDateTime: OffsetDateTime (Optional)
-     *             lastModifiedBy: String (Optional)
-     *             portalUrl: String (Optional)
-     *             secrets (Optional): {
-     *                 String (Optional): {
-     *                     value: String (Optional)
-     *                     type: String (Optional)
-     *                 }
-     *             }
-     *             environmentVariables (Optional): {
-     *                 String: String (Optional)
-     *             }
-     *             duration: Long (Optional)
-     *             subnetId: String (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return all test runs with given filters as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listTestRunsSearch(RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listTestRunsSearch(requestOptions));
     }
 
     /**
@@ -750,5 +406,349 @@ public final class TestRunClient {
     public Response<BinaryData> getTestRunClientMetricsFiltersWithResponse(
             String testRunId, RequestOptions requestOptions) {
         return this.client.getTestRunClientMetricsFiltersWithResponse(testRunId, requestOptions).block();
+    }
+
+    /**
+     * Create and start a new test run with the given name.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>oldTestRunId</td><td>String</td><td>No</td><td>Existing test run Id that should be rerun.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     testRunId: String (Optional)
+     *     displayName: String (Optional)
+     *     testId: String (Optional)
+     *     resourceId: String (Optional)
+     *     description: String (Optional)
+     *     status: String (Optional)
+     *     startDateTime: OffsetDateTime (Optional)
+     *     endDateTime: OffsetDateTime (Optional)
+     *     loadTestConfig (Optional): {
+     *         engineInstances: Integer (Optional)
+     *         splitAllCSVs: Boolean (Optional)
+     *     }
+     *     testResult: String (Optional)
+     *     passFailCriteria (Optional): {
+     *         passFailMetrics (Optional): {
+     *             String (Optional): {
+     *                 clientmetric: String (Optional)
+     *                 aggregate: String (Optional)
+     *                 condition: String (Optional)
+     *                 requestName: String (Optional)
+     *                 value: Double (Optional)
+     *                 action: String (Optional)
+     *                 actualValue: Double (Optional)
+     *                 result: String (Optional)
+     *             }
+     *         }
+     *     }
+     *     testArtifacts (Optional): {
+     *         inputArtifacts (Required): {
+     *             configUrl (Optional): {
+     *                 url: String (Optional)
+     *                 fileId: String (Optional)
+     *                 filename: String (Optional)
+     *                 fileType: String(0/1/2) (Optional)
+     *                 expireTime: OffsetDateTime (Optional)
+     *                 validationStatus: String (Optional)
+     *             }
+     *             testScriptUrl (Optional): (recursive schema, see testScriptUrl above)
+     *             userPropUrl (Optional): (recursive schema, see userPropUrl above)
+     *             inputArtifactsZipFileurl (Optional): (recursive schema, see inputArtifactsZipFileurl above)
+     *             additionalUrls (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *         outputArtifacts (Optional): {
+     *             resultUrl (Optional): (recursive schema, see resultUrl above)
+     *             logsUrl (Optional): (recursive schema, see logsUrl above)
+     *         }
+     *     }
+     *     executedDateTime: OffsetDateTime (Optional)
+     *     vusers: Integer (Optional)
+     *     testRunStatistics (Optional): {
+     *         String (Optional): {
+     *             transaction: String (Optional)
+     *             sampleCount: Double (Optional)
+     *             errorCount: Double (Optional)
+     *             errorPct: Double (Optional)
+     *             meanResTime: Double (Optional)
+     *             medianResTime: Double (Optional)
+     *             maxResTime: Double (Optional)
+     *             minResTime: Double (Optional)
+     *             pct1ResTime: Double (Optional)
+     *             pct2ResTime: Double (Optional)
+     *             pct3ResTime: Double (Optional)
+     *             throughput: Double (Optional)
+     *             receivedKBytesPerSec: Double (Optional)
+     *             sentKBytesPerSec: Double (Optional)
+     *         }
+     *     }
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastModifiedDateTime: OffsetDateTime (Optional)
+     *     lastModifiedBy: String (Optional)
+     *     portalUrl: String (Optional)
+     *     secrets (Optional): {
+     *         String (Optional): {
+     *             value: String (Optional)
+     *             type: String (Optional)
+     *         }
+     *     }
+     *     environmentVariables (Optional): {
+     *         String: String (Optional)
+     *     }
+     *     duration: Long (Optional)
+     *     subnetId: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     testRunId: String (Optional)
+     *     displayName: String (Optional)
+     *     testId: String (Optional)
+     *     resourceId: String (Optional)
+     *     description: String (Optional)
+     *     status: String (Optional)
+     *     startDateTime: OffsetDateTime (Optional)
+     *     endDateTime: OffsetDateTime (Optional)
+     *     loadTestConfig (Optional): {
+     *         engineInstances: Integer (Optional)
+     *         splitAllCSVs: Boolean (Optional)
+     *     }
+     *     testResult: String (Optional)
+     *     passFailCriteria (Optional): {
+     *         passFailMetrics (Optional): {
+     *             String (Optional): {
+     *                 clientmetric: String (Optional)
+     *                 aggregate: String (Optional)
+     *                 condition: String (Optional)
+     *                 requestName: String (Optional)
+     *                 value: Double (Optional)
+     *                 action: String (Optional)
+     *                 actualValue: Double (Optional)
+     *                 result: String (Optional)
+     *             }
+     *         }
+     *     }
+     *     testArtifacts (Optional): {
+     *         inputArtifacts (Required): {
+     *             configUrl (Optional): {
+     *                 url: String (Optional)
+     *                 fileId: String (Optional)
+     *                 filename: String (Optional)
+     *                 fileType: String(0/1/2) (Optional)
+     *                 expireTime: OffsetDateTime (Optional)
+     *                 validationStatus: String (Optional)
+     *             }
+     *             testScriptUrl (Optional): (recursive schema, see testScriptUrl above)
+     *             userPropUrl (Optional): (recursive schema, see userPropUrl above)
+     *             inputArtifactsZipFileurl (Optional): (recursive schema, see inputArtifactsZipFileurl above)
+     *             additionalUrls (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *         outputArtifacts (Optional): {
+     *             resultUrl (Optional): (recursive schema, see resultUrl above)
+     *             logsUrl (Optional): (recursive schema, see logsUrl above)
+     *         }
+     *     }
+     *     executedDateTime: OffsetDateTime (Optional)
+     *     vusers: Integer (Optional)
+     *     testRunStatistics (Optional): {
+     *         String (Optional): {
+     *             transaction: String (Optional)
+     *             sampleCount: Double (Optional)
+     *             errorCount: Double (Optional)
+     *             errorPct: Double (Optional)
+     *             meanResTime: Double (Optional)
+     *             medianResTime: Double (Optional)
+     *             maxResTime: Double (Optional)
+     *             minResTime: Double (Optional)
+     *             pct1ResTime: Double (Optional)
+     *             pct2ResTime: Double (Optional)
+     *             pct3ResTime: Double (Optional)
+     *             throughput: Double (Optional)
+     *             receivedKBytesPerSec: Double (Optional)
+     *             sentKBytesPerSec: Double (Optional)
+     *         }
+     *     }
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastModifiedDateTime: OffsetDateTime (Optional)
+     *     lastModifiedBy: String (Optional)
+     *     portalUrl: String (Optional)
+     *     secrets (Optional): {
+     *         String (Optional): {
+     *             value: String (Optional)
+     *             type: String (Optional)
+     *         }
+     *     }
+     *     environmentVariables (Optional): {
+     *         String: String (Optional)
+     *     }
+     *     duration: Long (Optional)
+     *     subnetId: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testRunId Unique name of the load test run, must be a valid URL character ^[a-z0-9_-]*$.
+     * @param body Load test run model.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return load test run model along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createAndUpdateTestRunWithResponse(
+            String testRunId, BinaryData body, RequestOptions requestOptions) {
+        return this.client.createAndUpdateTestRunWithResponse(testRunId, body, requestOptions).block();
+    }
+
+    /**
+     * Get all test runs with given filters.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>orderBy</td><td>String</td><td>No</td><td>Sort on one of the field - status, displayName, executedDateTime in (field asc/desc) format. eg: displayName asc.</td></tr>
+     *     <tr><td>continuationToken</td><td>String</td><td>No</td><td>Continuation token to get the next page of response.</td></tr>
+     *     <tr><td>search</td><td>String</td><td>No</td><td>Filter search based on searchable fields - description, executedUser.</td></tr>
+     *     <tr><td>executionFrom</td><td>OffsetDateTime</td><td>No</td><td>The end DateTime(ISO 8601 literal format) of test-run execution time filter range.</td></tr>
+     *     <tr><td>executionTo</td><td>OffsetDateTime</td><td>No</td><td>The start DateTime(ISO 8601 literal format) of test-run execution time filter range.</td></tr>
+     *     <tr><td>status</td><td>String</td><td>No</td><td>Comma separated list of test run status, value can be -  "ACCEPTED", "NOTSTARTED","PROVISIONING","PROVISIONED","CONFIGURING",
+     * "CONFIGURED","EXECUTING","EXECUTED","DEPROVISIONING","DEPROVISIONED","DONE","CANCELLED","FAILED".</td></tr>
+     *     <tr><td>maxPageSize</td><td>Integer</td><td>No</td><td>Number of results in response.</td></tr>
+     *     <tr><td>testId</td><td>String</td><td>No</td><td>Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value (Required): [
+     *          (Required){
+     *             testRunId: String (Optional)
+     *             displayName: String (Optional)
+     *             testId: String (Optional)
+     *             resourceId: String (Optional)
+     *             description: String (Optional)
+     *             status: String (Optional)
+     *             startDateTime: OffsetDateTime (Optional)
+     *             endDateTime: OffsetDateTime (Optional)
+     *             loadTestConfig (Optional): {
+     *                 engineInstances: Integer (Optional)
+     *                 splitAllCSVs: Boolean (Optional)
+     *             }
+     *             testResult: String (Optional)
+     *             passFailCriteria (Optional): {
+     *                 passFailMetrics (Optional): {
+     *                     String (Optional): {
+     *                         clientmetric: String (Optional)
+     *                         aggregate: String (Optional)
+     *                         condition: String (Optional)
+     *                         requestName: String (Optional)
+     *                         value: Double (Optional)
+     *                         action: String (Optional)
+     *                         actualValue: Double (Optional)
+     *                         result: String (Optional)
+     *                     }
+     *                 }
+     *             }
+     *             testArtifacts (Optional): {
+     *                 inputArtifacts (Required): {
+     *                     configUrl (Optional): {
+     *                         url: String (Optional)
+     *                         fileId: String (Optional)
+     *                         filename: String (Optional)
+     *                         fileType: String(0/1/2) (Optional)
+     *                         expireTime: OffsetDateTime (Optional)
+     *                         validationStatus: String (Optional)
+     *                     }
+     *                     testScriptUrl (Optional): (recursive schema, see testScriptUrl above)
+     *                     userPropUrl (Optional): (recursive schema, see userPropUrl above)
+     *                     inputArtifactsZipFileurl (Optional): (recursive schema, see inputArtifactsZipFileurl above)
+     *                     additionalUrls (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 }
+     *                 outputArtifacts (Optional): {
+     *                     resultUrl (Optional): (recursive schema, see resultUrl above)
+     *                     logsUrl (Optional): (recursive schema, see logsUrl above)
+     *                 }
+     *             }
+     *             executedDateTime: OffsetDateTime (Optional)
+     *             vusers: Integer (Optional)
+     *             testRunStatistics (Optional): {
+     *                 String (Optional): {
+     *                     transaction: String (Optional)
+     *                     sampleCount: Double (Optional)
+     *                     errorCount: Double (Optional)
+     *                     errorPct: Double (Optional)
+     *                     meanResTime: Double (Optional)
+     *                     medianResTime: Double (Optional)
+     *                     maxResTime: Double (Optional)
+     *                     minResTime: Double (Optional)
+     *                     pct1ResTime: Double (Optional)
+     *                     pct2ResTime: Double (Optional)
+     *                     pct3ResTime: Double (Optional)
+     *                     throughput: Double (Optional)
+     *                     receivedKBytesPerSec: Double (Optional)
+     *                     sentKBytesPerSec: Double (Optional)
+     *                 }
+     *             }
+     *             createdDateTime: OffsetDateTime (Optional)
+     *             createdBy: String (Optional)
+     *             lastModifiedDateTime: OffsetDateTime (Optional)
+     *             lastModifiedBy: String (Optional)
+     *             portalUrl: String (Optional)
+     *             secrets (Optional): {
+     *                 String (Optional): {
+     *                     value: String (Optional)
+     *                     type: String (Optional)
+     *                 }
+     *             }
+     *             environmentVariables (Optional): {
+     *                 String: String (Optional)
+     *             }
+     *             duration: Long (Optional)
+     *             subnetId: String (Optional)
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return all test runs with given filters as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listTestRunsSearch(RequestOptions requestOptions) {
+        return new PagedIterable<>(this.client.listTestRunsSearch(requestOptions));
     }
 }
