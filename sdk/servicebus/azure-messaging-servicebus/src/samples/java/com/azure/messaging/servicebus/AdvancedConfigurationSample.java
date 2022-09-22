@@ -3,15 +3,36 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.AmqpRetryOptions;
+
+import java.time.Duration;
+
 /**
  * Class containing code snippets that set advanced configurations.
  */
 public class AdvancedConfigurationSample {
 
     /**
+     * Create an asynchronous receiver that use customized retry options.
+     */
+    public void createAsyncServiceBusReceiver() {
+        AmqpRetryOptions retryOptions = new AmqpRetryOptions();
+        retryOptions.setTryTimeout(Duration.ofSeconds(60));
+        retryOptions.setMaxRetries(3);
+        retryOptions.setDelay(Duration.ofMillis(800));
+
+        ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+            .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
+            .retryOptions(retryOptions)
+            .receiver()
+            .queueName("<< QUEUE NAME >>")
+            .buildAsyncClient();
+    }
+
+    /**
      * Create an asynchronous receiver that prefetch 100 messages.
      */
-    public void createAsynchronousServiceBusReceiverWithPrefetch() {
+    public void createAsyncServiceBusReceiverWithPrefetch() {
         ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
             .receiver()
