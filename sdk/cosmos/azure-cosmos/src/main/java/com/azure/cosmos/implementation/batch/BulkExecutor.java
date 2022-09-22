@@ -46,6 +46,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -98,8 +99,9 @@ public final class BulkExecutor<TContext> {
     private final Sinks.EmitFailureHandler serializedEmitFailureHandler;
     private final Sinks.Many<CosmosItemOperation> mainSink;
     private final List<FluxSink<CosmosItemOperation>> groupSinks;
-    private final ScheduledExecutorService executorService;
+    private final ScheduledThreadPoolExecutor executorService;
     private ScheduledFuture<?> scheduledFutureForFlush;
+    private final String identifier = "BulkExecutor-" + instanceCount.incrementAndGet();
 
     public BulkExecutor(CosmosAsyncContainer container,
                         Flux<CosmosItemOperation> inputOperations,
@@ -132,9 +134,9 @@ public final class BulkExecutor<TContext> {
             .getOperationContext(cosmosBulkExecutionOptions);
         if (operationListener != null &&
             operationListener.getOperationContext() != null) {
-            operationContextText = operationListener.getOperationContext().toString();
+            operationContextText = identifier + "[" + operationListener.getOperationContext().toString() + "]";
         } else {
-            operationContextText = "n/a";
+            operationContextText = identifier +"[n/a]";
         }
 
         // Initialize sink for handling gone error.
@@ -150,14 +152,49 @@ public final class BulkExecutor<TContext> {
         // To make sure we flush the buffers at least every maxMicroBatchIntervalInMs we start a timer
         // that will trigger artificial ItemOperations that are only used to flush the buffers (and will be
         // filtered out before sending requests to the backend)
-        this.executorService = Executors.newSingleThreadScheduledExecutor(
-                new CosmosDaemonThreadFactory("BulkExecutor-" + instanceCount.incrementAndGet()));
+        // this.executorService = Executors.newSingleThreadScheduledExecutor(
+        //        new CosmosDaemonThreadFactory("BulkExecutor-" + instanceCount.incrementAndGet()));
+        this.executorService = new ScheduledThreadPoolExecutor(
+            1,
+            new CosmosDaemonThreadFactory(identifier));
+        this.executorService.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
+        this.executorService.setRemoveOnCancelPolicy(true);
         this.scheduledFutureForFlush = this.executorService.scheduleWithFixedDelay(
             this::onFlush,
             this.maxMicroBatchIntervalInMs,
             this.maxMicroBatchIntervalInMs,
             TimeUnit.MILLISECONDS);
+
+        logger.debug("Instantiated BulkExecutor, Context: {}",
+            this.operationContextText);
     }
+
+    private void shutdown() {
+        logger.debug("Shutting down, Context: {}", this.operationContextText);
+
+        groupSinks.forEach(FluxSink::complete);
+        logger.debug("All group sinks completed, Context: {}", this.operationContextText);
+
+        ScheduledFuture<?> scheduledFutureSnapshot = this.scheduledFutureForFlush;
+
+        if (scheduledFutureSnapshot != null) {
+            try {
+                scheduledFutureSnapshot.cancel(true);
+                logger.debug("Cancelled all future scheduled tasks {}, Context: {}", getThreadInfo(), this.operationContextText);
+            } catch (Exception e) {
+                logger.warn("Failed to cancel scheduled tasks{}, Context: {}", getThreadInfo(), this.operationContextText, e);
+            }
+        }
+
+        try {
+            logger.debug("Shutting down the executor service, Context: {}", this.operationContextText);
+            this.executorService.shutdownNow();
+            logger.debug("Successfully shut down the executor service, Context: {}", this.operationContextText);
+        } catch (Exception e) {
+            logger.warn("Failed to shut down the executor service, Context: {}",this.operationContextText, e);
+        }
+    }
+
 
     public Flux<CosmosBulkOperationResponse<TContext>> execute() {
 
@@ -236,9 +273,9 @@ public final class BulkExecutor<TContext> {
                             if (scheduledFutureSnapshot != null) {
                                 try {
                                     scheduledFutureSnapshot.cancel(true);
-                                    logger.debug("Cancelled all future scheduled tasks {}", getThreadInfo());
+                                    logger.debug("Cancelled all future scheduled tasks {}, Context: {}", getThreadInfo(), this.operationContextText);
                                 } catch (Exception e) {
-                                    logger.warn("Failed to cancel scheduled tasks{}", getThreadInfo(), e);
+                                    logger.warn("Failed to cancel scheduled tasks{}, Context: {}", getThreadInfo(), this.operationContextText, e);
                                 }
                             }
 
@@ -254,6 +291,8 @@ public final class BulkExecutor<TContext> {
                                 flushIntervalAfterDrainingIncomingFlux,
                                 flushIntervalAfterDrainingIncomingFlux,
                                 TimeUnit.MILLISECONDS);
+
+                            logger.debug("Scheduled new flush operation {}, Context: {}", getThreadInfo(), this.operationContextText);
                         }
                     })
                     .mergeWith(mainSink.asFlux())
@@ -301,7 +340,13 @@ public final class BulkExecutor<TContext> {
                                 getThreadInfo());
                             completeAllSinks();
                         } else {
-                            logger.debug(
+                            if (totalCountAfterDecrement == 0) {
+                                logger.debug(
+                                    "No Work left - but mainSource not yet completed, Context: {} {}",
+                                    this.operationContextText,
+                                    getThreadInfo());
+                            }
+                            logger.trace(
                                 "Work left - TotalCount after decrement: {}, main sink completed {}, {}, Context: {} {}",
                                 totalCountAfterDecrement,
                                 mainSourceCompletedSnapshot,
@@ -327,6 +372,17 @@ public final class BulkExecutor<TContext> {
                                 getThreadInfo());
                         }
                     });
+            })
+            .doOnCancel(() -> {
+                long totalCountSnapshot = totalCount.get();
+                logger.info("Execution flux was cancelled - # left items {}, Context: {}",
+                    totalCountSnapshot,
+                    this.operationContextText);
+                if (totalCountSnapshot == 0) {
+                    completeAllSinks();
+                } else {
+                    this.shutdown();
+                }
             });
     }
 
@@ -745,33 +801,21 @@ public final class BulkExecutor<TContext> {
         logger.info("Closing all sinks, Context: {}", this.operationContextText);
 
         logger.debug("Executor service shut down, Context: {}", this.operationContextText);
-        mainSink.tryEmitComplete();
-        logger.debug("Main sink completed, Context: {}", this.operationContextText);
-        groupSinks.forEach(FluxSink::complete);
-        logger.debug("All group sinks completed, Context: {}", this.operationContextText);
-
-        try {
-            logger.info("Cancelling the scheduledFutureForFlush task");
-            this.scheduledFutureForFlush.cancel(true);
-            logger.info("Successfully cancelled the scheduledFutureForFlush task");
-        } catch (Exception e) {
-            logger.warn("Failed to cancel the scheduledFutureForFlush task", e);
+        Sinks.EmitResult completeEmitResult = mainSink.tryEmitComplete();
+        if (completeEmitResult == Sinks.EmitResult.OK) {
+            logger.debug("Main sink completed, Context: {}", this.operationContextText);
+        } else {
+            logger.info("Main sink completion failed. EmitResult: {}, Context: {}", completeEmitResult, this.operationContextText);
         }
 
-        try {
-            logger.info("Shutting down the executor service");
-            this.executorService.shutdown();
-            logger.info("Successfully shut down the executor service");
-        } catch (Exception e) {
-            logger.warn("Failed to shut down the executor service", e);
-        }
+        this.shutdown();
     }
 
     private void onFlush() {
         try {
             this.groupSinks.forEach(sink -> sink.next(FlushBuffersItemOperation.singleton()));
         } catch(Throwable t) {
-            logger.error("Callback invocation 'onFlush' failed.", t);
+            logger.error("Callback invocation 'onFlush' failed. Context: {}", this.operationContextText,  t);
         }
     }
 
