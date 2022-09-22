@@ -22,7 +22,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.6.0-beta.1</version> <!-- {x-version-update;jdbc_com.azure:azure-identity;external_dependency} -->
+      <version>1.7.0-beta.1</version> <!-- {x-version-update;beta_com.azure:azure-identity;dependency} -->
     </dependency>
 
     <!-- test   -->
