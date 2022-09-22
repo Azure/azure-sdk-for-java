@@ -29,7 +29,7 @@ import org.springframework.web.client.RestOperations;
 
 import java.util.concurrent.TimeUnit;
 
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ResourceServerRestOperationConfiguration.AAD_OAUTH2_RESOURCE_SERVER_REST_OPERATION_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ResourceServerRestOperationConfiguration.AAD_OAUTH2_RESOURCE_SERVER_REST_OPERATIONS_BEAN_NAME;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Azure Active Authentication filters.
@@ -60,7 +60,7 @@ public class AadAuthenticationFilterAutoConfiguration {
      */
     public AadAuthenticationFilterAutoConfiguration(
             AadAuthenticationProperties properties,
-            @Qualifier(AAD_OAUTH2_RESOURCE_SERVER_REST_OPERATION_BEAN_NAME) RestOperations restOperations) {
+            @Qualifier(AAD_OAUTH2_RESOURCE_SERVER_REST_OPERATIONS_BEAN_NAME) RestOperations restOperations) {
         this.properties = properties;
         this.restOperations = restOperations;
         this.endpoints = new AadAuthorizationServerEndpoints(properties.getProfile().getEnvironment().getActiveDirectoryEndpoint(),

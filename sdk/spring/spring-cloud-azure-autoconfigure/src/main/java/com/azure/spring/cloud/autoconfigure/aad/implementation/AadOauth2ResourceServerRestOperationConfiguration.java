@@ -26,8 +26,8 @@ public class AadOauth2ResourceServerRestOperationConfiguration {
      *
      * @see AadOauth2ResourceServerRestOperationConfiguration#aadOauth2ResourceServerRestOperation(RestTemplateBuilder)
      */
-    public static final String AAD_OAUTH2_RESOURCE_SERVER_REST_OPERATION_BEAN_NAME =
-            "aadOauth2ResourceServerRestOperation";
+    public static final String AAD_OAUTH2_RESOURCE_SERVER_REST_OPERATIONS_BEAN_NAME =
+            "aadOauth2ResourceServerRestOperations";
 
     /**
      * Declare {@link RestOperations} bean used to get key to validate Azure AD(or Azure AD B2C) access token. It is
@@ -52,8 +52,8 @@ public class AadOauth2ResourceServerRestOperationConfiguration {
      * @see AadResourceServerConfiguration
      * @see AadB2cResourceServerAutoConfiguration
      */
-    @Bean(AAD_OAUTH2_RESOURCE_SERVER_REST_OPERATION_BEAN_NAME)
-    @ConditionalOnMissingBean(name = AAD_OAUTH2_RESOURCE_SERVER_REST_OPERATION_BEAN_NAME)
+    @Bean(AAD_OAUTH2_RESOURCE_SERVER_REST_OPERATIONS_BEAN_NAME)
+    @ConditionalOnMissingBean(name = AAD_OAUTH2_RESOURCE_SERVER_REST_OPERATIONS_BEAN_NAME)
     public RestOperations aadOauth2ResourceServerRestOperation(RestTemplateBuilder builder) {
         return builder.build();
     }

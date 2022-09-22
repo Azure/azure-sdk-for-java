@@ -39,7 +39,7 @@ import org.springframework.web.client.RestOperations;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ResourceServerRestOperationConfiguration.AAD_OAUTH2_RESOURCE_SERVER_REST_OPERATION_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ResourceServerRestOperationConfiguration.AAD_OAUTH2_RESOURCE_SERVER_REST_OPERATIONS_BEAN_NAME;
 
 /**
  * Configure necessary beans for Azure AD B2C resource server beans, and import {@link AadB2cOAuth2ClientConfiguration} class for Azure AD
@@ -63,7 +63,7 @@ public class AadB2cResourceServerAutoConfiguration {
      */
     public AadB2cResourceServerAutoConfiguration(
             AadB2cProperties properties,
-            @Qualifier(AAD_OAUTH2_RESOURCE_SERVER_REST_OPERATION_BEAN_NAME) RestOperations restOperations) {
+            @Qualifier(AAD_OAUTH2_RESOURCE_SERVER_REST_OPERATIONS_BEAN_NAME) RestOperations restOperations) {
         this.properties = properties;
         this.restOperations = restOperations;
     }

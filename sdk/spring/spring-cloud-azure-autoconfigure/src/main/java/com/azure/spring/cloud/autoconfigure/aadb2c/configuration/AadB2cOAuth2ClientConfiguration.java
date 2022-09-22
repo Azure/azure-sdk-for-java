@@ -41,7 +41,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ClientRestOperationConfiguration.AAD_OAUTH2_CLIENT_REST_OPERATION_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ClientRestOperationConfiguration.AAD_OAUTH2_CLIENT_REST_OPERATIONS_BEAN_NAME;
 
 /**
  * Configuration for AAD B2C OAuth2 client support, when depends on the Spring OAuth2 Client module.
@@ -65,7 +65,7 @@ public class AadB2cOAuth2ClientConfiguration {
      */
     public AadB2cOAuth2ClientConfiguration(
             AadB2cProperties properties,
-            @Qualifier(AAD_OAUTH2_CLIENT_REST_OPERATION_BEAN_NAME) RestOperations restOperations) {
+            @Qualifier(AAD_OAUTH2_CLIENT_REST_OPERATIONS_BEAN_NAME) RestOperations restOperations) {
         this.properties = properties;
         this.restOperations = restOperations;
     }

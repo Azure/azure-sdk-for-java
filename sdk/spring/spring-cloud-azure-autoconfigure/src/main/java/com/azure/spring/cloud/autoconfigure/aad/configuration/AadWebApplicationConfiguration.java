@@ -24,7 +24,7 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.web.client.RestOperations;
 
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ClientRestOperationConfiguration.AAD_OAUTH2_CLIENT_REST_OPERATION_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ClientRestOperationConfiguration.AAD_OAUTH2_CLIENT_REST_OPERATIONS_BEAN_NAME;
 
 /**
  * Configure the necessary beans used for Azure AD authentication and authorization.
@@ -43,7 +43,7 @@ public class AadWebApplicationConfiguration {
      *
      */
     public AadWebApplicationConfiguration(
-            @Qualifier(AAD_OAUTH2_CLIENT_REST_OPERATION_BEAN_NAME) RestOperations operations) {
+            @Qualifier(AAD_OAUTH2_CLIENT_REST_OPERATIONS_BEAN_NAME) RestOperations operations) {
         this.operations = operations;
     }
 

@@ -35,7 +35,7 @@ import org.springframework.web.client.RestOperations;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ResourceServerRestOperationConfiguration.AAD_OAUTH2_RESOURCE_SERVER_REST_OPERATION_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ResourceServerRestOperationConfiguration.AAD_OAUTH2_RESOURCE_SERVER_REST_OPERATIONS_BEAN_NAME;
 
 /**
  * <p>
@@ -56,7 +56,7 @@ public class AadResourceServerConfiguration {
      * @param restOperations the restOperations
      */
     public AadResourceServerConfiguration(
-            @Qualifier(AAD_OAUTH2_RESOURCE_SERVER_REST_OPERATION_BEAN_NAME) RestOperations restOperations) {
+            @Qualifier(AAD_OAUTH2_RESOURCE_SERVER_REST_OPERATIONS_BEAN_NAME) RestOperations restOperations) {
         this.restOperations = restOperations;
     }
 
