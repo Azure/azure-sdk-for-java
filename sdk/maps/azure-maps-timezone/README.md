@@ -75,20 +75,20 @@ See [API design][design] for general introduction on design and key concepts on 
 ## Examples
 Get Timezone By Id
 ```java com.azure.maps.timezone.sync.get_timezone_by_id
-TimezoneIdOptions options = new TimezoneIdOptions().setTimezoneId("Asia/Bahrain").setOptions(TimezoneOptions.  ALL).setAcceptLanguage(null).setTimeStamp(null).setDaylightSavingsTimeFrom(null).setDaylightSavingsTimeLastingYears(null);
+TimezoneIdOptions options = new TimezoneIdOptions().setTimezoneId("Asia/Bahrain").setOptions(TimezoneOptions.ALL);
 client.getTimezoneById(options);
 ```
 
 Get Timezone By Coordinates
 ```java com.azure.maps.timezone.sync.get_timezone_by_coordinates
-GeoPosition coordinate = new GeoPosition(-122, 47.0);
-TimezoneCoordinateOptions options = new TimezoneCoordinateOptions().setCoordinates(coordinate).setOptions(TimezoneOptions.ALL);
-client.getTimezoneByCoordinates(options);
+GeoPosition coord = new GeoPosition(-122, 47.0);
+TimezoneCoordinateOptions op = new TimezoneCoordinateOptions().setCoordinates(coord).setOptions(TimezoneOptions.ALL);
+client.getTimezoneByCoordinates(op);
 ```
 
 Get Iana Timezone Ids
 ```java com.azure.maps.timezone.async.get_timezone_enum_iana
-client.getIanaTimezoneIds();
+asyncClient.getIanaTimezoneIds();
 ```
 
 Get Iana Version
@@ -104,7 +104,7 @@ client.convertWindowsTimezoneToIana("pacific standard time", null);
 
 Get Windows Timezone Ids
 ```java com.azure.maps.timezone.async.get_timezone_enum_windows
-client.getWindowsTimezoneIds();
+asyncClient.getWindowsTimezoneIds();
 ```
 
 ## Troubleshooting

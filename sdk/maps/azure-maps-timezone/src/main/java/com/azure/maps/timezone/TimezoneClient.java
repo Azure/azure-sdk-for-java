@@ -53,6 +53,12 @@ public final class TimezoneClient {
 
     /**
      * __Time Zone by Id__
+     * <!-- src_embed com.azure.maps.timezone.sync.get_timezone_by_id -->
+     * <pre>
+     * TimezoneIdOptions options = new TimezoneIdOptions&#40;&#41;.setTimezoneId&#40;&quot;Asia&#47;Bahrain&quot;&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
+     * client.getTimezoneById&#40;options&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.timezone.sync.get_timezone_by_id -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -71,6 +77,12 @@ public final class TimezoneClient {
 
     /**
      * __Time Zone by Id__
+     * <!-- src_embed com.azure.maps.timezone.sync.get_timezone_by_id -->
+     * <pre>
+     * TimezoneIdOptions options = new TimezoneIdOptions&#40;&#41;.setTimezoneId&#40;&quot;Asia&#47;Bahrain&quot;&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
+     * client.getTimezoneById&#40;options&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.timezone.sync.get_timezone_by_id -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -90,6 +102,13 @@ public final class TimezoneClient {
 
     /**
      * __Time Zone by Coordinates__
+     * <!-- src_embed com.azure.maps.timezone.sync.get_timezone_by_coordinates -->
+     * <pre>
+     * GeoPosition coord = new GeoPosition&#40;-122, 47.0&#41;;
+     * TimezoneCoordinateOptions op = new TimezoneCoordinateOptions&#40;&#41;.setCoordinates&#40;coord&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
+     * client.getTimezoneByCoordinates&#40;op&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.timezone.sync.get_timezone_by_coordinates -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -109,6 +128,13 @@ public final class TimezoneClient {
 
     /**
      * __Time Zone by Coordinates__
+     * <!-- src_embed com.azure.maps.timezone.sync.get_timezone_by_coordinates -->
+     * <pre>
+     * GeoPosition coord = new GeoPosition&#40;-122, 47.0&#41;;
+     * TimezoneCoordinateOptions op = new TimezoneCoordinateOptions&#40;&#41;.setCoordinates&#40;coord&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
+     * client.getTimezoneByCoordinates&#40;op&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.timezone.sync.get_timezone_by_coordinates -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -129,6 +155,11 @@ public final class TimezoneClient {
 
     /**
      * __Windows Time Zones__
+     * <!-- src_embed com.azure.maps.timezone.sync.get_timezone_enum_windows -->
+     * <pre>
+     * client.getWindowsTimezoneIds&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.timezone.sync.get_timezone_enum_windows -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -146,6 +177,11 @@ public final class TimezoneClient {
 
     /**
      * __Windows Time Zones__
+     * <!-- src_embed com.azure.maps.timezone.sync.get_timezone_enum_windows -->
+     * <pre>
+     * client.getWindowsTimezoneIds&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.timezone.sync.get_timezone_enum_windows -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -164,6 +200,11 @@ public final class TimezoneClient {
 
     /**
      * __IANA Time Zones__
+     * <!-- src_embed com.azure.maps.timezone.sync.get_timezone_enum_iana -->
+     * <pre>
+     * client.getIanaTimezoneIds&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.timezone.sync.get_timezone_enum_iana -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -182,6 +223,11 @@ public final class TimezoneClient {
 
     /**
      * __IANA Time Zones__
+     * <!-- src_embed com.azure.maps.timezone.sync.get_timezone_enum_iana -->
+     * <pre>
+     * client.getIanaTimezoneIds&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.timezone.sync.get_timezone_enum_iana -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -201,6 +247,11 @@ public final class TimezoneClient {
 
     /**
      * __Time Zone IANA Version__
+     * <!-- src_embed com.azure.maps.timezone.sync.get_timezone_iana_version -->
+     * <pre>
+     * client.getIanaVersion&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.timezone.sync.get_timezone_iana_version -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -218,6 +269,11 @@ public final class TimezoneClient {
 
     /**
      * __Time Zone IANA Version__
+     * <!-- src_embed com.azure.maps.timezone.sync.get_timezone_iana_version -->
+     * <pre>
+     * client.getIanaVersion&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.timezone.sync.get_timezone_iana_version -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -236,6 +292,11 @@ public final class TimezoneClient {
 
     /**
      * __Windows to IANA Time Zone__
+     * <!-- src_embed com.azure.maps.timezone.sync.convert_windows_timezone_to_iana -->
+     * <pre>
+     * client.convertWindowsTimezoneToIana&#40;&quot;pacific standard time&quot;, null&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.timezone.sync.convert_windows_timezone_to_iana -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -257,6 +318,11 @@ public final class TimezoneClient {
 
      /**
      * __Windows to IANA Time Zone__
+     * <!-- src_embed com.azure.maps.timezone.sync.convert_windows_timezone_to_iana -->
+     * <pre>
+     * client.convertWindowsTimezoneToIana&#40;&quot;pacific standard time&quot;, null&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.timezone.sync.convert_windows_timezone_to_iana -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *

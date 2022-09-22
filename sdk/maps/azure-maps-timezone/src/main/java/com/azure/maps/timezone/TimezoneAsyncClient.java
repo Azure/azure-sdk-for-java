@@ -23,7 +23,23 @@ import com.azure.maps.timezone.models.TimezoneWindows;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous TimezoneClient type. */
+/** Initializes a new instance of the asynchronous TimezoneClient type. 
+* Creating an async client using a {@link com.azure.core.credential.AzureKeyCredential}:
+* <!-- src_embed com.azure.maps.timezone.async.builder.key.instantiation -->
+* <pre>
+* &#47;&#47; Authenticates using subscription key
+* AzureKeyCredential keyCredential = new AzureKeyCredential&#40;System.getenv&#40;&quot;SUBSCRIPTION_KEY&quot;&#41;&#41;;
+*
+* &#47;&#47; Creates a builder
+* TimezoneClientBuilder builder = new TimezoneClientBuilder&#40;&#41;;
+* builder.credential&#40;keyCredential&#41;;
+* builder.httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;;
+*
+* &#47;&#47; Builds the client
+* TimezoneAsyncClient client = builder.buildAsyncClient&#40;&#41;;
+* </pre>
+* <!-- end com.azure.maps.timezone.async.builder.key.instantiation -->
+*/
 @ServiceClient(builder = TimezoneClientBuilder.class, isAsync = true)
 public final class TimezoneAsyncClient {
     private final TimezonesImpl serviceClient;
@@ -39,6 +55,12 @@ public final class TimezoneAsyncClient {
 
     /**
      * __Time Zone by Id__
+     * <!-- src_embed com.azure.maps.timezone.async.get_timezone_by_id -->
+     * <pre>
+     * TimezoneIdOptions options2 = new TimezoneIdOptions&#40;&#41;.setTimezoneId&#40;&quot;Asia&#47;Bahrain&quot;&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
+     * asyncClient.getTimezoneById&#40;options2&#41;;
+     * </pre>
+     * <!-- end om.azure.maps.timezone.async.get_timezone_by_id -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -60,6 +82,12 @@ public final class TimezoneAsyncClient {
 
     /**
      * __Time Zone by Id__
+     * <!-- src_embed com.azure.maps.timezone.async.get_timezone_by_id -->
+     * <pre>
+     * TimezoneIdOptions options2 = new TimezoneIdOptions&#40;&#41;.setTimezoneId&#40;&quot;Asia&#47;Bahrain&quot;&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
+     * asyncClient.getTimezoneById&#40;options2&#41;;
+     * </pre>
+     * <!-- end om.azure.maps.timezone.async.get_timezone_by_id -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -78,6 +106,12 @@ public final class TimezoneAsyncClient {
 
     /**
      * __Time Zone by Id__
+     * <!-- src_embed com.azure.maps.timezone.async.get_timezone_by_id -->
+     * <pre>
+     * TimezoneIdOptions options2 = new TimezoneIdOptions&#40;&#41;.setTimezoneId&#40;&quot;Asia&#47;Bahrain&quot;&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
+     * asyncClient.getTimezoneById&#40;options2&#41;;
+     * </pre>
+     * <!-- end om.azure.maps.timezone.async.get_timezone_by_id -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -110,6 +144,13 @@ public final class TimezoneAsyncClient {
 
     /**
      * __Time Zone by Coordinates__
+     * <!-- src_embed com.azure.maps.timezone.async.get_timezone_by_coordinates -->
+     * <pre>
+     * GeoPosition coord2 = new GeoPosition&#40;-122, 47.0&#41;;
+     * TimezoneCoordinateOptions op2 = new TimezoneCoordinateOptions&#40;&#41;.setCoordinates&#40;coord2&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
+     * asyncClient.getTimezoneByCoordinates&#40;op2&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.timezone.async.get_timezone_by_coordinates -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -132,6 +173,13 @@ public final class TimezoneAsyncClient {
 
     /**
      * __Time Zone by Coordinates__
+     * <!-- src_embed com.azure.maps.timezone.async.get_timezone_by_coordinates -->
+     * <pre>
+     * GeoPosition coord2 = new GeoPosition&#40;-122, 47.0&#41;;
+     * TimezoneCoordinateOptions op2 = new TimezoneCoordinateOptions&#40;&#41;.setCoordinates&#40;coord2&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
+     * asyncClient.getTimezoneByCoordinates&#40;op2&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.timezone.async.get_timezone_by_coordinates -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -151,6 +199,13 @@ public final class TimezoneAsyncClient {
 
     /**
      * __Time Zone by Coordinates__
+     * <!-- src_embed com.azure.maps.timezone.async.get_timezone_by_coordinates -->
+     * <pre>
+     * GeoPosition coord2 = new GeoPosition&#40;-122, 47.0&#41;;
+     * TimezoneCoordinateOptions op2 = new TimezoneCoordinateOptions&#40;&#41;.setCoordinates&#40;coord2&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
+     * asyncClient.getTimezoneByCoordinates&#40;op2&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.timezone.async.get_timezone_by_coordinates -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -184,6 +239,11 @@ public final class TimezoneAsyncClient {
 
     /**
      * __Windows Time Zones__
+     * <!-- src_embed com.azure.maps.timezone.async.get_timezone_enum_windows -->
+     * <pre>
+     * asyncClient.getWindowsTimezoneIds&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.timezone.async.get_timezone_enum_windows -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -204,6 +264,11 @@ public final class TimezoneAsyncClient {
 
     /**
      * __Windows Time Zones__
+     * <!-- src_embed com.azure.maps.timezone.async.get_timezone_enum_windows -->
+     * <pre>
+     * asyncClient.getWindowsTimezoneIds&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.timezone.async.get_timezone_enum_windows -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -221,6 +286,11 @@ public final class TimezoneAsyncClient {
 
     /**
      * __Windows Time Zones__
+     * <!-- src_embed com.azure.maps.timezone.async.get_timezone_enum_windows -->
+     * <pre>
+     * asyncClient.getWindowsTimezoneIds&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.timezone.async.get_timezone_enum_windows -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -244,6 +314,11 @@ public final class TimezoneAsyncClient {
 
     /**
      * __IANA Time Zones__
+     * <!-- src_embed com.azure.maps.timezone.async.get_timezone_enum_iana -->
+     * <pre>
+     * asyncClient.getIanaTimezoneIds&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.timezone.async.get_timezone_enum_iana -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -265,6 +340,11 @@ public final class TimezoneAsyncClient {
 
     /**
      * __IANA Time Zones__
+     * <!-- src_embed com.azure.maps.timezone.async.get_timezone_enum_iana -->
+     * <pre>
+     * asyncClient.getIanaTimezoneIds&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.timezone.async.get_timezone_enum_iana -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -283,6 +363,11 @@ public final class TimezoneAsyncClient {
 
     /**
      * __IANA Time Zones__
+     * <!-- src_embed com.azure.maps.timezone.async.get_timezone_enum_iana -->
+     * <pre>
+     * asyncClient.getIanaTimezoneIds&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.timezone.async.get_timezone_enum_iana -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -307,6 +392,11 @@ public final class TimezoneAsyncClient {
 
     /**
      * __Time Zone IANA Version__
+     * <!-- src_embed com.azure.maps.timezone.async.get_timezone_iana_version -->
+     * <pre>
+     * asyncClient.getIanaVersion&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.timezone.async.get_timezone_iana_version -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -327,6 +417,11 @@ public final class TimezoneAsyncClient {
 
     /**
      * __Time Zone IANA Version__
+     * <!-- src_embed com.azure.maps.timezone.async.get_timezone_iana_version -->
+     * <pre>
+     * asyncClient.getIanaVersion&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.timezone.async.get_timezone_iana_version -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -344,6 +439,11 @@ public final class TimezoneAsyncClient {
 
     /**
      * __Time Zone IANA Version__
+     * <!-- src_embed com.azure.maps.timezone.async.get_timezone_iana_version -->
+     * <pre>
+     * asyncClient.getIanaVersion&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.timezone.async.get_timezone_iana_version -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -367,6 +467,11 @@ public final class TimezoneAsyncClient {
 
     /**
      * __Windows to IANA Time Zone__
+     * <!-- src_embed com.azure.maps.timezone.async.convert_windows_timezone_to_iana -->
+     * <pre>
+     * asyncClient.convertWindowsTimezoneToIana&#40;&quot;pacific standard time&quot;, null&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.timezone.async.convert_windows_timezone_to_iana -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -391,6 +496,11 @@ public final class TimezoneAsyncClient {
 
     /**
      * __Windows to IANA Time Zone__
+     * <!-- src_embed com.azure.maps.timezone.async.convert_windows_timezone_to_iana -->
+     * <pre>
+     * asyncClient.convertWindowsTimezoneToIana&#40;&quot;pacific standard time&quot;, null&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.timezone.async.convert_windows_timezone_to_iana -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -412,6 +522,11 @@ public final class TimezoneAsyncClient {
 
     /**
      * __Windows to IANA Time Zone__
+     * <!-- src_embed com.azure.maps.timezone.async.convert_windows_timezone_to_iana -->
+     * <pre>
+     * asyncClient.convertWindowsTimezoneToIana&#40;&quot;pacific standard time&quot;, null&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.timezone.async.convert_windows_timezone_to_iana -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
