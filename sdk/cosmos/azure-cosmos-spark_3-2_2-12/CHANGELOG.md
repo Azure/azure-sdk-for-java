@@ -1,15 +1,9 @@
 ## Release History
 
-### 4.14.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
+### 4.13.1 (2022-09-22)
 
 #### Bugs Fixed
 * Fixed a race condition that could result in a memory/thread leak for `BulkExecutor` instances (and their corresponding `cosmos-daemon-BulkExecutor-*` thread). This issue could occur when ingesting data into Cosmos DB via structured streaming jobs. - See [PR 31082](https://github.com/Azure/azure-sdk-for-java/pull/31082)
-
-#### Other Changes
 
 ### 4.13.0 (2022-09-15)
 
