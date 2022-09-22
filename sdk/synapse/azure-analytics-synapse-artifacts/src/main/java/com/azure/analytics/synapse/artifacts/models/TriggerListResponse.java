@@ -23,6 +23,9 @@ public final class TriggerListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of TriggerListResponse class. */
+    public TriggerListResponse() {}
+
     /**
      * Get the value property: List of triggers.
      *

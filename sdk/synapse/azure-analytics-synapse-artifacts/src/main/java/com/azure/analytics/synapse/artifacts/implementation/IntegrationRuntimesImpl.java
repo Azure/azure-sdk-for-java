@@ -122,32 +122,6 @@ public final class IntegrationRuntimesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration runtime resources on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<IntegrationRuntimeListResponse> listAsync(Context context) {
-        return listWithResponseAsync(context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * List Integration Runtimes.
-     *
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration runtime resources along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IntegrationRuntimeListResponse> listWithResponse() {
-        return listWithResponseAsync().block();
-    }
-
-    /**
-     * List Integration Runtimes.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of integration runtime resources along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -165,20 +139,6 @@ public final class IntegrationRuntimesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IntegrationRuntimeListResponse list() {
         return listWithResponse(Context.NONE).getValue();
-    }
-
-    /**
-     * List Integration Runtimes.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration runtime resources.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IntegrationRuntimeListResponse list(Context context) {
-        return listWithResponse(context).getValue();
     }
 
     /**
@@ -238,35 +198,6 @@ public final class IntegrationRuntimesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration Runtime on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<IntegrationRuntimeResource> getAsync(String integrationRuntimeName, Context context) {
-        return getWithResponseAsync(integrationRuntimeName, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get Integration Runtime.
-     *
-     * @param integrationRuntimeName The Integration Runtime name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration Runtime along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IntegrationRuntimeResource> getWithResponse(String integrationRuntimeName) {
-        return getWithResponseAsync(integrationRuntimeName).block();
-    }
-
-    /**
-     * Get Integration Runtime.
-     *
-     * @param integrationRuntimeName The Integration Runtime name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration Runtime along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -286,20 +217,5 @@ public final class IntegrationRuntimesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IntegrationRuntimeResource get(String integrationRuntimeName) {
         return getWithResponse(integrationRuntimeName, Context.NONE).getValue();
-    }
-
-    /**
-     * Get Integration Runtime.
-     *
-     * @param integrationRuntimeName The Integration Runtime name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration Runtime.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IntegrationRuntimeResource get(String integrationRuntimeName, Context context) {
-        return getWithResponse(integrationRuntimeName, context).getValue();
     }
 }

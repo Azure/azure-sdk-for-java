@@ -22,6 +22,9 @@ public final class DeleteDataFlowDebugSessionRequest {
     @JsonProperty(value = "dataFlowName")
     private String dataFlowName;
 
+    /** Creates an instance of DeleteDataFlowDebugSessionRequest class. */
+    public DeleteDataFlowDebugSessionRequest() {}
+
     /**
      * Get the sessionId property: The ID of data flow debug session.
      *

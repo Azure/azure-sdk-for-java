@@ -41,6 +41,9 @@ public final class SparkScheduler {
     @JsonProperty(value = "currentState")
     private SchedulerCurrentState currentState;
 
+    /** Creates an instance of SparkScheduler class. */
+    public SparkScheduler() {}
+
     /**
      * Get the submittedAt property: The submittedAt property.
      *

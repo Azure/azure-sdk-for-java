@@ -86,6 +86,9 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.numExecutors")
     private Integer numExecutors;
 
+    /** Creates an instance of SynapseSparkJobDefinitionActivity class. */
+    public SynapseSparkJobDefinitionActivity() {}
+
     /**
      * Get the sparkJob property: Synapse spark job reference.
      *

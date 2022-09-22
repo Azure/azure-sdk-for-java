@@ -20,6 +20,9 @@ public final class AmazonMWSSource extends TabularSource {
     @JsonProperty(value = "query")
     private Object query;
 
+    /** Creates an instance of AmazonMWSSource class. */
+    public AmazonMWSSource() {}
+
     /**
      * Get the query property: A query to retrieve data from source. Type: string (or Expression with resultType
      * string).

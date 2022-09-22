@@ -392,40 +392,6 @@ public final class LinkConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LinkConnectionResource> createOrUpdateLinkConnectionAsync(
-            String linkConnectionName, LinkConnectionResource linkConnection, Context context) {
-        return createOrUpdateLinkConnectionWithResponseAsync(linkConnectionName, linkConnection, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a link connection.
-     *
-     * @param linkConnectionName The link connection name.
-     * @param linkConnection Link connection resource definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LinkConnectionResource> createOrUpdateLinkConnectionWithResponse(
-            String linkConnectionName, LinkConnectionResource linkConnection) {
-        return createOrUpdateLinkConnectionWithResponseAsync(linkConnectionName, linkConnection).block();
-    }
-
-    /**
-     * Creates or updates a link connection.
-     *
-     * @param linkConnectionName The link connection name.
-     * @param linkConnection Link connection resource definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -448,23 +414,6 @@ public final class LinkConnectionsImpl {
     public LinkConnectionResource createOrUpdateLinkConnection(
             String linkConnectionName, LinkConnectionResource linkConnection) {
         return createOrUpdateLinkConnectionWithResponse(linkConnectionName, linkConnection, Context.NONE).getValue();
-    }
-
-    /**
-     * Creates or updates a link connection.
-     *
-     * @param linkConnectionName The link connection name.
-     * @param linkConnection Link connection resource definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LinkConnectionResource createOrUpdateLinkConnection(
-            String linkConnectionName, LinkConnectionResource linkConnection, Context context) {
-        return createOrUpdateLinkConnectionWithResponse(linkConnectionName, linkConnection, context).getValue();
     }
 
     /**
@@ -526,36 +475,6 @@ public final class LinkConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a link connection on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LinkConnectionResource> getLinkConnectionAsync(String linkConnectionName, Context context) {
-        return getLinkConnectionWithResponseAsync(linkConnectionName, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get a link connection.
-     *
-     * @param linkConnectionName The link connection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a link connection along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LinkConnectionResource> getLinkConnectionWithResponse(String linkConnectionName) {
-        return getLinkConnectionWithResponseAsync(linkConnectionName).block();
-    }
-
-    /**
-     * Get a link connection.
-     *
-     * @param linkConnectionName The link connection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a link connection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -575,21 +494,6 @@ public final class LinkConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LinkConnectionResource getLinkConnection(String linkConnectionName) {
         return getLinkConnectionWithResponse(linkConnectionName, Context.NONE).getValue();
-    }
-
-    /**
-     * Get a link connection.
-     *
-     * @param linkConnectionName The link connection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a link connection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LinkConnectionResource getLinkConnection(String linkConnectionName, Context context) {
-        return getLinkConnectionWithResponse(linkConnectionName, context).getValue();
     }
 
     /**
@@ -650,35 +554,6 @@ public final class LinkConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteLinkConnectionAsync(String linkConnectionName, Context context) {
-        return deleteLinkConnectionWithResponseAsync(linkConnectionName, context).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Delete a link connection.
-     *
-     * @param linkConnectionName The link connection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteLinkConnectionWithResponse(String linkConnectionName) {
-        return deleteLinkConnectionWithResponseAsync(linkConnectionName).block();
-    }
-
-    /**
-     * Delete a link connection.
-     *
-     * @param linkConnectionName The link connection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -697,20 +572,6 @@ public final class LinkConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteLinkConnection(String linkConnectionName) {
         deleteLinkConnectionWithResponse(linkConnectionName, Context.NONE);
-    }
-
-    /**
-     * Delete a link connection.
-     *
-     * @param linkConnectionName The link connection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteLinkConnection(String linkConnectionName, Context context) {
-        deleteLinkConnectionWithResponse(linkConnectionName, context);
     }
 
     /**
@@ -783,38 +644,6 @@ public final class LinkConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> editTablesAsync(String linkConnectionName, EditTablesRequest editTablesRequest, Context context) {
-        return editTablesWithResponseAsync(linkConnectionName, editTablesRequest, context)
-                .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Edit tables for a link connection.
-     *
-     * @param linkConnectionName The link connection name.
-     * @param editTablesRequest Edit tables request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> editTablesWithResponse(String linkConnectionName, EditTablesRequest editTablesRequest) {
-        return editTablesWithResponseAsync(linkConnectionName, editTablesRequest).block();
-    }
-
-    /**
-     * Edit tables for a link connection.
-     *
-     * @param linkConnectionName The link connection name.
-     * @param editTablesRequest Edit tables request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -835,21 +664,6 @@ public final class LinkConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void editTables(String linkConnectionName, EditTablesRequest editTablesRequest) {
         editTablesWithResponse(linkConnectionName, editTablesRequest, Context.NONE);
-    }
-
-    /**
-     * Edit tables for a link connection.
-     *
-     * @param linkConnectionName The link connection name.
-     * @param editTablesRequest Edit tables request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void editTables(String linkConnectionName, EditTablesRequest editTablesRequest, Context context) {
-        editTablesWithResponse(linkConnectionName, editTablesRequest, context);
     }
 
     /**
@@ -908,35 +722,6 @@ public final class LinkConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> startAsync(String linkConnectionName, Context context) {
-        return startWithResponseAsync(linkConnectionName, context).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Start a link connection.
-     *
-     * @param linkConnectionName The link connection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> startWithResponse(String linkConnectionName) {
-        return startWithResponseAsync(linkConnectionName).block();
-    }
-
-    /**
-     * Start a link connection.
-     *
-     * @param linkConnectionName The link connection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -955,20 +740,6 @@ public final class LinkConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String linkConnectionName) {
         startWithResponse(linkConnectionName, Context.NONE);
-    }
-
-    /**
-     * Start a link connection.
-     *
-     * @param linkConnectionName The link connection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void start(String linkConnectionName, Context context) {
-        startWithResponse(linkConnectionName, context);
     }
 
     /**
@@ -1027,35 +798,6 @@ public final class LinkConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> stopAsync(String linkConnectionName, Context context) {
-        return stopWithResponseAsync(linkConnectionName, context).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Stop a link connection.
-     *
-     * @param linkConnectionName The link connection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> stopWithResponse(String linkConnectionName) {
-        return stopWithResponseAsync(linkConnectionName).block();
-    }
-
-    /**
-     * Stop a link connection.
-     *
-     * @param linkConnectionName The link connection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1074,20 +816,6 @@ public final class LinkConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stop(String linkConnectionName) {
         stopWithResponse(linkConnectionName, Context.NONE);
-    }
-
-    /**
-     * Stop a link connection.
-     *
-     * @param linkConnectionName The link connection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void stop(String linkConnectionName, Context context) {
-        stopWithResponse(linkConnectionName, context);
     }
 
     /**
@@ -1151,36 +879,6 @@ public final class LinkConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the detailed status of a link connection on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LinkConnectionDetailedStatus> getDetailedStatusAsync(String linkConnectionName, Context context) {
-        return getDetailedStatusWithResponseAsync(linkConnectionName, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get the detailed status of a link connection.
-     *
-     * @param linkConnectionName The link connection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the detailed status of a link connection along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LinkConnectionDetailedStatus> getDetailedStatusWithResponse(String linkConnectionName) {
-        return getDetailedStatusWithResponseAsync(linkConnectionName).block();
-    }
-
-    /**
-     * Get the detailed status of a link connection.
-     *
-     * @param linkConnectionName The link connection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the detailed status of a link connection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1201,21 +899,6 @@ public final class LinkConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LinkConnectionDetailedStatus getDetailedStatus(String linkConnectionName) {
         return getDetailedStatusWithResponse(linkConnectionName, Context.NONE).getValue();
-    }
-
-    /**
-     * Get the detailed status of a link connection.
-     *
-     * @param linkConnectionName The link connection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the detailed status of a link connection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LinkConnectionDetailedStatus getDetailedStatus(String linkConnectionName, Context context) {
-        return getDetailedStatusWithResponse(linkConnectionName, context).getValue();
     }
 
     /**
@@ -1277,36 +960,6 @@ public final class LinkConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LinkTableListResponse> listLinkTablesAsync(String linkConnectionName, Context context) {
-        return listLinkTablesWithResponseAsync(linkConnectionName, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * List the link tables of a link connection.
-     *
-     * @param linkConnectionName The link connection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LinkTableListResponse> listLinkTablesWithResponse(String linkConnectionName) {
-        return listLinkTablesWithResponseAsync(linkConnectionName).block();
-    }
-
-    /**
-     * List the link tables of a link connection.
-     *
-     * @param linkConnectionName The link connection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1326,21 +979,6 @@ public final class LinkConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LinkTableListResponse listLinkTables(String linkConnectionName) {
         return listLinkTablesWithResponse(linkConnectionName, Context.NONE).getValue();
-    }
-
-    /**
-     * List the link tables of a link connection.
-     *
-     * @param linkConnectionName The link connection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LinkTableListResponse listLinkTables(String linkConnectionName, Context context) {
-        return listLinkTablesWithResponse(linkConnectionName, context).getValue();
     }
 
     /**
@@ -1415,40 +1053,6 @@ public final class LinkConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LinkConnectionQueryTableStatus> queryTableStatusAsync(
-            String linkConnectionName, QueryTableStatusRequest queryTableStatusRequest, Context context) {
-        return queryTableStatusWithResponseAsync(linkConnectionName, queryTableStatusRequest, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Query the link table status of a link connection.
-     *
-     * @param linkConnectionName The link connection name.
-     * @param queryTableStatusRequest Query table status request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LinkConnectionQueryTableStatus> queryTableStatusWithResponse(
-            String linkConnectionName, QueryTableStatusRequest queryTableStatusRequest) {
-        return queryTableStatusWithResponseAsync(linkConnectionName, queryTableStatusRequest).block();
-    }
-
-    /**
-     * Query the link table status of a link connection.
-     *
-     * @param linkConnectionName The link connection name.
-     * @param queryTableStatusRequest Query table status request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1471,23 +1075,6 @@ public final class LinkConnectionsImpl {
     public LinkConnectionQueryTableStatus queryTableStatus(
             String linkConnectionName, QueryTableStatusRequest queryTableStatusRequest) {
         return queryTableStatusWithResponse(linkConnectionName, queryTableStatusRequest, Context.NONE).getValue();
-    }
-
-    /**
-     * Query the link table status of a link connection.
-     *
-     * @param linkConnectionName The link connection name.
-     * @param queryTableStatusRequest Query table status request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LinkConnectionQueryTableStatus queryTableStatus(
-            String linkConnectionName, QueryTableStatusRequest queryTableStatusRequest, Context context) {
-        return queryTableStatusWithResponse(linkConnectionName, queryTableStatusRequest, context).getValue();
     }
 
     /**
@@ -1569,44 +1156,6 @@ public final class LinkConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateLandingZoneCredentialAsync(
-            String linkConnectionName,
-            UpdateLandingZoneCredential updateLandingZoneCredentialRequest,
-            Context context) {
-        return updateLandingZoneCredentialWithResponseAsync(
-                        linkConnectionName, updateLandingZoneCredentialRequest, context)
-                .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Update landing zone credential of a link connection.
-     *
-     * @param linkConnectionName The link connection name.
-     * @param updateLandingZoneCredentialRequest update landing zone credential request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateLandingZoneCredentialWithResponse(
-            String linkConnectionName, UpdateLandingZoneCredential updateLandingZoneCredentialRequest) {
-        return updateLandingZoneCredentialWithResponseAsync(linkConnectionName, updateLandingZoneCredentialRequest)
-                .block();
-    }
-
-    /**
-     * Update landing zone credential of a link connection.
-     *
-     * @param linkConnectionName The link connection name.
-     * @param updateLandingZoneCredentialRequest update landing zone credential request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1632,24 +1181,6 @@ public final class LinkConnectionsImpl {
     public void updateLandingZoneCredential(
             String linkConnectionName, UpdateLandingZoneCredential updateLandingZoneCredentialRequest) {
         updateLandingZoneCredentialWithResponse(linkConnectionName, updateLandingZoneCredentialRequest, Context.NONE);
-    }
-
-    /**
-     * Update landing zone credential of a link connection.
-     *
-     * @param linkConnectionName The link connection name.
-     * @param updateLandingZoneCredentialRequest update landing zone credential request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateLandingZoneCredential(
-            String linkConnectionName,
-            UpdateLandingZoneCredential updateLandingZoneCredentialRequest,
-            Context context) {
-        updateLandingZoneCredentialWithResponse(linkConnectionName, updateLandingZoneCredentialRequest, context);
     }
 
     /**

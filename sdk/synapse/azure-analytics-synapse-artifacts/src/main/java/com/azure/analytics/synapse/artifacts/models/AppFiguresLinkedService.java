@@ -36,6 +36,9 @@ public class AppFiguresLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.clientKey", required = true)
     private SecretBase clientKey;
 
+    /** Creates an instance of AppFiguresLinkedService class. */
+    public AppFiguresLinkedService() {}
+
     /**
      * Get the userName property: The username of the Appfigures source.
      *

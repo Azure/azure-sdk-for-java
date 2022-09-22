@@ -51,6 +51,9 @@ public final class NotebookCell {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of NotebookCell class. */
+    public NotebookCell() {}
+
     /**
      * Get the cellType property: String identifying the type of cell.
      *

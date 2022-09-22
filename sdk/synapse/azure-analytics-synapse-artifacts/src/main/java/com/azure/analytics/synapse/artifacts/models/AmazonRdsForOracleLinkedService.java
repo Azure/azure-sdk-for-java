@@ -37,6 +37,9 @@ public class AmazonRdsForOracleLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of AmazonRdsForOracleLinkedService class. */
+    public AmazonRdsForOracleLinkedService() {}
+
     /**
      * Get the connectionString property: The connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.

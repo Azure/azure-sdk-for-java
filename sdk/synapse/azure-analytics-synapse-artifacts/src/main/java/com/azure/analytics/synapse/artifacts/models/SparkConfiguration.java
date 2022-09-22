@@ -59,6 +59,9 @@ public final class SparkConfiguration {
     @JsonProperty(value = "configMergeRule")
     private Map<String, String> configMergeRule;
 
+    /** Creates an instance of SparkConfiguration class. */
+    public SparkConfiguration() {}
+
     /**
      * Get the description property: Description about the SparkConfiguration.
      *

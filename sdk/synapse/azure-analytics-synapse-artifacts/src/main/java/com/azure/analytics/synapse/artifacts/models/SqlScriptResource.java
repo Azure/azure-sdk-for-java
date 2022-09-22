@@ -41,6 +41,9 @@ public final class SqlScriptResource {
     @JsonProperty(value = "properties", required = true)
     private SqlScript properties;
 
+    /** Creates an instance of SqlScriptResource class. */
+    public SqlScriptResource() {}
+
     /**
      * Get the id property: Fully qualified resource Id for the resource. Ex -
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.

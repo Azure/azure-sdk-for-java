@@ -103,6 +103,9 @@ public class DynamicsCrmLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of DynamicsCrmLinkedService class. */
+    public DynamicsCrmLinkedService() {}
+
     /**
      * Get the deploymentType property: The deployment type of the Dynamics CRM instance. 'Online' for Dynamics CRM
      * Online and 'OnPremisesWithIfd' for Dynamics CRM on-premises with Ifd. Type: string (or Expression with resultType

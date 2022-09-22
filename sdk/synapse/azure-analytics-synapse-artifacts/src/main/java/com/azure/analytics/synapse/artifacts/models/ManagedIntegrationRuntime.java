@@ -40,6 +40,9 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
     @JsonProperty(value = "typeProperties.ssisProperties")
     private IntegrationRuntimeSsisProperties ssisProperties;
 
+    /** Creates an instance of ManagedIntegrationRuntime class. */
+    public ManagedIntegrationRuntime() {}
+
     /**
      * Get the state property: Integration runtime state, only valid for managed dedicated integration runtime.
      *

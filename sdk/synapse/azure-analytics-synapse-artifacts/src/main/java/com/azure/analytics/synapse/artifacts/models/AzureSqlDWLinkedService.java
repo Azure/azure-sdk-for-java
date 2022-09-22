@@ -66,6 +66,9 @@ public class AzureSqlDWLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of AzureSqlDWLinkedService class. */
+    public AzureSqlDWLinkedService() {}
+
     /**
      * Get the connectionString property: The connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.

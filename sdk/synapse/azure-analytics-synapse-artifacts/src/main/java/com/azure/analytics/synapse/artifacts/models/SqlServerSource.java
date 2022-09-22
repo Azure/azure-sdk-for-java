@@ -53,6 +53,9 @@ public final class SqlServerSource extends TabularSource {
     @JsonProperty(value = "partitionSettings")
     private SqlPartitionSettings partitionSettings;
 
+    /** Creates an instance of SqlServerSource class. */
+    public SqlServerSource() {}
+
     /**
      * Get the sqlReaderQuery property: SQL reader query. Type: string (or Expression with resultType string).
      *

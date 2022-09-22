@@ -23,6 +23,9 @@ public class WaitActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties.waitTimeInSeconds", required = true)
     private Object waitTimeInSeconds;
 
+    /** Creates an instance of WaitActivity class. */
+    public WaitActivity() {}
+
     /**
      * Get the waitTimeInSeconds property: Duration in seconds.
      *

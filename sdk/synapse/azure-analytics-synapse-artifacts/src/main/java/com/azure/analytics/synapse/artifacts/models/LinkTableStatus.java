@@ -65,6 +65,9 @@ public final class LinkTableStatus {
     @JsonProperty(value = "lastTransactionCommitTime")
     private OffsetDateTime lastTransactionCommitTime;
 
+    /** Creates an instance of LinkTableStatus class. */
+    public LinkTableStatus() {}
+
     /**
      * Get the id property: ID provided by the client.
      *

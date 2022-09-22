@@ -34,6 +34,9 @@ public final class DynamicsSink extends CopySink {
     @JsonProperty(value = "alternateKeyName")
     private Object alternateKeyName;
 
+    /** Creates an instance of DynamicsSink class. */
+    public DynamicsSink() {}
+
     /**
      * Get the writeBehavior property: The write behavior for the operation.
      *

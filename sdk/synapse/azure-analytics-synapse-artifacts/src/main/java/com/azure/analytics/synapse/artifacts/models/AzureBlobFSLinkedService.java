@@ -81,6 +81,9 @@ public class AzureBlobFSLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of AzureBlobFSLinkedService class. */
+    public AzureBlobFSLinkedService() {}
+
     /**
      * Get the url property: Endpoint for the Azure Data Lake Storage Gen2 service. Type: string (or Expression with
      * resultType string).

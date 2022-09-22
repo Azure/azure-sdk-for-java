@@ -28,6 +28,9 @@ public final class DWCopyCommandSettings {
     @JsonProperty(value = "additionalOptions")
     private Map<String, String> additionalOptions;
 
+    /** Creates an instance of DWCopyCommandSettings class. */
+    public DWCopyCommandSettings() {}
+
     /**
      * Get the defaultValues property: Specifies the default values for each target column in SQL DW. The default values
      * in the property overwrite the DEFAULT constraint set in the DB, and identity column cannot have a default value.

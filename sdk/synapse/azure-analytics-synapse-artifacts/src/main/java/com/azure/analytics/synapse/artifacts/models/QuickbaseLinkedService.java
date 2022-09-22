@@ -37,6 +37,9 @@ public class QuickbaseLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of QuickbaseLinkedService class. */
+    public QuickbaseLinkedService() {}
+
     /**
      * Get the url property: The url to connect Quickbase source. Type: string (or Expression with resultType string).
      *

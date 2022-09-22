@@ -33,19 +33,6 @@ public final class IntegrationRuntimesClient {
     /**
      * List Integration Runtimes.
      *
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration runtime resources along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IntegrationRuntimeListResponse> listWithResponse() {
-        return this.serviceClient.listWithResponse();
-    }
-
-    /**
-     * List Integration Runtimes.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -69,36 +56,6 @@ public final class IntegrationRuntimesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IntegrationRuntimeListResponse list() {
         return this.serviceClient.list();
-    }
-
-    /**
-     * List Integration Runtimes.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration runtime resources.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IntegrationRuntimeListResponse list(Context context) {
-        return this.serviceClient.list(context);
-    }
-
-    /**
-     * Get Integration Runtime.
-     *
-     * @param integrationRuntimeName The Integration Runtime name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration Runtime along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IntegrationRuntimeResource> getWithResponse(String integrationRuntimeName) {
-        return this.serviceClient.getWithResponse(integrationRuntimeName);
     }
 
     /**
@@ -130,21 +87,5 @@ public final class IntegrationRuntimesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IntegrationRuntimeResource get(String integrationRuntimeName) {
         return this.serviceClient.get(integrationRuntimeName);
-    }
-
-    /**
-     * Get Integration Runtime.
-     *
-     * @param integrationRuntimeName The Integration Runtime name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration Runtime.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IntegrationRuntimeResource get(String integrationRuntimeName, Context context) {
-        return this.serviceClient.get(integrationRuntimeName, context);
     }
 }

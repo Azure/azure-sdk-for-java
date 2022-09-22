@@ -24,6 +24,9 @@ public class AzureMariaDBTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
+    /** Creates an instance of AzureMariaDBTableDataset class. */
+    public AzureMariaDBTableDataset() {}
+
     /**
      * Get the tableName property: The table name. Type: string (or Expression with resultType string).
      *

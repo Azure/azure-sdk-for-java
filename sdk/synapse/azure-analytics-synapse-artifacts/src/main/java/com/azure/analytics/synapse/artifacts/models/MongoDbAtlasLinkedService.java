@@ -32,6 +32,9 @@ public class MongoDbAtlasLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.database", required = true)
     private Object database;
 
+    /** Creates an instance of MongoDbAtlasLinkedService class. */
+    public MongoDbAtlasLinkedService() {}
+
     /**
      * Get the connectionString property: The MongoDB Atlas connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.

@@ -28,6 +28,9 @@ public final class PipelineRunInvokedBy {
     @JsonProperty(value = "invokedByType", access = JsonProperty.Access.WRITE_ONLY)
     private String invokedByType;
 
+    /** Creates an instance of PipelineRunInvokedBy class. */
+    public PipelineRunInvokedBy() {}
+
     /**
      * Get the name property: Name of the entity that started the pipeline run.
      *

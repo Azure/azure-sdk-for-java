@@ -52,6 +52,9 @@ public final class LibraryResourceProperties {
     @JsonProperty(value = "creatorId", access = JsonProperty.Access.WRITE_ONLY)
     private String creatorId;
 
+    /** Creates an instance of LibraryResourceProperties class. */
+    public LibraryResourceProperties() {}
+
     /**
      * Get the name property: Name of the library/package.
      *

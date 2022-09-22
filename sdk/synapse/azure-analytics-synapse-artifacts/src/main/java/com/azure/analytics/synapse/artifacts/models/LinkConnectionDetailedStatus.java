@@ -77,6 +77,9 @@ public final class LinkConnectionDetailedStatus {
     @JsonProperty(value = "landingZoneCredentialExpireTime")
     private OffsetDateTime landingZoneCredentialExpireTime;
 
+    /** Creates an instance of LinkConnectionDetailedStatus class. */
+    public LinkConnectionDetailedStatus() {}
+
     /**
      * Get the id property: Link connection id.
      *

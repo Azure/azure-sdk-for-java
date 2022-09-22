@@ -17,6 +17,9 @@ public final class EditTablesRequest {
     @JsonProperty(value = "linkTables")
     private List<LinkTableRequest> linkTables;
 
+    /** Creates an instance of EditTablesRequest class. */
+    public EditTablesRequest() {}
+
     /**
      * Get the linkTables property: Edit link tables request.
      *

@@ -16,6 +16,9 @@ public final class CreateRunResponse {
     @JsonProperty(value = "runId", required = true)
     private String runId;
 
+    /** Creates an instance of CreateRunResponse class. */
+    public CreateRunResponse() {}
+
     /**
      * Get the runId property: Identifier of a run.
      *

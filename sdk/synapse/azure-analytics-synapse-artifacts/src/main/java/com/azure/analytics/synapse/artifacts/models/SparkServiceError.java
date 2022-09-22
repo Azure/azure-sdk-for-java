@@ -28,6 +28,9 @@ public final class SparkServiceError {
     @JsonProperty(value = "source")
     private SparkErrorSource source;
 
+    /** Creates an instance of SparkServiceError class. */
+    public SparkServiceError() {}
+
     /**
      * Get the message property: The message property.
      *

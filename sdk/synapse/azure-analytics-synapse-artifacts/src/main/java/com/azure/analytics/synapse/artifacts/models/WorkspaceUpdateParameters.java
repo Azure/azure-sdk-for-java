@@ -23,6 +23,9 @@ public final class WorkspaceUpdateParameters {
     @JsonProperty(value = "identity")
     private WorkspaceIdentity identity;
 
+    /** Creates an instance of WorkspaceUpdateParameters class. */
+    public WorkspaceUpdateParameters() {}
+
     /**
      * Get the tags property: The resource tags.
      *

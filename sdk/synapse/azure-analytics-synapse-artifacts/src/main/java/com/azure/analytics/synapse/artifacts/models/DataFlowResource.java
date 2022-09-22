@@ -16,6 +16,9 @@ public final class DataFlowResource extends SubResource {
     @JsonProperty(value = "properties", required = true)
     private DataFlow properties;
 
+    /** Creates an instance of DataFlowResource class. */
+    public DataFlowResource() {}
+
     /**
      * Get the properties property: Data flow properties.
      *

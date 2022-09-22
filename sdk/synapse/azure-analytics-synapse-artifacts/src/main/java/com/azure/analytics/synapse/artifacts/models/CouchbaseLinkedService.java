@@ -37,6 +37,9 @@ public class CouchbaseLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of CouchbaseLinkedService class. */
+    public CouchbaseLinkedService() {}
+
     /**
      * Get the connectionString property: An ODBC connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.

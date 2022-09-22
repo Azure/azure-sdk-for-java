@@ -24,6 +24,9 @@ public class SalesforceObjectDataset extends Dataset {
     @JsonProperty(value = "typeProperties.objectApiName")
     private Object objectApiName;
 
+    /** Creates an instance of SalesforceObjectDataset class. */
+    public SalesforceObjectDataset() {}
+
     /**
      * Get the objectApiName property: The Salesforce object API name. Type: string (or Expression with resultType
      * string).

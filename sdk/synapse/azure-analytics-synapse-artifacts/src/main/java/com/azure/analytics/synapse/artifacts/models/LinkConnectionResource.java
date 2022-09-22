@@ -40,6 +40,9 @@ public final class LinkConnectionResource {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of LinkConnectionResource class. */
+    public LinkConnectionResource() {}
+
     /**
      * Get the id property: Link connection id.
      *

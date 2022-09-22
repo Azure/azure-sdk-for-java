@@ -32,6 +32,9 @@ public final class RecurrenceScheduleOccurrence {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of RecurrenceScheduleOccurrence class. */
+    public RecurrenceScheduleOccurrence() {}
+
     /**
      * Get the day property: The day of the week.
      *

@@ -503,44 +503,6 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return notebook resource type on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NotebookResource> createOrUpdateNotebookAsync(
-            String notebookName, NotebookResource notebook, String ifMatch, Context context) {
-        return createOrUpdateNotebookWithResponseAsync(notebookName, notebook, ifMatch, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a Note Book.
-     *
-     * @param notebookName The notebook name.
-     * @param notebook Note book resource definition.
-     * @param ifMatch ETag of the Note book entity. Should only be specified for update, for which it should match
-     *     existing entity or can be * for unconditional update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return notebook resource type along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NotebookResource> createOrUpdateNotebookWithResponse(
-            String notebookName, NotebookResource notebook, String ifMatch) {
-        return createOrUpdateNotebookWithResponseAsync(notebookName, notebook, ifMatch).block();
-    }
-
-    /**
-     * Creates or updates a Note Book.
-     *
-     * @param notebookName The notebook name.
-     * @param notebook Note book resource definition.
-     * @param ifMatch ETag of the Note book entity. Should only be specified for update, for which it should match
-     *     existing entity or can be * for unconditional update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return notebook resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -580,25 +542,6 @@ public final class NotebooksImpl {
     public NotebookResource createOrUpdateNotebook(String notebookName, NotebookResource notebook) {
         final String ifMatch = null;
         return createOrUpdateNotebookWithResponse(notebookName, notebook, ifMatch, Context.NONE).getValue();
-    }
-
-    /**
-     * Creates or updates a Note Book.
-     *
-     * @param notebookName The notebook name.
-     * @param notebook Note book resource definition.
-     * @param ifMatch ETag of the Note book entity. Should only be specified for update, for which it should match
-     *     existing entity or can be * for unconditional update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return notebook resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NotebookResource createOrUpdateNotebook(
-            String notebookName, NotebookResource notebook, String ifMatch, Context context) {
-        return createOrUpdateNotebookWithResponse(notebookName, notebook, ifMatch, context).getValue();
     }
 
     /**
@@ -683,40 +626,6 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Note Book on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NotebookResource> getNotebookAsync(String notebookName, String ifNoneMatch, Context context) {
-        return getNotebookWithResponseAsync(notebookName, ifNoneMatch, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets a Note Book.
-     *
-     * @param notebookName The notebook name.
-     * @param ifNoneMatch ETag of the Notebook entity. Should only be specified for get. If the ETag matches the
-     *     existing entity tag, or if * was provided, then no content will be returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Note Book along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NotebookResource> getNotebookWithResponse(String notebookName, String ifNoneMatch) {
-        return getNotebookWithResponseAsync(notebookName, ifNoneMatch).block();
-    }
-
-    /**
-     * Gets a Note Book.
-     *
-     * @param notebookName The notebook name.
-     * @param ifNoneMatch ETag of the Notebook entity. Should only be specified for get. If the ETag matches the
-     *     existing entity tag, or if * was provided, then no content will be returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Note Book along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -754,23 +663,6 @@ public final class NotebooksImpl {
     public NotebookResource getNotebook(String notebookName) {
         final String ifNoneMatch = null;
         return getNotebookWithResponse(notebookName, ifNoneMatch, Context.NONE).getValue();
-    }
-
-    /**
-     * Gets a Note Book.
-     *
-     * @param notebookName The notebook name.
-     * @param ifNoneMatch ETag of the Notebook entity. Should only be specified for get. If the ETag matches the
-     *     existing entity tag, or if * was provided, then no content will be returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Note Book.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NotebookResource getNotebook(String notebookName, String ifNoneMatch, Context context) {
-        return getNotebookWithResponse(notebookName, ifNoneMatch, context).getValue();
     }
 
     /**
@@ -830,35 +722,6 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteNotebookAsync(String notebookName, Context context) {
-        return deleteNotebookWithResponseAsync(notebookName, context).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Deletes a Note book.
-     *
-     * @param notebookName The notebook name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteNotebookWithResponse(String notebookName) {
-        return deleteNotebookWithResponseAsync(notebookName).block();
-    }
-
-    /**
-     * Deletes a Note book.
-     *
-     * @param notebookName The notebook name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -877,20 +740,6 @@ public final class NotebooksImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteNotebook(String notebookName) {
         deleteNotebookWithResponse(notebookName, Context.NONE);
-    }
-
-    /**
-     * Deletes a Note book.
-     *
-     * @param notebookName The notebook name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteNotebook(String notebookName, Context context) {
-        deleteNotebookWithResponse(notebookName, context);
     }
 
     /**
@@ -956,37 +805,6 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> renameNotebookAsync(String notebookName, ArtifactRenameRequest request, Context context) {
-        return renameNotebookWithResponseAsync(notebookName, request, context).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Renames a notebook.
-     *
-     * @param notebookName The notebook name.
-     * @param request proposed new name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> renameNotebookWithResponse(String notebookName, ArtifactRenameRequest request) {
-        return renameNotebookWithResponseAsync(notebookName, request).block();
-    }
-
-    /**
-     * Renames a notebook.
-     *
-     * @param notebookName The notebook name.
-     * @param request proposed new name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1007,21 +825,6 @@ public final class NotebooksImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void renameNotebook(String notebookName, ArtifactRenameRequest request) {
         renameNotebookWithResponse(notebookName, request, Context.NONE);
-    }
-
-    /**
-     * Renames a notebook.
-     *
-     * @param notebookName The notebook name.
-     * @param request proposed new name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void renameNotebook(String notebookName, ArtifactRenameRequest request, Context context) {
-        renameNotebookWithResponse(notebookName, request, context);
     }
 
     /**

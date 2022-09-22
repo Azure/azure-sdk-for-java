@@ -67,26 +67,6 @@ public final class SparkJobDefinitionClient {
      * @param sparkJobDefinition Spark Job Definition resource definition.
      * @param ifMatch ETag of the Spark Job Definition entity. Should only be specified for update, for which it should
      *     match existing entity or can be * for unconditional update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spark job definition resource type along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SparkJobDefinitionResource> createOrUpdateSparkJobDefinitionWithResponse(
-            String sparkJobDefinitionName, SparkJobDefinitionResource sparkJobDefinition, String ifMatch) {
-        return this.serviceClient.createOrUpdateSparkJobDefinitionWithResponse(
-                sparkJobDefinitionName, sparkJobDefinition, ifMatch);
-    }
-
-    /**
-     * Creates or updates a Spark Job Definition.
-     *
-     * @param sparkJobDefinitionName The spark job definition name.
-     * @param sparkJobDefinition Spark Job Definition resource definition.
-     * @param ifMatch ETag of the Spark Job Definition entity. Should only be specified for update, for which it should
-     *     match existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -141,48 +121,6 @@ public final class SparkJobDefinitionClient {
     }
 
     /**
-     * Creates or updates a Spark Job Definition.
-     *
-     * @param sparkJobDefinitionName The spark job definition name.
-     * @param sparkJobDefinition Spark Job Definition resource definition.
-     * @param ifMatch ETag of the Spark Job Definition entity. Should only be specified for update, for which it should
-     *     match existing entity or can be * for unconditional update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spark job definition resource type.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SparkJobDefinitionResource createOrUpdateSparkJobDefinition(
-            String sparkJobDefinitionName,
-            SparkJobDefinitionResource sparkJobDefinition,
-            String ifMatch,
-            Context context) {
-        return this.serviceClient.createOrUpdateSparkJobDefinition(
-                sparkJobDefinitionName, sparkJobDefinition, ifMatch, context);
-    }
-
-    /**
-     * Gets a Spark Job Definition.
-     *
-     * @param sparkJobDefinitionName The spark job definition name.
-     * @param ifNoneMatch ETag of the Spark Job Definition entity. Should only be specified for get. If the ETag matches
-     *     the existing entity tag, or if * was provided, then no content will be returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Spark Job Definition along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SparkJobDefinitionResource> getSparkJobDefinitionWithResponse(
-            String sparkJobDefinitionName, String ifNoneMatch) {
-        return this.serviceClient.getSparkJobDefinitionWithResponse(sparkJobDefinitionName, ifNoneMatch);
-    }
-
-    /**
      * Gets a Spark Job Definition.
      *
      * @param sparkJobDefinitionName The spark job definition name.
@@ -234,40 +172,6 @@ public final class SparkJobDefinitionClient {
     }
 
     /**
-     * Gets a Spark Job Definition.
-     *
-     * @param sparkJobDefinitionName The spark job definition name.
-     * @param ifNoneMatch ETag of the Spark Job Definition entity. Should only be specified for get. If the ETag matches
-     *     the existing entity tag, or if * was provided, then no content will be returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Spark Job Definition.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SparkJobDefinitionResource getSparkJobDefinition(
-            String sparkJobDefinitionName, String ifNoneMatch, Context context) {
-        return this.serviceClient.getSparkJobDefinition(sparkJobDefinitionName, ifNoneMatch, context);
-    }
-
-    /**
-     * Deletes a Spark Job Definition.
-     *
-     * @param sparkJobDefinitionName The spark job definition name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteSparkJobDefinitionWithResponse(String sparkJobDefinitionName) {
-        return this.serviceClient.deleteSparkJobDefinitionWithResponse(sparkJobDefinitionName);
-    }
-
-    /**
      * Deletes a Spark Job Definition.
      *
      * @param sparkJobDefinitionName The spark job definition name.
@@ -295,36 +199,6 @@ public final class SparkJobDefinitionClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteSparkJobDefinition(String sparkJobDefinitionName) {
         this.serviceClient.deleteSparkJobDefinition(sparkJobDefinitionName);
-    }
-
-    /**
-     * Deletes a Spark Job Definition.
-     *
-     * @param sparkJobDefinitionName The spark job definition name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteSparkJobDefinition(String sparkJobDefinitionName, Context context) {
-        this.serviceClient.deleteSparkJobDefinition(sparkJobDefinitionName, context);
-    }
-
-    /**
-     * Executes the spark job definition.
-     *
-     * @param sparkJobDefinitionName The spark job definition name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SparkBatchJob> executeSparkJobDefinitionWithResponse(String sparkJobDefinitionName) {
-        return this.serviceClient.executeSparkJobDefinitionWithResponse(sparkJobDefinitionName);
     }
 
     /**
@@ -357,39 +231,6 @@ public final class SparkJobDefinitionClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SparkBatchJob executeSparkJobDefinition(String sparkJobDefinitionName) {
         return this.serviceClient.executeSparkJobDefinition(sparkJobDefinitionName);
-    }
-
-    /**
-     * Executes the spark job definition.
-     *
-     * @param sparkJobDefinitionName The spark job definition name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SparkBatchJob executeSparkJobDefinition(String sparkJobDefinitionName, Context context) {
-        return this.serviceClient.executeSparkJobDefinition(sparkJobDefinitionName, context);
-    }
-
-    /**
-     * Renames a sparkJobDefinition.
-     *
-     * @param sparkJobDefinitionName The spark job definition name.
-     * @param request proposed new name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> renameSparkJobDefinitionWithResponse(
-            String sparkJobDefinitionName, ArtifactRenameRequest request) {
-        return this.serviceClient.renameSparkJobDefinitionWithResponse(sparkJobDefinitionName, request);
     }
 
     /**
@@ -426,39 +267,6 @@ public final class SparkJobDefinitionClient {
     }
 
     /**
-     * Renames a sparkJobDefinition.
-     *
-     * @param sparkJobDefinitionName The spark job definition name.
-     * @param request proposed new name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void renameSparkJobDefinition(
-            String sparkJobDefinitionName, ArtifactRenameRequest request, Context context) {
-        this.serviceClient.renameSparkJobDefinition(sparkJobDefinitionName, request, context);
-    }
-
-    /**
-     * Debug the spark job definition.
-     *
-     * @param sparkJobDefinitionAzureResource Spark Job Definition resource definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SparkBatchJob> debugSparkJobDefinitionWithResponse(
-            SparkJobDefinitionResource sparkJobDefinitionAzureResource) {
-        return this.serviceClient.debugSparkJobDefinitionWithResponse(sparkJobDefinitionAzureResource);
-    }
-
-    /**
      * Debug the spark job definition.
      *
      * @param sparkJobDefinitionAzureResource Spark Job Definition resource definition.
@@ -488,22 +296,5 @@ public final class SparkJobDefinitionClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SparkBatchJob debugSparkJobDefinition(SparkJobDefinitionResource sparkJobDefinitionAzureResource) {
         return this.serviceClient.debugSparkJobDefinition(sparkJobDefinitionAzureResource);
-    }
-
-    /**
-     * Debug the spark job definition.
-     *
-     * @param sparkJobDefinitionAzureResource Spark Job Definition resource definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SparkBatchJob debugSparkJobDefinition(
-            SparkJobDefinitionResource sparkJobDefinitionAzureResource, Context context) {
-        return this.serviceClient.debugSparkJobDefinition(sparkJobDefinitionAzureResource, context);
     }
 }

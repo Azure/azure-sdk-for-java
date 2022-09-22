@@ -122,6 +122,9 @@ public class RestServiceLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.scope")
     private Object scope;
 
+    /** Creates an instance of RestServiceLinkedService class. */
+    public RestServiceLinkedService() {}
+
     /**
      * Get the url property: The base URL of the REST service.
      *

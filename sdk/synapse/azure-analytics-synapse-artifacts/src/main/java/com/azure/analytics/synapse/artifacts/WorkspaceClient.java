@@ -32,19 +32,6 @@ public final class WorkspaceClient {
     /**
      * Get Workspace.
      *
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Workspace> getWithResponse() {
-        return this.serviceClient.getWithResponse();
-    }
-
-    /**
-     * Get Workspace.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -68,20 +55,5 @@ public final class WorkspaceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Workspace get() {
         return this.serviceClient.get();
-    }
-
-    /**
-     * Get Workspace.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Workspace get(Context context) {
-        return this.serviceClient.get(context);
     }
 }

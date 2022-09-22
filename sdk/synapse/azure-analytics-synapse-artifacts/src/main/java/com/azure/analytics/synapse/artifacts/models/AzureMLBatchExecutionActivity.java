@@ -42,6 +42,9 @@ public class AzureMLBatchExecutionActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.webServiceInputs")
     private Map<String, AzureMLWebServiceFile> webServiceInputs;
 
+    /** Creates an instance of AzureMLBatchExecutionActivity class. */
+    public AzureMLBatchExecutionActivity() {}
+
     /**
      * Get the globalParameters property: Key,Value pairs to be passed to the Azure ML Batch Execution Service endpoint.
      * Keys must match the names of web service parameters defined in the published Azure ML web service. Values will be

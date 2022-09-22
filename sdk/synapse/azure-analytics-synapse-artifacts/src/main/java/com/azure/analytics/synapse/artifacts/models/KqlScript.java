@@ -16,6 +16,9 @@ public final class KqlScript {
     @JsonProperty(value = "content")
     private KqlScriptContent content;
 
+    /** Creates an instance of KqlScript class. */
+    public KqlScript() {}
+
     /**
      * Get the content property: The content property.
      *

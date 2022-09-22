@@ -46,6 +46,9 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of AzureDatabricksDeltaLakeLinkedService class. */
+    public AzureDatabricksDeltaLakeLinkedService() {}
+
     /**
      * Get the domain property: &lt;REGION&gt;.azuredatabricks.net, domain name of your Databricks deployment. Type:
      * string (or Expression with resultType string).

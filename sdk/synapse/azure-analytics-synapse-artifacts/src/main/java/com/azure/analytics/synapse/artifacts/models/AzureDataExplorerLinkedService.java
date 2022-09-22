@@ -51,6 +51,9 @@ public class AzureDataExplorerLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.tenant")
     private Object tenant;
 
+    /** Creates an instance of AzureDataExplorerLinkedService class. */
+    public AzureDataExplorerLinkedService() {}
+
     /**
      * Get the endpoint property: The endpoint of Azure Data Explorer (the engine's endpoint). URL will be in the format
      * https://&lt;clusterName&gt;.&lt;regionName&gt;.kusto.windows.net. Type: string (or Expression with resultType

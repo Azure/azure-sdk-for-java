@@ -356,44 +356,6 @@ public final class LinkedServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return linked service resource type on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LinkedServiceResource> createOrUpdateLinkedServiceAsync(
-            String linkedServiceName, LinkedServiceResource linkedService, String ifMatch, Context context) {
-        return createOrUpdateLinkedServiceWithResponseAsync(linkedServiceName, linkedService, ifMatch, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a linked service.
-     *
-     * @param linkedServiceName The linked service name.
-     * @param linkedService Linked service resource definition.
-     * @param ifMatch ETag of the linkedService entity. Should only be specified for update, for which it should match
-     *     existing entity or can be * for unconditional update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return linked service resource type along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LinkedServiceResource> createOrUpdateLinkedServiceWithResponse(
-            String linkedServiceName, LinkedServiceResource linkedService, String ifMatch) {
-        return createOrUpdateLinkedServiceWithResponseAsync(linkedServiceName, linkedService, ifMatch).block();
-    }
-
-    /**
-     * Creates or updates a linked service.
-     *
-     * @param linkedServiceName The linked service name.
-     * @param linkedService Linked service resource definition.
-     * @param ifMatch ETag of the linkedService entity. Should only be specified for update, for which it should match
-     *     existing entity or can be * for unconditional update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return linked service resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -437,25 +399,6 @@ public final class LinkedServicesImpl {
         final String ifMatch = null;
         return createOrUpdateLinkedServiceWithResponse(linkedServiceName, linkedService, ifMatch, Context.NONE)
                 .getValue();
-    }
-
-    /**
-     * Creates or updates a linked service.
-     *
-     * @param linkedServiceName The linked service name.
-     * @param linkedService Linked service resource definition.
-     * @param ifMatch ETag of the linkedService entity. Should only be specified for update, for which it should match
-     *     existing entity or can be * for unconditional update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return linked service resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LinkedServiceResource createOrUpdateLinkedService(
-            String linkedServiceName, LinkedServiceResource linkedService, String ifMatch, Context context) {
-        return createOrUpdateLinkedServiceWithResponse(linkedServiceName, linkedService, ifMatch, context).getValue();
     }
 
     /**
@@ -549,41 +492,6 @@ public final class LinkedServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a linked service on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LinkedServiceResource> getLinkedServiceAsync(
-            String linkedServiceName, String ifNoneMatch, Context context) {
-        return getLinkedServiceWithResponseAsync(linkedServiceName, ifNoneMatch, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets a linked service.
-     *
-     * @param linkedServiceName The linked service name.
-     * @param ifNoneMatch ETag of the linked service entity. Should only be specified for get. If the ETag matches the
-     *     existing entity tag, or if * was provided, then no content will be returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a linked service along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LinkedServiceResource> getLinkedServiceWithResponse(String linkedServiceName, String ifNoneMatch) {
-        return getLinkedServiceWithResponseAsync(linkedServiceName, ifNoneMatch).block();
-    }
-
-    /**
-     * Gets a linked service.
-     *
-     * @param linkedServiceName The linked service name.
-     * @param ifNoneMatch ETag of the linked service entity. Should only be specified for get. If the ETag matches the
-     *     existing entity tag, or if * was provided, then no content will be returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a linked service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -621,23 +529,6 @@ public final class LinkedServicesImpl {
     public LinkedServiceResource getLinkedService(String linkedServiceName) {
         final String ifNoneMatch = null;
         return getLinkedServiceWithResponse(linkedServiceName, ifNoneMatch, Context.NONE).getValue();
-    }
-
-    /**
-     * Gets a linked service.
-     *
-     * @param linkedServiceName The linked service name.
-     * @param ifNoneMatch ETag of the linked service entity. Should only be specified for get. If the ETag matches the
-     *     existing entity tag, or if * was provided, then no content will be returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a linked service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LinkedServiceResource getLinkedService(String linkedServiceName, String ifNoneMatch, Context context) {
-        return getLinkedServiceWithResponse(linkedServiceName, ifNoneMatch, context).getValue();
     }
 
     /**
@@ -698,35 +589,6 @@ public final class LinkedServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteLinkedServiceAsync(String linkedServiceName, Context context) {
-        return deleteLinkedServiceWithResponseAsync(linkedServiceName, context).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Deletes a linked service.
-     *
-     * @param linkedServiceName The linked service name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteLinkedServiceWithResponse(String linkedServiceName) {
-        return deleteLinkedServiceWithResponseAsync(linkedServiceName).block();
-    }
-
-    /**
-     * Deletes a linked service.
-     *
-     * @param linkedServiceName The linked service name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -745,20 +607,6 @@ public final class LinkedServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteLinkedService(String linkedServiceName) {
         deleteLinkedServiceWithResponse(linkedServiceName, Context.NONE);
-    }
-
-    /**
-     * Deletes a linked service.
-     *
-     * @param linkedServiceName The linked service name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteLinkedService(String linkedServiceName, Context context) {
-        deleteLinkedServiceWithResponse(linkedServiceName, context);
     }
 
     /**
@@ -826,39 +674,6 @@ public final class LinkedServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> renameLinkedServiceAsync(
-            String linkedServiceName, ArtifactRenameRequest request, Context context) {
-        return renameLinkedServiceWithResponseAsync(linkedServiceName, request, context)
-                .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Renames a linked service.
-     *
-     * @param linkedServiceName The linked service name.
-     * @param request proposed new name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> renameLinkedServiceWithResponse(String linkedServiceName, ArtifactRenameRequest request) {
-        return renameLinkedServiceWithResponseAsync(linkedServiceName, request).block();
-    }
-
-    /**
-     * Renames a linked service.
-     *
-     * @param linkedServiceName The linked service name.
-     * @param request proposed new name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -879,21 +694,6 @@ public final class LinkedServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void renameLinkedService(String linkedServiceName, ArtifactRenameRequest request) {
         renameLinkedServiceWithResponse(linkedServiceName, request, Context.NONE);
-    }
-
-    /**
-     * Renames a linked service.
-     *
-     * @param linkedServiceName The linked service name.
-     * @param request proposed new name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void renameLinkedService(String linkedServiceName, ArtifactRenameRequest request, Context context) {
-        renameLinkedServiceWithResponse(linkedServiceName, request, context);
     }
 
     /**

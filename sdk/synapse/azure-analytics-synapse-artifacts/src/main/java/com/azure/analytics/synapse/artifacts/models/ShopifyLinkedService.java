@@ -56,6 +56,9 @@ public class ShopifyLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of ShopifyLinkedService class. */
+    public ShopifyLinkedService() {}
+
     /**
      * Get the host property: The endpoint of the Shopify server. (i.e. mystore.myshopify.com).
      *
