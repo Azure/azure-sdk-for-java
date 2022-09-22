@@ -71,7 +71,7 @@ final class FluxTrace extends FluxOperator<ServiceBusMessageContext, ServiceBusM
                 if (context != null) {
                     Object processorException = context.getData(PROCESS_ERROR_KEY).orElse(null);
                     if (processorException instanceof Throwable) {
-                        exception = (Exception) processorException;
+                        exception = (Throwable) processorException;
                     }
                 }
                 tracer.endSpan(exception, span, scope);

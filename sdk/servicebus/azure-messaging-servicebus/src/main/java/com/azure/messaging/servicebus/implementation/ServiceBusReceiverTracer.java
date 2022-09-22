@@ -7,7 +7,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
-import org.apache.qpid.proton.amqp.Symbol;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
@@ -18,15 +17,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.MESSAGE_ENQUEUED_TIME;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_NAMESPACE_VALUE;
 
 public class ServiceBusReceiverTracer extends ServiceBusTracer {
-    private static final Symbol ENQUEUED_TIME_UTC_ANNOTATION_NAME_SYMBOL = Symbol.valueOf(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
-
     private static final AutoCloseable NOOP_AUTOCLOSEABLE = () -> {
     };
 
@@ -52,7 +48,7 @@ public class ServiceBusReceiverTracer extends ServiceBusTracer {
             }
 
             Context span = startSpanWithLink(spanName, message, Context.NONE.addData("span-start-time", startTime));
-            endSpan(signal == null ? null : signal.getThrowable(), span, null);
+            endSpan(signal.getThrowable(), span, null);
         }
     }
 
