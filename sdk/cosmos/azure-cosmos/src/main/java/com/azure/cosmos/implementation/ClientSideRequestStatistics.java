@@ -90,6 +90,10 @@ public class ClientSideRequestStatistics {
             return null;
         }
 
+        if (requestStartTimeUTC == requestEndTimeUTC) {
+            return Duration.ZERO;
+        }
+
         return Duration.between(requestStartTimeUTC, requestEndTimeUTC);
     }
 
@@ -360,6 +364,10 @@ public class ClientSideRequestStatistics {
                 requestResponseTimeUTC == null ||
                 requestResponseTimeUTC.isBefore(requestStartTimeUTC)) {
                 return null;
+            }
+
+            if (requestStartTimeUTC == requestResponseTimeUTC) {
+                return Duration.ZERO;
             }
 
             return Duration.between(requestStartTimeUTC, requestResponseTimeUTC);

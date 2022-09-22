@@ -31,7 +31,7 @@ import java.util.stream.Stream;
  * Class with config options for Cosmos Client telemetry
  */
 @Beta(value = Beta.SinceVersion.V4_37_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-public class CosmosClientTelemetryConfig {
+public final class CosmosClientTelemetryConfig {
     private static Logger logger = LoggerFactory.getLogger(CosmosClientTelemetryConfig.class);
     private static boolean DEFAULT_CLIENT_TELEMETRY_ENABLED = false;
     private static final Duration DEFAULT_NETWORK_REQUEST_TIMEOUT = Duration.ofSeconds(60);

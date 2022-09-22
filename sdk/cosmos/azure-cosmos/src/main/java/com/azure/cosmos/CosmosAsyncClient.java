@@ -127,8 +127,14 @@ public final class CosmosAsyncClient implements Closeable {
                 .getCosmosClientTelemetryConfigAccessor()
                 .isClientMetricsEnabled(this.clientTelemetryConfig));
         this.apiType = builder.apiType();
-        this.clientCorrelationId =  builder.getClientCorrelationId();
-        this.metricTagNames = builder.getMetricTagNames();
+        this.clientCorrelationId =  ImplementationBridgeHelpers
+            .CosmosClientTelemetryConfigHelper
+            .getCosmosClientTelemetryConfigAccessor()
+            .getClientCorrelationId(this.clientTelemetryConfig);
+        this.metricTagNames = ImplementationBridgeHelpers
+            .CosmosClientTelemetryConfigHelper
+            .getCosmosClientTelemetryConfigAccessor()
+            .getMetricTagNames(this.clientTelemetryConfig);
 
         List<Permission> permissionList = new ArrayList<>();
         if (this.permissions != null) {
@@ -177,7 +183,10 @@ public final class CosmosAsyncClient implements Closeable {
             TagName.ClientCorrelationId.toString(),
             ClientTelemetryMetrics.escape(effectiveClientCorrelationId));
 
-        this.clientMetricRegistrySnapshot = builder.getClientMetricRegistry();
+        this.clientMetricRegistrySnapshot = ImplementationBridgeHelpers
+            .CosmosClientTelemetryConfigHelper
+            .getCosmosClientTelemetryConfigAccessor()
+            .getClientMetricRegistry(this.clientTelemetryConfig);
         this.clientMetricsEnabled = clientMetricRegistrySnapshot != null;
         if (clientMetricRegistrySnapshot != null) {
             ClientTelemetryMetrics.add(clientMetricRegistrySnapshot);

@@ -785,27 +785,6 @@ public class CosmosClientBuilder implements
             .ensureInitialized(this.clientTelemetryConfig, this);
     }
 
-    String getClientCorrelationId() {
-        return ImplementationBridgeHelpers
-            .CosmosClientTelemetryConfigHelper
-            .getCosmosClientTelemetryConfigAccessor()
-            .getClientCorrelationId(this.clientTelemetryConfig());
-    }
-
-    EnumSet<TagName> getMetricTagNames() {
-        return ImplementationBridgeHelpers
-            .CosmosClientTelemetryConfigHelper
-            .getCosmosClientTelemetryConfigAccessor()
-            .getMetricTagNames(this.clientTelemetryConfig());
-    }
-
-    MeterRegistry getClientMetricRegistry() {
-        return ImplementationBridgeHelpers
-            .CosmosClientTelemetryConfigHelper
-            .getCosmosClientTelemetryConfigAccessor()
-            .getClientMetricRegistry(this.clientTelemetryConfig());
-    }
-
     /**
      * Builds a cosmos async client with the provided properties
      *
