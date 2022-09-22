@@ -1,8 +1,7 @@
 # Release History
 
-## 4.4.0-beta.1 (Unreleased)
-Upgrade Spring Boot dependencies version to 2.7.3 and Spring Cloud dependencies version to 2021.0.3
-Upgrade Spring Boot dependencies version to 2.7.2 and Spring Cloud dependencies version to 2021.0.3.
+## 6.0.0-beta.1 (Unreleased)
+Upgrade Spring Boot dependencies version to 3.0.0-M4 and Spring Cloud dependencies version to 2022.0.0-M4.
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
@@ -13,6 +12,9 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Features Added
 - Support auto start-up for the auto-configured Service Bus Processor Client by enabling a new property of `spring.cloud.azure.servicebus.processor.auto-startup`. [#29997](https://github.com/Azure/azure-sdk-for-java/issues/29997)
+
+#### Breaking Changes
+- Removed Spring Data Cosmos Auto Configuration support as Spring Data 3 is currently not supported.
 
 ## 4.3.0 (2022-06-29)
 - This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.9, 2.7.0-2.7.1. (Note: 2.5.x (x>14), 2.6.y (y>9) and 2.7.z (z>1) should be supported, but they aren't tested with this release.)
