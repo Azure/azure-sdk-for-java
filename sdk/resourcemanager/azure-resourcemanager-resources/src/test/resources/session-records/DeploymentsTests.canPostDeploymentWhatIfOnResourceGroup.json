@@ -1,347 +1,234 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg9877093?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg79204dd?api-version=2021-01-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.8.0-beta.1 (15.0.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "903af015-e5a9-4dcf-a3fd-29d283a61a20",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
+      "x-ms-client-request-id" : "cf301104-b857-49e5-9d5e-29d4e936b313",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "223",
       "X-Content-Type-Options" : "nosniff",
-      "x-ms-ratelimit-remaining-subscription-writes" : "1198",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1199",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-correlation-request-id" : "6cd734b8-bc8d-4308-84b3-47b9583154b8",
-      "Date" : "Thu, 26 Aug 2021 08:42:12 GMT",
+      "x-ms-correlation-request-id" : "470297ee-7132-4ba8-8d9d-894fb335bcc5",
+      "Date" : "Thu, 22 Sep 2022 06:02:33 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210826T084212Z:6cd734b8-bc8d-4308-84b3-47b9583154b8",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220922T060233Z:470297ee-7132-4ba8-8d9d-894fb335bcc5",
       "Expires" : "-1",
-      "x-ms-request-id" : "6cd734b8-bc8d-4308-84b3-47b9583154b8",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093\",\"name\":\"rg9877093\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"southcentralus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}",
+      "x-ms-request-id" : "470297ee-7132-4ba8-8d9d-894fb335bcc5",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg79204dd\",\"name\":\"rg79204dd\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"southcentralus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg9877093/providers/Microsoft.Resources/deployments/dpA9877093?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg79204dd/providers/Microsoft.Resources/deployments/dpA79204dd?api-version=2021-01-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.8.0-beta.1 (15.0.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "0821e26f-acff-43d2-9d12-0f80e6ccd616",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
+      "x-ms-client-request-id" : "0faf4ead-f45d-43b6-bffe-51bedaae0e84",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "2589",
+      "content-length" : "1354",
       "X-Content-Type-Options" : "nosniff",
-      "x-ms-ratelimit-remaining-subscription-writes" : "1196",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1198",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-correlation-request-id" : "d9e29fe0-473a-4d11-afd4-908580afceb3",
-      "Date" : "Thu, 26 Aug 2021 08:42:17 GMT",
+      "x-ms-correlation-request-id" : "38b811d5-8cf3-43fa-b401-6a3a474499d3",
+      "Date" : "Thu, 22 Sep 2022 06:02:40 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210826T084217Z:d9e29fe0-473a-4d11-afd4-908580afceb3",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220922T060241Z:38b811d5-8cf3-43fa-b401-6a3a474499d3",
       "Expires" : "-1",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg9877093/providers/Microsoft.Resources/deployments/dpA9877093/operationStatuses/08585716395521394484?api-version=2021-01-01",
-      "x-ms-request-id" : "d9e29fe0-473a-4d11-afd4-908580afceb3",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Resources/deployments/dpA9877093\",\"name\":\"dpA9877093\",\"type\":\"Microsoft.Resources/deployments\",\"properties\":{\"templateLink\":{\"uri\":\"https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.network/vnet-two-subnets/azuredeploy.json\",\"contentVersion\":\"1.0.0.0\"},\"templateHash\":\"17421496824516967129\",\"parametersLink\":{\"uri\":\"https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.network/vnet-two-subnets/azuredeploy.parameters.json\",\"contentVersion\":\"1.0.0.0\"},\"parameters\":{\"vnetName\":{\"type\":\"String\",\"value\":\"VNet1\"},\"vnetAddressPrefix\":{\"type\":\"String\",\"value\":\"10.0.0.0/16\"},\"subnet1Prefix\":{\"type\":\"String\",\"value\":\"10.0.0.0/24\"},\"subnet1Name\":{\"type\":\"String\",\"value\":\"Subnet1\"},\"subnet2Prefix\":{\"type\":\"String\",\"value\":\"10.0.1.0/24\"},\"subnet2Name\":{\"type\":\"String\",\"value\":\"Subnet2\"},\"location\":{\"type\":\"String\",\"value\":\"southcentralus\"}},\"mode\":\"Complete\",\"provisioningState\":\"Accepted\",\"timestamp\":\"2021-08-26T08:42:15.9432567Z\",\"duration\":\"PT2.6050638S\",\"correlationId\":\"d9e29fe0-473a-4d11-afd4-908580afceb3\",\"providers\":[{\"namespace\":\"Microsoft.Network\",\"resourceTypes\":[{\"resourceType\":\"virtualNetworks/subnets\",\"locations\":[null]},{\"resourceType\":\"virtualNetworks\",\"locations\":[\"southcentralus\"]}]}],\"dependencies\":[{\"dependsOn\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1\",\"resourceType\":\"Microsoft.Network/virtualNetworks\",\"resourceName\":\"VNet1\"}],\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1/subnets/Subnet1\",\"resourceType\":\"Microsoft.Network/virtualNetworks/subnets\",\"resourceName\":\"VNet1/Subnet1\"},{\"dependsOn\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1/subnets/Subnet1\",\"resourceType\":\"Microsoft.Network/virtualNetworks/subnets\",\"resourceName\":\"VNet1/Subnet1\"},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1\",\"resourceType\":\"Microsoft.Network/virtualNetworks\",\"resourceName\":\"VNet1\"}],\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1/subnets/Subnet2\",\"resourceType\":\"Microsoft.Network/virtualNetworks/subnets\",\"resourceName\":\"VNet1/Subnet2\"}]}}",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg79204dd/providers/Microsoft.Resources/deployments/dpA79204dd/operationStatuses/08585377803289330843?api-version=2021-01-01",
+      "x-ms-request-id" : "38b811d5-8cf3-43fa-b401-6a3a474499d3",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg79204dd/providers/Microsoft.Resources/deployments/dpA79204dd\",\"name\":\"dpA79204dd\",\"type\":\"Microsoft.Resources/deployments\",\"properties\":{\"templateLink\":{\"uri\":\"https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.network/vnet-two-subnets/azuredeploy.json\",\"contentVersion\":\"1.0.0.0\"},\"templateHash\":\"10806234693722113459\",\"parametersLink\":{\"uri\":\"https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.network/vnet-two-subnets/azuredeploy.parameters.json\",\"contentVersion\":\"1.0.0.0\"},\"parameters\":{\"vnetName\":{\"type\":\"String\",\"value\":\"VNet1\"},\"vnetAddressPrefix\":{\"type\":\"String\",\"value\":\"10.0.0.0/16\"},\"subnet1Prefix\":{\"type\":\"String\",\"value\":\"10.0.0.0/24\"},\"subnet1Name\":{\"type\":\"String\",\"value\":\"Subnet1\"},\"subnet2Prefix\":{\"type\":\"String\",\"value\":\"10.0.1.0/24\"},\"subnet2Name\":{\"type\":\"String\",\"value\":\"Subnet2\"},\"location\":{\"type\":\"String\",\"value\":\"southcentralus\"}},\"mode\":\"Complete\",\"provisioningState\":\"Accepted\",\"timestamp\":\"2022-09-22T06:02:39.5910098Z\",\"duration\":\"PT0.0006665S\",\"correlationId\":\"38b811d5-8cf3-43fa-b401-6a3a474499d3\",\"providers\":[{\"namespace\":\"Microsoft.Network\",\"resourceTypes\":[{\"resourceType\":\"virtualNetworks\",\"locations\":[\"southcentralus\"]}]}],\"dependencies\":[]}}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg9877093/providers/Microsoft.Resources/deployments/dpA9877093/operationStatuses/08585716395521394484?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg79204dd/providers/Microsoft.Resources/deployments/dpA79204dd/operationStatuses/08585377803289330843?api-version=2021-01-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "d2586110-b877-4c45-94a4-0fc966319a96"
-    },
-    "Response" : {
-      "content-length" : "20",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11997",
-      "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "3e58f2e6-f46e-4b88-b77d-9ffa114cb7d0",
-      "Date" : "Thu, 26 Aug 2021 08:42:47 GMT",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210826T084248Z:3e58f2e6-f46e-4b88-b77d-9ffa114cb7d0",
-      "Expires" : "-1",
-      "x-ms-request-id" : "3e58f2e6-f46e-4b88-b77d-9ffa114cb7d0",
-      "Body" : "{\"status\":\"Running\"}",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg9877093/providers/Microsoft.Resources/deployments/dpA9877093/operationStatuses/08585716395521394484?api-version=2021-01-01",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "438b331d-0207-4c6b-8050-b22d52d6de13"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
+      "x-ms-client-request-id" : "1a89e61e-9867-4f34-96e4-a1edb987e134"
     },
     "Response" : {
       "content-length" : "22",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11976",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11997",
       "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "47435745-f414-46cf-a4ad-b69ba44d3b28",
-      "Date" : "Thu, 26 Aug 2021 08:43:18 GMT",
+      "x-ms-correlation-request-id" : "f6770c2f-f425-42e5-98b8-c140b37278ac",
+      "Date" : "Thu, 22 Sep 2022 06:03:10 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210826T084318Z:47435745-f414-46cf-a4ad-b69ba44d3b28",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220922T060311Z:f6770c2f-f425-42e5-98b8-c140b37278ac",
       "Expires" : "-1",
-      "x-ms-request-id" : "47435745-f414-46cf-a4ad-b69ba44d3b28",
+      "x-ms-request-id" : "f6770c2f-f425-42e5-98b8-c140b37278ac",
       "Body" : "{\"status\":\"Succeeded\"}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg9877093/providers/Microsoft.Resources/deployments/dpA9877093?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg79204dd/providers/Microsoft.Resources/deployments/dpA79204dd?api-version=2021-01-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e35a2aba-dd46-43e1-b6e0-854ecf67b81c"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
+      "x-ms-client-request-id" : "73aa671c-e283-46b3-ba31-cc0cda2a6324"
     },
     "Response" : {
-      "content-length" : "3050",
+      "content-length" : "1512",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11965",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11997",
       "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "d1a7da55-9c1b-44c7-b9b7-70f4872c014a",
-      "Date" : "Thu, 26 Aug 2021 08:43:19 GMT",
+      "x-ms-correlation-request-id" : "72bc52fe-3c41-4497-9a59-c3dfff65278f",
+      "Date" : "Thu, 22 Sep 2022 06:03:12 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210826T084319Z:d1a7da55-9c1b-44c7-b9b7-70f4872c014a",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220922T060312Z:72bc52fe-3c41-4497-9a59-c3dfff65278f",
       "Expires" : "-1",
-      "x-ms-request-id" : "d1a7da55-9c1b-44c7-b9b7-70f4872c014a",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Resources/deployments/dpA9877093\",\"name\":\"dpA9877093\",\"type\":\"Microsoft.Resources/deployments\",\"properties\":{\"templateLink\":{\"uri\":\"https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.network/vnet-two-subnets/azuredeploy.json\",\"contentVersion\":\"1.0.0.0\"},\"templateHash\":\"17421496824516967129\",\"parametersLink\":{\"uri\":\"https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.network/vnet-two-subnets/azuredeploy.parameters.json\",\"contentVersion\":\"1.0.0.0\"},\"parameters\":{\"vnetName\":{\"type\":\"String\",\"value\":\"VNet1\"},\"vnetAddressPrefix\":{\"type\":\"String\",\"value\":\"10.0.0.0/16\"},\"subnet1Prefix\":{\"type\":\"String\",\"value\":\"10.0.0.0/24\"},\"subnet1Name\":{\"type\":\"String\",\"value\":\"Subnet1\"},\"subnet2Prefix\":{\"type\":\"String\",\"value\":\"10.0.1.0/24\"},\"subnet2Name\":{\"type\":\"String\",\"value\":\"Subnet2\"},\"location\":{\"type\":\"String\",\"value\":\"southcentralus\"}},\"mode\":\"Complete\",\"provisioningState\":\"Succeeded\",\"timestamp\":\"2021-08-26T08:42:54.1282099Z\",\"duration\":\"PT40.790017S\",\"correlationId\":\"d9e29fe0-473a-4d11-afd4-908580afceb3\",\"providers\":[{\"namespace\":\"Microsoft.Network\",\"resourceTypes\":[{\"resourceType\":\"virtualNetworks/subnets\",\"locations\":[null]},{\"resourceType\":\"virtualNetworks\",\"locations\":[\"southcentralus\"]}]}],\"dependencies\":[{\"dependsOn\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1\",\"resourceType\":\"Microsoft.Network/virtualNetworks\",\"resourceName\":\"VNet1\"}],\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1/subnets/Subnet1\",\"resourceType\":\"Microsoft.Network/virtualNetworks/subnets\",\"resourceName\":\"VNet1/Subnet1\"},{\"dependsOn\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1/subnets/Subnet1\",\"resourceType\":\"Microsoft.Network/virtualNetworks/subnets\",\"resourceName\":\"VNet1/Subnet1\"},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1\",\"resourceType\":\"Microsoft.Network/virtualNetworks\",\"resourceName\":\"VNet1\"}],\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1/subnets/Subnet2\",\"resourceType\":\"Microsoft.Network/virtualNetworks/subnets\",\"resourceName\":\"VNet1/Subnet2\"}],\"outputResources\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1\"},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1/subnets/Subnet1\"},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1/subnets/Subnet2\"}]}}",
+      "x-ms-request-id" : "72bc52fe-3c41-4497-9a59-c3dfff65278f",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg79204dd/providers/Microsoft.Resources/deployments/dpA79204dd\",\"name\":\"dpA79204dd\",\"type\":\"Microsoft.Resources/deployments\",\"properties\":{\"templateLink\":{\"uri\":\"https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.network/vnet-two-subnets/azuredeploy.json\",\"contentVersion\":\"1.0.0.0\"},\"templateHash\":\"10806234693722113459\",\"parametersLink\":{\"uri\":\"https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.network/vnet-two-subnets/azuredeploy.parameters.json\",\"contentVersion\":\"1.0.0.0\"},\"parameters\":{\"vnetName\":{\"type\":\"String\",\"value\":\"VNet1\"},\"vnetAddressPrefix\":{\"type\":\"String\",\"value\":\"10.0.0.0/16\"},\"subnet1Prefix\":{\"type\":\"String\",\"value\":\"10.0.0.0/24\"},\"subnet1Name\":{\"type\":\"String\",\"value\":\"Subnet1\"},\"subnet2Prefix\":{\"type\":\"String\",\"value\":\"10.0.1.0/24\"},\"subnet2Name\":{\"type\":\"String\",\"value\":\"Subnet2\"},\"location\":{\"type\":\"String\",\"value\":\"southcentralus\"}},\"mode\":\"Complete\",\"provisioningState\":\"Succeeded\",\"timestamp\":\"2022-09-22T06:02:59.5345976Z\",\"duration\":\"PT19.9442543S\",\"correlationId\":\"38b811d5-8cf3-43fa-b401-6a3a474499d3\",\"providers\":[{\"namespace\":\"Microsoft.Network\",\"resourceTypes\":[{\"resourceType\":\"virtualNetworks\",\"locations\":[\"southcentralus\"]}]}],\"dependencies\":[],\"outputResources\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg79204dd/providers/Microsoft.Network/virtualNetworks/VNet1\"}]}}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg9877093/providers/Microsoft.Resources/deployments/?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg79204dd/providers/Microsoft.Resources/deployments/?api-version=2021-01-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.8.0-beta.1 (15.0.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "0b15dbf6-497b-4935-9d41-d5053fbd725e",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
+      "x-ms-client-request-id" : "fd48c70e-338f-4d37-9485-23aaea5582b0",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "3062",
+      "content-length" : "1524",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11987",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11994",
       "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "f2ce38f0-d929-4d1a-9ed5-d294da09fb65",
-      "Date" : "Thu, 26 Aug 2021 08:43:19 GMT",
+      "x-ms-correlation-request-id" : "64298f39-4946-4818-82a2-aac989bbcc49",
+      "Date" : "Thu, 22 Sep 2022 06:03:11 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210826T084319Z:f2ce38f0-d929-4d1a-9ed5-d294da09fb65",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220922T060312Z:64298f39-4946-4818-82a2-aac989bbcc49",
       "Expires" : "-1",
-      "x-ms-request-id" : "f2ce38f0-d929-4d1a-9ed5-d294da09fb65",
-      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Resources/deployments/dpA9877093\",\"name\":\"dpA9877093\",\"type\":\"Microsoft.Resources/deployments\",\"properties\":{\"templateLink\":{\"uri\":\"https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.network/vnet-two-subnets/azuredeploy.json\",\"contentVersion\":\"1.0.0.0\"},\"templateHash\":\"17421496824516967129\",\"parametersLink\":{\"uri\":\"https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.network/vnet-two-subnets/azuredeploy.parameters.json\",\"contentVersion\":\"1.0.0.0\"},\"parameters\":{\"vnetName\":{\"type\":\"String\",\"value\":\"VNet1\"},\"vnetAddressPrefix\":{\"type\":\"String\",\"value\":\"10.0.0.0/16\"},\"subnet1Prefix\":{\"type\":\"String\",\"value\":\"10.0.0.0/24\"},\"subnet1Name\":{\"type\":\"String\",\"value\":\"Subnet1\"},\"subnet2Prefix\":{\"type\":\"String\",\"value\":\"10.0.1.0/24\"},\"subnet2Name\":{\"type\":\"String\",\"value\":\"Subnet2\"},\"location\":{\"type\":\"String\",\"value\":\"southcentralus\"}},\"mode\":\"Complete\",\"provisioningState\":\"Succeeded\",\"timestamp\":\"2021-08-26T08:42:54.1282099Z\",\"duration\":\"PT40.790017S\",\"correlationId\":\"d9e29fe0-473a-4d11-afd4-908580afceb3\",\"providers\":[{\"namespace\":\"Microsoft.Network\",\"resourceTypes\":[{\"resourceType\":\"virtualNetworks/subnets\",\"locations\":[null]},{\"resourceType\":\"virtualNetworks\",\"locations\":[\"southcentralus\"]}]}],\"dependencies\":[{\"dependsOn\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1\",\"resourceType\":\"Microsoft.Network/virtualNetworks\",\"resourceName\":\"VNet1\"}],\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1/subnets/Subnet1\",\"resourceType\":\"Microsoft.Network/virtualNetworks/subnets\",\"resourceName\":\"VNet1/Subnet1\"},{\"dependsOn\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1/subnets/Subnet1\",\"resourceType\":\"Microsoft.Network/virtualNetworks/subnets\",\"resourceName\":\"VNet1/Subnet1\"},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1\",\"resourceType\":\"Microsoft.Network/virtualNetworks\",\"resourceName\":\"VNet1\"}],\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1/subnets/Subnet2\",\"resourceType\":\"Microsoft.Network/virtualNetworks/subnets\",\"resourceName\":\"VNet1/Subnet2\"}],\"outputResources\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1\"},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1/subnets/Subnet1\"},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1/subnets/Subnet2\"}]}}]}",
+      "x-ms-request-id" : "64298f39-4946-4818-82a2-aac989bbcc49",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg79204dd/providers/Microsoft.Resources/deployments/dpA79204dd\",\"name\":\"dpA79204dd\",\"type\":\"Microsoft.Resources/deployments\",\"properties\":{\"templateLink\":{\"uri\":\"https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.network/vnet-two-subnets/azuredeploy.json\",\"contentVersion\":\"1.0.0.0\"},\"templateHash\":\"10806234693722113459\",\"parametersLink\":{\"uri\":\"https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.network/vnet-two-subnets/azuredeploy.parameters.json\",\"contentVersion\":\"1.0.0.0\"},\"parameters\":{\"vnetName\":{\"type\":\"String\",\"value\":\"VNet1\"},\"vnetAddressPrefix\":{\"type\":\"String\",\"value\":\"10.0.0.0/16\"},\"subnet1Prefix\":{\"type\":\"String\",\"value\":\"10.0.0.0/24\"},\"subnet1Name\":{\"type\":\"String\",\"value\":\"Subnet1\"},\"subnet2Prefix\":{\"type\":\"String\",\"value\":\"10.0.1.0/24\"},\"subnet2Name\":{\"type\":\"String\",\"value\":\"Subnet2\"},\"location\":{\"type\":\"String\",\"value\":\"southcentralus\"}},\"mode\":\"Complete\",\"provisioningState\":\"Succeeded\",\"timestamp\":\"2022-09-22T06:02:59.5345976Z\",\"duration\":\"PT19.9442543S\",\"correlationId\":\"38b811d5-8cf3-43fa-b401-6a3a474499d3\",\"providers\":[{\"namespace\":\"Microsoft.Network\",\"resourceTypes\":[{\"resourceType\":\"virtualNetworks\",\"locations\":[\"southcentralus\"]}]}],\"dependencies\":[],\"outputResources\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg79204dd/providers/Microsoft.Network/virtualNetworks/VNet1\"}]}}]}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg9877093/providers/Microsoft.Resources/deployments/dpA9877093?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg79204dd/providers/Microsoft.Resources/deployments/dpA79204dd?api-version=2021-01-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.8.0-beta.1 (15.0.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "090d9679-033c-4e5f-b4a3-4c3fcd926281",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
+      "x-ms-client-request-id" : "ab53db27-3fa9-49d6-bc14-c9257c76ce72",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "3050",
+      "content-length" : "1512",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11975",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11997",
       "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "9cd346e2-d14d-44cb-92b6-fa35b5e208f4",
-      "Date" : "Thu, 26 Aug 2021 08:43:19 GMT",
+      "x-ms-correlation-request-id" : "3d417f4e-1d16-4a04-9343-623671e23197",
+      "Date" : "Thu, 22 Sep 2022 06:03:12 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210826T084320Z:9cd346e2-d14d-44cb-92b6-fa35b5e208f4",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220922T060313Z:3d417f4e-1d16-4a04-9343-623671e23197",
       "Expires" : "-1",
-      "x-ms-request-id" : "9cd346e2-d14d-44cb-92b6-fa35b5e208f4",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Resources/deployments/dpA9877093\",\"name\":\"dpA9877093\",\"type\":\"Microsoft.Resources/deployments\",\"properties\":{\"templateLink\":{\"uri\":\"https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.network/vnet-two-subnets/azuredeploy.json\",\"contentVersion\":\"1.0.0.0\"},\"templateHash\":\"17421496824516967129\",\"parametersLink\":{\"uri\":\"https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.network/vnet-two-subnets/azuredeploy.parameters.json\",\"contentVersion\":\"1.0.0.0\"},\"parameters\":{\"vnetName\":{\"type\":\"String\",\"value\":\"VNet1\"},\"vnetAddressPrefix\":{\"type\":\"String\",\"value\":\"10.0.0.0/16\"},\"subnet1Prefix\":{\"type\":\"String\",\"value\":\"10.0.0.0/24\"},\"subnet1Name\":{\"type\":\"String\",\"value\":\"Subnet1\"},\"subnet2Prefix\":{\"type\":\"String\",\"value\":\"10.0.1.0/24\"},\"subnet2Name\":{\"type\":\"String\",\"value\":\"Subnet2\"},\"location\":{\"type\":\"String\",\"value\":\"southcentralus\"}},\"mode\":\"Complete\",\"provisioningState\":\"Succeeded\",\"timestamp\":\"2021-08-26T08:42:54.1282099Z\",\"duration\":\"PT40.790017S\",\"correlationId\":\"d9e29fe0-473a-4d11-afd4-908580afceb3\",\"providers\":[{\"namespace\":\"Microsoft.Network\",\"resourceTypes\":[{\"resourceType\":\"virtualNetworks/subnets\",\"locations\":[null]},{\"resourceType\":\"virtualNetworks\",\"locations\":[\"southcentralus\"]}]}],\"dependencies\":[{\"dependsOn\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1\",\"resourceType\":\"Microsoft.Network/virtualNetworks\",\"resourceName\":\"VNet1\"}],\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1/subnets/Subnet1\",\"resourceType\":\"Microsoft.Network/virtualNetworks/subnets\",\"resourceName\":\"VNet1/Subnet1\"},{\"dependsOn\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1/subnets/Subnet1\",\"resourceType\":\"Microsoft.Network/virtualNetworks/subnets\",\"resourceName\":\"VNet1/Subnet1\"},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1\",\"resourceType\":\"Microsoft.Network/virtualNetworks\",\"resourceName\":\"VNet1\"}],\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1/subnets/Subnet2\",\"resourceType\":\"Microsoft.Network/virtualNetworks/subnets\",\"resourceName\":\"VNet1/Subnet2\"}],\"outputResources\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1\"},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1/subnets/Subnet1\"},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1/subnets/Subnet2\"}]}}",
+      "x-ms-request-id" : "3d417f4e-1d16-4a04-9343-623671e23197",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg79204dd/providers/Microsoft.Resources/deployments/dpA79204dd\",\"name\":\"dpA79204dd\",\"type\":\"Microsoft.Resources/deployments\",\"properties\":{\"templateLink\":{\"uri\":\"https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.network/vnet-two-subnets/azuredeploy.json\",\"contentVersion\":\"1.0.0.0\"},\"templateHash\":\"10806234693722113459\",\"parametersLink\":{\"uri\":\"https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.network/vnet-two-subnets/azuredeploy.parameters.json\",\"contentVersion\":\"1.0.0.0\"},\"parameters\":{\"vnetName\":{\"type\":\"String\",\"value\":\"VNet1\"},\"vnetAddressPrefix\":{\"type\":\"String\",\"value\":\"10.0.0.0/16\"},\"subnet1Prefix\":{\"type\":\"String\",\"value\":\"10.0.0.0/24\"},\"subnet1Name\":{\"type\":\"String\",\"value\":\"Subnet1\"},\"subnet2Prefix\":{\"type\":\"String\",\"value\":\"10.0.1.0/24\"},\"subnet2Name\":{\"type\":\"String\",\"value\":\"Subnet2\"},\"location\":{\"type\":\"String\",\"value\":\"southcentralus\"}},\"mode\":\"Complete\",\"provisioningState\":\"Succeeded\",\"timestamp\":\"2022-09-22T06:02:59.5345976Z\",\"duration\":\"PT19.9442543S\",\"correlationId\":\"38b811d5-8cf3-43fa-b401-6a3a474499d3\",\"providers\":[{\"namespace\":\"Microsoft.Network\",\"resourceTypes\":[{\"resourceType\":\"virtualNetworks\",\"locations\":[\"southcentralus\"]}]}],\"dependencies\":[],\"outputResources\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg79204dd/providers/Microsoft.Network/virtualNetworks/VNet1\"}]}}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg9877093/providers/Microsoft.Resources/deployments/dpA9877093/whatIf?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg79204dd/providers/Microsoft.Resources/deployments/dpA79204dd/whatIf?api-version=2021-01-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.8.0-beta.1 (15.0.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "af07e152-df5d-4b90-9198-8357ae04f110",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
+      "x-ms-client-request-id" : "83dc94c6-09bf-422e-8557-04851e7b0468",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "0",
       "X-Content-Type-Options" : "nosniff",
-      "x-ms-ratelimit-remaining-subscription-writes" : "1197",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1198",
       "Pragma" : "no-cache",
       "StatusCode" : "202",
-      "x-ms-correlation-request-id" : "3f7700d3-6d1c-4d72-9522-f0b99210758a",
-      "Date" : "Thu, 26 Aug 2021 08:43:21 GMT",
+      "x-ms-correlation-request-id" : "15246a9a-43f6-46f4-b0fb-972696d16399",
+      "Date" : "Thu, 22 Sep 2022 06:03:14 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
       "Retry-After" : "0",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210826T084321Z:3f7700d3-6d1c-4d72-9522-f0b99210758a",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220922T060315Z:15246a9a-43f6-46f4-b0fb-972696d16399",
       "Expires" : "-1",
-      "x-ms-request-id" : "3f7700d3-6d1c-4d72-9522-f0b99210758a",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IkRlcGxveW1lbnRXaGF0SWZKb2ItUkc5ODc3MDkzLURQQTk4NzcwOTMtM0Y3NzAwRDM6MkQ2RDFDOjJENEQ3MjoyRDk1MjI6MkRGMEI5OTIxMDc1OEEiLCJqb2JMb2NhdGlvbiI6InNvdXRoY2VudHJhbHVzIn0?api-version=2021-01-01"
+      "x-ms-request-id" : "15246a9a-43f6-46f4-b0fb-972696d16399",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IkRlcGxveW1lbnRXaGF0SWZKb2ItUkc3OTIwNERELURQQTc5MjA0REQtMTUyNDZBOUE6MkQ0M0Y2OjJENDZGNDoyREIwRkI6MkQ5NzI2OTZEMTYzOTkiLCJqb2JMb2NhdGlvbiI6InNvdXRoY2VudHJhbHVzIn0?api-version=2021-01-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IkRlcGxveW1lbnRXaGF0SWZKb2ItUkc5ODc3MDkzLURQQTk4NzcwOTMtM0Y3NzAwRDM6MkQ2RDFDOjJENEQ3MjoyRDk1MjI6MkRGMEI5OTIxMDc1OEEiLCJqb2JMb2NhdGlvbiI6InNvdXRoY2VudHJhbHVzIn0?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IkRlcGxveW1lbnRXaGF0SWZKb2ItUkc3OTIwNERELURQQTc5MjA0REQtMTUyNDZBOUE6MkQ0M0Y2OjJENDZGNDoyREIwRkI6MkQ5NzI2OTZEMTYzOTkiLCJqb2JMb2NhdGlvbiI6InNvdXRoY2VudHJhbHVzIn0?api-version=2021-01-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c7fb5664-a0f1-4a14-a1f8-af099c5a3f67"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
+      "x-ms-client-request-id" : "a4f9a90e-da57-4d82-996c-4529d7991865"
     },
     "Response" : {
-      "content-length" : "4227",
+      "content-length" : "2047",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11973",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11998",
       "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "35fded40-3ace-41cb-b829-0775eaf69276",
-      "Date" : "Thu, 26 Aug 2021 08:43:37 GMT",
+      "x-ms-correlation-request-id" : "24ca2b8b-a25f-44f2-976f-566f9b92167a",
+      "Date" : "Thu, 22 Sep 2022 06:03:31 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210826T084337Z:35fded40-3ace-41cb-b829-0775eaf69276",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220922T060331Z:24ca2b8b-a25f-44f2-976f-566f9b92167a",
       "Expires" : "-1",
-      "x-ms-request-id" : "35fded40-3ace-41cb-b829-0775eaf69276",
-      "Body" : "{\"status\":\"Succeeded\",\"properties\":{\"correlationId\":\"3f7700d3-6d1c-4d72-9522-f0b99210758a\",\"changes\":[{\"resourceId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1\",\"changeType\":\"Modify\",\"before\":{\"apiVersion\":\"2020-06-01\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1\",\"location\":\"southcentralus\",\"name\":\"VNet1\",\"properties\":{\"addressSpace\":{\"addressPrefixes\":[\"10.0.0.0/16\"]},\"enableDdosProtection\":false,\"subnets\":[{\"name\":\"Subnet1\",\"properties\":{\"addressPrefix\":\"10.0.0.0/24\",\"privateEndpointNetworkPolicies\":\"Enabled\",\"privateLinkServiceNetworkPolicies\":\"Enabled\"}},{\"name\":\"Subnet2\",\"properties\":{\"addressPrefix\":\"10.0.1.0/24\",\"privateEndpointNetworkPolicies\":\"Enabled\",\"privateLinkServiceNetworkPolicies\":\"Enabled\"}}]},\"type\":\"Microsoft.Network/virtualNetworks\"},\"after\":{\"apiVersion\":\"2020-06-01\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1\",\"location\":\"southcentralus\",\"name\":\"VNet1\",\"properties\":{\"addressSpace\":{\"addressPrefixes\":[\"10.0.0.0/16\"]},\"enableDdosProtection\":false,\"subnets\":[{\"name\":\"Subnet1\",\"properties\":{\"addressPrefix\":\"10.0.0.0/24\"}},{\"name\":\"Subnet2\",\"properties\":{\"addressPrefix\":\"10.0.1.0/24\"}}]},\"type\":\"Microsoft.Network/virtualNetworks\"},\"delta\":[{\"path\":\"properties.subnets\",\"propertyChangeType\":\"Array\",\"children\":[{\"path\":\"0\",\"propertyChangeType\":\"Modify\",\"children\":[{\"path\":\"properties.privateEndpointNetworkPolicies\",\"propertyChangeType\":\"Delete\",\"before\":\"Enabled\"},{\"path\":\"properties.privateLinkServiceNetworkPolicies\",\"propertyChangeType\":\"Delete\",\"before\":\"Enabled\"}]},{\"path\":\"1\",\"propertyChangeType\":\"Modify\",\"children\":[{\"path\":\"properties.privateEndpointNetworkPolicies\",\"propertyChangeType\":\"Delete\",\"before\":\"Enabled\"},{\"path\":\"properties.privateLinkServiceNetworkPolicies\",\"propertyChangeType\":\"Delete\",\"before\":\"Enabled\"}]}]},{\"path\":\"properties.subnets[0].type\",\"propertyChangeType\":\"NoEffect\",\"after\":\"Microsoft.Network/virtualNetworks/subnets\"},{\"path\":\"properties.subnets[1].type\",\"propertyChangeType\":\"NoEffect\",\"after\":\"Microsoft.Network/virtualNetworks/subnets\"}]},{\"resourceId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1/subnets/Subnet1\",\"changeType\":\"NoChange\",\"before\":{\"apiVersion\":\"2020-06-01\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1/subnets/Subnet1\",\"name\":\"Subnet1\",\"properties\":{\"addressPrefix\":\"10.0.0.0/24\",\"privateEndpointNetworkPolicies\":\"Enabled\",\"privateLinkServiceNetworkPolicies\":\"Enabled\"},\"type\":\"Microsoft.Network/virtualNetworks/subnets\"},\"after\":{\"apiVersion\":\"2020-06-01\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1/subnets/Subnet1\",\"name\":\"Subnet1\",\"properties\":{\"addressPrefix\":\"10.0.0.0/24\",\"privateEndpointNetworkPolicies\":\"Enabled\",\"privateLinkServiceNetworkPolicies\":\"Enabled\"},\"type\":\"Microsoft.Network/virtualNetworks/subnets\"},\"delta\":[]},{\"resourceId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1/subnets/Subnet2\",\"changeType\":\"NoChange\",\"before\":{\"apiVersion\":\"2020-06-01\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1/subnets/Subnet2\",\"name\":\"Subnet2\",\"properties\":{\"addressPrefix\":\"10.0.1.0/24\",\"privateEndpointNetworkPolicies\":\"Enabled\",\"privateLinkServiceNetworkPolicies\":\"Enabled\"},\"type\":\"Microsoft.Network/virtualNetworks/subnets\"},\"after\":{\"apiVersion\":\"2020-06-01\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg9877093/providers/Microsoft.Network/virtualNetworks/VNet1/subnets/Subnet2\",\"name\":\"Subnet2\",\"properties\":{\"addressPrefix\":\"10.0.1.0/24\",\"privateEndpointNetworkPolicies\":\"Enabled\",\"privateLinkServiceNetworkPolicies\":\"Enabled\"},\"type\":\"Microsoft.Network/virtualNetworks/subnets\"},\"delta\":[]}]}}",
+      "x-ms-request-id" : "24ca2b8b-a25f-44f2-976f-566f9b92167a",
+      "Body" : "{\"status\":\"Succeeded\",\"properties\":{\"correlationId\":\"15246a9a-43f6-46f4-b0fb-972696d16399\",\"changes\":[{\"resourceId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg79204dd/providers/Microsoft.Network/virtualNetworks/VNet1\",\"changeType\":\"Modify\",\"before\":{\"apiVersion\":\"2021-08-01\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg79204dd/providers/Microsoft.Network/virtualNetworks/VNet1\",\"location\":\"southcentralus\",\"name\":\"VNet1\",\"properties\":{\"addressSpace\":{\"addressPrefixes\":[\"10.0.0.0/16\"]},\"enableDdosProtection\":false,\"subnets\":[{\"name\":\"Subnet1\",\"properties\":{\"addressPrefix\":\"10.0.0.0/24\",\"privateEndpointNetworkPolicies\":\"Disabled\",\"privateLinkServiceNetworkPolicies\":\"Enabled\"}},{\"name\":\"Subnet2\",\"properties\":{\"addressPrefix\":\"10.0.1.0/24\",\"privateEndpointNetworkPolicies\":\"Disabled\",\"privateLinkServiceNetworkPolicies\":\"Enabled\"}}]},\"type\":\"Microsoft.Network/virtualNetworks\"},\"after\":{\"apiVersion\":\"2021-08-01\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg79204dd/providers/Microsoft.Network/virtualNetworks/VNet1\",\"location\":\"southcentralus\",\"name\":\"VNet1\",\"properties\":{\"addressSpace\":{\"addressPrefixes\":[\"10.0.0.0/16\"]},\"enableDdosProtection\":false,\"subnets\":[{\"name\":\"Subnet1\",\"properties\":{\"addressPrefix\":\"10.0.0.0/24\",\"privateEndpointNetworkPolicies\":\"Enabled\",\"privateLinkServiceNetworkPolicies\":\"Enabled\"}},{\"name\":\"Subnet2\",\"properties\":{\"addressPrefix\":\"10.0.1.0/24\",\"privateEndpointNetworkPolicies\":\"Enabled\",\"privateLinkServiceNetworkPolicies\":\"Enabled\"}}]},\"type\":\"Microsoft.Network/virtualNetworks\"},\"delta\":[{\"path\":\"properties.subnets\",\"propertyChangeType\":\"Array\",\"children\":[{\"path\":\"0\",\"propertyChangeType\":\"Modify\",\"children\":[{\"path\":\"properties.privateEndpointNetworkPolicies\",\"propertyChangeType\":\"Modify\",\"before\":\"Disabled\",\"after\":\"Enabled\"}]},{\"path\":\"1\",\"propertyChangeType\":\"Modify\",\"children\":[{\"path\":\"properties.privateEndpointNetworkPolicies\",\"propertyChangeType\":\"Modify\",\"before\":\"Disabled\",\"after\":\"Enabled\"}]}]}]}]}}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg9877093/providers/Microsoft.Network//virtualnetworks/VNet1?api-version=2020-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg79204dd?api-version=2021-01-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.8.0-beta.1 (15.0.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "9b537f53-d2ce-4b15-a0fd-0ed3bf769412",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
+      "x-ms-client-request-id" : "5c2e5376-9753-43f0-ba6c-6c1152190208",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "0",
-      "x-ms-ratelimit-remaining-subscription-deletes" : "14995",
-      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "Azure-AsyncNotification" : "Enabled",
-      "StatusCode" : "202",
-      "x-ms-correlation-request-id" : "3bbea460-2e2a-4104-a6bc-d88172588004",
-      "Date" : "Thu, 26 Aug 2021 08:43:38 GMT",
-      "x-ms-arm-service-request-id" : "02bc2185-fb2a-4450-8d8d-eec6f1970930",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "Retry-After" : "0",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210826T084339Z:3bbea460-2e2a-4104-a6bc-d88172588004",
-      "Expires" : "-1",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/0756fffb-6044-42a6-8ac7-f7f5ec8e024b?api-version=2020-11-01",
-      "x-ms-request-id" : "0756fffb-6044-42a6-8ac7-f7f5ec8e024b",
-      "x-ms-client-request-id" : "9b537f53-d2ce-4b15-a0fd-0ed3bf769412",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operationResults/0756fffb-6044-42a6-8ac7-f7f5ec8e024b?api-version=2020-11-01"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/0756fffb-6044-42a6-8ac7-f7f5ec8e024b?api-version=2020-11-01",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "63821fce-93c5-4e35-9b4d-f072350cd344"
-    },
-    "Response" : {
-      "content-length" : "29",
-      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11963",
-      "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "643da01c-dfa5-496a-b9c4-9cb4a694deb5",
-      "Date" : "Thu, 26 Aug 2021 08:43:50 GMT",
-      "x-ms-arm-service-request-id" : "c008daef-6e14-4fed-9114-525d5bfc5ef7",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210826T084350Z:643da01c-dfa5-496a-b9c4-9cb4a694deb5",
-      "Expires" : "-1",
-      "x-ms-request-id" : "837b88b3-149f-4a16-bc0f-3fa17b3aa2f0",
-      "Body" : "{\r\n  \"status\": \"Succeeded\"\r\n}",
-      "x-ms-client-request-id" : "63821fce-93c5-4e35-9b4d-f072350cd344",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operationResults/0756fffb-6044-42a6-8ac7-f7f5ec8e024b?api-version=2020-11-01",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "0b31841e-d6fb-400b-8a4b-56e2974b8408"
-    },
-    "Response" : {
-      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "Azure-AsyncNotification" : "Enabled",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11984",
-      "StatusCode" : "204",
-      "x-ms-correlation-request-id" : "3bbea460-2e2a-4104-a6bc-d88172588004",
-      "Date" : "Thu, 26 Aug 2021 08:43:50 GMT",
-      "x-ms-arm-service-request-id" : "02bc2185-fb2a-4450-8d8d-eec6f1970930",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210826T084351Z:8eb19a5e-2bc0-44ac-b5f9-7e984c6a612f",
-      "Expires" : "-1",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operations/0756fffb-6044-42a6-8ac7-f7f5ec8e024b?api-version=2020-11-01",
-      "x-ms-request-id" : "0756fffb-6044-42a6-8ac7-f7f5ec8e024b",
-      "Body" : "",
-      "x-ms-client-request-id" : "9b537f53-d2ce-4b15-a0fd-0ed3bf769412",
-      "Content-Type" : "application/json; charset=utf-8",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/southcentralus/operationResults/0756fffb-6044-42a6-8ac7-f7f5ec8e024b?api-version=2020-11-01"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg9877093?api-version=2021-01-01",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.8.0-beta.1 (15.0.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "bfe2126a-0532-4d0f-a8c0-1cd5b9939985",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "0",
-      "x-ms-ratelimit-remaining-subscription-deletes" : "14996",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14999",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "StatusCode" : "202",
-      "x-ms-correlation-request-id" : "0c9df886-02da-4e85-8899-179eed3183f6",
-      "Date" : "Thu, 26 Aug 2021 08:43:52 GMT",
+      "x-ms-correlation-request-id" : "2e96e5b2-321b-4f70-99b5-72c1fb893411",
+      "Date" : "Thu, 22 Sep 2022 06:03:33 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
       "Retry-After" : "0",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210826T084353Z:0c9df886-02da-4e85-8899-179eed3183f6",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220922T060334Z:2e96e5b2-321b-4f70-99b5-72c1fb893411",
       "Expires" : "-1",
-      "x-ms-request-id" : "0c9df886-02da-4e85-8899-179eed3183f6",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzk4NzcwOTMtU09VVEhDRU5UUkFMVVMiLCJqb2JMb2NhdGlvbiI6InNvdXRoY2VudHJhbHVzIn0?api-version=2021-01-01"
+      "x-ms-request-id" : "2e96e5b2-321b-4f70-99b5-72c1fb893411",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzc5MjA0REQtU09VVEhDRU5UUkFMVVMiLCJqb2JMb2NhdGlvbiI6InNvdXRoY2VudHJhbHVzIn0?api-version=2021-01-01"
     },
     "Exception" : null
   } ],
-  "variables" : [ "9877093" ]
+  "variables" : [ "79204dd" ]
 }

@@ -103,7 +103,7 @@ public class DeploymentsTests extends ResourceManagementTest {
         Assertions.assertNotNull(resourceGroup.exportTemplate(ResourceGroupExportTemplateOptions.INCLUDE_BOTH));
         // Deployment operations
         PagedIterable<DeploymentOperation> operations = deployment.deploymentOperations().list();
-        Assertions.assertEquals(5, TestUtilities.getSize(operations));
+        Assertions.assertEquals(3, TestUtilities.getSize(operations));
         DeploymentOperation op = deployment.deploymentOperations().getById(operations.iterator().next().operationId());
         Assertions.assertNotNull(op);
         resourceClient.genericResources().delete(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", NETWORK_API_VERSION);
@@ -143,7 +143,7 @@ public class DeploymentsTests extends ResourceManagementTest {
             .whatIf();
 
         Assertions.assertEquals("Succeeded", result.status());
-        Assertions.assertEquals(3, result.changes().size());
+        Assertions.assertEquals(1, result.changes().size());
 
         resourceClient.genericResources().delete(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", NETWORK_API_VERSION);
     }
