@@ -104,7 +104,7 @@ public class ChangeFeedProcessorBuilder {
     }
 
     /**
-     * Sets a consumer function which will be called to process changes for full fidelity
+     * Sets a consumer function which will be called to process changes for AllVersionsAndDeletes
      *
      * <pre>
      * {@code
@@ -112,7 +112,7 @@ public class ChangeFeedProcessorBuilder {
      *             .hostName(hostName)
      *             .feedContainer(feedContainer)
      *             .leaseContainer(leaseContainer)
-     *             .changeFeedMode(ChangeFeedMode.FULL_FIDELITY)
+     *             .changeFeedMode(ChangeFeedMode.AllVersionsAndDeletes)
      *             .handleAllVersionsAndDeletesChanges(docs -> {
      *                 for (ChangeFeedProcessorItem item : docs) {
      *                     // Implementation for handling and processing of each ChangeFeedProcessorItem item goes here
@@ -212,13 +212,13 @@ public class ChangeFeedProcessorBuilder {
         }
         if ((partitionKeyBasedLeaseConsumer == null && epkRangeBasedLeaseConsumer == null)
             || (partitionKeyBasedLeaseConsumer != null && epkRangeBasedLeaseConsumer != null)) {
-            throw new IllegalArgumentException("expecting either incremental or full fidelity consumer for handling change feed processor changes");
+            throw new IllegalArgumentException("expecting either LatestVersion or AllVersionsAndDeletes consumer for handling change feed processor changes");
         }
         if (ChangeFeedMode.LATEST_VERSION.equals(changeFeedMode) && partitionKeyBasedLeaseConsumer == null) {
-            throw new IllegalArgumentException("consumer for handling change feed processor incremental changes cannot be null when using incremental mode");
+            throw new IllegalArgumentException("consumer for handling change feed processor LatestVersion changes cannot be null when using LatestVersion mode");
         }
         if (ChangeFeedMode.ALL_VERSIONS_AND_DELETES.equals(changeFeedMode) && epkRangeBasedLeaseConsumer == null) {
-            throw new IllegalArgumentException("consumer for handling change feed processor full fidelity changes cannot be null when using full fidelity mode");
+            throw new IllegalArgumentException("consumer for handling change feed processor AllVersionsAndDeletes changes cannot be null when using AllVersionsAndDeletes mode");
         }
         validateChangeFeedProcessorOptions();
     }
@@ -232,14 +232,14 @@ public class ChangeFeedProcessorBuilder {
             //  force a lot of resets and lead to a poor overall performance of ChangeFeedProcessor.
             throw new IllegalArgumentException("changeFeedProcessorOptions: expecting leaseRenewInterval less than leaseExpirationInterval");
         }
-        //  Some extra checks for full fidelity mode
+        //  Some extra checks for all versions and deletes mode
         if (ChangeFeedMode.ALL_VERSIONS_AND_DELETES.equals(changeFeedMode)) {
             if (this.changeFeedProcessorOptions.getStartTime() != null) {
-                throw new IllegalStateException("changeFeedProcessorOptions: Full fidelity change feed is not supported for startTime option.");
+                throw new IllegalStateException("changeFeedProcessorOptions: AllVersionsAndDeletes change feed mode is not supported for startTime option.");
             }
 
             if (this.changeFeedProcessorOptions.isStartFromBeginning()) {
-                throw new IllegalStateException("changeFeedProcessorOptions: Full fidelity change feed is not supported for startFromBeginning option.");
+                throw new IllegalStateException("changeFeedProcessorOptions: AllVersionsAndDeletes change feed mode is not supported for startFromBeginning option.");
             }
         }
     }

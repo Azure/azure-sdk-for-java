@@ -372,7 +372,7 @@ public final class CosmosChangeFeedRequestOptions {
      * container. {@link ChangeFeedPolicy}
      * <p>
      * Intermediary snapshots of changes as well as deleted documents would be
-     * available for processing for 8 minutes before they vanish.
+     * available for processing for retention window before they vanish.
      * When enabling {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES} mode you will only be able to process change feed events
      * within the retention window configured in the change feed policy of the container.
      * If you attempt to process a change feed after more than the retention window

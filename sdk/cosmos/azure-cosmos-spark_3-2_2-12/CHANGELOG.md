@@ -3,6 +3,7 @@
 ### 4.14.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added new config options for Change Feed Modes, Incremental as `LatestVersion` and Full Fidelity as `AllVersionsAndDeletes` changes - See [PR 30399](https://github.com/Azure/azure-sdk-for-java/pull/30399)
 
 #### Breaking Changes
 

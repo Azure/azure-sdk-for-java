@@ -82,7 +82,7 @@ public final class ChangeFeedPolicy {
         }
 
         ChangeFeedPolicy policy = new ChangeFeedPolicy();
-        policy.setAllVersionsAndDeletesRetentionDurationInMinutes((int)(retentionDuration.getSeconds() / 60));
+        policy.setAllVersionsAndDeletesRetentionDurationInMinutes((int)retentionDuration.toMinutes());
         return policy;
     }
 
@@ -108,7 +108,7 @@ public final class ChangeFeedPolicy {
         }
 
         ChangeFeedPolicy policy = new ChangeFeedPolicy();
-        policy.setAllVersionsAndDeletesRetentionDurationInMinutes((int)(retentionDuration.getSeconds() / 60));
+        policy.setAllVersionsAndDeletesRetentionDurationInMinutes((int)retentionDuration.toMinutes());
         return policy;
     }
 
@@ -141,7 +141,7 @@ public final class ChangeFeedPolicy {
      *
      * @return ChangeFeedPolicy for default/{@link ChangeFeedMode#LATEST_VERSION} change feed without {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES}.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0,
+    @Beta(value = Beta.SinceVersion.V4_37_0,
         warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static ChangeFeedPolicy createLatestVersionPolicy() {
 

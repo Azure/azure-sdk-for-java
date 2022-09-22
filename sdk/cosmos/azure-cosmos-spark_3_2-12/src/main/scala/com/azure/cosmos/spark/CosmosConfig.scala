@@ -1104,10 +1104,8 @@ private case class CosmosChangeFeedConfig
     }
 
     this.changeFeedMode match {
-      case ChangeFeedModes.Incremental => options
-      case ChangeFeedModes.LatestVersion => options
-      case ChangeFeedModes.FullFidelity => options.allVersionsAndDeletes()
-      case ChangeFeedModes.AllVersionsAndDeletes => options.allVersionsAndDeletes()
+      case ChangeFeedModes.Incremental | ChangeFeedModes.LatestVersion => options
+      case ChangeFeedModes.FullFidelity | ChangeFeedModes.AllVersionsAndDeletes => options.allVersionsAndDeletes()
     }
   }
 
