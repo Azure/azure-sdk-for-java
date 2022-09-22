@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.aad.configuration;
 
 import com.azure.spring.cloud.autoconfigure.aad.AadWebSecurityConfigurerAdapter;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ClientRestOperationsConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestOperationsConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.WebApplicationCondition;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapp.AadOAuth2UserService;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
@@ -24,14 +24,14 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.web.client.RestOperations;
 
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ClientRestOperationsConfiguration.AAD_OAUTH2_CLIENT_REST_OPERATIONS_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestOperationsConfiguration.AAD_REST_OPERATIONS_BEAN_NAME;
 
 /**
  * Configure the necessary beans used for Azure AD authentication and authorization.
  */
 @Configuration(proxyBeanMethods = false)
 @Conditional(WebApplicationCondition.class)
-@Import(AadOauth2ClientRestOperationsConfiguration.class)
+@Import(AadRestOperationsConfiguration.class)
 public class AadWebApplicationConfiguration {
 
     private final RestOperations operations;
@@ -43,7 +43,7 @@ public class AadWebApplicationConfiguration {
      *
      */
     public AadWebApplicationConfiguration(
-            @Qualifier(AAD_OAUTH2_CLIENT_REST_OPERATIONS_BEAN_NAME) RestOperations operations) {
+            @Qualifier(AAD_REST_OPERATIONS_BEAN_NAME) RestOperations operations) {
         this.operations = operations;
     }
 

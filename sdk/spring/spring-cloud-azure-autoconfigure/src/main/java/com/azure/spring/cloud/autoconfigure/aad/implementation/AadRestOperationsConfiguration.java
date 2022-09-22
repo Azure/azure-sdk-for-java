@@ -22,30 +22,33 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 /**
- * Configure RestOperation bean used for accessing Azure AD and Azure AD B2C
+ * Configure RestOperation bean used for accessing Azure AD (or Azure AD B2C) and Graph
  */
 @Configuration(proxyBeanMethods = false)
-public class AadOauth2ClientRestOperationsConfiguration {
+public class AadRestOperationsConfiguration {
 
     /**
-     * Bean name of RestOperation bean. The bean is used to retrieve access token.
-     *
-     * @see AadOauth2ClientRestOperationsConfiguration#aadOAuth2ClientRestOperation(RestTemplateBuilder)
+     * Name of RestOperation bean. The bean is used to access Azure AD (or Azure AD B2C) and Graph.
      */
-    public static final String AAD_OAUTH2_CLIENT_REST_OPERATIONS_BEAN_NAME = "aadOAuth2ClientRestOperations";
+    public static final String AAD_REST_OPERATIONS_BEAN_NAME = "aadRestOperations";
+
+    /**
+     * Name of RestOperation bean. The bean is used to get access token from Azure AD (or Azure AD B2C).
+     */
+    public static final String AAD_OAUTH2_ACCESS_TOKEN_RESPONSE_CLIENT_REST_OPERATIONS_BEAN_NAME =
+            "AADOAuth2AccessTokenResponseClientRestOperations";
 
     /**
      * Declare {@link RestOperations} bean used to retrieve access token from Azure AD(or Azure AD B2C) endpoints like:
-     *
+     * <a href="https://login.microsoftonline.com/common/oauth2/v2.0/token">
+     * https://login.microsoftonline.com/common/oauth2/v2.0/token</a>
+     * It's mainly used in kinds of {@link OAuth2AccessTokenResponseClient} bean(like
+     * {@link DefaultAuthorizationCodeTokenResponseClient}). {@link OAuth2AccessTokenResponseClient}'s
+     * {@link RestOperations} requires 1 specific handler and 2 specific converters:
      * <ul>
-     *     <li> <a href="https://login.microsoftonline.com/common/oauth2/v2.0/token">
-     *         https://login.microsoftonline.com/common/oauth2/v2.0/token</a>
-     * </ul>
-     * It's mainly used in these places:
-     * <ul>
-     *     <li> In kinds of {@link OAuth2AccessTokenResponseClient} bean(like
-     *     {@link DefaultAuthorizationCodeTokenResponseClient}) declared in {@link AadOAuth2ClientConfiguration} and
-     *     {@link AadB2cOAuth2ClientConfiguration}.
+     *      <li> {@link OAuth2ErrorResponseErrorHandler} </li>
+     *      <li> {@link FormHttpMessageConverter} </li>
+     *      <li> {@link OAuth2AccessTokenResponseHttpMessageConverter} </li>
      * </ul>
      *
      * @param builder The RestTemplateBuilder bean, which can be provided in {@link RestTemplateAutoConfiguration}
@@ -54,15 +57,24 @@ public class AadOauth2ClientRestOperationsConfiguration {
      * @see AadOAuth2ClientConfiguration
      * @see AadB2cOAuth2ClientConfiguration
      */
-    @Bean(AAD_OAUTH2_CLIENT_REST_OPERATIONS_BEAN_NAME)
-    @ConditionalOnMissingBean(name = AAD_OAUTH2_CLIENT_REST_OPERATIONS_BEAN_NAME)
-    public RestOperations aadOAuth2ClientRestOperation(RestTemplateBuilder builder) {
+    @Bean(AAD_OAUTH2_ACCESS_TOKEN_RESPONSE_CLIENT_REST_OPERATIONS_BEAN_NAME)
+    @ConditionalOnMissingBean(name = AAD_OAUTH2_ACCESS_TOKEN_RESPONSE_CLIENT_REST_OPERATIONS_BEAN_NAME)
+    public RestOperations aadOauth2AccessTokenResponseClientRestOperationsBean(RestTemplateBuilder builder) {
         RestTemplate restTemplate = builder.build();
         restTemplate.setErrorHandler(new OAuth2ErrorResponseErrorHandler());
         List<HttpMessageConverter<?>> converters = restTemplate.getMessageConverters();
         converters.add(new FormHttpMessageConverter());
         converters.add(new OAuth2AccessTokenResponseHttpMessageConverter());
         return restTemplate;
+    }
+
+    /**
+     * Declare {@link RestOperations} bean used to access Azure AD(or Azure AD B2C) and Graph.
+     */
+    @Bean(AAD_REST_OPERATIONS_BEAN_NAME)
+    @ConditionalOnMissingBean(name = AAD_REST_OPERATIONS_BEAN_NAME)
+    public RestOperations aadRestOperations(RestTemplateBuilder builder) {
+        return builder.build();
     }
 
 }

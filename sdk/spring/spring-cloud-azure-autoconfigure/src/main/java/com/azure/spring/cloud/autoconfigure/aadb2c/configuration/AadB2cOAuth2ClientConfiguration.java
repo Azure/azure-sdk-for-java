@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aadb2c.configuration;
 
-import com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ClientRestOperationsConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestOperationsConfiguration;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cClientRegistrationRepository;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cConditions;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cUrl;
@@ -41,7 +41,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ClientRestOperationsConfiguration.AAD_OAUTH2_CLIENT_REST_OPERATIONS_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestOperationsConfiguration.AAD_OAUTH2_ACCESS_TOKEN_RESPONSE_CLIENT_REST_OPERATIONS_BEAN_NAME;
 
 /**
  * Configuration for AAD B2C OAuth2 client support, when depends on the Spring OAuth2 Client module.
@@ -49,7 +49,7 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2C
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(value = "spring.cloud.azure.active-directory.b2c.enabled", havingValue = "true")
 @Conditional(AadB2cConditions.ClientRegistrationCondition.class)
-@Import({AadB2cPropertiesConfiguration.class, AadOauth2ClientRestOperationsConfiguration.class})
+@Import({AadB2cPropertiesConfiguration.class, AadRestOperationsConfiguration.class})
 @ConditionalOnClass({ OAuth2LoginAuthenticationFilter.class })
 public class AadB2cOAuth2ClientConfiguration {
 
@@ -65,7 +65,7 @@ public class AadB2cOAuth2ClientConfiguration {
      */
     public AadB2cOAuth2ClientConfiguration(
             AadB2cProperties properties,
-            @Qualifier(AAD_OAUTH2_CLIENT_REST_OPERATIONS_BEAN_NAME) RestOperations restOperations) {
+            @Qualifier(AAD_OAUTH2_ACCESS_TOKEN_RESPONSE_CLIENT_REST_OPERATIONS_BEAN_NAME) RestOperations restOperations) {
         this.properties = properties;
         this.restOperations = restOperations;
     }

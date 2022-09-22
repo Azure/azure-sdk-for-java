@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.aad.configuration;
 
 import com.azure.spring.cloud.autoconfigure.aad.AadClientRegistrationRepository;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ClientRestOperationsConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestOperationsConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.ClientCertificatePropertiesCondition;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.ClientRegistrationCondition;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.AadJwtClientAuthenticationParametersConverter;
@@ -40,7 +40,7 @@ import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedCli
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.web.client.RestOperations;
 
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ClientRestOperationsConfiguration.AAD_OAUTH2_CLIENT_REST_OPERATIONS_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestOperationsConfiguration.AAD_OAUTH2_ACCESS_TOKEN_RESPONSE_CLIENT_REST_OPERATIONS_BEAN_NAME;
 
 /**
  * <p>
@@ -49,7 +49,7 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2C
  */
 @Configuration(proxyBeanMethods = false)
 @Conditional(ClientRegistrationCondition.class)
-@Import(AadOauth2ClientRestOperationsConfiguration.class)
+@Import(AadRestOperationsConfiguration.class)
 public class AadOAuth2ClientConfiguration {
 
     private final RestOperations restOperations;
@@ -60,7 +60,8 @@ public class AadOAuth2ClientConfiguration {
      * @param restOperations the restOperations
      */
     public AadOAuth2ClientConfiguration(
-            @Qualifier(AAD_OAUTH2_CLIENT_REST_OPERATIONS_BEAN_NAME) RestOperations restOperations) {
+            @Qualifier(AAD_OAUTH2_ACCESS_TOKEN_RESPONSE_CLIENT_REST_OPERATIONS_BEAN_NAME)
+            RestOperations restOperations) {
         this.restOperations = restOperations;
     }
 
