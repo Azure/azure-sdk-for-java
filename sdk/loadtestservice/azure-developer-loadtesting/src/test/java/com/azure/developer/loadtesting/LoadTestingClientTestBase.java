@@ -17,17 +17,17 @@ import reactor.core.publisher.Mono;
 class LoadTestingClientTestBase extends TestBase {
     protected LoadTestingClient client;
 
-    private final String DEFAULT_ENDPOINT = "REDACTED.eus.cnt-prod.loadtesting.azure.com";
+    private final String defaultEndpoint = "REDACTED.eus.cnt-prod.loadtesting.azure.com";
 
-    protected final String DEFAULT_TEST_ID = "11111111-1234-1234-1234-123456789012";
-    protected final String DEFAULT_FILE_ID = "22222222-1234-1234-1234-123456789012";
-    protected final String DEFAULT_TEST_RUN_ID = "33333333-1234-1234-1234-123456789012";
+    protected final String defaultTestId = "11111111-1234-1234-1234-123456789012";
+    protected final String defaultFileId = "22222222-1234-1234-1234-123456789012";
+    protected final String defaultTestRunId = "33333333-1234-1234-1234-123456789012";
 
     @Override
     protected void beforeTest() {
         LoadTestingClientBuilder loadTestingClientBuilder =
                 new LoadTestingClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", DEFAULT_ENDPOINT))
+                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", defaultEndpoint))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {

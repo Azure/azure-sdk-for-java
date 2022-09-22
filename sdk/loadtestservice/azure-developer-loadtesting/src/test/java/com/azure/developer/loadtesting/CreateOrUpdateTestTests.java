@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public final class CreateOrUpdateTestTests extends LoadTestingClientTestBase {
-    private final String CREATE_TEST_BODY_JSON = "{\"description\":\"Sample Test\",\"displayName\":\"Java SDK Sample Test\","
+    private final String createTestBodyJson = "{\"description\":\"Sample Test\",\"displayName\":\"Java SDK Sample Test\","
         + "\"environmentVariables\":{\"threads_per_engine\":1,\"ramp_up_time\":0,\"duration_in_sec\":10,\"domain\":\"azure.microsoft.com\",\"protocol\":\"https\"},"
         + "\"loadTestConfig\":{\"engineInstances\":1}}";
 
@@ -39,9 +39,9 @@ public final class CreateOrUpdateTestTests extends LoadTestingClientTestBase {
 
     @Test
     public void createOrUpdateTestString() {
-        BinaryData body = BinaryData.fromString(CREATE_TEST_BODY_JSON);
+        BinaryData body = BinaryData.fromString(createTestBodyJson);
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = client.getAdministration().createOrUpdateTestWithResponse(DEFAULT_TEST_ID, body, requestOptions);
+        Response<BinaryData> response = client.getLoadTestAdministration().createOrUpdateTestWithResponse(defaultTestId, body, requestOptions);
         Assertions.assertTrue(Arrays.asList(200, 201).contains(response.getStatusCode()));
     }
 
@@ -49,7 +49,7 @@ public final class CreateOrUpdateTestTests extends LoadTestingClientTestBase {
     public void createOrUpdateTestDictDict() {
         BinaryData body = BinaryData.fromObject(getTestBodyFromDict());
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = client.getAdministration().createOrUpdateTestWithResponse(DEFAULT_TEST_ID, body, requestOptions);
+        Response<BinaryData> response = client.getLoadTestAdministration().createOrUpdateTestWithResponse(defaultTestId, body, requestOptions);
         Assertions.assertTrue(Arrays.asList(200, 201).contains(response.getStatusCode()));
     }
 }

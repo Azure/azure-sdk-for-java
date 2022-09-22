@@ -36,7 +36,7 @@ public final class ReadmeSamples {
 
         BinaryData test = BinaryData.fromObject(testMap);
 
-        Response<BinaryData> testOutResponse = client.getAdministration().createOrUpdateTestWithResponse("test12345", test, null);
+        Response<BinaryData> testOutResponse = client.getLoadTestAdministration().createOrUpdateTestWithResponse("test12345", test, null);
         System.out.println(testOutResponse.getValue().toString());
         // END: java-readme-sample-createTest
     }
@@ -49,7 +49,7 @@ public final class ReadmeSamples {
             .buildClient();
 
         BinaryData fileData = BinaryData.fromFile(new File("path/to/file").toPath());
-        Response<BinaryData> fileUrlOut = client.getAdministration().uploadTestFileWithResponse("test12345", "file12345", "sample-file.jmx", fileData, null);
+        Response<BinaryData> fileUrlOut = client.getLoadTestAdministration().uploadTestFileWithResponse("test12345", "file12345", "sample-file.jmx", fileData, null);
         System.out.println(fileUrlOut.getValue().toString());
         // END: java-readme-sample-uploadTestFile
     }
@@ -71,7 +71,7 @@ public final class ReadmeSamples {
 
         BinaryData testRun = BinaryData.fromObject(testRunMap);
 
-        Response<BinaryData> testRunOut = client.getTestRun().createAndUpdateTestRunWithResponse("testrun12345", testRun, null);
+        Response<BinaryData> testRunOut = client.getLoadTestRun().createAndUpdateTestRunWithResponse("testrun12345", testRun, null);
         System.out.println(testRunOut.getValue().toString());
         // END: java-readme-sample-runTest
     }

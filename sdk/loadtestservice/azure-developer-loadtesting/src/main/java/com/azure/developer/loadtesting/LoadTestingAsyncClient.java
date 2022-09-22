@@ -35,7 +35,7 @@ public final class LoadTestingAsyncClient {
      *
      * @return {@link LoadTestAdministrationAsyncClient} object.
      */
-    public LoadTestAdministrationAsyncClient getAdministration() {
+    public LoadTestAdministrationAsyncClient getLoadTestAdministration() {
         return this.administration;
     }
 
@@ -44,7 +44,7 @@ public final class LoadTestingAsyncClient {
      *
      * @return {@link TestRunAsyncClient} object.
      */
-    public TestRunAsyncClient getTestRun() {
+    public TestRunAsyncClient getLoadTestRun() {
         return this.testRun;
     }
 }

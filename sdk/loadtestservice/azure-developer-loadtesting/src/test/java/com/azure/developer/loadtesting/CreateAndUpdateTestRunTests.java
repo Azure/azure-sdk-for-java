@@ -12,12 +12,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public final class CreateAndUpdateTestRunTests extends LoadTestingClientTestBase {
-    private final String CREATE_TEST_RUN_BODY_JSON = "{\"testId\":\"" + DEFAULT_TEST_ID + "\""
+    private final String createTestRunBodyJson = "{\"testId\":\"" + defaultTestId + "\""
         + ",\"description\":\"Sample Test Run\",\"displayName\":\"Java SDK Sample Test Run\"}";
 
     private Map<String, Object> getTestRunBodyFromDict() {
         Map<String, Object> testRunMap = new HashMap<String, Object>();
-        testRunMap.put("testId", DEFAULT_TEST_ID);
+        testRunMap.put("testId", defaultTestId);
         testRunMap.put("displayName", "Java SDK Sample Test Run");
         testRunMap.put("description", "Sample Test Run");
 
@@ -26,9 +26,9 @@ public final class CreateAndUpdateTestRunTests extends LoadTestingClientTestBase
 
     @Test
     public void createAndUpdateTestRunString() {
-        BinaryData file = BinaryData.fromString(CREATE_TEST_RUN_BODY_JSON);
+        BinaryData file = BinaryData.fromString(createTestRunBodyJson);
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = client.getTestRun().createAndUpdateTestRunWithResponse(DEFAULT_TEST_RUN_ID, file, requestOptions);
+        Response<BinaryData> response = client.getLoadTestRun().createAndUpdateTestRunWithResponse(defaultTestRunId, file, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
     }
 
@@ -36,7 +36,7 @@ public final class CreateAndUpdateTestRunTests extends LoadTestingClientTestBase
     public void createAndUpdateTestRunDict() {
         BinaryData file = BinaryData.fromObject(getTestRunBodyFromDict());
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = client.getTestRun().createAndUpdateTestRunWithResponse(DEFAULT_TEST_RUN_ID, file, requestOptions);
+        Response<BinaryData> response = client.getLoadTestRun().createAndUpdateTestRunWithResponse(defaultTestRunId, file, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
     }
 }

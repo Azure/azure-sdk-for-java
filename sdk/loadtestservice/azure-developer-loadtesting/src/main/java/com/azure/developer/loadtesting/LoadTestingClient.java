@@ -25,8 +25,8 @@ public final class LoadTestingClient {
      * @param serviceClient the service client implementation.
      */
     LoadTestingClient(LoadTestingAsyncClient client) {
-        this.administration = new LoadTestAdministrationClient(client.getAdministration());
-        this.testRun = new TestRunClient(client.getTestRun());
+        this.administration = new LoadTestAdministrationClient(client.getLoadTestAdministration());
+        this.testRun = new TestRunClient(client.getLoadTestRun());
     }
 
     /**
@@ -34,7 +34,7 @@ public final class LoadTestingClient {
      *
      * @return {@link LoadTestAdministrationClient} object.
      */
-    public LoadTestAdministrationClient getAdministration() {
+    public LoadTestAdministrationClient getLoadTestAdministration() {
         return this.administration;
     }
 
@@ -43,7 +43,7 @@ public final class LoadTestingClient {
      *
      * @return {@link TestRunClient} object.
      */
-    public TestRunClient getTestRun() {
+    public TestRunClient getLoadTestRun() {
         return this.testRun;
     }
 }
