@@ -476,4 +476,26 @@ public class DeploymentsTests extends ResourceManagementTest {
             }
         }
     }
+
+    @Test
+    public void canBeginCreateAsync() {
+        final String dpName = "dpA" + testId;
+        final String rgName = generateRandomResourceName("rg", 9);
+        ResourceGroup resourceGroup = resourceGroups.define(rgName).withRegion(Region.US_SOUTH_CENTRAL).create();
+        try {
+            resourceClient.deployments()
+                .define(dpName)
+                .withExistingResourceGroup(resourceGroup)
+                .withTemplateLink(TEMPLATE_URI, CONTENT_VERSION)
+                .withParametersLink(PARAMETERS_URI, CONTENT_VERSION)
+                .withMode(DeploymentMode.COMPLETE)
+                .beginCreateAsync()
+                .block();
+
+            Deployment deployment = resourceClient.deployments().getByResourceGroup(rgName, dpName);
+            Assertions.assertNotNull(deployment);
+        } finally {
+            resourceGroups.beginDeleteByName(rgName);
+        }
+    }
 }

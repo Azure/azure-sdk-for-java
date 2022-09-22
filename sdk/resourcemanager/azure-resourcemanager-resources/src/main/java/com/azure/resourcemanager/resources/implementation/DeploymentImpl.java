@@ -345,9 +345,8 @@ public final class DeploymentImpl extends
 
     @Override
     public Mono<Deployment> beginCreateAsync() {
-        return Mono.just(creatableResourceGroup)
-                .flatMap(resourceGroupCreatable -> {
-                    if (resourceGroupCreatable != null) {
+        return Mono.defer(() -> {
+                    if (creatableResourceGroup != null) {
                         return creatableResourceGroup.createAsync();
                     } else {
                         return Mono.just((Indexable) DeploymentImpl.this);
