@@ -300,7 +300,7 @@ public class VertxAsyncHttpClientBuilder {
      */
     private static Runnable getVertxCloseRunnable(Vertx vertxToClose) {
         return () -> {
-            CountDownLatch latch = new CountDownLatch(1);
+            CountDownLatch latch = new CountDownLatch(3);
             if (vertxToClose != null) {
                 vertxToClose.close(event -> {
                     if (event.failed() && event.cause() != null) {
