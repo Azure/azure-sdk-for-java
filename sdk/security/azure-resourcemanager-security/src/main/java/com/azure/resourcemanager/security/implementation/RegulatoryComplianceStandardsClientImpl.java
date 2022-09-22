@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.RegulatoryComplianceStandardsClient;
 import com.azure.resourcemanager.security.fluent.models.RegulatoryComplianceStandardInner;
 import com.azure.resourcemanager.security.models.RegulatoryComplianceStandardList;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RegulatoryComplianceStandardsClient. */
 public final class RegulatoryComplianceStandardsClientImpl implements RegulatoryComplianceStandardsClient {
-    private final ClientLogger logger = new ClientLogger(RegulatoryComplianceStandardsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RegulatoryComplianceStandardsService service;
 
@@ -107,7 +104,8 @@ public final class RegulatoryComplianceStandardsClientImpl implements Regulatory
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of regulatory compliance standards response.
+     * @return list of regulatory compliance standards response along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RegulatoryComplianceStandardInner>> listSinglePageAsync(String filter) {
@@ -156,7 +154,8 @@ public final class RegulatoryComplianceStandardsClientImpl implements Regulatory
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of regulatory compliance standards response.
+     * @return list of regulatory compliance standards response along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RegulatoryComplianceStandardInner>> listSinglePageAsync(String filter, Context context) {
@@ -195,7 +194,7 @@ public final class RegulatoryComplianceStandardsClientImpl implements Regulatory
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of regulatory compliance standards response.
+     * @return list of regulatory compliance standards response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RegulatoryComplianceStandardInner> listAsync(String filter) {
@@ -207,7 +206,7 @@ public final class RegulatoryComplianceStandardsClientImpl implements Regulatory
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of regulatory compliance standards response.
+     * @return list of regulatory compliance standards response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RegulatoryComplianceStandardInner> listAsync() {
@@ -223,7 +222,7 @@ public final class RegulatoryComplianceStandardsClientImpl implements Regulatory
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of regulatory compliance standards response.
+     * @return list of regulatory compliance standards response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RegulatoryComplianceStandardInner> listAsync(String filter, Context context) {
@@ -236,7 +235,7 @@ public final class RegulatoryComplianceStandardsClientImpl implements Regulatory
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of regulatory compliance standards response.
+     * @return list of regulatory compliance standards response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RegulatoryComplianceStandardInner> list() {
@@ -252,7 +251,7 @@ public final class RegulatoryComplianceStandardsClientImpl implements Regulatory
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of regulatory compliance standards response.
+     * @return list of regulatory compliance standards response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RegulatoryComplianceStandardInner> list(String filter, Context context) {
@@ -266,7 +265,8 @@ public final class RegulatoryComplianceStandardsClientImpl implements Regulatory
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return regulatory compliance standard details and state.
+     * @return regulatory compliance standard details and state along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RegulatoryComplianceStandardInner>> getWithResponseAsync(
@@ -313,7 +313,8 @@ public final class RegulatoryComplianceStandardsClientImpl implements Regulatory
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return regulatory compliance standard details and state.
+     * @return regulatory compliance standard details and state along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RegulatoryComplianceStandardInner>> getWithResponseAsync(
@@ -356,19 +357,11 @@ public final class RegulatoryComplianceStandardsClientImpl implements Regulatory
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return regulatory compliance standard details and state.
+     * @return regulatory compliance standard details and state on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RegulatoryComplianceStandardInner> getAsync(String regulatoryComplianceStandardName) {
-        return getWithResponseAsync(regulatoryComplianceStandardName)
-            .flatMap(
-                (Response<RegulatoryComplianceStandardInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(regulatoryComplianceStandardName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -393,7 +386,7 @@ public final class RegulatoryComplianceStandardsClientImpl implements Regulatory
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return regulatory compliance standard details and state.
+     * @return regulatory compliance standard details and state along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RegulatoryComplianceStandardInner> getWithResponse(
@@ -404,11 +397,13 @@ public final class RegulatoryComplianceStandardsClientImpl implements Regulatory
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of regulatory compliance standards response.
+     * @return list of regulatory compliance standards response along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RegulatoryComplianceStandardInner>> listNextSinglePageAsync(String nextLink) {
@@ -439,12 +434,14 @@ public final class RegulatoryComplianceStandardsClientImpl implements Regulatory
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of regulatory compliance standards response.
+     * @return list of regulatory compliance standards response along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RegulatoryComplianceStandardInner>> listNextSinglePageAsync(

@@ -5,46 +5,31 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.AllowlistCustomAlertRule;
 import com.azure.resourcemanager.security.models.DenylistCustomAlertRule;
 import com.azure.resourcemanager.security.models.ThresholdCustomAlertRule;
 import com.azure.resourcemanager.security.models.TimeWindowCustomAlertRule;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The device security group resource. */
-@JsonFlatten
 @Fluent
-public class DeviceSecurityGroupInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeviceSecurityGroupInner.class);
-
+public final class DeviceSecurityGroupInner extends ProxyResource {
     /*
-     * The list of custom alert threshold rules.
+     * Device Security group data
      */
-    @JsonProperty(value = "properties.thresholdRules")
-    private List<ThresholdCustomAlertRule> thresholdRules;
+    @JsonProperty(value = "properties")
+    private DeviceSecurityGroupProperties innerProperties;
 
-    /*
-     * The list of custom alert time-window rules.
+    /**
+     * Get the innerProperties property: Device Security group data.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.timeWindowRules")
-    private List<TimeWindowCustomAlertRule> timeWindowRules;
-
-    /*
-     * The allow-list custom alert rules.
-     */
-    @JsonProperty(value = "properties.allowlistRules")
-    private List<AllowlistCustomAlertRule> allowlistRules;
-
-    /*
-     * The deny-list custom alert rules.
-     */
-    @JsonProperty(value = "properties.denylistRules")
-    private List<DenylistCustomAlertRule> denylistRules;
+    private DeviceSecurityGroupProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the thresholdRules property: The list of custom alert threshold rules.
@@ -52,7 +37,7 @@ public class DeviceSecurityGroupInner extends ProxyResource {
      * @return the thresholdRules value.
      */
     public List<ThresholdCustomAlertRule> thresholdRules() {
-        return this.thresholdRules;
+        return this.innerProperties() == null ? null : this.innerProperties().thresholdRules();
     }
 
     /**
@@ -62,7 +47,10 @@ public class DeviceSecurityGroupInner extends ProxyResource {
      * @return the DeviceSecurityGroupInner object itself.
      */
     public DeviceSecurityGroupInner withThresholdRules(List<ThresholdCustomAlertRule> thresholdRules) {
-        this.thresholdRules = thresholdRules;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeviceSecurityGroupProperties();
+        }
+        this.innerProperties().withThresholdRules(thresholdRules);
         return this;
     }
 
@@ -72,7 +60,7 @@ public class DeviceSecurityGroupInner extends ProxyResource {
      * @return the timeWindowRules value.
      */
     public List<TimeWindowCustomAlertRule> timeWindowRules() {
-        return this.timeWindowRules;
+        return this.innerProperties() == null ? null : this.innerProperties().timeWindowRules();
     }
 
     /**
@@ -82,7 +70,10 @@ public class DeviceSecurityGroupInner extends ProxyResource {
      * @return the DeviceSecurityGroupInner object itself.
      */
     public DeviceSecurityGroupInner withTimeWindowRules(List<TimeWindowCustomAlertRule> timeWindowRules) {
-        this.timeWindowRules = timeWindowRules;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeviceSecurityGroupProperties();
+        }
+        this.innerProperties().withTimeWindowRules(timeWindowRules);
         return this;
     }
 
@@ -92,7 +83,7 @@ public class DeviceSecurityGroupInner extends ProxyResource {
      * @return the allowlistRules value.
      */
     public List<AllowlistCustomAlertRule> allowlistRules() {
-        return this.allowlistRules;
+        return this.innerProperties() == null ? null : this.innerProperties().allowlistRules();
     }
 
     /**
@@ -102,7 +93,10 @@ public class DeviceSecurityGroupInner extends ProxyResource {
      * @return the DeviceSecurityGroupInner object itself.
      */
     public DeviceSecurityGroupInner withAllowlistRules(List<AllowlistCustomAlertRule> allowlistRules) {
-        this.allowlistRules = allowlistRules;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeviceSecurityGroupProperties();
+        }
+        this.innerProperties().withAllowlistRules(allowlistRules);
         return this;
     }
 
@@ -112,7 +106,7 @@ public class DeviceSecurityGroupInner extends ProxyResource {
      * @return the denylistRules value.
      */
     public List<DenylistCustomAlertRule> denylistRules() {
-        return this.denylistRules;
+        return this.innerProperties() == null ? null : this.innerProperties().denylistRules();
     }
 
     /**
@@ -122,7 +116,10 @@ public class DeviceSecurityGroupInner extends ProxyResource {
      * @return the DeviceSecurityGroupInner object itself.
      */
     public DeviceSecurityGroupInner withDenylistRules(List<DenylistCustomAlertRule> denylistRules) {
-        this.denylistRules = denylistRules;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeviceSecurityGroupProperties();
+        }
+        this.innerProperties().withDenylistRules(denylistRules);
         return this;
     }
 
@@ -132,17 +129,8 @@ public class DeviceSecurityGroupInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (thresholdRules() != null) {
-            thresholdRules().forEach(e -> e.validate());
-        }
-        if (timeWindowRules() != null) {
-            timeWindowRules().forEach(e -> e.validate());
-        }
-        if (allowlistRules() != null) {
-            allowlistRules().forEach(e -> e.validate());
-        }
-        if (denylistRules() != null) {
-            denylistRules().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }
