@@ -19,7 +19,7 @@ public final class AnswerCallRequestInternal {
     /*
      * The callback uri.
      */
-    @JsonProperty(value = "callbackUri")
+    @JsonProperty(value = "callbackUri", required = true)
     private String callbackUri;
 
     /*

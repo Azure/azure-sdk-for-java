@@ -19,32 +19,28 @@ import java.util.Map;
 @Fluent
 public class HdfsLinkedService extends LinkedService {
     /*
-     * The URL of the HDFS service endpoint, e.g.
-     * http://myhostname:50070/webhdfs/v1 . Type: string (or Expression with
+     * The URL of the HDFS service endpoint, e.g. http://myhostname:50070/webhdfs/v1 . Type: string (or Expression with
      * resultType string).
      */
     @JsonProperty(value = "typeProperties.url", required = true)
     private Object url;
 
     /*
-     * Type of authentication used to connect to the HDFS. Possible values are:
-     * Anonymous and Windows. Type: string (or Expression with resultType
-     * string).
+     * Type of authentication used to connect to the HDFS. Possible values are: Anonymous and Windows. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.authenticationType")
     private Object authenticationType;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
     /*
-     * User name for Windows authentication. Type: string (or Expression with
-     * resultType string).
+     * User name for Windows authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.userName")
     private Object userName;

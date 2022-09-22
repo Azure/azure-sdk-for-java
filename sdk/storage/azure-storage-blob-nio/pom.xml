@@ -39,7 +39,6 @@
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
       --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
-      --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
       --add-opens com.azure.storage.common/com.azure.storage.common.implementation=ALL-UNNAMED
       --add-opens com.azure.storage.blob.nio/com.azure.storage.blob.nio=ALL-UNNAMED
       --add-reads com.azure.core=ALL-UNNAMED
@@ -79,6 +78,12 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
       <version>12.20.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <artifactId>jackson-dataformat-xml</artifactId>
+      <version>2.13.3</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -147,7 +152,25 @@
         <directory>${basedir}/src/test/resources</directory>
       </testResource>
     </testResources>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.13.3]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
+
   <profiles>
     <profile>
       <id>java8</id>

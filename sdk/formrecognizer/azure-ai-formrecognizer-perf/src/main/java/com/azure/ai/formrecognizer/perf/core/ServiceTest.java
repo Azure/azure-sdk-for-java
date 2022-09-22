@@ -73,7 +73,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
     @Override
     public Mono<Void> globalCleanupAsync() {
         if (modelId != null) {
-            return Mono.defer(() -> documentModelAdministrationAsyncClient.deleteModel(modelId));
+            return Mono.defer(() -> documentModelAdministrationAsyncClient.deleteDocumentModel(modelId));
         } else {
             return Mono.empty();
         }

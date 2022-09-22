@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HiveAuthenticationType. */
+/** The authentication method used to access the Hive server. */
 public final class HiveAuthenticationType extends ExpandableStringEnum<HiveAuthenticationType> {
     /** Static value Anonymous for HiveAuthenticationType. */
     public static final HiveAuthenticationType ANONYMOUS = fromString("Anonymous");
@@ -34,7 +34,11 @@ public final class HiveAuthenticationType extends ExpandableStringEnum<HiveAuthe
         return fromString(name, HiveAuthenticationType.class);
     }
 
-    /** @return known HiveAuthenticationType values. */
+    /**
+     * Gets known HiveAuthenticationType values.
+     *
+     * @return known HiveAuthenticationType values.
+     */
     public static Collection<HiveAuthenticationType> values() {
         return values(HiveAuthenticationType.class);
     }

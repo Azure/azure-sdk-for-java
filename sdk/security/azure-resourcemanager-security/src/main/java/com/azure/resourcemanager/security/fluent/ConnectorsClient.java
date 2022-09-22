@@ -18,7 +18,8 @@ public interface ConnectorsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return for a subscription, list of all cloud account connectors and their settings.
+     * @return for a subscription, list of all cloud account connectors and their settings as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ConnectorSettingInner> list();
@@ -30,7 +31,8 @@ public interface ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return for a subscription, list of all cloud account connectors and their settings.
+     * @return for a subscription, list of all cloud account connectors and their settings as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ConnectorSettingInner> list(Context context);
@@ -55,7 +57,7 @@ public interface ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connector setting.
+     * @return the connector setting along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ConnectorSettingInner> getWithResponse(String connectorName, Context context);
@@ -84,7 +86,7 @@ public interface ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connector setting.
+     * @return the connector setting along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ConnectorSettingInner> createOrUpdateWithResponse(
@@ -109,7 +111,7 @@ public interface ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(String connectorName, Context context);

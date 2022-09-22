@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for AccountFilters Delete. */
 public final class AccountFiltersDeleteSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/accountFilters-delete.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/accountFilters-delete.json
      */
     /**
      * Sample code: Delete an Account Filter.

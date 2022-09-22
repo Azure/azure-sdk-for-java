@@ -21,9 +21,8 @@ public final class RestServiceLinkedServiceTypeProperties {
     private Object url;
 
     /*
-     * Whether to validate server side SSL certificate when connecting to the
-     * endpoint.The default value is true. Type: boolean (or Expression with
-     * resultType boolean).
+     * Whether to validate server side SSL certificate when connecting to the endpoint.The default value is true. Type:
+     * boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "enableServerCertificateValidation")
     private Object enableServerCertificateValidation;
@@ -47,15 +46,14 @@ public final class RestServiceLinkedServiceTypeProperties {
     private SecretBase password;
 
     /*
-     * The additional HTTP headers in the request to RESTful API used for
-     * authorization. Type: object (or Expression with resultType object).
+     * The additional HTTP headers in the request to RESTful API used for authorization. Type: object (or Expression
+     * with resultType object).
      */
     @JsonProperty(value = "authHeaders")
     private Object authHeaders;
 
     /*
-     * The application's client ID used in AadServicePrincipal authentication
-     * type.
+     * The application's client ID used in AadServicePrincipal authentication type.
      */
     @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
@@ -67,17 +65,15 @@ public final class RestServiceLinkedServiceTypeProperties {
     private SecretBase servicePrincipalKey;
 
     /*
-     * The tenant information (domain name or tenant ID) used in
-     * AadServicePrincipal authentication type under which your application
-     * resides.
+     * The tenant information (domain name or tenant ID) used in AadServicePrincipal authentication type under which
+     * your application resides.
      */
     @JsonProperty(value = "tenant")
     private Object tenant;
 
     /*
-     * Indicates the azure cloud type of the service principle auth. Allowed
-     * values are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany.
-     * Default value is the data factory regions’ cloud type. Type: string (or
+     * Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina,
+     * AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or
      * Expression with resultType string).
      */
     @JsonProperty(value = "azureCloudType")
@@ -90,9 +86,8 @@ public final class RestServiceLinkedServiceTypeProperties {
     private Object aadResourceId;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
@@ -104,8 +99,7 @@ public final class RestServiceLinkedServiceTypeProperties {
     private CredentialReference credential;
 
     /*
-     * The client ID associated with your application. Type: string (or
-     * Expression with resultType string).
+     * The client ID associated with your application. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "clientId")
     private Object clientId;
@@ -117,22 +111,22 @@ public final class RestServiceLinkedServiceTypeProperties {
     private SecretBase clientSecret;
 
     /*
-     * The token endpoint of the authorization server to acquire access token.
-     * Type: string (or Expression with resultType string).
+     * The token endpoint of the authorization server to acquire access token. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "tokenEndpoint")
     private Object tokenEndpoint;
 
     /*
-     * The target service or resource to which the access will be requested.
-     * Type: string (or Expression with resultType string).
+     * The target service or resource to which the access will be requested. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "resource")
     private Object resource;
 
     /*
-     * The scope of the access required. It describes what kind of access will
-     * be requested. Type: string (or Expression with resultType string).
+     * The scope of the access required. It describes what kind of access will be requested. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "scope")
     private Object scope;

@@ -5,8 +5,10 @@
 package com.azure.ai.formrecognizer.documentanalysis.administration.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentModelComposeOperationDetailsHelper;
+import com.azure.core.annotation.Immutable;
 
 /** Get Operation response object. */
+@Immutable
 public final class DocumentModelComposeOperationDetails extends OperationDetails {
     /*
      * Operation result upon success.

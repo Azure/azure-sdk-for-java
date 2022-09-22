@@ -45,6 +45,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <legal>
             <![CDATA[[INFO] Any downloads listed may be third party software. Microsoft grants you no rights for third party software.]]></legal>
+        <javaModulesSurefireArgLine>
+            --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
+            --add-opens com.azure.monitor.ingestion/com.azure.monitor.ingestion=ALL-UNNAMED
+        </javaModulesSurefireArgLine>
     </properties>
 
     <developers>
@@ -100,7 +104,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-identity</artifactId>
-            <version>1.5.4</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+            <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
             <scope>test</scope>
         </dependency>
     </dependencies>

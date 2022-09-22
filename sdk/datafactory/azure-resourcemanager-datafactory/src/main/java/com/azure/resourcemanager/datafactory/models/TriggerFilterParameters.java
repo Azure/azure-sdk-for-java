@@ -11,15 +11,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class TriggerFilterParameters {
     /*
-     * The continuation token for getting the next page of results. Null for
-     * first page.
+     * The continuation token for getting the next page of results. Null for first page.
      */
     @JsonProperty(value = "continuationToken")
     private String continuationToken;
 
     /*
-     * The name of the parent TumblingWindowTrigger to get the child rerun
-     * triggers
+     * The name of the parent TumblingWindowTrigger to get the child rerun triggers
      */
     @JsonProperty(value = "parentTriggerName")
     private String parentTriggerName;

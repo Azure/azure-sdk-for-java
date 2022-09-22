@@ -6,6 +6,7 @@ package com.azure.json;
 import com.azure.json.implementation.DefaultJsonReader;
 import com.azure.json.implementation.DefaultJsonWriter;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
@@ -58,8 +59,9 @@ public final class JsonProviders {
      * @param json The JSON represented as a {@code byte[]}.
      * @return A new instance of {@link JsonReader}.
      * @throws NullPointerException If {@code json} is null.
+     * @throws IOException If a {@link JsonReader} cannot be instantiated.
      */
-    public static JsonReader createReader(byte[] json) {
+    public static JsonReader createReader(byte[] json) throws IOException {
         return createReader(json, JsonOptions.DEFAULT_OPTIONS, true);
     }
 
@@ -72,8 +74,9 @@ public final class JsonProviders {
      * @return A new instance of {@link JsonReader}.
      * @throws NullPointerException If {@code json} is null.
      * @throws IllegalStateException If a provider could not be found on the classpath and {@code useDefault} is false.
+     * @throws IOException If a {@link JsonReader} cannot be instantiated.
      */
-    public static JsonReader createReader(byte[] json, JsonOptions options, boolean useDefault) {
+    public static JsonReader createReader(byte[] json, JsonOptions options, boolean useDefault) throws IOException {
         if (defaultProvider == null) {
             if (useDefault) {
                 return DefaultJsonReader.fromBytes(json, options);
@@ -94,8 +97,9 @@ public final class JsonProviders {
      * @param json The JSON represented as a {@link String}.
      * @return A new instance of {@link JsonReader}.
      * @throws NullPointerException If {@code json} is null.
+     * @throws IOException If a {@link JsonReader} cannot be instantiated.
      */
-    public static JsonReader createReader(String json) {
+    public static JsonReader createReader(String json) throws IOException {
         return createReader(json, JsonOptions.DEFAULT_OPTIONS, true);
     }
 
@@ -108,8 +112,9 @@ public final class JsonProviders {
      * @return A new instance of {@link JsonReader}.
      * @throws NullPointerException If {@code json} is null.
      * @throws IllegalStateException If a provider could not be found on the classpath and {@code useDefault} is false.
+     * @throws IOException If a {@link JsonReader} cannot be instantiated.
      */
-    public static JsonReader createReader(String json, JsonOptions options, boolean useDefault) {
+    public static JsonReader createReader(String json, JsonOptions options, boolean useDefault) throws IOException {
         if (defaultProvider == null) {
             if (useDefault) {
                 return DefaultJsonReader.fromString(json, options);
@@ -131,8 +136,9 @@ public final class JsonProviders {
      * @param json The JSON represented as a {@link InputStream}.
      * @return A new instance of {@link JsonReader}.
      * @throws NullPointerException If {@code json} is null.
+     * @throws IOException If a {@link JsonReader} cannot be instantiated.
      */
-    public static JsonReader createReader(InputStream json) {
+    public static JsonReader createReader(InputStream json) throws IOException {
         return createReader(json, JsonOptions.DEFAULT_OPTIONS, true);
     }
 
@@ -145,8 +151,9 @@ public final class JsonProviders {
      * @return A new instance of {@link JsonReader}.
      * @throws NullPointerException If {@code json} is null.
      * @throws IllegalStateException If a provider could not be found on the classpath and {@code useDefault} is false.
+     * @throws IOException If a {@link JsonReader} cannot be instantiated.
      */
-    public static JsonReader createReader(InputStream json, JsonOptions options, boolean useDefault) {
+    public static JsonReader createReader(InputStream json, JsonOptions options, boolean useDefault) throws IOException {
         if (defaultProvider == null) {
             if (useDefault) {
                 return DefaultJsonReader.fromStream(json, options);
@@ -167,8 +174,9 @@ public final class JsonProviders {
      * @param json The JSON represented as a {@link Reader}.
      * @return A new instance of {@link JsonReader}.
      * @throws NullPointerException If {@code json} is null.
+     * @throws IOException If a {@link JsonReader} cannot be instantiated.
      */
-    public static JsonReader createReader(Reader json) {
+    public static JsonReader createReader(Reader json) throws IOException {
         return createReader(json, JsonOptions.DEFAULT_OPTIONS, true);
     }
 
@@ -181,8 +189,9 @@ public final class JsonProviders {
      * @return A new instance of {@link JsonReader}.
      * @throws NullPointerException If {@code json} is null.
      * @throws IllegalStateException If a provider could not be found on the classpath and {@code useDefault} is false.
+     * @throws IOException If a {@link JsonReader} cannot be instantiated.
      */
-    public static JsonReader createReader(Reader json, JsonOptions options, boolean useDefault) {
+    public static JsonReader createReader(Reader json, JsonOptions options, boolean useDefault) throws IOException {
         if (defaultProvider == null) {
             if (useDefault) {
                 return DefaultJsonReader.fromReader(json, options);
@@ -204,8 +213,9 @@ public final class JsonProviders {
      * @param json The JSON represented as an {@link OutputStream}.
      * @return A new instance of {@link JsonWriter}.
      * @throws NullPointerException If {@code json} is null.
+     * @throws IOException If a {@link JsonWriter} cannot be instantiated.
      */
-    public static JsonWriter createWriter(OutputStream json) {
+    public static JsonWriter createWriter(OutputStream json) throws IOException {
         return createWriter(json, JsonOptions.DEFAULT_OPTIONS, true);
     }
 
@@ -218,8 +228,9 @@ public final class JsonProviders {
      * @return A new instance of {@link JsonWriter}.
      * @throws NullPointerException If {@code json} is null.
      * @throws IllegalStateException If a provider could not be found on the classpath and {@code useDefault} is false.
+     * @throws IOException If a {@link JsonWriter} cannot be instantiated.
      */
-    public static JsonWriter createWriter(OutputStream json, JsonOptions options, boolean useDefault) {
+    public static JsonWriter createWriter(OutputStream json, JsonOptions options, boolean useDefault) throws IOException {
         if (defaultProvider == null) {
             if (useDefault) {
                 return DefaultJsonWriter.toStream(json, options);
@@ -240,8 +251,9 @@ public final class JsonProviders {
      * @param json The JSON represented as an {@link Writer}.
      * @return A new instance of {@link JsonWriter}.
      * @throws NullPointerException If {@code json} is null.
+     * @throws IOException If a {@link JsonWriter} cannot be instantiated.
      */
-    public static JsonWriter createWriter(Writer json) {
+    public static JsonWriter createWriter(Writer json) throws IOException {
         return createWriter(json, JsonOptions.DEFAULT_OPTIONS, true);
     }
 
@@ -254,8 +266,9 @@ public final class JsonProviders {
      * @return A new instance of {@link JsonWriter}.
      * @throws NullPointerException If {@code json} is null.
      * @throws IllegalStateException If a provider could not be found on the classpath and {@code useDefault} is false.
+     * @throws IOException If a {@link JsonWriter} cannot be instantiated.
      */
-    public static JsonWriter createWriter(Writer json, JsonOptions options, boolean useDefault) {
+    public static JsonWriter createWriter(Writer json, JsonOptions options, boolean useDefault) throws IOException {
         if (defaultProvider == null) {
             if (useDefault) {
                 return DefaultJsonWriter.toWriter(json, options);

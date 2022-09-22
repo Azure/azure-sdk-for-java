@@ -10,7 +10,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of OperationResults. */
 public interface OperationResults {
     /**
-     * Get asset track operation result.
+     * Get operation result.
+     *
+     * <p>Get asset track operation result.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -26,7 +28,9 @@ public interface OperationResults {
         String resourceGroupName, String accountName, String assetName, String trackName, String operationId);
 
     /**
-     * Get asset track operation result.
+     * Get operation result.
+     *
+     * <p>Get asset track operation result.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.

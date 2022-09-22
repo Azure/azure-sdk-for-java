@@ -41,7 +41,6 @@
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
       --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
-      --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
       --add-opens com.azure.storage.common/com.azure.storage.common.implementation=ALL-UNNAMED
       --add-opens com.azure.storage.common/com.azure.storage.common.sas=ALL-UNNAMED
       --add-opens com.azure.storage.blob/com.azure.storage.blob=ALL-UNNAMED
@@ -94,6 +93,12 @@
       <version>12.5.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-internal-avro;current} -->
     </dependency>
 
+    <dependency>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <artifactId>jackson-dataformat-xml</artifactId>
+      <version>2.13.3</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+    </dependency>
+
     <!-- Added this dependency to include necessary annotations used by reactor core.
         Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
         which is used in @Nullable annotation in reactor core classes -->
@@ -120,7 +125,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.5.4</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -175,6 +180,23 @@
         <directory>${basedir}/src/test/resources</directory>
       </testResource>
     </testResources>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.13.3]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 
   <profiles>

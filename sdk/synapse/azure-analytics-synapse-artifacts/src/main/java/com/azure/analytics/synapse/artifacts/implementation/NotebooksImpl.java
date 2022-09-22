@@ -420,14 +420,7 @@ public final class NotebooksImpl {
     public Mono<NotebookResource> createOrUpdateNotebookAsync(
             String notebookName, NotebookResource notebook, String ifMatch) {
         return createOrUpdateNotebookWithResponseAsync(notebookName, notebook, ifMatch)
-                .flatMap(
-                        (Response<NotebookResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -444,14 +437,7 @@ public final class NotebooksImpl {
     public Mono<NotebookResource> createOrUpdateNotebookAsync(String notebookName, NotebookResource notebook) {
         final String ifMatch = null;
         return createOrUpdateNotebookWithResponseAsync(notebookName, notebook, ifMatch)
-                .flatMap(
-                        (Response<NotebookResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -471,14 +457,7 @@ public final class NotebooksImpl {
     public Mono<NotebookResource> createOrUpdateNotebookAsync(
             String notebookName, NotebookResource notebook, String ifMatch, Context context) {
         return createOrUpdateNotebookWithResponseAsync(notebookName, notebook, ifMatch, context)
-                .flatMap(
-                        (Response<NotebookResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -587,15 +566,7 @@ public final class NotebooksImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NotebookResource> getNotebookAsync(String notebookName, String ifNoneMatch) {
-        return getNotebookWithResponseAsync(notebookName, ifNoneMatch)
-                .flatMap(
-                        (Response<NotebookResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getNotebookWithResponseAsync(notebookName, ifNoneMatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -610,15 +581,7 @@ public final class NotebooksImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NotebookResource> getNotebookAsync(String notebookName) {
         final String ifNoneMatch = null;
-        return getNotebookWithResponseAsync(notebookName, ifNoneMatch)
-                .flatMap(
-                        (Response<NotebookResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getNotebookWithResponseAsync(notebookName, ifNoneMatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -636,14 +599,7 @@ public final class NotebooksImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NotebookResource> getNotebookAsync(String notebookName, String ifNoneMatch, Context context) {
         return getNotebookWithResponseAsync(notebookName, ifNoneMatch, context)
-                .flatMap(
-                        (Response<NotebookResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -741,7 +697,7 @@ public final class NotebooksImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteNotebookAsync(String notebookName) {
-        return deleteNotebookWithResponseAsync(notebookName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteNotebookWithResponseAsync(notebookName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -756,7 +712,7 @@ public final class NotebooksImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteNotebookAsync(String notebookName, Context context) {
-        return deleteNotebookWithResponseAsync(notebookName, context).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteNotebookWithResponseAsync(notebookName, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -838,7 +794,7 @@ public final class NotebooksImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> renameNotebookAsync(String notebookName, ArtifactRenameRequest request) {
-        return renameNotebookWithResponseAsync(notebookName, request).flatMap((Response<Void> res) -> Mono.empty());
+        return renameNotebookWithResponseAsync(notebookName, request).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -854,8 +810,7 @@ public final class NotebooksImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> renameNotebookAsync(String notebookName, ArtifactRenameRequest request, Context context) {
-        return renameNotebookWithResponseAsync(notebookName, request, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+        return renameNotebookWithResponseAsync(notebookName, request, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -892,7 +847,8 @@ public final class NotebooksImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -919,7 +875,8 @@ public final class NotebooksImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -945,7 +902,8 @@ public final class NotebooksImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -972,7 +930,8 @@ public final class NotebooksImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

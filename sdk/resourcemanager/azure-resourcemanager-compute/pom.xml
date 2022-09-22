@@ -53,8 +53,6 @@
       --add-opens com.azure.resourcemanager.resources/com.azure.resourcemanager.resources=ALL-UNNAMED
       --add-opens com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm=ALL-UNNAMED
       --add-opens com.azure.resourcemanager.storage/com.azure.resourcemanager.storage=ALL-UNNAMED
-
-      --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 
@@ -124,7 +122,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.19.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.19.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <scope>test</scope>
       <exclusions>
         <exclusion>

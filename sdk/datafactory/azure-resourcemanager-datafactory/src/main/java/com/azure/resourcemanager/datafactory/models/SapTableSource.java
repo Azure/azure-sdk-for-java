@@ -15,61 +15,56 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class SapTableSource extends TabularSource {
     /*
-     * The number of rows to be retrieved. Type: integer(or Expression with
-     * resultType integer).
+     * The number of rows to be retrieved. Type: integer(or Expression with resultType integer).
      */
     @JsonProperty(value = "rowCount")
     private Object rowCount;
 
     /*
-     * The number of rows that will be skipped. Type: integer (or Expression
-     * with resultType integer).
+     * The number of rows that will be skipped. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "rowSkips")
     private Object rowSkips;
 
     /*
-     * The fields of the SAP table that will be retrieved. For example,
-     * column0, column1. Type: string (or Expression with resultType string).
+     * The fields of the SAP table that will be retrieved. For example, column0, column1. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "rfcTableFields")
     private Object rfcTableFields;
 
     /*
-     * The options for the filtering of the SAP Table. For example, COLUMN0 EQ
-     * SOME VALUE. Type: string (or Expression with resultType string).
+     * The options for the filtering of the SAP Table. For example, COLUMN0 EQ SOME VALUE. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "rfcTableOptions")
     private Object rfcTableOptions;
 
     /*
-     * Specifies the maximum number of rows that will be retrieved at a time
-     * when retrieving data from SAP Table. Type: integer (or Expression with
-     * resultType integer).
+     * Specifies the maximum number of rows that will be retrieved at a time when retrieving data from SAP Table. Type:
+     * integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "batchSize")
     private Object batchSize;
 
     /*
-     * Specifies the custom RFC function module that will be used to read data
-     * from SAP Table. Type: string (or Expression with resultType string).
+     * Specifies the custom RFC function module that will be used to read data from SAP Table. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "customRfcReadTableFunctionModule")
     private Object customRfcReadTableFunctionModule;
 
     /*
-     * The single character that will be used as delimiter passed to SAP RFC as
-     * well as splitting the output data retrieved. Type: string (or Expression
-     * with resultType string).
+     * The single character that will be used as delimiter passed to SAP RFC as well as splitting the output data
+     * retrieved. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "sapDataColumnDelimiter")
     private Object sapDataColumnDelimiter;
 
     /*
-     * The partition mechanism that will be used for SAP table read in
-     * parallel. Possible values include: "None", "PartitionOnInt",
-     * "PartitionOnCalendarYear", "PartitionOnCalendarMonth",
-     * "PartitionOnCalendarDate", "PartitionOnTime".
+     * The partition mechanism that will be used for SAP table read in parallel. Possible values include: "None",
+     * "PartitionOnInt", "PartitionOnCalendarYear", "PartitionOnCalendarMonth", "PartitionOnCalendarDate",
+     * "PartitionOnTime".
      */
     @JsonProperty(value = "partitionOption")
     private Object partitionOption;
