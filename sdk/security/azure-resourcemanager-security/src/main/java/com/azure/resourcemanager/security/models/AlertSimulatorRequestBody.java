@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Alert Simulator request body. */
 @Fluent
 public final class AlertSimulatorRequestBody {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AlertSimulatorRequestBody.class);
-
     /*
      * Alert Simulator request body data.
      */

@@ -809,6 +809,8 @@ public abstract class XmlWriter implements AutoCloseable {
 
     /**
      * Closes the XML stream.
+     * <p>
+     * During closing the implementation of {@link XmlWriter} must flush any un-flushed content.
      *
      * @throws XMLStreamException If the underlying content store fails to close.
      */

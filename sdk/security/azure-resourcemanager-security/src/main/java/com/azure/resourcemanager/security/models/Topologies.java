@@ -15,7 +15,8 @@ public interface Topologies {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list that allows to build a topology view of a subscription.
+     * @return a list that allows to build a topology view of a subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<TopologyResource> list();
 
@@ -26,7 +27,8 @@ public interface Topologies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list that allows to build a topology view of a subscription.
+     * @return a list that allows to build a topology view of a subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<TopologyResource> list(Context context);
 
@@ -38,7 +40,8 @@ public interface Topologies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list that allows to build a topology view of a subscription and location.
+     * @return a list that allows to build a topology view of a subscription and location as paginated response with
+     *     {@link PagedIterable}.
      */
     PagedIterable<TopologyResource> listByHomeRegion(String ascLocation);
 
@@ -51,7 +54,8 @@ public interface Topologies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list that allows to build a topology view of a subscription and location.
+     * @return a list that allows to build a topology view of a subscription and location as paginated response with
+     *     {@link PagedIterable}.
      */
     PagedIterable<TopologyResource> listByHomeRegion(String ascLocation, Context context);
 
@@ -82,7 +86,7 @@ public interface Topologies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific topology component.
+     * @return a specific topology component along with {@link Response}.
      */
     Response<TopologyResource> getWithResponse(
         String resourceGroupName, String ascLocation, String topologyResourceName, Context context);

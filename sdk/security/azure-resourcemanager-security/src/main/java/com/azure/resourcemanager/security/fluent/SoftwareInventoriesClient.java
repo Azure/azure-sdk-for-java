@@ -24,7 +24,7 @@ public interface SoftwareInventoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the software inventory of the virtual machine.
+     * @return the software inventory of the virtual machine as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SoftwareInner> listByExtendedResource(
@@ -42,7 +42,7 @@ public interface SoftwareInventoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the software inventory of the virtual machine.
+     * @return the software inventory of the virtual machine as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SoftwareInner> listByExtendedResource(
@@ -53,7 +53,8 @@ public interface SoftwareInventoriesClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the software inventory of all virtual machines in the subscriptions.
+     * @return the software inventory of all virtual machines in the subscriptions as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SoftwareInner> list();
@@ -65,7 +66,8 @@ public interface SoftwareInventoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the software inventory of all virtual machines in the subscriptions.
+     * @return the software inventory of all virtual machines in the subscriptions as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SoftwareInner> list(Context context);
@@ -105,7 +107,7 @@ public interface SoftwareInventoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single software data of the virtual machine.
+     * @return a single software data of the virtual machine along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SoftwareInner> getWithResponse(
