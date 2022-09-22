@@ -859,28 +859,6 @@ public class CosmosAsyncContainer {
 
             return executor
                 .execute()
-                .doFinally((SignalType signal) -> {
-                    if (signal == SignalType.ON_COMPLETE) {
-                        logger.debug("BulkExecutor.execute flux completed - # left items {}, Context: {}",
-                            executor.getItemsLeftSnapshot(),
-                            executor.getOperationContext());
-                    } else {
-                        int itemsLeftSnapshot = executor.getItemsLeftSnapshot();
-                        if (itemsLeftSnapshot > 0) {
-                            logger.info("BulkExecutor.execute flux terminated - Signal: {} - # left items {}, Context: {}",
-                                signal,
-                                itemsLeftSnapshot,
-                                executor.getOperationContext());
-                        } else {
-                            logger.debug("BulkExecutor.execute flux terminated - Signal: {} - # left items {}, Context: {}",
-                                signal,
-                                itemsLeftSnapshot,
-                                executor.getOperationContext());
-                        }
-                    }
-
-                    executor.dispose();
-                })
                 .publishOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC);
         });
     }

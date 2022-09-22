@@ -155,8 +155,6 @@ public final class BulkExecutor<TContext> implements Disposable {
         // To make sure we flush the buffers at least every maxMicroBatchIntervalInMs we start a timer
         // that will trigger artificial ItemOperations that are only used to flush the buffers (and will be
         // filtered out before sending requests to the backend)
-        // this.executorService = Executors.newSingleThreadScheduledExecutor(
-        //        new CosmosDaemonThreadFactory("BulkExecutor-" + instanceCount.incrementAndGet()));
         this.executorService = new ScheduledThreadPoolExecutor(
             1,
             new CosmosDaemonThreadFactory(identifier));
@@ -221,15 +219,37 @@ public final class BulkExecutor<TContext> implements Disposable {
         }
     }
 
-    public int getItemsLeftSnapshot() {
-        return this.totalCount.get();
-    }
-
-    public String getOperationContext() {
-        return this.operationContextText;
-    }
-
     public Flux<CosmosBulkOperationResponse<TContext>> execute() {
+        return this
+            .executeCore()
+            .doFinally((SignalType signal) -> {
+                if (signal == SignalType.ON_COMPLETE) {
+                    logger.debug("BulkExecutor.execute flux completed - # left items {}, Context: {}, {}",
+                        this.totalCount.get(),
+                        this.operationContextText,
+                        getThreadInfo());
+                } else {
+                    int itemsLeftSnapshot = this.totalCount.get();
+                    if (itemsLeftSnapshot > 0) {
+                        logger.info("BulkExecutor.execute flux terminated - Signal: {} - # left items {}, Context: {}, {}",
+                            signal,
+                            itemsLeftSnapshot,
+                            this.operationContextText,
+                            getThreadInfo());
+                    } else {
+                        logger.debug("BulkExecutor.execute flux terminated - Signal: {} - # left items {}, Context: {}, {}",
+                            signal,
+                            itemsLeftSnapshot,
+                            this.operationContextText,
+                            getThreadInfo());
+                    }
+                }
+
+                this.dispose();
+            });
+    }
+
+    private Flux<CosmosBulkOperationResponse<TContext>> executeCore() {
 
         // The groupBy below is running into a hang if the flatMap above is
         // not allowing at least a concurrency of the number of unique values
@@ -396,17 +416,6 @@ public final class BulkExecutor<TContext> implements Disposable {
                                 getThreadInfo());
                         }
                     });
-            })
-            .doOnCancel(() -> {
-                long totalCountSnapshot = totalCount.get();
-                logger.info("Execution flux was cancelled - # left items {}, Context: {}",
-                    totalCountSnapshot,
-                    this.operationContextText);
-                if (totalCountSnapshot == 0) {
-                    completeAllSinks();
-                } else {
-                    this.shutdown();
-                }
             });
     }
 

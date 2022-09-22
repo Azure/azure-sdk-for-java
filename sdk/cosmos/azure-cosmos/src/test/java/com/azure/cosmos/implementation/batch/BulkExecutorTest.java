@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.BatchTestBase;
@@ -5,14 +7,12 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.PartitionKey;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -25,7 +25,6 @@ import org.testng.annotations.Test;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.SignalType;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -51,7 +50,7 @@ public class BulkExecutorTest extends BatchTestBase {
     public void afterClass() {
         logger.info("starting ....");
         safeDeleteDatabase(database);
-        safeCloseClient(client);
+        safeCloseAsync(client);
     }
 
     @AfterMethod(groups = { "emulator" })
@@ -86,34 +85,12 @@ public class BulkExecutorTest extends BatchTestBase {
         return database.getContainer(collectionName);
     }
 
-    static protected CosmosAsyncDatabase createDatabase(CosmosAsyncClient client, String databaseId) {
-        CosmosDatabaseProperties databaseSettings = new CosmosDatabaseProperties(databaseId);
-        client.createDatabase(databaseSettings).block();
-        return client.getDatabase(databaseSettings.getId());
-    }
-
-    static protected CosmosAsyncDatabase createDatabaseIfNotExists(CosmosAsyncClient client, String databaseId) {
-        List<CosmosDatabaseProperties> res = client.queryDatabases(String.format("SELECT * FROM r where r.id = '%s'",
-            databaseId), null)
-                                                   .collectList()
-                                                   .block();
-        if (res.size() != 0) {
-            CosmosAsyncDatabase database = client.getDatabase(databaseId);
-            database.read().block();
-            return database;
-        } else {
-            CosmosDatabaseProperties databaseSettings = new CosmosDatabaseProperties(databaseId);
-            client.createDatabase(databaseSettings).block();
-            return client.getDatabase(databaseSettings.getId());
-        }
-    }
-
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void executeBulk_cancel() throws InterruptedException {
         int totalRequest = 100;
         this.container = createContainer(database);
 
-        List<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+        List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
         for (int i = 0; i < totalRequest; i++) {
             String partitionKey = UUID.randomUUID().toString();
             BatchTestBase.TestDoc testDoc = this.populateTestDoc(partitionKey);
@@ -127,8 +104,8 @@ public class BulkExecutorTest extends BatchTestBase {
                 new PartitionKey(partitionKey)));
         }
 
-        com.azure.cosmos.models.CosmosItemOperation[] itemOperationsArray =
-            new com.azure.cosmos.models.CosmosItemOperation[cosmosItemOperations.size()];
+        CosmosItemOperation[] itemOperationsArray =
+            new CosmosItemOperation[cosmosItemOperations.size()];
         cosmosItemOperations.toArray(itemOperationsArray);
         CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
         Flux<CosmosItemOperation> inputFlux = Flux
@@ -139,32 +116,7 @@ public class BulkExecutorTest extends BatchTestBase {
             inputFlux,
             cosmosBulkExecutionOptions);
         Flux<com.azure.cosmos.models.CosmosBulkOperationResponse<BulkExecutorTest>> bulkResponseFlux =
-            Flux.deferContextual(context -> executor
-                .execute()
-                .doFinally((SignalType signal) -> {
-                    if (signal == SignalType.ON_COMPLETE) {
-                        logger.info("BulkExecutor.execute flux completed - # left items {}, Context: {}",
-                            executor.getItemsLeftSnapshot(),
-                            executor.getOperationContext());
-                    } else {
-                        int itemsLeftSnapshot = executor.getItemsLeftSnapshot();
-                        if (itemsLeftSnapshot > 0) {
-                            logger.info("BulkExecutor.execute flux terminated - Signal: {} - # left items {}, "
-                                    + "Context: {}",
-                                signal,
-                                itemsLeftSnapshot,
-                                executor.getOperationContext());
-                        } else {
-                            logger.info("BulkExecutor.execute flux terminated - Signal: {} - # left items {}, "
-                                    + "Context: {}",
-                                signal,
-                                itemsLeftSnapshot,
-                                executor.getOperationContext());
-                        }
-                    }
-
-                    executor.dispose();
-                }));
+            Flux.deferContextual(context -> executor.execute());
 
         Disposable disposable = bulkResponseFlux.subscribe();
         disposable.dispose();
@@ -186,7 +138,7 @@ public class BulkExecutorTest extends BatchTestBase {
         int totalRequest = 10;
         this.container = createContainer(database);
 
-        List<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+        List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
         for (int i = 0; i < totalRequest; i++) {
             String partitionKey = UUID.randomUUID().toString();
             BatchTestBase.TestDoc testDoc = this.populateTestDoc(partitionKey);
@@ -200,8 +152,8 @@ public class BulkExecutorTest extends BatchTestBase {
                 new PartitionKey(partitionKey)));
         }
 
-        com.azure.cosmos.models.CosmosItemOperation[] itemOperationsArray =
-            new com.azure.cosmos.models.CosmosItemOperation[cosmosItemOperations.size()];
+        CosmosItemOperation[] itemOperationsArray =
+            new CosmosItemOperation[cosmosItemOperations.size()];
         cosmosItemOperations.toArray(itemOperationsArray);
         CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
         final BulkExecutor<BulkExecutorTest> executor = new BulkExecutor<>(
@@ -209,32 +161,7 @@ public class BulkExecutorTest extends BatchTestBase {
             Flux.fromArray(itemOperationsArray),
             cosmosBulkExecutionOptions);
         Flux<com.azure.cosmos.models.CosmosBulkOperationResponse<BulkExecutorTest>> bulkResponseFlux =
-            Flux.deferContextual(context -> executor
-                .execute()
-                .doFinally((SignalType signal) -> {
-                    if (signal == SignalType.ON_COMPLETE) {
-                        logger.debug("BulkExecutor.execute flux completed - # left items {}, Context: {}",
-                            executor.getItemsLeftSnapshot(),
-                            executor.getOperationContext());
-                    } else {
-                        int itemsLeftSnapshot = executor.getItemsLeftSnapshot();
-                        if (itemsLeftSnapshot > 0) {
-                            logger.info("BulkExecutor.execute flux terminated - Signal: {} - # left items {}, "
-                                    + "Context: {}",
-                                signal,
-                                itemsLeftSnapshot,
-                                executor.getOperationContext());
-                        } else {
-                            logger.debug("BulkExecutor.execute flux terminated - Signal: {} - # left items {}, "
-                                    + "Context: {}",
-                                signal,
-                                itemsLeftSnapshot,
-                                executor.getOperationContext());
-                        }
-                    }
-
-                    executor.dispose();
-                }));
+            Flux.deferContextual(context -> executor.execute());
 
         Mono<List<CosmosBulkOperationResponse<BulkExecutorTest>>> convertToListMono = bulkResponseFlux
             .collect(Collectors.toList());
@@ -264,91 +191,6 @@ public class BulkExecutorTest extends BatchTestBase {
 
             Thread.sleep(10);
             iterations++;
-        }
-    }
-
-    static protected void safeClose(CosmosAsyncClient client) {
-        if (client != null) {
-            try {
-                client.close();
-            } catch (Exception e) {
-                logger.error("failed to close client", e);
-            }
-        }
-    }
-
-    static protected void safeCloseAsync(CosmosAsyncClient client) {
-        if (client != null) {
-            new Thread(() -> {
-                try {
-                    client.close();
-                } catch (Exception e) {
-                    logger.error("failed to close client", e);
-                }
-            }).start();
-        }
-    }
-
-    static protected void safeCloseClient(CosmosAsyncClient client) {
-        if (client != null) {
-            try {
-                logger.info("closing client ...");
-                client.close();
-                logger.info("closing client completed");
-            } catch (Exception e) {
-                logger.error("failed to close client", e);
-            }
-        }
-    }
-
-    static protected void safeDeleteAllCollections(CosmosAsyncDatabase database) {
-        if (database != null) {
-            List<CosmosContainerProperties> collections = database.readAllContainers()
-                                                                  .collectList()
-                                                                  .block();
-
-            for (CosmosContainerProperties collection : collections) {
-                database.getContainer(collection.getId()).delete().block();
-            }
-        }
-    }
-
-    static protected void safeDeleteCollection(CosmosAsyncContainer collection) {
-        if (collection != null) {
-            try {
-                collection.delete().block();
-            } catch (Exception e) {
-            }
-        }
-    }
-
-    static protected void safeDeleteCollection(CosmosAsyncDatabase database, String collectionId) {
-        if (database != null && collectionId != null) {
-            try {
-                database.getContainer(collectionId).delete().block();
-            } catch (Exception e) {
-            }
-        }
-    }
-
-    static protected void safeDeleteDatabase(CosmosAsyncDatabase database) {
-        if (database != null) {
-            try {
-                database.delete().block();
-            } catch (Exception e) {
-            }
-        }
-    }
-
-    static protected void safeDeleteSyncDatabase(CosmosDatabase database) {
-        if (database != null) {
-            try {
-                logger.info("attempting to delete database ....");
-                database.delete();
-                logger.info("database deletion completed");
-            } catch (Exception e) {
-                logger.error("failed to delete sync database", e);
-            }
         }
     }
 }
