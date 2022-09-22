@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.models.InformationProtectionPolicyInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Information protection policies response. */
 @Fluent
 public final class InformationProtectionPolicyList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InformationProtectionPolicyList.class);
-
     /*
      * List of information protection policies.
      */

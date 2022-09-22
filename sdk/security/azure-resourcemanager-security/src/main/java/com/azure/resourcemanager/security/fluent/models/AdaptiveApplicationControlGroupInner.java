@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.AdaptiveApplicationControlIssueSummary;
@@ -16,65 +15,17 @@ import com.azure.resourcemanager.security.models.ProtectionMode;
 import com.azure.resourcemanager.security.models.RecommendationStatus;
 import com.azure.resourcemanager.security.models.SourceSystem;
 import com.azure.resourcemanager.security.models.VmRecommendation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The AdaptiveApplicationControlGroup model. */
-@JsonFlatten
 @Fluent
-public class AdaptiveApplicationControlGroupInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdaptiveApplicationControlGroupInner.class);
-
+public final class AdaptiveApplicationControlGroupInner extends ProxyResource {
     /*
-     * The application control policy enforcement/protection mode of the
-     * machine group
+     * Represents a machines group and set of rules to be allowed running on a machine
      */
-    @JsonProperty(value = "properties.enforcementMode")
-    private EnforcementMode enforcementMode;
-
-    /*
-     * The protection mode of the collection/file types. Exe/Msi/Script are
-     * used for Windows, Executable is used for Linux.
-     */
-    @JsonProperty(value = "properties.protectionMode")
-    private ProtectionMode protectionMode;
-
-    /*
-     * The configuration status of the machines group or machine or rule
-     */
-    @JsonProperty(value = "properties.configurationStatus", access = JsonProperty.Access.WRITE_ONLY)
-    private ConfigurationStatus configurationStatus;
-
-    /*
-     * The initial recommendation status of the machine group or machine
-     */
-    @JsonProperty(value = "properties.recommendationStatus", access = JsonProperty.Access.WRITE_ONLY)
-    private RecommendationStatus recommendationStatus;
-
-    /*
-     * The issues property.
-     */
-    @JsonProperty(value = "properties.issues", access = JsonProperty.Access.WRITE_ONLY)
-    private List<AdaptiveApplicationControlIssueSummary> issues;
-
-    /*
-     * The source type of the machine group
-     */
-    @JsonProperty(value = "properties.sourceSystem", access = JsonProperty.Access.WRITE_ONLY)
-    private SourceSystem sourceSystem;
-
-    /*
-     * The vmRecommendations property.
-     */
-    @JsonProperty(value = "properties.vmRecommendations")
-    private List<VmRecommendation> vmRecommendations;
-
-    /*
-     * The pathRecommendations property.
-     */
-    @JsonProperty(value = "properties.pathRecommendations")
-    private List<PathRecommendation> pathRecommendations;
+    @JsonProperty(value = "properties", required = true)
+    private AdaptiveApplicationControlGroupData innerProperties = new AdaptiveApplicationControlGroupData();
 
     /*
      * Location where the resource is stored
@@ -83,123 +34,13 @@ public class AdaptiveApplicationControlGroupInner extends ProxyResource {
     private String location;
 
     /**
-     * Get the enforcementMode property: The application control policy enforcement/protection mode of the machine
-     * group.
+     * Get the innerProperties property: Represents a machines group and set of rules to be allowed running on a
+     * machine.
      *
-     * @return the enforcementMode value.
+     * @return the innerProperties value.
      */
-    public EnforcementMode enforcementMode() {
-        return this.enforcementMode;
-    }
-
-    /**
-     * Set the enforcementMode property: The application control policy enforcement/protection mode of the machine
-     * group.
-     *
-     * @param enforcementMode the enforcementMode value to set.
-     * @return the AdaptiveApplicationControlGroupInner object itself.
-     */
-    public AdaptiveApplicationControlGroupInner withEnforcementMode(EnforcementMode enforcementMode) {
-        this.enforcementMode = enforcementMode;
-        return this;
-    }
-
-    /**
-     * Get the protectionMode property: The protection mode of the collection/file types. Exe/Msi/Script are used for
-     * Windows, Executable is used for Linux.
-     *
-     * @return the protectionMode value.
-     */
-    public ProtectionMode protectionMode() {
-        return this.protectionMode;
-    }
-
-    /**
-     * Set the protectionMode property: The protection mode of the collection/file types. Exe/Msi/Script are used for
-     * Windows, Executable is used for Linux.
-     *
-     * @param protectionMode the protectionMode value to set.
-     * @return the AdaptiveApplicationControlGroupInner object itself.
-     */
-    public AdaptiveApplicationControlGroupInner withProtectionMode(ProtectionMode protectionMode) {
-        this.protectionMode = protectionMode;
-        return this;
-    }
-
-    /**
-     * Get the configurationStatus property: The configuration status of the machines group or machine or rule.
-     *
-     * @return the configurationStatus value.
-     */
-    public ConfigurationStatus configurationStatus() {
-        return this.configurationStatus;
-    }
-
-    /**
-     * Get the recommendationStatus property: The initial recommendation status of the machine group or machine.
-     *
-     * @return the recommendationStatus value.
-     */
-    public RecommendationStatus recommendationStatus() {
-        return this.recommendationStatus;
-    }
-
-    /**
-     * Get the issues property: The issues property.
-     *
-     * @return the issues value.
-     */
-    public List<AdaptiveApplicationControlIssueSummary> issues() {
-        return this.issues;
-    }
-
-    /**
-     * Get the sourceSystem property: The source type of the machine group.
-     *
-     * @return the sourceSystem value.
-     */
-    public SourceSystem sourceSystem() {
-        return this.sourceSystem;
-    }
-
-    /**
-     * Get the vmRecommendations property: The vmRecommendations property.
-     *
-     * @return the vmRecommendations value.
-     */
-    public List<VmRecommendation> vmRecommendations() {
-        return this.vmRecommendations;
-    }
-
-    /**
-     * Set the vmRecommendations property: The vmRecommendations property.
-     *
-     * @param vmRecommendations the vmRecommendations value to set.
-     * @return the AdaptiveApplicationControlGroupInner object itself.
-     */
-    public AdaptiveApplicationControlGroupInner withVmRecommendations(List<VmRecommendation> vmRecommendations) {
-        this.vmRecommendations = vmRecommendations;
-        return this;
-    }
-
-    /**
-     * Get the pathRecommendations property: The pathRecommendations property.
-     *
-     * @return the pathRecommendations value.
-     */
-    public List<PathRecommendation> pathRecommendations() {
-        return this.pathRecommendations;
-    }
-
-    /**
-     * Set the pathRecommendations property: The pathRecommendations property.
-     *
-     * @param pathRecommendations the pathRecommendations value to set.
-     * @return the AdaptiveApplicationControlGroupInner object itself.
-     */
-    public AdaptiveApplicationControlGroupInner withPathRecommendations(List<PathRecommendation> pathRecommendations) {
-        this.pathRecommendations = pathRecommendations;
-        return this;
+    private AdaptiveApplicationControlGroupData innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -212,22 +53,152 @@ public class AdaptiveApplicationControlGroupInner extends ProxyResource {
     }
 
     /**
+     * Get the enforcementMode property: The application control policy enforcement/protection mode of the machine
+     * group.
+     *
+     * @return the enforcementMode value.
+     */
+    public EnforcementMode enforcementMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().enforcementMode();
+    }
+
+    /**
+     * Set the enforcementMode property: The application control policy enforcement/protection mode of the machine
+     * group.
+     *
+     * @param enforcementMode the enforcementMode value to set.
+     * @return the AdaptiveApplicationControlGroupInner object itself.
+     */
+    public AdaptiveApplicationControlGroupInner withEnforcementMode(EnforcementMode enforcementMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AdaptiveApplicationControlGroupData();
+        }
+        this.innerProperties().withEnforcementMode(enforcementMode);
+        return this;
+    }
+
+    /**
+     * Get the protectionMode property: The protection mode of the collection/file types. Exe/Msi/Script are used for
+     * Windows, Executable is used for Linux.
+     *
+     * @return the protectionMode value.
+     */
+    public ProtectionMode protectionMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().protectionMode();
+    }
+
+    /**
+     * Set the protectionMode property: The protection mode of the collection/file types. Exe/Msi/Script are used for
+     * Windows, Executable is used for Linux.
+     *
+     * @param protectionMode the protectionMode value to set.
+     * @return the AdaptiveApplicationControlGroupInner object itself.
+     */
+    public AdaptiveApplicationControlGroupInner withProtectionMode(ProtectionMode protectionMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AdaptiveApplicationControlGroupData();
+        }
+        this.innerProperties().withProtectionMode(protectionMode);
+        return this;
+    }
+
+    /**
+     * Get the configurationStatus property: The configuration status of the machines group or machine or rule.
+     *
+     * @return the configurationStatus value.
+     */
+    public ConfigurationStatus configurationStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().configurationStatus();
+    }
+
+    /**
+     * Get the recommendationStatus property: The initial recommendation status of the machine group or machine.
+     *
+     * @return the recommendationStatus value.
+     */
+    public RecommendationStatus recommendationStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().recommendationStatus();
+    }
+
+    /**
+     * Get the issues property: The issues property.
+     *
+     * @return the issues value.
+     */
+    public List<AdaptiveApplicationControlIssueSummary> issues() {
+        return this.innerProperties() == null ? null : this.innerProperties().issues();
+    }
+
+    /**
+     * Get the sourceSystem property: The source type of the machine group.
+     *
+     * @return the sourceSystem value.
+     */
+    public SourceSystem sourceSystem() {
+        return this.innerProperties() == null ? null : this.innerProperties().sourceSystem();
+    }
+
+    /**
+     * Get the vmRecommendations property: The vmRecommendations property.
+     *
+     * @return the vmRecommendations value.
+     */
+    public List<VmRecommendation> vmRecommendations() {
+        return this.innerProperties() == null ? null : this.innerProperties().vmRecommendations();
+    }
+
+    /**
+     * Set the vmRecommendations property: The vmRecommendations property.
+     *
+     * @param vmRecommendations the vmRecommendations value to set.
+     * @return the AdaptiveApplicationControlGroupInner object itself.
+     */
+    public AdaptiveApplicationControlGroupInner withVmRecommendations(List<VmRecommendation> vmRecommendations) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AdaptiveApplicationControlGroupData();
+        }
+        this.innerProperties().withVmRecommendations(vmRecommendations);
+        return this;
+    }
+
+    /**
+     * Get the pathRecommendations property: The pathRecommendations property.
+     *
+     * @return the pathRecommendations value.
+     */
+    public List<PathRecommendation> pathRecommendations() {
+        return this.innerProperties() == null ? null : this.innerProperties().pathRecommendations();
+    }
+
+    /**
+     * Set the pathRecommendations property: The pathRecommendations property.
+     *
+     * @param pathRecommendations the pathRecommendations value to set.
+     * @return the AdaptiveApplicationControlGroupInner object itself.
+     */
+    public AdaptiveApplicationControlGroupInner withPathRecommendations(List<PathRecommendation> pathRecommendations) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AdaptiveApplicationControlGroupData();
+        }
+        this.innerProperties().withPathRecommendations(pathRecommendations);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (protectionMode() != null) {
-            protectionMode().validate();
-        }
-        if (issues() != null) {
-            issues().forEach(e -> e.validate());
-        }
-        if (vmRecommendations() != null) {
-            vmRecommendations().forEach(e -> e.validate());
-        }
-        if (pathRecommendations() != null) {
-            pathRecommendations().forEach(e -> e.validate());
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model AdaptiveApplicationControlGroupInner"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AdaptiveApplicationControlGroupInner.class);
 }
