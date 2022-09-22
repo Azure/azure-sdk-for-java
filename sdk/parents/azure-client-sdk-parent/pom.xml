@@ -214,6 +214,9 @@
 
     <!-- Set this to an empty value to enable the compiler to fail on usage of deprecated APIs. -->
     <compiler.failondeprecatedstatus>-</compiler.failondeprecatedstatus>
+
+    <!-- Used by Java 18 and later to allow the security manager to be set while testing and linting. -->
+    <java.security.manager.configuration></java.security.manager.configuration>
   </properties>
 
   <build>
@@ -652,7 +655,7 @@
             <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
             <includeTests>${spotbugs.includeTests}</includeTests>
             <jvmArgs>
-              -Djava.security.manager=allow
+              ${java.security.manager.configuration}
             </jvmArgs>
 
             <!-- Enable this plugin when issues documented are fixed -->
@@ -1157,7 +1160,7 @@
                 <!-- In later versions of Java, java.base doesn't open java.lang.invoke to azure-core, so it needs to be done with this directive. This only affects tests. -->
                 --add-opens java.base/java.lang.invoke=com.azure.core
                 ${additionalFailsafeArgLine}
-                -Djava.security.manager=allow
+                ${java.security.manager.configuration}
               </argLine>
             </configuration>
           </plugin>
@@ -1599,6 +1602,17 @@
           </plugin>
         </plugins>
       </build>
+    </profile>
+
+    <profile>
+      <id>java-18-plus-allow-securitymanager</id>
+      <activation>
+        <jdk>[18,)</jdk>
+      </activation>
+
+      <properties>
+        <java.security.manager.configuration>-Djava.security.manager=allow</java.security.manager.configuration>
+      </properties>
     </profile>
   </profiles>
 </project>
