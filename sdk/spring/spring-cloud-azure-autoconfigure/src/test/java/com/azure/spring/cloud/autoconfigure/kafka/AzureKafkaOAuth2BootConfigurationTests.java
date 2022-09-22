@@ -98,6 +98,7 @@ class AzureKafkaOAuth2BootConfigurationTests extends AbstractAzureKafkaOAuth2Aut
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     void testOAuthConfiguredToCallbackHandler() {
         this.contextRunner
             .withPropertyValues(
@@ -114,7 +115,7 @@ class AzureKafkaOAuth2BootConfigurationTests extends AbstractAzureKafkaOAuth2Aut
 
                 AzureKafkaProperties properties = (AzureKafkaProperties) ReflectionTestUtils
                     .getField(callbackHandler, "properties");
-                @SuppressWarnings("unchecked") AzureCredentialResolver<TokenCredential> azureTokenCredentialResolver =
+                AzureCredentialResolver<TokenCredential> azureTokenCredentialResolver =
                     (AzureCredentialResolver<TokenCredential>) ReflectionTestUtils.getField(callbackHandler, "tokenCredentialResolver");
                 assertNotNull(azureTokenCredentialResolver);
                 assertTrue(azureTokenCredentialResolver.resolve(properties) instanceof ManagedIdentityCredential);
