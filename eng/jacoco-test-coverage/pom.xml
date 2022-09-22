@@ -223,12 +223,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-json</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-json;current} -->
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-json;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-json-gson</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-json-gson;current} -->
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-json-gson;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -373,7 +373,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-xml</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-xml;current} -->
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-xml;current} -->
     </dependency>
 
     <dependency>
