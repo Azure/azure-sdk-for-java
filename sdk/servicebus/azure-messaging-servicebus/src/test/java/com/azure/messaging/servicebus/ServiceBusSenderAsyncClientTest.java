@@ -129,7 +129,7 @@ class ServiceBusSenderAsyncClientTest {
     private ArgumentCaptor<Iterable<Long>> sequenceNumberCaptor;
 
     private final MessageSerializer serializer = new ServiceBusMessageSerializer();
-    private final ServiceBusSenderTracer tracer = new ServiceBusSenderTracer(NAMESPACE, ENTITY_NAME);
+    private static final ServiceBusSenderTracer DEFAULT_TRACER = new ServiceBusSenderTracer(null, NAMESPACE, ENTITY_NAME);
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions()
         .setDelay(Duration.ofMillis(500))
         .setMode(AmqpRetryMode.FIXED)
@@ -167,7 +167,7 @@ class ServiceBusSenderAsyncClientTest {
                 connectionOptions.getRetry()));
 
         sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionProcessor,
-            retryOptions, tracer, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+            retryOptions, DEFAULT_TRACER, serializer, onClientClose, null, CLIENT_IDENTIFIER);
 
         when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
             .thenReturn(just(managementNode));
@@ -324,7 +324,7 @@ class ServiceBusSenderAsyncClientTest {
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.toBytes();
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(256 * 1024,
-            errorContextProvider, tracer, serializer, null, null);
+            errorContextProvider, DEFAULT_TRACER, serializer, null, null);
 
         IntStream.range(0, count).forEach(index -> {
             final ServiceBusMessage message = new ServiceBusMessage(BinaryData.fromBytes(contents));
@@ -363,7 +363,7 @@ class ServiceBusSenderAsyncClientTest {
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.toBytes();
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(256 * 1024,
-            errorContextProvider, tracer, serializer, null, null);
+            errorContextProvider, DEFAULT_TRACER, serializer, null, null);
 
         IntStream.range(0, count).forEach(index -> {
             final ServiceBusMessage message = new ServiceBusMessage(BinaryData.fromBytes(contents));

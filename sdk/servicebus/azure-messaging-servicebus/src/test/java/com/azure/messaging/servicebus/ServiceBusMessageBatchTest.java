@@ -22,7 +22,7 @@ public class ServiceBusMessageBatchTest {
     private ErrorContextProvider errorContextProvider;
 
     private MessageSerializer serializer = new ServiceBusMessageSerializer();
-    private ServiceBusSenderTracer tracer = new ServiceBusSenderTracer("namespace", "entity");
+    private ServiceBusSenderTracer tracer = new ServiceBusSenderTracer(null, "namespace", "entity");
 
     @BeforeEach
     public void setup() {

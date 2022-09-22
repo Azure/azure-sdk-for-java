@@ -72,7 +72,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
     private final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
     private final EmitterProcessor<Message> messageProcessor = EmitterProcessor.create();
     private final FluxSink<Message> messageSink = messageProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
-    private final ServiceBusReceiverTracer tracer = new ServiceBusReceiverTracer(NAMESPACE, ENTITY_PATH, false);
+    private final ServiceBusReceiverTracer tracer = new ServiceBusReceiverTracer(null, NAMESPACE, ENTITY_PATH, false);
 
     private ServiceBusConnectionProcessor connectionProcessor;
     private ServiceBusSessionManager sessionManager;

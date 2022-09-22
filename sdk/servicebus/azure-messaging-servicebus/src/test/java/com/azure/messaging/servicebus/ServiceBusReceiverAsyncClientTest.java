@@ -133,7 +133,7 @@ class ServiceBusReceiverAsyncClientTest {
     @Mock
     private MessageSerializer messageSerializer;
 
-    private ServiceBusReceiverTracer tracer = new ServiceBusReceiverTracer(NAMESPACE, ENTITY_PATH, false);
+    private ServiceBusReceiverTracer tracer = new ServiceBusReceiverTracer(null, NAMESPACE, ENTITY_PATH, false);
     @Mock
     private ServiceBusManagementNode managementNode;
     @Mock

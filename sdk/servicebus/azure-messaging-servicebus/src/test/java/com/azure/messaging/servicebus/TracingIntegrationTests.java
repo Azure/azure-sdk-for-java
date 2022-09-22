@@ -13,6 +13,7 @@ import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.api.trace.StatusCode;
 import io.opentelemetry.context.Context;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.trace.IdGenerator;
 import io.opentelemetry.sdk.trace.ReadWriteSpan;
 import io.opentelemetry.sdk.trace.ReadableSpan;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
@@ -22,12 +23,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
-import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -97,61 +98,89 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void sendAndReceive() throws InterruptedException {
-        ServiceBusMessage message = new ServiceBusMessage(CONTENTS_BYTES);
-        StepVerifier.create(sender.sendMessage(message))
+    public void sendAndReceive()  {
+        ServiceBusMessage message1 = new ServiceBusMessage(CONTENTS_BYTES);
+        ServiceBusMessage message2 = new ServiceBusMessage(CONTENTS_BYTES);
+        List<ServiceBusMessage> messages = Arrays.asList(message1, message2);
+        StepVerifier.create(sender.sendMessages(messages))
             .verifyComplete();
 
-        AtomicReference<ServiceBusReceivedMessage> receivedMessage = new AtomicReference<>();
+        List<ServiceBusReceivedMessage> received = new ArrayList<>();
         StepVerifier.create(receiver.receiveMessages()
                 .flatMap(rm -> receiver.complete(rm).thenReturn(rm))
-                .take(1))
-            .assertNext(rm -> {
-                receivedMessage.set(rm);
-            })
+                .take(2))
+            .assertNext(rm -> received.add(rm))
+            .assertNext(rm -> received.add(rm))
             .verifyComplete();
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
 
-        assertMessageSpan(spans.get(0), message);
-        assertSendSpan(spans.get(1), Collections.singletonList(message), "ServiceBus.send");
+        List<ReadableSpan> messageSpans = findSpans(spans, "ServiceBus.message");
+        assertMessageSpan(messageSpans.get(0), message1);
+        assertMessageSpan(messageSpans.get(1), message2);
 
-        List<ReadableSpan> received = findSpans(spans, "ServiceBus.process");
-        assertConsumerSpan(received.get(0), receivedMessage.get(), "ServiceBus.process");
+        List<ReadableSpan> send = findSpans(spans, "ServiceBus.send");
+        assertSendSpan(send.get(0), messages, "ServiceBus.send");
+
+        List<ReadableSpan> processed = findSpans(spans, "ServiceBus.process");
+        assertConsumerSpan(processed.get(0), received.get(0), "ServiceBus.process");
+        assertConsumerSpan(processed.get(1), received.get(1), "ServiceBus.process");
 
         List<ReadableSpan> completed = findSpans(spans, "ServiceBus.complete");
-        assertReceiveSpan(completed.get(0), Collections.singletonList(receivedMessage.get()), "ServiceBus.complete");
+        assertReceiveSpan(completed.get(0), Collections.singletonList(received.get(0)), "ServiceBus.complete");
+        assertParent(completed.get(0), processed.get(0));
 
+        assertReceiveSpan(completed.get(1), Collections.singletonList(received.get(1)), "ServiceBus.complete");
+        assertParent(completed.get(1), processed.get(1));
     }
 
     @Test
-    public void sendPeekRenewLockAndDefer() {
-        StepVerifier.create(sender.sendMessage(new ServiceBusMessage(CONTENTS_BYTES)))
-            .verifyComplete();
+    public void sendPeekRenewLockAndDefer() throws InterruptedException {
+        String traceId = IdGenerator.random().generateTraceId();
+        String traceparent = "00-" + traceId + "-" + IdGenerator.random().generateSpanId() + "-01";
+        ServiceBusMessage message = new ServiceBusMessage(CONTENTS_BYTES);
+        AtomicReference<ServiceBusReceivedMessage> receivedMessage = new AtomicReference<>();
+        message.getApplicationProperties().put("traceparent", traceparent);
 
-        Flux<ServiceBusReceivedMessage> receive = receiver.receiveMessages()
-            .take(1)
+        StepVerifier.create(sender.sendMessage(message)).verifyComplete();
+
+        CountDownLatch latch = new CountDownLatch(2);
+        spanProcessor.notifyIfCondition(latch, s -> s.getName().equals("ServiceBus.process") && s.getSpanContext().getTraceId().equals(traceId));
+        receiver.receiveMessages()
+            .skipUntil(m -> traceparent.equals(m.getApplicationProperties().get("traceparent")))
             .flatMap(m -> receiver.renewMessageLock(m, Duration.ofSeconds(1)).thenReturn(m))
             .flatMap(m -> receiver.defer(m, new DeferOptions()).thenReturn(m))
-            .flatMap(m -> receiver.receiveDeferredMessage(m.getSequenceNumber()).thenReturn(m));
+            .flatMap(m -> receiver.receiveDeferredMessage(m.getSequenceNumber()).thenReturn(m))
+            .subscribe(m -> {
+                if (traceparent.equals(m.getApplicationProperties().get("traceparent"))) {
+                    receivedMessage.set(m);
+                    latch.countDown();
+                }
+            });
 
-        StepVerifier.create(receive.take(1))
-            .assertNext(receivedMessage ->  {
-                List<ReadableSpan> spans = spanProcessor.getEndedSpans();
+        assertTrue(latch.await(50, TimeUnit.SECONDS));
 
-                List<ReadableSpan> received = findSpans(spans, "ServiceBus.process");
-                assertConsumerSpan(received.get(0), receivedMessage, "ServiceBus.process");
+        List<ReadableSpan> spans = spanProcessor.getEndedSpans();
 
-                List<ReadableSpan> renewMessageLock = findSpans(spans, "ServiceBus.renewMessageLock");
-                assertReceiveSpan(renewMessageLock.get(0), Collections.singletonList(receivedMessage), "ServiceBus.renewMessageLock");
+        assertEquals(0, findSpans(spans, "ServiceBus.message").size());
 
-                List<ReadableSpan> defer = findSpans(spans, "ServiceBus.defer");
-                assertReceiveSpan(defer.get(0), Collections.singletonList(receivedMessage), "ServiceBus.defer");
+        List<ReadableSpan> send = findSpans(spans, "ServiceBus.send");
+        assertSendSpan(send.get(0), Collections.singletonList(message), "ServiceBus.send");
 
-                List<ReadableSpan> receiveDeferredMessage = findSpans(spans, "ServiceBus.receiveDeferredMessage");
-                assertReceiveSpan(receiveDeferredMessage.get(0), Collections.singletonList(receivedMessage), "ServiceBus.receiveDeferredMessage");
-            })
-            .verifyComplete();
+        List<ReadableSpan> process = findSpans(spans, "ServiceBus.process", traceId);
+        assertConsumerSpan(process.get(0), receivedMessage.get(), "ServiceBus.process");
+
+        List<ReadableSpan> renewMessageLock = findSpans(spans, "ServiceBus.renewMessageLock", traceId);
+        assertReceiveSpan(renewMessageLock.get(0), Collections.singletonList(receivedMessage.get()), "ServiceBus.renewMessageLock");
+        assertParent(renewMessageLock.get(0), process.get(0));
+
+        // for correlation to work after first async call, we need to enable otel rector instrumentations,
+        // so no correlation beyond this point
+        List<ReadableSpan> defer = findSpans(spans, "ServiceBus.defer");
+        assertReceiveSpan(defer.get(0), Collections.singletonList(receivedMessage.get()), "ServiceBus.defer");
+
+        List<ReadableSpan> receiveDeferredMessage = findSpans(spans, "ServiceBus.receiveDeferredMessage");
+        assertReceiveSpan(receiveDeferredMessage.get(0), Collections.singletonList(receivedMessage.get()), "ServiceBus.receiveDeferredMessage");
     }
 
     @Test
@@ -278,6 +307,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertMessageSpan(spans.get(0), message);
         assertSendSpan(spans.get(1), Collections.singletonList(message), "ServiceBus.send");
 
+        assertEquals(0, findSpans(spans, "ServiceBus.consume").size());
         List<ReadableSpan> processed = findSpans(spans, "ServiceBus.process")
             .stream().filter(p -> p == currentInProcess.get()).collect(Collectors.toList());
         assertEquals(1, processed.size());
@@ -288,6 +318,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .collect(Collectors.toList());
         assertEquals(1, completed.size());
         assertSendSpan(completed.get(0), Collections.singletonList(message), "ServiceBus.complete");
+        assertParent(completed.get(0), processed.get(0));
     }
 
     @Test
@@ -323,6 +354,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         processor.stop();
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
+        //assertEquals(0, findSpans(spans, "ServiceBus.consume").size());
         List<ReadableSpan> processed = findSpans(spans, "ServiceBus.process")
             .stream().filter(p -> p.getParentSpanContext().isValid())
             .filter(p -> p.toSpanData().getStatus().getStatusCode() == StatusCode.ERROR)
@@ -335,6 +367,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .collect(Collectors.toList());
         assertEquals(1, abandoned.size());
         assertSendSpan(abandoned.get(0), Collections.singletonList(message), "ServiceBus.abandon");
+        assertParent(abandoned.get(0), processed.get(0));
     }
 
     @Test
@@ -395,9 +428,21 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertEquals(messageTraceparent, parent);
     }
 
+    private void assertParent(ReadableSpan child, ReadableSpan parent) {
+        assertEquals(child.getParentSpanContext().getTraceId(), parent.getSpanContext().getTraceId());
+        assertEquals(child.getParentSpanContext().getSpanId(), parent.getSpanContext().getSpanId());
+    }
+
     private List<ReadableSpan> findSpans(List<ReadableSpan> spans, String spanName) {
         return spans.stream()
             .filter(s -> s.getName().equals(spanName))
+            .collect(Collectors.toList());
+    }
+
+    private List<ReadableSpan> findSpans(List<ReadableSpan> spans, String spanName, String traceId) {
+        return spans.stream()
+            .filter(s -> s.getName().equals(spanName))
+            .filter(s -> s.getSpanContext().getTraceId().equals(traceId))
             .collect(Collectors.toList());
     }
 

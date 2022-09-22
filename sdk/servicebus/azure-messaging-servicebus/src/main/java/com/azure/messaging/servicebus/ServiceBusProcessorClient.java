@@ -11,8 +11,6 @@ import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
 import reactor.core.Disposable;
 import reactor.core.scheduler.Schedulers;
-import reactor.util.context.Context;
-
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,8 +18,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
-
-import static com.azure.messaging.servicebus.implementation.ServiceBusReceiverTracer.PROCESSING_ERROR_CONTEXT_KEY;
 
 /**
  * The processor client for processing Service Bus messages. {@link ServiceBusProcessorClient} provides a push-based
@@ -146,6 +142,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         this.processMessage = Objects.requireNonNull(processMessage, "'processMessage' cannot be null");
         this.processError = Objects.requireNonNull(processError, "'processError' cannot be null");
         this.processorOptions = Objects.requireNonNull(processorOptions, "'processorOptions' cannot be null");
+
         this.asyncClient.set(sessionReceiverBuilder.buildAsyncClientForProcessor());
         this.receiverBuilder = null;
         this.queueName = queueName;
@@ -316,7 +313,6 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         for (int i = 0; i < processorOptions.getMaxConcurrentCalls(); i++) {
             subscribers[i] = new CoreSubscriber<ServiceBusMessageContext>() {
                 private Subscription subscription = null;
-                private reactor.util.context.Context context = reactor.util.context.Context.empty();
 
                 @Override
                 public void onSubscribe(Subscription subscription) {
@@ -336,8 +332,9 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
 
                             processMessage.accept(serviceBusReceivedMessageContext);
                         } catch (Exception ex) {
+                            serviceBusMessageContext.getMessage().addContext(FluxTrace.PROCESS_ERROR_KEY, ex);
                             handleError(new ServiceBusException(ex, ServiceBusErrorSource.USER_CALLBACK));
-                            context = context.put(PROCESSING_ERROR_CONTEXT_KEY, ex);
+
                             if (!processorOptions.isDisableAutoComplete()) {
                                 LOGGER.warning("Error when processing message. Abandoning message.", ex);
                                 abandonMessage(serviceBusMessageContext, receiverClient);
@@ -365,11 +362,6 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                     if (isRunning.get()) {
                         restartMessageReceiver(subscription);
                     }
-                }
-
-                @Override
-                public Context currentContext() {
-                    return context;
                 }
             };
         }

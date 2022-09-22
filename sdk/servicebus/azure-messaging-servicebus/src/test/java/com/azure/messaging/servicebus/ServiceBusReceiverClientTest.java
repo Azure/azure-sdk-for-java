@@ -85,7 +85,7 @@ class ServiceBusReceiverClientTest {
         when(asyncClient.getReceiverOptions()).thenReturn(new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
         when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
         when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
-        when(asyncClient.getTracer()).thenReturn(new ServiceBusReceiverTracer(NAMESPACE, ENTITY_PATH, false));
+        when(asyncClient.getTracer()).thenReturn(new ServiceBusReceiverTracer(null, NAMESPACE, ENTITY_PATH, false));
         client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
     }
 

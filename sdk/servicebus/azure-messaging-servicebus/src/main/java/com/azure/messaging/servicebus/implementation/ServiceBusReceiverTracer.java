@@ -7,10 +7,14 @@ import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
 
+import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
@@ -20,19 +24,14 @@ import static com.azure.core.util.tracing.Tracer.MESSAGE_ENQUEUED_TIME;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_NAMESPACE_VALUE;
 
 public class ServiceBusReceiverTracer extends ServiceBusTracer {
-    public static final String PROCESSING_ERROR_CONTEXT_KEY = "process-error";
     private static final AutoCloseable NOOP_AUTOCLOSEABLE = () -> {
     };
 
-    private final boolean syncReceiver;
-    public ServiceBusReceiverTracer(String fullyQualifiedName, String entityPath, boolean syncReceiver) {
-        super(fullyQualifiedName, entityPath);
-        this.syncReceiver = syncReceiver;
-    }
+    private final boolean isSync;
 
-    public ServiceBusReceiverTracer(Tracer tracer, String fullyQualifiedName, String entityPath, boolean syncReceiver) {
+    public ServiceBusReceiverTracer(Tracer tracer, String fullyQualifiedName, String entityPath, boolean isSync) {
         super(tracer, fullyQualifiedName, entityPath);
-        this.syncReceiver = syncReceiver;
+        this.isSync = isSync;
     }
 
     public Context startProcessSpan(String name, ServiceBusReceivedMessage message, Context parent) {
@@ -42,23 +41,33 @@ public class ServiceBusReceiverTracer extends ServiceBusTracer {
         return tracer.start(name, setAttributes(message, parent), ProcessKind.PROCESS);
     }
 
-    public void reportReceiveSpan(Signal<ServiceBusReceivedMessage> signal, String spanName) {
-        if (tracer != null) {
+    public void reportReceiveSpan(String spanName, Instant startTime, Signal<ServiceBusReceivedMessage> signal) {
+        if (tracer != null && (signal.isOnNext())) {
             ServiceBusReceivedMessage message = null;
-            if (signal != null && signal.hasValue()) {
+            if (signal.hasValue()) {
                 message = signal.get();
             }
 
-            Context span = startSpanWithLink(spanName, message, Context.NONE);
-            endSpan(signal == null ? null : signal.getThrowable(), span);
+            Context span = startSpanWithLink(spanName, message, Context.NONE.addData("span-start-time", startTime));
+            endSpan(signal == null ? null : signal.getThrowable(), span, null);
         }
     }
 
-    public void reportReceiveSpan(Iterable<ServiceBusReceivedMessage> messages, String spanName, Throwable error) {
-        if (tracer != null) {
-            Context span = startSpanWithLinks(spanName, messages, Context.NONE);
-            endSpan(error, span);
+    public Flux<ServiceBusReceivedMessage> reportSyncReceiverSpan(String name, Instant startTime, Flux<ServiceBusReceivedMessage> messages) {
+        if (messages == null || tracer == null) {
+            return messages;
         }
+
+        List<ServiceBusReceivedMessage> messageList = new ArrayList<>();
+        return messages
+            .doOnEach(signal -> {
+                if (signal.isOnNext() && signal.hasValue()) {
+                    messageList.add(signal.get());
+                } else if (signal.isOnComplete() || signal.isOnError()) {
+                    Context span = startSpanWithLinks(name, messageList, Context.NONE.addData("span-start-time", startTime));
+                    endSpan(signal.getThrowable(), span, null);
+                }
+            });
     }
 
     public <T> Mono<T> traceMonoWithLink(Mono<T> publisher, ServiceBusReceivedMessage message, String spanName) {
@@ -103,10 +112,10 @@ public class ServiceBusReceiverTracer extends ServiceBusTracer {
     }
 
     public boolean isSync() {
-        return syncReceiver;
+        return isSync;
     }
 
-    private Context startSpanWithLinks(String name, Iterable<ServiceBusReceivedMessage> batch, Context context) {
+    private Context startSpanWithLinks(String name, List<ServiceBusReceivedMessage> batch, Context context) {
         Context spanBuilder = getBuilder(name, context);
         if (batch != null) {
             for (ServiceBusReceivedMessage message : batch) {

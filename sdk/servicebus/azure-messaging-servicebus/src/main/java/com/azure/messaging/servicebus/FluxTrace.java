@@ -4,7 +4,6 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiverTracer;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
@@ -14,13 +13,11 @@ import reactor.core.publisher.FluxOperator;
 
 import java.util.Objects;
 
-import static com.azure.messaging.servicebus.implementation.ServiceBusReceiverTracer.PROCESSING_ERROR_CONTEXT_KEY;
-
 /**
  * Flux operator that traces receive and process calls
  */
 final class FluxTrace extends FluxOperator<ServiceBusMessageContext, ServiceBusMessageContext> {
-    private static final ClientLogger LOGGER = new ClientLogger(FluxTrace.class);
+    static final String PROCESS_ERROR_KEY = "process-error";
     private final ServiceBusReceiverTracer tracer;
 
     FluxTrace(Flux<? extends ServiceBusMessageContext> upstream, ServiceBusReceiverTracer tracer) {
@@ -70,20 +67,14 @@ final class FluxTrace extends FluxOperator<ServiceBusMessageContext, ServiceBusM
             } catch (Throwable t) {
                 exception = t;
             } finally {
-                Object downstreamErrorObj = currentContext().getOrDefault(PROCESSING_ERROR_CONTEXT_KEY, null);
-                if (downstreamErrorObj instanceof Exception) {
-                    exception = (Exception) downstreamErrorObj;
-                }
-
-                try {
-                    if (scope != null) {
-                        scope.close();
+                Context context = message.getMessage().getContext();
+                if (context != null) {
+                    Object processorException = context.getData(PROCESS_ERROR_KEY).orElse(null);
+                    if (processorException instanceof Throwable) {
+                        exception = (Exception) processorException;
                     }
-                } catch (Exception e) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(e));
-                } finally {
-                    tracer.endSpan(exception, span);
                 }
+                tracer.endSpan(exception, span, scope);
             }
         }
 

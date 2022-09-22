@@ -33,6 +33,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
@@ -596,7 +597,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "peek")));
         }
-
+        final Instant startTime = tracer.isEnabled() ? Instant.now() : null;
         return connectionProcessor
                 .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
                 .flatMap(channel -> {
@@ -609,7 +610,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                     return channel.peek(sequence, sessionId, getLinkName(sessionId));
                 })
                 .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE))
-            .doOnEach(signal -> tracer.reportReceiveSpan(signal, "ServiceBus.peekMessage"))
+            .doOnEach(signal -> tracer.reportReceiveSpan("ServiceBus.peekMessage", startTime, signal))
             .handle((message, sink) -> {
                 final long current = lastPeekedSequenceNumber
                     .updateAndGet(value -> Math.max(value, message.getSequenceNumber()));
@@ -655,11 +656,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "peekAt")));
         }
-
+        final Instant startTime = tracer.isEnabled() ? Instant.now() : null;
         return connectionProcessor
                 .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
                 .flatMap(node -> node.peek(sequenceNumber, sessionId, getLinkName(sessionId)))
-                .doOnEach(signal -> tracer.reportReceiveSpan(signal, "ServiceBus.peekMessage"))
+                .doOnEach(signal -> tracer.reportReceiveSpan("ServiceBus.peekMessage", startTime, signal))
                 .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE));
     }
 
@@ -676,8 +677,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     public Flux<ServiceBusReceivedMessage> peekMessages(int maxMessages) {
+        final Instant startTime = tracer.isEnabled() ? Instant.now() : null;
         return peekMessages(maxMessages, receiverOptions.getSessionId())
-            .doOnEach(signal -> tracer.reportReceiveSpan(signal, "ServiceBus.peekMessages"));
+            .doOnEach(signal -> tracer.reportReceiveSpan("ServiceBus.peekMessages", startTime, signal));
     }
 
     /**
@@ -775,11 +777,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         if (maxMessages <= 0) {
             return fluxError(LOGGER, new IllegalArgumentException("'maxMessages' is not positive."));
         }
-
+        final Instant startTime = tracer.isEnabled() ? Instant.now() : null;
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMapMany(node -> node.peek(sequenceNumber, sessionId, getLinkName(sessionId), maxMessages))
-            .doOnEach(signal -> tracer.reportReceiveSpan(signal, "ServiceBus.peekMessages"))
+            .doOnEach(signal -> tracer.reportReceiveSpan("ServiceBus.peekMessages", startTime, signal))
             .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE));
     }
 
@@ -907,6 +909,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "receiveDeferredMessage")));
         }
+
+        final Instant startTime = tracer.isEnabled() ? Instant.now() : null;
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(node -> node.receiveDeferredMessages(receiverOptions.getReceiveMode(),
@@ -923,7 +927,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
                 return receivedMessage;
             })
-            .doOnEach(signal -> tracer.reportReceiveSpan(signal, "ServiceBus.receiveDeferredMessage"))
+            .doOnEach(signal -> tracer.reportReceiveSpan("ServiceBus.receiveDeferredMessage", startTime, signal))
             .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE));
     }
 
@@ -940,8 +944,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws ServiceBusException if deferred messages cannot be received.
      */
     public Flux<ServiceBusReceivedMessage> receiveDeferredMessages(Iterable<Long> sequenceNumbers) {
+        final Instant startTime = tracer.isEnabled() ? Instant.now() : null;
         return receiveDeferredMessages(sequenceNumbers, receiverOptions.getSessionId())
-            .doOnEach(signal -> tracer.reportReceiveSpan(signal, "ServiceBus.receiveDeferredMessages"));
+            .doOnEach(signal -> tracer.reportReceiveSpan("ServiceBus.receiveDeferredMessages", startTime, signal));
     }
 
     /**

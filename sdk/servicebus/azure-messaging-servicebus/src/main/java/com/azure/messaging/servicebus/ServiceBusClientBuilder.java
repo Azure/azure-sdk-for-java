@@ -41,6 +41,7 @@ import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiverTracer;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusSharedKeyCredential;
+import com.azure.messaging.servicebus.implementation.ServiceBusTracer;
 import com.azure.messaging.servicebus.implementation.models.ServiceBusProcessorClientOptions;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
@@ -960,7 +961,7 @@ public final class ServiceBusClientBuilder implements
                 clientIdentifier = UUID.randomUUID().toString();
             }
 
-            final ServiceBusSenderTracer tracer = new ServiceBusSenderTracer(connectionProcessor.getFullyQualifiedNamespace(), entityName);
+            final ServiceBusSenderTracer tracer = new ServiceBusSenderTracer(ServiceBusTracer.getDefaultTracer(), connectionProcessor.getFullyQualifiedNamespace(), entityName);
             return new ServiceBusSenderAsyncClient(entityName, entityType, connectionProcessor, retryOptions,
                 tracer, messageSerializer, ServiceBusClientBuilder.this::onClientClose, null, clientIdentifier);
         }
@@ -1442,7 +1443,7 @@ public final class ServiceBusClientBuilder implements
 
             final ServiceBusSessionManager sessionManager = new ServiceBusSessionManager(entityPath, entityType,
                 connectionProcessor, messageSerializer, receiverOptions, clientIdentifier);
-            final ServiceBusReceiverTracer tracer = new ServiceBusReceiverTracer(connectionProcessor.getFullyQualifiedNamespace(), entityPath, false);
+            final ServiceBusReceiverTracer tracer = new ServiceBusReceiverTracer(ServiceBusTracer.getDefaultTracer(), connectionProcessor.getFullyQualifiedNamespace(), entityPath, false);
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
                 entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
                 tracer, messageSerializer, ServiceBusClientBuilder.this::onClientClose, sessionManager);
@@ -1517,7 +1518,8 @@ public final class ServiceBusClientBuilder implements
                 clientIdentifier = UUID.randomUUID().toString();
             }
 
-            final ServiceBusReceiverTracer tracer = new ServiceBusReceiverTracer(connectionProcessor.getFullyQualifiedNamespace(), entityPath, syncConsumer);
+            final ServiceBusReceiverTracer tracer = new ServiceBusReceiverTracer(ServiceBusTracer.getDefaultTracer(),
+                connectionProcessor.getFullyQualifiedNamespace(), entityPath, syncConsumer);
             return new ServiceBusSessionReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(),
                 entityPath, entityType, receiverOptions, connectionProcessor, tracer, messageSerializer,
                 ServiceBusClientBuilder.this::onClientClose, clientIdentifier);
@@ -1959,7 +1961,8 @@ public final class ServiceBusClientBuilder implements
                 clientIdentifier = UUID.randomUUID().toString();
             }
 
-            final ServiceBusReceiverTracer tracer = new ServiceBusReceiverTracer(connectionProcessor.getFullyQualifiedNamespace(), entityPath, syncConsumer);
+            final ServiceBusReceiverTracer tracer = new ServiceBusReceiverTracer(ServiceBusTracer.getDefaultTracer(),
+                connectionProcessor.getFullyQualifiedNamespace(), entityPath, syncConsumer);
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
                 entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
                 tracer, messageSerializer, ServiceBusClientBuilder.this::onClientClose, clientIdentifier);

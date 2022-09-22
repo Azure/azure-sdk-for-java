@@ -16,10 +16,6 @@ import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 
 class ServiceBusSenderTracer extends ServiceBusTracer {
-    ServiceBusSenderTracer(String fullyQualifiedName, String entityPath) {
-        super(fullyQualifiedName, entityPath);
-    }
-
     ServiceBusSenderTracer(Tracer tracer, String fullyQualifiedName, String entityPath) {
         super(tracer, fullyQualifiedName, entityPath);
     }
@@ -64,6 +60,12 @@ class ServiceBusSenderTracer extends ServiceBusTracer {
             return;
         }
 
+        String traceparent = getTraceparent(serviceBusMessage.getApplicationProperties());
+        if (traceparent != null) {
+            // if message has context (in case of retries) or if user supplied it, don't start a message span or add a new context
+            return;
+        }
+
         // Starting the span makes the sampling decision (nothing is logged at this time)
         Context newMessageContext = setAttributes(messageContext);
 
@@ -74,7 +76,7 @@ class ServiceBusSenderTracer extends ServiceBusTracer {
             serviceBusMessage.getApplicationProperties().put(DIAGNOSTIC_ID_KEY, traceparentOpt.get().toString());
             serviceBusMessage.getApplicationProperties().put(TRACEPARENT_KEY, traceparentOpt.get().toString());
 
-            endSpan(null, eventSpanContext);
+            endSpan(null, eventSpanContext, null);
 
             Optional<Object> spanContext = eventSpanContext.getData(SPAN_CONTEXT_KEY);
             if (spanContext.isPresent()) {

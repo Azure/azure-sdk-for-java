@@ -48,7 +48,8 @@ import static org.mockito.Mockito.when;
  */
 public class ServiceBusProcessorTest {
 
-    private static final ServiceBusReceiverTracer NOOP_TRACER = new ServiceBusReceiverTracer("namespace", "entity_path", false);
+    private static final String NAMESPACE = "namespace";
+    private static final String ENTITY_NAME = "entity";
 
     /**
      * Tests receiving messages using a {@link ServiceBusProcessorClient}.
@@ -73,7 +74,7 @@ public class ServiceBusProcessorTest {
 
         AtomicInteger messageId = new AtomicInteger();
         CountDownLatch countDownLatch = new CountDownLatch(5);
-        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, "queue",
+        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, ENTITY_NAME,
                 null, null,
             messageContext -> {
                 assertEquals(String.valueOf(messageId.getAndIncrement()), messageContext.getMessage().getMessageId());
@@ -109,11 +110,11 @@ public class ServiceBusProcessorTest {
                 }
             });
 
-        ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder receiverBuilder = getSessionBuilder(messageFlux, null);
+        ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder receiverBuilder = getSessionBuilder(messageFlux);
 
         AtomicInteger messageId = new AtomicInteger();
         CountDownLatch countDownLatch = new CountDownLatch(numberOfMessages);
-        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, "queue",
+        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, ENTITY_NAME,
                 null, null,
             messageContext -> {
                 int expectedMessageId = messageId.getAndIncrement();
@@ -147,7 +148,7 @@ public class ServiceBusProcessorTest {
         countDownLatch.set(new CountDownLatch(2));
 
         AtomicBoolean assertionFailed = new AtomicBoolean();
-        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, "queue",
+        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, ENTITY_NAME,
                 null, null,
             messageContext -> {
                 try {
@@ -230,7 +231,7 @@ public class ServiceBusProcessorTest {
         countDownLatch.set(new CountDownLatch(4));
         AtomicBoolean assertionFailed = new AtomicBoolean();
         StringBuffer messageIdNotMatched = new StringBuffer();
-        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, "queue",
+        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, ENTITY_NAME,
                 null, null,
             messageContext -> {
                 try {
@@ -281,13 +282,14 @@ public class ServiceBusProcessorTest {
         when(receiverBuilder.buildAsyncClient()).thenReturn(asyncClient);
         when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux);
         when(asyncClient.isConnectionClosed()).thenReturn(false);
-        when(asyncClient.getTracer()).thenReturn(NOOP_TRACER);
         when(asyncClient.abandon(any(ServiceBusReceivedMessage.class))).thenReturn(Mono.empty());
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_NAME);
         doNothing().when(asyncClient).close();
 
         final AtomicInteger messageId = new AtomicInteger();
         final CountDownLatch countDownLatch = new CountDownLatch(numberOfEvents);
-        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, "queue",
+        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, ENTITY_NAME,
                 null, null,
             messageContext -> {
                 assertEquals(String.valueOf(messageId.getAndIncrement()), messageContext.getMessage().getMessageId());
@@ -335,12 +337,14 @@ public class ServiceBusProcessorTest {
         when(receiverBuilder.buildAsyncClient()).thenReturn(asyncClient);
         when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux);
         when(asyncClient.isConnectionClosed()).thenReturn(false);
-        when(asyncClient.getTracer()).thenReturn(NOOP_TRACER);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_NAME);
+
         doNothing().when(asyncClient).close();
 
         AtomicInteger messageId = new AtomicInteger();
         CountDownLatch countDownLatch = new CountDownLatch(5);
-        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, "queue",
+        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, ENTITY_NAME,
                 null, null,
             messageContext -> {
                 assertEquals(String.valueOf(messageId.getAndIncrement()), messageContext.getMessage().getMessageId());
@@ -400,7 +404,7 @@ public class ServiceBusProcessorTest {
 
         AtomicInteger messageId = new AtomicInteger();
         CountDownLatch countDownLatch = new CountDownLatch(numberOfTimes);
-        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, "queue",
+        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, ENTITY_NAME,
                 null, null,
             messageContext -> {
                 assertEquals(String.valueOf(messageId.getAndIncrement()), messageContext.getMessage().getMessageId());
@@ -455,7 +459,7 @@ public class ServiceBusProcessorTest {
 
         AtomicInteger messageId = new AtomicInteger();
         CountDownLatch countDownLatch = new CountDownLatch(numberOfTimes);
-        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, "queue",
+        ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, ENTITY_NAME,
                 null, null,
             messageContext -> {
                 assertEquals(String.valueOf(messageId.getAndIncrement()), messageContext.getMessage().getMessageId());
@@ -485,9 +489,10 @@ public class ServiceBusProcessorTest {
 
         ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
         when(receiverBuilder.buildAsyncClient()).thenReturn(asyncClient);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_NAME);
 
-        ServiceBusReceiverTracer sbTracer = new ServiceBusReceiverTracer(tracer, "namespace", "entityPath", false);
-        when(asyncClient.getTracer()).thenReturn(sbTracer);
+        ServiceBusReceiverTracer sbTracer = new ServiceBusReceiverTracer(tracer, NAMESPACE, ENTITY_NAME, false);
         when(asyncClient.receiveMessagesWithContext()).thenReturn(
             new FluxTrace(messageFlux, sbTracer).publishOn(Schedulers.boundedElastic()));
         when(asyncClient.isConnectionClosed()).thenReturn(false);
@@ -496,16 +501,17 @@ public class ServiceBusProcessorTest {
     }
 
     private ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder getSessionBuilder(
-        Flux<ServiceBusMessageContext> messageFlux, Tracer tracer) {
+        Flux<ServiceBusMessageContext> messageFlux) {
 
         ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder receiverBuilder =
             mock(ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder.class);
 
         ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
+        when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getEntityPath()).thenReturn(ENTITY_NAME);
         when(receiverBuilder.buildAsyncClientForProcessor()).thenReturn(asyncClient);
         when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux);
         when(asyncClient.isConnectionClosed()).thenReturn(false);
-        when(asyncClient.getTracer()).thenReturn(new ServiceBusReceiverTracer(tracer, "namespace", "entityPath", false));
         doNothing().when(asyncClient).close();
         return receiverBuilder;
     }
