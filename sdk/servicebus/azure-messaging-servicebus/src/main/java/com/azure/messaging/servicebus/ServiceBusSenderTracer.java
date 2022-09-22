@@ -103,7 +103,7 @@ class ServiceBusSenderTracer extends ServiceBusTracer {
             createMessageSpan(message);
         }
 
-        addLink(message.getApplicationProperties(), spanBuilder);
+        addLink(message.getApplicationProperties(), null, spanBuilder, Context.NONE);
     }
 
     private Context startSpanWithLinks(String name, ServiceBusMessageBatch batch, Context context) {

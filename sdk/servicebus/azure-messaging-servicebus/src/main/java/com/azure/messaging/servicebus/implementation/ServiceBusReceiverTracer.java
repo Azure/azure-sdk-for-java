@@ -7,6 +7,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
+import org.apache.qpid.proton.amqp.Symbol;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
@@ -17,13 +18,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.MESSAGE_ENQUEUED_TIME;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_NAMESPACE_VALUE;
 
 public class ServiceBusReceiverTracer extends ServiceBusTracer {
+    private static final Symbol ENQUEUED_TIME_UTC_ANNOTATION_NAME_SYMBOL = Symbol.valueOf(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
+
     private static final AutoCloseable NOOP_AUTOCLOSEABLE = () -> {
     };
 
@@ -119,7 +122,7 @@ public class ServiceBusReceiverTracer extends ServiceBusTracer {
         Context spanBuilder = getBuilder(name, context);
         if (batch != null) {
             for (ServiceBusReceivedMessage message : batch) {
-                addLink(message.getApplicationProperties(), spanBuilder);
+                addLink(message.getApplicationProperties(), message.getEnqueuedTime(), spanBuilder, Context.NONE);
             }
         }
 
@@ -133,7 +136,7 @@ public class ServiceBusReceiverTracer extends ServiceBusTracer {
             return parent;
         }
         Context spanBuilder = getBuilder(name, parent);
-        addLink(message.getApplicationProperties(), spanBuilder);
+        addLink(message.getApplicationProperties(), message.getEnqueuedTime(), spanBuilder, Context.NONE);
 
         // TODO: need to refactor tracing in core. Currently we use ProcessKind.SEND as
         // SpanKind.CLIENT
@@ -145,13 +148,7 @@ public class ServiceBusReceiverTracer extends ServiceBusTracer {
             return context;
         }
 
-        Object diagnosticId = properties.get(DIAGNOSTIC_ID_KEY);
-        if (diagnosticId == null) {
-            diagnosticId = properties.get(TRACEPARENT_KEY);
-        }
-
-        String traceparent = diagnosticId == null ? null : diagnosticId.toString();
-
+        String traceparent = getTraceparent(properties);
         return traceparent == null ? context : tracer.extractContext(traceparent, context);
     }
 

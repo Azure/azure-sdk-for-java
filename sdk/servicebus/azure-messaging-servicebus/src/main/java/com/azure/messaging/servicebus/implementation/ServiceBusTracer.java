@@ -10,6 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import reactor.core.publisher.Signal;
 
+import java.time.OffsetDateTime;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
@@ -20,6 +21,8 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
+import static com.azure.core.util.tracing.Tracer.MESSAGE_ENQUEUED_TIME;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_NAMESPACE_VALUE;
 
 public class ServiceBusTracer {
@@ -95,16 +98,24 @@ public class ServiceBusTracer {
         endSpan(signal.getThrowable(), span, null);
     }
 
-    protected void addLink(Map<String, Object> applicationProperties, Context spanBuilder) {
+    protected void addLink(Map<String, Object> applicationProperties, OffsetDateTime enqueuedTime, Context spanBuilder, Context eventContext) {
         if (applicationProperties == null) {
             return;
         }
 
-        String traceparent = getTraceparent(applicationProperties);
-        Context link = traceparent == null ? Context.NONE : tracer.extractContext(traceparent, Context.NONE);
-        Optional<Object> linkContext = link.getData(Tracer.SPAN_CONTEXT_KEY);
+        Optional<Object> linkContext = eventContext.getData(SPAN_CONTEXT_KEY);
+        if (!linkContext.isPresent()) {
+            String traceparent = getTraceparent(applicationProperties);
+            Context link = traceparent == null ? Context.NONE : tracer.extractContext(traceparent, Context.NONE);
+            linkContext = link.getData(SPAN_CONTEXT_KEY);
+        }
+
+        if (enqueuedTime != null) {
+            spanBuilder = spanBuilder.addData(MESSAGE_ENQUEUED_TIME, enqueuedTime.toInstant());
+        }
+
         if (linkContext.isPresent()) {
-            tracer.addLink(spanBuilder.addData(Tracer.SPAN_CONTEXT_KEY, linkContext.get()));
+            tracer.addLink(spanBuilder.addData(SPAN_CONTEXT_KEY, linkContext.get()));
         }
     }
 }
