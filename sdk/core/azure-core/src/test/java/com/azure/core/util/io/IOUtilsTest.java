@@ -16,7 +16,6 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-import wiremock.org.eclipse.jetty.util.ConcurrentArrayQueue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -32,6 +31,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -123,9 +123,9 @@ public class IOUtilsTest {
             return currentOffset + size;
         });
         AtomicInteger retries = new AtomicInteger();
-        ConcurrentArrayQueue<Long> offsets = new ConcurrentArrayQueue<>();
-        ConcurrentArrayQueue<Throwable> throwables = new ConcurrentArrayQueue<>();
-        ConcurrentArrayQueue<HttpResponse> responses = new ConcurrentArrayQueue<>();
+        ConcurrentLinkedQueue<Long> offsets = new ConcurrentLinkedQueue<>();
+        ConcurrentLinkedQueue<Throwable> throwables = new ConcurrentLinkedQueue<>();
+        ConcurrentLinkedQueue<HttpResponse> responses = new ConcurrentLinkedQueue<>();
         HttpResponse httpResponse = Mockito.spy(new MockFluxHttpResponse(
             Mockito.mock(HttpRequest.class), fluxSupplier.apply(0)));
         responses.add(httpResponse);
@@ -179,9 +179,9 @@ public class IOUtilsTest {
             return currentOffset + size;
         });
         AtomicInteger retries = new AtomicInteger();
-        ConcurrentArrayQueue<Long> offsets = new ConcurrentArrayQueue<>();
-        ConcurrentArrayQueue<Throwable> throwables = new ConcurrentArrayQueue<>();
-        ConcurrentArrayQueue<HttpResponse> responses = new ConcurrentArrayQueue<>();
+        ConcurrentLinkedQueue<Long> offsets = new ConcurrentLinkedQueue<>();
+        ConcurrentLinkedQueue<Throwable> throwables = new ConcurrentLinkedQueue<>();
+        ConcurrentLinkedQueue<HttpResponse> responses = new ConcurrentLinkedQueue<>();
         HttpResponse httpResponse = Mockito.spy(new MockFluxHttpResponse(
             Mockito.mock(HttpRequest.class), fluxSupplier.apply(0)));
         responses.add(httpResponse);

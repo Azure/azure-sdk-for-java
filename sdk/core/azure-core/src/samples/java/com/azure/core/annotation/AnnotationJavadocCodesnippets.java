@@ -9,7 +9,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import reactor.core.publisher.Mono;
-import wiremock.org.apache.http.NameValuePair;
 
 import java.io.FileInputStream;
 import java.util.List;
@@ -441,6 +440,9 @@ public interface AnnotationJavadocCodesnippets {
         // If multiple annotations share the same HTTP status code or there is multiple default annotations the
         // exception, the last annotation in the top to bottom order will be used (so the bottom most annotation).
         // END: com.azure.core.annotation.UnexpectedResponseExceptionType.class
+    }
+
+    final class NameValuePair {
     }
 
     final class RequestBody {
