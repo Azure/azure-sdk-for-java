@@ -32,6 +32,13 @@ public interface AllowedConnectionsResource {
     String type();
 
     /**
+     * Gets the location property: Location where the resource is stored.
+     *
+     * @return the location value.
+     */
+    String location();
+
+    /**
      * Gets the calculatedDateTime property: The UTC time on which the allowed connections resource was calculated.
      *
      * @return the calculatedDateTime value.
@@ -44,13 +51,6 @@ public interface AllowedConnectionsResource {
      * @return the connectableResources value.
      */
     List<ConnectableResource> connectableResources();
-
-    /**
-     * Gets the location property: Location where the resource is stored.
-     *
-     * @return the location value.
-     */
-    String location();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.AllowedConnectionsResourceInner object.

@@ -14,67 +14,67 @@ import com.azure.resourcemanager.security.fluent.models.SecurityContactInner;
 /** An instance of this class provides access to all the operations defined in SecurityContactsClient. */
 public interface SecurityContactsClient {
     /**
-     * Security contact configurations for the subscription.
+     * List all security contact configurations for the subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security contacts response.
+     * @return list of security contacts response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SecurityContactInner> list();
 
     /**
-     * Security contact configurations for the subscription.
+     * List all security contact configurations for the subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security contacts response.
+     * @return list of security contacts response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SecurityContactInner> list(Context context);
 
     /**
-     * Security contact configurations for the subscription.
+     * Get Default Security contact configurations for the subscription.
      *
      * @param securityContactName Name of the security contact object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contact details for security issues.
+     * @return default Security contact configurations for the subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SecurityContactInner get(String securityContactName);
 
     /**
-     * Security contact configurations for the subscription.
+     * Get Default Security contact configurations for the subscription.
      *
      * @param securityContactName Name of the security contact object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contact details for security issues.
+     * @return default Security contact configurations for the subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SecurityContactInner> getWithResponse(String securityContactName, Context context);
 
     /**
-     * Security contact configurations for the subscription.
+     * Create security contact configurations for the subscription.
      *
      * @param securityContactName Name of the security contact object.
      * @param securityContact Security contact object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contact details for security issues.
+     * @return contact details and configurations for notifications coming from Microsoft Defender for Cloud.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SecurityContactInner create(String securityContactName, SecurityContactInner securityContact);
 
     /**
-     * Security contact configurations for the subscription.
+     * Create security contact configurations for the subscription.
      *
      * @param securityContactName Name of the security contact object.
      * @param securityContact Security contact object.
@@ -82,14 +82,15 @@ public interface SecurityContactsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contact details for security issues.
+     * @return contact details and configurations for notifications coming from Microsoft Defender for Cloud along with
+     *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SecurityContactInner> createWithResponse(
         String securityContactName, SecurityContactInner securityContact, Context context);
 
     /**
-     * Security contact configurations for the subscription.
+     * Delete security contact configurations for the subscription.
      *
      * @param securityContactName Name of the security contact object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -100,43 +101,15 @@ public interface SecurityContactsClient {
     void delete(String securityContactName);
 
     /**
-     * Security contact configurations for the subscription.
+     * Delete security contact configurations for the subscription.
      *
      * @param securityContactName Name of the security contact object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(String securityContactName, Context context);
-
-    /**
-     * Security contact configurations for the subscription.
-     *
-     * @param securityContactName Name of the security contact object.
-     * @param securityContact Security contact object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contact details for security issues.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SecurityContactInner update(String securityContactName, SecurityContactInner securityContact);
-
-    /**
-     * Security contact configurations for the subscription.
-     *
-     * @param securityContactName Name of the security contact object.
-     * @param securityContact Security contact object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contact details for security issues.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SecurityContactInner> updateWithResponse(
-        String securityContactName, SecurityContactInner securityContact, Context context);
 }

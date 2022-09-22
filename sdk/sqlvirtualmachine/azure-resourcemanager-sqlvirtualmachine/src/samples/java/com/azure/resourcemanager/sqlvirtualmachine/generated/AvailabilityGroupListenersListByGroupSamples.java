@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for AvailabilityGroupListeners ListByGroup. */
 public final class AvailabilityGroupListenersListByGroupSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2021-11-01-preview/examples/ListByGroupAvailabilityGroupListener.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/ListByGroupAvailabilityGroupListener.json
      */
     /**
      * Sample code: Lists all availability group listeners in a SQL virtual machine group.

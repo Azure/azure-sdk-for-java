@@ -14,10 +14,9 @@ import com.azure.resourcemanager.security.fluent.models.AdaptiveNetworkHardening
 import com.azure.resourcemanager.security.models.AdaptiveNetworkHardening;
 import com.azure.resourcemanager.security.models.AdaptiveNetworkHardeningEnforceRequest;
 import com.azure.resourcemanager.security.models.AdaptiveNetworkHardenings;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AdaptiveNetworkHardeningsImpl implements AdaptiveNetworkHardenings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdaptiveNetworkHardeningsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AdaptiveNetworkHardeningsImpl.class);
 
     private final AdaptiveNetworkHardeningsClient innerClient;
 

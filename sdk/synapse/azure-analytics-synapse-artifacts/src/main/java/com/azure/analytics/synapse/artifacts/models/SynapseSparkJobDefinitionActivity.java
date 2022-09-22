@@ -30,65 +30,58 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     private List<Object> arguments;
 
     /*
-     * The main file used for the job, which will override the 'file' of the
-     * spark job definition you provide. Type: string (or Expression with
-     * resultType string).
+     * The main file used for the job, which will override the 'file' of the spark job definition you provide. Type:
+     * string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.file")
     private Object file;
 
     /*
-     * The fully-qualified identifier or the main class that is in the main
-     * definition file, which will override the 'className' of the spark job
-     * definition you provide. Type: string (or Expression with resultType
-     * string).
+     * The fully-qualified identifier or the main class that is in the main definition file, which will override the
+     * 'className' of the spark job definition you provide. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.className")
     private Object className;
 
     /*
-     * Additional files used for reference in the main definition file, which
-     * will override the 'files' of the spark job definition you provide.
+     * Additional files used for reference in the main definition file, which will override the 'files' of the spark
+     * job definition you provide.
      */
     @JsonProperty(value = "typeProperties.files")
     private List<Object> files;
 
     /*
-     * The name of the big data pool which will be used to execute the spark
-     * batch job, which will override the 'targetBigDataPool' of the spark job
-     * definition you provide.
+     * The name of the big data pool which will be used to execute the spark batch job, which will override the
+     * 'targetBigDataPool' of the spark job definition you provide.
      */
     @JsonProperty(value = "typeProperties.targetBigDataPool")
     private BigDataPoolParametrizationReference targetBigDataPool;
 
     /*
-     * Number of core and memory to be used for executors allocated in the
-     * specified Spark pool for the job, which will be used for overriding
-     * 'executorCores' and 'executorMemory' of the spark job definition you
-     * provide. Type: string (or Expression with resultType string).
+     * Number of core and memory to be used for executors allocated in the specified Spark pool for the job, which will
+     * be used for overriding 'executorCores' and 'executorMemory' of the spark job definition you provide. Type:
+     * string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.executorSize")
     private Object executorSize;
 
     /*
-     * Spark configuration properties, which will override the 'conf' of the
-     * spark job definition you provide.
+     * Spark configuration properties, which will override the 'conf' of the spark job definition you provide.
      */
     @JsonProperty(value = "typeProperties.conf")
     private Object conf;
 
     /*
-     * Number of core and memory to be used for driver allocated in the
-     * specified Spark pool for the job, which will be used for overriding
-     * 'driverCores' and 'driverMemory' of the spark job definition you
-     * provide. Type: string (or Expression with resultType string).
+     * Number of core and memory to be used for driver allocated in the specified Spark pool for the job, which will be
+     * used for overriding 'driverCores' and 'driverMemory' of the spark job definition you provide. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.driverSize")
     private Object driverSize;
 
     /*
-     * Number of executors to launch for this job, which will override the
-     * 'numExecutors' of the spark job definition you provide.
+     * Number of executors to launch for this job, which will override the 'numExecutors' of the spark job definition
+     * you provide.
      */
     @JsonProperty(value = "typeProperties.numExecutors")
     private Integer numExecutors;

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ValueType. */
+/** The value type of the items in the list. */
 public final class ValueType extends ExpandableStringEnum<ValueType> {
     /** Static value IpCidr for ValueType. */
     public static final ValueType IP_CIDR = fromString("IpCidr");
@@ -27,7 +27,11 @@ public final class ValueType extends ExpandableStringEnum<ValueType> {
         return fromString(name, ValueType.class);
     }
 
-    /** @return known ValueType values. */
+    /**
+     * Gets known ValueType values.
+     *
+     * @return known ValueType values.
+     */
     public static Collection<ValueType> values() {
         return values(ValueType.class);
     }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NetezzaPartitionOption. */
+/** The partition mechanism that will be used for Netezza read in parallel. */
 public final class NetezzaPartitionOption extends ExpandableStringEnum<NetezzaPartitionOption> {
     /** Static value None for NetezzaPartitionOption. */
     public static final NetezzaPartitionOption NONE = fromString("None");
@@ -30,7 +30,11 @@ public final class NetezzaPartitionOption extends ExpandableStringEnum<NetezzaPa
         return fromString(name, NetezzaPartitionOption.class);
     }
 
-    /** @return known NetezzaPartitionOption values. */
+    /**
+     * Gets known NetezzaPartitionOption values.
+     *
+     * @return known NetezzaPartitionOption values.
+     */
     public static Collection<NetezzaPartitionOption> values() {
         return values(NetezzaPartitionOption.class);
     }

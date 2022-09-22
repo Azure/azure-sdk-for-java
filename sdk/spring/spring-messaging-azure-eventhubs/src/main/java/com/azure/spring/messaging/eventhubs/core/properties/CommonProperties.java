@@ -3,9 +3,9 @@
 
 package com.azure.spring.messaging.eventhubs.core.properties;
 
-import com.azure.spring.cloud.core.provider.connectionstring.ConnectionStringProvider;
 import com.azure.spring.cloud.core.implementation.connectionstring.EventHubsConnectionString;
 import com.azure.spring.cloud.core.implementation.properties.AzureAmqpSdkProperties;
+import com.azure.spring.cloud.core.provider.connectionstring.ConnectionStringProvider;
 import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventHubClientCommonProperties;
 
 /**
@@ -14,7 +14,7 @@ import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventH
 public abstract class CommonProperties extends AzureAmqpSdkProperties implements EventHubClientCommonProperties, ConnectionStringProvider {
 
 
-    private String domainName = "servicebus.windows.net";
+    private String domainName;
 
     /**
      * The namespace of a event hub, which is the prefix of the FQDN. A FQDN should be composed of &lt;NamespaceName&gt;.&lt;DomainName&gt;
@@ -45,7 +45,14 @@ public abstract class CommonProperties extends AzureAmqpSdkProperties implements
     // https://docs.microsoft.com/azure/event-hubs/event-hubs-get-connection-string
     @Override
     public String getFullyQualifiedNamespace() {
-        return this.namespace == null ? extractFqdnFromConnectionString() : (this.namespace + "." + domainName);
+        return this.namespace == null ? extractFqdnFromConnectionString() : buildFqdnFromNamespace();
+    }
+
+    private String buildFqdnFromNamespace() {
+        if (namespace == null || domainName == null) {
+            return null;
+        }
+        return this.namespace + "." + domainName;
     }
 
     @Override

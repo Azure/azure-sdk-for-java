@@ -23,7 +23,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.PricingsClient;
 import com.azure.resourcemanager.security.fluent.models.PricingInner;
 import com.azure.resourcemanager.security.fluent.models.PricingListInner;
@@ -31,8 +30,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PricingsClient. */
 public final class PricingsClientImpl implements PricingsClient {
-    private final ClientLogger logger = new ClientLogger(PricingsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PricingsService service;
 
@@ -94,11 +91,12 @@ public final class PricingsClientImpl implements PricingsClient {
     }
 
     /**
-     * Lists Security Center pricing configurations in the subscription.
+     * Lists Microsoft Defender for Cloud pricing configurations in the subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of pricing configurations response.
+     * @return list of pricing configurations response along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PricingListInner>> listWithResponseAsync() {
@@ -114,7 +112,7 @@ public final class PricingsClientImpl implements PricingsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -125,13 +123,14 @@ public final class PricingsClientImpl implements PricingsClient {
     }
 
     /**
-     * Lists Security Center pricing configurations in the subscription.
+     * Lists Microsoft Defender for Cloud pricing configurations in the subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of pricing configurations response.
+     * @return list of pricing configurations response along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PricingListInner>> listWithResponseAsync(Context context) {
@@ -147,34 +146,26 @@ public final class PricingsClientImpl implements PricingsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context);
     }
 
     /**
-     * Lists Security Center pricing configurations in the subscription.
+     * Lists Microsoft Defender for Cloud pricing configurations in the subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of pricing configurations response.
+     * @return list of pricing configurations response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PricingListInner> listAsync() {
-        return listWithResponseAsync()
-            .flatMap(
-                (Response<PricingListInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Lists Security Center pricing configurations in the subscription.
+     * Lists Microsoft Defender for Cloud pricing configurations in the subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -186,13 +177,13 @@ public final class PricingsClientImpl implements PricingsClient {
     }
 
     /**
-     * Lists Security Center pricing configurations in the subscription.
+     * Lists Microsoft Defender for Cloud pricing configurations in the subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of pricing configurations response.
+     * @return list of pricing configurations response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PricingListInner> listWithResponse(Context context) {
@@ -200,13 +191,14 @@ public final class PricingsClientImpl implements PricingsClient {
     }
 
     /**
-     * Gets a provided Security Center pricing configuration in the subscription.
+     * Gets a provided Microsoft Defender for Cloud pricing configuration in the subscription.
      *
      * @param pricingName name of the pricing configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a provided Security Center pricing configuration in the subscription.
+     * @return a provided Microsoft Defender for Cloud pricing configuration in the subscription along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PricingInner>> getWithResponseAsync(String pricingName) {
@@ -225,7 +217,7 @@ public final class PricingsClientImpl implements PricingsClient {
         if (pricingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter pricingName is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -242,14 +234,15 @@ public final class PricingsClientImpl implements PricingsClient {
     }
 
     /**
-     * Gets a provided Security Center pricing configuration in the subscription.
+     * Gets a provided Microsoft Defender for Cloud pricing configuration in the subscription.
      *
      * @param pricingName name of the pricing configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a provided Security Center pricing configuration in the subscription.
+     * @return a provided Microsoft Defender for Cloud pricing configuration in the subscription along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PricingInner>> getWithResponseAsync(String pricingName, Context context) {
@@ -268,7 +261,7 @@ public final class PricingsClientImpl implements PricingsClient {
         if (pricingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter pricingName is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -276,35 +269,28 @@ public final class PricingsClientImpl implements PricingsClient {
     }
 
     /**
-     * Gets a provided Security Center pricing configuration in the subscription.
+     * Gets a provided Microsoft Defender for Cloud pricing configuration in the subscription.
      *
      * @param pricingName name of the pricing configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a provided Security Center pricing configuration in the subscription.
+     * @return a provided Microsoft Defender for Cloud pricing configuration in the subscription on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PricingInner> getAsync(String pricingName) {
-        return getWithResponseAsync(pricingName)
-            .flatMap(
-                (Response<PricingInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(pricingName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Gets a provided Security Center pricing configuration in the subscription.
+     * Gets a provided Microsoft Defender for Cloud pricing configuration in the subscription.
      *
      * @param pricingName name of the pricing configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a provided Security Center pricing configuration in the subscription.
+     * @return a provided Microsoft Defender for Cloud pricing configuration in the subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PricingInner get(String pricingName) {
@@ -312,14 +298,15 @@ public final class PricingsClientImpl implements PricingsClient {
     }
 
     /**
-     * Gets a provided Security Center pricing configuration in the subscription.
+     * Gets a provided Microsoft Defender for Cloud pricing configuration in the subscription.
      *
      * @param pricingName name of the pricing configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a provided Security Center pricing configuration in the subscription.
+     * @return a provided Microsoft Defender for Cloud pricing configuration in the subscription along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PricingInner> getWithResponse(String pricingName, Context context) {
@@ -327,15 +314,15 @@ public final class PricingsClientImpl implements PricingsClient {
     }
 
     /**
-     * Updates a provided Security Center pricing configuration in the subscription.
+     * Updates a provided Microsoft Defender for Cloud pricing configuration in the subscription.
      *
      * @param pricingName name of the pricing configuration.
      * @param pricing Pricing object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Security Center is provided in two pricing tiers: free and standard, with the standard tier
-     *     available with a trial period.
+     * @return microsoft Defender for Cloud is provided in two pricing tiers: free and standard, with the standard tier
+     *     available with a trial period along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PricingInner>> updateWithResponseAsync(String pricingName, PricingInner pricing) {
@@ -359,7 +346,7 @@ public final class PricingsClientImpl implements PricingsClient {
         } else {
             pricing.validate();
         }
-        final String apiVersion = "2018-06-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -377,7 +364,7 @@ public final class PricingsClientImpl implements PricingsClient {
     }
 
     /**
-     * Updates a provided Security Center pricing configuration in the subscription.
+     * Updates a provided Microsoft Defender for Cloud pricing configuration in the subscription.
      *
      * @param pricingName name of the pricing configuration.
      * @param pricing Pricing object.
@@ -385,8 +372,8 @@ public final class PricingsClientImpl implements PricingsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Security Center is provided in two pricing tiers: free and standard, with the standard tier
-     *     available with a trial period.
+     * @return microsoft Defender for Cloud is provided in two pricing tiers: free and standard, with the standard tier
+     *     available with a trial period along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PricingInner>> updateWithResponseAsync(
@@ -411,7 +398,7 @@ public final class PricingsClientImpl implements PricingsClient {
         } else {
             pricing.validate();
         }
-        final String apiVersion = "2018-06-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -426,38 +413,30 @@ public final class PricingsClientImpl implements PricingsClient {
     }
 
     /**
-     * Updates a provided Security Center pricing configuration in the subscription.
+     * Updates a provided Microsoft Defender for Cloud pricing configuration in the subscription.
      *
      * @param pricingName name of the pricing configuration.
      * @param pricing Pricing object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Security Center is provided in two pricing tiers: free and standard, with the standard tier
-     *     available with a trial period.
+     * @return microsoft Defender for Cloud is provided in two pricing tiers: free and standard, with the standard tier
+     *     available with a trial period on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PricingInner> updateAsync(String pricingName, PricingInner pricing) {
-        return updateWithResponseAsync(pricingName, pricing)
-            .flatMap(
-                (Response<PricingInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return updateWithResponseAsync(pricingName, pricing).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Updates a provided Security Center pricing configuration in the subscription.
+     * Updates a provided Microsoft Defender for Cloud pricing configuration in the subscription.
      *
      * @param pricingName name of the pricing configuration.
      * @param pricing Pricing object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Security Center is provided in two pricing tiers: free and standard, with the standard tier
+     * @return microsoft Defender for Cloud is provided in two pricing tiers: free and standard, with the standard tier
      *     available with a trial period.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -466,7 +445,7 @@ public final class PricingsClientImpl implements PricingsClient {
     }
 
     /**
-     * Updates a provided Security Center pricing configuration in the subscription.
+     * Updates a provided Microsoft Defender for Cloud pricing configuration in the subscription.
      *
      * @param pricingName name of the pricing configuration.
      * @param pricing Pricing object.
@@ -474,8 +453,8 @@ public final class PricingsClientImpl implements PricingsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Security Center is provided in two pricing tiers: free and standard, with the standard tier
-     *     available with a trial period.
+     * @return microsoft Defender for Cloud is provided in two pricing tiers: free and standard, with the standard tier
+     *     available with a trial period along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PricingInner> updateWithResponse(String pricingName, PricingInner pricing, Context context) {

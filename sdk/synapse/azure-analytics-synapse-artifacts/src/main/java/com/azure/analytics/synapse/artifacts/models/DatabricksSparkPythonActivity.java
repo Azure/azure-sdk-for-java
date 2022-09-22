@@ -19,8 +19,8 @@ import java.util.Map;
 @Fluent
 public class DatabricksSparkPythonActivity extends ExecutionActivity {
     /*
-     * The URI of the Python file to be executed. DBFS paths are supported.
-     * Type: string (or Expression with resultType string).
+     * The URI of the Python file to be executed. DBFS paths are supported. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "typeProperties.pythonFile", required = true)
     private Object pythonFile;
@@ -32,8 +32,7 @@ public class DatabricksSparkPythonActivity extends ExecutionActivity {
     private List<Object> parameters;
 
     /*
-     * A list of libraries to be installed on the cluster that will execute the
-     * job.
+     * A list of libraries to be installed on the cluster that will execute the job.
      */
     @JsonProperty(value = "typeProperties.libraries")
     private List<Map<String, Object>> libraries;

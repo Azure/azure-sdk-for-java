@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,8 +14,6 @@ import java.util.List;
  */
 @Fluent
 public final class Rule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Rule.class);
-
     /*
      * The name of the rule
      */
@@ -43,8 +39,8 @@ public final class Rule {
     private List<TransportProtocol> protocols;
 
     /*
-     * The remote IP addresses that should be able to communicate with the
-     * Azure resource on the rule's destination port and protocol
+     * The remote IP addresses that should be able to communicate with the Azure resource on the rule's destination
+     * port and protocol
      */
     @JsonProperty(value = "ipAddresses")
     private List<String> ipAddresses;

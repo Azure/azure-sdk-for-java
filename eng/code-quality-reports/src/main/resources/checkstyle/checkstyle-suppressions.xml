@@ -124,7 +124,7 @@ the main ServiceBusClientBuilder. -->
   <!-- Some classes are named *Builder but are not @ServiceClientBuilder -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.core.http.netty.NettyAsyncHttpClientBuilder"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.core.http.jdk.httpclient.JdkAsyncHttpClientBuilder"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.core.http.vertx.VertxAsyncHttpClientBuilder"/>
 
   <!-- False positive in this case : This should not change behavior for UseCaughtExceptionCauseCheck when checking for throwing caught exceptions -->
@@ -508,4 +508,8 @@ the main ServiceBusClientBuilder. -->
 
   <!-- Star import is ok in impl class - it makes it easier to import all parent APIs, etc -->
   <suppress checks="AvoidStarImport" files="com.azure.jedis.AzureJedisClient.java"/>
+
+  <!-- Field additionallyAllowedTenants is not set in constructor and can be changed using the builder option. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.identity.DefaultAzureCredentialBuilder"/>
+
 </suppressions>

@@ -12,11 +12,15 @@
     "baseName": {
       "defaultValue": "[resourceGroup().name]",
       "type": "String"
+    },
+    "keyVaultEndpointSuffix": {
+      "type": "String",
+      "defaultValue": ".vault.azure.net"
     }
   },
   "variables": {
     "azureKeyVaultName": "[parameters('baseName')]",
-    "azureKeyVaultUri": "[concat('https://', variables('azureKeyVaultName'), '.vault.azure.net/')]",
+    "azureKeyVaultUri": "[concat('https://', variables('azureKeyVaultName'), parameters('keyVaultEndpointSuffix'), '/')]",
     "location": "[resourceGroup().location]"
   },
   "resources": [
@@ -51,7 +55,6 @@
         "enableSoftDelete": true,
         "softDeleteRetentionInDays": 90,
         "enableRbacAuthorization": false,
-        "vaultUri": "[variables('azureKeyVaultUri')]",
         "provisioningState": "Succeeded",
         "publicNetworkAccess": "Enabled"
       }
