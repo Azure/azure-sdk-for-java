@@ -74,10 +74,12 @@ public class BufferedUploadWithKnownLengthExample {
         // Since we already know the size of our buffered bytes, we can pass the ByteBuffer and length to the BinaryData.
         // This will internally convert the BinaryData to a Flux<ByteBuffer>, but with known length we can optimize the
         // upload speed.
-        BinaryData binaryData = BinaryData.fromFlux(sourceData, length).block();
-        BlobParallelUploadOptions parallelUploadOptions = new BlobParallelUploadOptions(binaryData)
-            .setParallelTransferOptions(parallelTransferOptions);
-        blobClient.uploadWithResponse(parallelUploadOptions).block();
+        // Need to use BinaryData.fromFlux(Flux<ByteBuffer>, Long, Boolean) with bufferContent set to false, this allows
+        // us to configure the BinaryData to have a specified length set without the BinaryData being infinitely
+        // subscribed to the Flux<ByteBuffer>.
+        BinaryData.fromFlux(sourceData, length, false).flatMap(binaryData ->
+            blobClient.uploadWithResponse(new BlobParallelUploadOptions(binaryData)
+                .setParallelTransferOptions(parallelTransferOptions)));
     }
 
     @SuppressWarnings("cast")
