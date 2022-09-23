@@ -72,6 +72,18 @@
         <version>2.19.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;dependency} -->
       </dependency>
 
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-identity-providers-jdbc-mysql</artifactId>
+        <version>1.0.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-identity-providers-jdbc-mysql;dependency} -->
+      </dependency>
+
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-identity-providers-jdbc-postgresql</artifactId>
+        <version>1.0.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-identity-providers-jdbc-postgresql;dependency} -->
+      </dependency>
+
       <!-- Spring Cloud Azure -->
       <dependency>
         <groupId>com.azure.spring</groupId>
