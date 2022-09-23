@@ -8,6 +8,7 @@ import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.security.oauth2.client.http.OAuth2ErrorResponseErrorHandler;
 import org.springframework.security.oauth2.core.http.converter.OAuth2AccessTokenResponseHttpMessageConverter;
+import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public final class AadRestTemplateCreator {
     }
 
     public static RestTemplate createRestTemplate(RestTemplateBuilder builder) {
+        Assert.notNull(builder, "RestTemplateBuilder cannot be null");
         return builder.build();
     }
 

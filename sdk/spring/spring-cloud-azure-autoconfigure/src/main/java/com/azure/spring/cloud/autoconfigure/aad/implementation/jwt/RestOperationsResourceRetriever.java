@@ -32,7 +32,6 @@ public class RestOperationsResourceRetriever implements ResourceRetriever {
     private final RestOperations restOperations;
 
     public RestOperationsResourceRetriever(RestTemplateBuilder restTemplateBuilder) {
-        Assert.notNull(restTemplateBuilder, "restOperations cannot be null");
         this.restOperations = createRestTemplate(restTemplateBuilder);
     }
 
