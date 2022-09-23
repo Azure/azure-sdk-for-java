@@ -2,13 +2,9 @@
 
 ## 2.19.0-beta.1 (Unreleased)
 
-### Features Added
-
 ### Breaking Changes
 
-### Bugs Fixed
-
-### Other Changes
+- Since `2021-05-01`, `PublicIpAddress` of `Basic` Sku no longer supported configuring with Availability Zone.
 
 ## 2.18.0 (2022-08-26)
 
