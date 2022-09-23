@@ -19,7 +19,7 @@ public class HttpBinJSON {
     private Map<String, List<String>> headers;
 
     @JsonProperty()
-    private Object data;
+    private String data;
 
     /**
      * Gets the URL associated with this request.
@@ -66,7 +66,7 @@ public class HttpBinJSON {
      *
      * @return The response body.
      */
-    public Object data() {
+    public String data() {
         return data;
     }
 
@@ -75,7 +75,7 @@ public class HttpBinJSON {
      *
      * @param data The response body.
      */
-    public void data(Object data) {
+    public void data(String data) {
         this.data = data;
     }
 }

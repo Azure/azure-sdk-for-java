@@ -1013,9 +1013,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON httpBinJSON = service16.putByteArray(expectedBytes);
 
         // httpbin sends the data back as a string like "\u0001\u0002\u0003\u0004"
-        assertTrue(httpBinJSON.data() instanceof String);
-
-        final String base64String = (String) httpBinJSON.data();
+        final String base64String = httpBinJSON.data();
         final byte[] actualBytes = base64String.getBytes();
         assertArrayEquals(expectedBytes, actualBytes);
     }
@@ -1024,10 +1022,7 @@ public abstract class RestProxyTests {
     public void service16PutAsync() {
         final byte[] expectedBytes = new byte[]{1, 2, 3, 4};
         StepVerifier.create(createService(Service16.class).putByteArrayAsync(expectedBytes))
-            .assertNext(json -> {
-                assertTrue(json.data() instanceof String);
-                assertArrayEquals(expectedBytes, ((String) json.data()).getBytes());
-            }).verifyComplete();
+            .assertNext(json -> assertArrayEquals(expectedBytes, json.data().getBytes())).verifyComplete();
     }
 
     @Host("http://{hostPart1}{hostPart2}")
@@ -1737,7 +1732,7 @@ public abstract class RestProxyTests {
                 try {
                     assertEquals(hash, MessageDigestUtils.md5(Files.readAllBytes(tempFile)));
                 } catch (IOException e) {
-                    Exceptions.propagate(e);
+                    throw Exceptions.propagate(e);
                 }
             })
             .verifyComplete();
@@ -1946,7 +1941,6 @@ public abstract class RestProxyTests {
         HttpBinJSON response = service.put(42, new RequestOptions().setBody(BinaryData.fromString("24")));
         assertNotNull(response);
         assertNotNull(response.data());
-        assertTrue(response.data() instanceof String);
         assertEquals("24", response.data());
     }
 
@@ -1958,7 +1952,6 @@ public abstract class RestProxyTests {
             .setHeader("Content-Length", "4"));
         assertNotNull(response);
         assertNotNull(response.data());
-        assertTrue(response.data() instanceof String);
         assertEquals("4242", response.data());
         assertEquals("4", response.getHeaderValue("Content-Length"));
     }
@@ -1970,7 +1963,6 @@ public abstract class RestProxyTests {
         HttpBinJSON response = service.put(42, new RequestOptions().addHeader("randomHeader", "randomValue"));
         assertNotNull(response);
         assertNotNull(response.data());
-        assertTrue(response.data() instanceof String);
         assertEquals("42", response.data());
         assertEquals("randomValue", response.getHeaderValue("randomHeader"));
     }
@@ -1983,7 +1975,6 @@ public abstract class RestProxyTests {
             .setHeader("randomHeader", "randomValue2"));
         assertNotNull(response);
         assertNotNull(response.data());
-        assertTrue(response.data() instanceof String);
         assertEquals("42", response.data());
         assertEquals("randomValue2", response.getHeaderValue("randomHeader"));
     }

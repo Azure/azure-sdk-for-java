@@ -28,7 +28,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 /**
  * This HttpClient attempts to mimic the behavior of http://httpbin.org without ever making a network call.
@@ -41,7 +40,18 @@ public class MockHttpClient extends NoOpHttpClient {
         .set("X-Processed-Time", "1.0")
         .set("Access-Control-Allow-Credentials", "true")
         .set("Content-Type", "application/json");
-    private static final Random RANDOM = new Random();
+
+    private static final byte[] BUFFER;
+
+    static {
+        BUFFER = new byte[1024];
+        for (int i = 0; i < 32; i++) {
+            for (int j = 0; j < 32; j++) {
+
+                BUFFER[i * 32 + j] = (byte) (j + 64);
+            }
+        }
+    }
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request) {
@@ -72,7 +82,15 @@ public class MockHttpClient extends NoOpHttpClient {
                     byte[] content;
                     if (byteCount > 0) {
                         content = new byte[byteCount];
-                        RANDOM.nextBytes(content);
+                        int count = byteCount / 1024;
+                        int remainder = byteCount % 1024;
+                        for (int i = 0; i < count; i++) {
+                            System.arraycopy(BUFFER, 0, content, i * 1024, 1024);
+                        }
+
+                        if (remainder > 0) {
+                            System.arraycopy(BUFFER, 0, content, count * 1024, remainder);
+                        }
                         newHeaders = newHeaders.set("ETag", MessageDigestUtils.md5(content));
                     } else {
                         content = null;

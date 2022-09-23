@@ -4,6 +4,7 @@
 package com.azure.core.test;
 
 import com.azure.core.test.http.HttpClientTests;
+import com.azure.core.util.UrlBuilder;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.common.FileSource;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
@@ -12,8 +13,6 @@ import com.github.tomakehurst.wiremock.extension.ResponseDefinitionTransformer;
 import com.github.tomakehurst.wiremock.http.Request;
 import com.github.tomakehurst.wiremock.http.ResponseDefinition;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
@@ -109,20 +108,13 @@ public class HttpClientTestsWireMockServer {
         public static final String NAME = "http-client-transformer";
 
         @Override
-        public ResponseDefinition transform(
-            Request request, ResponseDefinition responseDefinition, FileSource fileSource, Parameters parameters) {
-            try {
-                URL requestUrl = new URL(request.getAbsoluteUrl());
-                String path = requestUrl.getPath();
-                if (ECHO_RESPONSE.equals(path)) {
-                    return aResponse()
-                        .withBody(request.getBody())
-                        .build();
-                } else {
-                    return responseDefinition;
-                }
-            } catch (MalformedURLException e) {
-                throw new RuntimeException(e);
+        public ResponseDefinition transform(Request request, ResponseDefinition responseDefinition,
+            FileSource fileSource, Parameters parameters) {
+            String path = UrlBuilder.parse(request.getAbsoluteUrl()).getPath();
+            if (ECHO_RESPONSE.equals(path)) {
+                return aResponse().withBody(request.getBody()).build();
+            } else {
+                return responseDefinition;
             }
         }
 
