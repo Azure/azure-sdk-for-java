@@ -54,7 +54,7 @@ public class CallAutomationLiveTestBase extends TestBase {
         .get("RECORDING_DELETE_URL_404", "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141c");
 
     protected static final String TARGET_USER_ID = Configuration.getGlobalConfiguration()
-        .get("TARGET_USER_ID");
+        .get("TARGET_USER_ID", "8:acs:ad7b4e1f-5b71-4d2f-9db2-b1bae6d4f392_00000014-0b21-aee5-85f4-343a0d0065cf");
 
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
