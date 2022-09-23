@@ -3,10 +3,7 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.identity.CommunicationIdentityAsyncClient;
 import com.azure.communication.identity.CommunicationIdentityClientBuilder;
-import com.azure.communication.identity.CommunicationIdentityServiceVersion;
-
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
