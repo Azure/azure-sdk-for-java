@@ -14,13 +14,13 @@ import java.time.Duration;
  * Represents the change feed policy configuration for the container in the Azure Cosmos DB service.
  *
  * <p>
- * The example below creates a new container with a change feed policy for {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES} change feed with a
+ * The example below creates a new container with a change feed policy for AllVersionsAndDeletes change feed with a
  * retention window of 8 minutes - so intermediary snapshots of changes as well as deleted documents would be
  * available for processing for 8 minutes before they vanish.
- * Processing the change feed with {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES} mode will only be able within this retention window - if you attempt to process a change feed after more
+ * Processing the change feed with AllVersionsAndDeletes mode will only be able within this retention window - if you attempt to process a change feed after more
  * than the retention window (8 minutes in this sample) an error (Status Code 400) will be returned.
- * It would still be possible to process changes using {@link ChangeFeedMode#LATEST_VERSION} mode even when configuring a {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES} change
- * feed policy with retention window on the container and when using {@link ChangeFeedMode#LATEST_VERSION} mode it doesn't matter whether
+ * It would still be possible to process changes using LatestVersion mode even when configuring a AllVersionsAndDeletes change
+ * feed policy with retention window on the container and when using LatestVersion mode it doesn't matter whether
  * you are out of the retention window or not.
  *
  * <pre>{@code
@@ -35,10 +35,10 @@ import java.time.Duration;
  * }
  * </pre>
  * <p>
- * The example below creates a new container with a change feed policy for {@link ChangeFeedMode#LATEST_VERSION} change feed.
- * Processing the change feed with {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES} mode will not be possible for this container.
- * It would still be possible to process changes using {@link ChangeFeedMode#LATEST_VERSION} mode.
- * The {@link ChangeFeedMode#LATEST_VERSION} change feed policy is also the default that is used when not explicitly specifying a change feed policy.
+ * The example below creates a new container with a change feed policy for LatestVersion change feed.
+ * Processing the change feed with AllVersionsAndDeletes mode will not be possible for this container.
+ * It would still be possible to process changes using LatestVersion mode.
+ * The LatestVersion change feed policy is also the default that is used when not explicitly specifying a change feed policy.
  *
  * <pre>{@code
  *
@@ -59,12 +59,12 @@ public final class ChangeFeedPolicy {
     private final JsonSerializable jsonSerializable;
 
     /**
-     * Creates a ChangeFeedPolicy with retention duration for {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES} processing
+     * Creates a ChangeFeedPolicy with retention duration for AllVersionsAndDeletes processing
      *
      * @param retentionDuration  - the retention duration (max granularity in minutes) in which it
-     *                             will be possible to process change feed events with {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES} mode.
+     *                             will be possible to process change feed events with AllVersionsAndDeletes mode.
      *
-     * @return ChangeFeedPolicy for {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES} change feed.
+     * @return ChangeFeedPolicy for AllVersionsAndDeletes change feed.
      * @deprecated use {@link ChangeFeedPolicy#createAllVersionsAndDeletesPolicy(Duration)} instead.
      */
     @Beta(value = Beta.SinceVersion.V4_12_0,
@@ -87,12 +87,12 @@ public final class ChangeFeedPolicy {
     }
 
     /**
-     * Creates a ChangeFeedPolicy with retention duration for {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES} processing
+     * Creates a ChangeFeedPolicy with retention duration for AllVersionsAndDeletes processing
      *
      * @param retentionDuration  - the retention duration (max granularity in minutes) in which it
-     *                             will be possible to process change feed events with {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES} mode.
+     *                             will be possible to process change feed events with AllVersionsAndDeletes mode.
      *
-     * @return ChangeFeedPolicy for {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES} change feed.
+     * @return ChangeFeedPolicy for AllVersionsAndDeletes change feed.
      */
     @Beta(value = Beta.SinceVersion.V4_37_0,
         warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
@@ -113,13 +113,13 @@ public final class ChangeFeedPolicy {
     }
 
     /**
-     * Creates a default ChangeFeedPolicy without retention duration specified. With the default/{@link ChangeFeedMode#LATEST_VERSION}
+     * Creates a default ChangeFeedPolicy without retention duration specified. With the default/LatestVersion
      * change feed it will not be possible to process intermediary changes or deletes.
      * <p>
      * This is the default policy being used when not specifying any ChangeFeedPolicy for the Container.
      * </p>
      *
-     * @return ChangeFeedPolicy for default/{@link ChangeFeedMode#LATEST_VERSION} change feed without {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES}.
+     * @return ChangeFeedPolicy for default/LatestVersion change feed without AllVersionsAndDeletes.
      * @deprecated use {@link ChangeFeedPolicy#createLatestVersionPolicy()} instead.
      */
     @Beta(value = Beta.SinceVersion.V4_12_0,
@@ -133,13 +133,13 @@ public final class ChangeFeedPolicy {
     }
 
     /**
-     * Creates a default ChangeFeedPolicy without retention duration specified. With the default/{@link ChangeFeedMode#LATEST_VERSION}
+     * Creates a default ChangeFeedPolicy without retention duration specified. With the default/LatestVersion
      * change feed it will not be possible to process intermediary changes or deletes.
      * <p>
      * This is the default policy being used when not specifying any ChangeFeedPolicy for the Container.
      * </p>
      *
-     * @return ChangeFeedPolicy for default/{@link ChangeFeedMode#LATEST_VERSION} change feed without {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES}.
+     * @return ChangeFeedPolicy for default/LatestVersion change feed without AllVersionsAndDeletes.
      */
     @Beta(value = Beta.SinceVersion.V4_37_0,
         warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
@@ -177,11 +177,11 @@ public final class ChangeFeedPolicy {
 
     /**
      * Gets the retention duration in which it will be possible to
-     * process change feed events with {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES} mode
+     * process change feed events with AllVersionsAndDeletes mode
      * (meaning intermediary changes and deletes will be exposed in change feed).
-     * By default {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES} change feed is not enabled - so the retention duration would be Duration.ZERO.
+     * By default AllVersionsAndDeletes change feed is not enabled - so the retention duration would be Duration.ZERO.
      *
-     * @return {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES} retention duration.
+     * @return AllVersionsAndDeletes retention duration.
      * @deprecated use {@link ChangeFeedPolicy#getAllVersionsAndDeletesRetentionDuration()} instead
      */
     @Beta(value = Beta.SinceVersion.V4_12_0,
@@ -193,11 +193,11 @@ public final class ChangeFeedPolicy {
 
     /**
      * Gets the retention duration in which it will be possible to
-     * process change feed events with {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES} mode
+     * process change feed events with AllVersionsAndDeletes mode
      * (meaning intermediary changes and deletes will be exposed in change feed).
-     * By default {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES} change feed is not enabled - so the retention duration would be Duration.ZERO.
+     * By default AllVersionsAndDeletes change feed is not enabled - so the retention duration would be Duration.ZERO.
      *
-     * @return {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES} retention duration.
+     * @return AllVersionsAndDeletes retention duration.
      */
     @Beta(value = Beta.SinceVersion.V4_37_0,
         warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
@@ -207,11 +207,11 @@ public final class ChangeFeedPolicy {
 
     /**
      * Gets the retention duration in which it will be possible to
-     * process change feed events with {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES} mode
+     * process change feed events with AllVersionsAndDeletes mode
      * (meaning intermediary changes and deletes will be exposed in change feed).
-     * By default {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES} change feed is not enabled - so the retention duration would be Duration.ZERO.
+     * By default AllVersionsAndDeletes change feed is not enabled - so the retention duration would be Duration.ZERO.
      *
-     * @return {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES} retention duration.
+     * @return AllVersionsAndDeletes retention duration.
      */
     int getAllVersionsAndDeletesRetentionDurationInMinutes() {
 
@@ -226,13 +226,13 @@ public final class ChangeFeedPolicy {
 
     /**
      * Sets the retention duration in minutes in which it will be possible to
-     * process change feed events with {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES} mode
+     * process change feed events with AllVersionsAndDeletes mode
      * (meaning intermediary changes and deletes will be exposed in change feed).
      * If the value of the {@param retentionDurationInMinutes} argument is null, 0 or negative
-     * no {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES} change feed is available for the container and change feed events can only
-     * be processed with the default mode {@link ChangeFeedMode#LATEST_VERSION}.
+     * no AllVersionsAndDeletes change feed is available for the container and change feed events can only
+     * be processed with the default mode LatestVersion.
      *
-     * @param retentionDurationInMinutes - {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES} retention duration in minutes.
+     * @param retentionDurationInMinutes - AllVersionsAndDeletes retention duration in minutes.
      */
     ChangeFeedPolicy setAllVersionsAndDeletesRetentionDurationInMinutes(Integer retentionDurationInMinutes) {
         if (retentionDurationInMinutes == null || retentionDurationInMinutes <= 0) {

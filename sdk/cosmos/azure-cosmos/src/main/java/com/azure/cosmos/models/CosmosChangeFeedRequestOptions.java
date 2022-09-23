@@ -5,6 +5,7 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
@@ -65,7 +66,7 @@ public final class CosmosChangeFeedRequestOptions {
         this.startFromInternal = startFromInternal;
         this.continuationState = continuationState;
 
-        if (mode != ChangeFeedMode.LATEST_VERSION && mode != ChangeFeedMode.ALL_VERSIONS_AND_DELETES) {
+        if (mode != ChangeFeedMode.INCREMENTAL && mode != ChangeFeedMode.FULL_FIDELITY) {
             throw new IllegalArgumentException(
                 String.format(
                     "Argument 'mode' has unsupported change feed mode %s",
@@ -227,7 +228,7 @@ public final class CosmosChangeFeedRequestOptions {
         return new CosmosChangeFeedRequestOptions(
             FeedRangeInternal.convert(feedRange),
             ChangeFeedStartFromInternal.createFromBeginning(),
-            ChangeFeedMode.LATEST_VERSION,
+            ChangeFeedMode.INCREMENTAL,
             null);
     }
 
@@ -301,7 +302,7 @@ public final class CosmosChangeFeedRequestOptions {
         return new CosmosChangeFeedRequestOptions(
             FeedRangeInternal.convert(feedRange),
             ChangeFeedStartFromInternal.createFromNow(),
-            ChangeFeedMode.LATEST_VERSION,
+            ChangeFeedMode.INCREMENTAL,
             null);
     }
 
@@ -331,7 +332,7 @@ public final class CosmosChangeFeedRequestOptions {
         return new CosmosChangeFeedRequestOptions(
             FeedRangeInternal.convert(feedRange),
             ChangeFeedStartFromInternal.createFromPointInTime(pointInTime),
-            ChangeFeedMode.LATEST_VERSION,
+            ChangeFeedMode.INCREMENTAL,
             null);
     }
 
@@ -367,27 +368,27 @@ public final class CosmosChangeFeedRequestOptions {
 
     /**
      * Changes the change feed mode so that the change feed will contain events for creations,
-     * deletes as well as all intermediary snapshots for updates. Enabling {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES}
+     * deletes as well as all intermediary snapshots for updates. Enabling AllVersionsAndDeletes
      * change feed mode requires configuring a retention duration in the change feed policy of the
      * container. {@link ChangeFeedPolicy}
      * <p>
      * Intermediary snapshots of changes as well as deleted documents would be
      * available for processing for retention window before they vanish.
-     * When enabling {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES} mode you will only be able to process change feed events
+     * When enabling AllVersionsAndDeletes mode you will only be able to process change feed events
      * within the retention window configured in the change feed policy of the container.
      * If you attempt to process a change feed after more than the retention window
      * an error (Status Code 400) will be returned because the events for intermediary
      * updates and deletes have vanished.
-     * It would still be possible to process changes using {@link ChangeFeedMode#LATEST_VERSION} mode even when
-     * configuring a {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES} change feed policy with retention window on the container
-     * and when using {@link ChangeFeedMode#LATEST_VERSION} mode it doesn't matter whether your are out of the retention
+     * It would still be possible to process changes using LatestVersion mode even when
+     * configuring a AllVersionsAndDeletes change feed policy with retention window on the container
+     * and when using LatestVersion mode it doesn't matter whether your are out of the retention
      * window or not - but no events for deletes or intermediary updates would be included.
      * When events are not getting processed within the retention window it is also possible
-     * to continue processing future events in {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES} mode by querying the change feed
+     * to continue processing future events in AllVersionsAndDeletes mode by querying the change feed
      * with a new CosmosChangeFeedRequestOptions instance.
      * </p>
      *
-     * @return a {@link CosmosChangeFeedRequestOptions} instance with {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES} mode enabled
+     * @return a {@link CosmosChangeFeedRequestOptions} instance with AllVersionsAndDeletes mode enabled
      * @deprecated use {@link CosmosChangeFeedRequestOptions#allVersionsAndDeletes()} instead.
      */
     @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
@@ -403,33 +404,33 @@ public final class CosmosChangeFeedRequestOptions {
             );
         }
 
-        this.mode = ChangeFeedMode.ALL_VERSIONS_AND_DELETES;
+        this.mode = ChangeFeedMode.FULL_FIDELITY;
         return this;
     }
 
     /**
      * Changes the change feed mode so that the change feed will contain events for creations,
-     * deletes as well as all intermediary snapshots for updates. Enabling {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES}
+     * deletes as well as all intermediary snapshots for updates. Enabling AllVersionsAndDeletes
      * change feed mode requires configuring a retention duration in the change feed policy of the
      * container. {@link ChangeFeedPolicy}
      * <p>
      * Intermediary snapshots of changes as well as deleted documents would be
      * available for processing for 8 minutes before they vanish.
-     * When enabling {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES} mode you will only be able to process change feed events
+     * When enabling AllVersionsAndDeletes mode you will only be able to process change feed events
      * within the retention window configured in the change feed policy of the container.
      * If you attempt to process a change feed after more than the retention window
      * an error (Status Code 400) will be returned because the events for intermediary
      * updates and deletes have vanished.
-     * It would still be possible to process changes using {@link ChangeFeedMode#LATEST_VERSION} mode even when
-     * configuring a {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES} change feed policy with retention window on the container
-     * and when using {@link ChangeFeedMode#LATEST_VERSION} mode it doesn't matter whether your are out of the retention
+     * It would still be possible to process changes using LatestVersion mode even when
+     * configuring a AllVersionsAndDeletes change feed policy with retention window on the container
+     * and when using LatestVersion mode it doesn't matter whether your are out of the retention
      * window or not - but no events for deletes or intermediary updates would be included.
      * When events are not getting processed within the retention window it is also possible
-     * to continue processing future events in {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES} mode by querying the change feed
+     * to continue processing future events in AllVersionsAndDeletes mode by querying the change feed
      * with a new CosmosChangeFeedRequestOptions instance.
      * </p>
      *
-     * @return a {@link CosmosChangeFeedRequestOptions} instance with {@link ChangeFeedMode#ALL_VERSIONS_AND_DELETES} mode enabled
+     * @return a {@link CosmosChangeFeedRequestOptions} instance with AllVersionsAndDeletes mode enabled
      */
     @Beta(value = Beta.SinceVersion.V4_37_0, warningText =
         Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
@@ -443,7 +444,7 @@ public final class CosmosChangeFeedRequestOptions {
             );
         }
 
-        this.mode = ChangeFeedMode.ALL_VERSIONS_AND_DELETES;
+        this.mode = ChangeFeedMode.FULL_FIDELITY;
         return this;
     }
 

@@ -3,7 +3,6 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.models.ChangeFeedMode;
 import com.azure.cosmos.models.ChangeFeedProcessorItem;
 
 /**
@@ -27,7 +26,6 @@ public class ChangeFeedProcessorAllVersionsAndDeletesModeCodeSnippet {
             .hostName(hostName)
             .feedContainer(feedContainer)
             .leaseContainer(leaseContainer)
-            .changeFeedMode(ChangeFeedMode.ALL_VERSIONS_AND_DELETES)
             .handleAllVersionsAndDeletesChanges(docs -> {
                 for (ChangeFeedProcessorItem item : docs) {
                     // Implementation for handling and processing of each ChangeFeedProcessorItem item goes here
@@ -52,14 +50,13 @@ public class ChangeFeedProcessorAllVersionsAndDeletesModeCodeSnippet {
             .hostName(hostName)
             .feedContainer(feedContainer)
             .leaseContainer(leaseContainer)
-            // BEGIN: com.azure.cosmos.fullFidelityChangeFeedProcessor.handleChanges
-            .changeFeedMode(ChangeFeedMode.ALL_VERSIONS_AND_DELETES)
+            // BEGIN: com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessor.handleChanges
             .handleAllVersionsAndDeletesChanges(docs -> {
                 for (ChangeFeedProcessorItem item : docs) {
                     // Implementation for handling and processing of each ChangeFeedProcessorItem item goes here
                 }
             })
-            // END: com.azure.cosmos.fullFidelityChangeFeedProcessor.handleChanges
+            // END: com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessor.handleChanges
             .buildChangeFeedProcessor();
     }
 }

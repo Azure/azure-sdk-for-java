@@ -11,7 +11,7 @@ import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.changefeed.common.LeaseVersion;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
-import com.azure.cosmos.models.ChangeFeedMode;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -159,7 +159,7 @@ public class ServiceItemLeaseV1 implements Lease {
         return new ChangeFeedStateV1(
             containerRid,
             this.feedRangeInternal,
-            ChangeFeedMode.ALL_VERSIONS_AND_DELETES,
+            ChangeFeedMode.FULL_FIDELITY,
             ChangeFeedStartFromInternal.createFromETagAndFeedRange(token, this.feedRangeInternal),
             changeFeedState.getContinuation());
     }

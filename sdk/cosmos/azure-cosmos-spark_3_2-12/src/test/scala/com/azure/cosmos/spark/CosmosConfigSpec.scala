@@ -517,7 +517,7 @@ class CosmosConfigSpec extends UnitSpec {
 
     val config = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(changeFeedConfig)
 
-    config.changeFeedMode shouldEqual ChangeFeedModes.LatestVersion
+    config.changeFeedMode shouldEqual ChangeFeedModes.Incremental
     config.startFrom shouldEqual ChangeFeedStartFromModes.Beginning
     config.startFromPointInTime shouldEqual None
     config.maxItemCountPerTrigger shouldEqual None

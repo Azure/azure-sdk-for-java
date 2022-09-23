@@ -9,7 +9,6 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
-import com.azure.cosmos.models.ChangeFeedMode;
 
 import java.util.Objects;
 
@@ -162,15 +161,15 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
             String.valueOf(maxItemCount));
         request.getHeaders().put(HttpConstants.HttpHeaders.POPULATE_QUERY_METRICS, String.valueOf(true));
         switch (this.mode) {
-            case LATEST_VERSION:
+            case INCREMENTAL:
                 request.getHeaders().put(
                     HttpConstants.HttpHeaders.A_IM,
-                    HttpConstants.A_IMHeaderValues.LATEST_VERSION_FEED);
+                    HttpConstants.A_IMHeaderValues.INCREMENTAL_FEED);
                 break;
-            case ALL_VERSIONS_AND_DELETES:
+            case FULL_FIDELITY:
                 request.getHeaders().put(
                     HttpConstants.HttpHeaders.A_IM,
-                    HttpConstants.A_IMHeaderValues.ALL_VERSIONS_AND_DELETES_FEED);
+                    HttpConstants.A_IMHeaderValues.FULL_FIDELITY_FEED);
                 //  This is the new wire format, which only gets passed for Full Fidelity Change Feed
                 request.getHeaders().put(
                     HttpConstants.HttpHeaders.CHANGE_FEED_WIRE_FORMAT_VERSION,

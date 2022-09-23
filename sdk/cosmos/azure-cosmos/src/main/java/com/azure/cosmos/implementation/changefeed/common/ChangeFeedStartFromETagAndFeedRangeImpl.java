@@ -7,7 +7,6 @@ import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
-import com.azure.cosmos.models.ChangeFeedMode;
 
 import static com.azure.cosmos.BridgeInternal.setProperty;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -74,7 +73,7 @@ class ChangeFeedStartFromETagAndFeedRangeImpl extends ChangeFeedStartFromInterna
         if (this.eTag != null) {
             // On REST level, change feed is using IfNoneMatch/ETag instead of continuation
             request.getHeaders().put(HttpConstants.HttpHeaders.IF_NONE_MATCH, this.eTag);
-        } else if (ChangeFeedMode.ALL_VERSIONS_AND_DELETES == changeFeedMode) {
+        } else if (ChangeFeedMode.FULL_FIDELITY == changeFeedMode) {
             //  If there is no continuation token, we start from now (which is by default).
             //  On REST level, change feed is using IfNoneMatch/ETag instead of continuation.
             request.getHeaders().put(HttpConstants.HttpHeaders.IF_NONE_MATCH,

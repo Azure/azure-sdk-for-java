@@ -11,7 +11,6 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.models.ChangeFeedMode;
 import com.azure.cosmos.models.ChangeFeedOperationType;
 import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.ChangeFeedProcessorItem;
@@ -212,7 +211,6 @@ public class ChangeFeedProcessorAllVersionsAndDeletesTest {
             .leaseContainer(leaseContainer)
             .options(changeFeedProcessorOptions)
             .hostName("example-host")
-            .changeFeedMode(ChangeFeedMode.ALL_VERSIONS_AND_DELETES)
             .handleAllVersionsAndDeletesChanges(changeFeedProcessorItems -> {
                 for (ChangeFeedProcessorItem item : changeFeedProcessorItems) {
                     try {

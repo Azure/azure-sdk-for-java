@@ -11,7 +11,6 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.changefeed.fullfidelity.ServiceItemLeaseV1;
-import com.azure.cosmos.models.ChangeFeedMode;
 import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.ChangeFeedProcessorState;
@@ -84,7 +83,6 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .options(changeFeedProcessorOptions)
                 .hostName(hostName)
-                .changeFeedMode(ChangeFeedMode.ALL_VERSIONS_AND_DELETES)
                 .handleAllVersionsAndDeletesChanges((List<ChangeFeedProcessorItem> docs) -> {
                     log.info("START processing from thread {}", Thread.currentThread().getId());
                     for (ChangeFeedProcessorItem item : docs) {
@@ -145,7 +143,6 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .options(changeFeedProcessorOptions)
                 .hostName(hostName)
-                .changeFeedMode(ChangeFeedMode.ALL_VERSIONS_AND_DELETES)
                 .handleAllVersionsAndDeletesChanges((List<ChangeFeedProcessorItem> docs) -> {
                     log.info("START processing from thread {}", Thread.currentThread().getId());
                     for (ChangeFeedProcessorItem item : docs) {
@@ -202,7 +199,6 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             Map<String, ChangeFeedProcessorItem> receivedDocuments = new ConcurrentHashMap<>();
             ChangeFeedProcessor changeFeedProcessorMain = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
-                .changeFeedMode(ChangeFeedMode.ALL_VERSIONS_AND_DELETES)
                 .handleAllVersionsAndDeletesChanges((List<ChangeFeedProcessorItem> docs) -> {
                     log.info("START processing from thread {}", Thread.currentThread().getId());
                     for (ChangeFeedProcessorItem item : docs) {
@@ -216,7 +212,6 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
             ChangeFeedProcessor changeFeedProcessorSideCart = new ChangeFeedProcessorBuilder()
                 .hostName("side-cart")
-                .changeFeedMode(ChangeFeedMode.ALL_VERSIONS_AND_DELETES)
                 .handleAllVersionsAndDeletesChanges((List<ChangeFeedProcessorItem> docs) -> {
                     fail("ERROR - we should not execute this handler");
                 })
@@ -342,7 +337,6 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             Map<String, ChangeFeedProcessorItem> receivedDocuments = new ConcurrentHashMap<>();
             ChangeFeedProcessor changeFeedProcessorMain = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
-                .changeFeedMode(ChangeFeedMode.ALL_VERSIONS_AND_DELETES)
                 .handleAllVersionsAndDeletesChanges((List<ChangeFeedProcessorItem> docs) -> {
                     log.info("START processing from thread {}", Thread.currentThread().getId());
                     for (ChangeFeedProcessorItem item : docs) {
@@ -356,7 +350,6 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
             ChangeFeedProcessor changeFeedProcessorSideCart = new ChangeFeedProcessorBuilder()
                 .hostName("side-cart")
-                .changeFeedMode(ChangeFeedMode.ALL_VERSIONS_AND_DELETES)
                 .handleAllVersionsAndDeletesChanges((List<ChangeFeedProcessorItem> docs) -> {
                     fail("ERROR - we should not execute this handler");
                 })
@@ -531,7 +524,6 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
             ChangeFeedProcessor changeFeedProcessorFirst = new ChangeFeedProcessorBuilder()
                 .hostName(ownerFirst)
-                .changeFeedMode(ChangeFeedMode.ALL_VERSIONS_AND_DELETES)
                 .handleAllVersionsAndDeletesChanges(docs -> {
                     log.info("START processing from thread {} using host {}", Thread.currentThread().getId(), ownerFirst);
                     log.info("END processing from thread {} using host {}", Thread.currentThread().getId(), ownerFirst);
@@ -545,7 +537,6 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
             ChangeFeedProcessor changeFeedProcessorSecond = new ChangeFeedProcessorBuilder()
                 .hostName(ownerSecond)
-                .changeFeedMode(ChangeFeedMode.ALL_VERSIONS_AND_DELETES)
                 .handleAllVersionsAndDeletesChanges((List<ChangeFeedProcessorItem> docs) -> {
                     log.info("START processing from thread {} using host {}", Thread.currentThread().getId(), ownerSecond);
                     for (ChangeFeedProcessorItem item : docs) {
@@ -667,7 +658,6 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
             ChangeFeedProcessor changeFeedProcessorFirst = new ChangeFeedProcessorBuilder()
                 .hostName(ownerFirst)
-                .changeFeedMode(ChangeFeedMode.ALL_VERSIONS_AND_DELETES)
                 .handleAllVersionsAndDeletesChanges(docs -> {
                     logger.info("START processing from thread {} using host {}", Thread.currentThread().getId(), ownerFirst);
                     for (ChangeFeedProcessorItem item : docs) {
@@ -799,7 +789,6 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
             changeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
-                .changeFeedMode(ChangeFeedMode.ALL_VERSIONS_AND_DELETES)
                 .handleAllVersionsAndDeletesChanges(fullFidelityChangeFeedProcessorHandler(receivedDocuments))
                 .feedContainer(createdFeedCollection)
                 .leaseContainer(createdLeaseCollection)

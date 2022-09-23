@@ -17,7 +17,7 @@ import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInte
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
-import com.azure.cosmos.models.ChangeFeedMode;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 
@@ -93,7 +93,7 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory<ChangeF
             state = new ChangeFeedStateV1(
                 BridgeInternal.extractContainerSelfLink(this.collectionSelfLink),
                 lease.getFeedRange(),
-                ChangeFeedMode.ALL_VERSIONS_AND_DELETES,
+                ChangeFeedMode.FULL_FIDELITY,
                 getStartFromSettings(
                     lease.getFeedRange(),
                     this.changeFeedProcessorOptions),

@@ -1118,7 +1118,7 @@ private case class CosmosChangeFeedConfig
 }
 
 private object CosmosChangeFeedConfig {
-  private val DefaultChangeFeedMode: ChangeFeedMode = ChangeFeedModes.LatestVersion
+  private val DefaultChangeFeedMode: ChangeFeedMode = ChangeFeedModes.Incremental
   private val DefaultStartFromMode: ChangeFeedStartFromMode = ChangeFeedStartFromModes.Beginning
 
   private val startFrom = CosmosConfigEntry[ChangeFeedStartFromMode](
@@ -1142,7 +1142,7 @@ private object CosmosChangeFeedConfig {
   private val changeFeedMode = CosmosConfigEntry[ChangeFeedMode](
     key = CosmosConfigNames.ChangeFeedMode,
     mandatory = false,
-    defaultValue = Some(ChangeFeedModes.LatestVersion),
+    defaultValue = Some(ChangeFeedModes.Incremental),
     parseFromStringFunction = changeFeedModeString => CosmosConfigEntry.parseEnumeration(changeFeedModeString, ChangeFeedModes),
     helpMessage = "ChangeFeed mode (Incremental/LatestVersion or FullFidelity/AllVersionsAndDeletes)")
 

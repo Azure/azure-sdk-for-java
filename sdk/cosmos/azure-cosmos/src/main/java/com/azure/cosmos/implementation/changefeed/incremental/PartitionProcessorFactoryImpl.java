@@ -18,7 +18,7 @@ import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
-import com.azure.cosmos.models.ChangeFeedMode;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -104,7 +104,7 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory<JsonNod
             state = new ChangeFeedStateV1(
                 BridgeInternal.extractContainerSelfLink(this.collectionSelfLink),
                 new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken()),
-                ChangeFeedMode.LATEST_VERSION,
+                ChangeFeedMode.INCREMENTAL,
                 getStartFromSettings(
                     feedRange,
                     this.changeFeedProcessorOptions),
