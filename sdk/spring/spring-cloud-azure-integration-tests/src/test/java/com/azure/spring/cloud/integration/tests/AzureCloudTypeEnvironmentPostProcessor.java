@@ -11,6 +11,7 @@ import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,10 +28,14 @@ public class AzureCloudTypeEnvironmentPostProcessor implements EnvironmentPostPr
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
         String authorityHost = environment.getProperty("AZURE_AUTHORITY_HOST");
+        if (!StringUtils.hasText(authorityHost)) {
+            logger.info("No AZURE_AUTHORITY_HOST set.");
+            return;
+        }
         Map<String, Object> props = new HashMap<>();
         MapPropertySource mapPropertySource = new MapPropertySource("spring-cloud-azure-cloud-type", props);
 
-        logger.info("The set AZURE_AUTHORITY_HOST is [" + authorityHost + "]");
+        logger.info("The set AZURE_AUTHORITY_HOST is [" + authorityHost + "].");
 
         if (authorityHost.startsWith("https://login.microsoftonline.us")) {
             props.put(CLOUD_TYPE_PROPERTY_KEY, AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
