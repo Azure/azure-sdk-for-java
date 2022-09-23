@@ -11,7 +11,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-identity-providers-core</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity-providers-core;current} -->
+  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-identity-providers-core;current} -->
   <packaging>jar</packaging>
 
   <name>Azure Identity Providers Core</name>

@@ -108,7 +108,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity-providers-core</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-identity-providers-core;dependency} -->
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity-providers-core;dependency} -->
       <optional>true</optional>
     </dependency>
 
