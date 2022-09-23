@@ -4,6 +4,7 @@
 package com.azure.core.util;
 
 import com.azure.core.implementation.util.BinaryDataContent;
+import com.azure.core.implementation.util.FileContent;
 import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.implementation.util.IterableOfByteBuffersInputStream;
 import com.azure.core.util.logging.ClientLogger;
@@ -42,12 +43,12 @@ import java.nio.ReadOnlyBufferException;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.CompletionHandler;
 import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.nio.file.spi.FileSystemProvider;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -57,6 +58,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -571,26 +574,32 @@ public class BinaryDataTest {
 
     @Test
     public void testFromLargeFileFlux() throws Exception {
-        Path file = Files.createTempFile("binaryDataFromFile" + UUID.randomUUID(), ".txt");
-        file.toFile().deleteOnExit();
-        int chunkSize = 10 * 1024 * 1024; // 10 MB
-        int numberOfChunks = 220; // 2200 MB total
+        Path dummyFile = Files.createTempFile("binaryDataFromFile" + UUID.randomUUID(), ".txt");
+        dummyFile.toFile().deleteOnExit();
+
+        int chunkSize = 1024 * 1024; // 10 MB
+        long numberOfChunks = 2200; // 2200 MB total
         byte[] bytes = new byte[chunkSize];
         RANDOM.nextBytes(bytes);
 
-        try (AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(file, StandardOpenOption.WRITE)) {
-            Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(bytes))
-                .repeat(numberOfChunks - 1)
-                .map(ByteBuffer::duplicate);
-            StepVerifier.create(FluxUtil.writeFile(data, fileChannel)).verifyComplete();
-        }
+        File mockFile = mock(File.class);
+        when(mockFile.exists()).thenReturn(true);
+        when(mockFile.length()).thenReturn(numberOfChunks * chunkSize);
 
-        assertEquals((long) chunkSize * numberOfChunks, file.toFile().length());
+        Path mockPath = mock(Path.class);
+        when(mockPath.toFile()).thenReturn(mockFile);
+
+        FileContent fileContent = new FileContent(mockPath, 32768, null, null) {
+            @Override
+            public AsynchronousFileChannel getAsynchronousFileChannel() throws IOException {
+                return new FakeAsynchronousFileChannel(bytes, numberOfChunks * chunkSize);
+            }
+        };
 
         AtomicInteger index = new AtomicInteger();
         AtomicLong totalRead = new AtomicLong();
 
-        StepVerifier.create(BinaryData.fromFile(file).toFluxByteBuffer())
+        StepVerifier.create(fileContent.toFluxByteBuffer())
             .thenConsumeWhile(byteBuffer -> {
                 totalRead.addAndGet(byteBuffer.remaining());
                 int idx = index.getAndUpdate(operand -> (operand + byteBuffer.remaining()) % chunkSize);
@@ -607,25 +616,31 @@ public class BinaryDataTest {
 
     @Test
     public void testFromLargeFileStream() throws Exception {
-        Path file = Files.createTempFile("binaryDataFromFile" + UUID.randomUUID(), ".txt");
-        file.toFile().deleteOnExit();
-        int chunkSize = 10 * 1024 * 1024; // 10 MB
-        int numberOfChunks = 220; // 2200 MB total
+        Path dummyFile = Files.createTempFile("binaryDataFromFile" + UUID.randomUUID(), ".txt");
+        dummyFile.toFile().deleteOnExit();
+
+        int chunkSize = 1024 * 1024; // 1 MB
+        long numberOfChunks = 2200L; // 2200 MB total
         byte[] bytes = new byte[chunkSize];
         RANDOM.nextBytes(bytes);
 
-        try (AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(file, StandardOpenOption.WRITE)) {
-            Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(bytes))
-                .repeat(numberOfChunks - 1)
-                .map(ByteBuffer::duplicate);
-            StepVerifier.create(FluxUtil.writeFile(data, fileChannel)).verifyComplete();
-        }
+        File mockFile = mock(File.class);
+        when(mockFile.exists()).thenReturn(true);
+        when(mockFile.length()).thenReturn(numberOfChunks * chunkSize);
 
-        assertEquals((long) chunkSize * numberOfChunks, file.toFile().length());
+        Path mockPath = mock(Path.class);
+        when(mockPath.toFile()).thenReturn(mockFile);
 
-        try (InputStream is = BinaryData.fromFile(file).toStream()) {
+        FileContent fileContent = new FileContent(mockPath, 32768, null, null) {
+            @Override
+            public FileInputStream getFileInputStream() throws FileNotFoundException {
+                return new FakeFileInputStream(dummyFile, bytes, numberOfChunks * chunkSize);
+            }
+        };
+
+        try (InputStream is = fileContent.toStream()) {
             // Read and validate in chunks to optimize validation compared to byte-by-byte checking.
-            byte[] buffer = new byte[4096];
+            byte[] buffer = new byte[32768];
             long totalRead = 0;
             int read;
             int idx = 0;
@@ -674,7 +689,7 @@ public class BinaryDataTest {
         assertArrayEquals(expectedBytes, BinaryData.fromFile(file, (long) leftPadding, (long) size).toBytes());
         assertArrayEquals(expectedBytes,
             FluxUtil.collectBytesInByteBufferStream(
-                BinaryData.fromFile(file, (long) leftPadding, (long) size).toFluxByteBuffer()).block());
+                BinaryData.fromFile(file, (long) leftPadding, (long) size).toFluxByteBuffer(), size).block());
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream(size);
         try (InputStream is = BinaryData.fromFile(file, (long) leftPadding, (long) size).toStream()) {
@@ -1161,6 +1176,167 @@ public class BinaryDataTest {
         @Override
         public Mono<Void> serializeAsync(OutputStream stream, Object value) {
             return Mono.fromRunnable(() -> serialize(stream, value));
+        }
+    }
+
+    private static final class FakeFileInputStream extends FileInputStream {
+        private final byte[] fakeData;
+        private final int dataLength;
+        private final long fileLength;
+
+        private long position = 0L;
+
+        private FakeFileInputStream(Path file, byte[] fakeData, long fileLength) throws FileNotFoundException {
+            super(file.toFile());
+            this.fakeData = fakeData;
+            this.dataLength = fakeData.length;
+            this.fileLength = fileLength;
+        }
+
+        @Override
+        public int read() {
+            if (position >= fileLength) {
+                return -1;
+            }
+
+            int value = fakeData[(int) (position % dataLength)];
+            position++;
+
+            return value;
+        }
+
+        @Override
+        public int read(byte[] buffer) {
+            return read(buffer, 0, buffer.length);
+        }
+
+        @Override
+        public int read(byte[] buffer, int offset, int length) {
+            if (position >= fileLength) {
+                return -1;
+            }
+
+            int bytesOffset = (int) (position % dataLength);
+
+            // Check if we need to wrap back around to the beginning of the bytes.
+            if (bytesOffset + length > dataLength) {
+                int wrapLength = (bytesOffset + length) - dataLength;
+                System.arraycopy(fakeData, bytesOffset, buffer, offset, dataLength - bytesOffset);
+                System.arraycopy(fakeData, 0, buffer, offset + (dataLength - bytesOffset), wrapLength);
+            } else {
+                System.arraycopy(fakeData, bytesOffset, buffer, 0, length);
+            }
+
+            position += length;
+            return length;
+        }
+    }
+
+    private static final class FakeAsynchronousFileChannel extends AsynchronousFileChannel {
+        private final byte[] fakeData;
+        private final int dataLength;
+        private final long fileLength;
+
+        private FakeAsynchronousFileChannel(byte[] fakeData, long fileLength) {
+            this.fakeData = fakeData;
+            this.dataLength = fakeData.length;
+            this.fileLength = fileLength;
+        }
+
+        @Override
+        public long size() {
+            return fileLength;
+        }
+
+        @Override
+        public AsynchronousFileChannel truncate(long size) {
+            return null; // no-op
+        }
+
+        @Override
+        public void force(boolean metaData) {
+            // no-op
+        }
+
+        @Override
+        public <A> void lock(long position, long size, boolean shared, A attachment,
+            CompletionHandler<FileLock, ? super A> handler) {
+            // no-op
+        }
+
+        @Override
+        public Future<FileLock> lock(long position, long size, boolean shared) {
+            return null; // no-op
+        }
+
+        @Override
+        public FileLock tryLock(long position, long size, boolean shared) {
+            return null; // no-op
+        }
+
+        @Override
+        public <A> void read(ByteBuffer dst, long position, A attachment,
+            CompletionHandler<Integer, ? super A> handler) {
+            if (position >= fileLength) {
+                handler.completed(-1, attachment);
+                return;
+            }
+
+            int remaining = dst.remaining();
+            int bytesOffset = (int) (position % dataLength);
+
+            // Check if we need to wrap back around to the beginning of the bytes.
+            if (bytesOffset + remaining > dataLength) {
+                int wrapLength = (bytesOffset + remaining) - dataLength;
+                dst.put(fakeData, bytesOffset, dataLength - bytesOffset);
+                dst.put(fakeData, 0, wrapLength);
+            } else {
+                dst.put(fakeData, bytesOffset, remaining);
+            }
+
+            handler.completed(remaining, attachment);
+        }
+
+        @Override
+        public Future<Integer> read(ByteBuffer dst, long position) {
+            if (position >= fileLength) {
+                return CompletableFuture.completedFuture(-1);
+            }
+
+            int remaining = dst.remaining();
+            int bytesOffset = (int) (position % dataLength);
+
+            // Check if we need to wrap back around to the beginning of the bytes.
+            if (bytesOffset + remaining > dataLength) {
+                int wrapLength = (bytesOffset + remaining) - dataLength;
+                dst.put(fakeData, bytesOffset, dataLength - bytesOffset);
+                dst.put(fakeData, 0, wrapLength);
+            } else {
+                dst.put(fakeData, bytesOffset, remaining);
+            }
+
+            return CompletableFuture.completedFuture(remaining);
+        }
+
+        @Override
+        public <A> void write(ByteBuffer src, long position, A attachment,
+            CompletionHandler<Integer, ? super A> handler) {
+            // no-op
+        }
+
+        @Override
+        public Future<Integer> write(ByteBuffer src, long position) {
+            return null; // no-op
+        }
+
+        @Override
+        public boolean isOpen() {
+            return true;
+        }
+
+        @Override
+        public void close() {
+            // no-op
         }
     }
 }
