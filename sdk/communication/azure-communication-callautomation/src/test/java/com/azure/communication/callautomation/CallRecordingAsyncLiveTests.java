@@ -13,6 +13,7 @@ import com.azure.communication.callautomation.models.ServerCallLocator;
 import com.azure.communication.callautomation.models.StartRecordingOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.identity.CommunicationIdentityAsyncClient;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -39,11 +40,14 @@ public class CallRecordingAsyncLiveTests extends CallAutomationLiveTestBase {
             .addPolicy((context, next) -> logHeaders("recordingOperationsAsync", next))
             .buildAsyncClient();
 
+        CommunicationIdentityAsyncClient communicationIdentityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
+            .buildAsyncClient();
+
         String callConnectionId = "";
         try {
-            CommunicationUserIdentifier sourceUser = createCommunicationIdentityClient().createUser().block();
+            CommunicationUserIdentifier sourceUser = communicationIdentityAsyncClient.createUser().block();
 
-            String targetUserId = TARGET_USER_ID;
+            String targetUserId = ACS_USER_CALL_RECORDING;
             List<CommunicationIdentifier> targets = new ArrayList<CommunicationIdentifier>() {
                 {
                     add(new CommunicationUserIdentifier(targetUserId));

@@ -54,9 +54,6 @@ public class CallAutomationLiveTestBase extends TestBase {
     protected static final String RECORDING_DELETE_URL_404 = Configuration.getGlobalConfiguration()
         .get("RECORDING_DELETE_URL_404", "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141c");
 
-    protected static final String TARGET_USER_ID = Configuration.getGlobalConfiguration()
-        .get("TARGET_USER_ID", "8:acs:ad7b4e1f-5b71-4d2f-9db2-b1bae6d4f392_00000014-0b21-aee5-85f4-343a0d0065cf");
-
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
         .add("value")
@@ -73,6 +70,9 @@ public class CallAutomationLiveTestBase extends TestBase {
 
     protected static final String ACS_USER_2 = Configuration.getGlobalConfiguration()
         .get("ANOTHER_TARGET_USER_ID", String.format("8:acs:%s_00000014-00d7-31b3-28df-444822002030", RANDOM_RESOURCE_IDENTIFIER));
+
+    protected static final String ACS_USER_CALL_RECORDING = Configuration.getGlobalConfiguration()
+        .get("CALL_RECORDING_USER_ID", "8:acs:ad7b4e1f-5b71-4d2f-9db2-b1bae6d4f392_00000014-0b21-aee5-85f4-343a0d0065cf");
 
     protected static final String ACS_RESOURCE_PHONE = Configuration.getGlobalConfiguration()
         .get("AZURE_PHONE_NUMBER", "+18331234567");
@@ -152,13 +152,6 @@ public class CallAutomationLiveTestBase extends TestBase {
                     + ": " + bufferedResponse.getHeaderValue("X-Microsoft-Skype-Chain-ID"));
                 return Mono.just(bufferedResponse);
             });
-    }
-
-    protected CommunicationIdentityAsyncClient createCommunicationIdentityClient() {
-        return new CommunicationIdentityClientBuilder()
-            .connectionString(CONNECTION_STRING)
-            .serviceVersion(CommunicationIdentityServiceVersion.V2021_03_07)
-            .buildAsyncClient();
     }
 
     protected void waitForOperationCompletion(int milliSeconds) throws InterruptedException {
