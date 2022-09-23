@@ -3,15 +3,21 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.identity.CommunicationIdentityAsyncClient;
+import com.azure.communication.identity.CommunicationIdentityClientBuilder;
+import com.azure.communication.identity.CommunicationIdentityServiceVersion;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -20,9 +26,6 @@ import java.util.StringJoiner;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import reactor.core.publisher.Mono;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpResponse;
 
 public class CallAutomationLiveTestBase extends TestBase {
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
@@ -49,6 +52,9 @@ public class CallAutomationLiveTestBase extends TestBase {
 
     protected static final String RECORDING_DELETE_URL_404 = Configuration.getGlobalConfiguration()
         .get("RECORDING_DELETE_URL_404", "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141c");
+
+    protected static final String TARGET_USER_ID = Configuration.getGlobalConfiguration()
+        .get("TARGET_USER_ID");
 
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
@@ -114,6 +120,18 @@ public class CallAutomationLiveTestBase extends TestBase {
                     + ": " + bufferedResponse.getHeaderValue("X-Microsoft-Skype-Chain-ID"));
                 return Mono.just(bufferedResponse);
             });
+    }
+
+    protected CommunicationIdentityAsyncClient createCommunicationIdentityClient() {
+        return new CommunicationIdentityClientBuilder()
+            .connectionString(CONNECTION_STRING)
+            .serviceVersion(CommunicationIdentityServiceVersion.V2021_03_07)
+            .buildAsyncClient();
+    }
+
+    protected void WaitForOperationCompletion(int milliSeconds) throws InterruptedException {
+        if (getTestMode() != TestMode.PLAYBACK)
+            Thread.sleep(milliSeconds);
     }
 
     static class FakeCredentials implements TokenCredential {

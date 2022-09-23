@@ -3,15 +3,23 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallingServerErrorException;
+import com.azure.communication.callautomation.models.CreateCallOptions;
+import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.RecordingState;
 import com.azure.communication.callautomation.models.RecordingStateResult;
 import com.azure.communication.callautomation.models.ServerCallLocator;
 import com.azure.communication.callautomation.models.StartRecordingOptions;
+import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -31,9 +39,29 @@ public class CallRecordingAsyncLiveTests extends CallAutomationLiveTestBase {
             .addPolicy((context, next) -> logHeaders("recordingOperationsAsync", next))
             .buildAsyncClient();
 
+        String callConnectionId = "";
         try {
+            CommunicationUserIdentifier sourceUser = createCommunicationIdentityClient().createUser().block();
+
+            String targetUserId = TARGET_USER_ID;
+            List<CommunicationIdentifier> targets = new ArrayList<>() {{
+                add(new CommunicationUserIdentifier(targetUserId));
+            }};
+
             String ngrok = "https://localhost";
-            String serverCallId = "serverCallId";
+
+            CreateCallResult createCallResult = client.createCall(new CreateCallOptions(sourceUser, targets, ngrok)).block();
+
+            assertNotNull(createCallResult);
+            WaitForOperationCompletion(10000);
+
+            CallConnectionProperties callConnectionProperties =
+                client.getCallConnectionAsync(createCallResult.getCallConnectionProperties().getCallConnectionId()).getCallProperties().block();
+
+            String serverCallId = callConnectionProperties.getServerCallId();
+
+            callConnectionId = callConnectionProperties.getCallConnectionId();
+
             CallRecordingAsync callRecording = client.getCallRecordingAsync();
             RecordingStateResult recordingResponse = callRecording.startRecording(
                 new StartRecordingOptions(new ServerCallLocator(serverCallId))
@@ -42,25 +70,32 @@ public class CallRecordingAsyncLiveTests extends CallAutomationLiveTestBase {
             assertNotNull(recordingResponse);
             String recordingId = recordingResponse.getRecordingId();
             assertNotNull(recordingId);
+            WaitForOperationCompletion(10000);
 
             recordingResponse = callRecording.getRecordingState(recordingId).block();
             assertNotNull(recordingResponse);
             assertEquals(RecordingState.ACTIVE, recordingResponse.getRecordingState());
 
-            callRecording.pauseRecording(recordingId);
+            callRecording.pauseRecording(recordingId).block();
+            WaitForOperationCompletion(10000);
             recordingResponse = callRecording.getRecordingState(recordingId).block();
             assertNotNull(recordingResponse);
             assertEquals(RecordingState.INACTIVE, recordingResponse.getRecordingState());
 
-            callRecording.resumeRecording(recordingId);
+            callRecording.resumeRecording(recordingId).block();
+            WaitForOperationCompletion(10000);
             recordingResponse = callRecording.getRecordingState(recordingId).block();
             assertNotNull(recordingResponse);
             assertEquals(RecordingState.ACTIVE, recordingResponse.getRecordingState());
 
             callRecording.stopRecording(recordingId).block();
+            WaitForOperationCompletion(10000);
             assertThrows(CallingServerErrorException.class, () -> callRecording.getRecordingState(recordingId).block());
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
+        } finally {
+            CallConnectionAsync callConnection = client.getCallConnectionAsync(callConnectionId);
+            callConnection.hangUp(true).block();
         }
     }
 }
