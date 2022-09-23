@@ -16,6 +16,7 @@
         <module>azure-maps-search</module>
         <module>azure-maps-route</module>
         <module>azure-maps-render</module>
+        <module>azure-maps-timezone</module>
       </modules>
 
       <dependencies>
@@ -34,6 +35,11 @@
           <artifactId>azure-maps-render</artifactId>
           <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-maps-render;current} -->
         </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-maps-timezone</artifactId>
+          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-maps-timezone;current} -->
+        </dependency>
       </dependencies>
 
       <build>
@@ -48,6 +54,7 @@
                 <include>com/azure/maps/search/*.class</include>
                 <include>com/azure/maps/route/*.class</include>
                 <include>com/azure/maps/render*.class</include>
+                <include>com/azure/maps/timezone*.class</include>
               </includes>
             </configuration>
           </plugin>
@@ -64,6 +71,7 @@
         <module>azure-maps-search</module>
         <module>azure-maps-route</module>
         <module>azure-maps-render</module>
+        <module>azure-maps-timezone</module>
       </modules>
     </profile>
   </profiles>
