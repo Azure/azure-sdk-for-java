@@ -36,7 +36,7 @@ public class AadRestOperationsConfiguration {
      * Name of RestOperation bean. The bean is used to get access token from Azure AD (or Azure AD B2C).
      */
     public static final String AAD_OAUTH2_ACCESS_TOKEN_RESPONSE_CLIENT_REST_OPERATIONS_BEAN_NAME =
-            "AADOAuth2AccessTokenResponseClientRestOperations";
+            "aadOAuth2AccessTokenResponseClientRestOperations";
 
     /**
      * Declare {@link RestOperations} bean used to retrieve access token from Azure AD(or Azure AD B2C) endpoints like:
