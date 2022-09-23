@@ -59,19 +59,22 @@ public class CallAutomationLiveTestBase extends TestBase {
         = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT),
         Pattern.CASE_INSENSITIVE);
 
-    private static final String randomResourceIdentifier = "82e890fc-188a-4b67-bb7d-deff073d7d1e";
+    private static final String RANDOM_RESOURCE_IDENTIFIER = "82e890fc-188a-4b67-bb7d-deff073d7d1e";
 
     protected static final String ACS_USER_1 = Configuration.getGlobalConfiguration()
-        .get("TARGET_USER_ID", String.format("8:acs:%s_00000014-00d6-e250-28df-44482200202a", randomResourceIdentifier));
+        .get("TARGET_USER_ID", String.format("8:acs:%s_00000014-00d6-e250-28df-44482200202a", RANDOM_RESOURCE_IDENTIFIER));
 
     protected static final String ACS_USER_2 = Configuration.getGlobalConfiguration()
-        .get("ANOTHER_TARGET_USER_ID", String.format("8:acs:%s_00000014-00d7-31b3-28df-444822002030", randomResourceIdentifier));
+        .get("ANOTHER_TARGET_USER_ID", String.format("8:acs:%s_00000014-00d7-31b3-28df-444822002030", RANDOM_RESOURCE_IDENTIFIER));
 
     protected static final String ACS_RESOURCE_PHONE = Configuration.getGlobalConfiguration()
         .get("AZURE_PHONE_NUMBER", "+18331234567");
 
     protected static final String PHONE_USER_1 = Configuration.getGlobalConfiguration()
         .get("TARGET_PHONE_NUMBER", "+16471234567");
+
+    protected static final String MEDIA_SOURCE = Configuration.getGlobalConfiguration()
+        .get("ACS_MEDIA_SOURCE", "https://mwlstoragetest.blob.core.windows.net/blobs1/languagesPrompt.wav");
 
     protected CommunicationIdentityClientBuilder getCommunicationIdentityClientUsingConnectionString(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder()

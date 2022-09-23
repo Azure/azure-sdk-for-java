@@ -11,9 +11,8 @@ import com.azure.communication.callautomation.models.ListParticipantsResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
-import com.azure.communication.identity.CommunicationIdentityAsyncClient;
+import com.azure.communication.identity.CommunicationIdentityClient;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.rest.Response;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -28,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class CallAutomationAsyncClientLiveTests extends CallAutomationLiveTestBase {
+public class CallAutomationClientLiveTests extends CallAutomationLiveTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
@@ -44,35 +43,34 @@ public class CallAutomationAsyncClientLiveTests extends CallAutomationLiveTestBa
          * 4. hang up the call.
          * 5. once call is hung up, verify that call connection cannot be found.
          */
-        CallAutomationAsyncClient callClient = getCallingServerClientUsingConnectionString(httpClient)
+        CallAutomationClient callClient = getCallingServerClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("createVOIPCallAndHangupTest", next))
-            .buildAsyncClient();
+            .buildClient();
 
-        CommunicationIdentityAsyncClient identityClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
+        CommunicationIdentityClient identityClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("createVOIPCallAndHangupTest", next))
-            .buildAsyncClient();
+            .buildClient();
 
         try {
             String callbackUrl = "https://localhost";
-            CommunicationIdentifier source = identityClient.createUser().block();
+            CommunicationIdentifier source = identityClient.createUser();
             List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(ACS_USER_1)));
 
             CreateCallOptions createCallOptions = new CreateCallOptions(source, targets, callbackUrl);
-            Response<CreateCallResult> result = callClient.createCallWithResponse(createCallOptions).block();
+            CreateCallResult result = callClient.createCall(createCallOptions);
             assertNotNull(result);
-            assertNotNull(result.getValue());
-            assertNotNull(result.getValue().getCallConnection());
-            assertNotNull(result.getValue().getCallConnectionProperties());
+            assertNotNull(result.getCallConnection());
+            assertNotNull(result.getCallConnectionProperties());
             Thread.sleep(10000);
 
-            CallConnectionAsync callConnectionAsync = callClient.getCallConnectionAsync(result.getValue().getCallConnectionProperties().getCallConnectionId());
-            assertNotNull(callConnectionAsync);
-            CallConnectionProperties callConnectionProperties = callConnectionAsync.getCallProperties().block();
+            CallConnection callConnection = callClient.getCallConnection(result.getCallConnectionProperties().getCallConnectionId());
+            assertNotNull(callConnection);
+            CallConnectionProperties callConnectionProperties = callConnection.getCallProperties();
             assertNotNull(callConnectionProperties);
 
-            callConnectionAsync.hangUp(true).block();
+            callConnection.hangUp(true);
             Thread.sleep(5000);
-            assertThrows(Exception.class, () -> callConnectionAsync.getCallProperties().block());
+            assertThrows(Exception.class, callConnection::getCallProperties);
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
         }
@@ -92,36 +90,35 @@ public class CallAutomationAsyncClientLiveTests extends CallAutomationLiveTestBa
          * 4. hang up the call.
          * 5. once call is hung up, verify that call connection cannot be found.
          */
-        CallAutomationAsyncClient callClient = getCallingServerClientUsingConnectionString(httpClient)
+        CallAutomationClient callClient = getCallingServerClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("createPSTNCallAndHangupTest", next))
-            .buildAsyncClient();
+            .buildClient();
 
-        CommunicationIdentityAsyncClient identityClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
+        CommunicationIdentityClient identityClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("createPSTNCallAndHangupTest", next))
-            .buildAsyncClient();
+            .buildClient();
 
         try {
             String callbackUrl = "https://localhost";
-            CommunicationIdentifier source = identityClient.createUser().block();
+            CommunicationIdentifier source = identityClient.createUser();
             List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(new PhoneNumberIdentifier(PHONE_USER_1)));
 
             CreateCallOptions createCallOptions = new CreateCallOptions(source, targets, callbackUrl)
                 .setSourceCallerId(ACS_RESOURCE_PHONE);
-            Response<CreateCallResult> result = callClient.createCallWithResponse(createCallOptions).block();
+            CreateCallResult result = callClient.createCall(createCallOptions);
             assertNotNull(result);
-            assertNotNull(result.getValue());
-            assertNotNull(result.getValue().getCallConnection());
-            assertNotNull(result.getValue().getCallConnectionProperties());
+            assertNotNull(result.getCallConnection());
+            assertNotNull(result.getCallConnectionProperties());
             Thread.sleep(10000);
 
-            CallConnectionAsync callConnectionAsync = callClient.getCallConnectionAsync(result.getValue().getCallConnectionProperties().getCallConnectionId());
-            assertNotNull(callConnectionAsync);
-            CallConnectionProperties callConnectionProperties = callConnectionAsync.getCallProperties().block();
+            CallConnection callConnection = callClient.getCallConnection(result.getCallConnectionProperties().getCallConnectionId());
+            assertNotNull(callConnection);
+            CallConnectionProperties callConnectionProperties = callConnection.getCallProperties();
             assertNotNull(callConnectionProperties);
 
-            callConnectionAsync.hangUp(true).block();
+            callConnection.hangUp(true);
             Thread.sleep(5000);
-            assertThrows(Exception.class, () -> callConnectionAsync.getCallProperties().block());
+            assertThrows(Exception.class, callConnection::getCallProperties);
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
         }
@@ -142,43 +139,42 @@ public class CallAutomationAsyncClientLiveTests extends CallAutomationLiveTestBa
          * 5. verify that call connection cannot be found.
          */
 
-        CallAutomationAsyncClient callClient = getCallingServerClientUsingConnectionString(httpClient)
+        CallAutomationClient callClient = getCallingServerClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("startACallWithMultipleTargetsTest", next))
-            .buildAsyncClient();
+            .buildClient();
 
-        CommunicationIdentityAsyncClient identityClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
+        CommunicationIdentityClient identityClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("startACallWithMultipleTargetsTest", next))
-            .buildAsyncClient();
+            .buildClient();
 
         try {
             String callbackUrl = "https://localhost";
-            CommunicationIdentifier source = identityClient.createUser().block();
+            CommunicationIdentifier source = identityClient.createUser();
             List<CommunicationIdentifier> targets = new ArrayList<>(Arrays.asList(new PhoneNumberIdentifier(PHONE_USER_1),
                 new CommunicationUserIdentifier(ACS_USER_1), new CommunicationUserIdentifier(ACS_USER_2)));
 
             CreateCallOptions createCallOptions = new CreateCallOptions(source, targets, callbackUrl)
                 .setSourceCallerId(ACS_RESOURCE_PHONE);
-            Response<CreateCallResult> result = callClient.createCallWithResponse(createCallOptions).block();
+            CreateCallResult result = callClient.createCall(createCallOptions);
             assertNotNull(result);
-            assertNotNull(result.getValue());
-            assertNotNull(result.getValue().getCallConnection());
-            assertNotNull(result.getValue().getCallConnectionProperties());
+            assertNotNull(result.getCallConnection());
+            assertNotNull(result.getCallConnectionProperties());
             Thread.sleep(20000);
 
-            CallConnectionAsync callConnectionAsync = callClient.getCallConnectionAsync(result.getValue().getCallConnectionProperties().getCallConnectionId());
-            assertNotNull(callConnectionAsync);
-            CallConnectionProperties callConnectionProperties = callConnectionAsync.getCallProperties().block();
+            CallConnection callConnection = callClient.getCallConnection(result.getCallConnectionProperties().getCallConnectionId());
+            assertNotNull(callConnection);
+            CallConnectionProperties callConnectionProperties = callConnection.getCallProperties();
             assertNotNull(callConnectionProperties);
             assertEquals(CallConnectionState.CONNECTED, callConnectionProperties.getCallConnectionState());
             assertEquals(3, callConnectionProperties.getTargets().size());
 
-            Response<ListParticipantsResult> listParticipantsResultResponse = callConnectionAsync.listParticipantsWithResponse().block();
-            assertNotNull(listParticipantsResultResponse);
-            assertEquals(4, listParticipantsResultResponse.getValue().getValues().size());
+            ListParticipantsResult listParticipantsResult = callConnection.listParticipants();
+            assertNotNull(listParticipantsResult);
+            assertEquals(4, listParticipantsResult.getValues().size());
 
-            callConnectionAsync.hangUp(true).block();
+            callConnection.hangUp(true);
             Thread.sleep(5000);
-            assertThrows(Exception.class, () -> callConnectionAsync.getCallProperties().block());
+            assertThrows(Exception.class, callConnection::getCallProperties);
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
         }
