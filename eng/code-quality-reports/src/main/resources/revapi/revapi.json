@@ -451,6 +451,56 @@
           "code": "java.field.removedWithConstant",
           "old": "field com.azure.spring.cloud.config.properties.AppConfigurationStoreSelects.LABEL_SEPARATOR",
           "justification": "Not a public api"
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "old": "method void com.azure.spring.cloud.autoconfigure.aad.AadAuthenticationFilterAutoConfiguration::<init>(com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties, org.springframework.boot.web.client.RestTemplateBuilder)",
+          "justification": "Bean configuration will not be used by customer in java code."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "old": "method void com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration::<init>(org.springframework.boot.web.client.RestTemplateBuilder)",
+          "justification": "Bean configuration will not be used by customer in java code."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "old": "method void com.azure.spring.cloud.autoconfigure.aad.configuration.AadResourceServerConfiguration::<init>(org.springframework.boot.web.client.RestTemplateBuilder)",
+          "justification": "Bean configuration will not be used by customer in java code."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "old": "method void com.azure.spring.cloud.autoconfigure.aad.configuration.AadWebApplicationConfiguration::<init>(org.springframework.boot.web.client.RestTemplateBuilder)",
+          "justification": "Bean configuration will not be used by customer in java code."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "old": "method void com.azure.spring.cloud.autoconfigure.aad.filter.AadAuthenticationFilter::<init>(com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties, com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints, com.azure.spring.cloud.autoconfigure.aad.filter.UserPrincipalManager, org.springframework.boot.web.client.RestTemplateBuilder)",
+          "justification": "Customer's java code will not call this method directly."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "old": "method void com.azure.spring.cloud.autoconfigure.aad.filter.AadAuthenticationFilter::<init>(com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties, com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints, com.nimbusds.jose.util.ResourceRetriever, org.springframework.boot.web.client.RestTemplateBuilder)",
+          "justification": "Customer's java code will not call this method directly."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "old": "method void com.azure.spring.cloud.autoconfigure.aad.filter.AadAuthenticationFilter::<init>(com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties, com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints, com.nimbusds.jose.util.ResourceRetriever, com.nimbusds.jose.jwk.source.JWKSetCache, org.springframework.boot.web.client.RestTemplateBuilder)",
+          "justification": "Customer's java code will not call this method directly."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "old": "method void com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfiguration::<init>(com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties, org.springframework.boot.web.client.RestTemplateBuilder)",
+          "justification": "Bean configuration will not be used by customer in java code."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "old": "method com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector<com.nimbusds.jose.proc.SecurityContext> com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfiguration::aadIssuerJwsKeySelector(com.azure.spring.cloud.autoconfigure.aad.AadTrustedIssuerRepository, com.nimbusds.jose.util.ResourceRetriever)",
+          "justification": "Bean configuration will not be used by customer in java code."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "old": "method void com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cOAuth2ClientConfiguration::<init>(com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties, org.springframework.boot.web.client.RestTemplateBuilder)",
+          "justification": "Bean configuration will not be used by customer in java code."
         }
       ]
     }
