@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.SecuritySolutionsReferenceDatasClient;
 import com.azure.resourcemanager.security.fluent.models.SecuritySolutionsReferenceDataListInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SecuritySolutionsReferenceDatasClient. */
 public final class SecuritySolutionsReferenceDatasClientImpl implements SecuritySolutionsReferenceDatasClient {
-    private final ClientLogger logger = new ClientLogger(SecuritySolutionsReferenceDatasClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SecuritySolutionsReferenceDatasService service;
 
@@ -89,7 +86,8 @@ public final class SecuritySolutionsReferenceDatasClientImpl implements Security
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all supported Security Solutions for the subscription.
+     * @return a list of all supported Security Solutions for the subscription along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SecuritySolutionsReferenceDataListInner>> listWithResponseAsync() {
@@ -122,7 +120,8 @@ public final class SecuritySolutionsReferenceDatasClientImpl implements Security
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all supported Security Solutions for the subscription.
+     * @return a list of all supported Security Solutions for the subscription along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SecuritySolutionsReferenceDataListInner>> listWithResponseAsync(Context context) {
@@ -149,19 +148,11 @@ public final class SecuritySolutionsReferenceDatasClientImpl implements Security
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all supported Security Solutions for the subscription.
+     * @return a list of all supported Security Solutions for the subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SecuritySolutionsReferenceDataListInner> listAsync() {
-        return listWithResponseAsync()
-            .flatMap(
-                (Response<SecuritySolutionsReferenceDataListInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -183,7 +174,7 @@ public final class SecuritySolutionsReferenceDatasClientImpl implements Security
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all supported Security Solutions for the subscription.
+     * @return a list of all supported Security Solutions for the subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecuritySolutionsReferenceDataListInner> listWithResponse(Context context) {
@@ -198,7 +189,8 @@ public final class SecuritySolutionsReferenceDatasClientImpl implements Security
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all supported Security Solutions for subscription and location.
+     * @return list of all supported Security Solutions for subscription and location along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SecuritySolutionsReferenceDataListInner>> listByHomeRegionWithResponseAsync(
@@ -243,7 +235,8 @@ public final class SecuritySolutionsReferenceDatasClientImpl implements Security
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all supported Security Solutions for subscription and location.
+     * @return list of all supported Security Solutions for subscription and location along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SecuritySolutionsReferenceDataListInner>> listByHomeRegionWithResponseAsync(
@@ -279,19 +272,12 @@ public final class SecuritySolutionsReferenceDatasClientImpl implements Security
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all supported Security Solutions for subscription and location.
+     * @return list of all supported Security Solutions for subscription and location on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SecuritySolutionsReferenceDataListInner> listByHomeRegionAsync(String ascLocation) {
-        return listByHomeRegionWithResponseAsync(ascLocation)
-            .flatMap(
-                (Response<SecuritySolutionsReferenceDataListInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listByHomeRegionWithResponseAsync(ascLocation).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -318,7 +304,7 @@ public final class SecuritySolutionsReferenceDatasClientImpl implements Security
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all supported Security Solutions for subscription and location.
+     * @return list of all supported Security Solutions for subscription and location along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecuritySolutionsReferenceDataListInner> listByHomeRegionWithResponse(

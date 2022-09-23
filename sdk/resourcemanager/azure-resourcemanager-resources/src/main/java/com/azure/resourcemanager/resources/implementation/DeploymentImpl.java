@@ -345,32 +345,31 @@ public final class DeploymentImpl extends
 
     @Override
     public Mono<Deployment> beginCreateAsync() {
-        return Mono.just(creatableResourceGroup)
-                .flatMap(resourceGroupCreatable -> {
-                    if (resourceGroupCreatable != null) {
-                        return creatableResourceGroup.createAsync();
-                    } else {
-                        return Mono.just((Indexable) DeploymentImpl.this);
-                    }
-                })
-                .flatMap(indexable -> manager().serviceClient().getDeployments()
-                    .createOrUpdateWithResponseAsync(resourceGroupName(), name(), deploymentCreateUpdateParameters))
-                .flatMap(activationResponse -> FluxUtil.collectBytesInByteBufferStream(activationResponse.getValue()))
-                .map(response -> {
-                    try {
-                        return (DeploymentExtendedInner) SerializerFactory.createDefaultManagementSerializerAdapter()
-                            .deserialize(new String(response, StandardCharsets.UTF_8),
-                                DeploymentExtendedInner.class, SerializerEncoding.JSON);
-                    } catch (IOException ioe) {
-                        throw logger.logExceptionAsError(
-                            new IllegalStateException("Failed to deserialize activation response body", ioe));
-                    }
-                })
-                .map(deploymentExtendedInner -> {
-                    prepareForUpdate(deploymentExtendedInner);
-                    return deploymentExtendedInner;
-                })
-                .map(innerToFluentMap(this));
+        return Mono.defer(() -> {
+            if (creatableResourceGroup != null) {
+                return creatableResourceGroup.createAsync();
+            } else {
+                return Mono.just((Indexable) DeploymentImpl.this);
+            }
+        })
+        .flatMap(indexable -> manager().serviceClient().getDeployments()
+            .createOrUpdateWithResponseAsync(resourceGroupName(), name(), deploymentCreateUpdateParameters))
+        .flatMap(activationResponse -> FluxUtil.collectBytesInByteBufferStream(activationResponse.getValue()))
+        .map(response -> {
+            try {
+                return (DeploymentExtendedInner) SerializerFactory.createDefaultManagementSerializerAdapter()
+                    .deserialize(new String(response, StandardCharsets.UTF_8),
+                        DeploymentExtendedInner.class, SerializerEncoding.JSON);
+            } catch (IOException ioe) {
+                throw logger.logExceptionAsError(
+                    new IllegalStateException("Failed to deserialize activation response body", ioe));
+            }
+        })
+        .map(deploymentExtendedInner -> {
+            prepareForUpdate(deploymentExtendedInner);
+            return deploymentExtendedInner;
+        })
+        .map(innerToFluentMap(this));
     }
 
     @Override

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Operator. */
+/** A valid comparer operator to use. A case-insensitive comparison will be applied for String PropertyType. */
 public final class Operator extends ExpandableStringEnum<Operator> {
     /** Static value Equals for Operator. */
     public static final Operator EQUALS = fromString("Equals");
@@ -48,7 +48,11 @@ public final class Operator extends ExpandableStringEnum<Operator> {
         return fromString(name, Operator.class);
     }
 
-    /** @return known Operator values. */
+    /**
+     * Gets known Operator values.
+     *
+     * @return known Operator values.
+     */
     public static Collection<Operator> values() {
         return values(Operator.class);
     }

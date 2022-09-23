@@ -12,10 +12,9 @@ import com.azure.resourcemanager.security.fluent.models.SecureScoreControlDetail
 import com.azure.resourcemanager.security.models.ExpandControlsEnum;
 import com.azure.resourcemanager.security.models.SecureScoreControlDetails;
 import com.azure.resourcemanager.security.models.SecureScoreControls;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SecureScoreControlsImpl implements SecureScoreControls {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecureScoreControlsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SecureScoreControlsImpl.class);
 
     private final SecureScoreControlsClient innerClient;
 

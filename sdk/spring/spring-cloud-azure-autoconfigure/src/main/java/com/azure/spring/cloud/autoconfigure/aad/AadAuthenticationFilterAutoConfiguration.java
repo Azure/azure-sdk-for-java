@@ -7,7 +7,6 @@ import com.azure.spring.cloud.autoconfigure.aad.configuration.AadPropertiesConfi
 import com.azure.spring.cloud.autoconfigure.aad.filter.AadAppRoleStatelessAuthenticationFilter;
 import com.azure.spring.cloud.autoconfigure.aad.filter.AadAuthenticationFilter;
 import com.azure.spring.cloud.autoconfigure.aad.filter.UserPrincipalManager;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ResourceServerRestOperationConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.RestOperationsResourceRetriever;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
@@ -16,20 +15,17 @@ import com.nimbusds.jose.jwk.source.JWKSetCache;
 import com.nimbusds.jose.util.ResourceRetriever;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.web.client.RestOperations;
 
 import java.util.concurrent.TimeUnit;
-
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2ResourceServerRestOperationConfiguration.AAD_OAUTH_2_RESOURCE_SERVER_REST_OPERATION_BEAN_NAME;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Azure Active Authentication filters.
@@ -43,28 +39,29 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadOauth2R
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnExpression("${spring.cloud.azure.active-directory.enabled:false}")
 @ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken" })
-@Import({AadPropertiesConfiguration.class, AadOauth2ResourceServerRestOperationConfiguration.class})
+@Import(AadPropertiesConfiguration.class)
 public class AadAuthenticationFilterAutoConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AadAuthenticationProperties.class);
 
     private final AadAuthenticationProperties properties;
     private final AadAuthorizationServerEndpoints endpoints;
-    private final RestOperations restOperations;
+    private final RestTemplateBuilder restTemplateBuilder;
 
     /**
      * Creates a new instance of {@link AadAuthenticationFilterAutoConfiguration}.
      *
      * @param properties the AAD authentication properties
-     * @param restOperations the restOperations
+     * @param restTemplateBuilder the RestTemplateBuilder
      */
     public AadAuthenticationFilterAutoConfiguration(
             AadAuthenticationProperties properties,
-            @Qualifier(AAD_OAUTH_2_RESOURCE_SERVER_REST_OPERATION_BEAN_NAME) RestOperations restOperations) {
+            RestTemplateBuilder restTemplateBuilder) {
         this.properties = properties;
-        this.restOperations = restOperations;
-        this.endpoints = new AadAuthorizationServerEndpoints(properties.getProfile().getEnvironment().getActiveDirectoryEndpoint(),
-            properties.getProfile().getTenantId());
+        this.restTemplateBuilder = restTemplateBuilder;
+        this.endpoints = new AadAuthorizationServerEndpoints(
+                properties.getProfile().getEnvironment().getActiveDirectoryEndpoint(),
+                properties.getProfile().getTenantId());
     }
 
     /**
@@ -77,13 +74,16 @@ public class AadAuthenticationFilterAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(AadAuthenticationFilter.class)
     @ConditionalOnExpression("${spring.cloud.azure.active-directory.session-stateless:false} == false")
-    public AadAuthenticationFilter aadAuthenticationFilter(ResourceRetriever resourceRetriever, JWKSetCache jwkSetCache) {
+    public AadAuthenticationFilter aadAuthenticationFilter(
+            ResourceRetriever resourceRetriever,
+            JWKSetCache jwkSetCache) {
         LOGGER.info("AadAuthenticationFilter Constructor.");
         return new AadAuthenticationFilter(
             properties,
             endpoints,
             resourceRetriever,
-            jwkSetCache
+            jwkSetCache,
+            restTemplateBuilder
         );
     }
 
@@ -116,7 +116,7 @@ public class AadAuthenticationFilterAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(ResourceRetriever.class)
     public ResourceRetriever jwtResourceRetriever() {
-        return new RestOperationsResourceRetriever(restOperations);
+        return new RestOperationsResourceRetriever(restTemplateBuilder);
     }
 
     /**

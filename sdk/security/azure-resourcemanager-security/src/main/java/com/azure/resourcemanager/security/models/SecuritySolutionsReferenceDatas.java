@@ -25,7 +25,7 @@ public interface SecuritySolutionsReferenceDatas {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all supported Security Solutions for the subscription.
+     * @return a list of all supported Security Solutions for the subscription along with {@link Response}.
      */
     Response<SecuritySolutionsReferenceDataList> listWithResponse(Context context);
 
@@ -50,7 +50,7 @@ public interface SecuritySolutionsReferenceDatas {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all supported Security Solutions for subscription and location.
+     * @return list of all supported Security Solutions for subscription and location along with {@link Response}.
      */
     Response<SecuritySolutionsReferenceDataList> listByHomeRegionWithResponse(String ascLocation, Context context);
 }

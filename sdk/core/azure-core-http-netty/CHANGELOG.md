@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed a bug where `HttpClientOptions.connectTimeout` wasn't being passed when using `HttpClientProvider(ClientOptions)`. ([#31079](https://github.com/Azure/azure-sdk-for-java/pull/31079))
+
 ### Other Changes
 
 ## 1.12.5 (2022-09-01)

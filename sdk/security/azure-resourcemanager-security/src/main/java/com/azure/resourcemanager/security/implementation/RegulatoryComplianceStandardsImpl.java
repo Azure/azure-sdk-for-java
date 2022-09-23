@@ -13,10 +13,9 @@ import com.azure.resourcemanager.security.fluent.RegulatoryComplianceStandardsCl
 import com.azure.resourcemanager.security.fluent.models.RegulatoryComplianceStandardInner;
 import com.azure.resourcemanager.security.models.RegulatoryComplianceStandard;
 import com.azure.resourcemanager.security.models.RegulatoryComplianceStandards;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RegulatoryComplianceStandardsImpl implements RegulatoryComplianceStandards {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegulatoryComplianceStandardsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RegulatoryComplianceStandardsImpl.class);
 
     private final RegulatoryComplianceStandardsClient innerClient;
 
