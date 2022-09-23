@@ -22,7 +22,7 @@ public class AadRestTemplateCreator {
     }
 
     public static RestTemplate createOAuth2ErrorResponseHandledRestTemplate(RestTemplateBuilder builder) {
-        RestTemplate restTemplate = builder.build();
+        RestTemplate restTemplate = createRestTemplate(builder);
         restTemplate.setErrorHandler(new OAuth2ErrorResponseErrorHandler());
         return restTemplate;
     }
