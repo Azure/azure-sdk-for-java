@@ -17,11 +17,11 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -63,7 +63,7 @@ public class AadAuthenticationFilterTests {
             properties,
             mock(AadAuthorizationServerEndpoints.class),
             userPrincipalManager,
-            new RestTemplate()
+            new RestTemplateBuilder()
         );
     }
 

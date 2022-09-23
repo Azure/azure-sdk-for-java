@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.oauth2.sdk.http.HTTPResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -19,6 +20,8 @@ import org.springframework.web.client.RestOperations;
 
 import java.io.IOException;
 import java.util.Optional;
+
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createRestTemplate;
 
 /**
  * GraphClient is used to access graph server. Mainly used to get groups information of a user.
@@ -33,10 +36,11 @@ public class GraphClient {
      * Creates a new instance of {@link GraphClient}.
      *
      * @param properties the AAD authentication properties
+     * @param restTemplateBuilder the restTemplateBuilder
      */
-    public GraphClient(AadAuthenticationProperties properties, RestOperations operations) {
+    public GraphClient(AadAuthenticationProperties properties, RestTemplateBuilder restTemplateBuilder) {
         this.properties = properties;
-        this.operations = operations;
+        this.operations = createRestTemplate(restTemplateBuilder);
     }
 
     /**

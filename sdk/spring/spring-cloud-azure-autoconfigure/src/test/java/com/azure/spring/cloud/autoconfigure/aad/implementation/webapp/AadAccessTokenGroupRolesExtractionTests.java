@@ -13,8 +13,8 @@ import org.junit.jupiter.api.TestInstance;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -69,7 +69,7 @@ class AadAccessTokenGroupRolesExtractionTests {
         AadAuthenticationProperties properties = new AadAuthenticationProperties();
         properties.getUserGroup().setAllowedGroupNames(allowedGroupNames);
 
-        AadOAuth2UserService userService = new AadOAuth2UserService(properties, graphClient, new RestTemplate());
+        AadOAuth2UserService userService = new AadOAuth2UserService(properties, graphClient, new RestTemplateBuilder());
         Set<String> groupRoles = userService.extractGroupRolesFromAccessToken(accessToken);
         assertThat(groupRoles).hasSize(1);
         assertThat(groupRoles).contains("ROLE_group1");
@@ -84,7 +84,7 @@ class AadAccessTokenGroupRolesExtractionTests {
         AadAuthenticationProperties properties = new AadAuthenticationProperties();
         properties.getUserGroup().setAllowedGroupIds(allowedGroupIds);
 
-        AadOAuth2UserService userService = new AadOAuth2UserService(properties, graphClient, new RestTemplate());
+        AadOAuth2UserService userService = new AadOAuth2UserService(properties, graphClient, new RestTemplateBuilder());
         Set<String> groupRoles = userService.extractGroupRolesFromAccessToken(accessToken);
         assertThat(groupRoles).hasSize(1);
         assertThat(groupRoles).contains("ROLE_" + GROUP_ID_1);
@@ -103,7 +103,7 @@ class AadAccessTokenGroupRolesExtractionTests {
         properties.getUserGroup().setAllowedGroupIds(allowedGroupIds);
         properties.getUserGroup().setAllowedGroupNames(allowedGroupNames);
 
-        AadOAuth2UserService userService = new AadOAuth2UserService(properties, graphClient, new RestTemplate());
+        AadOAuth2UserService userService = new AadOAuth2UserService(properties, graphClient, new RestTemplateBuilder());
         Set<String> groupRoles = userService.extractGroupRolesFromAccessToken(accessToken);
         assertThat(groupRoles).hasSize(2);
         assertThat(groupRoles).contains("ROLE_group1");

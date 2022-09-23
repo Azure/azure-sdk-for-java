@@ -4,17 +4,15 @@
 package com.azure.spring.cloud.autoconfigure.aad.configuration;
 
 import com.azure.spring.cloud.autoconfigure.aad.AadWebSecurityConfigurerAdapter;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestOperationsConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.WebApplicationCondition;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapp.AadOAuth2UserService;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,29 +20,24 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
-import org.springframework.web.client.RestOperations;
-
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestOperationsConfiguration.AAD_REST_OPERATIONS_BEAN_NAME;
 
 /**
  * Configure the necessary beans used for Azure AD authentication and authorization.
  */
 @Configuration(proxyBeanMethods = false)
 @Conditional(WebApplicationCondition.class)
-@Import(AadRestOperationsConfiguration.class)
 public class AadWebApplicationConfiguration {
 
-    private final RestOperations operations;
+    private final RestTemplateBuilder restTemplateBuilder;
 
     /**
      * Creates a new instance of {@link AadWebApplicationConfiguration}.
      *
-     * @param operations the RestOperations
+     * @param restTemplateBuilder the RestTemplateBuilder
      *
      */
-    public AadWebApplicationConfiguration(
-            @Qualifier(AAD_REST_OPERATIONS_BEAN_NAME) RestOperations operations) {
-        this.operations = operations;
+    public AadWebApplicationConfiguration(RestTemplateBuilder restTemplateBuilder) {
+        this.restTemplateBuilder = restTemplateBuilder;
     }
 
     /**
@@ -56,7 +49,7 @@ public class AadWebApplicationConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService(AadAuthenticationProperties properties) {
-        return new AadOAuth2UserService(properties, operations);
+        return new AadOAuth2UserService(properties, restTemplateBuilder);
     }
 
     /**

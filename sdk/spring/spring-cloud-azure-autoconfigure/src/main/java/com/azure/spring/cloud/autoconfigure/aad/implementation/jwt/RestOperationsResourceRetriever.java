@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.aad.implementation.jwt;
 
 import com.nimbusds.jose.util.Resource;
 import com.nimbusds.jose.util.ResourceRetriever;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createRestTemplate;
+
 /**
  * A ResourceRetriever that accepts an RestOperations as a constructor parameter.
  * Copied from org.springframework.security.oauth2.jwt.NimbusJwtDecoder.JwkSetUriJwtDecoderBuilder.RestOperationsResourceRetriever
@@ -28,9 +31,9 @@ public class RestOperationsResourceRetriever implements ResourceRetriever {
 
     private final RestOperations restOperations;
 
-    public RestOperationsResourceRetriever(RestOperations restOperations) {
-        Assert.notNull(restOperations, "restOperations cannot be null");
-        this.restOperations = restOperations;
+    public RestOperationsResourceRetriever(RestTemplateBuilder restTemplateBuilder) {
+        Assert.notNull(restTemplateBuilder, "restOperations cannot be null");
+        this.restOperations = createRestTemplate(restTemplateBuilder);
     }
 
     @Override

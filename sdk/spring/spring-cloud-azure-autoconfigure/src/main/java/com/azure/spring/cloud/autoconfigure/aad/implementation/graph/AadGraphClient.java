@@ -17,6 +17,7 @@ import com.microsoft.aad.msal4j.OnBehalfOfParameters;
 import com.microsoft.aad.msal4j.UserAssertion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -37,6 +38,7 @@ import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createRestTemplate;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.constants.Constants.DEFAULT_AUTHORITY_SET;
 
 
@@ -54,7 +56,7 @@ public class AadGraphClient {
     private final String clientSecret;
     private final AadAuthorizationServerEndpoints endpoints;
     private final AadAuthenticationProperties aadAuthenticationProperties;
-    private final RestOperations operations;
+    private RestOperations operations;
 
     /**
      * Creates a new instance of {@link AadGraphClient}.
@@ -68,11 +70,15 @@ public class AadGraphClient {
                           String clientSecret,
                           AadAuthenticationProperties aadAuthenticationProperties,
                           AadAuthorizationServerEndpoints endpoints,
-                          RestOperations operations) {
+                          RestTemplateBuilder restTemplateBuilder) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.aadAuthenticationProperties = aadAuthenticationProperties;
         this.endpoints = endpoints;
+        this.operations = createRestTemplate(restTemplateBuilder);
+    }
+
+    void setRestOperations(RestOperations operations) {
         this.operations = operations;
     }
 

@@ -13,6 +13,7 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -88,7 +89,8 @@ class UserPrincipalMicrosoftGraphTests {
         properties.getUserGroup().setAllowedGroupNames(Arrays.asList("group1", "group2", "group3"));
 
         RestTemplate template = new RestTemplate();
-        AadGraphClient client = new AadGraphClient(clientId, clientSecret, properties, endpoints, template);
+        AadGraphClient client = new AadGraphClient(clientId, clientSecret, properties, endpoints, new RestTemplateBuilder());
+        client.setRestOperations(template);
 
         MockRestServiceServer mockServer = MockRestServiceServer.createServer(template);
         mockServer
@@ -96,10 +98,7 @@ class UserPrincipalMicrosoftGraphTests {
                 .andExpect(method(HttpMethod.GET))
                 .andExpect(header(ACCEPT, APPLICATION_JSON_VALUE))
                 .andExpect(header(AUTHORIZATION, String.format("Bearer %s", accessToken)))
-                .andRespond(withStatus(HttpStatus.OK)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .body(userGroupsJson)
-                );
+                .andRespond(withStatus(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(userGroupsJson));
 
         Set<String> groups = client.getGroups(MicrosoftGraphConstants.BEARER_TOKEN);
         assertThat(groups)

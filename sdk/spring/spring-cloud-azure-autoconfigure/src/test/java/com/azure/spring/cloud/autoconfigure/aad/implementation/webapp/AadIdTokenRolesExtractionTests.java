@@ -5,8 +5,8 @@ package com.azure.spring.cloud.autoconfigure.aad.implementation.webapp;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import net.minidev.json.JSONArray;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
-import org.springframework.web.client.RestOperations;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 class AadIdTokenRolesExtractionTests {
 
     private AadOAuth2UserService getUserService() {
-        return new AadOAuth2UserService(mock(AadAuthenticationProperties.class), mock(RestOperations.class));
+        return new AadOAuth2UserService(mock(AadAuthenticationProperties.class), new RestTemplateBuilder());
     }
 
     @Test

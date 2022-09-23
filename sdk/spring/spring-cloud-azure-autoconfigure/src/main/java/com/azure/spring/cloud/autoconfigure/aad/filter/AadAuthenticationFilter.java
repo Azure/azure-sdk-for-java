@@ -15,13 +15,13 @@ import com.nimbusds.jose.util.ResourceRetriever;
 import com.nimbusds.jwt.proc.BadJWTException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
-import org.springframework.web.client.RestOperations;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.naming.ServiceUnavailableException;
@@ -56,13 +56,13 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
      *
      * @param aadAuthenticationProperties the AAD authentication properties
      * @param endpoints the AAD authorization server endpoints
-     * @param restOperations the restOperations
      * @param resourceRetriever the resource retriever
+     * @param restTemplateBuilder the restTemplateBuilder
      */
     public AadAuthenticationFilter(AadAuthenticationProperties aadAuthenticationProperties,
                                    AadAuthorizationServerEndpoints endpoints,
                                    ResourceRetriever resourceRetriever,
-                                   RestOperations restOperations) {
+                                   RestTemplateBuilder restTemplateBuilder) {
         this(
             aadAuthenticationProperties,
             endpoints,
@@ -72,7 +72,7 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
                 resourceRetriever,
                 false
             ),
-            restOperations
+            restTemplateBuilder
         );
     }
 
@@ -82,14 +82,14 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
      * @param aadAuthenticationProperties the AAD authentication properties
      * @param endpoints the AAD authorization server endpoints
      * @param resourceRetriever the resource retriever
-     * @param restOperations the restOperations
+     * @param restTemplateBuilder the RestTemplateBuilder
      * @param jwkSetCache the JWK set cache
      */
     public AadAuthenticationFilter(AadAuthenticationProperties aadAuthenticationProperties,
                                    AadAuthorizationServerEndpoints endpoints,
                                    ResourceRetriever resourceRetriever,
                                    JWKSetCache jwkSetCache,
-                                   RestOperations restOperations) {
+                                   RestTemplateBuilder restTemplateBuilder) {
         this(
             aadAuthenticationProperties,
             endpoints,
@@ -100,7 +100,7 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
                 false,
                 jwkSetCache
             ),
-            restOperations
+            restTemplateBuilder
         );
     }
 
@@ -110,19 +110,19 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
      * @param aadAuthenticationProperties the AAD authentication properties
      * @param endpoints the AAD authorization server endpoints
      * @param userPrincipalManager the user principal manager
-     * @param restOperations restOperations
+     * @param restTemplateBuilder the restTemplateBuilder
      */
     public AadAuthenticationFilter(AadAuthenticationProperties aadAuthenticationProperties,
                                    AadAuthorizationServerEndpoints endpoints,
                                    UserPrincipalManager userPrincipalManager,
-                                   RestOperations restOperations) {
+                                   RestTemplateBuilder restTemplateBuilder) {
         this.userPrincipalManager = userPrincipalManager;
         this.aadGraphClient = new AadGraphClient(
             aadAuthenticationProperties.getCredential().getClientId(),
             aadAuthenticationProperties.getCredential().getClientSecret(),
             aadAuthenticationProperties,
             endpoints,
-            restOperations
+            restTemplateBuilder
         );
     }
 
