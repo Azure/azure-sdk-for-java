@@ -62,8 +62,8 @@
       }
     },
     {
-      "type":"Microsoft.KeyVault/vaults/secrets",
-      "name":"[variables('azureKeyVaultSecretName')]",
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name":"[concat(variables('azureKeyVaultName'), '/', variables('azureKeyVaultSecretName'))]",
       "apiVersion": "2022-07-01",
       "properties":{
         "contentType": "string",
