@@ -45,7 +45,8 @@
               "keys": [],
               "secrets": [
                 "Get",
-                "Set"
+                "Set",
+                "List"
               ],
               "certificates": []
             }
