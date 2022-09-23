@@ -22,7 +22,7 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.List;
 
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createOAuth2AccessTokenResponseClientRestOperations;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createOAuth2AccessTokenResponseClientRestTemplate;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createOAuth2ErrorResponseHandledRestTemplate;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createRestTemplate;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreatorTest.RestTemplateProxyCustomizerConfiguration.FACTORY;
@@ -55,7 +55,7 @@ class AadRestTemplateCreatorTest {
                     assertFalse(hasItemOfClass(converters, FormHttpMessageConverter.class));
                     assertFalse(hasItemOfClass(converters, OAuth2AccessTokenResponseHttpMessageConverter.class));
 
-                    restTemplate = createOAuth2AccessTokenResponseClientRestOperations(builder);
+                    restTemplate = createOAuth2AccessTokenResponseClientRestTemplate(builder);
                     handler = restTemplate.getErrorHandler();
                     assertEquals(handler.getClass(), OAuth2ErrorResponseErrorHandler.class);
                     converters = restTemplate.getMessageConverters();

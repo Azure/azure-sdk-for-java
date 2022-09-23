@@ -39,7 +39,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createOAuth2AccessTokenResponseClientRestOperations;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createOAuth2AccessTokenResponseClientRestTemplate;
 
 /**
  * Configuration for AAD B2C OAuth2 client support, when depends on the Spring OAuth2 Client module.
@@ -158,7 +158,7 @@ public class AadB2cOAuth2ClientConfiguration {
     private RefreshTokenOAuth2AuthorizedClientProvider azureRefreshTokenProvider() {
         RefreshTokenOAuth2AuthorizedClientProvider provider = new RefreshTokenOAuth2AuthorizedClientProvider();
         DefaultRefreshTokenTokenResponseClient responseClient = new DefaultRefreshTokenTokenResponseClient();
-        responseClient.setRestOperations(createOAuth2AccessTokenResponseClientRestOperations(restTemplateBuilder));
+        responseClient.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));
         provider.setAccessTokenResponseClient(responseClient);
         return provider;
     }
@@ -166,7 +166,7 @@ public class AadB2cOAuth2ClientConfiguration {
     private ClientCredentialsOAuth2AuthorizedClientProvider azureClientCredentialProvider() {
         ClientCredentialsOAuth2AuthorizedClientProvider provider = new ClientCredentialsOAuth2AuthorizedClientProvider();
         DefaultClientCredentialsTokenResponseClient responseClient = new DefaultClientCredentialsTokenResponseClient();
-        responseClient.setRestOperations(createOAuth2AccessTokenResponseClientRestOperations(restTemplateBuilder));
+        responseClient.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));
         provider.setAccessTokenResponseClient(responseClient);
         return provider;
     }
@@ -174,7 +174,7 @@ public class AadB2cOAuth2ClientConfiguration {
     private PasswordOAuth2AuthorizedClientProvider azurePasswordProvider() {
         PasswordOAuth2AuthorizedClientProvider provider = new PasswordOAuth2AuthorizedClientProvider();
         DefaultPasswordTokenResponseClient responseClient = new DefaultPasswordTokenResponseClient();
-        responseClient.setRestOperations(createOAuth2AccessTokenResponseClientRestOperations(restTemplateBuilder));
+        responseClient.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));
         provider.setAccessTokenResponseClient(responseClient);
         return provider;
     }
