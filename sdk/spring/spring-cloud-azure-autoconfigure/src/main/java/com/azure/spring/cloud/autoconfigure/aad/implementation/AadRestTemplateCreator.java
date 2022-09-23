@@ -13,9 +13,12 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 /**
- * Util class used to create RestTemplate for all Azure AD related http request.
+ * Util class used to create {@link RestTemplate}s for all Azure AD related http requests.
  */
-public class AadRestTemplateCreator {
+public final class AadRestTemplateCreator {
+
+    private AadRestTemplateCreator() {
+    }
 
     public static RestTemplate createRestTemplate(RestTemplateBuilder builder) {
         return builder.build();
