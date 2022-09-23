@@ -32,7 +32,6 @@ public final class AadRestTemplateCreator {
 
     public static RestTemplate createOAuth2AccessTokenResponseClientRestTemplate(RestTemplateBuilder builder) {
         RestTemplate restTemplate = createOAuth2ErrorResponseHandledRestTemplate(builder);
-        restTemplate.setErrorHandler(new OAuth2ErrorResponseErrorHandler());
         List<HttpMessageConverter<?>> converters = restTemplate.getMessageConverters();
         if (notContainsElementOfType(converters, FormHttpMessageConverter.class)) {
             converters.add(new FormHttpMessageConverter());
