@@ -44,7 +44,7 @@ public class CallRecordingAsyncLiveTests extends CallAutomationLiveTestBase {
             CommunicationUserIdentifier sourceUser = createCommunicationIdentityClient().createUser().block();
 
             String targetUserId = TARGET_USER_ID;
-            List<CommunicationIdentifier> targets = new ArrayList<>() {{
+            List<CommunicationIdentifier> targets = new ArrayList<CommunicationIdentifier>() {{
                 add(new CommunicationUserIdentifier(targetUserId));
             }};
 
