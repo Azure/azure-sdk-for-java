@@ -63,14 +63,14 @@
     },
     {
       "type":"Microsoft.KeyVault/vaults/secrets",
-      "name":"[variables('azureKeyVaultName')]",
+      "name":"[variables('azureKeyVaultSecretName')]",
       "apiVersion": "2022-07-01",
       "properties":{
         "contentType": "string",
-        "value": "[variables('azureKeyVaultValue')]"
+        "value": "[variables('azureKeyVaultSecretValue')]"
       },
       "dependsOn":[
-        "[resourceId('Microsoft.KeyVault/vaults', [variables('azureKeyVaultName')])]"
+        "[resourceId('Microsoft.KeyVault/vaults', variables('azureKeyVaultName'))]"
       ]
     }
   ],
@@ -81,11 +81,11 @@
     },
     "AZURE_KEYVAULT_SECRET_NAME": {
       "type": "string",
-      "value": "[variables('azureKeyVaultName')]"
+      "value": "[variables('azureKeyVaultSecretName')]"
     },
     "AZURE_KEYVAULT_SECRET_VALUE": {
       "type": "string",
-      "value": "[variables('azureKeyVaultValue')]"
+      "value": "[variables('azureKeyVaultSecretValue')]"
     }
   }
 }
