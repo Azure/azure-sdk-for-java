@@ -49,6 +49,8 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class UserPrincipalMicrosoftGraphTests {
 
+    private static final String MOCK_MICROSOFT_GRAPH_ENDPOINT = "http://localhost:8080/";
+
     private String clientId;
     private String clientSecret;
     private AadAuthenticationProperties properties;
@@ -75,7 +77,7 @@ class UserPrincipalMicrosoftGraphTests {
     void setup() {
         accessToken = MicrosoftGraphConstants.BEARER_TOKEN;
         properties = new AadAuthenticationProperties();
-        properties.getProfile().getEnvironment().setMicrosoftGraphEndpoint("http://localhost:8080/");
+        properties.getProfile().getEnvironment().setMicrosoftGraphEndpoint(MOCK_MICROSOFT_GRAPH_ENDPOINT);
         endpoints = new AadAuthorizationServerEndpoints(properties.getProfile().getEnvironment().getActiveDirectoryEndpoint(), properties.getProfile().getTenantId());
         clientId = "client";
         clientSecret = "pass";
@@ -90,7 +92,7 @@ class UserPrincipalMicrosoftGraphTests {
 
         MockRestServiceServer mockServer = MockRestServiceServer.createServer(template);
         mockServer
-                .expect(ExpectedCount.once(), requestTo(new URI("http://localhost:8080/v1.0/me/memberOf")))
+                .expect(ExpectedCount.once(), requestTo(new URI(MOCK_MICROSOFT_GRAPH_ENDPOINT + "v1.0/me/memberOf")))
                 .andExpect(method(HttpMethod.GET))
                 .andExpect(header(ACCEPT, APPLICATION_JSON_VALUE))
                 .andExpect(header(AUTHORIZATION, String.format("Bearer %s", accessToken)))
@@ -103,6 +105,8 @@ class UserPrincipalMicrosoftGraphTests {
         assertThat(groups)
             .isNotEmpty()
             .containsExactlyInAnyOrder("group1", "group2", "group3");
+
+        mockServer.verify();
     }
 
     @Test

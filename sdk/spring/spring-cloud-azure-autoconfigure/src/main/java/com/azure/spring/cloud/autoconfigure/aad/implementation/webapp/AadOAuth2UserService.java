@@ -14,9 +14,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.http.OAuth2ErrorResponseErrorHandler;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.AbstractOAuth2Token;
@@ -65,9 +67,10 @@ public class AadOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
      * Creates a new instance of {@link AadOAuth2UserService}.
      *
      * @param properties the AAD authentication properties
+     * @param operations the restOperations
      */
     public AadOAuth2UserService(AadAuthenticationProperties properties, RestOperations operations) {
-        this(properties, new GraphClient(properties, operations));
+        this(properties, new GraphClient(properties, operations), operations);
     }
 
     /**
@@ -75,8 +78,11 @@ public class AadOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
      *
      * @param properties the AAD authentication properties
      * @param graphClient the graph client
+     * @param operations the restOperations
      */
-    public AadOAuth2UserService(AadAuthenticationProperties properties, GraphClient graphClient) {
+    public AadOAuth2UserService(AadAuthenticationProperties properties,
+                                GraphClient graphClient,
+                                RestOperations operations) {
         allowedGroupNames = Optional.ofNullable(properties)
                                     .map(AadAuthenticationProperties::getUserGroup)
                                     .map(AadAuthenticationProperties.UserGroupProperties::getAllowedGroupNames)
@@ -85,7 +91,10 @@ public class AadOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
                                   .map(AadAuthenticationProperties::getUserGroup)
                                   .map(AadAuthenticationProperties.UserGroupProperties::getAllowedGroupIds)
                                   .orElseGet(Collections::emptySet);
+        DefaultOAuth2UserService oAuth2UserService = new DefaultOAuth2UserService();
+        oAuth2UserService.setRestOperations(operations);
         this.oidcUserService = new OidcUserService();
+        this.oidcUserService.setOauth2UserService(oAuth2UserService);
         this.graphClient = graphClient;
     }
 

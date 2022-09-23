@@ -40,7 +40,7 @@ import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedCli
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.web.client.RestOperations;
 
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestOperationsConfiguration.AAD_OAUTH2_ACCESS_TOKEN_RESPONSE_CLIENT_REST_OPERATIONS_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestOperationsConfiguration.AAD_OAUTH2_RESPONSE_ERROR_HANDLED_REST_OPERATIONS_BEAN_NAME;
 
 /**
  * <p>
@@ -60,7 +60,7 @@ public class AadOAuth2ClientConfiguration {
      * @param restOperations the restOperations
      */
     public AadOAuth2ClientConfiguration(
-            @Qualifier(AAD_OAUTH2_ACCESS_TOKEN_RESPONSE_CLIENT_REST_OPERATIONS_BEAN_NAME)
+            @Qualifier(AAD_OAUTH2_RESPONSE_ERROR_HANDLED_REST_OPERATIONS_BEAN_NAME)
             RestOperations restOperations) {
         this.restOperations = restOperations;
     }

@@ -35,8 +35,8 @@ public class AadRestOperationsConfiguration {
     /**
      * Name of RestOperation bean. The bean is used to get access token from Azure AD (or Azure AD B2C).
      */
-    public static final String AAD_OAUTH2_ACCESS_TOKEN_RESPONSE_CLIENT_REST_OPERATIONS_BEAN_NAME =
-            "aadOAuth2AccessTokenResponseClientRestOperations";
+    public static final String AAD_OAUTH2_RESPONSE_ERROR_HANDLED_REST_OPERATIONS_BEAN_NAME =
+            "aadOAuth2ResponseErrorHandledRestOperations";
 
     /**
      * Declare {@link RestOperations} bean used to retrieve access token from Azure AD(or Azure AD B2C) endpoints like:
@@ -57,15 +57,23 @@ public class AadRestOperationsConfiguration {
      * @see AadOAuth2ClientConfiguration
      * @see AadB2cOAuth2ClientConfiguration
      */
-    @Bean(AAD_OAUTH2_ACCESS_TOKEN_RESPONSE_CLIENT_REST_OPERATIONS_BEAN_NAME)
-    @ConditionalOnMissingBean(name = AAD_OAUTH2_ACCESS_TOKEN_RESPONSE_CLIENT_REST_OPERATIONS_BEAN_NAME)
+    @Bean(AAD_OAUTH2_RESPONSE_ERROR_HANDLED_REST_OPERATIONS_BEAN_NAME)
+    @ConditionalOnMissingBean(name = AAD_OAUTH2_RESPONSE_ERROR_HANDLED_REST_OPERATIONS_BEAN_NAME)
     public RestOperations aadOauth2AccessTokenResponseClientRestOperationsBean(RestTemplateBuilder builder) {
         RestTemplate restTemplate = builder.build();
         restTemplate.setErrorHandler(new OAuth2ErrorResponseErrorHandler());
         List<HttpMessageConverter<?>> converters = restTemplate.getMessageConverters();
-        converters.add(new FormHttpMessageConverter());
-        converters.add(new OAuth2AccessTokenResponseHttpMessageConverter());
+        if (!containsElementOfType(converters, FormHttpMessageConverter.class)) {
+            converters.add(new FormHttpMessageConverter());
+        }
+        if (!containsElementOfType(converters, OAuth2AccessTokenResponseHttpMessageConverter.class)) {
+            converters.add(new OAuth2AccessTokenResponseHttpMessageConverter());
+        }
         return restTemplate;
+    }
+
+    boolean containsElementOfType(List<?> list, Class<?> clazz) {
+        return list.stream().anyMatch(item -> item.getClass().equals(clazz));
     }
 
     /**
