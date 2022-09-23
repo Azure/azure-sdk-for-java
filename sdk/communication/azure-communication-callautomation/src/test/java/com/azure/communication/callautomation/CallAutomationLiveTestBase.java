@@ -129,9 +129,10 @@ public class CallAutomationLiveTestBase extends TestBase {
             .buildAsyncClient();
     }
 
-    protected void WaitForOperationCompletion(int milliSeconds) throws InterruptedException {
-        if (getTestMode() != TestMode.PLAYBACK)
+    protected void waitForOperationCompletion(int milliSeconds) throws InterruptedException {
+        if (getTestMode() != TestMode.PLAYBACK) {
             Thread.sleep(milliSeconds);
+        }
     }
 
     static class FakeCredentials implements TokenCredential {
