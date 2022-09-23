@@ -42,7 +42,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createRestTemplate;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createOAuth2ErrorResponseHandledRestTemplate;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.constants.Constants.DEFAULT_AUTHORITY_SET;
 
 /**
@@ -92,7 +92,7 @@ public class AadOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
                                   .map(AadAuthenticationProperties.UserGroupProperties::getAllowedGroupIds)
                                   .orElseGet(Collections::emptySet);
         DefaultOAuth2UserService oAuth2UserService = new DefaultOAuth2UserService();
-        oAuth2UserService.setRestOperations(createRestTemplate(restTemplateBuilder));
+        oAuth2UserService.setRestOperations(createOAuth2ErrorResponseHandledRestTemplate(restTemplateBuilder));
         this.oidcUserService = new OidcUserService();
         this.oidcUserService.setOauth2UserService(oAuth2UserService);
         this.graphClient = graphClient;
