@@ -8,11 +8,14 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -21,9 +24,6 @@ import java.util.StringJoiner;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import reactor.core.publisher.Mono;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpResponse;
 
 public class CallAutomationLiveTestBase extends TestBase {
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
@@ -67,6 +67,9 @@ public class CallAutomationLiveTestBase extends TestBase {
 
     protected static final String ACS_USER_2 = Configuration.getGlobalConfiguration()
         .get("ANOTHER_TARGET_USER_ID", String.format("8:acs:%s_00000014-00d7-31b3-28df-444822002030", RANDOM_RESOURCE_IDENTIFIER));
+
+    protected static final String ACS_USER_CALL_RECORDING = Configuration.getGlobalConfiguration()
+        .get("CALL_RECORDING_USER_ID", "8:acs:ad7b4e1f-5b71-4d2f-9db2-b1bae6d4f392_00000014-0b21-aee5-85f4-343a0d0065cf");
 
     protected static final String ACS_RESOURCE_PHONE = Configuration.getGlobalConfiguration()
         .get("AZURE_PHONE_NUMBER", "+18331234567");
@@ -146,6 +149,12 @@ public class CallAutomationLiveTestBase extends TestBase {
                     + ": " + bufferedResponse.getHeaderValue("X-Microsoft-Skype-Chain-ID"));
                 return Mono.just(bufferedResponse);
             });
+    }
+
+    protected void waitForOperationCompletion(int milliSeconds) throws InterruptedException {
+        if (getTestMode() != TestMode.PLAYBACK) {
+            Thread.sleep(milliSeconds);
+        }
     }
 
     static class FakeCredentials implements TokenCredential {
