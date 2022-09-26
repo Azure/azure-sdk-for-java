@@ -46,6 +46,9 @@
 # PRLabel: %Communication - Calling Server
 /sdk/communication/sdk/communication/azure-communication-callingserver/ @minwoolee-msft
 
+# PRLabel: %Communication - Calling Server
+/sdk/communication/sdk/communication/azure-communication-callingserver/ @juntuchen-msft @cochi2
+
 # PRLabel: %Communication - Chat
 /sdk/communication/sdk/communication/azure-communication-chat/ @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
 
