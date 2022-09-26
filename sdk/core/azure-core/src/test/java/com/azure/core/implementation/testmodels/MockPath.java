@@ -3,7 +3,6 @@
 
 package com.azure.core.implementation.testmodels;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.FileSystem;
@@ -19,18 +18,18 @@ import java.util.Iterator;
  * Implementation of {@link Path} used for mocking without Mockito.
  */
 public final class MockPath implements Path {
-    private final File file;
+    private final MockFile file;
 
-    public MockPath(String fileName, long fileLength) {
-        this.file = new MockFile(fileName, fileLength);
+    public MockPath(String fileName, byte[] data, long fileLength) {
+        this(new MockFile(fileName, data, fileLength));
     }
 
-    public MockPath(File file) {
+    public MockPath(MockFile file) {
         this.file = file;
     }
 
     @Override
-    public File toFile() {
+    public MockFile toFile() {
         return file;
     }
 

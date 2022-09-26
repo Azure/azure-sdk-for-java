@@ -570,8 +570,9 @@ public class BinaryDataTest {
         String expected = "The quick brown fox jumps over the lazy dog";
         byte[] expectedBytes = expected.getBytes(StandardCharsets.UTF_8);
 
-        MockFile mockFile = new MockFile("binaryDataFromFile" + UUID.randomUUID() + ".txt", expectedBytes.length);
-        FileContent fileContent = new MockFileContent(new MockPath(mockFile), expectedBytes);
+        MockFile mockFile = new MockFile("binaryDataFromFile" + UUID.randomUUID() + ".txt", expectedBytes,
+            expectedBytes.length);
+        FileContent fileContent = new MockFileContent(new MockPath(mockFile));
 
         assertEquals(expected, fileContent.toString());
     }
@@ -581,8 +582,9 @@ public class BinaryDataTest {
         int chunkSize = 1024 * 1024; // 10 MB
         long numberOfChunks = 2200; // 2200 MB total
 
-        File mockFile = new MockFile("binaryDataFromFile" + UUID.randomUUID() + ".txt", numberOfChunks * chunkSize);
-        FileContent fileContent = new MockFileContent(new MockPath(mockFile), 32768, null, null, RANDOM_DATA);
+        MockFile mockFile = new MockFile("binaryDataFromFile" + UUID.randomUUID() + ".txt", RANDOM_DATA,
+            numberOfChunks * chunkSize);
+        FileContent fileContent = new MockFileContent(new MockPath(mockFile), 32768, null, null);
 
         AtomicInteger index = new AtomicInteger();
         AtomicLong totalRead = new AtomicLong();
@@ -607,8 +609,9 @@ public class BinaryDataTest {
         int chunkSize = 1024 * 1024; // 1 MB
         long numberOfChunks = 2200L; // 2200 MB total
 
-        MockFile mockFile = new MockFile("binaryDataFromFile" + UUID.randomUUID() + ".txt", numberOfChunks * chunkSize);
-        FileContent fileContent = new MockFileContent(new MockPath(mockFile), 32768, null, null, RANDOM_DATA);
+        MockFile mockFile = new MockFile("binaryDataFromFile" + UUID.randomUUID() + ".txt", RANDOM_DATA,
+            numberOfChunks * chunkSize);
+        FileContent fileContent = new MockFileContent(new MockPath(mockFile), 32768, null, null);
 
         try (InputStream is = fileContent.toStream()) {
             // Read and validate in chunks to optimize validation compared to byte-by-byte checking.
@@ -636,8 +639,9 @@ public class BinaryDataTest {
         String expected = "The quick brown fox jumps over the lazy dog";
         byte[] expectedBytes = expected.getBytes(StandardCharsets.UTF_8);
 
-        File mockFile = new MockFile("binaryDataFromFile" + UUID.randomUUID() + ".txt", expectedBytes.length);
-        FileContent fileContent = new MockFileContent(new MockPath(mockFile), expectedBytes);
+        MockFile mockFile = new MockFile("binaryDataFromFile" + UUID.randomUUID() + ".txt", expectedBytes,
+            expectedBytes.length);
+        FileContent fileContent = new MockFileContent(new MockPath(mockFile));
 
         StepVerifier.create(fileContent.toFluxByteBuffer())
             .assertNext(bb -> assertEquals("The quick brown fox jumps over the lazy dog",
@@ -653,9 +657,8 @@ public class BinaryDataTest {
         byte[] fullFile = new byte[size + leftPadding + rightPadding];
         fillArray(fullFile);
 
-        File mockFile = new MockFile("binaryDataFromFile" + UUID.randomUUID() + ".txt", fullFile.length);
-        FileContent fileContent = new MockFileContent(new MockPath(mockFile), 8192, (long) leftPadding, (long) size,
-            fullFile);
+        MockFile mockFile = new MockFile("binaryDataFromFile" + UUID.randomUUID() + ".txt", fullFile, fullFile.length);
+        FileContent fileContent = new MockFileContent(new MockPath(mockFile), 8192, (long) leftPadding, (long) size);
 
         assertEquals(size, fileContent.getLength());
 
@@ -754,11 +757,11 @@ public class BinaryDataTest {
         assertSame(data, clone);
     }
 
-    public static Stream<Arguments> createRetryableBinaryData() throws IOException {
+    public static Stream<Arguments> createRetryableBinaryData() {
         byte[] bytes = new byte[1024];
         fillArray(bytes);
 
-        File mockFile = new MockFile("binaryDataFromFile" + UUID.randomUUID() + ".txt", 1024);
+        MockFile mockFile = new MockFile("binaryDataFromFile" + UUID.randomUUID() + ".txt", bytes, 1024);
 
         return Stream.of(
             Arguments.of(
@@ -775,7 +778,7 @@ public class BinaryDataTest {
             ),
             Arguments.of(
                 Named.named("file",
-                    (Supplier<BinaryData>) () -> new BinaryData(new MockFileContent(new MockPath(mockFile), bytes))),
+                    (Supplier<BinaryData>) () -> new BinaryData(new MockFileContent(new MockPath(mockFile)))),
                 Named.named("expected bytes", bytes)
             ),
             Arguments.of(
@@ -850,23 +853,23 @@ public class BinaryDataTest {
         byte[] bytes = new byte[size];
         fillArray(bytes);
 
-        File mockFile = new MockFile("binaryDataFromFile" + UUID.randomUUID() + ".txt", size);
+        MockFile mockFile = new MockFile("binaryDataFromFile" + UUID.randomUUID() + ".txt", bytes, size);
 
         // Delegate to testReplayableContentTypes to assert accessors replayability
         // with unknown length
-        testReplayableContentTypes(() -> new BinaryData(new MockFileContent(new MockPath(mockFile), bytes))
+        testReplayableContentTypes(() -> new BinaryData(new MockFileContent(new MockPath(mockFile)))
             .toReplayableBinaryData(), bytes);
-        testReplayableContentTypes(() -> new BinaryData(new MockFileContent(new MockPath(mockFile), bytes))
+        testReplayableContentTypes(() -> new BinaryData(new MockFileContent(new MockPath(mockFile)))
             .toReplayableBinaryDataAsync().block(), bytes);
 
         // with known length
         testReplayableContentTypes(() -> new BinaryData(new MockFileContent(new MockPath(mockFile), 8192, null,
-            (long) bytes.length, bytes)).toReplayableBinaryData(), bytes);
+            (long) bytes.length)).toReplayableBinaryData(), bytes);
         testReplayableContentTypes(() -> new BinaryData(new MockFileContent(new MockPath(mockFile), 8192, null,
-            (long) bytes.length, bytes)).toReplayableBinaryDataAsync().block(), bytes);
+            (long) bytes.length)).toReplayableBinaryDataAsync().block(), bytes);
 
         // When using markable stream
-        FileInputStream fileInputStream = new MockFileInputStream(bytes, size);
+        FileInputStream fileInputStream = new MockFileInputStream(mockFile);
         assertFalse(fileInputStream.markSupported());
         assertNotSame(fileInputStream, BinaryData.fromStream(fileInputStream).toReplayableBinaryData().toStream());
         assertNotSame(fileInputStream, BinaryData.fromStream(fileInputStream).toReplayableBinaryDataAsync().block()

@@ -166,11 +166,11 @@ public class RestProxyTests {
     private static Stream<Arguments> knownLengthBinaryDataIsPassthroughArgumentProvider() {
         String string = "hello";
         byte[] bytes = string.getBytes();
-        Path file = new MockPath("knownLengthBinaryDataIsPassthroughArgumentProvider", bytes.length);
+        MockPath file = new MockPath("knownLengthBinaryDataIsPassthroughArgumentProvider", bytes, bytes.length);
         return Stream.of(
             Arguments.of(Named.of("bytes", BinaryData.fromBytes(bytes)), bytes.length),
             Arguments.of(Named.of("string", BinaryData.fromString(string)), bytes.length),
-            Arguments.of(Named.of("file", createBinaryData(new MockFileContent(file, bytes))), bytes.length),
+            Arguments.of(Named.of("file", createBinaryData(new MockFileContent(file))), bytes.length),
             Arguments.of(Named.of("flux with length",
                 BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(bytes))).block()), bytes.length),
             Arguments.of(Named.of("serializable", BinaryData.fromObject(bytes)),
@@ -328,12 +328,12 @@ public class RestProxyTests {
     private static Stream<Arguments> doesNotChangeBinaryDataContentTypeDataProvider() {
         String string = "hello";
         byte[] bytes = string.getBytes();
-        Path file = new MockPath("doesNotChangeBinaryDataContentTypeDataProvider", bytes.length);
+        MockPath file = new MockPath("doesNotChangeBinaryDataContentTypeDataProvider", bytes, bytes.length);
         ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
         return Stream.of(
             Arguments.of(Named.of("bytes", BinaryData.fromBytes(bytes)), bytes.length),
             Arguments.of(Named.of("string", BinaryData.fromString(string)), bytes.length),
-            Arguments.of(Named.of("file", createBinaryData(new MockFileContent(file, bytes))), bytes.length),
+            Arguments.of(Named.of("file", createBinaryData(new MockFileContent(file))), bytes.length),
             Arguments.of(Named.of("stream", BinaryData.fromStream(stream)), bytes.length),
             Arguments.of(Named.of("eager flux with length",
                 BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(bytes))).block()), bytes.length),

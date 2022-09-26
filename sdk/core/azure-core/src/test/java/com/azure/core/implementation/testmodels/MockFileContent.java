@@ -12,26 +12,26 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
-import java.nio.file.Path;
 
 /**
  * Implementation of {@link FileContent} used for mocking without Mockito.
  */
 public class MockFileContent extends FileContent {
-    private final byte[] mockData;
+    private final MockPath mockPath;
 
-    public MockFileContent(Path file, byte[] mockData) {
-        this(file, 8192, null, null, mockData);
+    public MockFileContent(MockPath file) {
+        this(file, 8192, null, null);
     }
 
-    public MockFileContent(Path file, int chunkSize, Long position, Long length, byte[] mockData) {
+    public MockFileContent(MockPath file, int chunkSize, Long position, Long length) {
         super(file, chunkSize, position, length);
-        this.mockData = mockData;
+
+        this.mockPath = file;
     }
 
     @Override
     protected FileInputStream getFileInputStream() throws FileNotFoundException {
-        return new MockFileInputStream(mockData, getFile().toFile().length());
+        return new MockFileInputStream(mockPath.toFile());
     }
 
     @Override
@@ -53,6 +53,6 @@ public class MockFileContent extends FileContent {
 
     @Override
     protected AsynchronousFileChannel getAsynchronousFileChannel() {
-        return new MockAsynchronousFileChannel(mockData, getFile().toFile().length());
+        return new MockAsynchronousFileChannel(mockPath.toFile());
     }
 }

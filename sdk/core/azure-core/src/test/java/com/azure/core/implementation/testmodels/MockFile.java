@@ -10,11 +10,17 @@ import java.io.File;
  */
 public class MockFile extends File {
     private final long length;
+    private final byte[] data;
 
-    public MockFile(String pathname, long length) {
+    public MockFile(String pathname, byte[] data, long length) {
         super(pathname);
 
+        this.data = data;
         this.length = length;
+    }
+
+    public byte[] getData() {
+        return data;
     }
 
     @Override

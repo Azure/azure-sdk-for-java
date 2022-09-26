@@ -16,11 +16,11 @@ public final class MockFileInputStream extends FileInputStream {
 
     private long position = 0L;
 
-    public MockFileInputStream(byte[] mockData, long fileLength) {
+    public MockFileInputStream(MockFile mockFile) {
         super(new FileDescriptor());
-        this.mockData = mockData;
+        this.mockData = mockFile.getData();
         this.dataLength = mockData.length;
-        this.fileLength = fileLength;
+        this.fileLength = mockFile.length();
     }
 
     @Override

@@ -18,10 +18,10 @@ public class MockAsynchronousFileChannel extends AsynchronousFileChannel {
     private final int dataLength;
     private final long fileLength;
 
-    public MockAsynchronousFileChannel(byte[] mockData, long fileLength) {
-        this.mockData = mockData;
+    public MockAsynchronousFileChannel(MockFile mockFile) {
+        this.mockData = mockFile.getData();
         this.dataLength = mockData.length;
-        this.fileLength = fileLength;
+        this.fileLength = mockFile.length();
     }
 
     @Override
