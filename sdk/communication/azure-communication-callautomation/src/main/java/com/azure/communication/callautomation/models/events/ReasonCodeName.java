@@ -5,13 +5,9 @@ package com.azure.communication.callautomation.models.events;
 
 import com.azure.core.util.ExpandableStringEnum;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 /** Defines values for ReasonCodeName. */
 public class ReasonCodeName extends ExpandableStringEnum<ReasonCodeName> {
+    /** Reason code names for the Recognize operation */
     public static class Recognize extends ExpandableStringEnum<ReasonCodeName> {
         /** Action failed, initial silence timeout reached. */
         public static final ReasonCodeName INITIAL_SILENCE_TIMEOUT = fromReasonCode(8510);
@@ -26,6 +22,7 @@ public class ReasonCodeName extends ExpandableStringEnum<ReasonCodeName> {
         public static final ReasonCodeName STOP_TONE_DETECTED = fromReasonCode(8514);
     }
 
+    /** Reason code names for the Play operation */
     public static class Play extends ExpandableStringEnum<ReasonCodeName> {
         /** Action failed, file could not be downloaded. */
         public static final ReasonCodeName DOWNLOAD_FAILED = fromReasonCode(8536);
