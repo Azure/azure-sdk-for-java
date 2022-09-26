@@ -129,19 +129,21 @@ public final class ClientEncryptionPolicy {
                     }
 
                     // for the ClientEncryptionIncludedPath found check the encryption type.
-                    if (!encrypterPartitionKeyPath.stream().map(encrypter -> encrypter.getEncryptionType()).findFirst().orElse(null).equals("Deterministic"))
-                    throw new IllegalArgumentException(String.format("Path %s which is part of the partition key " +
-                        "has to be encrypted" +
-                        " with Deterministic type Encryption.", topLevelToken));
+                    if (!encrypterPartitionKeyPath.stream().map(encrypter -> encrypter.getEncryptionType()).findFirst().orElse(null).equals(Constants.Properties.DETERMINISTIC)) {
+                        throw new IllegalArgumentException(String.format("Path %s which is part of the partition key " +
+                            "has to be encrypted" +
+                            " with Deterministic type Encryption.", topLevelToken));
+                    }
+
                 }
             }
         }
     }
 
-    private void validateIncludedPaths(List<ClientEncryptionIncludedPath> clientEncryptionIncludedPath, int policyFormatVersion) {
+    private static void validateIncludedPaths(List<ClientEncryptionIncludedPath> clientEncryptionIncludedPath, int policyFormatVersion) {
         List<String> includedPathsList = new ArrayList<>();
         for (ClientEncryptionIncludedPath path : clientEncryptionIncludedPath) {
-            this.validateClientEncryptionIncludedPath(path, policyFormatVersion);
+            validateClientEncryptionIncludedPath(path, policyFormatVersion);
             if (includedPathsList.contains(path.getPath())) {
                 throw new IllegalArgumentException("Duplicate Path found in clientEncryptionIncludedPath.");
             }
@@ -150,7 +152,7 @@ public final class ClientEncryptionPolicy {
         }
     }
 
-    private void validateClientEncryptionIncludedPath(ClientEncryptionIncludedPath clientEncryptionIncludedPath, int policyFormatVersion) {
+    private static void validateClientEncryptionIncludedPath(ClientEncryptionIncludedPath clientEncryptionIncludedPath, int policyFormatVersion) {
         if (clientEncryptionIncludedPath == null) {
             throw new IllegalArgumentException("clientEncryptionIncludedPath is null");
         }
@@ -169,7 +171,7 @@ public final class ClientEncryptionPolicy {
                 throw new IllegalArgumentException(String.format("Path %s cannot be encrypted with policyFormatVersion %s.", clientEncryptionIncludedPath.getPath(), policyFormatVersion));
             }
 
-            if (!clientEncryptionIncludedPath.getEncryptionType().equals("Deterministic")) {
+            if (!clientEncryptionIncludedPath.getEncryptionType().equals(Constants.Properties.DETERMINISTIC)) {
                 throw new IllegalArgumentException(String.format("Only deterministic encryption type is supported for path %s.", clientEncryptionIncludedPath.getPath()));
             }
         }
