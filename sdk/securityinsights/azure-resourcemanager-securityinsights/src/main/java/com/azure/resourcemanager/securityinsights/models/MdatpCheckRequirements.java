@@ -16,8 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class MdatpCheckRequirements extends DataConnectorsCheckRequirements {
     /*
-     * MDATP (Microsoft Defender Advanced Threat Protection) requirements check
-     * properties.
+     * MDATP (Microsoft Defender Advanced Threat Protection) requirements check properties.
      */
     @JsonProperty(value = "properties")
     private MdatpCheckRequirementsProperties innerProperties;

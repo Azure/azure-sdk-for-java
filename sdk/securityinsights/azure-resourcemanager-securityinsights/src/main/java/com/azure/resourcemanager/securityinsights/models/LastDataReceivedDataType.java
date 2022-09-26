@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public class LastDataReceivedDataType {
     /*
-     * Name of the data type to show in the graph. can be use with
-     * {{graphQueriesTableName}} placeholder
+     * Name of the data type to show in the graph. can be use with {{graphQueriesTableName}} placeholder
      */
     @JsonProperty(value = "name")
     private String name;

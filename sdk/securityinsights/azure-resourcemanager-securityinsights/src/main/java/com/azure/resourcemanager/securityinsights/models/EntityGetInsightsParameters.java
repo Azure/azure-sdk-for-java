@@ -27,15 +27,13 @@ public final class EntityGetInsightsParameters {
     private OffsetDateTime endTime;
 
     /*
-     * Indicates if query time range should be extended with default time range
-     * of the query. Default value is false
+     * Indicates if query time range should be extended with default time range of the query. Default value is false
      */
     @JsonProperty(value = "addDefaultExtendedTimeRange")
     private Boolean addDefaultExtendedTimeRange;
 
     /*
-     * List of Insights Query Id. If empty, default value is all insights of
-     * this entity
+     * List of Insights Query Id. If empty, default value is all insights of this entity
      */
     @JsonProperty(value = "insightQueryIds")
     private List<UUID> insightQueryIds;

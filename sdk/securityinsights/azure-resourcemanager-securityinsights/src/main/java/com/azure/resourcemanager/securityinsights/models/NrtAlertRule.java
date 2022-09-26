@@ -405,6 +405,29 @@ public final class NrtAlertRule extends AlertRuleInner {
     }
 
     /**
+     * Get the eventGroupingSettings property: The event grouping settings.
+     *
+     * @return the eventGroupingSettings value.
+     */
+    public EventGroupingSettings eventGroupingSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().eventGroupingSettings();
+    }
+
+    /**
+     * Set the eventGroupingSettings property: The event grouping settings.
+     *
+     * @param eventGroupingSettings the eventGroupingSettings value to set.
+     * @return the NrtAlertRule object itself.
+     */
+    public NrtAlertRule withEventGroupingSettings(EventGroupingSettings eventGroupingSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NrtAlertRuleProperties();
+        }
+        this.innerProperties().withEventGroupingSettings(eventGroupingSettings);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
