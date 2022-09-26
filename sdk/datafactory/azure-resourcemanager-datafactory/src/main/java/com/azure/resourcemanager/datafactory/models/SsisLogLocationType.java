@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SsisLogLocationType. */
+/** The type of SSIS log location. */
 public final class SsisLogLocationType extends ExpandableStringEnum<SsisLogLocationType> {
     /** Static value File for SsisLogLocationType. */
     public static final SsisLogLocationType FILE = fromString("File");

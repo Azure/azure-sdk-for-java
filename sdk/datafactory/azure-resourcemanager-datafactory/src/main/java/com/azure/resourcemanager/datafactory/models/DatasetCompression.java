@@ -17,15 +17,13 @@ import java.util.Map;
 @Fluent
 public final class DatasetCompression {
     /*
-     * Type of dataset compression. Type: string (or Expression with resultType
-     * string).
+     * Type of dataset compression. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "type", required = true)
     private Object type;
 
     /*
-     * The dataset compression level. Type: string (or Expression with
-     * resultType string).
+     * The dataset compression level. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "level")
     private Object level;

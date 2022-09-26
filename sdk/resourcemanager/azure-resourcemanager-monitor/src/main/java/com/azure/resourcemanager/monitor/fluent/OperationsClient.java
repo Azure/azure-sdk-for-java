@@ -18,7 +18,8 @@ public interface OperationsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Microsoft.
+     * @return result of the request to list Microsoft.Insights operations along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<OperationListResultInner>> listWithResponseAsync();
@@ -28,7 +29,7 @@ public interface OperationsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Microsoft.
+     * @return result of the request to list Microsoft.Insights operations on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<OperationListResultInner> listAsync();
@@ -38,7 +39,7 @@ public interface OperationsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Microsoft.
+     * @return result of the request to list Microsoft.Insights operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     OperationListResultInner list();
@@ -50,7 +51,7 @@ public interface OperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Microsoft.
+     * @return result of the request to list Microsoft.Insights operations along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<OperationListResultInner> listWithResponse(Context context);

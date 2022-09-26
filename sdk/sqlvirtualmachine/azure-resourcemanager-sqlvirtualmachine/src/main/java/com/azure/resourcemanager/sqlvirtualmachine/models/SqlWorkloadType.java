@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SqlWorkloadType. */
+/** SQL Server workload type. */
 public final class SqlWorkloadType extends ExpandableStringEnum<SqlWorkloadType> {
     /** Static value GENERAL for SqlWorkloadType. */
     public static final SqlWorkloadType GENERAL = fromString("GENERAL");
@@ -30,7 +30,11 @@ public final class SqlWorkloadType extends ExpandableStringEnum<SqlWorkloadType>
         return fromString(name, SqlWorkloadType.class);
     }
 
-    /** @return known SqlWorkloadType values. */
+    /**
+     * Gets known SqlWorkloadType values.
+     *
+     * @return known SqlWorkloadType values.
+     */
     public static Collection<SqlWorkloadType> values() {
         return values(SqlWorkloadType.class);
     }

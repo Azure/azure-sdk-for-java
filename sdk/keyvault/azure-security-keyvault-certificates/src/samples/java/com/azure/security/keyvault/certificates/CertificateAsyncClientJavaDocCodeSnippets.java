@@ -5,13 +5,9 @@ package com.azure.security.keyvault.certificates;
 
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
 import com.azure.security.keyvault.certificates.models.CertificateIssuer;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
@@ -65,23 +61,6 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildAsyncClient();
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation
-        return certificateAsyncClient;
-    }
-
-    /**
-     * Generates code sample for creating a {@link CertificateAsyncClient}
-     * @return An instance of {@link CertificateAsyncClient}
-     */
-    public CertificateAsyncClient createAsyncClientWithPipeline() {
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation.withPipeline
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(new KeyVaultCredentialPolicy(new DefaultAzureCredentialBuilder().build()), new RetryPolicy())
-            .build();
-        CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder()
-            .pipeline(pipeline)
-            .vaultUrl("<your-key-vault-url>")
-            .buildAsyncClient();
-        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation.withPipeline
         return certificateAsyncClient;
     }
 

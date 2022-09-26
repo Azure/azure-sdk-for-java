@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SourceControlsOperation List. */
 public final class SourceControlsOperationListSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/sourcecontrols/GetSourceControls.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/sourcecontrols/GetSourceControls.json
      */
     /**
      * Sample code: Get all source controls.

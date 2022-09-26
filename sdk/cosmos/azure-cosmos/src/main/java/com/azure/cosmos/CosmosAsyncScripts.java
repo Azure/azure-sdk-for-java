@@ -109,10 +109,13 @@ public class CosmosAsyncScripts {
     CosmosPagedFlux<CosmosStoredProcedureProperties> readAllStoredProcedures(CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = "readAllStoredProcedures." + this.container.getId();
-            pagedFluxOptions.setTracerInformation(this.container.getDatabase().getClient().getTracerProvider(),
+            CosmosAsyncClient client = this.container.getDatabase().getClient();
+            pagedFluxOptions.setTracerInformation(
+                client.getTracerProvider(),
                 spanName,
-                this.container.getDatabase().getClient().getServiceEndpoint(),
-                this.container.getDatabase().getId());
+                client.getServiceEndpoint(),
+                this.container.getDatabase().getId(),
+                options != null ? options.getQueryNameOrDefault(spanName) : spanName);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
                 .readStoredProcedures(container.getLink(), options)
@@ -229,10 +232,13 @@ public class CosmosAsyncScripts {
     CosmosPagedFlux<CosmosUserDefinedFunctionProperties> readAllUserDefinedFunctions(CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = "readAllUserDefinedFunctions." + this.container.getId();
-            pagedFluxOptions.setTracerInformation(this.container.getDatabase().getClient().getTracerProvider(),
+            CosmosAsyncClient client = this.container.getDatabase().getClient();
+            pagedFluxOptions.setTracerInformation(
+                client.getTracerProvider(),
                 spanName,
-                this.container.getDatabase().getClient().getServiceEndpoint(),
-                this.container.getDatabase().getId());
+                client.getServiceEndpoint(),
+                this.container.getDatabase().getId(),
+                options != null ? options.getQueryNameOrDefault(spanName) : spanName);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
                 .readUserDefinedFunctions(container.getLink(), options)
@@ -348,10 +354,13 @@ public class CosmosAsyncScripts {
     CosmosPagedFlux<CosmosTriggerProperties> readAllTriggers(CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = "readAllTriggers." + this.container.getId();
-            pagedFluxOptions.setTracerInformation(this.container.getDatabase().getClient().getTracerProvider(),
+            CosmosAsyncClient client = this.container.getDatabase().getClient();
+            pagedFluxOptions.setTracerInformation(
+                client.getTracerProvider(),
                 spanName,
-                this.container.getDatabase().getClient().getServiceEndpoint(),
-                this.container.getDatabase().getId());
+                client.getServiceEndpoint(),
+                this.container.getDatabase().getId(),
+                options != null ? options.getQueryNameOrDefault(spanName) : spanName);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
                 .readTriggers(container.getLink(), options)
@@ -418,10 +427,13 @@ public class CosmosAsyncScripts {
         CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = "queryStoredProcedures." + this.container.getId();
-            pagedFluxOptions.setTracerInformation(this.container.getDatabase().getClient().getTracerProvider(),
+            CosmosAsyncClient client = this.container.getDatabase().getClient();
+            pagedFluxOptions.setTracerInformation(
+                client.getTracerProvider(),
                 spanName,
-                this.container.getDatabase().getClient().getServiceEndpoint(),
-                this.container.getDatabase().getId());
+                client.getServiceEndpoint(),
+                this.container.getDatabase().getId(),
+                options != null ? options.getQueryNameOrDefault(spanName) : spanName);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
                 .queryStoredProcedures(container.getLink(), querySpec, options)
@@ -436,10 +448,13 @@ public class CosmosAsyncScripts {
         CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = "queryUserDefinedFunctions." + this.container.getId();
-            pagedFluxOptions.setTracerInformation(this.container.getDatabase().getClient().getTracerProvider(),
+            CosmosAsyncClient client = this.container.getDatabase().getClient();
+            pagedFluxOptions.setTracerInformation(
+                client.getTracerProvider(),
                 spanName,
-                this.container.getDatabase().getClient().getServiceEndpoint(),
-                this.container.getDatabase().getId());
+                client.getServiceEndpoint(),
+                this.container.getDatabase().getId(),
+                options != null ? options.getQueryNameOrDefault(spanName) : spanName);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
                 .queryUserDefinedFunctions(container.getLink(), querySpec, options)
@@ -461,10 +476,13 @@ public class CosmosAsyncScripts {
                 spanName = "queryTriggers." + this.container.getId();
             }
 
-            pagedFluxOptions.setTracerInformation(this.container.getDatabase().getClient().getTracerProvider(),
+            CosmosAsyncClient client = this.container.getDatabase().getClient();
+            pagedFluxOptions.setTracerInformation(
+                client.getTracerProvider(),
                 spanName,
-                this.container.getDatabase().getClient().getServiceEndpoint(),
-                this.container.getDatabase().getId());
+                client.getServiceEndpoint(),
+                this.container.getDatabase().getId(),
+                options != null ? options.getQueryNameOrDefault(spanName) : spanName);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
                 .queryTriggers(container.getLink(), querySpec, options)

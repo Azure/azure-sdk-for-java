@@ -38,6 +38,7 @@ import com.azure.resourcemanager.securityinsights.fluent.EntitiesRelationsClient
 import com.azure.resourcemanager.securityinsights.fluent.EntityQueriesClient;
 import com.azure.resourcemanager.securityinsights.fluent.EntityQueryTemplatesClient;
 import com.azure.resourcemanager.securityinsights.fluent.EntityRelationsClient;
+import com.azure.resourcemanager.securityinsights.fluent.FileImportsClient;
 import com.azure.resourcemanager.securityinsights.fluent.IncidentCommentsClient;
 import com.azure.resourcemanager.securityinsights.fluent.IncidentRelationsClient;
 import com.azure.resourcemanager.securityinsights.fluent.IncidentsClient;
@@ -47,6 +48,7 @@ import com.azure.resourcemanager.securityinsights.fluent.OfficeConsentsClient;
 import com.azure.resourcemanager.securityinsights.fluent.OperationsClient;
 import com.azure.resourcemanager.securityinsights.fluent.ProductSettingsClient;
 import com.azure.resourcemanager.securityinsights.fluent.SecurityInsights;
+import com.azure.resourcemanager.securityinsights.fluent.SecurityMLAnalyticsSettingsClient;
 import com.azure.resourcemanager.securityinsights.fluent.SentinelOnboardingStatesClient;
 import com.azure.resourcemanager.securityinsights.fluent.SourceControlsClient;
 import com.azure.resourcemanager.securityinsights.fluent.SourceControlsOperationsClient;
@@ -331,6 +333,18 @@ public final class SecurityInsightsImpl implements SecurityInsights {
         return this.entityQueryTemplates;
     }
 
+    /** The FileImportsClient object to access its operations. */
+    private final FileImportsClient fileImports;
+
+    /**
+     * Gets the FileImportsClient object to access its operations.
+     *
+     * @return the FileImportsClient object.
+     */
+    public FileImportsClient getFileImports() {
+        return this.fileImports;
+    }
+
     /** The IncidentCommentsClient object to access its operations. */
     private final IncidentCommentsClient incidentComments;
 
@@ -389,6 +403,18 @@ public final class SecurityInsightsImpl implements SecurityInsights {
      */
     public SentinelOnboardingStatesClient getSentinelOnboardingStates() {
         return this.sentinelOnboardingStates;
+    }
+
+    /** The SecurityMLAnalyticsSettingsClient object to access its operations. */
+    private final SecurityMLAnalyticsSettingsClient securityMLAnalyticsSettings;
+
+    /**
+     * Gets the SecurityMLAnalyticsSettingsClient object to access its operations.
+     *
+     * @return the SecurityMLAnalyticsSettingsClient object.
+     */
+    public SecurityMLAnalyticsSettingsClient getSecurityMLAnalyticsSettings() {
+        return this.securityMLAnalyticsSettings;
     }
 
     /** The ProductSettingsClient object to access its operations. */
@@ -545,7 +571,7 @@ public final class SecurityInsightsImpl implements SecurityInsights {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-01-01-preview";
+        this.apiVersion = "2022-09-01-preview";
         this.alertRules = new AlertRulesClientImpl(this);
         this.actions = new ActionsClientImpl(this);
         this.alertRuleTemplates = new AlertRuleTemplatesClientImpl(this);
@@ -562,11 +588,13 @@ public final class SecurityInsightsImpl implements SecurityInsights {
         this.entityRelations = new EntityRelationsClientImpl(this);
         this.entityQueries = new EntityQueriesClientImpl(this);
         this.entityQueryTemplates = new EntityQueryTemplatesClientImpl(this);
+        this.fileImports = new FileImportsClientImpl(this);
         this.incidentComments = new IncidentCommentsClientImpl(this);
         this.incidentRelations = new IncidentRelationsClientImpl(this);
         this.metadatas = new MetadatasClientImpl(this);
         this.officeConsents = new OfficeConsentsClientImpl(this);
         this.sentinelOnboardingStates = new SentinelOnboardingStatesClientImpl(this);
+        this.securityMLAnalyticsSettings = new SecurityMLAnalyticsSettingsClientImpl(this);
         this.productSettings = new ProductSettingsClientImpl(this);
         this.sourceControls = new SourceControlsClientImpl(this);
         this.sourceControlsOperations = new SourceControlsOperationsClientImpl(this);

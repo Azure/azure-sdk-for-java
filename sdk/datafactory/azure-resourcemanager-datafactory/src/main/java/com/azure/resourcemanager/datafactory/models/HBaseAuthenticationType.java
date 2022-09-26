@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HBaseAuthenticationType. */
+/** The authentication mechanism to use to connect to the HBase server. */
 public final class HBaseAuthenticationType extends ExpandableStringEnum<HBaseAuthenticationType> {
     /** Static value Anonymous for HBaseAuthenticationType. */
     public static final HBaseAuthenticationType ANONYMOUS = fromString("Anonymous");

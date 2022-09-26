@@ -12,15 +12,19 @@ import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import com.nimbusds.jose.proc.JWSAlgorithmFamilyJWSKeySelector;
 import com.nimbusds.jose.proc.JWSKeySelector;
 import com.nimbusds.jose.proc.SecurityContext;
-import com.nimbusds.jose.util.DefaultResourceRetriever;
+import com.nimbusds.jose.util.ResourceRetriever;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.web.client.RestOperations;
 
 import java.net.URL;
 import java.security.Key;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createRestTemplate;
 
 /**
  * Selecting key candidates for processing a signed JWT which provides access to the JWT claims set in addition to the
@@ -29,30 +33,22 @@ import java.util.concurrent.ConcurrentHashMap;
 public class AadIssuerJwsKeySelector implements JWTClaimsSetAwareJWSKeySelector<SecurityContext> {
 
     private final AadTrustedIssuerRepository trustedIssuerRepo;
-
-    private final int connectTimeout;
-
-    private final int readTimeout;
-
-    private final int sizeLimit;
-
     private final Map<String, JWSKeySelector<SecurityContext>> selectors = new ConcurrentHashMap<>();
 
+    private final RestOperations restOperations;
+
+    private final ResourceRetriever resourceRetriever;
     /**
      * Creates a new instance of {@link AadIssuerJwsKeySelector}.
      *
      * @param trustedIssuerRepo the AAD trusted issuer repository
-     * @param connectTimeout the connect timeout
-     * @param readTimeout the read timeout
-     * @param sizeLimit te size limit
      */
-    public AadIssuerJwsKeySelector(AadTrustedIssuerRepository trustedIssuerRepo,
-                                   int connectTimeout,
-                                   int readTimeout, int sizeLimit) {
+    public AadIssuerJwsKeySelector(RestTemplateBuilder restTemplateBuilder,
+                                   AadTrustedIssuerRepository trustedIssuerRepo,
+                                   ResourceRetriever resourceRetriever) {
+        this.restOperations = createRestTemplate(restTemplateBuilder);
         this.trustedIssuerRepo = trustedIssuerRepo;
-        this.connectTimeout = connectTimeout;
-        this.readTimeout = readTimeout;
-        this.sizeLimit = sizeLimit;
+        this.resourceRetriever = resourceRetriever;
     }
 
     @Override
@@ -68,12 +64,10 @@ public class AadIssuerJwsKeySelector implements JWTClaimsSetAwareJWSKeySelector<
 
     private JWSKeySelector<SecurityContext> fromIssuer(String issuer) {
         Map<String, Object> configurationForOidcIssuerLocation = AadJwtDecoderProviderConfiguration
-            .getConfigurationForOidcIssuerLocation(getOidcIssuerLocation(issuer));
+            .getConfigurationForOidcIssuerLocation(restOperations, getOidcIssuerLocation(issuer));
         String uri = configurationForOidcIssuerLocation.get("jwks_uri").toString();
-        DefaultResourceRetriever jwkSetRetriever =
-            new DefaultResourceRetriever(connectTimeout, readTimeout, sizeLimit);
         try {
-            JWKSource<SecurityContext> jwkSource = new RemoteJWKSet<>(new URL(uri), jwkSetRetriever);
+            JWKSource<SecurityContext> jwkSource = new RemoteJWKSet<>(new URL(uri), resourceRetriever);
             return JWSAlgorithmFamilyJWSKeySelector.fromJWKSource(jwkSource);
         } catch (Exception ex) {
             throw new IllegalArgumentException(ex.getMessage(), ex);

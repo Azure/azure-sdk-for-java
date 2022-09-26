@@ -13,22 +13,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class Office365LinkedServiceTypeProperties {
     /*
-     * Azure tenant ID to which the Office 365 account belongs. Type: string
-     * (or Expression with resultType string).
+     * Azure tenant ID to which the Office 365 account belongs. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "office365TenantId", required = true)
     private Object office365TenantId;
 
     /*
-     * Specify the tenant information under which your Azure AD web application
-     * resides. Type: string (or Expression with resultType string).
+     * Specify the tenant information under which your Azure AD web application resides. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "servicePrincipalTenantId", required = true)
     private Object servicePrincipalTenantId;
 
     /*
-     * Specify the application's client ID. Type: string (or Expression with
-     * resultType string).
+     * Specify the application's client ID. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "servicePrincipalId", required = true)
     private Object servicePrincipalId;
@@ -40,9 +38,8 @@ public final class Office365LinkedServiceTypeProperties {
     private SecretBase servicePrincipalKey;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;

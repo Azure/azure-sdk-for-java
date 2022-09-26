@@ -88,6 +88,13 @@ public interface DatabasePrincipalAssignment {
     String aadObjectId();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.kusto.fluent.models.DatabasePrincipalAssignmentInner object.
      *
      * @return the inner object.

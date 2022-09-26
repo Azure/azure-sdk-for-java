@@ -4,47 +4,38 @@
 
 package com.azure.resourcemanager.security.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import java.util.Collection;
 
-/** Describes an Azure resource with kind. */
-@Fluent
-public class AadConnectivityState {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AadConnectivityState.class);
+/** The connectivity state of the external AAD solution. */
+public final class AadConnectivityState extends ExpandableStringEnum<AadConnectivityState> {
+    /** Static value Discovered for AadConnectivityState. */
+    public static final AadConnectivityState DISCOVERED = fromString("Discovered");
 
-    /*
-     * The connectivity state of the external AAD solution
-     */
-    @JsonProperty(value = "connectivityState")
-    private AadConnectivityStateValue connectivityState;
+    /** Static value NotLicensed for AadConnectivityState. */
+    public static final AadConnectivityState NOT_LICENSED = fromString("NotLicensed");
+
+    /** Static value Connected for AadConnectivityState. */
+    public static final AadConnectivityState CONNECTED = fromString("Connected");
 
     /**
-     * Get the connectivityState property: The connectivity state of the external AAD solution.
+     * Creates or finds a AadConnectivityState from its string representation.
      *
-     * @return the connectivityState value.
+     * @param name a name to look for.
+     * @return the corresponding AadConnectivityState.
      */
-    public AadConnectivityStateValue connectivityState() {
-        return this.connectivityState;
+    @JsonCreator
+    public static AadConnectivityState fromString(String name) {
+        return fromString(name, AadConnectivityState.class);
     }
 
     /**
-     * Set the connectivityState property: The connectivity state of the external AAD solution.
+     * Gets known AadConnectivityState values.
      *
-     * @param connectivityState the connectivityState value to set.
-     * @return the AadConnectivityState object itself.
+     * @return known AadConnectivityState values.
      */
-    public AadConnectivityState withConnectivityState(AadConnectivityStateValue connectivityState) {
-        this.connectivityState = connectivityState;
-        return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
+    public static Collection<AadConnectivityState> values() {
+        return values(AadConnectivityState.class);
     }
 }

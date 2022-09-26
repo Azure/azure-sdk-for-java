@@ -1,6 +1,6 @@
 ## Release History
 
-### 1.6.0-beta.1 (Unreleased)
+### 1.7.0-beta.1 (Unreleased)
 
 #### Features Added
 * Added support for allowing parition key path and id to be part of client encryption policy - See [PR 30678](https://github.com/Azure/azure-sdk-for-java/pull/30678)
@@ -11,6 +11,10 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 1.6.0 (2022-09-15)
+#### Other Changes
+* Updated `azure-cosmos` to version `4.36.0`.
 
 ### 1.5.0 (2022-08-19)
 #### Other Changes

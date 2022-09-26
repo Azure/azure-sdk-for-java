@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Clusters Start. */
 public final class ClustersStartSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClustersStart.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-07-07/examples/KustoClustersStart.json
      */
     /**
      * Sample code: KustoClustersStart.

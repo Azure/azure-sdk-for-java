@@ -4,6 +4,7 @@
 package com.azure.xml;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
 public class ResponseLink implements XmlSerializable<ResponseLink> {
     private String href;
@@ -50,7 +51,7 @@ public class ResponseLink implements XmlSerializable<ResponseLink> {
     }
 
     @Override
-    public XmlWriter toXml(XmlWriter xmlWriter) {
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         xmlWriter.writeStartSelfClosingElement("link");
         xmlWriter.writeNamespace("http://www.w3.org/2005/Atom");
         xmlWriter.writeStringAttribute("rel", rel);
@@ -59,7 +60,7 @@ public class ResponseLink implements XmlSerializable<ResponseLink> {
         return xmlWriter.flush();
     }
 
-    public static ResponseLink fromXml(XmlReader xmlReader) {
+    public static ResponseLink fromXml(XmlReader xmlReader) throws XMLStreamException {
         if (xmlReader.currentToken() != XmlToken.START_ELEMENT) {
             xmlReader.nextElement();
         }

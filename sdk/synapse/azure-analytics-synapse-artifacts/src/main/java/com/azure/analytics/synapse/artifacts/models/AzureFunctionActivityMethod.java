@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AzureFunctionActivityMethod. */
+/** The list of HTTP methods supported by a AzureFunctionActivity. */
 public final class AzureFunctionActivityMethod extends ExpandableStringEnum<AzureFunctionActivityMethod> {
     /** Static value GET for AzureFunctionActivityMethod. */
     public static final AzureFunctionActivityMethod GET = fromString("GET");
@@ -42,7 +42,11 @@ public final class AzureFunctionActivityMethod extends ExpandableStringEnum<Azur
         return fromString(name, AzureFunctionActivityMethod.class);
     }
 
-    /** @return known AzureFunctionActivityMethod values. */
+    /**
+     * Gets known AzureFunctionActivityMethod values.
+     *
+     * @return known AzureFunctionActivityMethod values.
+     */
     public static Collection<AzureFunctionActivityMethod> values() {
         return values(AzureFunctionActivityMethod.class);
     }

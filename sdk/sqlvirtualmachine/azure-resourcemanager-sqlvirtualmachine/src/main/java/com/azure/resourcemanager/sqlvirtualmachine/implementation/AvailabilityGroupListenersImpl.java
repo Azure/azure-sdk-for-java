@@ -13,10 +13,9 @@ import com.azure.resourcemanager.sqlvirtualmachine.fluent.AvailabilityGroupListe
 import com.azure.resourcemanager.sqlvirtualmachine.fluent.models.AvailabilityGroupListenerInner;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AvailabilityGroupListener;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AvailabilityGroupListeners;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AvailabilityGroupListenersImpl implements AvailabilityGroupListeners {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailabilityGroupListenersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AvailabilityGroupListenersImpl.class);
 
     private final AvailabilityGroupListenersClient innerClient;
 
@@ -94,7 +93,7 @@ public final class AvailabilityGroupListenersImpl implements AvailabilityGroupLi
     public AvailabilityGroupListener getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -102,7 +101,7 @@ public final class AvailabilityGroupListenersImpl implements AvailabilityGroupLi
         }
         String sqlVirtualMachineGroupName = Utils.getValueFromIdByName(id, "sqlVirtualMachineGroups");
         if (sqlVirtualMachineGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -112,7 +111,7 @@ public final class AvailabilityGroupListenersImpl implements AvailabilityGroupLi
         }
         String availabilityGroupListenerName = Utils.getValueFromIdByName(id, "availabilityGroupListeners");
         if (availabilityGroupListenerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -130,7 +129,7 @@ public final class AvailabilityGroupListenersImpl implements AvailabilityGroupLi
     public Response<AvailabilityGroupListener> getByIdWithResponse(String id, String expand, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -138,7 +137,7 @@ public final class AvailabilityGroupListenersImpl implements AvailabilityGroupLi
         }
         String sqlVirtualMachineGroupName = Utils.getValueFromIdByName(id, "sqlVirtualMachineGroups");
         if (sqlVirtualMachineGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -148,7 +147,7 @@ public final class AvailabilityGroupListenersImpl implements AvailabilityGroupLi
         }
         String availabilityGroupListenerName = Utils.getValueFromIdByName(id, "availabilityGroupListeners");
         if (availabilityGroupListenerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -164,7 +163,7 @@ public final class AvailabilityGroupListenersImpl implements AvailabilityGroupLi
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -172,7 +171,7 @@ public final class AvailabilityGroupListenersImpl implements AvailabilityGroupLi
         }
         String sqlVirtualMachineGroupName = Utils.getValueFromIdByName(id, "sqlVirtualMachineGroups");
         if (sqlVirtualMachineGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -182,7 +181,7 @@ public final class AvailabilityGroupListenersImpl implements AvailabilityGroupLi
         }
         String availabilityGroupListenerName = Utils.getValueFromIdByName(id, "availabilityGroupListeners");
         if (availabilityGroupListenerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -196,7 +195,7 @@ public final class AvailabilityGroupListenersImpl implements AvailabilityGroupLi
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -204,7 +203,7 @@ public final class AvailabilityGroupListenersImpl implements AvailabilityGroupLi
         }
         String sqlVirtualMachineGroupName = Utils.getValueFromIdByName(id, "sqlVirtualMachineGroups");
         if (sqlVirtualMachineGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -214,7 +213,7 @@ public final class AvailabilityGroupListenersImpl implements AvailabilityGroupLi
         }
         String availabilityGroupListenerName = Utils.getValueFromIdByName(id, "availabilityGroupListeners");
         if (availabilityGroupListenerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

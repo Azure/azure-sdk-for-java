@@ -298,14 +298,7 @@ public final class LinkedServicesImpl {
     public Mono<LinkedServiceResource> createOrUpdateLinkedServiceAsync(
             String linkedServiceName, LinkedServiceResource linkedService, String ifMatch) {
         return createOrUpdateLinkedServiceWithResponseAsync(linkedServiceName, linkedService, ifMatch)
-                .flatMap(
-                        (Response<LinkedServiceResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -323,14 +316,7 @@ public final class LinkedServicesImpl {
             String linkedServiceName, LinkedServiceResource linkedService) {
         final String ifMatch = null;
         return createOrUpdateLinkedServiceWithResponseAsync(linkedServiceName, linkedService, ifMatch)
-                .flatMap(
-                        (Response<LinkedServiceResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -350,14 +336,7 @@ public final class LinkedServicesImpl {
     public Mono<LinkedServiceResource> createOrUpdateLinkedServiceAsync(
             String linkedServiceName, LinkedServiceResource linkedService, String ifMatch, Context context) {
         return createOrUpdateLinkedServiceWithResponseAsync(linkedServiceName, linkedService, ifMatch, context)
-                .flatMap(
-                        (Response<LinkedServiceResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -476,14 +455,7 @@ public final class LinkedServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LinkedServiceResource> getLinkedServiceAsync(String linkedServiceName, String ifNoneMatch) {
         return getLinkedServiceWithResponseAsync(linkedServiceName, ifNoneMatch)
-                .flatMap(
-                        (Response<LinkedServiceResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -499,14 +471,7 @@ public final class LinkedServicesImpl {
     public Mono<LinkedServiceResource> getLinkedServiceAsync(String linkedServiceName) {
         final String ifNoneMatch = null;
         return getLinkedServiceWithResponseAsync(linkedServiceName, ifNoneMatch)
-                .flatMap(
-                        (Response<LinkedServiceResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -525,14 +490,7 @@ public final class LinkedServicesImpl {
     public Mono<LinkedServiceResource> getLinkedServiceAsync(
             String linkedServiceName, String ifNoneMatch, Context context) {
         return getLinkedServiceWithResponseAsync(linkedServiceName, ifNoneMatch, context)
-                .flatMap(
-                        (Response<LinkedServiceResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -631,7 +589,7 @@ public final class LinkedServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteLinkedServiceAsync(String linkedServiceName) {
-        return deleteLinkedServiceWithResponseAsync(linkedServiceName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteLinkedServiceWithResponseAsync(linkedServiceName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -646,8 +604,7 @@ public final class LinkedServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteLinkedServiceAsync(String linkedServiceName, Context context) {
-        return deleteLinkedServiceWithResponseAsync(linkedServiceName, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteLinkedServiceWithResponseAsync(linkedServiceName, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -731,8 +688,7 @@ public final class LinkedServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> renameLinkedServiceAsync(String linkedServiceName, ArtifactRenameRequest request) {
-        return renameLinkedServiceWithResponseAsync(linkedServiceName, request)
-                .flatMap((Response<Void> res) -> Mono.empty());
+        return renameLinkedServiceWithResponseAsync(linkedServiceName, request).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -750,7 +706,7 @@ public final class LinkedServicesImpl {
     public Mono<Void> renameLinkedServiceAsync(
             String linkedServiceName, ArtifactRenameRequest request, Context context) {
         return renameLinkedServiceWithResponseAsync(linkedServiceName, request, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -787,7 +743,8 @@ public final class LinkedServicesImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -815,7 +772,8 @@ public final class LinkedServicesImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

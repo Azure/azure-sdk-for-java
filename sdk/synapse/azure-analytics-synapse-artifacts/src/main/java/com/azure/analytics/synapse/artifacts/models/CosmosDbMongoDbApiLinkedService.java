@@ -19,16 +19,15 @@ import java.util.Map;
 @Fluent
 public class CosmosDbMongoDbApiLinkedService extends LinkedService {
     /*
-     * The CosmosDB (MongoDB API) connection string. Type: string, SecureString
-     * or AzureKeyVaultSecretReference. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * The CosmosDB (MongoDB API) connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Type:
+     * string, SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "typeProperties.connectionString", required = true)
     private Object connectionString;
 
     /*
-     * The name of the CosmosDB (MongoDB API) database that you want to access.
-     * Type: string (or Expression with resultType string).
+     * The name of the CosmosDB (MongoDB API) database that you want to access. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "typeProperties.database", required = true)
     private Object database;
