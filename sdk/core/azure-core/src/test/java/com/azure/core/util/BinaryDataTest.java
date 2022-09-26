@@ -579,8 +579,8 @@ public class BinaryDataTest {
 
     @Test
     public void testFromLargeFileFlux() {
-        int chunkSize = 1024 * 1024; // 10 MB
-        long numberOfChunks = 2200; // 2200 MB total
+        int chunkSize = 1024 * 1024; // 1 MB
+        long numberOfChunks = 2200L; // 2200 MB total
 
         MockFile mockFile = new MockFile("binaryDataFromFile" + UUID.randomUUID() + ".txt", RANDOM_DATA,
             numberOfChunks * chunkSize);
