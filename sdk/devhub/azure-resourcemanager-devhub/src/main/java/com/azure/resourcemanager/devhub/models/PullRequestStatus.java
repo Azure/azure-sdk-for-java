@@ -19,8 +19,8 @@ public final class PullRequestStatus extends ExpandableStringEnum<PullRequestSta
     /** Static value merged for PullRequestStatus. */
     public static final PullRequestStatus MERGED = fromString("merged");
 
-    /** Static value merged for PullRequestStatus. */
-    public static final PullRequestStatus MERGED_1 = fromString("merged");
+    /** Static value removed for PullRequestStatus. */
+    public static final PullRequestStatus REMOVED = fromString("removed");
 
     /**
      * Creates or finds a PullRequestStatus from its string representation.
