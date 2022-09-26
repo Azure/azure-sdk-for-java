@@ -66,7 +66,7 @@ public class CallConnectionLiveTests extends CallAutomationLiveTestBase {
             assertNotNull(result);
             assertNotNull(result.getCallConnection());
             assertNotNull(result.getCallConnectionProperties());
-            Thread.sleep(15000);
+            waitForOperationCompletion(15000);
 
             CallConnection callConnection = callClient.getCallConnection(result.getCallConnectionProperties().getCallConnectionId());
             assertNotNull(callConnection);
@@ -92,7 +92,7 @@ public class CallConnectionLiveTests extends CallAutomationLiveTestBase {
             assertEquals(2, listParticipantsResult.getValues().size());
 
             callConnection.hangUp(true);
-            Thread.sleep(5000);
+            waitForOperationCompletion(5000);
             assertThrows(Exception.class, callConnection::getCallProperties);
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
@@ -134,7 +134,7 @@ public class CallConnectionLiveTests extends CallAutomationLiveTestBase {
             assertNotNull(result);
             assertNotNull(result.getCallConnection());
             assertNotNull(result.getCallConnectionProperties());
-            Thread.sleep(20000);
+            waitForOperationCompletion(20000);
 
             CallConnection callConnection = callClient.getCallConnection(result.getCallConnectionProperties().getCallConnectionId());
             assertNotNull(callConnection);
@@ -159,7 +159,7 @@ public class CallConnectionLiveTests extends CallAutomationLiveTestBase {
             assertEquals(2, listParticipantsResult.getValues().size());
 
             callConnection.hangUp(true);
-            Thread.sleep(5000);
+            waitForOperationCompletion(5000);
             assertThrows(Exception.class, callConnection::getCallProperties);
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
@@ -199,7 +199,7 @@ public class CallConnectionLiveTests extends CallAutomationLiveTestBase {
             assertNotNull(result);
             assertNotNull(result.getCallConnection());
             assertNotNull(result.getCallConnectionProperties());
-            Thread.sleep(12000);
+            waitForOperationCompletion(12000);
 
             CallConnection callConnection = callClient.getCallConnection(result.getCallConnectionProperties().getCallConnectionId());
             assertNotNull(callConnection);
@@ -211,7 +211,7 @@ public class CallConnectionLiveTests extends CallAutomationLiveTestBase {
             TransferCallResult transferCallResult = callConnection.transferToParticipantCall(transferToParticipantCallOptions);
             assertNotNull(transferCallResult);
 
-            Thread.sleep(5000);
+            waitForOperationCompletion(5000);
             assertThrows(Exception.class, callConnection::getCallProperties);
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
