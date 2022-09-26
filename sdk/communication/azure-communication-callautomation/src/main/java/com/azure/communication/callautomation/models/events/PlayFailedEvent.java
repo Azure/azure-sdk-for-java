@@ -7,11 +7,7 @@ import com.azure.core.annotation.Immutable;
 
 /** The PlayFailedEvent model. */
 @Immutable
-public final class PlayFailedEvent extends CallAutomationEventBase {
+public final class PlayFailedEvent extends CallAutomationEventWithReasonCodeBase {
     private PlayFailedEvent() {
-    }
-
-    public ReasonCodeName getReasonCodeName() {
-        return ReasonCodeName.fromReasonCode(getResultInformation().getSubCode());
     }
 }

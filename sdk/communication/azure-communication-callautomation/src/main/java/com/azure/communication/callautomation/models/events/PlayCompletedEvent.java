@@ -7,11 +7,7 @@ import com.azure.core.annotation.Immutable;
 
 /** The PlayCompletedEvent model. */
 @Immutable
-public final class PlayCompletedEvent extends CallAutomationEventBase {
+public final class PlayCompletedEvent extends CallAutomationEventWithReasonCodeBase {
     private PlayCompletedEvent() {
-    }
-
-    public ReasonCodeName getReasonCodeName() {
-        return ReasonCodeName.fromReasonCode(getResultInformation().getSubCode());
     }
 }
