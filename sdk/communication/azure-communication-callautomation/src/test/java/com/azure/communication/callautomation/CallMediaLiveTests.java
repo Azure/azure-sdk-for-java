@@ -61,7 +61,7 @@ public class CallMediaLiveTests extends CallAutomationLiveTestBase {
             assertNotNull(result);
             assertNotNull(result.getCallConnection());
             assertNotNull(result.getCallConnectionProperties());
-            Thread.sleep(15000);
+            waitForOperationCompletion(15000);
 
             CallConnection callConnection = callClient.getCallConnection(result.getCallConnectionProperties().getCallConnectionId());
             assertNotNull(callConnection);
@@ -71,10 +71,10 @@ public class CallMediaLiveTests extends CallAutomationLiveTestBase {
 
             CallMedia callMedia = callConnection.getCallMedia();
             callMedia.playToAll(new FileSource().setUri(MEDIA_SOURCE));
-            Thread.sleep(5000);
+            waitForOperationCompletion(5000);
 
             callConnection.hangUp(true);
-            Thread.sleep(5000);
+            waitForOperationCompletion(5000);
             assertThrows(Exception.class, callConnection::getCallProperties);
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
