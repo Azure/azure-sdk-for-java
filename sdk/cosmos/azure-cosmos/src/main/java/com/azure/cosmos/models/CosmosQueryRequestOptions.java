@@ -6,6 +6,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -46,6 +47,7 @@ public class CosmosQueryRequestOptions {
     private UUID correlationActivityId;
     private boolean emptyPageDiagnosticsEnabled;
     private Function<JsonNode, ?> itemFactoryMethod;
+    private String queryName;
     /**
      * Instantiates a new query request options.
      */
@@ -83,6 +85,9 @@ public class CosmosQueryRequestOptions {
         this.correlationActivityId = options.correlationActivityId;
         this.emptyPageDiagnosticsEnabled = options.emptyPageDiagnosticsEnabled;
         this.itemFactoryMethod = options.itemFactoryMethod;
+        this.queryName = options.queryName;
+        this.feedRange = options.feedRange;
+        this.thresholdForDiagnosticsOnTracer = options.thresholdForDiagnosticsOnTracer;
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -548,6 +553,34 @@ public class CosmosQueryRequestOptions {
     }
 
     /**
+     * Gets the logical query name - this identifier is only used for metrics and logs
+     * to distinguish different queries in telemetry. Cardinality of unique  values for queryName should be
+     * reasonably low - like significantly smaller than 100.
+     *
+     * @param defaultQueryName the default query name that should be used if none is specified on request options
+     * @return the logical query name
+     */
+    @Beta(value = Beta.SinceVersion.V4_37_0, warningText =Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public String getQueryNameOrDefault(String defaultQueryName) {
+        return !Strings.isNullOrWhiteSpace(queryName) ? queryName : defaultQueryName;
+    }
+
+    /**
+     * Sets the logical query name - this identifier is only used for metrics and logs
+     * to distinguish different queries in telemetry. Cardinality of unique  values for queryName should be
+     * reasonably low - like significantly smaller than 100.
+     *
+     * @param queryName a logical query name to distinguish this query pattern from others
+     * @return the logical query name
+     */
+    @Beta(value = Beta.SinceVersion.V4_37_0, warningText =Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosQueryRequestOptions setQueryName(String queryName) {
+        this.queryName = queryName;
+
+        return this;
+    }
+
+    /**
      * Sets the custom query request option value by key
      *
      * @param name  a string representing the custom option's name
@@ -587,6 +620,15 @@ public class CosmosQueryRequestOptions {
     CosmosQueryRequestOptions setEmptyPageDiagnosticsEnabled(boolean emptyPageDiagnosticsEnabled) {
         this.emptyPageDiagnosticsEnabled = emptyPageDiagnosticsEnabled;
         return this;
+    }
+
+    CosmosQueryRequestOptions withEmptyPageDiagnosticsEnabled(boolean emptyPageDiagnosticsEnabled) {
+        if (this.emptyPageDiagnosticsEnabled == emptyPageDiagnosticsEnabled)
+        {
+            return this;
+        }
+
+        return new CosmosQueryRequestOptions(this).setEmptyPageDiagnosticsEnabled(emptyPageDiagnosticsEnabled);
     }
 
     Function<JsonNode, ?> getItemFactoryMethod() { return this.itemFactoryMethod; }
@@ -666,6 +708,11 @@ public class CosmosQueryRequestOptions {
                 @Override
                 public CosmosQueryRequestOptions setEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions, boolean emptyPageDiagnosticsEnabled) {
                     return queryRequestOptions.setEmptyPageDiagnosticsEnabled(emptyPageDiagnosticsEnabled);
+                }
+
+                @Override
+                public CosmosQueryRequestOptions withEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions, boolean emptyPageDiagnosticsEnabled) {
+                    return queryRequestOptions.withEmptyPageDiagnosticsEnabled(emptyPageDiagnosticsEnabled);
                 }
 
                 @Override

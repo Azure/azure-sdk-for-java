@@ -76,6 +76,11 @@ abstract class AsyncBenchmark<T> {
     private AtomicBoolean warmupMode = new AtomicBoolean(false);
 
     AsyncBenchmark(Configuration cfg) {
+
+        logger = LoggerFactory.getLogger(this.getClass());
+        configuration = cfg;
+        MeterRegistry registry = configuration.getAzureMonitorMeterRegistry();
+
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(cfg.getServiceEndpoint())
             .key(cfg.getMasterKey())
@@ -83,6 +88,16 @@ abstract class AsyncBenchmark<T> {
             .consistencyLevel(cfg.getConsistencyLevel())
             .contentResponseOnWriteEnabled(cfg.isContentResponseOnWriteEnabled())
             .clientTelemetryEnabled(cfg.isClientTelemetryEnabled());
+
+        if (registry != null) {
+            cosmosClientBuilder.clientTelemetryConfig().clientMetrics(registry);
+        }
+
+        registry = configuration.getGraphiteMeterRegistry();
+
+        if (registry != null) {
+            cosmosClientBuilder.clientTelemetryConfig().clientMetrics(registry);
+        }
 
         if (cfg.getConnectionMode().equals(ConnectionMode.DIRECT)) {
             cosmosClientBuilder = cosmosClientBuilder.directMode(DirectConnectionConfig.getDefaultConfig());
@@ -92,8 +107,6 @@ abstract class AsyncBenchmark<T> {
             cosmosClientBuilder = cosmosClientBuilder.gatewayMode(gatewayConnectionConfig);
         }
         cosmosClient = cosmosClientBuilder.buildAsyncClient();
-        configuration = cfg;
-        logger = LoggerFactory.getLogger(this.getClass());
 
         try {
             cosmosAsyncDatabase = cosmosClient.getDatabase(this.configuration.getDatabaseId());
@@ -220,18 +233,6 @@ abstract class AsyncBenchmark<T> {
                 .convertDurationsTo(TimeUnit.MILLISECONDS)
                 .convertRatesTo(TimeUnit.SECONDS)
                 .build();
-        }
-
-        MeterRegistry registry = configuration.getAzureMonitorMeterRegistry();
-
-        if (registry != null) {
-            BridgeInternal.monitorTelemetry(registry);
-        }
-
-        registry = configuration.getGraphiteMeterRegistry();
-
-        if (registry != null) {
-            BridgeInternal.monitorTelemetry(registry);
         }
     }
 

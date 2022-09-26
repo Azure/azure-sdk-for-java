@@ -10,7 +10,7 @@ import com.azure.resourcemanager.securityinsights.models.EyesOn;
 /** Samples for ProductSettings Update. */
 public final class ProductSettingsUpdateSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/settings/UpdateEyesOnSetting.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/settings/UpdateEyesOnSetting.json
      */
     /**
      * Sample code: Update EyesOn settings.

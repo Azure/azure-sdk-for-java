@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosException;
@@ -13,7 +14,10 @@ import com.azure.cosmos.implementation.CosmosDaemonThreadFactory;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
@@ -53,6 +57,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -103,6 +108,8 @@ public final class BulkExecutor<TContext> implements Disposable {
     private final Sinks.Many<CosmosItemOperation> mainSink;
     private final List<FluxSink<CosmosItemOperation>> groupSinks;
     private final ScheduledThreadPoolExecutor executorService;
+    private final CosmosAsyncClient cosmosClient;
+    private final String bulkSpanName;
     private ScheduledFuture<?> scheduledFutureForFlush;
     private final String identifier = "BulkExecutor-" + instanceCount.incrementAndGet();
 
@@ -116,8 +123,14 @@ public final class BulkExecutor<TContext> implements Disposable {
 
         this.cosmosBulkExecutionOptions = cosmosBulkOptions;
         this.container = container;
+        this.bulkSpanName = "nonTransactionalBatch." + this.container.getId();
         this.inputOperations = inputOperations;
         this.docClientWrapper = CosmosBridgeInternal.getAsyncDocumentClient(container.getDatabase());
+        this.cosmosClient = ImplementationBridgeHelpers
+            .CosmosAsyncDatabaseHelper
+            .getCosmosAsyncDatabaseAccessor()
+            .getCosmosAsyncClient(container.getDatabase());
+
         this.throttlingRetryOptions = docClientWrapper.getConnectionPolicy().getThrottlingRetryOptions();
 
         // Fill the option first, to make the BulkProcessingOptions immutable, as if accessed directly, we might get
@@ -826,8 +839,22 @@ public final class BulkExecutor<TContext> implements Disposable {
             }
         }
 
-        return this.docClientWrapper.executeBatchRequest(
-            BridgeInternal.getLink(this.container), serverRequest, options, false);
+        return withContext(context -> {
+            final Mono<CosmosBatchResponse> responseMono = this.docClientWrapper.executeBatchRequest(
+                BridgeInternal.getLink(this.container), serverRequest, options, false);
+
+            return BridgeInternal.getTracerProvider(this.cosmosClient)
+                .traceEnabledBatchResponsePublisher(
+                    responseMono,
+                    context,
+                    this.bulkSpanName,
+                    this.container.getId(),
+                    this.container.getDatabase().getId(),
+                    this.cosmosClient,
+                    options.getConsistencyLevel(),
+                    OperationType.Batch,
+                    ResourceType.Document);
+        });
     }
 
     private void completeAllSinks() {
