@@ -214,8 +214,9 @@ public class ChangeFeedProcessorAllVersionsAndDeletesTest {
             .handleAllVersionsAndDeletesChanges(changeFeedProcessorItems -> {
                 for (ChangeFeedProcessorItem item : changeFeedProcessorItems) {
                     try {
-                        logger.info("Item is : {}", item.toString());
+                        logger.info("Item is : {}", item);
                         logger.info("JsonNode version is : {}", item.toJsonNode().toPrettyString());
+                        logger.info("Timestamp is : {}", item.getChangeFeedMetaData().getConflictResolutionTimestamp());
                         ChangeFeedOperationType operationType = item.getChangeFeedMetaData().getOperationType();
                         changeFeedMap.computeIfAbsent(operationType, changeFeedOperationType -> new AtomicInteger(0));
                         changeFeedMap.get(operationType).incrementAndGet();

@@ -7,13 +7,15 @@ import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import java.time.Instant;
+
 /**
  * Change Feed response meta data
  */
 @Beta(value = Beta.SinceVersion.V4_37_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class ChangeFeedMetaData {
     @JsonProperty("crts")
-    private long conflictResolutionTimestamp;
+    private Instant conflictResolutionTimestamp;
     @JsonProperty("lsn")
     private long logSequenceNumber;
     @JsonProperty("operationType")
@@ -29,7 +31,7 @@ public final class ChangeFeedMetaData {
      * @return conflict resolution timestamp
      */
     @Beta(value = Beta.SinceVersion.V4_37_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public long getConflictResolutionTimestamp() {
+    public Instant getConflictResolutionTimestamp() {
         return conflictResolutionTimestamp;
     }
 
