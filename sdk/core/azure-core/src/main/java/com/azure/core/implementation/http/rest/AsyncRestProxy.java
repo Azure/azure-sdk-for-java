@@ -143,7 +143,7 @@ public class AsyncRestProxy extends RestProxyBase {
         }
     }
 
-    private Mono<?> handleBodyReturnType(final HttpResponseDecoder.HttpDecodedResponse response,
+    Mono<?> handleBodyReturnType(final HttpResponseDecoder.HttpDecodedResponse response,
                                          final SwaggerMethodParser methodParser, final Type entityType) {
         final int responseStatusCode = response.getSourceResponse().getStatusCode();
         final HttpMethod httpMethod = methodParser.getHttpMethod();
