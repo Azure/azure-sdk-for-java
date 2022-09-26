@@ -45,4 +45,7 @@ public final class RecognizeCompleted extends CallAutomationEventBase {
         return this.collectTonesResult;
     }
 
+    public ReasonCodeName getReasonCodeName() {
+        return ReasonCodeName.fromReasonCode(getResultInformation().getSubCode());
+    }
 }

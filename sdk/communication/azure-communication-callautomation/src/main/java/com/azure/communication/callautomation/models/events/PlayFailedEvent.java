@@ -10,4 +10,8 @@ import com.azure.core.annotation.Immutable;
 public final class PlayFailedEvent extends CallAutomationEventBase {
     private PlayFailedEvent() {
     }
+
+    public ReasonCodeName getReasonCodeName() {
+        return ReasonCodeName.fromReasonCode(getResultInformation().getSubCode());
+    }
 }

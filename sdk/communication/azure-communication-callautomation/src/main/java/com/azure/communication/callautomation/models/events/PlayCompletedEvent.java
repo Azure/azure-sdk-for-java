@@ -10,4 +10,8 @@ import com.azure.core.annotation.Immutable;
 public final class PlayCompletedEvent extends CallAutomationEventBase {
     private PlayCompletedEvent() {
     }
+
+    public ReasonCodeName getReasonCodeName() {
+        return ReasonCodeName.fromReasonCode(getResultInformation().getSubCode());
+    }
 }
