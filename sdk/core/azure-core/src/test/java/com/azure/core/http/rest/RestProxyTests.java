@@ -19,6 +19,8 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
 import com.azure.core.implementation.http.rest.RestProxyUtils;
+import com.azure.core.implementation.testmodels.MockFileContent;
+import com.azure.core.implementation.testmodels.MockPath;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.util.BinaryData;
@@ -36,13 +38,13 @@ import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
 import java.nio.ByteBuffer;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static com.azure.core.implementation.util.BinaryDataHelper.createBinaryData;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -156,23 +158,19 @@ public class RestProxyTests {
             .build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
-        Response<Void> response = testInterface.testMethod(data,
-                "application/json", contentLength)
-            .block();
+        Response<Void> response = testInterface.testMethod(data, "application/json", contentLength).block();
         assertEquals(200, response.getStatusCode());
         assertSame(data, client.getLastHttpRequest().getBodyAsBinaryData());
     }
 
-    private static Stream<Arguments> knownLengthBinaryDataIsPassthroughArgumentProvider() throws Exception {
+    private static Stream<Arguments> knownLengthBinaryDataIsPassthroughArgumentProvider() {
         String string = "hello";
         byte[] bytes = string.getBytes();
-        Path file = Files.createTempFile("knownLengthBinaryDataIsPassthroughArgumentProvider", null);
-        file.toFile().deleteOnExit();
-        Files.write(file, bytes);
+        Path file = new MockPath("knownLengthBinaryDataIsPassthroughArgumentProvider", bytes.length);
         return Stream.of(
             Arguments.of(Named.of("bytes", BinaryData.fromBytes(bytes)), bytes.length),
             Arguments.of(Named.of("string", BinaryData.fromString(string)), bytes.length),
-            Arguments.of(Named.of("file", BinaryData.fromFile(file)), bytes.length),
+            Arguments.of(Named.of("file", createBinaryData(new MockFileContent(file, bytes))), bytes.length),
             Arguments.of(Named.of("flux with length",
                 BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(bytes))).block()), bytes.length),
             Arguments.of(Named.of("serializable", BinaryData.fromObject(bytes)),
@@ -327,17 +325,15 @@ public class RestProxyTests {
         assertFalse((Boolean) client.lastContext.getData("azure-eagerly-read-response").get());
     }
 
-    private static Stream<Arguments> doesNotChangeBinaryDataContentTypeDataProvider() throws Exception {
+    private static Stream<Arguments> doesNotChangeBinaryDataContentTypeDataProvider() {
         String string = "hello";
         byte[] bytes = string.getBytes();
-        Path file = Files.createTempFile("doesNotChangeBinaryDataContentTypeDataProvider", null);
-        file.toFile().deleteOnExit();
-        Files.write(file, bytes);
+        Path file = new MockPath("doesNotChangeBinaryDataContentTypeDataProvider", bytes.length);
         ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
         return Stream.of(
             Arguments.of(Named.of("bytes", BinaryData.fromBytes(bytes)), bytes.length),
             Arguments.of(Named.of("string", BinaryData.fromString(string)), bytes.length),
-            Arguments.of(Named.of("file", BinaryData.fromFile(file)), bytes.length),
+            Arguments.of(Named.of("file", createBinaryData(new MockFileContent(file, bytes))), bytes.length),
             Arguments.of(Named.of("stream", BinaryData.fromStream(stream)), bytes.length),
             Arguments.of(Named.of("eager flux with length",
                 BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(bytes))).block()), bytes.length),

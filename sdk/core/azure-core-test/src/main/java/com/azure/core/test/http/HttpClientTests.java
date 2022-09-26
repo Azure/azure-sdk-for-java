@@ -8,13 +8,20 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.implementation.util.BinaryDataContent;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.ByteArrayContent;
+import com.azure.core.implementation.util.FluxByteBufferContent;
+import com.azure.core.implementation.util.InputStreamContent;
+import com.azure.core.implementation.util.SerializableContent;
+import com.azure.core.implementation.util.StringContent;
 import com.azure.core.test.SyncAsyncExtension;
 import com.azure.core.test.annotation.SyncAsyncTest;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
-import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.ProgressReporter;
+import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
@@ -28,6 +35,8 @@ import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -43,10 +52,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -74,9 +83,16 @@ public abstract class HttpClientTests {
     private static final String BOM_WITH_DIFFERENT_HEADER = "bomBytesWithDifferentHeader";
     protected static final String ECHO_RESPONSE = "echo";
 
-    private static final Random RANDOM = new Random();
+    private static final byte[] RANDOM_BYTES;
+    private static final int RANDOM_BYTES_LENGTH;
 
     private static final byte[] EXPECTED_RETURN_BYTES = "Hello World!".getBytes(StandardCharsets.UTF_8);
+
+    static {
+        RANDOM_BYTES = new byte[1024 * 1024];
+        new SecureRandom().nextBytes(RANDOM_BYTES);
+        RANDOM_BYTES_LENGTH = RANDOM_BYTES.length;
+    }
 
     /**
      * Get the HTTP client that will be used for each test. This will be called once per test.
@@ -343,8 +359,10 @@ public abstract class HttpClientTests {
         assertArrayEquals(requestBody.toBytes(), response.getBodyAsInputStream()
             .map(s -> BinaryData.fromStream(s).toBytes()).block());
 
-        assertArrayEquals(requestBody.toBytes(), BinaryData.fromFlux(response.getBody()).map(BinaryData::toBytes).block());
-        assertArrayEquals(requestBody.toBytes(), BinaryData.fromFlux(response.getBody()).map(BinaryData::toBytes).block());
+        assertArrayEquals(requestBody.toBytes(), BinaryData.fromFlux(response.getBody()).map(BinaryData::toBytes)
+            .block());
+        assertArrayEquals(requestBody.toBytes(), BinaryData.fromFlux(response.getBody()).map(BinaryData::toBytes)
+            .block());
 
         assertArrayEquals(requestBody.toBytes(), getResponseBytesViaWritableChannel(response));
         assertArrayEquals(requestBody.toBytes(), getResponseBytesViaWritableChannel(response));
@@ -360,16 +378,11 @@ public abstract class HttpClientTests {
      */
     @ParameterizedTest
     @MethodSource("getBinaryDataBodyVariants")
-    public void canSendBinaryData(BinaryData requestBody, byte[] expectedResponseBody) {
-        HttpRequest request = new HttpRequest(
-            HttpMethod.PUT,
-            getRequestUrl(ECHO_RESPONSE),
-            new HttpHeaders(),
-            requestBody);
+    public void canSendBinaryData(BinaryDataContent requestBody, byte[] expectedResponseBody) {
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(),
+            BinaryDataHelper.createBinaryData(requestBody));
 
-        StepVerifier.create(createHttpClient()
-            .send(request)
-            .flatMap(HttpResponse::getBodyAsByteArray))
+        StepVerifier.create(createHttpClient().send(request).flatMap(HttpResponse::getBodyAsByteArray))
             .assertNext(responseBytes -> assertArrayEquals(expectedResponseBody, responseBytes))
             .verifyComplete();
     }
@@ -381,19 +394,13 @@ public abstract class HttpClientTests {
      */
     @ParameterizedTest
     @MethodSource("getBinaryDataBodyVariants")
-    public void canSendBinaryDataSync(BinaryData requestBody, byte[] expectedResponseBody) {
-        HttpRequest request = new HttpRequest(
-            HttpMethod.PUT,
-            getRequestUrl(ECHO_RESPONSE),
-            new HttpHeaders(),
-            requestBody);
+    public void canSendBinaryDataSync(BinaryDataContent requestBody, byte[] expectedResponseBody) {
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(),
+            BinaryDataHelper.createBinaryData(requestBody));
 
-        HttpResponse httpResponse = createHttpClient()
-            .sendSync(request, Context.NONE);
+        HttpResponse httpResponse = createHttpClient().sendSync(request, Context.NONE);
 
-        byte[] responseBytes = httpResponse
-            .getBodyAsByteArray()
-            .block();
+        byte[] responseBytes = httpResponse.getBodyAsByteArray().block();
 
         assertArrayEquals(expectedResponseBody, responseBytes);
     }
@@ -405,22 +412,16 @@ public abstract class HttpClientTests {
      */
     @ParameterizedTest
     @MethodSource("getBinaryDataBodyVariants")
-    public void canSendBinaryDataWithProgressReporting(BinaryData requestBody, byte[] expectedResponseBody) {
-        HttpRequest request = new HttpRequest(
-            HttpMethod.PUT,
-            getRequestUrl(ECHO_RESPONSE),
-            new HttpHeaders(),
-            requestBody);
+    public void canSendBinaryDataWithProgressReporting(BinaryDataContent requestBody, byte[] expectedResponseBody) {
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(),
+            BinaryDataHelper.createBinaryData(requestBody));
 
         AtomicLong progress = new AtomicLong();
         Context context = Contexts.empty()
-            .setHttpRequestProgressReporter(
-                ProgressReporter.withProgressListener(progress::set))
+            .setHttpRequestProgressReporter(ProgressReporter.withProgressListener(progress::set))
             .getContext();
 
-        StepVerifier.create(createHttpClient()
-                .send(request, context)
-                .flatMap(HttpResponse::getBodyAsByteArray))
+        StepVerifier.create(createHttpClient().send(request, context).flatMap(HttpResponse::getBodyAsByteArray))
             .assertNext(responseBytes -> assertArrayEquals(expectedResponseBody, responseBytes))
             .verifyComplete();
 
@@ -434,25 +435,18 @@ public abstract class HttpClientTests {
      */
     @ParameterizedTest
     @MethodSource("getBinaryDataBodyVariants")
-    public void canSendBinaryDataWithProgressReportingSync(BinaryData requestBody, byte[] expectedResponseBody) {
-        HttpRequest request = new HttpRequest(
-            HttpMethod.PUT,
-            getRequestUrl(ECHO_RESPONSE),
-            new HttpHeaders(),
-            requestBody);
+    public void canSendBinaryDataWithProgressReportingSync(BinaryDataContent requestBody, byte[] expectedResponseBody) {
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(),
+            BinaryDataHelper.createBinaryData(requestBody));
 
         AtomicLong progress = new AtomicLong();
         Context context = Contexts.empty()
-            .setHttpRequestProgressReporter(
-                ProgressReporter.withProgressListener(progress::set))
+            .setHttpRequestProgressReporter(ProgressReporter.withProgressListener(progress::set))
             .getContext();
 
-        HttpResponse httpResponse = createHttpClient()
-            .sendSync(request, context);
+        HttpResponse httpResponse = createHttpClient().sendSync(request, context);
 
-        byte[] responseBytes = httpResponse
-            .getBodyAsByteArray()
-            .block();
+        byte[] responseBytes = httpResponse.getBodyAsByteArray().block();
 
         assertArrayEquals(expectedResponseBody, responseBytes);
         assertEquals(expectedResponseBody.length, progress.intValue());
@@ -463,77 +457,71 @@ public abstract class HttpClientTests {
             .flatMap(size -> {
                 try {
                     byte[] bytes = new byte[size];
-                    RANDOM.nextBytes(bytes);
 
-                    BinaryData byteArrayData = BinaryData.fromBytes(bytes);
+                    int count = size / RANDOM_BYTES_LENGTH;
+                    int remainder = size % RANDOM_BYTES_LENGTH;
+
+                    for (int i = 0; i < count; i++) {
+                        System.arraycopy(RANDOM_BYTES, 0, bytes, i * RANDOM_BYTES_LENGTH, RANDOM_BYTES_LENGTH);
+                    }
+
+                    if (remainder > 0) {
+                        System.arraycopy(RANDOM_BYTES, 0, bytes, count * RANDOM_BYTES_LENGTH, remainder);
+                    }
+
+                    BinaryDataContent byteArrayData = new ByteArrayContent(bytes);
 
                     String randomString = new String(bytes, StandardCharsets.UTF_8);
                     byte[] randomStringBytes = randomString.getBytes(StandardCharsets.UTF_8);
-                    BinaryData stringBinaryData = BinaryData.fromString(randomString);
+                    BinaryDataContent stringBinaryData = new StringContent(randomString);
 
-                    BinaryData streamData = BinaryData.fromStream(new ByteArrayInputStream(bytes));
+                    BinaryDataContent streamData = new InputStreamContent(new ByteArrayInputStream(bytes), null);
 
                     List<ByteBuffer> bufferList = new ArrayList<>();
                     int bufferSize = 113;
                     for (int startIndex = 0; startIndex < bytes.length; startIndex += bufferSize) {
-                        bufferList.add(
-                            ByteBuffer.wrap(
-                                bytes, startIndex, Math.min(bytes.length - startIndex, bufferSize)));
+                        bufferList.add(ByteBuffer.wrap(bytes, startIndex,
+                            Math.min(bytes.length - startIndex, bufferSize)));
                     }
-                    BinaryData fluxBinaryData = BinaryData.fromFlux(
-                        Flux.fromIterable(bufferList)
-                            .map(ByteBuffer::duplicate),
-                        null, false).block();
+                    BinaryDataContent fluxBinaryData = new FluxByteBufferContent(
+                        Flux.fromIterable(bufferList).map(ByteBuffer::duplicate), null);
 
-                    BinaryData fluxBinaryDataWithLength = BinaryData.fromFlux(
-                        Flux.fromIterable(bufferList)
-                            .map(ByteBuffer::duplicate),
-                        size.longValue(), false).block();
+                    BinaryDataContent fluxBinaryDataWithLength = new FluxByteBufferContent(
+                        Flux.fromIterable(bufferList).map(ByteBuffer::duplicate), size.longValue());
 
-                    BinaryData asyncFluxBinaryData = BinaryData.fromFlux(
-                        Flux.fromIterable(bufferList)
-                            .map(ByteBuffer::duplicate)
-                            .delayElements(Duration.ofNanos(10))
-                            .flatMapSequential(
-                                buffer -> Mono.delay(Duration.ofNanos(10)).map(i -> buffer)
-                            ),
-                        null, false).block();
+                    BinaryDataContent asyncFluxBinaryData = new FluxByteBufferContent(
+                        Flux.fromIterable(bufferList).map(ByteBuffer::duplicate).delayElements(Duration.ofNanos(10)),
+                        null);
 
-                    BinaryData asyncFluxBinaryDataWithLength = BinaryData.fromFlux(
-                        Flux.fromIterable(bufferList)
-                            .map(ByteBuffer::duplicate)
-                            .delayElements(Duration.ofNanos(10))
-                            .flatMapSequential(
-                                buffer -> Mono.delay(Duration.ofNanos(10)).map(i -> buffer)
-                            ),
-                        size.longValue(), false).block();
+                    BinaryDataContent asyncFluxBinaryDataWithLength = new FluxByteBufferContent(
+                        Flux.fromIterable(bufferList).map(ByteBuffer::duplicate).delayElements(Duration.ofNanos(10)),
+                        size.longValue());
 
-                    BinaryData objectBinaryData = BinaryData.fromObject(bytes, new ByteArraySerializer());
-
+                    BinaryDataContent objectBinaryData = new SerializableContent(bytes, new ByteArraySerializer());
 
                     Path wholeFile = Files.createTempFile("http-client-tests", null);
                     wholeFile.toFile().deleteOnExit();
-                    Files.write(wholeFile, bytes);
-                    BinaryData fileData = BinaryData.fromFile(wholeFile);
+                    Files.write(wholeFile, bytes, StandardOpenOption.APPEND);
+                    BinaryData fileData = BinaryData.fromFile(wholeFile, 8192L, (long) size);
 
                     Path sliceFile = Files.createTempFile("http-client-tests", null);
                     sliceFile.toFile().deleteOnExit();
-                    Files.write(sliceFile, new byte[size], StandardOpenOption.APPEND);
+                    Files.write(sliceFile, new byte[8192], StandardOpenOption.APPEND);
                     Files.write(sliceFile, bytes, StandardOpenOption.APPEND);
-                    Files.write(sliceFile, new byte[size], StandardOpenOption.APPEND);
-                    BinaryData sliceFileData = BinaryData.fromFile(sliceFile, Long.valueOf(size), Long.valueOf(size));
-
+                    Files.write(sliceFile, new byte[8192], StandardOpenOption.APPEND);
+                    BinaryData sliceFileData = BinaryData.fromFile(sliceFile, 8192L, (long) size);
 
                     return Stream.of(
                         Arguments.of(Named.named("byte[]", byteArrayData), Named.named("" + size, bytes)),
                         Arguments.of(Named.named("String", stringBinaryData),
                             Named.named("" + randomStringBytes.length, randomStringBytes)),
-                        Arguments.of(Named.named("InputStream",
-                            streamData), Named.named("" + size, bytes)),
+                        Arguments.of(Named.named("InputStream", streamData), Named.named("" + size, bytes)),
                         Arguments.of(Named.named("Flux", fluxBinaryData), Named.named("" + size, bytes)),
-                        Arguments.of(Named.named("Flux with length", fluxBinaryDataWithLength), Named.named("" + size, bytes)),
+                        Arguments.of(Named.named("Flux with length", fluxBinaryDataWithLength),
+                            Named.named("" + size, bytes)),
                         Arguments.of(Named.named("async Flux", asyncFluxBinaryData), Named.named("" + size, bytes)),
-                        Arguments.of(Named.named("async Flux with length", asyncFluxBinaryDataWithLength), Named.named("" + size, bytes)),
+                        Arguments.of(Named.named("async Flux with length", asyncFluxBinaryDataWithLength),
+                            Named.named("" + size, bytes)),
                         Arguments.of(Named.named("Object", objectBinaryData), Named.named("" + size, bytes)),
                         Arguments.of(Named.named("File", fileData), Named.named("" + size, bytes)),
                         Arguments.of(Named.named("File slice", sliceFileData), Named.named("" + size, bytes))
@@ -615,6 +603,76 @@ public abstract class HttpClientTests {
         @Override
         public Mono<Void> serializeAsync(OutputStream stream, Object value) {
             return Mono.fromRunnable(() -> serialize(stream, value));
+        }
+    }
+
+    private static final class FakeFileInputStream extends FileInputStream {
+        private final byte[] fakeData;
+        private final int dataLength;
+        private final long fileLength;
+
+        private long position = 0L;
+
+        private FakeFileInputStream(Path file, byte[] fakeData, long fileLength) throws FileNotFoundException {
+            super(file.toFile());
+            this.fakeData = fakeData;
+            this.dataLength = fakeData.length;
+            this.fileLength = fileLength;
+        }
+
+        @Override
+        public long skip(long n) {
+            long skipable = Math.min(fileLength - position, n);
+            position += skipable;
+
+            return skipable;
+        }
+
+        @Override
+        public int available() {
+            if (fileLength - position > Integer.MAX_VALUE) {
+                return Integer.MAX_VALUE;
+            } else {
+                return (int) Math.max(0, fileLength - position);
+            }
+        }
+
+        @Override
+        public int read() {
+            if (position >= fileLength) {
+                return -1;
+            }
+
+            int value = fakeData[(int) (position % dataLength)];
+            position++;
+
+            return value;
+        }
+
+        @Override
+        public int read(byte[] buffer) {
+            return read(buffer, 0, buffer.length);
+        }
+
+        @Override
+        public int read(byte[] buffer, int offset, int length) {
+            if (position >= fileLength) {
+                return -1;
+            }
+
+            int bytesOffset = (int) (position % dataLength);
+
+            // Check if we need to wrap back around to the beginning of the bytes.
+            if (bytesOffset + length > dataLength) {
+                int wrapLength = (bytesOffset + length) - dataLength;
+                System.arraycopy(fakeData, bytesOffset, buffer, offset, dataLength - bytesOffset);
+                System.arraycopy(fakeData, 0, buffer, offset + (dataLength - bytesOffset), wrapLength);
+            } else {
+                System.arraycopy(fakeData, bytesOffset, buffer, 0, length);
+            }
+
+            position += length;
+            return length;
         }
     }
 }

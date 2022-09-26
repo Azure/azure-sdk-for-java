@@ -16,7 +16,6 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-import wiremock.org.eclipse.jetty.util.ConcurrentArrayQueue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -32,6 +31,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -40,92 +40,82 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class IOUtilsTest {
+    private static final byte[] DATA;
 
-    private static final Random RANDOM = new Random();
+    static {
+        DATA = new byte[10 * 1024 * 1024 + 117]; // more than default buffer.
+        new Random().nextBytes(DATA);
+    }
 
     @Test
     public void canTransferFromReadableByteChannelToWriteableByteChannel() throws IOException {
-        byte[] data = new byte[10 * 1024 * 1024 + 117]; // more than default buffer.
-        RANDOM.nextBytes(data);
-
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        ReadableByteChannel source = Channels.newChannel(new ByteArrayInputStream(data));
+        ReadableByteChannel source = Channels.newChannel(new ByteArrayInputStream(DATA));
         WritableByteChannel destination = Channels.newChannel(byteArrayOutputStream);
 
         IOUtils.transfer(source, destination);
 
-        assertArrayEquals(data, byteArrayOutputStream.toByteArray());
+        assertArrayEquals(DATA, byteArrayOutputStream.toByteArray());
     }
 
     @Test
     public void canTransferFromReadableByteChannelToWriteableByteChannelWithPartialWrites() throws IOException {
-        byte[] data = new byte[10 * 1024 * 1024 + 117]; // more than default buffer.
-        RANDOM.nextBytes(data);
-
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        ReadableByteChannel source = Channels.newChannel(new ByteArrayInputStream(data));
+        ReadableByteChannel source = Channels.newChannel(new ByteArrayInputStream(DATA));
         WritableByteChannel destination = new PartialWriteChannel(Channels.newChannel(byteArrayOutputStream));
 
         IOUtils.transfer(source, destination);
 
-        assertArrayEquals(data, byteArrayOutputStream.toByteArray());
+        assertArrayEquals(DATA, byteArrayOutputStream.toByteArray());
     }
 
     @Test
     public void canTransferFromReadableByteChannelToAsynchronousByteChannel() throws IOException {
-        byte[] data = new byte[10 * 1024 * 1024 + 117]; // more than default buffer.
-        RANDOM.nextBytes(data);
-
         Path tempFile = Files.createTempFile("ioutilstest", null);
         tempFile.toFile().deleteOnExit();
 
-        ReadableByteChannel source = Channels.newChannel(new ByteArrayInputStream(data));
+        ReadableByteChannel source = Channels.newChannel(new ByteArrayInputStream(DATA));
         try (AsynchronousByteChannel destination = IOUtils.toAsynchronousByteChannel(
             AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)) {
             IOUtils.transferAsync(source, destination).block();
         }
 
-        assertArrayEquals(data, Files.readAllBytes(tempFile));
+        assertArrayEquals(DATA, Files.readAllBytes(tempFile));
     }
 
     @Test
     public void canTransferFromReadableByteChannelToAsynchronousByteChannelWithPartialWrites() throws IOException {
-        byte[] data = new byte[10 * 1024 * 1024 + 117]; // more than default buffer.
-        RANDOM.nextBytes(data);
-
         Path tempFile = Files.createTempFile("ioutilstest", null);
         tempFile.toFile().deleteOnExit();
 
-        ReadableByteChannel source = Channels.newChannel(new ByteArrayInputStream(data));
+        ReadableByteChannel source = Channels.newChannel(new ByteArrayInputStream(DATA));
         try (AsynchronousByteChannel destination = IOUtils.toAsynchronousByteChannel(
             AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)) {
             AsynchronousByteChannel paritialWriteDestination = new PartialWriteAsynchronousChannel(destination);
             IOUtils.transferAsync(source, paritialWriteDestination).block();
         }
 
-        assertArrayEquals(data, Files.readAllBytes(tempFile));
+        assertArrayEquals(DATA, Files.readAllBytes(tempFile));
     }
 
     @Test
     public void canResumeStreamResponseTransfer() throws IOException {
-        byte[] data = new byte[10 * 1024 * 1024 + 117]; // more than default buffer.
-        RANDOM.nextBytes(data);
         Path tempFile = Files.createTempFile("ioutilstest", null);
         tempFile.toFile().deleteOnExit();
 
         Function<Integer, Flux<ByteBuffer>> fluxSupplier = offset -> Flux.generate(() -> offset, (currentOffset, sink) -> {
-            int size = Math.min(64, data.length - currentOffset);
+            int size = Math.min(64, DATA.length - currentOffset);
             if (size > 0) {
-                sink.next(ByteBuffer.wrap(data, currentOffset, size));
+                sink.next(ByteBuffer.wrap(DATA, currentOffset, size));
             } else {
                 sink.complete();
             }
             return currentOffset + size;
         });
         AtomicInteger retries = new AtomicInteger();
-        ConcurrentArrayQueue<Long> offsets = new ConcurrentArrayQueue<>();
-        ConcurrentArrayQueue<Throwable> throwables = new ConcurrentArrayQueue<>();
-        ConcurrentArrayQueue<HttpResponse> responses = new ConcurrentArrayQueue<>();
+        ConcurrentLinkedQueue<Long> offsets = new ConcurrentLinkedQueue<>();
+        ConcurrentLinkedQueue<Throwable> throwables = new ConcurrentLinkedQueue<>();
+        ConcurrentLinkedQueue<HttpResponse> responses = new ConcurrentLinkedQueue<>();
         HttpResponse httpResponse = Mockito.spy(new MockFluxHttpResponse(
             Mockito.mock(HttpRequest.class), fluxSupplier.apply(0)));
         responses.add(httpResponse);
@@ -156,7 +146,7 @@ public class IOUtilsTest {
         offsets.forEach(e -> assertEquals(1024L, e));
         assertEquals(3, throwables.size());
         throwables.forEach(e -> assertEquals("KABOOM", e.getMessage()));
-        assertArrayEquals(data, Files.readAllBytes(tempFile));
+        assertArrayEquals(DATA, Files.readAllBytes(tempFile));
         // check that all responses are closed
         assertEquals(4, responses.size());
         responses.forEach(r -> Mockito.verify(r).close());
@@ -164,24 +154,22 @@ public class IOUtilsTest {
 
     @Test
     public void throwsIfRetriesAreExhausted() throws IOException {
-        byte[] data = new byte[10 * 1024 * 1024 + 117]; // more than default buffer.
-        RANDOM.nextBytes(data);
         Path tempFile = Files.createTempFile("ioutilstest", null);
         tempFile.toFile().deleteOnExit();
 
         Function<Integer, Flux<ByteBuffer>> fluxSupplier = offset -> Flux.generate(() -> offset, (currentOffset, sink) -> {
-            int size = Math.min(64, data.length - currentOffset);
+            int size = Math.min(64, DATA.length - currentOffset);
             if (size > 0) {
-                sink.next(ByteBuffer.wrap(data, currentOffset, size));
+                sink.next(ByteBuffer.wrap(DATA, currentOffset, size));
             } else {
                 sink.complete();
             }
             return currentOffset + size;
         });
         AtomicInteger retries = new AtomicInteger();
-        ConcurrentArrayQueue<Long> offsets = new ConcurrentArrayQueue<>();
-        ConcurrentArrayQueue<Throwable> throwables = new ConcurrentArrayQueue<>();
-        ConcurrentArrayQueue<HttpResponse> responses = new ConcurrentArrayQueue<>();
+        ConcurrentLinkedQueue<Long> offsets = new ConcurrentLinkedQueue<>();
+        ConcurrentLinkedQueue<Throwable> throwables = new ConcurrentLinkedQueue<>();
+        ConcurrentLinkedQueue<HttpResponse> responses = new ConcurrentLinkedQueue<>();
         HttpResponse httpResponse = Mockito.spy(new MockFluxHttpResponse(
             Mockito.mock(HttpRequest.class), fluxSupplier.apply(0)));
         responses.add(httpResponse);
@@ -213,7 +201,7 @@ public class IOUtilsTest {
         offsets.forEach(e -> assertEquals(1024L, e));
         assertEquals(2, throwables.size());
         throwables.forEach(e -> assertEquals("KABOOM", e.getMessage()));
-        assertArrayEquals(Arrays.copyOfRange(data, 0, 1024), Files.readAllBytes(tempFile));
+        assertArrayEquals(Arrays.copyOfRange(DATA, 0, 1024), Files.readAllBytes(tempFile));
         // check that all responses are closed
         assertEquals(3, responses.size());
         responses.forEach(r -> Mockito.verify(r).close());

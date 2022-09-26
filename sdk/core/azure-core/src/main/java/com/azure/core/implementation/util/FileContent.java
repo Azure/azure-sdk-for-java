@@ -130,14 +130,13 @@ public class FileContent extends BinaryDataContent {
     @Override
     public InputStream toStream() {
         try {
-            return new SliceInputStream(new BufferedInputStream(getFileInputStream(), chunkSize),
-                position, length);
+            return new SliceInputStream(new BufferedInputStream(getFileInputStream(), chunkSize), position, length);
         } catch (FileNotFoundException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException("File not found " + file, e));
         }
     }
 
-    public FileInputStream getFileInputStream() throws FileNotFoundException {
+    protected FileInputStream getFileInputStream() throws FileNotFoundException {
         return new FileInputStream(file.toFile());
     }
 
@@ -148,19 +147,20 @@ public class FileContent extends BinaryDataContent {
                 String.format("'length' cannot be greater than %d when mapping file to ByteBuffer.",
                     Integer.MAX_VALUE)));
         }
+
+        return toByteBufferInternal();
+    }
+
+    protected ByteBuffer toByteBufferInternal() {
         /*
          * A mapping, once established, is not dependent upon the file channel that was used to create it.
          * Closing the channel, in particular, has no effect upon the validity of the mapping.
          */
-        try (FileChannel fileChannel = getFileChannel(file)) {
+        try (FileChannel fileChannel = FileChannel.open(file)) {
             return fileChannel.map(FileChannel.MapMode.READ_ONLY, position, length);
         } catch (IOException exception) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(exception));
         }
-    }
-
-    public FileChannel getFileChannel(Path path) throws IOException {
-        return FileChannel.open(path);
     }
 
     @Override
@@ -176,7 +176,7 @@ public class FileContent extends BinaryDataContent {
             });
     }
 
-    public AsynchronousFileChannel getAsynchronousFileChannel() throws IOException {
+    protected AsynchronousFileChannel getAsynchronousFileChannel() throws IOException {
         return AsynchronousFileChannel.open(file, StandardOpenOption.READ);
     }
 

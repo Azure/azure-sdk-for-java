@@ -1,0 +1,58 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.core.implementation.testmodels;
+
+import com.azure.core.implementation.util.FileContent;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousFileChannel;
+import java.nio.file.Path;
+
+/**
+ * Implementation of {@link FileContent} used for mocking without Mockito.
+ */
+public class MockFileContent extends FileContent {
+    private final byte[] mockData;
+
+    public MockFileContent(Path file, byte[] mockData) {
+        this(file, 8192, null, null, mockData);
+    }
+
+    public MockFileContent(Path file, int chunkSize, Long position, Long length, byte[] mockData) {
+        super(file, chunkSize, position, length);
+        this.mockData = mockData;
+    }
+
+    @Override
+    protected FileInputStream getFileInputStream() throws FileNotFoundException {
+        return new MockFileInputStream(mockData, getFile().toFile().length());
+    }
+
+    @Override
+    protected ByteBuffer toByteBufferInternal() {
+        ByteBuffer byteBuffer = ByteBuffer.allocate(getLength().intValue());
+        byte[] buffer = new byte[4096];
+        try (InputStream inputStream = getFileInputStream()) {
+            int readCount;
+            while ((readCount = inputStream.read(buffer)) != -1) {
+                byteBuffer.put(buffer, 0, readCount);
+            }
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
+
+        byteBuffer.flip();
+        return byteBuffer;
+    }
+
+    @Override
+    protected AsynchronousFileChannel getAsynchronousFileChannel() {
+        return new MockAsynchronousFileChannel(mockData, getFile().toFile().length());
+    }
+}
