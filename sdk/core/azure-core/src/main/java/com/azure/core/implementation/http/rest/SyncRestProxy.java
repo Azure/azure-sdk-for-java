@@ -19,7 +19,6 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
@@ -176,9 +175,7 @@ public class SyncRestProxy extends RestProxyBase {
             }
             result = responseBodyBytes != null ? (responseBodyBytes.length == 0 ? null : responseBodyBytes) : null;
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, InputStream.class)) {
-            final BinaryData binaryData = response.getSourceResponse().getBodyAsBinaryData();
-
-            result = new ByteArrayInputStream(binaryData.toBytes());
+            result = response.getSourceResponse().getBodyAsInputStream();
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, BinaryData.class)) {
             // BinaryData
             // The raw response is directly used to create an instance of BinaryData which then provides
