@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ThreatIntelligenceResourceKindEnum. */
+/** The kind of the threat intelligence entity. */
 public final class ThreatIntelligenceResourceKindEnum extends ExpandableStringEnum<ThreatIntelligenceResourceKindEnum> {
     /** Static value indicator for ThreatIntelligenceResourceKindEnum. */
     public static final ThreatIntelligenceResourceKindEnum INDICATOR = fromString("indicator");
