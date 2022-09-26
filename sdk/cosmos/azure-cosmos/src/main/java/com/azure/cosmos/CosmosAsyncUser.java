@@ -147,10 +147,13 @@ public class CosmosAsyncUser {
     CosmosPagedFlux<CosmosPermissionProperties> readAllPermissions(CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = "readAllPermissions." + this.getId();
-            pagedFluxOptions.setTracerInformation(this.getDatabase().getClient().getTracerProvider(),
+            CosmosAsyncClient client = this.getDatabase().getClient();
+            pagedFluxOptions.setTracerInformation(
+                client.getTracerProvider(),
                 spanName,
-                this.getDatabase().getClient().getServiceEndpoint(),
-                this.getDatabase().getId());
+                client.getServiceEndpoint(),
+                this.getDatabase().getId(),
+                options != null ? options.getQueryNameOrDefault(spanName) : spanName);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase().getDocClientWrapper()
                        .readPermissions(getLink(), options)
@@ -191,10 +194,13 @@ public class CosmosAsyncUser {
         CosmosQueryRequestOptions requestOptions = options == null ? new CosmosQueryRequestOptions() : options;
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = "queryPermissions." + this.getId();
-            pagedFluxOptions.setTracerInformation(this.getDatabase().getClient().getTracerProvider(),
+            CosmosAsyncClient client = this.getDatabase().getClient();
+            pagedFluxOptions.setTracerInformation(
+                client.getTracerProvider(),
                 spanName,
-                this.getDatabase().getClient().getServiceEndpoint(),
-                this.getDatabase().getId());
+                client.getServiceEndpoint(),
+                this.getDatabase().getId(),
+                requestOptions.getQueryNameOrDefault(spanName));
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, requestOptions);
             return getDatabase().getDocClientWrapper()
                        .queryPermissions(getLink(), query, requestOptions)

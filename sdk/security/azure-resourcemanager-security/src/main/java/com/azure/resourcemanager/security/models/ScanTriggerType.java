@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ScanTriggerType. */
+/** The scan trigger type. */
 public final class ScanTriggerType extends ExpandableStringEnum<ScanTriggerType> {
     /** Static value OnDemand for ScanTriggerType. */
     public static final ScanTriggerType ON_DEMAND = fromString("OnDemand");
@@ -27,7 +27,11 @@ public final class ScanTriggerType extends ExpandableStringEnum<ScanTriggerType>
         return fromString(name, ScanTriggerType.class);
     }
 
-    /** @return known ScanTriggerType values. */
+    /**
+     * Gets known ScanTriggerType values.
+     *
+     * @return known ScanTriggerType values.
+     */
     public static Collection<ScanTriggerType> values() {
         return values(ScanTriggerType.class);
     }

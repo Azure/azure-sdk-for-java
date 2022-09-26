@@ -8,7 +8,8 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
-import com.azure.cosmos.implementation.ClientTelemetryConfig;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -19,6 +20,7 @@ import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -28,6 +30,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
+import java.util.EnumSet;
 import java.util.Map;
 import java.util.UUID;
 
@@ -174,7 +177,12 @@ public class BarrierRequestHelperTest {
                 false,
                 null,
                 null,
-                ClientTelemetryConfig.getDefaultConfig());
+                ImplementationBridgeHelpers
+                    .CosmosClientTelemetryConfigHelper
+                    .getCosmosClientTelemetryConfigAccessor()
+                    .getDefaultConfig(),
+                null,
+                EnumSet.allOf(TagName.class));
 
         ResourceType resourceType = ResourceType.DocumentCollection;
         OperationType operationType = OperationType.Read;
@@ -237,7 +245,10 @@ public class BarrierRequestHelperTest {
                 new AsyncDocumentClient.Builder()
                         .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                         .withServiceEndpoint(TestConfigurations.HOST)
-                        .withClientTelemetryConfig(ClientTelemetryConfig.getDefaultConfig())
+                        .withClientTelemetryConfig(ImplementationBridgeHelpers
+                            .CosmosClientTelemetryConfigHelper
+                            .getCosmosClientTelemetryConfigAccessor()
+                            .getDefaultConfig())
                         .build();
     }
 

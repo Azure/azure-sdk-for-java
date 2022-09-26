@@ -6,7 +6,8 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
-import com.azure.cosmos.implementation.ClientTelemetryConfig;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.Database;
@@ -82,7 +83,10 @@ public class DCDocumentCrudTest extends TestSuiteBase {
             .withConsistencyLevel(ConsistencyLevel.SESSION)
             .withContentResponseOnWriteEnabled(true)
             .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-            .withClientTelemetryConfig(ClientTelemetryConfig.getDefaultConfig());
+            .withClientTelemetryConfig(ImplementationBridgeHelpers
+                .CosmosClientTelemetryConfigHelper
+                .getCosmosClientTelemetryConfigAccessor()
+                .getDefaultConfig());
     }
 
     @Factory(dataProvider = "directClientBuilder")

@@ -941,6 +941,24 @@ public class CosmosTemplateIT {
     }
 
     @Test
+    public void queryWithResponseContinuationTokenLimitInKb() throws ClassNotFoundException {
+        final CosmosConfig config = CosmosConfig.builder()
+            .responseContinuationTokenLimitInKb(2000)
+            .build();
+        final CosmosTemplate responseContinuationTokenLimitInKbCosmosTemplate =
+            createCosmosTemplate(config, TestConstants.DB_NAME);
+
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
+        final CosmosQuery query = new CosmosQuery(criteria);
+
+        final long count = responseContinuationTokenLimitInKbCosmosTemplate.count(query, containerName);
+
+        assertEquals((int) ReflectionTestUtils.getField(responseContinuationTokenLimitInKbCosmosTemplate,
+            "responseContinuationTokenLimitInKb"), 2000);
+    }
+
+    @Test
     public void queryDatabaseWithQueryMerticsEnabled() throws ClassNotFoundException {
         final CosmosConfig config = CosmosConfig.builder()
             .enableQueryMetrics(true)
