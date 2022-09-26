@@ -196,6 +196,26 @@ public final class SchemaRegistryAsyncClient {
     }
 
     /**
+     * Gets the schema properties of the schema associated with the group name, schema name, and schema version.
+     *
+     * @param groupName Group name for the schema
+     * @param schemaName Name of the schema
+     * @param schemaVersion Version of schema
+     *
+     * @return The {@link SchemaProperties} matching the parameters.
+     *
+     * @throws NullPointerException if {@code groupName} or {@code schemaName} is null.
+     * @throws ResourceNotFoundException if a schema with the matching {@code groupName} or {@code schemaName} could
+     *     not be found.
+     * @throws HttpResponseException if an issue was encountered while fetching the schema.
+     * @throws UncheckedIOException if an error occurred while deserializing response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SchemaRegistrySchema> getSchema(String groupName, String schemaName, int schemaVersion) {
+        return getSchemaWithResponse(groupName, schemaName, schemaVersion).map(Response::getValue);
+    }
+
+    /**
      * Gets the schema properties of the schema associated with the unique schema id.
      *
      * @param schemaId The unique identifier of the schema.
@@ -210,6 +230,28 @@ public final class SchemaRegistryAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SchemaRegistrySchema>> getSchemaWithResponse(String schemaId) {
         return FluxUtil.withContext(context -> getSchemaWithResponse(schemaId, context));
+    }
+
+    /**
+     * Gets the schema properties of the schema associated with the group name, schema name, and schema version.
+     *
+     * @param groupName Group name for the schema
+     * @param schemaName Name of the schema
+     * @param schemaVersion Version of schema
+     *
+     * @return The {@link SchemaProperties} matching the parameters.
+     *
+     * @throws NullPointerException if {@code groupName} or {@code schemaName} is null.
+     * @throws ResourceNotFoundException if a schema with the matching {@code groupName} or {@code schemaName} could
+     *     not be found.
+     * @throws HttpResponseException if an issue was encountered while fetching the schema.
+     * @throws UncheckedIOException if an error occurred while deserializing response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SchemaRegistrySchema>> getSchemaWithResponse(String groupName, String schemaName,
+        int schemaVersion) {
+
+        return FluxUtil.withContext(context -> getSchemaWithResponse(groupName, schemaName, schemaVersion, context));
     }
 
     Mono<Response<SchemaRegistrySchema>> getSchemaWithResponse(String schemaId, Context context) {
@@ -235,6 +277,34 @@ public final class SchemaRegistryAsyncClient {
                     response.getHeaders(), new SchemaRegistrySchema(schemaObject, schema)));
                 sink.complete();
             });
+    }
+
+    Mono<Response<SchemaRegistrySchema>> getSchemaWithResponse(String groupName, String schemaName, int schemaVersion,
+        Context context) {
+
+        if (Objects.isNull(groupName)) {
+            return monoError(logger, new NullPointerException("'groupName' should not be null."));
+        }
+
+        // return this.restService.getSchemas().getByIdWithResponseAsync(schemaId, context)
+        //     .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
+        //     .handle((response, sink) -> {
+        //         final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(response);
+        //         final String schema;
+        //
+        //         try {
+        //             schema = convertToString(response.getValue());
+        //         } catch (UncheckedIOException e) {
+        //             sink.error(e);
+        //             return;
+        //         }
+        //
+        //         sink.next(new SimpleResponse<>(
+        //             response.getRequest(), response.getStatusCode(),
+        //             response.getHeaders(), new SchemaRegistrySchema(schemaObject, schema)));
+        //         sink.complete();
+        //     });
+        return Mono.empty();
     }
 
     /**

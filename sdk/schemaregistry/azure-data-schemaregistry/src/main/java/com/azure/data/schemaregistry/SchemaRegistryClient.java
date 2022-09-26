@@ -10,9 +10,11 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
+import reactor.core.publisher.Mono;
 
 import java.io.UncheckedIOException;
 
@@ -144,6 +146,26 @@ public final class SchemaRegistryClient {
     }
 
     /**
+     * Gets the schema properties of the schema associated with the group name, schema name, and schema version.
+     *
+     * @param groupName Group name for the schema
+     * @param schemaName Name of the schema
+     * @param schemaVersion Version of schema
+     *
+     * @return The {@link SchemaProperties} matching the parameters.
+     *
+     * @throws NullPointerException if {@code groupName} or {@code schemaName} is null.
+     * @throws ResourceNotFoundException if a schema with the matching {@code groupName} or {@code schemaName} could
+     *     not be found.
+     * @throws HttpResponseException if an issue was encountered while fetching the schema.
+     * @throws UncheckedIOException if an error occurred while deserializing response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SchemaRegistrySchema getSchema(String groupName, String schemaName, int schemaVersion) {
+        return this.asyncClient.getSchema(groupName, schemaName, schemaVersion).block();
+    }
+
+    /**
      * Gets the schema properties of the schema associated with the unique schema id.
      *
      * @param schemaId The unique identifier of the schema.
@@ -159,6 +181,28 @@ public final class SchemaRegistryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SchemaRegistrySchema> getSchemaWithResponse(String schemaId, Context context) {
         return this.asyncClient.getSchemaWithResponse(schemaId, context).block();
+    }
+
+    /**
+     * Gets the schema properties of the schema associated with the group name, schema name, and schema version.
+     *
+     * @param groupName Group name for the schema
+     * @param schemaName Name of the schema
+     * @param schemaVersion Version of schema
+     * @param context The context to pass to the Http pipeline.
+     *
+     * @return The {@link SchemaProperties} matching the parameters.
+     *
+     * @throws NullPointerException if {@code groupName} or {@code schemaName} is null.
+     * @throws ResourceNotFoundException if a schema with the matching {@code groupName} or {@code schemaName} could
+     *     not be found.
+     * @throws HttpResponseException if an issue was encountered while fetching the schema.
+     * @throws UncheckedIOException if an error occurred while deserializing response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SchemaRegistrySchema> getSchemaWithResponse(String groupName, String schemaName,
+        int schemaVersion, Context context) {
+        return this.asyncClient.getSchemaWithResponse(groupName, schemaName, schemaVersion, context).block();
     }
 
     /**
