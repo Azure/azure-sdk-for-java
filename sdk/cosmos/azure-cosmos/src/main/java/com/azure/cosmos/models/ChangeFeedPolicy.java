@@ -82,7 +82,7 @@ public final class ChangeFeedPolicy {
         }
 
         ChangeFeedPolicy policy = new ChangeFeedPolicy();
-        policy.setAllVersionsAndDeletesRetentionDurationInMinutes((int)retentionDuration.toMinutes());
+        policy.setRetentionDurationForAllVersionsAndDeletesPolicyInMinutes((int)retentionDuration.toMinutes());
         return policy;
     }
 
@@ -108,7 +108,7 @@ public final class ChangeFeedPolicy {
         }
 
         ChangeFeedPolicy policy = new ChangeFeedPolicy();
-        policy.setAllVersionsAndDeletesRetentionDurationInMinutes((int)retentionDuration.toMinutes());
+        policy.setRetentionDurationForAllVersionsAndDeletesPolicyInMinutes((int)retentionDuration.toMinutes());
         return policy;
     }
 
@@ -128,7 +128,7 @@ public final class ChangeFeedPolicy {
     public static ChangeFeedPolicy createIncrementalPolicy() {
 
         ChangeFeedPolicy policy = new ChangeFeedPolicy();
-        policy.setAllVersionsAndDeletesRetentionDurationInMinutes(null);
+        policy.setRetentionDurationForAllVersionsAndDeletesPolicyInMinutes(null);
         return policy;
     }
 
@@ -146,7 +146,7 @@ public final class ChangeFeedPolicy {
     public static ChangeFeedPolicy createLatestVersionPolicy() {
 
         ChangeFeedPolicy policy = new ChangeFeedPolicy();
-        policy.setAllVersionsAndDeletesRetentionDurationInMinutes(null);
+        policy.setRetentionDurationForAllVersionsAndDeletesPolicyInMinutes(null);
         return policy;
     }
 
@@ -182,13 +182,13 @@ public final class ChangeFeedPolicy {
      * By default AllVersionsAndDeletes change feed is not enabled - so the retention duration would be Duration.ZERO.
      *
      * @return AllVersionsAndDeletes retention duration.
-     * @deprecated use {@link ChangeFeedPolicy#getAllVersionsAndDeletesRetentionDuration()} instead
+     * @deprecated use {@link ChangeFeedPolicy#getRetentionDurationForAllVersionsAndDeletesPolicy()} instead
      */
     @Beta(value = Beta.SinceVersion.V4_12_0,
         warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     @Deprecated //since = "V4_37_0", forRemoval = true
     public Duration getFullFidelityRetentionDuration() {
-        return Duration.ofMinutes(this.getAllVersionsAndDeletesRetentionDurationInMinutes());
+        return this.getRetentionDurationForAllVersionsAndDeletesPolicy();
     }
 
     /**
@@ -201,8 +201,8 @@ public final class ChangeFeedPolicy {
      */
     @Beta(value = Beta.SinceVersion.V4_37_0,
         warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public Duration getAllVersionsAndDeletesRetentionDuration() {
-        return Duration.ofMinutes(this.getAllVersionsAndDeletesRetentionDurationInMinutes());
+    public Duration getRetentionDurationForAllVersionsAndDeletesPolicy() {
+        return Duration.ofMinutes(this.getRetentionDurationForAllVersionsAndDeletesPolicyInMinutes());
     }
 
     /**
@@ -213,7 +213,7 @@ public final class ChangeFeedPolicy {
      *
      * @return AllVersionsAndDeletes retention duration.
      */
-    int getAllVersionsAndDeletesRetentionDurationInMinutes() {
+    int getRetentionDurationForAllVersionsAndDeletesPolicyInMinutes() {
 
         Integer intValue = this.jsonSerializable.getInt(Constants.Properties.LOG_RETENTION_DURATION);
 
@@ -234,7 +234,7 @@ public final class ChangeFeedPolicy {
      *
      * @param retentionDurationInMinutes - AllVersionsAndDeletes retention duration in minutes.
      */
-    ChangeFeedPolicy setAllVersionsAndDeletesRetentionDurationInMinutes(Integer retentionDurationInMinutes) {
+    ChangeFeedPolicy setRetentionDurationForAllVersionsAndDeletesPolicyInMinutes(Integer retentionDurationInMinutes) {
         if (retentionDurationInMinutes == null || retentionDurationInMinutes <= 0) {
             this.jsonSerializable.set(
                 Constants.Properties.LOG_RETENTION_DURATION,
