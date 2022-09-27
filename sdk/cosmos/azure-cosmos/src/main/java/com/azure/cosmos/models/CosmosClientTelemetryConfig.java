@@ -67,6 +67,9 @@ public final class CosmosClientTelemetryConfig {
         this.clientTelemetryEnabled = effectiveIsClientTelemetryEnabled;
     }
 
+    /**
+     * Instantiates a new Cosmos client telemetry configuration.
+     */
     public CosmosClientTelemetryConfig() {
         this.clientTelemetryEnabled = null;
         this.httpNetworkRequestTimeout = DEFAULT_NETWORK_REQUEST_TIMEOUT;

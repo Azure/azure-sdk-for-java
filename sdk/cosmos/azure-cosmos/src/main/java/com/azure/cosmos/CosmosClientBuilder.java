@@ -803,6 +803,7 @@ public class CosmosClientBuilder implements
 
     /**
      * Returns the client telemetry config instance for this builder
+     * @param telemetryConfig the client telemetry configuration to be used
      * @return the client telemetry config instance for this builder
      */
     public CosmosClientBuilder clientTelemetryConfig(CosmosClientTelemetryConfig telemetryConfig) {
