@@ -88,7 +88,7 @@ public class ClientMetricsTest extends BatchTestBase {
         this.meterRegistry = null;
     }
 
-    @Test(groups = { "unit" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void maxValueExceedingDefinedLimitStillWorksWithoutException() throws Exception {
 
         // Expected behavior is that higher values than the expected max value can still be recorded
