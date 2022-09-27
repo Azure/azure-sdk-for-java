@@ -18,7 +18,8 @@ import java.util.stream.StreamSupport;
 
 final class CommunicationIdentityClientUtils {
 
-    static final String TOKEN_EXPIRATION_OVERFLOW_MESSAGE = "The tokenExpiresIn argument is out of permitted bounds. Please refer to the documentation and set the value accordingly.";
+    static final String TOKEN_EXPIRATION_OVERFLOW_MESSAGE = "The tokenExpiresIn argument is out of permitted bounds [1,24] hours. Please refer to the documentation and set the value accordingly.";
+    static final double TOKEN_EXPIRATION_ALLOWED_DEVIATION = 0.05;
 
     static CommunicationIdentityCreateRequest createCommunicationIdentityCreateRequest(
         Iterable<CommunicationTokenScope> scopes,
@@ -56,7 +57,7 @@ final class CommunicationIdentityClientUtils {
         return tokenRequest;
     }
 
-    static boolean isTokenExpirationValid(Duration expectedTokenExpiration, OffsetDateTime tokenExpiresIn) {
+    static TokenExpirationDeviationData tokenExpirationWithinAllowedDeviation(Duration expectedTokenExpiration, OffsetDateTime tokenExpiresIn) {
 
         Duration expectedExpiration = expectedTokenExpiration == null ? Duration.ofDays(1) : expectedTokenExpiration;
 
@@ -64,8 +65,15 @@ final class CommunicationIdentityClientUtils {
         long tokenSeconds = ChronoUnit.SECONDS.between(utcDateTimeNow, tokenExpiresIn);
         long expectedTime = expectedExpiration.getSeconds();
         long timeDiff = Math.abs(expectedTime - tokenSeconds);
-        double allowedTimeDiff = expectedTime * 0.05;
-        return timeDiff < allowedTimeDiff;
+        double allowedTimeDiff = expectedTime * TOKEN_EXPIRATION_ALLOWED_DEVIATION;
+        return new TokenExpirationDeviationData(tokenSeconds, timeDiff < allowedTimeDiff);
+    }
+
+    static String getTokenExpirationOutsideAllowedDeviationErrorMessage(int expectedExpirationInMinutes, double actualExpirationInMinutes) {
+        return String.format("Token expiration is outside of allowed %d%% deviation. Expected minutes: %d, actual minutes: %s",
+            (int) (TOKEN_EXPIRATION_ALLOWED_DEVIATION * 100),
+            expectedExpirationInMinutes,
+            (double) Math.round(actualExpirationInMinutes * 100) / 100);
     }
 
     private static int getTokenExpirationInMinutes(Duration tokenExpiresIn, ClientLogger logger) {
@@ -74,6 +82,25 @@ final class CommunicationIdentityClientUtils {
         } catch (ArithmeticException ex) {
             IllegalArgumentException expiresAfterOverflowEx = new IllegalArgumentException(TOKEN_EXPIRATION_OVERFLOW_MESSAGE, ex);
             throw logger.logExceptionAsError(expiresAfterOverflowEx);
+        }
+    }
+
+    static class TokenExpirationDeviationData {
+
+        final long actualExpirationInSeconds;
+        final boolean isWithinAllowedDeviation;
+
+        TokenExpirationDeviationData(long actualExpirationInSeconds, boolean isWithinAllowedDeviation) {
+            this.actualExpirationInSeconds = actualExpirationInSeconds;
+            this.isWithinAllowedDeviation = isWithinAllowedDeviation;
+        }
+
+        long getActualExpirationInSeconds() {
+            return this.actualExpirationInSeconds;
+        }
+
+        boolean getIsWithinAllowedDeviation() {
+            return this.isWithinAllowedDeviation;
         }
     }
 }

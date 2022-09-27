@@ -138,8 +138,14 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         assertFalse(result.getUser().getId().isEmpty());
 
         if (getTestMode() == TestMode.LIVE) {
-            boolean tokenExpirationValid = CommunicationIdentityClientUtils.isTokenExpirationValid(tokenExpiresIn, result.getUserToken().getExpiresAt());
-            assertTrue(tokenExpirationValid);
+            int expectedTokenExpirationToFormat = tokenExpiresIn == null ? 1440 : (int) (tokenExpiresIn.getSeconds() / 60);
+            CommunicationIdentityClientUtils.TokenExpirationDeviationData tokenExpirationData =
+                CommunicationIdentityClientUtils.tokenExpirationWithinAllowedDeviation(tokenExpiresIn, result.getUserToken().getExpiresAt());
+
+            assertTrue(tokenExpirationData.getIsWithinAllowedDeviation(),
+                CommunicationIdentityClientUtils.getTokenExpirationOutsideAllowedDeviationErrorMessage(expectedTokenExpirationToFormat,
+                    tokenExpirationData.getActualExpirationInSeconds() / 60)
+            );
         }
     }
 
@@ -161,8 +167,14 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         assertFalse(result.getUser().getId().isEmpty());
 
         if (getTestMode() == TestMode.LIVE) {
-            boolean tokenExpirationValid = CommunicationIdentityClientUtils.isTokenExpirationValid(tokenExpiresIn, result.getUserToken().getExpiresAt());
-            assertTrue(tokenExpirationValid);
+            int expectedTokenExpirationToFormat = tokenExpiresIn == null ? 1440 : (int) (tokenExpiresIn.getSeconds() / 60);
+            CommunicationIdentityClientUtils.TokenExpirationDeviationData tokenExpirationData =
+                CommunicationIdentityClientUtils.tokenExpirationWithinAllowedDeviation(tokenExpiresIn, result.getUserToken().getExpiresAt());
+
+            assertTrue(tokenExpirationData.getIsWithinAllowedDeviation(),
+                CommunicationIdentityClientUtils.getTokenExpirationOutsideAllowedDeviationErrorMessage(expectedTokenExpirationToFormat,
+                    tokenExpirationData.getActualExpirationInSeconds() / 60)
+            );
         }
     }
 
@@ -405,8 +417,14 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         verifyTokenNotEmpty(issuedToken);
 
         if (getTestMode() == TestMode.LIVE) {
-            boolean tokenExpirationValid = CommunicationIdentityClientUtils.isTokenExpirationValid(tokenExpiresIn, issuedToken.getExpiresAt());
-            assertTrue(tokenExpirationValid);
+            int expectedTokenExpirationToFormat = tokenExpiresIn == null ? 1440 : (int) (tokenExpiresIn.getSeconds() / 60);
+            CommunicationIdentityClientUtils.TokenExpirationDeviationData tokenExpirationData =
+                CommunicationIdentityClientUtils.tokenExpirationWithinAllowedDeviation(tokenExpiresIn, issuedToken.getExpiresAt());
+
+            assertTrue(tokenExpirationData.getIsWithinAllowedDeviation(),
+                CommunicationIdentityClientUtils.getTokenExpirationOutsideAllowedDeviationErrorMessage(expectedTokenExpirationToFormat,
+                    tokenExpirationData.getActualExpirationInSeconds() / 60)
+            );
         }
     }
 
@@ -445,8 +463,14 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         verifyTokenNotEmpty(issuedTokenResponse.getValue());
 
         if (getTestMode() == TestMode.LIVE) {
-            boolean tokenExpirationValid = CommunicationIdentityClientUtils.isTokenExpirationValid(tokenExpiresIn, issuedTokenResponse.getValue().getExpiresAt());
-            assertTrue(tokenExpirationValid);
+            int expectedTokenExpirationToFormat = tokenExpiresIn == null ? 1440 : (int) (tokenExpiresIn.getSeconds() / 60);
+            CommunicationIdentityClientUtils.TokenExpirationDeviationData tokenExpirationData =
+                CommunicationIdentityClientUtils.tokenExpirationWithinAllowedDeviation(tokenExpiresIn, issuedTokenResponse.getValue().getExpiresAt());
+
+            assertTrue(tokenExpirationData.getIsWithinAllowedDeviation(),
+                CommunicationIdentityClientUtils.getTokenExpirationOutsideAllowedDeviationErrorMessage(expectedTokenExpirationToFormat,
+                    tokenExpirationData.getActualExpirationInSeconds() / 60)
+            );
         }
     }
 
