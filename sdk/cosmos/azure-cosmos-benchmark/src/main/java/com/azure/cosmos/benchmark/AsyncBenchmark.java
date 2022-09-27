@@ -91,7 +91,7 @@ abstract class AsyncBenchmark<T> {
 
         if (registry != null) {
             CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig();
-            telemetryConfig.setMeterRegistry(registry);
+            telemetryConfig.meterRegistry(registry);
             cosmosClientBuilder.clientTelemetryConfig(telemetryConfig);
         }
 
@@ -99,7 +99,7 @@ abstract class AsyncBenchmark<T> {
 
         if (registry != null) {
             CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig();
-            telemetryConfig.setMeterRegistry(registry);
+            telemetryConfig.meterRegistry(registry);
             cosmosClientBuilder.clientTelemetryConfig(telemetryConfig);
         }
 

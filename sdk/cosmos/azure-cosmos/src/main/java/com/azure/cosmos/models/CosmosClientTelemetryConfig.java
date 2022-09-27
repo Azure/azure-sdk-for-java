@@ -183,7 +183,7 @@ public final class CosmosClientTelemetryConfig {
      * @param clientMetricMeterRegistry - the MetricRegistry to be used to emit client metrics
      * @return current CosmosClientTelemetryConfig
      */
-    public CosmosClientTelemetryConfig setMeterRegistry(MeterRegistry clientMetricMeterRegistry) {
+    public CosmosClientTelemetryConfig meterRegistry(MeterRegistry clientMetricMeterRegistry) {
         this.clientMetricRegistry = clientMetricMeterRegistry;
         this.isClientMetricsEnabled = clientMetricMeterRegistry != null;
 

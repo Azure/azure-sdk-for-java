@@ -61,7 +61,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
         this.meterRegistry = ConsoleLoggingRegistryFactory.create(1);
         CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig()
-            .setMeterRegistry(this.meterRegistry);
+            .meterRegistry(this.meterRegistry);
 
         this.client = getClientBuilder()
             .clientTelemetryConfig(telemetryConfig)
