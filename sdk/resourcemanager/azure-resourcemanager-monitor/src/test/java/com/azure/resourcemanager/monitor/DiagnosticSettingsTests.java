@@ -5,6 +5,7 @@ package com.azure.resourcemanager.monitor;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.Region;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorizationRule;
@@ -169,7 +170,7 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
                 .apply();
 
             // "get" will throw 404 since the setting is deleted
-            Assertions.assertThrows(Exception.class, setting::refresh);
+            Assertions.assertThrows(ManagementException.class, setting::refresh);
 
             Assertions.assertFalse(
                 monitorManager.diagnosticSettings()
