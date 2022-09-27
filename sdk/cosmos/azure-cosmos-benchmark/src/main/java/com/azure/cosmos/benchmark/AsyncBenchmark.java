@@ -13,6 +13,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.codahale.metrics.ConsoleReporter;
@@ -90,13 +91,17 @@ abstract class AsyncBenchmark<T> {
             .clientTelemetryEnabled(cfg.isClientTelemetryEnabled());
 
         if (registry != null) {
-            cosmosClientBuilder.clientTelemetryConfig().clientMetrics(registry);
+            CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig();
+            telemetryConfig.clientMetrics(registry);
+            cosmosClientBuilder.clientTelemetryConfig(telemetryConfig);
         }
 
         registry = configuration.getGraphiteMeterRegistry();
 
         if (registry != null) {
-            cosmosClientBuilder.clientTelemetryConfig().clientMetrics(registry);
+            CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig();
+            telemetryConfig.clientMetrics(registry);
+            cosmosClientBuilder.clientTelemetryConfig(telemetryConfig);
         }
 
         if (cfg.getConnectionMode().equals(ConnectionMode.DIRECT)) {
