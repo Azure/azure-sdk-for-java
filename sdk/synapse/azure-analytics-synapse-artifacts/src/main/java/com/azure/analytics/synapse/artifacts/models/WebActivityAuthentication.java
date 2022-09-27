@@ -40,6 +40,9 @@ public final class WebActivityAuthentication {
     @JsonProperty(value = "resource")
     private String resource;
 
+    /** Creates an instance of WebActivityAuthentication class. */
+    public WebActivityAuthentication() {}
+
     /**
      * Get the type property: Web activity authentication (Basic/ClientCertificate/MSI).
      *

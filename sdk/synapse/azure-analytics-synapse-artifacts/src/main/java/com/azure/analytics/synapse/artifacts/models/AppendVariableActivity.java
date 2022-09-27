@@ -29,6 +29,9 @@ public class AppendVariableActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties.value")
     private Object value;
 
+    /** Creates an instance of AppendVariableActivity class. */
+    public AppendVariableActivity() {}
+
     /**
      * Get the variableName property: Name of the variable whose value needs to be appended to.
      *

@@ -13,6 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("FileServerWriteSettings")
 @Fluent
 public final class FileServerWriteSettings extends StoreWriteSettings {
+    /** Creates an instance of FileServerWriteSettings class. */
+    public FileServerWriteSettings() {}
+
     /** {@inheritDoc} */
     @Override
     public FileServerWriteSettings setMaxConcurrentConnections(Object maxConcurrentConnections) {

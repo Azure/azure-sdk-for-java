@@ -34,6 +34,9 @@ public final class LinkConnection {
     @JsonProperty(value = "compute")
     private LinkConnectionCompute compute;
 
+    /** Creates an instance of LinkConnection class. */
+    public LinkConnection() {}
+
     /**
      * Get the sourceDatabase property: Properties of link connection's source database.
      *

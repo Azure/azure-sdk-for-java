@@ -41,6 +41,9 @@ public class GetMetadataActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.formatSettings")
     private FormatReadSettings formatSettings;
 
+    /** Creates an instance of GetMetadataActivity class. */
+    public GetMetadataActivity() {}
+
     /**
      * Get the dataset property: GetMetadata activity dataset reference.
      *

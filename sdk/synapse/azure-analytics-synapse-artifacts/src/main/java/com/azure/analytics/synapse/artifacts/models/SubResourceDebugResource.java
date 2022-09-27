@@ -16,6 +16,9 @@ public class SubResourceDebugResource {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of SubResourceDebugResource class. */
+    public SubResourceDebugResource() {}
+
     /**
      * Get the name property: The resource name.
      *

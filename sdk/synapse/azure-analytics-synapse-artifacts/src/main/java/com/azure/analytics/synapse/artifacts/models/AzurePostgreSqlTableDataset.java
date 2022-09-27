@@ -37,6 +37,9 @@ public class AzurePostgreSqlTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.schema")
     private Object schemaTypePropertiesSchema;
 
+    /** Creates an instance of AzurePostgreSqlTableDataset class. */
+    public AzurePostgreSqlTableDataset() {}
+
     /**
      * Get the tableName property: The table name of the Azure PostgreSQL database which includes both schema and table.
      * Type: string (or Expression with resultType string).

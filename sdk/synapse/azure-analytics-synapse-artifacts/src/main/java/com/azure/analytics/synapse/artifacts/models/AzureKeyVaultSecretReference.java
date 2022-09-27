@@ -33,6 +33,9 @@ public final class AzureKeyVaultSecretReference extends SecretBase {
     @JsonProperty(value = "secretVersion")
     private Object secretVersion;
 
+    /** Creates an instance of AzureKeyVaultSecretReference class. */
+    public AzureKeyVaultSecretReference() {}
+
     /**
      * Get the store property: The Azure Key Vault linked service reference.
      *

@@ -43,6 +43,9 @@ public class OperationResult {
     @JsonProperty(value = "error.details")
     private List<CloudError> details;
 
+    /** Creates an instance of OperationResult class. */
+    public OperationResult() {}
+
     /**
      * Get the status property: Operation status.
      *

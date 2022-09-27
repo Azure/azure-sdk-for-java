@@ -23,6 +23,9 @@ public final class SparkConfigurationListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of SparkConfigurationListResponse class. */
+    public SparkConfigurationListResponse() {}
+
     /**
      * Get the value property: List of sparkconfigurations.
      *

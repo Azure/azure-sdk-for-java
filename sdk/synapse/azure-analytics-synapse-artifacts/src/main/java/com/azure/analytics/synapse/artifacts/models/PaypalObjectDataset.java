@@ -24,6 +24,9 @@ public class PaypalObjectDataset extends Dataset {
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
+    /** Creates an instance of PaypalObjectDataset class. */
+    public PaypalObjectDataset() {}
+
     /**
      * Get the tableName property: The table name. Type: string (or Expression with resultType string).
      *

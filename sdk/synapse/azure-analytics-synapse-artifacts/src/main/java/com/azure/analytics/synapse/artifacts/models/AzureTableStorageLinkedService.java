@@ -51,6 +51,9 @@ public class AzureTableStorageLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private String encryptedCredential;
 
+    /** Creates an instance of AzureTableStorageLinkedService class. */
+    public AzureTableStorageLinkedService() {}
+
     /**
      * Get the connectionString property: The connection string. It is mutually exclusive with sasUri property. Type:
      * string, SecureString or AzureKeyVaultSecretReference.

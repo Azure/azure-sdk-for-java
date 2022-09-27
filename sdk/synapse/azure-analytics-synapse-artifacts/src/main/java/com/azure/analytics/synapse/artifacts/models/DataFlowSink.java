@@ -22,6 +22,9 @@ public final class DataFlowSink extends Transformation {
     @JsonProperty(value = "rejectedDataLinkedService")
     private LinkedServiceReference rejectedDataLinkedService;
 
+    /** Creates an instance of DataFlowSink class. */
+    public DataFlowSink() {}
+
     /**
      * Get the schemaLinkedService property: Schema linked service reference.
      *

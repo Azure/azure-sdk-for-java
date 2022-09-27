@@ -18,6 +18,9 @@ public final class SparkConfigurationResource extends SubResource {
     @JsonProperty(value = "properties", required = true)
     private SparkConfiguration properties;
 
+    /** Creates an instance of SparkConfigurationResource class. */
+    public SparkConfigurationResource() {}
+
     /**
      * Get the properties property: Information about a SparkConfiguration created at the workspace level.
      *

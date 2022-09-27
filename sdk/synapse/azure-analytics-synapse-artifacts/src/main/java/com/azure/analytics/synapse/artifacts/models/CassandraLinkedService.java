@@ -55,6 +55,9 @@ public class CassandraLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of CassandraLinkedService class. */
+    public CassandraLinkedService() {}
+
     /**
      * Get the host property: Host name for connection. Type: string (or Expression with resultType string).
      *

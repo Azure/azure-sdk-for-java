@@ -40,6 +40,9 @@ public class ChainingTrigger extends Trigger {
     @JsonProperty(value = "typeProperties.runDimension", required = true)
     private String runDimension;
 
+    /** Creates an instance of ChainingTrigger class. */
+    public ChainingTrigger() {}
+
     /**
      * Get the pipeline property: Pipeline for which runs are created when all upstream pipelines complete successfully.
      *

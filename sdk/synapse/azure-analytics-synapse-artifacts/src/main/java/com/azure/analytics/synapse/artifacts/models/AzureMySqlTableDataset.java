@@ -30,6 +30,9 @@ public class AzureMySqlTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.table")
     private Object table;
 
+    /** Creates an instance of AzureMySqlTableDataset class. */
+    public AzureMySqlTableDataset() {}
+
     /**
      * Get the tableName property: The Azure MySQL database table name. Type: string (or Expression with resultType
      * string).

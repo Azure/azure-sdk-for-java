@@ -24,6 +24,9 @@ public class SalesforceServiceCloudObjectDataset extends Dataset {
     @JsonProperty(value = "typeProperties.objectApiName")
     private Object objectApiName;
 
+    /** Creates an instance of SalesforceServiceCloudObjectDataset class. */
+    public SalesforceServiceCloudObjectDataset() {}
+
     /**
      * Get the objectApiName property: The Salesforce Service Cloud object API name. Type: string (or Expression with
      * resultType string).

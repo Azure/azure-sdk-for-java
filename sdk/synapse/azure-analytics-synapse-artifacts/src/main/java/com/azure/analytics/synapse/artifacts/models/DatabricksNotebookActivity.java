@@ -38,6 +38,9 @@ public class DatabricksNotebookActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.libraries")
     private List<Map<String, Object>> libraries;
 
+    /** Creates an instance of DatabricksNotebookActivity class. */
+    public DatabricksNotebookActivity() {}
+
     /**
      * Get the notebookPath property: The absolute path of the notebook to be run in the Databricks Workspace. This path
      * must begin with a slash. Type: string (or Expression with resultType string).

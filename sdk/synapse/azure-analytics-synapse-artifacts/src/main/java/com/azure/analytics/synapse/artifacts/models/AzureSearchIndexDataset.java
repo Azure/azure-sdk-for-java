@@ -24,6 +24,9 @@ public class AzureSearchIndexDataset extends Dataset {
     @JsonProperty(value = "typeProperties.indexName", required = true)
     private Object indexName;
 
+    /** Creates an instance of AzureSearchIndexDataset class. */
+    public AzureSearchIndexDataset() {}
+
     /**
      * Get the indexName property: The name of the Azure Search Index. Type: string (or Expression with resultType
      * string).

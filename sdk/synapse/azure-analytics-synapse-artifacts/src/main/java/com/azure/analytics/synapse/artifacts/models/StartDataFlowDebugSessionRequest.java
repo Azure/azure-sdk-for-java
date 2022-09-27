@@ -59,6 +59,9 @@ public final class StartDataFlowDebugSessionRequest {
     @JsonProperty(value = "incrementalDebug")
     private Boolean incrementalDebug;
 
+    /** Creates an instance of StartDataFlowDebugSessionRequest class. */
+    public StartDataFlowDebugSessionRequest() {}
+
     /**
      * Get the sessionId property: The ID of data flow debug session.
      *

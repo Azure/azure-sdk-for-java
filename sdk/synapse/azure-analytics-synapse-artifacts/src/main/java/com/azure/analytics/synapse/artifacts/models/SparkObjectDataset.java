@@ -36,6 +36,9 @@ public class SparkObjectDataset extends Dataset {
     @JsonProperty(value = "typeProperties.schema")
     private Object schemaTypePropertiesSchema;
 
+    /** Creates an instance of SparkObjectDataset class. */
+    public SparkObjectDataset() {}
+
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.

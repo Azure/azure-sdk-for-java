@@ -23,6 +23,9 @@ public final class TriggerPipelineReference {
     @JsonProperty(value = "parameters")
     private Map<String, Object> parameters;
 
+    /** Creates an instance of TriggerPipelineReference class. */
+    public TriggerPipelineReference() {}
+
     /**
      * Get the pipelineReference property: Pipeline reference.
      *

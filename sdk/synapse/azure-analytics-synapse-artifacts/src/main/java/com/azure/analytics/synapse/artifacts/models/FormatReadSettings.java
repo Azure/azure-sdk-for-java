@@ -34,6 +34,9 @@ public class FormatReadSettings {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of FormatReadSettings class. */
+    public FormatReadSettings() {}
+
     /**
      * Get the additionalProperties property: Format read settings.
      *

@@ -39,6 +39,9 @@ public class SapOpenHubTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.baseRequestId")
     private Object baseRequestId;
 
+    /** Creates an instance of SapOpenHubTableDataset class. */
+    public SapOpenHubTableDataset() {}
+
     /**
      * Get the openHubDestinationName property: The name of the Open Hub Destination with destination type as Database
      * Table. Type: string (or Expression with resultType string).

@@ -23,6 +23,9 @@ public final class DataFlowListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of DataFlowListResponse class. */
+    public DataFlowListResponse() {}
+
     /**
      * Get the value property: List of data flows.
      *

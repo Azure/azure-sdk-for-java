@@ -75,6 +75,9 @@ public final class Notebook {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of Notebook class. */
+    public Notebook() {}
+
     /**
      * Get the description property: The description of the notebook.
      *

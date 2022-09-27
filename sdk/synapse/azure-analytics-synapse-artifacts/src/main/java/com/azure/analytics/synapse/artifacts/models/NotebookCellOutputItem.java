@@ -46,6 +46,9 @@ public final class NotebookCellOutputItem {
     @JsonProperty(value = "metadata")
     private Object metadata;
 
+    /** Creates an instance of NotebookCellOutputItem class. */
+    public NotebookCellOutputItem() {}
+
     /**
      * Get the name property: For output_type=stream, determines the name of stream (stdout / stderr).
      *

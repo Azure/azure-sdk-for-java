@@ -127,19 +127,6 @@ public final class NotebookOperationResultsImpl {
      * Get notebook operation result.
      *
      * @param operationId Operation ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void get(String operationId) {
-        getAsync(operationId).block();
-    }
-
-    /**
-     * Get notebook operation result.
-     *
-     * @param operationId Operation ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -149,5 +136,18 @@ public final class NotebookOperationResultsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getWithResponse(String operationId, Context context) {
         return getWithResponseAsync(operationId, context).block();
+    }
+
+    /**
+     * Get notebook operation result.
+     *
+     * @param operationId Operation ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void get(String operationId) {
+        getWithResponse(operationId, Context.NONE);
     }
 }

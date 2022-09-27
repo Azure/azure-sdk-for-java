@@ -22,6 +22,9 @@ public final class DataFlowDebugCommandResponse {
     @JsonProperty(value = "data")
     private String data;
 
+    /** Creates an instance of DataFlowDebugCommandResponse class. */
+    public DataFlowDebugCommandResponse() {}
+
     /**
      * Get the status property: The run status of data preview, statistics or expression preview.
      *

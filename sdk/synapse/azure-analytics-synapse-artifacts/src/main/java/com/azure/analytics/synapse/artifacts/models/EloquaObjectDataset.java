@@ -24,6 +24,9 @@ public class EloquaObjectDataset extends Dataset {
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
+    /** Creates an instance of EloquaObjectDataset class. */
+    public EloquaObjectDataset() {}
+
     /**
      * Get the tableName property: The table name. Type: string (or Expression with resultType string).
      *

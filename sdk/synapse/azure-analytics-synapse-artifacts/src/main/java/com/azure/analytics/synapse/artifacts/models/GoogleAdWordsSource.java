@@ -20,6 +20,9 @@ public final class GoogleAdWordsSource extends TabularSource {
     @JsonProperty(value = "query")
     private Object query;
 
+    /** Creates an instance of GoogleAdWordsSource class. */
+    public GoogleAdWordsSource() {}
+
     /**
      * Get the query property: A query to retrieve data from source. Type: string (or Expression with resultType
      * string).

@@ -49,6 +49,9 @@ public class StoreReadSettings {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of StoreReadSettings class. */
+    public StoreReadSettings() {}
+
     /**
      * Get the maxConcurrentConnections property: The maximum concurrent connection count for the source data store.
      * Type: integer (or Expression with resultType integer).

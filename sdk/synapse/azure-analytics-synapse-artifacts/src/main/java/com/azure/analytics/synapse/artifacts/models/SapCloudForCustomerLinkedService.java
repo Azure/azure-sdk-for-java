@@ -45,6 +45,9 @@ public class SapCloudForCustomerLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of SapCloudForCustomerLinkedService class. */
+    public SapCloudForCustomerLinkedService() {}
+
     /**
      * Get the url property: The URL of SAP Cloud for Customer OData API. For example,
      * '[https://[tenantname].crm.ondemand.com/sap/c4c/odata/v1]'. Type: string (or Expression with resultType string).

@@ -29,6 +29,9 @@ public class FilterActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties.condition", required = true)
     private Expression condition;
 
+    /** Creates an instance of FilterActivity class. */
+    public FilterActivity() {}
+
     /**
      * Get the items property: Input array on which filter should be applied.
      *

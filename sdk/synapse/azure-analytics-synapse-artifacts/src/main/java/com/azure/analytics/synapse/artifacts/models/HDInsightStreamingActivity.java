@@ -90,6 +90,9 @@ public class HDInsightStreamingActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.defines")
     private Map<String, Object> defines;
 
+    /** Creates an instance of HDInsightStreamingActivity class. */
+    public HDInsightStreamingActivity() {}
+
     /**
      * Get the storageLinkedServices property: Storage linked service references.
      *

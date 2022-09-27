@@ -66,6 +66,26 @@ public final class DatasetClient {
      * @param dataset Dataset resource definition.
      * @param ifMatch ETag of the dataset entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dataset resource type along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DatasetResource> createOrUpdateDatasetWithResponse(
+            String datasetName, DatasetResource dataset, String ifMatch, Context context) {
+        return this.serviceClient.createOrUpdateDatasetWithResponse(datasetName, dataset, ifMatch, context);
+    }
+
+    /**
+     * Creates or updates a dataset.
+     *
+     * @param datasetName The dataset name.
+     * @param dataset Dataset resource definition.
+     * @param ifMatch ETag of the dataset entity. Should only be specified for update, for which it should match
+     *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -94,23 +114,21 @@ public final class DatasetClient {
     }
 
     /**
-     * Creates or updates a dataset.
+     * Gets a dataset.
      *
      * @param datasetName The dataset name.
-     * @param dataset Dataset resource definition.
-     * @param ifMatch ETag of the dataset entity. Should only be specified for update, for which it should match
-     *     existing entity or can be * for unconditional update.
+     * @param ifNoneMatch ETag of the dataset entity. Should only be specified for get. If the ETag matches the existing
+     *     entity tag, or if * was provided, then no content will be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dataset resource type along with {@link Response}.
+     * @return a dataset along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DatasetResource> createOrUpdateDatasetWithResponse(
-            String datasetName, DatasetResource dataset, String ifMatch, Context context) {
-        return this.serviceClient.createOrUpdateDatasetWithResponse(datasetName, dataset, ifMatch, context);
+    public Response<DatasetResource> getDatasetWithResponse(String datasetName, String ifNoneMatch, Context context) {
+        return this.serviceClient.getDatasetWithResponse(datasetName, ifNoneMatch, context);
     }
 
     /**
@@ -146,38 +164,6 @@ public final class DatasetClient {
     }
 
     /**
-     * Gets a dataset.
-     *
-     * @param datasetName The dataset name.
-     * @param ifNoneMatch ETag of the dataset entity. Should only be specified for get. If the ETag matches the existing
-     *     entity tag, or if * was provided, then no content will be returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dataset along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DatasetResource> getDatasetWithResponse(String datasetName, String ifNoneMatch, Context context) {
-        return this.serviceClient.getDatasetWithResponse(datasetName, ifNoneMatch, context);
-    }
-
-    /**
-     * Deletes a dataset.
-     *
-     * @param datasetName The dataset name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteDataset(String datasetName) {
-        this.serviceClient.deleteDataset(datasetName);
-    }
-
-    /**
      * Deletes a dataset.
      *
      * @param datasetName The dataset name.
@@ -194,18 +180,17 @@ public final class DatasetClient {
     }
 
     /**
-     * Renames a dataset.
+     * Deletes a dataset.
      *
      * @param datasetName The dataset name.
-     * @param request proposed new name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void renameDataset(String datasetName, ArtifactRenameRequest request) {
-        this.serviceClient.renameDataset(datasetName, request);
+    public void deleteDataset(String datasetName) {
+        this.serviceClient.deleteDataset(datasetName);
     }
 
     /**
@@ -224,5 +209,20 @@ public final class DatasetClient {
     public Response<Void> renameDatasetWithResponse(
             String datasetName, ArtifactRenameRequest request, Context context) {
         return this.serviceClient.renameDatasetWithResponse(datasetName, request, context);
+    }
+
+    /**
+     * Renames a dataset.
+     *
+     * @param datasetName The dataset name.
+     * @param request proposed new name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void renameDataset(String datasetName, ArtifactRenameRequest request) {
+        this.serviceClient.renameDataset(datasetName, request);
     }
 }

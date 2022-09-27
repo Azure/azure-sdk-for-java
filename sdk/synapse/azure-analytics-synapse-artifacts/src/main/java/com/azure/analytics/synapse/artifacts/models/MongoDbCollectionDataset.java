@@ -24,6 +24,9 @@ public class MongoDbCollectionDataset extends Dataset {
     @JsonProperty(value = "typeProperties.collectionName", required = true)
     private Object collectionName;
 
+    /** Creates an instance of MongoDbCollectionDataset class. */
+    public MongoDbCollectionDataset() {}
+
     /**
      * Get the collectionName property: The table name of the MongoDB database. Type: string (or Expression with
      * resultType string).

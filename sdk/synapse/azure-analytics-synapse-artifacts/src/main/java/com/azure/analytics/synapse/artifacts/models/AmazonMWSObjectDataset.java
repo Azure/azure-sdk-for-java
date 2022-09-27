@@ -24,6 +24,9 @@ public class AmazonMWSObjectDataset extends Dataset {
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
+    /** Creates an instance of AmazonMWSObjectDataset class. */
+    public AmazonMWSObjectDataset() {}
+
     /**
      * Get the tableName property: The table name. Type: string (or Expression with resultType string).
      *

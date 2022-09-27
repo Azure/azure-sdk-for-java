@@ -42,6 +42,9 @@ public class AzureDataLakeStoreDataset extends Dataset {
     @JsonProperty(value = "typeProperties.compression")
     private DatasetCompression compression;
 
+    /** Creates an instance of AzureDataLakeStoreDataset class. */
+    public AzureDataLakeStoreDataset() {}
+
     /**
      * Get the folderPath property: Path to the folder in the Azure Data Lake Store. Type: string (or Expression with
      * resultType string).

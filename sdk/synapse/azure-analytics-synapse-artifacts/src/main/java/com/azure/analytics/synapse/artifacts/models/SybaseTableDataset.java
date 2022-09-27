@@ -24,6 +24,9 @@ public class SybaseTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
+    /** Creates an instance of SybaseTableDataset class. */
+    public SybaseTableDataset() {}
+
     /**
      * Get the tableName property: The Sybase table name. Type: string (or Expression with resultType string).
      *

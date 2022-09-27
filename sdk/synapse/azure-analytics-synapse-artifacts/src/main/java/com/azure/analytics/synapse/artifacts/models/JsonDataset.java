@@ -39,6 +39,9 @@ public class JsonDataset extends Dataset {
     @JsonProperty(value = "typeProperties.compression")
     private DatasetCompression compression;
 
+    /** Creates an instance of JsonDataset class. */
+    public JsonDataset() {}
+
     /**
      * Get the location property: The location of the json data storage.
      *
