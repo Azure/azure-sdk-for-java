@@ -191,6 +191,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         StepVerifier.create(client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO))
             .assertNext(response -> {
                 assertSchemaProperties(response, null, SchemaFormat.AVRO, schemaGroup, schemaName);
+                assertEquals(1, response.getVersion());
                 schemaId.set(response.getId());
             }).verifyComplete();
 
@@ -203,6 +204,9 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         StepVerifier.create(client2.getSchemaProperties(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO))
             .assertNext(schema -> {
                 assertSchemaProperties(schema, schemaIdToGet, SchemaFormat.AVRO, schemaGroup, schemaName);
+
+                // Should be the same version since we did not register a new one.
+                assertEquals(1, schema.getVersion());
             })
             .verifyComplete();
     }
