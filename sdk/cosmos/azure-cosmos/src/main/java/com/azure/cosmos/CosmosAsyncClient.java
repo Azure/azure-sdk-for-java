@@ -114,9 +114,7 @@ public final class CosmosAsyncClient implements Closeable {
             .CosmosClientTelemetryConfigHelper
             .getCosmosClientTelemetryConfigAccessor();
 
-        CosmosClientTelemetryConfig effectiveTelemetryConfig = ImplementationBridgeHelpers
-            .CosmosClientTelemetryConfigHelper
-            .getCosmosClientTelemetryConfigAccessor()
+        CosmosClientTelemetryConfig effectiveTelemetryConfig = telemetryConfigAccessor
             .createSnapshot(
                 builder.getClientTelemetryConfig(),
                 builder.isClientTelemetryEnabled());
