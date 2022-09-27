@@ -25,6 +25,9 @@ public class AzureKeyVaultLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.baseUrl", required = true)
     private Object baseUrl;
 
+    /** Creates an instance of AzureKeyVaultLinkedService class. */
+    public AzureKeyVaultLinkedService() {}
+
     /**
      * Get the baseUrl property: The base URL of the Azure Key Vault. e.g. https://myakv.vault.azure.net Type: string
      * (or Expression with resultType string).

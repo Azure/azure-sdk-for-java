@@ -23,6 +23,9 @@ public final class SparkJobDefinitionsListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of SparkJobDefinitionsListResponse class. */
+    public SparkJobDefinitionsListResponse() {}
+
     /**
      * Get the value property: List of spark job definitions.
      *

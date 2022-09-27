@@ -66,6 +66,26 @@ public final class SqlScriptClient {
      * @param sqlScript Sql Script resource definition.
      * @param ifMatch ETag of the SQL script entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sql Script resource type along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SqlScriptResource> createOrUpdateSqlScriptWithResponse(
+            String sqlScriptName, SqlScriptResource sqlScript, String ifMatch, Context context) {
+        return this.serviceClient.createOrUpdateSqlScriptWithResponse(sqlScriptName, sqlScript, ifMatch, context);
+    }
+
+    /**
+     * Creates or updates a Sql Script.
+     *
+     * @param sqlScriptName The sql script name.
+     * @param sqlScript Sql Script resource definition.
+     * @param ifMatch ETag of the SQL script entity. Should only be specified for update, for which it should match
+     *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -95,23 +115,22 @@ public final class SqlScriptClient {
     }
 
     /**
-     * Creates or updates a Sql Script.
+     * Gets a sql script.
      *
      * @param sqlScriptName The sql script name.
-     * @param sqlScript Sql Script resource definition.
-     * @param ifMatch ETag of the SQL script entity. Should only be specified for update, for which it should match
-     *     existing entity or can be * for unconditional update.
+     * @param ifNoneMatch ETag of the sql compute entity. Should only be specified for get. If the ETag matches the
+     *     existing entity tag, or if * was provided, then no content will be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Script resource type along with {@link Response}.
+     * @return a sql script along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SqlScriptResource> createOrUpdateSqlScriptWithResponse(
-            String sqlScriptName, SqlScriptResource sqlScript, String ifMatch, Context context) {
-        return this.serviceClient.createOrUpdateSqlScriptWithResponse(sqlScriptName, sqlScript, ifMatch, context);
+    public Response<SqlScriptResource> getSqlScriptWithResponse(
+            String sqlScriptName, String ifNoneMatch, Context context) {
+        return this.serviceClient.getSqlScriptWithResponse(sqlScriptName, ifNoneMatch, context);
     }
 
     /**
@@ -147,39 +166,6 @@ public final class SqlScriptClient {
     }
 
     /**
-     * Gets a sql script.
-     *
-     * @param sqlScriptName The sql script name.
-     * @param ifNoneMatch ETag of the sql compute entity. Should only be specified for get. If the ETag matches the
-     *     existing entity tag, or if * was provided, then no content will be returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sql script along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SqlScriptResource> getSqlScriptWithResponse(
-            String sqlScriptName, String ifNoneMatch, Context context) {
-        return this.serviceClient.getSqlScriptWithResponse(sqlScriptName, ifNoneMatch, context);
-    }
-
-    /**
-     * Deletes a Sql Script.
-     *
-     * @param sqlScriptName The sql script name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteSqlScript(String sqlScriptName) {
-        this.serviceClient.deleteSqlScript(sqlScriptName);
-    }
-
-    /**
      * Deletes a Sql Script.
      *
      * @param sqlScriptName The sql script name.
@@ -196,18 +182,17 @@ public final class SqlScriptClient {
     }
 
     /**
-     * Renames a sqlScript.
+     * Deletes a Sql Script.
      *
      * @param sqlScriptName The sql script name.
-     * @param request proposed new name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void renameSqlScript(String sqlScriptName, ArtifactRenameRequest request) {
-        this.serviceClient.renameSqlScript(sqlScriptName, request);
+    public void deleteSqlScript(String sqlScriptName) {
+        this.serviceClient.deleteSqlScript(sqlScriptName);
     }
 
     /**
@@ -226,5 +211,20 @@ public final class SqlScriptClient {
     public Response<Void> renameSqlScriptWithResponse(
             String sqlScriptName, ArtifactRenameRequest request, Context context) {
         return this.serviceClient.renameSqlScriptWithResponse(sqlScriptName, request, context);
+    }
+
+    /**
+     * Renames a sqlScript.
+     *
+     * @param sqlScriptName The sql script name.
+     * @param request proposed new name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void renameSqlScript(String sqlScriptName, ArtifactRenameRequest request) {
+        this.serviceClient.renameSqlScript(sqlScriptName, request);
     }
 }

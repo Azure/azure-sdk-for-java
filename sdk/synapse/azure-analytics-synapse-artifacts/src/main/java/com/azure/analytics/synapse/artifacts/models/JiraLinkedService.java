@@ -69,6 +69,9 @@ public class JiraLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of JiraLinkedService class. */
+    public JiraLinkedService() {}
+
     /**
      * Get the host property: The IP address or host name of the Jira service. (e.g. jira.example.com).
      *

@@ -43,6 +43,9 @@ public class SqlServerLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of SqlServerLinkedService class. */
+    public SqlServerLinkedService() {}
+
     /**
      * Get the connectionString property: The connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.

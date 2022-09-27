@@ -23,6 +23,9 @@ public class ScheduleTrigger extends MultiplePipelineTrigger {
     @JsonProperty(value = "typeProperties.recurrence", required = true)
     private ScheduleTriggerRecurrence recurrence;
 
+    /** Creates an instance of ScheduleTrigger class. */
+    public ScheduleTrigger() {}
+
     /**
      * Get the recurrence property: Recurrence schedule configuration.
      *

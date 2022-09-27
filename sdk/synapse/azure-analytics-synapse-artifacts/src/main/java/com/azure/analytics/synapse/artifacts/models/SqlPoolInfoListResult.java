@@ -27,6 +27,9 @@ public final class SqlPoolInfoListResult {
     @JsonProperty(value = "value")
     private List<SqlPool> value;
 
+    /** Creates an instance of SqlPoolInfoListResult class. */
+    public SqlPoolInfoListResult() {}
+
     /**
      * Get the nextLink property: Link to the next page of results.
      *

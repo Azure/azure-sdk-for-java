@@ -56,6 +56,9 @@ public class AmazonRedshiftLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of AmazonRedshiftLinkedService class. */
+    public AmazonRedshiftLinkedService() {}
+
     /**
      * Get the server property: The name of the Amazon Redshift server. Type: string (or Expression with resultType
      * string).

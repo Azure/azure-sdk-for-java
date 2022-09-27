@@ -49,6 +49,9 @@ public class CosmosDbLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of CosmosDbLinkedService class. */
+    public CosmosDbLinkedService() {}
+
     /**
      * Get the connectionString property: The connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.

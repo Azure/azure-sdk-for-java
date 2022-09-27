@@ -122,6 +122,9 @@ public class CopyActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.skipErrorFile")
     private SkipErrorFile skipErrorFile;
 
+    /** Creates an instance of CopyActivity class. */
+    public CopyActivity() {}
+
     /**
      * Get the inputs property: List of inputs for the activity.
      *

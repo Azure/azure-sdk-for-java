@@ -22,6 +22,9 @@ public final class SsisPropertyOverride {
     @JsonProperty(value = "isSensitive")
     private Boolean isSensitive;
 
+    /** Creates an instance of SsisPropertyOverride class. */
+    public SsisPropertyOverride() {}
+
     /**
      * Get the value property: SSIS package property override value. Type: string (or Expression with resultType
      * string).

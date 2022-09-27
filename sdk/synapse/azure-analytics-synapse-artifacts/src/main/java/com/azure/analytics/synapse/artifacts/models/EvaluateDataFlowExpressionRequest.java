@@ -40,6 +40,9 @@ public final class EvaluateDataFlowExpressionRequest {
     @JsonProperty(value = "expression")
     private String expression;
 
+    /** Creates an instance of EvaluateDataFlowExpressionRequest class. */
+    public EvaluateDataFlowExpressionRequest() {}
+
     /**
      * Get the sessionId property: The ID of data flow debug session.
      *

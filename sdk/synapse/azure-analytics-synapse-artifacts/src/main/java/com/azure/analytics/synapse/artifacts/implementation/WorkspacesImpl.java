@@ -107,11 +107,11 @@ public final class WorkspacesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace on successful completion of {@link Mono}.
+     * @return workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Workspace> getAsync(Context context) {
-        return getWithResponseAsync(context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Response<Workspace> getWithResponse(Context context) {
+        return getWithResponseAsync(context).block();
     }
 
     /**
@@ -123,20 +123,6 @@ public final class WorkspacesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Workspace get() {
-        return getAsync().block();
-    }
-
-    /**
-     * Get Workspace.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Workspace> getWithResponse(Context context) {
-        return getWithResponseAsync(context).block();
+        return getWithResponse(Context.NONE).getValue();
     }
 }

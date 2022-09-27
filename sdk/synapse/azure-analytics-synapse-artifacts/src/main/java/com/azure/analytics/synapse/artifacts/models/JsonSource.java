@@ -33,6 +33,9 @@ public final class JsonSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
+    /** Creates an instance of JsonSource class. */
+    public JsonSource() {}
+
     /**
      * Get the storeSettings property: Json store settings.
      *

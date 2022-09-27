@@ -36,6 +36,9 @@ public class AzureSqlMITableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.table")
     private Object table;
 
+    /** Creates an instance of AzureSqlMITableDataset class. */
+    public AzureSqlMITableDataset() {}
+
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.

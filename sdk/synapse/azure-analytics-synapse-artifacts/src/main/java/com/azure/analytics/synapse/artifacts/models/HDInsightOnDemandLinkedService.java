@@ -227,6 +227,9 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.subnetName")
     private Object subnetName;
 
+    /** Creates an instance of HDInsightOnDemandLinkedService class. */
+    public HDInsightOnDemandLinkedService() {}
+
     /**
      * Get the clusterSize property: Number of worker/data nodes in the cluster. Suggestion value: 4. Type: string (or
      * Expression with resultType string).

@@ -62,6 +62,9 @@ public class MarketoLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of MarketoLinkedService class. */
+    public MarketoLinkedService() {}
+
     /**
      * Get the endpoint property: The endpoint of the Marketo server. (i.e. 123-ABC-321.mktorest.com).
      *

@@ -24,6 +24,9 @@ public class GoogleAdWordsObjectDataset extends Dataset {
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
+    /** Creates an instance of GoogleAdWordsObjectDataset class. */
+    public GoogleAdWordsObjectDataset() {}
+
     /**
      * Get the tableName property: The table name. Type: string (or Expression with resultType string).
      *

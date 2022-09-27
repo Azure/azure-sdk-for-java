@@ -32,6 +32,9 @@ public final class NotebookKernelSpec {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of NotebookKernelSpec class. */
+    public NotebookKernelSpec() {}
+
     /**
      * Get the name property: Name of the kernel specification.
      *

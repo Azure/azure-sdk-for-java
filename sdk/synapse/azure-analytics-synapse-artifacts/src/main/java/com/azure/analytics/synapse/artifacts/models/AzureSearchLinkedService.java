@@ -37,6 +37,9 @@ public class AzureSearchLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of AzureSearchLinkedService class. */
+    public AzureSearchLinkedService() {}
+
     /**
      * Get the url property: URL for Azure Search service. Type: string (or Expression with resultType string).
      *

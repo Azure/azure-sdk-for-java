@@ -50,6 +50,9 @@ public class Office365LinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of Office365LinkedService class. */
+    public Office365LinkedService() {}
+
     /**
      * Get the office365TenantId property: Azure tenant ID to which the Office 365 account belongs. Type: string (or
      * Expression with resultType string).

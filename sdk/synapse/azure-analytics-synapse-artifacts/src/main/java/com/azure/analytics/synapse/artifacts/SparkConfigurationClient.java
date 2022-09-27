@@ -66,6 +66,30 @@ public final class SparkConfigurationClient {
      * @param sparkConfiguration SparkConfiguration resource definition.
      * @param ifMatch ETag of the sparkConfiguration entity. Should only be specified for update, for which it should
      *     match existing entity or can be * for unconditional update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return spark Configuration resource type along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SparkConfigurationResource> createOrUpdateSparkConfigurationWithResponse(
+            String sparkConfigurationName,
+            SparkConfigurationResource sparkConfiguration,
+            String ifMatch,
+            Context context) {
+        return this.serviceClient.createOrUpdateSparkConfigurationWithResponse(
+                sparkConfigurationName, sparkConfiguration, ifMatch, context);
+    }
+
+    /**
+     * Creates or updates a sparkconfiguration.
+     *
+     * @param sparkConfigurationName The spark Configuration name.
+     * @param sparkConfiguration SparkConfiguration resource definition.
+     * @param ifMatch ETag of the sparkConfiguration entity. Should only be specified for update, for which it should
+     *     match existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -96,27 +120,22 @@ public final class SparkConfigurationClient {
     }
 
     /**
-     * Creates or updates a sparkconfiguration.
+     * Gets a sparkConfiguration.
      *
      * @param sparkConfigurationName The spark Configuration name.
-     * @param sparkConfiguration SparkConfiguration resource definition.
-     * @param ifMatch ETag of the sparkConfiguration entity. Should only be specified for update, for which it should
-     *     match existing entity or can be * for unconditional update.
+     * @param ifNoneMatch ETag of the sparkConfiguration entity. Should only be specified for get. If the ETag matches
+     *     the existing entity tag, or if * was provided, then no content will be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spark Configuration resource type along with {@link Response}.
+     * @return a sparkConfiguration along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SparkConfigurationResource> createOrUpdateSparkConfigurationWithResponse(
-            String sparkConfigurationName,
-            SparkConfigurationResource sparkConfiguration,
-            String ifMatch,
-            Context context) {
-        return this.serviceClient.createOrUpdateSparkConfigurationWithResponse(
-                sparkConfigurationName, sparkConfiguration, ifMatch, context);
+    public Response<SparkConfigurationResource> getSparkConfigurationWithResponse(
+            String sparkConfigurationName, String ifNoneMatch, Context context) {
+        return this.serviceClient.getSparkConfigurationWithResponse(sparkConfigurationName, ifNoneMatch, context);
     }
 
     /**
@@ -152,39 +171,6 @@ public final class SparkConfigurationClient {
     }
 
     /**
-     * Gets a sparkConfiguration.
-     *
-     * @param sparkConfigurationName The spark Configuration name.
-     * @param ifNoneMatch ETag of the sparkConfiguration entity. Should only be specified for get. If the ETag matches
-     *     the existing entity tag, or if * was provided, then no content will be returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sparkConfiguration along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SparkConfigurationResource> getSparkConfigurationWithResponse(
-            String sparkConfigurationName, String ifNoneMatch, Context context) {
-        return this.serviceClient.getSparkConfigurationWithResponse(sparkConfigurationName, ifNoneMatch, context);
-    }
-
-    /**
-     * Deletes a sparkConfiguration.
-     *
-     * @param sparkConfigurationName The spark Configuration name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteSparkConfiguration(String sparkConfigurationName) {
-        this.serviceClient.deleteSparkConfiguration(sparkConfigurationName);
-    }
-
-    /**
      * Deletes a sparkConfiguration.
      *
      * @param sparkConfigurationName The spark Configuration name.
@@ -201,18 +187,17 @@ public final class SparkConfigurationClient {
     }
 
     /**
-     * Renames a sparkConfiguration.
+     * Deletes a sparkConfiguration.
      *
      * @param sparkConfigurationName The spark Configuration name.
-     * @param request proposed new name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void renameSparkConfiguration(String sparkConfigurationName, ArtifactRenameRequest request) {
-        this.serviceClient.renameSparkConfiguration(sparkConfigurationName, request);
+    public void deleteSparkConfiguration(String sparkConfigurationName) {
+        this.serviceClient.deleteSparkConfiguration(sparkConfigurationName);
     }
 
     /**
@@ -231,5 +216,20 @@ public final class SparkConfigurationClient {
     public Response<Void> renameSparkConfigurationWithResponse(
             String sparkConfigurationName, ArtifactRenameRequest request, Context context) {
         return this.serviceClient.renameSparkConfigurationWithResponse(sparkConfigurationName, request, context);
+    }
+
+    /**
+     * Renames a sparkConfiguration.
+     *
+     * @param sparkConfigurationName The spark Configuration name.
+     * @param request proposed new name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void renameSparkConfiguration(String sparkConfigurationName, ArtifactRenameRequest request) {
+        this.serviceClient.renameSparkConfiguration(sparkConfigurationName, request);
     }
 }

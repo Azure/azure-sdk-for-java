@@ -20,6 +20,9 @@ public final class AzureBlobFSSink extends CopySink {
     @JsonProperty(value = "copyBehavior")
     private Object copyBehavior;
 
+    /** Creates an instance of AzureBlobFSSink class. */
+    public AzureBlobFSSink() {}
+
     /**
      * Get the copyBehavior property: The type of copy behavior for copy sink.
      *

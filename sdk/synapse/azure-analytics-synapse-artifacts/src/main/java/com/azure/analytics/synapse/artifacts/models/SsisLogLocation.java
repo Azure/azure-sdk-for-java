@@ -37,6 +37,9 @@ public class SsisLogLocation {
     @JsonProperty(value = "typeProperties.logRefreshInterval")
     private Object logRefreshInterval;
 
+    /** Creates an instance of SsisLogLocation class. */
+    public SsisLogLocation() {}
+
     /**
      * Get the logPath property: The SSIS package execution log path. Type: string (or Expression with resultType
      * string).

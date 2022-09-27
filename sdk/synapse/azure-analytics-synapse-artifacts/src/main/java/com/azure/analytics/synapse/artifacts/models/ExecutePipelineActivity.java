@@ -36,6 +36,9 @@ public class ExecutePipelineActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties.waitOnCompletion")
     private Boolean waitOnCompletion;
 
+    /** Creates an instance of ExecutePipelineActivity class. */
+    public ExecutePipelineActivity() {}
+
     /**
      * Get the pipeline property: Pipeline reference.
      *

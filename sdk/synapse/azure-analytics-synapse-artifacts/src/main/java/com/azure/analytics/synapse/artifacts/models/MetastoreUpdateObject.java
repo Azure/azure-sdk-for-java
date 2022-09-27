@@ -16,6 +16,9 @@ public final class MetastoreUpdateObject {
     @JsonProperty(value = "inputFolder", required = true)
     private String inputFolder;
 
+    /** Creates an instance of MetastoreUpdateObject class. */
+    public MetastoreUpdateObject() {}
+
     /**
      * Get the inputFolder property: The input folder containing CDM files.
      *

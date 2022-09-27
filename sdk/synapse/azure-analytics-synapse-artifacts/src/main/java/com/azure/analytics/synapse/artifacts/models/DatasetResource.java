@@ -16,6 +16,9 @@ public final class DatasetResource extends SubResource {
     @JsonProperty(value = "properties", required = true)
     private Dataset properties;
 
+    /** Creates an instance of DatasetResource class. */
+    public DatasetResource() {}
+
     /**
      * Get the properties property: Dataset properties.
      *

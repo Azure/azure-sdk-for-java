@@ -146,6 +146,9 @@ public class AzureDatabricksLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.policyId")
     private Object policyId;
 
+    /** Creates an instance of AzureDatabricksLinkedService class. */
+    public AzureDatabricksLinkedService() {}
+
     /**
      * Get the domain property: &lt;REGION&gt;.azuredatabricks.net, domain name of your Databricks deployment. Type:
      * string (or Expression with resultType string).

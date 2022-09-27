@@ -45,6 +45,9 @@ public class AzureFunctionActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.body")
     private Object body;
 
+    /** Creates an instance of AzureFunctionActivity class. */
+    public AzureFunctionActivity() {}
+
     /**
      * Get the method property: Rest API method for target endpoint.
      *

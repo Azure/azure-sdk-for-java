@@ -47,6 +47,9 @@ public class MappingDataFlow extends DataFlow {
     @JsonProperty(value = "typeProperties.scriptLines")
     private List<String> scriptLines;
 
+    /** Creates an instance of MappingDataFlow class. */
+    public MappingDataFlow() {}
+
     /**
      * Get the sources property: List of sources in data flow.
      *

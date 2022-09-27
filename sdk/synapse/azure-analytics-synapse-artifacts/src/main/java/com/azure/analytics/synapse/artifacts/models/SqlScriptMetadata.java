@@ -26,6 +26,9 @@ public final class SqlScriptMetadata {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of SqlScriptMetadata class. */
+    public SqlScriptMetadata() {}
+
     /**
      * Get the language property: The language of the SQL script.
      *

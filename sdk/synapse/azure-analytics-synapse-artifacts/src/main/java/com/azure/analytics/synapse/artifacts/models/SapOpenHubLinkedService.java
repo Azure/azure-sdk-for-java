@@ -90,6 +90,9 @@ public class SapOpenHubLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of SapOpenHubLinkedService class. */
+    public SapOpenHubLinkedService() {}
+
     /**
      * Get the server property: Host name of the SAP BW instance where the open hub destination is located. Type: string
      * (or Expression with resultType string).

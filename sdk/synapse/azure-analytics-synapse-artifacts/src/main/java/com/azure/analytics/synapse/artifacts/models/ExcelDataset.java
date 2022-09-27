@@ -62,6 +62,9 @@ public class ExcelDataset extends Dataset {
     @JsonProperty(value = "typeProperties.nullValue")
     private Object nullValue;
 
+    /** Creates an instance of ExcelDataset class. */
+    public ExcelDataset() {}
+
     /**
      * Get the location property: The location of the excel storage.
      *

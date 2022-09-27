@@ -92,6 +92,9 @@ public class SftpServerLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.hostKeyFingerprint")
     private Object hostKeyFingerprint;
 
+    /** Creates an instance of SftpServerLinkedService class. */
+    public SftpServerLinkedService() {}
+
     /**
      * Get the host property: The SFTP server host name. Type: string (or Expression with resultType string).
      *

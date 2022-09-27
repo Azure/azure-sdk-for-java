@@ -30,6 +30,9 @@ public class SapHanaTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.table")
     private Object table;
 
+    /** Creates an instance of SapHanaTableDataset class. */
+    public SapHanaTableDataset() {}
+
     /**
      * Get the schemaTypePropertiesSchema property: The schema name of SAP HANA. Type: string (or Expression with
      * resultType string).

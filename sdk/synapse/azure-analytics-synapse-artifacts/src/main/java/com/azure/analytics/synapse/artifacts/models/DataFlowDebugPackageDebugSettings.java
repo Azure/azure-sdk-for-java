@@ -30,6 +30,9 @@ public final class DataFlowDebugPackageDebugSettings {
     @JsonProperty(value = "datasetParameters")
     private Object datasetParameters;
 
+    /** Creates an instance of DataFlowDebugPackageDebugSettings class. */
+    public DataFlowDebugPackageDebugSettings() {}
+
     /**
      * Get the sourceSettings property: Source setting for data flow debug.
      *

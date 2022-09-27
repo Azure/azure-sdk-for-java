@@ -24,6 +24,9 @@ public class RelationalTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
+    /** Creates an instance of RelationalTableDataset class. */
+    public RelationalTableDataset() {}
+
     /**
      * Get the tableName property: The relational table name. Type: string (or Expression with resultType string).
      *

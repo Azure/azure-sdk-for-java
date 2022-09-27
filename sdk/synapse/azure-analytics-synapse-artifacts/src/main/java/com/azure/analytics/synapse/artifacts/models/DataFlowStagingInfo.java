@@ -22,6 +22,9 @@ public final class DataFlowStagingInfo {
     @JsonProperty(value = "folderPath")
     private String folderPath;
 
+    /** Creates an instance of DataFlowStagingInfo class. */
+    public DataFlowStagingInfo() {}
+
     /**
      * Get the linkedService property: Staging linked service reference.
      *

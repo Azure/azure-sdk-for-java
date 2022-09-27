@@ -22,6 +22,9 @@ public final class TriggerDependencyProvisioningStatus {
     @JsonProperty(value = "provisioningStatus", required = true)
     private String provisioningStatus;
 
+    /** Creates an instance of TriggerDependencyProvisioningStatus class. */
+    public TriggerDependencyProvisioningStatus() {}
+
     /**
      * Get the triggerName property: Trigger name.
      *

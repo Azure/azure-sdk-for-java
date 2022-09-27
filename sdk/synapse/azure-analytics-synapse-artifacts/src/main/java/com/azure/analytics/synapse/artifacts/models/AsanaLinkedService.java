@@ -31,6 +31,9 @@ public class AsanaLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of AsanaLinkedService class. */
+    public AsanaLinkedService() {}
+
     /**
      * Get the apiToken property: The api token for the Asana source.
      *

@@ -34,6 +34,9 @@ public final class LinkTableResource {
     @JsonProperty(value = "target")
     private LinkTableRequestTarget target;
 
+    /** Creates an instance of LinkTableResource class. */
+    public LinkTableResource() {}
+
     /**
      * Get the id property: Link table id.
      *

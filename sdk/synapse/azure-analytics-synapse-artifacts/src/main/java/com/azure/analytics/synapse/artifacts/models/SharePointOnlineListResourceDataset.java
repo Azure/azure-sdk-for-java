@@ -24,6 +24,9 @@ public class SharePointOnlineListResourceDataset extends Dataset {
     @JsonProperty(value = "typeProperties.listName")
     private Object listName;
 
+    /** Creates an instance of SharePointOnlineListResourceDataset class. */
+    public SharePointOnlineListResourceDataset() {}
+
     /**
      * Get the listName property: The name of the SharePoint Online list. Type: string (or Expression with resultType
      * string).

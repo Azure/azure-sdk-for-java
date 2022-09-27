@@ -71,6 +71,9 @@ public class XeroLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of XeroLinkedService class. */
+    public XeroLinkedService() {}
+
     /**
      * Get the connectionProperties property: Properties used to connect to Xero. It is mutually exclusive with any
      * other properties in the linked service. Type: object.

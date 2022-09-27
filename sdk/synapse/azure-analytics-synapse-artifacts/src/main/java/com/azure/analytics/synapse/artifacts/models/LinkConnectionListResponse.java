@@ -23,6 +23,9 @@ public final class LinkConnectionListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of LinkConnectionListResponse class. */
+    public LinkConnectionListResponse() {}
+
     /**
      * Get the value property: List link connection value.
      *

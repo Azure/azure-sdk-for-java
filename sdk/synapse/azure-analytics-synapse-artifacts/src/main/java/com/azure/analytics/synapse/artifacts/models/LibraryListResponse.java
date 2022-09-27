@@ -23,6 +23,9 @@ public final class LibraryListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of LibraryListResponse class. */
+    public LibraryListResponse() {}
+
     /**
      * Get the value property: List of Library.
      *

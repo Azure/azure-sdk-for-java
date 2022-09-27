@@ -22,6 +22,9 @@ public final class CustomerManagedKeyDetails {
     @JsonProperty(value = "key")
     private WorkspaceKeyDetails key;
 
+    /** Creates an instance of CustomerManagedKeyDetails class. */
+    public CustomerManagedKeyDetails() {}
+
     /**
      * Get the status property: The customer managed key status on the workspace.
      *

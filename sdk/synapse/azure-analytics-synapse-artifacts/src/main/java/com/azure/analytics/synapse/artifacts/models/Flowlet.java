@@ -47,6 +47,9 @@ public class Flowlet extends DataFlow {
     @JsonProperty(value = "typeProperties.scriptLines")
     private List<String> scriptLines;
 
+    /** Creates an instance of Flowlet class. */
+    public Flowlet() {}
+
     /**
      * Get the sources property: List of sources in Flowlet.
      *
