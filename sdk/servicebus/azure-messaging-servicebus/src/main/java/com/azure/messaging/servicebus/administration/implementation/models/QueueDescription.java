@@ -9,20 +9,23 @@ import com.azure.messaging.servicebus.administration.models.EntityStatus;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-/** Description of a Service Bus queue resource. */
+/** The QueueDescription model. */
 @JacksonXmlRootElement(
         localName = "QueueDescription",
         namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
 @Fluent
 public final class QueueDescription {
     /*
-     * ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the message is locked for other
-     * receivers. The maximum value for LockDuration is 5 minutes; the default value is 1 minute.
+     * ISO 8601 timespan duration of a peek-lock; that is, the amount of time
+     * that the message is locked for other receivers. The maximum value for
+     * LockDuration is 5 minutes; the default value is 1 minute.
      */
     @JacksonXmlProperty(
             localName = "LockDuration",
@@ -30,7 +33,8 @@ public final class QueueDescription {
     private Duration lockDuration;
 
     /*
-     * The maximum size of the queue in megabytes, which is the size of memory allocated for the queue.
+     * The maximum size of the queue in megabytes, which is the size of memory
+     * allocated for the queue.
      */
     @JacksonXmlProperty(
             localName = "MaxSizeInMegabytes",
@@ -46,7 +50,8 @@ public final class QueueDescription {
     private Boolean requiresDuplicateDetection;
 
     /*
-     * A value that indicates whether the queue supports the concept of sessions.
+     * A value that indicates whether the queue supports the concept of
+     * sessions.
      */
     @JacksonXmlProperty(
             localName = "RequiresSession",
@@ -54,9 +59,10 @@ public final class QueueDescription {
     private Boolean requiresSession;
 
     /*
-     * ISO 8601 default message timespan to live value. This is the duration after which the message expires, starting
-     * from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a
-     * message itself.
+     * ISO 8601 default message timespan to live value. This is the duration
+     * after which the message expires, starting from when the message is sent
+     * to Service Bus. This is the default value used when TimeToLive is not
+     * set on a message itself.
      */
     @JacksonXmlProperty(
             localName = "DefaultMessageTimeToLive",
@@ -64,7 +70,8 @@ public final class QueueDescription {
     private Duration defaultMessageTimeToLive;
 
     /*
-     * A value that indicates whether this queue has dead letter support when a message expires.
+     * A value that indicates whether this queue has dead letter support when a
+     * message expires.
      */
     @JacksonXmlProperty(
             localName = "DeadLetteringOnMessageExpiration",
@@ -72,8 +79,8 @@ public final class QueueDescription {
     private Boolean deadLetteringOnMessageExpiration;
 
     /*
-     * ISO 8601 timeSpan structure that defines the duration of the duplicate detection history. The default value is
-     * 10 minutes.
+     * ISO 8601 timeSpan structure that defines the duration of the duplicate
+     * detection history. The default value is 10 minutes.
      */
     @JacksonXmlProperty(
             localName = "DuplicateDetectionHistoryTimeWindow",
@@ -81,13 +88,21 @@ public final class QueueDescription {
     private Duration duplicateDetectionHistoryTimeWindow;
 
     /*
-     * The maximum delivery count. A message is automatically deadlettered after this number of deliveries. Default
-     * value is 10.
+     * The maximum delivery count. A message is automatically deadlettered
+     * after this number of deliveries. Default value is 10.
      */
     @JacksonXmlProperty(
             localName = "MaxDeliveryCount",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private Integer maxDeliveryCount;
+
+    /*
+     * The maximum message size for a message.
+     */
+    @JacksonXmlProperty(
+        localName = "MaxMessageSizeInKilobytes",
+        namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+    private Long maxMessageSizeInKilobytes;
 
     /*
      * Value that indicates whether server-side batched operations are enabled.
@@ -114,32 +129,36 @@ public final class QueueDescription {
     private Integer messageCount;
 
     /*
-     * A value indicating if the resource can be accessed without authorization.
+     * A value indicating if the resource can be accessed without
+     * authorization.
      */
     @JacksonXmlProperty(
             localName = "IsAnonymousAccessible",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private Boolean isAnonymousAccessible;
 
-    /*
-     * Authorization rules for resource.
-     */
     private static final class AuthorizationRulesWrapper {
-        @JacksonXmlProperty(
-                localName = "AuthorizationRule",
-                namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-        private final List<AuthorizationRule> items;
+        @JacksonXmlProperty(localName = "AuthorizationRule",
+            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+        private final List<AuthorizationRuleImpl> items;
+
+        @JsonCreator
+        private AuthorizationRulesWrapper() {
+            this.items = Collections.emptyList();
+        }
 
         @JsonCreator
         private AuthorizationRulesWrapper(
-                @JacksonXmlProperty(
-                                localName = "AuthorizationRule",
-                                namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-                        List<AuthorizationRule> items) {
+                @JacksonXmlProperty(localName = "AuthorizationRule",
+                    namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+                    List<AuthorizationRuleImpl> items) {
             this.items = items;
         }
     }
 
+    /*
+     * Authorization rules for resource.
+     */
     @JacksonXmlProperty(
             localName = "AuthorizationRules",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
@@ -154,7 +173,8 @@ public final class QueueDescription {
     private EntityStatus status;
 
     /*
-     * The name of the recipient entity to which all the messages sent to the queue are forwarded to.
+     * The name of the recipient entity to which all the messages sent to the
+     * queue are forwarded to.
      */
     @JacksonXmlProperty(
             localName = "ForwardTo",
@@ -162,7 +182,8 @@ public final class QueueDescription {
     private String forwardTo;
 
     /*
-     * Custom metdata that user can associate with the description. Max length is 1024 chars.
+     * Custom metdata that user can associate with the description. Max length
+     * is 1024 chars.
      */
     @JacksonXmlProperty(
             localName = "UserMetadata",
@@ -186,7 +207,8 @@ public final class QueueDescription {
     private OffsetDateTime updatedAt;
 
     /*
-     * Last time a message was sent, or the last time there was a receive request to this queue.
+     * Last time a message was sent, or the last time there was a receive
+     * request to this queue.
      */
     @JacksonXmlProperty(
             localName = "AccessedAt",
@@ -210,8 +232,8 @@ public final class QueueDescription {
     private MessageCountDetails messageCountDetails;
 
     /*
-     * ISO 8601 timeSpan idle interval after which the queue is automatically deleted. The minimum duration is 5
-     * minutes.
+     * ISO 8601 timeSpan idle interval after which the queue is automatically
+     * deleted. The minimum duration is 5 minutes.
      */
     @JacksonXmlProperty(
             localName = "AutoDeleteOnIdle",
@@ -219,7 +241,8 @@ public final class QueueDescription {
     private Duration autoDeleteOnIdle;
 
     /*
-     * A value that indicates whether the queue is to be partitioned across multiple message brokers.
+     * A value that indicates whether the queue is to be partitioned across
+     * multiple message brokers.
      */
     @JacksonXmlProperty(
             localName = "EnablePartitioning",
@@ -235,8 +258,9 @@ public final class QueueDescription {
     private EntityAvailabilityStatus entityAvailabilityStatus;
 
     /*
-     * A value that indicates whether Express Entities are enabled. An express queue holds a message in memory
-     * temporarily before writing it to persistent storage.
+     * A value that indicates whether Express Entities are enabled. An express
+     * queue holds a message in memory temporarily before writing it to
+     * persistent storage.
      */
     @JacksonXmlProperty(
             localName = "EnableExpress",
@@ -244,7 +268,8 @@ public final class QueueDescription {
     private Boolean enableExpress;
 
     /*
-     * The name of the recipient entity to which all the dead-lettered messages of this subscription are forwarded to.
+     * The name of the recipient entity to which all the dead-lettered messages
+     * of this subscription are forwarded to.
      */
     @JacksonXmlProperty(
             localName = "ForwardDeadLetteredMessagesTo",
@@ -514,9 +539,9 @@ public final class QueueDescription {
      *
      * @return the authorizationRules value.
      */
-    public List<AuthorizationRule> getAuthorizationRules() {
+    public List<AuthorizationRuleImpl> getAuthorizationRules() {
         if (this.authorizationRules == null) {
-            this.authorizationRules = new AuthorizationRulesWrapper(new ArrayList<AuthorizationRule>());
+            this.authorizationRules = new AuthorizationRulesWrapper(new ArrayList<AuthorizationRuleImpl>());
         }
         return this.authorizationRules.items;
     }
@@ -527,7 +552,7 @@ public final class QueueDescription {
      * @param authorizationRules the authorizationRules value to set.
      * @return the QueueDescription object itself.
      */
-    public QueueDescription setAuthorizationRules(List<AuthorizationRule> authorizationRules) {
+    public QueueDescription setAuthorizationRules(List<AuthorizationRuleImpl> authorizationRules) {
         this.authorizationRules = new AuthorizationRulesWrapper(authorizationRules);
         return this;
     }
@@ -803,6 +828,26 @@ public final class QueueDescription {
      */
     public QueueDescription setForwardDeadLetteredMessagesTo(String forwardDeadLetteredMessagesTo) {
         this.forwardDeadLetteredMessagesTo = forwardDeadLetteredMessagesTo;
+        return this;
+    }
+
+    /**
+     * Get the maxMessageSizeInKilobytes property: The maximum size of a message in kilobytes.
+     *
+     * @return the maxMessageSizeInKilobytes value.
+     */
+    public Long getMaxMessageSizeInKilobytes() {
+        return this.maxMessageSizeInKilobytes;
+    }
+
+    /**
+     * Set the maxMessageSizeInKilobytes property: The maximum size of a message in kilobytes.
+     *
+     * @param maxMessageSizeInKilobytes the maxMessageSizeInKilobytes value to set.
+     * @return the QueueDescription object itself.
+     */
+    public QueueDescription setMaxMessageSizeInKilobytes(Long maxMessageSizeInKilobytes) {
+        this.maxMessageSizeInKilobytes = maxMessageSizeInKilobytes;
         return this;
     }
 }

@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,7 @@ import java.util.List;
 @JsonTypeName("SqlRuleAction")
 @JacksonXmlRootElement(localName = "SqlRuleAction")
 @Fluent
-public final class SqlRuleAction extends RuleAction {
+public final class SqlRuleActionImpl extends RuleActionImpl {
     /*
      * The sqlExpression property.
      */
@@ -35,25 +36,19 @@ public final class SqlRuleAction extends RuleAction {
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private String compatibilityLevel;
 
-    /*
-     * The parameters property.
-     */
     private static final class ParametersWrapper {
-        @JacksonXmlProperty(
-                localName = "KeyValueOfstringanyType",
-                namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-        private final List<KeyValue> items;
+        @JacksonXmlProperty(localName = "KeyValueOfstringanyType", namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+        private final List<KeyValueImpl> items;
 
         @JsonCreator
-        private ParametersWrapper(
-                @JacksonXmlProperty(
-                                localName = "KeyValueOfstringanyType",
-                                namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-                        List<KeyValue> items) {
+        private ParametersWrapper(@JacksonXmlProperty(localName = "KeyValueOfstringanyType", namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect") List<KeyValueImpl> items) {
             this.items = items;
         }
     }
 
+    /*
+     * The parameters property.
+     */
     @JacksonXmlProperty(
             localName = "Parameters",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
@@ -82,7 +77,7 @@ public final class SqlRuleAction extends RuleAction {
      * @param sqlExpression the sqlExpression value to set.
      * @return the SqlRuleAction object itself.
      */
-    public SqlRuleAction setSqlExpression(String sqlExpression) {
+    public SqlRuleActionImpl setSqlExpression(String sqlExpression) {
         this.sqlExpression = sqlExpression;
         return this;
     }
@@ -102,7 +97,7 @@ public final class SqlRuleAction extends RuleAction {
      * @param compatibilityLevel the compatibilityLevel value to set.
      * @return the SqlRuleAction object itself.
      */
-    public SqlRuleAction setCompatibilityLevel(String compatibilityLevel) {
+    public SqlRuleActionImpl setCompatibilityLevel(String compatibilityLevel) {
         this.compatibilityLevel = compatibilityLevel;
         return this;
     }
@@ -112,9 +107,9 @@ public final class SqlRuleAction extends RuleAction {
      *
      * @return the parameters value.
      */
-    public List<KeyValue> getParameters() {
+    public List<KeyValueImpl> getParameters() {
         if (this.parameters == null) {
-            this.parameters = new ParametersWrapper(new ArrayList<KeyValue>());
+            this.parameters = new ParametersWrapper(new ArrayList<KeyValueImpl>());
         }
         return this.parameters.items;
     }
@@ -125,7 +120,7 @@ public final class SqlRuleAction extends RuleAction {
      * @param parameters the parameters value to set.
      * @return the SqlRuleAction object itself.
      */
-    public SqlRuleAction setParameters(List<KeyValue> parameters) {
+    public SqlRuleActionImpl setParameters(List<KeyValueImpl> parameters) {
         this.parameters = new ParametersWrapper(parameters);
         return this;
     }
@@ -145,7 +140,7 @@ public final class SqlRuleAction extends RuleAction {
      * @param requiresPreprocessing the requiresPreprocessing value to set.
      * @return the SqlRuleAction object itself.
      */
-    public SqlRuleAction setRequiresPreprocessing(Boolean requiresPreprocessing) {
+    public SqlRuleActionImpl setRequiresPreprocessing(Boolean requiresPreprocessing) {
         this.requiresPreprocessing = requiresPreprocessing;
         return this;
     }

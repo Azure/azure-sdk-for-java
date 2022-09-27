@@ -7,6 +7,7 @@ package com.azure.messaging.servicebus.administration.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import java.time.OffsetDateTime;
 
 /** The RuleDescription model. */
@@ -21,7 +22,7 @@ public final class RuleDescription {
     @JacksonXmlProperty(
             localName = "Filter",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private RuleFilter filter;
+    private RuleFilterImpl filter;
 
     /*
      * The action property.
@@ -29,7 +30,7 @@ public final class RuleDescription {
     @JacksonXmlProperty(
             localName = "Action",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private RuleAction action;
+    private RuleActionImpl action;
 
     /*
      * The exact time the rule was created.
@@ -52,7 +53,7 @@ public final class RuleDescription {
      *
      * @return the filter value.
      */
-    public RuleFilter getFilter() {
+    public RuleFilterImpl getFilter() {
         return this.filter;
     }
 
@@ -62,7 +63,7 @@ public final class RuleDescription {
      * @param filter the filter value to set.
      * @return the RuleDescription object itself.
      */
-    public RuleDescription setFilter(RuleFilter filter) {
+    public RuleDescription setFilter(RuleFilterImpl filter) {
         this.filter = filter;
         return this;
     }
@@ -72,7 +73,7 @@ public final class RuleDescription {
      *
      * @return the action value.
      */
-    public RuleAction getAction() {
+    public RuleActionImpl getAction() {
         return this.action;
     }
 
@@ -82,7 +83,7 @@ public final class RuleDescription {
      * @param action the action value to set.
      * @return the RuleDescription object itself.
      */
-    public RuleDescription setAction(RuleAction action) {
+    public RuleDescription setAction(RuleActionImpl action) {
         this.action = action;
         return this;
     }

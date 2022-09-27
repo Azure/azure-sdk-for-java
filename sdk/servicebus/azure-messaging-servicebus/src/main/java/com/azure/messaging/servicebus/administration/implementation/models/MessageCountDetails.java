@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/** Details about the message counts in entity. */
+/** The MessageCountDetails model. */
 @JacksonXmlRootElement(
         localName = "CountDetails",
         namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")

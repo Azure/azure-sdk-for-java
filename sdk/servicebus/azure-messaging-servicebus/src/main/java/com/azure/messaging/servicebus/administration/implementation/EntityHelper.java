@@ -1,9 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.servicebus.implementation;
+package com.azure.messaging.servicebus.administration.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.administration.implementation.models.AuthorizationRuleImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleActionImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleFilterImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.TopicDescription;
 import com.azure.messaging.servicebus.administration.models.AuthorizationRule;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
@@ -15,13 +22,6 @@ import com.azure.messaging.servicebus.administration.models.RuleProperties;
 import com.azure.messaging.servicebus.administration.models.SharedAccessAuthorizationRule;
 import com.azure.messaging.servicebus.administration.models.SubscriptionProperties;
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
-import com.azure.messaging.servicebus.implementation.models.AuthorizationRuleImpl;
-import com.azure.messaging.servicebus.implementation.models.QueueDescription;
-import com.azure.messaging.servicebus.implementation.models.RuleActionImpl;
-import com.azure.messaging.servicebus.implementation.models.RuleDescription;
-import com.azure.messaging.servicebus.implementation.models.RuleFilterImpl;
-import com.azure.messaging.servicebus.implementation.models.SubscriptionDescription;
-import com.azure.messaging.servicebus.implementation.models.TopicDescription;
 
 import java.util.Collections;
 import java.util.List;

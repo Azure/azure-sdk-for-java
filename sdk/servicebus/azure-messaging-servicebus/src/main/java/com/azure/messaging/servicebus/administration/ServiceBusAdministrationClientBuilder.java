@@ -146,6 +146,12 @@ public final class ServiceBusAdministrationClientBuilder implements
      * and {@link #retryPolicy(HttpPipelinePolicy)} have been set.
      */
     public ServiceBusAdministrationAsyncClient buildAsyncClient() {
+        final ServiceBusManagementClientImpl client = getServiceBusManagementClient();
+
+        return new ServiceBusAdministrationAsyncClient(client, serializer);
+    }
+
+    private ServiceBusManagementClientImpl getServiceBusManagementClient() {
         if (endpoint == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'endpoint' cannot be null."));
         }
@@ -160,8 +166,7 @@ public final class ServiceBusAdministrationClientBuilder implements
             .endpoint(endpoint)
             .apiVersion(apiVersion.getVersion())
             .buildClient();
-
-        return new ServiceBusAdministrationAsyncClient(client, serializer);
+        return client;
     }
 
     /**
@@ -182,7 +187,7 @@ public final class ServiceBusAdministrationClientBuilder implements
      * and {@link #retryPolicy(HttpPipelinePolicy)} have been set.
      */
     public ServiceBusAdministrationClient buildClient() {
-        return new ServiceBusAdministrationClient(buildAsyncClient());
+        return new ServiceBusAdministrationClient(getServiceBusManagementClient(), serializer);
     }
 
     /**

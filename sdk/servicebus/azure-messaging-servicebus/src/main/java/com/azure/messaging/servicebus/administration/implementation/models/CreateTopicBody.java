@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/** The request body for creating a topic. */
+/** The CreateTopicBody model. */
 @JacksonXmlRootElement(localName = "entry", namespace = "http://www.w3.org/2005/Atom")
 @Fluent
 public final class CreateTopicBody {

@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/** The TopicDescription. */
+/** The TopicDescriptionEntryContent model. */
 @JacksonXmlRootElement(localName = "null", namespace = "http://www.w3.org/2005/Atom")
 @Fluent
 public final class TopicDescriptionEntryContent {

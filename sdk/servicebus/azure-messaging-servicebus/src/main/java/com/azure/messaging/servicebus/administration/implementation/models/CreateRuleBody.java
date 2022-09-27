@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/** The request body for creating a rule. */
+/** The CreateRuleBody model. */
 @JacksonXmlRootElement(localName = "entry", namespace = "http://www.w3.org/2005/Atom")
 @Fluent
 public final class CreateRuleBody {

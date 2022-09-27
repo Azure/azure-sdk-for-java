@@ -6,9 +6,10 @@ package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
-/** Availability status of the entity. */
+/** Defines values for EntityAvailabilityStatus. */
 public final class EntityAvailabilityStatus extends ExpandableStringEnum<EntityAvailabilityStatus> {
     /** Static value Available for EntityAvailabilityStatus. */
     public static final EntityAvailabilityStatus AVAILABLE = fromString("Available");
@@ -36,11 +37,7 @@ public final class EntityAvailabilityStatus extends ExpandableStringEnum<EntityA
         return fromString(name, EntityAvailabilityStatus.class);
     }
 
-    /**
-     * Gets known EntityAvailabilityStatus values.
-     *
-     * @return known EntityAvailabilityStatus values.
-     */
+    /** @return known EntityAvailabilityStatus values. */
     public static Collection<EntityAvailabilityStatus> values() {
         return values(EntityAvailabilityStatus.class);
     }

@@ -9,7 +9,7 @@ import com.azure.messaging.servicebus.administration.models.NamespaceProperties;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/** Information about the namespace. */
+/** The NamespacePropertiesEntryContent model. */
 @JacksonXmlRootElement(localName = "null", namespace = "http://www.w3.org/2005/Atom")
 @Fluent
 public final class NamespacePropertiesEntryContent {

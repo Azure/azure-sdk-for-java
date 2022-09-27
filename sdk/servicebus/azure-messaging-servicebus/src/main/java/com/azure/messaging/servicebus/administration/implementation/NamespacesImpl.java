@@ -17,6 +17,7 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.messaging.servicebus.administration.implementation.models.NamespacePropertiesEntry;
 import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementErrorException;
 import reactor.core.publisher.Mono;
@@ -36,7 +37,7 @@ public final class NamespacesImpl {
      */
     NamespacesImpl(ServiceBusManagementClientImpl client) {
         this.service =
-                RestProxy.create(NamespacesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+            RestProxy.create(NamespacesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -51,19 +52,19 @@ public final class NamespacesImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
         Mono<Response<NamespacePropertiesEntry>> get(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
         @Get("/$namespaceinfo")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
         Response<NamespacePropertiesEntry> getSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -80,7 +81,7 @@ public final class NamespacesImpl {
     public Mono<Response<NamespacePropertiesEntry>> getWithResponseAsync() {
         final String accept = "application/xml, application/atom+xml";
         return FluxUtil.withContext(
-                context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), accept, context));
+            context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), accept, context));
     }
 
     /**

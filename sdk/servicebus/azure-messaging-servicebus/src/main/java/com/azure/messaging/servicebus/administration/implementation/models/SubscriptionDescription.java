@@ -6,20 +6,24 @@ package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.messaging.servicebus.administration.models.EntityStatus;
+import com.azure.messaging.servicebus.administration.implementation.models.EntityAvailabilityStatus;
+import com.azure.messaging.servicebus.administration.implementation.models.MessageCountDetails;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
-/** Description of a Service Bus subscription resource. */
+/** The SubscriptionDescription model. */
 @JacksonXmlRootElement(
         localName = "SubscriptionDescription",
         namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
 @Fluent
 public final class SubscriptionDescription {
     /*
-     * ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the message is locked for other
-     * receivers. The maximum value for LockDuration is 5 minutes; the default value is 1 minute.
+     * ISO 8601 timespan duration of a peek-lock; that is, the amount of time
+     * that the message is locked for other receivers. The maximum value for
+     * LockDuration is 5 minutes; the default value is 1 minute.
      */
     @JacksonXmlProperty(
             localName = "LockDuration",
@@ -27,7 +31,8 @@ public final class SubscriptionDescription {
     private Duration lockDuration;
 
     /*
-     * A value that indicates whether the subscription supports the concept of sessions.
+     * A value that indicates whether the subscription supports the concept of
+     * sessions.
      */
     @JacksonXmlProperty(
             localName = "RequiresSession",
@@ -35,9 +40,10 @@ public final class SubscriptionDescription {
     private Boolean requiresSession;
 
     /*
-     * ISO 8601 default message timespan to live value. This is the duration after which the message expires, starting
-     * from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a
-     * message itself.
+     * ISO 8601 default message timespan to live value. This is the duration
+     * after which the message expires, starting from when the message is sent
+     * to Service Bus. This is the default value used when TimeToLive is not
+     * set on a message itself.
      */
     @JacksonXmlProperty(
             localName = "DefaultMessageTimeToLive",
@@ -45,7 +51,8 @@ public final class SubscriptionDescription {
     private Duration defaultMessageTimeToLive;
 
     /*
-     * A value that indicates whether this subscription has dead letter support when a message expires.
+     * A value that indicates whether this subscription has dead letter support
+     * when a message expires.
      */
     @JacksonXmlProperty(
             localName = "DeadLetteringOnMessageExpiration",
@@ -53,7 +60,8 @@ public final class SubscriptionDescription {
     private Boolean deadLetteringOnMessageExpiration;
 
     /*
-     * A value that indicates whether this subscription has dead letter support when a message expires.
+     * A value that indicates whether this subscription has dead letter support
+     * when a message expires.
      */
     @JacksonXmlProperty(
             localName = "DeadLetteringOnFilterEvaluationExceptions",
@@ -69,8 +77,8 @@ public final class SubscriptionDescription {
     private Integer messageCount;
 
     /*
-     * The maximum delivery count. A message is automatically deadlettered after this number of deliveries. Default
-     * value is 10.
+     * The maximum delivery count. A message is automatically deadlettered
+     * after this number of deliveries. Default value is 10.
      */
     @JacksonXmlProperty(
             localName = "MaxDeliveryCount",
@@ -94,7 +102,8 @@ public final class SubscriptionDescription {
     private EntityStatus status;
 
     /*
-     * The name of the recipient entity to which all the messages sent to the subscription are forwarded to.
+     * The name of the recipient entity to which all the messages sent to the
+     * subscription are forwarded to.
      */
     @JacksonXmlProperty(
             localName = "ForwardTo",
@@ -118,7 +127,8 @@ public final class SubscriptionDescription {
     private OffsetDateTime updatedAt;
 
     /*
-     * Last time a message was sent, or the last time there was a receive request to this subscription.
+     * Last time a message was sent, or the last time there was a receive
+     * request to this subscription.
      */
     @JacksonXmlProperty(
             localName = "AccessedAt",
@@ -134,7 +144,8 @@ public final class SubscriptionDescription {
     private MessageCountDetails messageCountDetails;
 
     /*
-     * Metadata associated with the subscription. Maximum number of characters is 1024.
+     * Metadata associated with the subscription. Maximum number of characters
+     * is 1024.
      */
     @JacksonXmlProperty(
             localName = "UserMetadata",
@@ -142,7 +153,8 @@ public final class SubscriptionDescription {
     private String userMetadata;
 
     /*
-     * The name of the recipient entity to which all the messages sent to the subscription are forwarded to.
+     * The name of the recipient entity to which all the messages sent to the
+     * subscription are forwarded to.
      */
     @JacksonXmlProperty(
             localName = "ForwardDeadLetteredMessagesTo",
@@ -150,8 +162,8 @@ public final class SubscriptionDescription {
     private String forwardDeadLetteredMessagesTo;
 
     /*
-     * ISO 8601 timeSpan idle interval after which the subscription is automatically deleted. The minimum duration is 5
-     * minutes.
+     * ISO 8601 timeSpan idle interval after which the subscription is
+     * automatically deleted. The minimum duration is 5 minutes.
      */
     @JacksonXmlProperty(
             localName = "AutoDeleteOnIdle",

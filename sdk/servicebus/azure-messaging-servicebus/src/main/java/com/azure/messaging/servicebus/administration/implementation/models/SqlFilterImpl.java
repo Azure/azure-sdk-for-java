@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,15 +20,15 @@ import java.util.List;
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
         property = "type",
-        defaultImpl = SqlFilter.class)
+        defaultImpl = SqlFilterImpl.class)
 @JsonTypeName("SqlFilter")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "TrueFilter", value = TrueFilter.class),
-    @JsonSubTypes.Type(name = "FalseFilter", value = FalseFilter.class)
+    @JsonSubTypes.Type(name = "TrueFilter", value = TrueFilterImpl.class),
+    @JsonSubTypes.Type(name = "FalseFilter", value = FalseFilterImpl.class)
 })
 @JacksonXmlRootElement(localName = "SqlFilter")
 @Fluent
-public class SqlFilter extends RuleFilter {
+public class SqlFilterImpl extends RuleFilterImpl {
     /*
      * The sqlExpression property.
      */
@@ -44,25 +45,19 @@ public class SqlFilter extends RuleFilter {
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private String compatibilityLevel;
 
-    /*
-     * The parameters property.
-     */
     private static final class ParametersWrapper {
-        @JacksonXmlProperty(
-                localName = "KeyValueOfstringanyType",
-                namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-        private final List<KeyValue> items;
+        @JacksonXmlProperty(localName = "KeyValueOfstringanyType", namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+        private final List<KeyValueImpl> items;
 
         @JsonCreator
-        private ParametersWrapper(
-                @JacksonXmlProperty(
-                                localName = "KeyValueOfstringanyType",
-                                namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-                        List<KeyValue> items) {
+        private ParametersWrapper(@JacksonXmlProperty(localName = "KeyValueOfstringanyType", namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect") List<KeyValueImpl> items) {
             this.items = items;
         }
     }
 
+    /*
+     * The parameters property.
+     */
     @JacksonXmlProperty(
             localName = "Parameters",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
@@ -91,7 +86,7 @@ public class SqlFilter extends RuleFilter {
      * @param sqlExpression the sqlExpression value to set.
      * @return the SqlFilter object itself.
      */
-    public SqlFilter setSqlExpression(String sqlExpression) {
+    public SqlFilterImpl setSqlExpression(String sqlExpression) {
         this.sqlExpression = sqlExpression;
         return this;
     }
@@ -111,7 +106,7 @@ public class SqlFilter extends RuleFilter {
      * @param compatibilityLevel the compatibilityLevel value to set.
      * @return the SqlFilter object itself.
      */
-    public SqlFilter setCompatibilityLevel(String compatibilityLevel) {
+    public SqlFilterImpl setCompatibilityLevel(String compatibilityLevel) {
         this.compatibilityLevel = compatibilityLevel;
         return this;
     }
@@ -121,9 +116,9 @@ public class SqlFilter extends RuleFilter {
      *
      * @return the parameters value.
      */
-    public List<KeyValue> getParameters() {
+    public List<KeyValueImpl> getParameters() {
         if (this.parameters == null) {
-            this.parameters = new ParametersWrapper(new ArrayList<KeyValue>());
+            this.parameters = new ParametersWrapper(new ArrayList<KeyValueImpl>());
         }
         return this.parameters.items;
     }
@@ -134,7 +129,7 @@ public class SqlFilter extends RuleFilter {
      * @param parameters the parameters value to set.
      * @return the SqlFilter object itself.
      */
-    public SqlFilter setParameters(List<KeyValue> parameters) {
+    public SqlFilterImpl setParameters(List<KeyValueImpl> parameters) {
         this.parameters = new ParametersWrapper(parameters);
         return this;
     }
@@ -154,7 +149,7 @@ public class SqlFilter extends RuleFilter {
      * @param requiresPreprocessing the requiresPreprocessing value to set.
      * @return the SqlFilter object itself.
      */
-    public SqlFilter setRequiresPreprocessing(Boolean requiresPreprocessing) {
+    public SqlFilterImpl setRequiresPreprocessing(Boolean requiresPreprocessing) {
         this.requiresPreprocessing = requiresPreprocessing;
         return this;
     }

@@ -13,8 +13,8 @@ import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -24,6 +24,37 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.administration.implementation.EntitiesImpl;
+import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
+import com.azure.messaging.servicebus.administration.implementation.RulesImpl;
+import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementClientImpl;
+import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementSerializer;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBody;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBodyContent;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateRuleBody;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateRuleBodyContent;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateSubscriptionBody;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateSubscriptionBodyContent;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateTopicBody;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateTopicBodyContent;
+import com.azure.messaging.servicebus.administration.implementation.models.NamespacePropertiesEntry;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionEntry;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionFeed;
+import com.azure.messaging.servicebus.administration.implementation.models.ResponseLink;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleActionImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionEntry;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionFeed;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleFilterImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementError;
+import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementErrorException;
+import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionEntry;
+import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionFeed;
+import com.azure.messaging.servicebus.administration.implementation.models.TopicDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionEntry;
+import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionFeed;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
 import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
@@ -36,37 +67,6 @@ import com.azure.messaging.servicebus.administration.models.SubscriptionProperti
 import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
 import com.azure.messaging.servicebus.administration.models.TopicRuntimeProperties;
-import com.azure.messaging.servicebus.implementation.EntityHelper;
-import com.azure.messaging.servicebus.implementation.EntitiesImpl;
-import com.azure.messaging.servicebus.implementation.RulesImpl;
-import com.azure.messaging.servicebus.implementation.ServiceBusManagementClientImpl;
-import com.azure.messaging.servicebus.implementation.ServiceBusManagementSerializer;
-import com.azure.messaging.servicebus.implementation.models.CreateQueueBody;
-import com.azure.messaging.servicebus.implementation.models.CreateQueueBodyContent;
-import com.azure.messaging.servicebus.implementation.models.CreateRuleBody;
-import com.azure.messaging.servicebus.implementation.models.CreateRuleBodyContent;
-import com.azure.messaging.servicebus.implementation.models.CreateSubscriptionBody;
-import com.azure.messaging.servicebus.implementation.models.CreateSubscriptionBodyContent;
-import com.azure.messaging.servicebus.implementation.models.CreateTopicBody;
-import com.azure.messaging.servicebus.implementation.models.CreateTopicBodyContent;
-import com.azure.messaging.servicebus.implementation.models.NamespacePropertiesEntry;
-import com.azure.messaging.servicebus.implementation.models.QueueDescription;
-import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntry;
-import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed;
-import com.azure.messaging.servicebus.implementation.models.ResponseLink;
-import com.azure.messaging.servicebus.implementation.models.RuleActionImpl;
-import com.azure.messaging.servicebus.implementation.models.RuleDescription;
-import com.azure.messaging.servicebus.implementation.models.RuleDescriptionEntry;
-import com.azure.messaging.servicebus.implementation.models.RuleDescriptionFeed;
-import com.azure.messaging.servicebus.implementation.models.RuleFilterImpl;
-import com.azure.messaging.servicebus.implementation.models.ServiceBusManagementError;
-import com.azure.messaging.servicebus.implementation.models.ServiceBusManagementErrorException;
-import com.azure.messaging.servicebus.implementation.models.SubscriptionDescription;
-import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionEntry;
-import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionFeed;
-import com.azure.messaging.servicebus.implementation.models.TopicDescription;
-import com.azure.messaging.servicebus.implementation.models.TopicDescriptionEntry;
-import com.azure.messaging.servicebus.implementation.models.TopicDescriptionFeed;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -162,14 +162,14 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  */
 @ServiceClient(builder = ServiceBusAdministrationClientBuilder.class, isAsync = true)
 public final class ServiceBusAdministrationAsyncClient {
-    private static final String CONTENT_TYPE = "application/xml";
+    static final String CONTENT_TYPE = "application/xml";
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusAdministrationAsyncClient.class);
 
     // Name of the entity type when listing queues and topics.
-    private static final String QUEUES_ENTITY_TYPE = "queues";
-    private static final String TOPICS_ENTITY_TYPE = "topics";
+    static final String QUEUES_ENTITY_TYPE = "queues";
+    static final String TOPICS_ENTITY_TYPE = "topics";
 
-    private static final int NUMBER_OF_ELEMENTS = 100;
+    static final int NUMBER_OF_ELEMENTS = 100;
 
     private final ServiceBusManagementClientImpl managementClient;
     private final EntitiesImpl entityClient;
@@ -1118,13 +1118,13 @@ public final class ServiceBusAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TopicProperties> listTopics() {
         return new PagedFlux<>(
-            () -> withContext(context -> listTopicsFirstPage(context)),
+            () -> withContext(this::listTopicsFirstPage),
             token -> withContext(context -> listTopicsNextPage(token, context)));
     }
 
     /**
      * Updates a queue with the given {@link QueueProperties}. The {@link QueueProperties} must be fully populated as
-     * all of the properties are replaced. If a property is not set the service default value is used.
+     * all the properties are replaced. If a property is not set the service default value is used.
      *
      * The suggested flow is:
      * <ol>
@@ -1461,7 +1461,7 @@ public final class ServiceBusAdministrationAsyncClient {
         try {
             return entityClient.putWithResponseAsync(queueName, createEntity, null, contextWithHeaders)
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
-                .map(this::deserializeQueue);
+                .map(objectResponse -> deserializeQueue(objectResponse));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1835,7 +1835,7 @@ public final class ServiceBusAdministrationAsyncClient {
         try {
             return rulesClient.getWithResponseAsync(topicName, subscriptionName, ruleName, true, withTracing)
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
-                .map(this::deserializeRule);
+                .map(objectResponse -> deserializeRule(objectResponse));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -2161,7 +2161,7 @@ public final class ServiceBusAdministrationAsyncClient {
             // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
             return entityClient.putWithResponseAsync(queue.getName(), createEntity, "*", contextWithHeaders)
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
-                .map(response -> deserializeQueue(response));
+                .map(this::deserializeQueue);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -2331,7 +2331,7 @@ public final class ServiceBusAdministrationAsyncClient {
      *
      * @return The corresponding HTTP response with convenience properties set.
      */
-    private Response<QueueProperties> deserializeQueue(Response<Object> response) {
+     private Response<QueueProperties> deserializeQueue(Response<Object> response) {
         final QueueDescriptionEntry entry = deserialize(response.getValue(), QueueDescriptionEntry.class);
 
         // This was an empty response (ie. 204).
@@ -2652,7 +2652,7 @@ public final class ServiceBusAdministrationAsyncClient {
      *
      * @return boolean representing the outcome of adding header operation
      */
-    private void addSupplementaryAuthHeader(String headerName, String entity, Context context) {
+    static void addSupplementaryAuthHeader(String headerName, String entity, Context context) {
         context.getData(AZURE_REQUEST_HTTP_HEADERS_KEY)
             .ifPresent(headers -> {
                 if (headers instanceof HttpHeaders) {
@@ -2706,7 +2706,7 @@ public final class ServiceBusAdministrationAsyncClient {
      * @return The XML text inside the title. {@code null} is returned if there is no value.
      */
     @SuppressWarnings("unchecked")
-    private String getTitleValue(Object responseTitle) {
+    static String getTitleValue(Object responseTitle) {
         if (!(responseTitle instanceof Map)) {
             return null;
         }
@@ -2764,7 +2764,7 @@ public final class ServiceBusAdministrationAsyncClient {
      *
      * @param <T> The entity description from Service Bus.
      */
-    private static final class FeedPage<T> implements PagedResponse<T> {
+    static final class FeedPage<T> implements PagedResponse<T> {
         private final int statusCode;
         private final HttpHeaders header;
         private final HttpRequest request;
@@ -2776,7 +2776,7 @@ public final class ServiceBusAdministrationAsyncClient {
          *
          * @param entries Items in the page.
          */
-        private FeedPage(int statusCode, HttpHeaders header, HttpRequest request, List<T> entries) {
+        FeedPage(int statusCode, HttpHeaders header, HttpRequest request, List<T> entries) {
             this.statusCode = statusCode;
             this.header = header;
             this.request = request;
@@ -2790,7 +2790,7 @@ public final class ServiceBusAdministrationAsyncClient {
          * @param entries Items in the page.
          * @param skip Number of elements to "skip".
          */
-        private FeedPage(int statusCode, HttpHeaders header, HttpRequest request, List<T> entries, int skip) {
+        FeedPage(int statusCode, HttpHeaders header, HttpRequest request, List<T> entries, int skip) {
             this.statusCode = statusCode;
             this.header = header;
             this.request = request;
@@ -2828,11 +2828,11 @@ public final class ServiceBusAdministrationAsyncClient {
         }
     }
 
-    private static final class EntityNotFoundHttpResponse<T> extends HttpResponse {
+    static final class EntityNotFoundHttpResponse<T> extends HttpResponse {
         private final int statusCode;
         private final HttpHeaders headers;
 
-        private EntityNotFoundHttpResponse(Response<T> response) {
+        EntityNotFoundHttpResponse(Response<T> response) {
             super(response.getRequest());
             this.headers = response.getHeaders();
             this.statusCode = response.getStatusCode();

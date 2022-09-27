@@ -8,11 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Response from listing Service Bus subscriptions. */
+/** The SubscriptionDescriptionFeed model. */
 @JacksonXmlRootElement(localName = "feed", namespace = "http://www.w3.org/2005/Atom")
 @Fluent
 public final class SubscriptionDescriptionFeed {

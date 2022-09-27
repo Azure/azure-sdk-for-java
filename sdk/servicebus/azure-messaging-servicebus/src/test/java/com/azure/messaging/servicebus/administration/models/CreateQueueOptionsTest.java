@@ -5,7 +5,7 @@
 package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.messaging.servicebus.TestUtils;
-import com.azure.messaging.servicebus.implementation.EntityHelper;
+import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
 import com.azure.messaging.servicebus.implementation.models.QueueDescription;
 import org.junit.jupiter.api.Test;
 

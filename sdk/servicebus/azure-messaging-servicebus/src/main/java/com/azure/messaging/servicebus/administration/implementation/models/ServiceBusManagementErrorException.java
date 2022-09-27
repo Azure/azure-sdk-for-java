@@ -30,7 +30,6 @@ public final class ServiceBusManagementErrorException extends HttpResponseExcept
         super(message, response, value);
     }
 
-    /** {@inheritDoc} */
     @Override
     public ServiceBusManagementError getValue() {
         return (ServiceBusManagementError) super.getValue();

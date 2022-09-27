@@ -9,21 +9,24 @@ import com.azure.messaging.servicebus.administration.models.EntityStatus;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-/** Description of a Service Bus topic resource. */
+/** The TopicDescription model. */
 @JacksonXmlRootElement(
         localName = "TopicDescription",
         namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
 @Fluent
 public final class TopicDescription {
     /*
-     * ISO 8601 default message timespan to live value. This is the duration after which the message expires, starting
-     * from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a
-     * message itself.
+     * ISO 8601 default message timespan to live value. This is the duration
+     * after which the message expires, starting from when the message is sent
+     * to Service Bus. This is the default value used when TimeToLive is not
+     * set on a message itself.
      */
     @JacksonXmlProperty(
             localName = "DefaultMessageTimeToLive",
@@ -31,7 +34,8 @@ public final class TopicDescription {
     private Duration defaultMessageTimeToLive;
 
     /*
-     * The maximum size of the topic in megabytes, which is the size of memory allocated for the topic.
+     * The maximum size of the topic in megabytes, which is the size of memory
+     * allocated for the topic.
      */
     @JacksonXmlProperty(
             localName = "MaxSizeInMegabytes",
@@ -47,8 +51,8 @@ public final class TopicDescription {
     private Boolean requiresDuplicateDetection;
 
     /*
-     * ISO 8601 timeSpan structure that defines the duration of the duplicate detection history. The default value is
-     * 10 minutes.
+     * ISO 8601 timeSpan structure that defines the duration of the duplicate
+     * detection history. The default value is 10 minutes.
      */
     @JacksonXmlProperty(
             localName = "DuplicateDetectionHistoryTimeWindow",
@@ -80,32 +84,33 @@ public final class TopicDescription {
     private Boolean filteringMessagesBeforePublishing;
 
     /*
-     * A value indicating if the resource can be accessed without authorization.
+     * A value indicating if the resource can be accessed without
+     * authorization.
      */
     @JacksonXmlProperty(
             localName = "IsAnonymousAccessible",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private Boolean isAnonymousAccessible;
 
-    /*
-     * Authorization rules for resource.
-     */
     private static final class AuthorizationRulesWrapper {
-        @JacksonXmlProperty(
-                localName = "AuthorizationRule",
-                namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-        private final List<AuthorizationRule> items;
+        @JacksonXmlProperty(localName = "AuthorizationRule")
+        private final List<AuthorizationRuleImpl> items;
+
+        @JsonCreator
+        private AuthorizationRulesWrapper() {
+            this.items = Collections.emptyList();
+        }
 
         @JsonCreator
         private AuthorizationRulesWrapper(
-                @JacksonXmlProperty(
-                                localName = "AuthorizationRule",
-                                namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-                        List<AuthorizationRule> items) {
+                @JacksonXmlProperty(localName = "AuthorizationRule") List<AuthorizationRuleImpl> items) {
             this.items = items;
         }
     }
 
+    /*
+     * Authorization rules for resource.
+     */
     @JacksonXmlProperty(
             localName = "AuthorizationRules",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
@@ -136,7 +141,8 @@ public final class TopicDescription {
     private OffsetDateTime updatedAt;
 
     /*
-     * Last time a message was sent, or the last time there was a receive request to this topic.
+     * Last time a message was sent, or the last time there was a receive
+     * request to this topic.
      */
     @JacksonXmlProperty(
             localName = "AccessedAt",
@@ -168,8 +174,8 @@ public final class TopicDescription {
     private Integer subscriptionCount;
 
     /*
-     * ISO 8601 timeSpan idle interval after which the topic is automatically deleted. The minimum duration is 5
-     * minutes.
+     * ISO 8601 timeSpan idle interval after which the topic is automatically
+     * deleted. The minimum duration is 5 minutes.
      */
     @JacksonXmlProperty(
             localName = "AutoDeleteOnIdle",
@@ -177,7 +183,8 @@ public final class TopicDescription {
     private Duration autoDeleteOnIdle;
 
     /*
-     * A value that indicates whether the topic is to be partitioned across multiple message brokers.
+     * A value that indicates whether the topic is to be partitioned across
+     * multiple message brokers.
      */
     @JacksonXmlProperty(
             localName = "EnablePartitioning",
@@ -193,7 +200,8 @@ public final class TopicDescription {
     private EntityAvailabilityStatus entityAvailabilityStatus;
 
     /*
-     * A value that indicates whether the topic's subscription is to be partitioned.
+     * A value that indicates whether the topic's subscription is to be
+     * partitioned.
      */
     @JacksonXmlProperty(
             localName = "EnableSubscriptionPartitioning",
@@ -201,8 +209,9 @@ public final class TopicDescription {
     private Boolean enableSubscriptionPartitioning;
 
     /*
-     * A value that indicates whether Express Entities are enabled. An express topic holds a message in memory
-     * temporarily before writing it to persistent storage.
+     * A value that indicates whether Express Entities are enabled. An express
+     * topic holds a message in memory temporarily before writing it to
+     * persistent storage.
      */
     @JacksonXmlProperty(
             localName = "EnableExpress",
@@ -216,6 +225,14 @@ public final class TopicDescription {
             localName = "UserMetadata",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private String userMetadata;
+
+    /*
+     * The maximum message size for a message.
+     */
+    @JacksonXmlProperty(
+        localName = "MaxMessageSizeInKilobytes",
+        namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+    private Long maxMessageSizeInKilobytes;
 
     /**
      * Get the defaultMessageTimeToLive property: ISO 8601 default message timespan to live value. This is the duration
@@ -392,9 +409,9 @@ public final class TopicDescription {
      *
      * @return the authorizationRules value.
      */
-    public List<AuthorizationRule> getAuthorizationRules() {
+    public List<AuthorizationRuleImpl> getAuthorizationRules() {
         if (this.authorizationRules == null) {
-            this.authorizationRules = new AuthorizationRulesWrapper(new ArrayList<AuthorizationRule>());
+            this.authorizationRules = new AuthorizationRulesWrapper(new ArrayList<AuthorizationRuleImpl>());
         }
         return this.authorizationRules.items;
     }
@@ -405,7 +422,7 @@ public final class TopicDescription {
      * @param authorizationRules the authorizationRules value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicDescription setAuthorizationRules(List<AuthorizationRule> authorizationRules) {
+    public TopicDescription setAuthorizationRules(List<AuthorizationRuleImpl> authorizationRules) {
         this.authorizationRules = new AuthorizationRulesWrapper(authorizationRules);
         return this;
     }
@@ -677,6 +694,26 @@ public final class TopicDescription {
      */
     public TopicDescription setUserMetadata(String userMetadata) {
         this.userMetadata = userMetadata;
+        return this;
+    }
+
+    /**
+     * Get the maxMessageSizeInKilobytes property: The maximum size of a message in kilobytes.
+     *
+     * @return the maxMessageSizeInKilobytes value.
+     */
+    public Long getMaxMessageSizeInKilobytes() {
+        return this.maxMessageSizeInKilobytes;
+    }
+
+    /**
+     * Set the maxMessageSizeInKilobytes property: The maximum size of a message in kilobytes.
+     *
+     * @param maxMessageSizeInKilobytes the maxMessageSizeInKilobytes value to set.
+     * @return the QueueDescription object itself.
+     */
+    public TopicDescription setMaxMessageSizeInKilobytes(Long maxMessageSizeInKilobytes) {
+        this.maxMessageSizeInKilobytes = maxMessageSizeInKilobytes;
         return this;
     }
 }

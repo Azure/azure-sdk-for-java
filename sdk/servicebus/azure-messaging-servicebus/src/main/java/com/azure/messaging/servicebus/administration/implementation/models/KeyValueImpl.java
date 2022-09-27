@@ -8,12 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/** Key Values of custom properties. */
+/** The KeyValue model. */
 @JacksonXmlRootElement(
         localName = "KeyValueOfstringanyType",
         namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
 @Fluent
-public final class KeyValue {
+public final class KeyValueImpl {
     /*
      * The key property.
      */
@@ -45,7 +45,7 @@ public final class KeyValue {
      * @param key the key value to set.
      * @return the KeyValue object itself.
      */
-    public KeyValue setKey(String key) {
+    public KeyValueImpl setKey(String key) {
         this.key = key;
         return this;
     }
@@ -65,7 +65,7 @@ public final class KeyValue {
      * @param value the value value to set.
      * @return the KeyValue object itself.
      */
-    public KeyValue setValue(String value) {
+    public KeyValueImpl setValue(String value) {
         this.value = value;
         return this;
     }

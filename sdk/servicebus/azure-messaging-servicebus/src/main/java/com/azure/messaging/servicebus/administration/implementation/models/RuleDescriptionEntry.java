@@ -8,9 +8,10 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import java.time.OffsetDateTime;
 
-/** Represents an entry in the feed when querying rules. */
+/** The RuleDescriptionEntry model. */
 @JacksonXmlRootElement(localName = "entry", namespace = "http://www.w3.org/2005/Atom")
 @Fluent
 public final class RuleDescriptionEntry {

@@ -8,26 +8,26 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/** The CreateQueueBodyContent model. */
-@JacksonXmlRootElement(localName = "null", namespace = "http://www.w3.org/2005/Atom")
+/** The QueueDescriptionResponseContent model. */
+@JacksonXmlRootElement(localName = "QueueDescriptionResponseContent")
 @Fluent
-public final class CreateQueueBodyContent {
+public final class QueueDescriptionResponseContent {
     /*
-     * MIME type of content.
+     * Type of content in queue response
      */
     @JacksonXmlProperty(localName = "type", isAttribute = true)
     private String type;
 
     /*
-     * Properties of the new queue.
+     * Description of a Service Bus queue resource.
      */
     @JacksonXmlProperty(
             localName = "QueueDescription",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private QueueDescription queueDescription;
+    private QueueDescription queueProperties;
 
     /**
-     * Get the type property: MIME type of content.
+     * Get the type property: Type of content in queue response.
      *
      * @return the type value.
      */
@@ -36,33 +36,33 @@ public final class CreateQueueBodyContent {
     }
 
     /**
-     * Set the type property: MIME type of content.
+     * Set the type property: Type of content in queue response.
      *
      * @param type the type value to set.
-     * @return the CreateQueueBodyContent object itself.
+     * @return the QueueDescriptionResponseContent object itself.
      */
-    public CreateQueueBodyContent setType(String type) {
+    public QueueDescriptionResponseContent setType(String type) {
         this.type = type;
         return this;
     }
 
     /**
-     * Get the queueDescription property: Properties of the new queue.
+     * Get the queueDescription property: Description of a Service Bus queue resource.
      *
      * @return the queueDescription value.
      */
     public QueueDescription getQueueDescription() {
-        return this.queueDescription;
+        return this.queueProperties;
     }
 
     /**
-     * Set the queueDescription property: Properties of the new queue.
+     * Set the queueDescription property: Description of a Service Bus queue resource.
      *
-     * @param queueDescription the queueDescription value to set.
-     * @return the CreateQueueBodyContent object itself.
+     * @param queueProperties the queueDescription value to set.
+     * @return the QueueDescriptionResponseContent object itself.
      */
-    public CreateQueueBodyContent setQueueDescription(QueueDescription queueDescription) {
-        this.queueDescription = queueDescription;
+    public QueueDescriptionResponseContent setQueueDescription(QueueDescription queueProperties) {
+        this.queueProperties = queueProperties;
         return this;
     }
 }
