@@ -309,6 +309,33 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
             .verify();
     }
 
+    @Test
+    public void getSchemaByGroupNameVersion() {
+        // Arrange
+        final SchemaRegistryAsyncClient client1 = builder.buildAsyncClient();
+        final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
+
+        // Register a schema first.
+        final SchemaProperties registeredSchema = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT,
+            SchemaFormat.AVRO).block(Duration.ofSeconds(10));
+
+        assertNotNull(registeredSchema);
+
+        // Act & Assert
+        StepVerifier.create(client1.getSchema(schemaGroup, schemaName, registeredSchema.getVersion()))
+            .assertNext(actual -> {
+                SchemaProperties properties = actual.getProperties();
+                assertNotNull(properties);
+
+                assertEquals(registeredSchema.getVersion(), properties.getVersion());
+                assertEquals(schemaGroup, registeredSchema.getGroupName());
+                assertEquals(schemaName, registeredSchema.getName());
+                assertEquals(registeredSchema.getId(), registeredSchema.getId());
+            })
+            .expectComplete()
+            .verify();
+    }
+
     static void assertSchemaRegistrySchema(SchemaRegistrySchema actual, String expectedSchemaId, SchemaFormat format,
         String expectedContents) {
 
