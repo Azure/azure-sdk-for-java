@@ -54,7 +54,6 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
-import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import org.slf4j.Logger;
@@ -470,7 +469,6 @@ public class CosmosAsyncContainer {
      *
      *  @return Mono of Void.
      */
-    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<Void> openConnectionsAndInitCaches() {
 
         if(isInitialized.compareAndSet(false, true)) {
@@ -671,8 +669,6 @@ public class CosmosAsyncContainer {
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained
      * items or an error.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> CosmosPagedFlux<T> queryChangeFeed(CosmosChangeFeedRequestOptions options, Class<T> classType) {
         checkNotNull(options, "Argument 'options' must not be null.");
         checkNotNull(classType, "Argument 'classType' must not be null.");
@@ -1218,7 +1214,6 @@ public class CosmosAsyncContainer {
      * @param options the request options.
      * @return an {@link Mono} containing the Cosmos item resource response.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<CosmosItemResponse<Object>> deleteAllItemsByPartitionKey(PartitionKey partitionKey, CosmosItemRequestOptions options) {
         if (options == null) {
             options = new CosmosItemRequestOptions();
@@ -1689,7 +1684,6 @@ public class CosmosAsyncContainer {
      *
      * @return An unmodifiable list of {@link FeedRange}
      */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<List<FeedRange>> getFeedRanges() {
         return this.getDatabase().getDocClientWrapper().getFeedRanges(getLink());
     }
@@ -1755,7 +1749,6 @@ public class CosmosAsyncContainer {
      *
      * @param groupConfig A {@link ThroughputControlGroupConfig}.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void enableLocalThroughputControlGroup(ThroughputControlGroupConfig groupConfig) {
         LocalThroughputControlGroup localControlGroup = ThroughputControlGroupFactory.createThroughputLocalControlGroup(groupConfig, this);
         this.database.getClient().enableThroughputControlGroup(localControlGroup);
@@ -1786,7 +1779,6 @@ public class CosmosAsyncContainer {
      * @param groupConfig The throughput control group configuration, see {@link GlobalThroughputControlGroup}.
      * @param globalControlConfig The global throughput control configuration, see {@link GlobalThroughputControlConfig}.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void enableGlobalThroughputControlGroup(
         ThroughputControlGroupConfig groupConfig,
         GlobalThroughputControlConfig globalControlConfig) {

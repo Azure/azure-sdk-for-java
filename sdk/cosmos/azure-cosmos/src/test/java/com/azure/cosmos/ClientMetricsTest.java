@@ -89,7 +89,7 @@ public class ClientMetricsTest extends BatchTestBase {
     }
 
     @Test(groups = { "unit" }, timeOut = TIMEOUT)
-    public void MaxValueExceedingDefinedLimitStillWorksWithoutException() throws Exception {
+    public void maxValueExceedingDefinedLimitStillWorksWithoutException() throws Exception {
 
         // Expected behavior is that higher values than the expected max value can still be recorded
         // it would only result in getting less accurate "estimates" for percentile histograms

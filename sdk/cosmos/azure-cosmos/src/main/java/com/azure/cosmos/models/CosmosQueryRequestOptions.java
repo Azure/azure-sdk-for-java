@@ -443,7 +443,6 @@ public class CosmosQueryRequestOptions {
      * Gets the {@link FeedRange}
      * @return the {@link FeedRange}
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText =Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FeedRange getFeedRange() {
         return feedRange;
     }
@@ -453,7 +452,6 @@ public class CosmosQueryRequestOptions {
      * @param feedRange the {@link FeedRange}
      * @return the CosmosQueryRequestOptions.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText =Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosQueryRequestOptions setFeedRange(FeedRange feedRange) {
         this.feedRange = feedRange;
         return this;
@@ -463,7 +461,6 @@ public class CosmosQueryRequestOptions {
      * Get throughput control group name.
      * @return The throughput control group name.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getThroughputControlGroupName() {
         return this.throughputControlGroupName;
     }
@@ -474,7 +471,6 @@ public class CosmosQueryRequestOptions {
      * @param throughputControlGroupName The throughput control group name.
      * @return A {@link CosmosQueryRequestOptions}.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosQueryRequestOptions setThroughputControlGroupName(String throughputControlGroupName) {
         this.throughputControlGroupName = throughputControlGroupName;
         return this;

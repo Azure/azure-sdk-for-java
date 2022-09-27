@@ -3,12 +3,9 @@
 
 package com.azure.cosmos.implementation.changefeed.common;
 
-import com.azure.cosmos.util.Beta;
-
 /**
  * Change feed mode
  */
-@Beta(value = Beta.SinceVersion.V4_35_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public enum ChangeFeedMode {
     /**
      * Incremental mode is the latest version change only. This mode only provides changes for Create, Replace and Upsert operations.
