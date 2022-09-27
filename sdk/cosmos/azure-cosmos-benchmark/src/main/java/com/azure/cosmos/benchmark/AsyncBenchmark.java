@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
@@ -92,7 +91,7 @@ abstract class AsyncBenchmark<T> {
 
         if (registry != null) {
             CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig();
-            telemetryConfig.clientMetrics(registry);
+            telemetryConfig.setMeterRegistry(registry);
             cosmosClientBuilder.clientTelemetryConfig(telemetryConfig);
         }
 
@@ -100,7 +99,7 @@ abstract class AsyncBenchmark<T> {
 
         if (registry != null) {
             CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig();
-            telemetryConfig.clientMetrics(registry);
+            telemetryConfig.setMeterRegistry(registry);
             cosmosClientBuilder.clientTelemetryConfig(telemetryConfig);
         }
 

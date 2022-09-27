@@ -155,7 +155,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           }
 
           val telemetryConfig  = new CosmosClientTelemetryConfig()
-          telemetryConfig.clientMetrics(CosmosClientMetrics.meterRegistry.get)
+          telemetryConfig.setMeterRegistry(CosmosClientMetrics.meterRegistry.get)
           telemetryConfig.clientCorrelationId(clientCorrelationId)
           telemetryConfig.metricTagNames(
             s"${TagName.Container}, ${TagName.ClientCorrelationId}, ${TagName.Operation}, " +
