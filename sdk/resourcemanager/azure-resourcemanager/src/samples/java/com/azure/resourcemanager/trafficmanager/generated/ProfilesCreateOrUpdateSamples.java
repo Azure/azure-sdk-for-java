@@ -66,6 +66,8 @@ public final class ProfilesCreateOrUpdateSamples {
                         Arrays
                             .asList(
                                 new EndpointInner()
+                                    .withName("My external endpoint")
+                                    .withType("Microsoft.network/TrafficManagerProfiles/ExternalEndpoints")
                                     .withTarget("foobar.contoso.com")
                                     .withEndpointStatus(EndpointStatus.ENABLED)
                                     .withEndpointLocation("North Europe")
@@ -144,6 +146,8 @@ public final class ProfilesCreateOrUpdateSamples {
                         Arrays
                             .asList(
                                 new EndpointInner()
+                                    .withName("My external endpoint")
+                                    .withType("Microsoft.network/TrafficManagerProfiles/ExternalEndpoints")
                                     .withTarget("foobar.contoso.com")
                                     .withEndpointStatus(EndpointStatus.ENABLED)
                                     .withEndpointLocation("North Europe"))),

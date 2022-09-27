@@ -33,6 +33,8 @@ public final class EndpointsCreateOrUpdateSamples {
                 "ExternalEndpoints",
                 "My%20external%20endpoint",
                 new EndpointInner()
+                    .withName("My external endpoint")
+                    .withType("Microsoft.network/TrafficManagerProfiles/ExternalEndpoints")
                     .withTarget("foobar.contoso.com")
                     .withEndpointStatus(EndpointStatus.ENABLED)
                     .withSubnets(
@@ -63,6 +65,8 @@ public final class EndpointsCreateOrUpdateSamples {
                 "ExternalEndpoints",
                 "azsmnet7187",
                 new EndpointInner()
+                    .withName("azsmnet7187")
+                    .withType("Microsoft.network/TrafficManagerProfiles/ExternalEndpoints")
                     .withTarget("foobar.contoso.com")
                     .withEndpointStatus(EndpointStatus.ENABLED)
                     .withEndpointLocation("North Europe")
@@ -94,6 +98,8 @@ public final class EndpointsCreateOrUpdateSamples {
                 "ExternalEndpoints",
                 "azsmnet7187",
                 new EndpointInner()
+                    .withName("azsmnet7187")
+                    .withType("Microsoft.network/TrafficManagerProfiles/ExternalEndpoints")
                     .withTarget("foobar.contoso.com")
                     .withEndpointStatus(EndpointStatus.ENABLED)
                     .withEndpointLocation("North Europe"),
@@ -120,6 +126,8 @@ public final class EndpointsCreateOrUpdateSamples {
                 "ExternalEndpoints",
                 "My%20external%20endpoint",
                 new EndpointInner()
+                    .withName("My external endpoint")
+                    .withType("Microsoft.network/TrafficManagerProfiles/ExternalEndpoints")
                     .withTarget("foobar.contoso.com")
                     .withEndpointStatus(EndpointStatus.ENABLED)
                     .withGeoMapping(Arrays.asList("GEO-AS", "GEO-AF")),

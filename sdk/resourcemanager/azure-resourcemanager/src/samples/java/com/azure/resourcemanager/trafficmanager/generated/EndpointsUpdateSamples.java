@@ -28,7 +28,12 @@ public final class EndpointsUpdateSamples {
                 "azsmnet6386",
                 "ExternalEndpoints",
                 "azsmnet7187",
-                new EndpointInner().withTarget("another.foobar.contoso.com"),
+                new EndpointInner()
+                    .withId(
+                        "/subscriptions/{subscription-id}/resourceGroups/azuresdkfornetautoresttrafficmanager1421/providers/Microsoft.Network/trafficManagerProfiles/azsmnet6386/externalEndpoints/azsmnet7187")
+                    .withName("azsmnet7187")
+                    .withType("Microsoft.Network/trafficManagerProfiles/externalEndpoints")
+                    .withTarget("another.foobar.contoso.com"),
                 Context.NONE);
     }
 }
