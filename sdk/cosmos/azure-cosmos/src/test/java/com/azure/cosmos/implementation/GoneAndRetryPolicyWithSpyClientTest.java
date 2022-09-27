@@ -71,10 +71,7 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
             .withConsistencyLevel(ConsistencyLevel.SESSION)
             .withContentResponseOnWriteEnabled(true)
             .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-            .withClientTelemetryConfig(ImplementationBridgeHelpers
-                .CosmosClientTelemetryConfigHelper
-                .getCosmosClientTelemetryConfigAccessor()
-                .getDefaultConfig());
+            .withClientTelemetryConfig(new CosmosClientTelemetryConfig());
     }
 
     @Factory(dataProvider = "directClientBuilder")

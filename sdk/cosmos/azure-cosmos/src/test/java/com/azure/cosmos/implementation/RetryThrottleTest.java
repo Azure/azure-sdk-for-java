@@ -50,10 +50,7 @@ public class RetryThrottleTest extends TestSuiteBase {
                 .withConnectionPolicy(policy)
                 .withConsistencyLevel(ConsistencyLevel.EVENTUAL)
                 .withContentResponseOnWriteEnabled(true)
-                .withClientTelemetryConfig(ImplementationBridgeHelpers
-                    .CosmosClientTelemetryConfigHelper
-                    .getCosmosClientTelemetryConfigAccessor()
-                    .getDefaultConfig());
+                .withClientTelemetryConfig(new CosmosClientTelemetryConfig());
 
         client = SpyClientUnderTestFactory.createClientWithGatewaySpy(builder);
 

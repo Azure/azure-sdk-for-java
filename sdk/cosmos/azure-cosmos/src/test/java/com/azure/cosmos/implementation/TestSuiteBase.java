@@ -911,10 +911,7 @@ public class TestSuiteBase extends DocumentClientTest {
                 .withConnectionPolicy(connectionPolicy)
                 .withConsistencyLevel(ConsistencyLevel.SESSION)
                 .withContentResponseOnWriteEnabled(true)
-                .withClientTelemetryConfig(ImplementationBridgeHelpers
-                    .CosmosClientTelemetryConfigHelper
-                    .getCosmosClientTelemetryConfigAccessor()
-                    .getDefaultConfig());
+                .withClientTelemetryConfig(new CosmosClientTelemetryConfig());
     }
 
     static protected Builder createGatewayRxDocumentClient(ConsistencyLevel consistencyLevel, boolean multiMasterEnabled, List<String> preferredLocations, boolean contentResponseOnWriteEnabled) {
@@ -928,10 +925,7 @@ public class TestSuiteBase extends DocumentClientTest {
                 .withConnectionPolicy(connectionPolicy)
                 .withConsistencyLevel(consistencyLevel)
                 .withContentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
-                .withClientTelemetryConfig(ImplementationBridgeHelpers
-                    .CosmosClientTelemetryConfigHelper
-                    .getCosmosClientTelemetryConfigAccessor()
-                    .getDefaultConfig());
+                .withClientTelemetryConfig(new CosmosClientTelemetryConfig());
     }
 
     static protected Builder createGatewayRxDocumentClient() {
@@ -962,10 +956,7 @@ public class TestSuiteBase extends DocumentClientTest {
                             .withConsistencyLevel(consistencyLevel)
                             .withConfigs(configs)
                             .withContentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
-                            .withClientTelemetryConfig(ImplementationBridgeHelpers
-                                .CosmosClientTelemetryConfigHelper
-                                .getCosmosClientTelemetryConfigAccessor()
-                                .getDefaultConfig());
+                            .withClientTelemetryConfig(new CosmosClientTelemetryConfig());
 
     }
 

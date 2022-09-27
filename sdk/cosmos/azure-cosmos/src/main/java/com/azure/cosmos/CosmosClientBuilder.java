@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.routing.LocationHelper;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
@@ -117,8 +118,9 @@ public class CosmosClientBuilder implements
     private boolean endpointDiscoveryEnabled = true;
     private boolean multipleWriteRegionsEnabled = true;
     private boolean readRequestsFallbackEnabled = true;
-    private final CosmosClientTelemetryConfig clientTelemetryConfig;
+    private CosmosClientTelemetryConfig clientTelemetryConfig;
     private ApiType apiType = null;
+    private Boolean clientTelemetryEnabledOverride = null;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -129,10 +131,7 @@ public class CosmosClientBuilder implements
         //  Some default values
         this.userAgentSuffix = "";
         this.throttlingRetryOptions = new ThrottlingRetryOptions();
-        this.clientTelemetryConfig = ImplementationBridgeHelpers
-            .CosmosClientTelemetryConfigHelper
-            .getCosmosClientTelemetryConfigAccessor()
-            .getDefaultConfig();
+        this.clientTelemetryConfig = new CosmosClientTelemetryConfig();
     }
 
     CosmosClientBuilder metadataCaches(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot) {
@@ -644,7 +643,19 @@ public class CosmosClientBuilder implements
      * @return current CosmosClientBuilder
      */
     public CosmosClientBuilder clientTelemetryEnabled(boolean clientTelemetryEnabled) {
-        this.clientTelemetryConfig.sendClientTelemetryToServiceEnabled(clientTelemetryEnabled);
+        ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor accessor =
+            ImplementationBridgeHelpers
+            .CosmosClientTelemetryConfigHelper
+            .getCosmosClientTelemetryConfigAccessor();
+
+        Boolean explicitlySetInConfig = accessor.isSendClientTelemetryToServiceEnabled(this.clientTelemetryConfig);
+
+
+        if (explicitlySetInConfig != null) {
+            accessor.resetIsSendClientTelemetryToServiceEnabled(this.clientTelemetryConfig);
+        }
+
+        this.clientTelemetryEnabledOverride = clientTelemetryEnabled;
         return this;
     }
 
@@ -746,10 +757,22 @@ public class CosmosClientBuilder implements
      * @return flag to enable client telemetry.
      */
     boolean isClientTelemetryEnabled() {
-        return ImplementationBridgeHelpers
+        Boolean explicitlySetInConfig = ImplementationBridgeHelpers
             .CosmosClientTelemetryConfigHelper
             .getCosmosClientTelemetryConfigAccessor()
-            .isSendClientTelemetryToServiceEnabled(this.clientTelemetryConfig());
+            .isSendClientTelemetryToServiceEnabled(this.clientTelemetryConfig);
+
+        assert(this.clientTelemetryEnabledOverride == null || explicitlySetInConfig == null);
+
+        if (this.clientTelemetryEnabledOverride != null) {
+            return this.clientTelemetryEnabledOverride;
+        }
+
+        if (explicitlySetInConfig != null) {
+            return explicitlySetInConfig;
+        }
+
+        return ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED;
     }
 
     /**
@@ -772,11 +795,29 @@ public class CosmosClientBuilder implements
      * Returns the client telemetry config instance for this builder
      * @return the client telemetry config instance for this builder
      */
-    public CosmosClientTelemetryConfig clientTelemetryConfig() {
-        return ImplementationBridgeHelpers
+    CosmosClientTelemetryConfig getClientTelemetryConfig() {
+        return this.clientTelemetryConfig;
+    }
+
+    /**
+     * Returns the client telemetry config instance for this builder
+     * @return the client telemetry config instance for this builder
+     */
+    public CosmosClientBuilder clientTelemetryConfig(CosmosClientTelemetryConfig telemetryConfig) {
+        ifThrowIllegalArgException(telemetryConfig == null,
+            "Parameter 'telemetryConfig' must not be null.");
+
+        Boolean explicitValueFromConfig = ImplementationBridgeHelpers
             .CosmosClientTelemetryConfigHelper
             .getCosmosClientTelemetryConfigAccessor()
-            .ensureInitialized(this.clientTelemetryConfig, this);
+            .isSendClientTelemetryToServiceEnabled(this.clientTelemetryConfig);
+        if (explicitValueFromConfig != null) {
+            this.clientTelemetryEnabledOverride = null;
+        }
+
+        this.clientTelemetryConfig = telemetryConfig;
+
+        return this;
     }
 
     /**

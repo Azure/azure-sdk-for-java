@@ -263,10 +263,7 @@ public class ResourceTokenTest extends TestSuiteBase {
                             .withPermissionFeed(permissionFeed)
                             .withConnectionPolicy(ConnectionPolicy.getDefaultPolicy())
                             .withConsistencyLevel(ConsistencyLevel.SESSION)
-                            .withClientTelemetryConfig(ImplementationBridgeHelpers
-                                .CosmosClientTelemetryConfigHelper
-                                .getCosmosClientTelemetryConfigAccessor()
-                                .getDefaultConfig())
+                            .withClientTelemetryConfig(new CosmosClientTelemetryConfig())
                             .build();
             Mono<ResourceResponse<DocumentCollection>> readObservable = asyncClientResourceToken
                     .readCollection(collectionUrl, null);
@@ -298,10 +295,7 @@ public class ResourceTokenTest extends TestSuiteBase {
                             .withPermissionFeed(permissionFeed)
                             .withConnectionPolicy(defaultPolicy)
                             .withConsistencyLevel(ConsistencyLevel.SESSION)
-                            .withClientTelemetryConfig(ImplementationBridgeHelpers
-                                .CosmosClientTelemetryConfigHelper
-                                .getCosmosClientTelemetryConfigAccessor()
-                                .getDefaultConfig())
+                            .withClientTelemetryConfig(new CosmosClientTelemetryConfig())
                             .build();
             RequestOptions options = new RequestOptions();
             if (StringUtils.isNotEmpty(partitionKey)) {
@@ -334,10 +328,7 @@ public class ResourceTokenTest extends TestSuiteBase {
                             .withMasterKeyOrResourceToken(resourceToken)
                             .withConnectionPolicy(ConnectionPolicy.getDefaultPolicy())
                             .withConsistencyLevel(ConsistencyLevel.SESSION)
-                            .withClientTelemetryConfig(ImplementationBridgeHelpers
-                                .CosmosClientTelemetryConfigHelper
-                                .getCosmosClientTelemetryConfigAccessor()
-                                .getDefaultConfig())
+                            .withClientTelemetryConfig(new CosmosClientTelemetryConfig())
                             .build();
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(PartitionKey.NONE);
@@ -371,10 +362,7 @@ public class ResourceTokenTest extends TestSuiteBase {
                             .withPermissionFeed(permissionFeed)
                             .withConnectionPolicy(defaultPolicy)
                             .withConsistencyLevel(ConsistencyLevel.SESSION)
-                            .withClientTelemetryConfig(ImplementationBridgeHelpers
-                                .CosmosClientTelemetryConfigHelper
-                                .getCosmosClientTelemetryConfigAccessor()
-                                .getDefaultConfig())
+                            .withClientTelemetryConfig(new CosmosClientTelemetryConfig())
                             .build();
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(new PartitionKey(partitionKey));
@@ -408,10 +396,7 @@ public class ResourceTokenTest extends TestSuiteBase {
                             .withPermissionFeed(permissionFeed)
                             .withConnectionPolicy(defaultPolicy)
                             .withConsistencyLevel(ConsistencyLevel.SESSION)
-                            .withClientTelemetryConfig(ImplementationBridgeHelpers
-                                .CosmosClientTelemetryConfigHelper
-                                .getCosmosClientTelemetryConfigAccessor()
-                                .getDefaultConfig())
+                            .withClientTelemetryConfig(new CosmosClientTelemetryConfig())
                             .build();
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(new PartitionKey(partitionKey));
@@ -441,10 +426,7 @@ public class ResourceTokenTest extends TestSuiteBase {
                 .withConnectionPolicy(ConnectionPolicy.getDefaultPolicy())
                 .withConsistencyLevel(ConsistencyLevel.SESSION)
                 .withPermissionFeed(permissionFeed)
-                .withClientTelemetryConfig(ImplementationBridgeHelpers
-                    .CosmosClientTelemetryConfigHelper
-                    .getCosmosClientTelemetryConfigAccessor()
-                    .getDefaultConfig())
+                .withClientTelemetryConfig(new CosmosClientTelemetryConfig())
                 .build();
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(new PartitionKey(PARTITION_KEY_VALUE_2));
@@ -470,10 +452,7 @@ public class ResourceTokenTest extends TestSuiteBase {
                 .withConnectionPolicy(ConnectionPolicy.getDefaultPolicy())
                 .withConsistencyLevel(ConsistencyLevel.SESSION)
                 .withMasterKeyOrResourceToken(permission.getToken())
-                .withClientTelemetryConfig(ImplementationBridgeHelpers
-                    .CosmosClientTelemetryConfigHelper
-                    .getCosmosClientTelemetryConfigAccessor()
-                    .getDefaultConfig())
+                .withClientTelemetryConfig(new CosmosClientTelemetryConfig())
                 .build();
 
             CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();

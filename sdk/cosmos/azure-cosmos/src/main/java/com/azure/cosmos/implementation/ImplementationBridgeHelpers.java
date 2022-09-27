@@ -1113,10 +1113,12 @@ public class ImplementationBridgeHelpers {
             EnumSet<TagName> getMetricTagNames(CosmosClientTelemetryConfig config);
             String getClientCorrelationId(CosmosClientTelemetryConfig config);
             MeterRegistry getClientMetricRegistry(CosmosClientTelemetryConfig config);
-            boolean isSendClientTelemetryToServiceEnabled(CosmosClientTelemetryConfig config);
-            CosmosClientTelemetryConfig getDefaultConfig();
+            Boolean isSendClientTelemetryToServiceEnabled(CosmosClientTelemetryConfig config);
             boolean isClientMetricsEnabled(CosmosClientTelemetryConfig config);
-            CosmosClientTelemetryConfig ensureInitialized(CosmosClientTelemetryConfig config, CosmosClientBuilder owner);
+            void resetIsSendClientTelemetryToServiceEnabled(CosmosClientTelemetryConfig config);
+            CosmosClientTelemetryConfig createSnapshot(
+                CosmosClientTelemetryConfig config,
+                boolean effectiveIsClientTelemetryEnabled);
         }
     }
 }
