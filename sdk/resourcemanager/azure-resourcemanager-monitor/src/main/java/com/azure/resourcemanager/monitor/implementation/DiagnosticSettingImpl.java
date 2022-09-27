@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.TreeMap;
-
 import reactor.core.publisher.Mono;
 
 /** The Azure metric definition entries are of type DiagnosticSetting. */
