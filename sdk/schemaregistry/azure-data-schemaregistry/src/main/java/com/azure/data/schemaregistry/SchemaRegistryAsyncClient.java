@@ -286,25 +286,34 @@ public final class SchemaRegistryAsyncClient {
             return monoError(logger, new NullPointerException("'groupName' should not be null."));
         }
 
-        // return this.restService.getSchemas().getByIdWithResponseAsync(schemaId, context)
-        //     .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
-        //     .handle((response, sink) -> {
-        //         final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(response);
-        //         final String schema;
-        //
-        //         try {
-        //             schema = convertToString(response.getValue());
-        //         } catch (UncheckedIOException e) {
-        //             sink.error(e);
-        //             return;
-        //         }
-        //
-        //         sink.next(new SimpleResponse<>(
-        //             response.getRequest(), response.getStatusCode(),
-        //             response.getHeaders(), new SchemaRegistrySchema(schemaObject, schema)));
-        //         sink.complete();
-        //     });
-        return Mono.empty();
+        return this.restService.getSchemas().getSchemaVersionWithResponseAsync(groupName, schemaName, schemaVersion,
+                context)
+            .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
+            .handle((response, sink) -> {
+                final InputStream schemaInputStream = response.getValue();
+                final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(response);
+                final String schema;
+
+                if (schemaInputStream == null) {
+                    sink.error(new IllegalArgumentException(String.format(
+                        "Schema definition should not be null. Group Name: %s. Schema Name: %s. Version: %d",
+                        groupName, schemaName, schemaVersion)));
+
+                    return;
+                }
+
+                try {
+                    schema = convertToString(schemaInputStream);
+                } catch (UncheckedIOException e) {
+                    sink.error(e);
+                    return;
+                }
+
+                sink.next(new SimpleResponse<>(
+                    response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), new SchemaRegistrySchema(schemaObject, schema)));
+                sink.complete();
+            });
     }
 
     /**

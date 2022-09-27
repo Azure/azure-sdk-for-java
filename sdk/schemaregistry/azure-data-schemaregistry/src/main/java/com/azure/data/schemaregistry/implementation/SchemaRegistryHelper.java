@@ -4,6 +4,8 @@ package com.azure.data.schemaregistry.implementation;
 
 import com.azure.data.schemaregistry.implementation.models.SchemasGetByIdHeaders;
 import com.azure.data.schemaregistry.implementation.models.SchemasGetByIdResponse;
+import com.azure.data.schemaregistry.implementation.models.SchemasGetSchemaVersionHeaders;
+import com.azure.data.schemaregistry.implementation.models.SchemasGetSchemaVersionResponse;
 import com.azure.data.schemaregistry.implementation.models.SchemasQueryIdByContentHeaders;
 import com.azure.data.schemaregistry.implementation.models.SchemasQueryIdByContentResponse;
 import com.azure.data.schemaregistry.implementation.models.SchemasRegisterHeaders;
@@ -56,5 +58,13 @@ public final class SchemaRegistryHelper {
         return accessor.getSchemaProperties(headers.getSchemaId(), SchemaFormat.AVRO, headers.getSchemaGroupName(),
             headers.getSchemaName(), headers.getSchemaVersion());
     }
+
+    public static SchemaProperties getSchemaProperties(SchemasGetSchemaVersionResponse response) {
+        final SchemasGetSchemaVersionHeaders headers = response.getDeserializedHeaders();
+
+        return accessor.getSchemaProperties(headers.getSchemaId(), SchemaFormat.AVRO, headers.getSchemaGroupName(),
+            headers.getSchemaName(), headers.getSchemaVersion());
+    }
+
 }
 
