@@ -650,9 +650,11 @@ public class CosmosClientBuilder implements
 
         Boolean explicitlySetInConfig = accessor.isSendClientTelemetryToServiceEnabled(this.clientTelemetryConfig);
 
-
         if (explicitlySetInConfig != null) {
-            accessor.resetIsSendClientTelemetryToServiceEnabled(this.clientTelemetryConfig);
+            CosmosClientTelemetryConfig newTelemetryConfig = accessor
+                .createSnapshot(this.clientTelemetryConfig, clientTelemetryEnabled);
+            accessor.resetIsSendClientTelemetryToServiceEnabled(newTelemetryConfig);
+            this.clientTelemetryConfig = newTelemetryConfig;
         }
 
         this.clientTelemetryEnabledOverride = clientTelemetryEnabled;
@@ -810,7 +812,7 @@ public class CosmosClientBuilder implements
         Boolean explicitValueFromConfig = ImplementationBridgeHelpers
             .CosmosClientTelemetryConfigHelper
             .getCosmosClientTelemetryConfigAccessor()
-            .isSendClientTelemetryToServiceEnabled(this.clientTelemetryConfig);
+            .isSendClientTelemetryToServiceEnabled(telemetryConfig);
         if (explicitValueFromConfig != null) {
             this.clientTelemetryEnabledOverride = null;
         }
