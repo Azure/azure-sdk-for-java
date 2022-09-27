@@ -36,7 +36,10 @@ public final class MediaServicesOperationResultsGetHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public MediaServicesOperationResultsGetHeaders(HttpHeaders rawHeaders) {
-        this.retryAfter = Integer.parseInt(rawHeaders.getValue("Retry-After"));
+        String retryAfter = rawHeaders.getValue("Retry-After");
+        if (retryAfter != null) {
+            this.retryAfter = Integer.parseInt(retryAfter);
+        }
         this.azureAsyncOperation = rawHeaders.getValue("Azure-AsyncOperation");
         this.location = rawHeaders.getValue("Location");
     }

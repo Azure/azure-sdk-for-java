@@ -26,6 +26,10 @@ public final class StreamingPolicyFairPlayConfiguration {
     @JsonProperty(value = "allowPersistentLicense", required = true)
     private boolean allowPersistentLicense;
 
+    /** Creates an instance of StreamingPolicyFairPlayConfiguration class. */
+    public StreamingPolicyFairPlayConfiguration() {
+    }
+
     /**
      * Get the customLicenseAcquisitionUrlTemplate property: Template for the URL of the custom service delivering
      * licenses to end user players. Not required when using Azure Media Services for issuing licenses. The template

@@ -26,6 +26,10 @@ public final class StreamingPolicyPlayReadyConfiguration {
     @JsonProperty(value = "playReadyCustomAttributes")
     private String playReadyCustomAttributes;
 
+    /** Creates an instance of StreamingPolicyPlayReadyConfiguration class. */
+    public StreamingPolicyPlayReadyConfiguration() {
+    }
+
     /**
      * Get the customLicenseAcquisitionUrlTemplate property: Template for the URL of the custom service delivering
      * licenses to end user players. Not required when using Azure Media Services for issuing licenses. The template

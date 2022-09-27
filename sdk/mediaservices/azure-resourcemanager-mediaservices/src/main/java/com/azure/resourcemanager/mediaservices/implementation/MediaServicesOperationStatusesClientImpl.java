@@ -193,23 +193,6 @@ public final class MediaServicesOperationStatusesClientImpl implements MediaServ
      *
      * @param locationName Location name.
      * @param operationId Operation ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return media service operation status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MediaServiceOperationStatusInner get(String locationName, String operationId) {
-        return getAsync(locationName, operationId).block();
-    }
-
-    /**
-     * Get operation status.
-     *
-     * <p>Get media service operation status.
-     *
-     * @param locationName Location name.
-     * @param operationId Operation ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -220,5 +203,22 @@ public final class MediaServicesOperationStatusesClientImpl implements MediaServ
     public Response<MediaServiceOperationStatusInner> getWithResponse(
         String locationName, String operationId, Context context) {
         return getWithResponseAsync(locationName, operationId, context).block();
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get media service operation status.
+     *
+     * @param locationName Location name.
+     * @param operationId Operation ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return media service operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MediaServiceOperationStatusInner get(String locationName, String operationId) {
+        return getWithResponse(locationName, operationId, Context.NONE).getValue();
     }
 }

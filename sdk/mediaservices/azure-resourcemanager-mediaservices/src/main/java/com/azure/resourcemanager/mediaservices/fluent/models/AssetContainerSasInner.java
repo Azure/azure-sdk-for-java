@@ -17,6 +17,10 @@ public final class AssetContainerSasInner {
     @JsonProperty(value = "assetContainerSasUrls")
     private List<String> assetContainerSasUrls;
 
+    /** Creates an instance of AssetContainerSasInner class. */
+    public AssetContainerSasInner() {
+    }
+
     /**
      * Get the assetContainerSasUrls property: The list of Asset container SAS URLs.
      *

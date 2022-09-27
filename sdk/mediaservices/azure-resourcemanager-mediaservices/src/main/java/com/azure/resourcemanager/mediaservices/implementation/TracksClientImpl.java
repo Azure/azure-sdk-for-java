@@ -515,14 +515,16 @@ public final class TracksClientImpl implements TracksClient {
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
      * @param trackName The Asset Track name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Track in the Asset.
+     * @return the details of a Track in the Asset along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssetTrackInner get(String resourceGroupName, String accountName, String assetName, String trackName) {
-        return getAsync(resourceGroupName, accountName, assetName, trackName).block();
+    public Response<AssetTrackInner> getWithResponse(
+        String resourceGroupName, String accountName, String assetName, String trackName, Context context) {
+        return getWithResponseAsync(resourceGroupName, accountName, assetName, trackName, context).block();
     }
 
     /**
@@ -534,16 +536,14 @@ public final class TracksClientImpl implements TracksClient {
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
      * @param trackName The Asset Track name.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Track in the Asset along with {@link Response}.
+     * @return the details of a Track in the Asset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AssetTrackInner> getWithResponse(
-        String resourceGroupName, String accountName, String assetName, String trackName, Context context) {
-        return getWithResponseAsync(resourceGroupName, accountName, assetName, trackName, context).block();
+    public AssetTrackInner get(String resourceGroupName, String accountName, String assetName, String trackName) {
+        return getWithResponse(resourceGroupName, accountName, assetName, trackName, Context.NONE).getValue();
     }
 
     /**

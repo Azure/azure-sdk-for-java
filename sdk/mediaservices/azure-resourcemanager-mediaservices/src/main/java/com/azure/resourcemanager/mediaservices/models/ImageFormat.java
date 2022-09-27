@@ -22,6 +22,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class ImageFormat extends Format {
+    /** Creates an instance of ImageFormat class. */
+    public ImageFormat() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public ImageFormat withFilenamePattern(String filenamePattern) {

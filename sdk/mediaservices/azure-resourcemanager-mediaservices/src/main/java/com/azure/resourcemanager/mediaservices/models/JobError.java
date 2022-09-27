@@ -42,6 +42,10 @@ public final class JobError {
     @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
     private List<JobErrorDetail> details;
 
+    /** Creates an instance of JobError class. */
+    public JobError() {
+    }
+
     /**
      * Get the code property: Error code describing the error.
      *

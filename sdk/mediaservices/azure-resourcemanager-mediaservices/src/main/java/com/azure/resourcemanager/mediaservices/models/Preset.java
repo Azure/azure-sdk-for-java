@@ -28,6 +28,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class Preset {
+    /** Creates an instance of Preset class. */
+    public Preset() {
+    }
+
     /**
      * Validates the instance.
      *

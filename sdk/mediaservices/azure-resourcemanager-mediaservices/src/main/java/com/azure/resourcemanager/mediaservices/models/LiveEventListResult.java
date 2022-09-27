@@ -34,6 +34,10 @@ public final class LiveEventListResult {
     @JsonProperty(value = "@odata.nextLink")
     private String odataNextLink;
 
+    /** Creates an instance of LiveEventListResult class. */
+    public LiveEventListResult() {
+    }
+
     /**
      * Get the value property: The result of the List Live Event operation.
      *

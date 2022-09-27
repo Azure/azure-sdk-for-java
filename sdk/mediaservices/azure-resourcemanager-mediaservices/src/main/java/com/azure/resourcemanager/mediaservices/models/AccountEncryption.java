@@ -35,6 +35,10 @@ public final class AccountEncryption {
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
+    /** Creates an instance of AccountEncryption class. */
+    public AccountEncryption() {
+    }
+
     /**
      * Get the type property: The type of key used to encrypt the Account Key.
      *

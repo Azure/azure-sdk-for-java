@@ -14,6 +14,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Immutable
 public final class ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader
     extends ContentKeyPolicyPlayReadyContentKeyLocation {
+    /** Creates an instance of ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader class. */
+    public ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader() {
+    }
+
     /**
      * Validates the instance.
      *

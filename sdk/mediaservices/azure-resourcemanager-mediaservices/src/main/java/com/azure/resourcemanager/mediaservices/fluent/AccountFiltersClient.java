@@ -52,22 +52,6 @@ public interface AccountFiltersClient {
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of an Account Filter in the Media Services account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AccountFilterInner get(String resourceGroupName, String accountName, String filterName);
-
-    /**
-     * Get an Account Filter.
-     *
-     * <p>Get the details of an Account Filter in the Media Services account.
-     *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param filterName The Account Filter name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -79,22 +63,20 @@ public interface AccountFiltersClient {
         String resourceGroupName, String accountName, String filterName, Context context);
 
     /**
-     * Create or update an Account Filter
+     * Get an Account Filter.
      *
-     * <p>Creates or updates an Account Filter in the Media Services account.
+     * <p>Get the details of an Account Filter in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.
-     * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Account Filter.
+     * @return the details of an Account Filter in the Media Services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AccountFilterInner createOrUpdate(
-        String resourceGroupName, String accountName, String filterName, AccountFilterInner parameters);
+    AccountFilterInner get(String resourceGroupName, String accountName, String filterName);
 
     /**
      * Create or update an Account Filter
@@ -120,19 +102,22 @@ public interface AccountFiltersClient {
         Context context);
 
     /**
-     * Delete an Account Filter.
+     * Create or update an Account Filter
      *
-     * <p>Deletes an Account Filter in the Media Services account.
+     * <p>Creates or updates an Account Filter in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.
+     * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Account Filter.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String accountName, String filterName);
+    AccountFilterInner createOrUpdate(
+        String resourceGroupName, String accountName, String filterName, AccountFilterInner parameters);
 
     /**
      * Delete an Account Filter.
@@ -152,22 +137,19 @@ public interface AccountFiltersClient {
     Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String filterName, Context context);
 
     /**
-     * Update an Account Filter
+     * Delete an Account Filter.
      *
-     * <p>Updates an existing Account Filter in the Media Services account.
+     * <p>Deletes an Account Filter in the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.
-     * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Account Filter.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AccountFilterInner update(
-        String resourceGroupName, String accountName, String filterName, AccountFilterInner parameters);
+    void delete(String resourceGroupName, String accountName, String filterName);
 
     /**
      * Update an Account Filter
@@ -191,4 +173,22 @@ public interface AccountFiltersClient {
         String filterName,
         AccountFilterInner parameters,
         Context context);
+
+    /**
+     * Update an Account Filter
+     *
+     * <p>Updates an existing Account Filter in the Media Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param filterName The Account Filter name.
+     * @param parameters The request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Account Filter.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AccountFilterInner update(
+        String resourceGroupName, String accountName, String filterName, AccountFilterInner parameters);
 }

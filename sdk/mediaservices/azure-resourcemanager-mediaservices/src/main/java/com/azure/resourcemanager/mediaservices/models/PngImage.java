@@ -22,6 +22,10 @@ public final class PngImage extends Image {
     @JsonProperty(value = "layers")
     private List<PngLayer> layers;
 
+    /** Creates an instance of PngImage class. */
+    public PngImage() {
+    }
+
     /**
      * Get the layers property: A collection of output PNG image layers to be produced by the encoder.
      *

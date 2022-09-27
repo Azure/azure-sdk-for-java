@@ -33,6 +33,10 @@ public final class LiveEventInputTrackSelection {
     @JsonProperty(value = "value")
     private String value;
 
+    /** Creates an instance of LiveEventInputTrackSelection class. */
+    public LiveEventInputTrackSelection() {
+    }
+
     /**
      * Get the property property: Property name to select. This property is reserved for future use, any value set on
      * this property will be ignored.

@@ -26,6 +26,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class ContentKeyPolicyPlayReadyContentKeyLocation {
+    /** Creates an instance of ContentKeyPolicyPlayReadyContentKeyLocation class. */
+    public ContentKeyPolicyPlayReadyContentKeyLocation() {
+    }
+
     /**
      * Validates the instance.
      *

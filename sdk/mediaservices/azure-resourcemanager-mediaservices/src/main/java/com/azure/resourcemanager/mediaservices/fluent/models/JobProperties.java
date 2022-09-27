@@ -81,6 +81,10 @@ public final class JobProperties {
     @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTime;
 
+    /** Creates an instance of JobProperties class. */
+    public JobProperties() {
+    }
+
     /**
      * Get the created property: The UTC date and time when the customer has created the Job, in 'YYYY-MM-DDThh:mm:ssZ'
      * format.

@@ -25,6 +25,10 @@ public final class MediaServiceCollection {
     @JsonProperty(value = "@odata.nextLink")
     private String odataNextLink;
 
+    /** Creates an instance of MediaServiceCollection class. */
+    public MediaServiceCollection() {
+    }
+
     /**
      * Get the value property: A collection of MediaService items.
      *

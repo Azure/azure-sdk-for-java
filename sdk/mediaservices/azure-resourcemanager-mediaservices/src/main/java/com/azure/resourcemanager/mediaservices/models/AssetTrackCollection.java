@@ -18,6 +18,10 @@ public final class AssetTrackCollection {
     @JsonProperty(value = "value")
     private List<AssetTrackInner> value;
 
+    /** Creates an instance of AssetTrackCollection class. */
+    public AssetTrackCollection() {
+    }
+
     /**
      * Get the value property: A collection of AssetTrack items.
      *

@@ -29,6 +29,10 @@ public final class VideoAnalyzerPreset extends AudioAnalyzerPreset {
     @JsonProperty(value = "insightsToExtract")
     private InsightsType insightsToExtract;
 
+    /** Creates an instance of VideoAnalyzerPreset class. */
+    public VideoAnalyzerPreset() {
+    }
+
     /**
      * Get the insightsToExtract property: Defines the type of insights that you want the service to generate. The
      * allowed values are 'AudioInsightsOnly', 'VideoInsightsOnly', and 'AllInsights'. The default is AllInsights. If

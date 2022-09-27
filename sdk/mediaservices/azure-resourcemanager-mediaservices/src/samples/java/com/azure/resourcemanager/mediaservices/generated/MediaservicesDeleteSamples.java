@@ -18,6 +18,6 @@ public final class MediaservicesDeleteSamples {
      */
     public static void deleteAMediaServicesAccount(
         com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
-        manager.mediaservices().deleteWithResponse("contoso", "contososports", Context.NONE);
+        manager.mediaservices().deleteByResourceGroupWithResponse("contoso", "contososports", Context.NONE);
     }
 }

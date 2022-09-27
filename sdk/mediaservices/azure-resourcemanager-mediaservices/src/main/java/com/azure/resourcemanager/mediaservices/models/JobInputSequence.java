@@ -24,6 +24,10 @@ public final class JobInputSequence extends JobInput {
     @JsonProperty(value = "inputs")
     private List<JobInputClip> inputs;
 
+    /** Creates an instance of JobInputSequence class. */
+    public JobInputSequence() {
+    }
+
     /**
      * Get the inputs property: JobInputs that make up the timeline.
      *

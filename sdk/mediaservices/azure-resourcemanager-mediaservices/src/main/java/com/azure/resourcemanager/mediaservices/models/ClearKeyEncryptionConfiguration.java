@@ -19,6 +19,10 @@ public final class ClearKeyEncryptionConfiguration {
     @JsonProperty(value = "customKeysAcquisitionUrlTemplate")
     private String customKeysAcquisitionUrlTemplate;
 
+    /** Creates an instance of ClearKeyEncryptionConfiguration class. */
+    public ClearKeyEncryptionConfiguration() {
+    }
+
     /**
      * Get the customKeysAcquisitionUrlTemplate property: Template for the URL of the custom service delivering content
      * keys to end user players. Not required when using Azure Media Services for issuing licenses. The template

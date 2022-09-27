@@ -54,6 +54,10 @@ public class VideoLayer extends Layer {
     @JsonProperty(value = "adaptiveBFrame")
     private Boolean adaptiveBFrame;
 
+    /** Creates an instance of VideoLayer class. */
+    public VideoLayer() {
+    }
+
     /**
      * Get the bitrate property: The average bitrate in bits per second at which to encode the input video when
      * generating this layer. This is a required field.

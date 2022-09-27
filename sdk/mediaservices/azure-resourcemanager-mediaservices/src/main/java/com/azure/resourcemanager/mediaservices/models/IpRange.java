@@ -28,6 +28,10 @@ public final class IpRange {
     @JsonProperty(value = "subnetPrefixLength")
     private Integer subnetPrefixLength;
 
+    /** Creates an instance of IpRange class. */
+    public IpRange() {
+    }
+
     /**
      * Get the name property: The friendly name for the IP address range.
      *

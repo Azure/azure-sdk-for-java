@@ -23,6 +23,10 @@ public final class JobInputHttp extends JobInputClip {
     @JsonProperty(value = "baseUri")
     private String baseUri;
 
+    /** Creates an instance of JobInputHttp class. */
+    public JobInputHttp() {
+    }
+
     /**
      * Get the baseUri property: Base URI for HTTPS job input. It will be concatenated with provided file names. If no
      * base uri is given, then the provided file list is assumed to be fully qualified uris. Maximum length of 4000

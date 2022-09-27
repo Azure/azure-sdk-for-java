@@ -22,6 +22,10 @@ public final class ContentKeyPolicySymmetricTokenKey extends ContentKeyPolicyRes
     @JsonProperty(value = "keyValue", required = true)
     private byte[] keyValue;
 
+    /** Creates an instance of ContentKeyPolicySymmetricTokenKey class. */
+    public ContentKeyPolicySymmetricTokenKey() {
+    }
+
     /**
      * Get the keyValue property: The key value of the key.
      *

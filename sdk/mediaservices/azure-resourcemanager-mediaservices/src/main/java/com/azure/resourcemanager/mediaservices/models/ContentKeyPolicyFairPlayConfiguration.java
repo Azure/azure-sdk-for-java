@@ -52,6 +52,10 @@ public final class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolic
     @JsonProperty(value = "offlineRentalConfiguration")
     private ContentKeyPolicyFairPlayOfflineRentalConfiguration offlineRentalConfiguration;
 
+    /** Creates an instance of ContentKeyPolicyFairPlayConfiguration class. */
+    public ContentKeyPolicyFairPlayConfiguration() {
+    }
+
     /**
      * Get the ask property: The key that must be used as FairPlay Application Secret key.
      *

@@ -40,6 +40,10 @@ public final class MediaServiceInner extends Resource {
     @JsonProperty(value = "identity")
     private MediaServiceIdentity identity;
 
+    /** Creates an instance of MediaServiceInner class. */
+    public MediaServiceInner() {
+    }
+
     /**
      * Get the innerProperties property: The resource properties.
      *

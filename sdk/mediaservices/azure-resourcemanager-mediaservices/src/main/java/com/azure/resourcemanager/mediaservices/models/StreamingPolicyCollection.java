@@ -25,6 +25,10 @@ public final class StreamingPolicyCollection {
     @JsonProperty(value = "@odata.nextLink")
     private String odataNextLink;
 
+    /** Creates an instance of StreamingPolicyCollection class. */
+    public StreamingPolicyCollection() {
+    }
+
     /**
      * Get the value property: A collection of StreamingPolicy items.
      *

@@ -25,6 +25,10 @@ public final class JobCollection {
     @JsonProperty(value = "@odata.nextLink")
     private String odataNextLink;
 
+    /** Creates an instance of JobCollection class. */
+    public JobCollection() {
+    }
+
     /**
      * Get the value property: A collection of Job items.
      *

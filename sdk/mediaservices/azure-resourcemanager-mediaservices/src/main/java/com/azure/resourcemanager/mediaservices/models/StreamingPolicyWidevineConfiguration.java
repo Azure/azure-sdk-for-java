@@ -20,6 +20,10 @@ public final class StreamingPolicyWidevineConfiguration {
     @JsonProperty(value = "customLicenseAcquisitionUrlTemplate")
     private String customLicenseAcquisitionUrlTemplate;
 
+    /** Creates an instance of StreamingPolicyWidevineConfiguration class. */
+    public StreamingPolicyWidevineConfiguration() {
+    }
+
     /**
      * Get the customLicenseAcquisitionUrlTemplate property: Template for the URL of the custom service delivering
      * licenses to end user players. Not required when using Azure Media Services for issuing licenses. The template

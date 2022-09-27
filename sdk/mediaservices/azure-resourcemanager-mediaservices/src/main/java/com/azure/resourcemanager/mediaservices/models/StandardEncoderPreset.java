@@ -34,6 +34,10 @@ public final class StandardEncoderPreset extends Preset {
     @JsonProperty(value = "formats", required = true)
     private List<Format> formats;
 
+    /** Creates an instance of StandardEncoderPreset class. */
+    public StandardEncoderPreset() {
+    }
+
     /**
      * Get the filters property: One or more filtering operations that are applied to the input media before encoding.
      *

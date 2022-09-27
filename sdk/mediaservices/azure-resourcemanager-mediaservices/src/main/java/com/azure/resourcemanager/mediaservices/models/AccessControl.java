@@ -24,6 +24,10 @@ public final class AccessControl {
     @JsonProperty(value = "ipAllowList")
     private List<String> ipAllowList;
 
+    /** Creates an instance of AccessControl class. */
+    public AccessControl() {
+    }
+
     /**
      * Get the defaultAction property: The behavior for IP access control in Key Delivery.
      *

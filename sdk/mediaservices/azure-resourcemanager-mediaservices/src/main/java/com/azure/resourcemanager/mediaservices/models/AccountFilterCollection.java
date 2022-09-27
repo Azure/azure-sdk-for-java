@@ -25,6 +25,10 @@ public final class AccountFilterCollection {
     @JsonProperty(value = "@odata.nextLink")
     private String odataNextLink;
 
+    /** Creates an instance of AccountFilterCollection class. */
+    public AccountFilterCollection() {
+    }
+
     /**
      * Get the value property: A collection of AccountFilter items.
      *

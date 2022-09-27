@@ -44,15 +44,6 @@ public final class StreamingLocatorsImpl implements StreamingLocators {
         return Utils.mapPage(inner, inner1 -> new StreamingLocatorImpl(inner1, this.manager()));
     }
 
-    public StreamingLocator get(String resourceGroupName, String accountName, String streamingLocatorName) {
-        StreamingLocatorInner inner = this.serviceClient().get(resourceGroupName, accountName, streamingLocatorName);
-        if (inner != null) {
-            return new StreamingLocatorImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<StreamingLocator> getWithResponse(
         String resourceGroupName, String accountName, String streamingLocatorName, Context context) {
         Response<StreamingLocatorInner> inner =
@@ -68,8 +59,13 @@ public final class StreamingLocatorsImpl implements StreamingLocators {
         }
     }
 
-    public void delete(String resourceGroupName, String accountName, String streamingLocatorName) {
-        this.serviceClient().delete(resourceGroupName, accountName, streamingLocatorName);
+    public StreamingLocator get(String resourceGroupName, String accountName, String streamingLocatorName) {
+        StreamingLocatorInner inner = this.serviceClient().get(resourceGroupName, accountName, streamingLocatorName);
+        if (inner != null) {
+            return new StreamingLocatorImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -77,15 +73,8 @@ public final class StreamingLocatorsImpl implements StreamingLocators {
         return this.serviceClient().deleteWithResponse(resourceGroupName, accountName, streamingLocatorName, context);
     }
 
-    public ListContentKeysResponse listContentKeys(
-        String resourceGroupName, String accountName, String streamingLocatorName) {
-        ListContentKeysResponseInner inner =
-            this.serviceClient().listContentKeys(resourceGroupName, accountName, streamingLocatorName);
-        if (inner != null) {
-            return new ListContentKeysResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String accountName, String streamingLocatorName) {
+        this.serviceClient().delete(resourceGroupName, accountName, streamingLocatorName);
     }
 
     public Response<ListContentKeysResponse> listContentKeysWithResponse(
@@ -105,11 +94,12 @@ public final class StreamingLocatorsImpl implements StreamingLocators {
         }
     }
 
-    public ListPathsResponse listPaths(String resourceGroupName, String accountName, String streamingLocatorName) {
-        ListPathsResponseInner inner =
-            this.serviceClient().listPaths(resourceGroupName, accountName, streamingLocatorName);
+    public ListContentKeysResponse listContentKeys(
+        String resourceGroupName, String accountName, String streamingLocatorName) {
+        ListContentKeysResponseInner inner =
+            this.serviceClient().listContentKeys(resourceGroupName, accountName, streamingLocatorName);
         if (inner != null) {
-            return new ListPathsResponseImpl(inner, this.manager());
+            return new ListContentKeysResponseImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -125,6 +115,16 @@ public final class StreamingLocatorsImpl implements StreamingLocators {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ListPathsResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ListPathsResponse listPaths(String resourceGroupName, String accountName, String streamingLocatorName) {
+        ListPathsResponseInner inner =
+            this.serviceClient().listPaths(resourceGroupName, accountName, streamingLocatorName);
+        if (inner != null) {
+            return new ListPathsResponseImpl(inner, this.manager());
         } else {
             return null;
         }

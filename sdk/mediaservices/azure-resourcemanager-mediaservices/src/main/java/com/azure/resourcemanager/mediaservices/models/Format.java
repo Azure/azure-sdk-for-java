@@ -38,6 +38,10 @@ public class Format {
     @JsonProperty(value = "filenamePattern", required = true)
     private String filenamePattern;
 
+    /** Creates an instance of Format class. */
+    public Format() {
+    }
+
     /**
      * Get the filenamePattern property: The pattern of the file names for the generated output files. The following
      * macros are supported in the file name: {Basename} - An expansion macro that will use the name of the input video

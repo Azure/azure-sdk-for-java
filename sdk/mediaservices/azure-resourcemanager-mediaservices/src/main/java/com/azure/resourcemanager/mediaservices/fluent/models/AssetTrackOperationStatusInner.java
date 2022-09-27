@@ -49,6 +49,10 @@ public final class AssetTrackOperationStatusInner {
     @JsonProperty(value = "error")
     private ManagementError error;
 
+    /** Creates an instance of AssetTrackOperationStatusInner class. */
+    public AssetTrackOperationStatusInner() {
+    }
+
     /**
      * Get the name property: Operation identifier.
      *

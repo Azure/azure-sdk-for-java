@@ -38,6 +38,10 @@ public final class Rectangle {
     @JsonProperty(value = "height")
     private String height;
 
+    /** Creates an instance of Rectangle class. */
+    public Rectangle() {
+    }
+
     /**
      * Get the left property: The number of pixels from the left-margin. This can be absolute pixel value (e.g 100), or
      * relative to the size of the video (For example, 50%).

@@ -40,15 +40,6 @@ public final class StreamingPoliciesImpl implements StreamingPolicies {
         return Utils.mapPage(inner, inner1 -> new StreamingPolicyImpl(inner1, this.manager()));
     }
 
-    public StreamingPolicy get(String resourceGroupName, String accountName, String streamingPolicyName) {
-        StreamingPolicyInner inner = this.serviceClient().get(resourceGroupName, accountName, streamingPolicyName);
-        if (inner != null) {
-            return new StreamingPolicyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<StreamingPolicy> getWithResponse(
         String resourceGroupName, String accountName, String streamingPolicyName, Context context) {
         Response<StreamingPolicyInner> inner =
@@ -64,13 +55,22 @@ public final class StreamingPoliciesImpl implements StreamingPolicies {
         }
     }
 
-    public void delete(String resourceGroupName, String accountName, String streamingPolicyName) {
-        this.serviceClient().delete(resourceGroupName, accountName, streamingPolicyName);
+    public StreamingPolicy get(String resourceGroupName, String accountName, String streamingPolicyName) {
+        StreamingPolicyInner inner = this.serviceClient().get(resourceGroupName, accountName, streamingPolicyName);
+        if (inner != null) {
+            return new StreamingPolicyImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String accountName, String streamingPolicyName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, accountName, streamingPolicyName, context);
+    }
+
+    public void delete(String resourceGroupName, String accountName, String streamingPolicyName) {
+        this.serviceClient().delete(resourceGroupName, accountName, streamingPolicyName);
     }
 
     public StreamingPolicy getById(String id) {
