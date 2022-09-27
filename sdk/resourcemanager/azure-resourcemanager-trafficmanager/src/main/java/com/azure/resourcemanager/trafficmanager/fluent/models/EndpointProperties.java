@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.trafficmanager.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.trafficmanager.models.EndpointMonitorStatus;
 import com.azure.resourcemanager.trafficmanager.models.EndpointPropertiesCustomHeadersItem;
 import com.azure.resourcemanager.trafficmanager.models.EndpointPropertiesSubnetsItem;
@@ -13,26 +12,85 @@ import com.azure.resourcemanager.trafficmanager.models.EndpointStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Class representing a Traffic Manager endpoint. */
+/** Class representing a Traffic Manager endpoint properties. */
 @Fluent
-public final class EndpointInner extends ProxyResource {
+public final class EndpointProperties {
     /*
-     * The properties of the Traffic Manager endpoint.
+     * The Azure Resource URI of the of the endpoint. Not applicable to endpoints of type 'ExternalEndpoints'.
      */
-    @JsonProperty(value = "properties")
-    private EndpointProperties innerProperties;
+    @JsonProperty(value = "targetResourceId")
+    private String targetResourceId;
 
-    /** Creates an instance of EndpointInner class. */
-    public EndpointInner() {
-    }
-
-    /**
-     * Get the innerProperties property: The properties of the Traffic Manager endpoint.
-     *
-     * @return the innerProperties value.
+    /*
+     * The fully-qualified DNS name or IP address of the endpoint. Traffic Manager returns this value in DNS responses
+     * to direct traffic to this endpoint.
      */
-    private EndpointProperties innerProperties() {
-        return this.innerProperties;
+    @JsonProperty(value = "target")
+    private String target;
+
+    /*
+     * The status of the endpoint. If the endpoint is Enabled, it is probed for endpoint health and is included in the
+     * traffic routing method.
+     */
+    @JsonProperty(value = "endpointStatus")
+    private EndpointStatus endpointStatus;
+
+    /*
+     * The weight of this endpoint when using the 'Weighted' traffic routing method. Possible values are from 1 to
+     * 1000.
+     */
+    @JsonProperty(value = "weight")
+    private Long weight;
+
+    /*
+     * The priority of this endpoint when using the 'Priority' traffic routing method. Possible values are from 1 to
+     * 1000, lower values represent higher priority. This is an optional parameter.  If specified, it must be specified
+     * on all endpoints, and no two endpoints can share the same priority value.
+     */
+    @JsonProperty(value = "priority")
+    private Long priority;
+
+    /*
+     * Specifies the location of the external or nested endpoints when using the 'Performance' traffic routing method.
+     */
+    @JsonProperty(value = "endpointLocation")
+    private String endpointLocation;
+
+    /*
+     * The monitoring status of the endpoint.
+     */
+    @JsonProperty(value = "endpointMonitorStatus")
+    private EndpointMonitorStatus endpointMonitorStatus;
+
+    /*
+     * The minimum number of endpoints that must be available in the child profile in order for the parent profile to
+     * be considered available. Only applicable to endpoint of type 'NestedEndpoints'.
+     */
+    @JsonProperty(value = "minChildEndpoints")
+    private Long minChildEndpoints;
+
+    /*
+     * The list of countries/regions mapped to this endpoint when using the 'Geographic' traffic routing method. Please
+     * consult Traffic Manager Geographic documentation for a full list of accepted values.
+     */
+    @JsonProperty(value = "geoMapping")
+    private List<String> geoMapping;
+
+    /*
+     * The list of subnets, IP addresses, and/or address ranges mapped to this endpoint when using the 'Subnet' traffic
+     * routing method. An empty list will match all ranges not covered by other endpoints.
+     */
+    @JsonProperty(value = "subnets")
+    private List<EndpointPropertiesSubnetsItem> subnets;
+
+    /*
+     * List of custom headers.
+     */
+    @JsonProperty(value = "customHeaders")
+    private List<EndpointPropertiesCustomHeadersItem> customHeaders;
+
+    /** Creates an instance of EndpointProperties class. */
+    public EndpointProperties() {
     }
 
     /**
@@ -42,7 +100,7 @@ public final class EndpointInner extends ProxyResource {
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
-        return this.innerProperties() == null ? null : this.innerProperties().targetResourceId();
+        return this.targetResourceId;
     }
 
     /**
@@ -50,13 +108,10 @@ public final class EndpointInner extends ProxyResource {
      * type 'ExternalEndpoints'.
      *
      * @param targetResourceId the targetResourceId value to set.
-     * @return the EndpointInner object itself.
+     * @return the EndpointProperties object itself.
      */
-    public EndpointInner withTargetResourceId(String targetResourceId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new EndpointProperties();
-        }
-        this.innerProperties().withTargetResourceId(targetResourceId);
+    public EndpointProperties withTargetResourceId(String targetResourceId) {
+        this.targetResourceId = targetResourceId;
         return this;
     }
 
@@ -67,7 +122,7 @@ public final class EndpointInner extends ProxyResource {
      * @return the target value.
      */
     public String target() {
-        return this.innerProperties() == null ? null : this.innerProperties().target();
+        return this.target;
     }
 
     /**
@@ -75,13 +130,10 @@ public final class EndpointInner extends ProxyResource {
      * value in DNS responses to direct traffic to this endpoint.
      *
      * @param target the target value to set.
-     * @return the EndpointInner object itself.
+     * @return the EndpointProperties object itself.
      */
-    public EndpointInner withTarget(String target) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new EndpointProperties();
-        }
-        this.innerProperties().withTarget(target);
+    public EndpointProperties withTarget(String target) {
+        this.target = target;
         return this;
     }
 
@@ -92,7 +144,7 @@ public final class EndpointInner extends ProxyResource {
      * @return the endpointStatus value.
      */
     public EndpointStatus endpointStatus() {
-        return this.innerProperties() == null ? null : this.innerProperties().endpointStatus();
+        return this.endpointStatus;
     }
 
     /**
@@ -100,13 +152,10 @@ public final class EndpointInner extends ProxyResource {
      * endpoint health and is included in the traffic routing method.
      *
      * @param endpointStatus the endpointStatus value to set.
-     * @return the EndpointInner object itself.
+     * @return the EndpointProperties object itself.
      */
-    public EndpointInner withEndpointStatus(EndpointStatus endpointStatus) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new EndpointProperties();
-        }
-        this.innerProperties().withEndpointStatus(endpointStatus);
+    public EndpointProperties withEndpointStatus(EndpointStatus endpointStatus) {
+        this.endpointStatus = endpointStatus;
         return this;
     }
 
@@ -117,7 +166,7 @@ public final class EndpointInner extends ProxyResource {
      * @return the weight value.
      */
     public Long weight() {
-        return this.innerProperties() == null ? null : this.innerProperties().weight();
+        return this.weight;
     }
 
     /**
@@ -125,13 +174,10 @@ public final class EndpointInner extends ProxyResource {
      * values are from 1 to 1000.
      *
      * @param weight the weight value to set.
-     * @return the EndpointInner object itself.
+     * @return the EndpointProperties object itself.
      */
-    public EndpointInner withWeight(Long weight) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new EndpointProperties();
-        }
-        this.innerProperties().withWeight(weight);
+    public EndpointProperties withWeight(Long weight) {
+        this.weight = weight;
         return this;
     }
 
@@ -143,7 +189,7 @@ public final class EndpointInner extends ProxyResource {
      * @return the priority value.
      */
     public Long priority() {
-        return this.innerProperties() == null ? null : this.innerProperties().priority();
+        return this.priority;
     }
 
     /**
@@ -152,13 +198,10 @@ public final class EndpointInner extends ProxyResource {
      * specified, it must be specified on all endpoints, and no two endpoints can share the same priority value.
      *
      * @param priority the priority value to set.
-     * @return the EndpointInner object itself.
+     * @return the EndpointProperties object itself.
      */
-    public EndpointInner withPriority(Long priority) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new EndpointProperties();
-        }
-        this.innerProperties().withPriority(priority);
+    public EndpointProperties withPriority(Long priority) {
+        this.priority = priority;
         return this;
     }
 
@@ -169,7 +212,7 @@ public final class EndpointInner extends ProxyResource {
      * @return the endpointLocation value.
      */
     public String endpointLocation() {
-        return this.innerProperties() == null ? null : this.innerProperties().endpointLocation();
+        return this.endpointLocation;
     }
 
     /**
@@ -177,13 +220,10 @@ public final class EndpointInner extends ProxyResource {
      * 'Performance' traffic routing method.
      *
      * @param endpointLocation the endpointLocation value to set.
-     * @return the EndpointInner object itself.
+     * @return the EndpointProperties object itself.
      */
-    public EndpointInner withEndpointLocation(String endpointLocation) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new EndpointProperties();
-        }
-        this.innerProperties().withEndpointLocation(endpointLocation);
+    public EndpointProperties withEndpointLocation(String endpointLocation) {
+        this.endpointLocation = endpointLocation;
         return this;
     }
 
@@ -193,20 +233,17 @@ public final class EndpointInner extends ProxyResource {
      * @return the endpointMonitorStatus value.
      */
     public EndpointMonitorStatus endpointMonitorStatus() {
-        return this.innerProperties() == null ? null : this.innerProperties().endpointMonitorStatus();
+        return this.endpointMonitorStatus;
     }
 
     /**
      * Set the endpointMonitorStatus property: The monitoring status of the endpoint.
      *
      * @param endpointMonitorStatus the endpointMonitorStatus value to set.
-     * @return the EndpointInner object itself.
+     * @return the EndpointProperties object itself.
      */
-    public EndpointInner withEndpointMonitorStatus(EndpointMonitorStatus endpointMonitorStatus) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new EndpointProperties();
-        }
-        this.innerProperties().withEndpointMonitorStatus(endpointMonitorStatus);
+    public EndpointProperties withEndpointMonitorStatus(EndpointMonitorStatus endpointMonitorStatus) {
+        this.endpointMonitorStatus = endpointMonitorStatus;
         return this;
     }
 
@@ -218,7 +255,7 @@ public final class EndpointInner extends ProxyResource {
      * @return the minChildEndpoints value.
      */
     public Long minChildEndpoints() {
-        return this.innerProperties() == null ? null : this.innerProperties().minChildEndpoints();
+        return this.minChildEndpoints;
     }
 
     /**
@@ -227,13 +264,10 @@ public final class EndpointInner extends ProxyResource {
      * 'NestedEndpoints'.
      *
      * @param minChildEndpoints the minChildEndpoints value to set.
-     * @return the EndpointInner object itself.
+     * @return the EndpointProperties object itself.
      */
-    public EndpointInner withMinChildEndpoints(Long minChildEndpoints) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new EndpointProperties();
-        }
-        this.innerProperties().withMinChildEndpoints(minChildEndpoints);
+    public EndpointProperties withMinChildEndpoints(Long minChildEndpoints) {
+        this.minChildEndpoints = minChildEndpoints;
         return this;
     }
 
@@ -245,7 +279,7 @@ public final class EndpointInner extends ProxyResource {
      * @return the geoMapping value.
      */
     public List<String> geoMapping() {
-        return this.innerProperties() == null ? null : this.innerProperties().geoMapping();
+        return this.geoMapping;
     }
 
     /**
@@ -254,13 +288,10 @@ public final class EndpointInner extends ProxyResource {
      * values.
      *
      * @param geoMapping the geoMapping value to set.
-     * @return the EndpointInner object itself.
+     * @return the EndpointProperties object itself.
      */
-    public EndpointInner withGeoMapping(List<String> geoMapping) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new EndpointProperties();
-        }
-        this.innerProperties().withGeoMapping(geoMapping);
+    public EndpointProperties withGeoMapping(List<String> geoMapping) {
+        this.geoMapping = geoMapping;
         return this;
     }
 
@@ -271,7 +302,7 @@ public final class EndpointInner extends ProxyResource {
      * @return the subnets value.
      */
     public List<EndpointPropertiesSubnetsItem> subnets() {
-        return this.innerProperties() == null ? null : this.innerProperties().subnets();
+        return this.subnets;
     }
 
     /**
@@ -279,13 +310,10 @@ public final class EndpointInner extends ProxyResource {
      * using the 'Subnet' traffic routing method. An empty list will match all ranges not covered by other endpoints.
      *
      * @param subnets the subnets value to set.
-     * @return the EndpointInner object itself.
+     * @return the EndpointProperties object itself.
      */
-    public EndpointInner withSubnets(List<EndpointPropertiesSubnetsItem> subnets) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new EndpointProperties();
-        }
-        this.innerProperties().withSubnets(subnets);
+    public EndpointProperties withSubnets(List<EndpointPropertiesSubnetsItem> subnets) {
+        this.subnets = subnets;
         return this;
     }
 
@@ -295,20 +323,17 @@ public final class EndpointInner extends ProxyResource {
      * @return the customHeaders value.
      */
     public List<EndpointPropertiesCustomHeadersItem> customHeaders() {
-        return this.innerProperties() == null ? null : this.innerProperties().customHeaders();
+        return this.customHeaders;
     }
 
     /**
      * Set the customHeaders property: List of custom headers.
      *
      * @param customHeaders the customHeaders value to set.
-     * @return the EndpointInner object itself.
+     * @return the EndpointProperties object itself.
      */
-    public EndpointInner withCustomHeaders(List<EndpointPropertiesCustomHeadersItem> customHeaders) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new EndpointProperties();
-        }
-        this.innerProperties().withCustomHeaders(customHeaders);
+    public EndpointProperties withCustomHeaders(List<EndpointPropertiesCustomHeadersItem> customHeaders) {
+        this.customHeaders = customHeaders;
         return this;
     }
 
@@ -318,8 +343,11 @@ public final class EndpointInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (subnets() != null) {
+            subnets().forEach(e -> e.validate());
+        }
+        if (customHeaders() != null) {
+            customHeaders().forEach(e -> e.validate());
         }
     }
 }
