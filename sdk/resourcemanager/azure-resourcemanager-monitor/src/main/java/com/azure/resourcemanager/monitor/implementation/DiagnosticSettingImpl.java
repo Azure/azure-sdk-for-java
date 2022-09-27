@@ -17,7 +17,10 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.TreeMap;
+import java.util.function.Consumer;
+
 import reactor.core.publisher.Mono;
 
 /** The Azure metric definition entries are of type DiagnosticSetting. */
@@ -188,7 +191,7 @@ class DiagnosticSettingImpl
     @Override
     public List<MetricSettings> metrics() {
         if (this.innerModel().metrics() == null) {
-            return null;
+            return Collections.emptyList();
         }
         return Collections.unmodifiableList(this.innerModel().metrics());
     }
@@ -196,7 +199,7 @@ class DiagnosticSettingImpl
     @Override
     public List<LogSettings> logs() {
         if (this.innerModel().logs() == null) {
-            return null;
+            return Collections.emptyList();
         }
         return Collections.unmodifiableList(this.innerModel().logs());
     }
@@ -247,10 +250,10 @@ class DiagnosticSettingImpl
                         0,
                         this.innerModel().id().length()
                             - (DiagnosticSettingImpl.DIAGNOSTIC_SETTINGS_URI + this.innerModel().name()).length());
-            for (MetricSettings ms : this.innerModel().metrics()) {
+            for (MetricSettings ms : this.metrics()) {
                 this.metricSet.put(ms.category(), ms);
             }
-            for (LogSettings ls : this.innerModel().logs()) {
+            for (LogSettings ls : this.logs()) {
                 this.logSet.put(ls.category(), ls);
             }
         }
