@@ -31,7 +31,7 @@ import static java.lang.annotation.ElementType.METHOD;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
-//public class FullFidelityChangeFeedTest {} extends TestSuiteBase {
+//public class FullFidelityChangeFeedTest extends TestSuiteBase {
 //
 //    private static final int SETUP_TIMEOUT = 40000;
 //    private static final int TIMEOUT = 30000;
