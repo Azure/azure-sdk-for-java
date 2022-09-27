@@ -5,7 +5,6 @@ package com.azure.developer.loadtesting;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
@@ -18,7 +17,6 @@ import com.azure.core.util.BinaryData;
 import java.io.IOException;
 
 /** Initializes a new instance of the synchronous LoadTestingClient type. */
-@ServiceClient(builder = LoadTestAdministrationClientBuilder.class)
 public final class LoadTestAdministrationClient {
 
     @Generated private final LoadTestAdministrationAsyncClient client;

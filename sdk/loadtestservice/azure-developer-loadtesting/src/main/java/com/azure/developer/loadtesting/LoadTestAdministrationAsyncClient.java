@@ -5,7 +5,6 @@ package com.azure.developer.loadtesting;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
@@ -22,7 +21,6 @@ import java.util.Random;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous LoadTestingClient type. */
-@ServiceClient(builder = LoadTestAdministrationClientBuilder.class, isAsync = true)
 public final class LoadTestAdministrationAsyncClient {
 
     private static final Random RANDOM = new Random();
