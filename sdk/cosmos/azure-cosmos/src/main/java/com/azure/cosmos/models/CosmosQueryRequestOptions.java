@@ -560,8 +560,7 @@ public class CosmosQueryRequestOptions {
      * @param defaultQueryName the default query name that should be used if none is specified on request options
      * @return the logical query name
      */
-    @Beta(value = Beta.SinceVersion.V4_37_0, warningText =Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public String getQueryNameOrDefault(String defaultQueryName) {
+    String getQueryNameOrDefault(String defaultQueryName) {
         return !Strings.isNullOrWhiteSpace(queryName) ? queryName : defaultQueryName;
     }
 
@@ -573,7 +572,6 @@ public class CosmosQueryRequestOptions {
      * @param queryName a logical query name to distinguish this query pattern from others
      * @return the logical query name
      */
-    @Beta(value = Beta.SinceVersion.V4_37_0, warningText =Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosQueryRequestOptions setQueryName(String queryName) {
         this.queryName = queryName;
 
@@ -729,6 +727,13 @@ public class CosmosQueryRequestOptions {
                     Function<JsonNode, ?> factoryMethod) {
 
                     return queryRequestOptions.setItemFactoryMethod(factoryMethod);
+                }
+
+                @Override
+                public String getQueryNameOrDefault(CosmosQueryRequestOptions queryRequestOptions,
+                                                    String defaultQueryName) {
+
+                    return queryRequestOptions.getQueryNameOrDefault(defaultQueryName);
                 }
             });
     }

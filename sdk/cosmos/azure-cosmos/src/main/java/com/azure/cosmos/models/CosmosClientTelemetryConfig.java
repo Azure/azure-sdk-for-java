@@ -30,7 +30,6 @@ import java.util.stream.Stream;
 /**
  * Class with config options for Cosmos Client telemetry
  */
-@Beta(value = Beta.SinceVersion.V4_37_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class CosmosClientTelemetryConfig {
     private static Logger logger = LoggerFactory.getLogger(CosmosClientTelemetryConfig.class);
     private static boolean DEFAULT_CLIENT_TELEMETRY_ENABLED = false;
@@ -80,7 +79,6 @@ public final class CosmosClientTelemetryConfig {
      * enabled or not
      * @return current CosmosClientTelemetryConfig
      */
-    @Beta(value = Beta.SinceVersion.V4_37_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosClientBuilder sendClientTelemetryToServiceEnabled(
         boolean sendClientTelemetryToServiceEnabled) {
 
@@ -107,7 +105,6 @@ public final class CosmosClientTelemetryConfig {
      * @param clientCorrelationId the client correlationId to be used to identify this client instance in metrics
      * @return current CosmosClientTelemetryConfig
      */
-    @Beta(value = Beta.SinceVersion.V4_37_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosClientBuilder clientCorrelationId(String clientCorrelationId) {
         this.clientCorrelationId = clientCorrelationId;
         return this.owner;
@@ -126,7 +123,6 @@ public final class CosmosClientTelemetryConfig {
      * @param tagNames - a comma-separated list of tag names that should be considered
      * @return current CosmosClientTelemetryConfig
      */
-    @Beta(value = Beta.SinceVersion.V4_37_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosClientBuilder metricTagNames(String tagNames) {
         if (Strings.isNullOrWhiteSpace(tagNames)) {
             this.metricTagNames = DEFAULT_TAGS;
@@ -178,7 +174,6 @@ public final class CosmosClientTelemetryConfig {
      * @param clientMetricRegistry - the MetricRegistry to be used to emit client metrics
      * @return current CosmosClientTelemetryConfig
      */
-    @Beta(value = Beta.SinceVersion.V4_37_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosClientBuilder clientMetrics(MeterRegistry clientMetricRegistry) {
         this.clientMetricRegistry = clientMetricRegistry;
         this.isClientMetricsEnabled = clientMetricRegistry != null;

@@ -777,7 +777,6 @@ public class CosmosClientBuilder implements
      * Returns the client telemetry config instance for this builder
      * @return the client telemetry config instance for this builder
      */
-    @Beta(value = Beta.SinceVersion.V4_37_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosClientTelemetryConfig clientTelemetryConfig() {
         return ImplementationBridgeHelpers
             .CosmosClientTelemetryConfigHelper

@@ -424,7 +424,10 @@ public class CosmosAsyncContainer {
                 OperationType.ReadFeed,
                 ResourceType.Document,
                 client,
-                requestOptions.getQueryNameOrDefault(this.readAllItemsSpanName));
+                ImplementationBridgeHelpers
+                    .CosmosQueryRequestOptionsHelper
+                    .getCosmosQueryRequestOptionsAccessor()
+                    .getQueryNameOrDefault(requestOptions, this.readAllItemsSpanName));
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, requestOptions);
             pagedFluxOptions.setThresholdForDiagnosticsOnTracer(requestOptions.getThresholdForDiagnosticsOnTracer());
 
@@ -607,7 +610,10 @@ public class CosmosAsyncContainer {
                 OperationType.Query,
                 ResourceType.Document,
                 client,
-                options.getQueryNameOrDefault(spanName));
+                ImplementationBridgeHelpers
+                    .CosmosQueryRequestOptionsHelper
+                    .getCosmosQueryRequestOptionsAccessor()
+                    .getQueryNameOrDefault(options, spanName));
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             pagedFluxOptions.setThresholdForDiagnosticsOnTracer(options.getThresholdForDiagnosticsOnTracer());
 
@@ -636,7 +642,10 @@ public class CosmosAsyncContainer {
                 OperationType.Query,
                 ResourceType.Document,
                 client,
-                options.getQueryNameOrDefault(spanName));
+                ImplementationBridgeHelpers
+                    .CosmosQueryRequestOptionsHelper
+                    .getCosmosQueryRequestOptionsAccessor()
+                    .getQueryNameOrDefault(options, spanName));
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             pagedFluxOptions.setThresholdForDiagnosticsOnTracer(options.getThresholdForDiagnosticsOnTracer());
 
@@ -1048,7 +1057,10 @@ public class CosmosAsyncContainer {
                 OperationType.ReadFeed,
                 ResourceType.Document,
                 this.getDatabase().getClient(),
-                requestOptions.getQueryNameOrDefault(this.readAllItemsOfLogicalPartitionSpanName));
+                ImplementationBridgeHelpers
+                    .CosmosQueryRequestOptionsHelper
+                    .getCosmosQueryRequestOptionsAccessor()
+                    .getQueryNameOrDefault(requestOptions, this.readAllItemsOfLogicalPartitionSpanName));
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, requestOptions);
             return getDatabase()
                 .getDocClientWrapper()
@@ -1276,7 +1288,10 @@ public class CosmosAsyncContainer {
                 this.readAllConflictsSpanName,
                 client.getServiceEndpoint(),
                 database.getId(),
-                requestOptions.getQueryNameOrDefault(this.readAllConflictsSpanName));
+                ImplementationBridgeHelpers
+                    .CosmosQueryRequestOptionsHelper
+                    .getCosmosQueryRequestOptionsAccessor()
+                    .getQueryNameOrDefault(requestOptions, this.readAllConflictsSpanName));
 
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, requestOptions);
             return database.getDocClientWrapper().readConflicts(getLink(), requestOptions)
@@ -1314,7 +1329,10 @@ public class CosmosAsyncContainer {
                 this.queryConflictsSpanName,
                 client.getServiceEndpoint(),
                 database.getId(),
-                requestOptions.getQueryNameOrDefault(this.queryConflictsSpanName));
+                ImplementationBridgeHelpers
+                    .CosmosQueryRequestOptionsHelper
+                    .getCosmosQueryRequestOptionsAccessor()
+                    .getQueryNameOrDefault(requestOptions, this.queryConflictsSpanName));
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, requestOptions);
             return database.getDocClientWrapper().queryConflicts(getLink(), query, requestOptions)
                 .map(response -> BridgeInternal.createFeedResponse(

@@ -483,7 +483,11 @@ public final class CosmosAsyncClient implements Closeable {
                 spanName,
                 this.serviceEndpoint,
                 null,
-                options != null ? options.getQueryNameOrDefault(spanName) : spanName);
+                options != null ?
+                    ImplementationBridgeHelpers
+                        .CosmosQueryRequestOptionsHelper
+                        .getCosmosQueryRequestOptionsAccessor().getQueryNameOrDefault(options, spanName)
+                    : spanName);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readDatabases(options)
                 .map(response ->
@@ -600,7 +604,11 @@ public final class CosmosAsyncClient implements Closeable {
                 spanName,
                 this.serviceEndpoint,
                 null,
-                options != null ? options.getQueryNameOrDefault(spanName) : spanName);
+                options != null ?
+                    ImplementationBridgeHelpers
+                        .CosmosQueryRequestOptionsHelper
+                        .getCosmosQueryRequestOptionsAccessor().getQueryNameOrDefault(options, spanName)
+                    : spanName);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryDatabases(querySpec, options)
                 .map(response -> BridgeInternal.createFeedResponse(

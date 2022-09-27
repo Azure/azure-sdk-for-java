@@ -422,7 +422,10 @@ public class CosmosAsyncDatabase {
                 spanName,
                 this.getClient().getServiceEndpoint(),
                 getId(),
-                requestOptions.getQueryNameOrDefault(spanName));
+                ImplementationBridgeHelpers
+                    .CosmosQueryRequestOptionsHelper
+                    .getCosmosQueryRequestOptionsAccessor()
+                    .getQueryNameOrDefault(requestOptions, spanName));
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, requestOptions);
             return getDocClientWrapper().readCollections(getLink(), requestOptions)
                 .map(response -> BridgeInternal.createFeedResponse(
@@ -603,7 +606,10 @@ public class CosmosAsyncDatabase {
                 spanName,
                 this.getClient().getServiceEndpoint(),
                 getId(),
-                options != null ? options.getQueryNameOrDefault(spanName) : spanName);
+                options != null ? ImplementationBridgeHelpers
+                    .CosmosQueryRequestOptionsHelper
+                    .getCosmosQueryRequestOptionsAccessor()
+                    .getQueryNameOrDefault(options, spanName) : spanName);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readUsers(getLink(), options)
                 .map(response -> BridgeInternal.createFeedResponse(
@@ -658,7 +664,10 @@ public class CosmosAsyncDatabase {
                 spanName,
                 this.getClient().getServiceEndpoint(),
                 getId(),
-                options != null ? options.getQueryNameOrDefault(spanName) : spanName);
+                options != null ? ImplementationBridgeHelpers
+                    .CosmosQueryRequestOptionsHelper
+                    .getCosmosQueryRequestOptionsAccessor()
+                    .getQueryNameOrDefault(options, spanName) : spanName);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readClientEncryptionKeys(getLink(), options)
                 .map(response -> BridgeInternal.createFeedResponse(
@@ -749,7 +758,10 @@ public class CosmosAsyncDatabase {
                 spanName,
                 this.getClient().getServiceEndpoint(),
                 getId(),
-                options != null ? options.getQueryNameOrDefault(spanName): spanName);
+                options != null ? ImplementationBridgeHelpers
+                    .CosmosQueryRequestOptionsHelper
+                    .getCosmosQueryRequestOptionsAccessor()
+                    .getQueryNameOrDefault(options, spanName): spanName);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryClientEncryptionKeys(getLink(), querySpec, options)
                 .map(response -> BridgeInternal.createFeedResponseWithQueryMetrics(
@@ -901,7 +913,10 @@ public class CosmosAsyncDatabase {
                 spanName,
                 this.getClient().getServiceEndpoint(),
                 getId(),
-                options != null ? options.getQueryNameOrDefault(spanName) : spanName);
+                options != null ? ImplementationBridgeHelpers
+                    .CosmosQueryRequestOptionsHelper
+                    .getCosmosQueryRequestOptionsAccessor()
+                    .getQueryNameOrDefault(options, spanName) : spanName);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryCollections(getLink(), querySpec, options)
                 .map(response -> BridgeInternal.createFeedResponse(
@@ -918,7 +933,10 @@ public class CosmosAsyncDatabase {
                 spanName,
                 this.getClient().getServiceEndpoint(),
                 getId(),
-                options != null ? options.getQueryNameOrDefault(spanName) : spanName);
+                options != null ? ImplementationBridgeHelpers
+                    .CosmosQueryRequestOptionsHelper
+                    .getCosmosQueryRequestOptionsAccessor()
+                    .getQueryNameOrDefault(options, spanName) : spanName);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryUsers(getLink(), querySpec, options)
                 .map(response -> BridgeInternal.createFeedResponseWithQueryMetrics(

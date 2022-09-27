@@ -23,14 +23,18 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedIterable;
+import io.micrometer.core.instrument.Measurement;
 import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.Timer;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
+import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -82,6 +86,43 @@ public class ClientMetricsTest extends BatchTestBase {
             meterRegistrySnapshot.close();
         }
         this.meterRegistry = null;
+    }
+
+    @Test(groups = { "unit" }, timeOut = TIMEOUT)
+    public void MaxValueExceedingDefinedLimitStillWorksWithoutException() throws Exception {
+
+        // Expected behavior is that higher values than the expected max value can still be recorded
+        // it would only result in getting less accurate "estimates" for percentile histograms
+
+        this.beforeTest();
+
+        try {
+            Tag dummyOperationTag = Tag.of(TagName.Operation.toString(), "TestDummy");
+            Timer latencyMeter = Timer
+                .builder("cosmos.client.op.latency")
+                .description("Operation latency")
+                .maximumExpectedValue(Duration.ofSeconds(300))
+                .publishPercentiles(0.95, 0.99)
+                .publishPercentileHistogram(true)
+                .tags(Collections.singleton(dummyOperationTag))
+                .register(this.meterRegistry);
+            latencyMeter.record(Duration.ofSeconds(600));
+
+            Meter requestLatencyMeter = this.assertMetrics(
+                "cosmos.client.op.latency",
+                true,
+                dummyOperationTag);
+
+            List<Measurement> measurements = new ArrayList<>();
+            requestLatencyMeter.measure().forEach(measurements::add);
+
+            assertThat(measurements.size() == 1);
+            assertThat(measurements.get(0).getValue() == 600);
+
+
+        } finally {
+            this.afterTest();
+        }
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -491,11 +532,11 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    private void assertMetrics(String prefix, boolean expectedToFind) {
-        assertMetrics(prefix, expectedToFind, null);
+    private Meter assertMetrics(String prefix, boolean expectedToFind) {
+        return assertMetrics(prefix, expectedToFind, null);
     }
 
-    private void assertMetrics(String prefix, boolean expectedToFind, Tag withTag) {
+    private Meter assertMetrics(String prefix, boolean expectedToFind, Tag withTag) {
         assertThat(this.meterRegistry).isNotNull();
         assertThat(this.meterRegistry.getMeters()).isNotNull();
         List<Meter> meters = this.meterRegistry.getMeters().stream().collect(Collectors.toList());
@@ -513,12 +554,16 @@ public class ClientMetricsTest extends BatchTestBase {
 
         if (expectedToFind) {
             assertThat(meterMatches.size()).isGreaterThan(0);
+
+            return meterMatches.get(0);
         } else {
             if (meterMatches.size() > 0) {
                 meterMatches.forEach(m ->
                     logger.error("Found unexpected meter {}", m.getId().getName()));
             }
             assertThat(meterMatches.size()).isEqualTo(0);
+
+            return null;
         }
     }
 }
