@@ -520,6 +520,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
     private void validateMetrics() {
         this.assertMetrics("cosmos.client.op.latency", true);
+        this.assertMetrics("cosmos.client.op.calls", true);
         if (this.client.asyncClient().getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
             this.assertMetrics("cosmos.client.req.rntbd", true);
         } else {
@@ -530,6 +531,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
     private void validateMetrics(Tag expectedOperationTag, Tag expectedRequestTag) {
         this.assertMetrics("cosmos.client.op.latency", true, expectedOperationTag);
+        this.assertMetrics("cosmos.client.op.calls", true, expectedOperationTag);
         if (this.client.asyncClient().getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
             this.assertMetrics("cosmos.client.req.rntbd", true, expectedRequestTag);
         } else {
