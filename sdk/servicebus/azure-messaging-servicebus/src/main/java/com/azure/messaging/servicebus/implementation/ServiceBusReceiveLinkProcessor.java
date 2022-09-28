@@ -61,6 +61,10 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
     // size() on Deque is O(n) operation, so we use an integer to keep track. All reads and writes to this are gated by
     // the `queueLock`.
     private final AtomicInteger pendingMessages = new AtomicInteger();
+    // link.getCredits() is thread-unsafe, so we use an Atomic to calculate adding credits. unreceivedMessages here
+    // present for the number of messages that are not received by the ServiceBusReceiveLinkProcessor, which includes
+    // messages received by link but buffered in the reactor-operator-chain.
+    private final AtomicInteger unreceivedMessages = new AtomicInteger();
     private final int minimumNumberOfMessages;
     private final int prefetch;
 
@@ -218,12 +222,15 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             currentLink = next;
             next.setEmptyCreditListener(() -> 0);
 
+            unreceivedMessages.set(0);
+
             currentLinkSubscriptions = Disposables.composite(
-                next.receive().publishOn(Schedulers.boundedElastic()).subscribe(
+                next.receive().subscribe(
                     message -> {
                         synchronized (queueLock) {
                             messageQueue.add(message);
                             pendingMessages.incrementAndGet();
+                            unreceivedMessages.decrementAndGet();
                         }
 
                         drain();
@@ -572,6 +579,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             final int linkCredits = link.getCredits();
             final int credits = getCreditsToAdd(linkCredits);
             if (credits > 0) {
+                unreceivedMessages.addAndGet(credits);
                 link.addCredits(credits).subscribe();
             }
         }
@@ -608,7 +616,8 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
 
         synchronized (queueLock) {
             final int queuedMessages = pendingMessages.get();
-            final int pending = queuedMessages + linkCredits;
+            final int unreceived = unreceivedMessages.get();
+            final int pending = queuedMessages + unreceived;
 
             if (hasBackpressure) {
                 creditsToAdd = Math.max(expectedTotalCredit - pending, 0);
@@ -625,6 +634,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                 .addKeyValue("linkCredits", linkCredits)
                 .addKeyValue("expectedTotalCredit", expectedTotalCredit)
                 .addKeyValue("queuedMessages", queuedMessages)
+                .addKeyValue("unreceivedMessages", unreceived)
                 .addKeyValue("creditsToAdd", creditsToAdd)
                 .addKeyValue("messageQueueSize", messageQueue.size())
                 .log("Adding credits.");
