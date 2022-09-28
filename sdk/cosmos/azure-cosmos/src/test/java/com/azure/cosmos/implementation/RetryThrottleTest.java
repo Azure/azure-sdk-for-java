@@ -7,6 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import org.assertj.core.api.Assertions;
 import org.mockito.stubbing.Answer;
@@ -50,7 +51,9 @@ public class RetryThrottleTest extends TestSuiteBase {
                 .withConnectionPolicy(policy)
                 .withConsistencyLevel(ConsistencyLevel.EVENTUAL)
                 .withContentResponseOnWriteEnabled(true)
-                .withClientTelemetryConfig(new CosmosClientTelemetryConfig());
+                .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED));
 
         client = SpyClientUnderTestFactory.createClientWithGatewaySpy(builder);
 

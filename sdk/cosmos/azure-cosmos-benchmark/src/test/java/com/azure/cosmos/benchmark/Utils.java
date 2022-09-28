@@ -33,7 +33,8 @@ public class Utils {
                         .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                         .withConnectionPolicy(connectionPolicy)
                         .withContentResponseOnWriteEnabled(true)
-                        .withClientTelemetryConfig(new CosmosClientTelemetryConfig())
+                        .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig().sendClientTelemetryToService(false))
                         .build();
     }
 
