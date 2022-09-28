@@ -19,6 +19,7 @@ import org.springframework.data.repository.query.ResultProcessor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -64,7 +65,7 @@ public class StringBasedCosmosQuery extends AbstractCosmosQuery {
         List<SqlParameter> sqlParameters = new ArrayList<>();
         for (int paramIndex = 0; paramIndex < parameters.length; paramIndex++) {
                 Parameter queryParam = getQueryMethod().getParameters().getParameter(paramIndex);
-                if (queryParam.getName() != null && !queryParam.getName().isEmpty()) {
+                if (queryParam.getName() instanceof java.util.Optional && !queryParam.getName().isEmpty()) {
                     String modifiedExpandedQuery = expandedQuery.toLowerCase().replaceAll("\\s+", "");
                     String inParamCheck = ("ARRAY_CONTAINS(@" + queryParam.getName().get()).toLowerCase();
                     if (parameters[paramIndex] instanceof Collection
