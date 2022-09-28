@@ -24,6 +24,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetricsComp
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
 import com.azure.cosmos.implementation.guava25.net.PercentEscaper;
 import com.azure.cosmos.implementation.query.QueryInfo;
+import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.DistributionSummary;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -273,6 +274,14 @@ public final class ClientTelemetryMetrics {
             int actualItemCount,
             CosmosDiagnostics diagnostics) {
 
+            Counter operationsCounter = Counter
+                .builder(nameOf("op.calls"))
+                .baseUnit("calls")
+                .description("Operation calls")
+                .tags(operationTags)
+                .register(compositeRegistry);
+            operationsCounter.increment();
+
             DistributionSummary requestChargeMeter = DistributionSummary
                 .builder(nameOf("op.RUs"))
                 .baseUnit("RU (request unit)")
@@ -332,6 +341,14 @@ public final class ClientTelemetryMetrics {
             Tags requestTags = operationTags.and(
                 createQueryPlanTags(metricTagNames)
             );
+
+            Counter requestCounter = Counter
+                .builder(nameOf("req.gw.requests"))
+                .baseUnit("requests")
+                .description("Gateway requests")
+                .tags(requestTags)
+                .register(compositeRegistry);
+            requestCounter.increment();
 
             Duration latency = queryPlanDiagnostics.getDuration();
 
@@ -613,6 +630,14 @@ public final class ClientTelemetryMetrics {
                     requestLatencyMeter.record(latency);
                 }
 
+                Counter requestCounter = Counter
+                    .builder(nameOf("req.rntbd.requests"))
+                    .baseUnit("requests")
+                    .description("RNTBD requests")
+                    .tags(requestTags)
+                    .register(compositeRegistry);
+                requestCounter.increment();
+
                 recordRequestTimeline(
                     "req.rntbd.timeline.",
                     storeResponseDiagnostics.getRequestTimeline(), requestTags);
@@ -653,6 +678,14 @@ public final class ClientTelemetryMetrics {
                     null,
                     null)
             );
+
+            Counter requestCounter = Counter
+                .builder(nameOf("req.gw.requests"))
+                .baseUnit("requests")
+                .description("Gateway requests")
+                .tags(requestTags)
+                .register(compositeRegistry);
+            requestCounter.increment();
 
             if (latency != null) {
                 Timer requestLatencyMeter = Timer
