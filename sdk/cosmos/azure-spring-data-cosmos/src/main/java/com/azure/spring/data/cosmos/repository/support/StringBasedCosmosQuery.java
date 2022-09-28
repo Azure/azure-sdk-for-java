@@ -19,7 +19,6 @@ import org.springframework.data.repository.query.ResultProcessor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -64,25 +63,18 @@ public class StringBasedCosmosQuery extends AbstractCosmosQuery {
         String expandedQuery = query;
         List<SqlParameter> sqlParameters = new ArrayList<>();
         for (int paramIndex = 0; paramIndex < parameters.length; paramIndex++) {
-                Parameter queryParam = getQueryMethod().getParameters().getParameter(paramIndex);
-            boolean isParamEmpty = false;
-            try {
-                isParamEmpty = queryParam.getName().isEmpty();
-            } catch (Exception e) {
-                //Do nothing
-            }
-            if (!isParamEmpty) {
+            Parameter queryParam = getQueryMethod().getParameters().getParameter(paramIndex);
+            String paramName = queryParam.getName().orElse("");
+            if (paramName != "") {
                 String modifiedExpandedQuery = expandedQuery.toLowerCase().replaceAll("\\s+", "");
-                String inParamCheck = ("ARRAY_CONTAINS(@" + queryParam.getName().get()).toLowerCase();
-                if (parameters[paramIndex] instanceof Collection
-                    && modifiedExpandedQuery.indexOf(inParamCheck) == -1) {
+                String inParamCheck = ("ARRAY_CONTAINS(@" + paramName).toLowerCase();
+                if (parameters[paramIndex] instanceof Collection && !modifiedExpandedQuery.contains(inParamCheck)) {
                     List<String> expandParam = ((Collection<?>) parameters[paramIndex]).stream()
                         .map(Object::toString).collect(Collectors.toList());
                     List<String> expandedParamKeys = new ArrayList<>();
                     for (int arrayIndex = 0; arrayIndex < expandParam.size(); arrayIndex++) {
-                        String paramName = "@" + queryParam.getName().orElse("") + arrayIndex;
-                        expandedParamKeys.add(paramName);
-                        sqlParameters.add(new SqlParameter(paramName, toCosmosDbValue(expandParam.get(arrayIndex))));
+                        expandedParamKeys.add("@" + paramName + arrayIndex);
+                        sqlParameters.add(new SqlParameter("@" + paramName + arrayIndex, toCosmosDbValue(expandParam.get(arrayIndex))));
                     }
                     expandedQuery = expandedQuery.replaceAll("@" + queryParam.getName().orElse(""), String.join(",", expandedParamKeys));
                 } else {
