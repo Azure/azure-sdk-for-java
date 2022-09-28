@@ -7,16 +7,12 @@ package com.azure.ai.anomalydetector.generated;
 
 import com.azure.ai.anomalydetector.AnomalyDetectorClient;
 import com.azure.ai.anomalydetector.AnomalyDetectorClientBuilder;
-import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import java.time.OffsetDateTime;
-import reactor.core.publisher.Mono;
 
 class AnomalyDetectorClientTestBase extends TestBase {
     protected AnomalyDetectorClient anomalyDetectorClient;
@@ -31,15 +27,9 @@ class AnomalyDetectorClientTestBase extends TestBase {
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            anomalyDetectorClientbuilder
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+            anomalyDetectorClientbuilder.httpClient(interceptorManager.getPlaybackClient());
         } else if (getTestMode() == TestMode.RECORD) {
-            anomalyDetectorClientbuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
-        } else if (getTestMode() == TestMode.LIVE) {
-            anomalyDetectorClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+            anomalyDetectorClientbuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
         anomalyDetectorClient = anomalyDetectorClientbuilder.buildClient();
     }

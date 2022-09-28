@@ -1255,7 +1255,7 @@ public final class AnomalyDetectorClientImpl {
      * @return response of listing models along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listMultivariateModelSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listMultivariateModelSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context -> service.listMultivariateModel(this.getHost(), accept, requestOptions, context))
@@ -2077,7 +2077,7 @@ public final class AnomalyDetectorClientImpl {
      * @return response of listing models along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listMultivariateModelNextSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listMultivariateModelNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(

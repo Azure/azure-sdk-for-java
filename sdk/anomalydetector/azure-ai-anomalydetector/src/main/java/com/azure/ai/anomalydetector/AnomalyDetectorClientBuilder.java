@@ -8,30 +8,168 @@ package com.azure.ai.anomalydetector;
 import com.azure.ai.anomalydetector.implementation.AnomalyDetectorClientImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureKeyCredentialTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.EndpointTrait;
+import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.AzureKeyCredentialPolicy;
+import com.azure.core.http.policy.CookiePolicy;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.AzureEnvironment;
+import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /** A builder for creating a new instance of the AnomalyDetectorClient type. */
 @ServiceClientBuilder(serviceClients = {AnomalyDetectorClient.class, AnomalyDetectorAsyncClient.class})
-public final class AnomalyDetectorClientBuilder {
+public final class AnomalyDetectorClientBuilder
+        implements HttpTrait<AnomalyDetectorClientBuilder>,
+                ConfigurationTrait<AnomalyDetectorClientBuilder>,
+                AzureKeyCredentialTrait<AnomalyDetectorClientBuilder>,
+                EndpointTrait<AnomalyDetectorClientBuilder> {
+    @Generated private static final String SDK_NAME = "name";
+
+    @Generated private static final String SDK_VERSION = "version";
+
+    @Generated
+    private final Map<String, String> properties = CoreUtils.getProperties("azure-ai-anomalydetector.properties");
+
+    @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
+
+    /** Create an instance of the AnomalyDetectorClientBuilder. */
+    @Generated
+    public AnomalyDetectorClientBuilder() {
+        this.pipelinePolicies = new ArrayList<>();
+    }
+
     /*
-     * Supported Cognitive Services endpoints (protocol and hostname, for example:
-     * https://westus2.api.cognitive.microsoft.com).
+     * The HTTP pipeline to send requests through.
+     */
+    @Generated private HttpPipeline pipeline;
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public AnomalyDetectorClientBuilder pipeline(HttpPipeline pipeline) {
+        this.pipeline = pipeline;
+        return this;
+    }
+
+    /*
+     * The HTTP client used to send the request.
+     */
+    @Generated private HttpClient httpClient;
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public AnomalyDetectorClientBuilder httpClient(HttpClient httpClient) {
+        this.httpClient = httpClient;
+        return this;
+    }
+
+    /*
+     * The logging configuration for HTTP requests and responses.
+     */
+    @Generated private HttpLogOptions httpLogOptions;
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public AnomalyDetectorClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+        this.httpLogOptions = httpLogOptions;
+        return this;
+    }
+
+    /*
+     * The client options such as application ID and custom headers to set on a request.
+     */
+    @Generated private ClientOptions clientOptions;
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public AnomalyDetectorClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
+        return this;
+    }
+
+    /*
+     * The retry options to configure retry policy for failed requests.
+     */
+    @Generated private RetryOptions retryOptions;
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public AnomalyDetectorClientBuilder retryOptions(RetryOptions retryOptions) {
+        this.retryOptions = retryOptions;
+        return this;
+    }
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public AnomalyDetectorClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+        pipelinePolicies.add(customPolicy);
+        return this;
+    }
+
+    /*
+     * The configuration store that is used during construction of the service client.
+     */
+    @Generated private Configuration configuration;
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public AnomalyDetectorClientBuilder configuration(Configuration configuration) {
+        this.configuration = configuration;
+        return this;
+    }
+
+    /*
+     * The AzureKeyCredential used for authentication.
+     */
+    @Generated private AzureKeyCredential azureKeyCredential;
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public AnomalyDetectorClientBuilder credential(AzureKeyCredential azureKeyCredential) {
+        this.azureKeyCredential = azureKeyCredential;
+        return this;
+    }
+
+    /*
+     * The service endpoint
      */
     @Generated private String endpoint;
 
-    /**
-     * Sets Supported Cognitive Services endpoints (protocol and hostname, for example:
-     * https://westus2.api.cognitive.microsoft.com).
-     *
-     * @param endpoint the endpoint value.
-     * @return the AnomalyDetectorClientBuilder.
-     */
+    /** {@inheritDoc}. */
     @Generated
+    @Override
     public AnomalyDetectorClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
@@ -72,36 +210,19 @@ public final class AnomalyDetectorClientBuilder {
     }
 
     /*
-     * The environment to connect to
+     * The retry policy that will attempt to retry failed requests, if applicable.
      */
-    @Generated private AzureEnvironment environment;
+    @Generated private RetryPolicy retryPolicy;
 
     /**
-     * Sets The environment to connect to.
+     * Sets The retry policy that will attempt to retry failed requests, if applicable.
      *
-     * @param environment the environment value.
+     * @param retryPolicy the retryPolicy value.
      * @return the AnomalyDetectorClientBuilder.
      */
     @Generated
-    public AnomalyDetectorClientBuilder environment(AzureEnvironment environment) {
-        this.environment = environment;
-        return this;
-    }
-
-    /*
-     * The HTTP pipeline to send requests through
-     */
-    @Generated private HttpPipeline pipeline;
-
-    /**
-     * Sets The HTTP pipeline to send requests through.
-     *
-     * @param pipeline the pipeline value.
-     * @return the AnomalyDetectorClientBuilder.
-     */
-    @Generated
-    public AnomalyDetectorClientBuilder pipeline(HttpPipeline pipeline) {
-        this.pipeline = pipeline;
+    public AnomalyDetectorClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        this.retryPolicy = retryPolicy;
         return this;
     }
 
@@ -112,13 +233,9 @@ public final class AnomalyDetectorClientBuilder {
      */
     @Generated
     private AnomalyDetectorClientImpl buildInnerClient() {
+        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         String localApiVersion = (apiVersion != null) ? apiVersion : "v1.1";
         String localHost = (host != null) ? host : "";
-        AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline =
-                (pipeline != null)
-                        ? pipeline
-                        : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
         AnomalyDetectorClientImpl client =
                 new AnomalyDetectorClientImpl(
                         localPipeline,
@@ -127,6 +244,54 @@ public final class AnomalyDetectorClientBuilder {
                         localApiVersion,
                         localHost);
         return client;
+    }
+
+    @Generated
+    private HttpPipeline createHttpPipeline() {
+        Configuration buildConfiguration =
+                (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        if (httpLogOptions == null) {
+            httpLogOptions = new HttpLogOptions();
+        }
+        if (clientOptions == null) {
+            clientOptions = new ClientOptions();
+        }
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
+        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
+        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
+        policies.add(new RequestIdPolicy());
+        policies.add(new AddHeadersFromContextPolicy());
+        HttpHeaders headers = new HttpHeaders();
+        clientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
+        if (headers.getSize() > 0) {
+            policies.add(new AddHeadersPolicy(headers));
+        }
+        policies.addAll(
+                this.pipelinePolicies.stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                        .collect(Collectors.toList()));
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
+        policies.add(new AddDatePolicy());
+        policies.add(new CookiePolicy());
+        if (azureKeyCredential != null) {
+            policies.add(new AzureKeyCredentialPolicy("Ocp-Apim-Subscription-Key", azureKeyCredential));
+        }
+        policies.addAll(
+                this.pipelinePolicies.stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                        .collect(Collectors.toList()));
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+        policies.add(new HttpLoggingPolicy(httpLogOptions));
+        HttpPipeline httpPipeline =
+                new HttpPipelineBuilder()
+                        .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                        .httpClient(httpClient)
+                        .clientOptions(clientOptions)
+                        .build();
+        return httpPipeline;
     }
 
     /**
