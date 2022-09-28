@@ -208,9 +208,13 @@ foreach ($packageDetail in $packageDetails) {
   else {
 
     $resultsTime = [diagnostics.stopwatch]::StartNew()
-    if (Test-ReleasedPackage -RepositoryUrl $packageReposityUrl -PackageDetail $packageDetail) {
-      Write-Information "Package $($packageDetail.FullyQualifiedName) has already been deployed."
-      continue
+    if (IsMavenPackageVersionPublished -pkgId $packageDetail.ArtifactID -pkgVersion $packageDetail.Version -groupId $packageDetail.GroupId) {
+      if (Test-ReleasedPackage -RepositoryUrl $packageReposityUrl -PackageDetail $packageDetail) {
+        Write-Information "Package $($packageDetail.FullyQualifiedName) has already been deployed."
+        continue
+      }
+    } else {
+      Write-Information "$($packageDetail.FullyQualifiedName) has not yet deployed."
     }
     Write-Information "Time to test released package=$($resultstime.Elapsed.ToString('dd\.hh\:mm\:ss'))"
 
