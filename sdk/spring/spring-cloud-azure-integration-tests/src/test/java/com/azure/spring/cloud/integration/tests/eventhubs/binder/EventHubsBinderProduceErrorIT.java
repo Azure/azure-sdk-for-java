@@ -64,7 +64,7 @@ class EventHubsBinderProduceErrorIT {
         }
 
         @ServiceActivator(inputChannel = "errorChannel")
-        public void receiveProduceErrorMsg(Message sendFailedMsg) {
+        public void processError(Message sendFailedMsg) {
             LOGGER.info("receive send failed msg: '{}'", sendFailedMsg);
             LATCH.countDown();
         }
@@ -77,7 +77,6 @@ class EventHubsBinderProduceErrorIT {
         LOGGER.info("Send a message:" + MESSAGE + ".");
         many.emitNext(new GenericMessage<>(MESSAGE), Sinks.EmitFailureHandler.FAIL_FAST);
         assertThat(EventHubsBinderProduceErrorIT.LATCH.await(300, TimeUnit.SECONDS)).isTrue();
-        Thread.sleep(10000);
         LOGGER.info("EventHubsBinderProduceErrorIT end.");
     }
 }

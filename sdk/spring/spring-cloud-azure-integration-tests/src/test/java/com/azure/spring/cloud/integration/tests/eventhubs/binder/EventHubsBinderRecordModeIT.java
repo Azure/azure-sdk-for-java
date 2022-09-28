@@ -61,9 +61,8 @@ class EventHubsBinderRecordModeIT {
         }
 
         @ServiceActivator(inputChannel = "errorChannel")
-        public void receiveProduceErrorMsg(Message sendFailedMsg) {
+        public void processError(Message sendFailedMsg) {
             LOGGER.info("receive produce error message: '{}'", sendFailedMsg.getPayload());
-            LATCH.countDown();
         }
 
     }
