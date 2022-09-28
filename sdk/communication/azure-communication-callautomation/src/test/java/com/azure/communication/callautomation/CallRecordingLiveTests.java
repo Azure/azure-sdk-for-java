@@ -27,7 +27,7 @@ public class CallRecordingLiveTests extends CallAutomationLiveTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void recordingOperations(HttpClient httpClient) {
-        CallAutomationClient client = getCallingServerClientUsingConnectionString(httpClient)
+        CallAutomationClient client = getCallAutomationClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("recordingOperations", next))
             .buildClient();
 

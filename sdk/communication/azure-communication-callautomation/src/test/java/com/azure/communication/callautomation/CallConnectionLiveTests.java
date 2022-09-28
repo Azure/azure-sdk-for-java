@@ -46,7 +46,7 @@ public class CallConnectionLiveTests extends CallAutomationLiveTestBase {
          * 5. verify existing call is still ongoing and has 2 participants now.
          */
 
-        CallAutomationClient callClient = getCallingServerClientUsingConnectionString(httpClient)
+        CallAutomationClient callClient = getCallAutomationClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("removeAPSTNUserFromAnOngoingCallTest", next))
             .buildClient();
 
@@ -114,7 +114,7 @@ public class CallConnectionLiveTests extends CallAutomationLiveTestBase {
          * 5. verify existing call is still ongoing and has 2 participants now.
          */
 
-        CallAutomationClient callClient = getCallingServerClientUsingConnectionString(httpClient)
+        CallAutomationClient callClient = getCallAutomationClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("removeAPSTNUserAndAcsUserFromAnOngoingCallTest", next))
             .buildClient();
 
@@ -180,7 +180,7 @@ public class CallConnectionLiveTests extends CallAutomationLiveTestBase {
          * 4. transfer the call to another target.
          */
 
-        CallAutomationClient callClient = getCallingServerClientUsingConnectionString(httpClient)
+        CallAutomationClient callClient = getCallAutomationClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("transferACallFromOneUserToAnotherUserTest", next))
             .buildClient();
 

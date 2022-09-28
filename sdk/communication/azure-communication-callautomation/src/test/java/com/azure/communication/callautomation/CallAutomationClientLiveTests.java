@@ -43,7 +43,7 @@ public class CallAutomationClientLiveTests extends CallAutomationLiveTestBase {
          * 4. hang up the call.
          * 5. once call is hung up, verify that call connection cannot be found.
          */
-        CallAutomationClient callClient = getCallingServerClientUsingConnectionString(httpClient)
+        CallAutomationClient callClient = getCallAutomationClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("createVOIPCallAndHangupTest", next))
             .buildClient();
 
@@ -90,7 +90,7 @@ public class CallAutomationClientLiveTests extends CallAutomationLiveTestBase {
          * 4. hang up the call.
          * 5. once call is hung up, verify that call connection cannot be found.
          */
-        CallAutomationClient callClient = getCallingServerClientUsingConnectionString(httpClient)
+        CallAutomationClient callClient = getCallAutomationClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("createPSTNCallAndHangupTest", next))
             .buildClient();
 
@@ -139,7 +139,7 @@ public class CallAutomationClientLiveTests extends CallAutomationLiveTestBase {
          * 5. verify that call connection cannot be found.
          */
 
-        CallAutomationClient callClient = getCallingServerClientUsingConnectionString(httpClient)
+        CallAutomationClient callClient = getCallAutomationClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("startACallWithMultipleTargetsTest", next))
             .buildClient();
 
