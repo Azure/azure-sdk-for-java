@@ -20,20 +20,22 @@ import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.core.http.HttpClient;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
+import java.lang.reflect.Type;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestBase {
     protected ConcurrentHashMap<String, ServiceBusProcessorClient> processorStore;
+    // Key: callerId + receiverId, Value: incomingCallContext
     protected ConcurrentHashMap<String, String> incomingCallContextStore;
+    // Key: serverCallId(correlationID), Value: <Key: event Class, Value: instance of the event>
+    protected ConcurrentHashMap<String, ConcurrentHashMap<Type, CallAutomationEventBase>> eventStore;
     protected static final String SERVICEBUS_CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("SERVICEBUS_STRING",
             "Endpoint=sb://REDACTED.servicebus.windows.net/;SharedAccessKeyName=TestKey;SharedAccessKey=BZscTVbGv+kiKSwVYBGxYS4mWwmFQhOou8EtZn87JJY=");
@@ -43,9 +45,12 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
 
     protected static final String DISPATCHER_CALLBACK = DISPATCHER_ENDPOINT + "/api/servicebuscallback/events";
 
-    CallAutomationAutomatedLiveTestBase() {
+    @Override
+    protected void beforeTest() {
+        super.beforeTest();
         processorStore = new ConcurrentHashMap<>();
         incomingCallContextStore = new ConcurrentHashMap<>();
+        eventStore = new ConcurrentHashMap<>();
     }
 
     @Override
@@ -87,11 +92,12 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
     }
 
     protected void messageHandler(ServiceBusReceivedMessageContext context) {
+        // receive message from dispatcher
         ServiceBusReceivedMessage message = context.getMessage();
         String body = message.getBody().toString();
 
+        // parse the message
         assert !body.isEmpty();
-//        System.out.println(body);
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         JsonNode eventData;
@@ -101,8 +107,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
             throw new RuntimeException(e);
         }
 
-
-        //The following is for init development and testing, will be improved soon.
+        // check if this is an incomingCallEvent(Event grid event) or normal callAutomation cloud events
         if (eventData.get("incomingCallContext") != null) {
             String incomingCallContext = mapper.convertValue(eventData.get("incomingCallContext"), String.class);
             CommunicationIdentifierModel from = mapper.convertValue(eventData.get("from"), CommunicationIdentifierModel.class);
@@ -111,10 +116,13 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
 
             incomingCallContextStore.put(uniqueId, incomingCallContext);
         } else {
-            //TODO: Event Handling
             CallAutomationEventBase event = EventHandler.parseEvent(body);
-            assert event != null;
-            System.out.println(event.getClass());
+            assert event != null : "Event cannot be null";
+            String serverCallId = event.getServerCallId();
+            if (!eventStore.containsKey(serverCallId)) {
+                eventStore.put(serverCallId, new ConcurrentHashMap<>());
+            }
+            eventStore.get(serverCallId).put(event.getClass(), event);
         }
     }
 
