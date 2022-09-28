@@ -236,6 +236,7 @@ public class ImplementationBridgeHelpers {
             CosmosQueryRequestOptions withEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions, boolean emptyPageDiagnosticsEnabled);
             <T> Function<JsonNode, T> getItemFactoryMethod(CosmosQueryRequestOptions queryRequestOptions, Class<T> classOfT);
             CosmosQueryRequestOptions setItemFactoryMethod(CosmosQueryRequestOptions queryRequestOptions, Function<JsonNode, ?> factoryMethod);
+            String getQueryNameOrDefault(CosmosQueryRequestOptions queryRequestOptions, String defaultQueryName);
         }
     }
 

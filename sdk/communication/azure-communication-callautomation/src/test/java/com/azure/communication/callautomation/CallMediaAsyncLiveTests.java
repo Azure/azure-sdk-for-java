@@ -63,7 +63,7 @@ public class CallMediaAsyncLiveTests extends CallAutomationLiveTestBase {
             assertNotNull(result.getValue());
             assertNotNull(result.getValue().getCallConnection());
             assertNotNull(result.getValue().getCallConnectionProperties());
-            Thread.sleep(15000);
+            waitForOperationCompletion(15000);
 
             CallConnectionAsync callConnectionAsync = callClient.getCallConnectionAsync(result.getValue().getCallConnectionProperties().getCallConnectionId());
             assertNotNull(callConnectionAsync);
@@ -73,10 +73,10 @@ public class CallMediaAsyncLiveTests extends CallAutomationLiveTestBase {
 
             CallMediaAsync callMediaAsync = callConnectionAsync.getCallMediaAsync();
             callMediaAsync.playToAll(new FileSource().setUri(MEDIA_SOURCE)).block();
-            Thread.sleep(5000);
+            waitForOperationCompletion(5000);
 
             callConnectionAsync.hangUp(true).block();
-            Thread.sleep(5000);
+            waitForOperationCompletion(5000);
             assertThrows(Exception.class, () -> callConnectionAsync.getCallProperties().block());
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);

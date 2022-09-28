@@ -2,13 +2,9 @@
 
 ## 2.20.0-beta.1 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
 ### Bugs Fixed
 
-### Other Changes
+- Fixed a bug that `DiagnosticSettings.get()` throws NPE when it has no metrics or logs configured.
 
 ## 2.19.0 (2022-09-23)
 

@@ -69,7 +69,7 @@ public class CallAutomationLiveTestBase extends TestBase {
         .get("ANOTHER_TARGET_USER_ID", String.format("8:acs:%s_00000014-00d7-31b3-28df-444822002030", RANDOM_RESOURCE_IDENTIFIER));
 
     protected static final String ACS_USER_CALL_RECORDING = Configuration.getGlobalConfiguration()
-        .get("CALL_RECORDING_USER_ID", "8:acs:ad7b4e1f-5b71-4d2f-9db2-b1bae6d4f392_00000014-0b21-aee5-85f4-343a0d0065cf");
+        .get("CALL_RECORDING_USER_ID");
 
     protected static final String ACS_RESOURCE_PHONE = Configuration.getGlobalConfiguration()
         .get("AZURE_PHONE_NUMBER", "+18331234567");
