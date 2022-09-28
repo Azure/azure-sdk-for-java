@@ -55,24 +55,29 @@ public class StringBasedCosmosQuery extends AbstractCosmosQuery {
         String expandedQuery = query;
         List<SqlParameter> sqlParameters = new ArrayList<>();
         for (int paramIndex = 0; paramIndex < parameters.length; paramIndex++) {
-            Parameter queryParam = getQueryMethod().getParameters().getParameter(paramIndex);
-            if (parameters[paramIndex] instanceof Collection) {
-                List<String> expandParam = ((Collection<?>) parameters[paramIndex]).stream()
-                    .map(Object::toString).collect(Collectors.toList());
-                List<String> expandedParamKeys = new ArrayList<>();
-                for (int arrayIndex = 0; arrayIndex < expandParam.size(); arrayIndex++) {
-                    String paramName = "@" + queryParam.getName().orElse("") + arrayIndex;
-                    expandedParamKeys.add(paramName);
-                    sqlParameters.add(new SqlParameter(paramName, toCosmosDbValue(expandParam.get(arrayIndex))));
-                }
-                expandedQuery = expandedQuery.replaceAll("@" + queryParam.getName().orElse(""), String.join(",", expandedParamKeys));
-            } else {
-                if (!Pageable.class.isAssignableFrom(queryParam.getType())
-                    && !Sort.class.isAssignableFrom(queryParam.getType())) {
-                    sqlParameters.add(new SqlParameter("@" + queryParam.getName().orElse(""), toCosmosDbValue(parameters[paramIndex])));
+                Parameter queryParam = getQueryMethod().getParameters().getParameter(paramIndex);
+                if (!queryParam.getName().isEmpty()) {
+                    String inParamCheck = "ARRAY_CONTAINS(@" + queryParam.getName().get();
+                    if (parameters[paramIndex] instanceof Collection
+                        && expandedQuery.toString().toUpperCase().replaceAll("\\s", "")
+                        .indexOf(inParamCheck.toUpperCase()) == -1) {
+                        List<String> expandParam = ((Collection<?>) parameters[paramIndex]).stream()
+                            .map(Object::toString).collect(Collectors.toList());
+                        List<String> expandedParamKeys = new ArrayList<>();
+                        for (int arrayIndex = 0; arrayIndex < expandParam.size(); arrayIndex++) {
+                            String paramName = "@" + queryParam.getName().orElse("") + arrayIndex;
+                            expandedParamKeys.add(paramName);
+                            sqlParameters.add(new SqlParameter(paramName, toCosmosDbValue(expandParam.get(arrayIndex))));
+                        }
+                        expandedQuery = expandedQuery.replaceAll("@" + queryParam.getName().orElse(""), String.join(",", expandedParamKeys));
+                    } else {
+                        if (!Pageable.class.isAssignableFrom(queryParam.getType())
+                            && !Sort.class.isAssignableFrom(queryParam.getType())) {
+                            sqlParameters.add(new SqlParameter("@" + queryParam.getName().orElse(""), toCosmosDbValue(parameters[paramIndex])));
+                        }
+                    }
                 }
             }
-        }
 
         SqlQuerySpec querySpec = new SqlQuerySpec(expandedQuery, sqlParameters);
         if (isPageQuery()) {
