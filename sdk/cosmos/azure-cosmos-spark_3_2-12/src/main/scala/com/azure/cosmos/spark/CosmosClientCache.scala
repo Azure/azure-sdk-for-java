@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper
 import com.azure.cosmos.implementation.clienttelemetry.TagName
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, CosmosDaemonThreadFactory, SparkBridgeImplementationInternal, Strings}
-import com.azure.cosmos.models.CosmosClientTelemetryConfig
+import com.azure.cosmos.models.{CosmosClientTelemetryConfig, CosmosMicrometerMetricsOptions}
 import com.azure.cosmos.spark.CosmosPredicates.isOnSparkDriver
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, DirectConnectionConfig, ThrottlingRetryOptions}
@@ -155,13 +155,20 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           }
 
           val telemetryConfig  = new CosmosClientTelemetryConfig()
-          telemetryConfig.meterRegistry(CosmosClientMetrics.meterRegistry.get)
-          telemetryConfig.clientCorrelationId(clientCorrelationId)
-          telemetryConfig.metricTagNames(
-            s"${TagName.Container}, ${TagName.ClientCorrelationId}, ${TagName.Operation}, " +
-              s"${TagName.OperationStatusCode}, ${TagName.PartitionKeyRangeId}, ${TagName.ServiceEndpoint}, " +
-              s"${TagName.ServiceAddress}"
-          )
+            .metricsOptions(
+            new CosmosMicrometerMetricsOptions().meterRegistry(CosmosClientMetrics.meterRegistry.get)
+            )
+            .clientCorrelationId(clientCorrelationId)
+            .metricTagNames(
+              Array(
+                TagName.Container.toString,
+                TagName.ClientCorrelationId.toString,
+                TagName.Operation.toString,
+                TagName.OperationStatusCode.toString,
+                TagName.PartitionKeyRangeId.toString,
+                TagName.ServiceEndpoint.toString,
+                TagName.ServiceAddress.toString)
+            )
 
           builder.clientTelemetryConfig(telemetryConfig)
         }

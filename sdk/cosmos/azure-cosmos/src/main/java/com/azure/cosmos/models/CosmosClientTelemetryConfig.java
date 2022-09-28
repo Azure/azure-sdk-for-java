@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.util.MetricsOptions;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.Configs;
@@ -26,6 +27,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Stream;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Class with config options for Cosmos Client telemetry
@@ -100,6 +103,30 @@ public final class CosmosClientTelemetryConfig {
         this.clientTelemetryEnabled = null;
     }
 
+    /**
+     * Sets MetricRegistry to be used to emit client metrics
+     *
+     * @param clientMetricsOptions - the client MetricsOptions - NOTE: for now only
+     * CosmosMicrometerMetricsOptions are supported
+     * @return current CosmosClientTelemetryConfig
+     */
+    public CosmosClientTelemetryConfig metricsOptions(MetricsOptions clientMetricsOptions) {
+        checkNotNull(clientMetricsOptions, "expected non-null clientMetricsOptions");
+
+        if (! (clientMetricsOptions instanceof CosmosMicrometerMetricsOptions)) {
+            // TODO @fabianm -  extend this to OpenTelemetry etc. eventually
+            throw new IllegalArgumentException(
+                "Currently only MetricsOptions of type CosmosMicrometerMetricsOptions are supported");
+        }
+
+        CosmosMicrometerMetricsOptions micrometerMetricsOptions = (CosmosMicrometerMetricsOptions)clientMetricsOptions;
+
+        this.clientMetricRegistry = micrometerMetricsOptions.getClientMetricRegistry();
+        this.isClientMetricsEnabled = micrometerMetricsOptions.isEnabled();
+
+        return this;
+    }
+
     MeterRegistry getClientMetricRegistry() {
         return this.clientMetricRegistry;
     }
@@ -132,8 +159,8 @@ public final class CosmosClientTelemetryConfig {
      * @param tagNames - a comma-separated list of tag names that should be considered
      * @return current CosmosClientTelemetryConfig
      */
-    public CosmosClientTelemetryConfig metricTagNames(String tagNames) {
-        if (Strings.isNullOrWhiteSpace(tagNames)) {
+    public CosmosClientTelemetryConfig metricTagNames(String[] tagNames) {
+        if (tagNames == null || tagNames.length == 0) {
             this.metricTagNames = DEFAULT_TAGS;
         }
 
@@ -143,7 +170,8 @@ public final class CosmosClientTelemetryConfig {
         }
 
         Stream<TagName> tagNameStream =
-            Arrays.stream(tagNames.toLowerCase(Locale.ROOT).split(","))
+            Arrays.stream(tagNames)
+                  .map(rawTagName -> rawTagName.toLowerCase(Locale.ROOT))
                   .filter(tagName -> !Strings.isNullOrWhiteSpace(tagName))
                   .map(tagName -> {
                       String trimmedTagName = tagName.trim();
@@ -175,19 +203,6 @@ public final class CosmosClientTelemetryConfig {
 
     EnumSet<TagName> getMetricTagNames() {
         return this.metricTagNames;
-    }
-
-    /**
-     * Sets MetricRegistry to be used to emit client metrics
-     *
-     * @param clientMetricMeterRegistry - the MetricRegistry to be used to emit client metrics
-     * @return current CosmosClientTelemetryConfig
-     */
-    public CosmosClientTelemetryConfig meterRegistry(MeterRegistry clientMetricMeterRegistry) {
-        this.clientMetricRegistry = clientMetricMeterRegistry;
-        this.isClientMetricsEnabled = clientMetricMeterRegistry != null;
-
-        return this;
     }
 
     Duration getHttpNetworkRequestTimeout() {

@@ -18,6 +18,7 @@ import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosMicrometerMetricsOptions;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -60,8 +61,11 @@ public class ClientMetricsTest extends BatchTestBase {
         assertThat(this.meterRegistry).isNull();
 
         this.meterRegistry = ConsoleLoggingRegistryFactory.create(1);
-        CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig()
+        CosmosMicrometerMetricsOptions metricsOptions = new CosmosMicrometerMetricsOptions()
             .meterRegistry(this.meterRegistry);
+
+        CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig()
+            .metricsOptions(metricsOptions);
 
         this.client = getClientBuilder()
             .clientTelemetryConfig(telemetryConfig)
