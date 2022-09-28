@@ -1,6 +1,8 @@
 ## Generate autorest code
 
 ```yaml
+azure-arm: false
+
 require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/feature/cognitiveservices/anomalydetector/mvad/specification/cognitiveservices/data-plane/AnomalyDetector/readme.md
 output-folder: ../
 java: true
@@ -11,7 +13,6 @@ artifact-id: azure-ai-anomalydetector
 generate-samples: true
 license-header: MICROSOFT_MIT_NO_CODEGEN
 namespace: com.azure.ai.anomalydetector
-azure-arm: true
 service-versions:
 - v1.1
 ```
