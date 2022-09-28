@@ -206,6 +206,14 @@ foreach ($packageDetail in $packageDetails) {
     if ($LASTEXITCODE) { exit $LASTEXITCODE }
   }
   else {
+
+    $resultsTime = [diagnostics.stopwatch]::StartNew()
+    if (Test-ReleasedPackage -RepositoryUrl $packageReposityUrl -PackageDetail $packageDetail) {
+      Write-Information "Package $($packageDetail.FullyQualifiedName) has already been deployed."
+      continue
+    }
+    Write-Information "Time to test released package=$($resultstime.Elapsed.ToString('dd\.hh\:mm\:ss'))"
+
     # Maven Central Staging + optional Release
     $repositoryDirectoryOption = "-DrepositoryDirectory=$localRepositoryDirectory"
     Write-Information "Repository Directory Option is: $repositoryDirectoryOption"
