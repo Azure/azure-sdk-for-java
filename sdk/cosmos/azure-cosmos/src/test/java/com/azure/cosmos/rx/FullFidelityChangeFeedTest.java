@@ -20,14 +20,11 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
 import java.time.Duration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-import static java.lang.annotation.ElementType.METHOD;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
@@ -45,7 +42,7 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void fullFidelityChangeFeed_FromNowForLogicalPartition() throws Exception {
-        CosmosAsyncContainer cosmosContainer = initializeFFCFContainer(2);
+        CosmosAsyncContainer cosmosContainer = initializeFFCFContainer();
         try {
             CosmosChangeFeedRequestOptions options1 = CosmosChangeFeedRequestOptions
                 .createForProcessingFromNow(FeedRange.forLogicalPartition(new PartitionKey("mypk-1")));
@@ -92,11 +89,6 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
                 .toIterable()
                 .iterator();
 
-            // Check item2 deleted with TTL
-            // TODO: this is not working - item does get deleted but it won't show up in CF
-            logger.info("{} going to sleep for 5 seconds to populate ttl delete", Thread.currentThread().getName());
-            Thread.sleep(5 * 1000);
-
             if (results1.hasNext()) {
                 FeedResponse<JsonNode> response = results1.next();
                 List<JsonNode> itemChanges = response.getResults();
@@ -128,8 +120,6 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
                 assertThat(itemChanges.get(4).get("metadata").get("operationType").asText()).isEqualTo("delete");
                 assertThat(itemChanges.get(4).get("metadata").get("previousImageLSN").asText()
                 ).isEqualTo(itemChanges.get(2).get("metadata").get("lsn").asText());
-                // Assert item2 deleted with TTL
-                // TODO: Missing TTL logic
             } else {
                 fail("change feed missing results");
             }
@@ -197,7 +187,7 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void fullFidelityChangeFeed_FromContinuationToken() throws Exception {
-        CosmosAsyncContainer cosmosContainer = initializeFFCFContainer(2);
+        CosmosAsyncContainer cosmosContainer = initializeFFCFContainer();
         try {
             CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
                 .createForProcessingFromNow(FeedRange.forFullRange());
@@ -232,11 +222,6 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
             cosmosContainer.upsertItem(item1).block();
             cosmosContainer.deleteItem(item1, new CosmosItemRequestOptions()).block();
 
-            // Check item2 deleted with TTL
-            // TODO: this is not working - item does get deleted but it won't show up in CF
-            logger.info("{} going to sleep for 5 seconds to populate ttl delete", Thread.currentThread().getName());
-            Thread.sleep(5 * 1000);
-
             results = cosmosContainer
                 .queryChangeFeed(options, JsonNode.class)
                 .byPage()
@@ -267,8 +252,6 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
                 assertThat(itemChanges.get(3).get("metadata").get("operationType").asText()).isEqualTo("delete");
                 assertThat(itemChanges.get(3).get("metadata").get("previousImageLSN").asText()
                 ).isEqualTo(itemChanges.get(2).get("metadata").get("lsn").asText());
-                // Assert item2 deleted with TTL
-                // TODO: Missing TTL logic showing up
             } else {
                 fail("change feed missing results");
             }
@@ -279,7 +262,7 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void fullFidelityChangeFeed_FromContinuationTokenOperationsOrder() throws Exception {
-        CosmosAsyncContainer cosmosContainer = initializeFFCFContainer(0);
+        CosmosAsyncContainer cosmosContainer = initializeFFCFContainer();
         try {
             CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
                 .createForProcessingFromNow(FeedRange.forFullRange());
@@ -337,7 +320,7 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
     // TODO: re-enable this test once pipeline emulator has these changes - currently only in preview
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, enabled = false)
     public void fullFidelityChangeFeed_VerifyPreviousPresentOnReplace() throws Exception {
-        CosmosAsyncContainer cosmosContainer = initializeFFCFContainer(2);
+        CosmosAsyncContainer cosmosContainer = initializeFFCFContainer();
         try {
             CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
                 .createForProcessingFromNow(FeedRange.forFullRange());
@@ -417,11 +400,8 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
         }
     }
 
-    public CosmosAsyncContainer initializeFFCFContainer(int ttl) {
+    public CosmosAsyncContainer initializeFFCFContainer() {
         CosmosContainerProperties cosmosContainerProperties = getCollectionDefinition();
-        if (ttl != 0) {
-            cosmosContainerProperties.setDefaultTimeToLiveInSeconds(ttl);
-        }
         cosmosContainerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(5)));
         return createCollection(client, createdDatabase.getId(), cosmosContainerProperties);
     }
