@@ -61,11 +61,9 @@ public class ClientMetricsTest extends BatchTestBase {
         assertThat(this.meterRegistry).isNull();
 
         this.meterRegistry = ConsoleLoggingRegistryFactory.create(1);
-        CosmosMicrometerMetricsOptions metricsOptions = new CosmosMicrometerMetricsOptions()
-            .meterRegistry(this.meterRegistry);
 
         CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig()
-            .metricsOptions(metricsOptions);
+            .metricsOptions(new CosmosMicrometerMetricsOptions().meterRegistry(this.meterRegistry));
 
         this.client = getClientBuilder()
             .clientTelemetryConfig(telemetryConfig)

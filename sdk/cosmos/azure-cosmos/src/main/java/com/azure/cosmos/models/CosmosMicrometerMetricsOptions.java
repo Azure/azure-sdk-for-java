@@ -5,9 +5,15 @@ package com.azure.cosmos.models;
 import com.azure.core.util.MetricsOptions;
 import io.micrometer.core.instrument.MeterRegistry;
 
+/**
+ * Micrometer-specific Azure Cosmos DB SDK metrics options
+ */
 public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
     private MeterRegistry clientMetricRegistry = null;
 
+    /**
+     * Instantiates new Micrometer-specific Azure Cosmos DB SDK metrics options
+     */
     public CosmosMicrometerMetricsOptions() {
     }
 
