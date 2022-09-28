@@ -28,9 +28,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
@@ -69,7 +67,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
     }
 
     // Using this test to verify basic functionality
-    @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT, enabled = false)
     public void fullFidelityChangeFeedProcessorStartFromNow() throws InterruptedException {
         CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
@@ -132,7 +130,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
 
     // Using this test to verify basic functionality
-    @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT, enabled = false)
     public void fullFidelityChangeFeedProcessorStartFromContinuationToken() throws InterruptedException {
         CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
@@ -193,7 +191,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT, enabled = false)
     public void getCurrentState() throws InterruptedException {
         CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
@@ -331,7 +329,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT, enabled = false)
     public void getCurrentStateWithInsertedDocuments() throws InterruptedException {
         CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
@@ -515,7 +513,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT, enabled = false)
     public void staledLeaseAcquiring() throws InterruptedException {
         final String ownerFirst = "Owner_First";
         final String ownerSecond = "Owner_Second";
@@ -650,7 +648,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT, enabled = false)
     public void ownerNullAcquiring() throws InterruptedException {
         final String ownerFirst = "Owner_First";
         final String leasePrefix = "TEST";
@@ -929,52 +927,14 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
         assertThat(remainingWork > 0).as("Failed to receive all the feed documents").isTrue();
     }
 
-    @BeforeMethod(groups = { "emulator", "simple" }, timeOut = 2 * SETUP_TIMEOUT, alwaysRun = true)
-    public void beforeMethod() {
-    }
-
-    @BeforeClass(groups = { "emulator", "simple" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
+    @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_ChangeFeedProcessorTest() {
         client = getClientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
-
-        // Following is code that when enabled locally it allows for a predicted database/collection name that can be
-        // checked in the Azure Portal
-        //        try {
-        //            client.getDatabase(databaseId).read()
-        //                .map(cosmosDatabaseResponse -> cosmosDatabaseResponse.getDatabase())
-        //                .flatMap(database -> database.delete())
-        //                .onErrorResume(throwable -> {
-        //                    if (throwable instanceof com.azure.cosmos.CosmosClientException) {
-        //                        com.azure.cosmos.CosmosClientException clientException = (com.azure.cosmos.CosmosClientException) throwable;
-        //                        if (clientException.getStatusCode() == 404) {
-        //                            return Mono.empty();
-        //                        }
-        //                    }
-        //                    return Mono.error(throwable);
-        //                }).block();
-        //            Thread.sleep(500);
-        //        } catch (Exception e){
-        //            log.warn("Database delete", e);
-        //        }
-        //        createdDatabase = createDatabase(client, databaseId);
     }
 
-    @AfterMethod(groups = { "emulator", "simple" }, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
-    public void afterMethod() {
-    }
-
-    @AfterClass(groups = { "emulator", "simple" }, timeOut = 2 * SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "emulator" }, timeOut = 2 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        //        try {
-        //            client.readAllDatabases()
-        //                .flatMap(cosmosDatabaseProperties -> {
-        //                    CosmosAsyncDatabase cosmosDatabase = client.getDatabase(cosmosDatabaseProperties.getId());
-        //                    return cosmosDatabase.delete();
-        //                }).blockLast();
-        //            Thread.sleep(500);
-        //        } catch (Exception e){ }
-
         safeClose(client);
     }
 
