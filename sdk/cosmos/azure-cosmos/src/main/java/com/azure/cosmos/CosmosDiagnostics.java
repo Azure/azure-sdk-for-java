@@ -113,7 +113,6 @@ public final class CosmosDiagnostics {
      *
      * @return set of regions contacted for this request
      */
-    @Beta(value = Beta.SinceVersion.V4_22_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Set<String> getContactedRegionNames() {
         if (this.feedResponseDiagnostics != null) {
             return null;

@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The MediaStreamingConfigurationInternal model. */
 @Fluent
-public final class MediaStreamingConfiguration {
+public final class MediaStreamingOptions {
     /*
      * Transport URL for media streaming
      */
@@ -19,19 +19,19 @@ public final class MediaStreamingConfiguration {
      * The type of tranport to be used for media streaming, eg. Websocket
      */
     @JsonProperty(value = "transportType")
-    private final MediaStreamingTransportType transportType;
+    private final MediaStreamingTransport transportType;
 
     /*
      * Content type to stream, eg. audio, audio/video
      */
     @JsonProperty(value = "contentType")
-    private final MediaStreamingContentType contentType;
+    private final MediaStreamingContent contentType;
 
     /*
      * Audio channel type to stream, eg. unmixed audio, mixed audio
      */
     @JsonProperty(value = "audioChannelType")
-    private final MediaStreamingAudioChannelType audioChannelType;
+    private final MediaStreamingAudioChannel audioChannelType;
 
     /**
      * Creates a new instance of MediaStreamingConfiguration
@@ -40,7 +40,7 @@ public final class MediaStreamingConfiguration {
      * @param contentType - Content Type
      * @param audioChannelType - Audio Channel Type
      */
-    public MediaStreamingConfiguration(String transportUrl, MediaStreamingTransportType transportType, MediaStreamingContentType contentType, MediaStreamingAudioChannelType audioChannelType) {
+    public MediaStreamingOptions(String transportUrl, MediaStreamingTransport transportType, MediaStreamingContent contentType, MediaStreamingAudioChannel audioChannelType) {
         this.transportUrl = transportUrl;
         this.transportType = transportType;
         this.contentType = contentType;
@@ -61,7 +61,7 @@ public final class MediaStreamingConfiguration {
      *
      * @return the transportType value.
      */
-    public MediaStreamingTransportType getTransportType() {
+    public MediaStreamingTransport getTransportType() {
         return this.transportType;
     }
 
@@ -70,7 +70,7 @@ public final class MediaStreamingConfiguration {
      *
      * @return the contentType value.
      */
-    public MediaStreamingContentType getContentType() {
+    public MediaStreamingContent getContentType() {
         return this.contentType;
     }
 
@@ -79,7 +79,7 @@ public final class MediaStreamingConfiguration {
      *
      * @return the audioChannelType value.
      */
-    public MediaStreamingAudioChannelType getAudioChannelType() {
+    public MediaStreamingAudioChannel getAudioChannelType() {
         return this.audioChannelType;
     }
 }

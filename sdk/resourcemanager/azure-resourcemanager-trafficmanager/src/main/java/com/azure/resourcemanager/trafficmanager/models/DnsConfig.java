@@ -5,38 +5,35 @@
 package com.azure.resourcemanager.trafficmanager.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class containing DNS settings in a Traffic Manager profile. */
 @Fluent
 public final class DnsConfig {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DnsConfig.class);
-
     /*
-     * The relative DNS name provided by this Traffic Manager profile. This
-     * value is combined with the DNS domain name used by Azure Traffic Manager
-     * to form the fully-qualified domain name (FQDN) of the profile.
+     * The relative DNS name provided by this Traffic Manager profile. This value is combined with the DNS domain name
+     * used by Azure Traffic Manager to form the fully-qualified domain name (FQDN) of the profile.
      */
     @JsonProperty(value = "relativeName")
     private String relativeName;
 
     /*
-     * The fully-qualified domain name (FQDN) of the Traffic Manager profile.
-     * This is formed from the concatenation of the RelativeName with the DNS
-     * domain used by Azure Traffic Manager.
+     * The fully-qualified domain name (FQDN) of the Traffic Manager profile. This is formed from the concatenation of
+     * the RelativeName with the DNS domain used by Azure Traffic Manager.
      */
     @JsonProperty(value = "fqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String fqdn;
 
     /*
-     * The DNS Time-To-Live (TTL), in seconds. This informs the local DNS
-     * resolvers and DNS clients how long to cache DNS responses provided by
-     * this Traffic Manager profile.
+     * The DNS Time-To-Live (TTL), in seconds. This informs the local DNS resolvers and DNS clients how long to cache
+     * DNS responses provided by this Traffic Manager profile.
      */
     @JsonProperty(value = "ttl")
     private Long ttl;
+
+    /** Creates an instance of DnsConfig class. */
+    public DnsConfig() {
+    }
 
     /**
      * Get the relativeName property: The relative DNS name provided by this Traffic Manager profile. This value is

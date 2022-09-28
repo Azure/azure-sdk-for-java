@@ -9,9 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for MediaStreamingContentType. */
-public final class MediaStreamingContentType extends ExpandableStringEnum<MediaStreamingContentType> {
+public final class MediaStreamingContent extends ExpandableStringEnum<MediaStreamingContent> {
     /** Static value audio for MediaStreamingContentType. */
-    public static final MediaStreamingContentType AUDIO = fromString("audio");
+    public static final MediaStreamingContent AUDIO = fromString("audio");
 
     /**
      * Creates or finds a MediaStreamingContentType from its string representation.
@@ -20,12 +20,12 @@ public final class MediaStreamingContentType extends ExpandableStringEnum<MediaS
      * @return the corresponding MediaStreamingContentType.
      */
     @JsonCreator
-    public static MediaStreamingContentType fromString(String name) {
-        return fromString(name, MediaStreamingContentType.class);
+    public static MediaStreamingContent fromString(String name) {
+        return fromString(name, MediaStreamingContent.class);
     }
 
     /** @return known MediaStreamingContentType values. */
-    public static Collection<MediaStreamingContentType> values() {
-        return values(MediaStreamingContentType.class);
+    public static Collection<MediaStreamingContent> values() {
+        return values(MediaStreamingContent.class);
     }
 }

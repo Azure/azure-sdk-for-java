@@ -9,12 +9,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for MediaStreamingAudioChannelType. */
-public final class MediaStreamingAudioChannelType extends ExpandableStringEnum<MediaStreamingAudioChannelType> {
+public final class MediaStreamingAudioChannel extends ExpandableStringEnum<MediaStreamingAudioChannel> {
     /** Static value mixed for MediaStreamingAudioChannelType. */
-    public static final MediaStreamingAudioChannelType MIXED = fromString("mixed");
+    public static final MediaStreamingAudioChannel MIXED = fromString("mixed");
 
     /** Static value unmixed for MediaStreamingAudioChannelType. */
-    public static final MediaStreamingAudioChannelType UNMIXED = fromString("unmixed");
+    public static final MediaStreamingAudioChannel UNMIXED = fromString("unmixed");
 
     /**
      * Creates or finds a MediaStreamingAudioChannelType from its string representation.
@@ -23,12 +23,12 @@ public final class MediaStreamingAudioChannelType extends ExpandableStringEnum<M
      * @return the corresponding MediaStreamingAudioChannelType.
      */
     @JsonCreator
-    public static MediaStreamingAudioChannelType fromString(String name) {
-        return fromString(name, MediaStreamingAudioChannelType.class);
+    public static MediaStreamingAudioChannel fromString(String name) {
+        return fromString(name, MediaStreamingAudioChannel.class);
     }
 
     /** @return known MediaStreamingAudioChannelType values. */
-    public static Collection<MediaStreamingAudioChannelType> values() {
-        return values(MediaStreamingAudioChannelType.class);
+    public static Collection<MediaStreamingAudioChannel> values() {
+        return values(MediaStreamingAudioChannel.class);
     }
 }

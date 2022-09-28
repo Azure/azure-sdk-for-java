@@ -9,9 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for MediaStreamingTransportType. */
-public final class MediaStreamingTransportType extends ExpandableStringEnum<MediaStreamingTransportType> {
+public final class MediaStreamingTransport extends ExpandableStringEnum<MediaStreamingTransport> {
     /** Static value websocket for MediaStreamingTransportType. */
-    public static final MediaStreamingTransportType WEBSOCKET = fromString("websocket");
+    public static final MediaStreamingTransport WEBSOCKET = fromString("websocket");
 
     /**
      * Creates or finds a MediaStreamingTransportType from its string representation.
@@ -20,12 +20,12 @@ public final class MediaStreamingTransportType extends ExpandableStringEnum<Medi
      * @return the corresponding MediaStreamingTransportType.
      */
     @JsonCreator
-    public static MediaStreamingTransportType fromString(String name) {
-        return fromString(name, MediaStreamingTransportType.class);
+    public static MediaStreamingTransport fromString(String name) {
+        return fromString(name, MediaStreamingTransport.class);
     }
 
     /** @return known MediaStreamingTransportType values. */
-    public static Collection<MediaStreamingTransportType> values() {
-        return values(MediaStreamingTransportType.class);
+    public static Collection<MediaStreamingTransport> values() {
+        return values(MediaStreamingTransport.class);
     }
 }
