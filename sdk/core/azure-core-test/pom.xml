@@ -65,7 +65,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.22</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.21</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -95,7 +95,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>4.5.1</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>4.6.1</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -126,7 +126,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.projectreactor:reactor-test:[3.4.22]</include> <!-- {x-include-update;io.projectreactor:reactor-test;external_dependency} -->
+                <include>io.projectreactor:reactor-test:[3.4.21]</include> <!-- {x-include-update;io.projectreactor:reactor-test;external_dependency} -->
                 <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.13.3]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
                 <!-- special allowance for azure-core-test as it is not a shipping library: -->
                 <include>org.junit.jupiter:junit-jupiter-api:[5.8.2]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->

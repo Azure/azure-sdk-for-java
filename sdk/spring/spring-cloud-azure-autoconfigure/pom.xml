@@ -287,7 +287,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-configuration-metadata</artifactId>
-      <version>2.7.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-metadata;external_dependency} -->
+      <version>3.0.0-M4</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-metadata;external_dependency} -->
       <version>3.0.0-M4</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-metadata;external_dependency} -->
       <scope>test</scope>
     </dependency>
