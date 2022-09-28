@@ -62,7 +62,7 @@ public class ClientMetricsTest extends BatchTestBase {
     private MeterRegistry meterRegistry;
     private String preferredRegion;
 
-    @Factory(dataProvider = "clientBuildersWithDirectSession")
+    @Factory(dataProvider = "clientBuildersWithDirectTcpSession")
     public ClientMetricsTest(CosmosClientBuilder clientBuilder) {
 
         super(clientBuilder);
