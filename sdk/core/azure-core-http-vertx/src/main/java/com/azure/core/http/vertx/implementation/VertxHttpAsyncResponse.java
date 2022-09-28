@@ -6,6 +6,7 @@ package com.azure.core.http.vertx.implementation;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.FluxUtil;
 import io.vertx.core.http.HttpClientResponse;
+import io.vertx.core.net.NetSocket;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -36,12 +37,16 @@ public class VertxHttpAsyncResponse extends VertxHttpResponseBase {
     }
 
     private Flux<ByteBuffer> streamResponseBody() {
-        return Flux.create(sink ->
+        return Flux.create(sink -> {
+            NetSocket netSocket = getVertxHttpResponse().netSocket();
+            netSocket.drainHandler(unused ->
+                System.out.println("Draining -------------------------------------------------"));
             getVertxHttpResponse()
-                .handler(buffer -> sink.next(buffer.getByteBuf().nioBuffer().duplicate()))
-                .endHandler(event -> sink.complete())
-                .exceptionHandler(sink::error)
-                .resume()
+                    .handler(buffer -> sink.next(buffer.getByteBuf().nioBuffer()))
+                    .exceptionHandler(sink::error)
+                    .endHandler(event -> sink.complete())
+                    .resume();
+            }
         );
     }
 }
