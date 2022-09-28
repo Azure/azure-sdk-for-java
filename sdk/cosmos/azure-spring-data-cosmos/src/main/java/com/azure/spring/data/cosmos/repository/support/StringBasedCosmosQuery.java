@@ -19,6 +19,7 @@ import org.springframework.data.repository.query.ResultProcessor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -62,12 +63,12 @@ public class StringBasedCosmosQuery extends AbstractCosmosQuery {
          */
         String expandedQuery = query;
         List<SqlParameter> sqlParameters = new ArrayList<>();
-        String modifiedExpandedQuery = expandedQuery.toLowerCase().replaceAll("\\s+", "");
+        String modifiedExpandedQuery = expandedQuery.toLowerCase(Locale.US).replaceAll("\\s+", "");
         for (int paramIndex = 0; paramIndex < parameters.length; paramIndex++) {
             Parameter queryParam = getQueryMethod().getParameters().getParameter(paramIndex);
             String paramName = queryParam.getName().orElse("");
             if (!("").equals(paramName)) {
-                String inParamCheck = "array_contains(@" + paramName.toLowerCase();
+                String inParamCheck = "array_contains(@" + paramName.toLowerCase(Locale.US);
                 if (parameters[paramIndex] instanceof Collection && !modifiedExpandedQuery.contains(inParamCheck)) {
                     List<String> expandParam = ((Collection<?>) parameters[paramIndex]).stream()
                         .map(Object::toString).collect(Collectors.toList());
