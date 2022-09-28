@@ -104,7 +104,7 @@ public final class CosmosClientTelemetryConfig {
     }
 
     /**
-     * Sets MetricRegistry to be used to emit client metrics
+     * Sets MetricsOptions to be used to emit client metrics
      *
      * @param clientMetricsOptions - the client MetricsOptions - NOTE: for now only
      * CosmosMicrometerMetricsOptions are supported
