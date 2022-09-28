@@ -21,6 +21,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -47,7 +48,7 @@ public class CallRecordingAsyncLiveTests extends CallAutomationLiveTestBase {
         try {
             CommunicationUserIdentifier sourceUser = communicationIdentityAsyncClient.createUser().block();
 
-            String targetUserId = ACS_USER_CALL_RECORDING;
+            String targetUserId = Optional.ofNullable(ACS_USER_CALL_RECORDING).orElse("8:acs:ad7b4e1f-5b71-4d2f-9db2-b1bae6d4f392_00000014-0b21-aee5-85f4-343a0d0065cf");
             List<CommunicationIdentifier> targets = new ArrayList<CommunicationIdentifier>() {
                 {
                     add(new CommunicationUserIdentifier(targetUserId));

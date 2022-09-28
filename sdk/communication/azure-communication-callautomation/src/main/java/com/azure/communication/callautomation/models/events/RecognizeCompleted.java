@@ -10,7 +10,7 @@ import com.azure.core.annotation.Immutable;
 
 /** The RecognizeCompleted model. */
 @Immutable
-public final class RecognizeCompleted extends CallAutomationEventWithReasonCodeBase {
+public final class RecognizeCompleted extends CallAutomationEventBase {
 
     /*
      * Determines the sub-type of the recognize operation.
@@ -44,4 +44,5 @@ public final class RecognizeCompleted extends CallAutomationEventWithReasonCodeB
     public CollectTonesResult getCollectTonesResult() {
         return this.collectTonesResult;
     }
+
 }

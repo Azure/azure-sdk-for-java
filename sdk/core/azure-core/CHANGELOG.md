@@ -9,6 +9,8 @@
 ### Bugs Fixed
 - Added a short delay to `AccessTokenCache.getToken()` to avoid an async-busy-loop when the first thread to retrieve a fresh token takes longer than usual and the cache is shared amongst many threads. ([#31110](https://github.com/Azure/azure-sdk-for-java/pull/31110))
 
+- Fixed issue when deserializing InputStream from an HTTP response.
+
 ### Other Changes
 
 ## 1.32.0 (2022-09-01)
