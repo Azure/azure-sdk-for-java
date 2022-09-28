@@ -8,6 +8,7 @@ import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.TelemetryAttributes;
 import com.azure.core.util.metrics.DoubleHistogram;
 import com.azure.core.util.metrics.LongCounter;
+import com.azure.core.util.metrics.LongGauge;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.metrics.MeterProvider;
 import io.opentelemetry.api.GlobalOpenTelemetry;
@@ -25,6 +26,7 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static io.opentelemetry.api.common.AttributeKey.stringKey;
 import static io.opentelemetry.sdk.testing.assertj.OpenTelemetryAssertions.assertThat;
@@ -362,5 +364,75 @@ public class MetricsTests {
         assertThrows(NullPointerException.class, () -> meter.createDoubleHistogram("name", null, null));
         assertThrows(NullPointerException.class, () -> meter.createLongCounter(null, "description", null));
         assertThrows(NullPointerException.class, () -> meter.createLongCounter("name", null, null));
+        assertThrows(NullPointerException.class, () -> meter.createLongUpDownCounter(null, "description", null));
+        assertThrows(NullPointerException.class, () -> meter.createLongUpDownCounter("name", null, null));
+        assertThrows(NullPointerException.class, () -> meter.createLongGauge(null, "description", null));
+        assertThrows(NullPointerException.class, () -> meter.createLongGauge("name", null, null));
+    }
+
+
+    @Test
+    public void basicGauge() {
+        Meter meter = MeterProvider.getDefaultProvider().createMeter("az.sdk-name", null, new OpenTelemetryMetricsOptions().setProvider(sdkMeterProvider));
+        LongGauge gauge = meter.createLongGauge("az.sdk.test-gauge", "important metric", null);
+        assertTrue(gauge.isEnabled());
+
+        AtomicLong value = new AtomicLong();
+
+        AutoCloseable subscription = gauge.registerCallback(value::get, METRIC_ATTRIBUTES);
+        value.set(42);
+        testClock.advance(Duration.ofNanos(SECOND_NANOS));
+        assertThat(sdkMeterReader.collectAllMetrics())
+            .satisfiesExactly(
+                metric ->
+                    assertThat(metric)
+                        .hasResource(RESOURCE)
+                        .hasInstrumentationScope(InstrumentationScopeInfo.create("az.sdk-name", null, null))
+                        .hasName("az.sdk.test-gauge")
+                        .hasDescription("important metric")
+                        .hasLongGaugeSatisfying(
+                            g -> g.hasPointsSatisfying(
+                                point ->
+                                    point
+                                        .hasStartEpochNanos(testClock.now() - SECOND_NANOS)
+                                        .hasEpochNanos(testClock.now())
+                                        .hasAttributes(EXPECTED_ATTRIBUTES)
+                                        .hasValue(42))));
+    }
+
+    @Test
+    public void gaugeMultiple() throws Exception {
+        Meter meter = MeterProvider.getDefaultProvider().createMeter("az.sdk-name", null, new OpenTelemetryMetricsOptions().setProvider(sdkMeterProvider));
+        LongGauge gauge = meter.createLongGauge("az.sdk.test-gauge", "important metric", null);
+        assertTrue(gauge.isEnabled());
+
+        AtomicLong value = new AtomicLong();
+
+        AutoCloseable subscription = gauge.registerCallback(value::get, meter.createAttributes(Collections.emptyMap()));
+        value.set(42);
+        value.set(420);
+        testClock.advance(Duration.ofNanos(SECOND_NANOS));
+
+        assertThat(sdkMeterReader.collectAllMetrics())
+            .satisfiesExactly(
+                metric ->
+                    assertThat(metric)
+                        .hasResource(RESOURCE)
+                        .hasInstrumentationScope(InstrumentationScopeInfo.create("az.sdk-name", null, null))
+                        .hasName("az.sdk.test-gauge")
+                        .hasDescription("important metric")
+                        .hasLongGaugeSatisfying(
+                            g -> g.hasPointsSatisfying(
+                                point ->
+                                    point
+                                        .hasStartEpochNanos(testClock.now() - SECOND_NANOS)
+                                        .hasEpochNanos(testClock.now())
+                                        .hasAttributes(Attributes.empty())
+                                        .hasValue(420))));
+
+        subscription.close();
+        value.set(1);
+        testClock.advance(Duration.ofNanos(SECOND_NANOS));
+        assertThat(sdkMeterReader.collectAllMetrics()).isEmpty();
     }
 }

@@ -22,8 +22,8 @@ public final class AzureBlobFSSink extends CopySink {
     private Object copyBehavior;
 
     /*
-     * Specify the custom metadata to be added to sink data. Type: array of
-     * objects (or Expression with resultType array of objects).
+     * Specify the custom metadata to be added to sink data. Type: array of objects (or Expression with resultType
+     * array of objects).
      */
     @JsonProperty(value = "metadata")
     private List<MetadataItem> metadata;

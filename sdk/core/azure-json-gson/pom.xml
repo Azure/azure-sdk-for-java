@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-json-gson</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-json-gson;current} -->
+  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-json-gson;current} -->
 
   <name>Microsoft Azure Java GSON JSON Library</name>
   <description>This package contains a GSON-based JSON implementation.</description>
@@ -62,7 +62,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-json</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-json;current} -->
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-json;current} -->
     </dependency>
     <dependency>
       <groupId>com.google.code.gson</groupId>
@@ -73,7 +73,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-json</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-json;current} -->
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-json;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>

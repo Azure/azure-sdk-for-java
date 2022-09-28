@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.context;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.ClientCertificateCredential;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.DefaultAzureCredential;
@@ -38,6 +39,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.time.Duration;
 
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME;
+import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -296,6 +298,24 @@ class AzureTokenCredentialAutoConfigurationTests {
                 AzureTokenCredentialResolver tokenCredentialResolver = context.getBean(AzureTokenCredentialResolver.class);
                 assertEquals(builderFactory.getAzureTokenCredentialResolver(), tokenCredentialResolver);
             });
+    }
+
+    @Test
+    void globalPropertiesShouldBeHonored() {
+        AzureGlobalProperties properties = new AzureGlobalProperties();
+        properties.getProfile().setCloudType(AZURE_US_GOVERNMENT);
+        contextRunner
+            .withBean(AzureGlobalProperties.class, () -> properties)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureTokenCredentialAutoConfiguration.class);
+                AzureTokenCredentialAutoConfiguration autoConfiguration = context.getBean(AzureTokenCredentialAutoConfiguration.class);
+                AzureTokenCredentialAutoConfiguration.IdentityClientProperties identityClientProperties = autoConfiguration.getIdentityClientProperties();
+
+                assertEquals(AZURE_US_GOVERNMENT, identityClientProperties.getProfile().getCloudType());
+                assertEquals(AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint(),
+                    identityClientProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
+            });
+
     }
 
     @Configuration

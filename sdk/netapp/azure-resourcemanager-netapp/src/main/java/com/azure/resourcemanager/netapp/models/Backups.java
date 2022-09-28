@@ -11,7 +11,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of Backups. */
 public interface Backups {
     /**
-     * Get the status of the backup for a volume.
+     * Get volume's backup status
+     *
+     * <p>Get the status of the backup for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -25,7 +27,9 @@ public interface Backups {
     BackupStatus getStatus(String resourceGroupName, String accountName, String poolName, String volumeName);
 
     /**
-     * Get the status of the backup for a volume.
+     * Get volume's backup status
+     *
+     * <p>Get the status of the backup for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -41,7 +45,9 @@ public interface Backups {
         String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
 
     /**
-     * Get the status of the restore for a volume.
+     * Get volume's restore status
+     *
+     * <p>Get the status of the restore for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -56,7 +62,9 @@ public interface Backups {
         String resourceGroupName, String accountName, String poolName, String volumeName);
 
     /**
-     * Get the status of the restore for a volume.
+     * Get volume's restore status
+     *
+     * <p>Get the status of the restore for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -72,7 +80,9 @@ public interface Backups {
         String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
 
     /**
-     * List all backups for a volume.
+     * List Backups
+     *
+     * <p>List all backups for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -86,7 +96,9 @@ public interface Backups {
     PagedIterable<Backup> list(String resourceGroupName, String accountName, String poolName, String volumeName);
 
     /**
-     * List all backups for a volume.
+     * List Backups
+     *
+     * <p>List all backups for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -102,7 +114,9 @@ public interface Backups {
         String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
 
     /**
-     * Gets the specified backup of the volume.
+     * Get a backup
+     *
+     * <p>Gets the specified backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -117,7 +131,9 @@ public interface Backups {
     Backup get(String resourceGroupName, String accountName, String poolName, String volumeName, String backupName);
 
     /**
-     * Gets the specified backup of the volume.
+     * Get a backup
+     *
+     * <p>Gets the specified backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -139,7 +155,9 @@ public interface Backups {
         Context context);
 
     /**
-     * Delete a backup of the volume.
+     * Delete backup
+     *
+     * <p>Delete a backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -153,7 +171,9 @@ public interface Backups {
     void delete(String resourceGroupName, String accountName, String poolName, String volumeName, String backupName);
 
     /**
-     * Delete a backup of the volume.
+     * Delete backup
+     *
+     * <p>Delete a backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -174,7 +194,9 @@ public interface Backups {
         Context context);
 
     /**
-     * Gets the specified backup of the volume.
+     * Get a backup
+     *
+     * <p>Gets the specified backup of the volume.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -185,7 +207,9 @@ public interface Backups {
     Backup getById(String id);
 
     /**
-     * Gets the specified backup of the volume.
+     * Get a backup
+     *
+     * <p>Gets the specified backup of the volume.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -197,7 +221,9 @@ public interface Backups {
     Response<Backup> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete a backup of the volume.
+     * Delete backup
+     *
+     * <p>Delete a backup of the volume.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -207,7 +233,9 @@ public interface Backups {
     void deleteById(String id);
 
     /**
-     * Delete a backup of the volume.
+     * Delete backup
+     *
+     * <p>Delete a backup of the volume.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

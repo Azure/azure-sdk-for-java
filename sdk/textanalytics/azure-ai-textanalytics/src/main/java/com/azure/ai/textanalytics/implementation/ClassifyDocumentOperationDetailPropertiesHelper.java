@@ -19,6 +19,7 @@ public final class ClassifyDocumentOperationDetailPropertiesHelper {
      */
     public interface ClassifyDocumentOperationDetailAccessor {
         void setOperationId(ClassifyDocumentOperationDetail operationDetail, String operationId);
+        void setDisplayName(ClassifyDocumentOperationDetail operationDetail, String name);
         void setCreatedAt(ClassifyDocumentOperationDetail operationDetail, OffsetDateTime createdAt);
         void setExpiresAt(ClassifyDocumentOperationDetail operationDetail, OffsetDateTime expiresAt);
         void setLastModifiedAt(ClassifyDocumentOperationDetail operationDetail,
@@ -37,6 +38,10 @@ public final class ClassifyDocumentOperationDetailPropertiesHelper {
 
     public static void setOperationId(ClassifyDocumentOperationDetail operationDetail, String operationId) {
         accessor.setOperationId(operationDetail, operationId);
+    }
+
+    public static void setDisplayName(ClassifyDocumentOperationDetail operationDetail, String name) {
+        accessor.setDisplayName(operationDetail, name);
     }
 
     public static void setCreatedAt(ClassifyDocumentOperationDetail operationDetail,

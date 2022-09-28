@@ -13,10 +13,9 @@ import com.azure.resourcemanager.security.fluent.LocationsClient;
 import com.azure.resourcemanager.security.fluent.models.AscLocationInner;
 import com.azure.resourcemanager.security.models.AscLocation;
 import com.azure.resourcemanager.security.models.Locations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LocationsImpl implements Locations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LocationsImpl.class);
 
     private final LocationsClient innerClient;
 

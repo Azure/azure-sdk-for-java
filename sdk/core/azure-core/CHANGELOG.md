@@ -1,14 +1,33 @@
 # Release History
 
-## 1.32.0-beta.1 (Unreleased)
+## 1.33.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+- Added a short delay to `AccessTokenCache.getToken()` to avoid an async-busy-loop when the first thread to retrieve a fresh token takes longer than usual and the cache is shared amongst many threads. ([#31110](https://github.com/Azure/azure-sdk-for-java/pull/31110))
+
+- Fixed issue when deserializing InputStream from an HTTP response.
 
 ### Other Changes
+
+## 1.32.0 (2022-09-01)
+
+### Features Added
+
+- Added new constructor overloads to `PagedIterable` and introduced `PageRetrieverSync`.
+- Added `com.azure.core.util.metrics.LongGauge` instrument support to metrics.
+- Added `CoreUtils.stringJoin` which optimizes `String.join` for small `List`s.
+
+### Other Changes
+
+- Miscellaneous performance improvements.
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.4.2` to `3.4.22`.
 
 ## 1.31.0 (2022-08-05)
 

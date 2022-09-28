@@ -4,6 +4,7 @@
 package com.azure.core.credential;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 
@@ -87,13 +88,15 @@ public class SimpleTokenCache {
                             AccessToken accessToken = signal.get();
                             Throwable error = signal.getThrowable();
                             if (signal.isOnNext() && accessToken != null) { // SUCCESS
-                                LOGGER.info(refreshLog(cache, now, "Acquired a new access token"));
+                                LOGGER.log(LogLevel.INFORMATIONAL,
+                                    () -> refreshLog(cache, now, "Acquired a new access token"));
                                 cache = accessToken;
                                 sinksOne.tryEmitValue(accessToken);
                                 nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
                                 return Mono.just(accessToken);
                             } else if (signal.isOnError() && error != null) { // ERROR
-                                LOGGER.error(refreshLog(cache, now, "Failed to acquire a new access token"));
+                                LOGGER.log(LogLevel.ERROR,
+                                    () -> refreshLog(cache, now, "Failed to acquire a new access token"));
                                 nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
                                 return fallback.switchIfEmpty(Mono.error(() -> error));
                             } else { // NO REFRESH
@@ -123,7 +126,7 @@ public class SimpleTokenCache {
         });
     }
 
-    private String refreshLog(AccessToken cache, OffsetDateTime now, String log) {
+    private static String refreshLog(AccessToken cache, OffsetDateTime now, String log) {
         StringBuilder info = new StringBuilder(log);
         if (cache == null) {
             info.append(".");

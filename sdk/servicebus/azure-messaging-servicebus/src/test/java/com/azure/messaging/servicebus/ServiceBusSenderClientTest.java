@@ -34,6 +34,7 @@ import static org.mockito.Mockito.when;
 public class ServiceBusSenderClientTest {
     private static final String NAMESPACE = "my-namespace";
     private static final String ENTITY_NAME = "my-servicebus-entity";
+    private static final String CLIENT_IDENTIFIER = "my-client-identifier";
 
     @Mock
     private ServiceBusSenderAsyncClient asyncSender;
@@ -61,6 +62,7 @@ public class ServiceBusSenderClientTest {
         MockitoAnnotations.initMocks(this);
         when(asyncSender.getEntityPath()).thenReturn(ENTITY_NAME);
         when(asyncSender.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncSender.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
         sender = new ServiceBusSenderClient(asyncSender, RETRY_TIMEOUT);
     }
 
@@ -74,6 +76,7 @@ public class ServiceBusSenderClientTest {
     void verifyProperties() {
         Assertions.assertEquals(ENTITY_NAME, sender.getEntityPath());
         Assertions.assertEquals(NAMESPACE, sender.getFullyQualifiedNamespace());
+        Assertions.assertEquals(CLIENT_IDENTIFIER, sender.getIdentifier());
     }
 
     /**

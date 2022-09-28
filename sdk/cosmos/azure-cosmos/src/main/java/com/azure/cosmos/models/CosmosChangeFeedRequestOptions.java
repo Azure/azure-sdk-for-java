@@ -26,8 +26,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Encapsulates options that can be specified for an operation within a change feed request.
  */
-@Beta(value = Beta.SinceVersion.V4_12_0, warningText =
-    Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class CosmosChangeFeedRequestOptions {
     private static final int DEFAULT_MAX_ITEM_COUNT = 100;
     private static final int DEFAULT_MAX_PREFETCH_PAGE_COUNT = 1;
@@ -87,8 +85,6 @@ public final class CosmosChangeFeedRequestOptions {
      *
      * @return the feed range.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FeedRange getFeedRange() {
         return this.feedRangeInternal;
     }
@@ -99,8 +95,6 @@ public final class CosmosChangeFeedRequestOptions {
      *
      * @return the max number of items.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int getMaxItemCount() {
         return this.maxItemCount;
     }
@@ -112,8 +106,6 @@ public final class CosmosChangeFeedRequestOptions {
      * @param maxItemCount the max number of items.
      * @return the FeedOptionsBase.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosChangeFeedRequestOptions setMaxItemCount(int maxItemCount) {
         this.maxItemCount = maxItemCount;
         return this;
@@ -131,8 +123,6 @@ public final class CosmosChangeFeedRequestOptions {
      *
      * @return the modified change feed request options.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int getMaxPrefetchPageCount() {
         return this.maxPrefetchPageCount;
     }
@@ -151,8 +141,6 @@ public final class CosmosChangeFeedRequestOptions {
      *                             asynchronously in the background
      * @return the modified change feed request options.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosChangeFeedRequestOptions setMaxPrefetchPageCount(int maxPrefetchPageCount) {
         checkArgument(
             maxPrefetchPageCount > 0,
@@ -168,8 +156,6 @@ public final class CosmosChangeFeedRequestOptions {
      *
      * @return true if quotaInfoEnabled is enabled
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public boolean isQuotaInfoEnabled() {
         return quotaInfoEnabled;
     }
@@ -180,8 +166,6 @@ public final class CosmosChangeFeedRequestOptions {
      *
      * @param quotaInfoEnabled a boolean value indicating whether quotaInfoEnabled is enabled or not
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void setQuotaInfoEnabled(boolean quotaInfoEnabled) {
         this.quotaInfoEnabled = quotaInfoEnabled;
     }
@@ -220,8 +204,6 @@ public final class CosmosChangeFeedRequestOptions {
      *                  logical partition or subset of a container)
      * @return a new {@link CosmosChangeFeedRequestOptions} instance
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static CosmosChangeFeedRequestOptions createForProcessingFromBeginning(FeedRange feedRange) {
         checkNotNull(feedRange, "Argument 'feedRange' must not be null.");
 
@@ -240,8 +222,6 @@ public final class CosmosChangeFeedRequestOptions {
      *                     FeedResponse
      * @return a new {@link CosmosChangeFeedRequestOptions} instance
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static CosmosChangeFeedRequestOptions createForProcessingFromContinuation(
         String continuation) {
 
@@ -292,8 +272,6 @@ public final class CosmosChangeFeedRequestOptions {
      *                  logical partition or subset of a container)
      * @return a new {@link CosmosChangeFeedRequestOptions} instance
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static CosmosChangeFeedRequestOptions createForProcessingFromNow(FeedRange feedRange) {
         if (feedRange == null) {
             throw new NullPointerException("feedRange");
@@ -315,8 +293,6 @@ public final class CosmosChangeFeedRequestOptions {
      *                    logical partition or subset of a container)
      * @return a new {@link CosmosChangeFeedRequestOptions} instance
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static CosmosChangeFeedRequestOptions createForProcessingFromPointInTime(
         Instant pointInTime,
         FeedRange feedRange) {
@@ -411,7 +387,6 @@ public final class CosmosChangeFeedRequestOptions {
      *
      * @return The throughput control group name.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getThroughputControlGroupName() {
         return this.throughputControlGroupName;
     }
@@ -422,7 +397,6 @@ public final class CosmosChangeFeedRequestOptions {
      * @param throughputControlGroupName The throughput control group name.
      * @return A {@link CosmosChangeFeedRequestOptions}.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosChangeFeedRequestOptions setThroughputControlGroupName(String throughputControlGroupName) {
         this.throughputControlGroupName = throughputControlGroupName;
         return this;

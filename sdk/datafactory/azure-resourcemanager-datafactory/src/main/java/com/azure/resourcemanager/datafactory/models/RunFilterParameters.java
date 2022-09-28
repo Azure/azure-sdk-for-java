@@ -14,22 +14,19 @@ import java.util.List;
 @Fluent
 public final class RunFilterParameters {
     /*
-     * The continuation token for getting the next page of results. Null for
-     * first page.
+     * The continuation token for getting the next page of results. Null for first page.
      */
     @JsonProperty(value = "continuationToken")
     private String continuationToken;
 
     /*
-     * The time at or after which the run event was updated in 'ISO 8601'
-     * format.
+     * The time at or after which the run event was updated in 'ISO 8601' format.
      */
     @JsonProperty(value = "lastUpdatedAfter", required = true)
     private OffsetDateTime lastUpdatedAfter;
 
     /*
-     * The time at or before which the run event was updated in 'ISO 8601'
-     * format.
+     * The time at or before which the run event was updated in 'ISO 8601' format.
      */
     @JsonProperty(value = "lastUpdatedBefore", required = true)
     private OffsetDateTime lastUpdatedBefore;

@@ -98,50 +98,48 @@ public class EventHubsTemplate implements SendOperation {
     }
 
     private Mono<Void> doSend(String destination, List<EventData> events, PartitionSupplier partitionSupplier) {
-        EventHubProducerAsyncClient producer = producerFactory.createProducer(destination);
-        CreateBatchOptions options = buildCreateBatchOptions(partitionSupplier);
-
-        AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(
-            producer.createBatch(options).block());
-
-        Flux.fromIterable(events).flatMap(event -> {
-            final EventDataBatch batch = currentBatch.get();
-            try {
-                if (batch.tryAdd(event)) {
-                    return Mono.empty();
-                } else {
-                    LOGGER.warn("EventDataBatch is full in the collect process or the first event is "
-                        + "too large to fit in an empty batch! Max size: {}", batch.getMaxSizeInBytes());
-                }
-            } catch (AmqpException e) {
-                LOGGER.error("Event is larger than maximum allowed size.", e);
-                return Mono.empty();
-            }
-
-            return Mono.when(
-                producer.send(batch),
-                producer.createBatch(options).map(newBatch -> {
-                    currentBatch.set(newBatch);
-                    // Add the event that did not fit in the previous batch.
-                    try {
-                        if (!newBatch.tryAdd(event)) {
-                            LOGGER.error(
-                                "Event was too large to fit in an empty batch. Max size:{} ",
-                                newBatch.getMaxSizeInBytes());
-                        }
-                    } catch (AmqpException e) {
-                        LOGGER.error("Event was too large to fit in an empty batch. Max size:{}",
-                            newBatch.getMaxSizeInBytes(), e);
+        try (EventHubProducerAsyncClient producer = producerFactory.createProducer(destination)) {
+            CreateBatchOptions options = buildCreateBatchOptions(partitionSupplier);
+            AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(
+                producer.createBatch(options).block());
+            Flux.fromIterable(events).flatMap(event -> {
+                final EventDataBatch batch = currentBatch.get();
+                try {
+                    if (batch.tryAdd(event)) {
+                        return Mono.empty();
+                    } else {
+                        LOGGER.warn("EventDataBatch is full in the collect process or the first event is "
+                            + "too large to fit in an empty batch! Max size: {}", batch.getMaxSizeInBytes());
                     }
+                } catch (AmqpException e) {
+                    LOGGER.error("Event is larger than maximum allowed size.", e);
+                    return Mono.empty();
+                }
 
-                    return newBatch;
-                }));
-        })
-        .then()
-        .block();
+                return Mono.when(
+                    producer.send(batch),
+                    producer.createBatch(options).map(newBatch -> {
+                        currentBatch.set(newBatch);
+                        // Add the event that did not fit in the previous batch.
+                        try {
+                            if (!newBatch.tryAdd(event)) {
+                                LOGGER.error("Event was too large to fit in an empty batch. Max size:{} ",
+                                    newBatch.getMaxSizeInBytes());
+                            }
+                        } catch (AmqpException e) {
+                            LOGGER.error("Event was too large to fit in an empty batch. Max size:{}",
+                                newBatch.getMaxSizeInBytes(), e);
+                        }
 
-        final EventDataBatch batch = currentBatch.getAndSet(null);
-        return producer.send(batch);
+                        return newBatch;
+                    }));
+            })
+            .then()
+            .block();
+
+            final EventDataBatch batch = currentBatch.getAndSet(null);
+            return producer.send(batch);
+        }
     }
 
     private CreateBatchOptions buildCreateBatchOptions(PartitionSupplier partitionSupplier) {

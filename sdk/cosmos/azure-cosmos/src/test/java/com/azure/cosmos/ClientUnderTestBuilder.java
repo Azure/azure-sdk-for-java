@@ -56,7 +56,7 @@ public class ClientUnderTestBuilder extends CosmosClientBuilder {
                 this.getCredential(),
                 this.isContentResponseOnWriteEnabled(),
                 this.apiType(),
-                this.getClientTelemetryConfig());
+                this.clientTelemetryConfig());
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException(e.getMessage());
         }

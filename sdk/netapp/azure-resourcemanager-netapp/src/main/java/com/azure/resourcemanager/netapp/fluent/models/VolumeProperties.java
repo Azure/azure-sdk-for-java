@@ -13,6 +13,8 @@ import com.azure.resourcemanager.netapp.models.NetworkFeatures;
 import com.azure.resourcemanager.netapp.models.PlacementKeyValuePairs;
 import com.azure.resourcemanager.netapp.models.SecurityStyle;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
+import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
+import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesExportPolicy;
 import com.azure.resourcemanager.netapp.models.VolumeStorageToNetworkProximity;
@@ -23,41 +25,50 @@ import java.util.List;
 @Fluent
 public final class VolumeProperties {
     /*
-     * FileSystem ID Unique FileSystem Identifier.
+     * FileSystem ID
+     *
+     * Unique FileSystem Identifier.
      */
     @JsonProperty(value = "fileSystemId", access = JsonProperty.Access.WRITE_ONLY)
     private String fileSystemId;
 
     /*
-     * Creation Token or File Path A unique file path for the volume. Used when
-     * creating mount targets
+     * Creation Token or File Path
+     *
+     * A unique file path for the volume. Used when creating mount targets
      */
     @JsonProperty(value = "creationToken", required = true)
     private String creationToken;
 
     /*
-     * serviceLevel The service level of the file system
+     * serviceLevel
+     *
+     * The service level of the file system
      */
     @JsonProperty(value = "serviceLevel")
     private ServiceLevel serviceLevel;
 
     /*
-     * usageThreshold Maximum storage quota allowed for a file system in bytes.
-     * This is a soft quota used for alerting only. Minimum size is 100 GiB.
-     * Upper limit is 100TiB. Specified in bytes.
+     * usageThreshold
+     *
+     * Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
+     * size is 500 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
      */
     @JsonProperty(value = "usageThreshold", required = true)
     private long usageThreshold;
 
     /*
-     * exportPolicy Set of export policy rules
+     * exportPolicy
+     *
+     * Set of export policy rules
      */
     @JsonProperty(value = "exportPolicy")
     private VolumePropertiesExportPolicy exportPolicy;
 
     /*
-     * protocolTypes Set of protocol types, default NFSv3, CIFS for SMB
-     * protocol
+     * protocolTypes
+     *
+     * Set of protocol types, default NFSv3, CIFS for SMB protocol
      */
     @JsonProperty(value = "protocolTypes")
     private List<String> protocolTypes;
@@ -69,68 +80,84 @@ public final class VolumeProperties {
     private String provisioningState;
 
     /*
-     * Snapshot ID UUID v4 or resource identifier used to identify the
-     * Snapshot.
+     * Snapshot ID
+     *
+     * UUID v4 or resource identifier used to identify the Snapshot.
      */
     @JsonProperty(value = "snapshotId")
     private String snapshotId;
 
     /*
-     * Backup ID UUID v4 or resource identifier used to identify the Backup.
+     * If enabled (true) the snapshot the volume was created from will be automatically deleted after the volume create
+     * operation has finished.  Defaults to false
+     */
+    @JsonProperty(value = "deleteBaseSnapshot")
+    private Boolean deleteBaseSnapshot;
+
+    /*
+     * Backup ID
+     *
+     * UUID v4 or resource identifier used to identify the Backup.
      */
     @JsonProperty(value = "backupId")
     private String backupId;
 
     /*
-     * Baremetal Tenant ID Unique Baremetal Tenant Identifier.
+     * Baremetal Tenant ID
+     *
+     * Unique Baremetal Tenant Identifier.
      */
     @JsonProperty(value = "baremetalTenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String baremetalTenantId;
 
     /*
-     * The Azure Resource URI for a delegated subnet. Must have the delegation
-     * Microsoft.NetApp/volumes
+     * The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes
      */
     @JsonProperty(value = "subnetId", required = true)
     private String subnetId;
 
     /*
-     * Network features Basic network, or Standard features available to the
-     * volume.
+     * Network features
+     *
+     * Basic network, or Standard features available to the volume.
      */
     @JsonProperty(value = "networkFeatures")
     private NetworkFeatures networkFeatures;
 
     /*
-     * Network Sibling Set ID Network Sibling Set ID for the the group of
-     * volumes sharing networking resources.
+     * Network Sibling Set ID
+     *
+     * Network Sibling Set ID for the the group of volumes sharing networking resources.
      */
     @JsonProperty(value = "networkSiblingSetId", access = JsonProperty.Access.WRITE_ONLY)
     private String networkSiblingSetId;
 
     /*
-     * Storage to Network Proximity Provides storage to network proximity
-     * information for the volume.
+     * Storage to Network Proximity
+     *
+     * Provides storage to network proximity information for the volume.
      */
     @JsonProperty(value = "storageToNetworkProximity", access = JsonProperty.Access.WRITE_ONLY)
     private VolumeStorageToNetworkProximity storageToNetworkProximity;
 
     /*
-     * mountTargets List of mount targets
+     * mountTargets
+     *
+     * List of mount targets
      */
     @JsonProperty(value = "mountTargets", access = JsonProperty.Access.WRITE_ONLY)
     private List<MountTargetProperties> mountTargets;
 
     /*
-     * What type of volume is this. For destination volumes in Cross Region
-     * Replication, set type to DataProtection
+     * What type of volume is this. For destination volumes in Cross Region Replication, set type to DataProtection
      */
     @JsonProperty(value = "volumeType")
     private String volumeType;
 
     /*
-     * DataProtection DataProtection type volumes include an object containing
-     * details of the replication
+     * DataProtection
+     *
+     * DataProtection type volumes include an object containing details of the replication
      */
     @JsonProperty(value = "dataProtection")
     private VolumePropertiesDataProtection dataProtection;
@@ -142,61 +169,70 @@ public final class VolumeProperties {
     private Boolean isRestoring;
 
     /*
-     * If enabled (true) the volume will contain a read-only snapshot directory
-     * which provides access to each of the volume's snapshots (default to
-     * true).
+     * If enabled (true) the volume will contain a read-only snapshot directory which provides access to each of the
+     * volume's snapshots (default to true).
      */
     @JsonProperty(value = "snapshotDirectoryVisible")
     private Boolean snapshotDirectoryVisible;
 
     /*
-     * Describe if a volume is KerberosEnabled. To be use with swagger version
-     * 2020-05-01 or later
+     * Describe if a volume is KerberosEnabled. To be use with swagger version 2020-05-01 or later
      */
     @JsonProperty(value = "kerberosEnabled")
     private Boolean kerberosEnabled;
 
     /*
-     * The security style of volume, default unix, defaults to ntfs for dual
-     * protocol or CIFS protocol
+     * The security style of volume, default unix, defaults to ntfs for dual protocol or CIFS protocol
      */
     @JsonProperty(value = "securityStyle")
     private SecurityStyle securityStyle;
 
     /*
-     * Enables encryption for in-flight smb3 data. Only applicable for
-     * SMB/DualProtocol volume. To be used with swagger version 2020-08-01 or
-     * later
+     * Enables encryption for in-flight smb3 data. Only applicable for SMB/DualProtocol volume. To be used with swagger
+     * version 2020-08-01 or later
      */
     @JsonProperty(value = "smbEncryption")
     private Boolean smbEncryption;
 
     /*
-     * Enables continuously available share property for smb volume. Only
-     * applicable for SMB volume
+     * smbAccessBasedEnumeration
+     *
+     * Enables access based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume
+     */
+    @JsonProperty(value = "smbAccessBasedEnumeration")
+    private SmbAccessBasedEnumeration smbAccessBasedEnumeration;
+
+    /*
+     * smbNonBrowsable
+     *
+     * Enables non browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume
+     */
+    @JsonProperty(value = "smbNonBrowsable")
+    private SmbNonBrowsable smbNonBrowsable;
+
+    /*
+     * Enables continuously available share property for smb volume. Only applicable for SMB volume
      */
     @JsonProperty(value = "smbContinuouslyAvailable")
     private Boolean smbContinuouslyAvailable;
 
     /*
-     * Maximum throughput in MiB/s that can be achieved by this volume and this
-     * will be accepted as input only for manual qosType volume
+     * Maximum throughput in MiB/s that can be achieved by this volume and this will be accepted as input only for
+     * manual qosType volume
      */
     @JsonProperty(value = "throughputMibps")
     private Float throughputMibps;
 
     /*
-     * Source of key used to encrypt data in volume. Applicable if NetApp
-     * account has encryption.keySource = 'Microsoft.KeyVault'. Possible values
-     * (case-insensitive) are: 'Microsoft.NetApp, Microsoft.KeyVault'
+     * Source of key used to encrypt data in volume. Applicable if NetApp account has encryption.keySource =
+     * 'Microsoft.KeyVault'. Possible values (case-insensitive) are: 'Microsoft.NetApp, Microsoft.KeyVault'
      */
     @JsonProperty(value = "encryptionKeySource")
     private EncryptionKeySource encryptionKeySource;
 
     /*
-     * The resource ID of private endpoint for KeyVault. It must reside in the
-     * same VNET as the volume. Only applicable if encryptionKeySource =
-     * 'Microsoft.KeyVault'.
+     * The resource ID of private endpoint for KeyVault. It must reside in the same VNET as the volume. Only applicable
+     * if encryptionKeySource = 'Microsoft.KeyVault'.
      */
     @JsonProperty(value = "keyVaultPrivateEndpointResourceId")
     private String keyVaultPrivateEndpointResourceId;
@@ -214,36 +250,33 @@ public final class VolumeProperties {
     private Boolean coolAccess;
 
     /*
-     * Specifies the number of days after which data that is not accessed by
-     * clients will be tiered.
+     * Specifies the number of days after which data that is not accessed by clients will be tiered.
      */
     @JsonProperty(value = "coolnessPeriod")
     private Integer coolnessPeriod;
 
     /*
-     * UNIX permissions for NFS volume accepted in octal 4 digit format. First
-     * digit selects the set user ID(4), set group ID (2) and sticky (1)
-     * attributes. Second digit selects permission for the owner of the file:
-     * read (4), write (2) and execute (1). Third selects permissions for other
-     * users in the same group. the fourth for other users not in the group.
-     * 0755 - gives read/write/execute permissions to owner and read/execute to
-     * group and other users.
+     * UNIX permissions for NFS volume accepted in octal 4 digit format. First digit selects the set user ID(4), set
+     * group ID (2) and sticky (1) attributes. Second digit selects permission for the owner of the file: read (4),
+     * write (2) and execute (1). Third selects permissions for other users in the same group. the fourth for other
+     * users not in the group. 0755 - gives read/write/execute permissions to owner and read/execute to group and other
+     * users.
      */
     @JsonProperty(value = "unixPermissions")
     private String unixPermissions;
 
     /*
-     * When a volume is being restored from another volume's snapshot, will
-     * show the percentage completion of this cloning process. When this value
-     * is empty/null there is no cloning process currently happening on this
-     * volume. This value will update every 5 minutes during cloning.
+     * When a volume is being restored from another volume's snapshot, will show the percentage completion of this
+     * cloning process. When this value is empty/null there is no cloning process currently happening on this volume.
+     * This value will update every 5 minutes during cloning.
      */
     @JsonProperty(value = "cloneProgress", access = JsonProperty.Access.WRITE_ONLY)
     private Integer cloneProgress;
 
     /*
-     * avsDataStore Specifies whether the volume is enabled for Azure VMware
-     * Solution (AVS) datastore purpose
+     * avsDataStore
+     *
+     * Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose
      */
     @JsonProperty(value = "avsDataStore")
     private AvsDataStore avsDataStore;
@@ -255,22 +288,20 @@ public final class VolumeProperties {
     private Boolean isDefaultQuotaEnabled;
 
     /*
-     * Default user quota for volume in KiBs. If isDefaultQuotaEnabled is set,
-     * the minimum value of 4 KiBs applies .
+     * Default user quota for volume in KiBs. If isDefaultQuotaEnabled is set, the minimum value of 4 KiBs applies .
      */
     @JsonProperty(value = "defaultUserQuotaInKiBs")
     private Long defaultUserQuotaInKiBs;
 
     /*
-     * Default group quota for volume in KiBs. If isDefaultQuotaEnabled is set,
-     * the minimum value of 4 KiBs applies.
+     * Default group quota for volume in KiBs. If isDefaultQuotaEnabled is set, the minimum value of 4 KiBs applies.
      */
     @JsonProperty(value = "defaultGroupQuotaInKiBs")
     private Long defaultGroupQuotaInKiBs;
 
     /*
-     * Maximum number of files allowed. Needs a service request in order to be
-     * changed. Only allowed to be changed if volume quota is more than 4TiB.
+     * Maximum number of files allowed. Needs a service request in order to be changed. Only allowed to be changed if
+     * volume quota is more than 4TiB.
      */
     @JsonProperty(value = "maximumNumberOfFiles", access = JsonProperty.Access.WRITE_ONLY)
     private Long maximumNumberOfFiles;
@@ -300,22 +331,22 @@ public final class VolumeProperties {
     private String t2Network;
 
     /*
-     * Volume spec name is the application specific designation or identifier
-     * for the particular volume in a volume group for e.g. data, log
+     * Volume spec name is the application specific designation or identifier for the particular volume in a volume
+     * group for e.g. data, log
      */
     @JsonProperty(value = "volumeSpecName")
     private String volumeSpecName;
 
     /*
-     * Specifies if the volume is encrypted or not. Only available on volumes
-     * created or updated after 2022-01-01.
+     * Specifies if the volume is encrypted or not. Only available on volumes created or updated after 2022-01-01.
      */
     @JsonProperty(value = "encrypted", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean encrypted;
 
     /*
-     * Volume placement rules Application specific placement rules for the
-     * particular volume
+     * Volume placement rules
+     *
+     * Application specific placement rules for the particular volume
      */
     @JsonProperty(value = "placementRules")
     private List<PlacementKeyValuePairs> placementRules;
@@ -327,7 +358,9 @@ public final class VolumeProperties {
     private EnableSubvolumes enableSubvolumes;
 
     /**
-     * Get the fileSystemId property: FileSystem ID Unique FileSystem Identifier.
+     * Get the fileSystemId property: FileSystem ID
+     *
+     * <p>Unique FileSystem Identifier.
      *
      * @return the fileSystemId value.
      */
@@ -336,8 +369,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the creationToken property: Creation Token or File Path A unique file path for the volume. Used when creating
-     * mount targets.
+     * Get the creationToken property: Creation Token or File Path
+     *
+     * <p>A unique file path for the volume. Used when creating mount targets.
      *
      * @return the creationToken value.
      */
@@ -346,8 +380,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Set the creationToken property: Creation Token or File Path A unique file path for the volume. Used when creating
-     * mount targets.
+     * Set the creationToken property: Creation Token or File Path
+     *
+     * <p>A unique file path for the volume. Used when creating mount targets.
      *
      * @param creationToken the creationToken value to set.
      * @return the VolumeProperties object itself.
@@ -358,7 +393,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the serviceLevel property: serviceLevel The service level of the file system.
+     * Get the serviceLevel property: serviceLevel
+     *
+     * <p>The service level of the file system.
      *
      * @return the serviceLevel value.
      */
@@ -367,7 +404,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Set the serviceLevel property: serviceLevel The service level of the file system.
+     * Set the serviceLevel property: serviceLevel
+     *
+     * <p>The service level of the file system.
      *
      * @param serviceLevel the serviceLevel value to set.
      * @return the VolumeProperties object itself.
@@ -378,8 +417,10 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the usageThreshold property: usageThreshold Maximum storage quota allowed for a file system in bytes. This is
-     * a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB. Specified in bytes.
+     * Get the usageThreshold property: usageThreshold
+     *
+     * <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
+     * size is 500 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
      *
      * @return the usageThreshold value.
      */
@@ -388,8 +429,10 @@ public final class VolumeProperties {
     }
 
     /**
-     * Set the usageThreshold property: usageThreshold Maximum storage quota allowed for a file system in bytes. This is
-     * a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB. Specified in bytes.
+     * Set the usageThreshold property: usageThreshold
+     *
+     * <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
+     * size is 500 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
      *
      * @param usageThreshold the usageThreshold value to set.
      * @return the VolumeProperties object itself.
@@ -400,7 +443,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the exportPolicy property: exportPolicy Set of export policy rules.
+     * Get the exportPolicy property: exportPolicy
+     *
+     * <p>Set of export policy rules.
      *
      * @return the exportPolicy value.
      */
@@ -409,7 +454,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Set the exportPolicy property: exportPolicy Set of export policy rules.
+     * Set the exportPolicy property: exportPolicy
+     *
+     * <p>Set of export policy rules.
      *
      * @param exportPolicy the exportPolicy value to set.
      * @return the VolumeProperties object itself.
@@ -420,7 +467,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the protocolTypes property: protocolTypes Set of protocol types, default NFSv3, CIFS for SMB protocol.
+     * Get the protocolTypes property: protocolTypes
+     *
+     * <p>Set of protocol types, default NFSv3, CIFS for SMB protocol.
      *
      * @return the protocolTypes value.
      */
@@ -429,7 +478,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Set the protocolTypes property: protocolTypes Set of protocol types, default NFSv3, CIFS for SMB protocol.
+     * Set the protocolTypes property: protocolTypes
+     *
+     * <p>Set of protocol types, default NFSv3, CIFS for SMB protocol.
      *
      * @param protocolTypes the protocolTypes value to set.
      * @return the VolumeProperties object itself.
@@ -449,7 +500,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the snapshotId property: Snapshot ID UUID v4 or resource identifier used to identify the Snapshot.
+     * Get the snapshotId property: Snapshot ID
+     *
+     * <p>UUID v4 or resource identifier used to identify the Snapshot.
      *
      * @return the snapshotId value.
      */
@@ -458,7 +511,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Set the snapshotId property: Snapshot ID UUID v4 or resource identifier used to identify the Snapshot.
+     * Set the snapshotId property: Snapshot ID
+     *
+     * <p>UUID v4 or resource identifier used to identify the Snapshot.
      *
      * @param snapshotId the snapshotId value to set.
      * @return the VolumeProperties object itself.
@@ -469,7 +524,31 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the backupId property: Backup ID UUID v4 or resource identifier used to identify the Backup.
+     * Get the deleteBaseSnapshot property: If enabled (true) the snapshot the volume was created from will be
+     * automatically deleted after the volume create operation has finished. Defaults to false.
+     *
+     * @return the deleteBaseSnapshot value.
+     */
+    public Boolean deleteBaseSnapshot() {
+        return this.deleteBaseSnapshot;
+    }
+
+    /**
+     * Set the deleteBaseSnapshot property: If enabled (true) the snapshot the volume was created from will be
+     * automatically deleted after the volume create operation has finished. Defaults to false.
+     *
+     * @param deleteBaseSnapshot the deleteBaseSnapshot value to set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withDeleteBaseSnapshot(Boolean deleteBaseSnapshot) {
+        this.deleteBaseSnapshot = deleteBaseSnapshot;
+        return this;
+    }
+
+    /**
+     * Get the backupId property: Backup ID
+     *
+     * <p>UUID v4 or resource identifier used to identify the Backup.
      *
      * @return the backupId value.
      */
@@ -478,7 +557,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Set the backupId property: Backup ID UUID v4 or resource identifier used to identify the Backup.
+     * Set the backupId property: Backup ID
+     *
+     * <p>UUID v4 or resource identifier used to identify the Backup.
      *
      * @param backupId the backupId value to set.
      * @return the VolumeProperties object itself.
@@ -489,7 +570,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the baremetalTenantId property: Baremetal Tenant ID Unique Baremetal Tenant Identifier.
+     * Get the baremetalTenantId property: Baremetal Tenant ID
+     *
+     * <p>Unique Baremetal Tenant Identifier.
      *
      * @return the baremetalTenantId value.
      */
@@ -520,7 +603,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the networkFeatures property: Network features Basic network, or Standard features available to the volume.
+     * Get the networkFeatures property: Network features
+     *
+     * <p>Basic network, or Standard features available to the volume.
      *
      * @return the networkFeatures value.
      */
@@ -529,7 +614,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Set the networkFeatures property: Network features Basic network, or Standard features available to the volume.
+     * Set the networkFeatures property: Network features
+     *
+     * <p>Basic network, or Standard features available to the volume.
      *
      * @param networkFeatures the networkFeatures value to set.
      * @return the VolumeProperties object itself.
@@ -540,8 +627,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the networkSiblingSetId property: Network Sibling Set ID Network Sibling Set ID for the the group of volumes
-     * sharing networking resources.
+     * Get the networkSiblingSetId property: Network Sibling Set ID
+     *
+     * <p>Network Sibling Set ID for the the group of volumes sharing networking resources.
      *
      * @return the networkSiblingSetId value.
      */
@@ -550,8 +638,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the storageToNetworkProximity property: Storage to Network Proximity Provides storage to network proximity
-     * information for the volume.
+     * Get the storageToNetworkProximity property: Storage to Network Proximity
+     *
+     * <p>Provides storage to network proximity information for the volume.
      *
      * @return the storageToNetworkProximity value.
      */
@@ -560,7 +649,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the mountTargets property: mountTargets List of mount targets.
+     * Get the mountTargets property: mountTargets
+     *
+     * <p>List of mount targets.
      *
      * @return the mountTargets value.
      */
@@ -591,8 +682,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the dataProtection property: DataProtection DataProtection type volumes include an object containing details
-     * of the replication.
+     * Get the dataProtection property: DataProtection
+     *
+     * <p>DataProtection type volumes include an object containing details of the replication.
      *
      * @return the dataProtection value.
      */
@@ -601,8 +693,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Set the dataProtection property: DataProtection DataProtection type volumes include an object containing details
-     * of the replication.
+     * Set the dataProtection property: DataProtection
+     *
+     * <p>DataProtection type volumes include an object containing details of the replication.
      *
      * @param dataProtection the dataProtection value to set.
      * @return the VolumeProperties object itself.
@@ -717,6 +810,54 @@ public final class VolumeProperties {
      */
     public VolumeProperties withSmbEncryption(Boolean smbEncryption) {
         this.smbEncryption = smbEncryption;
+        return this;
+    }
+
+    /**
+     * Get the smbAccessBasedEnumeration property: smbAccessBasedEnumeration
+     *
+     * <p>Enables access based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     *
+     * @return the smbAccessBasedEnumeration value.
+     */
+    public SmbAccessBasedEnumeration smbAccessBasedEnumeration() {
+        return this.smbAccessBasedEnumeration;
+    }
+
+    /**
+     * Set the smbAccessBasedEnumeration property: smbAccessBasedEnumeration
+     *
+     * <p>Enables access based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     *
+     * @param smbAccessBasedEnumeration the smbAccessBasedEnumeration value to set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withSmbAccessBasedEnumeration(SmbAccessBasedEnumeration smbAccessBasedEnumeration) {
+        this.smbAccessBasedEnumeration = smbAccessBasedEnumeration;
+        return this;
+    }
+
+    /**
+     * Get the smbNonBrowsable property: smbNonBrowsable
+     *
+     * <p>Enables non browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     *
+     * @return the smbNonBrowsable value.
+     */
+    public SmbNonBrowsable smbNonBrowsable() {
+        return this.smbNonBrowsable;
+    }
+
+    /**
+     * Set the smbNonBrowsable property: smbNonBrowsable
+     *
+     * <p>Enables non browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     *
+     * @param smbNonBrowsable the smbNonBrowsable value to set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withSmbNonBrowsable(SmbNonBrowsable smbNonBrowsable) {
+        this.smbNonBrowsable = smbNonBrowsable;
         return this;
     }
 
@@ -912,8 +1053,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the avsDataStore property: avsDataStore Specifies whether the volume is enabled for Azure VMware Solution
-     * (AVS) datastore purpose.
+     * Get the avsDataStore property: avsDataStore
+     *
+     * <p>Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose.
      *
      * @return the avsDataStore value.
      */
@@ -922,8 +1064,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Set the avsDataStore property: avsDataStore Specifies whether the volume is enabled for Azure VMware Solution
-     * (AVS) datastore purpose.
+     * Set the avsDataStore property: avsDataStore
+     *
+     * <p>Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose.
      *
      * @param avsDataStore the avsDataStore value to set.
      * @return the VolumeProperties object itself.
@@ -1098,8 +1241,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the placementRules property: Volume placement rules Application specific placement rules for the particular
-     * volume.
+     * Get the placementRules property: Volume placement rules
+     *
+     * <p>Application specific placement rules for the particular volume.
      *
      * @return the placementRules value.
      */
@@ -1108,8 +1252,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Set the placementRules property: Volume placement rules Application specific placement rules for the particular
-     * volume.
+     * Set the placementRules property: Volume placement rules
+     *
+     * <p>Application specific placement rules for the particular volume.
      *
      * @param placementRules the placementRules value to set.
      * @return the VolumeProperties object itself.

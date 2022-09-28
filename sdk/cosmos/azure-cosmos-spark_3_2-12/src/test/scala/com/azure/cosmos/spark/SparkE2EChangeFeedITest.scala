@@ -20,10 +20,11 @@ import scala.collection.mutable.ArrayBuffer
 
 class SparkE2EChangeFeedITest
   extends IntegrationSpec
-    with Spark
+    with SparkWithDropwizardAndSlf4jMetrics
     with CosmosClient
     with CosmosContainerWithRetention
-    with BasicLoggingTrait {
+    with BasicLoggingTrait
+    with MetricAssertions {
 
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
@@ -155,6 +156,9 @@ class SparkE2EChangeFeedITest
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
+    CosmosClientMetrics.meterRegistry.isDefined shouldEqual true
+    val meterRegistry = CosmosClientMetrics.meterRegistry.get
+
     val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
     val sinkContainerName = cosmosClient
       .getDatabase(cosmosDatabase)
@@ -235,6 +239,13 @@ class SparkE2EChangeFeedITest
 
     validationDF
       .show(truncate = false)
+
+    assertMetrics(meterRegistry, "cosmos.client.op.latency", expectedToFind = true)
+    assertMetrics(meterRegistry, "cosmos.client.system.avgCpuLoad", expectedToFind = true)
+    assertMetrics(meterRegistry, "cosmos.client.req.gw", expectedToFind = true)
+    assertMetrics(meterRegistry, "cosmos.client.req.rntbd", expectedToFind = true)
+    assertMetrics(meterRegistry, "cosmos.client.rntbd", expectedToFind = true)
+    assertMetrics(meterRegistry, "cosmos.client.rntbd.addressResolution", expectedToFind = true)
   }
 
   "spark change feed query (incremental)" can "filter feed ranges" in {
@@ -597,7 +608,7 @@ class SparkE2EChangeFeedITest
       ))
       .to(cosmosClientCacheItems => {
 
-        databaseResourceId = cosmosClientCacheItems(0).get
+        databaseResourceId = cosmosClientCacheItems.head.get
           .client
           .getDatabase(cosmosDatabase)
           .read()
@@ -605,7 +616,7 @@ class SparkE2EChangeFeedITest
           .getProperties
           .getResourceId
 
-        val container = cosmosClientCacheItems(0).get
+        val container = cosmosClientCacheItems.head.get
           .client
           .getDatabase(cosmosDatabase)
           .getContainer(cosmosContainer)

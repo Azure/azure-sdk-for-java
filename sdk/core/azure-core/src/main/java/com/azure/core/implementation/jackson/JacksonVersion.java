@@ -39,14 +39,19 @@ final class JacksonVersion {
     private final String helpString;
 
     private JacksonVersion() {
-        coreVersion = SemanticVersion.parse(
-            new com.fasterxml.jackson.core.json.PackageVersion().version().toString());
-        databindVersion = SemanticVersion.parse(
-            new com.fasterxml.jackson.databind.cfg.PackageVersion().version().toString());
-        xmlVersion = SemanticVersion.parse(
-            new com.fasterxml.jackson.dataformat.xml.PackageVersion().version().toString());
-        jsr310Version = SemanticVersion.parse(
-            new com.fasterxml.jackson.datatype.jsr310.PackageVersion().version().toString());
+        coreVersion = SemanticVersion.parse(com.fasterxml.jackson.core.json.PackageVersion.VERSION.toString());
+        databindVersion = SemanticVersion.parse(com.fasterxml.jackson.databind.cfg.PackageVersion.VERSION.toString());
+        jsr310Version = SemanticVersion.parse(com.fasterxml.jackson.datatype.jsr310.PackageVersion.VERSION.toString());
+
+        SemanticVersion xmlVersion1;
+        try {
+            Class<?> xmlPackageVersion = Class.forName("com.fasterxml.jackson.dataformat.xml.PackageVersion");
+            xmlVersion1 = SemanticVersion.parse(xmlPackageVersion.getDeclaredField("VERSION").get(null).toString());
+        } catch (ReflectiveOperationException e) {
+            xmlVersion1 = SemanticVersion.createInvalid();
+        }
+        xmlVersion = xmlVersion1;
+
         checkVersion(coreVersion, CORE_PACKAGE_NAME);
         checkVersion(databindVersion, DATABIND_PACKAGE_NAME);
         checkVersion(xmlVersion, XML_PACKAGE_NAME);

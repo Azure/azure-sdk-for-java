@@ -19,15 +19,13 @@ import java.util.Map;
 @Fluent
 public class AzureDataLakeStoreDataset extends Dataset {
     /*
-     * Path to the folder in the Azure Data Lake Store. Type: string (or
-     * Expression with resultType string).
+     * Path to the folder in the Azure Data Lake Store. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.folderPath")
     private Object folderPath;
 
     /*
-     * The name of the file in the Azure Data Lake Store. Type: string (or
-     * Expression with resultType string).
+     * The name of the file in the Azure Data Lake Store. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.fileName")
     private Object fileName;
@@ -39,8 +37,7 @@ public class AzureDataLakeStoreDataset extends Dataset {
     private DatasetStorageFormat format;
 
     /*
-     * The data compression method used for the item(s) in the Azure Data Lake
-     * Store.
+     * The data compression method used for the item(s) in the Azure Data Lake Store.
      */
     @JsonProperty(value = "typeProperties.compression")
     private DatasetCompression compression;

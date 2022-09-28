@@ -64,29 +64,28 @@ import java.util.Map;
 @Fluent
 public class CopySource {
     /*
-     * Source retry count. Type: integer (or Expression with resultType
-     * integer).
+     * Source retry count. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "sourceRetryCount")
     private Object sourceRetryCount;
 
     /*
-     * Source retry wait. Type: string (or Expression with resultType string),
-     * pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Source retry wait. Type: string (or Expression with resultType string), pattern:
+     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "sourceRetryWait")
     private Object sourceRetryWait;
 
     /*
-     * The maximum concurrent connection count for the source data store. Type:
-     * integer (or Expression with resultType integer).
+     * The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType
+     * integer).
      */
     @JsonProperty(value = "maxConcurrentConnections")
     private Object maxConcurrentConnections;
 
     /*
-     * If true, disable data store metrics collection. Default is false. Type:
-     * boolean (or Expression with resultType boolean).
+     * If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType
+     * boolean).
      */
     @JsonProperty(value = "disableMetricsCollection")
     private Object disableMetricsCollection;
