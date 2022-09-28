@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -292,6 +293,20 @@ public final class ClientTelemetryMetrics {
                 .tags(operationTags)
                 .register(compositeRegistry);
             requestChargeMeter.record(Math.max(requestCharge, 10_000_000d));
+
+            DistributionSummary regionsContactedMeter = DistributionSummary
+                .builder(nameOf("op.regionsContacted"))
+                .baseUnit("Regions contacted")
+                .description("Operation - regions contacted")
+                .maximumExpectedValue(1_000d)
+                .publishPercentiles(0.95, 0.99)
+                .publishPercentileHistogram(true)
+                .tags(operationTags)
+                .register(compositeRegistry);
+            Set<String> contactedRegions = diagnostics.getContactedRegionNames();
+            if (contactedRegions != null) {
+                regionsContactedMeter.record(Math.max(contactedRegions.size(), 1_000d));
+            }
 
             Timer latencyMeter = Timer
                 .builder(nameOf("op.latency"))

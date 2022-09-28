@@ -562,6 +562,7 @@ public class ClientMetricsTest extends BatchTestBase {
         this.assertMetrics("cosmos.client.op.latency", true, expectedOperationTag);
         this.assertMetrics("cosmos.client.op.calls", true, expectedOperationTag);
         this.assertMetrics("cosmos.client.op.RUs", true, expectedOperationTag);
+        this.assertMetrics("cosmos.client.op.regionsContacted", true, expectedOperationTag);
         if (this.client.asyncClient().getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
             this.assertMetrics("cosmos.client.req.rntbd.latency", true, expectedRequestTag);
             this.assertMetrics("cosmos.client.req.rntbd.backendLatency", true, expectedRequestTag);
