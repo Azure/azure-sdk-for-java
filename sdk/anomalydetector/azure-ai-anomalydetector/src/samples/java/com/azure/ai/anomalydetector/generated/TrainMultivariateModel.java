@@ -7,17 +7,17 @@ package com.azure.ai.anomalydetector.generated;
 
 import com.azure.ai.anomalydetector.AnomalyDetectorClient;
 import com.azure.ai.anomalydetector.AnomalyDetectorClientBuilder;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class TrainMultivariateModel {
     public static void main(String[] args) {
         AnomalyDetectorClient anomalyDetectorClient =
                 new AnomalyDetectorClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
+                        .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("API_KEY")))
                         .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                         .apiVersion("v1.1")
                         .host("")
