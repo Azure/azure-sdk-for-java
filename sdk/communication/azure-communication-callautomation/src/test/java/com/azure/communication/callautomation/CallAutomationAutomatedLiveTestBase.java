@@ -42,7 +42,6 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
     protected static final String DISPATCHER_ENDPOINT = Configuration.getGlobalConfiguration()
         .get("DISPATCHER_ENDPOINT",
             "https://incomingcalldispatcher.azurewebsites.net");
-
     protected static final String DISPATCHER_CALLBACK = DISPATCHER_ENDPOINT + "/api/servicebuscallback/events";
 
     @Override
@@ -118,11 +117,11 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         } else {
             CallAutomationEventBase event = EventHandler.parseEvent(body);
             assert event != null : "Event cannot be null";
-            String serverCallId = event.getServerCallId();
-            if (!eventStore.containsKey(serverCallId)) {
-                eventStore.put(serverCallId, new ConcurrentHashMap<>());
+            String callConnectionId = event.getCallConnectionId();
+            if (!eventStore.containsKey(callConnectionId)) {
+                eventStore.put(callConnectionId, new ConcurrentHashMap<>());
             }
-            eventStore.get(serverCallId).put(event.getClass(), event);
+            eventStore.get(callConnectionId).put(event.getClass(), event);
         }
     }
 
