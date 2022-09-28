@@ -62,11 +62,11 @@ public class StringBasedCosmosQuery extends AbstractCosmosQuery {
          */
         String expandedQuery = query;
         List<SqlParameter> sqlParameters = new ArrayList<>();
+        String modifiedExpandedQuery = expandedQuery.toLowerCase().replaceAll("\\s+", "");
         for (int paramIndex = 0; paramIndex < parameters.length; paramIndex++) {
             Parameter queryParam = getQueryMethod().getParameters().getParameter(paramIndex);
             String paramName = queryParam.getName().orElse("");
-            if (!paramName.equals("")) {
-                String modifiedExpandedQuery = expandedQuery.toLowerCase().replaceAll("\\s+", "");
+            if (!("").equals(paramName)) {
                 String inParamCheck = "array_contains(@" + paramName.toLowerCase();
                 if (parameters[paramIndex] instanceof Collection && !modifiedExpandedQuery.contains(inParamCheck)) {
                     List<String> expandParam = ((Collection<?>) parameters[paramIndex]).stream()
