@@ -46,7 +46,8 @@ public final class CosmosClientTelemetryConfig {
         TagName.ClientCorrelationId,
         TagName.RequestStatusCode,
         TagName.RequestOperationType,
-        TagName.ServiceAddress
+        TagName.ServiceAddress,
+        TagName.RegionName
     );
 
     private Boolean clientTelemetryEnabled;

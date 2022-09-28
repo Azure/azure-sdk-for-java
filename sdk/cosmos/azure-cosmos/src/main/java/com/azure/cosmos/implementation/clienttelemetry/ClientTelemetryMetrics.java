@@ -141,6 +141,8 @@ public final class ClientTelemetryMetrics {
 
         EnumSet<TagName> metricTagNames = clientAccessor.getMetricTagNames(cosmosAsyncClient);
 
+        Set<String> contactedRegions = cosmosDiagnostics.getContactedRegionNames();
+
         Tags operationTags = createOperationTags(
             metricTagNames,
             cosmosAsyncClient,
@@ -151,7 +153,8 @@ public final class ClientTelemetryMetrics {
             resourceType,
             consistencyLevel,
             operationId,
-            isPointOperation
+            isPointOperation,
+            contactedRegions
         );
 
         OperationMetricProducer metricProducer = new OperationMetricProducer(metricTagNames, operationTags);
@@ -160,7 +163,8 @@ public final class ClientTelemetryMetrics {
             latency,
             maxItemCount == null ? -1 : maxItemCount,
             actualItemCount,
-            cosmosDiagnostics
+            cosmosDiagnostics,
+            contactedRegions
         );
     }
 
@@ -217,7 +221,8 @@ public final class ClientTelemetryMetrics {
         ResourceType resourceType,
         ConsistencyLevel consistencyLevel,
         String operationId,
-        boolean isPointOperation) {
+        boolean isPointOperation,
+        Set<String> contactedRegions) {
         List<Tag> effectiveTags = new ArrayList<>();
 
         if (metricTagNames.contains(TagName.ClientCorrelationId)) {
@@ -256,6 +261,16 @@ public final class ClientTelemetryMetrics {
             ));
         }
 
+        if (contactedRegions != null &&
+            contactedRegions.size() > 0 &&
+            metricTagNames.contains(TagName.RegionName)) {
+
+            effectiveTags.add(Tag.of(
+                TagName.RegionName.toString(),
+                String.join(", ", contactedRegions)
+            ));
+        }
+
         return Tags.of(effectiveTags);
     }
 
@@ -273,7 +288,8 @@ public final class ClientTelemetryMetrics {
             Duration latency,
             int maxItemCount,
             int actualItemCount,
-            CosmosDiagnostics diagnostics) {
+            CosmosDiagnostics diagnostics,
+            Set<String> contactedRegions) {
 
             Counter operationsCounter = Counter
                 .builder(nameOf("op.calls"))
@@ -298,14 +314,13 @@ public final class ClientTelemetryMetrics {
                 .builder(nameOf("op.regionsContacted"))
                 .baseUnit("Regions contacted")
                 .description("Operation - regions contacted")
-                .maximumExpectedValue(1_000d)
+                .maximumExpectedValue(100d)
                 .publishPercentiles(0.95, 0.99)
                 .publishPercentileHistogram(true)
                 .tags(operationTags)
                 .register(compositeRegistry);
-            Set<String> contactedRegions = diagnostics.getContactedRegionNames();
-            if (contactedRegions != null) {
-                regionsContactedMeter.record(Math.max(contactedRegions.size(), 1_000d));
+            if (contactedRegions != null && contactedRegions.size() > 0) {
+                regionsContactedMeter.record(Math.max(contactedRegions.size(), 100d));
             }
 
             Timer latencyMeter = Timer
@@ -471,7 +486,7 @@ public final class ClientTelemetryMetrics {
             if (metricTagNames.contains(TagName.RegionName)) {
                 effectiveTags.add(Tag.of(
                     TagName.RegionName.toString(),
-                    regionName != null ? escape(regionName) : "NONE"));
+                    regionName != null ? regionName : "NONE"));
             }
 
             if (metricTagNames.contains(TagName.ServiceEndpoint)) {
