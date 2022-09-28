@@ -52,15 +52,23 @@ public class StringBasedCosmosQuery extends AbstractCosmosQuery {
         final CosmosParameterAccessor accessor = new CosmosParameterParameterAccessor(getQueryMethod(), parameters);
         final ResultProcessor processor = getQueryMethod().getResultProcessor().withDynamicProjection(accessor);
 
+        /*
+         * The below for loop is used to handle two unique use cases with annotated queries.
+         * Annotated queries are defined as strings so there is no way to know the clauses
+         * being used in advance. Some clauses expect an array and others expect just a list of values.
+         * (1) IN clauses expect the syntax 'IN (a, b, c) which is generated from the if statement.
+         * (2) ARRAY_CONTAINS expects the syntax 'ARRAY_CONTAINS(["a", "b", "c"], table.param) which
+         *     is generated from the else statement.
+         */
         String expandedQuery = query;
         List<SqlParameter> sqlParameters = new ArrayList<>();
         for (int paramIndex = 0; paramIndex < parameters.length; paramIndex++) {
                 Parameter queryParam = getQueryMethod().getParameters().getParameter(paramIndex);
                 if (!queryParam.getName().isEmpty()) {
-                    String inParamCheck = "ARRAY_CONTAINS(@" + queryParam.getName().get();
+                    String modifiedExpandedQuery = expandedQuery.toLowerCase().replaceAll("\\s+", "");
+                    String inParamCheck = ("ARRAY_CONTAINS(@" + queryParam.getName().get()).toLowerCase();
                     if (parameters[paramIndex] instanceof Collection
-                        && expandedQuery.toString().toUpperCase().replaceAll("\\s", "")
-                        .indexOf(inParamCheck.toUpperCase()) == -1) {
+                        && modifiedExpandedQuery.indexOf(inParamCheck) == -1) {
                         List<String> expandParam = ((Collection<?>) parameters[paramIndex]).stream()
                             .map(Object::toString).collect(Collectors.toList());
                         List<String> expandedParamKeys = new ArrayList<>();
