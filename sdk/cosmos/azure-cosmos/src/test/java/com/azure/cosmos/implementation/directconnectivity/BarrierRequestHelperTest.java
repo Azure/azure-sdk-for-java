@@ -9,6 +9,7 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Document;
@@ -177,10 +178,7 @@ public class BarrierRequestHelperTest {
                 false,
                 null,
                 null,
-                ImplementationBridgeHelpers
-                    .CosmosClientTelemetryConfigHelper
-                    .getCosmosClientTelemetryConfigAccessor()
-                    .getDefaultConfig(),
+                new CosmosClientTelemetryConfig(),
                 null,
                 EnumSet.allOf(TagName.class));
 
@@ -245,10 +243,9 @@ public class BarrierRequestHelperTest {
                 new AsyncDocumentClient.Builder()
                         .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                         .withServiceEndpoint(TestConfigurations.HOST)
-                        .withClientTelemetryConfig(ImplementationBridgeHelpers
-                            .CosmosClientTelemetryConfigHelper
-                            .getCosmosClientTelemetryConfigAccessor()
-                            .getDefaultConfig())
+                        .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
                         .build();
     }
 
