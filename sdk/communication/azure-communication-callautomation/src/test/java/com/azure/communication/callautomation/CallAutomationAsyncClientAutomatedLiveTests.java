@@ -60,7 +60,7 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
 
             // wait for the incomingCallContext
             System.out.println("Waiting for incomingCallContext");
-            Thread.sleep(8000);
+            waitForOperationCompletion(8000);
 
             // answer the call
             String incomingCallContext = incomingCallContextStore.get(uniqueId);
@@ -68,8 +68,11 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
 
             AnswerCallResult answerCallResult = callClient.answerCall(incomingCallContext, DISPATCHER_CALLBACK).block();
             assertNotNull(answerCallResult);
-            assertNotNull(answerCallResult.getCallConnectionProperties());
-            Thread.sleep(5000);
+            assertNotNull(answerCallResult.getCallConnection());
+            waitForOperationCompletion(3000);
+
+            answerCallResult.getCallConnectionAsync().hangUp(true).block();
+            waitForOperationCompletion(2000);
 
             System.out.println("Test ended, please check if callback events are received.");
         } catch (Exception ex) {
