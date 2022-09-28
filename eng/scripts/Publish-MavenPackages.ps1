@@ -12,6 +12,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 
+. "${PSScriptRoot}/../common/scripts/common.ps1"
 . $PSScriptRoot\MavenPackaging.ps1
 
 # The Resolve-Path will normalize the path separators and throw if they don't exist.
