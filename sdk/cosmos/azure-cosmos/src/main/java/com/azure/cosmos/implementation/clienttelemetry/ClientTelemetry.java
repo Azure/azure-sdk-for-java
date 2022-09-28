@@ -143,13 +143,13 @@ public class ClientTelemetry {
         this.isClosed = false;
         this.configs = configs;
         this.clientTelemetryConfig = clientTelemetryConfig;
-        this.clientTelemetryConfigEnabled = ImplementationBridgeHelpers
-            .CosmosClientTelemetryConfigHelper
-            .getCosmosClientTelemetryConfigAccessor()
+        ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor
+            clientTelemetryAccessor = ImplementationBridgeHelpers
+                .CosmosClientTelemetryConfigHelper
+                .getCosmosClientTelemetryConfigAccessor();
+        this.clientTelemetryConfigEnabled = clientTelemetryAccessor
             .isSendClientTelemetryToServiceEnabled(clientTelemetryConfig);
-        this.clientMetricsEnabled = ImplementationBridgeHelpers
-            .CosmosClientTelemetryConfigHelper
-            .getCosmosClientTelemetryConfigAccessor()
+        this.clientMetricsEnabled = clientTelemetryAccessor
             .isClientMetricsEnabled(clientTelemetryConfig);
         this.httpClient = getHttpClientForClientTelemetry();
         this.metadataHttpClient = getHttpClientForIMDS();
