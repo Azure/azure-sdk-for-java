@@ -273,13 +273,23 @@ public class ClientMetricsTest extends BatchTestBase {
 
             this.validateMetrics(
                 Tag.of(
-                    TagName.Operation.toString(), "Document/ReadFeed"),
+                    TagName.Operation.toString(), "Document/ReadFeed/readAllItems." + container.getId()),
                 Tag.of(TagName.RequestOperationType.toString(), "Document/Query")
+            );
+
+            this.validateItemCountMetrics(
+                Tag.of(
+                    TagName.Operation.toString(), "Document/ReadFeed/readAllItems." + container.getId())
             );
 
             Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection/QueryPlan");
             this.assertMetrics("cosmos.client.req.gw", true, queryPlanTag);
             this.assertMetrics("cosmos.client.req.rntbd", false, queryPlanTag);
+            this.assertMetrics("cosmos.client.req.gw.requests", true, queryPlanTag);
+            this.assertMetrics("cosmos.client.req.gw.RUs", false, queryPlanTag);
+            this.assertMetrics("cosmos.client.req.gw.timeline", true, queryPlanTag);
+
+            this.assertMetrics("cosmos.client.op.maxItemCount", true);
         } finally {
             this.afterTest();
         }
@@ -313,8 +323,13 @@ public class ClientMetricsTest extends BatchTestBase {
 
             this.validateMetrics(
                 Tag.of(
-                    TagName.Operation.toString(), "Document/Query"),
+                    TagName.Operation.toString(), "Document/Query/queryItems." + container.getId()),
                 Tag.of(TagName.RequestOperationType.toString(), "Document/Query")
+            );
+
+            this.validateItemCountMetrics(
+                Tag.of(
+                    TagName.Operation.toString(), "Document/Query/queryItems." + container.getId())
             );
 
             Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection/QueryPlan");
@@ -521,21 +536,44 @@ public class ClientMetricsTest extends BatchTestBase {
     private void validateMetrics() {
         this.assertMetrics("cosmos.client.op.latency", true);
         this.assertMetrics("cosmos.client.op.calls", true);
+        this.assertMetrics("cosmos.client.op.RUs", true);
         if (this.client.asyncClient().getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
-            this.assertMetrics("cosmos.client.req.rntbd", true);
+            this.assertMetrics("cosmos.client.req.rntbd.latency", true);
+            this.assertMetrics("cosmos.client.req.rntbd.backendLatency", true);
+            this.assertMetrics("cosmos.client.req.rntbd.requests", true);
+            this.assertMetrics("cosmos.client.req.rntbd.RUs", true);
+            this.assertMetrics("cosmos.client.req.rntbd.timeline", true);
         } else {
-            this.assertMetrics("cosmos.client.req.gw", true);
+            this.assertMetrics("cosmos.client.req.gw.latency", true);
+            this.assertMetrics("cosmos.client.req.gw.backendLatency", false);
+            this.assertMetrics("cosmos.client.req.gw.requests", true);
+            this.assertMetrics("cosmos.client.req.gw.RUs", true);
+            this.assertMetrics("cosmos.client.req.gw.timeline", true);
             this.assertMetrics("cosmos.client.req.rntbd", false);
         }
+    }
+
+    private void validateItemCountMetrics(Tag expectedOperationTag) {
+        this.assertMetrics("cosmos.client.op.maxItemCount", true, expectedOperationTag);
+        this.assertMetrics("cosmos.client.op.actualItemCount", true, expectedOperationTag);
     }
 
     private void validateMetrics(Tag expectedOperationTag, Tag expectedRequestTag) {
         this.assertMetrics("cosmos.client.op.latency", true, expectedOperationTag);
         this.assertMetrics("cosmos.client.op.calls", true, expectedOperationTag);
+        this.assertMetrics("cosmos.client.op.RUs", true, expectedOperationTag);
         if (this.client.asyncClient().getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
-            this.assertMetrics("cosmos.client.req.rntbd", true, expectedRequestTag);
+            this.assertMetrics("cosmos.client.req.rntbd.latency", true, expectedRequestTag);
+            this.assertMetrics("cosmos.client.req.rntbd.backendLatency", true, expectedRequestTag);
+            this.assertMetrics("cosmos.client.req.rntbd.requests", true, expectedRequestTag);
+            this.assertMetrics("cosmos.client.req.rntbd.RUs", true, expectedRequestTag);
+            this.assertMetrics("cosmos.client.req.rntbd.timeline", true, expectedRequestTag);
         } else {
-            this.assertMetrics("cosmos.client.req.gw", true, expectedRequestTag);
+            this.assertMetrics("cosmos.client.req.gw.latency", true, expectedRequestTag);
+            this.assertMetrics("cosmos.client.req.gw.backendLatency", false, expectedRequestTag);
+            this.assertMetrics("cosmos.client.req.gw.requests", true, expectedRequestTag);
+            this.assertMetrics("cosmos.client.req.gw.RUs", true, expectedRequestTag);
+            this.assertMetrics("cosmos.client.req.gw.timeline", true, expectedRequestTag);
             this.assertMetrics("cosmos.client.req.rntbd", false);
         }
     }

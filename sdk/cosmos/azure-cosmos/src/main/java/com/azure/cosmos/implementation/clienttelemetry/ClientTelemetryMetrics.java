@@ -617,6 +617,18 @@ public final class ClientTelemetryMetrics {
                     backendRequestLatencyMeter.record(storeResultDiagnostics.getBackendLatencyInMs());
                 }
 
+                double requestCharge = storeResponseDiagnostics.getRequestCharge();
+                DistributionSummary requestChargeMeter = DistributionSummary
+                    .builder(nameOf("req.rntbd.RUs"))
+                    .baseUnit("RU (request unit)")
+                    .description("RNTBD Request RU charge")
+                    .maximumExpectedValue(1_000_000d)
+                    .publishPercentiles(0.95, 0.99)
+                    .publishPercentileHistogram(true)
+                    .tags(requestTags)
+                    .register(compositeRegistry);
+                requestChargeMeter.record(Math.max(requestCharge, 1_000_000d));
+
                 Duration latency = responseStatistics.getDuration();
                 if (latency != null) {
                     Timer requestLatencyMeter = Timer
@@ -687,6 +699,18 @@ public final class ClientTelemetryMetrics {
                 .register(compositeRegistry);
             requestCounter.increment();
 
+            double requestCharge = gatewayStatistics.getRequestCharge();
+            DistributionSummary requestChargeMeter = DistributionSummary
+                .builder(nameOf("req.gw.RUs"))
+                .baseUnit("RU (request unit)")
+                .description("Gateway Request RU charge")
+                .maximumExpectedValue(1_000_000d)
+                .publishPercentiles(0.95, 0.99)
+                .publishPercentileHistogram(true)
+                .tags(requestTags)
+                .register(compositeRegistry);
+            requestChargeMeter.record(Math.max(requestCharge, 1_000_000d));
+
             if (latency != null) {
                 Timer requestLatencyMeter = Timer
                     .builder(nameOf("req.gw.latency"))
@@ -743,6 +767,14 @@ public final class ClientTelemetryMetrics {
                     .tags(addressResolutionTags)
                     .register(compositeRegistry);
                 addressResolutionLatencyMeter.record(latency);
+
+                Counter requestCounter = Counter
+                    .builder(nameOf("rntbd.addressResolution.requests"))
+                    .baseUnit("requests")
+                    .description("Address resolution requests")
+                    .tags(addressResolutionTags)
+                    .register(compositeRegistry);
+                requestCounter.increment();
             }
         }
     }
