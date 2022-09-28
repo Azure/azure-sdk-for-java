@@ -68,7 +68,7 @@ public class CosmosClientBuilderTest {
         client.close();
 
         // Enabling via telemetryConfig
-        telemetryConfig.sendClientTelemetryToServiceEnabled(true);
+        telemetryConfig.sendClientTelemetryToService(true);
         client = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
@@ -80,7 +80,7 @@ public class CosmosClientBuilderTest {
         client.close();
 
         // Enabling via telemetryConfig and disabled via builder.isClientTelemetryEnabled --> Disabled
-        telemetryConfig.sendClientTelemetryToServiceEnabled(true);
+        telemetryConfig.sendClientTelemetryToService(true);
         client = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
@@ -93,7 +93,7 @@ public class CosmosClientBuilderTest {
         client.close();
 
         // Enabling via telemetryConfig, disabling via builder.isClientTelemetryEnabled and re-enabling again --> Enabled
-        telemetryConfig.sendClientTelemetryToServiceEnabled(true);
+        telemetryConfig.sendClientTelemetryToService(true);
         client = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
@@ -107,7 +107,7 @@ public class CosmosClientBuilderTest {
         client.close();
 
         // Disabling via telemetryConfig, enabling via builder.isClientTelemetryEnabled --> Enabled
-        telemetryConfig.sendClientTelemetryToServiceEnabled(false);
+        telemetryConfig.sendClientTelemetryToService(false);
         client = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
@@ -121,7 +121,7 @@ public class CosmosClientBuilderTest {
 
         // Disabling via telemetryConfig, enabling via builder.isClientTelemetryEnabled and
         // re-disabling again --> Disabled
-        telemetryConfig.sendClientTelemetryToServiceEnabled(false);
+        telemetryConfig.sendClientTelemetryToService(false);
         client = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
@@ -135,7 +135,7 @@ public class CosmosClientBuilderTest {
         client.close();
 
         // Enabling via telemetryConfig, enabling via builder.isClientTelemetryEnabled --> Enabled
-        telemetryConfig.sendClientTelemetryToServiceEnabled(true);
+        telemetryConfig.sendClientTelemetryToService(true);
         client = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)

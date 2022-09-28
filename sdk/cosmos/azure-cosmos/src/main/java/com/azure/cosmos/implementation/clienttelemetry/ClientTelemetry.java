@@ -147,6 +147,7 @@ public class ClientTelemetry {
             clientTelemetryAccessor = ImplementationBridgeHelpers
                 .CosmosClientTelemetryConfigHelper
                 .getCosmosClientTelemetryConfigAccessor();
+        assert(clientTelemetryAccessor != null);
         this.clientTelemetryConfigEnabled = clientTelemetryAccessor
             .isSendClientTelemetryToServiceEnabled(clientTelemetryConfig);
         this.clientMetricsEnabled = clientTelemetryAccessor

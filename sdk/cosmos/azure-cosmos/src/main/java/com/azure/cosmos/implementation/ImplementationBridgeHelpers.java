@@ -1097,6 +1097,8 @@ public class ImplementationBridgeHelpers {
         public static void setCosmosClientTelemetryConfigAccessor(
             final CosmosClientTelemetryConfigAccessor newAccessor) {
 
+            assert(newAccessor != null);
+
             if (!accessor.compareAndSet(null, newAccessor)) {
                 logger.debug("CosmosClientTelemetryConfigAccessor already initialized!");
             } else {

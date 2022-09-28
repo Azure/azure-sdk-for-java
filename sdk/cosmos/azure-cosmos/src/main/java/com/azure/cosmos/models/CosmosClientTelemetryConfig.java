@@ -85,14 +85,12 @@ public final class CosmosClientTelemetryConfig {
 
     /**
      * Enables or disables sending Cosmos DB client telemetry to the Azure Cosmos DB Service
-     * @param sendClientTelemetryToServiceEnabled a flag indicating whether sending client telemetry to the backend should be
+     * @param enabled a flag indicating whether sending client telemetry to the backend should be
      * enabled or not
      * @return current CosmosClientTelemetryConfig
      */
-    public CosmosClientTelemetryConfig sendClientTelemetryToServiceEnabled(
-        boolean sendClientTelemetryToServiceEnabled) {
-
-        this.clientTelemetryEnabled = sendClientTelemetryToServiceEnabled;
+    public CosmosClientTelemetryConfig sendClientTelemetryToService(boolean enabled) {
+        this.clientTelemetryEnabled = enabled;
 
         return this;
     }
@@ -161,7 +159,7 @@ public final class CosmosClientTelemetryConfig {
      * @param tagNames - a comma-separated list of tag names that should be considered
      * @return current CosmosClientTelemetryConfig
      */
-    public CosmosClientTelemetryConfig metricTagNames(String[] tagNames) {
+    public CosmosClientTelemetryConfig metricTagNames(String... tagNames) {
         if (tagNames == null || tagNames.length == 0) {
             this.metricTagNames = DEFAULT_TAGS;
         }

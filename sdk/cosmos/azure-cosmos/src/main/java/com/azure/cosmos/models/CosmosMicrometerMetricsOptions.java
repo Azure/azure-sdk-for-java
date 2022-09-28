@@ -4,12 +4,13 @@ package com.azure.cosmos.models;
 
 import com.azure.core.util.MetricsOptions;
 import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Metrics;
 
 /**
  * Micrometer-specific Azure Cosmos DB SDK metrics options
  */
 public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
-    private MeterRegistry clientMetricRegistry = null;
+    private MeterRegistry clientMetricRegistry = Metrics.globalRegistry;
 
     /**
      * Instantiates new Micrometer-specific Azure Cosmos DB SDK metrics options
@@ -28,7 +29,11 @@ public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
      * @return current CosmosMicrometerMetricsOptions instance
      */
     public CosmosMicrometerMetricsOptions meterRegistry(MeterRegistry clientMetricMeterRegistry) {
-        this.clientMetricRegistry = clientMetricMeterRegistry;
+        if (clientMetricMeterRegistry == null) {
+            this.clientMetricRegistry = Metrics.globalRegistry;
+        } else {
+            this.clientMetricRegistry = clientMetricMeterRegistry;
+        }
 
         return this;
     }
@@ -40,13 +45,5 @@ public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
     public CosmosMicrometerMetricsOptions setEnabled(boolean enabled) {
         super.setEnabled(enabled);
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isEnabled() {
-        return this.clientMetricRegistry != null && super.isEnabled();
     }
 }

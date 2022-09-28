@@ -160,14 +160,13 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
             )
             .clientCorrelationId(clientCorrelationId)
             .metricTagNames(
-              Array(
                 TagName.Container.toString,
                 TagName.ClientCorrelationId.toString,
                 TagName.Operation.toString,
                 TagName.OperationStatusCode.toString,
                 TagName.PartitionKeyRangeId.toString,
                 TagName.ServiceEndpoint.toString,
-                TagName.ServiceAddress.toString)
+                TagName.ServiceAddress.toString
             )
 
           builder.clientTelemetryConfig(telemetryConfig)
