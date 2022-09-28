@@ -36,7 +36,7 @@ public class EventHubsMetricsProvider {
         this.meter = meter;
         this.isEnabled = meter != null && meter.isEnabled();
         if (this.isEnabled) {
-            Map<String, Object> commonAttributesMap = new HashMap<>();
+            Map<String, Object> commonAttributesMap = new HashMap<>(3);
             commonAttributesMap.put(HOSTNAME_KEY, namespace);
             commonAttributesMap.put(ENTITY_NAME_KEY, entityName);
             if (consumerGroup != null) {

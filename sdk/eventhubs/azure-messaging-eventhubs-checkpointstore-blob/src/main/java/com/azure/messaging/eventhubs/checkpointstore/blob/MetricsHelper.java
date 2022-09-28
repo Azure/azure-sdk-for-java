@@ -66,8 +66,8 @@ final class MetricsHelper {
             this.meter = meterProvider.createMeter(LIBRARY_NAME, LIBRARY_VERSION, metricsOptions);
             this.isEnabled = this.meter.isEnabled();
         } else {
-            this.isEnabled = false;
             this.meter = null;
+            this.isEnabled = false;
         }
 
         if (isEnabled) {
@@ -115,7 +115,7 @@ final class MetricsHelper {
     }
 
     private Map<String, Object> createAttributes(Checkpoint checkpoint, String status) {
-        Map<String, Object> attributesMap = new HashMap<>();
+        Map<String, Object> attributesMap = new HashMap<>(5);
         attributesMap.put(HOSTNAME_KEY, checkpoint.getFullyQualifiedNamespace());
         attributesMap.put(ENTITY_NAME_KEY, checkpoint.getEventHubName());
         attributesMap.put(PARTITION_ID_KEY, checkpoint.getPartitionId());
@@ -132,11 +132,13 @@ final class MetricsHelper {
             return;
         }
 
-        CurrentValue valueSupplier;
+        final CurrentValue valueSupplier;
         if (maxCapacityReached) {
             valueSupplier = seqNoSubscriptions.get(attributesId);
+            if (valueSupplier == null) {
+                return;
+            }
         } else {
-
             TelemetryAttributes attributes = getOrCreate(common, attributesId, checkpoint, null);
             if (attributes == null) {
                 return;
@@ -148,9 +150,7 @@ final class MetricsHelper {
             });
         }
 
-        if (valueSupplier != null) {
-            valueSupplier.set(checkpoint.getSequenceNumber());
-        }
+        valueSupplier.set(checkpoint.getSequenceNumber());
     }
 
     private static boolean areMetricsEnabled(MetricsOptions options) {
