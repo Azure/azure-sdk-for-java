@@ -14,6 +14,7 @@ class PartitionMetadataSpec extends UnitSpec {
   private[this] val clientCfg = CosmosClientConfiguration(
     UUID.randomUUID().toString,
     UUID.randomUUID().toString,
+    None,
     UUID.randomUUID().toString,
     useGatewayMode = false,
     useEventualConsistency = true,
@@ -46,6 +47,7 @@ class PartitionMetadataSpec extends UnitSpec {
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
       UUID.randomUUID().toString,
+      None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
       useEventualConsistency = true,
@@ -117,6 +119,7 @@ class PartitionMetadataSpec extends UnitSpec {
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
       UUID.randomUUID().toString,
+      None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
       useEventualConsistency = true,
@@ -170,6 +173,7 @@ class PartitionMetadataSpec extends UnitSpec {
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
       UUID.randomUUID().toString,
+      None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
       useEventualConsistency = true,
@@ -218,6 +222,7 @@ class PartitionMetadataSpec extends UnitSpec {
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
       UUID.randomUUID().toString,
+      None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
       useEventualConsistency = true,
@@ -260,6 +265,7 @@ class PartitionMetadataSpec extends UnitSpec {
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
       UUID.randomUUID().toString,
+      None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
       useEventualConsistency = true,
@@ -302,6 +308,7 @@ class PartitionMetadataSpec extends UnitSpec {
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
       UUID.randomUUID().toString,
+      None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
       useEventualConsistency = true,
@@ -344,6 +351,7 @@ class PartitionMetadataSpec extends UnitSpec {
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
       UUID.randomUUID().toString,
+      None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
       useEventualConsistency = true,
@@ -386,6 +394,7 @@ class PartitionMetadataSpec extends UnitSpec {
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
       UUID.randomUUID().toString,
+      None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
       useEventualConsistency = true,
@@ -428,6 +437,7 @@ class PartitionMetadataSpec extends UnitSpec {
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
       UUID.randomUUID().toString,
+      None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
       useEventualConsistency = true,
@@ -487,6 +497,7 @@ class PartitionMetadataSpec extends UnitSpec {
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
       UUID.randomUUID().toString,
+      None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
       useEventualConsistency = true,

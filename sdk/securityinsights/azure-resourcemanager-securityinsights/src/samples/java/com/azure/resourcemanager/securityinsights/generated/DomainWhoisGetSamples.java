@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DomainWhois Get. */
 public final class DomainWhoisGetSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/enrichment/GetWhoisByDomainName.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/enrichment/GetWhoisByDomainName.json
      */
     /**
      * Sample code: Get whois information for a single domain name.

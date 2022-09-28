@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Incidents ListEntities. */
 public final class IncidentsListEntitiesSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/incidents/entities/GetAllIncidentEntities.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/incidents/entities/GetAllIncidentEntities.json
      */
     /**
      * Sample code: Gets all incident related entities.
