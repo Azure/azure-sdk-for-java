@@ -1,12 +1,23 @@
 # Release History
 
-## 4.0.0-beta.7 (2022-09-08)
-This version of the SDK defaults to the latest supported API version, which currently is 2021-09-30-preview.
+## 4.1.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 4.0.0 (2022-09-08)
+This version of the SDK defaults 2022-08-31 going forward.
 
 ### Features Added
 - Added a method `getWords()` on model `DocumentLine`.
 - Added `TypedDocumentField<T>` model for strongly typed representation of `Fields` on analyzed documents.
 `DocumentField` extends from `TypedDocumentField<T>`.
+- Added interfaces from `com.azure.core.client.traits` to `FormRecognizerClientBuilder` and `FormTrainingClientBuilder`
 
 ### Breaking Changes
 - Removed property `kind` from model `DocumentPage`
@@ -31,6 +42,16 @@ and `customDocumentModelLimit` on model `ResourceDetails`.
   - `deleteModel` to `deleteDocumentModel`
   - `beginBuildModel` to `beginBuildDocumentModel`
   - `beginComposeModel` to `beginComposeDocumentModel`
+- Renamed property `DocumentFieldType.INTEGER` to `DocumentFieldType.LONG`
+- Renamed method `getValueInteger` to `getValueLong` and `getValueFloat` to `getValueLong` on `DocumentField` model
+- Renamed properties on model `DocumentAnalysisAudience`
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.32.0`.
+- Upgraded `azure-core-http-netty` to `1.12.5`.
 
 ## 3.1.14 (2022-08-11)
 

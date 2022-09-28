@@ -16,15 +16,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class SelfDependencyTumblingWindowTriggerReference extends DependencyReference {
     /*
-     * Timespan applied to the start time of a tumbling window when evaluating
-     * dependency.
+     * Timespan applied to the start time of a tumbling window when evaluating dependency.
      */
     @JsonProperty(value = "offset", required = true)
     private String offset;
 
     /*
-     * The size of the window when evaluating the dependency. If undefined the
-     * frequency of the tumbling window will be used.
+     * The size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be
+     * used.
      */
     @JsonProperty(value = "size")
     private String size;

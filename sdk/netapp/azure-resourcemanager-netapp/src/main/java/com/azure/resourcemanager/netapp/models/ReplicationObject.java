@@ -18,8 +18,7 @@ public final class ReplicationObject {
     private String replicationId;
 
     /*
-     * Indicates whether the local volume is the source or destination for the
-     * Volume Replication
+     * Indicates whether the local volume is the source or destination for the Volume Replication
      */
     @JsonProperty(value = "endpointType")
     private EndpointType endpointType;

@@ -48,12 +48,14 @@ public final class Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
+
+    private static final String DEFAULT_SCOPE = "/.default";
+
     static {
         Map<String, String> properties = CoreUtils.getProperties(Constants.FORM_RECOGNIZER_PROPERTIES);
         CLIENT_NAME = properties.getOrDefault(Constants.NAME, "UnknownName");
         CLIENT_VERSION = properties.getOrDefault(Constants.VERSION, "UnknownVersion");
     }
-    static final String DEFAULT_SCOPE = "/.default";
 
     private Utility() {
     }
@@ -90,7 +92,7 @@ public final class Utility {
         // Authentications
         if (tokenCredential != null) {
             if (audience == null) {
-                audience = DocumentAnalysisAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
+                audience = DocumentAnalysisAudience.AZURE_PUBLIC_CLOUD;
             }
             httpPipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential,
                 audience + DEFAULT_SCOPE));

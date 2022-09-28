@@ -9,6 +9,7 @@ import com.azure.spring.cloud.autoconfigure.aad.implementation.webapp.AadOAuth2A
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
@@ -23,9 +24,10 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequest
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.util.StringUtils;
-import org.springframework.web.client.RestOperations;
 
 import javax.servlet.Filter;
+
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createOAuth2AccessTokenResponseClientRestTemplate;
 
 /**
  * Abstract configuration class, used to make AzureClientRegistrationRepository and AuthzCodeGrantRequestEntityConverter
@@ -43,10 +45,10 @@ public abstract class AadWebSecurityConfigurerAdapter extends WebSecurityConfigu
 
 
     /**
-     * RestOperations bean used by various OAuth2AccessTokenResponseClient.
+     * restTemplateBuilder bean used to create RestTemplate for Azure AD related http request.
      */
     @Autowired
-    protected RestOperations aadAuthRestOperations;
+    protected RestTemplateBuilder restTemplateBuilder;
 
     /**
      * OIDC user service.
@@ -130,7 +132,7 @@ public abstract class AadWebSecurityConfigurerAdapter extends WebSecurityConfigu
      */
     protected OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
         DefaultAuthorizationCodeTokenResponseClient result = new DefaultAuthorizationCodeTokenResponseClient();
-        result.setRestOperations(aadAuthRestOperations);
+        result.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));
         if (repo instanceof AadClientRegistrationRepository) {
             AadOAuth2AuthorizationCodeGrantRequestEntityConverter converter =
                 new AadOAuth2AuthorizationCodeGrantRequestEntityConverter(

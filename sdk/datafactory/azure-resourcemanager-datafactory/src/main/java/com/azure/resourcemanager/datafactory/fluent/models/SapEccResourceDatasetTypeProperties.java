@@ -12,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SapEccResourceDatasetTypeProperties {
     /*
-     * The path of the SAP ECC OData entity. Type: string (or Expression with
-     * resultType string).
+     * The path of the SAP ECC OData entity. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "path", required = true)
     private Object path;

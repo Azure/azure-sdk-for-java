@@ -13,7 +13,7 @@ public final class CommunicationUserIdentifierModel {
     /*
      * The id property.
      */
-    @JsonProperty(value = "id")
+    @JsonProperty(value = "id", required = true)
     private String id;
 
     /**

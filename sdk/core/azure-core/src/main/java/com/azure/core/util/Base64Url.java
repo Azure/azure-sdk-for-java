@@ -40,7 +40,13 @@ public final class Base64Url {
 
     private static byte[] unquote(byte[] bytes) {
         if (bytes != null && bytes.length > 1) {
-            bytes = unquote(new String(bytes, StandardCharsets.UTF_8)).getBytes(StandardCharsets.UTF_8);
+            byte firstByte = bytes[0];
+            if (firstByte == '\"' || firstByte == '\'') {
+                byte lastByte = bytes[bytes.length - 1];
+                if (lastByte == firstByte) {
+                    return Arrays.copyOfRange(bytes, 1, bytes.length - 1);
+                }
+            }
         }
         return bytes;
     }
@@ -52,7 +58,7 @@ public final class Base64Url {
                 final int base64UrlStringLength = string.length();
                 final char lastCharacter = string.charAt(base64UrlStringLength - 1);
                 if (lastCharacter == firstCharacter) {
-                    string = string.substring(1, base64UrlStringLength - 1);
+                    return string.substring(1, base64UrlStringLength - 1);
                 }
             }
         }

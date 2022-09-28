@@ -28,6 +28,12 @@ public final class LinkTableRequestTarget {
     @JsonProperty(value = "distributionOptions")
     private LinkTableRequestTargetDistributionOptions distributionOptions;
 
+    /*
+     * Target table structure options for link table request
+     */
+    @JsonProperty(value = "structureOptions")
+    private LinkTableRequestTargetStructureOptions structureOptions;
+
     /**
      * Get the tableName property: Target table table name.
      *
@@ -86,6 +92,26 @@ public final class LinkTableRequestTarget {
     public LinkTableRequestTarget setDistributionOptions(
             LinkTableRequestTargetDistributionOptions distributionOptions) {
         this.distributionOptions = distributionOptions;
+        return this;
+    }
+
+    /**
+     * Get the structureOptions property: Target table structure options for link table request.
+     *
+     * @return the structureOptions value.
+     */
+    public LinkTableRequestTargetStructureOptions getStructureOptions() {
+        return this.structureOptions;
+    }
+
+    /**
+     * Set the structureOptions property: Target table structure options for link table request.
+     *
+     * @param structureOptions the structureOptions value to set.
+     * @return the LinkTableRequestTarget object itself.
+     */
+    public LinkTableRequestTarget setStructureOptions(LinkTableRequestTargetStructureOptions structureOptions) {
+        this.structureOptions = structureOptions;
         return this;
     }
 }

@@ -44,7 +44,7 @@ public class GetWordsUsingSpans {
         BinaryData selectionMarkDocumentData = BinaryData.fromFile(filePath);
 
         SyncPoller<OperationResult, AnalyzeResult> analyzeLayoutResultPoller =
-            client.beginAnalyzeDocument("prebuilt-layout", selectionMarkDocumentData, selectionMarkDocument.length());
+            client.beginAnalyzeDocument("prebuilt-layout", selectionMarkDocumentData);
 
         AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 

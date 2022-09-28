@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.ExternalSecuritySolutionsClient;
 import com.azure.resourcemanager.security.fluent.models.ExternalSecuritySolutionInner;
 import com.azure.resourcemanager.security.models.ExternalSecuritySolutionList;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ExternalSecuritySolutionsClient. */
 public final class ExternalSecuritySolutionsClientImpl implements ExternalSecuritySolutionsClient {
-    private final ClientLogger logger = new ClientLogger(ExternalSecuritySolutionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ExternalSecuritySolutionsService service;
 
@@ -128,7 +125,8 @@ public final class ExternalSecuritySolutionsClientImpl implements ExternalSecuri
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of external security solutions for the subscription.
+     * @return a list of external security solutions for the subscription along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExternalSecuritySolutionInner>> listSinglePageAsync() {
@@ -170,7 +168,8 @@ public final class ExternalSecuritySolutionsClientImpl implements ExternalSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of external security solutions for the subscription.
+     * @return a list of external security solutions for the subscription along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExternalSecuritySolutionInner>> listSinglePageAsync(Context context) {
@@ -207,7 +206,7 @@ public final class ExternalSecuritySolutionsClientImpl implements ExternalSecuri
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of external security solutions for the subscription.
+     * @return a list of external security solutions for the subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ExternalSecuritySolutionInner> listAsync() {
@@ -221,7 +220,7 @@ public final class ExternalSecuritySolutionsClientImpl implements ExternalSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of external security solutions for the subscription.
+     * @return a list of external security solutions for the subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ExternalSecuritySolutionInner> listAsync(Context context) {
@@ -234,7 +233,8 @@ public final class ExternalSecuritySolutionsClientImpl implements ExternalSecuri
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of external security solutions for the subscription.
+     * @return a list of external security solutions for the subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExternalSecuritySolutionInner> list() {
@@ -248,7 +248,8 @@ public final class ExternalSecuritySolutionsClientImpl implements ExternalSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of external security solutions for the subscription.
+     * @return a list of external security solutions for the subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExternalSecuritySolutionInner> list(Context context) {
@@ -263,7 +264,8 @@ public final class ExternalSecuritySolutionsClientImpl implements ExternalSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of external Security Solutions for the subscription and location.
+     * @return a list of external Security Solutions for the subscription and location along with {@link PagedResponse}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExternalSecuritySolutionInner>> listByHomeRegionSinglePageAsync(String ascLocation) {
@@ -316,7 +318,8 @@ public final class ExternalSecuritySolutionsClientImpl implements ExternalSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of external Security Solutions for the subscription and location.
+     * @return a list of external Security Solutions for the subscription and location along with {@link PagedResponse}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExternalSecuritySolutionInner>> listByHomeRegionSinglePageAsync(
@@ -361,7 +364,8 @@ public final class ExternalSecuritySolutionsClientImpl implements ExternalSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of external Security Solutions for the subscription and location.
+     * @return a list of external Security Solutions for the subscription and location as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ExternalSecuritySolutionInner> listByHomeRegionAsync(String ascLocation) {
@@ -379,7 +383,8 @@ public final class ExternalSecuritySolutionsClientImpl implements ExternalSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of external Security Solutions for the subscription and location.
+     * @return a list of external Security Solutions for the subscription and location as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ExternalSecuritySolutionInner> listByHomeRegionAsync(String ascLocation, Context context) {
@@ -396,7 +401,8 @@ public final class ExternalSecuritySolutionsClientImpl implements ExternalSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of external Security Solutions for the subscription and location.
+     * @return a list of external Security Solutions for the subscription and location as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExternalSecuritySolutionInner> listByHomeRegion(String ascLocation) {
@@ -412,7 +418,8 @@ public final class ExternalSecuritySolutionsClientImpl implements ExternalSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of external Security Solutions for the subscription and location.
+     * @return a list of external Security Solutions for the subscription and location as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExternalSecuritySolutionInner> listByHomeRegion(String ascLocation, Context context) {
@@ -430,7 +437,8 @@ public final class ExternalSecuritySolutionsClientImpl implements ExternalSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific external Security Solution.
+     * @return a specific external Security Solution along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExternalSecuritySolutionInner>> getWithResponseAsync(
@@ -490,7 +498,8 @@ public final class ExternalSecuritySolutionsClientImpl implements ExternalSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific external Security Solution.
+     * @return a specific external Security Solution along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExternalSecuritySolutionInner>> getWithResponseAsync(
@@ -546,20 +555,13 @@ public final class ExternalSecuritySolutionsClientImpl implements ExternalSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific external Security Solution.
+     * @return a specific external Security Solution on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ExternalSecuritySolutionInner> getAsync(
         String resourceGroupName, String ascLocation, String externalSecuritySolutionsName) {
         return getWithResponseAsync(resourceGroupName, ascLocation, externalSecuritySolutionsName)
-            .flatMap(
-                (Response<ExternalSecuritySolutionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -593,7 +595,7 @@ public final class ExternalSecuritySolutionsClientImpl implements ExternalSecuri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific external Security Solution.
+     * @return a specific external Security Solution along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExternalSecuritySolutionInner> getWithResponse(
@@ -604,11 +606,12 @@ public final class ExternalSecuritySolutionsClientImpl implements ExternalSecuri
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExternalSecuritySolutionInner>> listNextSinglePageAsync(String nextLink) {
@@ -639,12 +642,13 @@ public final class ExternalSecuritySolutionsClientImpl implements ExternalSecuri
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExternalSecuritySolutionInner>> listNextSinglePageAsync(
@@ -676,11 +680,12 @@ public final class ExternalSecuritySolutionsClientImpl implements ExternalSecuri
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExternalSecuritySolutionInner>> listByHomeRegionNextSinglePageAsync(String nextLink) {
@@ -711,12 +716,13 @@ public final class ExternalSecuritySolutionsClientImpl implements ExternalSecuri
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExternalSecuritySolutionInner>> listByHomeRegionNextSinglePageAsync(

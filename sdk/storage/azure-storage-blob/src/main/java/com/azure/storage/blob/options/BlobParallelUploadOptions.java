@@ -105,7 +105,7 @@ public class BlobParallelUploadOptions {
         StorageImplUtils.assertNotNull("data", data);
         this.dataFlux = Flux.just(data.toByteBuffer());
         this.dataStream = null;
-        this.length = null;
+        this.length = data.getLength();
     }
 
     /**

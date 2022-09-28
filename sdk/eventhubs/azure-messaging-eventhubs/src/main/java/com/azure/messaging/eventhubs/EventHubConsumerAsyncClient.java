@@ -13,9 +13,11 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.metrics.Meter;
 import com.azure.messaging.eventhubs.implementation.AmqpReceiveLinkProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
+import com.azure.messaging.eventhubs.implementation.EventHubsMetricsProvider;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
@@ -155,6 +157,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
     private final boolean isSharedConnection;
     private final Runnable onClientClosed;
     private final String identifier;
+    private final EventHubsMetricsProvider metricsProvider;
     /**
      * Keeps track of the open partition consumers keyed by linkName. The link name is generated as: {@code
      * "partitionId_GUID"}. For receiving from all partitions, links are prefixed with {@code "all-GUID-partitionId"}.
@@ -164,7 +167,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
 
     EventHubConsumerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
         EventHubConnectionProcessor connectionProcessor, MessageSerializer messageSerializer, String consumerGroup,
-        int prefetchCount, boolean isSharedConnection, Runnable onClientClosed, String identifier) {
+        int prefetchCount, boolean isSharedConnection, Runnable onClientClosed, String identifier, Meter meter) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
         this.connectionProcessor = connectionProcessor;
@@ -174,6 +177,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
         this.isSharedConnection = isSharedConnection;
         this.onClientClosed = onClientClosed;
         this.identifier = identifier;
+        this.metricsProvider = new EventHubsMetricsProvider(meter, fullyQualifiedNamespace, eventHubName, consumerGroup);
     }
 
     /**
@@ -417,6 +421,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
             .computeIfAbsent(linkName,
                 name -> createPartitionConsumer(name, partitionId, startingPosition, receiveOptions))
             .receive()
+            .doOnNext(event -> metricsProvider.reportReceive(event))
             .doFinally(signal -> removeLink(linkName, partitionId, signal));
     }
 

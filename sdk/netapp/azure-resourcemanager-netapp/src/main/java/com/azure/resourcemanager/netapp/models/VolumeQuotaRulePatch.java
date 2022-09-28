@@ -59,7 +59,9 @@ public final class VolumeQuotaRulePatch {
     }
 
     /**
-     * Get the quotaType property: quotaType Type of quota.
+     * Get the quotaType property: quotaType
+     *
+     * <p>Type of quota.
      *
      * @return the quotaType value.
      */
@@ -68,7 +70,9 @@ public final class VolumeQuotaRulePatch {
     }
 
     /**
-     * Set the quotaType property: quotaType Type of quota.
+     * Set the quotaType property: quotaType
+     *
+     * <p>Type of quota.
      *
      * @param quotaType the quotaType value to set.
      * @return the VolumeQuotaRulePatch object itself.

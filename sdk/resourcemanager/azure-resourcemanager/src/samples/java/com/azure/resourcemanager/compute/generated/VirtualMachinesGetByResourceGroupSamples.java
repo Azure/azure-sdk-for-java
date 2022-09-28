@@ -5,11 +5,12 @@
 package com.azure.resourcemanager.compute.generated;
 
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.compute.models.InstanceViewTypes;
 
 /** Samples for VirtualMachines GetByResourceGroup. */
 public final class VirtualMachinesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineExamples/VirtualMachine_Get_WithVMSizeProperties.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Get_WithVMSizeProperties.json
      */
     /**
      * Sample code: Get a virtual machine with VM Size Properties.
@@ -26,7 +27,7 @@ public final class VirtualMachinesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineExamples/VirtualMachine_Get_AutoPlacedOnDedicatedHostGroup.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Get_AutoPlacedOnDedicatedHostGroup.json
      */
     /**
      * Sample code: Get a virtual machine placed on a dedicated host group through automatic placement.
@@ -44,7 +45,25 @@ public final class VirtualMachinesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineExamples/VirtualMachine_Get.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Get_WithDiskControllerType.json
+     */
+    /**
+     * Sample code: Get a virtual machine with Disk Controller Type Properties.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void getAVirtualMachineWithDiskControllerTypeProperties(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .getByResourceGroupWithResponse("myResourceGroup", "myVM", InstanceViewTypes.USER_DATA, Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Get.json
      */
     /**
      * Sample code: Get a Virtual Machine.
@@ -57,6 +76,6 @@ public final class VirtualMachinesGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getVirtualMachines()
-            .getByResourceGroupWithResponse("myResourceGroup", "myVM", null, Context.NONE);
+            .getByResourceGroupWithResponse("myResourceGroup", "myVM", InstanceViewTypes.USER_DATA, Context.NONE);
     }
 }

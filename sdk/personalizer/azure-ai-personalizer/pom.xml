@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-ai-personalizer</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-personalizer;current} -->
+  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-ai-personalizer;current} -->
 
   <name>Microsoft Azure client library for Personalizer</name>
   <description>This package contains the Microsoft Azure Cognitive Services Personalizer SDK.</description>
@@ -37,8 +37,6 @@
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
       --add-opens com.azure.ai.personalizer/com.azure.ai.personalizer=ALL-UNNAMED
-      --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
-      --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 
@@ -82,7 +80,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.5.5</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

@@ -3,10 +3,10 @@
 
 package com.azure.core.implementation.http.rest;
 
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.HttpMethod;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.StreamResponse;
@@ -25,6 +25,7 @@ import reactor.core.publisher.Signal;
 import reactor.util.context.ContextView;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -53,7 +54,6 @@ public class AsyncRestProxy extends RestProxyBase {
     Mono<HttpResponse> send(HttpRequest request, Context contextData) {
         return httpPipeline.send(request, contextData);
     }
-
 
     public HttpRequest createHttpRequest(SwaggerMethodParser methodParser, Object[] args) throws IOException {
         return createHttpRequest(methodParser, serializer, true, args);
@@ -143,7 +143,7 @@ public class AsyncRestProxy extends RestProxyBase {
         }
     }
 
-    private Mono<?> handleBodyReturnType(final HttpResponseDecoder.HttpDecodedResponse response,
+    Mono<?> handleBodyReturnType(final HttpResponseDecoder.HttpDecodedResponse response,
                                          final SwaggerMethodParser methodParser, final Type entityType) {
         final int responseStatusCode = response.getSourceResponse().getStatusCode();
         final HttpMethod httpMethod = methodParser.getHttpMethod();
@@ -174,6 +174,9 @@ public class AsyncRestProxy extends RestProxyBase {
             // is read and depending on which format the content is converted into, the response is not necessarily
             // fully copied into memory resulting in lesser overall memory usage.
             asyncResult = BinaryData.fromFlux(response.getSourceResponse().getBody());
+        } else if (TypeUtil.isTypeOrSubTypeOf(entityType, InputStream.class)) {
+            // Corresponds to the Open API 2.0 type "file" which is mapped to an InputStream.
+            asyncResult = response.getSourceResponse().getBodyAsInputStream();
         } else {
             // Mono<Object> or Mono<Page<T>>
             asyncResult = response.getSourceResponse().getBodyAsByteArray().mapNotNull(response::getDecodedBody);

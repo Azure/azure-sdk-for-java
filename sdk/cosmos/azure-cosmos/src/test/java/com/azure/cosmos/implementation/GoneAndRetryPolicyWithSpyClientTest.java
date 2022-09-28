@@ -17,6 +17,7 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
 import com.azure.cosmos.implementation.http.HttpResponse;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -70,7 +71,10 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
             .withConsistencyLevel(ConsistencyLevel.SESSION)
             .withContentResponseOnWriteEnabled(true)
             .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-            .withClientTelemetryConfig(ClientTelemetryConfig.getDefaultConfig());
+            .withClientTelemetryConfig(ImplementationBridgeHelpers
+                .CosmosClientTelemetryConfigHelper
+                .getCosmosClientTelemetryConfigAccessor()
+                .getDefaultConfig());
     }
 
     @Factory(dataProvider = "directClientBuilder")

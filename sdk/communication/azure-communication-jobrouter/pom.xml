@@ -40,6 +40,11 @@
     <jacoco.min.branchcoverage>0.9</jacoco.min.branchcoverage>
     <jacoco.skip>true</jacoco.skip>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
+    <javaModulesSurefireArgLine>
+      --add-opens com.azure.communication.jobrouter/com.azure.communication.jobrouter.implementation=ALL-UNNAMED
+      --add-opens com.azure.communication.common/com.azure.communication.common.implementation=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
   </properties>
 
   <dependencies>
@@ -51,7 +56,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
-      <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
+      <version>1.2.1</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>

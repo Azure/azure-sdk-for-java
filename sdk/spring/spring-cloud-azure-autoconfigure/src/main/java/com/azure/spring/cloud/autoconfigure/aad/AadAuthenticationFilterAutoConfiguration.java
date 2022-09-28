@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.autoconfigure.aad;
 
 import com.azure.spring.cloud.autoconfigure.aad.configuration.AadPropertiesConfiguration;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestOperationConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.filter.AadAppRoleStatelessAuthenticationFilter;
 import com.azure.spring.cloud.autoconfigure.aad.filter.AadAuthenticationFilter;
 import com.azure.spring.cloud.autoconfigure.aad.filter.UserPrincipalManager;
@@ -21,10 +20,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.web.client.RestOperations;
 
 import java.util.concurrent.TimeUnit;
 
@@ -40,23 +39,29 @@ import java.util.concurrent.TimeUnit;
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnExpression("${spring.cloud.azure.active-directory.enabled:false}")
 @ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken" })
-@Import({AadPropertiesConfiguration.class, AadRestOperationConfiguration.class})
+@Import(AadPropertiesConfiguration.class)
 public class AadAuthenticationFilterAutoConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AadAuthenticationProperties.class);
 
     private final AadAuthenticationProperties properties;
     private final AadAuthorizationServerEndpoints endpoints;
+    private final RestTemplateBuilder restTemplateBuilder;
 
     /**
      * Creates a new instance of {@link AadAuthenticationFilterAutoConfiguration}.
      *
      * @param properties the AAD authentication properties
+     * @param restTemplateBuilder the RestTemplateBuilder
      */
-    public AadAuthenticationFilterAutoConfiguration(AadAuthenticationProperties properties) {
+    public AadAuthenticationFilterAutoConfiguration(
+            AadAuthenticationProperties properties,
+            RestTemplateBuilder restTemplateBuilder) {
         this.properties = properties;
-        this.endpoints = new AadAuthorizationServerEndpoints(properties.getProfile().getEnvironment().getActiveDirectoryEndpoint(),
-            properties.getProfile().getTenantId());
+        this.restTemplateBuilder = restTemplateBuilder;
+        this.endpoints = new AadAuthorizationServerEndpoints(
+                properties.getProfile().getEnvironment().getActiveDirectoryEndpoint(),
+                properties.getProfile().getTenantId());
     }
 
     /**
@@ -69,13 +74,16 @@ public class AadAuthenticationFilterAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(AadAuthenticationFilter.class)
     @ConditionalOnExpression("${spring.cloud.azure.active-directory.session-stateless:false} == false")
-    public AadAuthenticationFilter aadAuthenticationFilter(ResourceRetriever resourceRetriever, JWKSetCache jwkSetCache) {
+    public AadAuthenticationFilter aadAuthenticationFilter(
+            ResourceRetriever resourceRetriever,
+            JWKSetCache jwkSetCache) {
         LOGGER.info("AadAuthenticationFilter Constructor.");
         return new AadAuthenticationFilter(
             properties,
             endpoints,
             resourceRetriever,
-            jwkSetCache
+            jwkSetCache,
+            restTemplateBuilder
         );
     }
 
@@ -103,13 +111,12 @@ public class AadAuthenticationFilterAutoConfiguration {
     /**
      * Declare JWT ResourceRetriever bean.
      *
-     * @param restOperations the rest operations used by the resource retriever.
      * @return JWT ResourceRetriever bean
      */
     @Bean
     @ConditionalOnMissingBean(ResourceRetriever.class)
-    public ResourceRetriever jwtResourceRetriever(RestOperations restOperations) {
-        return new RestOperationsResourceRetriever(restOperations);
+    public ResourceRetriever jwtResourceRetriever() {
+        return new RestOperationsResourceRetriever(restTemplateBuilder);
     }
 
     /**
