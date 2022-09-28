@@ -79,7 +79,7 @@ public final class TimezoneIdOptions {
      * @return the time stamp. Alternatively, use alias "stamp", or "s". Reference time, if omitted, the API will use the
      *     machine time serving the request.
      */
-    public OffsetDateTime getTimeStamp() {
+    public OffsetDateTime getTimestamp() {
         return timeStamp;
     }
 
@@ -89,7 +89,7 @@ public final class TimezoneIdOptions {
      *     machine time serving the request.
      * @return TimezoneIdOptions
      */
-    public TimezoneIdOptions setTimeStamp(OffsetDateTime timeStamp) {
+    public TimezoneIdOptions setTimestamp(OffsetDateTime timeStamp) {
         this.timeStamp = timeStamp;
         return this;
     }
@@ -99,7 +99,7 @@ public final class TimezoneIdOptions {
      * @return the daylight savings time in offset date time. Alternatively, use alias "tf". The start date from which daylight savings time
      *     (DST) transitions are requested, only applies when "options" = all or "options" = transitions.
      */
-    public OffsetDateTime getDaylightSavingsTimeFrom() {
+    public OffsetDateTime getDaylightSavingsTime() {
         return daylightSavingsTimeFrom;
     }
 
@@ -109,7 +109,7 @@ public final class TimezoneIdOptions {
      *     (DST) transitions are requested, only applies when "options" = all or "options" = transitions.
      * @return TimezoneIdOptions
      */
-    public TimezoneIdOptions setDaylightSavingsTimeFrom(OffsetDateTime daylightSavingsTimeFrom) {
+    public TimezoneIdOptions setDaylightSavingsTime(OffsetDateTime daylightSavingsTimeFrom) {
         this.daylightSavingsTimeFrom = daylightSavingsTimeFrom;
         return this;
     }

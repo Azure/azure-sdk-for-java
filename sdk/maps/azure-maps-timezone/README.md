@@ -82,7 +82,7 @@ client.getTimezoneById(options);
 Get Timezone By Coordinates
 ```java com.azure.maps.timezone.sync.get_timezone_by_coordinates
 GeoPosition coord = new GeoPosition(-122, 47.0);
-TimezoneCoordinateOptions op = new TimezoneCoordinateOptions().setCoordinates(coord).setOptions(TimezoneOptions.ALL);
+TimezoneCoordinateOptions op = new TimezoneCoordinateOptions().setPosition(coord).setOptions(TimezoneOptions.ALL);
 client.getTimezoneByCoordinates(op);
 ```
 

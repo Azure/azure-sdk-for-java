@@ -24,7 +24,7 @@ public final class TimezoneCoordinateOptions {
      *     list of coordinates, containing a pair of coordinate(lon, lat). When this endpoint is called directly,
      *     coordinates are passed in as a single string containing coordinates, separated by commas.
      */
-    public GeoPosition getCoordinates() {
+    public GeoPosition getPosition() {
         return coordinates;
     }
 
@@ -35,7 +35,7 @@ public final class TimezoneCoordinateOptions {
      *     coordinates are passed in as a single string containing coordinates, separated by commas.
      * @return returns TimezoneCoordinateOptions
      */
-    public TimezoneCoordinateOptions setCoordinates(GeoPosition coordinates) {
+    public TimezoneCoordinateOptions setPosition(GeoPosition coordinates) {
         this.coordinates = coordinates;
         return this;
     }
@@ -46,7 +46,7 @@ public final class TimezoneCoordinateOptions {
      *     code is provided, the response will be in "EN". Please refer to [Supported
      *     Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
      */
-    public String getAcceptLanguage() {
+    public String getLanguage() {
         return acceptLanguage;
     }
 
@@ -57,7 +57,7 @@ public final class TimezoneCoordinateOptions {
      *     Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
      * @return TimezoneCoordinateOptions
      */
-    public TimezoneCoordinateOptions setAcceptLanguage(String acceptLanguage) {
+    public TimezoneCoordinateOptions setLanguage(String acceptLanguage) {
         this.acceptLanguage = acceptLanguage;
         return this;
     }
@@ -66,7 +66,7 @@ public final class TimezoneCoordinateOptions {
      * Get timezone options
      * @return returns timezone options. Alternatively, use alias "o". Options available for types of information returned in the result.
      */
-    public TimezoneOptions getOptions() {
+    public TimezoneOptions getTimezoneOptions() {
         return options;
     }
 
@@ -75,7 +75,7 @@ public final class TimezoneCoordinateOptions {
      * @param options Alternatively, use alias "o". Options available for types of information returned in the result.
      * @return TimezoneCoordinateOptions
      */
-    public TimezoneCoordinateOptions setOptions(TimezoneOptions options) {
+    public TimezoneCoordinateOptions setTimezoneOptions(TimezoneOptions options) {
         this.options = options;
         return this;
     }
@@ -85,7 +85,7 @@ public final class TimezoneCoordinateOptions {
      * @return the time stamp. Alternatively, use alias "stamp", or "s". Reference time, if omitted, the API will use the
      *     machine time serving the request.
      */
-    public OffsetDateTime getTimeStamp() {
+    public OffsetDateTime getTimestamp() {
         return timeStamp;
     }
 
@@ -95,7 +95,7 @@ public final class TimezoneCoordinateOptions {
      *     machine time serving the request.
      * @return TimezoneCoordinateOptions
      */
-    public TimezoneCoordinateOptions setTimeStamp(OffsetDateTime timeStamp) {
+    public TimezoneCoordinateOptions setTimestamp(OffsetDateTime timeStamp) {
         this.timeStamp = timeStamp;
         return this;
     }

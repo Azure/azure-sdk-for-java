@@ -58,7 +58,7 @@ public final class IanaId {
      *
      * @return the aliasOf value.
      */
-    public String getAliasOf() {
+    public String getAlias() {
         return this.aliasOf;
     }
 
@@ -68,7 +68,7 @@ public final class IanaId {
      *
      * @return the hasZone1970Location value.
      */
-    public Boolean isHasZone1970Location() {
+    public Boolean getHasZone1970Location() {
         return this.hasZone1970Location;
     }
 }

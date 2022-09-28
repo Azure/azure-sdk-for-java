@@ -105,7 +105,7 @@ public final class TimezoneClient {
      * <!-- src_embed com.azure.maps.timezone.sync.get_timezone_by_coordinates -->
      * <pre>
      * GeoPosition coord = new GeoPosition&#40;-122, 47.0&#41;;
-     * TimezoneCoordinateOptions op = new TimezoneCoordinateOptions&#40;&#41;.setCoordinates&#40;coord&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
+     * TimezoneCoordinateOptions op = new TimezoneCoordinateOptions&#40;&#41;.setPosition&#40;coord&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
      * client.getTimezoneByCoordinates&#40;op&#41;;
      * </pre>
      * <!-- end com.azure.maps.timezone.sync.get_timezone_by_coordinates -->
@@ -131,7 +131,7 @@ public final class TimezoneClient {
      * <!-- src_embed com.azure.maps.timezone.sync.get_timezone_by_coordinates -->
      * <pre>
      * GeoPosition coord = new GeoPosition&#40;-122, 47.0&#41;;
-     * TimezoneCoordinateOptions op = new TimezoneCoordinateOptions&#40;&#41;.setCoordinates&#40;coord&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
+     * TimezoneCoordinateOptions op = new TimezoneCoordinateOptions&#40;&#41;.setPosition&#40;coord&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
      * client.getTimezoneByCoordinates&#40;op&#41;;
      * </pre>
      * <!-- end com.azure.maps.timezone.sync.get_timezone_by_coordinates -->

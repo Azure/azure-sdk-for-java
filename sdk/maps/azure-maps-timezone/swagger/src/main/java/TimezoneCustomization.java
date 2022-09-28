@@ -20,6 +20,9 @@ public class TimezoneCustomization extends Customization {
 
         // customize time transition
         customizeTimeTransition(models);
+
+        // customize iana id
+        customizeIanaId(models);
     }
 
     // Customizes the timezone id class
@@ -144,5 +147,14 @@ public class TimezoneCustomization extends Customization {
             .setReturn("Returns a {@link ZoneOffset} daylight savings. Get the daylightSavings property: Time saving in minutes in effect at the `ReferenceUTCTimestamp.");
 
             classCustomization.addImports("java.time.ZoneOffset");
+    }
+
+    // Customizes the iana id class
+    private void customizeIanaId(PackageCustomization models) {
+        ClassCustomization classCustomization = models.getClass("IanaId");
+        MethodCustomization methodCustomization = classCustomization.getMethod("getAliasOf");
+        methodCustomization.rename("getAlias");
+        MethodCustomization methodCustomization2 = classCustomization.getMethod("isHasZone1970Location");
+        methodCustomization2.rename("getHasZone1970Location");
     }
 }

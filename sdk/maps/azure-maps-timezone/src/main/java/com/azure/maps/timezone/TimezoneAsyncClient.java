@@ -130,8 +130,8 @@ public final class TimezoneAsyncClient {
             options.getTimezoneId(),
             options.getAcceptLanguage(),
             options.getOptions(),
-            options.getTimeStamp(),
-            options.getDaylightSavingsTimeFrom(),
+            options.getTimestamp(),
+            options.getDaylightSavingsTime(),
             options.getDaylightSavingsTimeLastingYears(), 
             context).onErrorMap(throwable -> {
                 if (!(throwable instanceof ErrorResponseException)) {
@@ -147,7 +147,7 @@ public final class TimezoneAsyncClient {
      * <!-- src_embed com.azure.maps.timezone.async.get_timezone_by_coordinates -->
      * <pre>
      * GeoPosition coord2 = new GeoPosition&#40;-122, 47.0&#41;;
-     * TimezoneCoordinateOptions op2 = new TimezoneCoordinateOptions&#40;&#41;.setCoordinates&#40;coord2&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
+     * TimezoneCoordinateOptions op2 = new TimezoneCoordinateOptions&#40;&#41;.setPosition&#40;coord2&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
      * asyncClient.getTimezoneByCoordinates&#40;op2&#41;;
      * </pre>
      * <!-- end com.azure.maps.timezone.async.get_timezone_by_coordinates -->
@@ -176,7 +176,7 @@ public final class TimezoneAsyncClient {
      * <!-- src_embed com.azure.maps.timezone.async.get_timezone_by_coordinates -->
      * <pre>
      * GeoPosition coord2 = new GeoPosition&#40;-122, 47.0&#41;;
-     * TimezoneCoordinateOptions op2 = new TimezoneCoordinateOptions&#40;&#41;.setCoordinates&#40;coord2&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
+     * TimezoneCoordinateOptions op2 = new TimezoneCoordinateOptions&#40;&#41;.setPosition&#40;coord2&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
      * asyncClient.getTimezoneByCoordinates&#40;op2&#41;;
      * </pre>
      * <!-- end com.azure.maps.timezone.async.get_timezone_by_coordinates -->
@@ -202,7 +202,7 @@ public final class TimezoneAsyncClient {
      * <!-- src_embed com.azure.maps.timezone.async.get_timezone_by_coordinates -->
      * <pre>
      * GeoPosition coord2 = new GeoPosition&#40;-122, 47.0&#41;;
-     * TimezoneCoordinateOptions op2 = new TimezoneCoordinateOptions&#40;&#41;.setCoordinates&#40;coord2&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
+     * TimezoneCoordinateOptions op2 = new TimezoneCoordinateOptions&#40;&#41;.setPosition&#40;coord2&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
      * asyncClient.getTimezoneByCoordinates&#40;op2&#41;;
      * </pre>
      * <!-- end com.azure.maps.timezone.async.get_timezone_by_coordinates -->
@@ -222,10 +222,10 @@ public final class TimezoneAsyncClient {
     Mono<Response<TimezoneResult>> getTimezoneByCoordinatesWithResponse(TimezoneCoordinateOptions options, Context context) {
         return this.serviceClient.getTimezoneByCoordinatesWithResponseAsync(
             JsonFormat.JSON,
-            Utility.toCoordinateList(options.getCoordinates()),
-            options.getAcceptLanguage(),
-            options.getOptions(),
-            options.getTimeStamp(),
+            Utility.toCoordinateList(options.getPosition()),
+            options.getLanguage(),
+            options.getTimezoneOptions(),
+            options.getTimestamp(),
             options.getDaylightSavingsTimeFrom(),
             options.getDaylightSavingsTimeLastingYears(), 
             context).onErrorMap(throwable -> {
