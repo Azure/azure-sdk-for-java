@@ -20,6 +20,7 @@ final class CommunicationIdentityClientUtils {
 
     static final String TOKEN_EXPIRATION_OVERFLOW_MESSAGE = "The tokenExpiresIn argument is out of permitted bounds [1,24] hours. Please refer to the documentation and set the value accordingly.";
     static final double TOKEN_EXPIRATION_ALLOWED_DEVIATION = 0.05;
+    static final int MAX_TOKEN_EXPIRATION_IN_MINUTES = 1440;
 
     static CommunicationIdentityCreateRequest createCommunicationIdentityCreateRequest(
         Iterable<CommunicationTokenScope> scopes,
@@ -69,10 +70,14 @@ final class CommunicationIdentityClientUtils {
         return new TokenExpirationDeviationData(tokenSeconds, timeDiff < allowedTimeDiff);
     }
 
-    static String getTokenExpirationOutsideAllowedDeviationErrorMessage(int expectedExpirationInMinutes, double actualExpirationInMinutes) {
+    static String getTokenExpirationOutsideAllowedDeviationErrorMessage(Duration tokenExpiresIn, double actualExpiration) {
+
+        int tokenExpiresInMinutes = tokenExpiresIn == null ? MAX_TOKEN_EXPIRATION_IN_MINUTES : (int) (tokenExpiresIn.getSeconds() / 60);
+        double actualExpirationInMinutes = actualExpiration / 60;
+
         return String.format("Token expiration is outside of allowed %d%% deviation. Expected minutes: %d, actual minutes: %s",
             (int) (TOKEN_EXPIRATION_ALLOWED_DEVIATION * 100),
-            expectedExpirationInMinutes,
+            tokenExpiresInMinutes,
             (double) Math.round(actualExpirationInMinutes * 100) / 100);
     }
 
