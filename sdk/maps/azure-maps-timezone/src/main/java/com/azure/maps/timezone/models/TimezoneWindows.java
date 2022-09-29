@@ -55,15 +55,4 @@ public final class TimezoneWindows {
     public List<String> getIanaIds() {
         return this.ianaIds;
     }
-
-    /**
-     * Set the ianaIds property: IanaIds array.
-     *
-     * @param ianaIds the ianaIds value to set.
-     * @return the TimezoneWindows object itself.
-     */
-    public TimezoneWindows setIanaIds(List<String> ianaIds) {
-        this.ianaIds = ianaIds;
-        return this;
-    }
 }

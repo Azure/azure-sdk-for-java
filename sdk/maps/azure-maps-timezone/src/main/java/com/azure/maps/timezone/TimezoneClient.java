@@ -55,7 +55,7 @@ public final class TimezoneClient {
      * __Time Zone by Id__
      * <!-- src_embed com.azure.maps.timezone.sync.get_timezone_by_id -->
      * <pre>
-     * TimezoneIdOptions options = new TimezoneIdOptions&#40;&#41;.setTimezoneId&#40;&quot;Asia&#47;Bahrain&quot;&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
+     * TimezoneIdOptions options = new TimezoneIdOptions&#40;&quot;Asia&#47;Bahrain&quot;&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
      * client.getTimezoneById&#40;options&#41;;
      * </pre>
      * <!-- end com.azure.maps.timezone.sync.get_timezone_by_id -->
@@ -79,7 +79,7 @@ public final class TimezoneClient {
      * __Time Zone by Id__
      * <!-- src_embed com.azure.maps.timezone.sync.get_timezone_by_id -->
      * <pre>
-     * TimezoneIdOptions options = new TimezoneIdOptions&#40;&#41;.setTimezoneId&#40;&quot;Asia&#47;Bahrain&quot;&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
+     * TimezoneIdOptions options = new TimezoneIdOptions&#40;&quot;Asia&#47;Bahrain&quot;&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
      * client.getTimezoneById&#40;options&#41;;
      * </pre>
      * <!-- end com.azure.maps.timezone.sync.get_timezone_by_id -->
@@ -104,8 +104,8 @@ public final class TimezoneClient {
      * __Time Zone by Coordinates__
      * <!-- src_embed com.azure.maps.timezone.sync.get_timezone_by_coordinates -->
      * <pre>
-     * GeoPosition coord = new GeoPosition&#40;-122, 47.0&#41;;
-     * TimezoneCoordinateOptions op = new TimezoneCoordinateOptions&#40;&#41;.setPosition&#40;coord&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
+     * GeoPosition cd = new GeoPosition&#40;-122, 47.0&#41;;
+     * TimezoneCoordinateOptions op = new TimezoneCoordinateOptions&#40;cd&#41;.setTimezoneOptions&#40;TimezoneOptions.ALL&#41;;
      * client.getTimezoneByCoordinates&#40;op&#41;;
      * </pre>
      * <!-- end com.azure.maps.timezone.sync.get_timezone_by_coordinates -->
@@ -130,8 +130,8 @@ public final class TimezoneClient {
      * __Time Zone by Coordinates__
      * <!-- src_embed com.azure.maps.timezone.sync.get_timezone_by_coordinates -->
      * <pre>
-     * GeoPosition coord = new GeoPosition&#40;-122, 47.0&#41;;
-     * TimezoneCoordinateOptions op = new TimezoneCoordinateOptions&#40;&#41;.setPosition&#40;coord&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
+     * GeoPosition cd = new GeoPosition&#40;-122, 47.0&#41;;
+     * TimezoneCoordinateOptions op = new TimezoneCoordinateOptions&#40;cd&#41;.setTimezoneOptions&#40;TimezoneOptions.ALL&#41;;
      * client.getTimezoneByCoordinates&#40;op&#41;;
      * </pre>
      * <!-- end com.azure.maps.timezone.sync.get_timezone_by_coordinates -->

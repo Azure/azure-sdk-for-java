@@ -43,7 +43,7 @@ public final class TimeTransition {
     private OffsetDateTime utcEnd;
 
     /** TimeTransition constructor */
-    public TimeTransition() {}
+    private TimeTransition() {}
 
     /**
      * TimeTransition constructor
@@ -51,7 +51,7 @@ public final class TimeTransition {
      * @param daylightSavings daylightSavings Time saving in minutes in effect at the `ReferenceUTCTimestamp`.
      * @param standardOffset UTC offset in effect at the `ReferenceUTCTimestamp`.
      */
-    public TimeTransition(ZoneOffset daylightSavings, ZoneOffset standardOffset) {
+    private TimeTransition(ZoneOffset daylightSavings, ZoneOffset standardOffset) {
         this.daylightSavings = daylightSavings.toString();
         this.standardOffset = standardOffset.toString();
     }

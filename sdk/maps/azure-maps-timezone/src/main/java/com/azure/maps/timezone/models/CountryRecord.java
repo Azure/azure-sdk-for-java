@@ -22,6 +22,9 @@ public final class CountryRecord {
     @JsonProperty(value = "Code", access = JsonProperty.Access.WRITE_ONLY)
     private String code;
 
+    /** Set default CountryRecord constructor to private */
+    private CountryRecord() {}
+
     /**
      * Get the name property: Country Name.
      *

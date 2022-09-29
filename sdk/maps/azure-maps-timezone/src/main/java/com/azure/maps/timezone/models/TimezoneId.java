@@ -60,6 +60,9 @@ public final class TimezoneId {
     @JsonProperty(value = "TimeTransitions", access = JsonProperty.Access.WRITE_ONLY)
     private List<TimeTransition> timeTransitions;
 
+    /** Set default TimezoneId constructor to private */
+    private TimezoneId() {}
+
     /**
      * Get the id property: Id property.
      *

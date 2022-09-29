@@ -34,6 +34,9 @@ public final class TimezoneNames {
     @JsonProperty(value = "Daylight", access = JsonProperty.Access.WRITE_ONLY)
     private String daylight;
 
+    /** Set default TimezoneNames constructor to private */
+    private TimezoneNames() {}
+
     /**
      * Get the iSO6391LanguageCode property: The ISO 639-1 language code of the Names.
      *

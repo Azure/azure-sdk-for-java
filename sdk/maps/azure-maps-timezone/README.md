@@ -75,14 +75,14 @@ See [API design][design] for general introduction on design and key concepts on 
 ## Examples
 Get Timezone By Id
 ```java com.azure.maps.timezone.sync.get_timezone_by_id
-TimezoneIdOptions options = new TimezoneIdOptions().setTimezoneId("Asia/Bahrain").setOptions(TimezoneOptions.ALL);
+TimezoneIdOptions options = new TimezoneIdOptions("Asia/Bahrain").setOptions(TimezoneOptions.ALL);
 client.getTimezoneById(options);
 ```
 
 Get Timezone By Coordinates
 ```java com.azure.maps.timezone.sync.get_timezone_by_coordinates
-GeoPosition coord = new GeoPosition(-122, 47.0);
-TimezoneCoordinateOptions op = new TimezoneCoordinateOptions().setPosition(coord).setOptions(TimezoneOptions.ALL);
+GeoPosition cd = new GeoPosition(-122, 47.0);
+TimezoneCoordinateOptions op = new TimezoneCoordinateOptions(cd).setTimezoneOptions(TimezoneOptions.ALL);
 client.getTimezoneByCoordinates(op);
 ```
 

@@ -19,6 +19,16 @@ public final class TimezoneCoordinateOptions {
     private Integer daylightSavingsTimeLastingYears;
 
     /**
+     * TimezoneCoordinateOptions constructor
+     * @param coordinates GeoPosition coordinates of the point for which time zone information is requested. This parameter is a
+     *     list of coordinates, containing a pair of coordinate(lon, lat). When this endpoint is called directly,
+     *     coordinates are passed in as a single string containing coordinates, separated by commas.
+     */
+    public TimezoneCoordinateOptions(GeoPosition coordinates) {
+        this.coordinates = coordinates;
+    }
+
+    /**
      * Get coordinates
      * @return GeoPosition coordinates of the point for which time zone information is requested. This parameter is a
      *     list of coordinates, containing a pair of coordinate(lon, lat). When this endpoint is called directly,

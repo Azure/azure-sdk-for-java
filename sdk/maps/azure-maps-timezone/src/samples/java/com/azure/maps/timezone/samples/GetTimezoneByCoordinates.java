@@ -36,8 +36,8 @@ public class GetTimezoneByCoordinates {
         // This API returns current, historical, and future time zone information for a specified latitude-longitude pair. 
         // In addition, the API provides sunset and sunrise times for a given location.
         // BEGIN: com.azure.maps.timezone.sync.get_timezone_by_coordinates
-        GeoPosition coord = new GeoPosition(-122, 47.0);
-        TimezoneCoordinateOptions op = new TimezoneCoordinateOptions().setPosition(coord).setTimezoneOptions(TimezoneOptions.ALL);
+        GeoPosition cd = new GeoPosition(-122, 47.0);
+        TimezoneCoordinateOptions op = new TimezoneCoordinateOptions(cd).setTimezoneOptions(TimezoneOptions.ALL);
         client.getTimezoneByCoordinates(op);
         // END: com.azure.maps.timezone.sync.get_timezone_by_coordinates
 
@@ -61,8 +61,8 @@ public class GetTimezoneByCoordinates {
         // This API returns current, historical, and future time zone information for a specified latitude-longitude pair. 
         // In addition, the API provides sunset and sunrise times for a given location.
         // BEGIN: com.azure.maps.timezone.async.get_timezone_by_coordinates
-        GeoPosition coord2 = new GeoPosition(-122, 47.0);
-        TimezoneCoordinateOptions op2 = new TimezoneCoordinateOptions().setPosition(coord2).setTimezoneOptions(TimezoneOptions.ALL);
+        GeoPosition c2 = new GeoPosition(-122, 47.0);
+        TimezoneCoordinateOptions op2 = new TimezoneCoordinateOptions(c2).setTimezoneOptions(TimezoneOptions.ALL);
         asyncClient.getTimezoneByCoordinates(op2);
         // END: com.azure.maps.timezone.async.get_timezone_by_coordinates
     }

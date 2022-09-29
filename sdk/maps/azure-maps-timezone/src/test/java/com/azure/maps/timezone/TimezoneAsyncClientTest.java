@@ -45,7 +45,7 @@ public class TimezoneAsyncClientTest extends TimezoneClientTestBase {
     @MethodSource("com.azure.maps.timezone.TestUtils#getTestParameters")
     public void testAsyncGetDataForPoints(HttpClient httpClient, TimezoneServiceVersion serviceVersion) throws IOException {
         TimezoneAsyncClient client = getTimezoneAsyncClient(httpClient, serviceVersion);
-        TimezoneIdOptions options = new TimezoneIdOptions().setTimezoneId("Asia/Bahrain").setOptions(TimezoneOptions.ALL).setAcceptLanguage(null)
+        TimezoneIdOptions options = new TimezoneIdOptions("Asia/Bahrain").setOptions(TimezoneOptions.ALL).setAcceptLanguage(null)
             .setTimestamp(null).setDaylightSavingsTime(null).setDaylightSavingsTimeLastingYears(null);
         StepVerifier.create(client.getTimezoneById(options))
             .assertNext(actualResults -> {
@@ -63,7 +63,7 @@ public class TimezoneAsyncClientTest extends TimezoneClientTestBase {
     @MethodSource("com.azure.maps.timezone.TestUtils#getTestParameters")
     public void testAsyncGetDataForPointsWithResponse(HttpClient httpClient, TimezoneServiceVersion serviceVersion) {
         TimezoneAsyncClient client = getTimezoneAsyncClient(httpClient, serviceVersion);
-        TimezoneIdOptions options = new TimezoneIdOptions().setTimezoneId("Asia/Bahrain").setOptions(TimezoneOptions.ALL).setAcceptLanguage(null)
+        TimezoneIdOptions options = new TimezoneIdOptions("Asia/Bahrain").setOptions(TimezoneOptions.ALL).setAcceptLanguage(null)
             .setTimestamp(null).setDaylightSavingsTime(null).setDaylightSavingsTimeLastingYears(null);
         StepVerifier.create(client.getTimezoneByIdWithResponse(options, null))
             .assertNext(response -> {
@@ -80,7 +80,7 @@ public class TimezoneAsyncClientTest extends TimezoneClientTestBase {
     @MethodSource("com.azure.maps.timezone.TestUtils#getTestParameters")
     public void testAsyncInvalidGetDataForPointsWithResponse(HttpClient httpClient, TimezoneServiceVersion serviceVersion) {
         TimezoneAsyncClient client = getTimezoneAsyncClient(httpClient, serviceVersion);
-        TimezoneIdOptions options = new TimezoneIdOptions().setTimezoneId("").setOptions(TimezoneOptions.ALL).setAcceptLanguage(null)
+        TimezoneIdOptions options = new TimezoneIdOptions("").setOptions(TimezoneOptions.ALL).setAcceptLanguage(null)
             .setTimestamp(null).setDaylightSavingsTime(null).setDaylightSavingsTimeLastingYears(null);
         StepVerifier.create(client.getTimezoneByIdWithResponse(options, null))
             .verifyErrorSatisfies(ex -> {
@@ -95,7 +95,7 @@ public class TimezoneAsyncClientTest extends TimezoneClientTestBase {
     public void testAsyncGetTimezoneByCoordinates(HttpClient httpClient, TimezoneServiceVersion serviceVersion) throws IOException {
         TimezoneAsyncClient client = getTimezoneAsyncClient(httpClient, serviceVersion);
         GeoPosition coordinate = new GeoPosition(-122, 47.0);
-        TimezoneCoordinateOptions options = new TimezoneCoordinateOptions().setPosition(coordinate).setTimezoneOptions(TimezoneOptions.ALL);
+        TimezoneCoordinateOptions options = new TimezoneCoordinateOptions(coordinate).setTimezoneOptions(TimezoneOptions.ALL);
         StepVerifier.create(client.getTimezoneByCoordinates(options))
             .assertNext(actualResults -> {
                 try {
@@ -113,7 +113,7 @@ public class TimezoneAsyncClientTest extends TimezoneClientTestBase {
     public void testAsyncGetTimezoneByCoordinatesWithResponse(HttpClient httpClient, TimezoneServiceVersion serviceVersion) {
         TimezoneAsyncClient client = getTimezoneAsyncClient(httpClient, serviceVersion);
         GeoPosition coordinate = new GeoPosition(-122, 47.0);
-        TimezoneCoordinateOptions options = new TimezoneCoordinateOptions().setPosition(coordinate).setTimezoneOptions(TimezoneOptions.ALL);
+        TimezoneCoordinateOptions options = new TimezoneCoordinateOptions(coordinate).setTimezoneOptions(TimezoneOptions.ALL);
         StepVerifier.create(client.getTimezoneByCoordinatesWithResponse(options, null))
             .assertNext(response -> {
                 try {
@@ -130,7 +130,7 @@ public class TimezoneAsyncClientTest extends TimezoneClientTestBase {
     public void testInvalidAsyncGetTimezoneByCoordinatesWithResponse(HttpClient httpClient, TimezoneServiceVersion serviceVersion) {
         TimezoneAsyncClient client = getTimezoneAsyncClient(httpClient, serviceVersion);
         GeoPosition coordinate = new GeoPosition(-10000, 47.0);
-        TimezoneCoordinateOptions options = new TimezoneCoordinateOptions().setPosition(coordinate).setTimezoneOptions(TimezoneOptions.ALL);
+        TimezoneCoordinateOptions options = new TimezoneCoordinateOptions(coordinate).setTimezoneOptions(TimezoneOptions.ALL);
         StepVerifier.create(client.getTimezoneByCoordinatesWithResponse(options, null))
             .verifyErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;

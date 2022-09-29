@@ -57,7 +57,7 @@ public final class TimezoneAsyncClient {
      * __Time Zone by Id__
      * <!-- src_embed com.azure.maps.timezone.async.get_timezone_by_id -->
      * <pre>
-     * TimezoneIdOptions options2 = new TimezoneIdOptions&#40;&#41;.setTimezoneId&#40;&quot;Asia&#47;Bahrain&quot;&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
+     * TimezoneIdOptions options2 = new TimezoneIdOptions&#40;&quot;Asia&#47;Bahrain&quot;&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
      * asyncClient.getTimezoneById&#40;options2&#41;;
      * </pre>
      * <!-- end om.azure.maps.timezone.async.get_timezone_by_id -->
@@ -84,7 +84,7 @@ public final class TimezoneAsyncClient {
      * __Time Zone by Id__
      * <!-- src_embed com.azure.maps.timezone.async.get_timezone_by_id -->
      * <pre>
-     * TimezoneIdOptions options2 = new TimezoneIdOptions&#40;&#41;.setTimezoneId&#40;&quot;Asia&#47;Bahrain&quot;&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
+     * TimezoneIdOptions options2 = new TimezoneIdOptions&#40;&quot;Asia&#47;Bahrain&quot;&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
      * asyncClient.getTimezoneById&#40;options2&#41;;
      * </pre>
      * <!-- end om.azure.maps.timezone.async.get_timezone_by_id -->
@@ -108,7 +108,7 @@ public final class TimezoneAsyncClient {
      * __Time Zone by Id__
      * <!-- src_embed com.azure.maps.timezone.async.get_timezone_by_id -->
      * <pre>
-     * TimezoneIdOptions options2 = new TimezoneIdOptions&#40;&#41;.setTimezoneId&#40;&quot;Asia&#47;Bahrain&quot;&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
+     * TimezoneIdOptions options2 = new TimezoneIdOptions&#40;&quot;Asia&#47;Bahrain&quot;&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
      * asyncClient.getTimezoneById&#40;options2&#41;;
      * </pre>
      * <!-- end om.azure.maps.timezone.async.get_timezone_by_id -->
@@ -146,8 +146,8 @@ public final class TimezoneAsyncClient {
      * __Time Zone by Coordinates__
      * <!-- src_embed com.azure.maps.timezone.async.get_timezone_by_coordinates -->
      * <pre>
-     * GeoPosition coord2 = new GeoPosition&#40;-122, 47.0&#41;;
-     * TimezoneCoordinateOptions op2 = new TimezoneCoordinateOptions&#40;&#41;.setPosition&#40;coord2&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
+     * GeoPosition c2 = new GeoPosition&#40;-122, 47.0&#41;;
+     * TimezoneCoordinateOptions op2 = new TimezoneCoordinateOptions&#40;c2&#41;.setTimezoneOptions&#40;TimezoneOptions.ALL&#41;;
      * asyncClient.getTimezoneByCoordinates&#40;op2&#41;;
      * </pre>
      * <!-- end com.azure.maps.timezone.async.get_timezone_by_coordinates -->
@@ -175,8 +175,8 @@ public final class TimezoneAsyncClient {
      * __Time Zone by Coordinates__
      * <!-- src_embed com.azure.maps.timezone.async.get_timezone_by_coordinates -->
      * <pre>
-     * GeoPosition coord2 = new GeoPosition&#40;-122, 47.0&#41;;
-     * TimezoneCoordinateOptions op2 = new TimezoneCoordinateOptions&#40;&#41;.setPosition&#40;coord2&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
+     * GeoPosition c2 = new GeoPosition&#40;-122, 47.0&#41;;
+     * TimezoneCoordinateOptions op2 = new TimezoneCoordinateOptions&#40;c2&#41;.setTimezoneOptions&#40;TimezoneOptions.ALL&#41;;
      * asyncClient.getTimezoneByCoordinates&#40;op2&#41;;
      * </pre>
      * <!-- end com.azure.maps.timezone.async.get_timezone_by_coordinates -->
@@ -201,8 +201,8 @@ public final class TimezoneAsyncClient {
      * __Time Zone by Coordinates__
      * <!-- src_embed com.azure.maps.timezone.async.get_timezone_by_coordinates -->
      * <pre>
-     * GeoPosition coord2 = new GeoPosition&#40;-122, 47.0&#41;;
-     * TimezoneCoordinateOptions op2 = new TimezoneCoordinateOptions&#40;&#41;.setPosition&#40;coord2&#41;.setOptions&#40;TimezoneOptions.ALL&#41;;
+     * GeoPosition c2 = new GeoPosition&#40;-122, 47.0&#41;;
+     * TimezoneCoordinateOptions op2 = new TimezoneCoordinateOptions&#40;c2&#41;.setTimezoneOptions&#40;TimezoneOptions.ALL&#41;;
      * asyncClient.getTimezoneByCoordinates&#40;op2&#41;;
      * </pre>
      * <!-- end com.azure.maps.timezone.async.get_timezone_by_coordinates -->

@@ -17,6 +17,14 @@ public final class TimezoneIdOptions {
     private Integer daylightSavingsTimeLastingYears;
 
     /**
+     * TimezoneIdOptions constructor
+     * @param timezoneId the IANA time zone ID.
+     */
+    public TimezoneIdOptions(String timezoneId) {
+        this.timezoneId = timezoneId;
+    }
+
+    /**
      * get timezoneId
      * @return the timezone id, the IANA time zone ID.
      */

@@ -12,8 +12,14 @@ public class TimezoneCustomization extends Customization {
     public void customize(LibraryCustomization customization, Logger logger) {
         PackageCustomization models = customization.getPackage("com.azure.maps.timezone.models");
 
+        // customize country record
+        customizeCountryRecord(models);
+
         // customize timezone id
         customizeTimezoneId(models);
+
+        // customize timezone names
+        customizeTimezoneNames(models);
 
         // customize reference time
         customizeReferenceTime(models);
@@ -23,6 +29,31 @@ public class TimezoneCustomization extends Customization {
 
         // customize iana id
         customizeIanaId(models);
+
+        // customize timezone windows
+        customizeTimezoneWindows(models);
+    }
+
+    // Customizes the country record class
+    private void customizeCountryRecord(PackageCustomization models) {
+        ClassCustomization classCustomization = models.getClass("CountryRecord");
+
+        classCustomization.addConstructor(
+            "private CountryRecord() {\n" + 
+            "}")
+            .getJavadoc()
+            .setDescription("Set default CountryRecord constructor to private");
+    }
+
+    // Customizes the timezone names class
+    private void customizeTimezoneNames(PackageCustomization models) {
+        ClassCustomization classCustomization = models.getClass("TimezoneNames");
+
+        classCustomization.addConstructor(
+            "private TimezoneNames() {\n" + 
+            "}")
+            .getJavadoc()
+            .setDescription("Set default TimezoneNames constructor to private");
     }
 
     // Customizes the timezone id class
@@ -38,6 +69,12 @@ public class TimezoneCustomization extends Customization {
             .setDescription("Returns the coordinate")
             .setReturn("Returns a {@link GeoPosition} coordinate.");
         classCustomization.addImports("com.azure.core.models.GeoPosition");
+
+        classCustomization.addConstructor(
+            "private TimezoneId() {\n" + 
+            "}")
+            .getJavadoc()
+            .setDescription("Set default TimezoneId constructor to private");
     }
 
     // Customizes the reference time class
@@ -48,13 +85,13 @@ public class TimezoneCustomization extends Customization {
         classCustomization.removeMethod("getWallTime");
 
         classCustomization.addConstructor(
-            "public ReferenceTime() {\n" + 
+            "private ReferenceTime() {\n" + 
             "}")
             .getJavadoc()
             .setDescription("ReferenceTime constructor");
         
         classCustomization.addConstructor(
-            "public ReferenceTime(ZoneOffset daylightSavings, ZoneOffset standardOffset) {\n" + 
+            "private ReferenceTime(ZoneOffset daylightSavings, ZoneOffset standardOffset) {\n" + 
             "   this.daylightSavings = daylightSavings.toString();\n" + 
             "   this.standardOffset = standardOffset.toString();\n" +
             "}")
@@ -107,13 +144,13 @@ public class TimezoneCustomization extends Customization {
         classCustomization.removeMethod("getDaylightSavings");
 
         classCustomization.addConstructor(
-            "public TimeTransition() {\n" + 
+            "private TimeTransition() {\n" + 
             "}")
             .getJavadoc()
             .setDescription("TimeTransition constructor");
         
         classCustomization.addConstructor(
-            "public TimeTransition(ZoneOffset daylightSavings, ZoneOffset standardOffset) {\n" + 
+            "private TimeTransition(ZoneOffset daylightSavings, ZoneOffset standardOffset) {\n" + 
             "   this.daylightSavings = daylightSavings.toString();\n" + 
             "   this.standardOffset = standardOffset.toString();\n" +
             "}")
@@ -156,5 +193,11 @@ public class TimezoneCustomization extends Customization {
         methodCustomization.rename("getAlias");
         MethodCustomization methodCustomization2 = classCustomization.getMethod("isHasZone1970Location");
         methodCustomization2.rename("getHasZone1970Location");
+    }
+    
+    // Customizes the timezone windows class
+    private void customizeTimezoneWindows(PackageCustomization models) {
+        ClassCustomization classCustomization = models.getClass("TimezoneWindows");
+        classCustomization.removeMethod("setIanaIds");
     }
 }

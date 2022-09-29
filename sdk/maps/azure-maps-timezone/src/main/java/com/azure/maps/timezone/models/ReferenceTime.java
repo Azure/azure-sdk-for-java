@@ -67,7 +67,7 @@ public final class ReferenceTime {
     private OffsetDateTime sunset;
 
     /** ReferenceTime constructor */
-    public ReferenceTime() {}
+    private ReferenceTime() {}
 
     /**
      * ReferenceTime constructor
@@ -75,7 +75,7 @@ public final class ReferenceTime {
      * @param daylightSavings daylightSavings Time saving in minutes in effect at the `ReferenceUTCTimestamp`.
      * @param standardOffset UTC offset in effect at the `ReferenceUTCTimestamp`.
      */
-    public ReferenceTime(ZoneOffset daylightSavings, ZoneOffset standardOffset) {
+    private ReferenceTime(ZoneOffset daylightSavings, ZoneOffset standardOffset) {
         this.daylightSavings = daylightSavings.toString();
         this.standardOffset = standardOffset.toString();
     }
