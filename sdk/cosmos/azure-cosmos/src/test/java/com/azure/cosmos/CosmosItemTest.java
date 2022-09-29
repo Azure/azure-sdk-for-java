@@ -71,14 +71,14 @@ public class CosmosItemTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createItem() throws Exception {
-        InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
-        CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
+        InternalObjectNode documentDefinition = getDocumentDefinition(UUID.randomUUID().toString());
+        CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(documentDefinition);
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
-        validateItemResponse(properties, itemResponse);
+        validateItemResponse(documentDefinition, itemResponse);
 
-        properties = getDocumentDefinition(UUID.randomUUID().toString());
-        CosmosItemResponse<InternalObjectNode> itemResponse1 = container.createItem(properties, new CosmosItemRequestOptions());
-        validateItemResponse(properties, itemResponse1);
+        documentDefinition = getDocumentDefinition(UUID.randomUUID().toString());
+        itemResponse = container.createItem(documentDefinition, new CosmosItemRequestOptions());
+        validateItemResponse(documentDefinition, itemResponse);
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
