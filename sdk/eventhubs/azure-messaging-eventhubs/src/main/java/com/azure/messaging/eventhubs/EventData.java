@@ -206,7 +206,7 @@ public class EventData extends MessageContent {
      *     <li>{@link Instant}</li>
      *     <li>{@link java.util.UUID}</li>
      * </ul>
-     * </p>
+     *
      *
      * @return Application properties associated with this {@link EventData}. For received {@link EventData}, the map is
      *     a read-only view.
