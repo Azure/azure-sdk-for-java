@@ -49,22 +49,4 @@ public class DeadlockTests {
             server.shutdown();
         }
     }
-
-    @Test
-    public void attemptToDeadlock() {
-        HttpClient httpClient = new VertxAsyncHttpClientProvider().createInstance();
-
-        String endpoint = server.baseUrl() + GET_ENDPOINT;
-
-        for (int i = 0; i < 100; i++) {
-            StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, endpoint))
-                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getBody())
-                    .zipWith(Mono.just(response.getStatusCode()))))
-                .assertNext(responseTuple -> {
-                    assertEquals(200, responseTuple.getT2());
-                    assertArrayEquals(expectedGetBytes, responseTuple.getT1());
-                })
-                .verifyComplete();
-        }
-    }
 }
