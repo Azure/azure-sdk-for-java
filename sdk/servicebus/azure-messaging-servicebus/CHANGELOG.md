@@ -7,7 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-
+- Fixed credits calculation issue in `ServiceBusReceiveLinkProcessor`. ([#30483](https://github.com/Azure/azure-sdk-for-java/issues/30483))
 ### Other Changes
 
 ## 7.11.0 (2022-09-19)
