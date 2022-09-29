@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class FacetRequestOptions {
     /*
-     * The column name or query expression to sort on. Defaults to count if not
-     * present.
+     * The column name or query expression to sort on. Defaults to count if not present.
      */
     @JsonProperty(value = "sortBy")
     private String sortBy;
@@ -24,8 +23,8 @@ public final class FacetRequestOptions {
     private FacetSortOrder sortOrder;
 
     /*
-     * Specifies the filter condition for the 'where' clause which will be run
-     * on main query's result, just before the actual faceting.
+     * Specifies the filter condition for the 'where' clause which will be run on main query's result, just before the
+     * actual faceting.
      */
     @JsonProperty(value = "filter")
     private String filter;
@@ -35,6 +34,10 @@ public final class FacetRequestOptions {
      */
     @JsonProperty(value = "$top")
     private Integer top;
+
+    /** Creates an instance of FacetRequestOptions class. */
+    public FacetRequestOptions() {
+    }
 
     /**
      * Get the sortBy property: The column name or query expression to sort on. Defaults to count if not present.

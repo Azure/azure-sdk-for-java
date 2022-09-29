@@ -21,8 +21,8 @@ public final class QueryResponseInner {
     private long totalRecords;
 
     /*
-     * Number of records returned in the current response. In the case of
-     * paging, this is the number of records in the current page.
+     * Number of records returned in the current response. In the case of paging, this is the number of records in the
+     * current page.
      */
     @JsonProperty(value = "count", required = true)
     private long count;
@@ -34,9 +34,8 @@ public final class QueryResponseInner {
     private ResultTruncated resultTruncated;
 
     /*
-     * When present, the value can be passed to a subsequent query call
-     * (together with the same query and scopes used in the current request) to
-     * retrieve the next page of data.
+     * When present, the value can be passed to a subsequent query call (together with the same query and scopes used
+     * in the current request) to retrieve the next page of data.
      */
     @JsonProperty(value = "$skipToken")
     private String skipToken;
@@ -52,6 +51,10 @@ public final class QueryResponseInner {
      */
     @JsonProperty(value = "facets")
     private List<Facet> facets;
+
+    /** Creates an instance of QueryResponseInner class. */
+    public QueryResponseInner() {
+    }
 
     /**
      * Get the totalRecords property: Number of total records matching the query.
