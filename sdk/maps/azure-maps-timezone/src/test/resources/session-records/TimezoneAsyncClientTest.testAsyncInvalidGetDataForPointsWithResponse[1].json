@@ -13,9 +13,9 @@
       "x-ms-azuremaps-region" : "West US 2",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "X-MSEdge-Ref" : "Ref A: 43935055C7084518A9900205F0722891 Ref B: BY3EDGE0518 Ref C: 2022-09-22T21:27:55Z",
+      "X-MSEdge-Ref" : "Ref A: CC8027B6ECB64522A479C22270BB06A9 Ref B: BY3EDGE0314 Ref C: 2022-09-29T21:00:52Z",
       "Body" : "{\"error\":{\"code\":\"400 BadRequest\",\"message\":\"query is missing or empty\"}}",
-      "Date" : "Thu, 22 Sep 2022 21:27:55 GMT",
+      "Date" : "Thu, 29 Sep 2022 21:00:52 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

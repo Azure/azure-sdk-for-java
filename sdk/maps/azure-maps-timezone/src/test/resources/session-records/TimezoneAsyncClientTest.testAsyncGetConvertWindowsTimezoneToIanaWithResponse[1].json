@@ -13,9 +13,9 @@
       "x-ms-azuremaps-region" : "West US 2",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "X-MSEdge-Ref" : "Ref A: 38CDA25CA14C42B1A38EC45CCF94CAAE Ref B: BY3EDGE0518 Ref C: 2022-09-22T21:27:56Z",
+      "X-MSEdge-Ref" : "Ref A: 14EF5EFF3694435BA7F7184D5F432602 Ref B: BY3EDGE0314 Ref C: 2022-09-29T21:00:54Z",
       "Body" : "[{\"Id\":\"America/Vancouver\",\"IsAlias\":false,\"HasZone1970Location\":true},{\"Id\":\"America/Los_Angeles\",\"IsAlias\":false,\"HasZone1970Location\":true},{\"Id\":\"PST8PDT\",\"IsAlias\":false,\"HasZone1970Location\":false}]",
-      "Date" : "Thu, 22 Sep 2022 21:27:56 GMT",
+      "Date" : "Thu, 29 Sep 2022 21:00:53 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
