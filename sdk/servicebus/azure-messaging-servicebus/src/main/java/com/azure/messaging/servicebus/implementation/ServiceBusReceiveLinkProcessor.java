@@ -576,8 +576,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         }
 
         synchronized (lock) {
-            final int linkCredits = link.getCredits();
-            final int credits = getCreditsToAdd(linkCredits);
+            final int credits = getCreditsToAdd();
             if (credits > 0) {
                 unreceivedMessages.addAndGet(credits);
                 link.addCredits(credits).subscribe();
@@ -585,7 +584,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         }
     }
 
-    private int getCreditsToAdd(int linkCredits) {
+    private int getCreditsToAdd() {
         final CoreSubscriber<? super Message> subscriber = downstream.get();
         final long r = REQUESTED.get(this);
         final boolean hasBackpressure = r != Long.MAX_VALUE;
@@ -631,7 +630,6 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             LOGGER.atInfo()
                 .addKeyValue("prefetch", getPrefetch())
                 .addKeyValue(NUMBER_OF_REQUESTED_MESSAGES_KEY, r)
-                .addKeyValue("linkCredits", linkCredits)
                 .addKeyValue("expectedTotalCredit", expectedTotalCredit)
                 .addKeyValue("queuedMessages", queuedMessages)
                 .addKeyValue("unreceivedMessages", unreceived)

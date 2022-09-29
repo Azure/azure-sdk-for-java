@@ -159,13 +159,12 @@ class ServiceBusReceiverAsyncClientTest {
 
         mocksCloseable = MockitoAnnotations.openMocks(this);
 
-        // Forcing us to publish the messages we receive on the AMQP link on single. Similar to how it is done
-        // in ReactorExecutor.
-        when(amqpReceiveLink.receive()).thenReturn(messageProcessor.publishOn(Schedulers.single()));
+        // Publish messages on boundedElastic thread pool as ServiceBusReactorReceiver.receive() does.
+        when(amqpReceiveLink.receive()).thenReturn(messageProcessor.publishOn(Schedulers.boundedElastic()));
         when(amqpReceiveLink.getEndpointStates()).thenReturn(endpointProcessor);
         when(amqpReceiveLink.addCredits(anyInt())).thenReturn(Mono.empty());
 
-        when(sessionReceiveLink.receive()).thenReturn(messageProcessor.publishOn(Schedulers.single()));
+        when(sessionReceiveLink.receive()).thenReturn(messageProcessor.publishOn(Schedulers.boundedElastic()));
         when(sessionReceiveLink.getEndpointStates()).thenReturn(endpointProcessor);
         when(sessionReceiveLink.addCredits(anyInt())).thenReturn(Mono.empty());
 

@@ -119,8 +119,12 @@ class ServiceBusReceiveLinkProcessorTest {
     void createNewLink() throws InterruptedException {
         // Arrange
         final CountDownLatch countDownLatch = new CountDownLatch(2);
-        when(link1.getCredits()).thenReturn(1);
-        when(link1.addCredits(eq(PREFETCH - 1))).thenAnswer(invocation -> {
+        when(link1.addCredits(eq(PREFETCH))).thenAnswer(invocation -> {
+            countDownLatch.countDown();
+            return Mono.empty();
+        });
+        // Add 1 credit after onNext() first message
+        when(link1.addCredits(eq(1))).thenAnswer(invocation -> {
             countDownLatch.countDown();
             return Mono.empty();
         });
@@ -181,7 +185,6 @@ class ServiceBusReceiveLinkProcessorTest {
         final int backpressure = -1;
         ServiceBusReceiveLinkProcessor processor = Flux.<ServiceBusReceiveLink>create(sink -> sink.next(link1))
             .subscribeWith(linkProcessor);
-        when(link1.getCredits()).thenReturn(1);
 
         // Act
         semaphore.acquire();
@@ -249,10 +252,6 @@ class ServiceBusReceiveLinkProcessorTest {
             sink.next(message4);
         }));
         when(link3.addCredits(anyInt())).thenReturn(Mono.empty());
-
-        when(link1.getCredits()).thenReturn(1);
-        when(link2.getCredits()).thenReturn(1);
-        when(link3.getCredits()).thenReturn(1);
 
         when(link1.closeAsync()).thenReturn(Mono.empty());
         when(link2.closeAsync()).thenReturn(Mono.empty());
@@ -508,8 +507,6 @@ class ServiceBusReceiveLinkProcessorTest {
         ServiceBusReceiveLinkProcessor processor = Flux.<ServiceBusReceiveLink>create(sink -> sink.next(link1))
             .subscribeWith(linkProcessor);
 
-        when(link1.getCredits()).thenReturn(0, 5, 4, 3, 2, 1);
-
         // Act & Assert
         StepVerifier.create(processor, backpressure)
             .then(() -> {
@@ -530,7 +527,6 @@ class ServiceBusReceiveLinkProcessorTest {
 
         final Duration shortWait = Duration.ofSeconds(5);
 
-        when(link1.getCredits()).thenReturn(0);
         when(link1.closeAsync()).thenReturn(Mono.empty());
 
         // Act & Assert
@@ -555,7 +551,8 @@ class ServiceBusReceiveLinkProcessorTest {
         assertNull(processor.getError());
 
         // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
-        verify(link1, times(3)).addCredits(eq(PREFETCH));
+        verify(link1, times(1)).addCredits(eq(PREFETCH));
+        verify(link1, times(2)).addCredits(eq(1));
         verify(link1).setEmptyCreditListener(creditSupplierCaptor.capture());  // Add 0
 
         Supplier<Integer> value = creditSupplierCaptor.getValue();
@@ -571,8 +568,11 @@ class ServiceBusReceiveLinkProcessorTest {
         // Arrange
         final CountDownLatch countDownLatch = new CountDownLatch(2);
 
-        when(link1.getCredits()).thenReturn(0);
         when(link1.addCredits(eq(PREFETCH))).thenAnswer(invocation -> {
+            countDownLatch.countDown();
+            return Mono.empty();
+        });
+        when(link1.addCredits(eq(1))).thenAnswer(invocation -> {
             countDownLatch.countDown();
             return Mono.empty();
         });
@@ -619,11 +619,7 @@ class ServiceBusReceiveLinkProcessorTest {
     void backpressureRequestOnlyEmitsThatAmount() {
         // Arrange
         final int backpressure = PREFETCH;
-        final int existingCredits = 1;
-        final int expectedCredits = backpressure - existingCredits;
         ServiceBusReceiveLinkProcessor processor = Flux.just(link1).subscribeWith(linkProcessor);
-
-        when(link1.getCredits()).thenReturn(existingCredits);
 
         // Act & Assert
         StepVerifier.create(processor, backpressure)
@@ -645,7 +641,8 @@ class ServiceBusReceiveLinkProcessorTest {
         assertNull(processor.getError());
 
         // Add credit for each time 'onNext' is called, plus once when publisher is subscribed.
-        verify(link1, times(backpressure + 1)).addCredits(expectedCredits);
+        verify(link1, times(1)).addCredits(PREFETCH);
+        verify(link1, times(backpressure)).addCredits(1);
         verify(link1).setEmptyCreditListener(any());
     }
 
@@ -678,7 +675,6 @@ class ServiceBusReceiveLinkProcessorTest {
         final String lockToken = "lockToken";
         final DeliveryState deliveryState = mock(DeliveryState.class);
 
-        when(link1.getCredits()).thenReturn(0);
         when(link1.updateDisposition(eq(lockToken), eq(deliveryState))).thenReturn(Mono.empty());
 
         // Act & Assert
