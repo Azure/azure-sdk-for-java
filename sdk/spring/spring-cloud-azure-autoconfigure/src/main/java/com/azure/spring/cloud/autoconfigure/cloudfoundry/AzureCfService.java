@@ -26,7 +26,7 @@ enum AzureCfService {
             "accessKey", "account-key"
         )),
 
-     REDIS("spring.redis", "azure-rediscache",
+    REDIS("spring.data.redis", "azure-rediscache",
         getImmutableMap("host", "host", "password", "password", "port", "port"),
         false);
 
