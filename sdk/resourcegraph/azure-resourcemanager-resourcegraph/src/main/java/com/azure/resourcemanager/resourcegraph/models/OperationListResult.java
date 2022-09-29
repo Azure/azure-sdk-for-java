@@ -16,8 +16,7 @@ import java.util.List;
 @Fluent
 public final class OperationListResult {
     /*
-     * List of Resource Graph operations supported by the Resource Graph
-     * resource provider.
+     * List of Resource Graph operations supported by the Resource Graph resource provider.
      */
     @JsonProperty(value = "value")
     private List<OperationInner> value;

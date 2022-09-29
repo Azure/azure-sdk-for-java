@@ -133,15 +133,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<QueryResponseInner> resourcesAsync(QueryRequest query) {
-        return resourcesWithResponseAsync(query)
-            .flatMap(
-                (Response<QueryResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return resourcesWithResponseAsync(query).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

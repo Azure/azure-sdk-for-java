@@ -19,8 +19,7 @@ public final class QueryRequest {
     private List<String> subscriptions;
 
     /*
-     * Azure management groups against which to execute the query. Example: [
-     * 'mg1', 'mg2' ]
+     * Azure management groups against which to execute the query. Example: [ 'mg1', 'mg2' ]
      */
     @JsonProperty(value = "managementGroups")
     private List<String> managementGroups;
