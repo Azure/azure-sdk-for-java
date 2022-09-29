@@ -11,7 +11,7 @@ import java.util.Arrays;
 /** Samples for ThreatIntelligenceIndicator AppendTags. */
 public final class ThreatIntelligenceIndicatorAppendTagsSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/threatintelligence/AppendTagsThreatIntelligence.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/threatintelligence/AppendTagsThreatIntelligence.json
      */
     /**
      * Sample code: Append tags to a threat intelligence indicator.

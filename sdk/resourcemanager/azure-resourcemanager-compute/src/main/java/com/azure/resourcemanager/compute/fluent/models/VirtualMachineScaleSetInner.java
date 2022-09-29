@@ -12,6 +12,7 @@ import com.azure.resourcemanager.compute.models.AutomaticRepairsPolicy;
 import com.azure.resourcemanager.compute.models.ExtendedLocation;
 import com.azure.resourcemanager.compute.models.OrchestrationMode;
 import com.azure.resourcemanager.compute.models.Plan;
+import com.azure.resourcemanager.compute.models.PriorityMixPolicy;
 import com.azure.resourcemanager.compute.models.ScaleInPolicy;
 import com.azure.resourcemanager.compute.models.Sku;
 import com.azure.resourcemanager.compute.models.SpotRestorePolicy;
@@ -563,8 +564,33 @@ public final class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
+     * Get the priorityMixPolicy property: Specifies the desired targets for mixing Spot and Regular priority VMs within
+     * the same VMSS Flex instance.
+     *
+     * @return the priorityMixPolicy value.
+     */
+    public PriorityMixPolicy priorityMixPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().priorityMixPolicy();
+    }
+
+    /**
+     * Set the priorityMixPolicy property: Specifies the desired targets for mixing Spot and Regular priority VMs within
+     * the same VMSS Flex instance.
+     *
+     * @param priorityMixPolicy the priorityMixPolicy value to set.
+     * @return the VirtualMachineScaleSetInner object itself.
+     */
+    public VirtualMachineScaleSetInner withPriorityMixPolicy(PriorityMixPolicy priorityMixPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetProperties();
+        }
+        this.innerProperties().withPriorityMixPolicy(priorityMixPolicy);
+        return this;
+    }
+
+    /**
      * Get the timeCreated property: Specifies the time at which the Virtual Machine Scale Set resource was
-     * created.&lt;br&gt;&lt;br&gt;Minimum api-version: 2022-03-01.
+     * created.&lt;br&gt;&lt;br&gt;Minimum api-version: 2021-11-01.
      *
      * @return the timeCreated value.
      */

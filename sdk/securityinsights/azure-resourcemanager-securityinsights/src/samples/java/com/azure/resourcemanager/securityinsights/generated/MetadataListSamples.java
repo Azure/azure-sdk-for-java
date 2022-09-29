@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Metadata List. */
 public final class MetadataListSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/metadata/GetAllMetadata.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/metadata/GetAllMetadata.json
      */
     /**
      * Sample code: Get all metadata.
@@ -21,7 +21,7 @@ public final class MetadataListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/metadata/GetAllMetadataOData.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/metadata/GetAllMetadataOData.json
      */
     /**
      * Sample code: Get all metadata with OData filter/orderby/skip/top.

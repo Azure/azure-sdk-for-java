@@ -31,8 +31,7 @@ public final class CodelessUiConnectorConfigProperties {
     private String descriptionMarkdown;
 
     /*
-     * An optional custom image to be used when displaying the connector within
-     * Azure Sentinel's connector's gallery
+     * An optional custom image to be used when displaying the connector within Azure Sentinel's connector's gallery
      */
     @JsonProperty(value = "customImage")
     private String customImage;

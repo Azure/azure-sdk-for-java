@@ -141,6 +141,7 @@ public final class DefaultXmlWriter extends XmlWriter {
 
     @Override
     public void close() throws XMLStreamException {
+        writer.flush();
         writer.close();
     }
 }
