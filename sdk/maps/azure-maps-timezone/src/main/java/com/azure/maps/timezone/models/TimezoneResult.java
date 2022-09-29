@@ -30,6 +30,9 @@ public final class TimezoneResult {
     @JsonProperty(value = "TimeZones", access = JsonProperty.Access.WRITE_ONLY)
     private List<TimezoneId> timeZones;
 
+    /** Set default TimezoneResult constructor to private */
+    private TimezoneResult() {}
+
     /**
      * Get the version property: Version property.
      *

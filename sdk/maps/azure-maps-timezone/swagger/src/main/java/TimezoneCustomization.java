@@ -35,6 +35,9 @@ public class TimezoneCustomization extends Customization {
 
         // customize Timezone Iana Version Result
         customizeTimezoneIanaVersionResult(models);
+
+        // customize Timezone Result
+        customizeTimezoneResult(models);
     }
 
     // Customizes the country record class
@@ -196,12 +199,22 @@ public class TimezoneCustomization extends Customization {
         methodCustomization.rename("getAlias");
         MethodCustomization methodCustomization2 = classCustomization.getMethod("isHasZone1970Location");
         methodCustomization2.rename("getHasZone1970Location");
+        classCustomization.addConstructor(
+            "private IanaId() {\n" + 
+            "}")
+            .getJavadoc()
+            .setDescription("Set default IanaId constructor to private");
     }
     
     // Customizes the timezone windows class
     private void customizeTimezoneWindows(PackageCustomization models) {
         ClassCustomization classCustomization = models.getClass("TimezoneWindows");
         classCustomization.removeMethod("setIanaIds");
+        classCustomization.addConstructor(
+            "private TimezoneWindows() {\n" + 
+            "}")
+            .getJavadoc()
+            .setDescription("Set default TimezoneWindows constructor to private");
     }
 
     // Customizes the Timezone Iana Version Result
@@ -213,5 +226,16 @@ public class TimezoneCustomization extends Customization {
             "}")
             .getJavadoc()
             .setDescription("Set default TimezoneIanaVersionResult constructor to private");
+    }
+
+    // Customizes the timezone result class
+    private void customizeTimezoneResult(PackageCustomization models) {
+        ClassCustomization classCustomization = models.getClass("TimezoneResult");
+
+        classCustomization.addConstructor(
+            "private TimezoneResult() {\n" + 
+            "}")
+            .getJavadoc()
+            .setDescription("Set default TimezoneResult constructor to private");
     }
 }

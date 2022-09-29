@@ -29,6 +29,9 @@ public final class TimezoneWindows {
     @JsonProperty(value = "IanaIds")
     private List<String> ianaIds;
 
+    /** Set default TimezoneWindows constructor to private */
+    private TimezoneWindows() {}
+
     /**
      * Get the windowsId property: Windows Id property.
      *

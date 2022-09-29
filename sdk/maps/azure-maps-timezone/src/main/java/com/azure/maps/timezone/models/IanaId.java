@@ -35,6 +35,9 @@ public final class IanaId {
     @JsonProperty(value = "HasZone1970Location", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean hasZone1970Location;
 
+    /** Set default IanaId constructor to private */
+    private IanaId() {}
+
     /**
      * Get the id property: Id property.
      *
