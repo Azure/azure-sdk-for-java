@@ -22,8 +22,7 @@ class AnomalyDetectorClientTestBase extends TestBase {
         AnomalyDetectorClientBuilder anomalyDetectorClientbuilder =
                 new AnomalyDetectorClientBuilder()
                         .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-                        .apiVersion(Configuration.getGlobalConfiguration().get("APIVERSION", "v1.1"))
-                        .host(Configuration.getGlobalConfiguration().get("HOST", ""))
+                        .apiVersion(Configuration.getGlobalConfiguration().get("APIVERSION", "apiversion"))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {

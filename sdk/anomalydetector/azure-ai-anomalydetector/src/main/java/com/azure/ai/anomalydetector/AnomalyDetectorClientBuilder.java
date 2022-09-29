@@ -193,23 +193,6 @@ public final class AnomalyDetectorClientBuilder
     }
 
     /*
-     * server parameter
-     */
-    @Generated private String host;
-
-    /**
-     * Sets server parameter.
-     *
-     * @param host the host value.
-     * @return the AnomalyDetectorClientBuilder.
-     */
-    @Generated
-    public AnomalyDetectorClientBuilder host(String host) {
-        this.host = host;
-        return this;
-    }
-
-    /*
      * The retry policy that will attempt to retry failed requests, if applicable.
      */
     @Generated private RetryPolicy retryPolicy;
@@ -234,15 +217,9 @@ public final class AnomalyDetectorClientBuilder
     @Generated
     private AnomalyDetectorClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        String localApiVersion = (apiVersion != null) ? apiVersion : "v1.1";
-        String localHost = (host != null) ? host : "";
         AnomalyDetectorClientImpl client =
                 new AnomalyDetectorClientImpl(
-                        localPipeline,
-                        JacksonAdapter.createDefaultSerializerAdapter(),
-                        endpoint,
-                        localApiVersion,
-                        localHost);
+                        localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
         return client;
     }
 

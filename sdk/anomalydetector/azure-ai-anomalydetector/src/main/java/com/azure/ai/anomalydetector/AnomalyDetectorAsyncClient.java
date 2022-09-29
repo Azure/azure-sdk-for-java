@@ -18,6 +18,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous AnomalyDetectorClient type. */
@@ -691,14 +692,13 @@ public final class AnomalyDetectorAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return detection results for the given resultId along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link PollerFlux} for polling of detection results for the given resultId.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> batchDetectAnomalyWithResponse(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginBatchDetectAnomaly(
             String modelId, BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.batchDetectAnomalyWithResponseAsync(modelId, body, requestOptions);
+        return this.serviceClient.beginBatchDetectAnomalyAsync(modelId, body, requestOptions);
     }
 
     /**

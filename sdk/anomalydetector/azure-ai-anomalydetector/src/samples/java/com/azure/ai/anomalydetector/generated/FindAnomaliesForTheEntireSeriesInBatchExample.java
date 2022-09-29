@@ -20,7 +20,6 @@ public class FindAnomaliesForTheEntireSeriesInBatchExample {
                         .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("API_KEY")))
                         .apiVersion("v1.1")
                         .endpoint("{Endpoint}")
-                        .host("")
                         .buildClient();
         // BEGIN:com.azure.ai.anomalydetector.generated.detectentireseries.findanomaliesfortheentireseriesinbatchexample
         BinaryData body =

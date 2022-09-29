@@ -16,7 +16,7 @@ public final class ListMultivariateModelTests extends AnomalyDetectorClientTestB
     @Test
     @Disabled
     public void testListMultivariateModelTests() {
-        RequestOptions requestOptions = new RequestOptions();
+        RequestOptions requestOptions = new RequestOptions().addQueryParam("skip", "0").addQueryParam("top", "10");
         PagedIterable<BinaryData> response = anomalyDetectorClient.listMultivariateModel(requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         Assertions.assertEquals(

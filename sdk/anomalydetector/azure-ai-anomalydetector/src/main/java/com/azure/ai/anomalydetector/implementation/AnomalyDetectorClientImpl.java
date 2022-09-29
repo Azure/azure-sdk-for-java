@@ -37,8 +37,13 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.DefaultPollingStrategy;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.TypeReference;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -77,18 +82,6 @@ public final class AnomalyDetectorClientImpl {
         return this.apiVersion;
     }
 
-    /** server parameter. */
-    private final String host;
-
-    /**
-     * Gets server parameter.
-     *
-     * @return the host value.
-     */
-    public String getHost() {
-        return this.host;
-    }
-
     /** The HTTP pipeline to send requests through. */
     private final HttpPipeline httpPipeline;
 
@@ -119,17 +112,15 @@ public final class AnomalyDetectorClientImpl {
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      *     https://westus2.api.cognitive.microsoft.com).
      * @param apiVersion Anomaly Detector API version (for example, v1.1).
-     * @param host server parameter.
      */
-    public AnomalyDetectorClientImpl(String endpoint, String apiVersion, String host) {
+    public AnomalyDetectorClientImpl(String endpoint, String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
                 endpoint,
-                apiVersion,
-                host);
+                apiVersion);
     }
 
     /**
@@ -139,10 +130,9 @@ public final class AnomalyDetectorClientImpl {
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      *     https://westus2.api.cognitive.microsoft.com).
      * @param apiVersion Anomaly Detector API version (for example, v1.1).
-     * @param host server parameter.
      */
-    public AnomalyDetectorClientImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion, String host) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion, host);
+    public AnomalyDetectorClientImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
     }
 
     /**
@@ -153,19 +143,13 @@ public final class AnomalyDetectorClientImpl {
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      *     https://westus2.api.cognitive.microsoft.com).
      * @param apiVersion Anomaly Detector API version (for example, v1.1).
-     * @param host server parameter.
      */
     public AnomalyDetectorClientImpl(
-            HttpPipeline httpPipeline,
-            SerializerAdapter serializerAdapter,
-            String endpoint,
-            String apiVersion,
-            String host) {
+            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.apiVersion = apiVersion;
-        this.host = host;
         this.service =
                 RestProxy.create(AnomalyDetectorClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
@@ -250,7 +234,8 @@ public final class AnomalyDetectorClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getBatchDetectionResult(
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @PathParam("resultId") String resultId,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -269,7 +254,8 @@ public final class AnomalyDetectorClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createMultivariateModel(
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @BodyParam("application/json") BinaryData body,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -288,7 +274,8 @@ public final class AnomalyDetectorClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listMultivariateModel(
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -306,7 +293,8 @@ public final class AnomalyDetectorClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteMultivariateModel(
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @PathParam("modelId") String modelId,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -325,7 +313,8 @@ public final class AnomalyDetectorClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getMultivariateModel(
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @PathParam("modelId") String modelId,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -344,7 +333,8 @@ public final class AnomalyDetectorClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> batchDetectAnomaly(
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @PathParam("modelId") String modelId,
                 @BodyParam("application/json") BinaryData body,
                 @HeaderParam("Accept") String accept,
@@ -364,7 +354,8 @@ public final class AnomalyDetectorClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> lastDetectAnomaly(
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @PathParam("modelId") String modelId,
                 @BodyParam("application/json") BinaryData body,
                 @HeaderParam("Accept") String accept,
@@ -385,7 +376,8 @@ public final class AnomalyDetectorClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listMultivariateModelNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
+                @HostParam("ApiVersion") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -834,7 +826,9 @@ public final class AnomalyDetectorClientImpl {
             String resultId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getBatchDetectionResult(this.getHost(), resultId, accept, requestOptions, context));
+                context ->
+                        service.getBatchDetectionResult(
+                                this.getEndpoint(), this.getApiVersion(), resultId, accept, requestOptions, context));
     }
 
     /**
@@ -1039,7 +1033,9 @@ public final class AnomalyDetectorClientImpl {
             BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.createMultivariateModel(this.getHost(), body, accept, requestOptions, context));
+                context ->
+                        service.createMultivariateModel(
+                                this.getEndpoint(), this.getApiVersion(), body, accept, requestOptions, context));
     }
 
     /**
@@ -1258,7 +1254,9 @@ public final class AnomalyDetectorClientImpl {
     private Mono<PagedResponse<BinaryData>> listMultivariateModelSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.listMultivariateModel(this.getHost(), accept, requestOptions, context))
+                        context ->
+                                service.listMultivariateModel(
+                                        this.getEndpoint(), this.getApiVersion(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1475,7 +1473,9 @@ public final class AnomalyDetectorClientImpl {
             String modelId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.deleteMultivariateModel(this.getHost(), modelId, accept, requestOptions, context));
+                context ->
+                        service.deleteMultivariateModel(
+                                this.getEndpoint(), this.getApiVersion(), modelId, accept, requestOptions, context));
     }
 
     /**
@@ -1570,7 +1570,9 @@ public final class AnomalyDetectorClientImpl {
             String modelId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getMultivariateModel(this.getHost(), modelId, accept, requestOptions, context));
+                context ->
+                        service.getMultivariateModel(
+                                this.getEndpoint(), this.getApiVersion(), modelId, accept, requestOptions, context));
     }
 
     /**
@@ -1734,11 +1736,19 @@ public final class AnomalyDetectorClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> batchDetectAnomalyWithResponseAsync(
+    private Mono<Response<BinaryData>> batchDetectAnomalyWithResponseAsync(
             String modelId, BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.batchDetectAnomaly(this.getHost(), modelId, body, accept, requestOptions, context));
+                context ->
+                        service.batchDetectAnomaly(
+                                this.getEndpoint(),
+                                this.getApiVersion(),
+                                modelId,
+                                body,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -1824,12 +1834,114 @@ public final class AnomalyDetectorClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return detection results for the given resultId along with {@link Response}.
+     * @return the {@link PollerFlux} for polling of detection results for the given resultId.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> batchDetectAnomalyWithResponse(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginBatchDetectAnomalyAsync(
             String modelId, BinaryData body, RequestOptions requestOptions) {
-        return batchDetectAnomalyWithResponseAsync(modelId, body, requestOptions).block();
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.batchDetectAnomalyWithResponseAsync(modelId, body, requestOptions),
+                new DefaultPollingStrategy<>(
+                        this.getHttpPipeline(),
+                        "{Endpoint}/anomalydetector/{ApiVersion}".replace("{Endpoint}", this.getEndpoint()),
+                        null,
+                        requestOptions != null && requestOptions.getContext() != null
+                                ? requestOptions.getContext()
+                                : Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Detect Multivariate Anomaly
+     *
+     * <p>Submit multivariate anomaly detection task with the modelId of trained model and inference data, the input
+     * schema should be the same with the training request. The request will complete asynchronously and return a
+     * resultId to query the detection result.The request should be a source link to indicate an externally accessible
+     * Azure storage Uri, either pointed to an Azure blob storage folder, or pointed to a CSV file in Azure blob
+     * storage.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     dataSource: String (Required)
+     *     topContributorCount: int (Required)
+     *     startTime: OffsetDateTime (Required)
+     *     endTime: OffsetDateTime (Required)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     resultId: String (Required)
+     *     summary (Required): {
+     *         status: String(CREATED/RUNNING/READY/FAILED) (Required)
+     *         errors (Optional): [
+     *              (Optional){
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *             }
+     *         ]
+     *         variableStates (Optional): [
+     *              (Optional){
+     *                 variable: String (Optional)
+     *                 filledNARatio: Float (Optional)
+     *                 effectiveCount: Integer (Optional)
+     *                 firstTimestamp: OffsetDateTime (Optional)
+     *                 lastTimestamp: OffsetDateTime (Optional)
+     *             }
+     *         ]
+     *         setupInfo (Required): {
+     *             dataSource: String (Required)
+     *             topContributorCount: int (Required)
+     *             startTime: OffsetDateTime (Required)
+     *             endTime: OffsetDateTime (Required)
+     *         }
+     *     }
+     *     results (Required): [
+     *          (Required){
+     *             timestamp: OffsetDateTime (Required)
+     *             value (Optional): {
+     *                 isAnomaly: boolean (Required)
+     *                 severity: float (Required)
+     *                 score: float (Required)
+     *                 interpretation (Optional): [
+     *                      (Optional){
+     *                         variable: String (Optional)
+     *                         contributionScore: Float (Optional)
+     *                         correlationChanges (Optional): {
+     *                             changedVariables (Optional): [
+     *                                 String (Optional)
+     *                             ]
+     *                         }
+     *                     }
+     *                 ]
+     *             }
+     *             errors (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param modelId Model identifier.
+     * @param body Detect anomaly request.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of detection results for the given resultId.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginBatchDetectAnomaly(
+            String modelId, BinaryData body, RequestOptions requestOptions) {
+        return this.beginBatchDetectAnomalyAsync(modelId, body, requestOptions).getSyncPoller();
     }
 
     /**
@@ -1915,7 +2027,15 @@ public final class AnomalyDetectorClientImpl {
             String modelId, BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.lastDetectAnomaly(this.getHost(), modelId, body, accept, requestOptions, context));
+                context ->
+                        service.lastDetectAnomaly(
+                                this.getEndpoint(),
+                                this.getApiVersion(),
+                                modelId,
+                                body,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -2083,7 +2203,12 @@ public final class AnomalyDetectorClientImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listMultivariateModelNext(
-                                        nextLink, this.getHost(), accept, requestOptions, context))
+                                        nextLink,
+                                        this.getEndpoint(),
+                                        this.getApiVersion(),
+                                        accept,
+                                        requestOptions,
+                                        context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
