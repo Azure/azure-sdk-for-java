@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LogModule. */
+/** Tells whether log modules are enabled or not. */
 public final class LogModule extends ExpandableStringEnum<LogModule> {
     /** Static value ENABLED for LogModule. */
     public static final LogModule ENABLED = fromString("ENABLED");

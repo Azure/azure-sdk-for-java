@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RegistryHive. */
+/** the hive that holds the registry key. */
 public final class RegistryHive extends ExpandableStringEnum<RegistryHive> {
     /** Static value HKEY_LOCAL_MACHINE for RegistryHive. */
     public static final RegistryHive HKEY_LOCAL_MACHINE = fromString("HKEY_LOCAL_MACHINE");

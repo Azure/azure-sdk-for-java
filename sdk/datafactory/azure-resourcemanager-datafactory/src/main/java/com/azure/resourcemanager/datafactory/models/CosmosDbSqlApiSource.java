@@ -21,30 +21,26 @@ public final class CosmosDbSqlApiSource extends CopySource {
     private Object query;
 
     /*
-     * Page size of the result. Type: integer (or Expression with resultType
-     * integer).
+     * Page size of the result. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "pageSize")
     private Object pageSize;
 
     /*
-     * Preferred regions. Type: array of strings (or Expression with resultType
-     * array of strings).
+     * Preferred regions. Type: array of strings (or Expression with resultType array of strings).
      */
     @JsonProperty(value = "preferredRegions")
     private Object preferredRegions;
 
     /*
-     * Whether detect primitive values as datetime values. Type: boolean (or
-     * Expression with resultType boolean).
+     * Whether detect primitive values as datetime values. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "detectDatetime")
     private Object detectDatetime;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array
-     * of objects(AdditionalColumns) (or Expression with resultType array of
-     * objects).
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
+     * Expression with resultType array of objects).
      */
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;

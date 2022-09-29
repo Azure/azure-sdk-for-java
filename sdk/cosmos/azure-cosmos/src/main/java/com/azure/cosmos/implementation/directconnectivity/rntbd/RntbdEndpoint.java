@@ -66,6 +66,8 @@ public interface RntbdEndpoint extends AutoCloseable {
 
     Tag tag();
 
+    Tag clientMetricTag();
+
     long usedDirectMemory();
 
     long usedHeapMemory();

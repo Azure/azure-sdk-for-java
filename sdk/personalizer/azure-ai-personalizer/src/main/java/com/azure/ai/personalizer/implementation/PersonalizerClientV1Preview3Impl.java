@@ -4,9 +4,9 @@
 
 package com.azure.ai.personalizer.implementation;
 
-import com.azure.ai.personalizer.implementation.models.ErrorResponseException;
-import com.azure.ai.personalizer.implementation.models.RankRequest;
-import com.azure.ai.personalizer.implementation.models.RankResponse;
+import com.azure.ai.personalizer.models.ErrorResponseException;
+import com.azure.ai.personalizer.models.PersonalizerRankOptions;
+import com.azure.ai.personalizer.models.PersonalizerRankResult;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;
@@ -45,6 +45,18 @@ public final class PersonalizerClientV1Preview3Impl {
      */
     public String getEndpoint() {
         return this.endpoint;
+    }
+
+    /** Personalizer API version (for example, v1.0). */
+    private final String apiVersion;
+
+    /**
+     * Gets Personalizer API version (for example, v1.0).
+     *
+     * @return the apiVersion value.
+     */
+    public String getApiVersion() {
+        return this.apiVersion;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -171,14 +183,16 @@ public final class PersonalizerClientV1Preview3Impl {
      * Initializes an instance of PersonalizerClientV1Preview3 client.
      *
      * @param endpoint Supported Cognitive Services endpoint.
+     * @param apiVersion Personalizer API version (for example, v1.0).
      */
-    PersonalizerClientV1Preview3Impl(String endpoint) {
+    PersonalizerClientV1Preview3Impl(String endpoint, String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint);
+                endpoint,
+                apiVersion);
     }
 
     /**
@@ -186,9 +200,10 @@ public final class PersonalizerClientV1Preview3Impl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint Supported Cognitive Services endpoint.
+     * @param apiVersion Personalizer API version (for example, v1.0).
      */
-    PersonalizerClientV1Preview3Impl(HttpPipeline httpPipeline, String endpoint) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
+    PersonalizerClientV1Preview3Impl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
     }
 
     /**
@@ -197,11 +212,14 @@ public final class PersonalizerClientV1Preview3Impl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint Supported Cognitive Services endpoint.
+     * @param apiVersion Personalizer API version (for example, v1.0).
      */
-    PersonalizerClientV1Preview3Impl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
+    PersonalizerClientV1Preview3Impl(
+            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
+        this.apiVersion = apiVersion;
         this.serviceConfigurations = new ServiceConfigurationsImpl(this);
         this.policies = new PoliciesImpl(this);
         this.evaluations = new EvaluationsImpl(this);
@@ -219,21 +237,24 @@ public final class PersonalizerClientV1Preview3Impl {
      * The interface defining all the services for PersonalizerClientV1Preview3 to be used by the proxy service to
      * perform REST calls.
      */
-    @Host("{Endpoint}/personalizer/v1.1-preview.3")
+    @Host("{Endpoint}/personalizer/{ApiVersion}")
     @ServiceInterface(name = "PersonalizerClientV1")
     public interface PersonalizerClientV1Preview3Service {
         @Post("/rank")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<RankResponse>> rank(
+        Mono<Response<PersonalizerRankResult>> rank(
                 @HostParam("Endpoint") String endpoint,
-                @BodyParam("application/json") RankRequest rankRequest,
+                @HostParam("ApiVersion") String apiVersion,
+                @BodyParam("application/json") PersonalizerRankOptions rankRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
 
     /**
-     * Submit a Personalizer rank request. Receives a context and a list of actions. Returns which of the provided
+     * Post Rank.
+     *
+     * <p>Submit a Personalizer rank request. Receives a context and a list of actions. Returns which of the provided
      * actions should be used by your application, in rewardActionId.
      *
      * @param rankRequest A Personalizer Rank request.
@@ -241,16 +262,19 @@ public final class PersonalizerClientV1Preview3Impl {
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return returns which action to use as rewardActionId, and additional information about each action as a result
-     *     of a Rank request.
+     *     of a Rank request along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RankResponse>> rankWithResponseAsync(RankRequest rankRequest) {
+    public Mono<Response<PersonalizerRankResult>> rankWithResponseAsync(PersonalizerRankOptions rankRequest) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.rank(this.getEndpoint(), rankRequest, accept, context));
+        return FluxUtil.withContext(
+                context -> service.rank(this.getEndpoint(), this.getApiVersion(), rankRequest, accept, context));
     }
 
     /**
-     * Submit a Personalizer rank request. Receives a context and a list of actions. Returns which of the provided
+     * Post Rank.
+     *
+     * <p>Submit a Personalizer rank request. Receives a context and a list of actions. Returns which of the provided
      * actions should be used by your application, in rewardActionId.
      *
      * @param rankRequest A Personalizer Rank request.
@@ -259,16 +283,19 @@ public final class PersonalizerClientV1Preview3Impl {
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return returns which action to use as rewardActionId, and additional information about each action as a result
-     *     of a Rank request.
+     *     of a Rank request along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RankResponse>> rankWithResponseAsync(RankRequest rankRequest, Context context) {
+    public Mono<Response<PersonalizerRankResult>> rankWithResponseAsync(
+            PersonalizerRankOptions rankRequest, Context context) {
         final String accept = "application/json";
-        return service.rank(this.getEndpoint(), rankRequest, accept, context);
+        return service.rank(this.getEndpoint(), this.getApiVersion(), rankRequest, accept, context);
     }
 
     /**
-     * Submit a Personalizer rank request. Receives a context and a list of actions. Returns which of the provided
+     * Post Rank.
+     *
+     * <p>Submit a Personalizer rank request. Receives a context and a list of actions. Returns which of the provided
      * actions should be used by your application, in rewardActionId.
      *
      * @param rankRequest A Personalizer Rank request.
@@ -276,23 +303,17 @@ public final class PersonalizerClientV1Preview3Impl {
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return returns which action to use as rewardActionId, and additional information about each action as a result
-     *     of a Rank request.
+     *     of a Rank request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RankResponse> rankAsync(RankRequest rankRequest) {
-        return rankWithResponseAsync(rankRequest)
-                .flatMap(
-                        (Response<RankResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+    public Mono<PersonalizerRankResult> rankAsync(PersonalizerRankOptions rankRequest) {
+        return rankWithResponseAsync(rankRequest).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Submit a Personalizer rank request. Receives a context and a list of actions. Returns which of the provided
+     * Post Rank.
+     *
+     * <p>Submit a Personalizer rank request. Receives a context and a list of actions. Returns which of the provided
      * actions should be used by your application, in rewardActionId.
      *
      * @param rankRequest A Personalizer Rank request.
@@ -301,23 +322,17 @@ public final class PersonalizerClientV1Preview3Impl {
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return returns which action to use as rewardActionId, and additional information about each action as a result
-     *     of a Rank request.
+     *     of a Rank request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RankResponse> rankAsync(RankRequest rankRequest, Context context) {
-        return rankWithResponseAsync(rankRequest, context)
-                .flatMap(
-                        (Response<RankResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+    public Mono<PersonalizerRankResult> rankAsync(PersonalizerRankOptions rankRequest, Context context) {
+        return rankWithResponseAsync(rankRequest, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Submit a Personalizer rank request. Receives a context and a list of actions. Returns which of the provided
+     * Post Rank.
+     *
+     * <p>Submit a Personalizer rank request. Receives a context and a list of actions. Returns which of the provided
      * actions should be used by your application, in rewardActionId.
      *
      * @param rankRequest A Personalizer Rank request.
@@ -328,12 +343,14 @@ public final class PersonalizerClientV1Preview3Impl {
      *     of a Rank request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RankResponse rank(RankRequest rankRequest) {
+    public PersonalizerRankResult rank(PersonalizerRankOptions rankRequest) {
         return rankAsync(rankRequest).block();
     }
 
     /**
-     * Submit a Personalizer rank request. Receives a context and a list of actions. Returns which of the provided
+     * Post Rank.
+     *
+     * <p>Submit a Personalizer rank request. Receives a context and a list of actions. Returns which of the provided
      * actions should be used by your application, in rewardActionId.
      *
      * @param rankRequest A Personalizer Rank request.
@@ -342,10 +359,10 @@ public final class PersonalizerClientV1Preview3Impl {
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return returns which action to use as rewardActionId, and additional information about each action as a result
-     *     of a Rank request.
+     *     of a Rank request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RankResponse> rankWithResponse(RankRequest rankRequest, Context context) {
+    public Response<PersonalizerRankResult> rankWithResponse(PersonalizerRankOptions rankRequest, Context context) {
         return rankWithResponseAsync(rankRequest, context).block();
     }
 }

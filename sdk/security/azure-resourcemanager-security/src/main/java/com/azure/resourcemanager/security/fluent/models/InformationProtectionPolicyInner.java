@@ -5,45 +5,30 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.InformationType;
 import com.azure.resourcemanager.security.models.SensitivityLabel;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** Information protection policy. */
-@JsonFlatten
 @Fluent
-public class InformationProtectionPolicyInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InformationProtectionPolicyInner.class);
-
+public final class InformationProtectionPolicyInner extends ProxyResource {
     /*
-     * Describes the last UTC time the policy was modified.
+     * Information protection policy data
      */
-    @JsonProperty(value = "properties.lastModifiedUtc", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastModifiedUtc;
+    @JsonProperty(value = "properties")
+    private InformationProtectionPolicyProperties innerProperties;
 
-    /*
-     * Describes the version of the policy.
+    /**
+     * Get the innerProperties property: Information protection policy data.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.version", access = JsonProperty.Access.WRITE_ONLY)
-    private String version;
-
-    /*
-     * Dictionary of sensitivity labels.
-     */
-    @JsonProperty(value = "properties.labels")
-    private Map<String, SensitivityLabel> labels;
-
-    /*
-     * The sensitivity information types.
-     */
-    @JsonProperty(value = "properties.informationTypes")
-    private Map<String, InformationType> informationTypes;
+    private InformationProtectionPolicyProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the lastModifiedUtc property: Describes the last UTC time the policy was modified.
@@ -51,7 +36,7 @@ public class InformationProtectionPolicyInner extends ProxyResource {
      * @return the lastModifiedUtc value.
      */
     public OffsetDateTime lastModifiedUtc() {
-        return this.lastModifiedUtc;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedUtc();
     }
 
     /**
@@ -60,7 +45,7 @@ public class InformationProtectionPolicyInner extends ProxyResource {
      * @return the version value.
      */
     public String version() {
-        return this.version;
+        return this.innerProperties() == null ? null : this.innerProperties().version();
     }
 
     /**
@@ -69,7 +54,7 @@ public class InformationProtectionPolicyInner extends ProxyResource {
      * @return the labels value.
      */
     public Map<String, SensitivityLabel> labels() {
-        return this.labels;
+        return this.innerProperties() == null ? null : this.innerProperties().labels();
     }
 
     /**
@@ -79,7 +64,10 @@ public class InformationProtectionPolicyInner extends ProxyResource {
      * @return the InformationProtectionPolicyInner object itself.
      */
     public InformationProtectionPolicyInner withLabels(Map<String, SensitivityLabel> labels) {
-        this.labels = labels;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InformationProtectionPolicyProperties();
+        }
+        this.innerProperties().withLabels(labels);
         return this;
     }
 
@@ -89,7 +77,7 @@ public class InformationProtectionPolicyInner extends ProxyResource {
      * @return the informationTypes value.
      */
     public Map<String, InformationType> informationTypes() {
-        return this.informationTypes;
+        return this.innerProperties() == null ? null : this.innerProperties().informationTypes();
     }
 
     /**
@@ -99,7 +87,10 @@ public class InformationProtectionPolicyInner extends ProxyResource {
      * @return the InformationProtectionPolicyInner object itself.
      */
     public InformationProtectionPolicyInner withInformationTypes(Map<String, InformationType> informationTypes) {
-        this.informationTypes = informationTypes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InformationProtectionPolicyProperties();
+        }
+        this.innerProperties().withInformationTypes(informationTypes);
         return this;
     }
 
@@ -109,25 +100,8 @@ public class InformationProtectionPolicyInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (labels() != null) {
-            labels()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
-        }
-        if (informationTypes() != null) {
-            informationTypes()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

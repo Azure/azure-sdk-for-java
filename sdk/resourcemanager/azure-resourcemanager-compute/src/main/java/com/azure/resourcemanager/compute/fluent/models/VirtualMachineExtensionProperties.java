@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.compute.models.KeyVaultSecretReference;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionInstanceView;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -86,7 +87,7 @@ public final class VirtualMachineExtensionProperties {
      * The extensions protected settings that are passed by reference, and consumed from key vault
      */
     @JsonProperty(value = "protectedSettingsFromKeyVault")
-    private Object protectedSettingsFromKeyVault;
+    private KeyVaultSecretReference protectedSettingsFromKeyVault;
 
     /**
      * Get the forceUpdateTag property: How the extension handler should be forced to update even if the extension
@@ -317,7 +318,7 @@ public final class VirtualMachineExtensionProperties {
      *
      * @return the protectedSettingsFromKeyVault value.
      */
-    public Object protectedSettingsFromKeyVault() {
+    public KeyVaultSecretReference protectedSettingsFromKeyVault() {
         return this.protectedSettingsFromKeyVault;
     }
 
@@ -328,7 +329,8 @@ public final class VirtualMachineExtensionProperties {
      * @param protectedSettingsFromKeyVault the protectedSettingsFromKeyVault value to set.
      * @return the VirtualMachineExtensionProperties object itself.
      */
-    public VirtualMachineExtensionProperties withProtectedSettingsFromKeyVault(Object protectedSettingsFromKeyVault) {
+    public VirtualMachineExtensionProperties withProtectedSettingsFromKeyVault(
+        KeyVaultSecretReference protectedSettingsFromKeyVault) {
         this.protectedSettingsFromKeyVault = protectedSettingsFromKeyVault;
         return this;
     }
@@ -341,6 +343,9 @@ public final class VirtualMachineExtensionProperties {
     public void validate() {
         if (instanceView() != null) {
             instanceView().validate();
+        }
+        if (protectedSettingsFromKeyVault() != null) {
+            protectedSettingsFromKeyVault().validate();
         }
     }
 }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RequestStatus. */
+/** Enumerates possible request statuses. */
 public final class RequestStatus extends ExpandableStringEnum<RequestStatus> {
     /** Static value Running for RequestStatus. */
     public static final RequestStatus RUNNING = fromString("Running");
@@ -30,7 +30,11 @@ public final class RequestStatus extends ExpandableStringEnum<RequestStatus> {
         return fromString(name, RequestStatus.class);
     }
 
-    /** @return known RequestStatus values. */
+    /**
+     * Gets known RequestStatus values.
+     *
+     * @return known RequestStatus values.
+     */
     public static Collection<RequestStatus> values() {
         return values(RequestStatus.class);
     }

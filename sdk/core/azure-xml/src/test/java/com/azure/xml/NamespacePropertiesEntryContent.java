@@ -4,6 +4,7 @@
 package com.azure.xml;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
 public class NamespacePropertiesEntryContent implements XmlSerializable<NamespacePropertiesEntryContent> {
     private String type;
@@ -50,7 +51,7 @@ public class NamespacePropertiesEntryContent implements XmlSerializable<Namespac
     }
 
     @Override
-    public XmlWriter toXml(XmlWriter xmlWriter) {
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         xmlWriter.writeStartElement("content");
         xmlWriter.writeNamespace("http://www.w3.org/2005/Atom");
         xmlWriter.writeStringAttribute("type", type);
@@ -60,7 +61,7 @@ public class NamespacePropertiesEntryContent implements XmlSerializable<Namespac
         return xmlWriter.writeEndElement().flush();
     }
 
-    public static NamespacePropertiesEntryContent fromXml(XmlReader xmlReader) {
+    public static NamespacePropertiesEntryContent fromXml(XmlReader xmlReader) throws XMLStreamException {
         if (xmlReader.currentToken() != XmlToken.START_ELEMENT) {
             xmlReader.nextElement();
         }

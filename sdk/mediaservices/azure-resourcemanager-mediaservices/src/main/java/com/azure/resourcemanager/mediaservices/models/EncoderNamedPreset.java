@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EncoderNamedPreset. */
+/** The built-in preset to be used for encoding videos. */
 public final class EncoderNamedPreset extends ExpandableStringEnum<EncoderNamedPreset> {
     /** Static value H264SingleBitrateSD for EncoderNamedPreset. */
     public static final EncoderNamedPreset H264SINGLE_BITRATE_SD = fromString("H264SingleBitrateSD");

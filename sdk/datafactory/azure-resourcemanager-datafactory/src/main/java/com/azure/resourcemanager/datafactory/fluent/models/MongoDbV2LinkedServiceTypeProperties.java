@@ -12,16 +12,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class MongoDbV2LinkedServiceTypeProperties {
     /*
-     * The MongoDB connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * The MongoDB connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Type: string,
+     * SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "connectionString", required = true)
     private Object connectionString;
 
     /*
-     * The name of the MongoDB database that you want to access. Type: string
-     * (or Expression with resultType string).
+     * The name of the MongoDB database that you want to access. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "database", required = true)
     private Object database;

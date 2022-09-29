@@ -27,6 +27,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
     implements ServiceBusNamespaceProperties, InitializingBean {
 
     public static final String PREFIX = "spring.cloud.azure.servicebus";
+    private static final String DEFAULT_DOMAIN_NAME = "servicebus.windows.net";
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureServiceBusProperties.class);
     /**
      * Whether to enable cross entity transaction on the connection to Service bus.
@@ -35,6 +36,10 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
     private final Producer producer = new Producer();
     private final Consumer consumer = new Consumer();
     private final Processor processor = new Processor();
+
+    public AzureServiceBusProperties() {
+        this.setDomainName(DEFAULT_DOMAIN_NAME);
+    }
 
     public Boolean getCrossEntityTransactions() {
         return crossEntityTransactions;

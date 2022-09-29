@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for AutomationRules Get. */
 public final class AutomationRulesGetSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/automationRules/AutomationRules_Get.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/automationRules/AutomationRules_Get.json
      */
     /**
      * Sample code: AutomationRules_Get.

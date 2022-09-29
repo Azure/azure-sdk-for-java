@@ -16,8 +16,7 @@ import java.util.List;
 @Immutable
 public final class ManagedIntegrationRuntimeStatusTypeProperties {
     /*
-     * The time at which the integration runtime was created, in ISO8601
-     * format.
+     * The time at which the integration runtime was created, in ISO8601 format.
      */
     @JsonProperty(value = "createTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createTime;

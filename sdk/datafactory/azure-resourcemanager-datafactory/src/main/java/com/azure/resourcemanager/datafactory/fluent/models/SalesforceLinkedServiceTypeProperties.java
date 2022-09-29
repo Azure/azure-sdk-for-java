@@ -12,18 +12,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SalesforceLinkedServiceTypeProperties {
     /*
-     * The URL of Salesforce instance. Default is
-     * 'https://login.salesforce.com'. To copy data from sandbox, specify
-     * 'https://test.salesforce.com'. To copy data from custom domain, specify,
-     * for example, 'https://[domain].my.salesforce.com'. Type: string (or
-     * Expression with resultType string).
+     * The URL of Salesforce instance. Default is 'https://login.salesforce.com'. To copy data from sandbox, specify
+     * 'https://test.salesforce.com'. To copy data from custom domain, specify, for example,
+     * 'https://[domain].my.salesforce.com'. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "environmentUrl")
     private Object environmentUrl;
 
     /*
-     * The username for Basic authentication of the Salesforce instance. Type:
-     * string (or Expression with resultType string).
+     * The username for Basic authentication of the Salesforce instance. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "username")
     private Object username;
@@ -41,16 +39,14 @@ public final class SalesforceLinkedServiceTypeProperties {
     private SecretBase securityToken;
 
     /*
-     * The Salesforce API version used in ADF. Type: string (or Expression with
-     * resultType string).
+     * The Salesforce API version used in ADF. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "apiVersion")
     private Object apiVersion;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;

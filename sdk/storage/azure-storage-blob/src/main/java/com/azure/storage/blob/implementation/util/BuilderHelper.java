@@ -159,9 +159,9 @@ public final class BuilderHelper {
      */
     public static String getEndpoint(BlobUrlParts parts) throws MalformedURLException {
         if (ModelHelper.determineAuthorityIsIpStyle(parts.getHost())) {
-            return String.format("%s://%s/%s", parts.getScheme(), parts.getHost(), parts.getAccountName());
+            return parts.getScheme() + "://" + parts.getHost() + "/" + parts.getAccountName();
         } else {
-            return String.format("%s://%s", parts.getScheme(), parts.getHost());
+            return parts.getScheme() + "://" + parts.getHost();
         }
     }
 

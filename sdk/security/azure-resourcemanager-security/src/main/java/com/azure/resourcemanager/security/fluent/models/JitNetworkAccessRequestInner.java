@@ -7,7 +7,6 @@ package com.azure.resourcemanager.security.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.JitNetworkAccessRequestVirtualMachine;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -15,8 +14,6 @@ import java.util.List;
 /** The JitNetworkAccessRequest model. */
 @Fluent
 public final class JitNetworkAccessRequestInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JitNetworkAccessRequestInner.class);
-
     /*
      * The virtualMachines property.
      */
@@ -129,7 +126,7 @@ public final class JitNetworkAccessRequestInner {
      */
     public void validate() {
         if (virtualMachines() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property virtualMachines in model JitNetworkAccessRequestInner"));
@@ -137,16 +134,18 @@ public final class JitNetworkAccessRequestInner {
             virtualMachines().forEach(e -> e.validate());
         }
         if (startTimeUtc() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property startTimeUtc in model JitNetworkAccessRequestInner"));
         }
         if (requestor() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property requestor in model JitNetworkAccessRequestInner"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(JitNetworkAccessRequestInner.class);
 }

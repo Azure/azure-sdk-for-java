@@ -19,8 +19,8 @@ import java.util.Map;
 @Fluent
 public class HttpLinkedService extends LinkedService {
     /*
-     * The base URL of the HTTP endpoint, e.g. http://www.microsoft.com. Type:
-     * string (or Expression with resultType string).
+     * The base URL of the HTTP endpoint, e.g. http://www.microsoft.com. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "typeProperties.url", required = true)
     private Object url;
@@ -32,49 +32,43 @@ public class HttpLinkedService extends LinkedService {
     private HttpAuthenticationType authenticationType;
 
     /*
-     * User name for Basic, Digest, or Windows authentication. Type: string (or
-     * Expression with resultType string).
+     * User name for Basic, Digest, or Windows authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.userName")
     private Object userName;
 
     /*
-     * Password for Basic, Digest, Windows, or ClientCertificate with
-     * EmbeddedCertData authentication.
+     * Password for Basic, Digest, Windows, or ClientCertificate with EmbeddedCertData authentication.
      */
     @JsonProperty(value = "typeProperties.password")
     private SecretBase password;
 
     /*
-     * Base64 encoded certificate data for ClientCertificate authentication.
-     * For on-premises copy with ClientCertificate authentication, either
-     * CertThumbprint or EmbeddedCertData/Password should be specified. Type:
+     * Base64 encoded certificate data for ClientCertificate authentication. For on-premises copy with
+     * ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should be specified. Type:
      * string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.embeddedCertData")
     private Object embeddedCertData;
 
     /*
-     * Thumbprint of certificate for ClientCertificate authentication. Only
-     * valid for on-premises copy. For on-premises copy with ClientCertificate
-     * authentication, either CertThumbprint or EmbeddedCertData/Password
-     * should be specified. Type: string (or Expression with resultType
-     * string).
+     * Thumbprint of certificate for ClientCertificate authentication. Only valid for on-premises copy. For on-premises
+     * copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should be
+     * specified. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.certThumbprint")
     private Object certThumbprint;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
     /*
-     * If true, validate the HTTPS server SSL certificate. Default value is
-     * true. Type: boolean (or Expression with resultType boolean).
+     * If true, validate the HTTPS server SSL certificate. Default value is true. Type: boolean (or Expression with
+     * resultType boolean).
      */
     @JsonProperty(value = "typeProperties.enableServerCertificateValidation")
     private Object enableServerCertificateValidation;

@@ -6,16 +6,16 @@ package com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.jackson.SerializerUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.util.Assert;
 
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.jackson.SerializerUtils.deserializeOAuth2AuthorizedClientMap;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.jackson.SerializerUtils.serializeOAuth2AuthorizedClientMap;
 
 /**
@@ -73,12 +73,10 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth
 
     private Map<String, OAuth2AuthorizedClient> getAuthorizedClients(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        String authorizedClientsString = (String) Optional.ofNullable(session)
-                                                          .map(s -> s.getAttribute(AUTHORIZED_CLIENTS_ATTR_NAME))
-                                                          .orElse(null);
-        if (authorizedClientsString == null) {
-            return new HashMap<>();
-        }
-        return deserializeOAuth2AuthorizedClientMap(authorizedClientsString);
+        return Optional.ofNullable(session)
+                       .map(s -> s.getAttribute(AUTHORIZED_CLIENTS_ATTR_NAME))
+                       .map(Object::toString)
+                       .map(SerializerUtils::deserializeOAuth2AuthorizedClientMap)
+                       .orElse(Collections.emptyMap());
     }
 }

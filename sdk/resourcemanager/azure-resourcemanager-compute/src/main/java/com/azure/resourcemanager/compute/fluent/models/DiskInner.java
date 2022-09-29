@@ -603,6 +603,15 @@ public final class DiskInner extends Resource {
     }
 
     /**
+     * Get the burstingEnabledTime property: Latest time when bursting was last enabled on a disk.
+     *
+     * @return the burstingEnabledTime value.
+     */
+    public OffsetDateTime burstingEnabledTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().burstingEnabledTime();
+    }
+
+    /**
      * Get the tier property: Performance tier of the disk (e.g, P4, S10) as described here:
      * https://azure.microsoft.com/en-us/pricing/details/managed-disks/. Does not apply to Ultra disks.
      *
@@ -777,6 +786,35 @@ public final class DiskInner extends Resource {
             this.innerProperties = new DiskProperties();
         }
         this.innerProperties().withDataAccessAuthMode(dataAccessAuthMode);
+        return this;
+    }
+
+    /**
+     * Get the optimizedForFrequentAttach property: Setting this property to true improves reliability and performance
+     * of data disks that are frequently (more than 5 times a day) by detached from one virtual machine and attached to
+     * another. This property should not be set for disks that are not detached and attached frequently as it causes the
+     * disks to not align with the fault domain of the virtual machine.
+     *
+     * @return the optimizedForFrequentAttach value.
+     */
+    public Boolean optimizedForFrequentAttach() {
+        return this.innerProperties() == null ? null : this.innerProperties().optimizedForFrequentAttach();
+    }
+
+    /**
+     * Set the optimizedForFrequentAttach property: Setting this property to true improves reliability and performance
+     * of data disks that are frequently (more than 5 times a day) by detached from one virtual machine and attached to
+     * another. This property should not be set for disks that are not detached and attached frequently as it causes the
+     * disks to not align with the fault domain of the virtual machine.
+     *
+     * @param optimizedForFrequentAttach the optimizedForFrequentAttach value to set.
+     * @return the DiskInner object itself.
+     */
+    public DiskInner withOptimizedForFrequentAttach(Boolean optimizedForFrequentAttach) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskProperties();
+        }
+        this.innerProperties().withOptimizedForFrequentAttach(optimizedForFrequentAttach);
         return this;
     }
 

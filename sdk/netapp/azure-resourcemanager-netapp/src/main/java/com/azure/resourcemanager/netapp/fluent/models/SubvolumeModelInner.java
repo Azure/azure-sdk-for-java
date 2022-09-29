@@ -72,7 +72,9 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Get the path property: path Path to the subvolume.
+     * Get the path property: path
+     *
+     * <p>Path to the subvolume.
      *
      * @return the path value.
      */
@@ -81,7 +83,9 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Set the path property: path Path to the subvolume.
+     * Set the path property: path
+     *
+     * <p>Path to the subvolume.
      *
      * @param path the path value to set.
      * @return the SubvolumeModelInner object itself.
@@ -95,7 +99,9 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Get the parentPath property: parentpath Path to the parent subvolume.
+     * Get the parentPath property: parentpath
+     *
+     * <p>Path to the parent subvolume.
      *
      * @return the parentPath value.
      */
@@ -104,7 +110,9 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Set the parentPath property: parentpath Path to the parent subvolume.
+     * Set the parentPath property: parentpath
+     *
+     * <p>Path to the parent subvolume.
      *
      * @param parentPath the parentPath value to set.
      * @return the SubvolumeModelInner object itself.
@@ -118,7 +126,9 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Get the size property: size Size of subvolume.
+     * Get the size property: size
+     *
+     * <p>Size of subvolume.
      *
      * @return the size value.
      */
@@ -127,7 +137,9 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Set the size property: size Size of subvolume.
+     * Set the size property: size
+     *
+     * <p>Size of subvolume.
      *
      * @param size the size value to set.
      * @return the SubvolumeModelInner object itself.
@@ -141,7 +153,9 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Get the bytesUsed property: bytesUsed Bytes used.
+     * Get the bytesUsed property: bytesUsed
+     *
+     * <p>Bytes used.
      *
      * @return the bytesUsed value.
      */
@@ -150,7 +164,9 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Set the bytesUsed property: bytesUsed Bytes used.
+     * Set the bytesUsed property: bytesUsed
+     *
+     * <p>Bytes used.
      *
      * @param bytesUsed the bytesUsed value to set.
      * @return the SubvolumeModelInner object itself.
@@ -164,7 +180,9 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Get the permissions property: permissions Permissions of the subvolume.
+     * Get the permissions property: permissions
+     *
+     * <p>Permissions of the subvolume.
      *
      * @return the permissions value.
      */
@@ -173,7 +191,9 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Set the permissions property: permissions Permissions of the subvolume.
+     * Set the permissions property: permissions
+     *
+     * <p>Permissions of the subvolume.
      *
      * @param permissions the permissions value to set.
      * @return the SubvolumeModelInner object itself.
@@ -187,7 +207,9 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Get the creationTimestamp property: creationTimeStamp Creation time and date.
+     * Get the creationTimestamp property: creationTimeStamp
+     *
+     * <p>Creation time and date.
      *
      * @return the creationTimestamp value.
      */
@@ -196,7 +218,9 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Set the creationTimestamp property: creationTimeStamp Creation time and date.
+     * Set the creationTimestamp property: creationTimeStamp
+     *
+     * <p>Creation time and date.
      *
      * @param creationTimestamp the creationTimestamp value to set.
      * @return the SubvolumeModelInner object itself.
@@ -210,7 +234,9 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Get the accessedTimestamp property: accessedTimeStamp Most recent access time and date.
+     * Get the accessedTimestamp property: accessedTimeStamp
+     *
+     * <p>Most recent access time and date.
      *
      * @return the accessedTimestamp value.
      */
@@ -219,7 +245,9 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Set the accessedTimestamp property: accessedTimeStamp Most recent access time and date.
+     * Set the accessedTimestamp property: accessedTimeStamp
+     *
+     * <p>Most recent access time and date.
      *
      * @param accessedTimestamp the accessedTimestamp value to set.
      * @return the SubvolumeModelInner object itself.
@@ -233,7 +261,9 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Get the modifiedTimestamp property: modifiedTimeStamp Most recent modification time and date.
+     * Get the modifiedTimestamp property: modifiedTimeStamp
+     *
+     * <p>Most recent modification time and date.
      *
      * @return the modifiedTimestamp value.
      */
@@ -242,7 +272,9 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Set the modifiedTimestamp property: modifiedTimeStamp Most recent modification time and date.
+     * Set the modifiedTimestamp property: modifiedTimeStamp
+     *
+     * <p>Most recent modification time and date.
      *
      * @param modifiedTimestamp the modifiedTimestamp value to set.
      * @return the SubvolumeModelInner object itself.
@@ -256,7 +288,9 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Get the changedTimestamp property: changedTimeStamp Most recent change time and date.
+     * Get the changedTimestamp property: changedTimeStamp
+     *
+     * <p>Most recent change time and date.
      *
      * @return the changedTimestamp value.
      */
@@ -265,7 +299,9 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Set the changedTimestamp property: changedTimeStamp Most recent change time and date.
+     * Set the changedTimestamp property: changedTimeStamp
+     *
+     * <p>Most recent change time and date.
      *
      * @param changedTimestamp the changedTimestamp value to set.
      * @return the SubvolumeModelInner object itself.

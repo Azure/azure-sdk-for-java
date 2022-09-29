@@ -38,7 +38,7 @@ public final class IncidentOwnerInfo {
     /*
      * The type of the owner the incident is assigned to.
      */
-    @JsonProperty(value = "ownerType", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "ownerType")
     private OwnerType ownerType;
 
     /**
@@ -128,6 +128,17 @@ public final class IncidentOwnerInfo {
      */
     public OwnerType ownerType() {
         return this.ownerType;
+    }
+
+    /**
+     * Set the ownerType property: The type of the owner the incident is assigned to.
+     *
+     * @param ownerType the ownerType value to set.
+     * @return the IncidentOwnerInfo object itself.
+     */
+    public IncidentOwnerInfo withOwnerType(OwnerType ownerType) {
+        this.ownerType = ownerType;
+        return this;
     }
 
     /**

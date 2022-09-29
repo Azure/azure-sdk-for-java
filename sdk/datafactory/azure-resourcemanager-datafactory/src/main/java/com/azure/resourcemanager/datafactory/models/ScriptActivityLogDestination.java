@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ScriptActivityLogDestination. */
+/** The destination of logs. Type: string. */
 public final class ScriptActivityLogDestination extends ExpandableStringEnum<ScriptActivityLogDestination> {
     /** Static value ActivityOutput for ScriptActivityLogDestination. */
     public static final ScriptActivityLogDestination ACTIVITY_OUTPUT = fromString("ActivityOutput");

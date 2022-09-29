@@ -536,6 +536,35 @@ public final class DiskUpdate {
     }
 
     /**
+     * Get the optimizedForFrequentAttach property: Setting this property to true improves reliability and performance
+     * of data disks that are frequently (more than 5 times a day) by detached from one virtual machine and attached to
+     * another. This property should not be set for disks that are not detached and attached frequently as it causes the
+     * disks to not align with the fault domain of the virtual machine.
+     *
+     * @return the optimizedForFrequentAttach value.
+     */
+    public Boolean optimizedForFrequentAttach() {
+        return this.innerProperties() == null ? null : this.innerProperties().optimizedForFrequentAttach();
+    }
+
+    /**
+     * Set the optimizedForFrequentAttach property: Setting this property to true improves reliability and performance
+     * of data disks that are frequently (more than 5 times a day) by detached from one virtual machine and attached to
+     * another. This property should not be set for disks that are not detached and attached frequently as it causes the
+     * disks to not align with the fault domain of the virtual machine.
+     *
+     * @param optimizedForFrequentAttach the optimizedForFrequentAttach value to set.
+     * @return the DiskUpdate object itself.
+     */
+    public DiskUpdate withOptimizedForFrequentAttach(Boolean optimizedForFrequentAttach) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
+        }
+        this.innerProperties().withOptimizedForFrequentAttach(optimizedForFrequentAttach);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

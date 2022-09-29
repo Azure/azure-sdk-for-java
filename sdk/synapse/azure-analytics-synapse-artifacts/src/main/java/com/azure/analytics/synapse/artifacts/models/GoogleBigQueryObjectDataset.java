@@ -19,22 +19,19 @@ import java.util.Map;
 @Fluent
 public class GoogleBigQueryObjectDataset extends Dataset {
     /*
-     * This property will be retired. Please consider using database + table
-     * properties instead.
+     * This property will be retired. Please consider using database + table properties instead.
      */
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
     /*
-     * The table name of the Google BigQuery. Type: string (or Expression with
-     * resultType string).
+     * The table name of the Google BigQuery. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.table")
     private Object table;
 
     /*
-     * The database name of the Google BigQuery. Type: string (or Expression
-     * with resultType string).
+     * The database name of the Google BigQuery. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.dataset")
     private Object dataset;
