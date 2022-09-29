@@ -37,8 +37,6 @@ public final class AppConfigurationProperties {
     @Nullable
     private String clientId; // Optional: client_id of the managed identity
 
-    private boolean pushRefresh = true;
-
     private Duration refreshInterval;
 
     /**
@@ -81,20 +79,6 @@ public final class AppConfigurationProperties {
      */
     public void setClientId(String clientId) {
         this.clientId = clientId;
-    }
-
-    /**
-     * @return the pushRefresh
-     */
-    public Boolean getPushRefresh() {
-        return pushRefresh;
-    }
-
-    /**
-     * @param pushRefresh the pushRefresh to set
-     */
-    public void setPushRefresh(Boolean pushRefresh) {
-        this.pushRefresh = pushRefresh;
     }
 
     /**
