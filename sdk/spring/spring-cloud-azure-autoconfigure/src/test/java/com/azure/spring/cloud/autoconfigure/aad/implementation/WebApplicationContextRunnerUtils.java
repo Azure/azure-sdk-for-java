@@ -28,7 +28,7 @@ public class WebApplicationContextRunnerUtils {
                     HttpMessageConvertersAutoConfiguration.class,
                     RestTemplateAutoConfiguration.class))
             .withUserConfiguration(AzureGlobalPropertiesAutoConfiguration.class, AadAutoConfiguration.class)
-            .withInitializer(new ConditionEvaluationReportLoggingListener(LogLevel.INFO));
+            .withInitializer(new ConditionEvaluationReportLoggingListener());
     }
 
     public static WebApplicationContextRunner oauthClientRunner() {
