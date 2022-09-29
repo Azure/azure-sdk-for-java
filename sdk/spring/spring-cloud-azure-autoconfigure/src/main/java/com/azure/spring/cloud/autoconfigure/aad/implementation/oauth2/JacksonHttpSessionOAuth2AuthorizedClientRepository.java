@@ -12,7 +12,7 @@ import org.springframework.util.Assert;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -77,6 +77,6 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth
                        .map(s -> s.getAttribute(AUTHORIZED_CLIENTS_ATTR_NAME))
                        .map(Object::toString)
                        .map(SerializerUtils::deserializeOAuth2AuthorizedClientMap)
-                       .orElse(Collections.emptyMap());
+                       .orElseGet(HashMap::new);
     }
 }

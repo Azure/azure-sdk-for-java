@@ -35,17 +35,10 @@ public final class AadRestTemplateCreator {
     public static RestTemplate createOAuth2AccessTokenResponseClientRestTemplate(RestTemplateBuilder builder) {
         RestTemplate restTemplate = createOAuth2ErrorResponseHandledRestTemplate(builder);
         List<HttpMessageConverter<?>> converters = restTemplate.getMessageConverters();
-        if (notContainsElementOfType(converters, FormHttpMessageConverter.class)) {
-            converters.add(new FormHttpMessageConverter());
-        }
-        if (notContainsElementOfType(converters, OAuth2AccessTokenResponseHttpMessageConverter.class)) {
-            converters.add(new OAuth2AccessTokenResponseHttpMessageConverter());
-        }
+        converters.clear();
+        converters.add(new FormHttpMessageConverter());
+        converters.add(new OAuth2AccessTokenResponseHttpMessageConverter());
         return restTemplate;
-    }
-
-    private static boolean notContainsElementOfType(List<?> list, Class<?> clazz) {
-        return list.stream().noneMatch(item -> item.getClass().equals(clazz));
     }
 
 }
