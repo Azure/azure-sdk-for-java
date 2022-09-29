@@ -25,8 +25,8 @@ public final class AccountEntityProperties extends EntityCommonProperties {
     private String aadUserId;
 
     /*
-     * The name of the account. This field should hold only the name without
-     * any domain added to it, i.e. administrator.
+     * The name of the account. This field should hold only the name without any domain added to it, i.e.
+     * administrator.
      */
     @JsonProperty(value = "accountName", access = JsonProperty.Access.WRITE_ONLY)
     private String accountName;
@@ -38,8 +38,7 @@ public final class AccountEntityProperties extends EntityCommonProperties {
     private String displayName;
 
     /*
-     * The Host entity id that contains the account in case it is a local
-     * account (not domain joined)
+     * The Host entity id that contains the account in case it is a local account (not domain joined)
      */
     @JsonProperty(value = "hostEntityId", access = JsonProperty.Access.WRITE_ONLY)
     private String hostEntityId;
@@ -51,15 +50,14 @@ public final class AccountEntityProperties extends EntityCommonProperties {
     private Boolean isDomainJoined;
 
     /*
-     * The NetBIOS domain name as it appears in the alert format
-     * domain/username. Examples: NT AUTHORITY.
+     * The NetBIOS domain name as it appears in the alert format domain/username. Examples: NT AUTHORITY.
      */
     @JsonProperty(value = "ntDomain", access = JsonProperty.Access.WRITE_ONLY)
     private String ntDomain;
 
     /*
-     * The objectGUID attribute is a single-value attribute that is the unique
-     * identifier for the object, assigned by active directory.
+     * The objectGUID attribute is a single-value attribute that is the unique identifier for the object, assigned by
+     * active directory.
      */
     @JsonProperty(value = "objectGuid", access = JsonProperty.Access.WRITE_ONLY)
     private UUID objectGuid;
@@ -77,8 +75,7 @@ public final class AccountEntityProperties extends EntityCommonProperties {
     private String sid;
 
     /*
-     * The user principal name suffix for the account, in some cases it is also
-     * the domain name. Examples: contoso.com.
+     * The user principal name suffix for the account, in some cases it is also the domain name. Examples: contoso.com.
      */
     @JsonProperty(value = "upnSuffix", access = JsonProperty.Access.WRITE_ONLY)
     private String upnSuffix;

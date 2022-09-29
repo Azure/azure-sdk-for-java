@@ -50,7 +50,7 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
 
         final CosmosAsyncClientWrapper mockedClientWrapper = Mockito.spy(new CosmosAsyncClientWrapper(client));
         Mockito.when(mockedClientWrapper.readAllDatabases()).thenReturn(UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
-            pagedFluxOptions.setTracerInformation(new TracerProvider(null), "testSpan", "testEndpoint,", "testDb");
+            pagedFluxOptions.setTracerInformation(new TracerProvider(null, false, false), "testSpan", "testEndpoint,", "testDb", null);
             return response;
         }));
         TestSubscriber<FeedResponse<CosmosDatabaseProperties>> subscriber = new TestSubscriber<>();

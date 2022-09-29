@@ -48,6 +48,8 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusReceiveLink, Message>
     implements Subscription {
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiveLinkProcessor.class);
+    private static final String REACTOR_PARENT_TRACE_CONTEXT_KEY = "otel-context-key";
+    protected static final String TRACEPARENT_KEY = "traceparent";
     private final Object lock = new Object();
     private final Object queueLock = new Object();
     private final AtomicBoolean isTerminated = new AtomicBoolean();
@@ -527,7 +529,6 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                     throw LOGGER.logExceptionAsError(Exceptions.propagate(
                         Operators.onOperatorError(upstream, e, message, subscriber.currentContext())));
                 }
-
                 numberEmitted++;
                 isEmpty = messageQueue.isEmpty();
             }
@@ -537,6 +538,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             }
         }
     }
+
 
     private boolean checkAndSetTerminated() {
         if (!isTerminated()) {

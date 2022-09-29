@@ -2,7 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, CosmosDaemonThreadFactory, SparkBridgeImplementationInternal}
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper
+import com.azure.cosmos.implementation.clienttelemetry.TagName
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, CosmosDaemonThreadFactory, SparkBridgeImplementationInternal, Strings}
+import com.azure.cosmos.models.{CosmosClientTelemetryConfig, CosmosMicrometerMetricsOptions}
 import com.azure.cosmos.spark.CosmosPredicates.isOnSparkDriver
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, DirectConnectionConfig, ThrottlingRetryOptions}
@@ -121,6 +124,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                                cosmosClientStateHandle: Option[CosmosClientMetadataCachesSnapshot],
                                ownerInfo: OwnerInfo)
   : CosmosClientCacheItem = synchronized {
+
     val clientConfigWrapper = ClientConfigurationWrapper(cosmosClientConfiguration)
     cache.get(clientConfigWrapper) match {
       case Some(clientCacheMetadata) => clientCacheMetadata.createCacheItemForReuse(ownerInfo)
@@ -133,6 +137,40 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
             new ThrottlingRetryOptions()
               .setMaxRetryAttemptsOnThrottledRequests(Int.MaxValue)
               .setMaxRetryWaitTime(Duration.ofSeconds((Integer.MAX_VALUE/1000) - 1)))
+
+        if (CosmosClientMetrics.meterRegistry.isDefined) {
+          val customApplicationNameSuffix = cosmosClientConfiguration.customApplicationNameSuffix
+            .getOrElse("")
+
+          val clientCorrelationId = SparkSession.getActiveSession match {
+            case Some(session) =>
+              val ctx = session.sparkContext
+
+              if (Strings.isNullOrWhiteSpace(customApplicationNameSuffix)) {
+                s"${CosmosClientMetrics.executorId}-${ctx.appName}"
+              } else {
+                s"$customApplicationNameSuffix-${CosmosClientMetrics.executorId}-${ctx.appName}"
+              }
+            case None => customApplicationNameSuffix
+          }
+
+          val telemetryConfig  = new CosmosClientTelemetryConfig()
+            .metricsOptions(
+            new CosmosMicrometerMetricsOptions().meterRegistry(CosmosClientMetrics.meterRegistry.get)
+            )
+            .clientCorrelationId(clientCorrelationId)
+            .metricTagNames(
+                TagName.Container.toString,
+                TagName.ClientCorrelationId.toString,
+                TagName.Operation.toString,
+                TagName.OperationStatusCode.toString,
+                TagName.PartitionKeyRangeId.toString,
+                TagName.ServiceEndpoint.toString,
+                TagName.ServiceAddress.toString
+            )
+
+          builder.clientTelemetryConfig(telemetryConfig)
+        }
 
         if (cosmosClientConfiguration.disableTcpConnectionEndpointRediscovery) {
           builder.endpointDiscoveryEnabled(false)
@@ -350,6 +388,12 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     }
   }
 
+  def clearCache(): Unit = {
+    cache.readOnlySnapshot().keys.foreach(clientCfgWrapper => purgeImpl(clientCfgWrapper, forceClosure = true))
+    cache.clear()
+    cleanUpToBeClosedWhenNotActiveAnymore(forceClosure = true)
+  }
+
   private[this] class CacheItemImpl
   (
     val cosmosClient: CosmosAsyncClient,
@@ -384,9 +428,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           case Some(_) =>
             logInfo(
               s"ApplicationEndListener:onApplicationEnd(${ctx.hashCode}) closed - purging all cosmos clients")
-            cache.readOnlySnapshot().keys.foreach(clientCfgWrapper => purgeImpl(clientCfgWrapper, forceClosure = true))
-            cache.clear()
-            cleanUpToBeClosedWhenNotActiveAnymore(forceClosure = true)
+            clearCache()
           case None =>
             logWarning(s"ApplicationEndListener:onApplicationEnd (${ctx.hashCode}) - not monitored anymore")
         }

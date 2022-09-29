@@ -26,23 +26,21 @@ public final class GroupingConfiguration {
     private boolean reopenClosedIncident;
 
     /*
-     * Limit the group to alerts created within the lookback duration (in ISO
-     * 8601 duration format)
+     * Limit the group to alerts created within the lookback duration (in ISO 8601 duration format)
      */
     @JsonProperty(value = "lookbackDuration", required = true)
     private Duration lookbackDuration;
 
     /*
-     * Grouping matching method. When method is Selected at least one of
-     * groupByEntities, groupByAlertDetails, groupByCustomDetails must be
-     * provided and not empty.
+     * Grouping matching method. When method is Selected at least one of groupByEntities, groupByAlertDetails,
+     * groupByCustomDetails must be provided and not empty.
      */
     @JsonProperty(value = "matchingMethod", required = true)
     private MatchingMethod matchingMethod;
 
     /*
-     * A list of entity types to group by (when matchingMethod is Selected).
-     * Only entities defined in the current alert rule may be used.
+     * A list of entity types to group by (when matchingMethod is Selected). Only entities defined in the current alert
+     * rule may be used.
      */
     @JsonProperty(value = "groupByEntities")
     private List<EntityMappingType> groupByEntities;
@@ -54,8 +52,8 @@ public final class GroupingConfiguration {
     private List<AlertDetail> groupByAlertDetails;
 
     /*
-     * A list of custom details keys to group by (when matchingMethod is
-     * Selected). Only keys defined in the current alert rule may be used.
+     * A list of custom details keys to group by (when matchingMethod is Selected). Only keys defined in the current
+     * alert rule may be used.
      */
     @JsonProperty(value = "groupByCustomDetails")
     private List<String> groupByCustomDetails;
