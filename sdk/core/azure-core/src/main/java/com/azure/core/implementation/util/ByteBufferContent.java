@@ -16,31 +16,28 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
- * A {@link BinaryDataContent} implementation which is backed by a serializable object.
+ * A {@link BinaryDataContent} implementation which is backed by a {@link ByteBuffer}.
  */
-public final class SerializableContent extends BinaryDataContent {
-
-    private final Object content;
-    private final ObjectSerializer serializer;
+public final class ByteBufferContent extends BinaryDataContent {
+    private final ByteBuffer content;
 
     private volatile byte[] bytes;
-    private static final AtomicReferenceFieldUpdater<SerializableContent, byte[]> BYTES_UPDATER
-        = AtomicReferenceFieldUpdater.newUpdater(SerializableContent.class, byte[].class, "bytes");
+    private static final AtomicReferenceFieldUpdater<ByteBufferContent, byte[]> BYTES_UPDATER
+        = AtomicReferenceFieldUpdater.newUpdater(ByteBufferContent.class, byte[].class, "bytes");
 
     /**
-     * Creates a new instance of {@link SerializableContent}.
-     * @param content The serializable object that forms the content of this instance.
-     * @param serializer The serializer that serializes the {@code content}.
-     * @throws NullPointerException if {@code serializer} is null.
+     * Creates a new instance of {@link BinaryDataContent}.
+     *
+     * @param content The {@link ByteBuffer} content.
+     * @throws NullPointerException If {@code content} is null.
      */
-    public SerializableContent(Object content, ObjectSerializer serializer) {
-        this.content = content;
-        this.serializer = Objects.requireNonNull(serializer, "'serializer' cannot be null.");
+    public ByteBufferContent(ByteBuffer content) {
+        this.content = Objects.requireNonNull(content, "'content' cannot be null.");
     }
 
     @Override
     public Long getLength() {
-        return this.content == null ? null : (long) toBytes().length;
+        return (long) content.remaining();
     }
 
     @Override
@@ -60,17 +57,17 @@ public final class SerializableContent extends BinaryDataContent {
 
     @Override
     public InputStream toStream() {
-        return new ByteArrayInputStream(getBytes());
+        return new ByteArrayInputStream(toBytes());
     }
 
     @Override
     public ByteBuffer toByteBuffer() {
-        return ByteBuffer.wrap(toBytes()).asReadOnlyBuffer();
+        return content.asReadOnlyBuffer();
     }
 
     @Override
     public Flux<ByteBuffer> toFluxByteBuffer() {
-        return Mono.fromSupplier(() -> ByteBuffer.wrap(toBytes())).flux();
+        return Flux.just(content).map(ByteBuffer::asReadOnlyBuffer);
     }
 
     @Override
@@ -89,6 +86,12 @@ public final class SerializableContent extends BinaryDataContent {
     }
 
     private byte[] getBytes() {
-        return serializer.serializeToBytes(content);
+        byte[] bytes = new byte[content.remaining()];
+
+        content.mark();
+        content.put(bytes);
+        content.flip();
+
+        return bytes;
     }
 }

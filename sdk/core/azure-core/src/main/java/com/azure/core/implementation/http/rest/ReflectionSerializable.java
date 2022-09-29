@@ -1,0 +1,352 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.core.implementation.http.rest;
+
+import com.azure.core.implementation.AccessibleByteArrayOutputStream;
+import com.azure.core.implementation.ReflectionUtils;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
+
+import javax.xml.stream.XMLStreamException;
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.lang.invoke.LambdaMetafactory;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.nio.ByteBuffer;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static java.lang.invoke.MethodType.methodType;
+
+/**
+ * Utility class that handles creating and using {@code JsonSerializable} and {@code XmlSerializable} reflectively while
+ * they are in beta.
+ * <p>
+ * Once {@code azure-json} and {@code azure-xml} GA this can be replaced with direct usage of the types. This is
+ * separated out from what uses it to keep those code paths clean.
+ */
+public final class ReflectionSerializable {
+    private static final ClientLogger LOGGER = new ClientLogger(ReflectionSerializable.class);
+
+    private static final Class<?> JSON_SERIALIZABLE;
+    private static final Class<?> JSON_READER;
+
+    private static final CreateJsonReader JSON_READER_CREATOR;
+    private static final CreateJsonWriter JSON_WRITER_CREATOR;
+    private static final JsonWriterWriteJson JSON_WRITER_WRITE_JSON_SERIALIZABLE;
+    static final boolean JSON_SERIALIZABLE_SUPPORTED;
+    private static final Map<Class<?>, JsonSerializableReadJson> FROM_JSON_CACHE;
+
+    private static final Class<?> XML_SERIALIZABLE;
+    private static final Class<?> XML_READER;
+
+    private static final CreateXmlReader XML_READER_CREATOR;
+    private static final CreateXmlWriter XML_WRITER_CREATOR;
+    private static final XmlWriterWriteStartDocument XML_WRITER_WRITE_XML_START_DOCUMENT;
+    private static final XmlWriterWriteXml XML_WRITER_WRITE_XML_SERIALIZABLE;
+    static final boolean XML_SERIALIZABLE_SUPPORTED;
+    private static final Map<Class<?>, XmlSerializableReadXml> FROM_XML_CACHE;
+
+    static {
+        MethodHandles.Lookup defaultLookup = MethodHandles.lookup();
+
+        Class<?> jsonSerializable = null;
+        Class<?> jsonReader = null;
+        CreateJsonReader jsonReaderCreator = null;
+        CreateJsonWriter jsonWriterCreator = null;
+        JsonWriterWriteJson jsonWriterWriteJsonSerializable = null;
+        boolean jsonSerializableSupported = false;
+        try {
+            jsonSerializable = Class.forName("com.azure.json.JsonSerializable");
+            jsonReader = Class.forName("com.azure.json.JsonReader");
+
+            Class<?> jsonProviders = Class.forName("com.azure.json.JsonProviders");
+            MethodHandles.Lookup lookup = ReflectionUtils.getLookupToUse(jsonProviders);
+
+            MethodHandle handle = lookup.unreflect(jsonProviders.getDeclaredMethod("createReader", byte[].class));
+            jsonReaderCreator = (CreateJsonReader) LambdaMetafactory.metafactory(defaultLookup, "createJsonReader",
+                    methodType(CreateJsonReader.class), methodType(Object.class, byte[].class), handle, handle.type())
+                .getTarget()
+                .invoke();
+
+            handle = lookup.unreflect(jsonProviders.getDeclaredMethod("createWriter", OutputStream.class));
+            jsonWriterCreator = (CreateJsonWriter) LambdaMetafactory.metafactory(defaultLookup, "createJsonWriter",
+                    methodType(CreateJsonWriter.class), methodType(Object.class, OutputStream.class), handle,
+                    handle.type())
+                .getTarget()
+                .invoke();
+
+            Class<?> jsonWriter = Class.forName("com.azure.json.JsonWriter");
+            handle = lookup.unreflect(jsonWriter.getDeclaredMethod("writeJson", jsonSerializable));
+            jsonWriterWriteJsonSerializable = (JsonWriterWriteJson) LambdaMetafactory.metafactory(defaultLookup,
+                    "writeJson", methodType(JsonWriterWriteJson.class),
+                    methodType(void.class, Object.class, Object.class), handle, handle.type())
+                .getTarget()
+                .invoke();
+
+            jsonSerializableSupported = true;
+        } catch (Throwable e) {
+            if (e instanceof LinkageError || e instanceof Exception) {
+                LOGGER.log(LogLevel.VERBOSE, () -> "JsonSerializable serialization and deserialization isn't "
+                    + "supported. If it is required add a dependency of 'com.azure:azure-json', or another "
+                    + "dependencies which include 'com.azure:azure-json' as a transitive dependency. If your "
+                    + "application runs as expected this informational message can be ignored.");
+            } else {
+                throw (Error) e;
+            }
+        }
+
+        JSON_SERIALIZABLE = jsonSerializable;
+        JSON_READER = jsonReader;
+        JSON_READER_CREATOR = jsonReaderCreator;
+        JSON_WRITER_CREATOR = jsonWriterCreator;
+        JSON_WRITER_WRITE_JSON_SERIALIZABLE = jsonWriterWriteJsonSerializable;
+        JSON_SERIALIZABLE_SUPPORTED = jsonSerializableSupported;
+        FROM_JSON_CACHE = JSON_SERIALIZABLE_SUPPORTED ? new ConcurrentHashMap<>() : null;
+
+        Class<?> xmlSerializable = null;
+        Class<?> xmlReader = null;
+        CreateXmlReader xmlReaderCreator = null;
+        CreateXmlWriter xmlWriterCreator = null;
+        XmlWriterWriteStartDocument xmlWriterWriteStartDocument = null;
+        XmlWriterWriteXml xmlWriterWriteXmlSerializable = null;
+        boolean xmlSerializableSupported = false;
+        try {
+            xmlSerializable = Class.forName("com.azure.xml.XmlSerializable");
+            xmlReader = Class.forName("com.azure.xml.XmlReader");
+
+            Class<?> xmlProviders = Class.forName("com.azure.xml.XmlProviders");
+            MethodHandles.Lookup lookup = ReflectionUtils.getLookupToUse(xmlProviders);
+            MethodHandle handle = lookup.unreflect(xmlProviders.getDeclaredMethod("createReader", byte[].class));
+
+            xmlReaderCreator = (CreateXmlReader) LambdaMetafactory.metafactory(defaultLookup, "createXmlReader",
+                    methodType(CreateXmlReader.class), methodType(Object.class, byte[].class), handle, handle.type())
+                .getTarget()
+                .invoke();
+
+            handle = lookup.unreflect(xmlProviders.getDeclaredMethod("createWriter", OutputStream.class));
+            xmlWriterCreator = (CreateXmlWriter) LambdaMetafactory.metafactory(defaultLookup, "createXmlWriter",
+                    methodType(CreateXmlWriter.class), methodType(Object.class, OutputStream.class), handle,
+                    handle.type())
+                .getTarget()
+                .invoke();
+
+            Class<?> xmlWriter = Class.forName("com.azure.xml.XmlWriter");
+            handle = lookup.unreflect(xmlWriter.getDeclaredMethod("writeStartDocument"));
+            xmlWriterWriteStartDocument = (XmlWriterWriteStartDocument) LambdaMetafactory.metafactory(defaultLookup,
+                    "writeStartDocument", methodType(XmlWriterWriteStartDocument.class), methodType(void.class), handle,
+                    handle.type())
+                .getTarget()
+                .invoke();
+
+            handle = lookup.unreflect(xmlWriter.getDeclaredMethod("writeXml", xmlSerializable));
+            xmlWriterWriteXmlSerializable = (XmlWriterWriteXml) LambdaMetafactory.metafactory(defaultLookup, "writeXml",
+                    methodType(XmlWriterWriteXml.class), methodType(Object.class, Object.class, Object.class), handle,
+                    handle.type())
+                .getTarget()
+                .invoke();
+
+            xmlSerializableSupported = true;
+        } catch (Throwable e) {
+            if (e instanceof LinkageError || e instanceof Exception) {
+                LOGGER.log(LogLevel.VERBOSE, () -> "XmlSerializable serialization and deserialization isn't supported. "
+                    + "If it is required add a dependency of 'com.azure:azure-xml', or another dependencies which "
+                    + "include 'com.azure:azure-xml' as a transitive dependency. If your application runs as expected "
+                    + "this informational message can be ignored.");
+            } else {
+                throw (Error) e;
+            }
+        }
+
+        XML_SERIALIZABLE = xmlSerializable;
+        XML_READER = xmlReader;
+        XML_READER_CREATOR = xmlReaderCreator;
+        XML_WRITER_CREATOR = xmlWriterCreator;
+        XML_WRITER_WRITE_XML_START_DOCUMENT = xmlWriterWriteStartDocument;
+        XML_WRITER_WRITE_XML_SERIALIZABLE = xmlWriterWriteXmlSerializable;
+        XML_SERIALIZABLE_SUPPORTED = xmlSerializableSupported;
+        FROM_XML_CACHE = XML_SERIALIZABLE_SUPPORTED ? new ConcurrentHashMap<>() : null;
+    }
+
+    /**
+     * Whether {@code JsonSerializable} is supported and the {@code bodyContentClass} is an instance of it.
+     *
+     * @param bodyContentClass The body content class.
+     * @return Whether {@code bodyContentClass} can be used as {@code JsonSerializable}.
+     */
+    public static boolean supportsJsonSerializable(Class<?> bodyContentClass) {
+        return JSON_SERIALIZABLE_SUPPORTED && JSON_SERIALIZABLE.isAssignableFrom(bodyContentClass);
+    }
+
+    /**
+     * Serializes the {@code jsonSerializable} as an instance of {@code JsonSerializable}.
+     *
+     * @param jsonSerializable The {@code JsonSerializable} body content.
+     * @return The {@link ByteBuffer} representing the serialized {@code jsonSerializable}.
+     * @throws IOException If an error occurs during serialization.
+     */
+    static ByteBuffer serializeAsJsonSerializable(Object jsonSerializable) throws IOException {
+        AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
+        try (Closeable jsonWriter = JSON_WRITER_CREATOR.createJsonWriter(outputStream)) {
+            JSON_WRITER_WRITE_JSON_SERIALIZABLE.writeJson(jsonWriter, jsonSerializable);
+        }
+
+        return ByteBuffer.wrap(outputStream.toByteArray(), 0, outputStream.count());
+    }
+
+    /**
+     * Deserializes the {@code json} as an instance of {@code JsonSerializable}.
+     *
+     * @param jsonSerializable The {@code JsonSerializable} represented by the {@code json}.
+     * @param json The JSON being deserialized.
+     * @return An instance of {@code jsonSerializable} based on the {@code json}.
+     * @throws IOException If an error occurs during deserialization.
+     */
+    public static Object deserializeAsJsonSerializable(Class<?> jsonSerializable, byte[] json) throws IOException {
+        if (FROM_JSON_CACHE.size() >= 10000) {
+            FROM_JSON_CACHE.clear();
+        }
+
+        JsonSerializableReadJson readJson = FROM_JSON_CACHE.computeIfAbsent(jsonSerializable, clazz -> {
+            try {
+                MethodHandles.Lookup lookup = ReflectionUtils.getLookupToUse(clazz);
+                MethodHandle handle = lookup.unreflect(jsonSerializable.getMethod("fromJson", JSON_READER));
+
+                return (JsonSerializableReadJson) LambdaMetafactory.metafactory(MethodHandles.lookup(), "readJson",
+                        methodType(JsonSerializableReadJson.class), methodType(Object.class, Object.class), handle,
+                        handle.type())
+                    .getTarget()
+                    .invoke();
+            } catch (Throwable e) {
+                if (e instanceof Error) {
+                    throw (Error) e;
+                } else {
+                    throw LOGGER.logExceptionAsError(new IllegalStateException(e));
+                }
+            }
+        });
+
+        try (Closeable jsonReader = JSON_READER_CREATOR.createJsonReader(json)) {
+            return readJson.readJson(jsonReader);
+        }
+    }
+
+    @FunctionalInterface
+    private interface CreateJsonWriter {
+        <T extends Closeable> T createJsonWriter(OutputStream outputStream) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonWriterWriteJson {
+        void writeJson(Object jsonWriter, Object jsonSerializable) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface CreateJsonReader {
+        <T extends Closeable> T createJsonReader(byte[] bytes) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonSerializableReadJson {
+        Object readJson(Object jsonReader);
+    }
+
+    /**
+     * Whether {@code XmlSerializable} is supported and the {@code bodyContentClass} is an instance of it.
+     *
+     * @param bodyContentClass The body content class.
+     * @return Whether {@code bodyContentClass} can be used as {@code XmlSerializable}.
+     */
+    public static boolean supportsXmlSerializable(Class<?> bodyContentClass) {
+        return XML_SERIALIZABLE_SUPPORTED && XML_SERIALIZABLE.isAssignableFrom(bodyContentClass);
+    }
+
+    /**
+     * Serializes the {@code bodyContent} as an instance of {@code XmlSerializable}.
+     *
+     * @param bodyContent The {@code XmlSerializable} body content.
+     * @return The {@link ByteBuffer} representing the serialized {@code bodyContent}.
+     * @throws IOException If the XmlWriter fails to close properly.
+     */
+    static ByteBuffer serializeAsXmlSerializable(Object bodyContent) throws IOException {
+        AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
+        try (Closeable xmlWriter = XML_WRITER_CREATOR.createXmlWriter(outputStream)) {
+            XML_WRITER_WRITE_XML_START_DOCUMENT.writeStartDocument(xmlWriter);
+            XML_WRITER_WRITE_XML_SERIALIZABLE.writeXml(xmlWriter, bodyContent);
+        } catch (XMLStreamException e) {
+            throw new IOException(e);
+        }
+
+        return ByteBuffer.wrap(outputStream.toByteArray(), 0, outputStream.count());
+    }
+
+    /**
+     * Deserializes the {@code xml} as an instance of {@code XmlSerializable}.
+     *
+     * @param xmlSerializable The {@code XmlSerializable} represented by the {@code xml}.
+     * @param xml The XML being deserialized.
+     * @return An instance of {@code xmlSerializable} based on the {@code xml}.
+     * @throws IOException If the XmlReader fails to close properly.
+     */
+    public static Object deserializeAsXmlSerializable(Class<?> xmlSerializable, byte[] xml) throws IOException {
+        if (FROM_XML_CACHE.size() >= 10000) {
+            FROM_XML_CACHE.clear();
+        }
+
+        XmlSerializableReadXml readXml = FROM_XML_CACHE.computeIfAbsent(xmlSerializable, clazz -> {
+            try {
+                MethodHandles.Lookup lookup = ReflectionUtils.getLookupToUse(clazz);
+                MethodHandle handle = lookup.unreflect(xmlSerializable.getMethod("fromXml", XML_READER));
+
+                return (XmlSerializableReadXml) LambdaMetafactory.metafactory(MethodHandles.lookup(), "readXml",
+                        methodType(XmlSerializableReadXml.class), methodType(Object.class, Object.class), handle,
+                        handle.type())
+                    .getTarget()
+                    .invoke();
+            } catch (Throwable e) {
+                if (e instanceof Error) {
+                    throw (Error) e;
+                } else {
+                    throw LOGGER.logExceptionAsError(new IllegalStateException(e));
+                }
+            }
+        });
+
+        try (Closeable xmlReader = XML_READER_CREATOR.createXmlReader(xml)) {
+            return readXml.readXml(xmlReader);
+        } catch (XMLStreamException e) {
+            throw new IOException(e);
+        }
+    }
+
+    @FunctionalInterface
+    private interface CreateXmlWriter {
+        <T extends Closeable> T createXmlWriter(OutputStream outputStream) throws XMLStreamException;
+    }
+
+    @FunctionalInterface
+    private interface XmlWriterWriteStartDocument {
+        void writeStartDocument(Object xmlWriter) throws XMLStreamException;
+    }
+
+    @FunctionalInterface
+    private interface XmlWriterWriteXml {
+        void writeXml(Object xmlWriter, Object jsonSerializable) throws XMLStreamException;
+    }
+
+    @FunctionalInterface
+    private interface CreateXmlReader {
+        <T extends Closeable> T createXmlReader(byte[] bytes) throws XMLStreamException;
+    }
+
+    @FunctionalInterface
+    private interface XmlSerializableReadXml {
+        Object readXml(Object xmlReader);
+    }
+
+    private ReflectionSerializable() {
+    }
+}
