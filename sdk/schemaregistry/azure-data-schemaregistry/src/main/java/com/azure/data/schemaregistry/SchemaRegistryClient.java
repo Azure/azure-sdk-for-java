@@ -131,7 +131,7 @@ public final class SchemaRegistryClient {
      *
      * @param schemaId The unique identifier of the schema.
      *
-     * @return The {@link SchemaProperties} associated with the given {@code schemaId}.
+     * @return The {@link SchemaRegistrySchema} associated with the given {@code schemaId}.
      *
      * @throws NullPointerException if {@code schemaId} is null.
      * @throws ResourceNotFoundException if a schema with the matching {@code schemaId} could not be found.
@@ -150,7 +150,7 @@ public final class SchemaRegistryClient {
      * @param schemaName Name of the schema
      * @param schemaVersion Version of schema
      *
-     * @return The {@link SchemaProperties} matching the parameters.
+     * @return The {@link SchemaRegistrySchema} matching the parameters.
      *
      * @throws NullPointerException if {@code groupName} or {@code schemaName} is null.
      * @throws ResourceNotFoundException if a schema with the matching {@code groupName} or {@code schemaName} could
@@ -169,7 +169,7 @@ public final class SchemaRegistryClient {
      * @param schemaId The unique identifier of the schema.
      * @param context The context to pass to the Http pipeline.
      *
-     * @return The {@link SchemaProperties} associated with the given {@code schemaId} and its HTTP response.
+     * @return The {@link SchemaRegistrySchema} associated with the given {@code schemaId} and its HTTP response.
      *
      * @throws NullPointerException if {@code schemaId} is null.
      * @throws ResourceNotFoundException if a schema with the matching {@code schemaId} could not be found.
@@ -189,7 +189,7 @@ public final class SchemaRegistryClient {
      * @param schemaVersion Version of schema
      * @param context The context to pass to the Http pipeline.
      *
-     * @return The {@link SchemaProperties} matching the parameters.
+     * @return The {@link SchemaRegistrySchema} matching the parameters.
      *
      * @throws NullPointerException if {@code groupName} or {@code schemaName} is null.
      * @throws ResourceNotFoundException if a schema with the matching {@code groupName} or {@code schemaName} could
