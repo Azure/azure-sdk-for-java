@@ -32,6 +32,9 @@ public class TimezoneCustomization extends Customization {
 
         // customize timezone windows
         customizeTimezoneWindows(models);
+
+        // customize Timezone Iana Version Result
+        customizeTimezoneIanaVersionResult(models);
     }
 
     // Customizes the country record class
@@ -199,5 +202,16 @@ public class TimezoneCustomization extends Customization {
     private void customizeTimezoneWindows(PackageCustomization models) {
         ClassCustomization classCustomization = models.getClass("TimezoneWindows");
         classCustomization.removeMethod("setIanaIds");
+    }
+
+    // Customizes the Timezone Iana Version Result
+    private void customizeTimezoneIanaVersionResult(PackageCustomization models) {
+        ClassCustomization classCustomization = models.getClass("TimezoneIanaVersionResult");
+
+        classCustomization.addConstructor(
+            "private TimezoneIanaVersionResult() {\n" + 
+            "}")
+            .getJavadoc()
+            .setDescription("Set default TimezoneIanaVersionResult constructor to private");
     }
 }

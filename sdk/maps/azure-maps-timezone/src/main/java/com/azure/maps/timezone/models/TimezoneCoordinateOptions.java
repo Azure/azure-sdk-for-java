@@ -115,7 +115,7 @@ public final class TimezoneCoordinateOptions {
      * @return daylight savings time. Alternatively, use alias "tf". The start date from which daylight savings time
      *     (DST) transitions are requested, only applies when "options" = all or "options" = transitions.
      */
-    public OffsetDateTime getDaylightSavingsTimeFrom() {
+    public OffsetDateTime getDaylightSavingsTime() {
         return daylightSavingsTimeFrom;
     }
 
@@ -125,7 +125,7 @@ public final class TimezoneCoordinateOptions {
      *     (DST) transitions are requested, only applies when "options" = all or "options" = transitions.
      * @return TimezoneCoordinateOptions
      */
-    public TimezoneCoordinateOptions setDaylightSavingsTimeFrom(OffsetDateTime daylightSavingsTimeFrom) {
+    public TimezoneCoordinateOptions setDaylightSavingsTime(OffsetDateTime daylightSavingsTimeFrom) {
         this.daylightSavingsTimeFrom = daylightSavingsTimeFrom;
         return this;
     }

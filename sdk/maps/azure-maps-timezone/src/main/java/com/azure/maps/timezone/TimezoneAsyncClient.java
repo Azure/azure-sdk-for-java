@@ -226,7 +226,7 @@ public final class TimezoneAsyncClient {
             options.getLanguage(),
             options.getTimezoneOptions(),
             options.getTimestamp(),
-            options.getDaylightSavingsTimeFrom(),
+            options.getDaylightSavingsTime(),
             options.getDaylightSavingsTimeLastingYears(), 
             context).onErrorMap(throwable -> {
                 if (!(throwable instanceof ErrorResponseException)) {

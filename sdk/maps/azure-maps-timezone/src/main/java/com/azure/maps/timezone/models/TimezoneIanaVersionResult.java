@@ -16,6 +16,9 @@ public final class TimezoneIanaVersionResult {
     @JsonProperty(value = "Version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
+    /** Set default TimezoneIanaVersionResult constructor to private */
+    private TimezoneIanaVersionResult() {}
+
     /**
      * Get the version property: Version property.
      *
