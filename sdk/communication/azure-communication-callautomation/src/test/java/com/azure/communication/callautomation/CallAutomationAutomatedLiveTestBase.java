@@ -193,12 +193,13 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
     protected <T extends CallAutomationEventBase> T waitForEvent(Class<T> eventType, String callConnectionId, Duration timeOut) throws InterruptedException {
         var timeOutTime = LocalDateTime.now().plusSeconds(timeOut.getSeconds());
         while (LocalDateTime.now().isBefore(timeOutTime)) {
-            T event = (T) eventStore.get(callConnectionId).get(eventType);
+            if (eventStore.get(callConnectionId) != null) {
+                T event = (T) eventStore.get(callConnectionId).get(eventType);
 
-            if (event != null) {
-                return event;
+                if (event != null) {
+                    return event;
+                }
             }
-
             Thread.sleep(1000);
         }
         return null;
