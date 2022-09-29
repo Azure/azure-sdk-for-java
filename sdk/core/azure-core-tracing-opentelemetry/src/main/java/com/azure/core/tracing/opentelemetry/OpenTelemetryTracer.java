@@ -362,7 +362,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         SpanBuilder spanBuilder = tracer.spanBuilder(spanNameKey)
             .setSpanKind(spanKind);
 
-        io.opentelemetry.context.Context parentContext =  getTraceContextOrDefault(context, io.opentelemetry.context.Context.current());
+        io.opentelemetry.context.Context parentContext = getTraceContextOrDefault(context, io.opentelemetry.context.Context.current());
         // if remote parent is provided, it has higher priority
         if (remoteParentContext != null) {
             spanBuilder.setParent(parentContext.with(Span.wrap(remoteParentContext)));

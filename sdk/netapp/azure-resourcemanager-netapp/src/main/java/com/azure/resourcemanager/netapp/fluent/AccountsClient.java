@@ -17,7 +17,9 @@ import com.azure.resourcemanager.netapp.models.NetAppAccountPatch;
 /** An instance of this class provides access to all the operations defined in AccountsClient. */
 public interface AccountsClient {
     /**
-     * List and describe all NetApp accounts in the subscription.
+     * Describe all NetApp Accounts in a subscription
+     *
+     * <p>List and describe all NetApp accounts in the subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -27,7 +29,9 @@ public interface AccountsClient {
     PagedIterable<NetAppAccountInner> list();
 
     /**
-     * List and describe all NetApp accounts in the subscription.
+     * Describe all NetApp Accounts in a subscription
+     *
+     * <p>List and describe all NetApp accounts in the subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -39,7 +43,9 @@ public interface AccountsClient {
     PagedIterable<NetAppAccountInner> list(Context context);
 
     /**
-     * List and describe all NetApp accounts in the resource group.
+     * Describe all NetApp Accounts in a resource group
+     *
+     * <p>List and describe all NetApp accounts in the resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -51,7 +57,9 @@ public interface AccountsClient {
     PagedIterable<NetAppAccountInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * List and describe all NetApp accounts in the resource group.
+     * Describe all NetApp Accounts in a resource group
+     *
+     * <p>List and describe all NetApp accounts in the resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
@@ -64,7 +72,9 @@ public interface AccountsClient {
     PagedIterable<NetAppAccountInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Get the NetApp account.
+     * Describe a NetApp Account
+     *
+     * <p>Get the NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -77,7 +87,9 @@ public interface AccountsClient {
     NetAppAccountInner getByResourceGroup(String resourceGroupName, String accountName);
 
     /**
-     * Get the NetApp account.
+     * Describe a NetApp Account
+     *
+     * <p>Get the NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -92,7 +104,9 @@ public interface AccountsClient {
         String resourceGroupName, String accountName, Context context);
 
     /**
-     * Create or update the specified NetApp account within the resource group.
+     * Create or update a NetApp account
+     *
+     * <p>Create or update the specified NetApp account within the resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -107,7 +121,9 @@ public interface AccountsClient {
         String resourceGroupName, String accountName, NetAppAccountInner body);
 
     /**
-     * Create or update the specified NetApp account within the resource group.
+     * Create or update a NetApp account
+     *
+     * <p>Create or update the specified NetApp account within the resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -123,7 +139,9 @@ public interface AccountsClient {
         String resourceGroupName, String accountName, NetAppAccountInner body, Context context);
 
     /**
-     * Create or update the specified NetApp account within the resource group.
+     * Create or update a NetApp account
+     *
+     * <p>Create or update the specified NetApp account within the resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -137,7 +155,9 @@ public interface AccountsClient {
     NetAppAccountInner createOrUpdate(String resourceGroupName, String accountName, NetAppAccountInner body);
 
     /**
-     * Create or update the specified NetApp account within the resource group.
+     * Create or update a NetApp account
+     *
+     * <p>Create or update the specified NetApp account within the resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -153,7 +173,9 @@ public interface AccountsClient {
         String resourceGroupName, String accountName, NetAppAccountInner body, Context context);
 
     /**
-     * Delete the specified NetApp account.
+     * Delete a NetApp account
+     *
+     * <p>Delete the specified NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -166,7 +188,9 @@ public interface AccountsClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName);
 
     /**
-     * Delete the specified NetApp account.
+     * Delete a NetApp account
+     *
+     * <p>Delete the specified NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -180,7 +204,9 @@ public interface AccountsClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, Context context);
 
     /**
-     * Delete the specified NetApp account.
+     * Delete a NetApp account
+     *
+     * <p>Delete the specified NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -192,7 +218,9 @@ public interface AccountsClient {
     void delete(String resourceGroupName, String accountName);
 
     /**
-     * Delete the specified NetApp account.
+     * Delete a NetApp account
+     *
+     * <p>Delete the specified NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -205,7 +233,9 @@ public interface AccountsClient {
     void delete(String resourceGroupName, String accountName, Context context);
 
     /**
-     * Patch the specified NetApp account.
+     * Update a NetApp account
+     *
+     * <p>Patch the specified NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -220,7 +250,9 @@ public interface AccountsClient {
         String resourceGroupName, String accountName, NetAppAccountPatch body);
 
     /**
-     * Patch the specified NetApp account.
+     * Update a NetApp account
+     *
+     * <p>Patch the specified NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -236,7 +268,9 @@ public interface AccountsClient {
         String resourceGroupName, String accountName, NetAppAccountPatch body, Context context);
 
     /**
-     * Patch the specified NetApp account.
+     * Update a NetApp account
+     *
+     * <p>Patch the specified NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -250,7 +284,9 @@ public interface AccountsClient {
     NetAppAccountInner update(String resourceGroupName, String accountName, NetAppAccountPatch body);
 
     /**
-     * Patch the specified NetApp account.
+     * Update a NetApp account
+     *
+     * <p>Patch the specified NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -263,4 +299,69 @@ public interface AccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetAppAccountInner update(String resourceGroupName, String accountName, NetAppAccountPatch body, Context context);
+
+    /**
+     * Renew identity credentials
+     *
+     * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
+     * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRenewCredentials(String resourceGroupName, String accountName);
+
+    /**
+     * Renew identity credentials
+     *
+     * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
+     * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRenewCredentials(
+        String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Renew identity credentials
+     *
+     * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
+     * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void renewCredentials(String resourceGroupName, String accountName);
+
+    /**
+     * Renew identity credentials
+     *
+     * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
+     * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void renewCredentials(String resourceGroupName, String accountName, Context context);
 }

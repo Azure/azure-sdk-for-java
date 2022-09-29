@@ -4,11 +4,13 @@
 package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.EmptyEnvironmentConfigurationSource;
 import com.azure.identity.util.TestUtils;
+import com.microsoft.aad.msal4j.MsalServiceException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -176,5 +178,60 @@ public class DefaultAzureCredentialTest {
 
         // test
         new DefaultAzureCredentialBuilder().managedIdentityClientId(CLIENT_ID).managedIdentityResourceId(resourceId).build();
+    }
+
+    @Test
+    public void testInvalidAdditionalTenant() throws Exception {
+        // setup
+        Configuration.getGlobalConfiguration()
+            .put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo")
+            .put(Configuration.PROPERTY_AZURE_CLIENT_SECRET, "bar")
+            .put(Configuration.PROPERTY_AZURE_TENANT_ID, "baz");
+
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
+            .setTenantId("newTenant");
+
+        DefaultAzureCredential credential =
+            new DefaultAzureCredentialBuilder().additionallyAllowedTenants("RANDOM").build();
+
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e instanceof ClientAuthenticationException && (e.getMessage().contains("The current credential is not configured to")))
+            .verify();
+    }
+
+    @Test
+    public void testInvalidMultiTenantAuth() throws Exception {
+        // setup
+        Configuration.getGlobalConfiguration()
+            .put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo")
+            .put(Configuration.PROPERTY_AZURE_CLIENT_SECRET, "bar")
+            .put(Configuration.PROPERTY_AZURE_TENANT_ID, "baz");
+
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
+            .setTenantId("newTenant");
+
+        DefaultAzureCredential credential =
+            new DefaultAzureCredentialBuilder().build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e instanceof ClientAuthenticationException && (e.getMessage().contains("The current credential is not configured to")))
+            .verify();
+    }
+
+    @Test
+    public void testValidMultiTenantAuth() throws Exception {
+        // setup
+        Configuration.getGlobalConfiguration()
+            .put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo")
+            .put(Configuration.PROPERTY_AZURE_CLIENT_SECRET, "bar")
+            .put(Configuration.PROPERTY_AZURE_TENANT_ID, "baz");
+
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
+            .setTenantId("newTenant");
+
+        DefaultAzureCredential credential =
+            new DefaultAzureCredentialBuilder().additionallyAllowedTenants("*").build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e.getCause() instanceof MsalServiceException)
+            .verify();
     }
 }

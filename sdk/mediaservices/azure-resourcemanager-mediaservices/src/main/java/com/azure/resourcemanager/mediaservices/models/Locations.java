@@ -10,7 +10,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of Locations. */
 public interface Locations {
     /**
-     * Checks whether the Media Service resource name is available.
+     * Check Name Availability
+     *
+     * <p>Checks whether the Media Service resource name is available.
      *
      * @param locationName Location name.
      * @param parameters The request parameters.
@@ -22,7 +24,9 @@ public interface Locations {
     EntityNameAvailabilityCheckOutput checkNameAvailability(String locationName, CheckNameAvailabilityInput parameters);
 
     /**
-     * Checks whether the Media Service resource name is available.
+     * Check Name Availability
+     *
+     * <p>Checks whether the Media Service resource name is available.
      *
      * @param locationName Location name.
      * @param parameters The request parameters.

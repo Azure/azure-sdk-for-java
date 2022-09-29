@@ -25,9 +25,8 @@ public class RestServiceLinkedService extends LinkedService {
     private Object url;
 
     /*
-     * Whether to validate server side SSL certificate when connecting to the
-     * endpoint.The default value is true. Type: boolean (or Expression with
-     * resultType boolean).
+     * Whether to validate server side SSL certificate when connecting to the endpoint.The default value is true. Type:
+     * boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "typeProperties.enableServerCertificateValidation")
     private Object enableServerCertificateValidation;
@@ -51,8 +50,7 @@ public class RestServiceLinkedService extends LinkedService {
     private SecretBase password;
 
     /*
-     * The application's client ID used in AadServicePrincipal authentication
-     * type.
+     * The application's client ID used in AadServicePrincipal authentication type.
      */
     @JsonProperty(value = "typeProperties.servicePrincipalId")
     private Object servicePrincipalId;
@@ -64,17 +62,15 @@ public class RestServiceLinkedService extends LinkedService {
     private SecretBase servicePrincipalKey;
 
     /*
-     * The tenant information (domain name or tenant ID) used in
-     * AadServicePrincipal authentication type under which your application
-     * resides.
+     * The tenant information (domain name or tenant ID) used in AadServicePrincipal authentication type under which
+     * your application resides.
      */
     @JsonProperty(value = "typeProperties.tenant")
     private Object tenant;
 
     /*
-     * Indicates the azure cloud type of the service principle auth. Allowed
-     * values are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany.
-     * Default value is the data factory regions’ cloud type. Type: string (or
+     * Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina,
+     * AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or
      * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.azureCloudType")
@@ -87,12 +83,44 @@ public class RestServiceLinkedService extends LinkedService {
     private Object aadResourceId;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /*
+     * The client ID associated with your application. Type: string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "typeProperties.clientId")
+    private Object clientId;
+
+    /*
+     * The client secret associated with your application.
+     */
+    @JsonProperty(value = "typeProperties.clientSecret")
+    private SecretBase clientSecret;
+
+    /*
+     * The token endpoint of the authorization server to acquire access token. Type: string (or Expression with
+     * resultType string).
+     */
+    @JsonProperty(value = "typeProperties.tokenEndpoint")
+    private Object tokenEndpoint;
+
+    /*
+     * The target service or resource to which the access will be requested. Type: string (or Expression with
+     * resultType string).
+     */
+    @JsonProperty(value = "typeProperties.resource")
+    private Object resource;
+
+    /*
+     * The scope of the access required. It describes what kind of access will be requested. Type: string (or
+     * Expression with resultType string).
+     */
+    @JsonProperty(value = "typeProperties.scope")
+    private Object scope;
 
     /**
      * Get the url property: The base URL of the REST service.
@@ -321,6 +349,114 @@ public class RestServiceLinkedService extends LinkedService {
      */
     public RestServiceLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /**
+     * Get the clientId property: The client ID associated with your application. Type: string (or Expression with
+     * resultType string).
+     *
+     * @return the clientId value.
+     */
+    public Object getClientId() {
+        return this.clientId;
+    }
+
+    /**
+     * Set the clientId property: The client ID associated with your application. Type: string (or Expression with
+     * resultType string).
+     *
+     * @param clientId the clientId value to set.
+     * @return the RestServiceLinkedService object itself.
+     */
+    public RestServiceLinkedService setClientId(Object clientId) {
+        this.clientId = clientId;
+        return this;
+    }
+
+    /**
+     * Get the clientSecret property: The client secret associated with your application.
+     *
+     * @return the clientSecret value.
+     */
+    public SecretBase getClientSecret() {
+        return this.clientSecret;
+    }
+
+    /**
+     * Set the clientSecret property: The client secret associated with your application.
+     *
+     * @param clientSecret the clientSecret value to set.
+     * @return the RestServiceLinkedService object itself.
+     */
+    public RestServiceLinkedService setClientSecret(SecretBase clientSecret) {
+        this.clientSecret = clientSecret;
+        return this;
+    }
+
+    /**
+     * Get the tokenEndpoint property: The token endpoint of the authorization server to acquire access token. Type:
+     * string (or Expression with resultType string).
+     *
+     * @return the tokenEndpoint value.
+     */
+    public Object getTokenEndpoint() {
+        return this.tokenEndpoint;
+    }
+
+    /**
+     * Set the tokenEndpoint property: The token endpoint of the authorization server to acquire access token. Type:
+     * string (or Expression with resultType string).
+     *
+     * @param tokenEndpoint the tokenEndpoint value to set.
+     * @return the RestServiceLinkedService object itself.
+     */
+    public RestServiceLinkedService setTokenEndpoint(Object tokenEndpoint) {
+        this.tokenEndpoint = tokenEndpoint;
+        return this;
+    }
+
+    /**
+     * Get the resource property: The target service or resource to which the access will be requested. Type: string (or
+     * Expression with resultType string).
+     *
+     * @return the resource value.
+     */
+    public Object getResource() {
+        return this.resource;
+    }
+
+    /**
+     * Set the resource property: The target service or resource to which the access will be requested. Type: string (or
+     * Expression with resultType string).
+     *
+     * @param resource the resource value to set.
+     * @return the RestServiceLinkedService object itself.
+     */
+    public RestServiceLinkedService setResource(Object resource) {
+        this.resource = resource;
+        return this;
+    }
+
+    /**
+     * Get the scope property: The scope of the access required. It describes what kind of access will be requested.
+     * Type: string (or Expression with resultType string).
+     *
+     * @return the scope value.
+     */
+    public Object getScope() {
+        return this.scope;
+    }
+
+    /**
+     * Set the scope property: The scope of the access required. It describes what kind of access will be requested.
+     * Type: string (or Expression with resultType string).
+     *
+     * @param scope the scope value to set.
+     * @return the RestServiceLinkedService object itself.
+     */
+    public RestServiceLinkedService setScope(Object scope) {
+        this.scope = scope;
         return this;
     }
 

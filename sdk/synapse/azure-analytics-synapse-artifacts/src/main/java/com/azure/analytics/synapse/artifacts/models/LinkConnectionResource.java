@@ -34,6 +34,12 @@ public final class LinkConnectionResource {
     @JsonProperty(value = "properties", required = true)
     private LinkConnection properties;
 
+    /*
+     * Link connection description
+     */
+    @JsonProperty(value = "description")
+    private String description;
+
     /**
      * Get the id property: Link connection id.
      *
@@ -111,6 +117,26 @@ public final class LinkConnectionResource {
      */
     public LinkConnectionResource setProperties(LinkConnection properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /**
+     * Get the description property: Link connection description.
+     *
+     * @return the description value.
+     */
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
+     * Set the description property: Link connection description.
+     *
+     * @param description the description value to set.
+     * @return the LinkConnectionResource object itself.
+     */
+    public LinkConnectionResource setDescription(String description) {
+        this.description = description;
         return this;
     }
 }

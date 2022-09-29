@@ -93,9 +93,9 @@ stages:
                   - '!sdk/**/session-records'
 
             - task: UsePythonVersion@0
-              displayName: 'Use Python 3.6'
+              displayName: 'Use Python $(PythonVersion)'
               inputs:
-                versionSpec: '3.6'
+                versionSpec: $(PythonVersion)
 
             - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
               parameters:
@@ -119,7 +119,6 @@ stages:
             - pwsh: |
                 $ArtifactsList = $('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId, uberJar | Where-Object -Not "uberJar")
                 $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
-                python --version
                 foreach($artifact in $ArtifactsList) {
                   $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 $($artifact.groupId) $($artifact.name) $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
                 }
@@ -273,9 +272,9 @@ stages:
                         - '!sdk/**/session-records'
 
                   - task: UsePythonVersion@0
-                    displayName: 'Use Python 3.6'
+                    displayName: 'Use Python $(PythonVersion)'
                     inputs:
-                      versionSpec: '3.6'
+                      versionSpec: $(PythonVersion)
 
                   # Apply the version increment to each library, which only updates the version_client.txt file,
                   # and then call to update_versions will then apply all of the updates.

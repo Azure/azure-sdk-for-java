@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-@Container(ru = TestConstants.MULTI_PARTITION_THROUGHPUT, autoScale = true)
+@Container()
 @CosmosIndexingPolicy()
 public class Person {
     private String id;

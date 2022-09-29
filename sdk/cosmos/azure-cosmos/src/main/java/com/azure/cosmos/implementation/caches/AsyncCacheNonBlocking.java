@@ -207,7 +207,7 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
                         })
                         .doOnError(throwable -> {
                             this.refreshInProgress.set(null);
-                            logger.warn("Background refresh task failed", throwable);
+                            logger.debug("Background refresh task failed", throwable);
                         })
                         .cache();
         }

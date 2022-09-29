@@ -181,7 +181,7 @@ public final class DynatraceObservabilityImpl implements DynatraceObservability 
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-09-01-preview";
+        this.apiVersion = "2021-09-01";
         this.monitors = new MonitorsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.tagRules = new TagRulesClientImpl(this);

@@ -83,9 +83,9 @@ jobs:
           JobType: 'Build'
 
       - task: UsePythonVersion@0
-        displayName: 'Use Python 3.6'
+        displayName: 'Use Python $(PythonVersion)'
         inputs:
-          versionSpec: '3.6'
+          versionSpec: $(PythonVersion)
 
       # This step needs to run before we update to using dev versions otherwise dependency
       # check in the script will not fully work because the versions will mismatch
@@ -230,9 +230,9 @@ jobs:
 
     steps:
       - task: UsePythonVersion@0
-        displayName: 'Use Python 3.6'
+        displayName: 'Use Python $(PythonVersion)'
         inputs:
-          versionSpec: '3.6'
+          versionSpec: $(PythonVersion)
 
       # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
       # as we require the github service connection to be loaded.

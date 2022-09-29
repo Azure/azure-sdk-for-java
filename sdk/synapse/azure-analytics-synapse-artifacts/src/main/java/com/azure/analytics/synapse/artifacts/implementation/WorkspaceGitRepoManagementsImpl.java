@@ -125,14 +125,7 @@ public final class WorkspaceGitRepoManagementsImpl {
     public Mono<GitHubAccessTokenResponse> getGitHubAccessTokenAsync(
             GitHubAccessTokenRequest gitHubAccessTokenRequest, String clientRequestId) {
         return getGitHubAccessTokenWithResponseAsync(gitHubAccessTokenRequest, clientRequestId)
-                .flatMap(
-                        (Response<GitHubAccessTokenResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -149,14 +142,7 @@ public final class WorkspaceGitRepoManagementsImpl {
             GitHubAccessTokenRequest gitHubAccessTokenRequest) {
         final String clientRequestId = null;
         return getGitHubAccessTokenWithResponseAsync(gitHubAccessTokenRequest, clientRequestId)
-                .flatMap(
-                        (Response<GitHubAccessTokenResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -174,14 +160,7 @@ public final class WorkspaceGitRepoManagementsImpl {
     public Mono<GitHubAccessTokenResponse> getGitHubAccessTokenAsync(
             GitHubAccessTokenRequest gitHubAccessTokenRequest, String clientRequestId, Context context) {
         return getGitHubAccessTokenWithResponseAsync(gitHubAccessTokenRequest, clientRequestId, context)
-                .flatMap(
-                        (Response<GitHubAccessTokenResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

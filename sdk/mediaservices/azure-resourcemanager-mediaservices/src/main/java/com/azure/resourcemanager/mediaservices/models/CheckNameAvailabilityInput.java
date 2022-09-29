@@ -17,8 +17,7 @@ public final class CheckNameAvailabilityInput {
     private String name;
 
     /*
-     * The account type. For a Media Services account, this should be
-     * 'MediaServices'.
+     * The account type. For a Media Services account, this should be 'MediaServices'.
      */
     @JsonProperty(value = "type")
     private String type;
