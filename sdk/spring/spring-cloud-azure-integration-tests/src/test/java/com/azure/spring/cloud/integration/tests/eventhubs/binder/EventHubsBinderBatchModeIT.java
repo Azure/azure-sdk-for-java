@@ -66,7 +66,7 @@ class EventHubsBinderBatchModeIT {
 
         @ServiceActivator(inputChannel = "errorChannel")
         public void processError(Message sendFailedMsg) {
-            LOGGER.info("receive produce error message: '{}'", sendFailedMsg.getPayload());
+            LOGGER.info("receive error message: '{}'", sendFailedMsg.getPayload());
         }
     }
 
