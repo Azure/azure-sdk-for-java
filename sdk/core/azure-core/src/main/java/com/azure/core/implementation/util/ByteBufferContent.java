@@ -89,7 +89,7 @@ public final class ByteBufferContent extends BinaryDataContent {
         byte[] bytes = new byte[content.remaining()];
 
         content.mark();
-        content.put(bytes);
+        content.get(bytes);
         content.flip();
 
         return bytes;
