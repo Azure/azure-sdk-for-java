@@ -51,7 +51,7 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
             CommunicationIdentifier caller = identityClient.createUser().block();
             CommunicationIdentifier target = identityClient.createUser().block();
 
-            String uniqueId = serviceBusWithNewCall(caller, target).block();
+            String uniqueId = serviceBusWithNewCall(caller, target);
 
             // create a call
             List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(target));

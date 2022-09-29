@@ -26,6 +26,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Type;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -65,7 +68,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS);
     }
 
-    protected Mono<String> serviceBusWithNewCall(CommunicationIdentifier caller, CommunicationIdentifier receiver) {
+    protected String serviceBusWithNewCall(CommunicationIdentifier caller, CommunicationIdentifier receiver) {
         String callerId = parseIdsFromIdentifier(caller);
         String receiverId = parseIdsFromIdentifier(receiver);
         String uniqueId = callerId + receiverId;
@@ -88,7 +91,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
 
         serviceBusProcessorClient.start();
         processorStore.put(uniqueId, serviceBusProcessorClient);
-        return Mono.just(uniqueId);
+        return uniqueId;
     }
 
     protected void messageHandler(ServiceBusReceivedMessageContext context) {
@@ -169,5 +172,36 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
 
     protected static String removeAllNonChar(String input) {
         return input.replaceAll("[^a-zA-Z0-9_-]", "");
+    }
+
+    protected String waitForIncomingCallContext(String callerMRIInput, Duration timeOut) throws InterruptedException {
+        String caller = removeAllNonChar(callerMRIInput);
+
+        var timeOutTime = LocalDateTime.now().plusSeconds(timeOut.getSeconds());
+        while (LocalDateTime.now().isBefore(timeOutTime))
+        {
+            String incomingcon = incomingCallContextStore.get(caller);
+            if (incomingcon != null)
+            {
+                incomingCallContextStore.remove(caller);
+                return incomingcon;
+            }
+            Thread.sleep(1000);
+        }
+        return null;
+    }
+
+    protected <T extends CallAutomationEventBase> T waitForEvent(Class<T> eventType, String callConnectionId, Duration timeOut) throws InterruptedException {
+        var timeOutTime = LocalDateTime.now().plusSeconds(timeOut.getSeconds());
+        while (LocalDateTime.now().isBefore(timeOutTime)) {
+            T event = (T) eventStore.get(callConnectionId).get(eventType);
+
+            if (event != null) {
+                return event;
+            }
+
+            Thread.sleep(1000);
+        }
+        return null;
     }
 }
