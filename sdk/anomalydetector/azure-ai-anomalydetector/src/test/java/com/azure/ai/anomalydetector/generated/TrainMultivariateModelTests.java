@@ -23,7 +23,7 @@ public final class TrainMultivariateModelTests extends AnomalyDetectorClientTest
         Response<BinaryData> response = anomalyDetectorClient.createMultivariateModelWithResponse(body, requestOptions);
         Assertions.assertEquals(201, response.getStatusCode());
         Assertions.assertEquals(
-                "{Endpoint}/anomalydetector/1.1/multivariate/models/{modelId}",
+                "{Endpoint}/anomalydetector/v1.1/multivariate/models/{modelId}",
                 response.getHeaders().get("Location").getValue());
         Assertions.assertEquals(
                 BinaryData.fromString(

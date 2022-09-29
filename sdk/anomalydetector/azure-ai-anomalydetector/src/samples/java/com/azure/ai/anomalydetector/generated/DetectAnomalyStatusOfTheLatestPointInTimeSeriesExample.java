@@ -20,7 +20,6 @@ public class DetectAnomalyStatusOfTheLatestPointInTimeSeriesExample {
                         .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("API_KEY")))
                         .apiVersion("v1.1")
                         .endpoint("{Endpoint}")
-                        .host("")
                         .buildClient();
         // BEGIN:com.azure.ai.anomalydetector.generated.detectlastpoint.detectanomalystatusofthelatestpointintimeseriesexample
         BinaryData body =

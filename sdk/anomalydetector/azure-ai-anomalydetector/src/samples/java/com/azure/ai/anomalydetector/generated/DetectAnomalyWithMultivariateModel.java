@@ -9,26 +9,25 @@ import com.azure.ai.anomalydetector.AnomalyDetectorClient;
 import com.azure.ai.anomalydetector.AnomalyDetectorClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.polling.SyncPoller;
 
 public class DetectAnomalyWithMultivariateModel {
     public static void main(String[] args) {
         AnomalyDetectorClient anomalyDetectorClient =
                 new AnomalyDetectorClientBuilder()
                         .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("API_KEY")))
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                         .apiVersion("v1.1")
-                        .host("")
+                        .endpoint("{Endpoint}")
                         .buildClient();
         // BEGIN:com.azure.ai.anomalydetector.generated.batchdetectanomaly.detectanomalywithmultivariatemodel
         BinaryData body =
                 BinaryData.fromString(
                         "{\"dataSource\":\"https://multiadsample.blob.core.windows.net/data/sample_data_2_1000.csv\",\"endTime\":\"2019-04-01T00:40:00Z\",\"startTime\":\"2019-04-01T00:15:00Z\",\"topContributorCount\":10}");
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response =
-                anomalyDetectorClient.batchDetectAnomalyWithResponse(
+        SyncPoller<BinaryData, BinaryData> response =
+                anomalyDetectorClient.beginBatchDetectAnomaly(
                         "45aad126-aafd-11ea-b8fb-d89ef3400c5f", body, requestOptions);
         // END:com.azure.ai.anomalydetector.generated.batchdetectanomaly.detectanomalywithmultivariatemodel
     }

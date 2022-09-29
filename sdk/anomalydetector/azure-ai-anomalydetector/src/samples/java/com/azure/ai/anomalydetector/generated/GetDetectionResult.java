@@ -18,9 +18,8 @@ public class GetDetectionResult {
         AnomalyDetectorClient anomalyDetectorClient =
                 new AnomalyDetectorClientBuilder()
                         .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("API_KEY")))
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                         .apiVersion("v1.1")
-                        .host("")
+                        .endpoint("{Endpoint}")
                         .buildClient();
         // BEGIN:com.azure.ai.anomalydetector.generated.getbatchdetectionresult.getdetectionresult
         RequestOptions requestOptions = new RequestOptions();
