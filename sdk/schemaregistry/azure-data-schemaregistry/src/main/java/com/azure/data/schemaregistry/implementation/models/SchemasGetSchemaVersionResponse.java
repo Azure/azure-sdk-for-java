@@ -9,23 +9,23 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import java.io.InputStream;
 
-/** Contains all response data for the getById operation. */
-public final class SchemasGetByIdResponse extends ResponseBase<SchemasGetByIdHeaders, InputStream> {
+/** Contains all response data for the getSchemaVersion operation. */
+public final class SchemasGetSchemaVersionResponse extends ResponseBase<SchemasGetSchemaVersionHeaders, InputStream> {
     /**
-     * Creates an instance of SchemasGetByIdResponse.
+     * Creates an instance of SchemasGetSchemaVersionResponse.
      *
-     * @param request the request which resulted in this SchemasGetByIdResponse.
+     * @param request the request which resulted in this SchemasGetSchemaVersionResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public SchemasGetByIdResponse(
+    public SchemasGetSchemaVersionResponse(
             HttpRequest request,
             int statusCode,
             HttpHeaders rawHeaders,
             InputStream value,
-            SchemasGetByIdHeaders headers) {
+            SchemasGetSchemaVersionHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

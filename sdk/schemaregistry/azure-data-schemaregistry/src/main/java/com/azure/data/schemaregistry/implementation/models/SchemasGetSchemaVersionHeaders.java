@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SchemasQueryIdByContentHeaders model. */
+/** The SchemasGetSchemaVersionHeaders model. */
 @Fluent
-public final class SchemasQueryIdByContentHeaders {
+public final class SchemasGetSchemaVersionHeaders {
     /*
      * The Schema-Version property.
      */
@@ -47,19 +47,26 @@ public final class SchemasQueryIdByContentHeaders {
     @JsonProperty(value = "Location")
     private String location;
 
+    /*
+     * The Content-Type property.
+     */
+    @JsonProperty(value = "Content-Type")
+    private String contentType;
+
     // HttpHeaders containing the raw property values.
     /**
-     * Creates an instance of SchemasQueryIdByContentHeaders class.
+     * Creates an instance of SchemasGetSchemaVersionHeaders class.
      *
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
-    public SchemasQueryIdByContentHeaders(HttpHeaders rawHeaders) {
+    public SchemasGetSchemaVersionHeaders(HttpHeaders rawHeaders) {
         this.schemaVersion = Integer.parseInt(rawHeaders.getValue("Schema-Version"));
         this.schemaId = rawHeaders.getValue("Schema-Id");
         this.schemaGroupName = rawHeaders.getValue("Schema-Group-Name");
         this.schemaName = rawHeaders.getValue("Schema-Name");
         this.schemaIdLocation = rawHeaders.getValue("Schema-Id-Location");
         this.location = rawHeaders.getValue("Location");
+        this.contentType = rawHeaders.getValue("Content-Type");
     }
 
     /**
@@ -75,9 +82,9 @@ public final class SchemasQueryIdByContentHeaders {
      * Set the schemaVersion property: The Schema-Version property.
      *
      * @param schemaVersion the schemaVersion value to set.
-     * @return the SchemasQueryIdByContentHeaders object itself.
+     * @return the SchemasGetSchemaVersionHeaders object itself.
      */
-    public SchemasQueryIdByContentHeaders setSchemaVersion(Integer schemaVersion) {
+    public SchemasGetSchemaVersionHeaders setSchemaVersion(Integer schemaVersion) {
         this.schemaVersion = schemaVersion;
         return this;
     }
@@ -95,9 +102,9 @@ public final class SchemasQueryIdByContentHeaders {
      * Set the schemaId property: The Schema-Id property.
      *
      * @param schemaId the schemaId value to set.
-     * @return the SchemasQueryIdByContentHeaders object itself.
+     * @return the SchemasGetSchemaVersionHeaders object itself.
      */
-    public SchemasQueryIdByContentHeaders setSchemaId(String schemaId) {
+    public SchemasGetSchemaVersionHeaders setSchemaId(String schemaId) {
         this.schemaId = schemaId;
         return this;
     }
@@ -115,9 +122,9 @@ public final class SchemasQueryIdByContentHeaders {
      * Set the schemaGroupName property: The Schema-Group-Name property.
      *
      * @param schemaGroupName the schemaGroupName value to set.
-     * @return the SchemasQueryIdByContentHeaders object itself.
+     * @return the SchemasGetSchemaVersionHeaders object itself.
      */
-    public SchemasQueryIdByContentHeaders setSchemaGroupName(String schemaGroupName) {
+    public SchemasGetSchemaVersionHeaders setSchemaGroupName(String schemaGroupName) {
         this.schemaGroupName = schemaGroupName;
         return this;
     }
@@ -135,9 +142,9 @@ public final class SchemasQueryIdByContentHeaders {
      * Set the schemaName property: The Schema-Name property.
      *
      * @param schemaName the schemaName value to set.
-     * @return the SchemasQueryIdByContentHeaders object itself.
+     * @return the SchemasGetSchemaVersionHeaders object itself.
      */
-    public SchemasQueryIdByContentHeaders setSchemaName(String schemaName) {
+    public SchemasGetSchemaVersionHeaders setSchemaName(String schemaName) {
         this.schemaName = schemaName;
         return this;
     }
@@ -155,9 +162,9 @@ public final class SchemasQueryIdByContentHeaders {
      * Set the schemaIdLocation property: The Schema-Id-Location property.
      *
      * @param schemaIdLocation the schemaIdLocation value to set.
-     * @return the SchemasQueryIdByContentHeaders object itself.
+     * @return the SchemasGetSchemaVersionHeaders object itself.
      */
-    public SchemasQueryIdByContentHeaders setSchemaIdLocation(String schemaIdLocation) {
+    public SchemasGetSchemaVersionHeaders setSchemaIdLocation(String schemaIdLocation) {
         this.schemaIdLocation = schemaIdLocation;
         return this;
     }
@@ -175,10 +182,30 @@ public final class SchemasQueryIdByContentHeaders {
      * Set the location property: The Location property.
      *
      * @param location the location value to set.
-     * @return the SchemasQueryIdByContentHeaders object itself.
+     * @return the SchemasGetSchemaVersionHeaders object itself.
      */
-    public SchemasQueryIdByContentHeaders setLocation(String location) {
+    public SchemasGetSchemaVersionHeaders setLocation(String location) {
         this.location = location;
+        return this;
+    }
+
+    /**
+     * Get the contentType property: The Content-Type property.
+     *
+     * @return the contentType value.
+     */
+    public String getContentType() {
+        return this.contentType;
+    }
+
+    /**
+     * Set the contentType property: The Content-Type property.
+     *
+     * @param contentType the contentType value to set.
+     * @return the SchemasGetSchemaVersionHeaders object itself.
+     */
+    public SchemasGetSchemaVersionHeaders setContentType(String contentType) {
+        this.contentType = contentType;
         return this;
     }
 }
