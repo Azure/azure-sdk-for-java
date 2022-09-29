@@ -131,8 +131,7 @@ public class EventHubsTemplate implements SendOperation {
                     // Add the event that did not fit in the previous batch.
                     try {
                         if (!newBatch.tryAdd(event)) {
-                            LOGGER.error(
-                                "Event was too large to fit in an empty batch. Max size:{} ",
+                            LOGGER.error("Event was too large to fit in an empty batch. Max size:{} ",
                                 newBatch.getMaxSizeInBytes());
                         }
                     } catch (AmqpException e) {
@@ -147,7 +146,8 @@ public class EventHubsTemplate implements SendOperation {
         .block();
 
         final EventDataBatch batch = currentBatch.getAndSet(null);
-        return producer.send(batch);
+        return producer.send(batch)
+                .doFinally(s -> producer.close());
     }
 
     private CreateBatchOptions buildCreateBatchOptions(PartitionSupplier partitionSupplier) {

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IncidentClassification. */
+/** The reason the incident was closed. */
 public final class IncidentClassification extends ExpandableStringEnum<IncidentClassification> {
     /** Static value Undetermined for IncidentClassification. */
     public static final IncidentClassification UNDETERMINED = fromString("Undetermined");

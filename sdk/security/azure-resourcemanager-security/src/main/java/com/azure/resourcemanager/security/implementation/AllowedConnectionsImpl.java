@@ -14,10 +14,9 @@ import com.azure.resourcemanager.security.fluent.models.AllowedConnectionsResour
 import com.azure.resourcemanager.security.models.AllowedConnections;
 import com.azure.resourcemanager.security.models.AllowedConnectionsResource;
 import com.azure.resourcemanager.security.models.ConnectionType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AllowedConnectionsImpl implements AllowedConnections {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AllowedConnectionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AllowedConnectionsImpl.class);
 
     private final AllowedConnectionsClient innerClient;
 

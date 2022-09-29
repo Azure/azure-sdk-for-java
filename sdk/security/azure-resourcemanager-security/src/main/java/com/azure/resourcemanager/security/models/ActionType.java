@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ActionType. */
+/** The type of the action that will be triggered by the Automation. */
 public final class ActionType extends ExpandableStringEnum<ActionType> {
     /** Static value LogicApp for ActionType. */
     public static final ActionType LOGIC_APP = fromString("LogicApp");
@@ -30,7 +30,11 @@ public final class ActionType extends ExpandableStringEnum<ActionType> {
         return fromString(name, ActionType.class);
     }
 
-    /** @return known ActionType values. */
+    /**
+     * Gets known ActionType values.
+     *
+     * @return known ActionType values.
+     */
     public static Collection<ActionType> values() {
         return values(ActionType.class);
     }
