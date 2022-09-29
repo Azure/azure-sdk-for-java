@@ -11,7 +11,7 @@
 # This script can be run locally from the root of the repo:
 # .\eng\scripts\Merge-Branch.ps1 -SourceBranch 'main' -Theirs '**' -Ours 'sdk/template' -Merge 'sdk/template/ci.yml', '**/README.md'
 #
-# This would merge main into the local branch, making the working folder look like main. It not overwrite sdk\template.
+# This would merge main into the local branch, making the working folder look like main. It will not overwrite sdk\template.
 # Changes in sdk\template\ci.yml and readme.md files would be merged, not excluded or overwritten.
 
 [CmdLetBinding()]
