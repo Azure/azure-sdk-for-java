@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLiveTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createACSCallAndUnmixedAudioTest(HttpClient httpClient) {
+    public void createACSCallAndUnmixedAudioTest(HttpClient httpClient) throws InterruptedException {
         /* Test case: ACS to ACS call
          * 1. create a CallAutomationClient.
          * 2. create a call from source to one ACS target.
@@ -46,19 +46,20 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
         CommunicationIdentityClient communicationIdentityClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
             .buildClient();
 
+        String callConnectionId = "";
         try {
             // Create caller and receiver
             CommunicationUserIdentifier source = communicationIdentityClient.createUser();
             CommunicationUserIdentifier target = communicationIdentityClient.createUser();
 
             // setup service bus
-            String serviceBus = serviceBusWithNewCall(source, target);
+            String uniqueId = serviceBusWithNewCall(source, target);
 
             // create call and assert response
             CreateCallResult createCallResult = client.createCall(
-                new CreateCallOptions(source, Arrays.asList(target), String.format("%s?q={uniqueId}", DISPATCHER_CALLBACK))
+                new CreateCallOptions(source, Arrays.asList(target), String.format("%s?q=%s", DISPATCHER_CALLBACK, uniqueId))
             );
-            String callConnectionId = createCallResult.getCallConnectionProperties().getCallConnectionId();
+            callConnectionId = createCallResult.getCallConnectionProperties().getCallConnectionId();
             assertNotNull(callConnectionId);
 
             // wait for incoming call context
@@ -90,14 +91,15 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
 
             // stop recording
             client.getCallRecording().stopRecording(recordingStateResult.getRecordingId());
-
-            // hangup
-            createCallResult.getCallConnection().hangUp(true);
-            CallDisconnectedEvent callDisconnectedEvent = waitForEvent(CallDisconnectedEvent.class, callConnectionId, Duration.ofSeconds(10));
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
         } finally {
-
+            // hangup
+            if (!callConnectionId.isEmpty()) {
+                CallConnection callConnection = client.getCallConnection(callConnectionId);
+                callConnection.hangUp(true);
+                CallDisconnectedEvent callDisconnectedEvent = waitForEvent(CallDisconnectedEvent.class, callConnectionId, Duration.ofSeconds(10));
+            }
         }
     }
 }
