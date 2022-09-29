@@ -37,17 +37,10 @@ public class VertxHttpAsyncResponse extends VertxHttpResponseBase {
     }
 
     private Flux<ByteBuffer> streamResponseBody() {
-        return Flux.create(sink -> {
-            HttpClientResponse vertxHttpResponse = getVertxHttpResponse();
-            NetSocket netSocket = vertxHttpResponse.netSocket();
+        HttpClientResponse vertxHttpResponse = getVertxHttpResponse();
 
-            if (netSocket.writeQueueFull()) {
-                netSocket.pause();
-                netSocket.drainHandler(hanlder -> {
-                    System.out.println("Queue is FULLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
-                });
-            }
-            netSocket
+        return Flux.create(sink -> {
+            vertxHttpResponse
                 .handler(buffer -> sink.next(buffer.getByteBuf().nioBuffer()))
                 .exceptionHandler(sink::error)
                 .endHandler(event -> sink.complete())
