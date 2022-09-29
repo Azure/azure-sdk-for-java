@@ -38,9 +38,6 @@ public class VertxHttpAsyncResponse extends VertxHttpResponseBase {
 
     private Flux<ByteBuffer> streamResponseBody() {
         return Flux.create(sink -> {
-            NetSocket netSocket = getVertxHttpResponse().netSocket();
-            netSocket.drainHandler(unused ->
-                System.out.println("Draining -------------------------------------------------"));
             getVertxHttpResponse()
                     .handler(buffer -> sink.next(buffer.getByteBuf().nioBuffer()))
                     .exceptionHandler(sink::error)
