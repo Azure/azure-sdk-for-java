@@ -3,12 +3,15 @@
 
 package com.azure.spring.data.cosmos.core;
 
-import com.azure.core.http.rest.*;
-import com.azure.cosmos.models.*;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Sort;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -83,13 +86,12 @@ public interface ReactiveCosmosOperations {
     /**
      * Find all items in a given container with partition key
      *
-     * @param pageable      Pageable object
      * @param domainType    the domainType
      * @param containerName the container name
      * @param <T>           type of domainType
      * @return results as Page
      */
-    <T> PagedFlux<T> findAll(Pageable pageable, Class<T> domainType, String containerName);
+    <T> CosmosPagedFlux<T> findAll(Class<T> domainType, String containerName);
 
     /**
      * Pagination query
@@ -100,7 +102,7 @@ public interface ReactiveCosmosOperations {
      * @param <T>           type class of domainType
      * @return results as Page
      */
-    <T> PagedFlux<T> paginationQuery(CosmosQuery query, Class<T> domainType, String containerName);
+    <T> CosmosPagedFlux<T> paginationQuery(CosmosQuery query, Class<T> domainType, String containerName);
 
     /**
      * Find by id

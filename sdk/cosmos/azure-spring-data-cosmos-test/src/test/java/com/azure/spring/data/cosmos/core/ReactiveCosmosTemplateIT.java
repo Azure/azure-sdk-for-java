@@ -3,22 +3,30 @@
 package com.azure.spring.data.cosmos.core;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.rest.*;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ConflictException;
-import com.azure.cosmos.models.*;
+import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.ThroughputResponse;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.spring.data.cosmos.Constants;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.ReactiveIntegrationTestCollectionManager;
-import com.azure.spring.data.cosmos.common.*;
+import com.azure.spring.data.cosmos.common.PropertyLoader;
+import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
+import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.generator.FindQuerySpecGenerator;
 import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
-import com.azure.spring.data.cosmos.core.query.*;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
+import com.azure.spring.data.cosmos.core.query.Criteria;
+import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.domain.AuditableEntity;
 import com.azure.spring.data.cosmos.domain.AutoScaleSample;
 import com.azure.spring.data.cosmos.domain.GenIdEntity;
@@ -27,7 +35,6 @@ import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.AuditableRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import com.fasterxml.jackson.databind.*;
 import org.assertj.core.api.Assertions;
 import org.junit.After;
 import org.junit.Assert;
@@ -40,8 +47,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.domain.EntityScanner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.annotation.Persistent;
-import org.springframework.data.domain.*;
-import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.parser.Part;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -52,19 +57,24 @@ import reactor.test.StepVerifier;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 import static com.azure.spring.data.cosmos.common.TestConstants.ADDRESSES;
 import static com.azure.spring.data.cosmos.common.TestConstants.AGE;
 import static com.azure.spring.data.cosmos.common.TestConstants.FIRST_NAME;
 import static com.azure.spring.data.cosmos.common.TestConstants.HOBBIES;
 import static com.azure.spring.data.cosmos.common.TestConstants.LAST_NAME;
+import static com.azure.spring.data.cosmos.common.TestConstants.PAGE_SIZE_2;
+import static com.azure.spring.data.cosmos.common.TestConstants.PAGE_SIZE_3;
 import static com.azure.spring.data.cosmos.common.TestConstants.PASSPORT_IDS_BY_COUNTRY;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
-import static org.springframework.data.domain.Sort.Direction.ASC;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -200,13 +210,70 @@ public class ReactiveCosmosTemplateIT {
         cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2))).block();
         cosmosTemplate.insert(TEST_PERSON_3, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_3))).block();
         cosmosTemplate.insert(TEST_PERSON_4, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_4))).block();
-        final CosmosPageRequest pageRequest = CosmosPageRequest.of(0, 0, 2,
-            null, Sort.by(ASC, "id"));
-        final PagedFlux<Person> results = cosmosTemplate.findAll(pageRequest, Person.class, containerName);
 
-        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+        final CosmosPagedFlux<Person> cosmosPagedFluxResult = cosmosTemplate.findAll(Person.class, containerName);
+        List<Person> results = cosmosPagedFluxResult.byPage().blockFirst().getResults();
+
+        assertThat(results.size()).isEqualTo(4);
+        assertThat(results).contains(TEST_PERSON, TEST_PERSON_2, TEST_PERSON_3, TEST_PERSON_4);
+    }
+
+    @Test
+    public void testFindAllWithPageablePageSize2() {
+        cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2))).block();
+        cosmosTemplate.insert(TEST_PERSON_3, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_3))).block();
+        cosmosTemplate.insert(TEST_PERSON_4, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_4))).block();
+
+        final CosmosPagedFlux<Person> cosmosPagedFluxResult = cosmosTemplate.findAll(Person.class, containerName);
+
+        int totalResultCount = 0;
+        List<Person> allResults = new ArrayList<>();
+        String continuationToken = null;
+        do {
+            Iterable<FeedResponse<Person>> feedResponseIterable = cosmosPagedFluxResult
+                .byPage(continuationToken, PAGE_SIZE_2).toIterable();
+            for (FeedResponse<Person> fr : feedResponseIterable) {
+                List<Person> results = fr.getResults();
+                for (Person person: results) {
+                    allResults.add(person);
+                }
+                assertThat(results.size()).isLessThanOrEqualTo(PAGE_SIZE_2);
+                totalResultCount += results.size();
+                continuationToken = fr.getContinuationToken();
+            }
+        } while (continuationToken != null);
+
+        assertThat(totalResultCount).isEqualTo(4);
+        assertThat(allResults).contains(TEST_PERSON, TEST_PERSON_2, TEST_PERSON_3, TEST_PERSON_4);
+    }
+
+    @Test
+    public void testFindAllWithPageablePageSize3() {
+        cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2))).block();
+        cosmosTemplate.insert(TEST_PERSON_3, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_3))).block();
+        cosmosTemplate.insert(TEST_PERSON_4, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_4))).block();
+
+        final CosmosPagedFlux<Person> cosmosPagedFluxResult = cosmosTemplate.findAll(Person.class, containerName);
+
+        int totalResultCount = 0;
+        List<Person> allResults = new ArrayList<>();
+        String continuationToken = null;
+        do {
+            Iterable<FeedResponse<Person>> feedResponseIterable = cosmosPagedFluxResult
+                .byPage(continuationToken, PAGE_SIZE_3).toIterable();
+            for (FeedResponse<Person> fr : feedResponseIterable) {
+                List<Person> results = fr.getResults();
+                for (Person person: results) {
+                    allResults.add(person);
+                }
+                assertThat(results.size()).isLessThanOrEqualTo(PAGE_SIZE_3);
+                totalResultCount += results.size();
+                continuationToken = fr.getContinuationToken();
+            }
+        } while (continuationToken != null);
+
+        assertThat(totalResultCount).isEqualTo(4);
+        assertThat(allResults).contains(TEST_PERSON, TEST_PERSON_2, TEST_PERSON_3, TEST_PERSON_4);
     }
 
     @Test
