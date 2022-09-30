@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.core.util.Context;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.models.CosmosPermissionProperties;
@@ -153,7 +154,10 @@ public class CosmosAsyncUser {
                 spanName,
                 client.getServiceEndpoint(),
                 this.getDatabase().getId(),
-                options != null ? options.getQueryNameOrDefault(spanName) : spanName);
+                options != null ? ImplementationBridgeHelpers
+                    .CosmosQueryRequestOptionsHelper
+                    .getCosmosQueryRequestOptionsAccessor()
+                    .getQueryNameOrDefault(options, spanName) : spanName);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase().getDocClientWrapper()
                        .readPermissions(getLink(), options)
@@ -200,7 +204,10 @@ public class CosmosAsyncUser {
                 spanName,
                 client.getServiceEndpoint(),
                 this.getDatabase().getId(),
-                requestOptions.getQueryNameOrDefault(spanName));
+                ImplementationBridgeHelpers
+                    .CosmosQueryRequestOptionsHelper
+                    .getCosmosQueryRequestOptionsAccessor()
+                    .getQueryNameOrDefault(requestOptions, spanName));
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, requestOptions);
             return getDatabase().getDocClientWrapper()
                        .queryPermissions(getLink(), query, requestOptions)

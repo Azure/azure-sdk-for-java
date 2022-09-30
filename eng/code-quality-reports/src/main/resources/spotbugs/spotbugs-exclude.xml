@@ -2648,4 +2648,19 @@
                   DM_STRING_TOSTRING"/>
   </Match>
 
+  <!-- Implementations of BinaryDataContent were transitioned from AtomicReference<byte[]> to volatile byte[] and AtomicReferenceFieldUpdater to reduce object size. -->
+  <!-- Spotbugs raises a VO_VOLATILE_REFERENCE_TO_ARRAY now but this has the same issue as before where the array elements aren't volatile. -->
+  <Match>
+    <Bug pattern="VO_VOLATILE_REFERENCE_TO_ARRAY"/>
+    <Or>
+      <Class name="com.azure.core.implementation.util.ByteBufferContent"/>
+      <Class name="com.azure.core.implementation.util.FileContent"/>
+      <Class name="com.azure.core.implementation.util.FluxByteBufferContent"/>
+      <Class name="com.azure.core.implementation.util.InputStreamContent"/>
+      <Class name="com.azure.core.implementation.util.SerializableContent"/>
+      <Class name="com.azure.core.implementation.util.StringContent"/>
+    </Or>
+    <Field name="bytes"/>
+  </Match>
+
 </FindBugsFilter>
