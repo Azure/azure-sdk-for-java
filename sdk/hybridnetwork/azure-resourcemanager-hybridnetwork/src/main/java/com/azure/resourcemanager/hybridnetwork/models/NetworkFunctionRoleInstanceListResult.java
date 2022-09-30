@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridnetwork.fluent.models.RoleInstanceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of role instances of vendor network function. */
 @Immutable
 public final class NetworkFunctionRoleInstanceListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkFunctionRoleInstanceListResult.class);
-
     /*
      * A list of role instances.
      */
@@ -27,6 +23,10 @@ public final class NetworkFunctionRoleInstanceListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of NetworkFunctionRoleInstanceListResult class. */
+    public NetworkFunctionRoleInstanceListResult() {
+    }
 
     /**
      * Get the value property: A list of role instances.
