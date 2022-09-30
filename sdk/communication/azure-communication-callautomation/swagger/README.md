@@ -153,9 +153,11 @@ directive:
 - remove-model: RecordingStateChangedEvent
 - remove-model: PlayCompleted
 - remove-model: PlayFailed
+- remove-model: PlayCanceled
 - remove-model: ResultInfo
 - remove-model: RecognizeCompleted
 - remove-model: RecognizeFailed
+- remove-model: RecognizeCanceled
 ```
 
 ### Rename RecordingChannelType to RecordingChannelInternal
