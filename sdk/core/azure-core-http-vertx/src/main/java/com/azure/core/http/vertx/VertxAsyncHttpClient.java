@@ -80,7 +80,6 @@ class VertxAsyncHttpClient implements HttpClient {
                             }
                         });
                     } else {
-                        vertxHttpResponse.pause();
                         sink.success(new VertxHttpAsyncResponse(request, vertxHttpResponse));
                     }
                 } else {

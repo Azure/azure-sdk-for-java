@@ -24,6 +24,7 @@ abstract class VertxHttpResponseBase extends HttpResponse {
     VertxHttpResponseBase(HttpRequest azureHttpRequest, HttpClientResponse vertxHttpResponse) {
         super(azureHttpRequest);
         this.vertxHttpResponse = vertxHttpResponse;
+        this.vertxHttpResponse.pause();
         this.azureHttpHeaders = fromVertxHttpHeaders(vertxHttpResponse.headers());
     }
 
