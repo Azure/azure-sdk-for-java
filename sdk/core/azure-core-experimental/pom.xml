@@ -48,6 +48,8 @@
     <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
     <javaModulesSurefireArgLine>
+      --add-reads java.xml=com.azure-core-experimental
+      --add-opens com.azure.core.experimental/com.azure.core.experimental.http=com.azure.core
       --add-opens com.azure.core.experimental/com.azure.core.experimental.http=ALL-UNNAMED
       --add-opens com.azure.core.experimental/com.azure.core.experimental.models=ALL-UNNAMED
     </javaModulesSurefireArgLine>
@@ -68,6 +70,19 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
       <version>1.33.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+    </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-json</artifactId>
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-json;current} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-xml</artifactId>
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-xml;current} -->
+      <scope>test</scope>
     </dependency>
 
     <dependency>

@@ -6,6 +6,7 @@ package com.azure.core.util;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.ByteArrayContent;
+import com.azure.core.implementation.util.ByteBufferContent;
 import com.azure.core.implementation.util.FileContent;
 import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.implementation.util.InputStreamContent;
@@ -497,10 +498,10 @@ public final class BinaryData {
     /**
      * Creates an instance of {@link BinaryData} from the given byte array.
      * <p>
-     * If the byte array is null or zero length an empty {@link BinaryData} will be returned. Note that the input byte
-     * array is used as a reference by this instance of {@link BinaryData} and any changes to the byte array outside of
-     * this instance will result in the contents of this BinaryData instance being updated as well. To safely update the
-     * byte array without impacting the BinaryData instance, perform an array copy first.
+     * If the byte array is zero length an empty {@link BinaryData} will be returned. Note that the input byte array is
+     * used as a reference by this instance of {@link BinaryData} and any changes to the byte array outside of this
+     * instance will result in the contents of this BinaryData instance being updated as well. To safely update the byte
+     * array without impacting the BinaryData instance, perform an array copy first.
      * </p>
      *
      * <p><strong>Create an instance from a byte array</strong></p>
@@ -519,6 +520,34 @@ public final class BinaryData {
      */
     public static BinaryData fromBytes(byte[] data) {
         return new BinaryData(new ByteArrayContent(data));
+    }
+
+    /**
+     * Creates an instance of {@link BinaryData} from the given {@link ByteBuffer}.
+     * <p>
+     * If the {@link ByteBuffer} is zero length an empty {@link BinaryData} will be returned. Note that the input
+     * {@link ByteBuffer} is used as a reference by this instance of {@link BinaryData} and any changes to the
+     * {@link ByteBuffer} outside of this instance will result in the contents of this BinaryData instance being updated
+     * as well. To safely update the {@link ByteBuffer} without impacting the BinaryData instance, perform an array copy
+     * first.
+     * </p>
+     *
+     * <p><strong>Create an instance from a ByteBuffer</strong></p>
+     *
+     * <!-- src_embed com.azure.core.util.BinaryData.fromByteBuffer#ByteBuffer -->
+     * <pre>
+     * final ByteBuffer data = ByteBuffer.wrap&#40;&quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
+     * BinaryData binaryData = BinaryData.fromByteBuffer&#40;data&#41;;
+     * System.out.println&#40;binaryData&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.fromByteBuffer#ByteBuffer -->
+     *
+     * @param data The {@link ByteBuffer} that {@link BinaryData} will represent.
+     * @return A {@link BinaryData} representing the {@link ByteBuffer}.
+     * @throws NullPointerException If {@code data} is null.
+     */
+    public static BinaryData fromByteBuffer(ByteBuffer data) {
+        return new BinaryData(new ByteBufferContent(data));
     }
 
     /**
