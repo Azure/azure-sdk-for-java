@@ -294,6 +294,15 @@ directive:
     $.name = "RecognitionTypeInternal";
 ```
 
+### Rename Tone to DtmfTone
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.Tone["x-ms-enum"]
+  transform: >
+    $.name = "DtmfTone";
+```
+
 ### Rename DtmfOptions to DtmfOptionsInternal
 ``` yaml
 directive:
