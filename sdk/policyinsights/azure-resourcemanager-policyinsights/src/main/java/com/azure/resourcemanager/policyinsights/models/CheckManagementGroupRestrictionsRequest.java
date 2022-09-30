@@ -5,17 +5,16 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The check policy restrictions parameters describing the resource that is being evaluated. */
 @Fluent
-public final class CheckRestrictionsRequest {
+public final class CheckManagementGroupRestrictionsRequest {
     /*
      * The information about the resource that will be evaluated.
      */
-    @JsonProperty(value = "resourceDetails", required = true)
+    @JsonProperty(value = "resourceDetails")
     private CheckRestrictionsResourceDetails resourceDetails;
 
     /*
@@ -24,8 +23,8 @@ public final class CheckRestrictionsRequest {
     @JsonProperty(value = "pendingFields")
     private List<PendingField> pendingFields;
 
-    /** Creates an instance of CheckRestrictionsRequest class. */
-    public CheckRestrictionsRequest() {
+    /** Creates an instance of CheckManagementGroupRestrictionsRequest class. */
+    public CheckManagementGroupRestrictionsRequest() {
     }
 
     /**
@@ -41,9 +40,10 @@ public final class CheckRestrictionsRequest {
      * Set the resourceDetails property: The information about the resource that will be evaluated.
      *
      * @param resourceDetails the resourceDetails value to set.
-     * @return the CheckRestrictionsRequest object itself.
+     * @return the CheckManagementGroupRestrictionsRequest object itself.
      */
-    public CheckRestrictionsRequest withResourceDetails(CheckRestrictionsResourceDetails resourceDetails) {
+    public CheckManagementGroupRestrictionsRequest withResourceDetails(
+        CheckRestrictionsResourceDetails resourceDetails) {
         this.resourceDetails = resourceDetails;
         return this;
     }
@@ -63,9 +63,9 @@ public final class CheckRestrictionsRequest {
      * restrictions.
      *
      * @param pendingFields the pendingFields value to set.
-     * @return the CheckRestrictionsRequest object itself.
+     * @return the CheckManagementGroupRestrictionsRequest object itself.
      */
-    public CheckRestrictionsRequest withPendingFields(List<PendingField> pendingFields) {
+    public CheckManagementGroupRestrictionsRequest withPendingFields(List<PendingField> pendingFields) {
         this.pendingFields = pendingFields;
         return this;
     }
@@ -76,18 +76,11 @@ public final class CheckRestrictionsRequest {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (resourceDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resourceDetails in model CheckRestrictionsRequest"));
-        } else {
+        if (resourceDetails() != null) {
             resourceDetails().validate();
         }
         if (pendingFields() != null) {
             pendingFields().forEach(e -> e.validate());
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(CheckRestrictionsRequest.class);
 }

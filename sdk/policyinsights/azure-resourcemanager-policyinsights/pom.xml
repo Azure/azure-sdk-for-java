@@ -13,7 +13,7 @@
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for PolicyInsights Management</name>
-  <description>This package contains Microsoft Azure SDK for PolicyInsights Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt.  Package tag package-2021-10.</description>
+  <description>This package contains Microsoft Azure SDK for PolicyInsights Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt.  Package tag package-2022-09.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
