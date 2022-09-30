@@ -53,7 +53,7 @@ public final class ThroughputControlGroupConfig {
      *
      * By default, this value is null.
      *
-     * @return the target throughput threshold (0, 1].
+     * @return the target throughput threshold null or (0, 1].
      */
     public Double getTargetThroughputThreshold() {
         return this.targetThroughputThreshold;
