@@ -76,17 +76,11 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     }
 
     public HttpHeaders add(String name, String value) {
-        if (name == null) {
+        if (name == null || value == null) {
             return this;
         }
 
-        if (value == null) {
-            // our general contract in HttpHeaders is that a null value will result in any key with this name
-            // being removed.
-            remove(name);
-        } else {
-            nettyHeaders.add(name, value);
-        }
+        nettyHeaders.add(name, value);
         return this;
     }
 

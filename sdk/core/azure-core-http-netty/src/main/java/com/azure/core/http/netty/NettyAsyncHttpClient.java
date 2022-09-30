@@ -73,7 +73,7 @@ class NettyAsyncHttpClient implements HttpClient {
 
     private static final String AZURE_EAGERLY_READ_RESPONSE = "azure-eagerly-read-response";
     private static final String AZURE_RESPONSE_TIMEOUT = "azure-response-timeout";
-    private static final String AZURE_HEADERS_EAGERLY_CONVERTED = "azure-headers-eagerly-converted";
+    private static final String AZURE_EAGERLY_CONVERT_HEADERS = "azure-eagerly-convert-headers";
 
     final boolean disableBufferCopy;
     final long readTimeout;
@@ -116,7 +116,7 @@ class NettyAsyncHttpClient implements HttpClient {
             .filter(timeoutDuration -> timeoutDuration instanceof Duration)
             .map(timeoutDuration -> ((Duration) timeoutDuration).toMillis())
             .orElse(this.responseTimeout);
-        boolean effectiveHeadersEagerlyConverted = (boolean) context.getData(AZURE_HEADERS_EAGERLY_CONVERTED)
+        boolean effectiveHeadersEagerlyConverted = (boolean) context.getData(AZURE_EAGERLY_CONVERT_HEADERS)
             .orElse(false);
 
         return nettyClient

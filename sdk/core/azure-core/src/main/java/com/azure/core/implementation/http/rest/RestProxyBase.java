@@ -112,7 +112,7 @@ public abstract class RestProxyBase {
             }
 
             if (methodParser.isHeadersEagerlyConverted()) {
-                context = context.addData("azure-headers-eagerly-converted", true);
+                context = context.addData("azure-eagerly-convert-headers", true);
             }
 
             return invoke(proxy, method, options, errorOptions, requestCallback, methodParser, request, context);
