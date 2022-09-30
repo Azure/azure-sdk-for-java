@@ -15,6 +15,8 @@ import java.io.OutputStream;
 import java.lang.invoke.LambdaMetafactory;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
+import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -37,6 +39,7 @@ public final class ReflectionSerializable {
     private static final CreateJsonReader JSON_READER_CREATOR;
     private static final CreateJsonWriter JSON_WRITER_CREATOR;
     private static final JsonWriterWriteJson JSON_WRITER_WRITE_JSON_SERIALIZABLE;
+    private static final JsonWriterFlush JSON_WRITER_FLUSH;
     static final boolean JSON_SERIALIZABLE_SUPPORTED;
     private static final Map<Class<?>, MethodHandle> FROM_JSON_CACHE;
 
@@ -47,6 +50,7 @@ public final class ReflectionSerializable {
     private static final CreateXmlWriter XML_WRITER_CREATOR;
     private static final XmlWriterWriteStartDocument XML_WRITER_WRITE_XML_START_DOCUMENT;
     private static final XmlWriterWriteXml XML_WRITER_WRITE_XML_SERIALIZABLE;
+    private static final XmlWriterFlush XML_WRITER_FLUSH;
     static final boolean XML_SERIALIZABLE_SUPPORTED;
     private static final Map<Class<?>, MethodHandle> FROM_XML_CACHE;
 
@@ -58,6 +62,7 @@ public final class ReflectionSerializable {
         CreateJsonReader jsonReaderCreator = null;
         CreateJsonWriter jsonWriterCreator = null;
         JsonWriterWriteJson jsonWriterWriteJsonSerializable = null;
+        JsonWriterFlush jsonWriterFlush = null;
         boolean jsonSerializableSupported = false;
         try {
             jsonSerializable = Class.forName("com.azure.json.JsonSerializable");
@@ -66,27 +71,21 @@ public final class ReflectionSerializable {
             Class<?> jsonProviders = Class.forName("com.azure.json.JsonProviders");
             MethodHandles.Lookup lookup = ReflectionUtils.getLookupToUse(jsonProviders);
 
-            MethodHandle handle = lookup.unreflect(jsonProviders.getDeclaredMethod("createReader", byte[].class));
-            jsonReaderCreator = (CreateJsonReader) LambdaMetafactory.metafactory(defaultLookup, "createJsonReader",
-                    methodType(CreateJsonReader.class), methodType(Closeable.class, byte[].class), handle,
-                    handle.type())
-                .getTarget()
-                .invoke();
+            jsonReaderCreator = createMetaFactory(jsonProviders.getDeclaredMethod("createReader", byte[].class),
+                lookup, CreateJsonReader.class, methodType(Closeable.class, byte[].class), defaultLookup);
 
-            handle = lookup.unreflect(jsonProviders.getDeclaredMethod("createWriter", OutputStream.class));
-            jsonWriterCreator = (CreateJsonWriter) LambdaMetafactory.metafactory(defaultLookup, "createJsonWriter",
-                    methodType(CreateJsonWriter.class), methodType(Closeable.class, OutputStream.class), handle,
-                    handle.type())
-                .getTarget()
-                .invoke();
+            jsonWriterCreator = createMetaFactory(jsonProviders.getDeclaredMethod("createWriter", OutputStream.class),
+                lookup, CreateJsonWriter.class, methodType(Closeable.class, OutputStream.class), defaultLookup);
+
 
             Class<?> jsonWriter = Class.forName("com.azure.json.JsonWriter");
-            handle = lookup.unreflect(jsonWriter.getDeclaredMethod("writeJson", jsonSerializable));
-            jsonWriterWriteJsonSerializable = (JsonWriterWriteJson) LambdaMetafactory.metafactory(defaultLookup,
-                    "writeJson", methodType(JsonWriterWriteJson.class),
-                    methodType(Object.class, Object.class, Object.class), handle, handle.type())
-                .getTarget()
-                .invoke();
+
+            jsonWriterWriteJsonSerializable = createMetaFactory(
+                jsonWriter.getDeclaredMethod("writeJson", jsonSerializable), lookup, JsonWriterWriteJson.class,
+                methodType(Object.class, Object.class, Object.class), defaultLookup);
+
+            jsonWriterFlush = createMetaFactory(jsonWriter.getDeclaredMethod("flush"), lookup, JsonWriterFlush.class,
+                methodType(Object.class, Object.class), defaultLookup);
 
             jsonSerializableSupported = true;
         } catch (Throwable e) {
@@ -105,6 +104,7 @@ public final class ReflectionSerializable {
         JSON_READER_CREATOR = jsonReaderCreator;
         JSON_WRITER_CREATOR = jsonWriterCreator;
         JSON_WRITER_WRITE_JSON_SERIALIZABLE = jsonWriterWriteJsonSerializable;
+        JSON_WRITER_FLUSH = jsonWriterFlush;
         JSON_SERIALIZABLE_SUPPORTED = jsonSerializableSupported;
         FROM_JSON_CACHE = JSON_SERIALIZABLE_SUPPORTED ? new ConcurrentHashMap<>() : null;
 
@@ -114,6 +114,7 @@ public final class ReflectionSerializable {
         CreateXmlWriter xmlWriterCreator = null;
         XmlWriterWriteStartDocument xmlWriterWriteStartDocument = null;
         XmlWriterWriteXml xmlWriterWriteXmlSerializable = null;
+        XmlWriterFlush xmlWriterFlush = null;
         boolean xmlSerializableSupported = false;
         try {
             xmlSerializable = Class.forName("com.azure.xml.XmlSerializable");
@@ -121,35 +122,23 @@ public final class ReflectionSerializable {
 
             Class<?> xmlProviders = Class.forName("com.azure.xml.XmlProviders");
             MethodHandles.Lookup lookup = ReflectionUtils.getLookupToUse(xmlProviders);
-            MethodHandle handle = lookup.unreflect(xmlProviders.getDeclaredMethod("createReader", byte[].class));
 
-            xmlReaderCreator = (CreateXmlReader) LambdaMetafactory.metafactory(defaultLookup, "createXmlReader",
-                    methodType(CreateXmlReader.class), methodType(AutoCloseable.class, byte[].class), handle,
-                    handle.type())
-                .getTarget()
-                .invoke();
+            xmlReaderCreator = createMetaFactory(xmlProviders.getDeclaredMethod("createReader", byte[].class), lookup,
+                CreateXmlReader.class, methodType(AutoCloseable.class, byte[].class), defaultLookup);
 
-            handle = lookup.unreflect(xmlProviders.getDeclaredMethod("createWriter", OutputStream.class));
-            xmlWriterCreator = (CreateXmlWriter) LambdaMetafactory.metafactory(defaultLookup, "createXmlWriter",
-                    methodType(CreateXmlWriter.class), methodType(AutoCloseable.class, OutputStream.class), handle,
-                    handle.type())
-                .getTarget()
-                .invoke();
+            xmlWriterCreator = createMetaFactory(xmlProviders.getDeclaredMethod("createWriter", OutputStream.class),
+                lookup, CreateXmlWriter.class, methodType(AutoCloseable.class, OutputStream.class), defaultLookup);
 
             Class<?> xmlWriter = Class.forName("com.azure.xml.XmlWriter");
-            handle = lookup.unreflect(xmlWriter.getDeclaredMethod("writeStartDocument"));
-            xmlWriterWriteStartDocument = (XmlWriterWriteStartDocument) LambdaMetafactory.metafactory(defaultLookup,
-                    "writeStartDocument", methodType(XmlWriterWriteStartDocument.class),
-                    methodType(Object.class, Object.class), handle, handle.type())
-                .getTarget()
-                .invoke();
 
-            handle = lookup.unreflect(xmlWriter.getDeclaredMethod("writeXml", xmlSerializable));
-            xmlWriterWriteXmlSerializable = (XmlWriterWriteXml) LambdaMetafactory.metafactory(defaultLookup, "writeXml",
-                    methodType(XmlWriterWriteXml.class), methodType(Object.class, Object.class, Object.class), handle,
-                    handle.type())
-                .getTarget()
-                .invoke();
+            xmlWriterWriteStartDocument = createMetaFactory(xmlWriter.getDeclaredMethod("writeStartDocument"), lookup,
+                XmlWriterWriteStartDocument.class, methodType(Object.class, Object.class), defaultLookup);
+
+            xmlWriterWriteXmlSerializable = createMetaFactory(xmlWriter.getDeclaredMethod("writeXml", xmlSerializable),
+                lookup, XmlWriterWriteXml.class, methodType(Object.class, Object.class, Object.class), defaultLookup);
+
+            xmlWriterFlush = createMetaFactory(xmlWriter.getDeclaredMethod("flush"), lookup, XmlWriterFlush.class,
+                methodType(Object.class, Object.class), defaultLookup);
 
             xmlSerializableSupported = true;
         } catch (Throwable e) {
@@ -169,8 +158,25 @@ public final class ReflectionSerializable {
         XML_WRITER_CREATOR = xmlWriterCreator;
         XML_WRITER_WRITE_XML_START_DOCUMENT = xmlWriterWriteStartDocument;
         XML_WRITER_WRITE_XML_SERIALIZABLE = xmlWriterWriteXmlSerializable;
+        XML_WRITER_FLUSH = xmlWriterFlush;
         XML_SERIALIZABLE_SUPPORTED = xmlSerializableSupported;
         FROM_XML_CACHE = XML_SERIALIZABLE_SUPPORTED ? new ConcurrentHashMap<>() : null;
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> T createMetaFactory(Method method, MethodHandles.Lookup unreflectLookup,
+        Class<T> interfaceType, MethodType interfaceMethodType, MethodHandles.Lookup defaultLookup) throws Throwable {
+        // Unreflect the method in azure-json or azure-xml using the Lookup for that module.
+        MethodHandle handle = unreflectLookup.unreflect(method);
+
+        // Get the method on the FunctionalInterface representing the call site.
+        Method functionalMethod = interfaceType.getDeclaredMethods()[0];
+
+        // Create the meta factory.
+        return (T) LambdaMetafactory.metafactory(defaultLookup, functionalMethod.getName(), methodType(interfaceType),
+            interfaceMethodType, handle, handle.type())
+            .getTarget()
+            .invoke();
     }
 
     /**
@@ -194,6 +200,7 @@ public final class ReflectionSerializable {
         try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
             Closeable jsonWriter = JSON_WRITER_CREATOR.createJsonWriter(outputStream)) {
             JSON_WRITER_WRITE_JSON_SERIALIZABLE.writeJson(jsonWriter, jsonSerializable);
+            JSON_WRITER_FLUSH.flush(jsonWriter);
 
             return ByteBuffer.wrap(outputStream.toByteArray(), 0, outputStream.count());
         }
@@ -208,6 +215,10 @@ public final class ReflectionSerializable {
      * @throws IOException If an error occurs during deserialization.
      */
     public static Object deserializeAsJsonSerializable(Class<?> jsonSerializable, byte[] json) throws IOException {
+        if (!JSON_SERIALIZABLE_SUPPORTED) {
+            return null;
+        }
+
         if (FROM_JSON_CACHE.size() >= 10000) {
             FROM_JSON_CACHE.clear();
         }
@@ -245,6 +256,11 @@ public final class ReflectionSerializable {
     }
 
     @FunctionalInterface
+    private interface  JsonWriterFlush {
+        Object flush(Object jsonWriter) throws IOException;
+    }
+
+    @FunctionalInterface
     private interface CreateJsonReader {
         Closeable createJsonReader(byte[] bytes) throws IOException;
     }
@@ -271,6 +287,7 @@ public final class ReflectionSerializable {
             AutoCloseable xmlWriter = XML_WRITER_CREATOR.createXmlWriter(outputStream)) {
             XML_WRITER_WRITE_XML_START_DOCUMENT.writeStartDocument(xmlWriter);
             XML_WRITER_WRITE_XML_SERIALIZABLE.writeXml(xmlWriter, bodyContent);
+            XML_WRITER_FLUSH.flush(xmlWriter);
 
             return ByteBuffer.wrap(outputStream.toByteArray(), 0, outputStream.count());
         } catch (Exception e) {
@@ -287,6 +304,10 @@ public final class ReflectionSerializable {
      * @throws IOException If the XmlReader fails to close properly.
      */
     public static Object deserializeAsXmlSerializable(Class<?> xmlSerializable, byte[] xml) throws IOException {
+        if (!XML_SERIALIZABLE_SUPPORTED) {
+            return null;
+        }
+
         if (FROM_XML_CACHE.size() >= 10000) {
             FROM_XML_CACHE.clear();
         }
@@ -326,6 +347,11 @@ public final class ReflectionSerializable {
     @FunctionalInterface
     private interface XmlWriterWriteXml {
         Object writeXml(Object xmlWriter, Object jsonSerializable) throws XMLStreamException;
+    }
+
+    @FunctionalInterface
+    private interface XmlWriterFlush {
+        Object flush(Object xmlWriter) throws XMLStreamException;
     }
 
     @FunctionalInterface
