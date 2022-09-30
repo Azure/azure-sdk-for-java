@@ -3,6 +3,7 @@
 ### 4.37.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added new preview APIs to `ChangeFeedProcessor` for handling all versions and deletes changes - See [PR 30399](https://github.com/Azure/azure-sdk-for-java/pull/30399)
 * Added option to emit client-side metrics via micrometer.io MeterRegistry. - See [PR 30065](https://github.com/Azure/azure-sdk-for-java/pull/30065)
 
 #### Breaking Changes
@@ -71,7 +72,7 @@
 * Fixed Store Response headers case insensitivity. - See [PR 29268](https://github.com/Azure/azure-sdk-for-java/pull/29268)
 
 #### Other Changes
-* Add `IdleStateHandler` after Ssl handshake has completed and improvement on keeping inner exceptions for creating new channels. See [PR 29253](https://github.com/Azure/azure-sdk-for-java/pull/29253)
+* Add `IdleStateHandler` after Ssl handshake has completed and improvement on keeping inner exceptions for creating new channels. - See [PR 29253](https://github.com/Azure/azure-sdk-for-java/pull/29253)
 
 ### 4.30.1 (2022-06-01)
 #### Other Changes

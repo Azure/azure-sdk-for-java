@@ -1097,6 +1097,8 @@ public class ImplementationBridgeHelpers {
         public static void setCosmosClientTelemetryConfigAccessor(
             final CosmosClientTelemetryConfigAccessor newAccessor) {
 
+            assert(newAccessor != null);
+
             if (!accessor.compareAndSet(null, newAccessor)) {
                 logger.debug("CosmosClientTelemetryConfigAccessor already initialized!");
             } else {
@@ -1113,10 +1115,12 @@ public class ImplementationBridgeHelpers {
             EnumSet<TagName> getMetricTagNames(CosmosClientTelemetryConfig config);
             String getClientCorrelationId(CosmosClientTelemetryConfig config);
             MeterRegistry getClientMetricRegistry(CosmosClientTelemetryConfig config);
-            boolean isSendClientTelemetryToServiceEnabled(CosmosClientTelemetryConfig config);
-            CosmosClientTelemetryConfig getDefaultConfig();
+            Boolean isSendClientTelemetryToServiceEnabled(CosmosClientTelemetryConfig config);
             boolean isClientMetricsEnabled(CosmosClientTelemetryConfig config);
-            CosmosClientTelemetryConfig ensureInitialized(CosmosClientTelemetryConfig config, CosmosClientBuilder owner);
+            void resetIsSendClientTelemetryToServiceEnabled(CosmosClientTelemetryConfig config);
+            CosmosClientTelemetryConfig createSnapshot(
+                CosmosClientTelemetryConfig config,
+                boolean effectiveIsClientTelemetryEnabled);
         }
     }
 }

@@ -11,7 +11,7 @@ import com.azure.cosmos.implementation.changefeed.PartitionProcessor;
 import com.azure.cosmos.implementation.changefeed.PartitionProcessorFactory;
 import com.azure.cosmos.implementation.changefeed.PartitionSupervisor;
 import com.azure.cosmos.implementation.changefeed.PartitionSupervisorFactory;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedProcessorItem;
+import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import reactor.core.scheduler.Scheduler;
 

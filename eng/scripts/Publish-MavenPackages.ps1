@@ -12,6 +12,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 
+. "${PSScriptRoot}/../common/scripts/common.ps1"
 . $PSScriptRoot\MavenPackaging.ps1
 
 # The Resolve-Path will normalize the path separators and throw if they don't exist.
@@ -206,6 +207,24 @@ foreach ($packageDetail in $packageDetails) {
     if ($LASTEXITCODE) { exit $LASTEXITCODE }
   }
   else {
+
+    $resultsTime = [diagnostics.stopwatch]::StartNew()
+    # IsMavenPackageVersionPublished is a very quick check to see if the pom is on maven which takes about 1-2 seconds
+    # to complete. If the POM if there, Test-ReleasedPackage will look at all of the package artifacts (pom, jars, .md)
+    # and compare their hashes. The reason we need the quick check first, is that Test-ReleasedPackage, when called
+    # on something that hasn't been released, takes 90 seconds if none of the artifacts have been released and about
+    # 25 seconds, if they have. The first time an artifact is being released we use IsMavenPackageVersionPublished so
+    # we don't add 90 seconds on to every Maven release.
+    if (IsMavenPackageVersionPublished -pkgId $packageDetail.ArtifactID -pkgVersion $packageDetail.Version -groupId $packageDetail.GroupId) {
+      if (Test-ReleasedPackage -RepositoryUrl $packageReposityUrl -PackageDetail $packageDetail) {
+        Write-Information "Package $($packageDetail.FullyQualifiedName) has already been deployed."
+        continue
+      }
+    } else {
+      Write-Information "$($packageDetail.FullyQualifiedName) has not yet deployed."
+    }
+    Write-Information "Time to test released package=$($resultstime.Elapsed.ToString('dd\.hh\:mm\:ss'))"
+
     # Maven Central Staging + optional Release
     $repositoryDirectoryOption = "-DrepositoryDirectory=$localRepositoryDirectory"
     Write-Information "Repository Directory Option is: $repositoryDirectoryOption"

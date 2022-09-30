@@ -2,42 +2,29 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
-import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosClient;
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosContainer;
-import com.azure.cosmos.CosmosDatabase;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.Database;
-import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.implementation.TestSuiteBase;
-import com.azure.cosmos.implementation.TestUtils;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.CosmosContainerResponse;
-import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-import static java.lang.annotation.ElementType.METHOD;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
@@ -45,423 +32,389 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
 
     private static final int SETUP_TIMEOUT = 40000;
     private static final int TIMEOUT = 30000;
-    private static final String PartitionKeyFieldName = "mypk";
-    private Database createdDatabase;
-    private DocumentCollection createdCollection;
+    private CosmosAsyncDatabase createdDatabase;
+    private CosmosAsyncClient client;
 
-    private AsyncDocumentClient client;
-
-    public String getCollectionLink() {
-        return TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId());
-    }
-
-    public FullFidelityChangeFeedTest() {
-        super(createGatewayRxDocumentClient());
-        subscriberValidationTimeout = TIMEOUT;
+    @Factory(dataProvider = "simpleClientBuildersWithDirectTcp")
+    public FullFidelityChangeFeedTest(CosmosClientBuilder cosmosClientBuilder) {
+        super(cosmosClientBuilder);
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void fullFidelityChangeFeed_FromNowForLogicalPartition() throws Exception {
-        CosmosContainer cosmosContainer = initializeFFCFContainer(2);
-        CosmosChangeFeedRequestOptions options1 = CosmosChangeFeedRequestOptions
-            .createForProcessingFromNow(FeedRange.forLogicalPartition(new PartitionKey("mypk-1")));
-        options1.fullFidelity();
+        CosmosAsyncContainer cosmosContainer = initializeFFCFContainer();
+        try {
+            CosmosChangeFeedRequestOptions options1 = CosmosChangeFeedRequestOptions
+                .createForProcessingFromNow(FeedRange.forLogicalPartition(new PartitionKey("mypk-1")));
+            options1.allVersionsAndDeletes();
 
-        Iterator<FeedResponse<JsonNode>> results1 = cosmosContainer
-            .queryChangeFeed(options1, JsonNode.class)
-            .iterableByPage()
-            .iterator();
+            Iterator<FeedResponse<JsonNode>> results1 = cosmosContainer
+                .queryChangeFeed(options1, JsonNode.class)
+                .byPage()
+                .toIterable()
+                .iterator();
 
-        String continuationToken1 = "";
-        while (results1.hasNext()) {
-            FeedResponse<JsonNode> response = results1.next();
-            continuationToken1 = response.getContinuationToken();
-        }
-
-        TestItem item1 = new TestItem(
-            UUID.randomUUID().toString(),
-            "mypk-1", "Johnson");
-        TestItem item2 = new TestItem(
-            UUID.randomUUID().toString(),
-            "mypk-1", "Smith");
-        TestItem item3 = new TestItem(
-            UUID.randomUUID().toString(),
-            "mypk-2", "John");
-        cosmosContainer.createItem(item1);
-        cosmosContainer.createItem(item2);
-        String originalLastNameItem1 = item1.getProp();
-        item1.setProp("Gates");
-        cosmosContainer.upsertItem(item1);
-        String originalLastNameItem2 = item2.getProp();
-        item2.setProp("Doe");
-        cosmosContainer.upsertItem(item2);
-        cosmosContainer.deleteItem(item1, new CosmosItemRequestOptions());
-
-        options1 = CosmosChangeFeedRequestOptions
-            .createForProcessingFromContinuation(continuationToken1);
-        options1.fullFidelity();
-
-        results1 = cosmosContainer
-            .queryChangeFeed(options1, JsonNode.class)
-            .iterableByPage()
-            .iterator();
-
-        // Check item2 deleted with TTL
-        // TODO: this is not working - item does get deleted but it won't show up in CF
-        logger.info("{} going to sleep for 5 seconds to populate ttl delete", Thread.currentThread().getName());
-        Thread.sleep(5 * 1000);
-
-        if (results1.hasNext()) {
-            FeedResponse<JsonNode> response = results1.next();
-            List<JsonNode> itemChanges = response.getResults();
-            assertGatewayMode(response);
-            assertThat(itemChanges.size()).isEqualTo(5);
-            // Assert initial creation of items
-            assertThat(itemChanges.get(0).get("current").get("id").asText()).isEqualTo(item1.getId());
-            assertThat(itemChanges.get(0).get("current").get("prop").asText()).isEqualTo(originalLastNameItem1);
-            assertThat(itemChanges.get(0).get("metadata").get("operationType").asText()).isEqualTo("create");
-            assertThat(itemChanges.get(1).get("current").get("id").asText()).isEqualTo(item2.getId());
-            assertThat(itemChanges.get(1).get("current").get("prop").asText()).isEqualTo(originalLastNameItem2);
-            assertThat(itemChanges.get(1).get("metadata").get("operationType").asText()).isEqualTo("create");
-            // Assert replace of item1
-            assertThat(itemChanges.get(2).get("current").get("id").asText()).isEqualTo(item1.getId());
-            assertThat(itemChanges.get(2).get("current").get("prop").asText()).isEqualTo(item1.getProp());
-            assertThat(itemChanges.get(2).get("metadata").get("operationType").asText()).isEqualTo("replace");
-            if (itemChanges.get(2).get("previous") != null) {
-                assertThat(itemChanges.get(2).get("previous")).isEqualTo(itemChanges.get(0).get("current"));
+            String continuationToken1 = "";
+            while (results1.hasNext()) {
+                FeedResponse<JsonNode> response = results1.next();
+                continuationToken1 = response.getContinuationToken();
             }
-            // Assert replace of item2
-            assertThat(itemChanges.get(3).get("current").get("id").asText()).isEqualTo(item2.getId());
-            assertThat(itemChanges.get(3).get("current").get("prop").asText()).isEqualTo(item2.getProp());
-            assertThat(itemChanges.get(3).get("metadata").get("operationType").asText()).isEqualTo("replace");
-            if (itemChanges.get(3).get("previous") != null) {
-                assertThat(itemChanges.get(3).get("previous")).isEqualTo(itemChanges.get(1).get("current"));
+
+            TestItem item1 = new TestItem(
+                UUID.randomUUID().toString(),
+                "mypk-1", "Johnson");
+            TestItem item2 = new TestItem(
+                UUID.randomUUID().toString(),
+                "mypk-1", "Smith");
+            TestItem item3 = new TestItem(
+                UUID.randomUUID().toString(),
+                "mypk-2", "John");
+            cosmosContainer.createItem(item1).block();
+            cosmosContainer.createItem(item2).block();
+            String originalLastNameItem1 = item1.getProp();
+            item1.setProp("Gates");
+            cosmosContainer.upsertItem(item1).block();
+            String originalLastNameItem2 = item2.getProp();
+            item2.setProp("Doe");
+            cosmosContainer.upsertItem(item2).block();
+            cosmosContainer.deleteItem(item1, new CosmosItemRequestOptions()).block();
+
+            options1 = CosmosChangeFeedRequestOptions
+                .createForProcessingFromContinuation(continuationToken1);
+            options1.allVersionsAndDeletes();
+
+            results1 = cosmosContainer
+                .queryChangeFeed(options1, JsonNode.class)
+                .byPage()
+                .toIterable()
+                .iterator();
+
+            if (results1.hasNext()) {
+                FeedResponse<JsonNode> response = results1.next();
+                List<JsonNode> itemChanges = response.getResults();
+                assertThat(itemChanges.size()).isEqualTo(5);
+                // Assert initial creation of items
+                assertThat(itemChanges.get(0).get("current").get("id").asText()).isEqualTo(item1.getId());
+                assertThat(itemChanges.get(0).get("current").get("prop").asText()).isEqualTo(originalLastNameItem1);
+                assertThat(itemChanges.get(0).get("metadata").get("operationType").asText()).isEqualTo("create");
+                assertThat(itemChanges.get(1).get("current").get("id").asText()).isEqualTo(item2.getId());
+                assertThat(itemChanges.get(1).get("current").get("prop").asText()).isEqualTo(originalLastNameItem2);
+                assertThat(itemChanges.get(1).get("metadata").get("operationType").asText()).isEqualTo("create");
+                // Assert replace of item1
+                assertThat(itemChanges.get(2).get("current").get("id").asText()).isEqualTo(item1.getId());
+                assertThat(itemChanges.get(2).get("current").get("prop").asText()).isEqualTo(item1.getProp());
+                assertThat(itemChanges.get(2).get("metadata").get("operationType").asText()).isEqualTo("replace");
+                if (itemChanges.get(2).get("previous") != null) {
+                    assertThat(itemChanges.get(2).get("previous")).isEqualTo(itemChanges.get(0).get("current"));
+                }
+                // Assert replace of item2
+                assertThat(itemChanges.get(3).get("current").get("id").asText()).isEqualTo(item2.getId());
+                assertThat(itemChanges.get(3).get("current").get("prop").asText()).isEqualTo(item2.getProp());
+                assertThat(itemChanges.get(3).get("metadata").get("operationType").asText()).isEqualTo("replace");
+                if (itemChanges.get(3).get("previous") != null) {
+                    assertThat(itemChanges.get(3).get("previous")).isEqualTo(itemChanges.get(1).get("current"));
+                }
+                // Assert delete of item1
+                assertThat(itemChanges.get(4).get("previous").get("id").asText()).isEqualTo(item1.getId());
+                assertThat(itemChanges.get(4).get("current")).isEmpty();
+                assertThat(itemChanges.get(4).get("metadata").get("operationType").asText()).isEqualTo("delete");
+                assertThat(itemChanges.get(4).get("metadata").get("previousImageLSN").asText()
+                ).isEqualTo(itemChanges.get(2).get("metadata").get("lsn").asText());
+            } else {
+                fail("change feed missing results");
             }
-            // Assert delete of item1
-            assertThat(itemChanges.get(4).get("previous").get("id").asText()).isEqualTo(item1.getId());
-            assertThat(itemChanges.get(4).get("current")).isEmpty();
-            assertThat(itemChanges.get(4).get("metadata").get("operationType").asText()).isEqualTo("delete");
-            assertThat(itemChanges.get(4).get("metadata").get("previousImageLSN").asText()
-            ).isEqualTo(itemChanges.get(2).get("metadata").get("lsn").asText());
-            // Assert item2 deleted with TTL
-            // TODO: Missing TTL logic
-        } else {
-            fail("change feed missing results");
-        }
 
-        CosmosChangeFeedRequestOptions options2 = CosmosChangeFeedRequestOptions
-            .createForProcessingFromNow(FeedRange.forLogicalPartition(new PartitionKey("mypk-2")));
-        options2.fullFidelity();
+            CosmosChangeFeedRequestOptions options2 = CosmosChangeFeedRequestOptions
+                .createForProcessingFromNow(FeedRange.forLogicalPartition(new PartitionKey("mypk-2")));
+            options2.allVersionsAndDeletes();
 
-        Iterator<FeedResponse<JsonNode>> results2 = cosmosContainer
-            .queryChangeFeed(options2, JsonNode.class)
-            .iterableByPage()
-            .iterator();
+            Iterator<FeedResponse<JsonNode>> results2 = cosmosContainer
+                .queryChangeFeed(options2, JsonNode.class)
+                .byPage()
+                .toIterable()
+                .iterator();
 
-        String continuationToken2 = "";
-        while (results2.hasNext()) {
-            FeedResponse<JsonNode> response = results2.next();
-            continuationToken2 = response.getContinuationToken();
-        }
-
-        cosmosContainer.createItem(item3);
-        String originalLastNameItem3 = item3.getProp();
-        item3.setProp("Potter");
-        cosmosContainer.upsertItem(item3);
-        cosmosContainer.deleteItem(item3, new CosmosItemRequestOptions());
-
-        options2 = CosmosChangeFeedRequestOptions
-            .createForProcessingFromContinuation(continuationToken2);
-        options2.fullFidelity();
-
-        results2 = cosmosContainer
-            .queryChangeFeed(options2, JsonNode.class)
-            .iterableByPage()
-            .iterator();
-
-        if (results2.hasNext()) {
-            FeedResponse<JsonNode> response = results2.next();
-            List<JsonNode> itemChanges = response.getResults();
-            assertGatewayMode(response);
-            assertThat(itemChanges.size()).isEqualTo(3);
-            // Assert initial creation of item3
-            assertThat(itemChanges.get(0).get("current").get("id").asText()).isEqualTo(item3.getId());
-            assertThat(itemChanges.get(0).get("current").get("prop").asText()).isEqualTo(originalLastNameItem3);
-            assertThat(itemChanges.get(0).get("metadata").get("operationType").asText()).isEqualTo("create");
-            // Assert replace of item3
-            assertThat(itemChanges.get(1).get("current").get("id").asText()).isEqualTo(item3.getId());
-            assertThat(itemChanges.get(1).get("current").get("prop").asText()).isEqualTo(item3.getProp());
-            assertThat(itemChanges.get(1).get("metadata").get("operationType").asText()).isEqualTo("replace");
-            if (itemChanges.get(1).get("previous") != null) {
-                assertThat(itemChanges.get(1).get("previous")).isEqualTo(itemChanges.get(0).get("current"));
+            String continuationToken2 = "";
+            while (results2.hasNext()) {
+                FeedResponse<JsonNode> response = results2.next();
+                continuationToken2 = response.getContinuationToken();
             }
-            // Assert delete of item3
-            assertThat(itemChanges.get(2).get("previous").get("id").asText()).isEqualTo(item3.getId());
-            assertThat(itemChanges.get(2).get("current")).isEmpty();
-            assertThat(itemChanges.get(2).get("metadata").get("operationType").asText()).isEqualTo("delete");
-            assertThat(itemChanges.get(2).get("metadata").get("previousImageLSN").asText()
-            ).isEqualTo(itemChanges.get(1).get("metadata").get("lsn").asText());
-        } else {
-            fail("change feed missing results");
+
+            cosmosContainer.createItem(item3).block();
+            String originalLastNameItem3 = item3.getProp();
+            item3.setProp("Potter");
+            cosmosContainer.upsertItem(item3).block();
+            cosmosContainer.deleteItem(item3, new CosmosItemRequestOptions()).block();
+
+            options2 = CosmosChangeFeedRequestOptions
+                .createForProcessingFromContinuation(continuationToken2);
+            options2.allVersionsAndDeletes();
+
+            results2 = cosmosContainer
+                .queryChangeFeed(options2, JsonNode.class)
+                .byPage()
+                .toIterable()
+                .iterator();
+
+            if (results2.hasNext()) {
+                FeedResponse<JsonNode> response = results2.next();
+                List<JsonNode> itemChanges = response.getResults();
+                assertThat(itemChanges.size()).isEqualTo(3);
+                // Assert initial creation of item3
+                assertThat(itemChanges.get(0).get("current").get("id").asText()).isEqualTo(item3.getId());
+                assertThat(itemChanges.get(0).get("current").get("prop").asText()).isEqualTo(originalLastNameItem3);
+                assertThat(itemChanges.get(0).get("metadata").get("operationType").asText()).isEqualTo("create");
+                // Assert replace of item3
+                assertThat(itemChanges.get(1).get("current").get("id").asText()).isEqualTo(item3.getId());
+                assertThat(itemChanges.get(1).get("current").get("prop").asText()).isEqualTo(item3.getProp());
+                assertThat(itemChanges.get(1).get("metadata").get("operationType").asText()).isEqualTo("replace");
+                if (itemChanges.get(1).get("previous") != null) {
+                    assertThat(itemChanges.get(1).get("previous")).isEqualTo(itemChanges.get(0).get("current"));
+                }
+                // Assert delete of item3
+                assertThat(itemChanges.get(2).get("previous").get("id").asText()).isEqualTo(item3.getId());
+                assertThat(itemChanges.get(2).get("current")).isEmpty();
+                assertThat(itemChanges.get(2).get("metadata").get("operationType").asText()).isEqualTo("delete");
+                assertThat(itemChanges.get(2).get("metadata").get("previousImageLSN").asText()
+                ).isEqualTo(itemChanges.get(1).get("metadata").get("lsn").asText());
+            } else {
+                fail("change feed missing results");
+            }
+        } finally {
+            safeDeleteCollection(cosmosContainer);
         }
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void fullFidelityChangeFeed_FromContinuationToken() throws Exception {
-        CosmosContainer cosmosContainer = initializeFFCFContainer(2);
-        CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
-            .createForProcessingFromNow(FeedRange.forFullRange());
-        options.fullFidelity();
+        CosmosAsyncContainer cosmosContainer = initializeFFCFContainer();
+        try {
+            CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+                .createForProcessingFromNow(FeedRange.forFullRange());
+            options.allVersionsAndDeletes();
 
-        Iterator<FeedResponse<JsonNode>> results = cosmosContainer
-            .queryChangeFeed(options, JsonNode.class)
-            .iterableByPage()
-            .iterator();
+            Iterator<FeedResponse<JsonNode>> results = cosmosContainer
+                .queryChangeFeed(options, JsonNode.class)
+                .byPage()
+                .toIterable()
+                .iterator();
 
-        String continuationToken = null;
-        while (results.hasNext()) {
-            FeedResponse<JsonNode> response = results.next();
-            continuationToken = response.getContinuationToken();
-        }
-
-        options = CosmosChangeFeedRequestOptions
-            .createForProcessingFromContinuation(continuationToken);
-        options.fullFidelity();
-
-        TestItem item1 = new TestItem(
-            UUID.randomUUID().toString(),
-            "mypk", "Johnson");
-        TestItem item2 = new TestItem(
-            UUID.randomUUID().toString(),
-            "mypk", "Smith");
-        cosmosContainer.upsertItem(item1);
-        cosmosContainer.upsertItem(item2);
-        String originalLastName = item1.getProp();
-        item1.setProp("Gates");
-        cosmosContainer.upsertItem(item1);
-        cosmosContainer.deleteItem(item1, new CosmosItemRequestOptions());
-
-        // Check item2 deleted with TTL
-        // TODO: this is not working - item does get deleted but it won't show up in CF
-        logger.info("{} going to sleep for 5 seconds to populate ttl delete", Thread.currentThread().getName());
-        Thread.sleep(5 * 1000);
-
-        results = cosmosContainer
-            .queryChangeFeed(options, JsonNode.class)
-            .iterableByPage()
-            .iterator();
-
-        if (results.hasNext()) {
-            FeedResponse<JsonNode> response = results.next();
-            List<JsonNode> itemChanges = response.getResults();
-            assertGatewayMode(response);
-            assertThat(itemChanges.size()).isEqualTo(4);
-            // Assert initial creation of items
-            assertThat(itemChanges.get(0).get("current").get("id").asText()).isEqualTo(item1.getId());
-            assertThat(itemChanges.get(0).get("current").get("prop").asText()).isEqualTo(originalLastName);
-            assertThat(itemChanges.get(0).get("metadata").get("operationType").asText()).isEqualTo("create");
-            assertThat(itemChanges.get(1).get("current").get("id").asText()).isEqualTo(item2.getId());
-            assertThat(itemChanges.get(1).get("current").get("prop").asText()).isEqualTo(item2.getProp());
-            assertThat(itemChanges.get(1).get("metadata").get("operationType").asText()).isEqualTo("create");
-            // Assert replace of item1
-            assertThat(itemChanges.get(2).get("current").get("id").asText()).isEqualTo(item1.getId());
-            assertThat(itemChanges.get(2).get("current").get("prop").asText()).isEqualTo(item1.getProp());
-            assertThat(itemChanges.get(2).get("metadata").get("operationType").asText()).isEqualTo("replace");
-            if (itemChanges.get(2).get("previous") != null) {
-                assertThat(itemChanges.get(2).get("previous")).isEqualTo(itemChanges.get(0).get("current"));
+            String continuationToken = null;
+            while (results.hasNext()) {
+                FeedResponse<JsonNode> response = results.next();
+                continuationToken = response.getContinuationToken();
             }
-            // Assert delete of item1
-            assertThat(itemChanges.get(3).get("previous").get("id").asText()).isEqualTo(item1.getId());
-            assertThat(itemChanges.get(3).get("current")).isEmpty();
-            assertThat(itemChanges.get(3).get("metadata").get("operationType").asText()).isEqualTo("delete");
-            assertThat(itemChanges.get(3).get("metadata").get("previousImageLSN").asText()
-            ).isEqualTo(itemChanges.get(2).get("metadata").get("lsn").asText());
-            // Assert item2 deleted with TTL
-            // TODO: Missing TTL logic showing up
-        } else {
-            fail("change feed missing results");
+
+            options = CosmosChangeFeedRequestOptions
+                .createForProcessingFromContinuation(continuationToken);
+            options.allVersionsAndDeletes();
+
+            TestItem item1 = new TestItem(
+                UUID.randomUUID().toString(),
+                "mypk", "Johnson");
+            TestItem item2 = new TestItem(
+                UUID.randomUUID().toString(),
+                "mypk", "Smith");
+            cosmosContainer.upsertItem(item1).block();
+            cosmosContainer.upsertItem(item2).block();
+            String originalLastName = item1.getProp();
+            item1.setProp("Gates");
+            cosmosContainer.upsertItem(item1).block();
+            cosmosContainer.deleteItem(item1, new CosmosItemRequestOptions()).block();
+
+            results = cosmosContainer
+                .queryChangeFeed(options, JsonNode.class)
+                .byPage()
+                .toIterable()
+                .iterator();
+
+            if (results.hasNext()) {
+                FeedResponse<JsonNode> response = results.next();
+                List<JsonNode> itemChanges = response.getResults();
+                assertThat(itemChanges.size()).isEqualTo(4);
+                // Assert initial creation of items
+                assertThat(itemChanges.get(0).get("current").get("id").asText()).isEqualTo(item1.getId());
+                assertThat(itemChanges.get(0).get("current").get("prop").asText()).isEqualTo(originalLastName);
+                assertThat(itemChanges.get(0).get("metadata").get("operationType").asText()).isEqualTo("create");
+                assertThat(itemChanges.get(1).get("current").get("id").asText()).isEqualTo(item2.getId());
+                assertThat(itemChanges.get(1).get("current").get("prop").asText()).isEqualTo(item2.getProp());
+                assertThat(itemChanges.get(1).get("metadata").get("operationType").asText()).isEqualTo("create");
+                // Assert replace of item1
+                assertThat(itemChanges.get(2).get("current").get("id").asText()).isEqualTo(item1.getId());
+                assertThat(itemChanges.get(2).get("current").get("prop").asText()).isEqualTo(item1.getProp());
+                assertThat(itemChanges.get(2).get("metadata").get("operationType").asText()).isEqualTo("replace");
+                if (itemChanges.get(2).get("previous") != null) {
+                    assertThat(itemChanges.get(2).get("previous")).isEqualTo(itemChanges.get(0).get("current"));
+                }
+                // Assert delete of item1
+                assertThat(itemChanges.get(3).get("previous").get("id").asText()).isEqualTo(item1.getId());
+                assertThat(itemChanges.get(3).get("current")).isEmpty();
+                assertThat(itemChanges.get(3).get("metadata").get("operationType").asText()).isEqualTo("delete");
+                assertThat(itemChanges.get(3).get("metadata").get("previousImageLSN").asText()
+                ).isEqualTo(itemChanges.get(2).get("metadata").get("lsn").asText());
+            } else {
+                fail("change feed missing results");
+            }
+        } finally {
+            safeDeleteCollection(cosmosContainer);
         }
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void fullFidelityChangeFeed_FromContinuationTokenOperationsOrder() throws Exception {
-        CosmosContainer cosmosContainer = initializeFFCFContainer(0);
-        CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
-            .createForProcessingFromNow(FeedRange.forFullRange());
-        options.fullFidelity();
+        CosmosAsyncContainer cosmosContainer = initializeFFCFContainer();
+        try {
+            CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+                .createForProcessingFromNow(FeedRange.forFullRange());
+            options.allVersionsAndDeletes();
 
-        Iterator<FeedResponse<JsonNode>> results = cosmosContainer
-            .queryChangeFeed(options, JsonNode.class)
-            .iterableByPage()
-            .iterator();
+            Iterator<FeedResponse<JsonNode>> results = cosmosContainer
+                .queryChangeFeed(options, JsonNode.class)
+                .byPage()
+                .toIterable()
+                .iterator();
 
-        String continuationToken = null;
-        while (results.hasNext()) {
-            FeedResponse<JsonNode> response = results.next();
-            continuationToken = response.getContinuationToken();
-        }
-
-        options = CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(continuationToken);
-        options.fullFidelity();
-        options.setMaxItemCount(150); // get all results in one page
-
-        // Create, replace, and delete 50 objects for 150 total operations
-        for (int i = 0; i < 50; i++) {
-            TestItem currentItem = new TestItem("item"+ i, "mypk", "Smith");
-            cosmosContainer.upsertItem(currentItem);
-            currentItem.setProp("Jefferson");
-            cosmosContainer.upsertItem(currentItem);
-            cosmosContainer.deleteItem(currentItem, new CosmosItemRequestOptions());
-        }
-
-        results = cosmosContainer
-            .queryChangeFeed(options, JsonNode.class)
-            .iterableByPage()
-            .iterator();
-
-        if (results.hasNext()) {
-            FeedResponse<JsonNode> response = results.next();
-            List<JsonNode> itemChanges = response.getResults();
-            assertGatewayMode(response);
-            assertThat(itemChanges.size()).isEqualTo(150);
-            // Verify that operations order shows properly
-            for (int index = 0; index < 150; index+=3) {
-                assertThat(itemChanges.get(index).get("metadata").get("operationType").asText()).isEqualTo("create");
-                assertThat(itemChanges.get(index+1).get("metadata").get("operationType").asText()).isEqualTo("replace");
-                assertThat(itemChanges.get(index+2).get("metadata").get("operationType").asText()).isEqualTo("delete");
+            String continuationToken = null;
+            while (results.hasNext()) {
+                FeedResponse<JsonNode> response = results.next();
+                continuationToken = response.getContinuationToken();
             }
-        } else {
-            fail("change feed missing results");
+
+            options = CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(continuationToken);
+            options.allVersionsAndDeletes();
+            options.setMaxItemCount(150); // get all results in one page
+
+            // Create, replace, and delete 50 objects for 150 total operations
+            for (int i = 0; i < 50; i++) {
+                TestItem currentItem = new TestItem("item"+ i, "mypk", "Smith");
+                cosmosContainer.upsertItem(currentItem).block();
+                currentItem.setProp("Jefferson");
+                cosmosContainer.upsertItem(currentItem).block();
+                cosmosContainer.deleteItem(currentItem, new CosmosItemRequestOptions()).block();
+            }
+
+            results = cosmosContainer
+                .queryChangeFeed(options, JsonNode.class)
+                .byPage()
+                .toIterable()
+                .iterator();
+
+            if (results.hasNext()) {
+                FeedResponse<JsonNode> response = results.next();
+                List<JsonNode> itemChanges = response.getResults();
+                assertThat(itemChanges.size()).isEqualTo(150);
+                // Verify that operations order shows properly
+                for (int index = 0; index < 150; index+=3) {
+                    assertThat(itemChanges.get(index).get("metadata").get("operationType").asText()).isEqualTo("create");
+                    assertThat(itemChanges.get(index+1).get("metadata").get("operationType").asText()).isEqualTo("replace");
+                    assertThat(itemChanges.get(index+2).get("metadata").get("operationType").asText()).isEqualTo("delete");
+                }
+            } else {
+                fail("change feed missing results");
+            }
+        } finally {
+            safeDeleteCollection(cosmosContainer);
         }
     }
+
     // TODO: re-enable this test once pipeline emulator has these changes - currently only in preview
-    @Test(groups = { "emulator" }, enabled = false, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT, enabled = false)
     public void fullFidelityChangeFeed_VerifyPreviousPresentOnReplace() throws Exception {
-        CosmosContainer cosmosContainer = initializeFFCFContainer(2);
-        CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
-            .createForProcessingFromNow(FeedRange.forFullRange());
-        options.fullFidelity();
+        CosmosAsyncContainer cosmosContainer = initializeFFCFContainer();
+        try {
+            CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+                .createForProcessingFromNow(FeedRange.forFullRange());
+            options.allVersionsAndDeletes();
 
-        Iterator<FeedResponse<JsonNode>> results = cosmosContainer
-            .queryChangeFeed(options, JsonNode.class)
-            .iterableByPage()
-            .iterator();
+            Iterator<FeedResponse<JsonNode>> results = cosmosContainer
+                .queryChangeFeed(options, JsonNode.class)
+                .byPage()
+                .toIterable()
+                .iterator();
 
-        String continuationToken = null;
-        while (results.hasNext()) {
-            FeedResponse<JsonNode> response = results.next();
-            continuationToken = response.getContinuationToken();
-        }
+            String continuationToken = null;
+            while (results.hasNext()) {
+                FeedResponse<JsonNode> response = results.next();
+                continuationToken = response.getContinuationToken();
+            }
 
-        options = CosmosChangeFeedRequestOptions
-            .createForProcessingFromContinuation(continuationToken);
-        options.fullFidelity();
+            options = CosmosChangeFeedRequestOptions
+                .createForProcessingFromContinuation(continuationToken);
+            options.allVersionsAndDeletes();
 
-        TestItem item1 = new TestItem(
-            UUID.randomUUID().toString(),
-            "mypk", "Johnson");
-        cosmosContainer.upsertItem(item1);
-        String originalLastName = item1.getProp();
-        item1.setProp("Gates");
-        cosmosContainer.upsertItem(item1);
-        String secondLastName = item1.getProp();
-        item1.setProp("DiCaprio");
-        String thirdLastName = item1.getProp();
-        cosmosContainer.upsertItem(item1);
-        item1.setProp(originalLastName);
-        cosmosContainer.upsertItem(item1);
-        cosmosContainer.deleteItem(item1, new CosmosItemRequestOptions());
+            TestItem item1 = new TestItem(
+                UUID.randomUUID().toString(),
+                "mypk", "Johnson");
+            cosmosContainer.upsertItem(item1).block();
+            String originalLastName = item1.getProp();
+            item1.setProp("Gates");
+            cosmosContainer.upsertItem(item1).block();
+            String secondLastName = item1.getProp();
+            item1.setProp("DiCaprio");
+            String thirdLastName = item1.getProp();
+            cosmosContainer.upsertItem(item1).block();
+            item1.setProp(originalLastName);
+            cosmosContainer.upsertItem(item1).block();
+            cosmosContainer.deleteItem(item1, new CosmosItemRequestOptions()).block();
 
-        results = cosmosContainer
-            .queryChangeFeed(options, JsonNode.class)
-            .iterableByPage()
-            .iterator();
+            results = cosmosContainer
+                .queryChangeFeed(options, JsonNode.class)
+                .byPage()
+                .toIterable()
+                .iterator();
 
-        if (results.hasNext()) {
-            FeedResponse<JsonNode> response = results.next();
-            List<JsonNode> itemChanges = response.getResults();
-            assertGatewayMode(response);
-            assertThat(itemChanges.size()).isEqualTo(5);
-            // Assert initial creation of item1
-            assertThat(itemChanges.get(0).get("current").get("id").asText()).isEqualTo(item1.getId());
-            assertThat(itemChanges.get(0).get("current").get("prop").asText()).isEqualTo(originalLastName);
-            assertThat(itemChanges.get(0).get("metadata").get("operationType").asText()).isEqualTo("create");
-            // Verify separate replace operations
-            assertThat(itemChanges.get(1).get("current").get("id").asText()).isEqualTo(item1.getId());
-            assertThat(itemChanges.get(1).get("current").get("prop").asText()).isEqualTo(secondLastName);
-            assertThat(itemChanges.get(1).get("metadata").get("operationType").asText()).isEqualTo("replace");
-            assertThat(itemChanges.get(1).get("metadata").get("previousImageLSN").asText()
-            ).isEqualTo(itemChanges.get(0).get("metadata").get("lsn").asText());
-            assertThat(itemChanges.get(1).get("previous")).isEqualTo(itemChanges.get(0).get("current"));
+            if (results.hasNext()) {
+                FeedResponse<JsonNode> response = results.next();
+                List<JsonNode> itemChanges = response.getResults();
+                assertThat(itemChanges.size()).isEqualTo(5);
+                // Assert initial creation of item1
+                assertThat(itemChanges.get(0).get("current").get("id").asText()).isEqualTo(item1.getId());
+                assertThat(itemChanges.get(0).get("current").get("prop").asText()).isEqualTo(originalLastName);
+                assertThat(itemChanges.get(0).get("metadata").get("operationType").asText()).isEqualTo("create");
+                // Verify separate replace operations
+                assertThat(itemChanges.get(1).get("current").get("id").asText()).isEqualTo(item1.getId());
+                assertThat(itemChanges.get(1).get("current").get("prop").asText()).isEqualTo(secondLastName);
+                assertThat(itemChanges.get(1).get("metadata").get("operationType").asText()).isEqualTo("replace");
+                assertThat(itemChanges.get(1).get("metadata").get("previousImageLSN").asText()
+                ).isEqualTo(itemChanges.get(0).get("metadata").get("lsn").asText());
+                assertThat(itemChanges.get(1).get("previous")).isEqualTo(itemChanges.get(0).get("current"));
 
-            assertThat(itemChanges.get(2).get("current").get("id").asText()).isEqualTo(item1.getId());
-            assertThat(itemChanges.get(2).get("current").get("prop").asText()).isEqualTo(thirdLastName);
-            assertThat(itemChanges.get(2).get("metadata").get("operationType").asText()).isEqualTo("replace");
-            assertThat(itemChanges.get(2).get("metadata").get("previousImageLSN").asText()
-            ).isEqualTo(itemChanges.get(1).get("metadata").get("lsn").asText());
-            assertThat(itemChanges.get(2).get("previous")).isEqualTo(itemChanges.get(1).get("current"));
+                assertThat(itemChanges.get(2).get("current").get("id").asText()).isEqualTo(item1.getId());
+                assertThat(itemChanges.get(2).get("current").get("prop").asText()).isEqualTo(thirdLastName);
+                assertThat(itemChanges.get(2).get("metadata").get("operationType").asText()).isEqualTo("replace");
+                assertThat(itemChanges.get(2).get("metadata").get("previousImageLSN").asText()
+                ).isEqualTo(itemChanges.get(1).get("metadata").get("lsn").asText());
+                assertThat(itemChanges.get(2).get("previous")).isEqualTo(itemChanges.get(1).get("current"));
 
-            assertThat(itemChanges.get(3).get("previous").get("id").asText()).isEqualTo(item1.getId());
-            assertThat(itemChanges.get(3).get("current").get("prop").asText()).isEqualTo(item1.getProp());
-            assertThat(itemChanges.get(3).get("metadata").get("operationType").asText()).isEqualTo("replace");
-            assertThat(itemChanges.get(3).get("metadata").get("previousImageLSN").asText()
-            ).isEqualTo(itemChanges.get(2).get("metadata").get("lsn").asText());
-            assertThat(itemChanges.get(3).get("previous")).isEqualTo(itemChanges.get(2).get("current"));
-        } else {
-            fail("change feed missing results");
+                assertThat(itemChanges.get(3).get("previous").get("id").asText()).isEqualTo(item1.getId());
+                assertThat(itemChanges.get(3).get("current").get("prop").asText()).isEqualTo(item1.getProp());
+                assertThat(itemChanges.get(3).get("metadata").get("operationType").asText()).isEqualTo("replace");
+                assertThat(itemChanges.get(3).get("metadata").get("previousImageLSN").asText()
+                ).isEqualTo(itemChanges.get(2).get("metadata").get("lsn").asText());
+                assertThat(itemChanges.get(3).get("previous")).isEqualTo(itemChanges.get(2).get("current"));
+            } else {
+                fail("change feed missing results");
+            }
+        } finally {
+            safeDeleteCollection(cosmosContainer);
         }
     }
 
-    public CosmosContainer initializeFFCFContainer(int ttl) {
-        CosmosClient ffcfCosmosClient = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .consistencyLevel(ConsistencyLevel.SESSION)
-            .contentResponseOnWriteEnabled(true)
-            .directMode()
-            .buildClient();
-        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
-        ArrayList<String> paths = new ArrayList<>();
-        paths.add("/mypk");
-        partitionKeyDef.setPaths(paths);
-
-        String containerId = "FFCF_container" + UUID.randomUUID().toString();
-        CosmosContainerProperties containerProperties =
-            new CosmosContainerProperties(containerId, partitionKeyDef);
-        if (ttl != 0) {
-            containerProperties.setDefaultTimeToLiveInSeconds(ttl);
-        }
-        containerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(5)));
-
-        CosmosDatabaseResponse databaseResponse = ffcfCosmosClient.createDatabaseIfNotExists(createdDatabase.getId());
-        CosmosDatabase database = ffcfCosmosClient.getDatabase(databaseResponse.getProperties().getId());
-        CosmosContainerResponse containerResponse = database.createContainerIfNotExists(containerProperties);
-
-        return database.getContainer(containerResponse.getProperties().getId());
+    public CosmosAsyncContainer initializeFFCFContainer() {
+        CosmosContainerProperties cosmosContainerProperties = getCollectionDefinition();
+        cosmosContainerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(5)));
+        return createCollection(client, createdDatabase.getId(), cosmosContainerProperties);
     }
 
-    // TODO: check why diagnostics are not showing this for change feed
-    void assertGatewayMode(FeedResponse<JsonNode> response) {
-        String diagnostics = response.getCosmosDiagnostics().toString();
-        logger.info("Full Fidelity Diagnostics are : {}", diagnostics);
-        assertThat(diagnostics).contains("");
-    }
-
-    @BeforeClass(groups = { "simple", "emulator" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_ChangeFeedTest() throws Exception {
         // set up the client
-        client = clientBuilder().build();
-        createdDatabase = SHARED_DATABASE;
+        client = this.getClientBuilder().buildAsyncClient();
+        createdDatabase = getSharedCosmosDatabase(this.client);
     }
 
-    @AfterClass(groups = { "simple", "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
-    }
-
-    @Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
-    @Target({ METHOD })
-    @interface Tag {
-        String name();
     }
 }

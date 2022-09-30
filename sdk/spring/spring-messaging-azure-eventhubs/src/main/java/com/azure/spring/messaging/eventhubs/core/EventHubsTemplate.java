@@ -98,48 +98,56 @@ public class EventHubsTemplate implements SendOperation {
     }
 
     private Mono<Void> doSend(String destination, List<EventData> events, PartitionSupplier partitionSupplier) {
-        try (EventHubProducerAsyncClient producer = producerFactory.createProducer(destination)) {
-            CreateBatchOptions options = buildCreateBatchOptions(partitionSupplier);
-            AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(
-                producer.createBatch(options).block());
-            Flux.fromIterable(events).flatMap(event -> {
-                final EventDataBatch batch = currentBatch.get();
-                try {
-                    if (batch.tryAdd(event)) {
-                        return Mono.empty();
-                    } else {
-                        LOGGER.warn("EventDataBatch is full in the collect process or the first event is "
-                            + "too large to fit in an empty batch! Max size: {}", batch.getMaxSizeInBytes());
-                    }
-                } catch (AmqpException e) {
-                    LOGGER.error("Event is larger than maximum allowed size.", e);
-                    return Mono.empty();
-                }
+        EventHubProducerAsyncClient producer = producerFactory.createProducer(destination);
+        CreateBatchOptions options = buildCreateBatchOptions(partitionSupplier);
 
-                return Mono.when(
-                    producer.send(batch),
-                    producer.createBatch(options).map(newBatch -> {
-                        currentBatch.set(newBatch);
-                        // Add the event that did not fit in the previous batch.
-                        try {
-                            if (!newBatch.tryAdd(event)) {
-                                LOGGER.error("Event was too large to fit in an empty batch. Max size:{} ",
-                                    newBatch.getMaxSizeInBytes());
-                            }
-                        } catch (AmqpException e) {
-                            LOGGER.error("Event was too large to fit in an empty batch. Max size:{}",
-                                newBatch.getMaxSizeInBytes(), e);
-                        }
-
-                        return newBatch;
-                    }));
-            })
-            .then()
-            .block();
-
-            final EventDataBatch batch = currentBatch.getAndSet(null);
-            return producer.send(batch);
+        EventDataBatch eventDataBatch = null;
+        try {
+            eventDataBatch = producer.createBatch(options).block();
+        } catch (Exception e) {
+            LOGGER.error("EventDataBatch create error.", e);
+            return Mono.error(e);
         }
+        AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(eventDataBatch);
+
+        Flux.fromIterable(events).flatMap(event -> {
+            final EventDataBatch batch = currentBatch.get();
+            try {
+                if (batch.tryAdd(event)) {
+                    return Mono.empty();
+                } else {
+                    LOGGER.warn("EventDataBatch is full in the collect process or the first event is "
+                        + "too large to fit in an empty batch! Max size: {}", batch.getMaxSizeInBytes());
+                }
+            } catch (AmqpException e) {
+                LOGGER.error("Event is larger than maximum allowed size.", e);
+                return Mono.empty();
+            }
+
+            return Mono.when(
+                producer.send(batch),
+                producer.createBatch(options).map(newBatch -> {
+                    currentBatch.set(newBatch);
+                    // Add the event that did not fit in the previous batch.
+                    try {
+                        if (!newBatch.tryAdd(event)) {
+                            LOGGER.error("Event was too large to fit in an empty batch. Max size:{} ",
+                                newBatch.getMaxSizeInBytes());
+                        }
+                    } catch (AmqpException e) {
+                        LOGGER.error("Event was too large to fit in an empty batch. Max size:{}",
+                            newBatch.getMaxSizeInBytes(), e);
+                    }
+
+                    return newBatch;
+                }));
+        })
+        .then()
+        .block();
+
+        final EventDataBatch batch = currentBatch.getAndSet(null);
+        return producer.send(batch)
+                .doFinally(s -> producer.close());
     }
 
     private CreateBatchOptions buildCreateBatchOptions(PartitionSupplier partitionSupplier) {
