@@ -143,14 +143,14 @@ directive:
     to: RecognizeOptionsInternal
     
 # Remove models
-- remove-model: AddParticipantsFailedEvent
-- remove-model: AddParticipantsSucceededEvent
-- remove-model: CallConnectedEvent
-- remove-model: CallDisconnectedEvent
-- remove-model: CallTransferAcceptedEvent
-- remove-model: CallTransferFailedEvent
-- remove-model: ParticipantsUpdatedEvent
-- remove-model: RecordingStateChangedEvent
+- remove-model: AddParticipantsFailed
+- remove-model: AddParticipantsSucceeded
+- remove-model: CallConnected
+- remove-model: CallDisconnected
+- remove-model: CallTransferAccepted
+- remove-model: CallTransferFailed
+- remove-model: ParticipantsUpdated
+- remove-model: RecordingStateChanged
 - remove-model: PlayCompleted
 - remove-model: PlayFailed
 - remove-model: ResultInfo
