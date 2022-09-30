@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.servicebus.administration.implementation;
 
 import com.azure.core.http.HttpHeaders;
@@ -66,6 +69,7 @@ public class Utility {
     public static final String TOPICS_ENTITY_TYPE = "topics";
 
     public static final int NUMBER_OF_ELEMENTS = 100;
+
     /**
      * Check that the additional headers field is present and add the additional auth header
      *
@@ -84,6 +88,7 @@ public class Utility {
 
     /**
      * Create Queue Body
+     *
      * @param createQueueOptions Create Queue Body options
      * @return {@link CreateQueueBody}
      */
@@ -103,6 +108,7 @@ public class Utility {
         return new CreateTopicBody()
             .setContent(content);
     }
+
     public static CreateTopicBody getCreateTopicBody(TopicDescription topicOptions) {
         final CreateTopicBodyContent content = new CreateTopicBodyContent()
             .setType(CONTENT_TYPE)
@@ -186,14 +192,15 @@ public class Utility {
     }
 
     public static List<SubscriptionProperties> getSubscriptionPropertiesList(String topicName,
-                                                                      SubscriptionDescriptionFeed feed) {
+                                                                             SubscriptionDescriptionFeed feed) {
         return feed.getEntry().stream()
             .filter(e -> e.getContent() != null && e.getContent().getSubscriptionDescription() != null)
             .map(e -> getSubscriptionProperties(topicName, e))
             .collect(Collectors.toList());
     }
 
-    public static SubscriptionProperties getSubscriptionProperties(String topicName, SubscriptionDescriptionEntry entry) {
+    public static SubscriptionProperties getSubscriptionProperties(String topicName,
+                                                                   SubscriptionDescriptionEntry entry) {
         final SubscriptionProperties subscription = EntityHelper.toModel(
             entry.getContent().getSubscriptionDescription());
         final String subscriptionName = getTitleValue(entry.getTitle());
@@ -210,7 +217,8 @@ public class Utility {
     }
 
     public static SimpleResponse<SubscriptionProperties> getSubscriptionPropertiesSimpleResponse(String topicName,
-        Response<Object> response, SubscriptionDescriptionEntry entry) {
+                                                                                                 Response<Object> response,
+                                                                                                 SubscriptionDescriptionEntry entry) {
         // This was an empty response (ie. 204).
         if (entry == null) {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
@@ -228,7 +236,7 @@ public class Utility {
     }
 
     public static SimpleResponse<RuleProperties> getRulePropertiesSimpleResponse(Response<Object> response,
-        RuleDescriptionEntry entry) {
+                                                                                 RuleDescriptionEntry entry) {
         // This was an empty response (ie. 204).
         if (entry == null) {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
@@ -266,21 +274,22 @@ public class Utility {
             return null;
         }
     }
+
     public static void validateQueueName(String queueName) {
         if (CoreUtils.isNullOrEmpty(queueName)) {
-            throw LOGGER.logExceptionAsError( new IllegalArgumentException("'queueName' cannot be null or empty."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'queueName' cannot be null or empty."));
         }
     }
 
     public static void validateRuleName(String ruleName) {
         if (CoreUtils.isNullOrEmpty(ruleName)) {
-            throw LOGGER.logExceptionAsError( new IllegalArgumentException("'ruleName' cannot be null or empty."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'ruleName' cannot be null or empty."));
         }
     }
 
     public static void validateTopicName(String topicName) {
         if (CoreUtils.isNullOrEmpty(topicName)) {
-            throw LOGGER.logExceptionAsError( new IllegalArgumentException("'topicName' cannot be null or empty."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'topicName' cannot be null or empty."));
         }
     }
 
@@ -418,23 +427,22 @@ public class Utility {
      * @param entities Entities in the feed.
      * @param responseLinks Links returned from the feed.
      * @param <TResult> Type of Service Bus entities in page.
-     *
      * @return A {@link FeedPage} indicating whether this can be continued or not.
      * @throws MalformedURLException if the "next" page link does not contain a well-formed URL.
      */
     public static <TResult, TFeed> FeedPage<TResult> extractPage(Response<TFeed> response, List<TResult> entities,
-                                                          List<ResponseLink> responseLinks)
+                                                                 List<ResponseLink> responseLinks)
         throws MalformedURLException, UnsupportedEncodingException {
         final Optional<ResponseLink> nextLink = responseLinks.stream()
             .filter(link -> link.getRel().equalsIgnoreCase("next"))
             .findFirst();
 
-        if (nextLink.isEmpty()) {
+        if (!nextLink.isPresent()) {
             return new FeedPage<>(response.getStatusCode(), response.getHeaders(), response.getRequest(), entities);
         }
 
         final URL url = new URL(nextLink.get().getHref());
-        final String decode = URLDecoder.decode(url.getQuery(), StandardCharsets.UTF_8);
+        final String decode = URLDecoder.decode(url.getQuery(), StandardCharsets.UTF_8.toString());
         final Optional<Integer> skipParameter = Arrays.stream(decode.split("&amp;|&"))
             .map(part -> part.split("=", 2))
             .filter(parts -> parts[0].equalsIgnoreCase("$skip") && parts.length == 2)

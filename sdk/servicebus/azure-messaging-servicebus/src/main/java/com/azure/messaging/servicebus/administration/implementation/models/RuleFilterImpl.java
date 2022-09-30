@@ -5,8 +5,6 @@
 package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.messaging.servicebus.administration.implementation.models.CorrelationFilterImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.SqlFilterImpl;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;

@@ -1043,16 +1043,8 @@ public final class ServiceBusAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<QueueProperties> listQueues() {
-        return new PagedFlux<>(
-            () -> withContext(context -> listQueues(0, getTracingContext(context))),
-            continuationToken -> {
-                if (continuationToken == null || continuationToken.isEmpty()) {
-                    return Mono.empty();
-                }
-
-                final int skip = Integer.parseInt(continuationToken);
-                return withContext(context -> listQueues(skip, getTracingContext(context)));
-            });
+        return new PagedFlux<>(() -> withContext(context -> listQueuesFirstPage(context)),
+            token -> withContext(context -> listQueuesNextPage(token, context)));
     }
 
     /**
@@ -1078,15 +1070,8 @@ public final class ServiceBusAdministrationAsyncClient {
         }
 
         return new PagedFlux<>(
-            () -> withContext(context -> listRules(topicName, subscriptionName, 0, getTracingContext(context))),
-            continuationToken -> {
-                if (continuationToken == null || continuationToken.isEmpty()) {
-                    return Mono.empty();
-                }
-
-                final int skip = Integer.parseInt(continuationToken);
-                return withContext(context -> listRules(topicName, subscriptionName, skip, getTracingContext(context)));
-            });
+            () -> withContext(context -> listRulesFirstPage(topicName, subscriptionName, context)),
+            token -> withContext(context -> listRulesNextPage(topicName, subscriptionName, token, context)));
     }
 
     /**
@@ -1477,7 +1462,7 @@ public final class ServiceBusAdministrationAsyncClient {
             validateSubscriptionName(subscriptionName);
             validateRuleName(ruleName);
             if (ruleOptions == null) {
-                throw LOGGER.logExceptionAsError( new NullPointerException("'ruleOptions' cannot be null."));
+                throw LOGGER.logExceptionAsError(new NullPointerException("'ruleOptions' cannot be null."));
             }
             final CreateRuleBody createEntity = getCreateRuleBody(ruleName, ruleOptions);
 
@@ -1549,9 +1534,8 @@ public final class ServiceBusAdministrationAsyncClient {
                 throw LOGGER.logExceptionAsError(new NullPointerException("'topicOptions' cannot be null."));
             }
             final CreateTopicBody createEntity = getCreateTopicBody(EntityHelper.getTopicDescription(topicOptions));
-            final Context withTracing = getTracingContext(context);
 
-            return entityClient.putWithResponseAsync(topicName, createEntity, null, withTracing)
+            return entityClient.putWithResponseAsync(topicName, createEntity, null, getTracingContext(context))
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(this::deserializeTopic);
         } catch (RuntimeException ex) {
@@ -1734,9 +1718,8 @@ public final class ServiceBusAdministrationAsyncClient {
         try {
             validateTopicName(topicName);
             validateSubscriptionName(subscriptionName);
-            final Context withTracing = getTracingContext(context);
             return managementClient.getSubscriptions().getWithResponseAsync(topicName, subscriptionName, true,
-                withTracing)
+                    getTracingContext(context))
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .handle((response, sink) -> {
                     final Response<SubscriptionProperties> deserialize = deserializeSubscription(topicName, response);
@@ -1824,10 +1807,8 @@ public final class ServiceBusAdministrationAsyncClient {
      * @return A Mono that completes with a page of subscriptions.
      */
     Mono<PagedResponse<SubscriptionProperties>> listSubscriptionsFirstPage(String topicName, Context context) {
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
-
         try {
-            return listSubscriptions(topicName, 0, withTracing);
+            return listSubscriptions(topicName, 0, getTracingContext(context));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -1848,10 +1829,9 @@ public final class ServiceBusAdministrationAsyncClient {
         }
 
         try {
-            final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
             final int skip = Integer.parseInt(continuationToken);
 
-            return listSubscriptions(topicName, skip, withTracing);
+            return listSubscriptions(topicName, skip, getTracingContext(context));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -1865,10 +1845,9 @@ public final class ServiceBusAdministrationAsyncClient {
      * @return A Mono that completes with a page of topics.
      */
     Mono<PagedResponse<TopicProperties>> listTopicsFirstPage(Context context) {
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
 
         try {
-            return listTopics(0, withTracing);
+            return listTopics(0, getTracingContext(context));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -1888,10 +1867,9 @@ public final class ServiceBusAdministrationAsyncClient {
         }
 
         try {
-            final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
             final int skip = Integer.parseInt(continuationToken);
 
-            return listTopics(skip, withTracing);
+            return listTopics(skip, getTracingContext(context));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
@@ -1961,6 +1939,82 @@ public final class ServiceBusAdministrationAsyncClient {
                 .map(this::deserializeRule);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Gets the first page of queues with context.
+     *
+     * @param context Context to pass into request.
+     *
+     * @return A Mono that completes with a page of queues.
+     */
+    Mono<PagedResponse<QueueProperties>> listQueuesFirstPage(Context context) {
+
+        try {
+            return listQueues(0, getTracingContext(context));
+        } catch (RuntimeException e) {
+            return monoError(LOGGER, e);
+        }
+    }
+
+    /**
+     * Gets the next page of queues with context.
+     *
+     * @param continuationToken Number of items to skip in feed.
+     * @param context Context to pass into request.
+     *
+     * @return A Mono that completes with a page of queues or empty if there are no items left.
+     */
+    Mono<PagedResponse<QueueProperties>> listQueuesNextPage(String continuationToken, Context context) {
+        if (continuationToken == null || continuationToken.isEmpty()) {
+            return Mono.empty();
+        }
+
+        try {
+            final int skip = Integer.parseInt(continuationToken);
+
+            return listQueues(skip, getTracingContext(context));
+        } catch (RuntimeException e) {
+            return monoError(LOGGER, e);
+        }
+    }
+
+    /**
+     * Gets the first page of rules with context.
+     *
+     * @param context Context to pass into request.
+     *
+     * @return A Mono that completes with a page of rules.
+     */
+    Mono<PagedResponse<RuleProperties>> listRulesFirstPage(String topicName, String subscriptionName, Context context) {
+        try {
+            return listRules(topicName, subscriptionName, 0, getTracingContext(context));
+        } catch (RuntimeException e) {
+            return monoError(LOGGER, e);
+        }
+    }
+
+    /**
+     * Gets the next page of rules with context.
+     *
+     * @param continuationToken Number of items to skip in feed.
+     * @param context Context to pass into request.
+     *
+     * @return A Mono that completes with a page of rules or empty if there are no items left.
+     */
+    Mono<PagedResponse<RuleProperties>> listRulesNextPage(String topicName, String subscriptionName,
+                                                          String continuationToken, Context context) {
+        if (continuationToken == null || continuationToken.isEmpty()) {
+            return Mono.empty();
+        }
+
+        try {
+            final int skip = Integer.parseInt(continuationToken);
+
+            return listRules(topicName, subscriptionName, skip, getTracingContext(context));
+        } catch (RuntimeException e) {
+            return monoError(LOGGER, e);
         }
     }
 
