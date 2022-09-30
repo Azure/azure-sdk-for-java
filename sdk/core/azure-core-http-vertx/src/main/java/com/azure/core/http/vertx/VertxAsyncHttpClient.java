@@ -19,6 +19,7 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpClientResponse;
 import io.vertx.core.http.RequestOptions;
+import io.vertx.core.streams.Pipe;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -78,7 +79,7 @@ class VertxAsyncHttpClient implements HttpClient {
                         vertxHttpResponse.body(bodyEvent -> {
                             if (bodyEvent.succeeded()) {
                                 sink.success(new BufferedVertxHttpResponse(request, vertxHttpResponse,
-                                    bodyEvent.result()));
+                                    bodyEvent.result().getBytes()));
                             } else {
                                 sink.error(bodyEvent.cause());
                             }
