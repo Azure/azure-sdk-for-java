@@ -70,7 +70,6 @@ class VertxAsyncHttpClient implements HttpClient {
             vertxHttpRequest.response(event -> {
                 if (event.succeeded()) {
                     HttpClientResponse vertxHttpResponse = event.result();
-
                     if (eagerlyReadResponse) {
                         vertxHttpResponse.body(bodyEvent -> {
                             if (bodyEvent.succeeded()) {
@@ -81,6 +80,7 @@ class VertxAsyncHttpClient implements HttpClient {
                             }
                         });
                     } else {
+                        vertxHttpResponse.pause();
                         sink.success(new VertxHttpAsyncResponse(request, vertxHttpResponse));
                     }
                 } else {
