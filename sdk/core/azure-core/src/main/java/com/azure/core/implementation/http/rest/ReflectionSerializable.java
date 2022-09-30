@@ -191,12 +191,12 @@ public final class ReflectionSerializable {
      * @throws IOException If an error occurs during serialization.
      */
     static ByteBuffer serializeAsJsonSerializable(Object jsonSerializable) throws IOException {
-        AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
-        try (Closeable jsonWriter = JSON_WRITER_CREATOR.createJsonWriter(outputStream)) {
+        try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
+            Closeable jsonWriter = JSON_WRITER_CREATOR.createJsonWriter(outputStream)) {
             JSON_WRITER_WRITE_JSON_SERIALIZABLE.writeJson(jsonWriter, jsonSerializable);
-        }
 
-        return ByteBuffer.wrap(outputStream.toByteArray(), 0, outputStream.count());
+            return ByteBuffer.wrap(outputStream.toByteArray(), 0, outputStream.count());
+        }
     }
 
     /**
@@ -267,15 +267,15 @@ public final class ReflectionSerializable {
      * @throws IOException If the XmlWriter fails to close properly.
      */
     static ByteBuffer serializeAsXmlSerializable(Object bodyContent) throws IOException {
-        AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
-        try (AutoCloseable xmlWriter = XML_WRITER_CREATOR.createXmlWriter(outputStream)) {
+        try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
+            AutoCloseable xmlWriter = XML_WRITER_CREATOR.createXmlWriter(outputStream)) {
             XML_WRITER_WRITE_XML_START_DOCUMENT.writeStartDocument(xmlWriter);
             XML_WRITER_WRITE_XML_SERIALIZABLE.writeXml(xmlWriter, bodyContent);
+
+            return ByteBuffer.wrap(outputStream.toByteArray(), 0, outputStream.count());
         } catch (Exception e) {
             throw new IOException(e);
         }
-
-        return ByteBuffer.wrap(outputStream.toByteArray(), 0, outputStream.count());
     }
 
     /**
