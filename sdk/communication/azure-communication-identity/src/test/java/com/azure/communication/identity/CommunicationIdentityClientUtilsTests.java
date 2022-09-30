@@ -9,9 +9,7 @@ import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.Test;
 
-import java.time.Clock;
 import java.time.Duration;
-import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,6 +32,7 @@ public class CommunicationIdentityClientUtilsTests {
         // Assert
         assertNotNull(request.getExpiresInMinutes());
         assertEquals(tokenExpirationInMinutes, request.getExpiresInMinutes());
+        assertEquals(scopes, request.getCreateTokenWithScopes());
     }
 
     @Test
@@ -46,6 +45,7 @@ public class CommunicationIdentityClientUtilsTests {
 
         // Assert
         assertNull(request.getExpiresInMinutes());
+        assertEquals(scopes, request.getCreateTokenWithScopes());
     }
 
     @Test
@@ -61,6 +61,7 @@ public class CommunicationIdentityClientUtilsTests {
         // Assert
         assertNotNull(request.getExpiresInMinutes());
         assertEquals(tokenExpirationInMinutes, request.getExpiresInMinutes());
+        assertEquals(scopes, request.getScopes());
     }
 
     @Test
@@ -73,43 +74,6 @@ public class CommunicationIdentityClientUtilsTests {
 
         // Assert
         assertNull(request.getExpiresInMinutes());
-    }
-
-    @Test
-    public void defaultTokenWithinAllowedDeviation() {
-        // Arrange
-        OffsetDateTime actualTokenExpiration = OffsetDateTime.now(Clock.systemUTC()).plusHours(24);
-
-        // Action
-        boolean withinAllowedDeviation = CommunicationIdentityClientUtils.tokenExpirationWithinAllowedDeviation(null, actualTokenExpiration).getIsWithinAllowedDeviation();
-
-        // Assert
-        assertTrue(withinAllowedDeviation);
-    }
-
-    @Test
-    public void customTokenWithinAllowedDeviation() {
-        // Arrange
-        Duration expectedTokenExpiration = Duration.ofHours(1);
-        OffsetDateTime actualTokenExpiration = OffsetDateTime.now(Clock.systemUTC()).plusHours(1);
-
-        // Action
-        boolean withinAllowedDeviation = CommunicationIdentityClientUtils.tokenExpirationWithinAllowedDeviation(expectedTokenExpiration, actualTokenExpiration).getIsWithinAllowedDeviation();
-
-        // Assert
-        assertTrue(withinAllowedDeviation);
-    }
-
-    @Test
-    public void customTokenOutsideOfAllowedDeviation() {
-        // Arrange
-        Duration expectedTokenExpiration = Duration.ofHours(1);
-        OffsetDateTime actualTokenExpiration = OffsetDateTime.now(Clock.systemUTC()).plusMinutes(55);
-
-        // Action
-        boolean withinAllowedDeviation = CommunicationIdentityClientUtils.tokenExpirationWithinAllowedDeviation(expectedTokenExpiration, actualTokenExpiration).getIsWithinAllowedDeviation();
-
-        // Assert
-        assertFalse(withinAllowedDeviation);
+        assertEquals(scopes, request.getScopes());
     }
 }

@@ -17,6 +17,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.Arrays;
 import java.util.List;
 import java.time.Duration;
+import java.util.Map;
 
 import static com.azure.communication.identity.CteTestHelper.skipExchangeAadTeamsTokenTest;
 import static org.junit.jupiter.api.Assertions.*;
@@ -127,7 +128,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     public void createUserAndTokenWithValidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "createUserAndTokenWithValidCustomExpiration" + testName + TEST_SUFFIX);
+        client = setupClient(builder, "createUserAndTokenWithValidCustomExpiration " + testName + TEST_SUFFIX);
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
         // Action & Assert
@@ -138,11 +139,11 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         assertFalse(result.getUser().getId().isEmpty());
 
         if (getTestMode() == TestMode.LIVE) {
-            CommunicationIdentityClientUtils.TokenExpirationDeviationData tokenExpirationData =
-                CommunicationIdentityClientUtils.tokenExpirationWithinAllowedDeviation(tokenExpiresIn, result.getUserToken().getExpiresAt());
-            assertTrue(tokenExpirationData.getIsWithinAllowedDeviation(),
-                CommunicationIdentityClientUtils.getTokenExpirationOutsideAllowedDeviationErrorMessage(tokenExpiresIn,
-                    tokenExpirationData.getActualExpirationInSeconds())
+            Map<String, Object> tokenExpirationDeviationData =
+                TokenCustomExpirationTimeHelper.tokenExpirationWithinAllowedDeviation(tokenExpiresIn, result.getUserToken().getExpiresAt());
+            assertTrue((boolean)tokenExpirationDeviationData.get("isWithinAllowedDeviation"),
+                TokenCustomExpirationTimeHelper.getTokenExpirationOutsideAllowedDeviationErrorMessage(tokenExpiresIn,
+                    (double) tokenExpirationDeviationData.get("actualExpirationInSeconds"))
             );
         }
     }
@@ -152,7 +153,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     public void createUserAndTokenWithResponseWithValidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "createUserAndTokenWithResponseWithValidCustomExpiration" + testName + TEST_SUFFIX);
+        client = setupClient(builder, "createUserAndTokenWithResponseWithValidCustomExpiration " + testName + TEST_SUFFIX);
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
         // Action & Assert
@@ -165,11 +166,11 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         assertFalse(result.getUser().getId().isEmpty());
 
         if (getTestMode() == TestMode.LIVE) {
-            CommunicationIdentityClientUtils.TokenExpirationDeviationData tokenExpirationData =
-                CommunicationIdentityClientUtils.tokenExpirationWithinAllowedDeviation(tokenExpiresIn, result.getUserToken().getExpiresAt());
-            assertTrue(tokenExpirationData.getIsWithinAllowedDeviation(),
-                CommunicationIdentityClientUtils.getTokenExpirationOutsideAllowedDeviationErrorMessage(tokenExpiresIn,
-                    tokenExpirationData.getActualExpirationInSeconds())
+            Map<String, Object> tokenExpirationDeviationData =
+                TokenCustomExpirationTimeHelper.tokenExpirationWithinAllowedDeviation(tokenExpiresIn, result.getUserToken().getExpiresAt());
+            assertTrue((boolean)tokenExpirationDeviationData.get("isWithinAllowedDeviation"),
+                TokenCustomExpirationTimeHelper.getTokenExpirationOutsideAllowedDeviationErrorMessage(tokenExpiresIn,
+                    (double) tokenExpirationDeviationData.get("actualExpirationInSeconds"))
             );
         }
     }
@@ -179,7 +180,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     public void createUserAndTokenWithInvalidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "createUserAndTokenWithInvalidCustomExpiration" + testName + TEST_SUFFIX);
+        client = setupClient(builder, "createUserAndTokenWithInvalidCustomExpiration " + testName + TEST_SUFFIX);
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
         // Action & Assert
         try {
@@ -197,7 +198,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     public void createUserAndTokenWithResponseWithInvalidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "createUserAndTokenWithResponseWithInvalidCustomExpiration" + testName + TEST_SUFFIX);
+        client = setupClient(builder, "createUserAndTokenWithResponseWithInvalidCustomExpiration " + testName + TEST_SUFFIX);
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
         // Action & Assert
         try {
@@ -214,7 +215,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     public void createUserAndTokenWithOverFlownExpiration() {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "createUserAndTokenWithOverFlownExpiration" + TEST_SUFFIX);
+        client = setupClient(builder, "createUserAndTokenWithOverFlownExpiration " + TEST_SUFFIX);
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
         Duration tokenExpiresIn = Duration.ofDays(Integer.MAX_VALUE);
         // Action & Assert
@@ -232,7 +233,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     public void createUserAndTokenWithResponseWithOverFlownExpiration() {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "createUserAndTokenWithResponseWithOverFlownExpiration" + TEST_SUFFIX);
+        client = setupClient(builder, "createUserAndTokenWithResponseWithOverFlownExpiration " + TEST_SUFFIX);
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
         Duration tokenExpiresIn = Duration.ofDays(Integer.MAX_VALUE);
         // Action & Assert
@@ -404,7 +405,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     public void getTokenWithValidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "getTokenWithValidCustomExpiration" + testName + TEST_SUFFIX);
+        client = setupClient(builder, "getTokenWithValidCustomExpiration " + testName + TEST_SUFFIX);
         CommunicationUserIdentifier communicationUser = client.createUser();
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
@@ -413,11 +414,11 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         verifyTokenNotEmpty(issuedToken);
 
         if (getTestMode() == TestMode.LIVE) {
-            CommunicationIdentityClientUtils.TokenExpirationDeviationData tokenExpirationData =
-                CommunicationIdentityClientUtils.tokenExpirationWithinAllowedDeviation(tokenExpiresIn, issuedToken.getExpiresAt());
-            assertTrue(tokenExpirationData.getIsWithinAllowedDeviation(),
-                CommunicationIdentityClientUtils.getTokenExpirationOutsideAllowedDeviationErrorMessage(tokenExpiresIn,
-                    tokenExpirationData.getActualExpirationInSeconds())
+            Map<String, Object> tokenExpirationDeviationData =
+                TokenCustomExpirationTimeHelper.tokenExpirationWithinAllowedDeviation(tokenExpiresIn, issuedToken.getExpiresAt());
+            assertTrue((boolean)tokenExpirationDeviationData.get("isWithinAllowedDeviation"),
+                TokenCustomExpirationTimeHelper.getTokenExpirationOutsideAllowedDeviationErrorMessage(tokenExpiresIn,
+                    (double) tokenExpirationDeviationData.get("actualExpirationInSeconds"))
             );
         }
     }
@@ -427,7 +428,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     public void getTokenWithInvalidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "getTokenWithInvalidCustomExpiration" + testName + TEST_SUFFIX);
+        client = setupClient(builder, "getTokenWithInvalidCustomExpiration " + testName + TEST_SUFFIX);
         CommunicationUserIdentifier communicationUser = client.createUser();
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
@@ -447,7 +448,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     public void getTokenWithResponseWithValidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "getTokenWithResponseWithValidCustomExpiration" + testName + TEST_SUFFIX);
+        client = setupClient(builder, "getTokenWithResponseWithValidCustomExpiration " + testName + TEST_SUFFIX);
         CommunicationUserIdentifier communicationUser = client.createUser();
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
@@ -457,11 +458,11 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         verifyTokenNotEmpty(issuedTokenResponse.getValue());
 
         if (getTestMode() == TestMode.LIVE) {
-            CommunicationIdentityClientUtils.TokenExpirationDeviationData tokenExpirationData =
-                CommunicationIdentityClientUtils.tokenExpirationWithinAllowedDeviation(tokenExpiresIn, issuedTokenResponse.getValue().getExpiresAt());
-            assertTrue(tokenExpirationData.getIsWithinAllowedDeviation(),
-                CommunicationIdentityClientUtils.getTokenExpirationOutsideAllowedDeviationErrorMessage(tokenExpiresIn,
-                    tokenExpirationData.getActualExpirationInSeconds())
+            Map<String, Object> tokenExpirationDeviationData =
+                TokenCustomExpirationTimeHelper.tokenExpirationWithinAllowedDeviation(tokenExpiresIn, issuedTokenResponse.getValue().getExpiresAt());
+            assertTrue((boolean)tokenExpirationDeviationData.get("isWithinAllowedDeviation"),
+                TokenCustomExpirationTimeHelper.getTokenExpirationOutsideAllowedDeviationErrorMessage(tokenExpiresIn,
+                    (double) tokenExpirationDeviationData.get("actualExpirationInSeconds"))
             );
         }
     }
@@ -471,7 +472,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     public void getTokenWithResponseWithInvalidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "getTokenWithResponseWithInvalidCustomExpiration" + testName + TEST_SUFFIX);
+        client = setupClient(builder, "getTokenWithResponseWithInvalidCustomExpiration " + testName + TEST_SUFFIX);
         CommunicationUserIdentifier communicationUser = client.createUser();
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
@@ -490,7 +491,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     public void getTokenWithOverflownExpiration() {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "getTokenWithOverflownExpiration" + TEST_SUFFIX);
+        client = setupClient(builder, "getTokenWithOverflownExpiration " + TEST_SUFFIX);
         CommunicationUserIdentifier communicationUser = client.createUser();
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
         Duration tokenExpiresIn = Duration.ofDays(Integer.MAX_VALUE);
@@ -509,7 +510,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     public void getTokenWithResponseWithOverflownExpiration() {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "getTokenWithResponseWithOverflownExpiration" + TEST_SUFFIX);
+        client = setupClient(builder, "getTokenWithResponseWithOverflownExpiration " + TEST_SUFFIX);
         CommunicationUserIdentifier communicationUser = client.createUser();
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
         Duration tokenExpiresIn = Duration.ofDays(Integer.MAX_VALUE);

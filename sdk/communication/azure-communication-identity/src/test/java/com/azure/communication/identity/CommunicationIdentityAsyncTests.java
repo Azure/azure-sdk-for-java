@@ -5,6 +5,7 @@ package com.azure.communication.identity;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.models.CommunicationTokenScope;
@@ -102,7 +103,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     public void createUserAndTokenWithValidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        asyncClient = setupAsyncClient(builder, "createUserAndTokenWithValidCustomExpiration" + testName);
+        asyncClient = setupAsyncClient(builder, "createUserAndTokenWithValidCustomExpiration " + testName);
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
         // Action & Assert
@@ -113,11 +114,11 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
                 assertNotNull(result.getUser());
 
                 if (getTestMode() == TestMode.LIVE) {
-                    CommunicationIdentityClientUtils.TokenExpirationDeviationData tokenExpirationData =
-                        CommunicationIdentityClientUtils.tokenExpirationWithinAllowedDeviation(tokenExpiresIn, result.getUserToken().getExpiresAt());
-                    assertTrue(tokenExpirationData.getIsWithinAllowedDeviation(),
-                        CommunicationIdentityClientUtils.getTokenExpirationOutsideAllowedDeviationErrorMessage(tokenExpiresIn,
-                            tokenExpirationData.getActualExpirationInSeconds())
+                    Map<String, Object> tokenExpirationDeviationData =
+                        TokenCustomExpirationTimeHelper.tokenExpirationWithinAllowedDeviation(tokenExpiresIn, result.getUserToken().getExpiresAt());
+                    assertTrue((boolean)tokenExpirationDeviationData.get("isWithinAllowedDeviation"),
+                        TokenCustomExpirationTimeHelper.getTokenExpirationOutsideAllowedDeviationErrorMessage(tokenExpiresIn,
+                            (double) tokenExpirationDeviationData.get("actualExpirationInSeconds"))
                     );
                 }
             })
@@ -129,7 +130,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     public void createUserAndTokenWithInvalidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        asyncClient = setupAsyncClient(builder, "createUserAndTokenWithInvalidCustomExpiration" + testName);
+        asyncClient = setupAsyncClient(builder, "createUserAndTokenWithInvalidCustomExpiration " + testName);
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
         // Action & Assert
@@ -146,7 +147,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     public void createUserAndTokenWithResponseWithValidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        asyncClient = setupAsyncClient(builder, "createUserAndTokenWithResponseWithValidCustomExpiration" + testName);
+        asyncClient = setupAsyncClient(builder, "createUserAndTokenWithResponseWithValidCustomExpiration " + testName);
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
         // Action & Assert
@@ -159,11 +160,11 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
                 assertNotNull(result.getValue().getUser());
 
                 if (getTestMode() == TestMode.LIVE) {
-                    CommunicationIdentityClientUtils.TokenExpirationDeviationData tokenExpirationData =
-                        CommunicationIdentityClientUtils.tokenExpirationWithinAllowedDeviation(tokenExpiresIn, result.getValue().getUserToken().getExpiresAt());
-                    assertTrue(tokenExpirationData.getIsWithinAllowedDeviation(),
-                        CommunicationIdentityClientUtils.getTokenExpirationOutsideAllowedDeviationErrorMessage(tokenExpiresIn,
-                            tokenExpirationData.getActualExpirationInSeconds())
+                    Map<String, Object> tokenExpirationDeviationData =
+                        TokenCustomExpirationTimeHelper.tokenExpirationWithinAllowedDeviation(tokenExpiresIn, result.getValue().getUserToken().getExpiresAt());
+                    assertTrue((boolean)tokenExpirationDeviationData.get("isWithinAllowedDeviation"),
+                        TokenCustomExpirationTimeHelper.getTokenExpirationOutsideAllowedDeviationErrorMessage(tokenExpiresIn,
+                            (double) tokenExpirationDeviationData.get("actualExpirationInSeconds"))
                     );
                 }
             })
@@ -175,7 +176,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     public void createUserAndTokenWithResponseWithInvalidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        asyncClient = setupAsyncClient(builder, "createUserAndTokenWithResponseWithInvalidCustomExpiration" + testName);
+        asyncClient = setupAsyncClient(builder, "createUserAndTokenWithResponseWithInvalidCustomExpiration " + testName);
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
         // Action & Assert
@@ -411,7 +412,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     public void getTokenWithValidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        asyncClient = setupAsyncClient(builder, "getTokenWithValidCustomExpiration" + testName);
+        asyncClient = setupAsyncClient(builder, "getTokenWithValidCustomExpiration " + testName);
 
         // Action & Assert
         StepVerifier.create(
@@ -424,11 +425,11 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
                 verifyTokenNotEmpty(issuedToken);
 
                 if (getTestMode() == TestMode.LIVE) {
-                    CommunicationIdentityClientUtils.TokenExpirationDeviationData tokenExpirationData =
-                        CommunicationIdentityClientUtils.tokenExpirationWithinAllowedDeviation(tokenExpiresIn, issuedToken.getExpiresAt());
-                    assertTrue(tokenExpirationData.getIsWithinAllowedDeviation(),
-                        CommunicationIdentityClientUtils.getTokenExpirationOutsideAllowedDeviationErrorMessage(tokenExpiresIn,
-                            tokenExpirationData.getActualExpirationInSeconds())
+                    Map<String, Object> tokenExpirationDeviationData =
+                        TokenCustomExpirationTimeHelper.tokenExpirationWithinAllowedDeviation(tokenExpiresIn, issuedToken.getExpiresAt());
+                    assertTrue((boolean)tokenExpirationDeviationData.get("isWithinAllowedDeviation"),
+                        TokenCustomExpirationTimeHelper.getTokenExpirationOutsideAllowedDeviationErrorMessage(tokenExpiresIn,
+                            (double) tokenExpirationDeviationData.get("actualExpirationInSeconds"))
                     );
                 }
             })
@@ -440,7 +441,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     public void getTokenWithInvalidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        asyncClient = setupAsyncClient(builder, "getTokenWithInvalidCustomExpiration" + testName);
+        asyncClient = setupAsyncClient(builder, "getTokenWithInvalidCustomExpiration " + testName);
 
         // Action & Assert
         StepVerifier.create(
@@ -460,7 +461,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     public void getTokenWithResponseWithValidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        asyncClient = setupAsyncClient(builder, "getTokenWithResponseWithValidCustomExpiration" + testName);
+        asyncClient = setupAsyncClient(builder, "getTokenWithResponseWithValidCustomExpiration " + testName);
 
         // Action & Assert
         StepVerifier.create(
@@ -474,11 +475,11 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
                 assertEquals(issuedToken.getStatusCode(), 200);
 
                 if (getTestMode() == TestMode.LIVE) {
-                    CommunicationIdentityClientUtils.TokenExpirationDeviationData tokenExpirationData =
-                        CommunicationIdentityClientUtils.tokenExpirationWithinAllowedDeviation(tokenExpiresIn, issuedToken.getValue().getExpiresAt());
-                    assertTrue(tokenExpirationData.getIsWithinAllowedDeviation(),
-                        CommunicationIdentityClientUtils.getTokenExpirationOutsideAllowedDeviationErrorMessage(tokenExpiresIn,
-                            tokenExpirationData.getActualExpirationInSeconds())
+                    Map<String, Object> tokenExpirationDeviationData =
+                        TokenCustomExpirationTimeHelper.tokenExpirationWithinAllowedDeviation(tokenExpiresIn, issuedToken.getValue().getExpiresAt());
+                    assertTrue((boolean)tokenExpirationDeviationData.get("isWithinAllowedDeviation"),
+                        TokenCustomExpirationTimeHelper.getTokenExpirationOutsideAllowedDeviationErrorMessage(tokenExpiresIn,
+                            (double) tokenExpirationDeviationData.get("actualExpirationInSeconds"))
                     );
                 }
             })
@@ -490,7 +491,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     public void getTokenWithResponseWithInvalidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        asyncClient = setupAsyncClient(builder, "getTokenWithResponseWithInvalidCustomExpiration" + testName);
+        asyncClient = setupAsyncClient(builder, "getTokenWithResponseWithInvalidCustomExpiration " + testName);
 
         // Action & Assert
         StepVerifier.create(
