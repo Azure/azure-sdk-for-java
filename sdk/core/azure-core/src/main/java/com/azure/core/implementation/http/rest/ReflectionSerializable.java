@@ -290,8 +290,10 @@ public final class ReflectionSerializable {
             XML_WRITER_FLUSH.flush(xmlWriter);
 
             return ByteBuffer.wrap(outputStream.toByteArray(), 0, outputStream.count());
-        } catch (Exception e) {
-            throw new IOException(e);
+        } catch (IOException ex) {
+            throw ex;
+        } catch (Exception ex) {
+            throw new IOException(ex);
         }
     }
 
