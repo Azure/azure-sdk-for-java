@@ -172,7 +172,9 @@ public class StoreResultDiagnostics {
                               SerializerProvider serializerProvider) throws IOException {
             StoreResponseDiagnostics storeResponseDiagnostics = storeResultDiagnostics.getStoreResponseDiagnostics();
             jsonGenerator.writeStartObject();
-            jsonGenerator.writeStringField("storePhysicalAddress", storeResultDiagnostics.storePhysicalAddress.getURIAsString());
+            jsonGenerator.writeStringField(
+                    "storePhysicalAddress",
+                    storeResultDiagnostics.storePhysicalAddress == null ? null : storeResultDiagnostics.storePhysicalAddress.getURIAsString());
             jsonGenerator.writeNumberField("lsn", storeResultDiagnostics.lsn);
             jsonGenerator.writeNumberField("globalCommittedLsn", storeResultDiagnostics.globalCommittedLSN);
             jsonGenerator.writeStringField("partitionKeyRangeId", storeResponseDiagnostics.getPartitionKeyRangeId());
