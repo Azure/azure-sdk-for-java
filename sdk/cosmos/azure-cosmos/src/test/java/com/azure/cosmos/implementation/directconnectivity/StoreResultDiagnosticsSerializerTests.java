@@ -9,7 +9,7 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -35,7 +35,7 @@ public class StoreResultDiagnosticsSerializerTests {
     }
 
     //TODO: add more test cases
-    @Test
+    @Test(groups = "unit")
     public void storeResultDiagnosticsSerializerTests() {
         StoreResponse storeResponse = new StoreResponse(200, new HashMap<>(), null);
         StoreResult storeResult = new StoreResult(
