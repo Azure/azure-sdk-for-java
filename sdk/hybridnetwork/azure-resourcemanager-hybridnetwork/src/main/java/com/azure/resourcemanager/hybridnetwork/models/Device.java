@@ -6,11 +6,9 @@ package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
-import com.azure.core.management.SubResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridnetwork.fluent.models.DeviceInner;
-import java.util.List;
 import java.util.Map;
 
 /** An immutable client-side representation of Device. */
@@ -51,39 +49,18 @@ public interface Device {
     Map<String, String> tags();
 
     /**
+     * Gets the properties property: Device properties.
+     *
+     * @return the properties value.
+     */
+    DevicePropertiesFormat properties();
+
+    /**
      * Gets the systemData property: The system meta data relating to this resource.
      *
      * @return the systemData value.
      */
     SystemData systemData();
-
-    /**
-     * Gets the status property: The current device status.
-     *
-     * @return the status value.
-     */
-    Status status();
-
-    /**
-     * Gets the provisioningState property: The provisioning state of the device resource.
-     *
-     * @return the provisioningState value.
-     */
-    ProvisioningState provisioningState();
-
-    /**
-     * Gets the azureStackEdge property: The reference to the Azure stack edge device. Once set, it cannot be updated.
-     *
-     * @return the azureStackEdge value.
-     */
-    SubResource azureStackEdge();
-
-    /**
-     * Gets the networkFunctions property: The list of network functions deployed on the device.
-     *
-     * @return the networkFunctions value.
-     */
-    List<SubResource> networkFunctions();
 
     /**
      * Gets the region of the resource.
@@ -98,6 +75,13 @@ public interface Device {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.hybridnetwork.fluent.models.DeviceInner object.
@@ -150,7 +134,7 @@ public interface Device {
          * The stage of the Device definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithAzureStackEdge {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithProperties {
             /**
              * Executes the create request.
              *
@@ -176,16 +160,15 @@ public interface Device {
              */
             WithCreate withTags(Map<String, String> tags);
         }
-        /** The stage of the Device definition allowing to specify azureStackEdge. */
-        interface WithAzureStackEdge {
+        /** The stage of the Device definition allowing to specify properties. */
+        interface WithProperties {
             /**
-             * Specifies the azureStackEdge property: The reference to the Azure stack edge device. Once set, it cannot
-             * be updated..
+             * Specifies the properties property: Device properties..
              *
-             * @param azureStackEdge The reference to the Azure stack edge device. Once set, it cannot be updated.
+             * @param properties Device properties.
              * @return the next definition stage.
              */
-            WithCreate withAzureStackEdge(SubResource azureStackEdge);
+            WithCreate withProperties(DevicePropertiesFormat properties);
         }
     }
     /**
@@ -243,20 +226,20 @@ public interface Device {
     /**
      * List the registration key for the device.
      *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the device registration key along with {@link Response}.
+     */
+    Response<DeviceRegistrationKey> listRegistrationKeyWithResponse(Context context);
+
+    /**
+     * List the registration key for the device.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the device registration key.
      */
     DeviceRegistrationKey listRegistrationKey();
-
-    /**
-     * List the registration key for the device.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the device registration key.
-     */
-    Response<DeviceRegistrationKey> listRegistrationKeyWithResponse(Context context);
 }
