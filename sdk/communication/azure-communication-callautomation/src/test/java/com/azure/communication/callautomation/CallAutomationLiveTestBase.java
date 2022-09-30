@@ -3,15 +3,19 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.identity.CommunicationIdentityClientBuilder;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -20,9 +24,6 @@ import java.util.StringJoiner;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import reactor.core.publisher.Mono;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpResponse;
 
 public class CallAutomationLiveTestBase extends TestBase {
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
@@ -52,11 +53,45 @@ public class CallAutomationLiveTestBase extends TestBase {
 
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
-        .add("to");
+        .add("value")
+        .add("rawId");
 
     private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
         = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT),
         Pattern.CASE_INSENSITIVE);
+
+    private static final String RANDOM_RESOURCE_IDENTIFIER = "82e890fc-188a-4b67-bb7d-deff073d7d1e";
+
+    protected static final String ACS_USER_1 = Configuration.getGlobalConfiguration()
+        .get("TARGET_USER_ID", String.format("8:acs:%s_00000014-00d6-e250-28df-44482200202a", RANDOM_RESOURCE_IDENTIFIER));
+
+    protected static final String ACS_USER_2 = Configuration.getGlobalConfiguration()
+        .get("ANOTHER_TARGET_USER_ID", String.format("8:acs:%s_00000014-00d7-31b3-28df-444822002030", RANDOM_RESOURCE_IDENTIFIER));
+
+    protected static final String ACS_USER_CALL_RECORDING = Configuration.getGlobalConfiguration()
+        .get("CALL_RECORDING_USER_ID");
+
+    protected static final String ACS_RESOURCE_PHONE = Configuration.getGlobalConfiguration()
+        .get("AZURE_PHONE_NUMBER", "+18331234567");
+
+    protected static final String PHONE_USER_1 = Configuration.getGlobalConfiguration()
+        .get("TARGET_PHONE_NUMBER", "+16471234567");
+
+    protected static final String MEDIA_SOURCE = Configuration.getGlobalConfiguration()
+        .get("ACS_MEDIA_SOURCE", "https://mwlstoragetest.blob.core.windows.net/blobs1/languagesPrompt.wav");
+
+    protected CommunicationIdentityClientBuilder getCommunicationIdentityClientUsingConnectionString(HttpClient httpClient) {
+        CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder()
+            .connectionString(CONNECTION_STRING)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+
+        if (getTestMode() == TestMode.RECORD) {
+            List<Function<String, String>> redactors = new ArrayList<>();
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data)));
+            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+        }
+        return builder;
+    }
 
     protected CallAutomationClientBuilder getCallingServerClientUsingConnectionString(HttpClient httpClient) {
         CallAutomationClientBuilder builder = new CallAutomationClientBuilder()
@@ -114,6 +149,12 @@ public class CallAutomationLiveTestBase extends TestBase {
                     + ": " + bufferedResponse.getHeaderValue("X-Microsoft-Skype-Chain-ID"));
                 return Mono.just(bufferedResponse);
             });
+    }
+
+    protected void waitForOperationCompletion(int milliSeconds) throws InterruptedException {
+        if (getTestMode() != TestMode.PLAYBACK) {
+            Thread.sleep(milliSeconds);
+        }
     }
 
     static class FakeCredentials implements TokenCredential {

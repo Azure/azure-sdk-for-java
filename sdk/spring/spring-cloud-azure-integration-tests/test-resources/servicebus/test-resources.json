@@ -22,6 +22,10 @@
     "baseName": {
       "defaultValue": "[resourceGroup().name]",
       "type": "String"
+    },
+    "serviceBusEndpointSuffix": {
+      "type": "String",
+      "defaultValue": ".servicebus.windows.net"
     }
   },
   "variables": {
@@ -423,6 +427,10 @@
     "AZURE_SERVICE_BUS_NAMESPACE3": {
       "type": "string",
       "value": "[variables('azureServiceBusNamespaceName_3')]"
+    },
+    "AZURE_SERVICE_BUS_DOMAIN_NAME": {
+      "type": "string",
+      "value": "[substring(parameters('serviceBusEndpointSuffix'), 1)]"
     }
   }
 }

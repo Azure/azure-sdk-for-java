@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NodeSize. */
+/** The level of compute power that each node in the Big Data pool has. */
 public final class NodeSize extends ExpandableStringEnum<NodeSize> {
     /** Static value None for NodeSize. */
     public static final NodeSize NONE = fromString("None");
@@ -42,7 +42,11 @@ public final class NodeSize extends ExpandableStringEnum<NodeSize> {
         return fromString(name, NodeSize.class);
     }
 
-    /** @return known NodeSize values. */
+    /**
+     * Gets known NodeSize values.
+     *
+     * @return known NodeSize values.
+     */
     public static Collection<NodeSize> values() {
         return values(NodeSize.class);
     }

@@ -42,7 +42,7 @@ public class CreateCallOptions {
     /**
      * Media Streaming Configuration.
      */
-    private MediaStreamingConfiguration mediaStreamingConfiguration;
+    private MediaStreamingOptions mediaStreamingOptions;
 
     /**
      * Constructor
@@ -107,8 +107,8 @@ public class CreateCallOptions {
      *
      * @return the mediaStreamingConfiguration.
      */
-    public MediaStreamingConfiguration getMediaStreamingConfiguration() {
-        return mediaStreamingConfiguration;
+    public MediaStreamingOptions getMediaStreamingConfiguration() {
+        return mediaStreamingOptions;
     }
 
     /**
@@ -137,11 +137,11 @@ public class CreateCallOptions {
     /**
      * Set the media streaming configuration.
      *
-     * @param mediaStreamingConfiguration The media streaming configuration.
+     * @param mediaStreamingOptions The media streaming configuration.
      * @return the CreateCallOptions object itself.
      */
-    public CreateCallOptions setMediaStreamingConfiguration(MediaStreamingConfiguration mediaStreamingConfiguration) {
-        this.mediaStreamingConfiguration = mediaStreamingConfiguration;
+    public CreateCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
+        this.mediaStreamingOptions = mediaStreamingOptions;
         return this;
     }
 }

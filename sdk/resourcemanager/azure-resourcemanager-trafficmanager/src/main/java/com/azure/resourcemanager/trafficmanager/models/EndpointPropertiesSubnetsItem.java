@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.trafficmanager.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Subnet first address, scope, and/or last address. */
 @Fluent
 public final class EndpointPropertiesSubnetsItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EndpointPropertiesSubnetsItem.class);
-
     /*
      * First address in the subnet.
      */
@@ -31,6 +27,10 @@ public final class EndpointPropertiesSubnetsItem {
      */
     @JsonProperty(value = "scope")
     private Integer scope;
+
+    /** Creates an instance of EndpointPropertiesSubnetsItem class. */
+    public EndpointPropertiesSubnetsItem() {
+    }
 
     /**
      * Get the first property: First address in the subnet.

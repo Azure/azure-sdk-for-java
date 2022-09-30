@@ -16,10 +16,10 @@ import com.azure.communication.callautomation.implementation.models.CallConnecti
 import com.azure.communication.callautomation.implementation.models.CallConnectionStateModelInternal;
 import com.azure.communication.callautomation.implementation.models.CallSourceInternal;
 import com.azure.communication.callautomation.implementation.models.GetParticipantsResponseInternal;
-import com.azure.communication.callautomation.models.MediaStreamingAudioChannelType;
-import com.azure.communication.callautomation.models.MediaStreamingConfiguration;
-import com.azure.communication.callautomation.models.MediaStreamingContentType;
-import com.azure.communication.callautomation.models.MediaStreamingTransportType;
+import com.azure.communication.callautomation.models.MediaStreamingAudioChannel;
+import com.azure.communication.callautomation.models.MediaStreamingOptions;
+import com.azure.communication.callautomation.models.MediaStreamingContent;
+import com.azure.communication.callautomation.models.MediaStreamingTransport;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
@@ -44,11 +44,11 @@ public class CallAutomationUnitTestBase {
     static final String CALL_OPERATION_CONTEXT = "operationContext";
     static final String MEDIA_SUBSCRIPTION_ID = "mediaSubscriptionId";
 
-    static final MediaStreamingConfiguration MEDIA_STREAMING_CONFIGURATION = new MediaStreamingConfiguration(
+    static final MediaStreamingOptions MEDIA_STREAMING_CONFIGURATION = new MediaStreamingOptions(
         "https://websocket.url.com",
-        MediaStreamingTransportType.WEBSOCKET,
-        MediaStreamingContentType.AUDIO,
-        MediaStreamingAudioChannelType.MIXED
+        MediaStreamingTransport.WEBSOCKET,
+        MediaStreamingContent.AUDIO,
+        MediaStreamingAudioChannel.MIXED
     );
 
     public static String generateDownloadResult(String content) {

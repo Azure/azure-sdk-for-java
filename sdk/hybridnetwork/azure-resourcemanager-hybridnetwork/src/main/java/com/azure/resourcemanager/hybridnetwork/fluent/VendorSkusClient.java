@@ -23,9 +23,9 @@ public interface VendorSkusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String vendorName, String skuName);
 
     /**
@@ -37,9 +37,9 @@ public interface VendorSkusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String vendorName, String skuName, Context context);
 
     /**
@@ -72,6 +72,20 @@ public interface VendorSkusClient {
      *
      * @param vendorName The name of the vendor.
      * @param skuName The name of the sku.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified sku along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<VendorSkuInner> getWithResponse(String vendorName, String skuName, Context context);
+
+    /**
+     * Gets information about the specified sku.
+     *
+     * @param vendorName The name of the vendor.
+     * @param skuName The name of the sku.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -79,20 +93,6 @@ public interface VendorSkusClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     VendorSkuInner get(String vendorName, String skuName);
-
-    /**
-     * Gets information about the specified sku.
-     *
-     * @param vendorName The name of the vendor.
-     * @param skuName The name of the sku.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified sku.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VendorSkuInner> getWithResponse(String vendorName, String skuName, Context context);
 
     /**
      * Creates or updates a sku. This operation can take up to 2 hours to complete. This is expected service behavior.
@@ -103,9 +103,9 @@ public interface VendorSkusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sku sub resource.
+     * @return the {@link SyncPoller} for polling of sku sub resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VendorSkuInner>, VendorSkuInner> beginCreateOrUpdate(
         String vendorName, String skuName, VendorSkuInner parameters);
 
@@ -119,9 +119,9 @@ public interface VendorSkusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sku sub resource.
+     * @return the {@link SyncPoller} for polling of sku sub resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VendorSkuInner>, VendorSkuInner> beginCreateOrUpdate(
         String vendorName, String skuName, VendorSkuInner parameters, Context context);
 
@@ -161,7 +161,7 @@ public interface VendorSkusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list vendor sku API service call.
+     * @return response for list vendor sku API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VendorSkuInner> list(String vendorName);
@@ -174,7 +174,7 @@ public interface VendorSkusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list vendor sku API service call.
+     * @return response for list vendor sku API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VendorSkuInner> list(String vendorName, Context context);

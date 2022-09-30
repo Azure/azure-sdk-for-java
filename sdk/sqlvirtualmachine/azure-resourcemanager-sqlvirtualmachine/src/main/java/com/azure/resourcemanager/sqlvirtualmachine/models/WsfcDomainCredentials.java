@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Domain credentials for setting up Windows Server Failover Cluster for SQL availability group. */
 @Fluent
 public final class WsfcDomainCredentials {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WsfcDomainCredentials.class);
-
     /*
      * Cluster bootstrap account password.
      */

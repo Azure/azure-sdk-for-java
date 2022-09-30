@@ -40,7 +40,12 @@ public enum RequestTracingConstants {
     /**
      * Constant for http Header Correlation Context
      */
-    CORRELATION_CONTEXT_HEADER("Correlation-Context");
+    CORRELATION_CONTEXT_HEADER("Correlation-Context"),
+    
+    /**
+     * Constant for number of replicas, not including origin configured.
+     */
+    REPLICA_COUNT("ReplicaCount");
 
     private final String text;
 
