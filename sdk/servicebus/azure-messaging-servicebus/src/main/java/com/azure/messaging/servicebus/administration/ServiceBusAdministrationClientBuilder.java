@@ -34,10 +34,10 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusServiceVersion;
+import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementClientImpl;
+import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementClientImplBuilder;
+import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementSerializer;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
-import com.azure.messaging.servicebus.implementation.ServiceBusManagementClientImpl;
-import com.azure.messaging.servicebus.implementation.ServiceBusManagementClientImplBuilder;
-import com.azure.messaging.servicebus.implementation.ServiceBusManagementSerializer;
 import com.azure.messaging.servicebus.implementation.ServiceBusSharedKeyCredential;
 import com.azure.messaging.servicebus.implementation.ServiceBusTokenCredentialHttpPolicy;
 

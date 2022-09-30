@@ -5,7 +5,7 @@
 package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
-import com.azure.messaging.servicebus.implementation.models.SubscriptionDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescription;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;

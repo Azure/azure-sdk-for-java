@@ -8,10 +8,10 @@ import com.azure.core.annotation.Fluent;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
-import com.azure.messaging.servicebus.implementation.models.AuthorizationRuleImpl;
-import com.azure.messaging.servicebus.implementation.models.EntityAvailabilityStatus;
-import com.azure.messaging.servicebus.implementation.models.MessageCountDetails;
-import com.azure.messaging.servicebus.implementation.models.TopicDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.AuthorizationRuleImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.EntityAvailabilityStatus;
+import com.azure.messaging.servicebus.administration.implementation.models.MessageCountDetails;
+import com.azure.messaging.servicebus.administration.implementation.models.TopicDescription;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
