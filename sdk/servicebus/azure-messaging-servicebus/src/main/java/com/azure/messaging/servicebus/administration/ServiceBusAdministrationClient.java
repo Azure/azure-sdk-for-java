@@ -26,6 +26,7 @@ import com.azure.messaging.servicebus.administration.implementation.EntityHelper
 import com.azure.messaging.servicebus.administration.implementation.RulesImpl;
 import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementClientImpl;
 import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementSerializer;
+import com.azure.messaging.servicebus.administration.implementation.Utility;
 import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBody;
 import com.azure.messaging.servicebus.administration.implementation.models.CreateRuleBody;
 import com.azure.messaging.servicebus.administration.implementation.models.CreateSubscriptionBody;
@@ -68,34 +69,29 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import static com.azure.core.http.policy.AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY;
-import static com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient.NUMBER_OF_ELEMENTS;
-import static com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient.QUEUES_ENTITY_TYPE;
-import static com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient.TOPICS_ENTITY_TYPE;
-import static com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient.getCreateQueueBody;
-import static com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient.getCreateRuleBody;
-import static com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient.getCreateSubscriptionBody;
-import static com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient.getCreateTopicBody;
-import static com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient.getQueueProperties;
-import static com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient.getQueuePropertiesList;
-import static com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient.getRulePropertiesList;
-import static com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient.getSubscriptionProperties;
-import static com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient.getSubscriptionPropertiesList;
-import static com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient.getTopicProperties;
-import static com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient.getTopicPropertiesList;
-import static com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient.getTracingContext;
-import static com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient.getUpdateRuleBody;
-import static com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient.getUpdateSubscriptionBody;
-import static com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient.getUpdateTopicBody;
-import static com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient.validateCreateRuleParams;
-import static com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient.validateParams;
-import static com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient.validateQueueName;
-import static com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient.validateRuleName;
-import static com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient.validateSubscriptionName;
-import static com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient.validateSubscriptionParams;
-import static com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient.validateTopicName;
-import static com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient.validateTopicParams;
-import static com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient.validateTopicSubscription;
+import static com.azure.messaging.servicebus.administration.implementation.Utility.NUMBER_OF_ELEMENTS;
+import static com.azure.messaging.servicebus.administration.implementation.Utility.QUEUES_ENTITY_TYPE;
+import static com.azure.messaging.servicebus.administration.implementation.Utility.TOPICS_ENTITY_TYPE;
 import static com.azure.messaging.servicebus.administration.implementation.Utility.addSupplementaryAuthHeader;
+import static com.azure.messaging.servicebus.administration.implementation.Utility.getCreateQueueBody;
+import static com.azure.messaging.servicebus.administration.implementation.Utility.getCreateRuleBody;
+import static com.azure.messaging.servicebus.administration.implementation.Utility.getCreateSubscriptionBody;
+import static com.azure.messaging.servicebus.administration.implementation.Utility.getCreateTopicBody;
+import static com.azure.messaging.servicebus.administration.implementation.Utility.getQueueProperties;
+import static com.azure.messaging.servicebus.administration.implementation.Utility.getQueuePropertiesList;
+import static com.azure.messaging.servicebus.administration.implementation.Utility.getRulePropertiesList;
+import static com.azure.messaging.servicebus.administration.implementation.Utility.getSubscriptionProperties;
+import static com.azure.messaging.servicebus.administration.implementation.Utility.getSubscriptionPropertiesList;
+import static com.azure.messaging.servicebus.administration.implementation.Utility.getTopicProperties;
+import static com.azure.messaging.servicebus.administration.implementation.Utility.getTopicPropertiesList;
+import static com.azure.messaging.servicebus.administration.implementation.Utility.getTracingContext;
+import static com.azure.messaging.servicebus.administration.implementation.Utility.getUpdateRuleBody;
+import static com.azure.messaging.servicebus.administration.implementation.Utility.getUpdateSubscriptionBody;
+import static com.azure.messaging.servicebus.administration.implementation.Utility.getUpdateTopicBody;
+import static com.azure.messaging.servicebus.administration.implementation.Utility.validateQueueName;
+import static com.azure.messaging.servicebus.administration.implementation.Utility.validateRuleName;
+import static com.azure.messaging.servicebus.administration.implementation.Utility.validateSubscriptionName;
+import static com.azure.messaging.servicebus.administration.implementation.Utility.validateTopicName;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME;
 
@@ -230,7 +226,10 @@ public final class ServiceBusAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueProperties> createQueueWithResponse(String queueName, CreateQueueOptions queueOptions,
         Context context) {
-        validateParams(queueName, queueOptions);
+        validateTopicName(queueName);
+        if (queueOptions == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'queueOptions' cannot be null."));
+        }
         context = context == null ? Context.NONE : context;
 
         final Context contextWithHeaders
@@ -315,7 +314,12 @@ public final class ServiceBusAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RuleProperties> createRuleWithResponse(String topicName, String subscriptionName,
         String ruleName, CreateRuleOptions ruleOptions, Context context) {
-        validateCreateRuleParams(topicName, subscriptionName, ruleName, ruleOptions);
+        validateTopicName(topicName);
+        validateSubscriptionName(subscriptionName);
+        validateRuleName(ruleName);
+        if (ruleOptions == null) {
+            throw LOGGER.logExceptionAsError( new NullPointerException("'ruleOptions' cannot be null."));
+        }
         final CreateRuleBody createEntity = getCreateRuleBody(ruleName, ruleOptions);
         return deserializeRule(
             managementClient.getRules().putSyncWithResponse(topicName, subscriptionName, ruleName, createEntity,
@@ -387,21 +391,12 @@ public final class ServiceBusAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SubscriptionProperties> createSubscriptionWithResponse(String topicName, String subscriptionName,
         CreateSubscriptionOptions subscriptionOptions, Context context) {
-        return createSubscriptionWithResponseSync(topicName, subscriptionName, subscriptionOptions, context);
-    }
-
-    /**
-     * Creates a subscription with its context.
-     *
-     * @param subscriptionOptions Subscription to create.
-     * @param context Context to pass into request.
-     *
-     * @return A Mono that completes with the created {@link SubscriptionProperties}.
-     */
-    private Response<SubscriptionProperties> createSubscriptionWithResponseSync(String topicName,
-            String subscriptionName, CreateSubscriptionOptions subscriptionOptions, Context context) {
-        validateSubscriptionParams(topicName, subscriptionName, subscriptionOptions);
-
+        validateTopicName(topicName);
+        validateSubscriptionName(subscriptionName);
+        if (subscriptionOptions == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'subscriptionOptions' cannot be null."));
+        }
+        context = context == null ? Context.NONE : context;
         final Context contextWithHeaders
             = enableSyncContext(getTracingContext(context).addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders()));
         String forwardTo = getForwardToEntity(subscriptionOptions.getForwardTo(), contextWithHeaders);
@@ -483,7 +478,10 @@ public final class ServiceBusAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TopicProperties> createTopicWithResponse(String topicName, CreateTopicOptions topicOptions,
         Context context) {
-        validateTopicParams(topicName, topicOptions);
+        validateTopicName(topicName);
+        if (topicOptions == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'topicOptions' cannot be null."));
+        }
 
         final CreateTopicBody createEntity = getCreateTopicBody(EntityHelper.getTopicDescription(topicOptions));
         return deserializeTopic(entityClient.putSyncWithResponse(topicName, createEntity, null,
@@ -570,8 +568,10 @@ public final class ServiceBusAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteRuleWithResponse(String topicName, String subscriptionName,
         String ruleName, Context context) {
-        validateTopicSubscription(topicName, subscriptionName);
+        validateTopicName(topicName);
+        validateSubscriptionName(subscriptionName);
         validateRuleName(ruleName);
+
         Response<Object> response =
             rulesClient.deleteSyncWithResponse(topicName, subscriptionName, ruleName, enableSyncContext(context));
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
@@ -615,7 +615,8 @@ public final class ServiceBusAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteSubscriptionWithResponse(String topicName, String subscriptionName, Context context) {
-        validateTopicSubscription(topicName, subscriptionName);
+        validateSubscriptionName(subscriptionName);
+        validateTopicName(topicName);
         Response<Object> response =
             managementClient.getSubscriptions().deleteSyncWithResponse(topicName, subscriptionName,
                 enableSyncContext(context));
@@ -712,7 +713,7 @@ public final class ServiceBusAdministrationClient {
         // if this is null, then the queue could not be found.
         if (deserialize.getValue() == null) {
             final HttpResponse
-                notFoundResponse = new ServiceBusAdministrationAsyncClient.EntityNotFoundHttpResponse<>(deserialize);
+                notFoundResponse = new Utility.EntityNotFoundHttpResponse<>(deserialize);
             throw LOGGER.logExceptionAsError(
                 new ResourceNotFoundException(String.format("Queue '%s' does not exist.", queueName),
                     notFoundResponse));
@@ -938,7 +939,7 @@ public final class ServiceBusAdministrationClient {
             // if this is null, then the queue could not be found.
         if (deserialize.getValue() == null) {
         final HttpResponse notFoundResponse
-            = new ServiceBusAdministrationAsyncClient.EntityNotFoundHttpResponse<>(deserialize);
+            = new Utility.EntityNotFoundHttpResponse<>(deserialize);
         throw LOGGER.logExceptionAsError(new ResourceNotFoundException(String.format(
             "Subscription '%s' in topic '%s' does not exist.", topicName, subscriptionName),
             notFoundResponse));
@@ -1073,7 +1074,7 @@ public final class ServiceBusAdministrationClient {
     }
 
     <T> Response<T> getTopicWithResponse(String topicName, Context context,
-                                         Function<TopicProperties, T> mapper) {
+        Function<TopicProperties, T> mapper) {
         validateTopicName(topicName);
 
         Response<Object> response = entityClient.getSyncWithResponse(topicName, true, enableSyncContext(context));
@@ -1082,7 +1083,7 @@ public final class ServiceBusAdministrationClient {
         // if this is null, then the queue could not be found.
         if (deserialize.getValue() == null) {
             final HttpResponse notFoundResponse =
-                new ServiceBusAdministrationAsyncClient.EntityNotFoundHttpResponse<>(deserialize);
+                new Utility.EntityNotFoundHttpResponse<>(deserialize);
             throw LOGGER.logExceptionAsError(
                 new ResourceNotFoundException(String.format("Topic '%s' does not exist.", topicName),
                     notFoundResponse));
@@ -1860,16 +1861,16 @@ public final class ServiceBusAdministrationClient {
     }
 
     /**
-     * Creates a {@link ServiceBusAdministrationAsyncClient.FeedPage} given the elements and a set of response links to get the next link from.
+     * Creates a {@link Utility.FeedPage} given the elements and a set of response links to get the next link from.
      *
      * @param entities Entities in the feed.
      * @param responseLinks Links returned from the feed.
      * @param <TResult> Type of Service Bus entities in page.
      *
-     * @return A {@link ServiceBusAdministrationAsyncClient.FeedPage} indicating whether this can be continued or not.
+     * @return A {@link Utility.FeedPage} indicating whether this can be continued or not.
      * @throws MalformedURLException if the "next" page link does not contain a well-formed URL.
      */
-    private <TResult, TFeed> ServiceBusAdministrationAsyncClient.FeedPage<TResult> extractPage(Response<TFeed> response,
+    private <TResult, TFeed> Utility.FeedPage<TResult> extractPage(Response<TFeed> response,
             List<TResult> entities, List<ResponseLink> responseLinks)
             throws MalformedURLException, UnsupportedEncodingException {
         final Optional<ResponseLink> nextLink = responseLinks.stream()
@@ -1877,7 +1878,7 @@ public final class ServiceBusAdministrationClient {
             .findFirst();
 
         if (nextLink.isEmpty()) {
-            return new ServiceBusAdministrationAsyncClient.FeedPage<>(response.getStatusCode(), response.getHeaders(), response.getRequest(), entities);
+            return new Utility.FeedPage<>(response.getStatusCode(), response.getHeaders(), response.getRequest(), entities);
         }
 
         final URL url = new URL(nextLink.get().getHref());
@@ -1889,11 +1890,11 @@ public final class ServiceBusAdministrationClient {
             .findFirst();
 
         if (skipParameter.isPresent()) {
-            return new ServiceBusAdministrationAsyncClient.FeedPage<>(response.getStatusCode(), response.getHeaders(), response.getRequest(), entities,
+            return new Utility.FeedPage<>(response.getStatusCode(), response.getHeaders(), response.getRequest(), entities,
                 skipParameter.get());
         } else {
             LOGGER.warning("There should have been a skip parameter for the next page.");
-            return new ServiceBusAdministrationAsyncClient.FeedPage<>(response.getStatusCode(), response.getHeaders(), response.getRequest(), entities);
+            return new Utility.FeedPage<>(response.getStatusCode(), response.getHeaders(), response.getRequest(), entities);
         }
     }
 
