@@ -6,7 +6,6 @@ package com.azure.core.http.vertx.implementation;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.FluxUtil;
 import io.vertx.core.http.HttpClientResponse;
-import io.vertx.core.net.NetSocket;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
