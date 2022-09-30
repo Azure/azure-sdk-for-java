@@ -27,6 +27,7 @@ public final class CallConnectionProperties {
     private final CallConnectionState callConnectionState;
     private final String subject;
     private final URI callbackUri;
+    private final String mediaSubscriptionId;
 
     static {
         CallConnectionPropertiesConstructorProxy.setAccessor(
@@ -50,6 +51,7 @@ public final class CallConnectionProperties {
         this.callConnectionState = null;
         this.subject = null;
         this.callbackUri = null;
+        this.mediaSubscriptionId = null;
     }
 
     /**
@@ -66,6 +68,7 @@ public final class CallConnectionProperties {
         this.callConnectionState = CallConnectionState.fromString(callConnectionPropertiesInternal.getCallConnectionState().toString());
         this.subject = callConnectionPropertiesInternal.getSubject();
         this.callbackUri = new URI(callConnectionPropertiesInternal.getCallbackUri());
+        this.mediaSubscriptionId = callConnectionPropertiesInternal.getMediaSubscriptionId();
     }
 
     /**
@@ -131,4 +134,12 @@ public final class CallConnectionProperties {
         return callConnectionId;
     }
 
+    /**
+     * Get the mediaSubscriptionId property: SubscriptionId for media streaming.
+     *
+     * @return the mediaSubscriptionId value.
+     */
+    public String getMediaSubscriptionId() { 
+        return mediaSubscriptionId;
+    }
 }

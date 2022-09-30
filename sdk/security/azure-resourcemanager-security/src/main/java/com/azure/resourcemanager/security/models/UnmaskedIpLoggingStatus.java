@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for UnmaskedIpLoggingStatus. */
+/** Unmasked IP address logging status. */
 public final class UnmaskedIpLoggingStatus extends ExpandableStringEnum<UnmaskedIpLoggingStatus> {
     /** Static value Disabled for UnmaskedIpLoggingStatus. */
     public static final UnmaskedIpLoggingStatus DISABLED = fromString("Disabled");
@@ -27,7 +27,11 @@ public final class UnmaskedIpLoggingStatus extends ExpandableStringEnum<Unmasked
         return fromString(name, UnmaskedIpLoggingStatus.class);
     }
 
-    /** @return known UnmaskedIpLoggingStatus values. */
+    /**
+     * Gets known UnmaskedIpLoggingStatus values.
+     *
+     * @return known UnmaskedIpLoggingStatus values.
+     */
     public static Collection<UnmaskedIpLoggingStatus> values() {
         return values(UnmaskedIpLoggingStatus.class);
     }

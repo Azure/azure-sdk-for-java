@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure;
 
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.management.AzureEnvironment;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
@@ -29,6 +30,7 @@ import java.util.Set;
 
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE;
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_CHINA;
+import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT;
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.OTHER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -291,5 +293,59 @@ class AzureServiceConfigurationBaseTests {
             });
     }
 
+    @Test
+    void configureGlobalCloudShouldApplyToAzureKeyVaultSecretProperties() {
+        AzureGlobalProperties azureProperties = new AzureGlobalProperties();
+        azureProperties.getProfile().setCloudType(AZURE_US_GOVERNMENT);
+
+        this.contextRunner
+            .withBean(AzureGlobalProperties.class, () -> azureProperties)
+            .withBean(SecretClientBuilder.class, () -> mock(SecretClientBuilder.class))
+            .withPropertyValues(
+                "spring.cloud.azure.keyvault.secret.endpoint=test"
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureKeyVaultSecretProperties.class);
+                final AzureKeyVaultSecretProperties properties = context.getBean(AzureKeyVaultSecretProperties.class);
+                assertThat(properties).extracting("profile.cloudType").isEqualTo(AZURE_US_GOVERNMENT);
+                assertThat(properties).extracting("profile.environment.activeDirectoryEndpoint").isEqualTo(AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint());
+            });
+    }
+
+    @Test
+    void configureGlobalCloudShouldApplyToAzureEventHubsProperties() {
+        AzureGlobalProperties azureProperties = new AzureGlobalProperties();
+        azureProperties.getProfile().setCloudType(AZURE_US_GOVERNMENT);
+
+        this.contextRunner
+            .withBean(AzureGlobalProperties.class, () -> azureProperties)
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.namespace=test-namespace"
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureEventHubsProperties.class);
+                final AzureEventHubsProperties properties = context.getBean(AzureEventHubsProperties.class);
+                assertThat(properties).extracting("profile.cloudType").isEqualTo(AZURE_US_GOVERNMENT);
+                assertThat(properties).extracting("profile.environment.activeDirectoryEndpoint").isEqualTo(AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint());
+            });
+    }
+
+    @Test
+    void globalDefaultShouldNotApplyWhenServiceSpecifyCloudType() {
+        AzureGlobalProperties azureProperties = new AzureGlobalProperties();
+
+        this.contextRunner
+            .withBean(AzureGlobalProperties.class, () -> azureProperties)
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.namespace=test-namespace",
+                "spring.cloud.azure.eventhubs.profile.cloud-type=AZURE_US_GOVERNMENT"
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureEventHubsProperties.class);
+                final AzureEventHubsProperties properties = context.getBean(AzureEventHubsProperties.class);
+                assertThat(properties).extracting("profile.cloudType").isEqualTo(AZURE_US_GOVERNMENT);
+                assertThat(properties).extracting("profile.environment.activeDirectoryEndpoint").isEqualTo(AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint());
+            });
+    }
 
 }

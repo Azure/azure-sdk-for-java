@@ -16,16 +16,15 @@ import java.util.Map;
 @Fluent
 public final class ActivityPolicy {
     /*
-     * Specifies the timeout for the activity to run. The default timeout is 7
-     * days. Type: string (or Expression with resultType string), pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Specifies the timeout for the activity to run. The default timeout is 7 days. Type: string (or Expression with
+     * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "timeout")
     private Object timeout;
 
     /*
-     * Maximum ordinary retry attempts. Default is 0. Type: integer (or
-     * Expression with resultType integer), minimum: 0.
+     * Maximum ordinary retry attempts. Default is 0. Type: integer (or Expression with resultType integer), minimum:
+     * 0.
      */
     @JsonProperty(value = "retry")
     private Object retry;
@@ -37,15 +36,13 @@ public final class ActivityPolicy {
     private Integer retryIntervalInSeconds;
 
     /*
-     * When set to true, Input from activity is considered as secure and will
-     * not be logged to monitoring.
+     * When set to true, Input from activity is considered as secure and will not be logged to monitoring.
      */
     @JsonProperty(value = "secureInput")
     private Boolean secureInput;
 
     /*
-     * When set to true, Output from activity is considered as secure and will
-     * not be logged to monitoring.
+     * When set to true, Output from activity is considered as secure and will not be logged to monitoring.
      */
     @JsonProperty(value = "secureOutput")
     private Boolean secureOutput;

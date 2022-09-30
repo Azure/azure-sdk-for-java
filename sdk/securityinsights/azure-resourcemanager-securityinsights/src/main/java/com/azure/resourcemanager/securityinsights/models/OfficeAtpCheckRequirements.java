@@ -16,8 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class OfficeAtpCheckRequirements extends DataConnectorsCheckRequirements {
     /*
-     * OfficeATP (Office 365 Advanced Threat Protection) requirements check
-     * properties.
+     * OfficeATP (Office 365 Advanced Threat Protection) requirements check properties.
      */
     @JsonProperty(value = "properties")
     private OfficeAtpCheckRequirementsProperties innerProperties;

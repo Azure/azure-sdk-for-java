@@ -1,5 +1,23 @@
 # Release History
 
+## 1.3.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Added `getVersion` to `SchemaProperties`.
+- Added the following methods in `SchemaRegistryAsyncClient`:
+  - `Mono<SchemaRegistrySchema> getSchema(String groupName, String schemaName, int schemaVersion)`
+  - `Mono<Response<SchemaRegistrySchema>> getSchemaWithResponse(String groupName, String schemaName, int schemaVersion)`
+- Added the following methods in `SchemaRegistryClient`:
+    - `SchemaRegistrySchema getSchema(String groupName, String schemaName, int schemaVersion)`
+    - `Response<SchemaRegistrySchema> getSchemaWithResponse(String groupName, String schemaName, int schemaVersion, Context context)`
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.2.4 (2022-09-12)
 
 ### Other Changes

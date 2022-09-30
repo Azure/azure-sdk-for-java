@@ -9,7 +9,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dnsresolver.models.ForwardingRuleState;
 import com.azure.resourcemanager.dnsresolver.models.ProvisioningState;
 import com.azure.resourcemanager.dnsresolver.models.TargetDnsServer;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -18,8 +17,6 @@ import java.util.Map;
 /** Represents the properties of a forwarding rule within a DNS forwarding ruleset. */
 @Fluent
 public final class ForwardingRuleProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ForwardingRuleProperties.class);
-
     /*
      * The domain name for the forwarding rule.
      */
@@ -46,8 +43,8 @@ public final class ForwardingRuleProperties {
     private ForwardingRuleState forwardingRuleState;
 
     /*
-     * The current provisioning state of the forwarding rule. This is a
-     * read-only property and any attempt to set this value will be ignored.
+     * The current provisioning state of the forwarding rule. This is a read-only property and any attempt to set this
+     * value will be ignored.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -149,13 +146,13 @@ public final class ForwardingRuleProperties {
      */
     public void validate() {
         if (domainName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property domainName in model ForwardingRuleProperties"));
         }
         if (targetDnsServers() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetDnsServers in model ForwardingRuleProperties"));
@@ -163,4 +160,6 @@ public final class ForwardingRuleProperties {
             targetDnsServers().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ForwardingRuleProperties.class);
 }

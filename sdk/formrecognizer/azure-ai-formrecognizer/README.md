@@ -572,6 +572,7 @@ try {
     documentAnalysisClient.beginAnalyzeDocumentFromUrl("prebuilt-receipt", "invalidSourceUrl");
 } catch (HttpResponseException e) {
     System.out.println(e.getMessage());
+    // Do something with the exception
 }
 ```
 

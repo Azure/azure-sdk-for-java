@@ -32,6 +32,13 @@ public interface TopologyResource {
     String type();
 
     /**
+     * Gets the location property: Location where the resource is stored.
+     *
+     * @return the location value.
+     */
+    String location();
+
+    /**
      * Gets the calculatedDateTime property: The UTC time on which the topology was calculated.
      *
      * @return the calculatedDateTime value.
@@ -44,13 +51,6 @@ public interface TopologyResource {
      * @return the topologyResources value.
      */
     List<TopologySingleResource> topologyResources();
-
-    /**
-     * Gets the location property: Location where the resource is stored.
-     *
-     * @return the location value.
-     */
-    String location();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.TopologyResourceInner object.
