@@ -1,6 +1,6 @@
 # Release History
 
-## 4.4.0-beta.1 (Unreleased)
+## 6.0.0-beta.2 (2022-09-30)
 
 ### Features Added
 
