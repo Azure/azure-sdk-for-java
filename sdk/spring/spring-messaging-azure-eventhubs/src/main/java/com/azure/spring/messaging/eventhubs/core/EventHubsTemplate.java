@@ -100,8 +100,16 @@ public class EventHubsTemplate implements SendOperation {
     private Mono<Void> doSend(String destination, List<EventData> events, PartitionSupplier partitionSupplier) {
         EventHubProducerAsyncClient producer = producerFactory.createProducer(destination);
         CreateBatchOptions options = buildCreateBatchOptions(partitionSupplier);
-        AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(
-            producer.createBatch(options).block());
+
+        EventDataBatch eventDataBatch = null;
+        try {
+            eventDataBatch = producer.createBatch(options).block();
+        } catch (Exception e) {
+            LOGGER.error("EventDataBatch create error.", e);
+            return Mono.error(e);
+        }
+        AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(eventDataBatch);
+
         Flux.fromIterable(events).flatMap(event -> {
             final EventDataBatch batch = currentBatch.get();
             try {
