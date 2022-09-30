@@ -5,6 +5,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
@@ -23,6 +24,7 @@ import com.azure.messaging.servicebus.administration.implementation.models.Queue
 import com.azure.messaging.servicebus.administration.implementation.models.ResponseLink;
 import com.azure.messaging.servicebus.administration.implementation.models.RuleActionImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.RuleDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionEntry;
 import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionFeed;
 import com.azure.messaging.servicebus.administration.implementation.models.RuleFilterImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescription;
@@ -205,6 +207,39 @@ public class Utility {
         final String topicName = getTitleValue(entry.getTitle());
         EntityHelper.setTopicName(result, topicName);
         return result;
+    }
+
+    public static SimpleResponse<SubscriptionProperties> getSubscriptionPropertiesSimpleResponse(String topicName,
+        Response<Object> response, SubscriptionDescriptionEntry entry) {
+        // This was an empty response (ie. 204).
+        if (entry == null) {
+            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
+        } else if (entry.getContent() == null) {
+            LOGGER.warning("entry.getContent() is null. There should have been content returned. Entry: {}", entry);
+            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
+        }
+        final SubscriptionProperties subscription = getSubscriptionProperties(topicName, entry);
+        final String subscriptionName = getTitleValue(entry.getTitle());
+        EntityHelper.setSubscriptionName(subscription, subscriptionName);
+        EntityHelper.setTopicName(subscription, topicName);
+
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            subscription);
+    }
+
+    public static SimpleResponse<RuleProperties> getRulePropertiesSimpleResponse(Response<Object> response,
+        RuleDescriptionEntry entry) {
+        // This was an empty response (ie. 204).
+        if (entry == null) {
+            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
+        } else if (entry.getContent() == null) {
+            LOGGER.info("entry.getContent() is null. The entity may not exist. {}", entry);
+            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
+        }
+
+        final RuleDescription description = entry.getContent().getRuleDescription();
+        final RuleProperties result = EntityHelper.toModel(description);
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), result);
     }
 
     /**

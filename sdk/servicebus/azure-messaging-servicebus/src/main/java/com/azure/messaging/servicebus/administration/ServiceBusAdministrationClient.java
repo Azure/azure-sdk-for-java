@@ -34,8 +34,6 @@ import com.azure.messaging.servicebus.administration.implementation.models.Creat
 import com.azure.messaging.servicebus.administration.implementation.models.NamespacePropertiesEntry;
 import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionEntry;
 import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionFeed;
-import com.azure.messaging.servicebus.administration.implementation.models.ResponseLink;
-import com.azure.messaging.servicebus.administration.implementation.models.RuleDescription;
 import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionEntry;
 import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionFeed;
 import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionEntry;
@@ -59,13 +57,9 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Function;
 
 import static com.azure.core.http.policy.AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY;
@@ -73,6 +67,7 @@ import static com.azure.messaging.servicebus.administration.implementation.Utili
 import static com.azure.messaging.servicebus.administration.implementation.Utility.QUEUES_ENTITY_TYPE;
 import static com.azure.messaging.servicebus.administration.implementation.Utility.TOPICS_ENTITY_TYPE;
 import static com.azure.messaging.servicebus.administration.implementation.Utility.addSupplementaryAuthHeader;
+import static com.azure.messaging.servicebus.administration.implementation.Utility.extractPage;
 import static com.azure.messaging.servicebus.administration.implementation.Utility.getCreateQueueBody;
 import static com.azure.messaging.servicebus.administration.implementation.Utility.getCreateRuleBody;
 import static com.azure.messaging.servicebus.administration.implementation.Utility.getCreateSubscriptionBody;
@@ -80,8 +75,9 @@ import static com.azure.messaging.servicebus.administration.implementation.Utili
 import static com.azure.messaging.servicebus.administration.implementation.Utility.getQueueProperties;
 import static com.azure.messaging.servicebus.administration.implementation.Utility.getQueuePropertiesList;
 import static com.azure.messaging.servicebus.administration.implementation.Utility.getRulePropertiesList;
-import static com.azure.messaging.servicebus.administration.implementation.Utility.getSubscriptionProperties;
+import static com.azure.messaging.servicebus.administration.implementation.Utility.getRulePropertiesSimpleResponse;
 import static com.azure.messaging.servicebus.administration.implementation.Utility.getSubscriptionPropertiesList;
+import static com.azure.messaging.servicebus.administration.implementation.Utility.getSubscriptionPropertiesSimpleResponse;
 import static com.azure.messaging.servicebus.administration.implementation.Utility.getTopicProperties;
 import static com.azure.messaging.servicebus.administration.implementation.Utility.getTopicPropertiesList;
 import static com.azure.messaging.servicebus.administration.implementation.Utility.getTracingContext;
@@ -1673,6 +1669,7 @@ public final class ServiceBusAdministrationClient {
         if(subscription == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'subscription' cannot be null"));
         }
+        context = context == null ? Context.NONE : context;
         final Context contextWithHeaders
             = enableSyncContext(context.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders()));
 
@@ -1806,33 +1803,12 @@ public final class ServiceBusAdministrationClient {
     private Response<RuleProperties> deserializeRule(Response<Object> response) {
         final RuleDescriptionEntry entry = deserialize(response.getValue(), RuleDescriptionEntry.class);
 
-        // This was an empty response (ie. 204).
-        if (entry == null) {
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        } else if (entry.getContent() == null) {
-            LOGGER.info("entry.getContent() is null. The entity may not exist. {}", entry);
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        }
-
-        final RuleDescription description = entry.getContent().getRuleDescription();
-        final RuleProperties result = EntityHelper.toModel(description);
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), result);
+        return getRulePropertiesSimpleResponse(response, entry);
     }
 
     private Response<SubscriptionProperties> deserializeSubscription(String topicName, Response<Object> response) {
         final SubscriptionDescriptionEntry entry = deserialize(response.getValue(), SubscriptionDescriptionEntry.class);
-
-        // This was an empty response (ie. 204).
-        if (entry == null) {
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        } else if (entry.getContent() == null) {
-            LOGGER.warning("entry.getContent() is null. There should have been content returned. Entry: {}", entry);
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        }
-        final SubscriptionProperties subscription = getSubscriptionProperties(topicName, entry);
-
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            subscription);
+        return getSubscriptionPropertiesSimpleResponse(topicName, response, entry);
     }
 
     private Response<TopicProperties> deserializeTopic(Response<Object> response) {
@@ -1858,44 +1834,6 @@ public final class ServiceBusAdministrationClient {
 
     private static Context enableSyncContext(Context context) {
         return getTracingContext(context).addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
-    }
-
-    /**
-     * Creates a {@link Utility.FeedPage} given the elements and a set of response links to get the next link from.
-     *
-     * @param entities Entities in the feed.
-     * @param responseLinks Links returned from the feed.
-     * @param <TResult> Type of Service Bus entities in page.
-     *
-     * @return A {@link Utility.FeedPage} indicating whether this can be continued or not.
-     * @throws MalformedURLException if the "next" page link does not contain a well-formed URL.
-     */
-    private <TResult, TFeed> Utility.FeedPage<TResult> extractPage(Response<TFeed> response,
-            List<TResult> entities, List<ResponseLink> responseLinks)
-            throws MalformedURLException, UnsupportedEncodingException {
-        final Optional<ResponseLink> nextLink = responseLinks.stream()
-            .filter(link -> link.getRel().equalsIgnoreCase("next"))
-            .findFirst();
-
-        if (nextLink.isEmpty()) {
-            return new Utility.FeedPage<>(response.getStatusCode(), response.getHeaders(), response.getRequest(), entities);
-        }
-
-        final URL url = new URL(nextLink.get().getHref());
-        final String decode = URLDecoder.decode(url.getQuery(), StandardCharsets.UTF_8);
-        final Optional<Integer> skipParameter = Arrays.stream(decode.split("&amp;|&"))
-            .map(part -> part.split("=", 2))
-            .filter(parts -> parts[0].equalsIgnoreCase("$skip") && parts.length == 2)
-            .map(parts -> Integer.valueOf(parts[1]))
-            .findFirst();
-
-        if (skipParameter.isPresent()) {
-            return new Utility.FeedPage<>(response.getStatusCode(), response.getHeaders(), response.getRequest(), entities,
-                skipParameter.get());
-        } else {
-            LOGGER.warning("There should have been a skip parameter for the next page.");
-            return new Utility.FeedPage<>(response.getStatusCode(), response.getHeaders(), response.getRequest(), entities);
-        }
     }
 
     private <T> T deserialize(Object object, Class<T> clazz) {

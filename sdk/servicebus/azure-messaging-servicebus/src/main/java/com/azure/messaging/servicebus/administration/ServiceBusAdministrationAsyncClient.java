@@ -35,7 +35,6 @@ import com.azure.messaging.servicebus.administration.implementation.models.Creat
 import com.azure.messaging.servicebus.administration.implementation.models.NamespacePropertiesEntry;
 import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionEntry;
 import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionFeed;
-import com.azure.messaging.servicebus.administration.implementation.models.RuleDescription;
 import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionEntry;
 import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionFeed;
 import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementError;
@@ -83,7 +82,9 @@ import static com.azure.messaging.servicebus.administration.implementation.Utili
 import static com.azure.messaging.servicebus.administration.implementation.Utility.getCreateTopicBody;
 import static com.azure.messaging.servicebus.administration.implementation.Utility.getQueuePropertiesList;
 import static com.azure.messaging.servicebus.administration.implementation.Utility.getRulePropertiesList;
+import static com.azure.messaging.servicebus.administration.implementation.Utility.getRulePropertiesSimpleResponse;
 import static com.azure.messaging.servicebus.administration.implementation.Utility.getSubscriptionPropertiesList;
+import static com.azure.messaging.servicebus.administration.implementation.Utility.getSubscriptionPropertiesSimpleResponse;
 import static com.azure.messaging.servicebus.administration.implementation.Utility.getTitleValue;
 import static com.azure.messaging.servicebus.administration.implementation.Utility.getTopicPropertiesList;
 import static com.azure.messaging.servicebus.administration.implementation.Utility.getTracingContext;
@@ -2075,7 +2076,7 @@ public final class ServiceBusAdministrationAsyncClient {
      *
      * @return The corresponding HTTP response with convenience properties set.
      */
-     private Response<QueueProperties> deserializeQueue(Response<Object> response) {
+    private Response<QueueProperties> deserializeQueue(Response<Object> response) {
         final QueueDescriptionEntry entry = deserialize(response.getValue(), QueueDescriptionEntry.class);
 
         // This was an empty response (ie. 204).
@@ -2109,18 +2110,7 @@ public final class ServiceBusAdministrationAsyncClient {
     private Response<RuleProperties> deserializeRule(Response<Object> response) {
         final RuleDescriptionEntry entry = deserialize(response.getValue(), RuleDescriptionEntry.class);
 
-        // This was an empty response (ie. 204).
-        if (entry == null) {
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        } else if (entry.getContent() == null) {
-            LOGGER.info("entry.getContent() is null. The entity may not exist. {}", entry);
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        }
-
-        final RuleDescription description = entry.getContent().getRuleDescription();
-        final RuleProperties result = EntityHelper.toModel(description);
-
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), result);
+        return getRulePropertiesSimpleResponse(response, entry);
     }
 
     /**
@@ -2133,23 +2123,7 @@ public final class ServiceBusAdministrationAsyncClient {
      */
     private Response<SubscriptionProperties> deserializeSubscription(String topicName, Response<Object> response) {
         final SubscriptionDescriptionEntry entry = deserialize(response.getValue(), SubscriptionDescriptionEntry.class);
-
-        // This was an empty response (ie. 204).
-        if (entry == null) {
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        } else if (entry.getContent() == null) {
-            LOGGER.warning("entry.getContent() is null. There should have been content returned. Entry: {}", entry);
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        }
-
-        final SubscriptionProperties subscription = EntityHelper.toModel(
-            entry.getContent().getSubscriptionDescription());
-        final String subscriptionName = getTitleValue(entry.getTitle());
-        EntityHelper.setSubscriptionName(subscription, subscriptionName);
-        EntityHelper.setTopicName(subscription, topicName);
-
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            subscription);
+        return getSubscriptionPropertiesSimpleResponse(topicName, response, entry);
     }
 
     /**
