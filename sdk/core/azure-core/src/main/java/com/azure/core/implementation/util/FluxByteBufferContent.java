@@ -50,7 +50,15 @@ public final class FluxByteBufferContent extends BinaryDataContent {
         this(content, length, false);
     }
 
-    private FluxByteBufferContent(Flux<ByteBuffer> content, Long length, boolean isReplayable) {
+    /**
+     * Creates an instance {@link FluxByteBufferContent} where replay-ability is configurable.
+     *
+     * @param content The content for this instance.
+     * @param length The length of the content in bytes.
+     * @param isReplayable Whether the content is replayable.
+     * @throws NullPointerException if {@code content} is null.
+     */
+    public FluxByteBufferContent(Flux<ByteBuffer> content, Long length, boolean isReplayable) {
         this.content = Objects.requireNonNull(content, "'content' cannot be null.");
         this.length = length;
         this.isReplayable = isReplayable;
