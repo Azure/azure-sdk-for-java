@@ -9,9 +9,9 @@ import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.messaging.servicebus.implementation.models.CreateQueueBody;
-import com.azure.messaging.servicebus.implementation.models.CreateRuleBody;
-import com.azure.messaging.servicebus.implementation.models.CreateSubscriptionBody;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBody;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateRuleBody;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateSubscriptionBody;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
