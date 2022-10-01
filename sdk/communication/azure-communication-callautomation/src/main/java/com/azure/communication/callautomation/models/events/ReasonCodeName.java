@@ -34,8 +34,6 @@ public class ReasonCodeName extends ExpandableStringEnum<ReasonCodeName> {
     public static final ReasonCodeName COMPLETED_SUCCESSFULLY = fromReasonCode(0);
     /** Unknown internal server error. */
     public static final ReasonCodeName UNSPECIFIED_ERROR = fromReasonCode(9999);
-    /** Action falied, the operation was cancelled. */
-    public static final ReasonCodeName OPERATION_CANCELLED = fromReasonCode(8508);
 
     /**
      * Creates or finds a ReasonCodeName from its string representation.
