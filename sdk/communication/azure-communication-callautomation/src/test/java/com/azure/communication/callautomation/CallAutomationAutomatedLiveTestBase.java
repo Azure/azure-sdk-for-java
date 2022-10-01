@@ -40,7 +40,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.lang.reflect.Type;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -53,7 +52,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
     protected ConcurrentHashMap<String, ConcurrentHashMap<Type, CallAutomationEventBase>> eventStore;
     protected static final String SERVICEBUS_CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("SERVICEBUS_STRING",
-            "Endpoint=sb://REDACTED.servicebus.windows.net/;SharedAccessKeyName=TestKey;SharedAccessKey=BZscTVbGv+kiKSwVYBGxYS4mWwmFQhOou8EtZn87JJY=");
+            "Endpoint=sb://REDACTED.servicebus.windows.net/;SharedAccessKeyName=REDACTED;SharedAccessKey=REDACTEDu8EtZn87JJY=");
     protected static final String DISPATCHER_ENDPOINT = Configuration.getGlobalConfiguration()
         .get("DISPATCHER_ENDPOINT",
             "https://incomingcalldispatcher.azurewebsites.net");
@@ -109,7 +108,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         // receive message from dispatcher
         ServiceBusReceivedMessage message = context.getMessage();
         String body = message.getBody().toString();
-
+        System.out.println(body);
         // parse the message
         assert !body.isEmpty();
         ObjectMapper mapper = new ObjectMapper();
@@ -242,9 +241,9 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         } else if (eventType.equals(RecordingStateChangedEvent.class)) {
             eventName = "Microsoft.Communication.CallRecordingStateChanged";
         } else if (eventType.equals(PlayCompletedEvent.class)) {
-            eventName = "Microsoft.Communication.PlayCompletedEvent";
+            eventName = "Microsoft.Communication.PlayCompleted";
         } else if (eventType.equals(PlayFailedEvent.class)) {
-            eventName = "Microsoft.Communication.PlayFailedEvent";
+            eventName = "Microsoft.Communication.PlayFailed";
         } else if (eventType.equals(RecognizeCompleted.class)) {
             eventName = "Microsoft.Communication.RecognizeCompleted";
         } else if (eventType.equals(RecognizeFailed.class)) {
