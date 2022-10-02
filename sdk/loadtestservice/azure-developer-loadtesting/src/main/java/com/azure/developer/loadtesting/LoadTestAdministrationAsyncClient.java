@@ -14,6 +14,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.FluxUtil;
 import com.azure.developer.loadtesting.implementation.LoadTestAdministrationsImpl;
 import com.azure.developer.loadtesting.implementation.util.MultipartHelper;
 import java.io.IOException;
@@ -101,6 +102,68 @@ public final class LoadTestAdministrationAsyncClient {
     }
 
     /**
+     * Associate an App Component (Azure resource) to a test or test run.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     resourceId: String (Optional)
+     *     testId: String (Optional)
+     *     testRunId: String (Optional)
+     *     name: String (Optional)
+     *     value (Required): {
+     *         String (Required): {
+     *             resourceId: String (Required)
+     *             resourceName: String (Required)
+     *             resourceType: String (Required)
+     *             displayName: String (Optional)
+     *             resourceGroup: String (Optional)
+     *             subscriptionId: String (Optional)
+     *             kind: String (Optional)
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     resourceId: String (Optional)
+     *     testId: String (Optional)
+     *     testRunId: String (Optional)
+     *     name: String (Optional)
+     *     value (Required): {
+     *         String (Required): {
+     *             resourceId: String (Required)
+     *             resourceName: String (Required)
+     *             resourceType: String (Required)
+     *             displayName: String (Optional)
+     *             resourceGroup: String (Optional)
+     *             subscriptionId: String (Optional)
+     *             kind: String (Optional)
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param name Unique name of the App Component, must be a valid URL character ^[a-z0-9_-]*$.
+     * @param body App Component model.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return app Components model on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> createOrUpdateAppComponents(String name, BinaryData body) {
+        return this.serviceClient
+                .createOrUpdateAppComponentsWithResponseAsync(name, body, null)
+                .flatMap(FluxUtil::toMono);
+    }
+
+    /**
      * Delete an App Component.
      *
      * @param name Unique name of the App Component, must be a valid URL character ^[a-z0-9_-]*$.
@@ -115,6 +178,21 @@ public final class LoadTestAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteAppComponentWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.deleteAppComponentWithResponseAsync(name, requestOptions);
+    }
+
+    /**
+     * Delete an App Component.
+     *
+     * @param name Unique name of the App Component, must be a valid URL character ^[a-z0-9_-]*$.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return Void on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAppComponent(String name) {
+        return this.serviceClient.deleteAppComponentWithResponseAsync(name, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -155,6 +233,43 @@ public final class LoadTestAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAppComponentByNameWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getAppComponentByNameWithResponseAsync(name, requestOptions);
+    }
+
+    /**
+     * Get App Component details by App Component name.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     resourceId: String (Optional)
+     *     testId: String (Optional)
+     *     testRunId: String (Optional)
+     *     name: String (Optional)
+     *     value (Required): {
+     *         String (Required): {
+     *             resourceId: String (Required)
+     *             resourceName: String (Required)
+     *             resourceType: String (Required)
+     *             displayName: String (Optional)
+     *             resourceGroup: String (Optional)
+     *             subscriptionId: String (Optional)
+     *             kind: String (Optional)
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param name Unique name of the App Component, must be a valid URL character ^[a-z0-9_-]*$.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return app Component details by App Component name on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> getAppComponentByName(String name) {
+        return this.serviceClient.getAppComponentByNameWithResponseAsync(name, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -205,6 +320,104 @@ public final class LoadTestAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAppComponentWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.getAppComponentWithResponseAsync(requestOptions);
+    }
+
+    /**
+     * Get App Components for a test by its name.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>testRunId</td><td>String</td><td>No</td><td>[Required, if testId is not provided] Test run Id.</td></tr>
+     *     <tr><td>testId</td><td>String</td><td>No</td><td>Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     resourceId: String (Optional)
+     *     testId: String (Optional)
+     *     testRunId: String (Optional)
+     *     name: String (Optional)
+     *     value (Required): {
+     *         String (Required): {
+     *             resourceId: String (Required)
+     *             resourceName: String (Required)
+     *             resourceType: String (Required)
+     *             displayName: String (Optional)
+     *             resourceGroup: String (Optional)
+     *             subscriptionId: String (Optional)
+     *             kind: String (Optional)
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param testId Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return app Components for a test by its name on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> getAppComponentForTest(String testId) {
+        RequestOptions requestOptions = new RequestOptions().addQueryParam("testId", testId);
+        return this.serviceClient.getAppComponentWithResponseAsync(requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Get App Components for a test run by its name.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>testRunId</td><td>String</td><td>No</td><td>[Required, if testId is not provided] Test run Id.</td></tr>
+     *     <tr><td>testId</td><td>String</td><td>No</td><td>Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     resourceId: String (Optional)
+     *     testId: String (Optional)
+     *     testRunId: String (Optional)
+     *     name: String (Optional)
+     *     value (Required): {
+     *         String (Required): {
+     *             resourceId: String (Required)
+     *             resourceName: String (Required)
+     *             resourceType: String (Required)
+     *             displayName: String (Optional)
+     *             resourceGroup: String (Optional)
+     *             subscriptionId: String (Optional)
+     *             kind: String (Optional)
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param testRunId Unique name for load test run, must be a valid URL character ^[a-z0-9_-]*$.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return app Components for a test run by its name on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> getAppComponentForTestRun(String testRunId) {
+        RequestOptions requestOptions = new RequestOptions().addQueryParam("testRunId", testRunId);
+        return this.serviceClient.getAppComponentWithResponseAsync(requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -277,6 +490,74 @@ public final class LoadTestAdministrationAsyncClient {
     }
 
     /**
+     * Configure server metrics for a test or test run.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     name: String (Optional)
+     *     testId: String (Optional)
+     *     testRunId: String (Optional)
+     *     metrics (Optional): {
+     *         String (Optional): {
+     *             id: String (Optional)
+     *             resourceId: String (Required)
+     *             metricnamespace: String (Required)
+     *             displayDescription: String (Optional)
+     *             name (Required): {
+     *                 value: String (Required)
+     *                 localizedValue: String (Required)
+     *             }
+     *             aggregation: String (Required)
+     *             unit: String (Optional)
+     *             resourceType: String (Required)
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     name: String (Optional)
+     *     testId: String (Optional)
+     *     testRunId: String (Optional)
+     *     metrics (Optional): {
+     *         String (Optional): {
+     *             id: String (Optional)
+     *             resourceId: String (Required)
+     *             metricnamespace: String (Required)
+     *             displayDescription: String (Optional)
+     *             name (Required): {
+     *                 value: String (Required)
+     *                 localizedValue: String (Required)
+     *             }
+     *             aggregation: String (Required)
+     *             unit: String (Optional)
+     *             resourceType: String (Required)
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param name Unique name for server metrics, must be a valid URL character ^[a-z0-9_-]*$.
+     * @param body Server metrics configuration model.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return server metrics config model on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> createOrUpdateServerMetricsConfig(String name, BinaryData body) {
+        return this.serviceClient
+                .createOrUpdateServerMetricsConfigWithResponseAsync(name, body, null)
+                .flatMap(FluxUtil::toMono);
+    }
+
+    /**
      * Get server metrics configuration by its name.
      *
      * <p><strong>Response Body Schema</strong>
@@ -320,6 +601,46 @@ public final class LoadTestAdministrationAsyncClient {
     }
 
     /**
+     * Get server metrics configuration by its name.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     name: String (Optional)
+     *     testId: String (Optional)
+     *     testRunId: String (Optional)
+     *     metrics (Optional): {
+     *         String (Optional): {
+     *             id: String (Optional)
+     *             resourceId: String (Required)
+     *             metricnamespace: String (Required)
+     *             displayDescription: String (Optional)
+     *             name (Required): {
+     *                 value: String (Required)
+     *                 localizedValue: String (Required)
+     *             }
+     *             aggregation: String (Required)
+     *             unit: String (Optional)
+     *             resourceType: String (Required)
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param name Unique name for server metrics, must be a valid URL character ^[a-z0-9_-]*$.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return server metrics configuration by its name on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> getServerMetricsByName(String name) {
+        return this.serviceClient.getServerMetricsByNameWithResponseAsync(name, null).flatMap(FluxUtil::toMono);
+    }
+
+    /**
      * Delete server metrics configuration by its name.
      *
      * @param name Unique name for server metrics, must be a valid URL character ^[a-z0-9_-]*$.
@@ -334,6 +655,21 @@ public final class LoadTestAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteServerMetricsWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.deleteServerMetricsWithResponseAsync(name, requestOptions);
+    }
+
+    /**
+     * Delete server metrics configuration by its name.
+     *
+     * @param name Unique name for server metrics, must be a valid URL character ^[a-z0-9_-]*$.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return Void on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteServerMetrics(String name) {
+        return this.serviceClient.deleteServerMetricsWithResponseAsync(name, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -390,6 +726,110 @@ public final class LoadTestAdministrationAsyncClient {
     }
 
     /**
+     * Get server metrics configuration for a test by its name.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>testRunId</td><td>String</td><td>No</td><td>[Required, if testId is not provided] Test run Id.</td></tr>
+     *     <tr><td>testId</td><td>String</td><td>No</td><td>Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     name: String (Optional)
+     *     testId: String (Optional)
+     *     testRunId: String (Optional)
+     *     metrics (Optional): {
+     *         String (Optional): {
+     *             id: String (Optional)
+     *             resourceId: String (Required)
+     *             metricnamespace: String (Required)
+     *             displayDescription: String (Optional)
+     *             name (Required): {
+     *                 value: String (Required)
+     *                 localizedValue: String (Required)
+     *             }
+     *             aggregation: String (Required)
+     *             unit: String (Optional)
+     *             resourceType: String (Required)
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param testId Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return server metrics configuration for a test by its name on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> getServerMetricsForTest(String testId) {
+        RequestOptions requestOptions = new RequestOptions().addQueryParam("testId", testId);
+        return this.serviceClient.getServerMetricsWithResponseAsync(requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Get server metrics configuration for a test run by its name.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>testRunId</td><td>String</td><td>No</td><td>[Required, if testId is not provided] Test run Id.</td></tr>
+     *     <tr><td>testId</td><td>String</td><td>No</td><td>Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     name: String (Optional)
+     *     testId: String (Optional)
+     *     testRunId: String (Optional)
+     *     metrics (Optional): {
+     *         String (Optional): {
+     *             id: String (Optional)
+     *             resourceId: String (Required)
+     *             metricnamespace: String (Required)
+     *             displayDescription: String (Optional)
+     *             name (Required): {
+     *                 value: String (Required)
+     *                 localizedValue: String (Required)
+     *             }
+     *             aggregation: String (Required)
+     *             unit: String (Optional)
+     *             resourceType: String (Required)
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param testRunId Unique name for load test run, must be a valid URL character ^[a-z0-9_-]*$.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return server metrics configuration for a test run by its name on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> getServerMetricsForTestRun(String testRunId) {
+        RequestOptions requestOptions = new RequestOptions().addQueryParam("testRunId", testRunId);
+        return this.serviceClient.getServerMetricsWithResponseAsync(requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
      * Get all default server metrics configuration for supported resource types.
      *
      * <p><strong>Response Body Schema</strong>
@@ -428,6 +868,42 @@ public final class LoadTestAdministrationAsyncClient {
     }
 
     /**
+     * Get all default server metrics configuration for supported resource types.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     defaultMetrics (Optional): {
+     *         String (Optional): [
+     *              (Optional){
+     *                 metricnamespace: String (Optional)
+     *                 aggregation: String (Optional)
+     *                 name (Optional): {
+     *                     value: String (Optional)
+     *                     localizedValue: String (Optional)
+     *                 }
+     *                 unit: String (Optional)
+     *                 displayDescription: String (Optional)
+     *             }
+     *         ]
+     *     }
+     * }
+     * }</pre>
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return all default server metrics configuration for supported resource types on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> getServerDefaultMetrics() {
+        return this.serviceClient.getServerDefaultMetricsWithResponseAsync(null).flatMap(FluxUtil::toMono);
+    }
+
+    /**
      * Get all supported resource types for App Components(Azure resource types).
      *
      * <p><strong>Response Body Schema</strong>
@@ -452,6 +928,31 @@ public final class LoadTestAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listSupportedResourceTypeWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.listSupportedResourceTypeWithResponseAsync(requestOptions);
+    }
+
+    /**
+     * Get all supported resource types for App Components(Azure resource types).
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value (Optional): [
+     *         String (Optional)
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return all supported resource types for App Components(Azure resource types) on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> listSupportedResourceType() {
+        return this.serviceClient.listSupportedResourceTypeWithResponseAsync(null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -596,6 +1097,144 @@ public final class LoadTestAdministrationAsyncClient {
     }
 
     /**
+     * Create a new test or Update an existing test.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     testId: String (Optional)
+     *     description: String (Optional)
+     *     displayName: String (Optional)
+     *     resourceId: String (Optional)
+     *     loadTestConfig (Optional): {
+     *         engineInstances: Integer (Optional)
+     *         splitAllCSVs: Boolean (Optional)
+     *     }
+     *     passFailCriteria (Optional): {
+     *         passFailMetrics (Optional): {
+     *             String (Optional): {
+     *                 clientmetric: String (Optional)
+     *                 aggregate: String (Optional)
+     *                 condition: String (Optional)
+     *                 requestName: String (Optional)
+     *                 value: Double (Optional)
+     *                 action: String (Optional)
+     *                 actualValue: Double (Optional)
+     *                 result: String (Optional)
+     *             }
+     *         }
+     *     }
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastModifiedDateTime: OffsetDateTime (Optional)
+     *     lastModifiedBy: String (Optional)
+     *     inputArtifacts (Optional): {
+     *         configUrl (Optional): {
+     *             url: String (Optional)
+     *             fileId: String (Optional)
+     *             filename: String (Optional)
+     *             fileType: String(0/1/2) (Optional)
+     *             expireTime: OffsetDateTime (Optional)
+     *             validationStatus: String (Optional)
+     *         }
+     *         testScriptUrl (Optional): (recursive schema, see testScriptUrl above)
+     *         userPropUrl (Optional): (recursive schema, see userPropUrl above)
+     *         inputArtifactsZipFileurl (Optional): (recursive schema, see inputArtifactsZipFileurl above)
+     *         additionalUrls (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *     }
+     *     secrets (Optional): {
+     *         String (Optional): {
+     *             value: String (Optional)
+     *             type: String (Optional)
+     *         }
+     *     }
+     *     environmentVariables (Optional): {
+     *         String: String (Optional)
+     *     }
+     *     subnetId: String (Optional)
+     *     keyvaultReferenceIdentityType: String (Optional)
+     *     keyvaultReferenceIdentityId: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     testId: String (Optional)
+     *     description: String (Optional)
+     *     displayName: String (Optional)
+     *     resourceId: String (Optional)
+     *     loadTestConfig (Optional): {
+     *         engineInstances: Integer (Optional)
+     *         splitAllCSVs: Boolean (Optional)
+     *     }
+     *     passFailCriteria (Optional): {
+     *         passFailMetrics (Optional): {
+     *             String (Optional): {
+     *                 clientmetric: String (Optional)
+     *                 aggregate: String (Optional)
+     *                 condition: String (Optional)
+     *                 requestName: String (Optional)
+     *                 value: Double (Optional)
+     *                 action: String (Optional)
+     *                 actualValue: Double (Optional)
+     *                 result: String (Optional)
+     *             }
+     *         }
+     *     }
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastModifiedDateTime: OffsetDateTime (Optional)
+     *     lastModifiedBy: String (Optional)
+     *     inputArtifacts (Optional): {
+     *         configUrl (Optional): {
+     *             url: String (Optional)
+     *             fileId: String (Optional)
+     *             filename: String (Optional)
+     *             fileType: String(0/1/2) (Optional)
+     *             expireTime: OffsetDateTime (Optional)
+     *             validationStatus: String (Optional)
+     *         }
+     *         testScriptUrl (Optional): (recursive schema, see testScriptUrl above)
+     *         userPropUrl (Optional): (recursive schema, see userPropUrl above)
+     *         inputArtifactsZipFileurl (Optional): (recursive schema, see inputArtifactsZipFileurl above)
+     *         additionalUrls (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *     }
+     *     secrets (Optional): {
+     *         String (Optional): {
+     *             value: String (Optional)
+     *             type: String (Optional)
+     *         }
+     *     }
+     *     environmentVariables (Optional): {
+     *         String: String (Optional)
+     *     }
+     *     subnetId: String (Optional)
+     *     keyvaultReferenceIdentityType: String (Optional)
+     *     keyvaultReferenceIdentityId: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testId Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$.
+     * @param body Load test model.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return load test model on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> createOrUpdateTest(String testId, BinaryData body) {
+        return this.serviceClient.createOrUpdateTestWithResponseAsync(testId, body, null).flatMap(FluxUtil::toMono);
+    }
+
+    /**
      * Delete a test by its name.
      *
      * @param testId Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$.
@@ -610,6 +1249,21 @@ public final class LoadTestAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteLoadTestWithResponse(String testId, RequestOptions requestOptions) {
         return this.serviceClient.deleteLoadTestWithResponseAsync(testId, requestOptions);
+    }
+
+    /**
+     * Delete a test by its name.
+     *
+     * @param testId Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return Void on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteLoadTest(String testId) {
+        return this.serviceClient.deleteLoadTestWithResponseAsync(testId, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -691,6 +1345,82 @@ public final class LoadTestAdministrationAsyncClient {
     }
 
     /**
+     * Get load test details by test name.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     testId: String (Optional)
+     *     description: String (Optional)
+     *     displayName: String (Optional)
+     *     resourceId: String (Optional)
+     *     loadTestConfig (Optional): {
+     *         engineInstances: Integer (Optional)
+     *         splitAllCSVs: Boolean (Optional)
+     *     }
+     *     passFailCriteria (Optional): {
+     *         passFailMetrics (Optional): {
+     *             String (Optional): {
+     *                 clientmetric: String (Optional)
+     *                 aggregate: String (Optional)
+     *                 condition: String (Optional)
+     *                 requestName: String (Optional)
+     *                 value: Double (Optional)
+     *                 action: String (Optional)
+     *                 actualValue: Double (Optional)
+     *                 result: String (Optional)
+     *             }
+     *         }
+     *     }
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastModifiedDateTime: OffsetDateTime (Optional)
+     *     lastModifiedBy: String (Optional)
+     *     inputArtifacts (Optional): {
+     *         configUrl (Optional): {
+     *             url: String (Optional)
+     *             fileId: String (Optional)
+     *             filename: String (Optional)
+     *             fileType: String(0/1/2) (Optional)
+     *             expireTime: OffsetDateTime (Optional)
+     *             validationStatus: String (Optional)
+     *         }
+     *         testScriptUrl (Optional): (recursive schema, see testScriptUrl above)
+     *         userPropUrl (Optional): (recursive schema, see userPropUrl above)
+     *         inputArtifactsZipFileurl (Optional): (recursive schema, see inputArtifactsZipFileurl above)
+     *         additionalUrls (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *     }
+     *     secrets (Optional): {
+     *         String (Optional): {
+     *             value: String (Optional)
+     *             type: String (Optional)
+     *         }
+     *     }
+     *     environmentVariables (Optional): {
+     *         String: String (Optional)
+     *     }
+     *     subnetId: String (Optional)
+     *     keyvaultReferenceIdentityType: String (Optional)
+     *     keyvaultReferenceIdentityId: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testId Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return load test details by test name on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> getLoadTest(String testId) {
+        return this.serviceClient.getLoadTestWithResponseAsync(testId, null).flatMap(FluxUtil::toMono);
+    }
+
+    /**
      * Upload input file for a given test name. File size can't be more than 50 MB. Existing file with same name for the
      * given test will be overwritten. File should be provided in the request body as multipart/form-data.
      *
@@ -738,6 +1468,53 @@ public final class LoadTestAdministrationAsyncClient {
     public Mono<Response<BinaryData>> uploadTestFileWithResponse(
             String testId, String fileId, BinaryData file, RequestOptions requestOptions) {
         return this.serviceClient.uploadTestFileWithResponseAsync(testId, fileId, file, requestOptions);
+    }
+
+    /**
+     * Upload input file for a given test name. File size can't be more than 50 MB. Existing file with same name for the
+     * given test will be overwritten. File should be provided in the request body as multipart/form-data.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>fileType</td><td>Integer</td><td>No</td><td>Integer representation of the file type (0 = JMX_FILE, 1 = USER_PROPERTIES, 2 = ADDITIONAL_ARTIFACTS).</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * Flux<ByteBuffer>
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     url: String (Optional)
+     *     fileId: String (Optional)
+     *     filename: String (Optional)
+     *     fileType: String(0/1/2) (Optional)
+     *     expireTime: OffsetDateTime (Optional)
+     *     validationStatus: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testId Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$.
+     * @param fileId Unique identifier for test file, must be a valid URL character ^[a-z0-9_-]*$.
+     * @param file The file to be uploaded.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return fileUrl Model on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> uploadTestFile(String testId, String fileId, BinaryData file) {
+        return this.serviceClient.uploadTestFileWithResponseAsync(testId, fileId, file, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -831,6 +1608,35 @@ public final class LoadTestAdministrationAsyncClient {
     }
 
     /**
+     * Get test file by the file name.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     url: String (Optional)
+     *     fileId: String (Optional)
+     *     filename: String (Optional)
+     *     fileType: String(0/1/2) (Optional)
+     *     expireTime: OffsetDateTime (Optional)
+     *     validationStatus: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testId Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$.
+     * @param fileId Unique identifier for test file, must be a valid URL character ^[a-z0-9_-]*$.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return test file by the file name on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> getTestFile(String testId, String fileId) {
+        return this.serviceClient.getTestFileWithResponseAsync(testId, fileId, null).flatMap(FluxUtil::toMono);
+    }
+
+    /**
      * Delete file by the file name for a test.
      *
      * @param testId Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$.
@@ -847,6 +1653,22 @@ public final class LoadTestAdministrationAsyncClient {
     public Mono<Response<Void>> deleteTestFileWithResponse(
             String testId, String fileId, RequestOptions requestOptions) {
         return this.serviceClient.deleteTestFileWithResponseAsync(testId, fileId, requestOptions);
+    }
+
+    /**
+     * Delete file by the file name for a test.
+     *
+     * @param testId Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$.
+     * @param fileId Unique identifier for test file, must be a valid URL character ^[a-z0-9_-]*$.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return Void on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteTestFile(String testId, String fileId) {
+        return this.serviceClient.deleteTestFileWithResponseAsync(testId, fileId, null).flatMap(FluxUtil::toMono);
     }
 
     /**

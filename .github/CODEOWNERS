@@ -90,7 +90,7 @@
 /sdk/cosmos/azure-spring-data-cosmos-test/          @kushagraThapar @mbhaskar @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @xinlian12 @moarychan
 
 # PRLabel: %Load Testing
-/sdk/loadtestservice                                      @Harshan01 @abranj1219
+/sdk/loadtestservice/                               @Harshan01 @abranj1219
 
 # ServiceLabel: %Device Update for IoT Hub %Service Attention
 /sdk/deviceupdate/                                  @dpokluda

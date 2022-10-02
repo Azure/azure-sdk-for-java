@@ -48,6 +48,21 @@ public final class TestRunClient {
     }
 
     /**
+     * Delete a test run by its name.
+     *
+     * @param testRunId Unique name of the load test run, must be a valid URL character ^[a-z0-9_-]*$.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return Void.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Void deleteTestRun(String testRunId) {
+        return this.client.deleteTestRun(testRunId).block();
+    }
+
+    /**
      * Get test run details by name.
      *
      * <p><strong>Response Body Schema</strong>
@@ -157,6 +172,113 @@ public final class TestRunClient {
     }
 
     /**
+     * Get test run details by name.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     testRunId: String (Optional)
+     *     displayName: String (Optional)
+     *     testId: String (Optional)
+     *     resourceId: String (Optional)
+     *     description: String (Optional)
+     *     status: String (Optional)
+     *     startDateTime: OffsetDateTime (Optional)
+     *     endDateTime: OffsetDateTime (Optional)
+     *     loadTestConfig (Optional): {
+     *         engineInstances: Integer (Optional)
+     *         splitAllCSVs: Boolean (Optional)
+     *     }
+     *     testResult: String (Optional)
+     *     passFailCriteria (Optional): {
+     *         passFailMetrics (Optional): {
+     *             String (Optional): {
+     *                 clientmetric: String (Optional)
+     *                 aggregate: String (Optional)
+     *                 condition: String (Optional)
+     *                 requestName: String (Optional)
+     *                 value: Double (Optional)
+     *                 action: String (Optional)
+     *                 actualValue: Double (Optional)
+     *                 result: String (Optional)
+     *             }
+     *         }
+     *     }
+     *     testArtifacts (Optional): {
+     *         inputArtifacts (Required): {
+     *             configUrl (Optional): {
+     *                 url: String (Optional)
+     *                 fileId: String (Optional)
+     *                 filename: String (Optional)
+     *                 fileType: String(0/1/2) (Optional)
+     *                 expireTime: OffsetDateTime (Optional)
+     *                 validationStatus: String (Optional)
+     *             }
+     *             testScriptUrl (Optional): (recursive schema, see testScriptUrl above)
+     *             userPropUrl (Optional): (recursive schema, see userPropUrl above)
+     *             inputArtifactsZipFileurl (Optional): (recursive schema, see inputArtifactsZipFileurl above)
+     *             additionalUrls (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *         outputArtifacts (Optional): {
+     *             resultUrl (Optional): (recursive schema, see resultUrl above)
+     *             logsUrl (Optional): (recursive schema, see logsUrl above)
+     *         }
+     *     }
+     *     executedDateTime: OffsetDateTime (Optional)
+     *     vusers: Integer (Optional)
+     *     testRunStatistics (Optional): {
+     *         String (Optional): {
+     *             transaction: String (Optional)
+     *             sampleCount: Double (Optional)
+     *             errorCount: Double (Optional)
+     *             errorPct: Double (Optional)
+     *             meanResTime: Double (Optional)
+     *             medianResTime: Double (Optional)
+     *             maxResTime: Double (Optional)
+     *             minResTime: Double (Optional)
+     *             pct1ResTime: Double (Optional)
+     *             pct2ResTime: Double (Optional)
+     *             pct3ResTime: Double (Optional)
+     *             throughput: Double (Optional)
+     *             receivedKBytesPerSec: Double (Optional)
+     *             sentKBytesPerSec: Double (Optional)
+     *         }
+     *     }
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastModifiedDateTime: OffsetDateTime (Optional)
+     *     lastModifiedBy: String (Optional)
+     *     portalUrl: String (Optional)
+     *     secrets (Optional): {
+     *         String (Optional): {
+     *             value: String (Optional)
+     *             type: String (Optional)
+     *         }
+     *     }
+     *     environmentVariables (Optional): {
+     *         String: String (Optional)
+     *     }
+     *     duration: Long (Optional)
+     *     subnetId: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testRunId Unique name of load test run, must be a valid URL character ^[a-z0-9_-]*$.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return test run details by name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData getTestRun(String testRunId) {
+        return this.client.getTestRun(testRunId).block();
+    }
+
+    /**
      * Get test run file by file name.
      *
      * <p><strong>Response Body Schema</strong>
@@ -186,6 +308,35 @@ public final class TestRunClient {
     public Response<BinaryData> getTestRunFileWithResponse(
             String testRunId, String fileId, RequestOptions requestOptions) {
         return this.client.getTestRunFileWithResponse(testRunId, fileId, requestOptions).block();
+    }
+
+    /**
+     * Get test run file by file name.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     url: String (Optional)
+     *     fileId: String (Optional)
+     *     filename: String (Optional)
+     *     fileType: String(0/1/2) (Optional)
+     *     expireTime: OffsetDateTime (Optional)
+     *     validationStatus: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testRunId Unique name of load test run, must be a valid URL character ^[a-z0-9_-]*$.
+     * @param fileId Unique identifier for test run file, must be a valid URL character ^[a-z0-9_-]*$.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return test run file by file name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData getTestRunFile(String testRunId, String fileId) {
+        return this.client.getTestRunFile(testRunId, fileId).block();
     }
 
     /**
@@ -298,6 +449,113 @@ public final class TestRunClient {
     }
 
     /**
+     * Stop test run by name.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     testRunId: String (Optional)
+     *     displayName: String (Optional)
+     *     testId: String (Optional)
+     *     resourceId: String (Optional)
+     *     description: String (Optional)
+     *     status: String (Optional)
+     *     startDateTime: OffsetDateTime (Optional)
+     *     endDateTime: OffsetDateTime (Optional)
+     *     loadTestConfig (Optional): {
+     *         engineInstances: Integer (Optional)
+     *         splitAllCSVs: Boolean (Optional)
+     *     }
+     *     testResult: String (Optional)
+     *     passFailCriteria (Optional): {
+     *         passFailMetrics (Optional): {
+     *             String (Optional): {
+     *                 clientmetric: String (Optional)
+     *                 aggregate: String (Optional)
+     *                 condition: String (Optional)
+     *                 requestName: String (Optional)
+     *                 value: Double (Optional)
+     *                 action: String (Optional)
+     *                 actualValue: Double (Optional)
+     *                 result: String (Optional)
+     *             }
+     *         }
+     *     }
+     *     testArtifacts (Optional): {
+     *         inputArtifacts (Required): {
+     *             configUrl (Optional): {
+     *                 url: String (Optional)
+     *                 fileId: String (Optional)
+     *                 filename: String (Optional)
+     *                 fileType: String(0/1/2) (Optional)
+     *                 expireTime: OffsetDateTime (Optional)
+     *                 validationStatus: String (Optional)
+     *             }
+     *             testScriptUrl (Optional): (recursive schema, see testScriptUrl above)
+     *             userPropUrl (Optional): (recursive schema, see userPropUrl above)
+     *             inputArtifactsZipFileurl (Optional): (recursive schema, see inputArtifactsZipFileurl above)
+     *             additionalUrls (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *         outputArtifacts (Optional): {
+     *             resultUrl (Optional): (recursive schema, see resultUrl above)
+     *             logsUrl (Optional): (recursive schema, see logsUrl above)
+     *         }
+     *     }
+     *     executedDateTime: OffsetDateTime (Optional)
+     *     vusers: Integer (Optional)
+     *     testRunStatistics (Optional): {
+     *         String (Optional): {
+     *             transaction: String (Optional)
+     *             sampleCount: Double (Optional)
+     *             errorCount: Double (Optional)
+     *             errorPct: Double (Optional)
+     *             meanResTime: Double (Optional)
+     *             medianResTime: Double (Optional)
+     *             maxResTime: Double (Optional)
+     *             minResTime: Double (Optional)
+     *             pct1ResTime: Double (Optional)
+     *             pct2ResTime: Double (Optional)
+     *             pct3ResTime: Double (Optional)
+     *             throughput: Double (Optional)
+     *             receivedKBytesPerSec: Double (Optional)
+     *             sentKBytesPerSec: Double (Optional)
+     *         }
+     *     }
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastModifiedDateTime: OffsetDateTime (Optional)
+     *     lastModifiedBy: String (Optional)
+     *     portalUrl: String (Optional)
+     *     secrets (Optional): {
+     *         String (Optional): {
+     *             value: String (Optional)
+     *             type: String (Optional)
+     *         }
+     *     }
+     *     environmentVariables (Optional): {
+     *         String: String (Optional)
+     *     }
+     *     duration: Long (Optional)
+     *     subnetId: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testRunId Unique name of the load test run, must be a valid URL character ^[a-z0-9_-]*$.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return load test run model.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData stopTestRun(String testRunId) {
+        return this.client.stopTestRun(testRunId).block();
+    }
+
+    /**
      * Get all client metrics for a load test run.
      *
      * <p><strong>Request Body Schema</strong>
@@ -369,6 +627,74 @@ public final class TestRunClient {
     }
 
     /**
+     * Get all client metrics for a load test run.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     requestSamplers (Optional): [
+     *         String (Optional)
+     *     ]
+     *     errors (Optional): [
+     *         String (Optional)
+     *     ]
+     *     percentiles (Optional): [
+     *         String (Optional)
+     *     ]
+     *     groupByInterval: String (Optional)
+     *     startTime: OffsetDateTime (Required)
+     *     endTime: OffsetDateTime (Required)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     testRunId: String (Optional)
+     *     timeSeries (Optional): {
+     *         activeUsers (Optional): {
+     *             String (Optional): [
+     *                  (Optional){
+     *                     timestamp: OffsetDateTime (Optional)
+     *                     value: Double (Optional)
+     *                 }
+     *             ]
+     *         }
+     *         responseTime (Optional): {
+     *             String (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *         throughput (Optional): {
+     *             String (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *         errors (Optional): {
+     *             String (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param testRunId Unique name of the load test run, must be a valid URL character ^[a-z0-9_-]*$.
+     * @param body Client metrics request model.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return all client metrics for a load test run.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData getTestRunClientMetrics(String testRunId, BinaryData body) {
+        return this.client.getTestRunClientMetrics(testRunId, body).block();
+    }
+
+    /**
      * Get all filters that are supported for client metrics for a given load test run.
      *
      * <p><strong>Response Body Schema</strong>
@@ -404,6 +730,41 @@ public final class TestRunClient {
     public Response<BinaryData> getTestRunClientMetricsFiltersWithResponse(
             String testRunId, RequestOptions requestOptions) {
         return this.client.getTestRunClientMetricsFiltersWithResponse(testRunId, requestOptions).block();
+    }
+
+    /**
+     * Get all filters that are supported for client metrics for a given load test run.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     testRunId: String (Optional)
+     *     filters (Optional): {
+     *         requestSamplerValues (Optional): [
+     *             String (Optional)
+     *         ]
+     *         errorFiltersValues (Optional): [
+     *             String (Optional)
+     *         ]
+     *     }
+     *     timeRange (Optional): {
+     *         startTime: OffsetDateTime (Optional)
+     *         endTime: OffsetDateTime (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param testRunId Unique name for load test run, must be a valid URL character ^[a-z0-9_-]*$.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return all filters that are supported for client metrics for a given load test run.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData getTestRunClientMetricsFiltersWithResponse(String testRunId) {
+        return this.client.getTestRunClientMetricsFilters(testRunId).block();
     }
 
     /**
@@ -617,6 +978,216 @@ public final class TestRunClient {
     public Response<BinaryData> createAndUpdateTestRunWithResponse(
             String testRunId, BinaryData body, RequestOptions requestOptions) {
         return this.client.createAndUpdateTestRunWithResponse(testRunId, body, requestOptions).block();
+    }
+
+    /**
+     * Create and start a new test run with the given name.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>oldTestRunId</td><td>String</td><td>No</td><td>Existing test run Id that should be rerun.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     testRunId: String (Optional)
+     *     displayName: String (Optional)
+     *     testId: String (Optional)
+     *     resourceId: String (Optional)
+     *     description: String (Optional)
+     *     status: String (Optional)
+     *     startDateTime: OffsetDateTime (Optional)
+     *     endDateTime: OffsetDateTime (Optional)
+     *     loadTestConfig (Optional): {
+     *         engineInstances: Integer (Optional)
+     *         splitAllCSVs: Boolean (Optional)
+     *     }
+     *     testResult: String (Optional)
+     *     passFailCriteria (Optional): {
+     *         passFailMetrics (Optional): {
+     *             String (Optional): {
+     *                 clientmetric: String (Optional)
+     *                 aggregate: String (Optional)
+     *                 condition: String (Optional)
+     *                 requestName: String (Optional)
+     *                 value: Double (Optional)
+     *                 action: String (Optional)
+     *                 actualValue: Double (Optional)
+     *                 result: String (Optional)
+     *             }
+     *         }
+     *     }
+     *     testArtifacts (Optional): {
+     *         inputArtifacts (Required): {
+     *             configUrl (Optional): {
+     *                 url: String (Optional)
+     *                 fileId: String (Optional)
+     *                 filename: String (Optional)
+     *                 fileType: String(0/1/2) (Optional)
+     *                 expireTime: OffsetDateTime (Optional)
+     *                 validationStatus: String (Optional)
+     *             }
+     *             testScriptUrl (Optional): (recursive schema, see testScriptUrl above)
+     *             userPropUrl (Optional): (recursive schema, see userPropUrl above)
+     *             inputArtifactsZipFileurl (Optional): (recursive schema, see inputArtifactsZipFileurl above)
+     *             additionalUrls (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *         outputArtifacts (Optional): {
+     *             resultUrl (Optional): (recursive schema, see resultUrl above)
+     *             logsUrl (Optional): (recursive schema, see logsUrl above)
+     *         }
+     *     }
+     *     executedDateTime: OffsetDateTime (Optional)
+     *     vusers: Integer (Optional)
+     *     testRunStatistics (Optional): {
+     *         String (Optional): {
+     *             transaction: String (Optional)
+     *             sampleCount: Double (Optional)
+     *             errorCount: Double (Optional)
+     *             errorPct: Double (Optional)
+     *             meanResTime: Double (Optional)
+     *             medianResTime: Double (Optional)
+     *             maxResTime: Double (Optional)
+     *             minResTime: Double (Optional)
+     *             pct1ResTime: Double (Optional)
+     *             pct2ResTime: Double (Optional)
+     *             pct3ResTime: Double (Optional)
+     *             throughput: Double (Optional)
+     *             receivedKBytesPerSec: Double (Optional)
+     *             sentKBytesPerSec: Double (Optional)
+     *         }
+     *     }
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastModifiedDateTime: OffsetDateTime (Optional)
+     *     lastModifiedBy: String (Optional)
+     *     portalUrl: String (Optional)
+     *     secrets (Optional): {
+     *         String (Optional): {
+     *             value: String (Optional)
+     *             type: String (Optional)
+     *         }
+     *     }
+     *     environmentVariables (Optional): {
+     *         String: String (Optional)
+     *     }
+     *     duration: Long (Optional)
+     *     subnetId: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     testRunId: String (Optional)
+     *     displayName: String (Optional)
+     *     testId: String (Optional)
+     *     resourceId: String (Optional)
+     *     description: String (Optional)
+     *     status: String (Optional)
+     *     startDateTime: OffsetDateTime (Optional)
+     *     endDateTime: OffsetDateTime (Optional)
+     *     loadTestConfig (Optional): {
+     *         engineInstances: Integer (Optional)
+     *         splitAllCSVs: Boolean (Optional)
+     *     }
+     *     testResult: String (Optional)
+     *     passFailCriteria (Optional): {
+     *         passFailMetrics (Optional): {
+     *             String (Optional): {
+     *                 clientmetric: String (Optional)
+     *                 aggregate: String (Optional)
+     *                 condition: String (Optional)
+     *                 requestName: String (Optional)
+     *                 value: Double (Optional)
+     *                 action: String (Optional)
+     *                 actualValue: Double (Optional)
+     *                 result: String (Optional)
+     *             }
+     *         }
+     *     }
+     *     testArtifacts (Optional): {
+     *         inputArtifacts (Required): {
+     *             configUrl (Optional): {
+     *                 url: String (Optional)
+     *                 fileId: String (Optional)
+     *                 filename: String (Optional)
+     *                 fileType: String(0/1/2) (Optional)
+     *                 expireTime: OffsetDateTime (Optional)
+     *                 validationStatus: String (Optional)
+     *             }
+     *             testScriptUrl (Optional): (recursive schema, see testScriptUrl above)
+     *             userPropUrl (Optional): (recursive schema, see userPropUrl above)
+     *             inputArtifactsZipFileurl (Optional): (recursive schema, see inputArtifactsZipFileurl above)
+     *             additionalUrls (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *         outputArtifacts (Optional): {
+     *             resultUrl (Optional): (recursive schema, see resultUrl above)
+     *             logsUrl (Optional): (recursive schema, see logsUrl above)
+     *         }
+     *     }
+     *     executedDateTime: OffsetDateTime (Optional)
+     *     vusers: Integer (Optional)
+     *     testRunStatistics (Optional): {
+     *         String (Optional): {
+     *             transaction: String (Optional)
+     *             sampleCount: Double (Optional)
+     *             errorCount: Double (Optional)
+     *             errorPct: Double (Optional)
+     *             meanResTime: Double (Optional)
+     *             medianResTime: Double (Optional)
+     *             maxResTime: Double (Optional)
+     *             minResTime: Double (Optional)
+     *             pct1ResTime: Double (Optional)
+     *             pct2ResTime: Double (Optional)
+     *             pct3ResTime: Double (Optional)
+     *             throughput: Double (Optional)
+     *             receivedKBytesPerSec: Double (Optional)
+     *             sentKBytesPerSec: Double (Optional)
+     *         }
+     *     }
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastModifiedDateTime: OffsetDateTime (Optional)
+     *     lastModifiedBy: String (Optional)
+     *     portalUrl: String (Optional)
+     *     secrets (Optional): {
+     *         String (Optional): {
+     *             value: String (Optional)
+     *             type: String (Optional)
+     *         }
+     *     }
+     *     environmentVariables (Optional): {
+     *         String: String (Optional)
+     *     }
+     *     duration: Long (Optional)
+     *     subnetId: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testRunId Unique name of the load test run, must be a valid URL character ^[a-z0-9_-]*$.
+     * @param body Load test run model.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return load test run model.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData createAndUpdateTestRun(String testRunId, BinaryData body) {
+        return this.client.createAndUpdateTestRun(testRunId, body).block();
     }
 
     /**
