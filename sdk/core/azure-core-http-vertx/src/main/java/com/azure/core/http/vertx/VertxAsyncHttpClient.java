@@ -8,6 +8,7 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.vertx.implementation.BufferedVertxHttpResponse;
+import com.azure.core.http.vertx.implementation.FluxByteBufferWriteSubscriber;
 import com.azure.core.http.vertx.implementation.VertxHttpAsyncResponse;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
@@ -20,7 +21,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.ProgressReporter;
-import io.netty.buffer.Unpooled;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
@@ -133,11 +133,7 @@ class VertxAsyncHttpClient implements HttpClient {
 
                     bodyContent.toFluxByteBuffer()
                         .subscribeOn(scheduler)
-                        .map(Unpooled::wrappedBuffer)
-                        .map(Buffer::buffer)
-                        .subscribe(buffer ->
-                                writeWithProgress(vertxHttpRequest.write(buffer), progressReporter, buffer.length()),
-                            sink::error, vertxHttpRequest::end);
+                        .subscribe(new FluxByteBufferWriteSubscriber(sink, vertxHttpRequest, progressReporter));
                 }
             }
         }));

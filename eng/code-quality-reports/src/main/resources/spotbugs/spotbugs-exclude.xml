@@ -415,6 +415,7 @@
       <Class name="com.azure.core.util.FluxUtil$1"/>
       <Class name="com.azure.core.implementation.FileWriteSubscriber"/>
       <Class name="com.azure.core.implementation.OutputStreamWriteSubscriber"/>
+      <Class name="com.azure.core.http.vertx.implementation.FluxByteBufferWriteSubscriber"/>
     </Or>
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
