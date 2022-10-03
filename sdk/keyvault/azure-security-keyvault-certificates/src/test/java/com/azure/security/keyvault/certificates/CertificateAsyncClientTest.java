@@ -82,10 +82,12 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
         createCertificateRunner((certificatePolicy) -> {
             String certName = testResourceNamer.randomName("testCert", 25);
-            StepVerifier.create(
-                    certificateAsyncClient.beginCreateCertificate(certName, certificatePolicy)
-                        .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                        .last().flatMap(AsyncPollResponse::getFinalResult))
+            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
+                certificateAsyncClient.beginCreateCertificate(certName, certificatePolicy);
+
+            StepVerifier.create(certPoller
+                    .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+                    .last().flatMap(AsyncPollResponse::getFinalResult))
                 .assertNext(expected -> {
                     assertEquals(certName, expected.getName());
                     assertNotNull(expected.getProperties().getCreatedOn());
@@ -857,9 +859,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
             .map(certificateProperties -> {
                 createdVersions.getAndIncrement();
                 return Mono.just("complete");
-            }).last()).assertNext(ignored -> {
-            assertEquals(versionsToCreate, createdVersions.get());
-        }).verifyComplete();
+            }).last()).assertNext(ignored -> assertEquals(versionsToCreate, createdVersions.get())).verifyComplete();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
