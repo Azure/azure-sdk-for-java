@@ -11,7 +11,10 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.test.InterceptorManager;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusException;
@@ -24,9 +27,21 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.lang.reflect.Type;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -45,18 +60,82 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
             "https://incomingcalldispatcher.azurewebsites.net");
     protected static final String DISPATCHER_CALLBACK = DISPATCHER_ENDPOINT + "/api/servicebuscallback/events";
 
+    private static final String RECORDED_EVENTS_FOLDER = "session-events";
+
+    private ConcurrentHashMap<String, String> serviceBusReceivedMessagesStore;
+
     @Override
     protected void beforeTest() {
         super.beforeTest();
         processorStore = new ConcurrentHashMap<>();
         incomingCallContextStore = new ConcurrentHashMap<>();
         eventStore = new ConcurrentHashMap<>();
+        serviceBusReceivedMessagesStore = new ConcurrentHashMap<>();
     }
 
     @Override
     protected void afterTest() {
         super.afterTest();
         processorStore.forEach((key, value) -> value.close());
+        Properties properties = new Properties();
+
+        for (Map.Entry<String,String> entry : serviceBusReceivedMessagesStore.entrySet()) {
+            properties.put(entry.getKey(), entry.getValue());
+        }
+
+        try {
+            File file = createRecordFile(testContextManager.getTestName());
+            properties.store(new FileOutputStream(file), null);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private File createRecordFile(String testName) throws IOException {
+        File recordFolder = getRecordFolder();
+        if (!recordFolder.exists()) {
+            if (recordFolder.mkdir()) {
+                System.out.printf("Created directory: %s\n", recordFolder.getPath());
+            }
+        }
+
+        File recordFile = new File(recordFolder, testName + ".json");
+        if (recordFile.createNewFile()) {
+            System.out.printf("Created record file: %s\n", recordFile.getPath());
+        }
+
+        System.out.println("==> Playback file path: " + recordFile);
+        return recordFile;
+    }
+
+    private File getRecordFolder() {
+        URL folderUrl = CallAutomationAutomatedLiveTestBase.class.getClassLoader().getResource(RECORDED_EVENTS_FOLDER);
+        if (folderUrl != null) {
+            // Use toURI as getResource will return a URL encoded file path that can only be cleaned up using the
+            // URI-based constructor of File.
+            return new File(toURI(folderUrl));
+        }
+
+        // session-record folder doesn't exist, create it.
+        folderUrl = CallAutomationAutomatedLiveTestBase.class.getClassLoader().getResource("");
+
+        // Use toURI as getResource will return a URL encoded file path that can only be cleaned up using the
+        // URI-based constructor of File.
+        Path recordFolder = new File(toURI(folderUrl)).toPath().resolve(RECORDED_EVENTS_FOLDER);
+        try {
+            Files.createDirectory(recordFolder);
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
+        return recordFolder.toFile();
+    }
+
+    private static URI toURI(URL url) {
+        try {
+            return url.toURI();
+        } catch (URISyntaxException ex) {
+            throw new IllegalStateException(ex);
+        }
     }
 
     protected static ServiceBusClientBuilder createServiceBusClientBuilderWithConnectionString() {
@@ -94,7 +173,12 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
     protected void messageHandler(ServiceBusReceivedMessageContext context) {
         // receive message from dispatcher
         ServiceBusReceivedMessage message = context.getMessage();
+
         String body = message.getBody().toString();
+
+        if (getTestMode() == TestMode.RECORD) {
+            serviceBusReceivedMessagesStore.put(message.getMessageId(), body);
+        }
 
         // parse the message
         assert !body.isEmpty();
