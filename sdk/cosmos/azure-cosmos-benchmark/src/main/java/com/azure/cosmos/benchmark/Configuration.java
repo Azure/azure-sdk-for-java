@@ -15,6 +15,7 @@ import io.micrometer.azuremonitor.AzureMonitorConfig;
 import io.micrometer.azuremonitor.AzureMonitorMeterRegistry;
 import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.config.NamingConvention;
 import io.micrometer.core.lang.Nullable;
 import io.micrometer.graphite.GraphiteConfig;
@@ -574,6 +575,7 @@ public class Configuration {
         if (this.azureMonitorMeterRegistry == null) {
 
             Duration step = Duration.ofSeconds(Integer.getInteger("azure.cosmos.monitoring.azureMonitor.step", this.printingInterval));
+            String testCategoryTag = System.getProperty("azure.cosmos.monitoring.azureMonitor.testCategory");
             boolean enabled = !Boolean.getBoolean("azure.cosmos.monitoring.azureMonitor.disabled");
 
             final AzureMonitorConfig config = new AzureMonitorConfig() {
@@ -602,6 +604,11 @@ public class Configuration {
             };
 
             this.azureMonitorMeterRegistry = new AzureMonitorMeterRegistry(config, Clock.SYSTEM);
+            if (!Strings.isNullOrEmpty(testCategoryTag)) {
+                List<Tag> globalTags = new ArrayList<>();
+                globalTags.add(Tag.of("TestCategory", testCategoryTag));
+                this.azureMonitorMeterRegistry.config().commonTags(globalTags);
+            }
         }
 
         return this.azureMonitorMeterRegistry;

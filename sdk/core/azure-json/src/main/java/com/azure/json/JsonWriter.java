@@ -29,6 +29,8 @@ public abstract class JsonWriter implements Closeable {
      * <p>
      * If the {@link #getWriteContext() writing context} isn't {@link JsonWriteContext#COMPLETED} when this is called an
      * {@link IllegalStateException} will be thrown.
+     * <p>
+     * During closing the implementation of {@link JsonWriter} must flush any un-flushed content.
      *
      * @throws IllegalStateException If the {@link JsonWriter} is closed before the
      * {@link #getWriteContext() writing context} is {@link JsonWriteContext#COMPLETED}.

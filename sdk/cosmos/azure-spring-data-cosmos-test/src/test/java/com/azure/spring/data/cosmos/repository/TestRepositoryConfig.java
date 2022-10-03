@@ -44,6 +44,9 @@ public class TestRepositoryConfig extends AbstractCosmosConfiguration {
     @Value("${cosmos.maxBufferedItemCount}")
     private int maxBufferedItemCount;
 
+    @Value("${cosmos.responseContinuationTokenLimitInKb}")
+    private int responseContinuationTokenLimitInKb;
+
     @Bean
     public ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils() {
         return new ResponseDiagnosticsTestUtils();
@@ -64,6 +67,7 @@ public class TestRepositoryConfig extends AbstractCosmosConfiguration {
                            .enableQueryMetrics(queryMetricsEnabled)
                            .maxDegreeOfParallelism(maxDegreeOfParallelism)
                            .maxBufferedItemCount(maxBufferedItemCount)
+                           .responseContinuationTokenLimitInKb(responseContinuationTokenLimitInKb)
                            .responseDiagnosticsProcessor(responseDiagnosticsTestUtils().getResponseDiagnosticsProcessor())
                            .build();
     }

@@ -9,7 +9,7 @@ import com.azure.communication.callautomation.models.CallRejectReason;
 import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
-import com.azure.communication.callautomation.models.MediaStreamingConfiguration;
+import com.azure.communication.callautomation.models.MediaStreamingOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -81,7 +81,7 @@ public final class CallAutomationClient {
      *
      * @param incomingCallContext The incoming call context.
      * @param callbackUrl The call back uri.
-     * @param mediaStreamingConfiguration The MediaStreamingConfiguration. Optional
+     * @param mediaStreamingOptions The MediaStreamingConfiguration. Optional
      * @param context The context to associate with this operation.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -89,9 +89,9 @@ public final class CallAutomationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AnswerCallResult> answerCallWithResponse(String incomingCallContext, String callbackUrl,
-                                                             MediaStreamingConfiguration mediaStreamingConfiguration,
+                                                             MediaStreamingOptions mediaStreamingOptions,
                                                              Context context) {
-        return callAutomationAsyncClient.answerCallWithResponseInternal(incomingCallContext, callbackUrl, mediaStreamingConfiguration, context).block();
+        return callAutomationAsyncClient.answerCallWithResponseInternal(incomingCallContext, callbackUrl, mediaStreamingOptions, context).block();
     }
 
     /**
