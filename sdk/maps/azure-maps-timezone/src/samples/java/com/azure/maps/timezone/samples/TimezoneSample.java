@@ -19,12 +19,10 @@ public class TimezoneSample {
         AzureKeyCredential keyCredential = new AzureKeyCredential(System.getenv("SUBSCRIPTION_KEY"));
 
         // Creates a builder
-        TimezoneClientBuilder builder = new TimezoneClientBuilder();
-        builder.credential(keyCredential);
-        builder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
-
-        // Builds the client
-        TimezoneClient client = builder.buildClient();
+        TimezoneClient client = new TimezoneClientBuilder() 
+            .credential(keyCredential)
+            .timezoneClientId(System.getenv("MAPS_CLIENT_ID"))
+            .buildClient();
         // END: com.azure.maps.timezone.sync.builder.key.instantiation
 
         return client;
@@ -55,15 +53,14 @@ public class TimezoneSample {
         AzureKeyCredential keyCredential = new AzureKeyCredential(System.getenv("SUBSCRIPTION_KEY"));
 
         // Creates a builder
-        TimezoneClientBuilder builder = new TimezoneClientBuilder();
-        builder.credential(keyCredential);
-        builder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+        TimezoneAsyncClient asyncClient = new TimezoneClientBuilder()
+            .credential(keyCredential)
+            .timezoneClientId(System.getenv("MAPS_CLIENT_ID"))
+            .buildAsyncClient();
 
-        // Builds the client
-        TimezoneAsyncClient client = builder.buildAsyncClient();
         // END: com.azure.maps.timezone.async.builder.key.instantiation
 
-        return client;
+        return asyncClient;
     }
 
     public TimezoneAsyncClient createMapsSearchAsyncClientUsingAzureADCredential() {
@@ -73,15 +70,13 @@ public class TimezoneSample {
         DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         // Creates a builder
-        TimezoneClientBuilder builder = new TimezoneClientBuilder();
-        builder.credential(tokenCredential);
-        builder.timezoneClientId(System.getenv("MAPS_CLIENT_ID"));
-        builder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+        TimezoneAsyncClient asyncClient = new TimezoneClientBuilder()
+            .credential(tokenCredential)
+            .timezoneClientId(System.getenv("MAPS_CLIENT_ID"))
+            .buildAsyncClient();
 
-        // Builds a client
-        TimezoneAsyncClient client = builder.buildAsyncClient();
         // END: com.azure.maps.timezone.async.builder.ad.instantiation
 
-        return client;
+        return asyncClient;
     }
 }

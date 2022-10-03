@@ -55,13 +55,10 @@ With above configuration, `azure` client can be authenticated by following code:
 DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
 // Creates a builder
-TimezoneClientBuilder builder = new TimezoneClientBuilder();
-builder.credential(tokenCredential);
-builder.timezoneClientId(System.getenv("MAPS_CLIENT_ID"));
-builder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
-
-// Builds a client
-TimezoneClient client = builder.buildClient();
+TimezoneClient client = new TimezoneClientBuilder() 
+    .credential(tokenCredential)
+    .timezoneClientId(System.getenv("MAPS_CLIENT_ID"))
+    .buildClient();
 ```
 
 The sample code assumes global Azure. Please change `AzureEnvironment.AZURE` variable if otherwise.
