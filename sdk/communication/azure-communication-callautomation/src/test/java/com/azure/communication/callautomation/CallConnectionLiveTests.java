@@ -46,7 +46,7 @@ public class CallConnectionLiveTests extends CallAutomationLiveTestBase {
          * 5. verify existing call is still ongoing and has 2 participants now.
          */
 
-        CallAutomationClient callClient = getCallingServerClientUsingConnectionString(httpClient)
+        CallAutomationClient callClient = getCallAutomationClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("removeAPSTNUserFromAnOngoingCallTest", next))
             .buildClient();
 
@@ -80,8 +80,7 @@ public class CallConnectionLiveTests extends CallAutomationLiveTestBase {
             assertEquals(3, listParticipantsResult.getValues().size());
 
             RemoveParticipantsResult removeParticipantsResult = callConnection.removeParticipants(
-                new ArrayList<>(Arrays.asList(new PhoneNumberIdentifier(PHONE_USER_1))),
-                null);
+                new ArrayList<>(Arrays.asList(new PhoneNumberIdentifier(PHONE_USER_1))));
 
             callConnectionProperties = callConnection.getCallProperties();
             assertNotNull(callConnectionProperties);
@@ -114,7 +113,7 @@ public class CallConnectionLiveTests extends CallAutomationLiveTestBase {
          * 5. verify existing call is still ongoing and has 2 participants now.
          */
 
-        CallAutomationClient callClient = getCallingServerClientUsingConnectionString(httpClient)
+        CallAutomationClient callClient = getCallAutomationClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("removeAPSTNUserAndAcsUserFromAnOngoingCallTest", next))
             .buildClient();
 
@@ -148,7 +147,7 @@ public class CallConnectionLiveTests extends CallAutomationLiveTestBase {
             assertEquals(4, listParticipantsResult.getValues().size());
 
             callConnection.removeParticipants(new ArrayList<>(Arrays.asList(new PhoneNumberIdentifier(PHONE_USER_1),
-                new CommunicationUserIdentifier(ACS_USER_2))), null);
+                new CommunicationUserIdentifier(ACS_USER_2))));
 
             callConnectionProperties = callConnection.getCallProperties();
             assertNotNull(callConnectionProperties);
@@ -180,7 +179,7 @@ public class CallConnectionLiveTests extends CallAutomationLiveTestBase {
          * 4. transfer the call to another target.
          */
 
-        CallAutomationClient callClient = getCallingServerClientUsingConnectionString(httpClient)
+        CallAutomationClient callClient = getCallAutomationClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("transferACallFromOneUserToAnotherUserTest", next))
             .buildClient();
 

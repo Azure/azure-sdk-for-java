@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.messaging.eventhubs.EventHubBufferedProducerAsyncClient.BufferedProducerClientOptions;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendBatchFailedContext;
@@ -12,12 +13,16 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Isolated;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 import reactor.test.StepVerifier;
+import reactor.util.concurrent.Queues;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -28,12 +33,15 @@ import java.util.Queue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 import static com.azure.messaging.eventhubs.EventDataAggregatorTest.setupBatchMock;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -46,6 +54,7 @@ public class EventHubBufferedPartitionProducerTest {
     private static final String EVENT_HUB_NAME = "test-hub";
     private static final List<String> PARTITION_IDS = Arrays.asList("one", "two", PARTITION_ID, "four");
     private static final AmqpRetryOptions DEFAULT_RETRY_OPTIONS = new AmqpRetryOptions();
+    private static final int QUEUE_SIZE = 5;
 
     private AutoCloseable mockCloseable;
 
@@ -76,6 +85,12 @@ public class EventHubBufferedPartitionProducerTest {
     @Mock
     private EventDataBatch batch5;
 
+    @Mock
+    private Sinks.Many<EventData> mockedEventSink;
+
+    private Sinks.Many<EventData> eventSink;
+    private Queue<EventData> eventQueue;
+
     @BeforeEach
     public void beforeEach() {
         mockCloseable = MockitoAnnotations.openMocks(this);
@@ -95,6 +110,9 @@ public class EventHubBufferedPartitionProducerTest {
             assertNotNull(returned, "there should be more batches to be returned.");
             return Mono.just(returned);
         });
+
+        this.eventQueue = Queues.<EventData>get(QUEUE_SIZE).get();
+        this.eventSink = Sinks.many().unicast().onBackpressureBuffer(eventQueue);
     }
 
     @AfterEach
@@ -126,7 +144,7 @@ public class EventHubBufferedPartitionProducerTest {
         when(client.send(any(EventDataBatch.class))).thenReturn(Mono.empty());
 
         final EventHubBufferedPartitionProducer producer = new EventHubBufferedPartitionProducer(client, PARTITION_ID,
-            options, DEFAULT_RETRY_OPTIONS);
+            options, DEFAULT_RETRY_OPTIONS, eventSink, eventQueue);
 
         // Act & Assert
         StepVerifier.create(producer.enqueueEvent(event1))
@@ -176,7 +194,7 @@ public class EventHubBufferedPartitionProducerTest {
         when(client.send(any(EventDataBatch.class))).thenReturn(Mono.empty(), Mono.error(error));
 
         final EventHubBufferedPartitionProducer producer = new EventHubBufferedPartitionProducer(client, PARTITION_ID,
-            options, DEFAULT_RETRY_OPTIONS);
+            options, DEFAULT_RETRY_OPTIONS, eventSink, eventQueue);
 
         // Act & Assert
         StepVerifier.create(Mono.when(producer.enqueueEvent(event1), producer.enqueueEvent(event2)))
@@ -246,7 +264,7 @@ public class EventHubBufferedPartitionProducerTest {
         });
 
         final EventHubBufferedPartitionProducer producer = new EventHubBufferedPartitionProducer(client, PARTITION_ID,
-            options, DEFAULT_RETRY_OPTIONS);
+            options, DEFAULT_RETRY_OPTIONS, eventSink, eventQueue);
 
         // Act & Assert
         StepVerifier.create(Mono.when(producer.enqueueEvent(event1), producer.enqueueEvent(event2)))
@@ -321,7 +339,7 @@ public class EventHubBufferedPartitionProducerTest {
             .thenAnswer(invocation -> Mono.delay(options.getMaxWaitTime()).then());
 
         final EventHubBufferedPartitionProducer producer = new EventHubBufferedPartitionProducer(client, PARTITION_ID,
-            options, DEFAULT_RETRY_OPTIONS);
+            options, DEFAULT_RETRY_OPTIONS, eventSink, eventQueue);
 
         // Act & Assert
         StepVerifier.create(Mono.when(producer.enqueueEvent(event1), producer.enqueueEvent(event2),
@@ -357,6 +375,111 @@ public class EventHubBufferedPartitionProducerTest {
             assertEquals(PARTITION_ID, second.getPartitionId());
             assertEquals(batchEvents2, second.getEvents());
         }
+    }
+
+    public static Stream<Sinks.EmitResult> retryAfterEmitResultError() {
+        return Stream.of(Sinks.EmitResult.FAIL_NON_SERIALIZED, Sinks.EmitResult.FAIL_OVERFLOW);
+    }
+
+    /**
+     * Checks that if there are errors when emitting to sink, will try again.
+     */
+    @MethodSource("retryAfterEmitResultError")
+    @ParameterizedTest
+    public void retryAfterEmitResultError(Sinks.EmitResult emitResult) {
+        // Arrange
+        final InvocationHolder holder = new InvocationHolder();
+        final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
+        options.setMaxWaitTime(Duration.ofSeconds(5));
+        options.setSendSucceededContext(context -> holder.onSucceed(context));
+        options.setSendFailedContext(context -> holder.onFailed(context));
+
+        when(mockedEventSink.asFlux()).thenReturn(Flux.never());
+        when(mockedEventSink.tryEmitNext(event1)).thenReturn(Sinks.EmitResult.OK);
+
+        // Return an error emit result, then try again
+        when(mockedEventSink.tryEmitNext(event2)).thenReturn(emitResult, Sinks.EmitResult.OK);
+        when(mockedEventSink.tryEmitNext(event3)).thenReturn(Sinks.EmitResult.OK);
+
+        final List<EventData> batchEvents = new ArrayList<>();
+        setupBatchMock(batch, batchEvents, event1, event2);
+
+        when(client.send(any(EventDataBatch.class))).thenAnswer(invocation -> Mono.empty());
+
+        final EventHubBufferedPartitionProducer producer = new EventHubBufferedPartitionProducer(client, PARTITION_ID,
+            options, DEFAULT_RETRY_OPTIONS, mockedEventSink, eventQueue);
+
+        // Act & Assert
+        StepVerifier.create(producer.enqueueEvent(event1))
+            .expectComplete()
+            .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
+
+        StepVerifier.create(producer.enqueueEvent(event2))
+            .expectComplete()
+            .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
+
+        StepVerifier.create(producer.enqueueEvent(event3))
+            .expectComplete()
+            .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
+
+        // Assert
+        verify(mockedEventSink).tryEmitNext(event1);
+        verify(mockedEventSink, times(2)).tryEmitNext(event2);
+        verify(mockedEventSink).tryEmitNext(event3);
+    }
+
+    @Test
+    public void exhaustsRetries() {
+        // Arrange
+        final InvocationHolder holder = new InvocationHolder();
+        final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
+        options.setMaxWaitTime(Duration.ofSeconds(5));
+        options.setSendSucceededContext(context -> holder.onSucceed(context));
+        options.setSendFailedContext(context -> holder.onFailed(context));
+
+        when(mockedEventSink.asFlux()).thenReturn(Flux.never());
+        when(mockedEventSink.tryEmitNext(event1)).thenReturn(Sinks.EmitResult.OK);
+
+        // Return an error emit result, then try again
+        when(mockedEventSink.tryEmitNext(event2)).thenReturn(
+            Sinks.EmitResult.FAIL_OVERFLOW,
+            Sinks.EmitResult.FAIL_NON_SERIALIZED,
+            Sinks.EmitResult.FAIL_OVERFLOW,
+            Sinks.EmitResult.OK);
+        when(mockedEventSink.tryEmitNext(event3)).thenReturn(Sinks.EmitResult.OK);
+
+        final List<EventData> batchEvents = new ArrayList<>();
+        setupBatchMock(batch, batchEvents, event1, event2);
+
+        when(client.send(any(EventDataBatch.class))).thenAnswer(invocation -> Mono.empty());
+
+        final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setMaxRetries(2).setDelay(Duration.ofSeconds(2));
+
+        final EventHubBufferedPartitionProducer producer = new EventHubBufferedPartitionProducer(client, PARTITION_ID,
+            options, retryOptions, mockedEventSink, eventQueue);
+
+        // Act & Assert
+        StepVerifier.create(producer.enqueueEvent(event1))
+            .expectComplete()
+            .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
+
+        StepVerifier.create(producer.enqueueEvent(event2))
+            .consumeErrorWith(error -> {
+                assertTrue(error instanceof AmqpException);
+
+                final AmqpException amqpException = (AmqpException) error;
+                assertTrue(amqpException.isTransient());
+            })
+            .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
+
+        StepVerifier.create(producer.enqueueEvent(event3))
+            .expectComplete()
+            .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
+
+        // Assert
+        verify(mockedEventSink).tryEmitNext(event1);
+        verify(mockedEventSink, times(3)).tryEmitNext(event2);
+        verify(mockedEventSink).tryEmitNext(event3);
     }
 
     private class InvocationHolder {

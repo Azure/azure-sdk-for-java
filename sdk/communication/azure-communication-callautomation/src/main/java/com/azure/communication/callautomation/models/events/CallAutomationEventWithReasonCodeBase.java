@@ -4,15 +4,15 @@
 package com.azure.communication.callautomation.models.events;
 
 /**
- * The base event interface with ReasonCodeName added.
+ * The base event interface with ReasonCode added.
  */
 public abstract class CallAutomationEventWithReasonCodeBase extends CallAutomationEventBase {
 
     /**
-     * Returns the reason code name of the event
-     * @return a ReasonCodeName object.
+     * Returns the reason code of the event
+     * @return a ReasonCode object.
      * */
-    public ReasonCodeName getReasonCodeName() {
-        return ReasonCodeName.fromReasonCode(getResultInformation().getSubCode());
+    public ReasonCode getReasonCode() {
+        return ReasonCode.fromReasonCode(getResultInformation().getSubCode());
     }
 }

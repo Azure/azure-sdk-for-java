@@ -4,7 +4,7 @@
 package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.events.PlayCanceled;
-import com.azure.communication.callautomation.models.events.ReasonCodeName;
+import com.azure.communication.callautomation.models.events.ReasonCode;
 import com.azure.communication.callautomation.models.events.RecognizeCanceled;
 import com.azure.communication.callautomation.models.events.RecognizeCompleted;
 import com.azure.communication.callautomation.models.RecordingState;
@@ -82,7 +82,7 @@ public class EventHandlerUnitTests {
         String receivedEvent = "[{\n"
             + "\"id\": \"704a7a96-4d74-4ebe-9cd0-b7cc39c3d7b1\",\n"
             + "\"source\": \"calling/callConnections/callConnectionId/PlayCompletedEvent\",\n"
-            + "\"type\": \"Microsoft.Communication.PlayCompletedEvent\",\n"
+            + "\"type\": \"Microsoft.Communication.PlayCompleted\",\n"
             + "\"data\": {\n"
             + "\"resultInformation\": {\n"
             + "\"code\": 200,\n"
@@ -105,7 +105,7 @@ public class EventHandlerUnitTests {
         assertNotNull(playCompletedEvent);
         assertEquals("serverCallId", playCompletedEvent.getServerCallId());
         assertEquals(200, playCompletedEvent.getResultInformation().getCode());
-        assertEquals(ReasonCodeName.COMPLETED_SUCCESSFULLY, playCompletedEvent.getReasonCodeName());
+        assertEquals(ReasonCode.COMPLETED_SUCCESSFULLY, playCompletedEvent.getReasonCode());
     }
 
     @Test
@@ -113,7 +113,7 @@ public class EventHandlerUnitTests {
         String receivedEvent = "[{\n"
             + "\"id\": \"704a7a96-4d74-4ebe-9cd0-b7cc39c3d7b1\",\n"
             + "\"source\": \"calling/callConnections/callConnectionId/PlayFailedEvent\",\n"
-            + "\"type\": \"Microsoft.Communication.PlayFailedEvent\",\n"
+            + "\"type\": \"Microsoft.Communication.PlayFailed\",\n"
             + "\"data\": {\n"
             + "\"resultInformation\": {\n"
             + "\"code\": 400,\n"
@@ -136,7 +136,7 @@ public class EventHandlerUnitTests {
         assertNotNull(playFailedEvent);
         assertEquals("serverCallId", playFailedEvent.getServerCallId());
         assertEquals(400, playFailedEvent.getResultInformation().getCode());
-        assertEquals(ReasonCodeName.Play.DOWNLOAD_FAILED, playFailedEvent.getReasonCodeName());
+        assertEquals(ReasonCode.Play.DOWNLOAD_FAILED, playFailedEvent.getReasonCode());
     }
 
     @Test
@@ -190,7 +190,7 @@ public class EventHandlerUnitTests {
         assertNotNull(recognizeCompleted);
         assertEquals("serverCallId", recognizeCompleted.getServerCallId());
         assertEquals(200, recognizeCompleted.getResultInformation().getCode());
-        assertEquals(ReasonCodeName.COMPLETED_SUCCESSFULLY, recognizeCompleted.getReasonCodeName());
+        assertEquals(ReasonCode.COMPLETED_SUCCESSFULLY, recognizeCompleted.getReasonCode());
     }
 
     @Test
@@ -221,7 +221,7 @@ public class EventHandlerUnitTests {
         assertNotNull(recognizeFailed);
         assertEquals("serverCallId", recognizeFailed.getServerCallId());
         assertEquals(400, recognizeFailed.getResultInformation().getCode());
-        assertEquals(ReasonCodeName.Recognize.INITIAL_SILENCE_TIMEOUT, recognizeFailed.getReasonCodeName());
+        assertEquals(ReasonCode.Recognize.INITIAL_SILENCE_TIMEOUT, recognizeFailed.getReasonCode());
     }
 
     @Test
