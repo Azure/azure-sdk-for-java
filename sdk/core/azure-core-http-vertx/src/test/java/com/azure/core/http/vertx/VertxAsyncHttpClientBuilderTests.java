@@ -280,7 +280,7 @@ public class VertxAsyncHttpClientBuilderTests {
 
             CountDownLatch latch = new CountDownLatch(1);
             vertx.close(event -> latch.countDown());
-            assertTrue(latch.await(5, TimeUnit.SECONDS));
+            assertTrue(latch.await(60, TimeUnit.SECONDS));
         }
     }
 

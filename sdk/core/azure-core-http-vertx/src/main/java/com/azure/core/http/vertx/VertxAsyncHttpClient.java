@@ -160,7 +160,7 @@ class VertxAsyncHttpClient implements HttpClient {
             // Pause the ReadStream before building the response as building the response may take time
             // and it's unknown on whether the stream is hot.
             vertxHttpResponse.pause();
-            sink.success(new VertxHttpAsyncResponse(request, vertxHttpResponse));
+            sink.success(new VertxHttpAsyncResponse(request, vertxHttpResponse, vertxHttpResponse.pipe()));
         }
     }
 

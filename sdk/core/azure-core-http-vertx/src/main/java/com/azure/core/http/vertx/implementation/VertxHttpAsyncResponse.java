@@ -5,7 +5,9 @@ package com.azure.core.http.vertx.implementation;
 
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.FluxUtil;
+import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClientResponse;
+import io.vertx.core.streams.Pipe;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -15,9 +17,12 @@ import java.nio.ByteBuffer;
  * Default HTTP response for Vert.x.
  */
 public class VertxHttpAsyncResponse extends VertxHttpResponseBase {
+    private final Pipe<Buffer> pipe;
 
-    public VertxHttpAsyncResponse(HttpRequest azureHttpRequest, HttpClientResponse vertxHttpResponse) {
+    public VertxHttpAsyncResponse(HttpRequest azureHttpRequest, HttpClientResponse vertxHttpResponse,
+        Pipe<Buffer> pipe) {
         super(azureHttpRequest, vertxHttpResponse);
+        this.pipe = pipe;
     }
 
     @Override
@@ -34,13 +39,12 @@ public class VertxHttpAsyncResponse extends VertxHttpResponseBase {
     }
 
     private Flux<ByteBuffer> streamResponseBody() {
-        HttpClientResponse vertxHttpResponse = getVertxHttpResponse();
-        return Flux.create(sink -> {
-            vertxHttpResponse.handler(buffer -> sink.next(ByteBuffer.wrap(buffer.getBytes())))
-                .endHandler(event -> sink.complete())
-                .exceptionHandler(sink::error);
-
-            vertxHttpResponse.resume();
-        });
+        return Flux.create(sink -> pipe.to(new FluxByteBufferWriteStream(sink), result -> {
+            if (result.failed()) {
+                sink.error(result.cause());
+            } else {
+                sink.complete();
+            }
+        }));
     }
 }

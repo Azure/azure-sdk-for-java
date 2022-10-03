@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 
-public final class BufferedVertxHttpResponse extends VertxHttpAsyncResponse {
+public final class BufferedVertxHttpResponse extends VertxHttpResponseBase {
 
     private final byte[] body;
 
