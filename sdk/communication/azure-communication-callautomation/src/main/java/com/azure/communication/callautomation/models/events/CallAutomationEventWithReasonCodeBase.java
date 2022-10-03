@@ -12,7 +12,7 @@ public abstract class CallAutomationEventWithReasonCodeBase extends CallAutomati
      * Returns the reason code name of the event
      * @return a ReasonCodeName object.
      * */
-    public ReasonCodeName getReasonCodeName() {
-        return ReasonCodeName.fromReasonCode(getResultInformation().getSubCode());
+    public ReasonCode getReasonCodeName() {
+        return ReasonCode.fromReasonCode(getResultInformation().getSubCode());
     }
 }
