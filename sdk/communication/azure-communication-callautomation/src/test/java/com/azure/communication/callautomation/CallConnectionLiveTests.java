@@ -80,8 +80,7 @@ public class CallConnectionLiveTests extends CallAutomationLiveTestBase {
             assertEquals(3, listParticipantsResult.getValues().size());
 
             RemoveParticipantsResult removeParticipantsResult = callConnection.removeParticipants(
-                new ArrayList<>(Arrays.asList(new PhoneNumberIdentifier(PHONE_USER_1))),
-                null);
+                new ArrayList<>(Arrays.asList(new PhoneNumberIdentifier(PHONE_USER_1))));
 
             callConnectionProperties = callConnection.getCallProperties();
             assertNotNull(callConnectionProperties);
@@ -148,7 +147,7 @@ public class CallConnectionLiveTests extends CallAutomationLiveTestBase {
             assertEquals(4, listParticipantsResult.getValues().size());
 
             callConnection.removeParticipants(new ArrayList<>(Arrays.asList(new PhoneNumberIdentifier(PHONE_USER_1),
-                new CommunicationUserIdentifier(ACS_USER_2))), null);
+                new CommunicationUserIdentifier(ACS_USER_2))));
 
             callConnectionProperties = callConnection.getCallProperties();
             assertNotNull(callConnectionProperties);

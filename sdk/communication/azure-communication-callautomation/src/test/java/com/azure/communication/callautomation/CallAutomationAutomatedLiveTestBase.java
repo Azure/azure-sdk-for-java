@@ -89,7 +89,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         HttpRequest request = new HttpRequest(HttpMethod.POST, dispatcherUrl);
         HttpResponse response = httpClient.send(request).block();
         assert response != null;
-        System.out.println("Subscription to dispatcher: " + response.getStatusCode());
+        System.out.println(String.format("Subscription to dispatcher of %s: ", uniqueId) + response.getStatusCode());
 
         // create a service bus processor
         ServiceBusProcessorClient serviceBusProcessorClient = createServiceBusClientBuilderWithConnectionString()
@@ -108,7 +108,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         // receive message from dispatcher
         ServiceBusReceivedMessage message = context.getMessage();
         String body = message.getBody().toString();
-        System.out.println(body);
+
         // parse the message
         assert !body.isEmpty();
         ObjectMapper mapper = new ObjectMapper();
