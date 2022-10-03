@@ -5,16 +5,26 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
+import com.azure.communication.callautomation.models.events.AddParticipantsFailedEvent;
+import com.azure.communication.callautomation.models.events.AddParticipantsSucceededEvent;
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
+import com.azure.communication.callautomation.models.events.CallConnectedEvent;
+import com.azure.communication.callautomation.models.events.CallDisconnectedEvent;
+import com.azure.communication.callautomation.models.events.CallTransferAcceptedEvent;
+import com.azure.communication.callautomation.models.events.CallTransferFailedEvent;
+import com.azure.communication.callautomation.models.events.ParticipantsUpdatedEvent;
+import com.azure.communication.callautomation.models.events.PlayCompletedEvent;
+import com.azure.communication.callautomation.models.events.PlayFailedEvent;
+import com.azure.communication.callautomation.models.events.RecognizeCompleted;
+import com.azure.communication.callautomation.models.events.RecognizeFailed;
+import com.azure.communication.callautomation.models.events.RecordingStateChangedEvent;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusException;
@@ -27,21 +37,9 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.lang.reflect.Type;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -54,15 +52,11 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
     protected ConcurrentHashMap<String, ConcurrentHashMap<Type, CallAutomationEventBase>> eventStore;
     protected static final String SERVICEBUS_CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("SERVICEBUS_STRING",
-            "Endpoint=sb://REDACTED.servicebus.windows.net/;SharedAccessKeyName=TestKey;SharedAccessKey=BZscTVbGv+kiKSwVYBGxYS4mWwmFQhOou8EtZn87JJY=");
+            "Endpoint=sb://REDACTED.servicebus.windows.net/;SharedAccessKeyName=REDACTED;SharedAccessKey=REDACTEDu8EtZn87JJY=");
     protected static final String DISPATCHER_ENDPOINT = Configuration.getGlobalConfiguration()
         .get("DISPATCHER_ENDPOINT",
             "https://incomingcalldispatcher.azurewebsites.net");
     protected static final String DISPATCHER_CALLBACK = DISPATCHER_ENDPOINT + "/api/servicebuscallback/events";
-
-    private static final String RECORDED_EVENTS_FOLDER = "session-events";
-
-    private ConcurrentHashMap<String, String> serviceBusReceivedMessagesStore;
 
     @Override
     protected void beforeTest() {
@@ -70,72 +64,12 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         processorStore = new ConcurrentHashMap<>();
         incomingCallContextStore = new ConcurrentHashMap<>();
         eventStore = new ConcurrentHashMap<>();
-        serviceBusReceivedMessagesStore = new ConcurrentHashMap<>();
     }
 
     @Override
     protected void afterTest() {
         super.afterTest();
         processorStore.forEach((key, value) -> value.close());
-        Properties properties = new Properties();
-
-        for (Map.Entry<String,String> entry : serviceBusReceivedMessagesStore.entrySet()) {
-            properties.put(entry.getKey(), entry.getValue());
-        }
-
-        try {
-            File file = createRecordFile(testContextManager.getTestName());
-            properties.store(new FileOutputStream(file), null);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private File createRecordFile(String testName) throws IOException {
-        File recordFolder = getRecordFolder();
-        if (!recordFolder.exists()) {
-            if (recordFolder.mkdir()) {
-                System.out.printf("Created directory: %s\n", recordFolder.getPath());
-            }
-        }
-
-        File recordFile = new File(recordFolder, testName + ".json");
-        if (recordFile.createNewFile()) {
-            System.out.printf("Created record file: %s\n", recordFile.getPath());
-        }
-
-        System.out.println("==> Playback file path: " + recordFile);
-        return recordFile;
-    }
-
-    private File getRecordFolder() {
-        URL folderUrl = CallAutomationAutomatedLiveTestBase.class.getClassLoader().getResource(RECORDED_EVENTS_FOLDER);
-        if (folderUrl != null) {
-            // Use toURI as getResource will return a URL encoded file path that can only be cleaned up using the
-            // URI-based constructor of File.
-            return new File(toURI(folderUrl));
-        }
-
-        // session-record folder doesn't exist, create it.
-        folderUrl = CallAutomationAutomatedLiveTestBase.class.getClassLoader().getResource("");
-
-        // Use toURI as getResource will return a URL encoded file path that can only be cleaned up using the
-        // URI-based constructor of File.
-        Path recordFolder = new File(toURI(folderUrl)).toPath().resolve(RECORDED_EVENTS_FOLDER);
-        try {
-            Files.createDirectory(recordFolder);
-        } catch (IOException ex) {
-            throw new UncheckedIOException(ex);
-        }
-        return recordFolder.toFile();
-    }
-
-    private static URI toURI(URL url) {
-        try {
-            return url.toURI();
-        } catch (URISyntaxException ex) {
-            throw new IllegalStateException(ex);
-        }
     }
 
     protected static ServiceBusClientBuilder createServiceBusClientBuilderWithConnectionString() {
@@ -155,7 +89,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         HttpRequest request = new HttpRequest(HttpMethod.POST, dispatcherUrl);
         HttpResponse response = httpClient.send(request).block();
         assert response != null;
-        System.out.println("Subscription to dispatcher: " + response.getStatusCode());
+        System.out.println(String.format("Subscription to dispatcher of %s: ", uniqueId) + response.getStatusCode());
 
         // create a service bus processor
         ServiceBusProcessorClient serviceBusProcessorClient = createServiceBusClientBuilderWithConnectionString()
@@ -173,12 +107,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
     protected void messageHandler(ServiceBusReceivedMessageContext context) {
         // receive message from dispatcher
         ServiceBusReceivedMessage message = context.getMessage();
-
         String body = message.getBody().toString();
-
-        if (getTestMode() == TestMode.RECORD) {
-            serviceBusReceivedMessagesStore.put(message.getMessageId(), body);
-        }
 
         // parse the message
         assert !body.isEmpty();
@@ -256,33 +185,75 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
     }
 
     protected String waitForIncomingCallContext(String uniqueId, Duration timeOut) throws InterruptedException {
-        String caller = removeAllNonChar(uniqueId);
-
-        LocalDateTime timeOutTime = LocalDateTime.now().plusSeconds(timeOut.getSeconds());
-        while (LocalDateTime.now().isBefore(timeOutTime)) {
-            String incomingCallContext = incomingCallContextStore.get(caller);
-            if (incomingCallContext != null) {
-                incomingCallContextStore.remove(caller);
-                return incomingCallContext;
+        if (getTestMode() != TestMode.PLAYBACK) {
+            LocalDateTime timeOutTime = LocalDateTime.now().plusSeconds(timeOut.getSeconds());
+            while (LocalDateTime.now().isBefore(timeOutTime)) {
+                String incomingCallContext = incomingCallContextStore.get(uniqueId);
+                if (incomingCallContext != null) {
+                    incomingCallContextStore.remove(uniqueId);
+                    return incomingCallContext;
+                }
+                Thread.sleep(1000);
             }
-            Thread.sleep(1000);
+            return null;
         }
-        return null;
+
+        return "REDACTED_a0pvc2ai329xk1j2z";
     }
 
     @SuppressWarnings("unchecked")
     protected <T extends CallAutomationEventBase> T waitForEvent(Class<T> eventType, String callConnectionId, Duration timeOut) throws InterruptedException {
-        LocalDateTime timeOutTime = LocalDateTime.now().plusSeconds(timeOut.getSeconds());
-        while (LocalDateTime.now().isBefore(timeOutTime)) {
-            if (eventStore.get(callConnectionId) != null) {
-                T event = (T) eventStore.get(callConnectionId).get(eventType);
+        if (getTestMode() != TestMode.PLAYBACK) {
+            LocalDateTime timeOutTime = LocalDateTime.now().plusSeconds(timeOut.getSeconds());
+            while (LocalDateTime.now().isBefore(timeOutTime)) {
+                if (eventStore.get(callConnectionId) != null) {
+                    T event = (T) eventStore.get(callConnectionId).get(eventType);
 
-                if (event != null) {
-                    return event;
+                    if (event != null) {
+                        return event;
+                    }
                 }
+                Thread.sleep(1000);
             }
-            Thread.sleep(1000);
+            return null;
         }
-        return null;
+
+        return generateEventForPlayback(eventType);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T extends CallAutomationEventBase> T generateEventForPlayback(Class<T> eventType) {
+        String eventName = "";
+        if (eventType.equals(CallConnectedEvent.class)) {
+            eventName = "Microsoft.Communication.CallConnected";
+        } else if (eventType.equals(CallDisconnectedEvent.class)) {
+            eventName = "Microsoft.Communication.CallDisconnected";
+        } else if (eventType.equals(AddParticipantsFailedEvent.class)) {
+            eventName = "Microsoft.Communication.AddParticipantsFailed";
+        } else if (eventType.equals(AddParticipantsSucceededEvent.class)) {
+            eventName = "Microsoft.Communication.AddParticipantsSucceeded";
+        } else if (eventType.equals(CallTransferAcceptedEvent.class)) {
+            eventName = "Microsoft.Communication.CallTransferAccepted";
+        } else if (eventType.equals(CallTransferFailedEvent.class)) {
+            eventName = "Microsoft.Communication.CallTransferFailed";
+        } else if (eventType.equals(ParticipantsUpdatedEvent.class)) {
+            eventName = "Microsoft.Communication.ParticipantsUpdated";
+        } else if (eventType.equals(RecordingStateChangedEvent.class)) {
+            eventName = "Microsoft.Communication.CallRecordingStateChanged";
+        } else if (eventType.equals(PlayCompletedEvent.class)) {
+            eventName = "Microsoft.Communication.PlayCompleted";
+        } else if (eventType.equals(PlayFailedEvent.class)) {
+            eventName = "Microsoft.Communication.PlayFailed";
+        } else if (eventType.equals(RecognizeCompleted.class)) {
+            eventName = "Microsoft.Communication.RecognizeCompleted";
+        } else if (eventType.equals(RecognizeFailed.class)) {
+            eventName = "Microsoft.Communication.RecognizeFailed";
+        } else {
+            return null;
+        }
+        String eventPayload = String.format("[{\"id\":\"e1REDACTED-2e2c-44a0-8f65-77d5REDACTEDde\",\"source\":\"calling/callConnections/411REDACTED-5800-4683-acec-6b4REDACTEDfe1\",\"type\":\"%s\",\"data\":{\"participants\":[{\"rawId\":\"8:acs:1bdREDACTED-9507-4542-bb64-a7bREDACTED8d4_00000014-25a2-eeba-92fd-8b3REDACTEDf3d4\",\"kind\":\"communicationUser\",\"communicationUser\":{\"id\":\"8:acs:1bREDACTED-9507-4542-bb64-a7bREDACTEDd4_00000014-25a2-eeba-92fd-8b3aREDACTEDd4\"}},{\"rawId\":\"8:acs:1bREDACTED-9507-4542-bb64-a7b2REDACTED8d4_00000014-25a2-efc7-defd-8b3aREDACTEDa6\",\"kind\":\"communicationUser\",\"communicationUser\":{\"id\":\"8:acs:1bREDACTED-9507-4542-bb64-a7b22cREDACTED4_00000014-25a2-efc7-defd-8b3a0REDACTEDa6\"}}],\"callConnectionId\":\"411REDACTED-5800-4683-acec-6b4746REDACTED1\",\"serverCallId\":\"aHR0cHMREDACTEDZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252REDACTEDtMDIuY29udi5za3lwZS5jb20vY29udi9lbHhmX0VpaUlFU3ZLUUlDNlpyVGdnP2k9MTAmZT02Mzc5OTk0NDkwNTM2MTY5MzU=\",\"correlationId\":\"34REDACTED-1f79-4030-a90f-141REDACTED29\"},\"time\":\"2022-09-28T20:19:54.3681008\\u002B00:00\",\"specversion\":\"1.0\",\"datacontenttype\":\"application/json\",\"subject\":\"calling/callConnections/411REDACTED-5800-4683-acec-6b4746REDACTED\"}]",
+            eventName);
+        CallAutomationEventBase dummyEvent = EventHandler.parseEvent(eventPayload);
+        return (T) dummyEvent;
     }
 }

@@ -13,10 +13,9 @@ import com.azure.resourcemanager.hybridnetwork.fluent.models.SkuOverviewInner;
 import com.azure.resourcemanager.hybridnetwork.models.NetworkFunctionSkuRoleDetails;
 import com.azure.resourcemanager.hybridnetwork.models.NetworkFunctionVendorSkus;
 import com.azure.resourcemanager.hybridnetwork.models.SkuOverview;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class NetworkFunctionVendorSkusImpl implements NetworkFunctionVendorSkus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkFunctionVendorSkusImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkFunctionVendorSkusImpl.class);
 
     private final NetworkFunctionVendorSkusClient innerClient;
 

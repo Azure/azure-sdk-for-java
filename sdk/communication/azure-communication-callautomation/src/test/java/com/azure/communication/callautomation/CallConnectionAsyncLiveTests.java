@@ -82,8 +82,7 @@ public class CallConnectionAsyncLiveTests extends CallAutomationLiveTestBase {
             assertEquals(3, listParticipantsResultResponse.getValue().getValues().size());
 
             RemoveParticipantsResult removeParticipantsResult = callConnectionAsync.removeParticipants(
-                new ArrayList<>(Arrays.asList(new PhoneNumberIdentifier(PHONE_USER_1))),
-                null).block();
+                new ArrayList<>(Arrays.asList(new PhoneNumberIdentifier(PHONE_USER_1)))).block();
 
             callConnectionProperties = callConnectionAsync.getCallProperties().block();
             assertNotNull(callConnectionProperties);
@@ -151,7 +150,7 @@ public class CallConnectionAsyncLiveTests extends CallAutomationLiveTestBase {
             assertEquals(4, listParticipantsResultResponse.getValue().getValues().size());
 
             callConnectionAsync.removeParticipants(new ArrayList<>(Arrays.asList(new PhoneNumberIdentifier(PHONE_USER_1),
-                new CommunicationUserIdentifier(ACS_USER_2))), null).block();
+                new CommunicationUserIdentifier(ACS_USER_2)))).block();
 
             callConnectionProperties = callConnectionAsync.getCallProperties().block();
             assertNotNull(callConnectionProperties);

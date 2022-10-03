@@ -350,6 +350,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          String clientCorrelationId,
                          EnumSet<TagName> tagNames) {
 
+        assert(clientTelemetryConfig != null);
+        Boolean clientTelemetryEnabled = ImplementationBridgeHelpers
+            .CosmosClientTelemetryConfigHelper
+            .getCosmosClientTelemetryConfigAccessor()
+            .isSendClientTelemetryToServiceEnabled(clientTelemetryConfig);
+        assert(clientTelemetryEnabled != null);
         activeClientsCnt.incrementAndGet();
         this.clientId = clientIdGenerator.incrementAndGet();
         this.clientCorrelationId = Strings.isNullOrWhiteSpace(clientCorrelationId) ?

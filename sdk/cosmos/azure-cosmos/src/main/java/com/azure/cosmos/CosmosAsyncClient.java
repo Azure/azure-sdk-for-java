@@ -109,31 +109,31 @@ public final class CosmosAsyncClient implements Closeable {
         this.tokenCredential = builder.getTokenCredential();
         this.sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
         this.enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
-        this.clientTelemetryConfig = builder.clientTelemetryConfig();
-        this.isSendClientTelemetryToServiceEnabled = ImplementationBridgeHelpers
+        ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor
+            telemetryConfigAccessor = ImplementationBridgeHelpers
             .CosmosClientTelemetryConfigHelper
-            .getCosmosClientTelemetryConfigAccessor()
-            .isSendClientTelemetryToServiceEnabled(this.clientTelemetryConfig);
+            .getCosmosClientTelemetryConfigAccessor();
+
+        CosmosClientTelemetryConfig effectiveTelemetryConfig = telemetryConfigAccessor
+            .createSnapshot(
+                builder.getClientTelemetryConfig(),
+                builder.isClientTelemetryEnabled());
+
+        this.clientTelemetryConfig = effectiveTelemetryConfig;
+        this.isSendClientTelemetryToServiceEnabled = telemetryConfigAccessor
+            .isSendClientTelemetryToServiceEnabled(effectiveTelemetryConfig);
         this.contentResponseOnWriteEnabled = builder.isContentResponseOnWriteEnabled();
         this.tracerProvider = new TracerProvider(
             TRACER,
-            ImplementationBridgeHelpers
-                .CosmosClientTelemetryConfigHelper
-                .getCosmosClientTelemetryConfigAccessor()
-                .isSendClientTelemetryToServiceEnabled(this.clientTelemetryConfig),
-            ImplementationBridgeHelpers
-                .CosmosClientTelemetryConfigHelper
-                .getCosmosClientTelemetryConfigAccessor()
-                .isClientMetricsEnabled(this.clientTelemetryConfig));
+            telemetryConfigAccessor
+                .isSendClientTelemetryToServiceEnabled(effectiveTelemetryConfig),
+            telemetryConfigAccessor
+                .isClientMetricsEnabled(effectiveTelemetryConfig));
         this.apiType = builder.apiType();
-        this.clientCorrelationId =  ImplementationBridgeHelpers
-            .CosmosClientTelemetryConfigHelper
-            .getCosmosClientTelemetryConfigAccessor()
-            .getClientCorrelationId(this.clientTelemetryConfig);
-        this.metricTagNames = ImplementationBridgeHelpers
-            .CosmosClientTelemetryConfigHelper
-            .getCosmosClientTelemetryConfigAccessor()
-            .getMetricTagNames(this.clientTelemetryConfig);
+        this.clientCorrelationId =  telemetryConfigAccessor
+            .getClientCorrelationId(effectiveTelemetryConfig);
+        this.metricTagNames = telemetryConfigAccessor
+            .getMetricTagNames(effectiveTelemetryConfig);
 
         List<Permission> permissionList = new ArrayList<>();
         if (this.permissions != null) {
@@ -182,10 +182,8 @@ public final class CosmosAsyncClient implements Closeable {
             TagName.ClientCorrelationId.toString(),
             ClientTelemetryMetrics.escape(effectiveClientCorrelationId));
 
-        this.clientMetricRegistrySnapshot = ImplementationBridgeHelpers
-            .CosmosClientTelemetryConfigHelper
-            .getCosmosClientTelemetryConfigAccessor()
-            .getClientMetricRegistry(this.clientTelemetryConfig);
+        this.clientMetricRegistrySnapshot = telemetryConfigAccessor
+            .getClientMetricRegistry(effectiveTelemetryConfig);
         this.clientMetricsEnabled = clientMetricRegistrySnapshot != null;
         if (clientMetricRegistrySnapshot != null) {
             ClientTelemetryMetrics.add(clientMetricRegistrySnapshot);
