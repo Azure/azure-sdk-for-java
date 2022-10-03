@@ -37,6 +37,7 @@ public class VertxAsyncHttpClientBuilder {
     private static final long DEFAULT_CONNECT_TIMEOUT;
     private static final long DEFAULT_WRITE_TIMEOUT;
     private static final long DEFAULT_READ_TIMEOUT;
+    private static final long DEFAULT_IDLE_TIMEOUT;
 
     static {
         Configuration configuration = Configuration.getGlobalConfiguration();
@@ -46,12 +47,13 @@ public class VertxAsyncHttpClientBuilder {
             Duration.ofSeconds(60), LOGGER).getSeconds();
         DEFAULT_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT,
             Duration.ofSeconds(60), LOGGER).getSeconds();
+        DEFAULT_IDLE_TIMEOUT = Duration.ofSeconds(60).getSeconds();
     }
 
     private Duration readIdleTimeout;
     private Duration writeIdleTimeout;
     private Duration connectTimeout;
-    private Duration idleTimeout = Duration.ofSeconds(60);
+    private Duration idleTimeout;
     private ProxyOptions proxyOptions;
     private Configuration configuration;
     private HttpClientOptions httpClientOptions;
@@ -59,7 +61,7 @@ public class VertxAsyncHttpClientBuilder {
 
     /**
      * Sets the read idle timeout.
-     *
+     * <p>
      * The default read idle timeout is 60 seconds.
      *
      * @param readIdleTimeout the read idle timeout
@@ -72,7 +74,7 @@ public class VertxAsyncHttpClientBuilder {
 
     /**
      * Sets the write idle timeout.
-     *
+     * <p>
      * The default read idle timeout is 60 seconds.
      *
      * @param writeIdleTimeout the write idle timeout
@@ -85,7 +87,7 @@ public class VertxAsyncHttpClientBuilder {
 
     /**
      * Sets the connect timeout.
-     *
+     * <p>
      * The default connect timeout is 10 seconds.
      *
      * @param connectTimeout the connection timeout
@@ -98,7 +100,7 @@ public class VertxAsyncHttpClientBuilder {
 
     /**
      * Sets the connection idle timeout.
-     *
+     * <p>
      * The default connect timeout is 60 seconds.
      *
      * @param idleTimeout the connection idle timeout
@@ -186,27 +188,11 @@ public class VertxAsyncHttpClientBuilder {
         }
 
         if (this.httpClientOptions == null) {
-            this.httpClientOptions = new HttpClientOptions();
-
-            if (this.connectTimeout != null) {
-                this.httpClientOptions.setConnectTimeout((int) this.connectTimeout.toMillis());
-            } else {
-                this.httpClientOptions.setConnectTimeout((int) DEFAULT_CONNECT_TIMEOUT);
-            }
-
-            if (this.readIdleTimeout != null) {
-                this.httpClientOptions.setReadIdleTimeout((int) this.readIdleTimeout.getSeconds());
-            } else {
-                this.httpClientOptions.setReadIdleTimeout((int) DEFAULT_READ_TIMEOUT);
-            }
-
-            if (this.writeIdleTimeout != null) {
-                this.httpClientOptions.setWriteIdleTimeout((int) this.writeIdleTimeout.getSeconds());
-            } else {
-                this.httpClientOptions.setWriteIdleTimeout((int) DEFAULT_WRITE_TIMEOUT);
-            }
-
-            this.httpClientOptions.setIdleTimeout((int) this.idleTimeout.getSeconds());
+            this.httpClientOptions = new HttpClientOptions()
+                .setConnectTimeout(getTimeout(connectTimeout, false, DEFAULT_CONNECT_TIMEOUT))
+                .setReadIdleTimeout(getTimeout(readIdleTimeout, true, DEFAULT_READ_TIMEOUT))
+                .setWriteIdleTimeout(getTimeout(writeIdleTimeout, true, DEFAULT_WRITE_TIMEOUT))
+                .setIdleTimeout(getTimeout(idleTimeout, true, DEFAULT_IDLE_TIMEOUT));
 
             Configuration buildConfiguration = (this.configuration == null)
                 ? Configuration.getGlobalConfiguration()
@@ -258,12 +244,24 @@ public class VertxAsyncHttpClientBuilder {
         return new VertxAsyncHttpClient(client, configuredVertx);
     }
 
+    private static int getTimeout(Duration configuredTimeout, boolean isSeconds, long defaultTimeout) {
+        if (configuredTimeout == null) {
+            return (int) defaultTimeout;
+        }
+
+        if (configuredTimeout.isNegative()) {
+            return 0;
+        }
+
+        return (int) (isSeconds ? configuredTimeout.getSeconds() : configuredTimeout.toMillis());
+    }
+
     /**
-     * Reverses non proxy host string sanitization applied by {@link ProxyOptions}.
-     *
+     * Reverses non-proxy host string sanitization applied by {@link ProxyOptions}.
+     * <p>
      * This is necessary as Vert.x will apply its own sanitization logic.
      *
-     * @param nonProxyHosts The list of non proxy hosts
+     * @param nonProxyHosts The list of non-proxy hosts
      * @return String array of desanitized proxy host strings
      */
     private String[] desanitizedNonProxyHosts(String nonProxyHosts) {

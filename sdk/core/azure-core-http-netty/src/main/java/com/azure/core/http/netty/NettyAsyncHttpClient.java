@@ -18,6 +18,7 @@ import com.azure.core.http.netty.implementation.WriteTimeoutHandler;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.ByteArrayContent;
+import com.azure.core.implementation.util.ByteBufferContent;
 import com.azure.core.implementation.util.FileContent;
 import com.azure.core.implementation.util.InputStreamContent;
 import com.azure.core.implementation.util.SerializableContent;
@@ -168,6 +169,8 @@ class NettyAsyncHttpClient implements HttpClient {
                     // adds extra operators to achieve same result.
                     // The bytes are in memory at this time anyway and Unpooled.wrappedBuffer is lightweight.
                     return reactorNettyOutbound.send(Mono.just(Unpooled.wrappedBuffer(bodyContent.toBytes())));
+                } else if (bodyContent instanceof ByteBufferContent) {
+                    return reactorNettyOutbound.send(Mono.just(Unpooled.wrappedBuffer(bodyContent.toByteBuffer())));
                 } else if (bodyContent instanceof StringContent
                     || bodyContent instanceof SerializableContent) {
                     // This defers encoding final bytes until emission happens.

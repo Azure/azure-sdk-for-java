@@ -4,34 +4,46 @@
 package com.azure.core.http.vertx;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.vertx.implementation.BufferedVertxHttpResponse;
 import com.azure.core.http.vertx.implementation.VertxHttpAsyncResponse;
+import com.azure.core.implementation.util.BinaryDataContent;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.ByteArrayContent;
+import com.azure.core.implementation.util.ByteBufferContent;
+import com.azure.core.implementation.util.FileContent;
+import com.azure.core.implementation.util.SerializableContent;
+import com.azure.core.implementation.util.StringContent;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.ProgressReporter;
 import io.netty.buffer.Unpooled;
+import io.vertx.core.AsyncResult;
+import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
+import io.vertx.core.file.OpenOptions;
 import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpClientResponse;
+import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.RequestOptions;
-import io.vertx.core.streams.Pipe;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.MonoSink;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
-import java.nio.ByteBuffer;
 import java.util.Objects;
+
+import static io.netty.buffer.Unpooled.wrappedBuffer;
 
 /**
  * {@link HttpClient} implementation for the Vert.x {@link io.vertx.core.http.HttpClient}.
  */
 class VertxAsyncHttpClient implements HttpClient {
+    private final Vertx vertx;
     private final Scheduler scheduler;
     final io.vertx.core.http.HttpClient client;
 
@@ -41,9 +53,8 @@ class VertxAsyncHttpClient implements HttpClient {
      * @param client The Vert.x {@link io.vertx.core.http.HttpClient}
      */
     VertxAsyncHttpClient(io.vertx.core.http.HttpClient client, Vertx vertx) {
-        Objects.requireNonNull(client, "client cannot be null");
-        Objects.requireNonNull(vertx, "vertx cannot be null");
-        this.client = client;
+        this.vertx = Objects.requireNonNull(vertx, "vertx cannot be null");
+        this.client = Objects.requireNonNull(client, "client cannot be null");
         this.scheduler = Schedulers.fromExecutor(vertx.nettyEventLoopGroup());
     }
 
@@ -56,76 +67,112 @@ class VertxAsyncHttpClient implements HttpClient {
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
         boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
-        return Mono.create(sink -> toVertxHttpRequest(request).subscribe(vertxHttpRequest -> {
-            vertxHttpRequest.exceptionHandler(sink::error);
 
-            HttpHeaders requestHeaders = request.getHeaders();
-            if (requestHeaders != null) {
-                requestHeaders.stream().forEach(header ->
-                    vertxHttpRequest.putHeader(header.getName(), header.getValuesList()));
-                if (request.getHeaders().get("Content-Length") == null) {
-                    vertxHttpRequest.setChunked(true);
+        HttpMethod requestMethod = HttpMethod.valueOf(request.getHttpMethod().name());
+
+        RequestOptions options = new RequestOptions()
+            .setMethod(requestMethod)
+            .setAbsoluteURI(request.getUrl());
+
+        return Mono.create(sink -> client.request(options, handler -> {
+            if (handler.failed()) {
+                sink.error(handler.cause());
+                return;
+            }
+
+            HttpClientRequest vertxHttpRequest = handler.result();
+            boolean consumedContentLength = false; // Minor optimization to reduce String comparisons
+            for (HttpHeader header : request.getHeaders()) {
+                if (!consumedContentLength && "Content-Length".equalsIgnoreCase(header.getName())) {
+                    vertxHttpRequest.setChunked(header.getValue() == null);
+                    consumedContentLength = true;
                 }
-            } else {
+
+                vertxHttpRequest.putHeader(header.getName(), header.getValuesList());
+            }
+
+            if (!consumedContentLength) {
                 vertxHttpRequest.setChunked(true);
             }
 
-            vertxHttpRequest.response(event -> {
-                if (event.succeeded()) {
-                    HttpClientResponse vertxHttpResponse = event.result();
-                    vertxHttpResponse.exceptionHandler(sink::error);
+            // Handle any errors in the HTTP request using the MonoSink.
+            vertxHttpRequest.exceptionHandler(sink::error);
 
-                    if (eagerlyReadResponse) {
-                        vertxHttpResponse.body(bodyEvent -> {
-                            if (bodyEvent.succeeded()) {
-                                sink.success(new BufferedVertxHttpResponse(request, vertxHttpResponse,
-                                    bodyEvent.result().getBytes()));
-                            } else {
-                                sink.error(bodyEvent.cause());
-                            }
-                        });
-                    } else {
-                        // Pause the ReadStream before building the response as building the response may take time
-                        // and it's unknown on whether the stream is hot.
-                        vertxHttpResponse.pause();
-                        sink.success(new VertxHttpAsyncResponse(request, vertxHttpResponse));
-                    }
+            BinaryData requestBody = request.getBodyAsBinaryData();
+            if (requestBody == null) {
+                vertxHttpRequest.send().onComplete(responseHandler -> consumeVertxHttpResponse(responseHandler, sink,
+                    eagerlyReadResponse, request));
+            } else {
+                BinaryDataContent bodyContent = BinaryDataHelper.getContent(requestBody);
+                if (bodyContent instanceof ByteArrayContent
+                    || bodyContent instanceof StringContent
+                    || bodyContent instanceof SerializableContent) {
+                    writeWithProgress(vertxHttpRequest.send(Buffer.buffer(wrappedBuffer(bodyContent.toBytes()))),
+                        progressReporter, bodyContent.getLength())
+                        .onComplete(responseHandler -> consumeVertxHttpResponse(responseHandler, sink,
+                            eagerlyReadResponse, request));
+                } else if (bodyContent instanceof ByteBufferContent) {
+                    writeWithProgress(vertxHttpRequest.send(Buffer.buffer(wrappedBuffer(bodyContent.toByteBuffer()))),
+                        progressReporter, bodyContent.getLength())
+                        .onComplete(responseHandler -> consumeVertxHttpResponse(responseHandler, sink,
+                            eagerlyReadResponse, request));
+                } else if (bodyContent instanceof FileContent) {
+                    FileContent fileContent = (FileContent) bodyContent;
+                    vertx.fileSystem().open(fileContent.getFile().toString(), new OpenOptions().setRead(true))
+                        .compose(file -> {
+                            file = file.setReadPos(fileContent.getPosition()).setReadLength(fileContent.getLength());
+                            return writeWithProgress(vertxHttpRequest.send(file), progressReporter,
+                                bodyContent.getLength());
+                        })
+                        .onComplete(responseHandler -> consumeVertxHttpResponse(responseHandler, sink,
+                            eagerlyReadResponse, request));
                 } else {
-                    sink.error(event.cause());
+                    // The response handler needs to be set before sending the request.
+                    vertxHttpRequest.response(responseHandler -> consumeVertxHttpResponse(responseHandler, sink,
+                        eagerlyReadResponse, request));
+
+                    bodyContent.toFluxByteBuffer()
+                        .subscribeOn(scheduler)
+                        .map(Unpooled::wrappedBuffer)
+                        .map(Buffer::buffer)
+                        .subscribe(buffer ->
+                                writeWithProgress(vertxHttpRequest.write(buffer), progressReporter, buffer.length()),
+                            sink::error, vertxHttpRequest::end);
                 }
-            });
-
-            getRequestBody(request, progressReporter)
-                .subscribeOn(scheduler)
-                .map(Unpooled::wrappedBuffer)
-                .map(Buffer::buffer)
-                .subscribe(vertxHttpRequest::write, sink::error, vertxHttpRequest::end);
-        }, sink::error));
+            }
+        }));
     }
 
-    private Mono<HttpClientRequest> toVertxHttpRequest(HttpRequest request) {
-        HttpMethod httpMethod = request.getHttpMethod();
-        io.vertx.core.http.HttpMethod requestMethod = io.vertx.core.http.HttpMethod.valueOf(httpMethod.name());
+    private static void consumeVertxHttpResponse(AsyncResult<HttpClientResponse> responseHandler,
+        MonoSink<HttpResponse> sink, boolean eagerlyReadResponse, HttpRequest request) {
+        if (responseHandler.failed()) {
+            sink.error(responseHandler.cause());
+            return;
+        }
 
-        RequestOptions options = new RequestOptions();
-        options.setMethod(requestMethod);
-        options.setAbsoluteURI(request.getUrl());
-        return Mono.fromCompletionStage(client.request(options).toCompletionStage());
+        HttpClientResponse vertxHttpResponse = responseHandler.result();
+        if (eagerlyReadResponse) {
+            vertxHttpResponse.body(responseBodyHandler -> {
+                if (responseBodyHandler.failed()) {
+                    sink.error(responseHandler.cause());
+                    return;
+                }
+
+                sink.success(new BufferedVertxHttpResponse(request, vertxHttpResponse, responseBodyHandler.result()));
+            });
+        } else {
+            // Pause the ReadStream before building the response as building the response may take time
+            // and it's unknown on whether the stream is hot.
+            vertxHttpResponse.pause();
+            sink.success(new VertxHttpAsyncResponse(request, vertxHttpResponse));
+        }
     }
 
-    private Flux<ByteBuffer> getRequestBody(HttpRequest request, ProgressReporter progressReporter) {
-        Flux<ByteBuffer> body = request.getBody();
-        if (body == null) {
-            return Flux.empty();
-        }
-
-        if (progressReporter != null) {
-            body = body.map(buffer -> {
-                progressReporter.reportProgress(buffer.remaining());
-                return buffer;
-            });
-        }
-
-        return body;
+    private static <T> Future<T> writeWithProgress(Future<T> write, ProgressReporter progressReporter, long progress) {
+        return write.onSuccess(ignored -> {
+            if (progressReporter != null) {
+                progressReporter.reportProgress(progress);
+            }
+        });
     }
 }
