@@ -3,6 +3,7 @@
 ### 3.28.0-beta.1 (Unreleased)
 
 #### Features Added
+* Adding pagination support to `ReactiveRepository` which returns a CosmosPagedFlux. - See [PR 30966](https://github.com/Azure/azure-sdk-for-java/pull/30966)
 
 #### Breaking Changes
 
