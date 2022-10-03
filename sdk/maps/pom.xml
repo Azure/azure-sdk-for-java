@@ -17,6 +17,7 @@
         <module>azure-maps-route</module>
         <module>azure-maps-render</module>
         <module>azure-maps-timezone</module>
+        <module>azure-maps-geolocation</module>
       </modules>
 
       <dependencies>
@@ -40,6 +41,11 @@
           <artifactId>azure-maps-timezone</artifactId>
           <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-maps-timezone;current} -->
         </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-maps-geolocation</artifactId>
+          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-maps-geolocation;current} -->
+        </dependency>
       </dependencies>
 
       <build>
@@ -55,6 +61,7 @@
                 <include>com/azure/maps/route/*.class</include>
                 <include>com/azure/maps/render*.class</include>
                 <include>com/azure/maps/timezone*.class</include>
+                <include>com/azure/maps/geolocation*.class</include>
               </includes>
             </configuration>
           </plugin>
@@ -72,6 +79,7 @@
         <module>azure-maps-route</module>
         <module>azure-maps-render</module>
         <module>azure-maps-timezone</module>
+        <module>azure-maps-geolocation</module>
       </modules>
     </profile>
   </profiles>
