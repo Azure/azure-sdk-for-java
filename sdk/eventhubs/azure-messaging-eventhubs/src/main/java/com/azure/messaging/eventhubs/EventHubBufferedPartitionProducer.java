@@ -8,6 +8,7 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubBufferedProducerAsyncClient.BufferedProducerClientOptions;
+import com.azure.messaging.eventhubs.implementation.UncheckedInterruptedException;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendBatchFailedContext;
 import com.azure.messaging.eventhubs.models.SendBatchSucceededContext;
@@ -19,7 +20,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
 import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Schedulers;
-import reactor.util.concurrent.Queues;
 
 import java.io.Closeable;
 import java.time.Duration;
@@ -32,12 +32,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.EMIT_RESULT_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
-import static com.azure.messaging.eventhubs.implementation.ClientConstants.SIGNAL_TYPE_KEY;
 
 /**
  * Keeps track of publishing events to a partition.
@@ -59,16 +57,16 @@ class EventHubBufferedPartitionProducer implements Closeable {
     private final PublishResultSubscriber publishResultSubscriber;
 
     EventHubBufferedPartitionProducer(EventHubProducerAsyncClient client, String partitionId,
-        BufferedProducerClientOptions options, AmqpRetryOptions retryOptions) {
+        BufferedProducerClientOptions options, AmqpRetryOptions retryOptions, Sinks.Many<EventData> eventSink,
+        Queue<EventData> eventQueue) {
+
         this.client = client;
         this.partitionId = partitionId;
         this.errorContext = new AmqpErrorContext(client.getFullyQualifiedNamespace());
         this.createBatchOptions = new CreateBatchOptions().setPartitionId(partitionId);
         this.retryOptions = retryOptions;
-
-        final Supplier<Queue<EventData>> queueSupplier = Queues.get(options.getMaxEventBufferLengthPerPartition());
-        this.eventQueue = queueSupplier.get();
-        this.eventSink = Sinks.many().unicast().onBackpressureBuffer(eventQueue);
+        this.eventSink = eventSink;
+        this.eventQueue = eventQueue;
 
         final Flux<EventDataBatch> eventDataBatchFlux = new EventDataAggregator(eventSink.asFlux(),
             this::createNewBatch, client.getFullyQualifiedNamespace(), options, partitionId);
@@ -114,37 +112,37 @@ class EventHubBufferedPartitionProducer implements Closeable {
                 return;
             }
 
-            try {
-                if (isClosed.get()) {
-                    sink.error(new IllegalStateException(String.format("Partition publisher id[%s] was "
-                            + "closed between flushing events and now. Cannot enqueue events.", partitionId)));
-                    return;
-                }
+            if (isClosed.get()) {
+                sink.error(new IllegalStateException(String.format("Partition publisher id[%s] was "
+                    + "closed between flushing events and now. Cannot enqueue events.", partitionId)));
+                return;
+            }
 
-                eventSink.emitNext(eventData, (signalType, emitResult) -> {
-                    // If the draining queue is slower than the publishing queue.
-                    LOGGER.atInfo()
-                        .addKeyValue(PARTITION_ID_KEY, partitionId)
-                        .addKeyValue(SIGNAL_TYPE_KEY, signalType)
-                        .addKeyValue(EMIT_RESULT_KEY, emitResult)
-                        .log("Could not push event downstream.");
-                    switch (emitResult) {
-                        case FAIL_OVERFLOW:
-                        case FAIL_NON_SERIALIZED:
-                            return true;
-                        default:
-                            LOGGER.info("Not trying to emit again. EmitResult: {}", emitResult);
-                            return false;
-                    }
-                });
+            final Sinks.EmitResult emitResult = eventSink.tryEmitNext(eventData);
+            if (emitResult.isSuccess()) {
                 sink.success();
-            } catch (Exception e) {
-                sink.error(new AmqpException(false, "Unable to buffer message for partition: " + getPartitionId(), e,
+                return;
+            }
+
+            if (emitResult == Sinks.EmitResult.FAIL_NON_SERIALIZED || emitResult == Sinks.EmitResult.FAIL_OVERFLOW) {
+                // If the draining queue is slower than the publishing queue.
+                LOGGER.atInfo()
+                    .addKeyValue(PARTITION_ID_KEY, partitionId)
+                    .addKeyValue(EMIT_RESULT_KEY, emitResult)
+                    .log("Event could not be published downstream. Applying retry.");
+
+                sink.error(new AmqpException(true, emitResult + " occurred.", errorContext));
+            } else {
+                LOGGER.atWarning().addKeyValue(EMIT_RESULT_KEY, emitResult)
+                    .log("Event could not be published downstream. Not retrying.", emitResult);
+
+                sink.error(new AmqpException(false, "Unable to buffer message for partition: " + getPartitionId(),
                     errorContext));
             }
         });
 
-        return withRetry(enqueueOperation, retryOptions, "Timed out trying to enqueue event data.", true);
+        return withRetry(enqueueOperation, retryOptions, "Timed out trying to enqueue event data.", true)
+            .onErrorMap(IllegalStateException.class, error -> new AmqpException(true, "Retries exhausted.", error, errorContext));
     }
 
     /**
@@ -361,9 +359,4 @@ class EventHubBufferedPartitionProducer implements Closeable {
         }
     }
 
-    static class UncheckedInterruptedException extends RuntimeException {
-        UncheckedInterruptedException(Throwable error) {
-            super("Unable to fetch batch.", error);
-        }
-    }
 }

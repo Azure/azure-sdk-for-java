@@ -14,15 +14,19 @@ import com.azure.messaging.eventhubs.models.SendBatchSucceededContext;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
+import reactor.util.concurrent.Queues;
 
 import java.io.Closeable;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -89,9 +93,7 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
                 return Flux.fromArray(as);
             })
             .map(partitionId -> {
-                return partitionProducers.computeIfAbsent(partitionId, key -> {
-                    return new EventHubBufferedPartitionProducer(client, key, clientOptions, retryOptions);
-                });
+                return partitionProducers.computeIfAbsent(partitionId, key -> createPartitionProducer(key));
             }).then();
 
         this.initialisationMono = partitionProducerFluxes.cache();
@@ -245,9 +247,7 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
             }
 
             final EventHubBufferedPartitionProducer producer =
-                partitionProducers.computeIfAbsent(options.getPartitionId(), key -> {
-                    return new EventHubBufferedPartitionProducer(client, key, clientOptions, retryOptions);
-                });
+                partitionProducers.computeIfAbsent(options.getPartitionId(), key -> createPartitionProducer(key));
 
             return producer.enqueueEvent(eventData).thenReturn(getBufferedEventCount());
         }
@@ -269,9 +269,7 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
             return partitionIdsMono.flatMap(ids -> {
                 final String partitionId = partitionResolver.assignRoundRobin(ids);
                 final EventHubBufferedPartitionProducer producer =
-                    partitionProducers.computeIfAbsent(partitionId, key -> {
-                        return new EventHubBufferedPartitionProducer(client, key, clientOptions, retryOptions);
-                    });
+                    partitionProducers.computeIfAbsent(partitionId, key -> createPartitionProducer(key));
 
                 return producer.enqueueEvent(eventData).thenReturn(getBufferedEventCount());
             });
@@ -361,6 +359,16 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
 
         partitionProducers.values().forEach(partitionProducer -> partitionProducer.close());
         client.close();
+    }
+
+    private EventHubBufferedPartitionProducer createPartitionProducer(String partitionId) {
+        final Supplier<Queue<EventData>> queueSupplier =
+            Queues.get(clientOptions.getMaxEventBufferLengthPerPartition());
+        final Queue<EventData> eventQueue = queueSupplier.get();
+        final Sinks.Many<EventData> eventSink = Sinks.many().unicast().onBackpressureBuffer(eventQueue);
+
+        return new EventHubBufferedPartitionProducer(client, partitionId, clientOptions, retryOptions,
+            eventSink, eventQueue);
     }
 
     /**
