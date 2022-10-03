@@ -112,7 +112,7 @@ public class EventHandlerUnitTests {
     public void parsePlayFailedEvent() {
         String receivedEvent = "[{\n"
             + "\"id\": \"704a7a96-4d74-4ebe-9cd0-b7cc39c3d7b1\",\n"
-            + "\"source\": \"calling/callConnections/callConnectionId/PlayFaile\",\n"
+            + "\"source\": \"calling/callConnections/callConnectionId/PlayFailed\",\n"
             + "\"type\": \"Microsoft.Communication.PlayFailed\",\n"
             + "\"data\": {\n"
             + "\"resultInformation\": {\n"
