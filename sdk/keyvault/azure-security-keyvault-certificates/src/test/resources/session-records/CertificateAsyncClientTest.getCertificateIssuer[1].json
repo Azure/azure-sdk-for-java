@@ -1,29 +1,4 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "PUT",
-    "Uri" : "https://REDACTED.vault.azure.net/certificates/issuers/testissuer1457767eab?api-version=7.3",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.6.8)",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "382",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Date" : "Fri, 26 Aug 2022 21:44:23 GMT",
-      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "centralus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.75;act_addr_fam=InterNetwork;",
-      "Expires" : "-1",
-      "x-ms-request-id" : "129d21e4-780d-4f45-b26c-5c8870d2b2e5",
-      "x-ms-keyvault-service-version" : "1.9.501.1",
-      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/issuers/testissuer1457767eab\",\"provider\":\"Test\",\"credentials\":{\"account_id\":\"issuerAccountId\"},\"org_details\":{\"id\":\"orgId\",\"zip\":0,\"admin_details\":[{\"first_name\":\"first\",\"last_name\":\"last\",\"email\":\"first.last@hotmail.com\",\"phone\":\"12345\"}]},\"attributes\":{\"enabled\":true,\"created\":1661550264,\"updated\":1661550264}}",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "testissuer1457767eab" ]
+  "networkCallRecords" : [ ],
+  "variables" : [ "testissuer778750f9db" ]
 }

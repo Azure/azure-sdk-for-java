@@ -3,7 +3,7 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.vault.azure.net/certificates/restore?api-version=7.3",
     "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.6.8)",
+      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -12,14 +12,14 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "Date" : "Fri, 26 Aug 2022 21:44:22 GMT",
+      "Date" : "Mon, 03 Oct 2022 19:42:40 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
       "x-ms-keyvault-region" : "centralus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.75;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "9d8e5b37-c490-4e92-9b85-4eeaca822896",
-      "x-ms-keyvault-service-version" : "1.9.501.1",
+      "x-ms-request-id" : "a6d5be8f-8228-4d8e-8328-865b55911bb8",
+      "x-ms-keyvault-service-version" : "1.9.538.1",
       "Body" : "{\"error\":{\"code\":\"Malformed backup blob\",\"message\":\"Backup blob is corrupt.\"}}",
       "Content-Type" : "application/json; charset=utf-8"
     },
