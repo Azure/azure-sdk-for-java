@@ -54,8 +54,8 @@ With above configuration, `azure` client can be authenticated by following code:
 // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
 DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
-// Creates a builder
-TimezoneClient client = new TimezoneClientBuilder() 
+// Creates a client
+TimezoneClient client = new TimezoneClientBuilder()
     .credential(tokenCredential)
     .timezoneClientId(System.getenv("MAPS_CLIENT_ID"))
     .buildClient();

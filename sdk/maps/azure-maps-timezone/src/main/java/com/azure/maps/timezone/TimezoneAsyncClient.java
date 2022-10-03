@@ -30,13 +30,12 @@ import reactor.core.publisher.Mono;
 * &#47;&#47; Authenticates using subscription key
 * AzureKeyCredential keyCredential = new AzureKeyCredential&#40;System.getenv&#40;&quot;SUBSCRIPTION_KEY&quot;&#41;&#41;;
 *
-* &#47;&#47; Creates a builder
-* TimezoneClientBuilder builder = new TimezoneClientBuilder&#40;&#41;;
-* builder.credential&#40;keyCredential&#41;;
-* builder.httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;;
+* &#47;&#47; Creates a client
+* TimezoneAsyncClient asyncClient = new TimezoneClientBuilder&#40;&#41;
+*     .credential&#40;keyCredential&#41;
+*     .timezoneClientId&#40;System.getenv&#40;&quot;MAPS_CLIENT_ID&quot;&#41;&#41;
+*     .buildAsyncClient&#40;&#41;;
 *
-* &#47;&#47; Builds the client
-* TimezoneAsyncClient client = builder.buildAsyncClient&#40;&#41;;
 * </pre>
 * <!-- end com.azure.maps.timezone.async.builder.key.instantiation -->
 */

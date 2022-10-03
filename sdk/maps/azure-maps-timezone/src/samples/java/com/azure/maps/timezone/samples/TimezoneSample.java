@@ -4,8 +4,6 @@
 package com.azure.maps.timezone.samples;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.maps.timezone.TimezoneAsyncClient;
@@ -18,7 +16,7 @@ public class TimezoneSample {
         // Authenticates using subscription key
         AzureKeyCredential keyCredential = new AzureKeyCredential(System.getenv("SUBSCRIPTION_KEY"));
 
-        // Creates a builder
+        // Creates a client
         TimezoneClient client = new TimezoneClientBuilder() 
             .credential(keyCredential)
             .timezoneClientId(System.getenv("MAPS_CLIENT_ID"))
@@ -34,14 +32,11 @@ public class TimezoneSample {
         // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
         DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
-        // Creates a builder
-        TimezoneClientBuilder builder = new TimezoneClientBuilder();
-        builder.credential(tokenCredential);
-        builder.timezoneClientId(System.getenv("MAPS_CLIENT_ID"));
-        builder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
-
-        // Builds a client
-        TimezoneClient client = builder.buildClient();
+        // Creates a client
+        TimezoneClient client = new TimezoneClientBuilder()
+            .credential(tokenCredential)
+            .timezoneClientId(System.getenv("MAPS_CLIENT_ID"))
+            .buildClient();
         // END: com.azure.maps.timezone.sync.builder.ad.instantiation
 
         return client;
@@ -52,7 +47,7 @@ public class TimezoneSample {
         // Authenticates using subscription key
         AzureKeyCredential keyCredential = new AzureKeyCredential(System.getenv("SUBSCRIPTION_KEY"));
 
-        // Creates a builder
+        // Creates a client
         TimezoneAsyncClient asyncClient = new TimezoneClientBuilder()
             .credential(keyCredential)
             .timezoneClientId(System.getenv("MAPS_CLIENT_ID"))
@@ -69,7 +64,7 @@ public class TimezoneSample {
         // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
         DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
-        // Creates a builder
+        // Creates a client
         TimezoneAsyncClient asyncClient = new TimezoneClientBuilder()
             .credential(tokenCredential)
             .timezoneClientId(System.getenv("MAPS_CLIENT_ID"))
