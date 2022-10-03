@@ -14,13 +14,11 @@ import java.util.Objects;
  * Metadata that can be used to wrap/unwrap a Data Encryption Key using a Customer Managed Key.
  * See https://aka.ms/CosmosClientEncryption for more information on client-side encryption support in Azure Cosmos DB.
  */
-@Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class EncryptionKeyWrapMetadata {
 
     /**
      * For JSON deserialize
      */
-    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public EncryptionKeyWrapMetadata() {
     }
 
@@ -29,7 +27,6 @@ public final class EncryptionKeyWrapMetadata {
      *
      * @param source Existing instance from which to initialize.
      */
-    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public EncryptionKeyWrapMetadata(EncryptionKeyWrapMetadata source) {
         this.type = source.type;
         this.name = source.name;
@@ -62,7 +59,6 @@ public final class EncryptionKeyWrapMetadata {
      * @param value Value of the metadata.
      * @param algorithm Algorithm of the metadata.
      */
-    @Beta(value = Beta.SinceVersion.V4_27_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public EncryptionKeyWrapMetadata(String type, String name, String value, String algorithm) {
         Preconditions.checkNotNull(type, "type is null");
         Preconditions.checkNotNull(value, "value is null");
@@ -97,7 +93,6 @@ public final class EncryptionKeyWrapMetadata {
      * credential information.
      * @return value of metadata
      */
-    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getValue() {
         return value;
     }
@@ -109,7 +104,6 @@ public final class EncryptionKeyWrapMetadata {
      * credential information.
      * @return name of metadata.
      */
-    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getName() {
         return name;
     }
@@ -121,7 +115,6 @@ public final class EncryptionKeyWrapMetadata {
      * credential information.
      * @return type of metadata.
      */
-    @Beta(value = Beta.SinceVersion.V4_16_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getType() {
         return type;
     }
@@ -133,7 +126,6 @@ public final class EncryptionKeyWrapMetadata {
      * credential information.
      * @return algorithm of metadata.
      */
-    @Beta(value = Beta.SinceVersion.V4_16_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getAlgorithm() {
         return algorithm;
     }
@@ -159,5 +151,4 @@ public final class EncryptionKeyWrapMetadata {
     public int hashCode() {
         return Objects.hash(type, name, value, algorithm);
     }
-
 }

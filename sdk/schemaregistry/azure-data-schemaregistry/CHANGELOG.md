@@ -4,6 +4,14 @@
 
 ### Features Added
 
+- Added `getVersion` to `SchemaProperties`.
+- Added the following methods in `SchemaRegistryAsyncClient`:
+  - `Mono<SchemaRegistrySchema> getSchema(String groupName, String schemaName, int schemaVersion)`
+  - `Mono<Response<SchemaRegistrySchema>> getSchemaWithResponse(String groupName, String schemaName, int schemaVersion)`
+- Added the following methods in `SchemaRegistryClient`:
+    - `SchemaRegistrySchema getSchema(String groupName, String schemaName, int schemaVersion)`
+    - `Response<SchemaRegistrySchema> getSchemaWithResponse(String groupName, String schemaName, int schemaVersion, Context context)`
+
 ### Breaking Changes
 
 ### Bugs Fixed
