@@ -41,7 +41,7 @@ public class CallMediaLiveTests extends CallAutomationLiveTestBase {
          * 4. terminate the call.
          */
 
-        CallAutomationClient callClient = getCallingServerClientUsingConnectionString(httpClient)
+        CallAutomationClient callClient = getCallAutomationClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("playMediaInACall", next))
             .buildClient();
 

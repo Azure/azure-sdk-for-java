@@ -37,7 +37,7 @@ public class CallRecordingAsyncLiveTests extends CallAutomationLiveTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void recordingOperations(HttpClient httpClient) {
-        CallAutomationAsyncClient client = getCallingServerClientUsingConnectionString(httpClient)
+        CallAutomationAsyncClient client = getCallAutomationClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("recordingOperationsAsync", next))
             .buildAsyncClient();
 

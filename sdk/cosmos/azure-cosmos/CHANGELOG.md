@@ -1,5 +1,15 @@
 ## Release History
 
+### 4.38.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
 ### 4.37.0 (2022-09-30)
 
 #### Features Added
@@ -8,6 +18,9 @@
 
 #### Bugs Fixed
 * Fixed a race condition that could result in a memory/thread leak for `BulkExecutor` instances (and their corresponding `cosmos-daemon-BulkExecutor-*` thread). - See [PR 31082](https://github.com/Azure/azure-sdk-for-java/pull/31082)
+
+#### Other Changes
+* Enable replica validation by default - See [PR 31159](https://github.com/Azure/azure-sdk-for-java/pull/31159)
 
 ### 4.36.0 (2022-09-15)
 
