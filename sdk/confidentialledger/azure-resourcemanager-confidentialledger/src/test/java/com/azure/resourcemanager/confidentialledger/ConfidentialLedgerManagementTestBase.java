@@ -16,9 +16,11 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
-import javax.security.auth.login.Configuration;
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ConfidentialLedgerManagementTestBase extends TestBase {
     public static AzureProfile profile;
@@ -34,17 +36,20 @@ public class ConfidentialLedgerManagementTestBase extends TestBase {
         credential = new DefaultAzureCredentialBuilder().build();
 
         // Create a resource group for testing in LIVE and RECORD modes only
+        String testResourceGroupName = "acl-sdk-test-rg";
         if (!System.getenv("AZURE_TEST_MODE").equals("PLAYBACK")) {
             testResourceGroup = ResourceManager
                 .authenticate(credential, profile)
                 .withDefaultSubscription()
                 .resourceGroups()
-                .define("acl-sdk-test-rg")
+                .define(testResourceGroupName)
                 .withRegion("eastus")
                 .create();
         }
         else {
-            testResourceGroup = new MockResourceGroup("acl-sdk-test-rg");
+            // Mock the test resource group
+            testResourceGroup = mock(ResourceGroup.class);
+            when(testResourceGroup.name()).thenReturn(testResourceGroupName);
         }
     }
 
