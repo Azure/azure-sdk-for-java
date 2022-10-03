@@ -14,7 +14,6 @@ public class ConfidentialLedgerManagementOperations {
     public ConfidentialLedgerManagementOperations(ConfidentialLedgerManager ledgerManager) {
         this.ledgerManager = ledgerManager;
     }
-
     public void createLedger(
             String ledgerName,
             String resourceGroupName,
@@ -38,7 +37,6 @@ public class ConfidentialLedgerManagementOperations {
                 )
                 .create();
     }
-
     public void createLedger(
         String ledgerName,
         String resourceGroupName,
@@ -51,7 +49,6 @@ public class ConfidentialLedgerManagementOperations {
             .withRegion(location)
             .create();
     }
-
     public void deleteLedger(String resourceGroupName, String ledgerName) {
         ledgerManager
                 .ledgers()
@@ -59,11 +56,10 @@ public class ConfidentialLedgerManagementOperations {
     }
 
     public ConfidentialLedger getLedger(String resourceGroupName, String ledgerName) {
-        try{
+        try {
             ConfidentialLedger ledger = ledgerManager.ledgers().getByResourceGroup(resourceGroupName, ledgerName);
             return ledger;
-        }
-        catch (ManagementException ex) {
+        } catch (ManagementException ex) {
             return null;
         }
     }

@@ -21,10 +21,12 @@ import java.util.Map;
 public class ConfidentialLedgerManagementTest extends ConfidentialLedgerManagementTestBase {
     @Test
     public void ledgerCreateTest() {
+        ConfidentialLedgerManagementOperations ledgerOperations = getLedgerOperationsInstance();
+
         // Ledger meta data
         String ledgerName = "acl-java-sdk-create-test";
-        String resourceGroupName = testResourceGroup.name();
-        String ledgerId = "/subscriptions/" + profile.getSubscriptionId()
+        String resourceGroupName = getTestResourceGroup().name();
+        String ledgerId = "/subscriptions/" + getAzureProfile().getSubscriptionId()
             + "/resourceGroups/" + resourceGroupName.toLowerCase()
             + "/providers/Microsoft.ConfidentialLedger"
             + "/Ledgers/" + ledgerName.toLowerCase();
@@ -71,8 +73,10 @@ public class ConfidentialLedgerManagementTest extends ConfidentialLedgerManageme
 
     @Test
     public void ledgerDeleteTest() {
+        ConfidentialLedgerManagementOperations ledgerOperations = getLedgerOperationsInstance();
+
         String ledgerName = "acl-java-sdk-delete-test";
-        String resourceGroupName = testResourceGroup.name();
+        String resourceGroupName = getTestResourceGroup().name();
         String location = "eastus";
         ledgerOperations.createLedger(ledgerName, resourceGroupName, location);
 

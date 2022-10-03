@@ -23,42 +23,26 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class ConfidentialLedgerManagementTestBase extends TestBase {
-    public static AzureProfile profile;
-    public static TokenCredential credential;
-    public static ResourceGroup testResourceGroup;
-    public ConfidentialLedgerManagementOperations ledgerOperations;
-
+    private static AzureProfile azureProfile;
+    private static TokenCredential credential;
+    private static ResourceGroup testResourceGroup;
+    private ConfidentialLedgerManagementOperations ledgerOperationsInstance;
     @BeforeAll
     public static void setup() {
-
         // Authenticate
-        profile = new AzureProfile(AzureEnvironment.AZURE);
-        credential = new DefaultAzureCredentialBuilder().build();
+        setAzureProfile();
+        setCredential();
 
         // Create a resource group for testing in LIVE and RECORD modes only
         String testResourceGroupName = "acl-sdk-test-rg";
-        if (!System.getenv("AZURE_TEST_MODE").equals("PLAYBACK")) {
-            testResourceGroup = ResourceManager
-                .authenticate(credential, profile)
-                .withDefaultSubscription()
-                .resourceGroups()
-                .define(testResourceGroupName)
-                .withRegion("eastus")
-                .create();
-        }
-        else {
-            // Mock the test resource group
-            testResourceGroup = mock(ResourceGroup.class);
-            when(testResourceGroup.name()).thenReturn(testResourceGroupName);
-        }
+        setTestResourceGroup(testResourceGroupName);
     }
-
     @AfterAll
     public static void cleanUp() {
         // Delete the created resource group in LIVE and RECORD modes only
         if (!System.getenv("AZURE_TEST_MODE").equals("PLAYBACK")) {
             ResourceManager
-                .authenticate(credential, profile)
+                .authenticate(getCredential(), getAzureProfile())
                 .withDefaultSubscription()
                 .resourceGroups()
                 .deleteByName(testResourceGroup.name());
@@ -69,30 +53,62 @@ public class ConfidentialLedgerManagementTestBase extends TestBase {
         ConfidentialLedgerManager ledgerManager = null;
         if (getTestMode() == TestMode.LIVE) {
             ledgerManager = ConfidentialLedgerManager
-                .authenticate(credential, profile);
-        }
-        else if (getTestMode() == TestMode.RECORD) {
+                .authenticate(getCredential(), getAzureProfile());
+        } else if (getTestMode() == TestMode.RECORD) {
             ledgerManager = ConfidentialLedgerManager
                 .configure()
                 .withPolicy(interceptorManager.getRecordPolicy())
-                .authenticate(credential, profile);
-        }
-        else if (getTestMode() == TestMode.PLAYBACK) {
+                .authenticate(getCredential(), getAzureProfile());
+        } else if (getTestMode() == TestMode.PLAYBACK) {
             ledgerManager = ConfidentialLedgerManager
                 .configure()
                 .withHttpClient(interceptorManager.getPlaybackClient())
-                .authenticate(credential, profile);
+                .authenticate(getCredential(), getAzureProfile());
         }
 
-        ledgerOperations = new ConfidentialLedgerManagementOperations(ledgerManager);
+        ledgerOperationsInstance = new ConfidentialLedgerManagementOperations(ledgerManager);
+    }
+    public static ResourceGroup getTestResourceGroup() {
+        return testResourceGroup;
+    }
+    public static void setTestResourceGroup(String testResourceGroupName) {
+        if (!System.getenv("AZURE_TEST_MODE").equals("PLAYBACK")) {
+            testResourceGroup = ResourceManager
+                .authenticate(getCredential(), getAzureProfile())
+                .withDefaultSubscription()
+                .resourceGroups()
+                .define(testResourceGroupName)
+                .withRegion("eastus")
+                .create();
+        } else {
+            // Mock the test resource group
+            testResourceGroup = mock(ResourceGroup.class);
+            when(testResourceGroup.name()).thenReturn(testResourceGroupName);
+        }
+    }
+    public static AzureProfile getAzureProfile() {
+        return azureProfile;
+    }
+    public static void setAzureProfile() {
+        azureProfile = new AzureProfile(AzureEnvironment.AZURE);
     }
 
+    public static TokenCredential getCredential() {
+        return credential;
+    }
+
+    public static void setCredential() {
+        credential = new DefaultAzureCredentialBuilder().build();
+    }
+
+    public ConfidentialLedgerManagementOperations getLedgerOperationsInstance() {
+        return ledgerOperationsInstance;
+    }
     protected Map<String, String> mapOf(String... inputs) {
         Map<String, String> map = new HashMap<>();
-        for(int i = 0; i < inputs.length; i += 2) {
+        for (int i = 0; i < inputs.length; i += 2) {
             map.put(inputs[i], inputs[i + 1]);
         }
         return map;
     }
-
 }
