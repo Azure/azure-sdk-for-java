@@ -166,7 +166,7 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
                     .setRecordingContent(RecordingContent.AUDIO)
                     .setRecordingFormat(RecordingFormat.WAV)
                     .setRecordingStateCallbackUrl(DISPATCHER_CALLBACK)
-                    .setChannelAffinity(new ArrayList<>() {
+                    .setChannelAffinity(new ArrayList<ChannelAffinity>() {
                         {
                             add(new ChannelAffinity(0, source));
                             add(new ChannelAffinity(1, target));
