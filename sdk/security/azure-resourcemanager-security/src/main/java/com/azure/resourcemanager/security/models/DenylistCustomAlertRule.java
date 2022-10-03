@@ -6,7 +6,6 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +16,6 @@ import java.util.List;
 @JsonTypeName("DenylistCustomAlertRule")
 @Fluent
 public final class DenylistCustomAlertRule extends ListCustomAlertRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DenylistCustomAlertRule.class);
-
     /*
      * The values to deny. The format of the values depends on the rule type.
      */
@@ -61,10 +58,12 @@ public final class DenylistCustomAlertRule extends ListCustomAlertRule {
     public void validate() {
         super.validate();
         if (denylistValues() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property denylistValues in model DenylistCustomAlertRule"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DenylistCustomAlertRule.class);
 }

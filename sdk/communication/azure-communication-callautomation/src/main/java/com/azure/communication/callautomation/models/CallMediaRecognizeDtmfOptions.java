@@ -28,7 +28,7 @@ public class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptions {
      * List of tones that will stop recognizing.
      */
     @JsonProperty(value = "stopTones")
-    private List<Tone> stopTones;
+    private List<DtmfTone> stopDtmfTones;
 
     /**
      * Get the interToneTimeout property: Time to wait between DTMF inputs to stop recognizing.
@@ -61,42 +61,34 @@ public class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptions {
     }
 
     /**
-     * Set the maxTonesToCollect property: Maximum number of DTMFs to be collected.
-     *
-     * @param maxTonesToCollect the maxTonesToCollect value to set.
-     * @return the DtmfConfigurationsInternal object itself.
-     */
-    public CallMediaRecognizeDtmfOptions setMaxTonesToCollect(Integer maxTonesToCollect) {
-        this.maxTonesToCollect = maxTonesToCollect;
-        return this;
-    }
-
-    /**
      * Get the stopTones property: List of tones that will stop recognizing.
      *
      * @return the stopTones value.
      */
-    public List<Tone> getStopTones() {
-        return this.stopTones;
+    public List<DtmfTone> getStopTones() {
+        return this.stopDtmfTones;
     }
 
     /**
      * Set the stopTones property: List of tones that will stop recognizing.
      *
-     * @param stopTones the stopTones value to set.
+     * @param stopDtmfTones the stopTones value to set.
      * @return the DtmfConfigurationsInternal object itself.
      */
-    public CallMediaRecognizeDtmfOptions setStopTones(List<Tone> stopTones) {
-        this.stopTones = stopTones;
+    public CallMediaRecognizeDtmfOptions setStopTones(List<DtmfTone> stopDtmfTones) {
+        this.stopDtmfTones = stopDtmfTones;
         return this;
     }
 
     /**
      * Initializes a CallMediaRecognizeDtmfOptions object.
+     *
      * @param targetParticipant Target participant of DTFM tone recognition.
+     * @param maxTonesToCollect Maximum number of DTMF tones to be collected.
      */
-    public CallMediaRecognizeDtmfOptions(CommunicationIdentifier targetParticipant) {
+    public CallMediaRecognizeDtmfOptions(CommunicationIdentifier targetParticipant, int maxTonesToCollect) {
         super(RecognizeInputType.DTMF, targetParticipant);
         this.interToneTimeout = Duration.ofSeconds(2);
+        this.maxTonesToCollect = maxTonesToCollect;
     }
 }

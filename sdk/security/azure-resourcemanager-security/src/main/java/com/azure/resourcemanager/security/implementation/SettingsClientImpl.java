@@ -27,17 +27,14 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.SettingsClient;
 import com.azure.resourcemanager.security.fluent.models.SettingInner;
+import com.azure.resourcemanager.security.models.SettingName;
 import com.azure.resourcemanager.security.models.SettingsList;
-import com.azure.resourcemanager.security.models.SettingsSettingName;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SettingsClient. */
 public final class SettingsClientImpl implements SettingsClient {
-    private final ClientLogger logger = new ClientLogger(SettingsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SettingsService service;
 
@@ -80,7 +77,7 @@ public final class SettingsClientImpl implements SettingsClient {
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("settingName") SettingsSettingName settingName,
+            @PathParam("settingName") SettingName settingName,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -92,7 +89,7 @@ public final class SettingsClientImpl implements SettingsClient {
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("settingName") SettingsSettingName settingName,
+            @PathParam("settingName") SettingName settingName,
             @BodyParam("application/json") SettingInner setting,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -109,11 +106,11 @@ public final class SettingsClientImpl implements SettingsClient {
     }
 
     /**
-     * Settings about different configurations in security center.
+     * Settings about different configurations in Microsoft Defender for Cloud.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription settings list.
+     * @return subscription settings list along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SettingInner>> listSinglePageAsync() {
@@ -129,7 +126,7 @@ public final class SettingsClientImpl implements SettingsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
+        final String apiVersion = "2022-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -149,13 +146,13 @@ public final class SettingsClientImpl implements SettingsClient {
     }
 
     /**
-     * Settings about different configurations in security center.
+     * Settings about different configurations in Microsoft Defender for Cloud.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription settings list.
+     * @return subscription settings list along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SettingInner>> listSinglePageAsync(Context context) {
@@ -171,7 +168,7 @@ public final class SettingsClientImpl implements SettingsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
+        final String apiVersion = "2022-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -188,11 +185,11 @@ public final class SettingsClientImpl implements SettingsClient {
     }
 
     /**
-     * Settings about different configurations in security center.
+     * Settings about different configurations in Microsoft Defender for Cloud.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription settings list.
+     * @return subscription settings list as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SettingInner> listAsync() {
@@ -200,13 +197,13 @@ public final class SettingsClientImpl implements SettingsClient {
     }
 
     /**
-     * Settings about different configurations in security center.
+     * Settings about different configurations in Microsoft Defender for Cloud.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription settings list.
+     * @return subscription settings list as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SettingInner> listAsync(Context context) {
@@ -215,11 +212,11 @@ public final class SettingsClientImpl implements SettingsClient {
     }
 
     /**
-     * Settings about different configurations in security center.
+     * Settings about different configurations in Microsoft Defender for Cloud.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription settings list.
+     * @return subscription settings list as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SettingInner> list() {
@@ -227,13 +224,13 @@ public final class SettingsClientImpl implements SettingsClient {
     }
 
     /**
-     * Settings about different configurations in security center.
+     * Settings about different configurations in Microsoft Defender for Cloud.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription settings list.
+     * @return subscription settings list as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SettingInner> list(Context context) {
@@ -241,16 +238,16 @@ public final class SettingsClientImpl implements SettingsClient {
     }
 
     /**
-     * Settings of different configurations in security center.
+     * Settings of different configurations in Microsoft Defender for Cloud.
      *
      * @param settingName The name of the setting.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the kind of the security setting.
+     * @return the kind of the security setting along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SettingInner>> getWithResponseAsync(SettingsSettingName settingName) {
+    private Mono<Response<SettingInner>> getWithResponseAsync(SettingName settingName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -266,7 +263,7 @@ public final class SettingsClientImpl implements SettingsClient {
         if (settingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter settingName is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
+        final String apiVersion = "2022-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -283,17 +280,17 @@ public final class SettingsClientImpl implements SettingsClient {
     }
 
     /**
-     * Settings of different configurations in security center.
+     * Settings of different configurations in Microsoft Defender for Cloud.
      *
      * @param settingName The name of the setting.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the kind of the security setting.
+     * @return the kind of the security setting along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SettingInner>> getWithResponseAsync(SettingsSettingName settingName, Context context) {
+    private Mono<Response<SettingInner>> getWithResponseAsync(SettingName settingName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -309,7 +306,7 @@ public final class SettingsClientImpl implements SettingsClient {
         if (settingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter settingName is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
+        final String apiVersion = "2022-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -317,29 +314,21 @@ public final class SettingsClientImpl implements SettingsClient {
     }
 
     /**
-     * Settings of different configurations in security center.
+     * Settings of different configurations in Microsoft Defender for Cloud.
      *
      * @param settingName The name of the setting.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the kind of the security setting.
+     * @return the kind of the security setting on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SettingInner> getAsync(SettingsSettingName settingName) {
-        return getWithResponseAsync(settingName)
-            .flatMap(
-                (Response<SettingInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    private Mono<SettingInner> getAsync(SettingName settingName) {
+        return getWithResponseAsync(settingName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Settings of different configurations in security center.
+     * Settings of different configurations in Microsoft Defender for Cloud.
      *
      * @param settingName The name of the setting.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -348,38 +337,37 @@ public final class SettingsClientImpl implements SettingsClient {
      * @return the kind of the security setting.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SettingInner get(SettingsSettingName settingName) {
+    public SettingInner get(SettingName settingName) {
         return getAsync(settingName).block();
     }
 
     /**
-     * Settings of different configurations in security center.
+     * Settings of different configurations in Microsoft Defender for Cloud.
      *
      * @param settingName The name of the setting.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the kind of the security setting.
+     * @return the kind of the security setting along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SettingInner> getWithResponse(SettingsSettingName settingName, Context context) {
+    public Response<SettingInner> getWithResponse(SettingName settingName, Context context) {
         return getWithResponseAsync(settingName, context).block();
     }
 
     /**
-     * updating settings about different configurations in security center.
+     * updating settings about different configurations in Microsoft Defender for Cloud.
      *
      * @param settingName The name of the setting.
      * @param setting Setting object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the kind of the security setting.
+     * @return the kind of the security setting along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SettingInner>> updateWithResponseAsync(
-        SettingsSettingName settingName, SettingInner setting) {
+    private Mono<Response<SettingInner>> updateWithResponseAsync(SettingName settingName, SettingInner setting) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -400,7 +388,7 @@ public final class SettingsClientImpl implements SettingsClient {
         } else {
             setting.validate();
         }
-        final String apiVersion = "2021-06-01";
+        final String apiVersion = "2022-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -418,7 +406,7 @@ public final class SettingsClientImpl implements SettingsClient {
     }
 
     /**
-     * updating settings about different configurations in security center.
+     * updating settings about different configurations in Microsoft Defender for Cloud.
      *
      * @param settingName The name of the setting.
      * @param setting Setting object.
@@ -426,11 +414,11 @@ public final class SettingsClientImpl implements SettingsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the kind of the security setting.
+     * @return the kind of the security setting along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SettingInner>> updateWithResponseAsync(
-        SettingsSettingName settingName, SettingInner setting, Context context) {
+        SettingName settingName, SettingInner setting, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -451,7 +439,7 @@ public final class SettingsClientImpl implements SettingsClient {
         } else {
             setting.validate();
         }
-        final String apiVersion = "2021-06-01";
+        final String apiVersion = "2022-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -466,30 +454,22 @@ public final class SettingsClientImpl implements SettingsClient {
     }
 
     /**
-     * updating settings about different configurations in security center.
+     * updating settings about different configurations in Microsoft Defender for Cloud.
      *
      * @param settingName The name of the setting.
      * @param setting Setting object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the kind of the security setting.
+     * @return the kind of the security setting on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SettingInner> updateAsync(SettingsSettingName settingName, SettingInner setting) {
-        return updateWithResponseAsync(settingName, setting)
-            .flatMap(
-                (Response<SettingInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    private Mono<SettingInner> updateAsync(SettingName settingName, SettingInner setting) {
+        return updateWithResponseAsync(settingName, setting).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * updating settings about different configurations in security center.
+     * updating settings about different configurations in Microsoft Defender for Cloud.
      *
      * @param settingName The name of the setting.
      * @param setting Setting object.
@@ -499,12 +479,12 @@ public final class SettingsClientImpl implements SettingsClient {
      * @return the kind of the security setting.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SettingInner update(SettingsSettingName settingName, SettingInner setting) {
+    public SettingInner update(SettingName settingName, SettingInner setting) {
         return updateAsync(settingName, setting).block();
     }
 
     /**
-     * updating settings about different configurations in security center.
+     * updating settings about different configurations in Microsoft Defender for Cloud.
      *
      * @param settingName The name of the setting.
      * @param setting Setting object.
@@ -512,22 +492,22 @@ public final class SettingsClientImpl implements SettingsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the kind of the security setting.
+     * @return the kind of the security setting along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SettingInner> updateWithResponse(
-        SettingsSettingName settingName, SettingInner setting, Context context) {
+    public Response<SettingInner> updateWithResponse(SettingName settingName, SettingInner setting, Context context) {
         return updateWithResponseAsync(settingName, setting, context).block();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription settings list.
+     * @return subscription settings list along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SettingInner>> listNextSinglePageAsync(String nextLink) {
@@ -558,12 +538,13 @@ public final class SettingsClientImpl implements SettingsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription settings list.
+     * @return subscription settings list along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SettingInner>> listNextSinglePageAsync(String nextLink, Context context) {

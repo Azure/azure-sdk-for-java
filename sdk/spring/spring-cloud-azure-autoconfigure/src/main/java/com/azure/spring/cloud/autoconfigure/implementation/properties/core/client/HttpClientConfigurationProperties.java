@@ -5,8 +5,8 @@ package com.azure.spring.cloud.autoconfigure.implementation.properties.core.clie
 
 import com.azure.spring.cloud.autoconfigure.properties.core.client.ClientConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingConfigurationProperties;
-import com.azure.spring.cloud.core.provider.ClientOptionsProvider;
 import com.azure.spring.cloud.core.properties.client.HeaderProperties;
+import com.azure.spring.cloud.core.provider.ClientOptionsProvider;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import java.time.Duration;

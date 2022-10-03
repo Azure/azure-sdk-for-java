@@ -31,63 +31,81 @@ public interface SubvolumeModel {
     String type();
 
     /**
-     * Gets the path property: path Path to the subvolume.
+     * Gets the path property: path
+     *
+     * <p>Path to the subvolume.
      *
      * @return the path value.
      */
     String path();
 
     /**
-     * Gets the parentPath property: parentpath Path to the parent subvolume.
+     * Gets the parentPath property: parentpath
+     *
+     * <p>Path to the parent subvolume.
      *
      * @return the parentPath value.
      */
     String parentPath();
 
     /**
-     * Gets the size property: size Size of subvolume.
+     * Gets the size property: size
+     *
+     * <p>Size of subvolume.
      *
      * @return the size value.
      */
     Long size();
 
     /**
-     * Gets the bytesUsed property: bytesUsed Bytes used.
+     * Gets the bytesUsed property: bytesUsed
+     *
+     * <p>Bytes used.
      *
      * @return the bytesUsed value.
      */
     Long bytesUsed();
 
     /**
-     * Gets the permissions property: permissions Permissions of the subvolume.
+     * Gets the permissions property: permissions
+     *
+     * <p>Permissions of the subvolume.
      *
      * @return the permissions value.
      */
     String permissions();
 
     /**
-     * Gets the creationTimestamp property: creationTimeStamp Creation time and date.
+     * Gets the creationTimestamp property: creationTimeStamp
+     *
+     * <p>Creation time and date.
      *
      * @return the creationTimestamp value.
      */
     OffsetDateTime creationTimestamp();
 
     /**
-     * Gets the accessedTimestamp property: accessedTimeStamp Most recent access time and date.
+     * Gets the accessedTimestamp property: accessedTimeStamp
+     *
+     * <p>Most recent access time and date.
      *
      * @return the accessedTimestamp value.
      */
     OffsetDateTime accessedTimestamp();
 
     /**
-     * Gets the modifiedTimestamp property: modifiedTimeStamp Most recent modification time and date.
+     * Gets the modifiedTimestamp property: modifiedTimeStamp
+     *
+     * <p>Most recent modification time and date.
      *
      * @return the modifiedTimestamp value.
      */
     OffsetDateTime modifiedTimestamp();
 
     /**
-     * Gets the changedTimestamp property: changedTimeStamp Most recent change time and date.
+     * Gets the changedTimestamp property: changedTimeStamp
+     *
+     * <p>Most recent change time and date.
      *
      * @return the changedTimestamp value.
      */

@@ -194,15 +194,13 @@ public class CallConnection {
      * Remove a list of participants from the call.
      *
      * @param participantsToRemove The identifier list of the participant to be removed.
-     * @param operationContext The operation context. Optional
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RemoveParticipantsResult removeParticipants(List<CommunicationIdentifier> participantsToRemove,
-                                                       String operationContext) {
-        return callConnectionAsync.removeParticipants(participantsToRemove, operationContext).block();
+    public RemoveParticipantsResult removeParticipants(List<CommunicationIdentifier> participantsToRemove) {
+        return callConnectionAsync.removeParticipants(participantsToRemove).block();
     }
 
     /**

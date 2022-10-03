@@ -7,24 +7,19 @@ package com.azure.resourcemanager.kusto.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A class representing the properties of a managed private endpoint object. */
 @Fluent
 public final class ManagedPrivateEndpointProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedPrivateEndpointProperties.class);
-
     /*
-     * The ARM resource ID of the resource for which the managed private
-     * endpoint is created.
+     * The ARM resource ID of the resource for which the managed private endpoint is created.
      */
     @JsonProperty(value = "privateLinkResourceId", required = true)
     private String privateLinkResourceId;
 
     /*
-     * The region of the resource to which the managed private endpoint is
-     * created.
+     * The region of the resource to which the managed private endpoint is created.
      */
     @JsonProperty(value = "privateLinkResourceRegion")
     private String privateLinkResourceRegion;
@@ -147,16 +142,18 @@ public final class ManagedPrivateEndpointProperties {
      */
     public void validate() {
         if (privateLinkResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property privateLinkResourceId in model ManagedPrivateEndpointProperties"));
         }
         if (groupId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property groupId in model ManagedPrivateEndpointProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedPrivateEndpointProperties.class);
 }

@@ -3,13 +3,11 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
+import com.azure.cosmos.implementation.ConsoleLoggingRegistryFactory;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.guava25.net.PercentEscaper;
-import com.codahale.metrics.ConsoleReporter;
-import com.codahale.metrics.MetricRegistry;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.DistributionSummary;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -17,16 +15,9 @@ import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.Tags;
 import io.micrometer.core.instrument.Timer;
 import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
-import io.micrometer.core.instrument.config.NamingConvention;
 import io.micrometer.core.instrument.distribution.HistogramSnapshot;
-import io.micrometer.core.instrument.dropwizard.DropwizardConfig;
-import io.micrometer.core.instrument.dropwizard.DropwizardMeterRegistry;
-import io.micrometer.core.instrument.util.HierarchicalNameMapper;
-import io.micrometer.core.lang.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("UnstableApiUsage")
 @JsonPropertyOrder({
@@ -34,7 +25,7 @@ import java.util.concurrent.TimeUnit;
     "requestSize", "responseSize", "channelsAcquired", "channelsAvailable", "requestQueueLength", "usedDirectMemory",
     "usedHeapMemory"
 })
-public final class RntbdMetrics {
+public final class RntbdMetrics implements RntbdMetricsCompletionRecorder {
 
     // region Fields
 
@@ -43,11 +34,13 @@ public final class RntbdMetrics {
     private static final Logger logger = LoggerFactory.getLogger(RntbdMetrics.class);
     private static final CompositeMeterRegistry registry = new CompositeMeterRegistry();
 
+    private static boolean hasAnyRegistry = false;
+
     static {
         try {
             int step = Integer.getInteger("azure.cosmos.monitoring.consoleLogging.step", 0);
             if (step > 0) {
-                RntbdMetrics.add(RntbdMetrics.consoleLoggingRegistry(step));
+                RntbdMetrics.add(ConsoleLoggingRegistryFactory.create(step));
             }
         } catch (Throwable throwable) {
             logger.error("failed to initialize console logging registry due to ", throwable);
@@ -67,11 +60,15 @@ public final class RntbdMetrics {
     private final Tags tags;
     private final RntbdTransportClient transportClient;
 
+    public static boolean isEmpty() {
+        return !hasAnyRegistry;
+    }
+
     // endregion
 
     // region Constructors
 
-    public RntbdMetrics(RntbdTransportClient client, RntbdEndpoint endpoint) {
+    private RntbdMetrics(RntbdTransportClient client, RntbdEndpoint endpoint) {
 
         this.transportClient = client;
         this.endpoint = endpoint;
@@ -137,11 +134,17 @@ public final class RntbdMetrics {
             .register(registry);
     }
 
+    static RntbdMetricsCompletionRecorder create(RntbdTransportClient client, RntbdEndpoint endpoint) {
+        return new RntbdMetrics(client, endpoint);
+    }
+
     // endregion
 
     // region Accessors
 
     public static void add(MeterRegistry registry) {
+
+        hasAnyRegistry = true;
         RntbdMetrics.registry.add(registry);
     }
 
@@ -253,44 +256,6 @@ public final class RntbdMetrics {
 
     static String escape(String value) {
         return PERCENT_ESCAPER.escape(value);
-    }
-
-    private static MeterRegistry consoleLoggingRegistry(final int step) {
-
-        final MetricRegistry dropwizardRegistry = new MetricRegistry();
-
-        ConsoleReporter consoleReporter = ConsoleReporter
-            .forRegistry(dropwizardRegistry)
-            .convertRatesTo(TimeUnit.SECONDS)
-            .convertDurationsTo(TimeUnit.MILLISECONDS)
-            .build();
-
-        consoleReporter.start(step, TimeUnit.SECONDS);
-
-        DropwizardConfig dropwizardConfig = new DropwizardConfig() {
-
-            @Override
-            public String get(@Nullable String key) {
-                return null;
-            }
-
-            @Override
-            public String prefix() {
-                return "console";
-            }
-
-        };
-
-        final MeterRegistry consoleLoggingRegistry = new DropwizardMeterRegistry(
-            dropwizardConfig, dropwizardRegistry, HierarchicalNameMapper.DEFAULT, Clock.SYSTEM) {
-            @Override
-            protected Double nullGaugeValue() {
-                return Double.NaN;
-            }
-        };
-
-        consoleLoggingRegistry.config().namingConvention(NamingConvention.dot);
-        return consoleLoggingRegistry;
     }
 
     private static String nameOf(final String member) {

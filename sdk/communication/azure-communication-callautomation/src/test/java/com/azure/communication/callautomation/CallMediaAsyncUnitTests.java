@@ -4,10 +4,10 @@
 package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
+import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.RecognizeInputType;
-import com.azure.communication.callautomation.models.Tone;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -72,23 +72,22 @@ public class CallMediaAsyncUnitTests {
 
     @Test
     public void recognizeWithResponse() {
-        CallMediaRecognizeDtmfOptions recognizeOptions = new CallMediaRecognizeDtmfOptions(new CommunicationUserIdentifier("id"));
+        CallMediaRecognizeDtmfOptions recognizeOptions = new CallMediaRecognizeDtmfOptions(new CommunicationUserIdentifier("id"), 1);
         StepVerifier.create(
-                callMedia.recognizeWithResponse(recognizeOptions))
+                callMedia.startRecognizingWithResponse(recognizeOptions))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }
 
     @Test
     public void recognizeWithResponseFilledDtmfOptions() {
-        CallMediaRecognizeDtmfOptions recognizeOptions = new CallMediaRecognizeDtmfOptions(new CommunicationUserIdentifier("id"));
+        CallMediaRecognizeDtmfOptions recognizeOptions = new CallMediaRecognizeDtmfOptions(new CommunicationUserIdentifier("id"), 5);
 
         recognizeOptions.setInterToneTimeout(Duration.ofSeconds(3));
-        recognizeOptions.setMaxTonesToCollect(3);
-        List<Tone> stopTones = new ArrayList<Tone>();
-        stopTones.add(Tone.ZERO);
-        stopTones.add(Tone.ONE);
-        stopTones.add(Tone.TWO);
+        List<DtmfTone> stopDtmfTones = new ArrayList<DtmfTone>();
+        stopDtmfTones.add(DtmfTone.ZERO);
+        stopDtmfTones.add(DtmfTone.ONE);
+        stopDtmfTones.add(DtmfTone.TWO);
         recognizeOptions.setRecognizeInputType(RecognizeInputType.DTMF);
         recognizeOptions.setPlayPrompt(new FileSource().setUri("abc"));
         recognizeOptions.setInterruptCallMediaOperation(true);
@@ -98,7 +97,7 @@ public class CallMediaAsyncUnitTests {
         recognizeOptions.setInitialSilenceTimeout(Duration.ofSeconds(4));
 
         StepVerifier.create(
-                callMedia.recognizeWithResponse(recognizeOptions))
+                callMedia.startRecognizingWithResponse(recognizeOptions))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }
