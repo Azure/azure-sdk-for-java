@@ -2,10 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.query;
 
-import com.azure.spring.data.cosmos.core.*;
-import com.azure.spring.data.cosmos.core.query.*;
+import com.azure.spring.data.cosmos.core.ReactiveCosmosOperations;
+import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.ReturnedType;
 
 /**
