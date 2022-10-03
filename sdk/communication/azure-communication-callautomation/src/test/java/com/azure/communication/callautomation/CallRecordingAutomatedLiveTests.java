@@ -110,7 +110,7 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void CreateACSCallUnmixedAudioAffinityTest(HttpClient httpClient) {
+    public void createACSCallUnmixedAudioAffinityTest(HttpClient httpClient) {
         /* Test case: ACS to ACS call
          * 1. create a CallAutomationClient.
          * 2. create a call from source to one ACS target.
