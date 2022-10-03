@@ -36,7 +36,7 @@ public class TimezoneClientTest extends TimezoneClientTestBase {
     @MethodSource("com.azure.maps.timezone.TestUtils#getTestParameters")
     public void testGetTimezoneById(HttpClient httpClient, TimezoneServiceVersion serviceVersion) throws IOException {
         client = getTimezoneClient(httpClient, serviceVersion);
-        TimezoneIdOptions options = new TimezoneIdOptions("Asia/Bahrain").setOptions(TimezoneOptions.ALL).setAcceptLanguage(null)
+        TimezoneIdOptions options = new TimezoneIdOptions("Asia/Bahrain").setOptions(TimezoneOptions.ALL).setLanguage(null)
             .setTimestamp(null).setDaylightSavingsTime(null).setDaylightSavingsTimeLastingYears(null);
         TimezoneResult actualResult = client.getTimezoneById(options);
         TimezoneResult expectedResult = TestUtils.getExpectedTimezoneById();
@@ -50,7 +50,7 @@ public class TimezoneClientTest extends TimezoneClientTestBase {
     @MethodSource("com.azure.maps.timezone.TestUtils#getTestParameters")
     public void testGetTimezoneByIdWithResponse(HttpClient httpClient, TimezoneServiceVersion serviceVersion) throws IOException {
         client = getTimezoneClient(httpClient, serviceVersion);
-        TimezoneIdOptions options = new TimezoneIdOptions("Asia/Bahrain").setOptions(TimezoneOptions.ALL).setAcceptLanguage(null)
+        TimezoneIdOptions options = new TimezoneIdOptions("Asia/Bahrain").setOptions(TimezoneOptions.ALL).setLanguage(null)
             .setTimestamp(null).setDaylightSavingsTime(null).setDaylightSavingsTimeLastingYears(null);
         validateGetTimezoneByIdWithResponse(TestUtils.getExpectedTimezoneById(), 200, client.getTimezoneByIdWithResponse(options, null));
     }
@@ -60,7 +60,7 @@ public class TimezoneClientTest extends TimezoneClientTestBase {
     @MethodSource("com.azure.maps.timezone.TestUtils#getTestParameters")
     public void testInvalidGetTimezoneByIdWithResponse(HttpClient httpClient, TimezoneServiceVersion serviceVersion) throws IOException {
         client = getTimezoneClient(httpClient, serviceVersion);
-        TimezoneIdOptions options = new TimezoneIdOptions("").setOptions(TimezoneOptions.ALL).setAcceptLanguage(null)
+        TimezoneIdOptions options = new TimezoneIdOptions("").setOptions(TimezoneOptions.ALL).setLanguage(null)
             .setTimestamp(null).setDaylightSavingsTime(null).setDaylightSavingsTimeLastingYears(null);
         final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
             () -> client.getTimezoneById(options));

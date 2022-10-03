@@ -128,7 +128,7 @@ public final class TimezoneAsyncClient {
         return this.serviceClient.getTimezoneByIDWithResponseAsync(
             JsonFormat.JSON,
             options.getTimezoneId(),
-            options.getAcceptLanguage(),
+            options.getLanguage(),
             options.getOptions(),
             options.getTimestamp(),
             options.getDaylightSavingsTime(),

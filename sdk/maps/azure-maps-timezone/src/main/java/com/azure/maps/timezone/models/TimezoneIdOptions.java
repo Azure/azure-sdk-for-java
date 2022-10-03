@@ -48,7 +48,7 @@ public final class TimezoneIdOptions {
      *     code is provided, the response will be in "EN". Please refer to [Supported
      *     Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
      */
-    public String getAcceptLanguage() {
+    public String getLanguage() {
         return acceptLanguage;
     }
 
@@ -59,7 +59,7 @@ public final class TimezoneIdOptions {
      *     Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
      * @return TimezoneIdOptions
      */
-    public TimezoneIdOptions setAcceptLanguage(String acceptLanguage) {
+    public TimezoneIdOptions setLanguage(String acceptLanguage) {
         this.acceptLanguage = acceptLanguage;
         return this;
     }

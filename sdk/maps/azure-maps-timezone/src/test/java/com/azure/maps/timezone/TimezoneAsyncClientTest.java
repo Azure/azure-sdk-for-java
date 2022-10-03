@@ -45,7 +45,7 @@ public class TimezoneAsyncClientTest extends TimezoneClientTestBase {
     @MethodSource("com.azure.maps.timezone.TestUtils#getTestParameters")
     public void testAsyncGetDataForPoints(HttpClient httpClient, TimezoneServiceVersion serviceVersion) throws IOException {
         TimezoneAsyncClient client = getTimezoneAsyncClient(httpClient, serviceVersion);
-        TimezoneIdOptions options = new TimezoneIdOptions("Asia/Bahrain").setOptions(TimezoneOptions.ALL).setAcceptLanguage(null)
+        TimezoneIdOptions options = new TimezoneIdOptions("Asia/Bahrain").setOptions(TimezoneOptions.ALL).setLanguage(null)
             .setTimestamp(null).setDaylightSavingsTime(null).setDaylightSavingsTimeLastingYears(null);
         StepVerifier.create(client.getTimezoneById(options))
             .assertNext(actualResults -> {
@@ -63,7 +63,7 @@ public class TimezoneAsyncClientTest extends TimezoneClientTestBase {
     @MethodSource("com.azure.maps.timezone.TestUtils#getTestParameters")
     public void testAsyncGetDataForPointsWithResponse(HttpClient httpClient, TimezoneServiceVersion serviceVersion) {
         TimezoneAsyncClient client = getTimezoneAsyncClient(httpClient, serviceVersion);
-        TimezoneIdOptions options = new TimezoneIdOptions("Asia/Bahrain").setOptions(TimezoneOptions.ALL).setAcceptLanguage(null)
+        TimezoneIdOptions options = new TimezoneIdOptions("Asia/Bahrain").setOptions(TimezoneOptions.ALL).setLanguage(null)
             .setTimestamp(null).setDaylightSavingsTime(null).setDaylightSavingsTimeLastingYears(null);
         StepVerifier.create(client.getTimezoneByIdWithResponse(options, null))
             .assertNext(response -> {
@@ -80,7 +80,7 @@ public class TimezoneAsyncClientTest extends TimezoneClientTestBase {
     @MethodSource("com.azure.maps.timezone.TestUtils#getTestParameters")
     public void testAsyncInvalidGetDataForPointsWithResponse(HttpClient httpClient, TimezoneServiceVersion serviceVersion) {
         TimezoneAsyncClient client = getTimezoneAsyncClient(httpClient, serviceVersion);
-        TimezoneIdOptions options = new TimezoneIdOptions("").setOptions(TimezoneOptions.ALL).setAcceptLanguage(null)
+        TimezoneIdOptions options = new TimezoneIdOptions("").setOptions(TimezoneOptions.ALL).setLanguage(null)
             .setTimestamp(null).setDaylightSavingsTime(null).setDaylightSavingsTimeLastingYears(null);
         StepVerifier.create(client.getTimezoneByIdWithResponse(options, null))
             .verifyErrorSatisfies(ex -> {

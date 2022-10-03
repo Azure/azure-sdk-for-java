@@ -16,7 +16,6 @@
   <modelVersion>4.0.0</modelVersion>
 
   <dependencies>
-    <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
     <dependency>
       <groupId>com.azure.tools</groupId>
       <artifactId>azure-autorest-customization</artifactId>
