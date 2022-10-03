@@ -281,7 +281,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
                     }
                 }
             } catch (UncheckedInterruptedException exception) {
-                logger.info("An exception occurred while trying to get a new batch.", exception);
+                logger.info("An exception occurred while trying to create a new batch.", exception);
 
                 if (this.lastError != null) {
                     logger.info("Exception has been set already, terminating EventDataAggregator.");

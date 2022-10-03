@@ -215,7 +215,9 @@ class EventHubBufferedPartitionProducer implements Closeable {
         final Mono<EventDataBatch> batch = client.createBatch(createBatchOptions);
         try {
             return batch.toFuture().get();
-        } catch (InterruptedException | ExecutionException e) {
+        } catch (InterruptedException e) {
+            throw LOGGER.logExceptionAsError(new UncheckedInterruptedException(e));
+        } catch (ExecutionException e) {
             throw LOGGER.logExceptionAsError(new UncheckedInterruptedException(e));
         }
     }

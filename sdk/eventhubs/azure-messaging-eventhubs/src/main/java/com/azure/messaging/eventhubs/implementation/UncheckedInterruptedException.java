@@ -3,11 +3,27 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * Adding an unchecked {@link InterruptedException}.
  */
 public class UncheckedInterruptedException extends RuntimeException {
-    public UncheckedInterruptedException(Throwable error) {
-        super("Unable to fetch batch.", error);
+    /**
+     * Creates a new instance.
+     *
+     * @param error Exception that occurred.
+     */
+    public UncheckedInterruptedException(InterruptedException error) {
+        super("Unable to create a new batch because thread was interrupted.", error);
+    }
+
+    /**
+     * Creates a new instance of the error.
+     *
+     * @param error Error that occurred.
+     */
+    public UncheckedInterruptedException(ExecutionException error) {
+        super("Unable to create a new batch because task was aborted.", error);
     }
 }
