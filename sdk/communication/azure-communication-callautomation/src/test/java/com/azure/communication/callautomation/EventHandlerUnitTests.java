@@ -103,7 +103,7 @@ public class EventHandlerUnitTests {
         assertNotNull(playCompletedEvent);
         assertEquals("serverCallId", playCompletedEvent.getServerCallId());
         assertEquals(200, playCompletedEvent.getResultInformation().getCode());
-        assertEquals(ReasonCode.COMPLETED_SUCCESSFULLY, playCompletedEvent.getReasonCodeName());
+        assertEquals(ReasonCode.COMPLETED_SUCCESSFULLY, playCompletedEvent.getReasonCode());
     }
 
     @Test
@@ -134,7 +134,7 @@ public class EventHandlerUnitTests {
         assertNotNull(playFailedEvent);
         assertEquals("serverCallId", playFailedEvent.getServerCallId());
         assertEquals(400, playFailedEvent.getResultInformation().getCode());
-        assertEquals(ReasonCode.Play.DOWNLOAD_FAILED, playFailedEvent.getReasonCodeName());
+        assertEquals(ReasonCode.Play.DOWNLOAD_FAILED, playFailedEvent.getReasonCode());
     }
 
     @Test
@@ -165,7 +165,7 @@ public class EventHandlerUnitTests {
         assertNotNull(recognizeCompleted);
         assertEquals("serverCallId", recognizeCompleted.getServerCallId());
         assertEquals(200, recognizeCompleted.getResultInformation().getCode());
-        assertEquals(ReasonCode.COMPLETED_SUCCESSFULLY, recognizeCompleted.getReasonCodeName());
+        assertEquals(ReasonCode.COMPLETED_SUCCESSFULLY, recognizeCompleted.getReasonCode());
     }
 
     @Test
@@ -196,6 +196,6 @@ public class EventHandlerUnitTests {
         assertNotNull(recognizeFailed);
         assertEquals("serverCallId", recognizeFailed.getServerCallId());
         assertEquals(400, recognizeFailed.getResultInformation().getCode());
-        assertEquals(ReasonCode.Recognize.INITIAL_SILENCE_TIMEOUT, recognizeFailed.getReasonCodeName());
+        assertEquals(ReasonCode.Recognize.INITIAL_SILENCE_TIMEOUT, recognizeFailed.getReasonCode());
     }
 }
