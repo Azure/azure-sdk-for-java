@@ -65,7 +65,7 @@ public class EventHandlerUnitTests {
             + "        \"time\": \"2022-08-11T23:42:45.5346632+00:00\",\n"
             + "        \"specversion\": \"1.0\",\n"
             + "        \"datacontenttype\": \"application/json\",\n"
-            + "        \"subject\": \"calling/recordings/serverCallId/recordingId/recordingId/RecordingStateChanged\"\n"
+            + "        \"subject\": \"calling/recordings/serverCallId/recordingId/recordingId\"\n"
             + "    }\n"
             + "]";
         CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
@@ -81,7 +81,7 @@ public class EventHandlerUnitTests {
     public void parsePlayCompletedEvent() {
         String receivedEvent = "[{\n"
             + "\"id\": \"704a7a96-4d74-4ebe-9cd0-b7cc39c3d7b1\",\n"
-            + "\"source\": \"calling/callConnections/callConnectionId/PlayCompletedEvent\",\n"
+            + "\"source\": \"calling/callConnections/callConnectionId/PlayCompleted\",\n"
             + "\"type\": \"Microsoft.Communication.PlayCompleted\",\n"
             + "\"data\": {\n"
             + "\"resultInformation\": {\n"
@@ -97,7 +97,7 @@ public class EventHandlerUnitTests {
             + "\"time\": \"2022-08-12T03:13:25.0252763+00:00\",\n"
             + "\"specversion\": \"1.0\",\n"
             + "\"datacontenttype\": \"application/json\",\n"
-            + "\"subject\": \"calling/callConnections/callConnectionId/PlayCompletedEvent\"\n"
+            + "\"subject\": \"calling/callConnections/callConnectionId\"\n"
             + "}]";
         CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
         assertNotNull(event);
@@ -112,7 +112,7 @@ public class EventHandlerUnitTests {
     public void parsePlayFailedEvent() {
         String receivedEvent = "[{\n"
             + "\"id\": \"704a7a96-4d74-4ebe-9cd0-b7cc39c3d7b1\",\n"
-            + "\"source\": \"calling/callConnections/callConnectionId/PlayFailedEvent\",\n"
+            + "\"source\": \"calling/callConnections/callConnectionId/PlayFaile\",\n"
             + "\"type\": \"Microsoft.Communication.PlayFailed\",\n"
             + "\"data\": {\n"
             + "\"resultInformation\": {\n"
@@ -128,7 +128,7 @@ public class EventHandlerUnitTests {
             + "\"time\": \"2022-08-12T03:13:25.0252763+00:00\",\n"
             + "\"specversion\": \"1.0\",\n"
             + "\"datacontenttype\": \"application/json\",\n"
-            + "\"subject\": \"calling/callConnections/callConnectionId/PlayFailedEvent\"\n"
+            + "\"subject\": \"calling/callConnections/callConnectionId\"\n"
             + "}]";
         CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
         assertNotNull(event);
@@ -154,7 +154,7 @@ public class EventHandlerUnitTests {
             + "\"time\": \"2022-08-12T03:13:25.0252763+00:00\",\n"
             + "\"specversion\": \"1.0\",\n"
             + "\"datacontenttype\": \"application/json\",\n"
-            + "\"subject\": \"calling/callConnections/callConnectionId/PlayCanceled\"\n"
+            + "\"subject\": \"calling/callConnections/callConnectionId\"\n"
             + "}]";
         CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
         assertNotNull(event);
@@ -182,7 +182,7 @@ public class EventHandlerUnitTests {
             + "\"time\": \"2022-08-12T03:13:25.0252763+00:00\",\n"
             + "\"specversion\": \"1.0\",\n"
             + "\"datacontenttype\": \"application/json\",\n"
-            + "\"subject\": \"calling/callConnections/callConnectionId/RecognizeCompleted\"\n"
+            + "\"subject\": \"calling/callConnections/callConnectionId\"\n"
             + "}]";
         CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
         assertNotNull(event);
@@ -213,7 +213,7 @@ public class EventHandlerUnitTests {
             + "\"time\": \"2022-08-12T03:13:25.0252763+00:00\",\n"
             + "\"specversion\": \"1.0\",\n"
             + "\"datacontenttype\": \"application/json\",\n"
-            + "\"subject\": \"calling/callConnections/callConnectionId/RecognizeFailed\"\n"
+            + "\"subject\": \"calling/callConnections/callConnectionId\"\n"
             + "}]";
         CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
         assertNotNull(event);
@@ -239,7 +239,7 @@ public class EventHandlerUnitTests {
             + "\"time\": \"2022-08-12T03:13:25.0252763+00:00\",\n"
             + "\"specversion\": \"1.0\",\n"
             + "\"datacontenttype\": \"application/json\",\n"
-            + "\"subject\": \"calling/callConnections/callConnectionId/RecognizeCanceled\"\n"
+            + "\"subject\": \"calling/callConnections/callConnectionId\"\n"
             + "}]";
         CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
         assertNotNull(event);
