@@ -3,6 +3,7 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.callautomation.models.events.ReasonCode;
 import com.azure.communication.callautomation.models.events.RecognizeCompleted;
 import com.azure.communication.callautomation.models.RecordingState;
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
@@ -102,6 +103,7 @@ public class EventHandlerUnitTests {
         assertNotNull(playCompletedEvent);
         assertEquals("serverCallId", playCompletedEvent.getServerCallId());
         assertEquals(200, playCompletedEvent.getResultInformation().getCode());
+        assertEquals(ReasonCode.COMPLETED_SUCCESSFULLY, playCompletedEvent.getReasonCode());
     }
 
     @Test
@@ -112,9 +114,9 @@ public class EventHandlerUnitTests {
             + "\"type\": \"Microsoft.Communication.PlayFailed\",\n"
             + "\"data\": {\n"
             + "\"resultInformation\": {\n"
-            + "\"code\": 404,\n"
-            + "\"subCode\": 0,\n"
-            + "\"message\": \"File source was not found\"\n"
+            + "\"code\": 400,\n"
+            + "\"subCode\": 8536,\n"
+            + "\"message\": \"Action failed, file could not be downloaded.\"\n"
             + "},\n"
             + "\"type\": \"playFailedEvent\",\n"
             + "\"callConnectionId\": \"callConnectionId\",\n"
@@ -131,7 +133,8 @@ public class EventHandlerUnitTests {
         PlayFailedEvent playFailedEvent = (PlayFailedEvent) event;
         assertNotNull(playFailedEvent);
         assertEquals("serverCallId", playFailedEvent.getServerCallId());
-        assertEquals(404, playFailedEvent.getResultInformation().getCode());
+        assertEquals(400, playFailedEvent.getResultInformation().getCode());
+        assertEquals(ReasonCode.Play.DOWNLOAD_FAILED, playFailedEvent.getReasonCode());
     }
 
     @Test
@@ -162,6 +165,7 @@ public class EventHandlerUnitTests {
         assertNotNull(recognizeCompleted);
         assertEquals("serverCallId", recognizeCompleted.getServerCallId());
         assertEquals(200, recognizeCompleted.getResultInformation().getCode());
+        assertEquals(ReasonCode.COMPLETED_SUCCESSFULLY, recognizeCompleted.getReasonCode());
     }
 
     @Test
@@ -172,9 +176,9 @@ public class EventHandlerUnitTests {
             + "\"type\": \"Microsoft.Communication.RecognizeFailed\",\n"
             + "\"data\": {\n"
             + "\"resultInformation\": {\n"
-            + "\"code\": 404,\n"
-            + "\"subCode\": 0,\n"
-            + "\"message\": \"Action failed.\"\n"
+            + "\"code\": 400,\n"
+            + "\"subCode\": 8510,\n"
+            + "\"message\": \"Action failed, initial silence timeout reached.\"\n"
             + "},\n"
             + "\"type\": \"recognizeFailed\",\n"
             + "\"callConnectionId\": \"callConnectionId\",\n"
@@ -191,6 +195,7 @@ public class EventHandlerUnitTests {
         RecognizeFailed recognizeFailed = (RecognizeFailed) event;
         assertNotNull(recognizeFailed);
         assertEquals("serverCallId", recognizeFailed.getServerCallId());
-        assertEquals(404, recognizeFailed.getResultInformation().getCode());
+        assertEquals(400, recognizeFailed.getResultInformation().getCode());
+        assertEquals(ReasonCode.Recognize.INITIAL_SILENCE_TIMEOUT, recognizeFailed.getReasonCode());
     }
 }
