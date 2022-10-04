@@ -17,8 +17,8 @@ public abstract class NettyAsyncHttpResponseBase extends HttpResponse {
     // We use a wrapper for the Netty-returned headers, so we are not forced to pay up-front the cost of converting
     // from Netty HttpHeaders to azure-core HttpHeaders. Instead, by wrapping it, there is no cost to pay as we map
     // the Netty HttpHeaders API into the azure-core HttpHeaders API.
-    private NettyToAzureCoreHttpHeadersWrapper headers;
-    private HttpHeaders convertedHeaders;
+    //private NettyToAzureCoreHttpHeadersWrapper headers;
+    private final HttpHeaders headers;
 
     NettyAsyncHttpResponseBase(HttpClientResponse reactorNettyResponse, HttpRequest httpRequest,
         boolean headersEagerlyConverted) {
@@ -27,9 +27,11 @@ public abstract class NettyAsyncHttpResponseBase extends HttpResponse {
 
         if (headersEagerlyConverted) {
             io.netty.handler.codec.http.HttpHeaders nettyHeaders = reactorNettyResponse.responseHeaders();
-            convertedHeaders = new HttpHeaders((int) (nettyHeaders.size() / 0.75F));
+            this.headers = new HttpHeaders((int) (nettyHeaders.size() / 0.75F));
             reactorNettyResponse.responseHeaders().forEach(header ->
-                convertedHeaders.add(header.getKey(), header.getValue()));
+                this.headers.add(header.getKey(), header.getValue()));
+        } else {
+            this.headers = new NettyToAzureCoreHttpHeadersWrapper(reactorNettyResponse.responseHeaders());
         }
     }
 
@@ -40,22 +42,11 @@ public abstract class NettyAsyncHttpResponseBase extends HttpResponse {
 
     @Override
     public final String getHeaderValue(String name) {
-        if (convertedHeaders != null) {
-            return convertedHeaders.getValue(name);
-        }
-        return reactorNettyResponse.responseHeaders().get(name);
+        return headers.getValue(name);
     }
 
     @Override
     public final HttpHeaders getHeaders() {
-        if (convertedHeaders != null) {
-            return convertedHeaders;
-        }
-
-        if (headers == null) {
-            headers = new NettyToAzureCoreHttpHeadersWrapper(reactorNettyResponse.responseHeaders());
-        }
-
         return headers;
     }
 }
