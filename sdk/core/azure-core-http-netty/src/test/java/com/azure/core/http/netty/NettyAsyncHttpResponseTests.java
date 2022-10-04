@@ -87,7 +87,11 @@ public class NettyAsyncHttpResponseTests {
         when(connection.inbound()).thenReturn(nettyInbound);
         when(connection.isDisposed()).thenReturn(true);
 
-        NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(null, connection, REQUEST, false, false);
+        HttpClientResponse reactorNettyResponse = mock(HttpClientResponse.class);
+        when(reactorNettyResponse.responseHeaders()).thenReturn(new DefaultHttpHeaders());
+
+        NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(reactorNettyResponse, connection, REQUEST, false,
+            false);
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(response.getBody()))
             .assertNext(actual -> assertArrayEquals(HELLO_BYTES, actual))
@@ -106,7 +110,11 @@ public class NettyAsyncHttpResponseTests {
         when(connection.inbound()).thenReturn(nettyInbound);
         when(connection.isDisposed()).thenReturn(true);
 
-        NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(null, connection, REQUEST, false, false);
+        HttpClientResponse reactorNettyResponse = mock(HttpClientResponse.class);
+        when(reactorNettyResponse.responseHeaders()).thenReturn(new DefaultHttpHeaders());
+
+        NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(reactorNettyResponse, connection, REQUEST, false,
+            false);
 
         StepVerifier.create(response.getBodyAsByteArray())
             .assertNext(actual -> assertArrayEquals(HELLO_BYTES, actual))
@@ -151,7 +159,11 @@ public class NettyAsyncHttpResponseTests {
         when(connection.inbound()).thenReturn(nettyInbound);
         when(connection.isDisposed()).thenReturn(true);
 
-        NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(null, connection, REQUEST, false, false);
+        HttpClientResponse reactorNettyResponse = mock(HttpClientResponse.class);
+        when(reactorNettyResponse.responseHeaders()).thenReturn(new DefaultHttpHeaders());
+
+        NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(reactorNettyResponse, connection, REQUEST, false,
+            false);
 
         StepVerifier.create(response.getBodyAsString(StandardCharsets.UTF_8))
             .assertNext(actual -> assertEquals(HELLO, actual))
