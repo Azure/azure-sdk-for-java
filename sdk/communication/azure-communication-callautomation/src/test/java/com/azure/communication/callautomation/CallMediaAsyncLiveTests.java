@@ -113,10 +113,12 @@ public class CallMediaAsyncLiveTests extends CallAutomationLiveTestBase {
         try {
             String callbackUrl = "https://localhost";
             //String promptUrl = "https://localhost/audio/bot-hold-music-2.wav";
-            CommunicationUserIdentifier targetUser = new CommunicationUserIdentifier(ACS_USER_1);
             CommunicationIdentifier source = identityClient.createUser().block();
+            PhoneNumberIdentifier targetUser = new PhoneNumberIdentifier(PHONE_USER_1);
             List<CommunicationIdentifier> targets = new ArrayList<>(Arrays.asList(targetUser));
-            CreateCallOptions createCallOptions = new CreateCallOptions(source, targets, callbackUrl);
+
+            CreateCallOptions createCallOptions = new CreateCallOptions(source, targets, callbackUrl)
+                .setSourceCallerId(ACS_RESOURCE_PHONE);
 
             Response<CreateCallResult> callResponse = callClient.createCallWithResponse(createCallOptions).block();
             assertNotNull(callResponse);
