@@ -6,11 +6,10 @@ package com.azure.communication.callautomation;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallConnectionState;
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
-import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
+import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.FileSource;
-import com.azure.communication.callautomation.models.Tone;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
@@ -102,7 +101,7 @@ public class CallMediaAsyncLiveTests extends CallAutomationLiveTestBase {
          * 4. hang up the call.
          */
 
-        CallAutomationAsyncClient callClient = getCallingServerClientUsingConnectionString(httpClient)
+        CallAutomationAsyncClient callClient = getCallAutomationClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("recognizeDtmfInACall", next))
             .buildAsyncClient();
 
@@ -135,8 +134,8 @@ public class CallMediaAsyncLiveTests extends CallAutomationLiveTestBase {
 
             CallMediaAsync callMediaAsync = callConnectionAsync.getCallMediaAsync();
 
-            List<Tone> stopTones = new ArrayList<>();
-            stopTones.add(Tone.POUND);
+            List<DtmfTone> stopTones = new ArrayList<>();
+            stopTones.add(DtmfTone.POUND);
             CallMediaRecognizeDtmfOptions callMediaRecognizeDtmfOptions = new CallMediaRecognizeDtmfOptions(targetUser, 5)
                 .setStopTones(stopTones)
                 .setInterToneTimeout(Duration.ofSeconds(5));
