@@ -1574,7 +1574,7 @@ public class BlobAsyncClientBase {
         BiFunction<BlobRange, BlobRequestConditions, Flux<ByteBuffer>> chunkDownloadFunc =
             (range, conditions) -> this.downloadRange(range, requestConditions, requestConditions.getIfMatch(),
                     rangeGetContentMd5, context)
-                .flatMapMany(Response::getValue);
+                .flatMapMany(StreamResponse::getValue);
 
         return ChunkedDownloadUtils.downloadFirstChunk(finalRange, finalParallelTransferOptions, requestConditions,
             firstChunkDownloadFunc, true)
