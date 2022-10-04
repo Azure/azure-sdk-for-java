@@ -5,7 +5,7 @@ package com.azure.communication.callautomation.models.events;
 
 import com.azure.core.util.ExpandableStringEnum;
 
-/** Defines values for ReasonCodeName. */
+/** Defines values for ReasonCode. */
 public class ReasonCode extends ExpandableStringEnum<ReasonCode> {
     /** Reason code names for the Recognize operation */
     public static class Recognize extends ExpandableStringEnum<ReasonCode> {
@@ -34,24 +34,22 @@ public class ReasonCode extends ExpandableStringEnum<ReasonCode> {
     public static final ReasonCode COMPLETED_SUCCESSFULLY = fromReasonCode(0);
     /** Unknown internal server error. */
     public static final ReasonCode UNSPECIFIED_ERROR = fromReasonCode(9999);
-    /** Action falied, the operation was cancelled. */
-    public static final ReasonCode OPERATION_CANCELLED = fromReasonCode(8508);
 
     /**
-     * Creates or finds a ReasonCodeName from its string representation.
+     * Creates or finds a ReasonCode from its string representation.
      *
      * @param reasonCode a reasonCode to look for.
-     * @return the corresponding ResourceCodeName.
+     * @return the corresponding ResourceCode.
      */
     private static ReasonCode fromString(String reasonCode) {
         return fromString(reasonCode, ReasonCode.class);
     }
 
     /**
-     * Creates or finds a ReasonCodeName from its reasonCode integer.
+     * Creates or finds a ReasonCode from its reasonCode integer.
      *
      * @param reasonCode a reasonCode to look for.
-     * @return the corresponding ResourceCodeName.
+     * @return the corresponding ResourceCode.
      */
     static ReasonCode fromReasonCode(int reasonCode) {
         return fromString(Integer.toString(reasonCode));

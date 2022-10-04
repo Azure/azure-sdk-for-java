@@ -3,7 +3,9 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.callautomation.models.events.PlayCanceled;
 import com.azure.communication.callautomation.models.events.ReasonCode;
+import com.azure.communication.callautomation.models.events.RecognizeCanceled;
 import com.azure.communication.callautomation.models.events.RecognizeCompleted;
 import com.azure.communication.callautomation.models.RecordingState;
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
@@ -63,7 +65,7 @@ public class EventHandlerUnitTests {
             + "        \"time\": \"2022-08-11T23:42:45.5346632+00:00\",\n"
             + "        \"specversion\": \"1.0\",\n"
             + "        \"datacontenttype\": \"application/json\",\n"
-            + "        \"subject\": \"calling/recordings/serverCallId/recordingId/recordingId/RecordingStateChanged\"\n"
+            + "        \"subject\": \"calling/recordings/serverCallId/recordingId/recordingId\"\n"
             + "    }\n"
             + "]";
         CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
@@ -79,7 +81,7 @@ public class EventHandlerUnitTests {
     public void parsePlayCompletedEvent() {
         String receivedEvent = "[{\n"
             + "\"id\": \"704a7a96-4d74-4ebe-9cd0-b7cc39c3d7b1\",\n"
-            + "\"source\": \"calling/callConnections/callConnectionId/PlayCompletedEvent\",\n"
+            + "\"source\": \"calling/callConnections/callConnectionId/PlayCompleted\",\n"
             + "\"type\": \"Microsoft.Communication.PlayCompleted\",\n"
             + "\"data\": {\n"
             + "\"resultInformation\": {\n"
@@ -95,7 +97,7 @@ public class EventHandlerUnitTests {
             + "\"time\": \"2022-08-12T03:13:25.0252763+00:00\",\n"
             + "\"specversion\": \"1.0\",\n"
             + "\"datacontenttype\": \"application/json\",\n"
-            + "\"subject\": \"calling/callConnections/callConnectionId/PlayCompletedEvent\"\n"
+            + "\"subject\": \"calling/callConnections/callConnectionId\"\n"
             + "}]";
         CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
         assertNotNull(event);
@@ -110,7 +112,7 @@ public class EventHandlerUnitTests {
     public void parsePlayFailedEvent() {
         String receivedEvent = "[{\n"
             + "\"id\": \"704a7a96-4d74-4ebe-9cd0-b7cc39c3d7b1\",\n"
-            + "\"source\": \"calling/callConnections/callConnectionId/PlayFailedEvent\",\n"
+            + "\"source\": \"calling/callConnections/callConnectionId/PlayFailed\",\n"
             + "\"type\": \"Microsoft.Communication.PlayFailed\",\n"
             + "\"data\": {\n"
             + "\"resultInformation\": {\n"
@@ -126,7 +128,7 @@ public class EventHandlerUnitTests {
             + "\"time\": \"2022-08-12T03:13:25.0252763+00:00\",\n"
             + "\"specversion\": \"1.0\",\n"
             + "\"datacontenttype\": \"application/json\",\n"
-            + "\"subject\": \"calling/callConnections/callConnectionId/PlayFailedEvent\"\n"
+            + "\"subject\": \"calling/callConnections/callConnectionId\"\n"
             + "}]";
         CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
         assertNotNull(event);
@@ -137,6 +139,29 @@ public class EventHandlerUnitTests {
         assertEquals(ReasonCode.Play.DOWNLOAD_FAILED, playFailedEvent.getReasonCode());
     }
 
+    @Test
+    public void parsePlayCanceledEvent() {
+        String receivedEvent = "[{\n"
+            + "\"id\": \"704a7a96-4d74-4ebe-9cd0-b7cc39c3d7b1\",\n"
+            + "\"source\": \"calling/callConnections/callConnectionId/PlayCanceled\",\n"
+            + "\"type\": \"Microsoft.Communication.PlayCanceled\",\n"
+            + "\"data\": {\n"
+            + "\"type\": \"playCanceled\",\n"
+            + "\"callConnectionId\": \"callConnectionId\",\n"
+            + "\"serverCallId\": \"serverCallId\",\n"
+            + "\"correlationId\": \"correlationId\"\n"
+            + "},\n"
+            + "\"time\": \"2022-08-12T03:13:25.0252763+00:00\",\n"
+            + "\"specversion\": \"1.0\",\n"
+            + "\"datacontenttype\": \"application/json\",\n"
+            + "\"subject\": \"calling/callConnections/callConnectionId\"\n"
+            + "}]";
+        CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
+        assertNotNull(event);
+        PlayCanceled playCanceled = (PlayCanceled) event;
+        assertNotNull(playCanceled);
+        assertEquals("serverCallId", playCanceled.getServerCallId());
+    }
     @Test
     public void parseRecognizeCompletedEvent() {
         String receivedEvent = "[{\n"
@@ -157,7 +182,7 @@ public class EventHandlerUnitTests {
             + "\"time\": \"2022-08-12T03:13:25.0252763+00:00\",\n"
             + "\"specversion\": \"1.0\",\n"
             + "\"datacontenttype\": \"application/json\",\n"
-            + "\"subject\": \"calling/callConnections/callConnectionId/RecognizeCompleted\"\n"
+            + "\"subject\": \"calling/callConnections/callConnectionId\"\n"
             + "}]";
         CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
         assertNotNull(event);
@@ -188,7 +213,7 @@ public class EventHandlerUnitTests {
             + "\"time\": \"2022-08-12T03:13:25.0252763+00:00\",\n"
             + "\"specversion\": \"1.0\",\n"
             + "\"datacontenttype\": \"application/json\",\n"
-            + "\"subject\": \"calling/callConnections/callConnectionId/RecognizeCompleted\"\n"
+            + "\"subject\": \"calling/callConnections/callConnectionId\"\n"
             + "}]";
         CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
         assertNotNull(event);
@@ -197,5 +222,29 @@ public class EventHandlerUnitTests {
         assertEquals("serverCallId", recognizeFailed.getServerCallId());
         assertEquals(400, recognizeFailed.getResultInformation().getCode());
         assertEquals(ReasonCode.Recognize.INITIAL_SILENCE_TIMEOUT, recognizeFailed.getReasonCode());
+    }
+
+    @Test
+    public void parseRecognizeCanceledEvent() {
+        String receivedEvent = "[{\n"
+            + "\"id\": \"704a7a96-4d74-4ebe-9cd0-b7cc39c3d7b1\",\n"
+            + "\"source\": \"calling/callConnections/callConnectionId/RecognizeCanceled\",\n"
+            + "\"type\": \"Microsoft.Communication.RecognizeCanceled\",\n"
+            + "\"data\": {\n"
+            + "\"type\": \"recognizeCanceled\",\n"
+            + "\"callConnectionId\": \"callConnectionId\",\n"
+            + "\"serverCallId\": \"serverCallId\",\n"
+            + "\"correlationId\": \"correlationId\"\n"
+            + "},\n"
+            + "\"time\": \"2022-08-12T03:13:25.0252763+00:00\",\n"
+            + "\"specversion\": \"1.0\",\n"
+            + "\"datacontenttype\": \"application/json\",\n"
+            + "\"subject\": \"calling/callConnections/callConnectionId\"\n"
+            + "}]";
+        CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
+        assertNotNull(event);
+        RecognizeCanceled recognizeCanceled = (RecognizeCanceled) event;
+        assertNotNull(recognizeCanceled);
+        assertEquals("serverCallId", recognizeCanceled.getServerCallId());
     }
 }
