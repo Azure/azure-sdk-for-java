@@ -1,7 +1,10 @@
 # Release History
 
 ## 1.1.1 (2022-10-11)
-- Mandatory update.
+### Other Changes
+- Mandator update.
+
+#### Dependency Updates
 
 ## 1.0.2 (2022-09-20)
 
