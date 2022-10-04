@@ -416,6 +416,18 @@
           "justification": "Thi isn't an external class"
         },
         {
+          "ignore": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class com.azure.spring.cloud.feature.manager.DynamicFeatureManager",
+          "justification": "Thi isn't an external class"
+        },
+        {
+          "ignore": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class com.azure.spring.cloud.feature.manager.FeatureManagementException",
+          "justification": "Thi isn't an external class"
+        },
+        {
           "code": "java.method.parameterTypeParameterChanged",
           "old": "parameter <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::insert(java.lang.String, ===java.lang.Object===, com.azure.cosmos.models.PartitionKey)",
           "new": "parameter <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::insert(java.lang.String, ===T===, com.azure.cosmos.models.PartitionKey)",
