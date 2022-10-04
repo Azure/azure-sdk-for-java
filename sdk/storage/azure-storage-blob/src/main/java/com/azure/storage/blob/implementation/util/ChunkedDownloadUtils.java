@@ -100,12 +100,12 @@ public class ChunkedDownloadUtils {
             });
     }
 
-    public static <T> Flux<T> downloadChunk(Integer chunkNum, BlobRange finalRange,
+    public static <T> Flux<T> downloadChunk(int chunkNum, BlobRange finalRange,
         ParallelTransferOptions finalParallelTransferOptions, BlobRequestConditions requestConditions, long newCount,
         BiFunction<BlobRange, BlobRequestConditions, Flux<ByteBuffer>> downloader,
         Function<Flux<ByteBuffer>, Flux<T>> returnTransformer) {
         // Calculate whether we need a full chunk or something smaller because we are at the end.
-        long modifier = chunkNum.longValue() * finalParallelTransferOptions.getBlockSizeLong();
+        long modifier = chunkNum * finalParallelTransferOptions.getBlockSizeLong();
         long chunkSizeActual = Math.min(finalParallelTransferOptions.getBlockSizeLong(),
             newCount - modifier);
         BlobRange chunkRange = new BlobRange(finalRange.getOffset() + modifier, chunkSizeActual);

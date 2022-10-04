@@ -15,7 +15,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.ProgressListener;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
@@ -1590,23 +1589,25 @@ public class BlobAsyncClientBase {
                 int numChunks = ChunkedDownloadUtils.calculateNumBlocks(newCount,
                     finalParallelTransferOptions.getBlockSizeLong());
 
+                Mono<Void> initialChunkWrite = writeBodyToFile(initialResponse.getValue(), file, 0,
+                    finalParallelTransferOptions, progressReporter == null ? null : progressReporter.createChild());
+
                 // Begin by writing the initial download first chunk response to file, then download additional chunks
                 // if necessary, finishing by returning the initial download response as the final response.
                 //
                 // If the number of chunks is less than or equal to 1, or in terms of downloading the blob is empty or
                 // was downloaded in the first chunk, there are no additional chunks to download.
-                Flux<Void> additionalChunksDownload = (numChunks <= 1)
-                    ? Flux.empty()
-                    : Flux.range(1, numChunks).flatMap(chunkNum -> ChunkedDownloadUtils.downloadChunk(chunkNum,
-                        finalRange, finalParallelTransferOptions, finalConditions, newCount, chunkDownloadFunc,
-                        response -> writeBodyToFile(response, file, chunkNum, finalParallelTransferOptions,
-                            progressReporter == null ? null : progressReporter.createChild()).flux()),
-                        finalParallelTransferOptions.getMaxConcurrency());
-
-                return writeBodyToFile(initialResponse.getValue(), file, 0, finalParallelTransferOptions,
-                    progressReporter == null ? null : progressReporter.createChild())
-                    .thenMany(additionalChunksDownload)
-                    .then(Mono.just(finalResponse));
+                if (numChunks <= 1) {
+                    return initialChunkWrite.thenReturn(finalResponse);
+                } else {
+                    return initialChunkWrite.thenMany(Flux.range(1, numChunks - 1)
+                            .flatMap(chunkNum -> ChunkedDownloadUtils.downloadChunk(chunkNum, finalRange,
+                                    finalParallelTransferOptions, finalConditions, newCount, chunkDownloadFunc,
+                                    response -> writeBodyToFile(response, file, chunkNum, finalParallelTransferOptions,
+                                        progressReporter == null ? null : progressReporter.createChild()).flux()),
+                                finalParallelTransferOptions.getMaxConcurrency()))
+                        .then(Mono.just(finalResponse));
+                }
             });
     }
 
@@ -1616,8 +1617,7 @@ public class BlobAsyncClientBase {
 
         long position = chunkNum * finalParallelTransferOptions.getBlockSizeLong();
 
-        return FluxUtil.writeToAsynchronousByteChannel(FluxUtil.addProgressReporting(response, progressReporter),
-            IOUtils.toAsynchronousByteChannel(file, position));
+        return FluxUtil.writeFile(FluxUtil.addProgressReporting(response, progressReporter), file, position);
     }
 
     private void downloadToFileCleanup(AsynchronousFileChannel channel, String filePath, SignalType signalType) {

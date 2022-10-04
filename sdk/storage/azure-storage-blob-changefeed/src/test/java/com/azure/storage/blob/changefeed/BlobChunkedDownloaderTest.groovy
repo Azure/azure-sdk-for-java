@@ -47,7 +47,8 @@ class BlobChunkedDownloaderTest extends APISpec {
 
         then:
         output == input
-        numDownloads * bc.downloadWithResponse(_,_,_,_)
+        1 * bc.downloadWithResponse(_,_,_,_)
+        numDownloads * bc.downloadStreamWithResponse(_, _, _, _) // downloadWithResponse calls into this, so expect numDownloads count
 
         where:
         size                | blockSize        || numDownloads
@@ -90,7 +91,8 @@ class BlobChunkedDownloaderTest extends APISpec {
         for (int i = 0; i < input.length - offset; i++) {
             assert output[i] == input[i + offset]
         }
-        numDownloads * bc.downloadWithResponse(_,_,_,_)
+        1 * bc.downloadWithResponse(_,_,_,_)
+        numDownloads * bc.downloadStreamWithResponse(_, _, _, _) // downloadWithResponse calls into this, so expect numDownloads count
 
         where:
         size                | blockSize        | offset           || numDownloads
