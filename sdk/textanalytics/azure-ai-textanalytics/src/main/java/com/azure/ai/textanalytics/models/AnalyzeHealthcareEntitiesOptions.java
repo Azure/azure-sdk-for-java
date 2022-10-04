@@ -13,6 +13,8 @@ public final class AnalyzeHealthcareEntitiesOptions extends TextAnalyticsRequest
     private String displayName;
     private Boolean disableServiceLogs;
 
+    private FhirVersion fhirVersion;
+
     /**
      * Gets display name of the operation.
      *
@@ -33,6 +35,29 @@ public final class AnalyzeHealthcareEntitiesOptions extends TextAnalyticsRequest
         this.displayName = displayName;
         return this;
     }
+
+    /**
+     * Get the fhirVersion property: The FHIR Spec version that the result will use to format the fhirBundle. For
+     * additional information see https://www.hl7.org/fhir/overview.html.
+     *
+     * @return the fhirVersion value.
+     */
+    public FhirVersion getFhirVersion() {
+        return fhirVersion;
+    }
+
+    /**
+     * Set the fhirVersion property: The FHIR Spec version that the result will use to format the fhirBundle. For
+     * additional information see https://www.hl7.org/fhir/overview.html.
+     *
+     * @param fhirVersion the fhirVersion value to set.
+     * @return the AnalyzeHealthcareEntitiesOptions object itself.
+     */
+    public AnalyzeHealthcareEntitiesOptions setFhirVersion(FhirVersion fhirVersion) {
+        this.fhirVersion = fhirVersion;
+        return this;
+    }
+
 
     /**
      * Sets the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".

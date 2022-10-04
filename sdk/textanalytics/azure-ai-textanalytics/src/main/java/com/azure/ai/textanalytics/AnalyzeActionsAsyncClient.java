@@ -49,6 +49,7 @@ import com.azure.ai.textanalytics.implementation.models.EntityLinkingTask;
 import com.azure.ai.textanalytics.implementation.models.EntityLinkingTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.EntityRecognitionLROResult;
 import com.azure.ai.textanalytics.implementation.models.Error;
+import com.azure.ai.textanalytics.implementation.models.FhirVersion;
 import com.azure.ai.textanalytics.implementation.models.HealthcareLROResult;
 import com.azure.ai.textanalytics.implementation.models.HealthcareLROTask;
 import com.azure.ai.textanalytics.implementation.models.HealthcareResult;
@@ -517,7 +518,10 @@ class AnalyzeActionsAsyncClient {
     }
 
     private HealthcareTaskParameters getHealthcareTaskParameters(AnalyzeHealthcareEntitiesAction action) {
+        final com.azure.ai.textanalytics.models.FhirVersion fhirVersion = action.getFhirVersion();
+        final FhirVersion fhirVersionImpl = fhirVersion == null ? null : FhirVersion.fromString(fhirVersion.toString());
         return new HealthcareTaskParameters()
+            .setFhirVersion(fhirVersionImpl)
             .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
             .setModelVersion(action.getModelVersion())
             .setLoggingOptOut(action.isServiceLogsDisabled());
