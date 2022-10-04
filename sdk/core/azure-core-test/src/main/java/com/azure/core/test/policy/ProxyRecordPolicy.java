@@ -2,16 +2,12 @@ package com.azure.core.test.policy;
 
 import com.azure.core.http.*;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.test.http.MockHttpResponse;
-import org.junit.jupiter.api.DisplayNameGenerator;
+import com.azure.core.util.UrlBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -20,65 +16,71 @@ import java.util.Map;
 import java.util.function.Function;
 
 public class ProxyRecordPolicy implements HttpPipelinePolicy {
-    private final String proxyUrlBase = "http://localhost:5000";
+    private final String proxyUrlScheme = "http";
+    private final String proxyUrlHost = "localhost";
+    private final int proxyUrlPort = 5000;
+    private final String proxyUrl = String.format("%s://%s:%d", proxyUrlScheme, proxyUrlHost, proxyUrlPort);
     private String xRecordingId;
     private String recordFile;
     public ProxyRecordPolicy(List<Function<String, String>> redactors) {
-
+        // TODO: redactors
     }
 
     public void startRecording(String recordFile) {
-        HttpResponse response = post(String.format("%s/record/start", proxyUrlBase), String.format("{\"x-recording-file\": \"%s\"}", recordFile));
+        HttpResponse response = send(String.format("%s/record/start", proxyUrl),
+            String.format("{\"x-recording-file\": \"%s\"}", recordFile).getBytes(StandardCharsets.UTF_8),
+            null,
+            HttpMethod.POST);
         xRecordingId = response.getHeaderValue("x-recording-id");
     }
 
-    public void stopRecording() {
-        post(String.format("%s/record/start", proxyUrlBase), null, getRecordingIdHeader());
+    public void stopRecording(Map<String, String> variables) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("x-recording-id", xRecordingId);
+        send(String.format("%s/record/start", proxyUrl), null, headers, HttpMethod.POST);
     }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         HttpRequest request = context.getHttpRequest().copy();
-        HttpHeader upstreamUri = new HttpHeader("x-recording-upstream-base-uri", request.getUrl().toString());
-        HttpHeader recordingHeader = new HttpHeader("x-recording-mode", "record");
-        request.setUrl(proxyUrlBase);
-        HttpHeaders headers = new HttpHeaders();
-        headers.
+        UrlBuilder builder = UrlBuilder.parse(request.getUrl());
+        builder.setScheme(proxyUrlScheme);
+        builder.setHost(proxyUrlHost);
+        builder.setPort(proxyUrlPort);
+        String url = builder.toString();
+
+        HttpHeaders headers = request.getHeaders();
+        headers.add("x-recording-upstream-base-uri", request.getUrl().toString());
+        headers.add("x-recording-mode", "record");
+        headers.add("x-recording-id", xRecordingId);
+        HttpResponse response = send(url,
+            request.getBodyAsBinaryData() != null ? request.getBodyAsBinaryData().toBytes() : null,
+            headers,
+            request.getHttpMethod());
+        return Mono.just(response);
     }
 
-    private HttpHeader getRecordingIdHeader() {
-        return new HttpHeader("x-recording-id", xRecordingId);
-    }
-    private HttpResponse post(String url, String body) {
-        return post(url, body, (HttpHeaders)null);
-    }
-    private HttpResponse post(String url, String body, HttpHeader header) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(header.getName(), header.getValue());
-        return post(url, body, headers);
-    }
-    private HttpResponse post(String url, String body, HttpHeaders headers) {
+    private HttpResponse send(String url, byte[] body, HttpHeaders headers, HttpMethod method) {
         HttpURLConnection connection = null;
 
         try {
             URL target = new URL(url);
             connection = (HttpURLConnection) target.openConnection();
-            connection.setRequestMethod("POST");
+            connection.setRequestMethod(method.toString());
             if(body != null) {
                 connection.setDoOutput(true);
                 BufferedOutputStream stream = new BufferedOutputStream(connection.getOutputStream());
-                stream.write(body.getBytes(StandardCharsets.UTF_8));
+                stream.write(body);
                 stream.flush();
             }
             if (headers != null) {
                 for (HttpHeader header : headers) {
-                    connection.setRequestProperty(header.getName(), header.getValue());
+                    String name = header.getName();
+                    connection.setRequestProperty(name, headers.getValue(name));
                 }
             }
             connection.connect();
             return createHttpResponse(connection);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {

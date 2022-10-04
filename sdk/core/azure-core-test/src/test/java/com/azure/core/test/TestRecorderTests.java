@@ -1,17 +1,13 @@
 package com.azure.core.test;
 
-import com.azure.core.implementation.util.EnvironmentConfiguration;
 import com.azure.core.test.implementation.TestingHelpers;
 import com.azure.core.test.policy.ProxyRecordPolicy;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.ConfigurationBuilder;
-import com.azure.core.util.logging.ClientLogger;
-import org.junit.After;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Proxy;
+import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -20,6 +16,12 @@ public class TestRecorderTests {
     @BeforeAll
     public static void setupClass() {
         Configuration.getGlobalConfiguration().put(TestingHelpers.AZURE_TEST_MODE, "RECORD");
+        try {
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         TestBase.setupClass();
     }
 
